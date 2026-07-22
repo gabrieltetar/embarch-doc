@@ -1,0 +1,229 @@
+# embarch-api: design
+
+**Status:** draft, 2026-07-17. This document supersedes the chat-history discussion that produced it — treat this file, not a conversation transcript, as the source of truth going forward. Append changes to the Changelog (§13) rather than silently editing history above it.
+
+## 1. Purpose and scope
+
+`embarch-api` is the layer between an MCP client (e.g. Claude Code, or any other MCP-speaking agent or tool) — or a human directly at a terminal, via its own CLI (§3.10) — and `embarch-core`. Core owns the debug probe and serial connection and deliberately "has no idea the EmbArch API or any MCP client exist" — it just exposes 4 bearer-token-authed HTTP endpoints (`/status`, `/flash`, `/reset`, `/serial-log`). embarch-api is what gives those endpoints meaning to an agent or a human: it exposes them as MCP tools and CLI subcommands, and adds the one capability Core intentionally does not have — running a project's build and handing the resulting artifact to Core's `/flash`.
+
+embarch-api is **not**:
+- A multi-user or multi-tenant service. Each engineer runs their own full stack (own embarch-api, own embarch-core).
+- A database-backed system. All state is a single TOML config file.
+- A toolchain-aware build system. It runs whatever command a project's config specifies and does not understand `west`, `idf.py`, `arduino-cli`, or any other tool's internals.
+
+**Out of scope for this document:** repository bootstrap (`git init`, an initial commit, `README.md`, CI, `LICENSE`) and the actual test code described in §7.1. Both are real, necessary work — this repo has no git history yet, and §7.1's testing strategy has no test files behind it — but they're implementation/process work, not design decisions, so they're deliberately left for a separate pass rather than specified here.
+
+## 2. Architecture overview
+
+```
+       build_command subprocess (west / arduino-cli / etc.)
+                                  |
+MCP client --stdio(spawn)--> embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
+                                  |
+                  human, direct: `embarch-api <subcommand> ...`
+```
+
+`embarch-api` is reached two ways: over MCP stdio by an MCP client (Claude Code, or any other MCP-speaking agent/tool), and directly via its own CLI subcommands (`build`, `flash`, `build_and_flash`, `reset`, `serial_log`, `list_projects` — §3.10, §5a) by a human at a terminal with no agent in front of them. Both converge on the same `config.rs`/`build.rs`/`core_client.rs` modules and the same per-project build lock — there is no separate code path for "CLI mode," mirroring the exact MCP-vs-CLI convergence `embarch-core/design.md` already established between its own HTTP API and its CLI (§2, §9 there). The MCP client spawns embarch-api as a local subprocess and talks MCP over stdio; the CLI is instead a direct, one-shot invocation with no client software mediating it. Either way, embarch-api talks plain HTTP to embarch-core, authenticating with the same `EMBARCH_TOKEN` Core itself expects. Build commands run as subprocesses of embarch-api, in the source tree of whichever project was named.
+
+## 3. Locked-in design decisions and rationale
+
+1. **Single user, single Core instance.** No multi-tenancy, no user/permission model, no database. This was explicitly revisited mid-design — the original framing raised "what if EmbArch API is multi-tenant, make it full" — but the resolution was that each engineer runs their own complete stack (their own embarch-api talking to their own embarch-core), so there is no multiplexing to design for. Revisit this document if that assumption ever changes.
+2. **Language: Rust**, matching embarch-core. Reuses Core's structuring patterns (an `AppState`-equivalent, `anyhow`-based error handling) and keeps the whole project to one toolchain.
+3. **Purpose: MCP server, CLI, and build orchestrator.** The three responsibilities embarch-api adds on top of Core are (a) exposing Core's capabilities as MCP tools for any MCP client, (b) exposing the identical capabilities as CLI subcommands for a human with no MCP client in front of them (§3.10), and (c) running a configured build command and feeding the artifact to Core's `/flash`.
+4. **MCP transport: stdio**, with the MCP client spawning embarch-api directly, when no subcommand is present on the command line (§3.10 governs the alternative). This was chosen over exposing embarch-api's MCP surface as its own HTTP+API-key service. The consequence: the trust boundary for embarch-api's *inbound MCP* interface is simply "whoever can spawn the process" — there is no bearer token, API key, or session concept protecting the MCP surface itself. This is a deliberate simplification, not an oversight; if embarch-api is ever run detached from an interactive MCP client session (e.g. reachable over a network), this decision needs revisiting. Note this is entirely separate from the *outbound* credential embarch-api needs to talk to Core — see §9. This decision governs MCP mode specifically; embarch-api also has a second, human-facing inbound interface — see §3.10.
+5. **Build orchestration: generic configurable command per project, not toolchain-specific logic.** Originally motivated by an assumption that the two real projects this manages day one used different toolchains (Zephyr/`west` vs. Arduino-CLI/PlatformIO) — on inspection both turned out to be Zephyr/`west`-based (see §4's note on `project-b-mkr`), but the generic-command design is kept regardless: it's the right call on its own merits (no toolchain-specific logic to maintain, works for whatever a future project uses) even though the original two-toolchain premise didn't hold.
+6. **Persistence: a single TOML config file, no database.** Matches the single-user, single-Core scope — there's no multi-row data (users, boards-across-tenants, audit trails) that would justify SQLite or Postgres.
+7. **Deployment: same machine as Core today, but Core's base URL stays configurable, never hardcoded to `127.0.0.1`.** Core's own README already flags a possible future move to a Raspberry Pi reachable over LAN; embarch-api should not bake in an assumption that will break when that happens.
+8. **This document is the durable design record.** Core's README references "the design discussion" without pointing anywhere — this file is meant to be that pointer for embarch-api going forward.
+9. **Dependency choices are locked, not incidental.** MCP protocol/transport: the `rmcp` crate (`server` + `transport-io` features), using its `tool_router`/`tool_handler` procedural-macro pattern — chosen over hand-rolling JSON-RPC, since MCP's schema/handshake plumbing isn't worth re-deriving per project. HTTP client: `reqwest` built on `rustls` rather than `native-tls`, specifically to avoid pulling in a system OpenSSL dependency — keeps embarch-api trivially buildable on whatever machine an engineer's Core happens to run on (§9). CLI: `clap` (derive). Config parsing: `toml` + `serde`. MCP tool parameter schemas: `schemars`'s `JsonSchema` derive, which `rmcp` requires to generate each tool's declared input schema. Exact versions are pinned in `Cargo.toml`/`Cargo.lock`, not restated here.
+10. **A CLI subcommand interface, invoked directly by a human, added alongside MCP — not a separate service, not a separate binary.** `embarch-api build|flash|build_and_flash|reset|serial_log|list_projects <args>` runs the identical `config.rs`/`build.rs`/`core_client.rs` orchestration MCP's `tools.rs` already calls (§10), mirroring the pattern `embarch-core` established between its own CLI and HTTP API (`embarch-core/design.md` §2, §9): two front-ends, one set of modules underneath, neither privileged over the other. This closes a real gap: without it, an engineer with no MCP client in front of them (no Claude Code, no other agent) had no way to invoke embarch-api's build orchestration at all, and would have had to either run the build manually or call embarch-core's HTTP endpoints directly — bypassing embarch-api's config-driven `build_command`, artifact-freshness check, and timeout/process-group handling entirely. **Subcommand presence is the mode switch**: no subcommand → MCP stdio server (§3.4, fully backward compatible with every existing MCP client config that spawns `embarch-api --config <path>`); a subcommand present → run that one operation as a human-facing CLI call and exit. See §5a for the subcommand surface, §8 for the CLI's trust boundary, §10 for `cli.rs`. This decision is recorded ahead of implementation — no `cli.rs` exists yet in the actual source tree; see `milestone-1.md` for the execution plan.
+
+## 4. Configuration schema reference
+
+Config path is passed explicitly via `--config <path>` (also honors an `EMBARCH_API_CONFIG` env var fallback) — not inferred from cwd, since the MCP client controls the spawn cwd via its own server config and that shouldn't be a hidden assumption.
+
+**`[core]`** (one instance):
+
+| Field | Type | Required | Default | Notes |
+|---|---|---|---|---|
+| `base_url` | string (URL) | yes | — | Core's base URL; never assumed to be `127.0.0.1` elsewhere in the codebase (§3.7). |
+| `token` | string | no (see Notes) | — | Inline bearer token. |
+| `token_env` | string | no (see Notes) | — | Name of an env var to read the token from instead of storing it in the file. `token_env` wins if both are set. If neither `token` nor `token_env` resolves, embarch-api falls back to machine-wide token-file discovery (`token_discovery.rs`, §7) before failing — see [embarch-token.md](../embarch-token.md) for the full lifecycle. |
+| `status_timeout_secs` | integer | no | 10 | |
+| `reset_timeout_secs` | integer | no | 10 | |
+| `flash_timeout_secs` | integer | no | 120 | |
+| `serial_timeout_secs` | integer | no | 15 | |
+
+**`[[projects]]`** (zero or more):
+
+| Field | Type | Required | Default | Notes |
+|---|---|---|---|---|
+| `name` | string | yes | — | Unique across all projects; config load fails on a duplicate. |
+| `source_path` | path | yes | — | Must exist on disk at config-load time; config load fails otherwise. |
+| `build_cwd` | path | no | none (build dir = `source_path`) | Joined onto `source_path` to form the build directory — the directory the build command runs in, **and** the directory `artifact_path` is resolved from (§6). |
+| `build_command` | array of strings | yes, non-empty | — | argv, no shell interposed (see design note below). |
+| `artifact_path` | path | yes | — | Resolved relative to the build directory (`source_path` + `build_cwd`), not to `source_path` alone. |
+| `chip` | string | yes | — | Opaque probe-rs target name, pass-through only. |
+| `flash_format` | string | yes | — | Opaque, pass-through only (Core parses/validates it). |
+| `build_timeout_secs` | integer | no | 300 | |
+| `env` | table of string→string | no | empty | Additive over embarch-api's inherited environment, not a full-profile replacement. |
+| `serial_port` | string | no | none | Fallback for the `serial_log` tool's `port` param. |
+| `serial_baud` | integer | no | none | Fallback for the `serial_log` tool's `baud` param — if neither this nor the call's own `baud` is set, the tool defaults to 115200 (§5). |
+| `artifact_path_for_core` | string | no | none | The Windows-visible UNC form of the same artifact file, used only when embarch-core runs on a different machine/OS than the build (e.g. Core on Windows, build in WSL2). When set, `flash`/`build_and_flash` send this value to Core's `/flash` as `firmware_path` instead of the WSL2-local `artifact_path`; `build.rs`'s local freshness check keeps using the regular `artifact_path` regardless. When unset, behavior is identical to before this field existed. |
+
+Both real day-one projects (`project-a-board`, `project-b-mkr`) turned out to be Zephyr/`west`-based once inspected — `project-b-fw` reads as an Arduino MKR-form-factor board by name, but its `boards/pb/mkr/board.yml` confirms it's a Zephyr board target (SoC `stm32f446xx`), not an Arduino-CLI/PlatformIO project. Confirmed by reading the real repo rather than assuming from the name; recorded here as a corrected assumption, not because the config schema changed as a result — it stays generic-command either way (§3.5).
+
+See `embarch-api/config.example.toml` for the maintained, runnable example with real values filled in.
+
+Design choices to preserve:
+- **`build_command` is an argv array, not a shell string.** Runs via `tokio::process::Command` with no shell interposed, avoiding quoting/injection ambiguity and shell-dialect differences (bash vs. cmd.exe vs. sh). Projects that genuinely need shell features (pipes, `&&`, sourcing a venv) use the explicit escape hatch: `build_command = ["bash", "-lc", "source .venv/bin/activate && west build ..."]`.
+- **`env` is additive**, merged onto embarch-api's own inherited environment, not a full-profile replacement. PATH and toolchain setup remain the responsibility of whatever launches embarch-api.
+- **`chip` / `flash_format` are opaque pass-through strings.** embarch-api does not validate them against probe-rs's target database — that validation belongs to Core/probe-rs, and duplicating it here would be a maintenance trap.
+
+## 5. MCP tool surface
+
+| Tool | Params | Behavior |
+|---|---|---|
+| `list_projects` | *(none)* | Returns configured projects (name, chip, flash_format, source_path, whether serial defaults are set). Pure config read, always safe. |
+| `status` | *(none)* | Calls Core `GET /status`; surfaces the probe list, or a clear "Core unreachable at `<base_url>`" error. |
+| `build` | `project` | Runs the configured build command for `project`. Returns success, exit code, truncated stdout/stderr, artifact path, and whether a fresh artifact was found. |
+| `flash` | `project`, `firmware_path?` | Calls Core `POST /flash` with the project's `chip`/`flash_format`. Defaults to the project's configured `artifact_path`; `firmware_path` lets you flash an already-built or one-off file without rebuilding. |
+| `build_and_flash` | `project` | Runs `build`, and only calls `flash` if the build succeeded **and** the artifact-freshness check passed. Returns both sub-results. |
+| `reset` | `project` | Calls Core `POST /reset` with the project's `chip`. |
+| `serial_log` | `project`, `port?`, `baud?`, `duration_ms?` | Calls Core `GET /serial-log`. Falls back to the project's `serial_port`/`serial_baud` config if not overridden, and beyond that to `baud = 115200`, `duration_ms = 2000` if nothing sets them. `port` has no fallback: if neither the call nor the project config supplies one, the tool errors rather than guessing a port. |
+
+**Why `build` and `flash` stay separate as well as offering `build_and_flash`:** the common agent-driven workflow ("make this change work on hardware") wants one call, and bundling prevents accidentally flashing a stale/failed artifact after a build error. But fast iteration on compiler errors shouldn't require touching hardware every call, and re-flashing the same artifact after a manual board reset shouldn't require a full rebuild — hence all three stay available.
+
+**Error-handling rule, applied to every tool:** expected/recoverable failures (nonzero build exit code, Core returning 4xx/5xx, a missing artifact) come back as `CallToolResult::error(...)` content — never `Err(McpError)` — so the calling agent sees the actual failure text (e.g. a compiler error) and can reason about it. `Err(McpError)` is reserved for true protocol-level problems, like embarch-api's own config being unloadable at all.
+
+**One documented exception:** every tool that takes a `project` argument looks it up against the config first, and an unknown/mistyped project name comes back as `Err(McpError::invalid_params(...))`, not `CallToolResult::error`. This is deliberate, not an oversight: MCP's `invalid_params` exists precisely for "the request itself is malformed," which a bad project name is, as distinct from "the request was well-formed but the operation failed" (a build error, a Core failure) — the case the general rule above covers.
+
+## 5a. CLI subcommand surface
+
+**Status: shipped** (§3.10) — implemented in `src/cli.rs`, dispatched from `main.rs` (§10).
+
+Available whenever `embarch-api` is invoked with a subcommand (§3.4, §3.10). This reuses the exact same `config.rs`/`build.rs`/`core_client.rs` modules §5's MCP tools call — the table below is the CLI argv shape for the identical six operations, not a second implementation. The bundling rationale for `build`/`flash`/`build_and_flash` (§5, "Why `build` and `flash` stay separate as well as offering `build_and_flash`") applies unchanged here.
+
+| Subcommand | Args | Behavior |
+|---|---|---|
+| `list_projects` | *(none)* | Same as the MCP tool: prints configured projects (name, chip, flash_format, source_path, whether serial defaults are set). |
+| `status` | *(none)* | Same as the MCP tool: calls Core `GET /status`. |
+| `build` | `<project>` | Same as the MCP tool. |
+| `flash` | `<project> [--firmware-path <path>]` | Same as the MCP tool. |
+| `build_and_flash` | `<project>` | Same as the MCP tool. |
+| `reset` | `<project>` | Same as the MCP tool. |
+| `serial_log` | `<project> [--port <port>] [--baud <baud>] [--duration-ms <ms>]` | Same as the MCP tool, same fallback chain (project config, then `baud = 115200`/`duration_ms = 2000`). |
+
+**`--json` flag** (`embarch-api --config <path> --json build <project>`): switches a subcommand's stdout from a human-readable summary to a single JSON object carrying the same fields the equivalent MCP tool result carries (e.g. `{"success": bool, "exit_code": i32|null, "stdout": "...", "stderr": "...", "artifact_path": "...", "artifact_fresh": bool}`), so a script (e.g. `milestone-1.md`'s west-runner wrapper) doesn't have to scrape human text. Default (no `--json`) prints readable text for an engineer typing the command directly.
+
+**Error handling and exit codes**: a CLI has no equivalent of MCP's protocol-level-vs-tool-level distinction (§5's `CallToolResult::error` vs. `Err(McpError)` split, or the `invalid_params` project-name exception) — there is no protocol layer underneath a CLI invocation. Instead:
+- Success → exit code `0`; result on stdout (human text, or the `--json` object).
+- Any failure — unknown project name, config load failure, build failure (nonzero exit/timeout/killed), Core unreachable, Core returning 4xx/5xx, missing artifact — → exit code `1`; a one-line error message on stderr. If `--json` was passed, the error goes into the same JSON object on stdout instead (`"success": false`, `"error": "..."`) rather than to stderr, so a script only has to check the process exit code, not which stream carried the result.
+- Malformed invocation itself (missing required arg, unknown subcommand) is handled by `clap` before any of this runs, using clap's own exit code (`2`) and usage text — unchanged, not part of this design.
+- **Deliberately not distinguishing failure *kinds* by exit code** (e.g. a distinct code for "build failed" vs. "project not found" vs. "Core unreachable") for v1 — nothing yet consumes a finer-grained signal, and inventing a taxonomy nobody needs would be scope creep. Flagged as an open question (§12) if a future scripted caller needs to branch on failure kind without parsing stderr/JSON text.
+
+## 6. Build orchestration details
+
+- **Working directory**: `source_path` joined with `build_cwd` if set, else `source_path`. Validated to exist before spawning; if not, returns a tool-level error rather than panicking.
+- **`artifact_path` resolution**: resolved relative to that same build directory, not to `source_path` alone. A project with `build_cwd = "app/project-a"` and `artifact_path = "build/zephyr/zephyr.hex"` (see `project-a-board` in §4) resolves to `<source_path>/app/project-a/build/zephyr/zephyr.hex`, since `west`'s own build output lands relative to wherever it was invoked from — a project that gets this wrong (e.g. assuming `artifact_path` is `source_path`-relative) would report a fresh artifact that's actually a stale leftover, or never find the real one at all.
+- **Environment**: inherits embarch-api's own process environment, overlaid with the project's `env` table.
+- **Capture**: `Stdio::piped()` for both stdout and stderr, drained by **two concurrent tokio tasks** — draining only one pipe while the other fills its OS buffer is a classic way for a child process to hang.
+- **Truncation**: each captured stream is capped (e.g. last ~64KB, with an explicit "truncated" marker) before it goes back through MCP, so an unbounded build log doesn't blow up the tool response or the agent's context.
+- **Timeout**: `build_timeout_secs` (project override, else a sane default) wraps the wait via `tokio::time::timeout`. On timeout, the **process group** is killed, not just the immediate child — build tools like `west`/`cmake`/`make` fork subprocesses that a plain `kill()` would orphan.
+- **Exit-code handling**: `0` → proceed to the artifact check. Nonzero → reported as a build failure with captured output, artifact check skipped. `None` (killed/timed out/signaled) → reported explicitly as "timed out"/"killed", distinct from a compiler error, so a hang isn't misdiagnosed as a code problem.
+- **Artifact freshness check**: the artifact path's existence and mtime are recorded *before* spawning. After a zero exit code, the file must now exist, and if it existed before, its mtime must be newer than the build-start time. Without this, a build that fails partway through (or a misconfigured `artifact_path`) could silently "succeed" by pointing at a stale binary from a previous build — the worst possible failure mode for hardware bring-up.
+- **Concurrency**: one build (or `build_and_flash`) in flight per project name at a time, enforced by a lightweight per-project async lock. This is separate from Core's own hardware lock — it guards against two overlapping calls stomping the same build output directory, not against USB contention (Core already owns that).
+
+## 7. Core HTTP client
+
+- Built once at startup from `[core]` config: `base_url`, the resolved token, and a `reqwest::Client`. Token resolution (`CoreConfig::resolve_token`) runs through `token_discovery.rs`'s chain — `token`/`token_env`, then a machine-wide token-file fallback (same-OS path, or the WSL2⟷Windows-translated path when running under WSL2) — before failing; full detail in [embarch-token.md](../embarch-token.md).
+- **Auth injection**: every request uses `.bearer_auth(&token)`, rendering `Authorization: Bearer <token>` — matching Core's exact-string check in `auth_middleware` (`api.rs`).
+- **Per-call timeouts**, not one global client timeout: `status`/`reset`/`serial_log` use short budgets, `flash` gets its own longer one, since flashing can legitimately take much longer than a status check.
+- **Error body handling**: Core's handlers return `(StatusCode, String)` on failure, which axum renders as a **plain-text body**, not JSON. embarch-api must parse JSON only on 2xx responses and read the body as plain text on non-2xx, folding it into the error message — attempting to `serde_json` a non-2xx body would fail and mask Core's actual error text. As of `embarch-core/design.md` §4/§11, that string is the full `anyhow` causal chain (`{e:?}`), not just Core's outermost context message — embarch-api's CLI/MCP error text should print it verbatim rather than truncating to a first line, since the actual cause (e.g. a probe-rs I/O error) is often further down the chain.
+- **Startup connectivity check**: `main.rs` calls `GET /status` once during init, before starting the MCP server loop. If Core is unreachable, embarch-api refuses to start and reports a clear "Core unreachable at `<base_url>`" error rather than starting successfully and only surfacing the problem on the first tool call. This is a fail-fast choice, not a correctness requirement — Core could in principle come up later — but for a single-engineer local tool, catching a misconfigured `base_url` or a Core that forgot to launch at startup is more useful than a confusing failure three tool calls into a session.
+- **Startup connectivity check is MCP-mode only.** The check above applies when embarch-api starts as an MCP server (§3.4). In CLI mode (§3.10), no eager connectivity check runs before dispatch — each subcommand's own Core call surfaces an "unreachable Core" error exactly as MCP would, and `list_projects` (which never calls Core) still works even with Core down entirely, which matters when debugging config alone.
+
+### 7.1 Testing strategy
+
+**Status: specified, not yet implemented** — no test files exist in the repo yet. The scenarios below are the acceptance criteria test code should satisfy, not a description of tests already written.
+
+- `core_client.rs`, tested against a mocked HTTP server (e.g. `wiremock`), not a real embarch-core instance:
+  - every outgoing request carries `Authorization: Bearer <token>` with the resolved token (inline or from `token_env`)
+  - `status`/`reset`/`flash`/`serial_log` each honor their own configured timeout independently — a slow mock on one endpoint doesn't eat into another's budget
+  - a non-2xx mock response is read as plain text and folded verbatim into the returned error — never handed to a JSON parser (§7's plain-text-vs-JSON rule)
+  - a 2xx mock response deserializes into the matching response struct (`StatusResponse`, `FlashResponse`, `ResetResponse`, `SerialLogResponse`); malformed JSON on a 2xx surfaces a clear parse error rather than panicking
+
+- `build.rs`, tested with fake `build_command`s (small scripts standing in for `west`), not a real toolchain:
+  - exit code 0 plus a freshly-written artifact reports build success and artifact freshness both true
+  - a nonzero exit reports build failure, with the artifact-freshness check skipped entirely
+  - a command that outlives `build_timeout_secs` is killed as a process group (§6, unix) and reported distinctly as "timed out" — not conflated with a normal nonzero exit
+  - a command that writes heavily to one of stdout/stderr while barely touching the other still completes without hanging — regression coverage for the two-pipe-must-drain-concurrently invariant (§6)
+  - output beyond the captured-stream cap is truncated exactly on a UTF-8 character boundary, with the truncation marker present
+  - an artifact that already existed before the build, with its mtime left untouched, is **not** treated as fresh even when the build exits 0 — the freshness check (§6) must distinguish "the build overwrote it" from "the build never touched it"
+
+- No integration tests against a real embarch-core process are planned for v1 — the mocked-boundary approach was chosen specifically to keep tests independent of hardware/probe state.
+
+## 8. Security model
+
+- **Inbound (MCP) trust boundary**: "whoever can spawn the embarch-api process." No API key, bearer token, or session exists at this layer — see §3.4.
+- **Inbound (CLI) trust boundary**: identical reasoning to the MCP case, restated as "whoever can run the `embarch-api` binary locally, with a config file it can read." There's no additional session/token layer distinguishing a CLI invocation from an MCP-spawned one; both terminate at the same OS-level question of who can execute the binary and read its `--config`. One difference worth calling out, not a different trust boundary: an MCP-spawned process's lifetime and stdio are entirely owned by the spawning client, whereas the CLI is directly interactive — a human can run `embarch-api build <project>` themselves, immediately, with no client software mediating. This doesn't change *who* is trusted, it's just the path a human actually exercises day to day (§3.10).
+- **Outbound (Core) credential**: `EMBARCH_TOKEN`, the same shared secret Core itself was started with, held either inline in config (`token`), via an env var (`token_env`, §4), or — if neither is set — discovered from the machine-wide token file Core generates (`token_discovery.rs`, §7). Full lifecycle (generation, storage, transport, rotation, threat model, known gaps) is documented in [embarch-token.md](../embarch-token.md) rather than here, including the file-permissions guidance for the inline `token` case.
+
+## 9. Deployment model
+
+Today: embarch-api (WSL2) and embarch-core (native Windows) run on the same physical machine as independent processes, embarch-api reaching Core over the WSL2⟷Windows network boundary rather than `127.0.0.1` — confirmed working end-to-end during milestone-1 (`embarch-core/design.md` §7). embarch-api never assumes `127.0.0.1`; Core's base URL is always a config value, because Core's own README already anticipates moving to a Raspberry Pi reachable over LAN.
+
+**Artifact-transfer gap — closed for the WSL2-same-PC case (milestone-1 §3.3), still open for a genuinely separate machine.** Core's `/flash` endpoint takes a `firmware_path` string and reads it from *its own local disk*, so a path meaningful to the build side isn't automatically meaningful to Core. For the WSL2-same-PC topology (embarch-api building in WSL2, Core running natively on Windows on the same physical box), this is solved by `artifact_path_for_core` (§4): a per-project config field carrying the artifact's `\\wsl.localhost\<distro>\...` UNC form, which `flash`/`build_and_flash` send to Core instead of the WSL2-local path. Confirmed working against real hardware: a `west`-built `.hex` was flashed onto the physical nRF54L15 board this way. Two caveats found during that validation, both still open (§12): the field isn't yet populated in the real `config.toml` for `project-a-board` (validated so far via the CLI's `--firmware-path` override, not the config field itself), and the UNC path a caller would compute from `resolved_artifact_path()` (§6) doesn't currently match where `west build` actually wrote the artifact for this project. **This does not generalize** to Core running on a genuinely separate machine (e.g. a future Pi deployment reached over a real LAN, not a WSL2⟷host loopback) — that case still has no mechanism to get the artifact's bytes onto Core's filesystem at all, and remains the open gap: extending Core's `/flash` to accept a multipart upload, requiring a shared network mount, or adding an explicit "push artifact" step ahead of `/flash`.
+
+## 10. Module layout
+
+No `service.rs` equivalent (contrast with Core) — stdio MCP servers are spawned per-session by the MCP client, and the CLI subcommand mode (§3.10) is likewise a one-shot invocation, not a background OS service.
+
+```
+embarch-api/src/
+├── main.rs        — clap CLI: `--config <path>` (falls back to EMBARCH_API_CONFIG), an optional subcommand
+│                    (`build`, `flash`, `build_and_flash`, `reset`, `serial_log`, `list_projects`), and a
+│                    `--json` flag (§5a); tracing→stderr init in both modes (stdout is the JSON-RPC transport
+│                    in MCP mode, and is reserved for CLI-mode result/`--json` output in CLI mode); builds
+│                    Config + CoreClient; dispatches to either the MCP stdio server (no subcommand, §3.4) or
+│                    `cli.rs::run` (subcommand present, §3.10)
+├── config.rs      — TOML schema structs, load_from_path(), validation (unique project names, path existence)
+├── core_client.rs — reqwest wrapper around Core's 4 endpoints, bearer-token injection, error mapping
+├── token_discovery.rs — machine-wide token-file discovery fallback for `CoreConfig::resolve_token()`
+│                    (§7): same-OS path, or WSL2⟷Windows path translation when running under WSL2
+├── build.rs       — subprocess execution for the configured build command (§6)
+├── tools.rs       — rmcp #[tool_router]/#[tool_handler] MCP surface; thin glue over config/build/core_client
+└── cli.rs         — human-facing CLI subcommand surface (§5a), shipped; thin glue over the same
+                     config/build/core_client modules tools.rs calls; formats results as human text
+                     or `--json`, maps outcomes to process exit codes (§5a)
+```
+
+## 11. Relationship to embarch-core
+
+Core owns all direct hardware access — `probe-rs` (flashing/reset) and `serialport` (UART log reads) live exclusively in Core. embarch-api never links against either crate; every hardware operation goes through Core's HTTP API. embarch-api's own domain is orchestration: turning a project name into a build, and a build's artifact into a Core `/flash` call, plus exposing all of it as MCP tools and CLI subcommands (§3.10, §5a).
+
+## 12. Open questions / future work
+
+- **PATH/toolchain preflight validation** (e.g. confirming `west`/`arduino-cli` resolve on PATH before attempting a build, for a faster/clearer error than a raw `os error 2`) — deferred from v1. Build failures surface naturally as a nonzero-exit/error-output report instead.
+- **Config hot-reload** — deferred from v1. Config loads once at startup; picking up edits requires restarting the MCP session (reconnecting the client).
+- **The artifact-transfer gap** described in §9, for a future Core-on-a-different-machine deployment.
+- **`serial_log` stays one-shot (capture for `duration_ms`, return, done) — not streaming.** This was a deliberate choice, not an oversight: Core's `/serial-log` endpoint is itself a bounded-duration capture rather than a stream, and MCP tool calls are fundamentally synchronous request/response. Building real streaming into embarch-api would require Core to grow a streaming mode first — out of scope for embarch-api to decide unilaterally, since Core "has no idea embarch-api or any MCP client exist" (§1). If long-running log tailing becomes a real workflow need, an agent can already approximate it by calling `serial_log` repeatedly with fresh `duration_ms` windows; true streaming is deferred until Core's API grows to support it.
+- **Adding projects to the config remains manual TOML editing** — no `add_project` MCP tool or CLI subcommand planned (distinct from the `build`/`flash`/etc. subcommands added in §3.10, which invoke existing config, they don't mutate it). Confirmed choice, consistent with §3.6's "no database, single config file" philosophy: not enough churn in the project list to justify a second way to mutate it.
+- **CLI exit-code granularity** — v1 uses a single nonzero exit code (`1`) for every operation failure kind (§5a), distinguishing them only via the stderr/`--json` text, not the exit code itself. Revisit if a real scripted caller (e.g. a west-runner wrapper, `milestone-1.md` §3.6) needs to branch on failure kind programmatically.
+- **`--json` schema stability** — the CLI's `--json` output shape (§5a) isn't versioned or pinned anywhere yet. Fine while the only consumer is this suite's own tooling; worth a stability note (or a `schema_version` field) if an external script starts depending on it.
+- **`artifact_path_for_core` is not yet populated in the real `config.toml` for `project-a-board`**, and the value milestone-1.md §3.3 originally proposed for it is wrong: it assumed the artifact lands at `<source_path>/app/project-a/build/zephyr/zephyr.hex` (matching `resolved_artifact_path()`'s `source_path` + `build_cwd` + `artifact_path` join, §6), but a real `west build` for this project actually wrote its output to the west-workspace root (`<source_path>/build/zephyr/zephyr.hex`, no `app/project-a` segment) — meaning `build_cwd = "app/project-a"` combined with `artifact_path = "build/zephyr/zephyr.hex"` resolves to a path that doesn't exist for this project as currently built. Found during milestone-1 §3.3/§3.5 hardware validation, worked around there via the CLI `flash` subcommand's `--firmware-path` override rather than fixed in config, since the right fix depends on understanding the engineer's actual `west build` invocation pattern (does it always run from the workspace root? is `build_cwd` simply wrong for this project?) rather than guessing. Until this is resolved, `build_and_flash` and a config-only `flash` (no `--firmware-path`) will not work correctly for `project-a-board` — only the explicit-path form has been validated against real hardware so far.
+- **Artifact-freshness check is racy under wall-clock jitter, observed on WSL2.** §6's freshness check compares a filesystem mtime against a `SystemTime::now()` read taken just before the build subprocess spawns (`build.rs`'s `artifact_is_fresh`). An isolated repro on this WSL2 machine (spawn a child that writes a file, compare its mtime to the parent's pre-spawn timestamp) showed the child's file mtime landing a few milliseconds *before* the parent's own timestamp on some runs — not filesystem mtime-resolution truncation (confirmed ext4, nanosecond resolution), most likely Hyper-V/WSL2 clock-sync jitter between reads taken microseconds apart. Effect: a build that just genuinely wrote a fresh artifact can be reported as stale, causing `build_and_flash` (and the CLI's `flash`) to refuse to flash a good build. Reproduced during `milestone-1-implementation-guide.md`'s Prompt 3/4 smoke tests; not fixed there since `build.rs` was deliberately out of scope for that pass. Worth resolving before relying on `build_and_flash` in the fast rebuild-and-flash inner loop milestone-1 §3.5 is meant to enable — likely fix is comparing elapsed time via a monotonic clock (`Instant`) bracketing the build, rather than two independent wall-clock (`SystemTime`) reads.
+
+## 13. Changelog
+
+- 2026-07-17 — Initial draft, written alongside the first embarch-api implementation.
+- 2026-07-20 — Moved from `embarch-api-design.md` (repo root) to `embarch-api/design.md` as part of the embarch-doc per-sub-project restructure; no content changes.
+- 2026-07-20 — Added startup Core-reachability check (§7), testing strategy (§7.1), and closed two open questions: `serial_log` stays one-shot (§12), config stays manual-TOML-only (§12).
+- 2026-07-20 — Made the document agent-agnostic: replaced Claude-Code-specific wording throughout with generic "MCP client" language, since nothing about embarch-api's design actually depends on Claude Code specifically.
+- 2026-07-20 — Closed gaps found by diffing this doc against the actual `src/` (which already exists and compiles, though the repo has no git history yet): recorded the locked dependency choices (§3.9); rewrote §4's config example as a complete field reference (was missing `env`/`serial_port`/`serial_baud` entirely); documented `serial_log`'s hardcoded fallback defaults and the `invalid_params` exception to the general error-handling rule (§5); documented `artifact_path`'s build-dir-relative resolution (§6); expanded the testing strategy into concrete acceptance criteria and flagged that no test code exists yet (§7.1); corrected §10's module layout, which described a `--log-level` CLI flag `main.rs` doesn't actually have.
+- 2026-07-20 — Added a CLI subcommand interface (§3.10, §5a) alongside MCP, mirroring embarch-core's own MCP/CLI convergence (`embarch-core/design.md` §2, §9): a human without an MCP client can now invoke `embarch-api build|flash|build_and_flash|reset|serial_log|list_projects` directly, reusing the same `config.rs`/`build.rs`/`core_client.rs` modules MCP's `tools.rs` already calls. Updated §1's purpose statement, §2's architecture diagram, §3's decisions 3/4 (purpose, stdio scoping) plus new decision 10, §7 (startup connectivity check is MCP-mode only), §8's security model (CLI trust boundary), §10's module layout (`cli.rs`), and §12 (new open questions: exit-code granularity, `--json` schema stability). This decision is recorded ahead of implementation — no `cli.rs` exists yet in the actual source tree; `embarch-features.md` lists it as Todo, not Shipped, and `milestone-1.md` carries the execution plan.
+- 2026-07-20 — Fixed §2's architecture diagram: the `build_command subprocess` annotation was column-aligned under `embarch-core`, visually implying Core spawns the build. Repositioned it as a branch off `embarch-api` (which is what actually spawns it, per §1/§6/§11); no change in meaning, just a diagram-accuracy fix.
+- 2026-07-20 — Milestone 1's §3.3/§3.4 shipped: added `artifact_path_for_core` to the `[[projects]]` config schema (§4) — an optional Windows-visible UNC path used only by `flash`/`build_and_flash`'s outbound Core call, leaving `build.rs`'s local freshness check untouched — and implemented the full CLI subcommand surface in `src/cli.rs` (§5a, now shipped rather than designed-only; §10's module layout updated to match).
+- 2026-07-20 — Recorded a new open question (§12): the artifact-freshness check's wall-clock comparison is racy under WSL2 clock jitter, found while smoke-testing Prompts 3/4 of `milestone-1-implementation-guide.md`.
+- 2026-07-21 — Milestone-1 hardware validation: confirmed the WSL2⟷Windows deployment topology works end-to-end (§9), including a real `west`-built artifact flashed onto the physical nRF54L15 board via `artifact_path_for_core`'s UNC-path mechanism (validated via the CLI's `--firmware-path` override, not yet via the config field itself). Updated §7 to note Core's error responses now carry the full `anyhow` chain, not just the outermost message. Recorded two new open questions (§12): `artifact_path_for_core` isn't populated in the real config yet, and the path this doc originally proposed for it was wrong — `project-a-board`'s real `west build` output lands at the workspace root, not under `build_cwd` as `resolved_artifact_path()` assumes.
+- 2026-07-21 — Milestone-2 (Token), §3.1–3.4 shipped code-side: added `token_discovery.rs`, wiring `CoreConfig::resolve_token()` (§7) through a token-file discovery fallback — same-OS path, or WSL2⟷Windows path translation (via `wslpath`, hand-parsing fallback) when running under WSL2 — before failing, replacing the old fail-if-neither-`token`-nor-`token_env`-set behavior. `cargo build`/`cargo clippy -- -D warnings` clean; unit tests cover the file-read and drive-letter-translation logic; manually re-verified on this machine (genuinely under WSL2), including the real translated path (`/mnt/c/ProgramData/embarch/token`) and the actionable failure message. Updated §4 (config schema notes), §7 (Core HTTP client), §8 (security model), §10 (module layout) to match; full lifecycle stays in [embarch-token.md](../embarch-token.md). Hardware re-validation against a real embarch-core instance generating the file (`milestone-2.md` §3.5) not yet done.
