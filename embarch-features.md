@@ -19,7 +19,7 @@
 | `reset` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `serial_log` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | CLI subcommand interface (`build`/`flash`/`build_and_flash`/`reset`/`serial_log`/`list_projects`) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
-| Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6 |
+| Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
 | Per-project build concurrency lock | embarch-api | Shipped | `embarch-api/design.md` §6 |
 | PATH/toolchain preflight validation | embarch-api | Todo | `embarch-api/design.md` §12 |
 | Config hot-reload | embarch-api | Todo | `embarch-api/design.md` §12 |
@@ -28,15 +28,16 @@
 | Multi-probe selection (beyond "first probe found") | embarch-core | Todo | `embarch-core/design.md` §5, §10 |
 | ESP-IDF UART-bootloader flashing via `esptool` fallback | embarch-core | Todo | `embarch-core/design.md` §10 |
 | Per-caller identity (beyond one shared token) | embarch-core | Todo | `embarch-core/design.md` §6, §10 |
-| Auto-generated, machine-wide token file (replaces `dev-token-change-me` fallback) | embarch-core | Todo | `embarch-token.md` §2, §3.1, §5; `embarch-core/milestone-2.md` |
-| `sc.exe` service `EMBARCH_TOKEN` passthrough fix | embarch-core | Todo | `embarch-token.md` §6; `embarch-core/milestone-2.md` §3.4 |
-| Token-file discovery + WSL2⟷Windows path translation | embarch-api | Todo | `embarch-token.md` §3.1; `embarch-api/milestone-2.md` |
+| Auto-generated, machine-wide token file (replaces `dev-token-change-me` fallback) | embarch-core | Shipped, Windows hardware-unvalidated | `embarch-token.md` §2, §3.1, §5; `embarch-core/milestone-2.md` §3.5 |
+| `sc.exe` service `EMBARCH_TOKEN` passthrough fix | embarch-core | Shipped, Windows hardware-unvalidated | `embarch-token.md` §6; `embarch-core/milestone-2.md` §3.4/§3.5 |
+| Token-file discovery + WSL2⟷Windows path translation | embarch-api | Shipped — WSL2⟷Windows translation exercised for real; end-to-end re-check against a live Core-generated file not yet done | `embarch-token.md` §3.1; `embarch-api/milestone-2.md` §3.5 |
 | Stimulus/sensing hardware-in-the-loop rig | embarch-dev-bench | Proposed | See `embarch-roadmap.md` Next |
 | Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | See `embarch-roadmap.md` Next |
 | Agent-facing codebase structural analysis (successor to the old GUI's static analysis) | *(unnamed)* | Proposed | See `embarch-roadmap.md` Later |
 
 ## Changelog
 
+- 2026-07-22 — Corrected status drift: three Milestone-2 (Token) rows were still marked `Todo` even though `embarch-token.md` and both design docs' changelogs recorded milestone-2 as code-complete (Windows-unvalidated) since 2026-07-21 — violated `DOC-PROTOCOL.md` §5's "sub-project doc and suite-level docs should never disagree about status" rule. Flipped to `Shipped, Windows hardware-unvalidated` (or the WSL2-specific equivalent) to match. Also annotated the artifact-freshness-check row with the WSL2 wall-clock-jitter fix applied the same day (`embarch-api/design.md` §12).
 - 2026-07-17 — Initial draft.
 - 2026-07-20 — Updated doc references for the `embarch-core/design.md` / `embarch-api/design.md` subfolder restructure.
 - 2026-07-20 — Added the CLI subcommand interface row (Todo), per `embarch-api/design.md` §3.10/§5a.
