@@ -2,13 +2,9 @@
 
 **Status:** draft, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/design.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
 
-**This revision documents the design (§2, §3.1) that replaces the insecure `dev-token-change-me` fallback with an auto-generated, machine-wide token file.** Both halves — `embarch-core`'s generation/persistence and `embarch-api`'s discovery — are now code-complete (`embarch-core/milestone-2.md` / `embarch-api/milestone-2.md` §6). **Windows validation is still outstanding**: the Windows-specific pieces (the token file's ACL restriction, and the `sc.exe` service-registry environment fix) were written and reviewed on a Linux machine with no way to exercise them for real — see §3.1/§6 below and `embarch-core/milestone-2.md` §3.5.
-
 ## 1. Purpose and scope
 
 `EMBARCH_TOKEN` is the single shared secret that authenticates every caller of `embarch-core`'s HTTP API. This doc is the source of truth for its full lifecycle — generation, storage, transport, security model, rotation, and known gaps — across every component that touches it (`embarch-core`, `embarch-api`). Component-specific docs link here rather than restate this content, per `DOC-PROTOCOL.md` §5.
-
-Out of scope: `embarch-dev-bench`, `embarch-promptu`, `embarch-atlas` are planned/paused with no repo yet and no defined relationship to Core's auth — not considered here until that relationship exists.
 
 ## 2. What it is
 
@@ -29,8 +25,6 @@ Out of scope: `embarch-dev-bench`, `embarch-promptu`, `embarch-atlas` are planne
 Beyond process memory, embarch-api's own config file (for the inline `token` case) and the token file (§3.1) are the only two places the token is ever written to disk. If stored inline in config, that file should be `chmod 600` and excluded from version control — identical treatment to any other local secret.
 
 ### 3.1 The auto-generated token file
-
-**Code-complete on both sides; Windows-specific pieces not yet hardware-validated.** embarch-api's discovery side (same-OS file read, plus WSL2⟷Windows path translation) shipped 2026-07-21 — code-complete, `cargo build`/`cargo clippy -- -D warnings` clean, unit-tested, and the WSL2 translation manually re-verified on a real WSL2 machine (see `embarch-api/milestone-2.md` §6). embarch-core's half — generating and persisting the token file (`token_store.rs`) — also shipped 2026-07-21: `cargo build`/`cargo clippy --all-targets -- -D warnings` clean, and the generate/reuse/explicit-override behavior was verified on a Linux machine (against a temp-path unit test rather than the real `/var/lib/embarch/token`, since that path isn't writable unprivileged there). The Windows ACL restriction and the Windows registry-environment fix (§6) were written and reviewed on that same Linux machine with no way to actually exercise them — still need confirming on real Windows hardware (`embarch-core/milestone-2.md` §3.5).
 
 A canonical, machine-wide path per OS, independent of which user account runs Core or embarch-api — this is what lets an installed Windows service (typically running as a different account than the interactive user) still find the same file, sidestepping §6's service-environment gap for the common case:
 
