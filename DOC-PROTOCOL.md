@@ -14,6 +14,7 @@ This is the instruction set for how docs in this repo get kept in sync while wor
 embarch/
 ├── embarch-core/
 ├── embarch-api/
+├── embarch-study-designer/ (types/tools implemented; embarch-dev-bench firmware not started)
 ├── embarch-dev-bench/      (planned, no repo yet)
 ├── embarch-promptu/        (planned, no repo yet)
 ├── embarch-atlas/          (paused, no repo yet)
@@ -29,6 +30,8 @@ embarch/
     ├── embarch-core/milestone-1.md
     ├── embarch-api/design.md
     ├── embarch-api/milestone-1.md
+    ├── embarch-study-designer/design.md
+    ├── embarch-study-designer/milestone-3.md
     ├── embarch-dev-bench/design.md
     ├── embarch-promptu/design.md
     └── embarch-atlas/design.md
@@ -79,3 +82,4 @@ This is the mechanism that makes §4–5 happen without re-explaining it in chat
 
 - 2026-07-20 — Initial draft, written alongside the embarch-doc per-sub-project restructure.
 - 2026-07-21 — Added `embarch-token.md` to the suite-level docs list (§3) and the repo layout tree (§2).
+- 2026-07-28 — Added `embarch-study-designer` to §2's repo layout tree, now that its repo exists ([gabrieltetar/embarch-study-designer](https://github.com/gabrieltetar/embarch-study-designer), empty).

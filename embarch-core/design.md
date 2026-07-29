@@ -15,12 +15,15 @@ embarch-core is **not**:
 
 ```
 embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
-                                    ^
-                                    |
+                                    ^  |
+                                    |  +--serial (UART/USB CDC, COBS-framed postcard)--> embarch-dev-bench firmware
+                                    |                                                    (BLE central/peripheral + power sampling)
                          embarch-core CLI (same machine)
 ```
 
 `embarch-core` is reached two ways: over HTTP by `embarch-api` (the normal Claude-Code-driven path), and directly via its own CLI (`main.rs`'s `run`/`install`/`uninstall` subcommands) for local operation and service management. Both paths converge on the same `hardware`/`serial` modules and the same `hw_lock` — there is no separate code path for "CLI mode."
+
+**Planned, not yet implemented:** a second hardware relationship, bridging `/study` HTTP calls from `embarch-api` to `embarch-dev-bench` over a second, independent serial link — see §4's `/study` rows and [embarch-study-designer/design.md](../embarch-study-designer/design.md) §5, which is the source of truth for this surface's design (recorded there ahead of code, same pattern `embarch-api/design.md` §3.10 used for its CLI decision).
 
 ## 3. Locked-in design decisions and rationale
 
@@ -38,10 +41,15 @@ All routes require `Authorization: Bearer <token>` (see §6).
 
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
-| `GET` | `/status` | — | `{ status: "ok", probes: [ProbeInfo] }` — every debug probe probe-rs currently sees over USB (ST-Link, J-Link, CMSIS-DAP, FTDI, ESP USB-JTAG, etc). |
+| `GET` | `/status` | — | `{ status: "ok", probes: [ProbeInfo], study_designer_schema_version: u32 }` — `probes` is every debug probe probe-rs currently sees over USB (ST-Link, J-Link, CMSIS-DAP, FTDI, ESP USB-JTAG, etc); `study_designer_schema_version` is `embarch-study-designer`'s wire-schema constant (`embarch-study-designer/design.md` §3 decision 12), so `embarch-api` can detect a drifted crate version before submitting a `Study`, without a separate handshake call. |
 | `POST` | `/flash` | `{"chip": "...", "firmware_path": "...", "format": "elf"}` | `{ flashed: true, chip }` |
 | `POST` | `/reset` | `{"chip": "..."}` | `{ reset: true }` |
 | `GET` | `/serial-log` | `?port=...&baud=115200&duration_ms=2000` | `{ port, lines: [String] }` |
+| `POST` | `/study` — **planned, not yet implemented** | `Study` (JSON) | `{ study_id: Uuid, status: "accepted" }`, or `409 Conflict` (body: in-flight `study_id`) if a study is already running |
+| `GET` | `/study/{study_id}` — **planned, not yet implemented** | — | `{ status: "pending"\|"running"\|"completed"\|"failed", current_step: u32?, total_steps: u32?, result: StudyResult?, reason: String? }` |
+| `GET` | `/study/{study_id}/power-data` — **planned, not yet implemented** | — | Raw CSV bytes (`Content-Type: text/csv`) |
+
+The three `/study*` rows bridge to `embarch-dev-bench` over the new serial hop (§2) rather than to Core's own probe/serial hardware, and are async/job-based rather than blocking, unlike the four rows above — see [embarch-study-designer/design.md](../embarch-study-designer/design.md) §5.1 for full rationale and semantics (one study in flight at a time via a dedicated lock separate from `hw_lock`, no cancel endpoint in v1, in-memory job retention until restart). That document, not this one, is the source of truth for this surface until it's implemented, at which point this table and the rest of this section should be updated to match reality rather than the plan.
 
 `chip` is an opaque probe-rs target name (e.g. `STM32F407VG`, `nRF52840_xxAA`, `esp32c3`) — Core does not validate it beyond whatever `probe.attach()` itself rejects. `format` is one of `elf` / `bin` / `hex` / `uf2` / `idf`, parsed by `hardware::parse_format`; an unrecognized value is rejected with an explicit error rather than silently defaulting. `firmware_path` is read from Core's own local disk — the caller is responsible for getting the file onto whatever machine Core runs on (see §7).
 
@@ -75,7 +83,13 @@ src/
 ├── hardware.rs    — probe-rs: list probes, flash, reset
 ├── serial.rs      — serialport: read the UART console log
 ├── service.rs     — service-manager: register/remove as a background OS service
-└── token_store.rs — resolves/generates/persists the machine-wide EMBARCH_TOKEN file (embarch-token.md §3.1)
+├── token_store.rs — resolves/generates/persists the machine-wide EMBARCH_TOKEN file (embarch-token.md §3.1)
+└── study.rs       — planned, not yet implemented: `/study*` handlers (§4), dev-bench serial bridge
+                     (COBS-framed postcard, embarch-study-designer/design.md §3 decisions 3/10), a
+                     `Hello`/`HelloAck` schema-version handshake on serial-port open before any `Study`
+                     traffic (embarch-study-designer/design.md §3 decision 12), the dedicated
+                     one-study-at-a-time lock (§4), and the in-memory job registry plus
+                     `study_results/<study_id>/{events.json,data.csv}` file writer (§4, embarch-study-designer/design.md §5.2)
 ```
 
 ## 9. Relationship to embarch-api
@@ -95,3 +109,6 @@ Core has zero knowledge of embarch-api, MCP, Claude Code, or the concept of a "p
 - 2026-07-20 — Moved from `embarch-core-design.md` (repo root) to `embarch-core/design.md` as part of the embarch-doc per-sub-project restructure; no content changes.
 - 2026-07-21 — Milestone-1 hardware validation (§3.1–3.4): confirmed the native-Windows build (requires the VS Build Tools C++ workload, not just `rustup`'s bare toolchain), confirmed the real probe-rs chip target is `nRF54L15` (not the `nRF54L15_M33` placeholder), validated `/status`/`/serial-log`/`/reset`/`/flash` against the physical board-a board from WSL2, and confirmed WSL2⟷Windows reachability needs no explicit Windows Firewall rule on this machine's networking mode (§7). Also fixed a real bug found during this validation: `api.rs`'s `internal_err` used to discard the full `anyhow` error chain via `Display`, returning/logging only the outermost context string — now uses `Debug` and logs server-side too (§4). §3.5 (`EMBARCH_TOKEN` surviving an installed Windows service) remains open — diagnosed, not yet fixed (§10).
 - 2026-07-21 — Milestone-2 (§3.1–3.4, code-side): removed the `dev-token-change-me` fallback entirely and added `token_store.rs` (§6, §8), implementing `resolve_token()`'s explicit-env-var-else-reuse-or-generate-machine-wide-file precedence, with `chmod 600` on Unix and an `icacls`-based ACL restriction on Windows. Applied the previously-diagnosed `sc.exe` service-environment fix to `service.rs`: `install()` now passes `ServiceInstallCtx.environment` through when an explicit `EMBARCH_TOKEN` is set (fixing Linux/macOS via `systemd.rs`'s existing handling) and writes the Windows `Environment` registry value via `winreg` (§10). `cargo build`/`cargo clippy --all-targets -- -D warnings` clean; `token_store`'s generate/reuse/permission behavior and the explicit-env-var path were exercised on this Linux machine (`/var/lib/embarch` itself isn't writable unprivileged here, so generate/reuse was verified against a temp-path unit test rather than the real path). The Windows ACL code and the Windows registry-write code are unverified — need real Windows hardware validation (`milestone-2.md` §3.5, §10 above).
+- 2026-07-28 — Recorded the planned `/study`, `/study/{id}`, `/study/{id}/power-data` endpoints (§4), the new dev-bench serial hop in §2's architecture diagram, and a planned `study.rs` module (§8) — ahead of implementation, per `DOC-PROTOCOL.md` §5, as `embarch-study-designer`'s milestone 3 resolved the endpoint-surface design. [embarch-study-designer/design.md](../embarch-study-designer/design.md) §5.1/§5.2 is the source-of-truth design; this doc gets updated again once real code lands.
+- 2026-07-28 — Added `study_designer_schema_version` to `/status`'s response (§4) and a planned serial-port-open `Hello`/`HelloAck` handshake to `study.rs` (§8), matching `embarch-study-designer/design.md` §3 decision 12's version-drift detection between independently-redeployed consumers.
+- 2026-07-28 — Documented `POST /study`'s `409 Conflict` response (§4) for a submission received while another study is already running, matching `embarch-study-designer/design.md` §5.1's concurrency rule (design review pass, no queueing).
