@@ -19,6 +19,7 @@ Static analysis and graph visualization of a firmware codebase was always part o
 | `embarch-core` | Owns the debug probe and serial connection; exposes `/status`, `/flash`, `/reset`, `/serial-log` over bearer-token-authed HTTP | Shipped | [embarch-core/design.md](embarch-core/design.md) |
 | `embarch-api` | MCP server and CLI for Claude Code and humans alike; runs a project's build and drives Core over HTTP | Shipped | [embarch-api/design.md](embarch-api/design.md) |
 | `embarch-dev-bench` | Physical rig that actively stimulates DUT inputs and senses outputs — real hardware-in-the-loop testing, not just power/reset/probe passthrough | Planned | [embarch-dev-bench/design.md](embarch-dev-bench/design.md) |
+| `embarch-study-designer` | Shared, `no_std` Rust library defining the data types for hardware-in-the-loop studies (BLE interaction + power profiling) that `embarch-core`, `embarch-dev-bench` firmware, and `embarch-api` all compile in | Types/tools implemented and tested ([gabrieltetar/embarch-study-designer](https://github.com/gabrieltetar/embarch-study-designer)); not yet consumed by `embarch-core`/`embarch-api`, and dev-bench firmware itself doesn't exist yet | [embarch-study-designer/design.md](embarch-study-designer/design.md) |
 | `embarch-promptu` | Curated library of firmware-specific Claude Code skills, subagents, and prompt patterns | Planned | [embarch-promptu/design.md](embarch-promptu/design.md) |
 | `embarch-atlas` | Static analysis and graph visualization of a firmware codebase, for use by agents and engineers; the original C#/WPF GUI survives as its debug/dev feature | Paused, no repo yet | [embarch-atlas/design.md](embarch-atlas/design.md) |
 | `embarch-doc` | This repo — design docs, feature inventory, roadmap, user guide | Ongoing | [DOC-PROTOCOL.md](DOC-PROTOCOL.md) |
@@ -31,13 +32,15 @@ Claude Code (using embarch-promptu skills)          human, direct: `embarch-api 
       | MCP (stdio)                                                  |
       v                                                              v
                             embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
-                                                                                                    ^
-                                                                                                    |
-                                                                                           embarch-dev-bench
-                                                                                       (stimulus/sensing fixture)
+                                                                            |
+                                                                            | serial (UART/USB CDC,
+                                                                            | COBS-framed postcard)
+                                                                            v
+                                                                   embarch-dev-bench firmware
+                                                                (BLE central/peripheral + power sampling)
 ```
 
-`embarch-promptu` isn't a separate runtime hop — it's skills and prompt patterns Claude Code loads directly. Everything hardware-facing still funnels through `embarch-api` → `embarch-core` → the probe/serial connection, with `embarch-dev-bench` as the physical fixture sitting at that hardware boundary once it exists. embarch-api itself is reachable two ways — over MCP by Claude Code, or directly via its own CLI subcommands by a human with no agent in front of them (`embarch-api/design.md` §2, §3.10) — mirroring the same MCP-vs-CLI convergence embarch-core already established for its own two front-ends (`embarch-core/design.md` §2, §9).
+`embarch-promptu` isn't a separate runtime hop — it's skills and prompt patterns Claude Code loads directly. Everything hardware-facing still funnels through `embarch-api` → `embarch-core` → the probe/serial connection, with `embarch-dev-bench` as the physical fixture sitting at that hardware boundary once it exists — reached over a new serial hop off `embarch-core` (planned, not yet implemented; see [embarch-study-designer/design.md](embarch-study-designer/design.md) §2, §5). `embarch-core`, `embarch-api`, and `embarch-dev-bench` firmware are all expected to compile in `embarch-study-designer`'s shared data types once that work starts, so the study data crossing this new hop doesn't drift into three independently-maintained definitions. embarch-api itself is reachable two ways — over MCP by Claude Code, or directly via its own CLI subcommands by a human with no agent in front of them (`embarch-api/design.md` §2, §3.10) — mirroring the same MCP-vs-CLI convergence embarch-core already established for its own two front-ends (`embarch-core/design.md` §2, §9).
 
 ## 5. Design principles carried across the suite
 
@@ -61,6 +64,8 @@ Claude Code (using embarch-promptu skills)          human, direct: `embarch-api 
 - [embarch-api/milestone-2.md](embarch-api/milestone-2.md) — embarch-api's milestone 2 execution plan (Token)
 - [embarch-api/milestone-2-implementation-guide.md](embarch-api/milestone-2-implementation-guide.md) — ready-to-run agent prompts implementing embarch-api's milestone-2 code work
 - [embarch-dev-bench/design.md](embarch-dev-bench/design.md) — embarch-dev-bench design (placeholder)
+- [embarch-study-designer/design.md](embarch-study-designer/design.md) — embarch-study-designer design (shared study-data-types library)
+- [embarch-study-designer/milestone-3.md](embarch-study-designer/milestone-3.md) — embarch-study-designer's milestone 3 execution plan (Study Designer, design-only)
 - [embarch-promptu/design.md](embarch-promptu/design.md) — embarch-promptu design (placeholder)
 - [embarch-atlas/design.md](embarch-atlas/design.md) — embarch-atlas design (placeholder)
 - [embarch-token.md](embarch-token.md) — `EMBARCH_TOKEN`'s full lifecycle: generation, storage, transport, security model, rotation, known gaps
@@ -79,3 +84,6 @@ Claude Code (using embarch-promptu skills)          human, direct: `embarch-api 
 - 2026-07-21 — Added `embarch-core/milestone-1-implementation-guide.md` to §6's index.
 - 2026-07-21 — Added [embarch-token.md](embarch-token.md), consolidating `EMBARCH_TOKEN` lifecycle content out of `embarch-core/design.md` and `embarch-api/design.md`; added it to §6's index.
 - 2026-07-21 — Added Milestone 2 (Token) to [embarch-roadmap.md](embarch-roadmap.md): replaces the insecure `dev-token-change-me` fallback with an auto-generated, machine-wide token file per [embarch-token.md](embarch-token.md)'s revised design. Added `embarch-core/milestone-2.md`, `embarch-core/milestone-2-implementation-guide.md`, `embarch-api/milestone-2.md`, and `embarch-api/milestone-2-implementation-guide.md` to §6's index.
+- 2026-07-27 — Added new sub-project `embarch-study-designer` (§3): a shared, `no_std` Rust library defining data types for hardware-in-the-loop studies (BLE interaction + power profiling), compiled independently by `embarch-core`, `embarch-dev-bench` firmware, and `embarch-api`. Extended §4's architecture sketch with the new `embarch-core` → `embarch-dev-bench` serial hop. Added `embarch-study-designer/design.md` and `embarch-study-designer/milestone-3.md` to §6's index. See [embarch-roadmap.md](embarch-roadmap.md)'s new Milestone 3.
+- 2026-07-28 — Milestone 3 substantially closed (`embarch-study-designer/milestone-3.md` §3.1–3.5, part of §3.6): `embarch-study-designer` now has a repo ([gabrieltetar/embarch-study-designer](https://github.com/gabrieltetar/embarch-study-designer), empty, §3 row updated); the wire format locked to COBS-framed postcard (§4's diagram updated); `embarch-core/design.md` gained planned `/study*` endpoints ahead of implementation. Only the nRF54 cross-compilation toolchain/build-wiring half of `embarch-study-designer/design.md` §7 remains open, blocked on real dev-bench hardware.
+- 2026-07-29 — `embarch-study-designer` gained its first real code (§3 row updated): the full §4 type model, `steps_crc`, `STUDY_DESIGNER_SCHEMA_VERSION`, the `limits` module, a minimal representative FFI surface, and `core-validation`'s `SignalCheck` evaluation, all `#![no_std]` and tested. Not yet wired into `embarch-core`/`embarch-api` as an actual Cargo dependency, and `embarch-dev-bench` firmware itself is still unstarted — see `embarch-study-designer/design.md`'s own changelog for detail.
