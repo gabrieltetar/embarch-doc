@@ -15,7 +15,7 @@ embarch/
 ├── embarch-core/
 ├── embarch-api/
 ├── embarch-study-designer/ (types/tools implemented; embarch-dev-bench firmware not started)
-├── embarch-dev-bench/      (planned, no repo yet)
+├── embarch-dev-bench/      (scoping in progress, repo created empty)
 ├── embarch-promptu/        (planned, no repo yet)
 ├── embarch-atlas/          (paused, no repo yet)
 └── embarch-doc/
