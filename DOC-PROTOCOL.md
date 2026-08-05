@@ -16,6 +16,7 @@ embarch/
 ├── embarch-api/
 ├── embarch-study-designer/ (types/tools implemented; embarch-dev-bench firmware not started)
 ├── embarch-dev-bench/      (scoping in progress, repo created empty)
+├── embarch-umbrella/       (design-only, repo created empty)
 ├── embarch-promptu/        (planned, no repo yet)
 ├── embarch-atlas/          (paused, no repo yet)
 └── embarch-doc/
@@ -33,6 +34,8 @@ embarch/
     ├── embarch-study-designer/design.md
     ├── embarch-study-designer/milestone-3.md
     ├── embarch-dev-bench/design.md
+    ├── embarch-umbrella/design.md
+    ├── embarch-umbrella/milestone-6.md
     ├── embarch-promptu/design.md
     └── embarch-atlas/design.md
 ```
@@ -43,7 +46,7 @@ Because every sub-project sits as a sibling of `embarch-doc`, its docs are alway
 
 Two tiers:
 
-- **Suite-level docs** (`embarch-doc/` root): [embarch.md](embarch.md) (suite overview + sub-project index), [embarch-roadmap.md](embarch-roadmap.md) (Now/Next/Later across the whole suite), [embarch-features.md](embarch-features.md) (feature inventory across the whole suite), [embarch-user-guide.md](embarch-user-guide.md) (day-to-day usage of the assembled suite), [embarch-token.md](embarch-token.md) (`EMBARCH_TOKEN`'s full lifecycle, since it's shared across `embarch-core` and `embarch-api`). These cover things that span more than one sub-project.
+- **Suite-level docs** (`embarch-doc/` root): [embarch.md](embarch.md) (suite overview + sub-project index), [embarch-roadmap.md](embarch-roadmap.md) (numbered milestones plus Next/Later across the whole suite), [embarch-features.md](embarch-features.md) (feature inventory across the whole suite), [embarch-user-guide.md](embarch-user-guide.md) (getting started and day-to-day usage of the assembled suite — the one doc in this repo written for a reader who isn't already inside the project, so it explains rather than links), [embarch-token.md](embarch-token.md) (`EMBARCH_TOKEN`'s full lifecycle, since it's shared across `embarch-core` and `embarch-api`). These cover things that span more than one sub-project.
 - **Sub-project docs** (`embarch-doc/<sub-project>/`): every existing or planned sub-project gets a subfolder. `design.md` is the one required file — the durable, living source of truth for that sub-project's architecture, decisions, and open questions, per [embarch.md](embarch.md) §5's "design doc as source of truth" principle. Add more files to a subfolder later (e.g. `api-reference.md`) if `design.md` grows unwieldy — don't split preemptively.
 - **Milestone docs** (`embarch-doc/<sub-project>/milestone-N.md`): when a roadmap milestone (see [embarch-roadmap.md](embarch-roadmap.md)) touches a sub-project, that sub-project's half of the execution plan — concrete, ordered steps, a definition of done, open questions carried into execution — lives in its own `milestone-N.md`, separate from `design.md`. This keeps `design.md` as the architecture-of-record (what's true now) distinct from a milestone doc's job (what to do next, and why); once a milestone's steps actually ship, fold whatever they resolved back into `design.md` per §5 below rather than leaving the decision only recorded in the milestone doc.
 
@@ -82,4 +85,5 @@ This is the mechanism that makes §4–5 happen without re-explaining it in chat
 
 - 2026-07-20 — Initial draft, written alongside the embarch-doc per-sub-project restructure.
 - 2026-07-21 — Added `embarch-token.md` to the suite-level docs list (§3) and the repo layout tree (§2).
+- 2026-08-05 — Added `embarch-umbrella` to §2's repo layout tree (design-only, no repo yet). Also qualified §3's suite-level-docs entry for [embarch-user-guide.md](embarch-user-guide.md): it's the one doc here written for an outside reader, so the "don't restate detail across docs, link instead" rule in §5 doesn't apply to it the way it does everywhere else — a getting-started guide that only links is useless. §3's roadmap description was also corrected from "Now/Next/Later" to match what that file actually contains (numbered milestones plus Next/Later).
 - 2026-07-28 — Added `embarch-study-designer` to §2's repo layout tree, now that its repo exists ([gabrieltetar/embarch-study-designer](https://github.com/gabrieltetar/embarch-study-designer), empty).

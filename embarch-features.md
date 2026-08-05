@@ -8,6 +8,7 @@
 | `POST /flash` — flash a chip from a local firmware path | embarch-core | Shipped | `embarch-core/design.md` §4 |
 | `POST /reset` — reset a chip | embarch-core | Shipped | `embarch-core/design.md` §4 |
 | `GET /serial-log` — bounded-duration serial capture | embarch-core | Shipped | `embarch-core/design.md` §4 |
+| `GET /dev-bench/port` — dev-bench serial-port auto-detection (SEGGER VID + product/serial/interface match), plus the `detect-dev-bench` CLI subcommand | embarch-core | Shipped, no real dev-bench yet | `embarch-core/design.md` §4, §5, §10; implements `embarch-dev-bench/design.md` §3 decision 12 |
 | Bearer-token auth on all endpoints | embarch-core | Shipped | `embarch-core/design.md` §6 |
 | `hw_lock` — serializes all hardware access | embarch-core | Shipped | `embarch-core/design.md` §3.4 |
 | Cross-platform service install (`install`/`uninstall`) | embarch-core | Shipped | `embarch-core/design.md` §3.3 |
@@ -21,7 +22,7 @@
 | CLI subcommand interface (`build`/`flash`/`build_and_flash`/`reset`/`serial_log`/`list_projects`) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
 | Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
 | Per-project build concurrency lock | embarch-api | Shipped | `embarch-api/design.md` §6 |
-| PATH/toolchain preflight validation | embarch-api | Todo | `embarch-api/design.md` §12 |
+| PATH/toolchain preflight validation | embarch-api | Todo — now expected to land as `embarch-umbrella`'s `doctor` check, not in the build path | `embarch-api/design.md` §12, §11a; `embarch-umbrella/design.md` §5 |
 | Config hot-reload | embarch-api | Todo | `embarch-api/design.md` §12 |
 | `artifact_path_for_core` UNC-path pass-through (WSL2-same-PC artifact transfer) | embarch-api | Shipped, validated against real hardware | `embarch-api/design.md` §4, §9; not yet populated for `project-a-board` specifically — see §12 |
 | Artifact-transfer over a real network (Core on a genuinely separate machine, e.g. a future Pi) | embarch-api / embarch-core | Todo | `embarch-api/design.md` §9, §12; `embarch-core/design.md` §7, §10 |
@@ -32,14 +33,26 @@
 | `sc.exe` service `EMBARCH_TOKEN` passthrough fix | embarch-core | Shipped, Windows hardware-unvalidated | `embarch-token.md` §6; `embarch-core/milestone-2.md` §3.4/§3.5 |
 | Token-file discovery + WSL2⟷Windows path translation | embarch-api | Shipped — WSL2⟷Windows translation exercised for real; end-to-end re-check against a live Core-generated file not yet done | `embarch-token.md` §3.1; `embarch-api/milestone-2.md` §3.5 |
 | Stimulus/sensing hardware-in-the-loop rig | embarch-dev-bench | Proposed | See `embarch-roadmap.md` Next |
-| Shared `no_std` study data-types library (BLE interaction + power profiling) | embarch-study-designer | Proposed, design-only | `embarch-study-designer/design.md` §3, §4; `embarch-study-designer/milestone-3.md` |
+| Shared `app/` firmware: COBS/postcard serial protocol, `Hello`/`HelloAck`, `LogLine`, stubbed study FFI | embarch-dev-bench | Shipped, `native_sim` only | `embarch-dev-bench/design.md` §2, §3 decisions 7/16/20 |
+| BLE bridge: advertise, connect (central/peripheral), GATT read/write/notify/indicate/subscribe/stream-capture | embarch-dev-bench | Shipped, compiles for nRF54L15DK — never run on a board | `embarch-dev-bench/design.md` §3 decision 16, §4 |
+| Shared `no_std` study data-types library (BLE interaction + power profiling) | embarch-study-designer | Shipped — not yet a Cargo dependency of `embarch-core`/`embarch-api` | `embarch-study-designer/design.md` §3, §4; `embarch-study-designer/milestone-3.md` |
 | `embarch-core` ↔ `embarch-dev-bench` serial bridge (new endpoints) | embarch-core | Proposed, design-only | `embarch-study-designer/design.md` §5 |
 | Study-running MCP tool + CLI subcommand | embarch-api | Proposed, design-only | `embarch-study-designer/design.md` §6 |
+| `embarch setup` — one-time per-machine setup with topology auto-detection | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decision 6, §8; `embarch-umbrella/milestone-6.md` §3.3 |
+| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
+| `embarch doctor` / `embarch status` — verify the whole chain, `--json` | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §5 |
+| `embarch up` / `down` — fallback Core start/stop, including across the WSL2⟷Windows boundary | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decisions 4/7 |
+| Suite release archive (all three binaries, four targets) | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decision 14; `embarch-umbrella/milestone-6.md` §3.7 |
+| `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Proposed, design-only | `embarch-api/design.md` §3.11, §4, §7 |
+| `start` / `stop` CLI subcommands | embarch-core | Proposed, design-only | `embarch-core/design.md` §10; `embarch-umbrella/milestone-6.md` §3.6 |
+| EmbArch UI — see whether Core is up and drive operations by hand, no agent involved | *(unnamed)* | Proposed | `embarch-umbrella/design.md` §10; see `embarch-roadmap.md` Later |
 | Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | See `embarch-roadmap.md` Next |
 | Agent-facing codebase structural analysis (successor to the old GUI's static analysis) | *(unnamed)* | Proposed | See `embarch-roadmap.md` Later |
 
 ## Changelog
 
+- 2026-08-05 — Added eight design-only rows for Milestone 6 (Onboarding): five for the new `embarch-umbrella` sub-project (`setup`, `init`, `doctor`/`status`, `up`/`down`, the suite release archive), one each for `embarch-api`'s `base_url = "auto"` and `embarch-core`'s `start`/`stop`, and one Proposed row for the future EmbArch UI. Note what did *not* move: `embarch-api`'s PATH/toolchain-preflight row stays `Todo` but its Notes now point at umbrella's `doctor` as the intended home rather than at a build-path check.
+- 2026-08-04 — Added three rows for work that shipped on the Core↔dev-bench hop: `embarch-core`'s dev-bench port auto-detection (`GET /dev-bench/port` + `detect-dev-bench`), and two `embarch-dev-bench` firmware rows (the shared serial/protocol application, and the BLE bridge now covering the full `Action`/`GattOperation` surface). Status wording is deliberately specific about *how far* each is verified — `native_sim` only, or uncompiled — since neither has met real hardware — the BLE-bridge row was updated the same day once `workspaces/nordic` was fetched and built, moving it from "uncompiled" to "compiles for nRF54L15DK, never run on a board." See each design doc's own open questions. Also corrected pre-existing status drift on the `embarch-study-designer` row, still marked `Proposed, design-only` even though `embarch.md` §3 and that crate's own changelog have recorded it as implemented and tested since 2026-07-29 (`DOC-PROTOCOL.md` §5's never-disagree rule).
 - 2026-07-27 — Added three Proposed/design-only rows for Milestone 3 (Study Designer): the shared `embarch-study-designer` data-types library, `embarch-core`'s new dev-bench serial bridge, and `embarch-api`'s future study-running MCP tool/CLI subcommand. All point at `embarch-study-designer/design.md` rather than restating detail, per this file's own header note.
 - 2026-07-22 — Corrected status drift: three Milestone-2 (Token) rows were still marked `Todo` even though `embarch-token.md` and both design docs' changelogs recorded milestone-2 as code-complete (Windows-unvalidated) since 2026-07-21 — violated `DOC-PROTOCOL.md` §5's "sub-project doc and suite-level docs should never disagree about status" rule. Flipped to `Shipped, Windows hardware-unvalidated` (or the WSL2-specific equivalent) to match. Also annotated the artifact-freshness-check row with the WSL2 wall-clock-jitter fix applied the same day (`embarch-api/design.md` §12).
 - 2026-07-17 — Initial draft.
