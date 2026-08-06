@@ -38,7 +38,7 @@ Verified on this WSL2 machine (detects WSL2, finds gateway `172.22.128.1`, probe
 
 **This is the piece `embarch-api` also needs (§3.5), and the answer is: write it once here, liftable — not a shared crate** (`design.md` §3 decision 15, which carries the reasoning and the drift mitigations). Concretely, for this step: one self-contained module, no umbrella-specific types crossing its boundary, unit tests written so they port to `embarch-api` unchanged, and a comment in the module naming its future mirror. §3.5 then copies module and tests together rather than reimplementing the race.
 
-### 3.3 `setup`
+### 3.3 `setup` — **done, 2026-08-05**
 
 Detect the topology (§3.2), then, driven by the detected class:
 
@@ -46,14 +46,16 @@ Detect the topology (§3.2), then, driven by the detected class:
 - `wsl-host`: locate the Windows-side `embarch-core.exe` (`design.md` §3 decision 7's env-var-then-recorded-path-then-search order), and — since installing/starting a Windows service needs elevation — print the exact elevated command rather than attempting it. Record the located path.
 - `remote`: prompt for the host, verify reachability, print the manual `EMBARCH_TOKEN` line (`design.md` §6).
 
-Then: put both binaries on `PATH`, persist the class (and host, for `remote`) — never an address — and finish by running `doctor`.
+Then: persist the class (and host, for `remote`) — never an address — and finish by pointing at `status`.
+
+Shipped as described, with two deviations recorded in `design.md` decisions 3 and 4: `PATH` is *not* edited (the release archive's sibling layout removes the need, and editing shell rc files is invasive), and setup ends by pointing at `embarch status` rather than `doctor`, which doesn't exist yet. Binary location lives in `locate.rs`, state in `state.rs`; both are unit-tested.
 
 ### 3.4 `init`, `doctor`, `status`, `up`/`down`
 
 - **`init`** — scaffold `embarch/embarch.toml` + `embarch/build/` per `design.md` §3 decision 10, deriving `build_command` from the repo's `build/build_info.yml` when one exists and writing a `chip` placeholder when it can't be derived (decision 13); exclude `embarch/` via `.git/info/exclude`; register the MCP server at local scope (decision 12); run `doctor`. `--uninstall` reverses all four.
 - **`doctor`** — the twelve checks in `design.md` §5, each with its fix line, plus `--json`. Checks 7 and 9 are the two that close previously-deferred `embarch-api` items and should not be dropped for scope.
 - **`status`** — one `/status` call, `--json` (decision 11).
-- **`up`/`down`** — installed service first via `embarch-core start`/`stop` (§3.6), foreground `embarch-core run` only when no service exists.
+- **`up`/`down`** — **done, 2026-08-05.** Installed service first via `embarch-core start`/`stop` (§3.6); the foreground fallback became opt-in (`--foreground`) rather than automatic, and a `remote` topology refuses both outright (`design.md` §3 decision 4's refinement).
 
 ### 3.5 `embarch-api`: `base_url = "auto"` — **done, 2026-08-05**
 
@@ -100,6 +102,7 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 
 ## 6. Changelog
 
+- 2026-08-05 — §3.3 and §3.4's `up`/`down` done, with `locate.rs`/`state.rs` underneath them. Two refinements folded back into `design.md` decisions 3 and 4 (no `PATH` editing; opt-in foreground fallback). Remaining: §3.4's `init` and `doctor`, §3.7, §3.8.
 - 2026-08-05 — §3.6 done: `embarch-core start`/`stop` shipped, unblocking `up`/`down`. Correction folded back into `design.md` §3 decision 7 and §10 — elevation is universal, not Windows-only. Remaining: §3.3, the rest of §3.4, §3.7, §3.8.
 - 2026-08-05 — §3.5 done: `base_url = "auto"` shipped in `embarch-api`, `topology.rs` lifted verbatim with its tests intact, and the live stale-gateway-IP bug in the real config closed. Remaining: §3.3, the rest of §3.4, §3.6, §3.7, §3.8.
 - 2026-08-05 — §3.2 done: topology detection implemented and verified against this machine and a mock, plus a partial §3.4 `status` so it isn't dead code. Two refinements and one new open item folded back into `design.md`. Remaining: §3.3, the rest of §3.4, §3.5, §3.6, §3.7, §3.8.
