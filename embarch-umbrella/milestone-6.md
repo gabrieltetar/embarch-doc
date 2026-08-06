@@ -32,7 +32,7 @@ Dependencies are `clap`, `anyhow`, `tracing`, `tracing-subscriber` only. `reqwes
 
 Implement `design.md` §3 decision 6's candidate race as a standalone, unit-testable function: given a candidate list, return the first that answered plus how it answered (`200` = reachable and authorized, `401` = reachable, token wrong, miss = not reachable). Candidate construction — localhost, then the WSL2 default gateway when running under WSL2, then a user-supplied host — is a separate pure function over "am I under WSL2" and "what does `ip route show default` say," so both halves are testable without a live Core.
 
-**This is the piece `embarch-api` also needs (§3.5).** Write it once here in a shape that can be lifted verbatim, or factor it into a small shared crate — decide during execution, but do not implement the same race twice with two chances to disagree.
+**This is the piece `embarch-api` also needs (§3.5), and the answer is: write it once here, liftable — not a shared crate** (`design.md` §3 decision 15, which carries the reasoning and the drift mitigations). Concretely, for this step: one self-contained module, no umbrella-specific types crossing its boundary, unit tests written so they port to `embarch-api` unchanged, and a comment in the module naming its future mirror. §3.5 then copies module and tests together rather than reimplementing the race.
 
 ### 3.3 `setup`
 
@@ -91,11 +91,12 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 - **WSL2 networking mode changes the answer to "is Core at localhost."** Mirrored mode says yes, NAT mode says no. `design.md` §3 decision 6's candidate order handles both, but only NAT mode has ever been observed on this machine — mirrored mode is reasoned, not tested.
 - **macOS is entirely unvalidated** and has no machine to validate on. Deliberately not blocking: ship it, and have a Mac-only engineer walk the guide once topology iii is proven (a later milestone, not this one).
 - **`aarch64-apple-darwin` code signing / Gatekeeper** (§3.7) may make the "just download and run" promise false on macOS specifically.
-- **Whether §3.2's detection should become a shared crate** or be duplicated-by-copy between umbrella and `embarch-api` — a fourth crate for one function is heavy, two copies of a resolution order that must agree is worse. Decide during execution.
+- **RESOLVED** — §3.2's detection is written once in umbrella in a liftable shape and copied into `embarch-api`, not extracted into a shared crate (`design.md` §3 decision 15). The residual risk this accepts is drift between the two copies; the mitigations are a mirrored-module comment, tests that port unchanged, and `doctor` check 3 reporting *which* candidate won so a divergence shows up as two different answers rather than as a mystery.
 - **`embarch setup --uninstall` doesn't exist** (`design.md` §10). Not needed to close this milestone, but the first engineer who wants to remove EmbArch from their machine will need it.
 
 ## 6. Changelog
 
+- 2026-08-05 — §5's shared-crate-vs-liftable-copy question resolved in favour of a liftable copy; §3.2 and §3.5 updated to say so, reasoning recorded as `design.md` §3 decision 15.
 - 2026-08-05 — §3.1 done: repo bootstrapped, `embarch` binary building with the full §8 command surface parsing and every command reporting itself unimplemented. Nothing else in this plan has started. Deviation from the plan as written, recorded here rather than silently: `reqwest`/`serde`/`toml` were left out of `Cargo.toml` until the steps that need them, so the bootstrap declares no unused dependencies.
 - 2026-08-05 — Repo created empty; §3.1 rewritten to cover only what bootstrap still requires (clone as a sibling, Cargo project, `CLAUDE.md`/`LICENSE`/`README.md`).
 - 2026-08-05 — Initial draft, scoping Milestone 6 (Onboarding): the new `embarch-umbrella` sub-project, `base_url = "auto"` in `embarch-api`, `start`/`stop` in `embarch-core`, the suite release archive, and the rewritten user guide that doubles as the acceptance criteria.
