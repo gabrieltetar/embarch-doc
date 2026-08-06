@@ -55,14 +55,14 @@ Then: put both binaries on `PATH`, persist the class (and host, for `remote`) �
 - **`status`** — one `/status` call, `--json` (decision 11).
 - **`up`/`down`** — installed service first via `embarch-core start`/`stop` (§3.6), foreground `embarch-core run` only when no service exists.
 
-### 3.5 `embarch-api`: `base_url = "auto"`
+### 3.5 `embarch-api`: `base_url = "auto"` — **done, 2026-08-05**
 
 Accept the literal string `auto` in `[core].base_url`, resolving it via §3.2's race at the point Core is first needed rather than at config load. Two details that matter:
 
 - **Resolution must be lazy in CLI mode.** `embarch-api`'s startup Core-reachability check is MCP-mode-only by design (`embarch-api/design.md` §7), and `list_projects` deliberately works with Core down. Resolving `auto` eagerly at config load would regress both.
 - **Add an optional `[core].host`** for the `remote` class, and keep `[core].port` (default `4884`) so `auto` has something to build candidates from.
 
-Then update the real `config.toml` and `config.example.toml` to use `auto`, removing the hardcoded `172.22.128.1` that is already stale relative to `embarch-core/design.md` §7's recorded `172.29.64.1`.
+Both details were honored, and the real `config.toml`/`config.example.toml` now use `auto` — the stale `172.22.128.1` is gone. `topology.rs`/`env.rs`/`probe.rs` were copied over from umbrella and all 13 topology tests passed unmodified, demonstrating decision 15's liftability claim rather than just asserting it. One unplanned fix came out of smoke-testing: CLI subcommands are kebab-case while MCP tools are snake_case, and every doc claimed snake_case for both (`embarch-api/design.md` §5a now states the split).
 
 ### 3.6 `embarch-core`: `start`/`stop` subcommands
 
@@ -100,6 +100,7 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 
 ## 6. Changelog
 
+- 2026-08-05 — §3.5 done: `base_url = "auto"` shipped in `embarch-api`, `topology.rs` lifted verbatim with its tests intact, and the live stale-gateway-IP bug in the real config closed. Remaining: §3.3, the rest of §3.4, §3.6, §3.7, §3.8.
 - 2026-08-05 — §3.2 done: topology detection implemented and verified against this machine and a mock, plus a partial §3.4 `status` so it isn't dead code. Two refinements and one new open item folded back into `design.md`. Remaining: §3.3, the rest of §3.4, §3.5, §3.6, §3.7, §3.8.
 - 2026-08-05 — §5's shared-crate-vs-liftable-copy question resolved in favour of a liftable copy; §3.2 and §3.5 updated to say so, reasoning recorded as `design.md` §3 decision 15.
 - 2026-08-05 — §3.1 done: repo bootstrapped, `embarch` binary building with the full §8 command surface parsing and every command reporting itself unimplemented. Nothing else in this plan has started. Deviation from the plan as written, recorded here rather than silently: `reqwest`/`serde`/`toml` were left out of `Cargo.toml` until the steps that need them, so the bootstrap declares no unused dependencies.

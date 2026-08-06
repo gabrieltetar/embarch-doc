@@ -23,7 +23,7 @@ Three pieces:
 You reach `embarch-api` two ways, and **both are first-class** — neither is a wrapper around the other:
 
 ```
-you, at a terminal:   embarch-api build_and_flash my-project
+you, at a terminal:   embarch-api build-and-flash my-project
 Claude Code:          "build this and flash it to the board"  (over MCP)
 ```
 
@@ -158,14 +158,16 @@ embarch doctor
 ## 6. Using it yourself, from a terminal
 
 ```sh
-embarch-api list_projects                    # what's configured
+embarch-api list-projects                    # what's configured
 embarch-api status                           # is Core up, what probes does it see
 embarch-api build my-firmware                # just build
 embarch-api flash my-firmware                # flash the configured artifact
-embarch-api build_and_flash my-firmware      # build, then flash only if the build succeeded
+embarch-api build-and-flash my-firmware      # build, then flash only if the build succeeded
 embarch-api reset my-firmware
-embarch-api serial_log my-firmware --duration-ms 5000
+embarch-api serial-log my-firmware --duration-ms 5000
 ```
+
+**Note the naming split**: CLI subcommands are kebab-case (`list-projects`, `build-and-flash`, `serial-log`), while the MCP tools in §7 are snake_case (`list_projects`, `build_and_flash`, `serial_log`). Each front-end follows its own convention; `--help` is authoritative.
 
 Add `--json` to any of them for machine-readable output — useful if you're wrapping this in a script or a `west flash` replacement.
 
@@ -339,10 +341,10 @@ Until [Milestone 6](embarch-roadmap.md#6---onboarding) ships, there is no releas
 
 8. **Verify by hand**, in this order — each step isolates a different failure:
    ```sh
-   embarch-api --config <path> list_projects     # config loads at all (no Core needed)
+   embarch-api --config <path> list-projects     # config loads at all (no Core needed)
    embarch-api --config <path> status            # Core reachable and token accepted
    embarch-api --config <path> build <project>   # build works, artifact is fresh
-   embarch-api --config <path> build_and_flash <project>
+   embarch-api --config <path> build-and-flash <project>
    ```
 
 9. **Register the MCP server** for your firmware repo:

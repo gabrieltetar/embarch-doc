@@ -19,7 +19,7 @@
 | `build_and_flash` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `reset` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `serial_log` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| CLI subcommand interface (`build`/`flash`/`build_and_flash`/`reset`/`serial_log`/`list_projects`) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
+| CLI subcommand interface (`build`/`flash`/`build-and-flash`/`reset`/`serial-log`/`list-projects` — kebab-case, unlike the snake_case MCP tools above) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
 | Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
 | Per-project build concurrency lock | embarch-api | Shipped | `embarch-api/design.md` §6 |
 | PATH/toolchain preflight validation | embarch-api | Todo — now expected to land as `embarch-umbrella`'s `doctor` check, not in the build path | `embarch-api/design.md` §12, §11a; `embarch-umbrella/design.md` §5 |
@@ -45,7 +45,7 @@
 | `embarch doctor` — verify the whole chain, `--json` | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §5 |
 | `embarch up` / `down` — fallback Core start/stop, including across the WSL2⟷Windows boundary | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decisions 4/7 |
 | Suite release archive (all three binaries, four targets) | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decision 14; `embarch-umbrella/milestone-6.md` §3.7 |
-| `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Proposed, design-only | `embarch-api/design.md` §3.11, §4, §7 |
+| `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Shipped — verified against a mock and with Core down; never against a real Core | `embarch-api/design.md` §3.11, §4, §7 |
 | `start` / `stop` CLI subcommands | embarch-core | Proposed, design-only | `embarch-core/design.md` §10; `embarch-umbrella/milestone-6.md` §3.6 |
 | EmbArch UI — see whether Core is up and drive operations by hand, no agent involved | *(unnamed)* | Proposed | `embarch-umbrella/design.md` §10; see `embarch-roadmap.md` Later |
 | Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | See `embarch-roadmap.md` Next |
@@ -53,6 +53,7 @@
 
 ## Changelog
 
+- 2026-08-05 — `base_url = "auto"` flipped to Shipped (`embarch-umbrella/milestone-6.md` §3.5). Corrected the CLI-subcommand row, which had listed snake_case names the CLI has never actually had — `clap`'s derive renames to kebab-case, so it's `list-projects`, not `list_projects` (`embarch-api/design.md` §5a).
 - 2026-08-05 — Split the `doctor`/`status` row now that they've diverged in status: topology auto-detection is Shipped (verified on WSL2 and against a mock, never against a real Core), `status` is Partial (reachability/address/class, no probe list or token check yet), `doctor` stays design-only.
 - 2026-08-05 — Added eight design-only rows for Milestone 6 (Onboarding): five for the new `embarch-umbrella` sub-project (`setup`, `init`, `doctor`/`status`, `up`/`down`, the suite release archive), one each for `embarch-api`'s `base_url = "auto"` and `embarch-core`'s `start`/`stop`, and one Proposed row for the future EmbArch UI. Note what did *not* move: `embarch-api`'s PATH/toolchain-preflight row stays `Todo` but its Notes now point at umbrella's `doctor` as the intended home rather than at a build-path check.
 - 2026-08-04 — Added three rows for work that shipped on the Core↔dev-bench hop: `embarch-core`'s dev-bench port auto-detection (`GET /dev-bench/port` + `detect-dev-bench`), and two `embarch-dev-bench` firmware rows (the shared serial/protocol application, and the BLE bridge now covering the full `Action`/`GattOperation` surface). Status wording is deliberately specific about *how far* each is verified — `native_sim` only, or uncompiled — since neither has met real hardware — the BLE-bridge row was updated the same day once `workspaces/nordic` was fetched and built, moving it from "uncompiled" to "compiles for nRF54L15DK, never run on a board." See each design doc's own open questions. Also corrected pre-existing status drift on the `embarch-study-designer` row, still marked `Proposed, design-only` even though `embarch.md` §3 and that crate's own changelog have recorded it as implemented and tested since 2026-07-29 (`DOC-PROTOCOL.md` §5's never-disagree rule).
