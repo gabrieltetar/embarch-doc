@@ -64,9 +64,9 @@ Accept the literal string `auto` in `[core].base_url`, resolving it via §3.2's 
 
 Both details were honored, and the real `config.toml`/`config.example.toml` now use `auto` — the stale `172.22.128.1` is gone. `topology.rs`/`env.rs`/`probe.rs` were copied over from umbrella and all 13 topology tests passed unmodified, demonstrating decision 15's liftability claim rather than just asserting it. One unplanned fix came out of smoke-testing: CLI subcommands are kebab-case while MCP tools are snake_case, and every doc claimed snake_case for both (`embarch-api/design.md` §5a now states the split).
 
-### 3.6 `embarch-core`: `start`/`stop` subcommands
+### 3.6 `embarch-core`: `start`/`stop` subcommands — **done, 2026-08-05**
 
-Add `start`/`stop` alongside `run`/`install`/`uninstall`/`detect-dev-bench`, wrapping the `service-manager` crate's own start/stop so per-OS service control stays in the one place that already does per-OS service logic (`embarch-core/design.md` §3.3). No new hardware or HTTP surface. Keeps `design.md` §3 decision 4's `up`/`down` from re-deriving `sc.exe`/`systemctl`/`launchctl` handling in a second codebase.
+Add `start`/`stop` alongside `run`/`install`/`uninstall`/`detect-dev-bench`, wrapping the `service-manager` crate's own start/stop so per-OS service control stays in the one place that already does per-OS service logic (`embarch-core/design.md` §3.3). No new hardware or HTTP surface. Keeps `design.md` §3 decision 4's `up`/`down` from re-deriving `sc.exe`/`systemctl`/`launchctl` handling in a second codebase. Shipped with no is-it-already-running pre-check, deliberately — backends disagree on whether starting a running service errors or no-ops. Smoke-testing surfaced a correction to `design.md` §3 decision 7: elevation is needed on every OS, not just Windows.
 
 ### 3.7 Release engineering
 
@@ -100,6 +100,7 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 
 ## 6. Changelog
 
+- 2026-08-05 — §3.6 done: `embarch-core start`/`stop` shipped, unblocking `up`/`down`. Correction folded back into `design.md` §3 decision 7 and §10 — elevation is universal, not Windows-only. Remaining: §3.3, the rest of §3.4, §3.7, §3.8.
 - 2026-08-05 — §3.5 done: `base_url = "auto"` shipped in `embarch-api`, `topology.rs` lifted verbatim with its tests intact, and the live stale-gateway-IP bug in the real config closed. Remaining: §3.3, the rest of §3.4, §3.6, §3.7, §3.8.
 - 2026-08-05 — §3.2 done: topology detection implemented and verified against this machine and a mock, plus a partial §3.4 `status` so it isn't dead code. Two refinements and one new open item folded back into `design.md`. Remaining: §3.3, the rest of §3.4, §3.5, §3.6, §3.7, §3.8.
 - 2026-08-05 — §5's shared-crate-vs-liftable-copy question resolved in favour of a liftable copy; §3.2 and §3.5 updated to say so, reasoning recorded as `design.md` §3 decision 15.

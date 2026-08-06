@@ -44,7 +44,7 @@ Find your row. This determines nothing you have to configure — setup detects i
 Prerequisites, all topologies:
 - A debug probe your board supports — J-Link, ST-Link, CMSIS-DAP, and FTDI all work, as does an on-board debugger like an nRF DK's.
 - Your existing firmware toolchain, working. EmbArch runs *your* build command; it doesn't install or replace `west`, `idf.py`, or anything else.
-- On Windows: an elevated (Administrator) shell, once, to install Core as a service.
+- An elevated shell, **once**, to install Core as a service that starts at boot: Administrator on Windows, `sudo`/root on Linux and macOS. Every OS needs this — it's what installing a system service costs — and it's the only step that ever does.
 
 ## 3. Install
 
@@ -62,7 +62,7 @@ Unpack it, then run setup from the unpacked directory:
 ./embarch setup
 ```
 
-On **Windows**, run this from an elevated shell — installing a Windows service requires it. This is the only step that ever needs elevation.
+Run this from an elevated shell — Administrator on Windows, `sudo` on Linux/macOS. Installing a system service requires it on every OS, and this is the only step that ever does.
 
 On **Windows + WSL2**, run it **twice**: once in the elevated Windows shell (which installs and starts Core), then once inside WSL2 (which sets up the API side and finds the Core you just started).
 
