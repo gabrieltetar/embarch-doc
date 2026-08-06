@@ -11,7 +11,7 @@
 | `GET /dev-bench/port` — dev-bench serial-port auto-detection (SEGGER VID + product/serial/interface match), plus the `detect-dev-bench` CLI subcommand | embarch-core | Shipped, no real dev-bench yet | `embarch-core/design.md` §4, §5, §10; implements `embarch-dev-bench/design.md` §3 decision 12 |
 | Bearer-token auth on all endpoints | embarch-core | Shipped | `embarch-core/design.md` §6 |
 | `hw_lock` — serializes all hardware access | embarch-core | Shipped | `embarch-core/design.md` §3.4 |
-| Cross-platform service install (`install`/`uninstall`) | embarch-core | Shipped | `embarch-core/design.md` §3.3 |
+| Cross-platform service install/control (`install`/`uninstall`/`start`/`stop`) | embarch-core | Shipped — all four need elevation on every OS, not just Windows | `embarch-core/design.md` §3.3 |
 | `list_projects` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `status` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `build` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
@@ -46,13 +46,14 @@
 | `embarch up` / `down` — fallback Core start/stop, including across the WSL2⟷Windows boundary | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decisions 4/7 |
 | Suite release archive (all three binaries, four targets) | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decision 14; `embarch-umbrella/milestone-6.md` §3.7 |
 | `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Shipped — verified against a mock and with Core down; never against a real Core | `embarch-api/design.md` §3.11, §4, §7 |
-| `start` / `stop` CLI subcommands | embarch-core | Proposed, design-only | `embarch-core/design.md` §10; `embarch-umbrella/milestone-6.md` §3.6 |
+| `start` / `stop` CLI subcommands | embarch-core | Shipped — smoke-tested on Linux, not on Windows/macOS | `embarch-core/design.md` §2, §3.3; `embarch-umbrella/milestone-6.md` §3.6 |
 | EmbArch UI — see whether Core is up and drive operations by hand, no agent involved | *(unnamed)* | Proposed | `embarch-umbrella/design.md` §10; see `embarch-roadmap.md` Later |
 | Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | See `embarch-roadmap.md` Next |
 | Agent-facing codebase structural analysis (successor to the old GUI's static analysis) | *(unnamed)* | Proposed | See `embarch-roadmap.md` Later |
 
 ## Changelog
 
+- 2026-08-05 — `embarch-core`'s `start`/`stop` flipped to Shipped, and the service-install row now records that elevation is required on every OS (a systemd system unit wants root/polkit, not just Windows wanting Administrator).
 - 2026-08-05 — `base_url = "auto"` flipped to Shipped (`embarch-umbrella/milestone-6.md` §3.5). Corrected the CLI-subcommand row, which had listed snake_case names the CLI has never actually had — `clap`'s derive renames to kebab-case, so it's `list-projects`, not `list_projects` (`embarch-api/design.md` §5a).
 - 2026-08-05 — Split the `doctor`/`status` row now that they've diverged in status: topology auto-detection is Shipped (verified on WSL2 and against a mock, never against a real Core), `status` is Partial (reachability/address/class, no probe list or token check yet), `doctor` stays design-only.
 - 2026-08-05 — Added eight design-only rows for Milestone 6 (Onboarding): five for the new `embarch-umbrella` sub-project (`setup`, `init`, `doctor`/`status`, `up`/`down`, the suite release archive), one each for `embarch-api`'s `base_url = "auto"` and `embarch-core`'s `start`/`stop`, and one Proposed row for the future EmbArch UI. Note what did *not* move: `embarch-api`'s PATH/toolchain-preflight row stays `Todo` but its Notes now point at umbrella's `doctor` as the intended home rather than at a build-path check.
