@@ -28,9 +28,13 @@ Cloned as a sibling of the other sub-projects (`DOC-PROTOCOL.md` §2's layout is
 
 Dependencies are `clap`, `anyhow`, `tracing`, `tracing-subscriber` only. `reqwest`/`rustls`, `serde`/`serde_json`, and `toml` are recorded in `Cargo.toml` as a comment and get added by §3.2–§3.4 when there is behavior that needs them, rather than declared unused now. `probe-rs` and `serialport` stay absent permanently — umbrella holds no hardware knowledge (`design.md` §1).
 
-### 3.2 Topology detection
+### 3.2 Topology detection — **done, 2026-08-05**
 
-Implement `design.md` §3 decision 6's candidate race as a standalone, unit-testable function: given a candidate list, return the first that answered plus how it answered (`200` = reachable and authorized, `401` = reachable, token wrong, miss = not reachable). Candidate construction — localhost, then the WSL2 default gateway when running under WSL2, then a user-supplied host — is a separate pure function over "am I under WSL2" and "what does `ip route show default` say," so both halves are testable without a live Core.
+`src/topology.rs` (pure, mirrored — no I/O, no umbrella-specific types on its boundary), `src/env.rs` (`/proc/version`, `WSL_DISTRO_NAME`, `ip route show default`), `src/probe.rs` (the `reqwest` call). 13 unit tests, all pure, written to port into `embarch-api` unchanged; `resolve` is generic over an async probe closure, so the race itself is tested with no network at all.
+
+Two design refinements came out of implementing it, folded back into `design.md` §3 decision 6: the "race" is ordered-sequential rather than concurrent, and a third outcome (`NotCore`) distinguishes another service on the port from nothing at all. One new open item, `design.md` §10: a `local` classification under WSL2 mirrored networking doesn't tell `up` whether Core is startable from here.
+
+Verified on this WSL2 machine (detects WSL2, finds gateway `172.22.128.1`, probes loopback then gateway in order) and against a mock (`401` → Core up, exit 0; `404` → "answered but isn't Core", keeps looking; nothing → every attempt listed, exit 1).
 
 **This is the piece `embarch-api` also needs (§3.5), and the answer is: write it once here, liftable — not a shared crate** (`design.md` §3 decision 15, which carries the reasoning and the drift mitigations). Concretely, for this step: one self-contained module, no umbrella-specific types crossing its boundary, unit tests written so they port to `embarch-api` unchanged, and a comment in the module naming its future mirror. §3.5 then copies module and tests together rather than reimplementing the race.
 
@@ -96,6 +100,7 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 
 ## 6. Changelog
 
+- 2026-08-05 — §3.2 done: topology detection implemented and verified against this machine and a mock, plus a partial §3.4 `status` so it isn't dead code. Two refinements and one new open item folded back into `design.md`. Remaining: §3.3, the rest of §3.4, §3.5, §3.6, §3.7, §3.8.
 - 2026-08-05 — §5's shared-crate-vs-liftable-copy question resolved in favour of a liftable copy; §3.2 and §3.5 updated to say so, reasoning recorded as `design.md` §3 decision 15.
 - 2026-08-05 — §3.1 done: repo bootstrapped, `embarch` binary building with the full §8 command surface parsing and every command reporting itself unimplemented. Nothing else in this plan has started. Deviation from the plan as written, recorded here rather than silently: `reqwest`/`serde`/`toml` were left out of `Cargo.toml` until the steps that need them, so the bootstrap declares no unused dependencies.
 - 2026-08-05 — Repo created empty; §3.1 rewritten to cover only what bootstrap still requires (clone as a sibling, Cargo project, `CLAUDE.md`/`LICENSE`/`README.md`).
