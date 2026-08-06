@@ -39,7 +39,7 @@
 | `embarch-core` ↔ `embarch-dev-bench` serial bridge (new endpoints) | embarch-core | Proposed, design-only | `embarch-study-designer/design.md` §5 |
 | Study-running MCP tool + CLI subcommand | embarch-api | Proposed, design-only | `embarch-study-designer/design.md` §6 |
 | `embarch setup` — one-time per-machine setup with topology auto-detection | embarch-umbrella | Shipped — smoke-tested on WSL2 for all three classes; the Windows-side install command has never been run | `embarch-umbrella/design.md` §3 decisions 3/6/7, §8 |
-| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
+| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Shipped — verified against a repo shaped like the real one; not yet run on a real firmware repo | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host, `401` counts as finding Core) | embarch-umbrella | Shipped — verified on WSL2 and against a mock, never against a real Core | `embarch-umbrella/design.md` §3 decisions 6/15; `embarch-umbrella/milestone-6.md` §3.2 |
 | `embarch status` — where Core is, `--json` | embarch-umbrella | Partial — reports reachability, address, and topology class; no probe list and no token check yet | `embarch-umbrella/design.md` §3 decision 11 |
 | `embarch doctor` — verify the whole chain, `--json` | embarch-umbrella | Proposed, design-only | `embarch-umbrella/design.md` §5 |
@@ -53,6 +53,7 @@
 
 ## Changelog
 
+- 2026-08-05 — `embarch init` flipped to Shipped. `doctor` is now the only unimplemented command.
 - 2026-08-05 — `embarch setup` and `embarch up`/`down` flipped to Shipped, with status wording kept specific about what has *not* been exercised: no real Core has been started by either, and the Windows-side install/start commands are printed but have never been run.
 - 2026-08-05 — `embarch-core`'s `start`/`stop` flipped to Shipped, and the service-install row now records that elevation is required on every OS (a systemd system unit wants root/polkit, not just Windows wanting Administrator).
 - 2026-08-05 — `base_url = "auto"` flipped to Shipped (`embarch-umbrella/milestone-6.md` §3.5). Corrected the CLI-subcommand row, which had listed snake_case names the CLI has never actually had — `clap`'s derive renames to kebab-case, so it's `list-projects`, not `list_projects` (`embarch-api/design.md` §5a).

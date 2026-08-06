@@ -52,7 +52,7 @@ Shipped as described, with two deviations recorded in `design.md` decisions 3 an
 
 ### 3.4 `init`, `doctor`, `status`, `up`/`down`
 
-- **`init`** — scaffold `embarch/embarch.toml` + `embarch/build/` per `design.md` §3 decision 10, deriving `build_command` from the repo's `build/build_info.yml` when one exists and writing a `chip` placeholder when it can't be derived (decision 13); exclude `embarch/` via `.git/info/exclude`; register the MCP server at local scope (decision 12); run `doctor`. `--uninstall` reverses all four.
+- **`init`** — **done, 2026-08-05.** Scaffolds `embarch/embarch.toml` per decision 10, derives `build_command` from `build/build_info.yml`, and — beyond the plan — derives `artifact_path` by *finding* a real `zephyr.hex` rather than assuming a layout (sysbuild nests it, a plain build doesn't) and computes `artifact_path_for_core` from `WSL_DISTRO_NAME`. `chip` stays a `CHANGE-ME` placeholder per decision 13. Excludes via `.git/info/exclude`, registers the MCP server at local scope, and `--uninstall` reverses all three, restoring the exclude file to its prior contents. Two deviations: it doesn't pre-create `embarch/build/` (west creates it, and an empty directory would be a lie about having built), and it ends by pointing at `status` rather than `doctor`, which doesn't exist yet.
 - **`doctor`** — the twelve checks in `design.md` §5, each with its fix line, plus `--json`. Checks 7 and 9 are the two that close previously-deferred `embarch-api` items and should not be dropped for scope.
 - **`status`** — one `/status` call, `--json` (decision 11).
 - **`up`/`down`** — **done, 2026-08-05.** Installed service first via `embarch-core start`/`stop` (§3.6); the foreground fallback became opt-in (`--foreground`) rather than automatic, and a `remote` topology refuses both outright (`design.md` §3 decision 4's refinement).
@@ -102,6 +102,7 @@ Walk [embarch-user-guide.md](../embarch-user-guide.md) start to finish on the re
 
 ## 6. Changelog
 
+- 2026-08-05 — §3.4's `init` done. Only `doctor` remains in §3.4, then §3.7 and §3.8.
 - 2026-08-05 — §3.3 and §3.4's `up`/`down` done, with `locate.rs`/`state.rs` underneath them. Two refinements folded back into `design.md` decisions 3 and 4 (no `PATH` editing; opt-in foreground fallback). Remaining: §3.4's `init` and `doctor`, §3.7, §3.8.
 - 2026-08-05 — §3.6 done: `embarch-core start`/`stop` shipped, unblocking `up`/`down`. Correction folded back into `design.md` §3 decision 7 and §10 — elevation is universal, not Windows-only. Remaining: §3.3, the rest of §3.4, §3.7, §3.8.
 - 2026-08-05 — §3.5 done: `base_url = "auto"` shipped in `embarch-api`, `topology.rs` lifted verbatim with its tests intact, and the live stale-gateway-IP bug in the real config closed. Remaining: §3.3, the rest of §3.4, §3.6, §3.7, §3.8.
