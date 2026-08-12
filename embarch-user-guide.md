@@ -64,7 +64,7 @@ Unpack it, then run setup from the unpacked directory:
 
 Run this from an elevated shell — Administrator on Windows, `sudo` on Linux/macOS. Installing a system service requires it on every OS, and this is the only step that ever does.
 
-On **Windows + WSL2**, run it **twice**: once in the elevated Windows shell (which installs and starts Core), then once inside WSL2 (which sets up the API side and finds the Core you just started).
+On **Windows + WSL2**, run it **twice, in this order**: once in the elevated Windows shell (which installs and starts Core), then once inside WSL2 (which sets up the API side and finds the Core you just started). **Order matters** — run the WSL2 leg first (easy to do if that's the shell you already have open) and, with no Core installed anywhere yet, `setup` can't tell your machine apart from a plain single-OS one: it reports `Topology: local` and fails with "`embarch-core: not found`", which doesn't point you back at the Windows-first step. If you see that, it's this trap, not a broken archive — go run the elevated Windows leg first, then retry.
 
 On **macOS**, the binaries aren't code-signed yet, so Gatekeeper will block them on first run. Right-click → Open, or `xattr -d com.apple.quarantine ./embarch`.
 
@@ -80,12 +80,15 @@ embarch doctor
 
 Every line is a check, and every failure comes with the command that fixes it. Run this any time something behaves oddly — it's the first thing to try, always.
 
-For a quick "is the stack alive," use the cheap version:
+For a quick "is the stack alive," use the cheap version — a fast, unauthenticated reachability check, not the full picture:
 
 ```sh
 embarch status
-# Core: up (local, http://127.0.0.1:4884) · probes: 1 (J-Link, S/N 1051000000) · dev-bench: not connected
+# Core: up at http://127.0.0.1:4884 (local)
+#   auth: not checked (this probe is unauthenticated)
 ```
+
+Probe count, model, and dev-bench connection aren't `status`'s job — those need an authenticated call, and only `doctor` (checks 5 and 12) makes one.
 
 Both accept `--json` if you want to script against them.
 
@@ -98,14 +101,15 @@ cd ~/src/my-firmware
 embarch init
 ```
 
-That creates an `embarch/` folder in your repo:
+That creates an `embarch/` folder in your repo, holding just `embarch.toml` at first:
 
 ```
 my-firmware/
 └── embarch/
-    ├── embarch.toml     what your project is and how to build it
-    └── build/           EmbArch's own build directory
+    └── embarch.toml     what your project is and how to build it
 ```
+
+`embarch/build/` — EmbArch's own build directory — isn't created by `init`. It shows up the first time you actually build (`west` creates it); an empty directory at that path would be a lie about having built something.
 
 Three things worth knowing about what just happened:
 
@@ -126,10 +130,12 @@ name = "my-firmware"
 source_path = "/home/me/src/my-firmware"
 build_command = ["west", "build", "-b", "my_board", "--build-dir", "embarch/build", "app/firmware"]
 artifact_path = "embarch/build/zephyr/zephyr.hex"
-chip = "CHIP-NAME-HERE"    # <- you have to fill this in
+chip = "CHANGE-ME"    # <- you have to fill this in; init leaves this exact placeholder
 flash_format = "hex"
 build_timeout_secs = 900
 ```
+
+On Windows+WSL2 specifically, `init` also writes an `artifact_path_for_core` line automatically — the `\\wsl.localhost\...` form of the same artifact, for the Windows-side Core to read (see [§8](#8-when-something-breaks)'s "Flash fails with a path error" row). You'll see it in the generated file even though it isn't in the example above.
 
 **`chip`** is a **probe-rs** target name, which is *not* the same as your Zephyr board name — `roadrunner@1/nrf54l15/cpuapp` is a board, `nRF54L15` is a chip. There's no mechanical mapping between the two, so EmbArch won't guess: a wrong guess would flash the wrong target instead of erroring. Find yours with the probe-rs CLI (`cargo install probe-rs-tools`, once):
 
@@ -157,7 +163,11 @@ embarch doctor
 
 ## 6. Using it yourself, from a terminal
 
+Every invocation needs to know which config file to use — there's no auto-discovery the way `doctor`/`init` have. Point at it once per shell with `EMBARCH_API_CONFIG`, or pass `--config` every time:
+
 ```sh
+export EMBARCH_API_CONFIG=~/src/my-firmware/embarch/embarch.toml
+
 embarch-api list-projects                    # what's configured
 embarch-api status                           # is Core up, what probes does it see
 embarch-api build my-firmware                # just build
@@ -166,6 +176,8 @@ embarch-api build-and-flash my-firmware      # build, then flash only if the bui
 embarch-api reset my-firmware
 embarch-api serial-log my-firmware --duration-ms 5000
 ```
+
+Without either, every one of these — including `list-projects` — exits immediately with `no config path given: pass --config <path> or set EMBARCH_API_CONFIG`.
 
 **Note the naming split**: CLI subcommands are kebab-case (`list-projects`, `build-and-flash`, `serial-log`), while the MCP tools in §7 are snake_case (`list_projects`, `build_and_flash`, `serial_log`). Each front-end follows its own convention; `--help` is authoritative.
 

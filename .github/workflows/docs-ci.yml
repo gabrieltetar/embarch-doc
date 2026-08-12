@@ -1,0 +1,21 @@
+name: docs-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check relative Markdown links resolve
+        run: python3 scripts/check-links.py
+
+  check-staleness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check suite-level docs don't disagree with sub-project design docs
+        run: python3 scripts/check-staleness.py
