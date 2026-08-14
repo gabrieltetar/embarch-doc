@@ -9,6 +9,7 @@
 | `POST /reset` — reset a chip | embarch-core | Shipped | `embarch-core/design.md` §4 |
 | `GET /serial-log` — bounded-duration serial capture | embarch-core | Shipped | `embarch-core/design.md` §4 |
 | `GET /dev-bench/port` — dev-bench serial-port auto-detection (SEGGER VID + product/serial/interface match), plus the `detect-dev-bench` CLI subcommand | embarch-core | Shipped, no real dev-bench yet | `embarch-core/design.md` §4, §5, §10; implements `embarch-dev-bench/design.md` §3 decision 12 |
+| `POST /resolve-chip` — Zephyr SoC name → probe-rs chip target string, validated against probe-rs's own target registry | embarch-core | Shipped | `embarch-core/design.md` §3 decision 8, §4; `embarch-api/design.md` §3 decision 12 |
 | Bearer-token auth on all endpoints | embarch-core | Shipped | `embarch-core/design.md` §6 |
 | `hw_lock` — serializes all hardware access | embarch-core | Shipped | `embarch-core/design.md` §3.4 |
 | Cross-platform service install/control (`install`/`uninstall`/`start`/`stop`) | embarch-core | Shipped — all four need elevation on every OS, not just Windows | `embarch-core/design.md` §3.3 |
@@ -19,6 +20,8 @@
 | `build_and_flash` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `reset` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
 | `serial_log` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
+| `list_targets` MCP tool + `list-targets` CLI subcommand — live target discovery for a `discovery = "zephyr-west"` project, or a `[[projects.targets]]` menu for a `static` one | embarch-api | Shipped | `embarch-api/design.md` §3 decision 12, §5, §5a |
+| `discovery = "zephyr-west"` — live, per-call `board`/`variant`/`revision`/`app` resolution (file-backing-validated against real overlay/defconfig files) on `build`/`flash`/`build_and_flash`/`reset`, instead of a static hand-maintained `[[projects]]` entry | embarch-api | Shipped — verified against a synthetic fixture + a real Core; not yet revalidated against the real healthband repo itself | `embarch-api/design.md` §3 decision 12; `embarch-umbrella/milestone-6.md` §3.9 |
 | CLI subcommand interface (`build`/`flash`/`build-and-flash`/`reset`/`serial-log`/`list-projects` — kebab-case, unlike the snake_case MCP tools above) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
 | Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
 | Per-project build concurrency lock | embarch-api | Shipped | `embarch-api/design.md` §6 |
@@ -39,7 +42,8 @@
 | `embarch-core` ↔ `embarch-dev-bench` serial bridge (new endpoints) | embarch-core | Proposed, design-only | `embarch-study-designer/design.md` §5 |
 | Study-running MCP tool + CLI subcommand | embarch-api | Proposed, design-only | `embarch-study-designer/design.md` §6 |
 | `embarch setup` — one-time per-machine setup with topology auto-detection | embarch-umbrella | Shipped — smoke-tested on WSL2 for all three classes; the Windows-side install command has never been run | `embarch-umbrella/design.md` §3 decisions 3/6/7, §8 |
-| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Shipped — verified against a repo shaped like the real one; not yet run on a real firmware repo | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
+| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Shipped — verified against a repo shaped like the real one; run for real against the healthband repo | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
+| `embarch init`/`doctor` support for `discovery = "zephyr-west"` — scaffolds the minimal schema instead of guessing one board; `doctor` checks 7-9 branch on `discovery` | embarch-umbrella | Shipped — verified against a synthetic fixture + a real Core; not yet revalidated against the real healthband repo itself | `embarch-umbrella/design.md` §3 decision 17; `embarch-umbrella/milestone-6.md` §3.9 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host, `401` counts as finding Core) | embarch-umbrella | Shipped — verified on WSL2 and against a mock, never against a real Core | `embarch-umbrella/design.md` §3 decisions 6/15; `embarch-umbrella/milestone-6.md` §3.2 |
 | `embarch status` — where Core is, `--json` | embarch-umbrella | Partial — reports reachability, address, and topology class; no probe list and no token check yet | `embarch-umbrella/design.md` §3 decision 11 |
 | `embarch doctor` — verify the whole chain, `--json` | embarch-umbrella | Shipped — all twelve checks plus `--json`; smoke-tested against a live Core and the real healthband repo's config | `embarch-umbrella/design.md` §5; `embarch-umbrella/milestone-6.md` §3.4 |
@@ -55,6 +59,7 @@
 
 *Older entries archived to [embarch-features.changelog-archive.md](embarch-features.changelog-archive.md).*
 
+- 2026-08-14 — Added four new Shipped rows for Zephyr/west live target discovery, implemented across all three repos same day: `embarch-core`'s `POST /resolve-chip`, `embarch-api`'s `list_targets` tool/subcommand and `discovery = "zephyr-west"` itself, and `embarch-umbrella`'s matching `init`/`doctor` support. Also updated the `embarch init` row's caveat — it's now been run for real against the healthband repo, not just a repo shaped like it.
 - 2026-08-11 — Corrected status drift: the `embarch doctor` and suite-release-archive rows were still marked `Proposed, design-only` even though `embarch-umbrella/milestone-6.md` §3.4 (doctor, done 2026-08-10) and §3.7 (release CI, done 2026-08-11, all three repos released clean) had both closed — violated `DOC-PROTOCOL.md` §5's "sub-project doc and suite-level docs should never disagree about status" rule. Flipped both to Shipped with links to the specific milestone section rather than restating its detail here.
 - 2026-08-05 — `embarch init` flipped to Shipped. `doctor` is now the only unimplemented command.
 - 2026-08-05 — `embarch setup` and `embarch up`/`down` flipped to Shipped, with status wording kept specific about what has *not* been exercised: no real Core has been started by either, and the Windows-side install/start commands are printed but have never been run.
