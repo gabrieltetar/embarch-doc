@@ -1,5 +1,7 @@
 # embarch-features.md: changelog archive
 
+- 2026-08-04 — Added three rows for work that shipped on the Core↔dev-bench hop: `embarch-core`'s dev-bench port auto-detection (`GET /dev-bench/port` + `detect-dev-bench`), and two `embarch-dev-bench` firmware rows (the shared serial/protocol application, and the BLE bridge now covering the full `Action`/`GattOperation` surface). Status wording is deliberately specific about *how far* each is verified — `native_sim` only, or uncompiled — since neither has met real hardware — the BLE-bridge row was updated the same day once `workspaces/nordic` was fetched and built, moving it from "uncompiled" to "compiles for nRF54L15DK, never run on a board." See each design doc's own open questions. Also corrected pre-existing status drift on the `embarch-study-designer` row, still marked `Proposed, design-only` even though `embarch.md` §3 and that crate's own changelog have recorded it as implemented and tested since 2026-07-29 (`DOC-PROTOCOL.md` §5's never-disagree rule).
+
 Entries beyond the 8 most recent, moved here from [embarch-features.md](embarch-features.md)
 by `scripts/archive-changelog.py`, per `DOC-PROTOCOL.md` §5. Newest-first,
 same as the live doc's own Changelog.

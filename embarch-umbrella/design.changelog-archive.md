@@ -1,5 +1,8 @@
 # design.md: changelog archive
 
+- 2026-08-05 — Resolved [milestone-6.md](milestone-6.md) §5's open question on where topology detection lives: new decision 15 — written once here in a liftable shape (no umbrella-specific types crossing its boundary, tests that port unchanged) and copied into `embarch-api`, rather than extracted into a fourth crate for one function. Records the drift cost this accepts and the three things that keep it visible, including `doctor` check 3 reporting which candidate won rather than just pass/fail.
+- 2026-08-05 — Repo bootstrapped ([milestone-6.md](milestone-6.md) §3.1 closed): Cargo project producing the `embarch` binary per decision 2, `clap` deriving the full §8 command surface, plus `CLAUDE.md`/`LICENSE`/`README.md`/`.gitignore`. Every command parses and then reports itself unimplemented with a pointer to the milestone step that implements it — deliberately, so the surface can't be mistaken for working behavior. `cargo build` and `cargo clippy --all-targets -- -D warnings` both clean; `--help`, a `--json` invocation, and a malformed invocation were all exercised. Two conventions adopted from `embarch-api` rather than invented: exit codes `0`/`1`/`2` (`embarch-api/design.md` §5a) and `tracing` to stderr so stdout stays reserved for results and `--json` (§10 there). `probe-rs`/`serialport` are deliberately absent from `Cargo.toml`, with a comment recording that they're expected to *stay* absent per §1.
+
 Entries beyond the 8 most recent, moved here from [design.md](design.md)
 by `scripts/archive-changelog.py`, per `DOC-PROTOCOL.md` §5. Newest-first,
 same as the live doc's own Changelog.
