@@ -1,9 +1,25 @@
 # embarch-promptu: design
 
-**Status:** Planned, no repo yet.
+**Status:** Planned, no repo yet. First concrete scoping pass below, added 2026-08-15 — closing item 57 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed). This remains scoping ahead of a repo — no code, same as every other doc in this suite that records a decision before building it (e.g. `embarch-api/design.md` §3 decision 10, `embarch-core/design.md` §4's `/study*` rows).
 
-Placeholder — this doc becomes the source of truth once `embarch-promptu` design work starts. See [embarch.md](../embarch.md) §3 for its one-line purpose and [embarch-roadmap.md](../embarch-roadmap.md)'s Next bucket: building out the curated firmware-specific skills/prompt library for Claude Code.
+## 1. Purpose and scope
+
+`embarch-promptu` is the piece that makes the rest of the suite's MCP tools usable *well* by an agent, not just usable at all. `embarch init` registers nine (and growing) MCP tools with zero installed guidance about when to use each one, when a human should be asked first, or how to compose them into a real workflow. That guidance already exists — [embarch-user-guide.md](../embarch-user-guide.md) §7.1 writes it out in prose — but it's manual: a human reads the guide and copy-pastes a permission split into their own repo's `.claude/settings.local.json` by hand, every time, per repo. `embarch-promptu`'s job is to make that installable, the same way `embarch init` already installs `embarch/embarch.toml` rather than leaving config-writing as a copy-paste exercise.
+
+## 2. First concrete content (identified 2026-08-15, not yet built)
+
+Three pieces already exist as prose elsewhere in this suite and are the natural first things to move here as real, installable artifacts once this sub-project has a repo:
+
+1. **A permission-split template.** [embarch-user-guide.md](../embarch-user-guide.md) §7.1's `.claude/settings.local.json` split — reads/builds auto-allowed (`list_projects`, `status`, `build`, `serial_log`), anything touching hardware asks first (`flash`, `build_and_flash`, `reset`) — should ship as a template fragment `embarch init` can offer to merge in, opt-in and never silent (matching `embarch-umbrella/design.md` §3 decision 12's "touches nothing tracked without being asked" posture, and never overwriting a settings file that already exists).
+2. **A `CLAUDE.md` fragment.** §7.1's exemption to a "never build/flash autonomously" house rule — EmbArch's `build`/`build_and_flash` tools use their own build directory and can't collide with a human's interactive build tree, so a blanket autonomy restriction shouldn't block them — is exactly the kind of instruction a firmware repo's own `CLAUDE.md` should carry, but nothing installs it today. `embarch init` (or a step this sub-project owns once it exists) should offer to append a short, clearly-marked block stating the exemption and why.
+3. **A build→flash→serial-log→diagnose loop skill.** The single most common real workflow this suite exists to support — "this won't compile, fix it and prove it works on hardware" — is today something an agent has to improvise from tool descriptions alone. A packaged skill encoding the loop explicitly (build → read errors → fix → rebuild → flash → serial-log → check for expected behavior → repeat) would turn "the agent generally does this reasonably" into "the agent reliably does this," the same gap a skill exists to close for any other repeated, structured task.
+
+## 3. Open questions
+
+- **Packaging mechanism isn't decided.** A Claude Code plugin, a skill file, or a `.claude/` directory template `embarch init` copies in are all plausible — which one fits best depends on how Claude Code's own extension mechanisms look by the time this sub-project actually starts, which is deliberately not being guessed at now.
+- **Repo shape isn't decided.** Whether this ships as its own repo (matching every other sub-project's one-repo-per-concern pattern) or as files living inside `embarch-umbrella`'s own `init` templates is open — the former is consistent with the rest of the suite; the latter avoids a seventh repo for what might end up being a handful of files.
 
 ## Changelog
 
+- 2026-08-15 — First concrete scoping pass, closing item 57 of that day's design-improvement review: identified three pieces of already-written guidance (`embarch-user-guide.md` §7.1's permission split and `CLAUDE.md` exemption, plus a new build→flash→serial-log→diagnose loop skill) as this sub-project's first real content, and recorded the two open questions (packaging mechanism, repo shape) that block turning this into a real repo. Still no repo, still `Planned` — this is scoping, not implementation.
 - 2026-07-20 — Placeholder created alongside the embarch-doc per-sub-project restructure.
