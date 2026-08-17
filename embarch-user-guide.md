@@ -48,13 +48,15 @@ Prerequisites, all topologies:
 
 ## 3. Install
 
-Download **one archive** for your platform from [embarch-umbrella releases](https://github.com/gabrieltetar/embarch-umbrella/releases). It contains all three binaries as a version-tested set.
+Download **one archive per operating system you're setting up** from [embarch-umbrella releases](https://github.com/gabrieltetar/embarch-umbrella/releases). Each archive contains all three binaries as a version-tested set, built for that one OS.
 
 | Platform | Archive |
 |---|---|
 | Windows | `embarch-<version>-x86_64-pc-windows-msvc.zip` |
 | Linux | `embarch-<version>-x86_64-unknown-linux-gnu.tar.gz` |
 | macOS (Apple silicon) | `embarch-<version>-aarch64-apple-darwin.tar.gz` |
+
+**On Windows + WSL2, this means downloading two archives, not one** — the Windows `.zip` *and* the Linux `.tar.gz` — because WSL2 is a separate Linux environment from the Windows host, not just another shell into the same binaries. Unpack the Windows archive somewhere on the Windows filesystem (for the elevated Windows leg below), and separately unpack the Linux archive **inside WSL2's own filesystem** — your WSL2 home directory (`~`), not a `/mnt/c/...` path — for the WSL2 leg. Running the Windows `.exe`s from WSL2 via `/mnt/c/...` is not the intended flow and won't work as `embarch setup` (WSL2's shell won't resolve `embarch` to a Windows `.exe` without the `.exe` suffix, and even if invoked as `embarch.exe`, it's the wrong binary for the WSL2-side API — it needs to run as a native Linux process, not through interop).
 
 Unpack it, then run setup from the unpacked directory:
 
@@ -70,13 +72,28 @@ embarch setup            :: Windows, cmd.exe — no ./ prefix, cmd.exe doesn't u
 
 Run this from an elevated shell — Administrator on Windows, `sudo` on Linux/macOS. Installing a system service requires it on every OS, and this is the only step that ever does.
 
-On **Windows + WSL2**, run it **twice, in this order**: once in the elevated Windows shell (which installs and starts Core), then once inside WSL2 (which sets up the API side and finds the Core you just started). **Order matters** — run the WSL2 leg first (easy to do if that's the shell you already have open) and, with no Core installed anywhere yet, `setup` can't tell your machine apart from a plain single-OS one: it reports `Topology: local` and fails with "`embarch-core: not found`", which doesn't point you back at the Windows-first step. If you see that, it's this trap, not a broken archive — go run the elevated Windows leg first, then retry.
+On **Windows + WSL2**, run it **twice, in this order, from the two separately-unpacked archives (see above)**: once in the elevated Windows shell against the Windows archive (which installs and starts Core), then once inside WSL2, in your WSL2 home directory, against the **Linux** archive (which sets up the API side and finds the Core you just started). **Order matters** — run the WSL2 leg first (easy to do if that's the shell you already have open) and, with no Core installed anywhere yet, `setup` can't tell your machine apart from a plain single-OS one: it reports `Topology: local` and fails with "`embarch-core: not found`", which doesn't point you back at the Windows-first step. If you see that, it's this trap, not a broken archive — go run the elevated Windows leg first, then retry.
+
+**`Topology: local` from the elevated Windows leg itself, with no failure alongside it, is expected — not the trap above.** From native Windows alone, before the WSL2 leg has run, `setup` has no way to see that a WSL2 side exists at all; `local` just means "nothing WSL2-specific detected yet." Confirm Core actually started (or was already running) and the token file is present, then move on to the WSL2 leg — that's the step that resolves the pairing and reports the real topology (`wsl-host`).
 
 On **macOS**, the binaries aren't code-signed yet, so Gatekeeper will block them on first run. Right-click → Open, or `xattr -d com.apple.quarantine ./embarch`.
 
-`setup` figures out which row of §2 you're on, installs Core as a service that starts at boot, puts `embarch-core` and `embarch-api` on your `PATH`, makes sure the shared auth token exists, and finishes by running `doctor`.
+`setup` figures out which row of §2 you're on, installs Core as a service that starts at boot, makes sure the shared auth token exists, prints (but does not run) the `PATH` line from §3.1 below, and finishes by running `doctor`.
 
 **Core stays running from now on.** It starts at boot; you don't launch it, and neither does the agent. That's the whole reason there's nothing to "start up" every morning.
+
+### 3.1 Add the binaries to your PATH
+
+`setup` doesn't edit your `PATH` itself — it only prints the line to add, since it can't know which shell or profile file you actually want it in. What it prints today is always POSIX `export PATH=...` syntax, even when `setup` itself is running natively on Windows `cmd.exe` — where that line doesn't work as printed (`export` isn't a `cmd.exe` command at all). Until that's fixed, translate it by hand for the shell you're actually in:
+
+```sh
+export PATH="<dir>:$PATH"          # bash/zsh (Linux, macOS, WSL2) — usable as printed
+```
+```powershell
+$env:Path += ";<dir>"              # PowerShell, current session only
+```
+
+On native Windows, the durable fix is the **System Properties → Environment Variables** GUI (`sysdm.cpl` → Advanced → Environment Variables), adding `<dir>` to your user `Path` — a `setx`/registry edit from a script risks truncating an already-long `PATH`, so the GUI is the safer default here. Until you've done that, just run the binaries from inside the unpacked directory instead of relying on `PATH`.
 
 ## 4. Check it worked
 
@@ -426,6 +443,7 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 
 ## Changelog
 
+- 2026-08-17 — Real Windows+WSL2 onboarding attempt surfaced three more real gaps in §3: (1) "download one archive" didn't say a WSL2 setup needs *two* — the Windows archive on Windows, a separate Linux archive unpacked inside WSL2 itself — leading directly to `embarch: command not found` when the Windows `.exe`s were tried from WSL2 via `/mnt/c`; (2) nothing explained that `Topology: local` from the correct first (Windows) leg is expected, not the already-documented wrong-order trap — indistinguishable from it without this note; (3) §3 claimed `setup` "puts `embarch-core` and `embarch-api` on your PATH," contradicted by `setup`'s own real output ("setup does not edit it for you") — corrected, and new §3.1 documents the printed hint plus the fact that it's POSIX-only even on native Windows `cmd.exe` (a real code gap, tracked in `embarch-umbrella/design.md` §10, not just a doc fix).
 - 2026-08-17 — §3's install step gave one Unix-shell command (`./embarch setup`) for every platform; on Windows `cmd.exe` this fails outright (`'.' is not recognized...`) since `cmd.exe` doesn't understand `./`. Split into three explicit per-shell command blocks (`cmd.exe`, PowerShell, Linux/macOS). Found live — first real Windows user to reach this step hit it immediately.
 - 2026-08-17 — Fixed a real staleness gap: the opening callout and Appendix A's intro still said the `embarch` setup tool was "designed but not yet built" and told readers to use the manual path — false since Milestone 6 (Onboarding) shipped real `v0.1.0` release binaries (`embarch-roadmap.md`'s Shipped foundation). Both now point at chapters 3–9 as the real, current procedure; Appendix A is relabeled as historical/reference. `embarch.md` §3's `embarch-umbrella` row (`In progress`) was disagreeing with this same fact and is corrected to `Shipped` in the same pass. Found while scoping Milestone 1 execution — the user's stated plan was to follow this guide directly, which would have hit this immediately.
 - 2026-08-17 — Added §5.2 (Multi-board / Zephyr-west repos): the guide had never been updated for `discovery = "zephyr-west"` (`embarch-api/design.md` §3 decision 12, shipped 2026-08-14) even though it's exactly the shape the real `reference-dut-fw` repo turned out to have (`embarch-umbrella/milestone-6.md`'s 2026-08-13 finding — four real boards, revision overlays only at `evt1`). Following old §5.1 literally on a repo like that would walk into the same "wrong board picked" trap Milestone 6 already hit. §5.1 now points here when `init` writes the smaller `zephyr-west` schema instead of the static one. Found while scoping [embarch-roadmap.md](embarch-roadmap.md)'s Milestone 1 execution ([embarch-api/milestone-7.md](embarch-api/milestone-7.md)).
