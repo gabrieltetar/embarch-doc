@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+"""Print every "Open questions" section across the suite's design docs, in one place.
+
+Added 2026-08-15, closing item 63 of that day's design-improvement review
+(.claude/design-improvements-2026-08-15.md, local working notes): open
+questions are spread across six-plus docs' own §7/§10/§12-equivalent
+sections, with no suite-wide index — this fits the existing scripts/
+tooling pattern (check-links.py, check-staleness.py) exactly, per that
+review's own suggestion.
+
+Walks every design.md (plus embarch-token.md, which carries its own §8) for
+a heading whose text contains "open question" (case-insensitive — headings
+vary: "Open questions / future work", "Open questions"), and prints every
+top-level bullet under it, grouped by doc.
+
+This is a reporting tool, not a CI gate — unlike check-links.py/
+check-staleness.py, an "open question" existing isn't a failure, so this
+always exits 0. Run it locally when you want the suite-wide view; nothing
+currently runs it automatically.
+
+Usage: scripts/collect-open-questions.py   (run from anywhere; paths are repo-relative)
+"""
+import os
+import re
+import sys
+
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+HEADING_RE = re.compile(r'^(#{1,3})\s+(.*)$')
+BULLET_RE = re.compile(r'^-\s+(.*)$')
+
+
+def find_design_docs(root):
+    """design.md files plus any root-level doc that carries its own open-questions section."""
+    docs = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d != '.git']
+        for name in filenames:
+            if name == 'design.md':
+                docs.append(os.path.join(dirpath, name))
+    for extra in ('embarch-token.md',):
+        path = os.path.join(root, extra)
+        if os.path.exists(path):
+            docs.append(path)
+    return sorted(docs)
+
+
+def extract_open_questions(path):
+    """Return (heading_level, bullet_text) for every bullet under an 'open question(s)' heading."""
+    with open(path, encoding='utf-8') as f:
+        lines = f.readlines()
+
+    bullets = []
+    in_section = False
+    section_level = None
+    for line in lines:
+        heading_match = HEADING_RE.match(line)
+        if heading_match:
+            level = len(heading_match.group(1))
+            title = heading_match.group(2)
+            if 'open question' in title.lower():
+                in_section = True
+                section_level = level
+                continue
+            if in_section and level <= section_level:
+                in_section = False
+            continue
+        if in_section:
+            bullet_match = BULLET_RE.match(line)
+            if bullet_match:
+                bullets.append(bullet_match.group(1).strip())
+    return bullets
+
+
+def main():
+    docs = find_design_docs(REPO_ROOT)
+    total = 0
+    print("# Suite-wide open questions\n")
+    print("Collected from every design.md's own \"Open questions\" section — the section itself "
+          "remains the source of truth; this is a read-only index, not a copy to edit.\n")
+
+    for path in docs:
+        bullets = extract_open_questions(path)
+        if not bullets:
+            continue
+        rel = os.path.relpath(path, REPO_ROOT)
+        print(f"## {rel}\n")
+        for b in bullets:
+            print(f"- {b}")
+            total += 1
+        print()
+
+    print(f"---\n{total} open question(s) across {sum(1 for p in docs if extract_open_questions(p))} doc(s).")
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

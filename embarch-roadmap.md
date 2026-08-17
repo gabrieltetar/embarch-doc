@@ -1,51 +1,51 @@
 # embarch: feature roadmap
 
-**Status:** draft, 2026-07-20.
+**Status:** draft, 2026-07-20. Restructured 2026-08-17 — see Changelog.
+
+## Shipped foundation
+
+The suite's original numbered milestones (Flash, Token, Study Designer scoping + implementation, Dev Bench scoping, Onboarding) are done and shipped as real `v0.1.0` releases across all three code-bearing repos (see Release, below) — they're recorded here as a foundation rather than as active numbered milestones, since none of them are still open work:
+
+- **Flash** — EmbArch flashes a chip without USB-forwarding WSL2↔Windows, validated against a generic test board (`project-a-board`). Steps: [embarch-api/milestone-1.md](embarch-api/milestone-1.md), [embarch-core/milestone-1.md](embarch-core/milestone-1.md).
+- **Token** — the insecure `dev-token-change-me` fallback replaced by an auto-generated, machine-wide token file Core persists and embarch-api discovers on its own. Full design: [embarch-token.md](embarch-token.md). Steps: [embarch-api/milestone-2.md](embarch-api/milestone-2.md), [embarch-core/milestone-2.md](embarch-core/milestone-2.md).
+- **Study Designer, scoping + implementation** — `embarch-study-designer`, the shared `no_std` Rust library defining hardware-in-the-loop study types (BLE advertise/connect/data-exchange/validation plus power profiling), designed and implemented with its full type model, wire-format tooling, schema versioning, and a `SignalCheck` evaluator. Full design: [embarch-study-designer/design.md](embarch-study-designer/design.md). Steps: [embarch-study-designer/milestone-3.md](embarch-study-designer/milestone-3.md).
+- **Dev Bench scoping** — `embarch-dev-bench`'s architecture scoped: Zephyr-based, cross-vendor (one shared application across per-vendor west workspaces), BLE + power sampling v1 scope. Full design: [embarch-dev-bench/design.md](embarch-dev-bench/design.md).
+- **Onboarding** — `embarch-umbrella` (the `embarch` binary): `setup`/`init`/`doctor`/`status`/`up`/`down`, `base_url = "auto"` in API, `start`/`stop` in Core, and the suite's first real release binaries. Full design: [embarch-umbrella/design.md](embarch-umbrella/design.md); user-facing guide: [embarch-user-guide.md](embarch-user-guide.md). Steps: [embarch-umbrella/milestone-6.md](embarch-umbrella/milestone-6.md).
+
+Two real gaps this foundation left behind, which is exactly what the new milestones below close: no shipped milestone ever flashed real hardware through a real client repo (`project-a-board` was a placeholder; the real `reference-dut-fw` repo was only ever used to validate config/discovery, never an actual physical flash — see `embarch-umbrella/milestone-6.md`'s 2026-08-13/14 entries), and `embarch-dev-bench` firmware has never been run on physical hardware at all (`embarch-dev-bench/design.md` §4).
 
 ## Milestones
 
-### 1 - Flash
+Each milestone below uses a real umbrella-suite release plus the real `reference-dut-fw` client repo as its test target, rather than a placeholder project or a synthetic fixture. Numbered starting fresh at 1 — the shipped foundation above is intentionally not renumbered into this sequence. *(Filename note: when an execution doc is created for one of these, it's filed as `milestone-N.md` using N = 7/8/9/10 — continuing the on-disk numbering past the shipped foundation's 1–6 — specifically so it can't collide with those still-live historical files; only this doc's own prose uses the fresh 1–4 numbering.)*
+
+### 1 - Flash & Build (real hardware)
 
 Projects : API - Core
-The goal is to use the EmbArch suite to flash the firmware to avoid having to forward the USB from windows to WSL2.
-Ideally "west flash" can be used.
-Steps : [embarch-api/milestone-1.md](embarch-api/milestone-1.md), [embarch-core/milestone-1.md](embarch-core/milestone-1.md)
+Use the real `reference-dut-fw` repo — not a placeholder project — to validate the full build→flash chain for real, with EmbArch API run from WSL2 and EmbArch Core run on Windows: the suite's actual daily-use topology. The shipped foundation's Flash milestone proved this chain against a generic test board; Onboarding validated `init`/`list_targets`/`doctor` against reference-dut's real config but never drove an actual physical flash through it. This milestone closes that gap: check out a real reference-dut board/variant, `embarch init`, `list_targets`, `build_and_flash` through the WSL2⟷Windows split, onto physical hardware.
+Steps : planned, not yet executed — [embarch-api/milestone-7.md](embarch-api/milestone-7.md) / [embarch-core/milestone-7.md](embarch-core/milestone-7.md). Target board/variant/revision is deliberately not pre-selected in either doc — resolved via live `list_targets` discovery against the real repo when execution runs, per decision 12.
 
-### 2 - Token
+### 2 - Dev Bench Self-Test
 
-Projects : API - Core
-The goal is to replace the insecure `dev-token-change-me` fallback with an auto-generated, machine-wide token file Core persists and embarch-api discovers on its own — no more hand-copying `EMBARCH_TOKEN` between the two. Also folds in the already-diagnosed `sc.exe` Windows-service environment-variable fix. Full target design : [embarch-token.md](embarch-token.md).
-Steps : [embarch-api/milestone-2.md](embarch-api/milestone-2.md), [embarch-core/milestone-2.md](embarch-core/milestone-2.md)
+Projects : Core - Dev Bench
+No client/DUT repo involved. Establish the dev-bench self-test as a standing precondition every study runs before touching a DUT: dev-bench firmware exercises its own peripherals and the Core⟷dev-bench transport — serial link, `Hello`/`HelloAck` handshake, real per-`Study` dispatch of a multi-step `Study` with `StepResult`/`StudyDone` round-tripping (`embarch-dev-bench/design.md` §3 decision 21) — end-to-end on physical hardware for the first time. Confirms dev-bench is ready for a task before Milestone 3 points it at a real DUT. Power sampling is explicitly out of scope here (Milestone 4).
+Steps : not yet planned — add `embarch-core/milestone-8.md` / `embarch-dev-bench/milestone-8.md` when execution starts.
 
-### 3 - Study Designer
+### 3 - Study Designer: Feature-Branch Iteration
 
-Projects : Study Designer (new) - Core - API - Dev Bench
-Design-only milestone (no code; repo now exists at [gabrieltetar/embarch-study-designer](https://github.com/gabrieltetar/embarch-study-designer), empty). The goal is to scope `embarch-study-designer`, a shared `no_std` Rust library defining the data types for hardware-in-the-loop studies of a DUT — BLE advertise/connect/data-exchange/validation plus power profiling, used for fuzz testing and dev-time automated unit/integration testing — compiled independently by `embarch-core`, `embarch-api`, and future `embarch-dev-bench` firmware. Full target design : [embarch-study-designer/design.md](embarch-study-designer/design.md).
-Steps : [embarch-study-designer/milestone-3.md](embarch-study-designer/milestone-3.md)
+Projects : Study Designer - Core - API - Dev Bench
+Use the full EmbArch chain to iterate a test of a feature branch on the real reference-dut repo: build and flash a feature branch via EmbArch, dev-bench BLE-connects to the running reference-dut DUT, exchanges GATT data per the branch's feature, and forwards the acquisition data over the Core⟷dev-bench serial link into `embarch-core`. One successful end-to-end run is the Definition of Done — not a repeated edit→rebuild→reflash loop.
+Steps : not yet planned — add `embarch-study-designer/milestone-9.md` / `embarch-core/milestone-9.md` / `embarch-api/milestone-9.md` / `embarch-dev-bench/milestone-9.md` when execution starts.
 
-### 4 - Study Designer Implementation
+### 4 - Power-Sampling Study
 
-Projects : Study Designer
-The goal is to actually implement `embarch-study-designer` per Milestone 3's design (`embarch-study-designer/design.md`): the crate now exists with its full type model, wire-format tooling (`steps_crc`, CSV rendering), schema versioning, and a `core-validation`-gated `SignalCheck` evaluator, all `#![no_std]` and tested. Not yet in scope: wiring `embarch-core`/`embarch-api` to actually depend on this crate (they don't yet), and `embarch-dev-bench` firmware itself, which remains the next step and stays blocked on real hardware existing (design.md §7).
-Steps : none yet — implemented directly against `design.md` rather than a separately-planned execution sequence; add a `embarch-study-designer/milestone-4.md` if this needs its own execution plan later.
-
-### 5 - Dev Bench Scoping
-
-Projects : Dev Bench (new)
-Design-only milestone (no code; repo now exists at [gabrieltetar/embarch-dev-bench](https://github.com/gabrieltetar/embarch-dev-bench), empty). The goal is to scope `embarch-dev-bench`, the Zephyr-based C firmware that plays the DUT's BLE counterpart and samples power during a `Study`, cross-vendor by design (one shared application spanning multiple vendor-specific west workspaces, not one board or one silicon vendor). Full target design : [embarch-dev-bench/design.md](embarch-dev-bench/design.md).
-Steps : none yet — resolved via Q&A directly into `design.md` rather than a separately-planned execution sequence.
-
-### 6 - Onboarding
-
-Projects : Umbrella (new) - API - Core
-The goal is to make the suite installable and usable by a firmware engineer who has never seen it — one archive to download, `embarch setup` to configure whatever topology their machine is, `embarch init` to integrate a firmware repo, and `embarch doctor` to say what's wrong. Introduces the sixth sub-project `embarch-umbrella` (binary `embarch`), whose central design point is that Core-as-an-autostarting-OS-service is what removes the need for a launcher at all, so umbrella owns setup and verification rather than process management. Also folds in `base_url = "auto"` in API (retiring the WSL2 gateway IP that goes stale on every WSL restart), `start`/`stop` in Core, and the first real release binaries the suite has ever had. Full target design : [embarch-umbrella/design.md](embarch-umbrella/design.md); the guide it has to satisfy : [embarch-user-guide.md](embarch-user-guide.md).
-Steps : [embarch-umbrella/milestone-6.md](embarch-umbrella/milestone-6.md)
+Projects : Dev Bench - Study Designer
+Acquire and wire in the provisional PPK2 power-measurement front end (`embarch-dev-bench/design.md` §3 decision 24) and exercise `PowerSampleWindow`/`StreamChunkBatch` end-to-end for the first time — the one dev-bench feature area Milestones 2 and 3 explicitly defer.
+Steps : not yet planned — add `embarch-dev-bench/milestone-10.md` when execution starts.
 
 ## Next
 
 Not yet numbered milestones — the buckets [embarch.md](embarch.md) and [embarch-features.md](embarch-features.md) refer to as "Next".
 
-- **Dev-bench on real hardware.** `embarch-dev-bench`'s firmware builds for the nRF54L15DK but has never been flashed or run on a board, and `embarch-core`'s dev-bench port auto-detection has never met a real J-Link ([embarch-dev-bench/design.md](embarch-dev-bench/design.md) §4, [embarch-core/design.md](embarch-core/design.md) §10). Everything downstream of that — the `/study*` endpoints, `run_study`/`study_status`, power-sampling hardware, the stimulus/sensing rig — is blocked behind it.
 - **`embarch-core`/`embarch-api` actually depending on `embarch-study-designer`** as a Cargo dependency; today all three define or assume the study types independently ([embarch-study-designer/design.md](embarch-study-designer/design.md)).
 - **`embarch-promptu`** — the curated library of firmware-specific skills, subagents, and prompt patterns. Planned, no repo ([embarch-promptu/design.md](embarch-promptu/design.md)).
 
@@ -58,15 +58,21 @@ Not yet numbered milestones — the buckets [embarch.md](embarch.md) and [embarc
 
 ## Release
 
-### 1 - Rochambeau
-1.x.x
-Date : ?
-includes : 
-Milestone 1
-Milestone 2
+*Updated 2026-08-15, closing item 64 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes): this section had gone stale the moment real releases shipped, still naming a placeholder ("Rochambeau, Date: ?") with no mention of the real `v0.1.0`s or the assembled suite archive.*
+
+### v0.1.0 — shipped 2026-08-11
+
+Real, per-repo `v0.1.0` tags and GitHub Releases exist for every component with code (`embarch-core`, `embarch-api`, `embarch-umbrella`), plus a real assembled `suite-v0.1.0` archive (`embarch-umbrella`'s `assemble-suite.yml`) that `doctor` check 1 has validated a manifest against. Scope in practice: everything through Milestone 6's release-engineering step, which turned out to include Milestones 1, 2, and 6 together — not the Milestone-1-and-2-only scope "Rochambeau" (below) originally named. Full detail: [embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 14, [milestone-6.md](embarch-umbrella/milestone-6.md) §3.7.
+
+### Rochambeau — superseded, kept for history
+
+The original working name for "the first release, Milestone 1 + 2 only." Never actually cut under that scope — release engineering itself turned out to be part of Milestone 6's work, and what shipped (above) covers substantially more than Milestones 1+2 alone. Recorded here as superseded rather than silently deleted, so the name doesn't get reused for a future release by someone who didn't know it was already spent on a plan that didn't survive contact with what actually got built.
 
 ## Changelog
 
+- 2026-08-17 — Milestone 1's execution plan drafted: [embarch-api/milestone-7.md](embarch-api/milestone-7.md) / [embarch-core/milestone-7.md](embarch-core/milestone-7.md), replacing the "Steps: not yet planned" placeholder. Deliberately doesn't pre-select a board/variant/revision in either doc — both defer to live `list_targets` discovery against the real repo at execution time, per decision 12, rather than hardcoding one of the combinations Milestone 6 found by hand. DoD scoped to require config-only `build_and_flash` (no `--firmware-path` override, unproven against real hardware for any project until now) and the MCP path (also unproven against real hardware for any project), both per user decision.
+- 2026-08-17 — Milestones restructured at the user's request: the original numbered milestones (1–6, Flash through Onboarding) folded into a new "Shipped foundation" section rather than staying numbered, since none are still open work. Four new milestones take the freed-up 1–4 numbering, each keyed to a real umbrella-suite release plus the real `reference-dut-fw` repo as test target rather than a placeholder project or synthetic fixture: 1 (Flash & Build, real hardware — WSL2 API / Windows Core split, real reference-dut repo, closing the gap that no shipped milestone ever drove an actual physical flash through that repo), 2 (Dev Bench Self-Test — Core⟷dev-bench transport and real per-`Study` dispatch proven on physical hardware for the first time, no client repo, power sampling explicitly deferred), 3 (Study Designer: Feature-Branch Iteration — dev-bench BLE-connects to a real reference-dut DUT running a feature branch and forwards acquisition data to Core; one successful run is the Definition of Done, not a repeated iteration loop), 4 (Power-Sampling Study — acquire and wire in the provisional PPK2 front end, the one area 2/3 defer). Next bucket's "Dev-bench on real hardware" bullet removed, since Milestones 2/3 now cover exactly that gap. Execution docs for the new milestones, when created, are filed as `milestone-7.md`/`8.md`/`9.md`/`10.md` on disk (continuing the counter past the shipped foundation's 1–6) so they can't collide with those still-live historical files, even though this doc's own prose numbers them 1–4.
+- 2026-08-15 — Release section rewritten, closing item 64 of that day's design-improvement review: replaced the stale "Rochambeau, Date: ?" placeholder with the real `v0.1.0` release (all three repos, real GitHub Releases, a real assembled `suite-v0.1.0` archive — all shipped 2026-08-11) and recorded "Rochambeau" as a superseded working name rather than deleting it outright.
 - 2026-07-20 — Initial draft, Milestone 1 (Flash).
 - 2026-07-21 — Added Milestone 2 (Token); added it to Rochambeau's includes list.
 - 2026-07-27 — Added Milestone 3 (Study Designer): design-only scoping of `embarch-study-designer`, a new shared library sub-project. Not added to Rochambeau's includes list since this milestone ships no code.

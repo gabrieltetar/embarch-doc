@@ -2,63 +2,66 @@
 
 **Status:** draft, 2026-07-17. Hand-maintained. Todo rows should stay in sync with the source design docs' own "open questions" sections rather than duplicating their detail — link back, don't restate.
 
-| Feature | Sub-project | Status | Notes |
-|---|---|---|---|
-| `GET /status` — list connected debug probes | embarch-core | Shipped | `embarch-core/design.md` §4 |
-| `POST /flash` — flash a chip from a local firmware path | embarch-core | Shipped | `embarch-core/design.md` §4 |
-| `POST /reset` — reset a chip | embarch-core | Shipped | `embarch-core/design.md` §4 |
-| `GET /serial-log` — bounded-duration serial capture | embarch-core | Shipped | `embarch-core/design.md` §4 |
-| `GET /dev-bench/port` — dev-bench serial-port auto-detection (SEGGER VID + product/serial/interface match), plus the `detect-dev-bench` CLI subcommand | embarch-core | Shipped, no real dev-bench yet | `embarch-core/design.md` §4, §5, §10; implements `embarch-dev-bench/design.md` §3 decision 12 |
-| `POST /resolve-chip` — Zephyr SoC name → probe-rs chip target string, validated against probe-rs's own target registry | embarch-core | Shipped | `embarch-core/design.md` §3 decision 8, §4; `embarch-api/design.md` §3 decision 12 |
-| Bearer-token auth on all endpoints | embarch-core | Shipped | `embarch-core/design.md` §6 |
-| `hw_lock` — serializes all hardware access | embarch-core | Shipped | `embarch-core/design.md` §3.4 |
-| Cross-platform service install/control (`install`/`uninstall`/`start`/`stop`) | embarch-core | Shipped — all four need elevation on every OS, not just Windows | `embarch-core/design.md` §3.3 |
-| `list_projects` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `status` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `build` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `flash` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `build_and_flash` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `reset` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `serial_log` MCP tool | embarch-api | Shipped | `embarch-api/design.md` §5 |
-| `list_targets` MCP tool + `list-targets` CLI subcommand — live target discovery for a `discovery = "zephyr-west"` project, or a `[[projects.targets]]` menu for a `static` one | embarch-api | Shipped | `embarch-api/design.md` §3 decision 12, §5, §5a |
-| `discovery = "zephyr-west"` — live, per-call `board`/`variant`/`revision`/`app` resolution (file-backing-validated against real overlay/defconfig files) on `build`/`flash`/`build_and_flash`/`reset`, instead of a static hand-maintained `[[projects]]` entry | embarch-api | Shipped — verified against a synthetic fixture + a real Core; not yet revalidated against the real reference-dut repo itself | `embarch-api/design.md` §3 decision 12; `embarch-umbrella/milestone-6.md` §3.9 |
-| CLI subcommand interface (`build`/`flash`/`build-and-flash`/`reset`/`serial-log`/`list-projects` — kebab-case, unlike the snake_case MCP tools above) | embarch-api | Shipped | `embarch-api/design.md` §3.10, §5a |
-| Artifact freshness check (mtime before/after build) | embarch-api | Shipped | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
-| Per-project build concurrency lock | embarch-api | Shipped | `embarch-api/design.md` §6 |
-| PATH/toolchain preflight validation | embarch-api | Todo — now expected to land as `embarch-umbrella`'s `doctor` check, not in the build path | `embarch-api/design.md` §12, §11a; `embarch-umbrella/design.md` §5 |
-| Config hot-reload | embarch-api | Todo | `embarch-api/design.md` §12 |
-| `artifact_path_for_core` UNC-path pass-through (WSL2-same-PC artifact transfer) | embarch-api | Shipped, validated against real hardware | `embarch-api/design.md` §4, §9; not yet populated for `project-a-board` specifically — see §12 |
-| Artifact-transfer over a real network (Core on a genuinely separate machine, e.g. a future Pi) | embarch-api / embarch-core | Todo | `embarch-api/design.md` §9, §12; `embarch-core/design.md` §7, §10 |
-| Multi-probe selection (beyond "first probe found") | embarch-core | Todo | `embarch-core/design.md` §5, §10 |
-| ESP-IDF UART-bootloader flashing via `esptool` fallback | embarch-core | Todo | `embarch-core/design.md` §10 |
-| Per-caller identity (beyond one shared token) | embarch-core | Todo | `embarch-core/design.md` §6, §10 |
-| Auto-generated, machine-wide token file (replaces `dev-token-change-me` fallback) | embarch-core | Shipped, Windows hardware-unvalidated | `embarch-token.md` §2, §3.1, §5; `embarch-core/milestone-2.md` §3.5 |
-| `sc.exe` service `EMBARCH_TOKEN` passthrough fix | embarch-core | Shipped, Windows hardware-unvalidated | `embarch-token.md` §6; `embarch-core/milestone-2.md` §3.4/§3.5 |
-| Token-file discovery + WSL2⟷Windows path translation | embarch-api | Shipped — WSL2⟷Windows translation exercised for real; end-to-end re-check against a live Core-generated file not yet done | `embarch-token.md` §3.1; `embarch-api/milestone-2.md` §3.5 |
-| Stimulus/sensing hardware-in-the-loop rig | embarch-dev-bench | Proposed | See `embarch-roadmap.md` Next |
-| Shared `app/` firmware: COBS/postcard serial protocol, `Hello`/`HelloAck`, `LogLine`, stubbed study FFI | embarch-dev-bench | Shipped, `native_sim` only | `embarch-dev-bench/design.md` §2, §3 decisions 7/16/20 |
-| BLE bridge: advertise, connect (central/peripheral), GATT read/write/notify/indicate/subscribe/stream-capture | embarch-dev-bench | Shipped, compiles for nRF54L15DK — never run on a board | `embarch-dev-bench/design.md` §3 decision 16, §4 |
-| Shared `no_std` study data-types library (BLE interaction + power profiling) | embarch-study-designer | Shipped — not yet a Cargo dependency of `embarch-core`/`embarch-api` | `embarch-study-designer/design.md` §3, §4; `embarch-study-designer/milestone-3.md` |
-| `embarch-core` ↔ `embarch-dev-bench` serial bridge (new endpoints) | embarch-core | Proposed, design-only | `embarch-study-designer/design.md` §5 |
-| Study-running MCP tool + CLI subcommand | embarch-api | Proposed, design-only | `embarch-study-designer/design.md` §6 |
-| `embarch setup` — one-time per-machine setup with topology auto-detection | embarch-umbrella | Shipped — smoke-tested on WSL2 for all three classes; the Windows-side install command has never been run | `embarch-umbrella/design.md` §3 decisions 3/6/7, §8 |
-| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Shipped — verified against a repo shaped like the real one; run for real against the reference-dut repo | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
-| `embarch init`/`doctor` support for `discovery = "zephyr-west"` — scaffolds the minimal schema instead of guessing one board; `doctor` checks 7-9 branch on `discovery` | embarch-umbrella | Shipped — verified against a synthetic fixture + a real Core; not yet revalidated against the real reference-dut repo itself | `embarch-umbrella/design.md` §3 decision 17; `embarch-umbrella/milestone-6.md` §3.9 |
-| Topology auto-detection (ordered loopback → WSL2 gateway → explicit host, `401` counts as finding Core) | embarch-umbrella | Shipped — verified on WSL2 and against a mock, never against a real Core | `embarch-umbrella/design.md` §3 decisions 6/15; `embarch-umbrella/milestone-6.md` §3.2 |
-| `embarch status` — where Core is, `--json` | embarch-umbrella | Partial — reports reachability, address, and topology class; no probe list and no token check yet | `embarch-umbrella/design.md` §3 decision 11 |
-| `embarch doctor` — verify the whole chain, `--json` | embarch-umbrella | Shipped — all twelve checks plus `--json`; smoke-tested against a live Core and the real reference-dut repo's config | `embarch-umbrella/design.md` §5; `embarch-umbrella/milestone-6.md` §3.4 |
-| `embarch up` / `down` — fallback Core start/stop, including across the WSL2⟷Windows boundary | embarch-umbrella | Shipped — never started a real Core; the WSL2→Windows path prints the command rather than elevating | `embarch-umbrella/design.md` §3 decisions 4/7 |
-| Suite release archive (all three binaries, four targets) | embarch-umbrella | Shipped — real `v0.1.0` releases across all three repos, plus a real assembled `suite-v0.1.0` archive that `doctor` check 1 has validated a manifest against | `embarch-umbrella/design.md` §3 decision 14; `embarch-umbrella/milestone-6.md` §3.7 |
-| `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Shipped — verified against a mock and with Core down; never against a real Core | `embarch-api/design.md` §3.11, §4, §7 |
-| `start` / `stop` CLI subcommands | embarch-core | Shipped — smoke-tested on Linux, not on Windows/macOS | `embarch-core/design.md` §2, §3.3; `embarch-umbrella/milestone-6.md` §3.6 |
-| EmbArch UI — see whether Core is up and drive operations by hand, no agent involved | *(unnamed)* | Proposed | `embarch-umbrella/design.md` §10; see `embarch-roadmap.md` Later |
-| Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | See `embarch-roadmap.md` Next |
-| Agent-facing codebase structural analysis (successor to the old GUI's static analysis) | *(unnamed)* | Proposed | See `embarch-roadmap.md` Later |
+**Verification column** (added 2026-08-15, closing item 62 of that day's design-improvement review — `.claude/design-improvements-2026-08-15.md`, local working notes): replaces the "not yet hardware-revalidated"/"never against a real Core" qualifiers that used to live only in prose, scattered across almost every row's Status/Notes cell. One of: **unit** (mocked/synthetic tests only, no live process), **live-local** (a real running Core/repo/CI on this machine, but no physical debug probe or board involved), **real-hardware** (validated against an actual physical probe, board, or a genuine OS service install), or **n/a** (not shipped yet).
+
+| Feature | Sub-project | Status | Verification | Notes |
+|---|---|---|---|---|
+| `GET /status` — list connected debug probes | embarch-core | Shipped | real-hardware | `embarch-core/design.md` §4 |
+| `POST /flash` — flash a chip from a local firmware path | embarch-core | Shipped | real-hardware | `embarch-core/design.md` §4 |
+| `POST /reset` — reset a chip | embarch-core | Shipped | real-hardware | `embarch-core/design.md` §4 |
+| `GET /serial-log` — bounded-duration serial capture | embarch-core | Shipped | real-hardware | `embarch-core/design.md` §4 |
+| `GET /dev-bench/port` — dev-bench serial-port auto-detection (SEGGER VID + product/serial/interface match), plus the `detect-dev-bench` CLI subcommand | embarch-core | Shipped, no real dev-bench yet | unit | `embarch-core/design.md` §4, §5, §10; implements `embarch-dev-bench/design.md` §3 decision 12 |
+| `POST /resolve-chip` — Zephyr SoC name → probe-rs chip target string, validated against probe-rs's own target registry | embarch-core | Shipped | live-local | `embarch-core/design.md` §3 decision 8, §4; `embarch-api/design.md` §3 decision 12 |
+| Bearer-token auth on all endpoints | embarch-core | Shipped | real-hardware | `embarch-core/design.md` §6 |
+| `hw_lock` — serializes all hardware access | embarch-core | Shipped | unit | `embarch-core/design.md` §3.4 |
+| Cross-platform service install/control (`install`/`uninstall`/`start`/`stop`) | embarch-core | Shipped — all four need elevation on every OS, not just Windows | real-hardware (Windows, Linux); macOS untested | `embarch-core/design.md` §3.3 |
+| `list_projects` MCP tool | embarch-api | Shipped | live-local | `embarch-api/design.md` §5 |
+| `status` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `build` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `flash` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `build_and_flash` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `reset` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `serial_log` MCP tool | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §5 |
+| `list_targets` MCP tool + `list-targets` CLI subcommand — live target discovery for a `discovery = "zephyr-west"` project, or a `[[projects.targets]]` menu for a `static` one | embarch-api | Shipped | live-local | `embarch-api/design.md` §3 decision 12, §5, §5a; not yet revalidated against the real reference-dut repo itself |
+| `discovery = "zephyr-west"` — live, per-call `board`/`variant`/`revision`/`app` resolution (file-backing-validated against real overlay/defconfig files) on `build`/`flash`/`build_and_flash`/`reset`, instead of a static hand-maintained `[[projects]]` entry | embarch-api | Shipped | live-local | `embarch-api/design.md` §3 decision 12; `embarch-umbrella/milestone-6.md` §3.9; not yet revalidated against the real reference-dut repo itself |
+| CLI subcommand interface (`build`/`flash`/`build-and-flash`/`reset`/`serial-log`/`list-projects` — kebab-case, unlike the snake_case MCP tools above) | embarch-api | Shipped | real-hardware | `embarch-api/design.md` §3.10, §5a |
+| Artifact freshness check (mtime before/after build) | embarch-api | Shipped | unit | `embarch-api/design.md` §6; WSL2 wall-clock jitter fix applied 2026-07-22 (§12), not yet hardware-revalidated |
+| Per-project build concurrency lock | embarch-api | Shipped | unit | `embarch-api/design.md` §6 |
+| PATH/toolchain preflight validation | embarch-api | Todo — now expected to land as `embarch-umbrella`'s `doctor` check, not in the build path | n/a | `embarch-api/design.md` §12, §11a; `embarch-umbrella/design.md` §5 |
+| Config hot-reload | embarch-api | Todo | n/a | `embarch-api/design.md` §12 |
+| `artifact_path_for_core` UNC-path pass-through (WSL2-same-PC artifact transfer) | embarch-api | Shipped, validated against real hardware | real-hardware | `embarch-api/design.md` §4, §9; not yet populated for `project-a-board` specifically — see §12 |
+| Artifact-transfer over a real network (Core on a genuinely separate machine, e.g. a future Pi) | embarch-api / embarch-core | Todo — design resolved 2026-08-15 (multipart upload), not yet implemented | n/a | `embarch-api/design.md` §3 decision 15; `embarch-core/design.md` §3 decision 10 |
+| Multi-probe selection (beyond "first probe found") | embarch-core | Todo — design resolved 2026-08-15 (`probe_serial` selector), not yet implemented | n/a | `embarch-core/design.md` §3 decision 9, §5, §10 |
+| ESP-IDF UART-bootloader flashing via `esptool` fallback | embarch-core | Todo — explicitly out of v1 scope as of 2026-08-15, no real ESP-IDF project driving it | n/a | `embarch-core/design.md` §10 |
+| Per-caller identity (beyond one shared token) | embarch-core | Todo | n/a | `embarch-core/design.md` §6, §10 |
+| Auto-generated, machine-wide token file (replaces `dev-token-change-me` fallback) | embarch-core | Shipped, Windows hardware-unvalidated | unit | `embarch-token.md` §2, §3.1, §5; `embarch-core/milestone-2.md` §3.5 |
+| `sc.exe` service `EMBARCH_TOKEN` passthrough fix | embarch-core | Shipped, Windows hardware-unvalidated | unit | `embarch-token.md` §6; `embarch-core/milestone-2.md` §3.4/§3.5 |
+| Token-file discovery + WSL2⟷Windows path translation | embarch-api | Shipped — WSL2⟷Windows translation exercised for real; end-to-end re-check against a live Core-generated file not yet done | live-local | `embarch-token.md` §3.1; `embarch-api/milestone-2.md` §3.5 |
+| Stimulus/sensing hardware-in-the-loop rig | embarch-dev-bench | Proposed | n/a | See `embarch-roadmap.md` Next |
+| Shared `app/` firmware: COBS/postcard serial protocol, `Hello`/`HelloAck`, `LogLine`, stubbed study FFI | embarch-dev-bench | Shipped, `native_sim` only | live-local | `embarch-dev-bench/design.md` §2, §3 decisions 7/16/20 |
+| BLE bridge: advertise, connect (central/peripheral), GATT read/write/notify/indicate/subscribe/stream-capture | embarch-dev-bench | Shipped, compiles for nRF54L15DK — never run on a board | live-local | `embarch-dev-bench/design.md` §3 decision 16, §4 |
+| Shared `no_std` study data-types library (BLE interaction + power profiling) | embarch-study-designer | Shipped — not yet a Cargo dependency of `embarch-core`/`embarch-api` | unit | `embarch-study-designer/design.md` §3, §4; `embarch-study-designer/milestone-3.md` |
+| `embarch-core` ↔ `embarch-dev-bench` serial bridge (new endpoints) | embarch-core | Proposed, design-only | n/a | `embarch-study-designer/design.md` §5 |
+| Study-running MCP tool + CLI subcommand | embarch-api | Proposed, design-only | n/a | `embarch-study-designer/design.md` §6 |
+| `embarch setup` — one-time per-machine setup with topology auto-detection | embarch-umbrella | Shipped — smoke-tested on WSL2 for all three classes; the Windows-side install command has never been run | live-local | `embarch-umbrella/design.md` §3 decisions 3/6/7, §8 |
+| `embarch init` — scaffold a firmware repo's `embarch/` config + local MCP registration, touching nothing tracked | embarch-umbrella | Shipped — verified against a repo shaped like the real one; run for real against the reference-dut repo | live-local | `embarch-umbrella/design.md` §3 decisions 10/12/13, §7 |
+| `embarch init`/`doctor` support for `discovery = "zephyr-west"` — scaffolds the minimal schema instead of guessing one board; `doctor` checks 7-9 branch on `discovery` | embarch-umbrella | Shipped | live-local | `embarch-umbrella/design.md` §3 decision 17; `embarch-umbrella/milestone-6.md` §3.9; not yet revalidated against the real reference-dut repo itself |
+| Topology auto-detection (ordered loopback → WSL2 gateway → explicit host, `401` counts as finding Core) | embarch-umbrella | Shipped — verified on WSL2 and against a mock, never against a real Core | live-local | `embarch-umbrella/design.md` §3 decisions 6/15; `embarch-umbrella/milestone-6.md` §3.2 |
+| `embarch status` — where Core is, `--json` | embarch-umbrella | Partial — reports reachability, address, and topology class; no probe list and no token check yet | live-local | `embarch-umbrella/design.md` §3 decision 11 |
+| `embarch doctor` — verify the whole chain, `--json` | embarch-umbrella | Shipped — all twelve checks plus `--json`; smoke-tested against a live Core and the real reference-dut repo's config | live-local | `embarch-umbrella/design.md` §5; `embarch-umbrella/milestone-6.md` §3.4 |
+| `embarch up` / `down` — fallback Core start/stop, including across the WSL2⟷Windows boundary | embarch-umbrella | Shipped — never started a real Core; the WSL2→Windows path prints the command rather than elevating | live-local | `embarch-umbrella/design.md` §3 decisions 4/7 |
+| Suite release archive (all three binaries, four targets) | embarch-umbrella | Shipped — real `v0.1.0` releases across all three repos, plus a real assembled `suite-v0.1.0` archive that `doctor` check 1 has validated a manifest against | live-local | `embarch-umbrella/design.md` §3 decision 14; `embarch-umbrella/milestone-6.md` §3.7 |
+| `base_url = "auto"` — Core address resolved per-process at first use, retiring the stale WSL2 gateway IP | embarch-api | Shipped — verified against a mock and with Core down; never against a real Core | live-local | `embarch-api/design.md` §3.11, §4, §7 |
+| `start` / `stop` CLI subcommands | embarch-core | Shipped — smoke-tested on Linux, not on Windows/macOS | real-hardware (Linux); Windows/macOS untested | `embarch-core/design.md` §2, §3.3; `embarch-umbrella/milestone-6.md` §3.6 |
+| EmbArch UI — see whether Core is up and drive operations by hand, no agent involved | *(unnamed)* | Proposed | n/a | `embarch-umbrella/design.md` §10; see `embarch-roadmap.md` Later |
+| Curated firmware-specific skills/prompt library | embarch-promptu | Proposed | n/a | See `embarch-roadmap.md` Next; first concrete content identified 2026-08-15, `embarch-promptu/design.md` §2 |
+| Agent-facing codebase structural analysis (successor to the old GUI's static analysis) | *(unnamed)* | Proposed | n/a | See `embarch-roadmap.md` Later |
 
 ## Changelog
 
 *Older entries archived to [embarch-features.changelog-archive.md](embarch-features.changelog-archive.md).*
 
+- 2026-08-15 — Added a **Verification** column (unit / live-local / real-hardware / n/a), closing item 62 of that day's design-improvement review: this was the most repeated caveat in the whole table, previously hand-rolled in prose on nearly every row ("never against a real Core," "not yet hardware-revalidated," "compiles... never run on a board"). Also noted, in three Notes cells, where a design has been resolved since the same review (artifact-transfer over a real network, multi-probe selection, ESP-IDF scope) without yet being implemented in code — Status stays `Todo` until it is.
 - 2026-08-14 — Added four new Shipped rows for Zephyr/west live target discovery, implemented across all three repos same day: `embarch-core`'s `POST /resolve-chip`, `embarch-api`'s `list_targets` tool/subcommand and `discovery = "zephyr-west"` itself, and `embarch-umbrella`'s matching `init`/`doctor` support. Also updated the `embarch init` row's caveat — it's now been run for real against the reference-dut repo, not just a repo shaped like it.
 - 2026-08-11 — Corrected status drift: the `embarch doctor` and suite-release-archive rows were still marked `Proposed, design-only` even though `embarch-umbrella/milestone-6.md` §3.4 (doctor, done 2026-08-10) and §3.7 (release CI, done 2026-08-11, all three repos released clean) had both closed — violated `DOC-PROTOCOL.md` §5's "sub-project doc and suite-level docs should never disagree about status" rule. Flipped both to Shipped with links to the specific milestone section rather than restating its detail here.
 - 2026-08-05 — `embarch init` flipped to Shipped. `doctor` is now the only unimplemented command.

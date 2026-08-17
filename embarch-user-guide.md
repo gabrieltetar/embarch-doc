@@ -2,7 +2,7 @@
 
 **Status:** draft, 2026-08-05. For a firmware engineer who has never used EmbArch.
 
-> **Read this first.** Chapters 3–8 describe the `embarch` setup tool, which is **designed but not yet built** — it's [Milestone 6](embarch-roadmap.md#6---onboarding). This guide is written ahead of it on purpose: it's the specification that milestone has to satisfy, and it doubles as the script for walking a real machine through setup. **[Appendix A](#appendix-a--the-manual-path-that-works-today) is what actually works today**, by hand. If you're setting up a machine right now, read chapters 1–2, then jump to Appendix A.
+> **Read this first.** Chapters 3–9 describe the real `embarch` setup tool — it shipped as part of `v0.1.0` ([embarch-roadmap.md](embarch-roadmap.md)'s Shipped foundation, Onboarding). This guide was originally written ahead of that tool as its specification; it now describes the real, released binaries. If you're setting up a machine right now, this is the path to follow. [Appendix A](#appendix-a--the-manual-path-that-works-today) is kept only as the pre-release manual procedure, for reference or if you hit something `setup`/`init` genuinely can't do yet (§8's "separate-box Core" row).
 
 ---
 
@@ -119,6 +119,8 @@ Three things worth knowing about what just happened:
 
 ### 5.1 Finish the config
 
+**If your repo has one board, skip to here.** If `init` detected a Zephyr/west project with `boards/*/*.yml` and picked `discovery = "zephyr-west"` instead — you'll see that field in the generated `embarch.toml`, and no `chip`/`build_command`/`artifact_path` fields at all — read [§5.2](#52-multi-board--zephyrwest-repos) instead; this section's placeholder-filling steps don't apply to that schema.
+
 `init` derives what it safely can and leaves the rest as placeholders. Open `embarch/embarch.toml`:
 
 ```toml
@@ -154,6 +156,55 @@ build_command = ["bash", "-lc", "source .venv/bin/activate && west build ..."]
 And if `west` isn't on your `PATH` (common when it lives in a workspace venv), give the absolute path to it rather than fighting your environment.
 
 > **The one trap worth knowing about.** `west`'s build directory is relative to *the directory west runs in*, not to the app path you pass it. If your real invocation is `west build -b <board> app/firmware` run from the repo root, then the output lands in `<repo-root>/build`, **not** `<repo-root>/app/firmware/build`. Get this wrong and EmbArch reports a "fresh" artifact that's actually a stale leftover — the worst possible failure during hardware bring-up. `init` reads your repo's `build/build_info.yml` (which west writes, recording the exact command it ran) to get this right automatically when you've built at least once. If you're editing by hand, check that file rather than assuming. Passing `--build-dir` explicitly, as `init` does, sidesteps the question entirely.
+
+Then re-check:
+
+```sh
+embarch doctor
+```
+
+### 5.2 Multi-board / Zephyr-west repos
+
+Some real firmware repos don't have one board — they have several real boards, each with several variants, some of which only have real hardware-revision overlays for *some* revisions, not every one their `board.yml` declares. A hand-written, single `chip`/`board` config can't represent that safely: it either picks one board and hides the rest, or risks silently building against a revision that has no real overlay and falls back to un-revisioned base files without telling you. `discovery = "zephyr-west"` exists for exactly this shape.
+
+`init` picks this schema automatically when your repo looks like a Zephyr/west project — you don't ask for it. The config it writes is deliberately smaller than §5.1's:
+
+```toml
+[[projects]]
+name = "my-firmware"
+source_path = "/home/me/src/my-firmware"
+discovery = "zephyr-west"
+west_binary = "/path/to/.venv/bin/west"   # or bare "west" on PATH, with a warning if init had to guess
+build_dir_root = "embarch/build"
+flash_format = "hex"
+build_timeout_secs = 900
+```
+
+No `chip`, `build_command`, or `artifact_path` — there's nowhere safe to write those down once a repo has more than one real board. Instead, every board/variant/revision/app combination is scanned live, off `boards/`/`app/` on disk, on every call — never cached, so it can't go stale the way a hand-maintained entry would.
+
+**See what's actually there:**
+
+```sh
+embarch-api list-targets my-firmware
+```
+
+Prints every combination that's file-backing-validated right now — not just what `board.yml` *declares*, but what actually has the files a build needs. This is the step that would have caught, for example, a revision overlay that only exists for one variant out of four.
+
+**Pick one.** `build`/`flash`/`build-and-flash`/`reset` all take the same four optional selection flags:
+
+```sh
+embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --revision evt1
+```
+
+- Give enough of `--board`/`--variant`/`--revision`/`--app` to narrow the live-scanned set to **exactly one** match, and the call proceeds.
+- Give a combination that still matches **more than one** — the call errors instead of guessing, and the error lists the narrowed remainder so you can see what's left to disambiguate.
+- Give **none of the four** and it lists everything `list-targets` would, rather than guessing a default — unless the project sets `default_target` (§4 of `embarch-api/design.md`), in which case that's the fallback, still overridable per-field on any individual call.
+- `--snippet <name>` and `--extra-arg <flag>` (both repeatable) layer on top of a resolved target — additive, not narrowing. Omit them to fall back to the project's `default_snippets`/`default_extra_args`; pass `--snippet none` on its own to force zero snippets regardless of the default.
+- `flash --firmware-path <path>` still needs enough of the four selection flags to resolve a **chip** — the override only bypasses picking *which build*, not chip resolution, since a `zephyr-west` project has no stored chip to fall back to either.
+
+**No interactive picker exists.** `list-targets` shows you the options; you re-run the command with more flags. There's nothing to click or number-select.
+
+`embarch doctor` check 8 for this schema is `list-targets`'s own count being nonzero — if it's failing, its fix output is the same listing `list-targets` would print, not a separate scan.
 
 Then re-check:
 
@@ -322,9 +373,9 @@ Platform notes that will cost you time otherwise:
 
 ---
 
-## Appendix A — the manual path that works today
+## Appendix A — the pre-release manual path
 
-Until [Milestone 6](embarch-roadmap.md#6---onboarding) ships, there is no release archive and no `embarch` binary. This is the real procedure, for the Windows-Core + WSL2-API topology. Every step here is a step `embarch setup`/`init` is meant to absorb; whatever's still in this appendix when that milestone closes is what genuinely couldn't be automated.
+Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `embarch` binary exist now, and chapters 3–9 are the real, current procedure. This appendix is what the manual procedure looked like before that, for the Windows-Core + WSL2-API topology, kept for reference rather than deleted outright. Everything in it is now absorbed by `embarch setup`/`init`, except the one gap that's still genuinely manual: a separate-box Core has no shared filesystem for token discovery, so §9's "copy the token by hand" step still applies there.
 
 1. **Clone the repos** as siblings under one `embarch/` parent (§11's layout), plus `embarch-doc`.
 
@@ -369,4 +420,6 @@ Until [Milestone 6](embarch-roadmap.md#6---onboarding) ships, there is no releas
 
 ## Changelog
 
+- 2026-08-17 — Fixed a real staleness gap: the opening callout and Appendix A's intro still said the `embarch` setup tool was "designed but not yet built" and told readers to use the manual path — false since Milestone 6 (Onboarding) shipped real `v0.1.0` release binaries (`embarch-roadmap.md`'s Shipped foundation). Both now point at chapters 3–9 as the real, current procedure; Appendix A is relabeled as historical/reference. `embarch.md` §3's `embarch-umbrella` row (`In progress`) was disagreeing with this same fact and is corrected to `Shipped` in the same pass. Found while scoping Milestone 1 execution — the user's stated plan was to follow this guide directly, which would have hit this immediately.
+- 2026-08-17 — Added §5.2 (Multi-board / Zephyr-west repos): the guide had never been updated for `discovery = "zephyr-west"` (`embarch-api/design.md` §3 decision 12, shipped 2026-08-14) even though it's exactly the shape the real `reference-dut-fw` repo turned out to have (`embarch-umbrella/milestone-6.md`'s 2026-08-13 finding — four real boards, revision overlays only at `evt1`). Following old §5.1 literally on a repo like that would walk into the same "wrong board picked" trap Milestone 6 already hit. §5.1 now points here when `init` writes the smaller `zephyr-west` schema instead of the static one. Found while scoping [embarch-roadmap.md](embarch-roadmap.md)'s Milestone 1 execution ([embarch-api/milestone-7.md](embarch-api/milestone-7.md)).
 - 2026-08-05 — Replaced the placeholder with the real getting-started guide, written for a firmware engineer new to EmbArch and written *ahead of* the `embarch` setup tool it describes, so it serves as [Milestone 6](embarch-roadmap.md#6---onboarding)'s specification and acceptance criteria ([embarch-umbrella/design.md](embarch-umbrella/design.md) §11). Appendix A carries the manual procedure that actually works today and is expected to shrink as that milestone lands. Both of `embarch-api`'s front-ends are presented as peers (§1, §6, §7) rather than treating the CLI as secondary to the agent path. Dev bench and studies are included per request but clearly marked unusable (§10).
