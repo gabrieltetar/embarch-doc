@@ -59,7 +59,13 @@ Download **one archive** for your platform from [embarch-umbrella releases](http
 Unpack it, then run setup from the unpacked directory:
 
 ```sh
-./embarch setup
+./embarch setup          # Linux, macOS
+```
+```bat
+embarch setup            :: Windows, cmd.exe — no ./ prefix, cmd.exe doesn't understand it
+```
+```powershell
+.\embarch setup           # Windows, PowerShell
 ```
 
 Run this from an elevated shell — Administrator on Windows, `sudo` on Linux/macOS. Installing a system service requires it on every OS, and this is the only step that ever does.
@@ -420,6 +426,7 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 
 ## Changelog
 
+- 2026-08-17 — §3's install step gave one Unix-shell command (`./embarch setup`) for every platform; on Windows `cmd.exe` this fails outright (`'.' is not recognized...`) since `cmd.exe` doesn't understand `./`. Split into three explicit per-shell command blocks (`cmd.exe`, PowerShell, Linux/macOS). Found live — first real Windows user to reach this step hit it immediately.
 - 2026-08-17 — Fixed a real staleness gap: the opening callout and Appendix A's intro still said the `embarch` setup tool was "designed but not yet built" and told readers to use the manual path — false since Milestone 6 (Onboarding) shipped real `v0.1.0` release binaries (`embarch-roadmap.md`'s Shipped foundation). Both now point at chapters 3–9 as the real, current procedure; Appendix A is relabeled as historical/reference. `embarch.md` §3's `embarch-umbrella` row (`In progress`) was disagreeing with this same fact and is corrected to `Shipped` in the same pass. Found while scoping Milestone 1 execution — the user's stated plan was to follow this guide directly, which would have hit this immediately.
 - 2026-08-17 — Added §5.2 (Multi-board / Zephyr-west repos): the guide had never been updated for `discovery = "zephyr-west"` (`embarch-api/design.md` §3 decision 12, shipped 2026-08-14) even though it's exactly the shape the real `reference-dut-fw` repo turned out to have (`embarch-umbrella/milestone-6.md`'s 2026-08-13 finding — four real boards, revision overlays only at `evt1`). Following old §5.1 literally on a repo like that would walk into the same "wrong board picked" trap Milestone 6 already hit. §5.1 now points here when `init` writes the smaller `zephyr-west` schema instead of the static one. Found while scoping [embarch-roadmap.md](embarch-roadmap.md)'s Milestone 1 execution ([embarch-api/milestone-7.md](embarch-api/milestone-7.md)).
 - 2026-08-05 — Replaced the placeholder with the real getting-started guide, written for a firmware engineer new to EmbArch and written *ahead of* the `embarch` setup tool it describes, so it serves as [Milestone 6](embarch-roadmap.md#6---onboarding)'s specification and acceptance criteria ([embarch-umbrella/design.md](embarch-umbrella/design.md) §11). Appendix A carries the manual procedure that actually works today and is expected to shrink as that milestone lands. Both of `embarch-api`'s front-ends are presented as peers (§1, §6, §7) rather than treating the CLI as secondary to the agent path. Dev bench and studies are included per request but clearly marked unusable (§10).
