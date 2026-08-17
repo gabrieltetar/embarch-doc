@@ -373,13 +373,15 @@ embarch/
 └── embarch-doc/               these docs
 ```
 
-Build any of the Rust ones the obvious way:
+Build any of the Rust ones the obvious way — a plain `cargo build` (no `--release`) is enough for day-to-day iteration; reach for `--release` only when actually producing something you'll run day-to-day or ship, not for every edit-compile-test cycle:
 
 ```sh
-cargo build --release
+cargo build
 cargo clippy --all-targets -- -D warnings      # expected clean before you commit
 cargo test
 ```
+
+**Iterating across repos — wiring a dev `embarch-core`/`embarch-api`/`embarch-umbrella` together, or safely testing an `embarch-umbrella` change without it overwriting your real install** — is its own doc: [embarch-dev-workflow.md](embarch-dev-workflow.md).
 
 Platform notes that will cost you time otherwise:
 - **Building on Windows natively needs Visual Studio Build Tools' "Desktop development with C++" workload** — a `rustup`-installed toolchain alone has no linker for the MSVC target.
@@ -445,6 +447,7 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 
 ## Changelog
 
+- 2026-08-17 — §11: `cargo build --release` changed to plain `cargo build` for day-to-day iteration (release mode is for actually shipping something, not every edit-compile-test cycle), and added a pointer to the new [embarch-dev-workflow.md](embarch-dev-workflow.md) — §11 told you to build each repo independently but never said how to wire a dev `embarch-api` to a dev `embarch-core`, or how to test an `embarch-umbrella` change without it overwriting a real install.
 - 2026-08-17 — §3.1 updated for decision 28 (`embarch-umbrella/design.md` §3): the manual PATH-hint-translation workaround is now marked as a stopgap for releases predating that fix, with the real (source-implemented, not yet released) behavior — `setup` copies binaries to a canonical location and edits PATH for real — described as what a future release will do automatically.
 - 2026-08-17 — Real Windows+WSL2 onboarding attempt surfaced three more real gaps in §3: (1) "download one archive" didn't say a WSL2 setup needs *two* — the Windows archive on Windows, a separate Linux archive unpacked inside WSL2 itself — leading directly to `embarch: command not found` when the Windows `.exe`s were tried from WSL2 via `/mnt/c`; (2) nothing explained that `Topology: local` from the correct first (Windows) leg is expected, not the already-documented wrong-order trap — indistinguishable from it without this note; (3) §3 claimed `setup` "puts `embarch-core` and `embarch-api` on your PATH," contradicted by `setup`'s own real output ("setup does not edit it for you") — corrected, and new §3.1 documents the printed hint plus the fact that it's POSIX-only even on native Windows `cmd.exe` (a real code gap, tracked in `embarch-umbrella/design.md` §10, not just a doc fix).
 - 2026-08-17 — §3's install step gave one Unix-shell command (`./embarch setup`) for every platform; on Windows `cmd.exe` this fails outright (`'.' is not recognized...`) since `cmd.exe` doesn't understand `./`. Split into three explicit per-shell command blocks (`cmd.exe`, PowerShell, Linux/macOS). Found live — first real Windows user to reach this step hit it immediately.
