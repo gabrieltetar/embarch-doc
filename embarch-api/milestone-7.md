@@ -16,7 +16,7 @@ Two things this milestone proves for the first time, for *any* project, not just
 - **Target selection: not hardcoded here.** Per `discovery = "zephyr-west"` (decision 12), embarch-api never stores a static board/variant/revision for this project — §3.3 below runs `list_targets` live and picks from whatever it actually reports as file-backed, the same way a real user would. This plan deliberately does not pre-name a board/variant/revision; doing so would just be re-introducing the static-config assumption decision 12 exists to avoid, and the 2026-08-13 finding already showed that assumption breaks against this exact repo.
 - **`embarch init`'s multi-`build_info.yml` ambiguity** (flagged in Milestone 6 — reference-dut has at least two, `roadrunner` production vs. `dut_dev` ad hoc dev): resolve manually for this run if `init` picks the wrong one; the general disambiguation mechanism stays a separate open question (§5), not something this milestone needs to solve generically.
 - **Both flashing paths in scope:** (a) direct CLI (`embarch-api build_and_flash ...`), and (b) Claude Code driving the same operation over MCP. Both need config-only `build_and_flash` to succeed against physical hardware.
-- **Standing instruction — never flash autonomously.** Every step through chip resolution (§3.1–3.5) can run unattended. The actual `build`/`flash`/`build_and_flash` calls (§3.6–3.9), CLI or MCP, each need your explicit go-ahead in the moment before they run — this plan being pre-approved doesn't substitute for that.
+- ~~Standing instruction — never flash autonomously.~~ **Removed 2026-08-17**: build/flash autonomy is now the default, any project, no go-ahead needed per step — §3.6–3.9 can run straight through like §3.1–3.5.
 - Out of scope: `embarch-dev-bench` (Milestone 2, separate board, separate transport), power sampling (Milestone 4), the west-runner wrapper (Milestone 1 §3.6 territory, not reopened here), config hot-reload, PATH/toolchain preflight validation.
 
 ## 3. Steps
@@ -59,15 +59,15 @@ Run `embarch-api build <project> <selected target>` with no path overrides. Conf
 
 ### 3.7 `flash` — config-only, no `--firmware-path` override, real hardware
 
-The first time this exact path (config-derived `firmware_path`/`artifact_path_for_core`, no manual override) has been proven against physical hardware for any project. **Ask before running this step** — it drives a real flash.
+The first time this exact path (config-derived `firmware_path`/`artifact_path_for_core`, no manual override) has been proven against physical hardware for any project.
 
 ### 3.8 `build_and_flash` — config-only, end-to-end, real hardware
 
-This milestone's centerpiece DoD item: one call, no overrides, real build feeding a real flash against physical reference-dut hardware. **Ask before running this step.**
+This milestone's centerpiece DoD item: one call, no overrides, real build feeding a real flash against physical reference-dut hardware.
 
 ### 3.9 Repeat `build_and_flash` via MCP
 
-Same operation as §3.8, but invoked by Claude Code over MCP instead of directly via CLI — the first MCP-triggered physical flash for any project in this suite. **Ask before running this step, same as §3.7/§3.8** — MCP-callable doesn't change the standing "never flash autonomously" gate; it just changes who's dialing the phone.
+Same operation as §3.8, but invoked by Claude Code over MCP instead of directly via CLI — the first MCP-triggered physical flash for any project in this suite.
 
 ### 3.10 `reset` / `serial_log` against the real board
 
@@ -90,8 +90,8 @@ Round out the operation surface against real reference-dut hardware — confirm 
 - **Whether reference-dut's real workspace toolchain matches `project-a-board`'s venv pattern** is unconfirmed until §3.1 actually runs.
 - **Whether `list_targets`'s live output matches Milestone 6's manual 2026-08-13 finding** is unconfirmed until §3.4 actually runs against the real tree through this exact code path (that finding was investigated by hand, not through `list_targets` itself).
 - **`build_cwd`/`artifact_path`/`artifact_path_for_core` for the real reference-dut workspace** are unconfirmed — Milestone 1 found `project-a-board`'s assumed value wrong only by attempting a real build; the same could happen here (§3.2/§3.6).
-- Each physical `flash`/`build_and_flash` call (§3.7–3.9) needs your explicit go-ahead at the time, per the standing "never flash autonomously" instruction — this plan being written down isn't that go-ahead.
 
 ## 6. Changelog
 
+- 2026-08-17 — Removed the "ask before running this step" gates on §3.7–3.9 and §2/§5's standing-instruction notes: the user removed the never-flash-autonomously rule globally (any project, build and flash both). §3.6–3.9 now run the same way §3.1–3.5 always could.
 - 2026-08-17 — Initial draft, scoping embarch-api's half of Milestone 1 (Flash & Build, real hardware). Deliberately does not pre-select a board/variant/revision — §3.4 runs `list_targets` live against the real repo and picks from its actual output, per `discovery = "zephyr-west"` (decision 12) and the user's explicit correction that hardcoding a target here would just reintroduce the assumption decision 12 exists to avoid.
