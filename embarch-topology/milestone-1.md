@@ -79,17 +79,25 @@ the non-blocking §5 items (§2 item 6).
      live-read `hardware_id`, by design); the two remaining routes — writing `enrollment.toml`
      directly, or physically swapping a probe without re-enrolling — were respectively blocked
      (a Claude Code permission classifier correctly denied the direct file write to a live
-     production file) and declined by the user this session ("skip this sub-check"). Also still
-     unconfirmed: the nRF54L15 `FICR.INFO.DEVICEID` address
-     (`embarch_topology::hardware::hardware_id`, `0xFFC304`/`0xFFC308`) — sourced from a DevZone
-     report, never independently verified against this suite's own DUT (carried over unchanged
-     from `embarch-core/design.md`'s prior open item on this exact address) — though the
-     successful `enroll`/reset/flash/study cycle above is indirect evidence it's at least
-     reading *something* consistent for this chip.
-5. **Confirm `cross`'s Docker-based aarch64 release leg can actually see sibling path
-   dependencies outside the crate root** — flagged as unverified in `embarch-core`'s (and now
-   `embarch-api`'s/`embarch-umbrella`'s) `release.yml` comments; needs a real tagged release run
-   to know either way.
+     production file) and declined by the user this session ("skip this sub-check"). Closed
+     2026-08-24 by design decision, not a documentation deep-dive: the nRF54L15
+     `FICR.INFO.DEVICEID` address (`embarch_topology::hardware::hardware_id`,
+     `0xFFC304`/`0xFFC308`) is still sourced from a DevZone report, not Nordic's own Product
+     Specification — a rigorous datasheet cross-check was considered and deliberately not
+     pursued, not worth the depth. Accepted instead on this session's real, repeated,
+     successful use against the real DUT: `enroll`/`reset`/`build_and_flash`/`run_study` all
+     read a stable, plausible value at this address across multiple calls. Revisit only if a
+     real symptom (e.g. a `hardware_id` collision) ever points back at it.
+5. **`cross`'s Docker-based aarch64 release leg seeing sibling path dependencies — theoretical
+   doubt resolved 2026-08-24 by research, real-run confirmation still open.** No Docker was
+   available in this dev sandbox to run `cross` for real, so this was checked against
+   `cross-rs/cross`'s own history instead: [PR #684](https://github.com/cross-rs/cross/pull/684)
+   (merged, shipped `v0.2.2`+, well below what `taiki-e/install-action@v2` installs today)
+   auto-mounts any path dependency `cargo metadata` can see, no formal `[workspace]` required —
+   exactly `embarch-core`'s plain `path = "../embarch-topology"` shape. `embarch-core`'s
+   `release.yml` comment updated with the citation (`embarch-api`/`embarch-umbrella` don't hit
+   this at all — they only need a plain aarch64 cross-linker, not `cross`'s Docker build). What's
+   left is mechanical: an actual tagged-release CI run to confirm it for real.
 6. **Everything `design.md` §5 still lists as open** — not blocking, but worth another pass once
    the above is live: web UI content/UX, an MCP tool surface for `validate`/alerts (and the
    caller-opens-the-UI question that depends on one existing), wiring
