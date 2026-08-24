@@ -18,13 +18,13 @@ Decisions 34/35 are design-only as of the pass that produced them — no code ex
 
 ## 3. Steps
 
-### 3.1 Registry schema and parser
+### 3.1 Registry schema and parser — done, 2026-08-24
 
-New `src/registry.rs` (or a `registry` module, `study-ui`-feature-gated, `std`-only — file I/O, no reason to force it into the `no_std` core): a `RegisteredAction` type — `name: String`, `uuid` (reusing `Uuid` from `ids.rs`), `operation` (reusing `GattOperation`'s shape where it fits — `Read`/`Write`/`Subscribe`/`Notify`/`Indicate`, decision 35 doesn't need `StreamCapture` here), and for a `Write`, a list of named fields, each with `{ name, byte_offset, byte_len, values: [{ label, value }] }`. Load/save `<firmware-repo>/embarch/study-actions.toml`; a missing file is an empty registry, not an error (matches `embarch.toml`'s own "written by `init`, hand-editable" posture — this file just doesn't have an `init`-equivalent yet, §5).
+New `src/registry.rs`, `study-ui`-feature-gated, `std`-only: `RegisteredAction { name, uuid, operation: RegisteredOperation, fields: Vec<ActionField> }` (`RegisteredOperation` is `Read`/`Write`/`Subscribe`/`Notify`/`Indicate` — a subset of `GattOperation`, not the type itself, since a registry entry has no per-call timeout). `ActionField { name, byte_offset, byte_len, values: Vec<ActionFieldValue> }`; `ActionFieldValue { label, bytes: Vec<u8> }` — **the exact literal bytes for that choice, engineer-supplied, not a numeric value this module would have to encode itself.** Deliberately not `value: u64`/similar as originally sketched here: encoding a number into bytes requires assuming a width and endianness, which is precisely the kind of DUT-protocol fact nobody writing this module is in a position to know — the engineer supplies the final bytes directly, and building a payload from a chosen value is a pure byte-offset splice, no interpretation. `ActionRegistry::validate()` checks every value's `bytes.len()` against its field's own `byte_len`, named as `RegistryError::FieldLengthMismatch` rather than silently truncating/padding a hand-edited file's mistake. `load`/`save` at `<firmware-repo>/embarch/study-actions.toml`; a missing file loads as an empty registry, not an error (§5's own "no `init`-equivalent yet" note). 8 unit tests (round-trip through TOML, save-then-load on disk, a missing file, a validation failure both in-memory and loaded from disk).
 
-### 3.2 Merged action-list function
+### 3.2 Merged action-list function — done, 2026-08-24
 
-A pure function (easy to unit-test without a UI or hardware): given this crate's built-in `Action` variants, an optional live `GattDiscover` result (`Vec<GattServiceInfo>`), an optional static `GattConfigExtractor` result, and a loaded registry, produce one deduplicated list of "things a Study-builder row can pick" — built-ins always present; discovered/extracted characteristics shown as raw UUID+properties for the engineer to register an action against (§3.4) if they want one; already-registered actions shown by name with their enumerated values ready to pick.
+New `src/merged_actions.rs`, `study-ui`-feature-gated, `std`-only: `merge_actions(live: Option<&[GattServiceInfo]>, static_extraction: Option<&[GattServiceInfo]>, registry: &ActionRegistry) -> Vec<MergedAction>`, pure and offline. `MergedAction` is `BuiltIn` (the three one-click actions this list always offers — `BleConnect`/`GattDiscover`/`GattMonitorAll`; `DataExchange` is deliberately not one, since authoring it directly means already knowing a raw UUID+payload, exactly what this feature exists to avoid), `Registered` (a characteristic with at least one engineer-registered action, shown by name), or `Unregistered { uuid, properties, sources }` (detected by live discovery and/or static extraction, not yet named — `DiscoverySources` records which). A registered characteristic is deduplicated against its own detection — it shows once, as `Registered`, never also as `Unregistered`. Order is deterministic (built-ins, then registry order, then first-seen detection order) so identical inputs always render identically. 5 unit tests, including a registered action persisting in the list with no matching discovery at all (the registry is the source of truth once an action is named, not contingent on this particular run finding it again).
 
 ### 3.3 Web UI skeleton: the Study table
 
@@ -52,8 +52,8 @@ Once §3.1–3.7 are code-complete and unit-tested: the user (or a firmware engi
 
 ## 4. Definition of done
 
-- [ ] Registry schema/parser implemented and round-trip tested (§3.1).
-- [ ] Merged action-list function implemented and unit-tested across every source-presence combination (§3.2).
+- [x] Registry schema/parser implemented and round-trip tested (§3.1).
+- [x] Merged action-list function implemented and unit-tested across every source-presence combination (§3.2).
 - [ ] Study-builder table UI: add/remove/reorder rows, every field editable, produces a schema-valid `Study` (§3.3).
 - [ ] Registry management UI: register a custom action with named enumerated values, no semantic-description field anywhere (§3.4).
 - [ ] Run-and-watch: submits via `embarch-api`'s existing CLI, polls, renders live per-step outcomes (§3.5).
@@ -71,4 +71,5 @@ Once §3.1–3.7 are code-complete and unit-tested: the user (or a firmware engi
 
 ## 6. Changelog
 
+- 2026-08-24 — **§3.1/§3.2 executed: the registry and the merged-action-list function, both `std`-only behind a new `study-ui` feature.** `RegisteredAction`/`ActionField`/`ActionFieldValue` (`src/registry.rs`) and `merge_actions`/`MergedAction` (`src/merged_actions.rs`), 13 new unit tests. One real correction to this doc's own §3.1 sketch, caught writing the code rather than after: a value's payload bytes are stored literally (`ActionFieldValue.bytes: Vec<u8>`), not as a numeric `value` this module would encode itself — encoding a number into bytes means assuming a width/endianness, exactly the kind of DUT-protocol fact this whole milestone exists to never guess at. `cargo build`/`test`/`clippy --all-targets -D warnings` clean with `--features study-ui`, and every other existing feature combination (`default`/`std`/`core-validation`/`ffi`/`gatt-extract`/`--all-features`) re-verified unaffected.
 - 2026-08-24 — Initial draft, scoping this milestone's execution plan from `design.md` §3 decisions 34/35, resolving the implementation details those decisions deliberately left open (registry file location/format, Core-access mechanism, web framework).
