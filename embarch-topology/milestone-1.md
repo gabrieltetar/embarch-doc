@@ -1,14 +1,20 @@
 # embarch-topology: milestone 1 — first rollout
 
-**Status:** first rollout closed except one deferred sub-check, 2026-08-24. The crate, the
-CLI/UI binary, and all three consumers' wiring are code-complete, merged to each repo's `main`,
-and pushed (§2 items 1-2, done). The live Windows Core is deployed, both real boards are
-enrolled and validated, and a real `build_and_flash` + `run_study` cycle has completed clean
-end-to-end (§2 items 3-4's enroll/validate/regression parts, done) — a real bug found running
-that first study (dev-bench's link-port serial needing its own declared fact,
-`design.md` decision 17) was fixed and redeployed live along the way. What's left: item 4's
-deliberate-mismatch/alert/SSE sub-check (explicitly skipped this session, see its own note) and
-the non-blocking §5 items (§2 item 6).
+**Status: CLOSED, 2026-08-24.** The crate, the CLI/UI binary, and all three consumers' wiring are
+code-complete, merged to each repo's `main`, and pushed (§2 items 1-2). The live Windows Core is
+deployed, both real boards are enrolled and validated, a real `build_and_flash` + `run_study`
+cycle has completed clean end-to-end (§2 items 3-4's enroll/validate/regression parts) — a real
+bug found running that first study (dev-bench's link-port serial needing its own declared fact,
+`design.md` decision 17) was fixed and redeployed live along the way — and item 5's `cross`
+aarch64 Docker leg is confirmed by a real tagged-release CI run (`embarch-core` v0.1.3, along the
+way fixing an unrelated real gap: `embarch-study-designer`'s `origin/main` sitting a milestone
+behind the local checkout its CI depends on). Closed with two items deliberately left open
+rather than blocking on them: item 4's deliberate-mismatch/alert/SSE sub-check, now believed
+structurally unreachable on today's bench (needs a second same-chip-family board not currently
+available — see its own note for why re-tried and re-confirmed, not just untried) and the
+non-blocking §5 polish (§2 item 6, web UI content/UX, `recommended_bind_address()` wiring,
+remote-Core-host storage). Revisit item 4 if a second nRF54L15 (or other same-chip-family pair)
+becomes available; item 6 whenever there's appetite for the polish pass.
 
 ## 1. What's already done
 
