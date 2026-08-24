@@ -77,6 +77,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-dev-bench/design.md](embarch-dev-bench/design.md) — embarch-dev-bench design (placeholder)
 - [embarch-study-designer/design.md](embarch-study-designer/design.md) — embarch-study-designer design (shared study-data-types library)
 - [embarch-study-designer/milestone-3.md](embarch-study-designer/milestone-3.md) — embarch-study-designer's milestone 3 execution plan (Study Designer, design-only)
+- [embarch-study-designer/milestone-11.md](embarch-study-designer/milestone-11.md) — embarch-study-designer's execution plan for roadmap Milestone 5 (Study Designer UI)
 - [embarch-umbrella/design.md](embarch-umbrella/design.md) — embarch-umbrella design (setup/verify/start-Core tooling; the `embarch` binary)
 - [embarch-umbrella/milestone-6.md](embarch-umbrella/milestone-6.md) — Milestone 6's execution plan (Onboarding), including the `embarch-api` and `embarch-core` steps it depends on
 - [embarch-promptu/design.md](embarch-promptu/design.md) — embarch-promptu design (placeholder)

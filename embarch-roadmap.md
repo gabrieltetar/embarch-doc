@@ -43,6 +43,12 @@ Projects : Dev Bench - Study Designer
 Acquire and wire in the provisional PPK2 power-measurement front end (`embarch-dev-bench/design.md` §3 decision 24) and exercise `PowerSampleWindow`/`StreamChunkBatch` end-to-end for the first time — the one dev-bench feature area Milestones 2 and 3 explicitly defer.
 Steps : not yet planned — add `embarch-dev-bench/milestone-10.md` when execution starts.
 
+### 5 - Study Designer UI
+
+Projects : Study Designer
+Opened by a real gap Milestone 3's own closing session hit directly: a real `GattMonitorAll` run against the reference-dut DUT came back empty, because nothing in that `Study` ever wrote anything to make the DUT stream, and there was no way for whoever authored it to know what to write — that's DUT-specific knowledge no generic discovery can produce, and an attempt to answer it by reading the DUT firmware's own source and asserting a conclusion from it was flagged directly as destructive to the dev process — an inference from source isn't the same as knowing. This milestone builds the actual fix: an interactive, table-based `Study` builder (own local web UI, shipping inside `embarch-study-designer`) whose action list merges built-in `Action`s, live `GattDiscover`, and static `GattConfigExtractor` output, plus a user-authored custom-action registry — name and clickable enumerated parameter values only, never a semantic description this crate invents on its own. Full design: `embarch-study-designer/design.md` §3 decisions 34/35.
+Steps : [embarch-study-designer/milestone-11.md](embarch-study-designer/milestone-11.md).
+
 ## Next
 
 Not yet numbered milestones — the buckets [embarch.md](embarch.md) and [embarch-features.md](embarch-features.md) refer to as "Next".
