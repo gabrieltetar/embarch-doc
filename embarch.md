@@ -82,7 +82,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-promptu/design.md](embarch-promptu/design.md) — embarch-promptu design (placeholder)
 - [embarch-atlas/design.md](embarch-atlas/design.md) — embarch-atlas design (placeholder)
 - [embarch-topology/design.md](embarch-topology/design.md) — embarch-topology design (implemented, merged into all three consumer repos' `main`, deployed to the live Windows Core, live-validated end to end): the suite's single abstraction for software and hardware topology
-- [embarch-topology/milestone-1.md](embarch-topology/milestone-1.md) — embarch-topology's first-rollout execution plan, closed 2026-08-24 (two items deliberately left open rather than blocking closure: a mismatch/alert/SSE sub-check needing hardware not currently available, and non-blocking §5 polish)
+- [embarch-topology/milestone-1.md](embarch-topology/milestone-1.md) — embarch-topology's first-rollout execution plan, closed 2026-08-24 (one item deliberately left open rather than blocking closure: a mismatch/alert/SSE sub-check needing hardware not currently available)
 - [embarch-token.md](embarch-token.md) — `EMBARCH_TOKEN`'s full lifecycle: generation, storage, transport, security model, rotation, known gaps
 - [embarch-features.md](embarch-features.md) — feature inventory across the suite
 - [embarch-roadmap.md](embarch-roadmap.md) — Now / Next / Later
@@ -97,6 +97,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 
 *Older entries archived to [embarch.changelog-archive.md](embarch.changelog-archive.md).*
 
+- 2026-08-24 — **`embarch-topology`'s Milestone 1's last non-blocking item closed too (§6 index) — the bind-address wiring surfaced a second real bug in the live Windows Core.** `embarch-umbrella setup` now wires `recommended_bind_address(TopologyClass)` into every `embarch-core install` it runs or prints; closing the `embarch-core` side found that the live Windows Core's `run_service` (the actual code path a Windows service runs under) had been hardcoding `0.0.0.0` regardless of any registered `--bind` since before the amendment requiring it was even written — fixed and redeployed live (`embarch-core` v0.1.4), reachability from WSL2 unaffected throughout. Remote-Core-host storage was decided against (stays split across `embarch-api`/`embarch-umbrella`'s existing config, not moved into `embarch-topology`) rather than left open. The web UI gained a topology diagram, a per-alert re-enroll link, and a mismatch-page click-to-fix flow, closing every gap `design.md` §5's own UI bullet used to name. Milestone 1 now has exactly one item left open: item 4's mismatch/alert/SSE sub-check, needing hardware not currently on hand.
 - 2026-08-24 — **`embarch-topology`'s Milestone 1 closed (§6 index).** The one item still open after
   yesterday's rollout closure — the `cross`-via-Docker aarch64 release leg's real-run confirmation
   (`embarch-topology/milestone-1.md` §2 item 5) — is now done: `embarch-core` v0.1.3's tagged

@@ -5,16 +5,20 @@ code-complete, merged to each repo's `main`, and pushed (§2 items 1-2). The liv
 deployed, both real boards are enrolled and validated, a real `build_and_flash` + `run_study`
 cycle has completed clean end-to-end (§2 items 3-4's enroll/validate/regression parts) — a real
 bug found running that first study (dev-bench's link-port serial needing its own declared fact,
-`design.md` decision 17) was fixed and redeployed live along the way — and item 5's `cross`
-aarch64 Docker leg is confirmed by a real tagged-release CI run (`embarch-core` v0.1.3, along the
-way fixing an unrelated real gap: `embarch-study-designer`'s `origin/main` sitting a milestone
-behind the local checkout its CI depends on). Closed with two items deliberately left open
-rather than blocking on them: item 4's deliberate-mismatch/alert/SSE sub-check, now believed
-structurally unreachable on today's bench (needs a second same-chip-family board not currently
-available — see its own note for why re-tried and re-confirmed, not just untried) and the
-non-blocking §5 polish (§2 item 6, web UI content/UX, `recommended_bind_address()` wiring,
-remote-Core-host storage). Revisit item 4 if a second nRF54L15 (or other same-chip-family pair)
-becomes available; item 6 whenever there's appetite for the polish pass.
+`design.md` decision 17) was fixed and redeployed live along the way. Item 5's `cross` aarch64
+Docker leg is confirmed by a real tagged-release CI run (`embarch-core` v0.1.3, along the way
+fixing an unrelated real gap: `embarch-study-designer`'s `origin/main` sitting a milestone behind
+the local checkout its CI depends on). Item 6's non-blocking §5 polish is done too, same day:
+`recommended_bind_address()` wired into `embarch-umbrella setup` (surfacing a second, unrelated
+real bug — the live Windows Core's `run_service` had been hardcoding `0.0.0.0` regardless of any
+registered `--bind`, fixed and redeployed live, `embarch-core` v0.1.4), a considered decision to
+leave remote-Core-host storage exactly where it is rather than move it here, and the web UI's
+topology diagram / per-alert re-enroll link / mismatch-page click-to-fix flow all shipped. Closed
+with one item deliberately left open rather than blocking on it: item 4's deliberate-mismatch/
+alert/SSE sub-check, now believed structurally unreachable on today's bench (needs a second
+same-chip-family board not currently available — see its own note for why re-tried and
+re-confirmed, not just untried). Revisit if a second nRF54L15 (or other same-chip-family pair)
+becomes available.
 
 ## 1. What's already done
 
@@ -118,10 +122,22 @@ becomes available; item 6 whenever there's appetite for the polish pass.
    "believed shipped, only local" pattern as item 2's unpowered-target-diagnosis gap). Committed
    and pushed (`embarch-study-designer@1b14c4a`), then `embarch-core` re-tagged `v0.1.3` against
    it — clean run.
-6. **Everything `design.md` §5 still lists as open** — not blocking. An MCP tool surface for
-   `validate`/alerts, and the caller-opens-the-UI question that depended on one existing, closed
-   2026-08-24 (`embarch-core`'s new `POST /validate`/`GET /alerts`, `embarch-api`'s new
-   `validate`/`alerts` MCP tools/CLI — `design.md` §6's own changelog entry). Still open, worth
-   another pass: web UI content/UX, wiring `recommended_bind_address()` into `embarch-umbrella`'s
-   `setup`, and whether a remote Core's declared host address should move into this crate's own
-   storage.
+6. ~~**Everything `design.md` §5 still lists as open.**~~ Done, 2026-08-24 — all three remaining
+   pieces closed in one pass (the MCP tool surface for `validate`/alerts, and the
+   caller-opens-the-UI question that depended on one existing, had already closed the same day,
+   earlier — `embarch-core`'s `POST /validate`/`GET /alerts`, `embarch-api`'s `validate`/`alerts`
+   MCP tools/CLI, `design.md` §6's own changelog entry):
+   - **`recommended_bind_address()` wired into `embarch-umbrella`'s `setup`** — every
+     `embarch-core install` it runs or prints now carries an explicit `--bind`. Surfaced a second,
+     unrelated real bug closing it: the live Windows Core's `run_service` (the SCM-dispatched code
+     path it actually runs under) had been hardcoding `0.0.0.0` regardless of any registered
+     `--bind` the whole time — fixed, and redeployed live (`embarch-core` v0.1.4, re-verified
+     `GET /status`/`GET /enroll` reachable from WSL2 throughout).
+   - **Remote-Core-host storage — decided against, not left open.** Stays exactly where it is
+     (`embarch-api`'s per-firmware-repo `[core].host`, `embarch-umbrella`'s per-machine
+     `state.rs`) rather than moving into this crate. No real pain point ever observed, and
+     `embarch-api/design.md` §3 decision 9's own reasoning against centralizing `base_url`
+     resolution at `setup` time applies just as well to centralizing its storage —
+     `design.md` §5 carries the full reasoning.
+   - **Web UI content/UX** — the topology diagram, the per-alert re-enroll link, and the
+     mismatch-page click-to-fix flow all shipped (`design.md` §5's own bullet, now fully closed).
