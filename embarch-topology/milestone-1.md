@@ -72,14 +72,25 @@ the non-blocking §5 items (§2 item 6).
      its own `update` self-elevation), then `run_study` completed both steps (`BleConnect`,
      `GattDiscover`) `Pass` — a real BLE connection and full GATT-table discovery against the
      freshly-flashed DUT.
-   - **Still open, explicitly deferred:** deliberately induce a mismatch and confirm the alert
-     lands in the durable log, the structured `topology-mismatch` error's `fix_it_url` is
+   - **Still open — tried again 2026-08-24, and now believed structurally unreachable on
+     today's real bench, not just untried.** Deliberately induce a mismatch and confirm the
+     alert lands in the durable log, the structured `topology-mismatch` error's `fix_it_url` is
      correct, and — with `embarch-topology ui` running — the live SSE push reaches a browser
      tab. `enroll`'s own API can't be used to fake this (it always writes a fresh, correct
-     live-read `hardware_id`, by design); the two remaining routes — writing `enrollment.toml`
-     directly, or physically swapping a probe without re-enrolling — were respectively blocked
-     (a Claude Code permission classifier correctly denied the direct file write to a live
-     production file) and declined by the user this session ("skip this sub-check"). Closed
+     live-read `hardware_id`, by design); writing `enrollment.toml` directly was blocked (a
+     Claude Code permission classifier correctly denied the write to a live production file).
+     The user then physically swapped the two debuggers' USB cables and asked for the mismatch
+     to be tried against that — reset still succeeded cleanly, no mismatch, no alert. Expected,
+     on inspection: a USB-to-PC cable swap doesn't change device identity (VID/PID/serial
+     travel with the device, not the port), and ESP JTAG can't be moved between boards at all
+     — it's the ESP32-C5's own on-chip peripheral, not a detachable probe. With only one board
+     per chip family on this bench (nRF54L15 J-Link, esp32c5 on-chip JTAG), there is no swap
+     available today that changes what a probe answers as — exactly decision 15's own flagged
+     limitation ("two boards sharing an identical probe type... still needs physical
+     isolation"), now confirmed the hard way rather than just reasoned about. Closing this
+     sub-check for real needs a second same-chip-family board (e.g. a second nRF54L15 target) to
+     swap the J-Link onto — not available now.
+   - ~~The nRF54L15 `FICR.INFO.DEVICEID` address's live-validation status.~~ Closed
      2026-08-24 by design decision, not a documentation deep-dive: the nRF54L15
      `FICR.INFO.DEVICEID` address (`embarch_topology::hardware::hardware_id`,
      `0xFFC304`/`0xFFC308`) is still sourced from a DevZone report, not Nordic's own Product
