@@ -19,6 +19,7 @@ embarch/
 ├── embarch-umbrella/       (design-only, repo created empty)
 ├── embarch-promptu/        (planned, no repo yet)
 ├── embarch-atlas/          (paused, no repo yet)
+├── embarch-topology/       (implemented and pushed 2026-08-21: gabrieltetar/embarch-topology)
 └── embarch-doc/
     ├── CLAUDE.md
     ├── embarch.md
@@ -40,7 +41,9 @@ embarch/
     ├── embarch-umbrella/design.md
     ├── embarch-umbrella/milestone-6.md
     ├── embarch-promptu/design.md
-    └── embarch-atlas/design.md
+    ├── embarch-atlas/design.md
+    ├── embarch-topology/design.md
+    └── embarch-topology/milestone-1.md
 ```
 
 Because every sub-project sits as a sibling of `embarch-doc`, its docs are always reachable by relative path from inside that sub-project's own repo: `../embarch-doc/<sub-project>/design.md`. No submodule, symlink, or absolute path is needed — that only holds as long as the layout above is preserved. If a sub-project ever gets cloned or moved somewhere that breaks the sibling relationship, this section needs revisiting first.
@@ -94,6 +97,8 @@ This is the mechanism that makes §4–5 happen without re-explaining it in chat
 
 ## Changelog
 
+- 2026-08-21 — `embarch-topology` implemented the same day it was scoped, then pushed to [gabrieltetar/embarch-topology](https://github.com/gabrieltetar/embarch-topology) (the user created the repo after this session's own `gh repo create` was blocked as an outward-facing action; §2's tree updated, `milestone-1.md` added). `embarch-core`/`embarch-api`/`embarch-umbrella` all wired to depend on it, each still on its own local, unmerged branch — see `embarch-topology/design.md` §4/§6 for what shipped and `embarch-topology/milestone-1.md` for what's left.
+- 2026-08-21 — Added `embarch-topology` to §2's repo layout tree — a new sub-project scoped this day (design-only, no repo yet): the suite's missing single abstraction for both software topology (where processes run relative to each other) and hardware topology (what's physically wired to what), prompted by a real incident (a stale `EMBARCH_DEV_BENCH_SERIAL` registry value surviving a runtime-link port migration undetected). See [embarch-topology/design.md](embarch-topology/design.md).
 - 2026-08-17 — Added [embarch-dev-workflow.md](embarch-dev-workflow.md) as a new suite-level doc (§2, §3): how to iterate locally across the three code repos without a release archive, and — the reason it was written now — how to avoid a debug `embarch-umbrella` build silently overwriting a real machine's canonical install/PATH while testing decision 28.
 - 2026-08-15 — Closed three items from that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes): added `scripts/collect-open-questions.py` (§5) as a read-only suite-wide open-questions index; registered two new suite-level docs in §2's repo layout and §3's suite-level-docs list — [embarch-glossary.md](embarch-glossary.md) (load-bearing terms, one place) and [embarch-decision-reversals.md](embarch-decision-reversals.md) (assumptions reality has overturned, one page).
 - 2026-08-11 — Automated the three manual chores §4/§5 had been describing as human steps: (1) `scripts/check-links.py` and the new `scripts/check-staleness.py` (a mechanical cross-check of `embarch.md` §3 and `embarch-features.md` against each sub-project's `design.md`) now both run on every push/PR via `.github/workflows/docs-ci.yml`, rather than "run this before committing" — `check-staleness.py`'s first-ever run found and fixed a real instance of the exact drift §4 warns about, in `embarch-study-designer/design.md`'s Status line. (2) New `scripts/archive-changelog.py` moves each doc's Changelog entries beyond the most recent few into a sibling `*.changelog-archive.md`, run weekly by `.github/workflows/changelog-archive.yml` (opens a PR rather than pushing straight to main). §4 and §5 updated to point at all three.
