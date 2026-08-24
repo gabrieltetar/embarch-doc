@@ -99,16 +99,19 @@ the non-blocking §5 items (§2 item 6).
      successful use against the real DUT: `enroll`/`reset`/`build_and_flash`/`run_study` all
      read a stable, plausible value at this address across multiple calls. Revisit only if a
      real symptom (e.g. a `hardware_id` collision) ever points back at it.
-5. **`cross`'s Docker-based aarch64 release leg seeing sibling path dependencies — theoretical
-   doubt resolved 2026-08-24 by research, real-run confirmation still open.** No Docker was
-   available in this dev sandbox to run `cross` for real, so this was checked against
-   `cross-rs/cross`'s own history instead: [PR #684](https://github.com/cross-rs/cross/pull/684)
-   (merged, shipped `v0.2.2`+, well below what `taiki-e/install-action@v2` installs today)
-   auto-mounts any path dependency `cargo metadata` can see, no formal `[workspace]` required —
-   exactly `embarch-core`'s plain `path = "../embarch-topology"` shape. `embarch-core`'s
-   `release.yml` comment updated with the citation (`embarch-api`/`embarch-umbrella` don't hit
-   this at all — they only need a plain aarch64 cross-linker, not `cross`'s Docker build). What's
-   left is mechanical: an actual tagged-release CI run to confirm it for real.
+5. ~~**`cross`'s Docker-based aarch64 release leg seeing sibling path dependencies.**~~ Done,
+   2026-08-24 — real tagged-release CI run confirms it:
+   [`embarch-core` v0.1.3](https://github.com/gabrieltetar/embarch-core/releases/tag/v0.1.3), all
+   four targets green including `aarch64-unknown-linux-gnu` via `cross` (3m22s), backing up the
+   [PR #684](https://github.com/cross-rs/cross/pull/684) citation with a real run instead of just
+   research. The first attempt, tagging the already-current `v0.1.2`, failed on *every* target —
+   not a `cross`/Docker problem at all: a real, unrelated gap this pass found, where
+   `embarch-study-designer`'s `origin/main` was a full milestone behind the local sibling
+   checkout `embarch-core`'s CI actually depends on (1 unpushed commit plus 734 lines of
+   uncommitted `GattDiscover`/`GattMonitorAll`/`unit`/`channel_id`/`StreamChunkBatch` work, same
+   "believed shipped, only local" pattern as item 2's unpowered-target-diagnosis gap). Committed
+   and pushed (`embarch-study-designer@1b14c4a`), then `embarch-core` re-tagged `v0.1.3` against
+   it — clean run.
 6. **Everything `design.md` §5 still lists as open** — not blocking. An MCP tool surface for
    `validate`/alerts, and the caller-opens-the-UI question that depended on one existing, closed
    2026-08-24 (`embarch-core`'s new `POST /validate`/`GET /alerts`, `embarch-api`'s new
