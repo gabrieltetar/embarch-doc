@@ -109,8 +109,10 @@ the non-blocking §5 items (§2 item 6).
    `release.yml` comment updated with the citation (`embarch-api`/`embarch-umbrella` don't hit
    this at all — they only need a plain aarch64 cross-linker, not `cross`'s Docker build). What's
    left is mechanical: an actual tagged-release CI run to confirm it for real.
-6. **Everything `design.md` §5 still lists as open** — not blocking, but worth another pass once
-   the above is live: web UI content/UX, an MCP tool surface for `validate`/alerts (and the
-   caller-opens-the-UI question that depends on one existing), wiring
-   `recommended_bind_address()` into `embarch-umbrella`'s `setup`, and whether a remote Core's
-   declared host address should move into this crate's own storage.
+6. **Everything `design.md` §5 still lists as open** — not blocking. An MCP tool surface for
+   `validate`/alerts, and the caller-opens-the-UI question that depended on one existing, closed
+   2026-08-24 (`embarch-core`'s new `POST /validate`/`GET /alerts`, `embarch-api`'s new
+   `validate`/`alerts` MCP tools/CLI — `design.md` §6's own changelog entry). Still open, worth
+   another pass: web UI content/UX, wiring `recommended_bind_address()` into `embarch-umbrella`'s
+   `setup`, and whether a remote Core's declared host address should move into this crate's own
+   storage.
