@@ -1,0 +1,82 @@
+# embarch-dev-bench: milestone 9 — Study Designer: Feature-Branch Iteration
+
+**Status:** in progress, 2026-08-20 — §3.1–3.6 (code, both build targets) done; §3.7–3.9 (real-hardware dispatch) blocked on a Windows-side `embarch-core` rebuild, see §6. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 3 ("Study Designer: Feature-Branch Iteration" — filed on disk as `milestone-9`). Companion to [embarch-study-designer/milestone-9.md](../embarch-study-designer/milestone-9.md) (the new wire types this doc's firmware work consumes), [embarch-core/milestone-9.md](../embarch-core/milestone-9.md), and [embarch-api/milestone-9.md](../embarch-api/milestone-9.md) (driving the whole chain against the real reference-dut DUT). See [design.md](design.md) §3 for the durable decisions this doc closes out (a real BLE connection to a physical DUT other than dev-bench itself, and dispatch of every `Action` kind — the first time either has happened for real).
+
+## 1. Goal, restated for dev-bench
+
+Milestone 2 proved dispatch, handshake, and the wire protocol end to end — but deliberately only for `Action::BleAdvertise`, against no DUT at all (`design.md` §3 decision 21, §4's open item). This milestone is the first time dev-bench actually plays its intended role: connecting to a real, separate physical DUT (the reference-dut board) as BLE central, and doing something with the GATT data it exposes. Concretely:
+
+- **Dispatch `Action::BleConnect`/`Action::DataExchange` through `main.c`'s per-`Study` loop for the first time.** `ble_bridge_real.c` has implemented both since 2026-08-04 (`design.md` §3 decision 16's implementation note) — the gap is entirely in `main.c`'s `dispatch_study` (decision 21), which today rejects any step whose action isn't `BleAdvertise` as "unsupported."
+- **Implement `Action::GattDiscover`/`Action::GattMonitorAll` for the first time — genuinely new BLE code, not just newly-dispatched existing code**, per `embarch-study-designer/design.md` §3 decisions 31/32: a wildcard `bt_gatt_discover` walk (no target UUID) and, for `GattMonitorAll`, subscribing to every characteristic whose discovered properties include Notify/Indicate and capturing everything that arrives.
+- **Extend `study_ffi.c`'s FFI decode surface** (`essd_study_decode_full`) to cover all four of these action kinds — today scoped to `Action::BleAdvertise` only (`embarch-study-designer/design.md` §7).
+
+## 2. Scope for this milestone
+
+- **Board: ESP32-C5-WROOM-1 DK (`workspaces/espressif`)** — the board Milestone 2 validated end to end and this suite currently has working; `workspaces/nordic` remains built-but-inactive (`design.md` decision 4's amendment), not this milestone's target.
+- **A real DUT for the first time: the `reference-dut-fw` repo's current firmware, flashed onto a real reference-dut board via `embarch-core`/`embarch-api` (see [embarch-api/milestone-9.md](../embarch-api/milestone-9.md) for the flash side).** The specific branch checked out is `fix/bouncing_dock` — as of this milestone's design pass, an empty branch (no commits past `main`) rather than a landed fix; the dock-debounce fix itself is explicitly **out of scope** for this milestone (per the design-questions pass that opened it) — this milestone proves the EmbArch chain (build → flash → connect → discover/monitor GATT → forward data into Core) works end to end against real hardware, independent of whatever fix eventually lands on that branch.
+- **The self-test `Study`'s GATT interaction is generic, not characteristic-specific** — `BleConnect` (central, no `target_address`, i.e. connect to whichever DUT advertises) followed by `GattDiscover` then `GattMonitorAll`, rather than a `DataExchange` step hardcoded against one known UUID (e.g. `DMS_BATT_STATUS_UUID`). Per the design-questions pass: don't over-focus on one characteristic the physical hardware setup might not even exercise (e.g. no dock-bounce condition needs to be produced) — a normal BLE acquisition window with nothing dropped is sufficient (§4).
+- **Out of scope:** any actual dock-bounce fix or validation of one; `PowerSampleWindow`/power-sampling hardware (Milestone 4's own scope, `design.md` decision 24 still unacquired); a second vendor/board family.
+
+## 3. Steps
+
+### 3.1 Extend `study_ffi.c`'s decode surface to `BleConnect`/`DataExchange`/`GattDiscover`/`GattMonitorAll`
+
+`essd_study_decode_full` (the Rust crate's FFI function handing a decoded `Study` back to C as a fixed-layout struct) currently only populates fields for `Action::BleAdvertise` steps. Extend the C struct (`EssdStep`'s action union) and the Rust-side conversion to cover all four remaining action kinds, matching whatever shape [embarch-study-designer/milestone-9.md](../embarch-study-designer/milestone-9.md) §3.2 lands for `GattDiscover`/`GattMonitorAll` (both field-less — the simplest possible FFI surface, no new parameters to marshal).
+
+### 3.2 Extend `main.c`'s `dispatch_study` to actually call `ble_bridge_real.c`'s existing `BleConnect`/`DataExchange` handlers
+
+Both are already implemented and exercised only via `native_sim`'s stub-signature-matching build, never dispatched through a real `Study` (`design.md` decision 21's "separate future work" note). This step is mechanical relative to §3.3/§3.4 below — wiring an existing capability into the per-step switch, not writing new BLE logic.
+
+### 3.3 Implement `Action::GattDiscover` in `ble_bridge_real.c`
+
+A wildcard `bt_gatt_discover` (`BT_GATT_DISCOVER_PRIMARY`, no UUID filter) over the active connection, then per discovered service a wildcard characteristic discovery, building `EssdGattServiceInfo`/`EssdGattCharacteristicInfo` structs (mirroring `embarch-study-designer/design.md` §4.3a) with each characteristic's raw ATT properties byte read directly off the discovery response — no re-derivation, matching that decision's "raw, not symbolic" call. Bounded by the step's own `timeout_ms`, same discovery-cancellation-on-timeout handling `DataExchange` already uses (`design.md` §3 decision 16's implementation note on `bt_gatt_cancel`).
+
+### 3.4 Implement `Action::GattMonitorAll` in `ble_bridge_real.c`
+
+Runs §3.3's discovery internally first, then for every characteristic whose properties include Notify or Indicate: writes its CCC descriptor to enable notifications/indications (mirroring `GattOperation::Subscribe`'s existing implementation), then for the remainder of the step's `timeout_ms` buffers every incoming notification/indication as a `GattActivityRecord { rx_utc_ms, characteristic_index, payload }` — `characteristic_index` computed from this step's own discovery, flattened service-then-characteristic in discovery order (`embarch-study-designer/design.md` §4.3a's stated convention). **Overflow handling per that decision's own addendum:** once `MAX_GATT_ACTIVITY_RECORDS` records are buffered, stop capturing further records for this step (still `Pass`, not `Fail`/`TimedOut`) rather than silently overwriting or corrupting an existing record.
+
+### 3.5 Static-allocate the new large scratch structures, not stack — from the outset, not as a fix found the hard way a second time
+
+`embarch-study-designer/design.md` §3 decision 32 flags this explicitly: `gatt_activity`'s worst case (`MAX_GATT_ACTIVITY_RECORDS` records × `MAX_PAYLOAD_LEN` bytes) is larger than `StudyStart`'s own worst case, which already forced `serial_protocol.c`/`main.c` off stack-allocated scratch buffers onto `static` ones (`design.md` decision 21's own stack-safety fix) once real message sizes were known. Apply the same treatment to whatever buffer holds an in-progress `GattMonitorAll` capture and the `dev_bench_message` union carrying the eventual `StepResult`, before ever running this against real hardware — check `CONFIG_MAIN_STACK_SIZE` headroom explicitly rather than assuming decision 21's earlier bump already covers this larger case.
+
+### 3.6 Build and confirm clean for `native_sim` and `espressif`
+
+`west build -b native_sim app` and `west build -b esp32c5_devkitc/esp32c5/hpcore app`, both clean, before ever touching real hardware — matching every prior milestone's own discipline (`design.md` decision 9's superseded "no CI" note, §3.1 of `milestone-8.md`).
+
+### 3.7 First real-hardware run: connect to a real DUT for the first time
+
+Flash this firmware onto the ESP32-C5 (via `embarch-core`'s ESP-JTAG support, `embarch-core/design.md` §3 decision 18 — unchanged from Milestone 2), and separately flash the reference-dut DUT (via [embarch-api/milestone-9.md](../embarch-api/milestone-9.md)'s `build_and_flash`) — both boards powered and advertising/ready. Submit the milestone's own `Study` (§2, §4) via `embarch-api`'s `run_study`; confirm `BleConnect` actually connects to the real DUT (not `native_sim`'s stub, not dev-bench advertising to itself) — the first physical BLE connection between two independent boards this suite has ever made.
+
+### 3.8 Confirm `GattDiscover`'s reported table against reality
+
+Cross-check the live `gatt_services` result (from §3.7's run) against `embarch-study-designer/milestone-9.md` §3.6's static extraction (`ZephyrBleDefExtractor` run against the same `fix/bouncing_dock` checkout) — the two should agree on service/characteristic UUIDs and properties, since both describe the same firmware build. A real mismatch here is exactly the kind of gap this dual-source design (`design.md` §3 decision 33) exists to catch.
+
+### 3.9 Confirm `GattMonitorAll` captures a real acquisition window cleanly, nothing dropped
+
+Run a normal capture window (no special dock manipulation — per the design-questions pass, "just a normal acquisition without samples dropped is good") long enough to receive real notification traffic from whatever characteristics the DUT actually pushes unsolicited, and confirm `gatt_activity` reflects it without hitting §3.4's overflow ceiling (or, if it does, that the overflow behavior itself is what's observed — not silent corruption).
+
+## 4. Definition of done
+
+- [x] Decode surface covers `BleConnect`/`DataExchange`/`GattDiscover`/`GattMonitorAll` (§3.1) — real gap found relative to this plan: it's `serial_protocol.c`'s own hand-written decode that needed extending, not `study_ffi.c`'s `essd_study_decode_full` (that surface decodes a `Study`, not the `StudyStart` this firmware receives, and `main.c`'s real dispatch has never called it — see `design.md` decision 27's own correction). Left `study_ffi.c` untouched.
+- [x] `main.c` dispatches `BleConnect`/`DataExchange` for real (§3.2).
+- [x] `Action::GattDiscover` implemented (§3.3) — code-complete and building clean; "returns a real, non-empty `gatt_services` against the real reference-dut DUT" is §3.8's own live-hardware check, not yet run.
+- [x] `Action::GattMonitorAll` implemented (§3.4) — code-complete; real-traffic capture is §3.9's own live-hardware check, not yet run.
+- [x] Scratch buffers for the new large structures are `static`, not stack-allocated, confirmed by inspection before first real-hardware run (§3.5) — plus two real bugs found and fixed along the way: a `CONFIG_MAIN_STACK_SIZE` board-conf override bug, and a real SRAM overflow (fixed via buffer consolidation + a dev-bench-internal step-count cap). See `design.md` decision 27.
+- [x] `native_sim` and `espressif` both build clean (§3.6) — 19/19 `serial_protocol` ztests pass; `espressif` SRAM at 90.87% (tight, flagged in `design.md`).
+- [ ] A real `BleConnect` to the physical reference-dut DUT succeeds for the first time (§3.7).
+- [ ] `GattDiscover`'s live result matches the static extraction from the same firmware build (§3.8).
+- [ ] A normal `GattMonitorAll` acquisition window completes with no data dropped (or the overflow path itself is observed cleanly) (§3.9).
+- [ ] The full run's `StudyResult` (via [embarch-api/milestone-9.md](../embarch-api/milestone-9.md)'s `run_study`/`study_status`) lands correctly in Core's `events.json` — the milestone's actual Definition of Done, per the design-questions pass that scoped it.
+- [ ] Any real gap found folded back into `design.md` per `DOC-PROTOCOL.md` §5.
+
+## 5. Open questions / risks carried into execution
+
+- **Whether the reference-dut DUT's real BLE stack behaves exactly like `ble_bridge_real.c` assumes** (pairing, MTU, connection interval) is unconfirmed until §3.7 actually runs — this is the first real DUT-to-dev-bench connection this suite has attempted; Milestone 1's `reference-dut-fw` validation was build/flash only, never a BLE connection to it.
+- **`fix/bouncing_dock` may gain real commits before this milestone executes** — if the dock-debounce fix actually lands mid-milestone, nothing here changes (the milestone's own scope is explicitly independent of the fix's content, §2), but the checked-out commit should be recorded in this doc's changelog at execution time for reproducibility.
+- **DTR/RTS and console-wiring gotchas Milestone 2 found on the ESP32-C5** (`design.md` decision 26) apply unchanged here — not re-litigated, just carried forward as a known quirk of this board.
+- **Overflow behavior (§3.4/§3.9) is untested against real notify rates** — `MAX_GATT_ACTIVITY_RECORDS = 32` is a placeholder (`embarch-study-designer/design.md` §3 decision 15's update); whether a real reference-dut DUT's unsolicited notification rate over a normal acquisition window fits comfortably under that ceiling, or exercises the overflow path immediately, is exactly what §3.9 is meant to find out.
+
+## 6. Changelog
+
+- 2026-08-20 — **§3.1–3.6 executed; §3.7–3.9 (real-hardware dispatch) still pending, blocked on a Windows-side `embarch-core` rebuild (see below).** Code-complete and verified on both build targets: `serial_protocol.h`/`.c`'s tagged-union `dbm_step.action` now covers all five `Action` kinds; `ble_bridge_real.c` implements wildcard `GattDiscover`/subscribe-all `GattMonitorAll` for real. Two real bugs found and fixed from the outset per §3.5/§5's own risk flag: a board-`.conf` `CONFIG_MAIN_STACK_SIZE` override silently defeating `prj.conf`'s value (both real-hardware `.conf` files affected, not just this board's), and a real SRAM overflow at link time, fixed via consolidating `main.c`'s four separate outbound message buffers into one and reducing `DBM_MAX_STEPS_PER_STUDY` (a dev-bench-internal cap, not the crate's own ceiling) from 64 to 16. `study_ffi.c`'s decode surface was correctly left unextended — a real gap relative to this doc's own §3.1 found while implementing it: that surface decodes a `Study`, not the `StudyStart` this firmware actually receives, and was never on `main.c`'s real dispatch path to begin with. `native_sim` (19/19 `serial_protocol` ztests, up from 10) and `esp32c5_devkitc/esp32c5/hpcore` (SRAM 90.87%, tight — flagged for whoever adds the next RAM-heavy feature) both build clean. **§3.7's own real-hardware flash surfaced a second, independent real gap, in `embarch-core`, not this repo:** `probe_serial` disambiguation (that project's own design.md decision 9) was documented as already implemented but never actually was — with the reference-dut DUT's J-Link and dev-bench's own ESP JTAG probe both attached for the first time, flashing picked the wrong one and failed loudly (wrong debug interface for the wrong chip). Fixed and tested on Linux (`embarch-core/design.md`'s own changelog has the detail); deploying it needs a Windows-side rebuild+restart of the real, currently-running Core, which this WSL2 environment can't do itself (no Windows cross-compile toolchain here) — the user is handling that rebuild directly. §3.7–3.9's actual live-hardware checks resume once that's confirmed back up.
+- 2026-08-19 — Initial draft, scoping dev-bench's half of Milestone 3 (Study Designer: Feature-Branch Iteration): first real BLE connection to a physical DUT other than dev-bench itself, and the first dispatch of every `Action` kind this crate defines, including the two new ones (`GattDiscover`/`GattMonitorAll`) from this milestone's own design-questions pass.
