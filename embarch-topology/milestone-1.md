@@ -1,8 +1,9 @@
 # embarch-topology: milestone 1 — first rollout
 
-**Status:** in progress, 2026-08-21. The crate, the CLI/UI binary, and all three consumers'
-wiring are code-complete and locally verified (`design.md` §4, §6) — this doc tracks what's
-left to actually ship it, per `design.md` §5's "first-rollout migration" item.
+**Status:** in progress, 2026-08-23. The crate, the CLI/UI binary, and all three consumers'
+wiring are code-complete, merged to each repo's `main`, and pushed (§2 items 1-2, done). The
+live Windows Core is deployed and confirmed reachable. What's left is live-hardware validation
+(§2 item 4, blocked on the DUT being powered) and the non-blocking §5 items (§2 item 6).
 
 ## 1. What's already done
 
@@ -32,15 +33,24 @@ left to actually ship it, per `design.md` §5's "first-rollout migration" item.
    ([run 32529687422](https://github.com/gabrieltetar/embarch-topology/actions/runs/32529687422)) —
    the first confirmation this builds on a real GitHub-hosted runner, not just this session's
    own Linux/WSL2 sandbox.
-2. **Merge and push the three `topology-integration` branches**, once the user has reviewed the
-   diffs — deliberately left uncommitted-to-`main`/unpushed by this pass (general harness
-   guidance: commit/push only when asked; this task's own scope was "implement," not "ship").
-3. **Deploy to the live Windows Core.** This session ran entirely from Linux/WSL2 against a
-   local git checkout — nothing here has touched the real Windows-hosted install
-   `embarch-dev-workflow.md` §5 describes as daily-used. The real rollout needs, in order: build
-   `embarch-core` on/for Windows with the new dependency, `embarch-core update <new-exe>`
-   (self-elevating, per that repo's `service.rs`), then re-confirm `GET /status` and a real
-   `flash`/`reset`/`run_study` cycle still work end to end.
+2. ~~**Merge and push the three `topology-integration` branches.**~~ Done, 2026-08-23 —
+   the user asked directly, closing the "commit/push only when asked" gate this item was
+   waiting on. All three (`embarch-core`, `embarch-api`, `embarch-umbrella`) merged to `main`
+   and pushed to `origin/main`; each is in sync with its remote (no divergence either
+   direction). Same pass also found and closed a real gap: the unpowered-target diagnosis
+   (`design.md` §3 decision 16, `embarch-core/design.md` §3 decision 26) existed only as
+   uncommitted working-tree changes in both repos — despite an earlier session believing it
+   already shipped — now committed and pushed too.
+3. ~~**Deploy to the live Windows Core.**~~ Done, 2026-08-23, for `embarch-core` — `embarch-core
+   update <new-exe>` self-elevated (UAC approved), the installed binary now matches the merged
+   `main` build byte-for-byte, `com.embarch.core` restarted and confirmed `Running`, `GET
+   /status`/`GET /enroll` both reachable from WSL2 over the gateway IP. `embarch-api` has no
+   persistent service to deploy — its locally-run debug binary (the exact path Claude Code's
+   MCP config spawns) is rebuilt against the merged dependency instead. `embarch-umbrella` has
+   no live install anywhere on this machine to update (`which embarch` finds nothing) — nothing
+   to deploy until `setup` is actually run again. **Not yet re-confirmed:** a real
+   `flash`/`reset`/`run_study` cycle end-to-end against the redeployed Core — folded into item 4
+   below, since it needs the DUT powered anyway.
 4. **Live-validate against real hardware**, once deployed:
    - The nRF54L15 `FICR.INFO.DEVICEID` address (`embarch_topology::hardware::hardware_id`,
      `0xFFC304`/`0xFFC308`) — sourced from a DevZone report, never independently confirmed
