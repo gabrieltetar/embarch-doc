@@ -1,9 +1,14 @@
 # embarch-topology: milestone 1 — first rollout
 
-**Status:** in progress, 2026-08-23. The crate, the CLI/UI binary, and all three consumers'
-wiring are code-complete, merged to each repo's `main`, and pushed (§2 items 1-2, done). The
-live Windows Core is deployed and confirmed reachable. What's left is live-hardware validation
-(§2 item 4, blocked on the DUT being powered) and the non-blocking §5 items (§2 item 6).
+**Status:** first rollout closed except one deferred sub-check, 2026-08-24. The crate, the
+CLI/UI binary, and all three consumers' wiring are code-complete, merged to each repo's `main`,
+and pushed (§2 items 1-2, done). The live Windows Core is deployed, both real boards are
+enrolled and validated, and a real `build_and_flash` + `run_study` cycle has completed clean
+end-to-end (§2 items 3-4's enroll/validate/regression parts, done) — a real bug found running
+that first study (dev-bench's link-port serial needing its own declared fact,
+`design.md` decision 17) was fixed and redeployed live along the way. What's left: item 4's
+deliberate-mismatch/alert/SSE sub-check (explicitly skipped this session, see its own note) and
+the non-blocking §5 items (§2 item 6).
 
 ## 1. What's already done
 
@@ -41,27 +46,46 @@ live Windows Core is deployed and confirmed reachable. What's left is live-hardw
    (`design.md` §3 decision 16, `embarch-core/design.md` §3 decision 26) existed only as
    uncommitted working-tree changes in both repos — despite an earlier session believing it
    already shipped — now committed and pushed too.
-3. ~~**Deploy to the live Windows Core.**~~ Done, 2026-08-23, for `embarch-core` — `embarch-core
-   update <new-exe>` self-elevated (UAC approved), the installed binary now matches the merged
-   `main` build byte-for-byte, `com.embarch.core` restarted and confirmed `Running`, `GET
-   /status`/`GET /enroll` both reachable from WSL2 over the gateway IP. `embarch-api` has no
-   persistent service to deploy — its locally-run debug binary (the exact path Claude Code's
-   MCP config spawns) is rebuilt against the merged dependency instead. `embarch-umbrella` has
-   no live install anywhere on this machine to update (`which embarch` finds nothing) — nothing
-   to deploy until `setup` is actually run again. **Not yet re-confirmed:** a real
-   `flash`/`reset`/`run_study` cycle end-to-end against the redeployed Core — folded into item 4
-   below, since it needs the DUT powered anyway.
-4. **Live-validate against real hardware**, once deployed:
-   - The nRF54L15 `FICR.INFO.DEVICEID` address (`embarch_topology::hardware::hardware_id`,
-     `0xFFC304`/`0xFFC308`) — sourced from a DevZone report, never independently confirmed
-     against this suite's own DUT (carried over unchanged from `embarch-core/design.md`'s prior
-     open item on this exact address).
-   - Re-enroll both real boards (DUT, dev-bench) via `POST /probes/enroll` /
-     `embarch-topology enroll`, confirm `validate_role`/`validate_serial` both still pass.
-   - Deliberately mismatch one (re-enroll a probe as a different chip, or physically swap
-     boards without re-enrolling) and confirm: the alert lands in the durable log, the
-     structured `topology-mismatch` error's `fix_it_url` is correct, and — with
-     `embarch-topology ui` running — the live SSE push actually reaches a browser tab.
+3. ~~**Deploy to the live Windows Core.**~~ Done, 2026-08-23 (re-deployed again 2026-08-24 with
+   decision 17's fix, see item 4) — `embarch-core update <new-exe>` self-elevated (UAC
+   approved), the installed binary now matches the merged `main` build byte-for-byte,
+   `com.embarch.core` restarted and confirmed `Running`, `GET /status`/`GET /enroll` both
+   reachable from WSL2 over the gateway IP. `embarch-api` has no persistent service to deploy —
+   its locally-run debug binary (the exact path Claude Code's MCP config spawns) is rebuilt
+   against the merged dependency instead. `embarch-umbrella` has no live install anywhere on
+   this machine to update (`which embarch` finds nothing) — nothing to deploy until `setup` is
+   actually run again. A real `flash`/`reset`/`run_study` cycle end-to-end against the
+   redeployed Core is confirmed — see item 4.
+4. **Live-validate against real hardware.** Done, except one deliberately-deferred sub-check:
+   - ~~Re-enroll both real boards (DUT, dev-bench) via `POST /probes/enroll`, confirm
+     `validate_role`/`validate_serial` both still pass.~~ Done, 2026-08-24 — DUT (nRF54L15,
+     J-Link `000852006107`) enrolled now that it's powered (`check_target_powered`, decision 16,
+     didn't fire — clean attach); dev-bench (esp32c5, ESP JTAG) re-confirmed. Re-enrolling
+     dev-bench a second time produced the identical `hardware_id`, confirming the live-identity
+     recheck is consistent.
+   - ~~A real `flash`/`reset`/`run_study` cycle end-to-end against the redeployed Core.~~ Done,
+     2026-08-24 — real `reset`, then a real `build_and_flash` (`reference-dut-fw`,
+     `dut_dev@7`/`reference-dut`) succeeded. The first real `run_study` attempt surfaced a genuine
+     bug: dev-bench's link-port detection was ambiguous against the DUT's own separate J-Link
+     VCOM interface (`design.md` decision 17) — fixed, tested, redeployed live (both
+     `embarch-topology` and `embarch-core` rebuilt and the running Windows service updated via
+     its own `update` self-elevation), then `run_study` completed both steps (`BleConnect`,
+     `GattDiscover`) `Pass` — a real BLE connection and full GATT-table discovery against the
+     freshly-flashed DUT.
+   - **Still open, explicitly deferred:** deliberately induce a mismatch and confirm the alert
+     lands in the durable log, the structured `topology-mismatch` error's `fix_it_url` is
+     correct, and — with `embarch-topology ui` running — the live SSE push reaches a browser
+     tab. `enroll`'s own API can't be used to fake this (it always writes a fresh, correct
+     live-read `hardware_id`, by design); the two remaining routes — writing `enrollment.toml`
+     directly, or physically swapping a probe without re-enrolling — were respectively blocked
+     (a Claude Code permission classifier correctly denied the direct file write to a live
+     production file) and declined by the user this session ("skip this sub-check"). Also still
+     unconfirmed: the nRF54L15 `FICR.INFO.DEVICEID` address
+     (`embarch_topology::hardware::hardware_id`, `0xFFC304`/`0xFFC308`) — sourced from a DevZone
+     report, never independently verified against this suite's own DUT (carried over unchanged
+     from `embarch-core/design.md`'s prior open item on this exact address) — though the
+     successful `enroll`/reset/flash/study cycle above is indirect evidence it's at least
+     reading *something* consistent for this chip.
 5. **Confirm `cross`'s Docker-based aarch64 release leg can actually see sibling path
    dependencies outside the crate root** — flagged as unverified in `embarch-core`'s (and now
    `embarch-api`'s/`embarch-umbrella`'s) `release.yml` comments; needs a real tagged release run
