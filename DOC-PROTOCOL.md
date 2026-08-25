@@ -48,7 +48,8 @@ embarch/
     ├── embarch-topology/design.md
     ├── embarch-topology/milestone-1.md
     ├── embarch-ui/design.md
-    └── embarch-outpost/design.md
+    ├── embarch-outpost/design.md
+    └── embarch-outpost/milestone-1.md
 ```
 
 Because every sub-project sits as a sibling of `embarch-doc`, its docs are always reachable by relative path from inside that sub-project's own repo: `../embarch-doc/<sub-project>/design.md`. No submodule, symlink, or absolute path is needed — that only holds as long as the layout above is preserved. If a sub-project ever gets cloned or moved somewhere that breaks the sibling relationship, this section needs revisiting first.
@@ -101,6 +102,8 @@ Update it proactively per ../embarch-doc/DOC-PROTOCOL.md whenever a notable desi
 This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here.
 
 ## Changelog
+
+- 2026-08-25 — §2's tree gained `embarch-outpost/milestone-1.md`, which existed but had never been listed. Registered while closing its Phase A; §5's "add a new top-level file to the index in the same edit" rule covers `embarch.md` §6 (where it *was* listed) but says nothing about this tree, which is why one of the two drifted and the other didn't.
 
 - 2026-08-25 — Added `embarch-outpost` to §2's repo layout tree (design-only, [repo](https://github.com/gabrieltetar/embarch-outpost) created empty): a Zephyr module compiled into a DUT's own debug firmware, emitting an MCU-load timeline out a TX-only UART. Note for §3's tier question raised by the 2026-08-24 entry below: [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) is now **half-accepted** — its inbound direction folded into five `design.md`s, its outbound direction still proposed — so the file stays at the root with a status line saying which half is which, rather than being deleted as its own §10 planned. A proposal that gets partially accepted is a second shape the missing fourth tier would need to handle.
 

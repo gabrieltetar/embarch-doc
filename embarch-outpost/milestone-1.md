@@ -1,6 +1,6 @@
 # embarch-outpost: milestone-1 (roadmap Milestone 7 — MCU Load Tracing)
 
-**Status: not started, 2026-08-25.** Execution plan for [embarch-roadmap.md](../embarch-roadmap.md) Milestone 7. Every decision this implements is already settled — see [design.md](design.md) and the companion decisions listed per phase. **Nothing below has any code behind it yet**, in any repo.
+**Status: Phase A CLOSED 2026-08-25; B–E not started.** Execution plan for [embarch-roadmap.md](../embarch-roadmap.md) Milestone 7. Every decision this implements is already settled — see [design.md](design.md) and the companion decisions listed per phase.
 
 ## 1. Why this is phased, and why the phases are ordered this way
 
@@ -10,19 +10,30 @@ Milestone 7 spans seven repos, which is too much for one pass. The ordering is n
 - **Phase C (the outpost module itself) is deliberately out of that chain.** It emits bytes down a UART and depends on nothing in this suite — it can be written and built in parallel with A/B by a separate thread. It is also the only phase whose *validation* needs hardware that does not exist yet (§5).
 - **Phase E is last and needs a physical bench**, including a USB-UART bridge nobody has bought yet.
 
+**The timing risk below did not decay: Phase A landed while Milestone 6's firmware was still unflashed**, so decisions 29 and 39 stayed a reshape rather than becoming a migration. Nothing about the ordering below changes; the note is kept because it is still live for Phase B, which is where the reshape actually reaches dev-bench's behavior.
+
 **One timing risk, stated up front because it decays.** [embarch-dev-bench/design.md](../embarch-dev-bench/design.md) §3 decision 29 and [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39 reverse wire shapes that are **code-complete and deployed but never flashed or run** (roadmap Milestone 6). That is precisely what made the reversal cheap. If Milestone 6's dev-bench firmware gets flashed and validated before Phase A/B land, the reshape stops being free and becomes a migration. Sequence accordingly, or accept the cost knowingly.
 
-## 2. Phase A — shared types (no hardware, pure Rust)
+## 2. Phase A — shared types (no hardware, pure Rust) — **CLOSED 2026-08-25**
 
-**Repos:** `embarch-study-designer`, `embarch-topology`.
+**Repos:** `embarch-study-designer`, `embarch-topology` (plus the wire-contract half of `embarch-dev-bench`, which the definition of done below requires and §3 does not cover).
 
-1. **Stream taps** — [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39, §4.8. `Study.streams: Vec<StreamTap>`; `StreamSource` (`GattNotify`/`PowerFrontEnd`/`GattTranscript`/`DevBenchLog`/`Signal`); `StreamEncoding` (`Raw`/`Text`/`Samples`/`GattTranscript`/`OutpostTrace`); `StreamScope`; wire records `StreamOpen`/`StreamChunkBatch { records: [{rx_utc_ms, bytes}] }`/`StreamClose { dropped }`; `StudyResult.streams: Vec<StreamRef>`.
-2. **Retire what it replaces**: `StreamChannel`, `StreamChunk` **and** `StreamChunkBatch`'s `Sample` payload (both variants are still live and both handled by Core in separate arms — collapse them), `DevBenchMessage::GattTranscriptRecord`, `GattOperation::StreamCapture`, `StepResult::power_samples_ref`/`waveform_ref`. Row shapes for `data.csv`/`waveform.csv`/`gatt.csv` **survive unchanged as encodings** — do not redesign the columns.
-3. **Version requirements** — decision 40. `Study.requires { dev_bench_version, firmware_version }` (mandatory, `any` legal, host-side only — must not cross the wire to dev-bench, same as `validations`); `StudyResult.provenance { …, dev_bench_source, firmware_source }` with `ReportedByDevBench`/`ReportedByOutpost`/`FlashedThisRun`/`Declared`.
-4. **`STUDY_DESIGNER_SCHEMA_VERSION` 5 → 6**, one bump covering decisions 39 and 40 together.
-5. **`SignalLink`** — [embarch-topology/design.md](../embarch-topology/design.md) §3 decision 18. `SignalLink { name, origin_role, direction, route }` in the crate's own enrollment storage; `Route::Direct { port_serial }` / `Route::ViaDevBench { rx_pin, tx_pin }`; resolution reusing `Filter` (decision 17's machinery); `validate()` confirming a `Direct` route's port is currently enumerable.
+1. ~~**Stream taps**~~ — done. [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39, §4.8, implemented as `src/streams.rs`. `Study.streams`; `StreamSource`; `StreamEncoding` plus a `SampleLayout` the decision named but did not define (element width/type/byte order only — no scaling, which would be inventing meaning); `StreamScope` (`Steps` inclusive at both ends); `StreamOpen`/`StreamChunkBatch { id, records }`/`StreamClose { id, dropped }`; `StudyResult.streams: Vec<StreamRef>`. Also `validate_taps` and `samples_in`, so Core holds no copy of the tap rules or the sample layout.
+2. ~~**Retire what it replaces**~~ — done, all of it: `StreamChannel`, `StreamChunk` **and** the old `Sample`-carrying `StreamChunkBatch`, `DevBenchMessage::GattTranscriptRecord`, `GattOperation::StreamCapture`, `StepResult::power_samples_ref`/`waveform_ref`, plus the now-orphaned `limits::MAX_BATCH_SAMPLES`/`MAX_RESULT_REF_LEN`. Row shapes for `data.csv`/`waveform.csv`/`gatt.csv` are untouched, as required.
+3. ~~**Version requirements**~~ — done. `Study.requires` (mandatory, no serde default, so omission fails to deserialize rather than defaulting to `any`; blank is a separate pre-flight failure); `StudyResult.provenance` with `VersionSource::{ReportedByDevBench, ReportedByOutpost, FlashedThisRun, Declared}`. A test asserts host-side-only structurally: two studies differing only in `requires` encode byte-identical `StudyStart`s.
+4. ~~**Schema bump**~~ — done, one bump covering both decisions. **It is 7 → 8, not the 5 → 6 both decisions were written against**: decisions 42 and 43 were implemented first and took v6 and v7 in between. Substance unchanged, arithmetic stale; recorded in decision 39 rather than silently corrected.
+5. ~~**`SignalLink`**~~ — done. [embarch-topology/design.md](../embarch-topology/design.md) §3 decision 18, implemented as `src/hardware/signal.rs`, stored as a `[[signals]]` table in the existing `enrollment.toml`. Resolution reuses decision 17's `Filter`/`select` via a new `Filter::for_declared_serial` + `no_vid_gate` (off by default, so dev-bench's own path is unchanged); `validate_signal` confirms a `Direct` route's port is enumerable and returns a downcastable `SignalMismatch` when it doesn't.
 
-**Definition of done:** `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean in both crates and in all four consumers against the new dependency. Every new wire record pinned **in both languages** — a literal COBS frame in dev-bench's ztest suite and the identical pre-COBS body asserted in the Rust crate. That pairing found a real discrepancy the first time it ran (decision 36); it is not optional.
+**Definition of done — met.** `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean in both crates and in all four consumers (`embarch-core`, `embarch-api`, `embarch-ui`, `embarch-umbrella`), across `embarch-study-designer`'s whole feature matrix and its `thumbv8m.main-none-eabi` staticlib cross-compile, and at `embarch-topology`'s default/`hardware`/`bin` feature sets. Every new wire record pinned **in both languages**: literal COBS frames in `embarch-dev-bench`'s ztest suite (28/28 pass on `native_sim`) against identical pre-COBS bodies in the Rust crate.
+
+**Three things Phase A settled that the decisions had left implicit**, all written up in [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39: `StudyStart` carries `streams` (appended after `steps_crc`, so dev-bench's C decoder sees a trailing byte rather than a reshuffle); `SampleLayout`'s variant set; and reuse of the retired stream trio's discriminants rather than leaving holes postcard cannot express.
+
+**Four things deliberately left for later, each recorded where it belongs rather than here:**
+
+- `steps_crc` still seals `steps` alone, so taps ride outside the integrity seal — `embarch-study-designer/design.md` §7.
+- `Step.power_sample` now overlaps a `PowerFrontEnd` tap; not resolved by implementation order — same §7.
+- No CLI or HTTP surface to declare a `SignalLink` from, and no durable `alerts.jsonl` record for a `SignalMismatch` — `embarch-topology/design.md` §5.
+- `embarch-core` was adapted mechanically, not redesigned: it still writes the three fixed CSV paths (chosen from the tap's declared encoding/source) rather than `streams/`, and logs rather than discards a `Raw`/`Text`/`OutpostTrace` tap's bytes. `streams/` is Phase B.
 
 ## 3. Phase B — hosts
 
@@ -57,7 +68,7 @@ Everything here is [design.md](design.md) §3 decisions 1–9 and §5. Build ord
 
 ## 6. Definition of done (milestone)
 
-- [ ] Phase A: schema 6 lands, all consumers green, wire records pinned in both languages
+- [x] Phase A: schema **8** lands (not 6 — see §2), all consumers green, wire records pinned in both languages — **closed 2026-08-25**
 - [ ] Phase B: Core/api/dev-bench green; dev-bench firmware is net smaller
 - [ ] Phase C: outpost builds for real hardware; manifest resolves real thread + ISR names; overhead measured
 - [ ] Phase D: routing declarable in the UI; a trace renders with honest gaps
