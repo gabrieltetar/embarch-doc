@@ -28,16 +28,29 @@ Milestone 7 spans seven repos, which is too much for one pass. The ordering is n
 
 **Three things Phase A settled that the decisions had left implicit**, all written up in [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39: `StudyStart` carries `streams` (appended after `steps_crc`, so dev-bench's C decoder sees a trailing byte rather than a reshuffle); `SampleLayout`'s variant set; and reuse of the retired stream trio's discriminants rather than leaving holes postcard cannot express.
 
-**Four things deliberately left for later, each recorded where it belongs rather than here:**
+**Four things deliberately left for later, each recorded where it belongs rather than here. All four were settled 2026-08-25, as decisions only — implementation is Phase B:**
 
-- `steps_crc` still seals `steps` alone, so taps ride outside the integrity seal — `embarch-study-designer/design.md` §7.
-- `Step.power_sample` now overlaps a `PowerFrontEnd` tap; not resolved by implementation order — same §7.
-- No CLI or HTTP surface to declare a `SignalLink` from, and no durable `alerts.jsonl` record for a `SignalMismatch` — `embarch-topology/design.md` §5.
+- ~~`steps_crc` still seals `steps` alone, so taps ride outside the integrity seal~~ — **settled**: a sibling `streams_crc`, not a widened `steps_crc` (`embarch-study-designer/design.md` §3 decision 39's amendment). §7's stated reason for preferring a second CRC was wrong (nothing invalidates saved studies — `steps_crc` is recomputed on every submit); the real reason is that widening means two non-contiguous C-side spans.
+- ~~`Step.power_sample` now overlaps a `PowerFrontEnd` tap~~ — **settled**: `power_sample` is retired, the tap is the only authoring path (same amendment). Decided on evidence — it was already vestigial in all four consumers — rather than by preference.
+- ~~No CLI or HTTP surface to declare a `SignalLink` from, and no durable `alerts.jsonl` record for a `SignalMismatch`~~ — **settled**: `POST /signals` + `GET /signals` on Core, deliberately **no** `embarch-topology` CLI mirror; and the durable alert record closes as not-needed-yet with a named trigger, since `SignalMismatch` has no caller anywhere and no signal is declarable or physically routable yet (`embarch-topology/design.md` §3 decision 18's amendment).
+
+**One thing settling those surfaced, which none of them predicted:** `STUDY_DESIGNER_SCHEMA_VERSION` was guarding two hops with different exposure and **splits in two** — a dev-bench wire version and a host type version (`embarch-study-designer/design.md` §3 decision 12's amendment, [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 22). It is Phase B's to implement alongside the rest.
+
 - `embarch-core` was adapted mechanically, not redesigned: it still writes the three fixed CSV paths (chosen from the tap's declared encoding/source) rather than `streams/`, and logs rather than discards a `Raw`/`Text`/`OutpostTrace` tap's bytes. `streams/` is Phase B.
 
 ## 3. Phase B — hosts
 
-**Repos:** `embarch-core`, `embarch-api`, `embarch-dev-bench`.
+**Repos:** `embarch-core`, `embarch-api`, `embarch-dev-bench`, plus `embarch-study-designer` and `embarch-topology` for the type/surface changes item 0 below adds.
+
+0. **The five decisions Phase A left open, settled 2026-08-25 and implemented here** (§2). Sequence these first: three of them change types every other item in this phase compiles against.
+   - **`streams_crc`** — a sibling seal over `Study.streams`, carried on `StudyStart` after `streams`, checked independently at both hops exactly as `steps_crc` is. `steps_crc`'s own definition does not move ([embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 39's amendment).
+   - **Retire `Step.power_sample`/`PowerSampleWindow`** — same amendment. Nothing reads it today, so this is a deletion, not a migration: the C decoder loses one `Option`-byte read, the encoder one write, and two `embarch-api` CLI/MCP description strings stop saying "power_sample steps."
+   - **`ValidationSource` names the tap** for stream-fed checks (no `step_index`); `DataChannel` narrows to `CapturedData`/`GattActivity` ([embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 19's amendment). No dev-bench work — `validations` never crosses that wire — but this is what stops three `DataChannel` variants naming CSV files item 1 below deletes.
+   - **Split `STUDY_DESIGNER_SCHEMA_VERSION`** into a dev-bench wire version (`Hello`/`HelloAck`) and a host type version (`GET /status`), and re-derive both numbers here rather than trusting any written in a doc ([embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 12's amendment; note decisions 44/45 have their own prospective bump reserved, so whichever ships first takes the number).
+   - **`POST /signals` + `GET /signals` on Core**, no `embarch-topology` CLI mirror ([embarch-topology/design.md](../embarch-topology/design.md) §3 decision 18's amendment). Folded into item 1's Core work.
+   - **Not in this phase, deliberately:** the durable `alerts.jsonl` record for a `SignalMismatch`. Closed as not-needed-yet with a named trigger (a declarable signal *and* a physically real route), not carried as owed work — see decision 18's amendment.
+
+   The first two are dev-bench wire changes and share **one** bump. They are still priced as a reshape rather than a migration only because Milestone 6's firmware remains unflashed — re-verify that before starting, the same way §2's timing risk says to.
 
 1. **Core** — [embarch-core/design.md](../embarch-core/design.md) §3 decisions 30, 31. `streams/` under `study_results/<id>/` replacing the three fixed CSV paths; **raw bytes always written before any decode is attempted**; a `Signal` tap with a `Direct` route opens a third serial port (resolved via `embarch_topology`'s `SignalLink`, taking neither `hw_lock` nor `study_lock`); manifest storage bound by the study's own flash and verified by build ID; retention (`EMBARCH_STREAM_MAX_BYTES`, `EMBARCH_STUDY_RESULTS_KEEP`); `GET /study/{id}/stream/{name}` with the three old routes kept as aliases for one release; `POST /signals`; the `POST /study` version gate (dev-bench checked for real, `409` naming both strings, no step run).
 2. **api** — [embarch-api/design.md](../embarch-api/design.md) §3 decisions 39, 40. Manifest pickup from the build and transport to Core; `study_stream_data`/`list_study_streams` with the three old tools as aliases; `run_study --reflash none|dev-bench|dut|both` (default `none`) and `--allow-version-mismatch` (recorded in the result, never silent). **`embarch-api` must never run `git checkout`** — reflash builds the tree as it stands and then verifies; a wrong tree fails naming both revisions.
@@ -69,7 +82,7 @@ Everything here is [design.md](design.md) §3 decisions 1–9 and §5. Build ord
 ## 6. Definition of done (milestone)
 
 - [x] Phase A: schema **8** lands (not 6 — see §2), all consumers green, wire records pinned in both languages — **closed 2026-08-25**
-- [ ] Phase B: Core/api/dev-bench green; dev-bench firmware is net smaller
+- [ ] Phase B: §3 item 0's five settled decisions land first (one shared dev-bench wire bump, re-derived not copied); Core/api/dev-bench green; dev-bench firmware is net smaller
 - [ ] Phase C: outpost builds for real hardware; manifest resolves real thread + ISR names; overhead measured
 - [ ] Phase D: routing declarable in the UI; a trace renders with honest gaps
 - [ ] Phase E: a real study captures a real trace from the real reference-dut DUT over the bypass route
