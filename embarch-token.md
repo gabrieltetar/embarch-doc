@@ -74,6 +74,8 @@ This doc doesn't prescribe *when* to rotate (no expiry, no scheduled cadence) �
 
 ## 8. Open questions / future work
 
+**All six items below were re-examined in the 2026-08-25 suite-wide design pass and every one was deliberately kept open rather than answered — the user's explicit call.** That is worth stating at the top of the section, because a list of six open security questions reads as neglect when it is in fact a posture: today every byte of this token stays on one machine's loopback (WSL2⟷Windows), where TLS buys nothing, per-caller identity distinguishes one caller from itself, and a rotation cadence would be process for a risk a single-engineer deployment does not yet carry. **The trigger that turns most of this from deferred into owed is precise and mechanical: the first time Core binds to anything other than a loopback address.** `embarch_topology::software::recommended_bind_address` already computes exactly that, so it is a gate something can check rather than a judgment someone has to remember — and the LAN/Pi milestone must not quietly ship without it.
+
 - **Per-caller identity.** One shared token can't distinguish which caller made a request. Revisit if Core ever needs to tell "which caller," not just "authorized or not" (`embarch-core/design.md` §6, §10).
 - **No TLS in transit** (§4/§5) — the token crosses the network in cleartext. Not yet assessed against the anticipated LAN/Pi deployment (`embarch-core/design.md` §7); may need revisiting before Core is reachable over a real, less-trusted LAN rather than a WSL2⟷Windows loopback.
 - **No rotation grace window / hot-reload.** Both components must restart to pick up a new token, with no dual-token overlap period (§7). Not designed around further since it's an accepted, low-frequency cost — revisit only if rotation ever needs to happen without a stop-the-world restart.
@@ -82,6 +84,8 @@ This doc doesn't prescribe *when* to rotate (no expiry, no scheduled cadence) �
 - **Native Linux/macOS path is unvalidated against real hardware/service.** `embarch-core/milestone-2.md` deliberately scoped hardware validation to Windows+WSL2 (today's actual topology); `/var/lib/embarch/token` ships as code without the same real-world confirmation the Windows path gets.
 
 ## 9. Changelog
+
+- 2026-08-25 — Suite-wide design pass re-read all six §8 items and kept every one open by explicit decision, adding a preamble that says so and names the trigger (Core binding to a non-loopback address) rather than leaving six security bullets looking unattended.
 
 - 2026-07-21 — Initial draft, consolidating token-handling content previously scattered across `embarch-core/design.md` (§6, §10) and `embarch-api/design.md` (§8, §12) into one canonical doc; those docs now point here instead of restating this content.
 - 2026-07-21 — Documented the file-based auto-generation design (§2, §3.1): explicit `EMBARCH_TOKEN`/`token`/`token_env` still wins if set; otherwise Core generates and persists a token to a canonical machine-wide path (`%ProgramData%\embarch\token` / `/var/lib/embarch/token`), which embarch-api reads as a fallback discovery step, replacing the `dev-token-change-me` literal entirely (§5). Covers the WSL2⟷Windows split via path translation (§3.1); explicitly does not cover a genuinely separate host (§8). Rotation (§7) and known gaps (§6) updated to match. Implementation tracked in `embarch-core/milestone-2.md` and `embarch-api/milestone-2.md`.
