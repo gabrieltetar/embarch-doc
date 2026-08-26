@@ -397,6 +397,29 @@ There's a third, rarer one: `EMBARCH_SIGNAL_BAUD` (default `1000000`) sets the l
 
 Flashing the bench itself goes through EmbArch like anything else: `embarch-api build-and-flash-dev-bench`, then `reset-dev-bench` (flashing halts the chip rather than starting it running), or `run-study --reflash dev-bench` to do all of it as part of a run. This paragraph used to say Core "deliberately has no business reflashing the fixture" and that you should use a hand-run `west flash` — that stopped being true in August 2026, once the bench turned out to use a debug probe Core already speaks natively.
 
+### 10.2 Wiring a DUT signal in, and reading the trace afterwards
+
+A study can record more than pass/fail: if your DUT's firmware has the [embarch-outpost](embarch-outpost/design.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART, and a study can capture it. Two things have to be true first, and both are done in the UI (`embarch-ui`, the tool the VS Code launcher opens — there is deliberately no CLI for either).
+
+**1. Tell EmbArch where the wire goes.** A cable between two headers is invisible to software — nothing can detect it — so it can only be stated. In the **Topology** tab, "Declare a signal": give it a name (that's what a study will tap it by), and pick a route.
+
+- **direct** — the signal goes straight to a serial port on the machine running Core, bypassing the dev bench. You pick the port from a list Core itself enumerates, because a port on *your* machine is not necessarily a port on Core's. This is what the outpost uses today, for a hardware reason rather than a preference: the bench has no spare pins for it yet.
+- **via dev-bench** — the signal terminates on dev-bench pins and the bench relays it. Nothing on this bench has the pins for it yet, but declaring it is a one-field change when it does, and no saved study has to be rewritten — a study names the *signal*, never the cable.
+
+Declaring the same name again moves the route. That is the intended way to rewire, not a mistake.
+
+**2. Add a tap to the study.** In the **Study Designer**, "+ Outpost trace tap": give the output a name and pick the signal. A study whose tap names a signal nothing has declared is refused before it runs, which is why step 1 comes first.
+
+**Then read it.** After the run, the **Trace** tab renders the recorded timeline — one lane per thread, one for CPU idle, one per interrupt, with your own `OUTPOST_EVT` markers as ticks. The run card's "Open in Trace" button takes you straight there.
+
+Three things it will tell you that are easy to misread as bugs, and are not:
+
+- **Threads shown as `0x08058240` instead of names.** Most of a real build's threads have no symbol a tool can read a name out of, so the trace shows the pointer it actually has. That is deliberate — a made-up name on a real timeline is worse than a number.
+- **Red hatched bands.** The firmware dropped records there, and says how many. Records that *survived* inside a band are still drawn: the band means "this interval is incomplete", not "nothing happened here".
+- **"This trace has no names."** The manifest describing your build did not match the firmware that produced the capture — usually because the board was flashed out of band between the study's flash and its run. The timeline is real and readable, it just has no labels. What EmbArch refuses to do is apply the *wrong* manifest, which would relabel every thread and marker and produce something that reads perfectly and is entirely wrong.
+
+**One honest caveat.** As of August 2026 no outpost byte has crossed a real UART on any board — the capture pipeline is verified end to end against a simulator, and every timing-related default in it is an unmeasured guess. Treat the first real trace as data about the trace, not just about your firmware.
+
 ## 11. Working on EmbArch itself
 
 Skip this unless you're changing EmbArch, not just using it. Everything above needs only the release archive.
@@ -486,6 +509,8 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 10. **Keep the config out of the repo yourself** — add `embarch/` to `.git/info/exclude` rather than the committed `.gitignore`, especially in a repo you don't own.
 
 ## Changelog
+
+- 2026-08-26 — **New §10.2: declaring a DUT signal's route, adding an outpost trace tap, and reading the trace** — the human-facing half of Milestone 7 Phase D. Written for the reader who will hit the three things about a rendered trace that look like bugs and are not: raw thread pointers instead of names, red hatched bands over intervals that still contain data, and a trace that renders with no labels at all because the manifest did not match the firmware. Ends with the caveat that matters more than any of it: no outpost byte has crossed a real UART yet, so every timing-related default in this pipeline is an unmeasured guess.
 
 - 2026-08-25 — **§10 gained the reflash/version story and the capture-listing commands, and three of its own statements turned out to be false.** New material: `list-study-streams` (read it *before* a capture — it's the only thing that reports truncation) and `study-stream-data --name <capture>`; `--reflash none|dev-bench|dut|both`, including the plain statement that **EmbArch will not run `git checkout` for you** and that a wrong tree fails before the board is touched; `--allow-version-mismatch` and where the override is recorded; and the limit that a DUT's version describes *the tree that was built*, not a readback, while the bench's is a real measurement. What was wrong: the chapter's opening note and its "what's genuinely not there yet" list both still said `embarch-api`'s `run-study`/`study-status` were missing, when they shipped in August 2026 and have run against real hardware; the two example commands were written in MCP snake_case (`run_study`) rather than the CLI's kebab-case; and the closing line told you to flash the bench with a hand-run `west flash` because Core "deliberately has no business" doing it — a decision reversed in August 2026, with `build-and-flash-dev-bench` and `--reflash dev-bench` both real since.
 
