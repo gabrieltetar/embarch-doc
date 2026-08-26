@@ -362,6 +362,24 @@ That serial link now carries more than discrete `Study` submission and `StudyRes
 
     Both constants move, per decision 12's own rule: the wire constant because a message dev-bench encodes changed shape, and the host constant because its triggers are a strict superset of the wire constant's and `schema_version.rs`'s compile-time assertion refuses to let it trail. Decision 36's both-languages pinning applies in full — this is a new field on a record that crosses that wire, which is precisely the case the rule exists for.
 
+49. **Decision 46's newtype is generalised to `Bounded<T, N>` and applied to the result types — because `steps` was neither the worst instance nor the one that crashed the release build, 2026-08-25.** Decision 46 fixed `Study.steps` and stopped there, on the reasoning that it was the field that had actually crashed something. Measuring the rest immediately afterwards showed how narrow that was:
+
+    | Type | Before | After |
+    |---|---:|---:|
+    | `StudyResult` | 1,293,608 | 9,024 |
+    | `StepResult` | 20,200 | 696 |
+    | `DevBenchMessage` | 20,208 | 2,128 |
+
+    `StudyResult.steps` was a 64-slot inline array of 20 KB `StepResult`s — **1.29 MB**, in a type Core assembles and `embarch-api` deserializes. And `StepResult` was 20 KB because `gatt_activity` inlined 32 × 536-byte records and `gatt_services` 8 × 296, whether or not the step captured any. Three fields, the same defect as `steps`, none of them touched by decision 46.
+
+    **This is the one that matters most, and decision 46 did not address it at all.** `embarch-core`'s `build_runtime` sets a 64 MiB thread stack, and its own comment records why: the first real `run_study` POST crashed the **release** Windows service with `STATUS_STACK_OVERFLOW` on `spawn_blocking(run_study_to_completion)` — a `StudyResult` path, not a `Study` one. Decision 46's fix could not have prevented that crash. This one addresses its actual cause.
+
+    `StepList` becomes `pub type StepList = Bounded<Step, MAX_STEPS_PER_STUDY>`, so decision 46's call sites are unchanged. `captured_data` is deliberately **left alone**: at 528 bytes it is 0.5% of the old `StepResult` and would have touched dozens of byte-level `from_slice`/`extend_from_slice` call sites for no meaningful gain — the cut is where the inline arrays are big, not everywhere they exist.
+
+    **Still no schema bump, and now asserted for more than one element type.** Decision 46 pinned this with a test comparing postcard bytes against the `heapless` shape for `Step`; decision 49 applies the newtype to three fields with different element types, so the property is re-asserted generically. Better still, `gatt_services`' existing round-trip test now encodes from a `Bounded` and decodes into a plain `heapless::Vec` — which is precisely the host-encodes/dev-bench-decodes case in miniature, and the first test in this crate to prove the two shapes agree rather than assert it in prose.
+
+    **The `no_std` shape is asserted too, in the opposite direction.** A test requires `size_of::<StepResult>() > 4096` without `alloc`, so that "make it smaller" can never be applied to the one build that has no allocator to make it smaller with.
+
 ## 4. Concrete data model
 
 Field-level, resolving milestone-3.md §3.1: concrete enough that a `#[derive(Serialize, Deserialize)]` Rust translation is mechanical — exact byte/UUID representations (`[u8; 16]` vs. a `uuid`-crate newtype, `no_std`-compatible either way) are implementation detail, not a design choice left open here. Every `Vec<T>`/`String` below is `heapless::Vec<T, N>`/`heapless::String<N>`, not `alloc`-based — §3 decision 15's `limits` module defines each `N`.
@@ -564,6 +582,8 @@ No convenience "block until done" wrapper (a `run_study`-side analogue of `build
 - **`ZephyrBleDefExtractor` (§3 decision 33) is scoped to exactly one firmware's macro conventions** — generic at the trait boundary, deliberately narrow at the implementation, per the user's explicit call during Milestone 3's design pass. A second firmware project's own extractor is new, separate future work, not a generalization of this one.
 
 ## 8. Changelog
+
+- 2026-08-25 — **Decision 49: `StepList` generalised to `Bounded<T, N>` and applied to `StudyResult.steps`, `StepResult.gatt_activity` and `StepResult.gatt_services`.** `StudyResult` 1,293,608 → 9,024 bytes, `StepResult` 20,200 → 696, `DevBenchMessage` 20,208 → 2,128. Raised by measuring what decision 46 had *not* fixed: `StudyResult` is the type on the path that actually crashed the release Windows service, which decision 46's `Study` fix could not have prevented. Module renamed `step_list` → `bounded`; `StepList` survives as a type alias. Still no schema bump, now asserted generically plus a `no_std`-shape guard in the opposite direction.
 
 - 2026-08-25 — **Suite-wide design pass: decisions 46 and 47.** Decision 46 fixes the stack-overflow risk at the type instead of the stack — `Study.steps` becomes a heap `Vec` on the host behind an `alloc` feature, `heapless` for the no_std dev-bench build, no schema bump because both serialize identically. Decision 47 adds `hardware_id` to `HelloAck` (wire 9 → 10, host 10 → 11), closing `embarch-topology` §5's UART-vs-JTAG same-chip gap. §7's power-dependent bullets — the physical dev-bench design, `Sample.value`'s grain, and the `SignalCheck` variant set — are now **deferred with power profiling as a whole** rather than individually open, following the user's call to move Milestone 4 out of the near sequence.
 
