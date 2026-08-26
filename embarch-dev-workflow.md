@@ -83,9 +83,31 @@ but §6 is referenced by name from nine `CLAUDE.md` files and from
 label does. `embarch-study-designer/design.md` §4.3a already sets that
 precedent.
 
-**This is the single most-repeated undocumented step in the suite.** Two
-handoffs in a row pointed at "`embarch-dev-workflow.md`" for it while it was
-not written down anywhere; every session rediscovered it from scratch.
+**`embarch deploy-core` now does all of this in one command — start there.**
+[embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32. It
+runs steps 1–3 below, and — the part worth having a command for — it
+**verifies the installed binary actually changed** afterwards, which is the
+one thing the manual procedure cannot do for you and the failure this section
+warns about twice:
+
+```sh
+embarch deploy-core --windows-root /mnt/c/Users/<you>/source/repos   # first run
+embarch deploy-core                                                  # thereafter
+```
+
+`--dry-run` prints the resolved plan and touches nothing; `--print-script`
+does the unelevated half and hands you the privileged step. Everything below
+is still accurate and is what the command automates — read it to understand
+what it is doing, or when it refuses and you need to do a step by hand.
+
+**Why this section still exists in full, and why it read as pure prose for two
+weeks.** It is *"the single most-repeated undocumented step in the suite"* —
+two handoffs in a row pointed at "`embarch-dev-workflow.md`" for it while it
+was not written down anywhere, and every session rediscovered it from scratch.
+Writing it down fixed the forgetting and not the re-typing: every deploy after
+that was still a hand-assembled `rsync` loop and a from-scratch PowerShell
+script. That gap between "documented" and "automated" is the thing worth
+noticing here.
 §1–2 cover a *dev* Core on a scratch port, which is the right default and
 touches nothing real. This section is the other case: a change to
 `embarch-core` that has to reach the **installed Windows service** the whole
@@ -237,7 +259,9 @@ board's firmware **must be reflashed in the same sitting**. Core sends
 `compatible: false` and Core refuses the link. There is no partial-upgrade
 mode, by design — so check that constant against what the board is running
 before you deploy, not after the handshake fails. `GET /dev-bench/hello`
-reports what the bench claims.
+reports what the bench claims, and `embarch deploy-core` prints the constant
+out of the source it is about to deploy so the check happens before the build
+rather than after the handshake fails.
 
 **Setting an environment variable for the installed Core.** Core reads knobs
 like `EMBARCH_SIGNAL_BAUD`, `EMBARCH_FLASH_BACKEND` and the tool-path overrides
@@ -306,6 +330,8 @@ then api ([embarch-core/design.md](embarch-core/design.md) §3 decision 30).
 
 
 ## Changelog
+
+- 2026-08-26 — **§4a now opens with `embarch deploy-core` rather than with five manual steps.** The procedure is unchanged and is kept in full — it is what the command automates, and what you need when the command refuses — but a section whose own text called its subject the most-repeated undocumented step in the suite had, two weeks later, still been re-typed by hand every single deploy. That gap between documented and automated is recorded rather than quietly closed: writing something down stops people forgetting it and does not stop them re-deriving it. See [embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32, including why the command's *verification* step is the part that justifies it.
 
 - 2026-08-25 — **Added §4a: how a Core change actually reaches the live Windows service.** rsync three crates Linux → Windows (shared crates first, Core last — Core's two `path` deps mean syncing Core alone builds against stale siblings and compiles anyway), build with native `cargo.exe`, then `update` from the *installed* binary. Written because this was **the single most-repeated undocumented step in the suite** — two handoffs in a row cited this file for it while it was not here, so every session re-derived it. Carries the two things that have actually gone wrong: `update`'s `current_exe()` footgun (running the new build against itself renames it to `.bak`, fails the copy, rolls back, and never reaches `start()` — leaving the live Core stopped while the binary looks fine), and the Windows copies not being git clones at all, which once let `check_target_powered` reach a deployed binary without ever being version-controlled. Numbered `4a` rather than `5` on purpose: §6 is referenced by name from nine `CLAUDE.md` files and DOC-PROTOCOL.md §6, so renumbering costs more than the label does.
 
