@@ -412,13 +412,22 @@ Declaring the same name again moves the route. That is the intended way to rewir
 
 **Then read it.** After the run, the **Trace** tab renders the recorded timeline — one lane per thread, one for CPU idle, one per interrupt, with your own `OUTPOST_EVT` markers as ticks. The run card's "Open in Trace" button takes you straight there.
 
+Below the timeline is the **load repartition**: for each thread, each interrupt and CPU idle, how many times it ran, how long it ran for, and what share of the captured window that is. Read the coverage line above the table first — it says what fraction of the window the firmware reported dropping records across, and a repartition computed over an interval with dropped records is not a measurement.
+
+Two things in that table are deliberate and look like arithmetic errors:
+
+- **The shares do not add up to 100%.** An interrupt runs *inside* whatever it interrupted, so its time is counted twice on purpose; and Zephyr's idle thread is reported both as its own idle records and as an ordinary thread, so those two rows are the same time measured two ways and are never added together. Where those two idle numbers disagree, that disagreement is information — it means some idle periods had no closing record.
+- **A "Not counted" column with time in it.** A span that crosses a dropped-record gap, or that is missing its start or end record, is drawn on the timeline so you can see it happened, but its width is a *shape* rather than a duration — so it is kept out of the total and reported separately instead. The "Entries" count still includes it: how many times something ran is not in doubt even when how long is.
+
 Three things it will tell you that are easy to misread as bugs, and are not:
 
 - **Threads shown as `0x08058240` instead of names.** Most of a real build's threads have no symbol a tool can read a name out of, so the trace shows the pointer it actually has. That is deliberate — a made-up name on a real timeline is worse than a number.
 - **Red hatched bands.** The firmware dropped records there, and says how many. Records that *survived* inside a band are still drawn: the band means "this interval is incomplete", not "nothing happened here".
 - **"This trace has no names."** The manifest describing your build did not match the firmware that produced the capture — usually because the board was flashed out of band between the study's flash and its run. The timeline is real and readable, it just has no labels. What EmbArch refuses to do is apply the *wrong* manifest, which would relabel every thread and marker and produce something that reads perfectly and is entirely wrong.
 
-**One honest caveat.** As of August 2026 no outpost byte has crossed a real UART on any board — the capture pipeline is verified end to end against a simulator, and every timing-related default in it is an unmeasured guess. Treat the first real trace as data about the trace, not just about your firmware.
+**One honest caveat, and it did not go away when the hardware arrived.** As of late August 2026 no outpost byte has crossed a real UART on any board. The module is compiled into a real DUT firmware and flashed onto real silicon, and it runs there — but on that bench the trace pin is not wired to anything the host can read, so nothing has been captured. The capture pipeline is verified end to end against a simulator only, and every timing-related default in it is an unmeasured guess. Treat the first real trace as data about the trace, not just about your firmware.
+
+**And a practical one if you are wiring this up yourself:** the pin your board's schematic labels as the debug UART's transmit pin is not necessarily the one your firmware transmits on. On the board this was first tried against, two nets are physically crossed and the firmware drives the *other* pin — so a bridge wired from the schematic reads a dead line and looks exactly like broken firmware. Confirm by flashing something that prints, and watching for it.
 
 ## 11. Working on EmbArch itself
 

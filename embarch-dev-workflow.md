@@ -205,6 +205,10 @@ own `.bak` behind** on success — the process doing the replacing is still
 executing from that file — cleaned up by the *next* `update` call. A
 lingering `.bak` is expected, not a failed run.
 
+**A refusal is reported; a prompt that never appears is not — found 2026-08-26.** `update` prints `Error: elevation declined (UAC prompt cancelled)` when the user says no. But a launch where the consent dialog never renders at all **exits `0`, prints nothing but the benign log warning, and does nothing** — the exe is untouched, no `.bak` appears, and the service keeps running the old binary. So do not read a clean exit as a successful deploy: check the binary's size/timestamp, or probe a route only the new build has. There is no unelevated fallback to reach for either — `sc.exe sdshow com.embarch.core` grants Interactive Users `CCLCSWLOCRRC` (query only, no `RP`/`WP`), so a non-admin can neither stop nor start it, **even though the install directory itself is writable** because it lives under the user's own profile. The writable directory is a trap: you can swap the binary and still not be able to restart the service onto it.
+
+When `update` will not go through, the reliable path is to do the elevation yourself around a script that logs from *inside* the elevated context — `Start-Process powershell -Verb RunAs -Wait` running a `.ps1` that `Tee-Object`s each step to a file. That gives one UAC prompt and a readable transcript of stop/copy/start, instead of a child console that vanishes.
+
 **`stop` → copy → `start` (simpler when you want to see each step).** Same
 outcome, no `current_exe()` subtlety, at the cost of doing the elevation
 yourself.
@@ -234,6 +238,8 @@ board's firmware **must be reflashed in the same sitting**. Core sends
 mode, by design — so check that constant against what the board is running
 before you deploy, not after the handshake fails. `GET /dev-bench/hello`
 reports what the bench claims.
+
+**Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
 
 **Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
 `/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
