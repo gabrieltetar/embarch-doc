@@ -340,20 +340,45 @@ export EMBARCH_TOKEN=<the contents of the token file on the Core machine>
 
 ## 10. Dev bench and studies
 
-> **Not usable yet — but for a narrower reason than this note used to give.** Core's `/study*` endpoints *are* implemented, and were validated against a real dev bench in August 2026. What is missing is the rest: `embarch-api`'s `run_study`/`study_status`, power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. This chapter is here so you know what's coming, not so you can follow it. Progress: [embarch-roadmap.md](embarch-roadmap.md)'s Next bucket.
+> **Partly usable — this note has been narrowed twice, and needed narrowing again.** Core's `/study*` endpoints and `embarch-api`'s `run-study`/`study-status` are both implemented and have run against a real dev bench and a real DUT. What is missing is **hardware**: power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Read this chapter as "here is how the parts that exist work," not as a tutorial you can follow end to end. Progress: [embarch-roadmap.md](embarch-roadmap.md)'s Next bucket.
 
 `embarch-dev-bench` is a second board — a **test fixture**, not your DUT — that plays your device's BLE counterpart on demand. Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.
 
 The unit of work is a **Study**: an ordered list of steps, each a BLE action (advertise, connect as central or peripheral, read/write/notify/indicate/subscribe a GATT characteristic, capture a stream) or a power-sampling window, with pass/fail checks. You'll submit one and poll it:
 
 ```sh
-embarch-api run_study --study-file my-study.json     # returns a study_id
-embarch-api study_status <study_id>                  # pending | running | completed | failed
+embarch-api run-study --study-file my-study.json     # returns a study_id
+embarch-api study-status <study_id>                  # pending | running | completed | failed
+embarch-api list-study-streams <study_id>            # what it captured, and whether anything was lost
+embarch-api study-stream-data <study_id> --name power --out power.csv
 ```
+
+**Read `list-study-streams` before you read a capture.** It lists every capture the study declared, how many bytes each wrote, and — the column that matters — whether it was **truncated**. A truncated capture is a short one: either retention rotation deleted an older segment, or the bench reported dropping records. Nothing else in the suite will tell you, and a short capture read as a complete one is the failure this whole area is built to prevent. A capture listed with 0 bytes was declared and produced nothing, which is a different problem from one that was never declared at all.
+
+`study-stream-data <study_id> --name <capture>` fetches one capture by the name your study gave it. Add `--raw` for the byte-for-byte bytes instead of the rendered CSV, and use `--out` rather than piping when a capture isn't text. The older `study-power-data`/`study-waveform-data`/`study-gatt-data` still work and each fetch one specific capture; they're kept for one release and can't report truncation.
+
+### Saying which firmware a study is for
+
+A study declares the bench and DUT builds it's meant to run against (`requires`), and `"any"` is a legal, explicit answer for either. Core checks the bench's declaration against what the bench actually reports and **refuses the study before any step runs** if they disagree, naming both strings.
+
+`--reflash` is how you say what to do about a disagreement:
+
+```sh
+embarch-api run-study --study-file my-study.json --reflash dev-bench
+embarch-api run-study --study-file my-study.json --reflash dut --project my-firmware
+```
+
+`none` (the default) means "run against what's already on the boards" — flashing is the destructive half, and a study that just observes a board you flashed by hand shouldn't quietly overwrite it. `dev-bench`, `dut`, or `both` rebuild and reflash **from your working tree exactly as it stands right now**.
+
+**EmbArch will not run `git checkout` for you, ever.** If your tree isn't at the revision the study asks for, the run fails and names both revisions — and stops before touching the board. Moving your tree is your call, not a test harness's. `--project` (plus the usual `--board`/`--app`/etc.) is needed only for a DUT reflash: a study isn't tied to a project, but rebuilding a DUT's firmware is.
+
+`--allow-version-mismatch` runs anyway. The override is written into the result (`provenance.overrides`, naming what was required and what actually ran) — so a result that was waved through never looks like one that met its requirements.
+
+One limit worth knowing: nothing can read a firmware version back off a DUT. When EmbArch says a run flashed a particular version, it means "this run built and flashed *this tree*, at this revision" — derived by running `git describe` in your project (or whatever `version_command` you declare for it). The bench is different: it reports its own version over its link, so that one is a real measurement.
 
 Where it plugs in: your DUT keeps its own probe on Core, and the bench connects to Core over a **second, separate serial link**. Core auto-detects which port the bench is on (it's already implemented — `embarch-core detect-dev-bench`). One dev bench, one DUT, one study at a time; testing two DUTs means two independent Core+bench pairs.
 
-What's genuinely not there yet: `run_study`/`study_status` in the API, power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Today it's BLE-proximity-only, and only in principle. (Core's own `/study*` endpoints came off this list in August 2026 — they're built and have run against a real bench.)
+What's genuinely not there yet: power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Today it's BLE-proximity-only. (Core's `/study*` endpoints came off this list in August 2026, and `embarch-api`'s `run-study`/`study-status` had come off it before that — both are built and have run against a real bench; this paragraph kept listing them anyway until 2026-08-25.)
 
 ### 10.1 Where a study's data lands, and the two knobs that keep it from filling your disk
 
@@ -370,7 +395,7 @@ Both defaults are reasoned rather than measured — nobody has yet run a capture
 
 There's a third, rarer one: `EMBARCH_SIGNAL_BAUD` (default `1000000`) sets the line rate when Core reads a DUT signal on its own serial port rather than through the bench. Only relevant once you've declared such a signal and wired a USB-UART bridge to it; leave it alone otherwise.
 
-Flashing the bench itself is a plain `west flash` you run by hand — Core's probe access is scoped to your DUT and deliberately has no business reflashing the fixture that's testing it.
+Flashing the bench itself goes through EmbArch like anything else: `embarch-api build-and-flash-dev-bench`, then `reset-dev-bench` (flashing halts the chip rather than starting it running), or `run-study --reflash dev-bench` to do all of it as part of a run. This paragraph used to say Core "deliberately has no business reflashing the fixture" and that you should use a hand-run `west flash` — that stopped being true in August 2026, once the bench turned out to use a debug probe Core already speaks natively.
 
 ## 11. Working on EmbArch itself
 
@@ -461,6 +486,8 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 10. **Keep the config out of the repo yourself** — add `embarch/` to `.git/info/exclude` rather than the committed `.gitignore`, especially in a repo you don't own.
 
 ## Changelog
+
+- 2026-08-25 — **§10 gained the reflash/version story and the capture-listing commands, and three of its own statements turned out to be false.** New material: `list-study-streams` (read it *before* a capture — it's the only thing that reports truncation) and `study-stream-data --name <capture>`; `--reflash none|dev-bench|dut|both`, including the plain statement that **EmbArch will not run `git checkout` for you** and that a wrong tree fails before the board is touched; `--allow-version-mismatch` and where the override is recorded; and the limit that a DUT's version describes *the tree that was built*, not a readback, while the bench's is a real measurement. What was wrong: the chapter's opening note and its "what's genuinely not there yet" list both still said `embarch-api`'s `run-study`/`study-status` were missing, when they shipped in August 2026 and have run against real hardware; the two example commands were written in MCP snake_case (`run_study`) rather than the CLI's kebab-case; and the closing line told you to flash the bench with a hand-run `west flash` because Core "deliberately has no business" doing it — a decision reversed in August 2026, with `build-and-flash-dev-bench` and `--reflash dev-bench` both real since.
 
 - 2026-08-25 — **New §10.1: where a study's data lands, and the two retention knobs an operator may actually need** (`EMBARCH_STREAM_MAX_BYTES`, `EMBARCH_STUDY_RESULTS_KEEP`, plus the rarer `EMBARCH_SIGNAL_BAUD`) — `embarch-core/design.md` §3 decision 30 asked for these rows by name, being the first EmbArch artifact unbounded both within a run and across runs. Also corrected §10's opening note and its "what's genuinely not there yet" list, both of which still said Core's `/study*` endpoints were unimplemented; they shipped in August 2026 and ran against a real bench. The chapter's overall "not usable yet" verdict stands — for the rest of the list, which is unchanged.
 
