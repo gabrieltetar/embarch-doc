@@ -324,6 +324,7 @@ Run `embarch doctor` first. It checks these in order and tells you the fix. What
 | **Artifact not fresh** | The build succeeded but didn't write where `artifact_path` says. Almost always the west build-directory trap in [§5.1](#51-finish-the-config) |
 | **Flash fails with a path error** | Core reads the firmware file from **its own** disk. On Windows+WSL2 that needs `artifact_path_for_core` — the `\\wsl.localhost\...` form of the same file. `init` sets this; `doctor` verifies both paths name the same file |
 | **Flashing on a separate-box Core** | Not a bug, not fixable today. There's no way to get the artifact's bytes onto a remote Core's filesystem. Status, reset, and serial work; flashing doesn't |
+| **A study fails and Core's log doesn't say why** | Ask the bench. `embarch-core dev-bench-logs --tail 100` prints what dev-bench's own firmware logged over the link — its boot record, whatever Zephyr's BT host complained about, and, if it crashed, the fatal-error dump. A short uptime in the `uptime … at handshake` line means the bench rebooted, which used to be invisible. Run it on the machine **Core** runs on |
 | **Wrong board flashed** | You're past what EmbArch checks. `chip` is passed to probe-rs verbatim, and only one probe is supported — the first one found. Unplug the other one |
 
 ## 9. The token

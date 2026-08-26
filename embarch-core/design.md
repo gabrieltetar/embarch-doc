@@ -326,6 +326,24 @@ embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
 
     `cargo build`/`test` (132)/`clippy --all-targets -- -D warnings` clean; the unit tests cover family matching, the refusal message, device-name mapping, cross-OS rejection, extension staging and the no-chip-erase property. **What is still not established is the counterfactual**: that probe-rs is what killed the board, rather than something else that a full erase-and-reprogram happened to clear.
 
+37. **The dev-bench debug file: every `LogLine` Core receives lands in a daily-rolling `dev-bench.log`, and the handshake now tolerates one arriving ahead of `HelloAck` — 2026-08-26.** Core's half of [embarch-dev-bench/design.md](../embarch-dev-bench/design.md) §3 decision 38, which turned `CONFIG_LOG` on in the bench firmware. Before that, a `LogLine` was a rare, deliberate diagnostic; now the same channel carries Zephyr's own subsystem output and, on a crash, the fatal-error dump — which changes both the volume and the value of it.
+
+    **Why a third destination for these lines, rather than one of the two that existed.** A `LogLine` already reached `core.log` (via `tracing`) and the running study's `streams/dev-bench` file (the reserved tap, decision 30's own §4.8). Both are right for what they are, and neither is a debug log of the bench: `core.log` is Core's account of what the *service* did, and interleaving a firmware's full log output into it at `info` drowns exactly the thing a reader opened it for; the study's tap is scoped to one study by construction, so it cannot hold a line from a handshake that failed before the study started, and does not exist at all for `GET /dev-bench/hello`. `src/dev_bench_log.rs` writes one continuous file spanning studies, in the same directory with the same `tracing-appender` daily rotation and the same 7-file retention as `core.log` — so it is a second *file*, not the second log *mechanism* `logs.rs`'s own header warns against building. Each record is `<arrival RFC 3339> <study id or `-`> <the line verbatim>`, and Core stamps arrival for the same reason it does on the reserved tap: it is the honest reading for a record dev-bench never framed as one, and it is on the clock every other Core-mediated record uses.
+
+    **`embarch-core dev-bench-logs --tail N`** reads it, through the same `logs.rs` reader now parameterized by filename prefix. It exists for the same reason `logs` does (decision 16): the file lives under the service account's `%ProgramData%`, and "open it yourself" is not an instruction that survives contact with a background service. Deliberately no HTTP endpoint, no SSE stream, and no `embarch-api` tool for it yet — nothing has asked, and this suite's posture is not to build the machinery first.
+
+    **A line's own `<lvl>` marker now picks the level Core mirrors it at.** dev-bench emits `log_output`'s standard `<err>`/`<wrn>`/`<inf>`/`<dbg>` prefix, so `classify()` reads it and mirrors at the level the *firmware* chose. This amends, rather than reverses, the earlier reasoning that put every `LogLine` at `info!`: that reasoning was correct for a channel carrying only deliberate diagnostics — and an *unmarked* line, which is exactly what those diagnostics still are, keeps `info` unchanged. Nothing is lost at any level, because the debug file takes every line at full detail regardless.
+
+    **Two Core-side changes only running it surfaced, both of which would have made the firmware's half useless:**
+
+    *The handshake refused a log line.* `open_and_handshake` did one `recv` and failed anything that wasn't `HelloAck` — so a bench that has already handshaked once and is logging live could send a `LogLine` first and get "expected HelloAck, got LogLine". Turning the firmware's logging on would have broken every study, and it would have read as a protocol bug. It now loops past `LogLine`s (recording each — this is precisely the window where a bench explains why it just rebooted) against the same deadline, so a bench that only ever logs still times out rather than looping.
+
+    *The boot record was reliably produced and reliably lost.* dev-bench holds its boot log until the first `Hello`, then flushes it right after `HelloAck` — that flush *is* how a reboot becomes visible from Core's side. But `GET /dev-bench/hello` (the doctor's check 13) returns the instant it has the ack and drops the link, so on a freshly reset bench the first handshake wrote the boot record onto a wire nobody was reading, and every later handshake had nothing left to flush. Found live, by looking for a line that should have been there and wasn't. `drain_post_ack_log_lines` now reads for a bounded 250 ms after the ack, in both paths; consuming is safe because Core has not sent `StudyStart` yet, so a `LogLine` is the only message dev-bench has any reason to send at that point. Anything else is reported rather than silently eaten.
+
+    Boundary markers (`--- link opened on COM13 (firmware …) ---`, `--- study finished, link closing ---`) are Core's own lines in the bench's file, bracketed so they cannot be mistaken for something the firmware said. Without them a bench that reset between two studies produces two runs of boot lines with nothing marking where one link ended. The closing marker is written before the outcome is decided, and names a failure when there is one — a failed run is the one most worth reading.
+
+    A debug log that cannot be opened must never be able to fail a study: the appender is built once, its failure is reported once into `core.log`, and every later call is a no-op. **Deployed to the live Windows service and validated against the real bench**, including a real study end to end; the ordering constraint is that this must be deployed *before* the new dev-bench firmware is flashed, since only this Core tolerates a `LogLine` before `HelloAck`.
+
 ## 4. Endpoint reference
 
 All routes require `Authorization: Bearer <token>` (see §6) — **no exception any more**: `GET /enroll` (§3 decision 25) was the one deliberately unauthenticated route, retired 2026-08-24 in favor of `embarch-ui`'s Enroll tab (decision 25's own amendment, `embarch-ui/milestone-1.md` §4.9).
@@ -408,7 +426,7 @@ Auth is a single shared secret, `EMBARCH_TOKEN`, checked via exact-string compar
 
 ```
 src/
-├── main.rs        — CLI (clap): `run`, `install`, `uninstall`, `start`, `stop`, `detect-dev-bench`, `logs`; resolves the token via token_store, builds AppState, starts Axum;
+├── main.rs        — CLI (clap): `run`, `install`, `uninstall`, `start`, `stop`, `detect-dev-bench`, `logs`, `dev-bench-logs`; resolves the token via token_store, builds AppState, starts Axum;
 │                    `init_tracing()` (§3 decision 16) wires stderr + a daily-rolling log file, called once before subcommand dispatch
 ├── api.rs         — Axum router, handlers, bearer-token auth middleware; `/logs/recent`/`/logs/stream`
 │                    handlers (§3 decision 29) call `logs.rs` directly, same as `main.rs`'s `logs` subcommand
@@ -423,7 +441,14 @@ src/
 ├── logs.rs        — added 2026-08-24 (§3 decision 29): `latest_log_file`/`tail_lines` moved out of
 │                    `main.rs` (unchanged), plus new `FollowState` (poll-based tail-follow behind
 │                    `GET /logs/stream`) — one implementation shared by `main.rs`'s `logs` subcommand
-│                    and `api.rs`'s two new HTTP handlers, not separate copies
+│                    and `api.rs`'s two new HTTP handlers, not separate copies.
+│                    `read_recent_with_prefix` (§3 decision 37) serves `dev-bench.log` through the
+│                    same reader — the two files rotate identically, only the prefix differs
+├── dev_bench_log.rs — added 2026-08-26 (§3 decision 37): the dev-bench debug file. Every `LogLine`
+│                    Core receives, appended to a daily-rolling `dev-bench.log.<date>` alongside
+│                    `core.log`, plus `classify()` (a line's own `<lvl>` marker → the level Core
+│                    mirrors it at) and Core's own link/study boundary markers. Best-effort by
+│                    construction: a debug log that cannot be opened must not fail a study
 ├── service.rs     — service-manager: register/remove as a background OS service;
 │                    its windows submodule (cfg(windows) only) is the actual
 │                    StartServiceCtrlDispatcherW handshake SCM requires (§3
@@ -522,6 +547,8 @@ Core has zero knowledge of embarch-api, MCP, Claude Code, or the concept of a "p
 
 
 ## 11. Changelog
+
+- 2026-08-26 — **The dev-bench debug file, and the two handshake fixes the bench's own logging needed (decision 37).** New `src/dev_bench_log.rs` writing `dev-bench.log.<date>` beside `core.log`, a `dev-bench-logs` CLI subcommand reading it through a prefix-parameterized `logs.rs`, level mirroring driven by each line's own `<lvl>` marker, and Core's link/study boundary markers in the bench's file. `open_and_handshake` now loops past a `LogLine` arriving before `HelloAck` instead of failing on it, and drains for 250 ms *after* the ack — without that second change the bench's boot record was written onto a wire nobody was reading on every reset, which is how it was found. No wire schema change; the counterpart is [embarch-dev-bench/design.md](../embarch-dev-bench/design.md) §3 decision 38. Deployed to the live Windows service and validated against the real ESP32-C5 bench, boot record and completed study included.
 
 - 2026-08-26 — **Deployed to the live Windows service, and decision 33's test closed Milestone 2's last open item** (§10; Milestone 7 Phase E). No code change — this entry records what running the existing code on the real bench established.
 
