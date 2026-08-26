@@ -239,6 +239,30 @@ mode, by design — so check that constant against what the board is running
 before you deploy, not after the handshake fails. `GET /dev-bench/hello`
 reports what the bench claims.
 
+**Setting an environment variable for the installed Core.** Core reads knobs
+like `EMBARCH_SIGNAL_BAUD`, `EMBARCH_FLASH_BACKEND` and the tool-path overrides
+from its process environment — and as a Windows service it gets none of your
+shell's. Exporting the variable in WSL, or in the terminal you deploy from,
+reaches nothing. Write it to the service's own registration instead:
+
+```powershell
+Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\com.embarch.core' `
+  -Name Environment -Value @('EMBARCH_SIGNAL_BAUD=230400') -Type MultiString
+```
+
+`REG_MULTI_SZ`, one `KEY=VALUE` per element, and the SCM injects them at
+service start — so **restart the service afterwards** or nothing changes. Needs
+elevation, same as everything else here. It is deliberately per-service rather
+than a system-wide environment variable: these knobs are Core's, and a
+machine-wide `EMBARCH_*` would leak into every other process.
+
+Verifying it took is the awkward part, because Core does not print its
+configuration anywhere. `EMBARCH_FLASH_BACKEND` and the tool paths have a
+direct read-out — `embarch-core.exe flash-backend` reports what it resolved.
+For the others, provoke an error that quotes the value back: declaring a signal
+against a port you hold open from another process makes Core's own failure
+message name the baud it opened at.
+
 **Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
 
 **Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
