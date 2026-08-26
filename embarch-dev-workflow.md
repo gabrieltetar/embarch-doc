@@ -1,6 +1,6 @@
 # embarch: local dev workflow
 
-**Status:** draft, 2026-08-17. How to iterate on `embarch-core`/`embarch-api`/`embarch-umbrella` locally without cutting a release, and without a debug build silently touching a real machine's install.
+**Status:** draft, 2026-08-17. How to iterate on `embarch-core`/`embarch-api`/`embarch-umbrella` locally without cutting a release, and without a debug build silently touching a real machine's install — plus, since 2026-08-25, the opposite case: how a Core change actually reaches this machine's live Windows service (§4a).
 
 ## 1. Short answer
 
@@ -74,6 +74,173 @@ This sandbox (and possibly yours) has no MSVC linker, so `cargo build --target x
 
 `rustup target list --installed` needs `x86_64-pc-windows-msvc` present for this to work at all; add it with `rustup target add x86_64-pc-windows-msvc` if it isn't.
 
+## 4a. Getting a Core change onto the real Windows service
+
+**Numbered `4a` rather than `5` deliberately.** This section belongs next to
+§4 (it is the operational other half of "Windows code, checked from Linux"),
+but §6 is referenced by name from nine `CLAUDE.md` files and from
+[DOC-PROTOCOL.md](DOC-PROTOCOL.md) §6, so renumbering costs more than the odd
+label does. `embarch-study-designer/design.md` §4.3a already sets that
+precedent.
+
+**This is the single most-repeated undocumented step in the suite.** Two
+handoffs in a row pointed at "`embarch-dev-workflow.md`" for it while it was
+not written down anywhere; every session rediscovered it from scratch.
+§1–2 cover a *dev* Core on a scratch port, which is the right default and
+touches nothing real. This section is the other case: a change to
+`embarch-core` that has to reach the **installed Windows service** the whole
+bench actually talks to.
+
+### The shape of the problem
+
+Three facts combine into a workflow that isn't obvious from any one of them:
+
+1. The live Core is a **Windows service**, `com.embarch.core`, whose
+   `BINARY_PATH_NAME` is
+   `C:\Users\tmp12\embarch-setup\embarch-0.1.0-x86_64-pc-windows-msvc\embarch-core.exe run --bind 0.0.0.0`.
+   The `0.1.0` is in the *directory* name only — the binary inside is
+   whatever was last copied there, and its version tells you nothing.
+2. **WSL2 cannot build it.** No MSVC linker here (§4), so the binary has to
+   be produced by a native Windows `cargo.exe`.
+3. The canonical git checkouts live on the **Linux** side
+   (`/home/gabriel/Github/embarch/`). The Windows side has *source copies*,
+   not clones.
+
+So: sync source Linux → Windows, build on Windows, install the result into
+the service's path, restart the service.
+
+### Step 1 — sync the source, all three crates
+
+`embarch-core`'s `Cargo.toml` has two `path` dependencies, so syncing Core
+alone produces a build against stale siblings — which compiles, and is
+wrong:
+
+```toml
+embarch-study-designer = { path = "../embarch-study-designer", features = ["std"] }
+embarch-topology       = { path = "../embarch-topology", default-features = false, features = ["hardware"] }
+```
+
+Sync **shared crates first, Core last** — the same ordering §6 requires for
+commits, for the same reason:
+
+```sh
+for r in embarch-study-designer embarch-topology embarch-core; do
+  rsync -a --exclude '/target/' --exclude '/.git/' \
+    /home/gabriel/Github/embarch/$r/ /mnt/c/Users/tmp12/source/repos/$r/
+done
+```
+
+Excluding `/target/` matters in both directions: it keeps the sync fast, and
+it keeps the Windows-side build cache (a *different* target triple's) from
+being clobbered by Linux artifacts.
+
+**`--delete` is deliberately not used here**, so a file deleted on the Linux
+side lingers on the Windows side as an orphan. Cargo ignores a `.rs` file
+nothing declares as a module, so this does not affect the build — but it
+does mean **a grep of the Windows copy can turn up source that no longer
+exists**. Treat the Linux checkout as the only thing worth reading; the
+Windows copy is a build input, not a reference. Verify what drifted with:
+
+```sh
+diff -rq --exclude=target --exclude=.git \
+  /home/gabriel/Github/embarch/embarch-core /mnt/c/Users/tmp12/source/repos/embarch-core
+```
+
+**These directories are not git clones — there is no `.git` at all.** That
+is the hazard worth internalizing: an edit made directly on the Windows side
+can reach a deployed binary without ever being version-controlled, and
+`git status` on the Linux repo will look perfectly clean while it happens.
+This has really occurred (`embarch-topology`'s `check_target_powered` shipped
+that way and had to be recovered afterwards). **Never edit the Windows copy.
+Edit on Linux, commit, then rsync.**
+
+### Step 2 — build natively
+
+```sh
+cd /mnt/c/Users/tmp12/source/repos/embarch-core
+/mnt/c/Users/tmp12/.cargo/bin/cargo.exe build --release
+```
+
+`cargo.exe` is not on the WSL `PATH`; give it the absolute path. The result
+is `target/release/embarch-core.exe`.
+
+Sanity-check that you built what you think you built, *before* deploying —
+pick something the new commit adds and look for it:
+
+```sh
+./target/release/embarch-core.exe --help          # e.g. is `chip-list` there?
+```
+
+Running the fresh exe from WSL2 logs one benign warning first — `failed to
+set up daily-rolling log file ... Access is denied` for
+`C:\ProgramData\embarch\logs`, which only the service account can write.
+It falls back to stderr and the command still runs. Not a symptom of
+anything.
+
+### Step 3 — install it into the service path
+
+Two ways, and the supported one has a real footgun.
+
+**`update` (supported, self-elevating).** It must be invoked **from the
+currently-installed binary**, passing the new build as the argument:
+
+```sh
+/mnt/c/Users/tmp12/embarch-setup/embarch-0.1.0-x86_64-pc-windows-msvc/embarch-core.exe \
+  update /mnt/c/Users/tmp12/source/repos/embarch-core/target/release/embarch-core.exe
+```
+
+**Never run the new build against itself** (`target/release/embarch-core.exe
+update target/release/embarch-core.exe`). `service.rs::update` resolves the
+binary it replaces via `std::env::current_exe()` — *whichever binary is
+running the command* — so a self-update renames that file aside to `.bak`,
+then tries to copy from the path it just renamed away, fails "file not
+found", rolls the exe back, and **never reaches `start()`**. The binary
+looks untouched and the service is left stopped. This has happened, and left
+the live Core down for several minutes.
+
+Two further properties of `update` worth knowing rather than rediscovering:
+it **rolls back automatically** if the new binary fails to start (so a bad
+build costs a restart, not a broken bench), and it deliberately **leaves its
+own `.bak` behind** on success — the process doing the replacing is still
+executing from that file — cleaned up by the *next* `update` call. A
+lingering `.bak` is expected, not a failed run.
+
+**`stop` → copy → `start` (simpler when you want to see each step).** Same
+outcome, no `current_exe()` subtlety, at the cost of doing the elevation
+yourself.
+
+Either way, if you need to see what the elevated child actually printed:
+`ShellExecuteExW`'s relaunch gives it its own console, so a
+`Start-Process -Wait -Redirect...` wrapped around the *unelevated* launcher
+captures nothing. Do the elevation yourself (`Start-Process powershell -Verb
+RunAs -Wait ...` running a script that redirects `*>` to a file from inside
+the already-elevated context).
+
+### Step 4 — verify, and mind two couplings
+
+Confirm the service is back and serving:
+
+```sh
+/mnt/c/Windows/System32/sc.exe query com.embarch.core     # STATE : 4 RUNNING
+```
+then `GET /status` through `embarch-api` (or `curl` the bind address).
+
+**Coupling 1 — the dev-bench wire schema.** If the redeploy carries a bump
+to `DEV_BENCH_WIRE_SCHEMA_VERSION`
+([embarch-study-designer/design.md](embarch-study-designer/design.md)), the
+board's firmware **must be reflashed in the same sitting**. Core sends
+`Hello { schema_version }`; a bench on the older version answers
+`compatible: false` and Core refuses the link. There is no partial-upgrade
+mode, by design — so check that constant against what the board is running
+before you deploy, not after the handshake fails. `GET /dev-bench/hello`
+reports what the bench claims.
+
+**Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
+`/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
+affect the running MCP server; a client picks up the new binary only on a
+**fresh Claude Code session**. Deploy order across the two is Core first,
+then api ([embarch-core/design.md](embarch-core/design.md) §3 decision 30).
+
 ## 5. Agent-driven iteration — what's safe unsupervised, what isn't
 
 **The general rule, on the repo owner's own real daily-use machine (global `CLAUDE.md`, 2026-08-17): full autonomy to build, test, flash, and develop — the only thing worth asking about is a physical action only the user can do** (plugging in a board/cable, pressing a physical button, swapping hardware). Everything below is that rule applied to this suite specifically, kept for the detail (which exact commands, which real files) rather than as a separate, narrower policy.
@@ -109,6 +276,8 @@ This sandbox (and possibly yours) has no MSVC linker, so `cargo build --target x
 
 
 ## Changelog
+
+- 2026-08-25 — **Added §4a: how a Core change actually reaches the live Windows service.** rsync three crates Linux → Windows (shared crates first, Core last — Core's two `path` deps mean syncing Core alone builds against stale siblings and compiles anyway), build with native `cargo.exe`, then `update` from the *installed* binary. Written because this was **the single most-repeated undocumented step in the suite** — two handoffs in a row cited this file for it while it was not here, so every session re-derived it. Carries the two things that have actually gone wrong: `update`'s `current_exe()` footgun (running the new build against itself renames it to `.bak`, fails the copy, rolls back, and never reaches `start()` — leaving the live Core stopped while the binary looks fine), and the Windows copies not being git clones at all, which once let `check_target_powered` reach a deployed binary without ever being version-controlled. Numbered `4a` rather than `5` on purpose: §6 is referenced by name from nine `CLAUDE.md` files and DOC-PROTOCOL.md §6, so renumbering costs more than the label does.
 
 - 2026-08-25 — **Added §6: work directly on `main` across every EmbArch repo, no feature branches, until the repo owner explicitly ends the rule.** Written after Milestone 7 Phase B ran the branch-per-item pattern across six repos and every merge turned out to be a fast-forward — a branch per repo per item bought isolation nobody needed while multiplying the chance of leaving one of eight repos behind. Overrides the general "branch before committing to the default branch" default *for this suite only*; the build-before-you-commit and shared-crate-first sequencing rules are what keep it safe, and are stated there rather than assumed.
 - 2026-08-17 — Added §5 (agent-driven iteration): a Tier 1 (fully autonomous)/Tier 2 (writes real shared state) split. New `embarch-umbrella/dev-sandbox/` (Dockerfile + run.sh) gives an isolated container for Tier 2 commands elsewhere; not yet verified (no `docker` in the session that wrote it).

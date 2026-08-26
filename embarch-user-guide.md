@@ -421,7 +421,7 @@ cargo clippy --all-targets -- -D warnings      # expected clean before you commi
 cargo test
 ```
 
-**Iterating across repos — wiring a dev `embarch-core`/`embarch-api`/`embarch-umbrella` together, or safely testing an `embarch-umbrella` change without it overwriting your real install** — is its own doc: [embarch-dev-workflow.md](embarch-dev-workflow.md).
+**Iterating across repos — wiring a dev `embarch-core`/`embarch-api`/`embarch-umbrella` together, or safely testing an `embarch-umbrella` change without it overwriting your real install** — is its own doc: [embarch-dev-workflow.md](embarch-dev-workflow.md). Its §4a covers the deploy direction: syncing, building, and installing a Core change onto a real Windows service.
 
 Platform notes that will cost you time otherwise:
 - **Building on Windows natively needs Visual Studio Build Tools' "Desktop development with C++" workload** — a `rustup`-installed toolchain alone has no linker for the MSVC target.
