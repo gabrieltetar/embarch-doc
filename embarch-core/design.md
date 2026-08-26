@@ -396,10 +396,14 @@ src/
                      embarch-study-designer/design.md §5.2) under the same machine-wide
                      local-data-dir convention `token_store.rs`'s new `local_data_dir()` helper now
                      shares, the §3 decision 31 version gate, and (since 2026-08-25) Core's own
-                     `Route::Direct` signal-tap reader threads. Post-hoc `validations` evaluation (embarch-study-designer/design.md §4.6,
-                     that crate's `core-validation` feature, enabled in this crate's `Cargo.toml` but
-                     not yet wired to anything that calls it) is a deliberately deferred follow-up —
-                     `StudyResult.validations` is always empty for now. Not yet validated against real
+                     `Route::Direct` signal-tap reader threads. Post-hoc `validations` evaluation is **gone**, not deferred
+                     (`embarch-study-designer/design.md` §3 decision 48, 2026-08-25): this crate
+                     enabled that crate's `core-validation` feature for months and never called it,
+                     and `finish` wrote a hardcoded `"validations":[]` into every `events.json` —
+                     which is a large part of why the whole notion was removed rather than finished.
+                     `events.json` no longer carries the key at all, and this crate's dependency now
+                     asks for `std` (which implies `alloc`) directly, since it used to reach `std`
+                     only via `core-validation = ["std"]`. Not yet validated against real
                      dev-bench hardware — confirmed only by `cargo build`/`test`/`clippy` and unit
                      tests over the pure validation/registry/CSV logic (§10). **Since 2026-08-19/20
                      that caveat is closed for the dev-bench path** (§10) and open only for the
@@ -419,7 +423,7 @@ src/
 
 ```
 study_results/<study_id>/
-├── events.json          the StudyResult: steps, validations, provenance, streams
+├── events.json          the StudyResult: steps, provenance, streams
 │                        (written once, at the end; `.partial` until then)
 └── streams/
     ├── index.json       one entry per declared tap: name -> files, encoding, alias
@@ -452,6 +456,8 @@ Core has zero knowledge of embarch-api, MCP, Claude Code, or the concept of a "p
 
 
 ## 11. Changelog
+
+- 2026-08-25 — **Post-hoc validation removed from this crate** (`embarch-study-designer/design.md` §3 decision 48, branch `remove-post-hoc-validation`). `validate_study`'s per-`PostHocValidation` step-index/tap-name checks are gone; `events.json` no longer writes its hardcoded `"validations":[]`; the `embarch-study-designer` dependency asks for `std` by name rather than reaching it via `core-validation = ["std"]`. Nothing here ever evaluated a validation, which is what the decision turned on.
 
 - 2026-08-25 — **Suite-wide design pass: three decisions (33/34/35) and three open questions closed.** Decision 33 fixes a live defect found by reading `next_deadline` — the host watchdog ignored `Step.delay_before_ms` while dev-bench sleeps it, so any study authoring a delay longer than its own timeout window failed a healthy bench; the fix also finally makes Milestone 2's never-closed watchdog-timeout test constructible. Decision 34 schedules and builds `chip-list [filter]`, scoped 2026-08-15 and unscheduled since, closing one bullet in three docs. Decision 35 puts dev-bench's own hardware ID in `HelloAck`, closing `embarch-topology` §5's UART-vs-JTAG same-chip gap — the one hole that doc correctly said needed a firmware protocol change it could not make itself. §10's `base_address` bullet resolved to a per-project config field ([embarch-api/design.md](../embarch-api/design.md) §3 decision 42).
 
