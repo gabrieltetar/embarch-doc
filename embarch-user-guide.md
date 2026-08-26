@@ -340,7 +340,7 @@ export EMBARCH_TOKEN=<the contents of the token file on the Core machine>
 
 ## 10. Dev bench and studies
 
-> **Not usable yet.** The pieces exist and compile, but no board has ever been flashed with this firmware and none of the endpoints below are implemented. This chapter is here so you know what's coming, not so you can follow it. Progress: [embarch-roadmap.md](embarch-roadmap.md)'s Next bucket.
+> **Not usable yet — but for a narrower reason than this note used to give.** Core's `/study*` endpoints *are* implemented, and were validated against a real dev bench in August 2026. What is missing is the rest: `embarch-api`'s `run_study`/`study_status`, power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. This chapter is here so you know what's coming, not so you can follow it. Progress: [embarch-roadmap.md](embarch-roadmap.md)'s Next bucket.
 
 `embarch-dev-bench` is a second board — a **test fixture**, not your DUT — that plays your device's BLE counterpart on demand. Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.
 
@@ -353,7 +353,22 @@ embarch-api study_status <study_id>                  # pending | running | compl
 
 Where it plugs in: your DUT keeps its own probe on Core, and the bench connects to Core over a **second, separate serial link**. Core auto-detects which port the bench is on (it's already implemented — `embarch-core detect-dev-bench`). One dev bench, one DUT, one study at a time; testing two DUTs means two independent Core+bench pairs.
 
-What's genuinely not there yet: the `/study*` endpoints in Core, `run_study`/`study_status` in the API, power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Today it's BLE-proximity-only, and only in principle.
+What's genuinely not there yet: `run_study`/`study_status` in the API, power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Today it's BLE-proximity-only, and only in principle. (Core's own `/study*` endpoints came off this list in August 2026 — they're built and have run against a real bench.)
+
+### 10.1 Where a study's data lands, and the two knobs that keep it from filling your disk
+
+Core writes each run to `study_results/<study_id>/` under its own machine-wide data directory (`%ProgramData%\embarch` on Windows, `/var/lib/embarch` on Linux/macOS) — the same place the token file lives. Inside: `events.json`, the run's pass/fail result; and `streams/`, one file per capture the study declared, named after that capture.
+
+Captures are the one thing EmbArch writes that has no natural size limit — a stream can run as long as the study does, and studies accumulate run after run. Two environment variables set on **Core's** process control that, and they're the first knobs you may actually need to turn:
+
+| Variable | Default | What it does |
+|---|---|---|
+| `EMBARCH_STREAM_MAX_BYTES` | `33554432` (32 MiB) | Cap per capture file. Past it, the file rotates: the current one is kept as a second segment and a fresh one starts, so you always keep **the most recent** data — worst case a little under twice this per capture, on disk. `0` means no cap. When rotation actually drops older data, the run's result says so (`truncated`) rather than handing you a short capture that looks complete |
+| `EMBARCH_STUDY_RESULTS_KEEP` | `50` | How many past runs' directories to keep. Swept on each new study; the oldest beyond this are deleted outright. `0` disables the sweep — nothing is ever removed, which is what you want if you're archiving results yourself |
+
+Both defaults are reasoned rather than measured — nobody has yet run a capture long enough to size them from evidence. Raise `EMBARCH_STREAM_MAX_BYTES` if a real run is being truncated; raise or zero `EMBARCH_STUDY_RESULTS_KEEP` if you need history.
+
+There's a third, rarer one: `EMBARCH_SIGNAL_BAUD` (default `1000000`) sets the line rate when Core reads a DUT signal on its own serial port rather than through the bench. Only relevant once you've declared such a signal and wired a USB-UART bridge to it; leave it alone otherwise.
 
 Flashing the bench itself is a plain `west flash` you run by hand — Core's probe access is scoped to your DUT and deliberately has no business reflashing the fixture that's testing it.
 
@@ -446,6 +461,8 @@ Milestone 6 (Onboarding) shipped in `v0.1.0` — a real release archive and `emb
 10. **Keep the config out of the repo yourself** — add `embarch/` to `.git/info/exclude` rather than the committed `.gitignore`, especially in a repo you don't own.
 
 ## Changelog
+
+- 2026-08-25 — **New §10.1: where a study's data lands, and the two retention knobs an operator may actually need** (`EMBARCH_STREAM_MAX_BYTES`, `EMBARCH_STUDY_RESULTS_KEEP`, plus the rarer `EMBARCH_SIGNAL_BAUD`) — `embarch-core/design.md` §3 decision 30 asked for these rows by name, being the first EmbArch artifact unbounded both within a run and across runs. Also corrected §10's opening note and its "what's genuinely not there yet" list, both of which still said Core's `/study*` endpoints were unimplemented; they shipped in August 2026 and ran against a real bench. The chapter's overall "not usable yet" verdict stands — for the rest of the list, which is unchanged.
 
 - 2026-08-17 — §11: `cargo build --release` changed to plain `cargo build` for day-to-day iteration (release mode is for actually shipping something, not every edit-compile-test cycle), and added a pointer to the new [embarch-dev-workflow.md](embarch-dev-workflow.md) — §11 told you to build each repo independently but never said how to wire a dev `embarch-api` to a dev `embarch-core`, or how to test an `embarch-umbrella` change without it overwriting a real install.
 - 2026-08-17 — §3.1 updated for decision 28 (`embarch-umbrella/design.md` §3): the manual PATH-hint-translation workaround is now marked as a stopgap for releases predating that fix, with the real (source-implemented, not yet released) behavior — `setup` copies binaries to a canonical location and edits PATH for real — described as what a future release will do automatically.
