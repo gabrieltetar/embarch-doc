@@ -21,7 +21,7 @@ embarch/
 ├── embarch-atlas/          (paused, no repo yet)
 ├── embarch-topology/       (implemented and pushed 2026-08-21: gabrieltetar/embarch-topology)
 ├── embarch-ui/             (in progress, added 2026-08-24: gabrieltetar/embarch-ui, empty)
-├── embarch-outpost/        (design-only, added 2026-08-25: gabrieltetar/embarch-outpost, empty)
+├── embarch-outpost/        (implemented 2026-08-26: gabrieltetar/embarch-outpost)
 └── embarch-doc/
     ├── CLAUDE.md
     ├── embarch.md
@@ -109,6 +109,8 @@ Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides 
 This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here. **A new sub-project repo needs both sections**, and it is worth checking an existing one actually has them: `embarch-topology` ran without a `CLAUDE.md` at all from its creation (2026-08-21) until 2026-08-25, so nothing in that repo pointed at its own design doc and §4–5 depended on whoever was working there already knowing. Nothing in this protocol had ever checked.
 
 ## Changelog
+
+- 2026-08-26 — §2's tree: `embarch-outpost` moves from *design-only, created empty* to *implemented* (Milestone 7 Phase C). §6's "a new sub-project repo needs both sections, and it is worth checking an existing one actually has them" was followed rather than assumed this time — the repo's first commit carries a `CLAUDE.md` with the docs pointer and the git rule, which is the gap `embarch-topology` ran four days with and which nothing in this protocol had ever checked before it was written down.
 
 - 2026-08-25 — **§4 gained an open-questions half.** Its pre-close grep and `check-staleness.py` both only ever watched status tables; a suite-wide design pass found two open-questions bullets that had gone stale against shipped work, each in a different sub-project's doc from the one that shipped it — which is why closing those milestones never surfaced them. `scripts/collect-open-questions.py`, written as a read-only index, is named as the pre-close instrument. Kept a human step deliberately: a resolved open question has no mechanical signature the way a superseded status word does.
 
