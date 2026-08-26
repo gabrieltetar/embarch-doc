@@ -91,17 +91,22 @@ This manual grep now has an automated backstop: `scripts/check-staleness.py` (§
 
 ## 6. How a sub-project repo hooks into this
 
-Each sub-project repo's own `CLAUDE.md` carries a short "Docs" pointer, e.g.:
+Each sub-project repo's own `CLAUDE.md` carries a short "Docs" pointer plus the suite's git rule, e.g.:
 
 ```markdown
 ## Docs
 Design doc: ../embarch-doc/embarch-core/design.md — source of truth for this project's architecture/design.
 Update it proactively per ../embarch-doc/DOC-PROTOCOL.md whenever a notable design decision, feature, or status change happens here.
+
+## Git
+Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides the general "branch before committing to the default branch" default, for this suite only; ends when the repo owner explicitly says so. See ../embarch-doc/embarch-dev-workflow.md §6.
 ```
 
-This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here.
+This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here. **A new sub-project repo needs both sections**, and it is worth checking an existing one actually has them: `embarch-topology` ran without a `CLAUDE.md` at all from its creation (2026-08-21) until 2026-08-25, so nothing in that repo pointed at its own design doc and §4–5 depended on whoever was working there already knowing. Nothing in this protocol had ever checked.
 
 ## Changelog
+
+- 2026-08-25 — **§6 gained the suite's git rule alongside the docs pointer** — work directly on `main`, no feature branches, until the repo owner ends it ([embarch-dev-workflow.md](embarch-dev-workflow.md) §6). Put here because §6 is already the mechanism that gets a standing rule into every repo's session context without re-explaining it in chat, and a branching policy has exactly that shape. Adding it surfaced a gap this protocol had never checked for: **`embarch-topology` had no `CLAUDE.md` at all** — created 2026-08-21, four days without anything pointing at its own design doc — so §6 now says to verify an existing repo has both sections rather than assuming.
 
 - 2026-08-25 — §2's tree gained `embarch-outpost/milestone-1.md`, which existed but had never been listed. Registered while closing its Phase A; §5's "add a new top-level file to the index in the same edit" rule covers `embarch.md` §6 (where it *was* listed) but says nothing about this tree, which is why one of the two drifted and the other didn't.
 

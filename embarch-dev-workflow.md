@@ -90,8 +90,27 @@ This sandbox (and possibly yours) has no MSVC linker, so `cargo build --target x
 - **A CI runner is already this kind of sandbox, no new tooling needed.** If any of this ever gets scripted into a GitHub Actions workflow, a `setup`/`doctor` step running there is already unsupervised-safe — the runner is destroyed after, same property the dev-sandbox container is built to have locally.
 - **Unit tests are the fully-autonomous default whenever they can reach the logic in question** — pure functions and idempotent file operations, as most of `install.rs`/`locate.rs` already are. This is how decision 28 itself was verified in the same session it was written (§4 also covers checking Windows-`cfg` code this way). Reach for the sandbox above only for what tests structurally can't reach — real registry/service-manager behavior.
 
+## 6. Branching: don't, for now — work directly on `main`
+
+**The rule, across every EmbArch repo (2026-08-25): commit straight to `main`. No feature branches, no PRs, no merges.** This includes `embarch-doc` — the docs move in the same pass as the code they describe (DOC-PROTOCOL.md §5), so putting them on a separate branch just splits one change in two.
+
+**It ends when the repo owner says it ends, and on no other condition.** Not when a heuristic looks satisfied, not when someone judges the project "mature enough" — the trigger is an explicit call, and until it is made, an agent working here does not get to decide the moment has arrived. This is deliberately a *stated* trigger rather than an open-ended "for now," matching how the rest of these docs close things they aren't building yet.
+
+**Why this is a real rule and not just laziness.** A branch exists to keep concurrent work from colliding. This suite has one engineer (`embarch.md` §5's single-engineer scope, and `embarch-api/design.md` §3.1's), CI reports but gates nothing, and no one downstream installs from `main`. There is nothing to collide with, so a branch buys isolation nobody needs and costs something real: the suite spans **eight repos that must move together**, and a schema change touching five of them turns into five branches, five merges, and five chances to leave one behind. That is not hypothetical — Milestone 7 Phase B ran exactly that way across six repos, and every one of the six merges turned out to be a fast-forward with no divergence to resolve. The branches recorded nothing the commit messages didn't already say.
+
+**What this changes for an agent working here, concretely.** The default instruction "if you're on the default branch, branch first" is **overridden in this suite**. Commit to `main`. Push when the work is done and green, per §5's autonomy rule — the same standard as before, applied one commit at a time rather than one branch at a time.
+
+**What does *not* change, and is what makes this safe:**
+
+- **`main` still has to build.** Nothing about skipping branches licenses committing something red. Run the crate's own `cargo build`/`test`/`clippy --all-targets -- -D warnings` — plus a native Windows build where `embarch-core` is involved (§4) — *before* the commit, not after.
+- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/design.md` §3 decision 30).
+- **Commit granularity is the thing carrying the history now.** With no branch name and no merge commit to hang a milestone off, the commit message is the only record of what a change was for. Write it accordingly.
+- **Real, risky, or exploratory work can still take a branch.** This is a default, not a prohibition — a rewrite you might abandon is exactly what a branch is for. The rule is against branching *reflexively* for ordinary forward work.
+
+
 ## Changelog
 
+- 2026-08-25 — **Added §6: work directly on `main` across every EmbArch repo, no feature branches, until the repo owner explicitly ends the rule.** Written after Milestone 7 Phase B ran the branch-per-item pattern across six repos and every merge turned out to be a fast-forward — a branch per repo per item bought isolation nobody needed while multiplying the chance of leaving one of eight repos behind. Overrides the general "branch before committing to the default branch" default *for this suite only*; the build-before-you-commit and shared-crate-first sequencing rules are what keep it safe, and are stated there rather than assumed.
 - 2026-08-17 — Added §5 (agent-driven iteration): a Tier 1 (fully autonomous)/Tier 2 (writes real shared state) split. New `embarch-umbrella/dev-sandbox/` (Dockerfile + run.sh) gives an isolated container for Tier 2 commands elsewhere; not yet verified (no `docker` in the session that wrote it).
 - 2026-08-17 — §5 updated same day: the repo owner explicitly authorized running Tier 2 commands live against their own real daily-use machine directly, no need to ask first there — recorded in `embarch-core`/`embarch-umbrella`'s own `CLAUDE.md` too.
 - 2026-08-17 — Same day, later: the separate firmware build/flash rule §5 had pointed to as the fallback default for other contexts was itself removed globally (any project, build and flash both) — updated §5 to stop citing a rule that no longer exists; `embarch-api/milestone-7.md`'s "ask before this step" gates on the real reference-dut flash steps removed to match.
