@@ -96,7 +96,9 @@ embarch deploy-core                                                  # thereafte
 ```
 
 `--dry-run` prints the resolved plan and touches nothing; `--print-script`
-does the unelevated half and hands you the privileged step. Everything below
+does the unelevated half and hands you the privileged step.
+
+**On this machine `--print-script` is the only path that works (found 2026-08-27).** `deploy-core`'s self-elevation cannot raise a UAC dialog from WSL — nothing renders, `Start-Process` returns `The operation was canceled by the user`, and the command then reports `landed` anyway ([embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32's amendment). So: run `--print-script`, run the emitted `.ps1` yourself from an elevated Windows PowerShell, and **verify by hash rather than by trusting the output** — `md5sum` the built `target/release/embarch-core.exe` against the installed one, because the command's own check compares size and a one-constant rebuild is the same size. Everything below
 is still accurate and is what the command automates — read it to understand
 what it is doing, or when it refuses and you need to do a step by hand.
 
@@ -288,6 +290,8 @@ against a port you hold open from another process makes Core's own failure
 message name the baud it opened at.
 
 **Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
+
+**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/design.md](embarch-api/design.md) §3 decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
 
 **Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
 `/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
