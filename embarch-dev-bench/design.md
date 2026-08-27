@@ -461,14 +461,38 @@ embarch-dev-bench/                     (single repo, one shared application)
 
   **And later the same day it stopped being reportable at all, which is why it has been so hard to pin down.** Three more studies died here, and every one of them surfaced as a *transport* error — `failed to decode DevBenchMessage ... The original data was not well encoded` — with no mention that a step had failed, let alone why. The `StepResult` carrying the diagnosis arrives short of its own declared length, because dev-bench resets partway through sending it, and Core discarded it and dropped the link (see the bullet below for the root cause, found 2026-08-27 afternoon). The two findings compose in the worst direction: **finding 4's fix is what made the reason long enough to trigger it.** Keeping the HCI byte turned `disconnected during service discovery` into `disconnected during … (HCI 0x08, supervision timeout)`, which pushed the frame from ~30 bytes to 81-88 — and only frames that long fail to finish transmitting before the crash. So the improvement that made this diagnosable is the same change that stopped the diagnosis being delivered, and the failure presented as if the link, not the DUT, were at fault.
 
-  **Refined 2026-08-27 afternoon, and it is now a statement about the DUT rather than about the bench: the reference-dut cannot service a GATT operation within the supervision timeout while PPG is running.** Two runs of the same eleven steps, reordered, separate the two:
+  **Root-caused 2026-08-27 evening, and it is a connection-interval problem, not a CPU one. The link now holds: a 14-step study with PPG flowing ran to completion, including a full two-minute BDS drain, and captured 2.4 MB of trace.** The DUT's own outpost trace is what found it, which is the instrument doing the job it was built for.
+
+  **What the trace showed, on a run that died.** Over the 12 s capture the DUT is **93% idle**, so nothing is CPU-starved. What collapses is the BLE controller's own ticker: `rtc0_nrf5_isr` goes from 91 entries/s to **eight consecutive holes of 626.4 ms**, metronomically regular, totalling 6222 ms of 11609 ms with no controller tick at all — and `swi_lll_nrf5_isr` and `radio_nrf5_isr` collapse in lockstep with it. Inside the largest hole the CPU is plainly alive: 504 SPI interrupts, 314 AFE-drain runs, 250 switches to idle, and 16 GRTC interrupts all fire. So interrupts are enabled, the kernel is running, and only the radio is not being scheduled.
+
+  Checked against capture loss before being believed, because this capture is known to drop frames: the loss is 12 frames of 1547, one per second, **steady before and after** the collapse, and frame throughput *rises* across it (89/s → 155/s). A lane-selective collapse is not what dropped frames produce.
+
+  **626.4 ms is the DUT's own configured connected-idle interval.** `lib/ble/Kconfig`'s `BLE_CONN_INTERVAL_MIN_MS`/`MAX_MS` default to **540-660 ms** with `BLE_CONN_SUPERVISION_TIMEOUT_MS` at 5000, applied once security is established. 626.25 ms (501 × 1.25 ms) sits in that band. The ticker holes are the DUT doing exactly what it is configured to do — and at that interval a 5 s supervision timeout is only **eight connection events** of margin. It is spec-legal (`ble.c`'s own `BUILD_ASSERT` checks the 1320 ms spec minimum and passes) and operationally thin.
+
+  **The lever exists and fires too late.** `lib/bds/bds.c` does request the fast interval — but only once a backlog threshold is crossed (`CONFIG_BDS_FAST_INTERVAL_MIN_BYTES`/`MIN_RECORDS`), and its own comment says so: *"Small one-off transfers skip the fast switch entirely (it can't engage before they finish)"*. The write that fails is the **control-point** write, and the GATT service discovery in front of it — both of which run before there is any backlog to measure. So the fast interval is requested downstream of the very exchange that needs it.
+
+  **Measured directly rather than inferred, via the DUT's own `ble status` over NUS:**
+
+  | when | interval | latency | supervision timeout |
+  |---|---|---|---|
+  | after pairing, before PPG | 50.00 ms | 0 | (reply truncated) |
+  | after `ble speed fast` | **30.00 ms** | 0 | 5000 ms |
+  | after `sensor01 start`, still pinned | **30.00 ms** | 0 | 5000 ms |
+
+  **And the fix, at study level, is one step.** Issuing `ble speed fast` over NUS *before* any BDS work — the DUT's own `cli_ble.c` command for exactly this — took the study from dying at step 5 of 11 to **14 of 14 steps run, `status: completed`**, the two-minute drain held with PPG flowing, and a named, timed, self-excluded 2.4 MB trace. (`drain-bds-2min` reports `TimedOut` in `idling`: nothing was banked to drain yet, since the band batches on ~5 min cycles. That is a study-authoring matter, not a link failure.)
+
+  **The firmware question this leaves is the owner's**, and it is narrow: whether the slow interval should be allowed to apply while a GATT exchange is in flight, or whether the control-point path should request the fast interval the way the bulk path does. Nothing was changed in that repo.
+
+  **Superseded by the above: the earlier reading that "PPG running" was the trigger.** It is a correlate, not the cause — PPG running is what coincides with the slow interval taking effect, and pinning the interval fast makes PPG-with-GATT work. The reordering experiment that produced that reading is still the evidence that it is not any one step, and is kept below.
+
+  **Earlier reading, 2026-08-27 afternoon: two runs of the same eleven steps, reordered, showed it is not a particular step:**
 
   | order | what ran before the failing step | failing step | reason |
   |---|---|---|---|
   | as authored | nothing had started PPG | `nus-sensor01-start` (the NUS write that starts it) | `disconnected during write (HCI 0x08, supervision timeout)` |
   | batchmgr pair moved *after* the NUS window | `sensor01 start` had run and returned `All SENSOR01 measurements started successfully` | `batchmgr-stop` | `disconnected during service discovery (HCI 0x08, supervision tim` |
 
-  The BDS service discovery that dies in the second run is the *same* discovery that passed as step 2 in the first — the difference is only that PPG is now flowing. So the link dies at whatever GATT operation follows PPG starting, and moving the steps around only moves which one that is. That also explains why the settle intervals, the `reset` between runs and the explicit `BDS_CMD_ABORT` all changed nothing: none of them stops PPG. **This is a DUT-side fault, observable from this bench and not fixable in it**, and it is what blocks a traced PPG capture — not the tracer, and not the frame truncation. Still `Unresolved`.
+  The BDS service discovery that dies in the second run is the *same* discovery that passed as step 2 in the first. So the link dies at whatever GATT operation runs while the interval is slow, and moving the steps around only moves which one that is. That also retires three experiments recorded above as inconclusive — the settle intervals (3 s, 5 s, 12 s), the `reset` between runs and the explicit `BDS_CMD_ABORT` all changed nothing, **because none of them changes the connection interval**. **Resolved as diagnosed**: the mechanism is above, the study-level fix is one `ble speed fast` step, and the remaining firmware decision belongs to the DUT's owner.
 
   **4. `disconnected_cb` throws away the disconnect reason** — see the next bullet.
 
@@ -484,6 +508,8 @@ embarch-dev-bench/                     (single repo, one shared application)
 
 
 ## 5. Changelog
+
+- 2026-08-27 (evening) — **§4 finding 3 is root-caused and the link now holds: it was the connection interval, not the DUT's CPU.** The DUT's own outpost trace is what found it, which is the instrument doing the job it was built for: 93% idle when the link dies, and the BLE controller's ticker collapsing into **eight consecutive 626.4 ms holes** while SPI interrupts, AFE drains and even GRTC keep firing inside them. 626.25 ms is the band's *own* configured connected-idle interval (`lib/ble/Kconfig`: 540-660 ms, 5000 ms supervision timeout — eight connection events of margin, spec-legal and thin). The firmware's own fast-interval lever fires **downstream of the exchange that needs it**: `lib/bds/bds.c` requests it only once a backlog threshold is crossed, and the write that dies is the control-point write in front of any backlog. Measured with the DUT's own `ble status` over NUS rather than inferred (50 ms → 30 ms), and fixed at study level with one `ble speed fast` step: **14 of 14 steps, `completed`**, the two-minute drain held with PPG flowing, 2.4 MB of named/timed trace. "PPG running is the trigger" is retired as a correlate ([embarch-decision-reversals.md](../embarch-decision-reversals.md) rows 95, 96). Nothing changed in the DUT's repo; the narrow firmware decision left is its owner's.
 
 - 2026-08-27 (later still) — **The bench's own boot banner is readable for the first time, and its silence about the cause is the finding.** Core stopped discarding bytes that never form a frame ([embarch-core/design.md](../embarch-core/design.md) §3 decision 40), and since this board's `zephyr,console` *is* the protocol UART, the reproduction now returns 699 bytes of `I (soc_init): ESP Simple boot`. It confirms the reboot outright — but `ESP_SIMPLE_BOOT` prints no `rst:0x..` line, and **no Zephyr fatal-error output precedes it in any form**, framed or raw. That absence argues the reset is not a Zephyr panic; brownout under simultaneous radio TX and 1 Mbaud UART TX now leads the hypotheses. Two cheap next steps named in §4: the forced `k_panic()` decision 38's own open bullet already proposes (it tells you whether `log_panic()` works at all), and `esp_reset_reason()` in the handshake line, since this board's `hwinfo` driver will not answer. [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 94.
 
