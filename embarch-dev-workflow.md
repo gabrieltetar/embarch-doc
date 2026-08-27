@@ -98,7 +98,14 @@ embarch deploy-core                                                  # thereafte
 `--dry-run` prints the resolved plan and touches nothing; `--print-script`
 does the unelevated half and hands you the privileged step.
 
-**On this machine `--print-script` is the only path that works (found 2026-08-27).** `deploy-core`'s self-elevation cannot raise a UAC dialog from WSL — nothing renders, `Start-Process` returns `The operation was canceled by the user`, and the command then reports `landed` anyway ([embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32's amendment). So: run `--print-script`, run the emitted `.ps1` yourself from an elevated Windows PowerShell, and **verify by hash rather than by trusting the output** — `md5sum` the built `target/release/embarch-core.exe` against the installed one, because the command's own check compares size and a one-constant rebuild is the same size. Everything below
+**Be at the machine when you run it, and verify by hash afterwards (found 2026-08-27).** Self-elevation works, but the UAC dialog needs answering, and `deploy-core` reports **`landed`** whether or not it was — twice in one session it printed success after the elevated child was cancelled and nothing was installed ([embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32's amendment). Its own check compares byte *length*, and a release rebuild of one constant is the same size, so it cannot discriminate the most common development deploy. Confirm with
+
+```sh
+md5sum /mnt/c/Users/<you>/source/repos/embarch-core/target/release/embarch-core.exe \
+       "$(/mnt/c/Windows/System32/sc.exe qc com.embarch.core | tr -d '\r' | sed -n 's/.*BINARY_PATH_NAME *: *//p' | cut -d' ' -f1)"
+```
+
+`--print-script` remains the fallback when you would rather run the privileged half yourself. Everything below
 is still accurate and is what the command automates — read it to understand
 what it is doing, or when it refuses and you need to do a step by hand.
 
