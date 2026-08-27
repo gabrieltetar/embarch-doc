@@ -877,6 +877,8 @@ No convenience "block until done" wrapper (a `run_study`-side analogue of `build
 
 ## 8. Changelog
 
+- 2026-08-27 — **`outpost.rs` decodes record layout 3**: `{cycles, kind, a, b}` again (layout 2 withdrawn — `embarch-outpost/design.md` §3 decision 4's reversal, [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 80), `RecordKind` gains `GpioDispatch`/`GpioCallbackDone`, and `csv_header()` carries **both** clocks: `frame_index,frame_seq,rx_utc_ms,cycles,us,kind,a,b,name`. A new test pins that a layout-**2** stream is refused rather than misread, which is the case the renumber exists for. Also fixed the same day: `render`'s new `rx` column used `to_string()`, which needs `ToString` in scope and so failed to build under `alloc`-without-`std` — `embarch-core` builds this crate with `std` and never saw it, `embarch-api` did immediately, which is the argument for building every consumer before calling a shared-crate change done.
+
 
 - 2026-08-27 — **The first real `.eap`, and what a real DUT said about the worked one (§4.9, §7).** No code change in this crate: `parse`/`resolve`/`validate_protocol` took a hand-authored manifest straight through, which is what §7 said they would. What ran is `bds_ppg_drain.eap` against the reference-dut's Batch Data Service — 34 request/pump/consume cycles in five minutes, 714,927 bytes captured — and §7's "the *only* thing still missing" is now supplied.
 
