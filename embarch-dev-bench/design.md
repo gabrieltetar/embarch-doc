@@ -362,6 +362,28 @@ embarch-dev-bench/                     (single repo, one shared application)
     **The live pair was already broken before this pass, and nothing had said so.** Core was serving wire v13 against a bench flashed to v14 — the handshake refused, correctly and loudly, but only to whoever called `/dev-bench/hello` by hand. `embarch doctor`'s check 11, the one whose entire job is "`study_designer_schema_version` agrees", is a hardcoded `Warn` stub whose stated reason ("`embarch-study-designer` isn't wired into `embarch-core`/`embarch-api` as a dependency yet") stopped being true long ago — see [embarch-umbrella/design.md](../embarch-umbrella/design.md) §7 and [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 71.
 
 
+42. **A `WholeStudy` tap is closed by `close_all_taps()` at the end of a run, not by a step index past the last one — 2026-08-27.** A one-function fix for a defect that made three taps' `truncated` flags unfalsifiable, found while trying to answer whether a PPG capture had a gap.
+
+    `dispatch_study` ended every run with `sync_taps_for_step(study->steps_len)`, on the premise its own comment stated: *"one past the last step: no scope covers it, so this closes whatever is still open."* That is true of a `Steps` window and **false of a `WholeStudy` one.** `dbm_stream_tap_covers` answers `true` for `WholeStudy` at every `step_index`, deliberately — it mirrors [embarch-study-designer](../embarch-study-designer/design.md)'s `StreamScope::covers`, and a predicate over a declared scope has no business knowing where a study ends. The serial-protocol suite even pinned both halves of the contradiction in one test: `zassert_true(dbm_stream_tap_covers(&whole, 0xFFFFFFFFu))` sat nine lines above a comment asserting that one past the last step is *"what dispatch_study uses to close everything still open at the end of a run: no scope may cover it."*
+
+    So a `WholeStudy` tap was never closed, never sent `StreamClose`, and never delivered the `dropped` count Core turns into `StreamRef.truncated` ([embarch-study-designer/design.md](../embarch-study-designer/design.md) §4.8). Its `truncated: false` was not a measurement — it was the absence of one, and it is indistinguishable on disk from a clean capture.
+
+    **Measured, not predicted.** The same drain study, run twice on the same bench minutes apart, differing only in its `gatt` tap's scope:
+
+    | `gatt` scope | dev-bench's own log line | `StreamRef.truncated` |
+    |---|---|---|
+    | `Steps { 0, 10 }` | dropped 16 entries | `true` |
+    | `WholeStudy` | dropped 31 entries | **`false`** |
+
+    The run that lost twice as much is the run that claimed to be complete. That study's three most load-bearing taps — `bds-data`, `bds-status` and `gatt` — are all `WholeStudy`, so all three flags were unfalsifiable at once, and an investigation into whether a PPG capture had a gap had been resting on them.
+
+    The fix makes end-of-study closing its own concern rather than a step index chosen to fall outside every window: `close_all_taps()` walks every dev-bench-mediated tap still open and closes it reporting its own `tap_dropped[i]`. `dbm_stream_tap_covers` is left exactly as it was — it is correct, and editing it to special-case the end of a study would desync the two ends of the link for no gain.
+
+    This is decision 39's own §4.8 rule (*"`dropped` is carried on close, so a stream that lost data says so"*) failing not in the type, the wire, or Core, but in the one place that decides whether a close ever happens. It is the third instance of the same shape in three days — [embarch-decision-reversals.md](../embarch-decision-reversals.md) rows 73, 76 and 98 — and the generalisable half is: **a mechanism that reports loss only on a transition needs the transition to be guaranteed, and "no scope covers step N+1" was a guarantee nobody had checked against every scope variant.**
+
+    Verified: `west twister -p native_sim -T app/tests` **72/72**, `esp32c5` build clean, flashed, and confirmed on hardware in the run that found it — the same `WholeStudy` study now reports `gatt` `truncated: true` with 213 dropped, in a run where `bds-data` closed reporting 0. That discrimination between two `WholeStudy` taps in one run is the thing the flag exists for and had never been able to do.
+
+
 ## 4. Open questions / future work
 
 - **A `StepResult` carrying a failure reason arrives short of its own declared length because *dev-bench resets in the middle of transmitting it*. Found 2026-08-27, root-caused the same day, not fixed.**
@@ -508,6 +530,8 @@ embarch-dev-bench/                     (single repo, one shared application)
 
 
 ## 5. Changelog
+
+- 2026-08-27 — **New decision 42: `close_all_taps()` replaces `sync_taps_for_step(steps_len)` at the end of a run.** A `WholeStudy` tap was never closed, so it never sent `StreamClose`, so its `dropped` count never reached Core and `StreamRef.truncated` stayed `false` no matter how much was lost. Found by widening one study's `gatt` tap from `Steps { 0, 10 }` to `WholeStudy` and watching `truncated` go from `true` (16 dropped) to `false` (31 dropped) on the same bench. Fixed, tested 72/72, flashed, and confirmed live. [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 98.
 
 - 2026-08-27 (evening) — **§4 finding 3 is root-caused and the link now holds: it was the connection interval, not the DUT's CPU.** The DUT's own outpost trace is what found it, which is the instrument doing the job it was built for: 93% idle when the link dies, and the BLE controller's ticker collapsing into **eight consecutive 626.4 ms holes** while SPI interrupts, AFE drains and even GRTC keep firing inside them. 626.25 ms is the band's *own* configured connected-idle interval (`lib/ble/Kconfig`: 540-660 ms, 5000 ms supervision timeout — eight connection events of margin, spec-legal and thin). The firmware's own fast-interval lever fires **downstream of the exchange that needs it**: `lib/bds/bds.c` requests it only once a backlog threshold is crossed, and the write that dies is the control-point write in front of any backlog. Measured with the DUT's own `ble status` over NUS rather than inferred (50 ms → 30 ms), and fixed at study level with one `ble speed fast` step: **14 of 14 steps, `completed`**, the two-minute drain held with PPG flowing, 2.4 MB of named/timed trace. "PPG running is the trigger" is retired as a correlate ([embarch-decision-reversals.md](../embarch-decision-reversals.md) rows 95, 96). Nothing changed in the DUT's repo; the narrow firmware decision left is its owner's.
 
