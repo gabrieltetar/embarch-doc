@@ -378,6 +378,19 @@ Three properties carry the design:
 
     *Rejected: a smaller `EMBARCH_OUTPOST_BATCH_BYTES` to get finer frames.* This was a live idea while the frame was the instrument's resolution, and decision 17's rework inverted it: frame size no longer affects resolution at all, so smaller frames now buy nothing and cost framing overhead. **Bigger is strictly better on this wire**, up to the latency the wait already bounds.
 
+21. **`<embarch/outpost.h>` is includable in a build that does not have the module, and `OUTPOST_EVT()` compiles to nothing there — 2026-08-27.** A one-line CMake fix for a defect that made decision 6's markers unusable in exactly the code they are most worth putting in.
+
+    The header was already written for this: its markers-compiled-out path no-ops, and its own comment says an unregistered name is a build error *"whether or not markers are enabled — the failure mode this is arranged to prevent does not depend on a Kconfig."* That design was defeated by this module's `CMakeLists.txt`, not by the header. `zephyr_include_directories(include)` sat **below** the `if(NOT CONFIG_EMBARCH_OUTPOST) return()` guard, so `#include <embarch/outpost.h>` did not resolve at all in a build without the module. The no-op path could never be reached from an application, and the compile-time name check could never run in the build where a typo costs the most — the shipping one.
+
+    **The cost landed exactly where markers earn their keep.** A marker is worth most in a hot path: a driver's drain loop, a queue's overflow branch, a library's error return — code compiled into both the tracing image and the shipping one. Reaching any of those meant the application wrapping every call site in its own `#ifdef CONFIG_EMBARCH_OUTPOST` and hand-rolling the fallback macro the header already contained. Found placing the first real `OUTPOST_EVT()` markers into a DUT's PPG pipeline, where the alternative was adding guards to four files of someone else's product code to work around a header that had the answer built in.
+
+    Two changes. The include directory moves above the guard — it adds no sources, no symbols and no code, since with `CONFIG_EMBARCH_OUTPOST` unset the header's entire content is an enum and two macros that expand to nothing. And the no-op degrades in **three** tiers rather than two, described in §5.2: the third tier drops the name check, because with no registration header included there is no enumerator to check against, and `(void)OUTPOST_MARKER_##id` there would fail every call site rather than catch anything.
+
+    `tests/module_off` pins it: a compile-only application that includes the header and calls `OUTPOST_EVT` with `CONFIG_EMBARCH_OUTPOST=n`. It is in `tests/run-all.sh` alongside the ztest, stream and cross-decoder stages.
+
+    **Validated on real hardware the same day**, which is also the first time this module's markers ran on a DUT at all: five markers declared at a PPG pipeline's sample-drop sites, all five resolved by name in `outpost-manifest.json`, and three `PPG_PULL_DROPPED` records decoded out of a study capture ~100 ms apart — the observe-poll cadence — each carrying the engineer's own argument. Decision 6 shipped 2026-08-26 and had until now only ever been exercised by this repo's own test app.
+
+
 ## 4. Wire format
 
 **Implemented and pinned; record layout 2 as of 2026-08-26.** The specification of record is `embarch-outpost/src/outpost_priv.h`, with three implementations that must agree: the firmware encoder, `embarch-study-designer`'s `outpost.rs` (which `embarch-core` and `embarch-ui` read a trace through, for the same reason `Sample`'s row shape lives there — Core holds no column knowledge), and `embarch-outpost/scripts/decode_outpost.py`. Every constant below is still provisional until the first real capture over a real UART (§7); each is a Kconfig (§5.3).
@@ -503,7 +516,9 @@ The general lesson, and the reason this is in the doc rather than in that repo's
 
 point `CONFIG_EMBARCH_OUTPOST_MARKER_HEADER="app_outpost_markers.h"` at it, and add its directory with **`zephyr_include_directories()`, not `target_include_directories(app ...)`** — the outpost module compiles that header too, and it is not part of the `app` target. Then, anywhere including inside an ISR: `OUTPOST_EVT(PPG_FRAME_BEGIN, frame_no);`
 
-An unregistered name does not compile, whether or not markers are enabled: `OUTPOST_EVT` expands through an enumerator that only the registration list creates, and the markers-compiled-out path still references it. The failure mode this exists to prevent does not depend on a Kconfig.
+An unregistered name does not compile in either build that has the module: `OUTPOST_EVT` expands through an enumerator that only the registration list creates, and the markers-compiled-out path still references it.
+
+**`<embarch/outpost.h>` is includable in a build without the module, and `OUTPOST_EVT` no-ops there — corrected 2026-08-27 (decision 21).** This is what lets a marker live in shared driver or library code that compiles into both the tracing image and the shipping one, unguarded. The name check degrades in three tiers: module on + markers on emits and checks; module on + markers off no-ops and checks; **module absent no-ops without checking**, because no registration header was included, so there is no enumerator to reference and insisting on one would break every call site in every shipping build. The check stays real in both builds that have the module, which is every build where a marker has a reason to exist.
 
 ### 5.3 Kconfig surface
 
@@ -610,6 +625,8 @@ Per study, thereafter: add an `outpost` tap to the `Study`, run it, read the tra
   Decision 4's rework was itself a bet on this number — that a counter read inside the context switch and inside `_isr_wrapper()` is a cost worth removing — made without a measurement, at the owner's call. Worth recording plainly, and now with a twist: **the change that removed the ability to measure emit-path overhead was motivated by emit-path overhead**, and its own reversal a day later is what made the *other* half of the overhead question answerable. If the trade ever needs revisiting, the layout version is the mechanism, and the measurement above is the evidence to get first.
 
 ## Changelog
+
+- 2026-08-27 — **New decision 21: the public header is includable without the module.** `zephyr_include_directories(include)` sat below the `CONFIG_EMBARCH_OUTPOST` early return, so `<embarch/outpost.h>` did not resolve in a non-tracing build and `OUTPOST_EVT`'s no-op path was unreachable from any application — markers could not be placed in code that compiles into both the tracing and the shipping image, which is where they are worth the most. Fixed, with the no-op degrading in three tiers (§5.2) and `tests/module_off` pinning it. Found and validated placing this module's first real markers into a DUT's PPG pipeline: five names in the manifest, three marker records decoded from a live capture. [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 99.
 
 - 2026-08-27 (evening) — **Record layout 4 is deferred, because the number that justified it was measured on a broken system** (§7). The case was 4141 rec/s delivered at 97% duty with 5452 records lost; that capture's BLE link was in the failed state. The first traced capture with the link actually holding — PPG flowing, full two-minute drain, 140 s — runs at **1606 rec/s at 10.66 B/record**, ~17 KB/s against ~46 KB/s, 1.12% frame loss: about 2.5× headroom. `g_AFE_DRAIN_WORK_Q` ran ~500 times/s on the failing run and 36 times/s on the healthy one. The target (base-relative `a` plus a `cycles` delta, ~6 B/record) and the trigger (a *healthy* capture that runs short of the link) are both written into §7 so neither is re-derived. [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 96.
 
