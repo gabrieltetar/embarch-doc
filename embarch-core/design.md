@@ -354,6 +354,13 @@ embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
 
     A debug log that cannot be opened must never be able to fail a study: the appender is built once, its failure is reported once into `core.log`, and every later call is a no-op. **Deployed to the live Windows service and validated against the real bench**, including a real study end to end; the ordering constraint is that this must be deployed *before* the new dev-bench firmware is flashed, since only this Core tolerates a `LogLine` before `HelloAck`.
 
+38. **Core renders a `Struct`-encoded tap, and holds no more column knowledge than it did before — 2026-08-26.** Core's half of [embarch-study-designer/design.md](../embarch-study-designer/design.md) §3 decision 52.
+
+    `StreamStore::create` takes the study's `decoders` alongside its taps, because a `Struct` tap's CSV *header* is the engineer's declared field list and cannot be derived from the encoding alone — the one place this differs from `Samples`/`GattTranscript`, whose headers are compile-time constants of the shared crate. Everything after that is the same mechanical job decision 30 already defined: raw bytes down first, then call the crate's own renderer, then append `core_rx_utc_ms`. Core still knows no field name, no width and no byte order.
+
+    **The failed-decode row is Core's, and it is a row rather than a log line.** A payload that doesn't match the layout gets written with its decoded columns empty and `payload_hex`/`decode_note` filled, aligned to the same header. Dropping it would leave a record that genuinely arrived indistinguishable from a notification that never came, which is the failure the whole 52–55 group exists to remove; a warning in `core.log` is not visible to whoever opens the CSV. `decode_note` is unquoted because `DecodeError`'s rendering carries no comma and no quote by construction, asserted in that type's own tests rather than assumed here.
+
+
 ## 4. Endpoint reference
 
 All routes require `Authorization: Bearer <token>` (see §6) — **no exception any more**: `GET /enroll` (§3 decision 25) was the one deliberately unauthenticated route, retired 2026-08-24 in favor of `embarch-ui`'s Enroll tab (decision 25's own amendment, `embarch-ui/milestone-1.md` §4.9).
@@ -557,6 +564,8 @@ Core has zero knowledge of embarch-api, MCP, Claude Code, or the concept of a "p
 
 
 ## 11. Changelog
+
+- 2026-08-26 — **§3 decision 38: `StreamEncoding::Struct` renders.** `StreamStore::create` now takes `Study.decoders` (a `Struct` tap's header is the engineer's field list, not a constant), `write_struct_rows` emits one row per repetition, and a payload that doesn't fit the layout gets a visibly-undecoded row rather than a dropped record. `validate_taps` gains the decoder-count argument that refuses a tap naming a layout the study doesn't carry. 152 tests.
 
 - 2026-08-26 — **Core became the outpost trace's clock** (§3 decision 30's settlement 3). [embarch-outpost/design.md](../embarch-outpost/design.md) §3 decision 4 took every timestamp off that wire, so the only time a trace has is Core's own `rx_utc_ms` — which Core has always recorded and, for an `OutpostTrace` tap, always discarded, because the rendering happens post-hoc and nothing carried the stamps that far. Now `streams/<tap>.arrival.csv` does: `frame_index,rx_utc_ms,frame_bytes`, one row per frame, written in the same lock as the raw bytes, unrotated.
 
