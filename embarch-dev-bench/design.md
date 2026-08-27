@@ -364,24 +364,47 @@ embarch-dev-bench/                     (single repo, one shared application)
 
 ## 4. Open questions / future work
 
-- **A `StepResult` carrying a failure reason arrives 16 bytes short, and Core treats that as a dead link. Found 2026-08-27 on real hardware, reproduced three times, not fixed.**
+- **A `StepResult` carrying a failure reason arrives short of its own declared length because *dev-bench resets in the middle of transmitting it*. Found 2026-08-27, root-caused the same day, not fixed.**
 
-  A study step failed and `embarch-core` refused the frame — *"failed to decode DevBenchMessage: 72 COBS-framed bytes, variant index 7 (StepResult) ... The original data was not well encoded"* — then dropped the connection and failed the whole study on a **dev-bench connection error**, never saying a step had failed at all. So the one message whose job is to explain a failure is the one that cannot get through.
+  A study step failed and `embarch-core` refused the frame — *"failed to decode DevBenchMessage ... The original data was not well encoded"* — then dropped the connection and failed the whole study on a **dev-bench connection error**, never saying a step had failed at all. So the one message whose job is to explain a failure was the one message that could not get through.
 
-  **The number that identifies it is 16.** COBS's leading overhead byte states how many non-zero bytes follow, and on both captured failures it overstates what arrived by exactly sixteen:
+  **The cause is a bench reboot, and the truncation is its shadow.** The proof is an uptime comparison, not a byte pattern: the link handshaked at `uptime 899843 ms`, the short frame arrived at `17:25:39.647`, and the *next* handshake reported `uptime 46320 ms` — placing the reset at `17:25:39.8`, within 150 ms of the frame. dev-bench dies partway through putting the frame on the wire, so the frame stops where the transmitter stopped. Everything that had looked like a transport fault follows from that:
 
-  | study | overhead byte says | bytes arrived | short by |
+  | observation | what a mid-send reset explains |
+  |---|---|
+  | the tail is missing and the prefix is byte-perfect | transmission got that far and no further |
+  | the last byte can be *corrupt* — `0x38` arrived as `0xf8` on one run | the line went idle mid-byte, so the remaining bits sampled as the idle `1` |
+  | nothing follows: no `StudyDone`, no `StreamClose`, silence to the deadline | the bench is rebooting, not continuing |
+  | only long frames lose their tail | short ones finish transmitting before the window the crash falls in |
+  | it is **intermittent** — the identical 88-byte frame decoded fine on study `f13f6a82`, whose bench did not reset | a crash, not a boundary |
+
+  **"The number that identifies it is 16" was wrong, and the number was the whole basis of the previous diagnosis.** Six captured occurrences, with the shortfall counted against the COBS block the code byte describes (the code byte included, the `0x00` delimiter excluded — see below):
+
+  | study | code byte says | block arrived | short by |
   |---|---|---|---|
-  | `d653f3e9` | `0x51` = 81 | 65 | **16** |
-  | `b2f1c81e` | `0x58` = 88 | 72 | **16** |
+  | `b38562b2` | `0x51` = 81 | 66 | 15 |
+  | `d653f3e9` | `0x51` = 81 | 64 | 17 |
+  | `b2f1c81e` | `0x58` = 88 | 71 | 17 |
+  | `61e3b5a0` | `0x51` = 81 | 68 | 13 |
+  | `978ca133` | `0x58` = 88 | 71 | 17 |
+  | `beadc399` | `0x51` = 81 | 68 | 13 |
+  | `f13f6a82` | `0x58` = 88 | **88 — complete** | — |
 
-  **This is a truncation in transit, not a malformed encoding**, and the distinction matters because the first diagnosis was the second one and it was wrong. The field layout is self-consistent right to where it stops — for `b2f1c81e`: variant (1) + step index (1) + name length (1) + `nus-sensor01-start` (18) + outcome discriminant `Fail` (1) + reason length 64 (1) + reason (64) = 87, exactly what the overhead byte claims. It is tempting to read that as "the encoder wrote the reason and then forgot `StepResult`'s four trailing `Option` bytes", and `serial_protocol.c`'s `DBM_TAG_STEP_RESULT` case disproves it: it writes `has_captured_data`, `has_gatt_services`, `security_level` and `protocol` unconditionally after the reason, on the `Fail` path as much as the `Pass` one. The bytes were built and then lost.
+  Not one of them is 16. The original table's two rows both read 16 because Core's own message subtracted a delimiter-inclusive length from a delimiter-exclusive claim — **an off-by-one in the diagnostic became the identifying fact of the bug**, and a fixed number is what made "find the 16-byte boundary in the TX path" look like the next step. There is no boundary; there is a crash with variable timing. Core's arithmetic is corrected ([embarch-core/design.md](../embarch-core/design.md) §3 decision 40).
 
-  Why it is length-dependent: a `Pass` `StepResult` is ~25-30 bytes and decodes fine every time. Only these long ones, 81-88 bytes, lose their tail. So the next step is to find the 16-byte boundary — dev-bench's COBS output staging, its UART TX path, or Core's read chunking on the dev-bench link — by capturing that link directly rather than by reading either side's source, which is what produced the wrong answer above.
+  **What is still not known is why it resets**, and the honest state of the evidence is thin:
 
-  **Two fixes, separable, and the second is worth doing regardless of the first.** The encoder (or the transport under it) must not emit a frame it cannot finish. And **Core should cost one undecodable frame the frame, not the link** — the posture every other part of this suite already takes, and exactly why an outpost frame carries its own CRC ([embarch-outpost/design.md](../embarch-outpost/design.md) §3 decision 5). A `StepResult` that will not decode should fail *that step*, loudly, and let the study end on its own terms.
+  - **`reset cause` is useless on this board.** Every handshake today reported `0x00000000`, including the one 46 seconds after a confirmed reboot. `send_reset_diagnostics` clears the cause each handshake precisely so the next one is meaningful, so this is the ESP32-C5 `hwinfo` driver declining to classify rather than a stale flag. The **uptime** is the load-bearing half, exactly as that function's own comment says.
+  - **No crash dump arrived** — which is itself a finding about §4's own "the fatal-error path decision 38 opens is designed and untested" bullet. This is the case that would exercise it. Either the reset is not a Zephyr panic (a hardware reset — brownout under simultaneous radio TX and UART TX is the hypothesis worth testing first, and it fits a mid-byte abort), or `log_panic()`'s synchronous path does not deliver. **Distinguishing those two is the next step, and it is cheap**: the forced `k_panic()` behind a debug-only build that bullet already proposes.
+  - Length-dependence is real but is a *consequence*: a `Pass` `StepResult` is ~25-30 bytes and has always decoded, because it finishes before the crash window.
 
-  **How it presents, because it is misleading twice over.** The study reports a *transport* error at the step *before* the one named in the frame, and nothing in the message says a step failed. It also looks exactly like a schema mismatch, which it is not — `GET /dev-bench/hello` reported `schema_version: 15, compatible: true` throughout. Check that before going down that road.
+  **Three things that were ruled out by experiment, so nobody re-runs them.** The outpost trace stream is not involved — study `978ca133` removed that tap and changed nothing else, and failed identically. ACL-buffer exhaustion is not the trigger — `978ca133` logged **no** `No available ACL buffers!` at all and still died. And it is not Core's read path: with Core keeping the link (below), it polled a live port for 13 seconds and received nothing.
+
+  **The previous diagnosis was "a truncation in transit, not a malformed encoding", and that half stands** — the field layout is self-consistent right to where it stops, and `serial_protocol.c`'s `DBM_TAG_STEP_RESULT` case does write all four trailing `Option` bytes on the `Fail` path. Reading it as "the encoder forgot the trailing options" was wrong then and is still wrong. What was wrong was the inference *from* "in transit" to "the wire or the staging buffer lost bytes": the sender stopped existing, which is a third possibility neither reading covered. **Two wrong diagnoses in a row on the same fault, both well-evidenced** — see [embarch-decision-reversals.md](../embarch-decision-reversals.md) rows 91 and 92.
+
+  **Core's half is fixed and deployed, and it is what produced the root cause.** An undecodable frame now costs *the frame*, not the link ([embarch-core/design.md](../embarch-core/design.md) §3 decision 40) — the posture every other part of this suite takes, and exactly why an outpost frame carries its own CRC ([embarch-outpost/design.md](../embarch-outpost/design.md) §3 decision 5). That change is what let a run keep reading past the bad frame and observe the *silence* after it, which is the observation the whole diagnosis rests on. **The bench-side fix is still open**: whatever resets dev-bench on this path.
+
+  **How it used to present, because it was misleading twice over.** The study reported a *transport* error at the step *before* the one named in the frame, and nothing in the message said a step failed. It also looked exactly like a schema mismatch, which it is not — `GET /dev-bench/hello` reported `schema_version: 15, compatible: true` throughout. Check that before going down that road.
 
   **It predates the work that found it**: the same frame, same step, at 06:39 UTC the same day, on the previous Core build and the previous DUT firmware.
 
@@ -426,7 +449,16 @@ embarch-dev-bench/                     (single repo, one shared application)
 
   What that leaves is a DUT-side or radio-side cause this bench can observe and not fix. It matters beyond one study, because a five-minute `RunProtocol` drain **did** complete on 2026-08-26 against the same two boards — so whatever this is, it is either intermittent or something about the bench's state changed between those days. Unresolved.
 
-  **And later the same day it stopped being reportable at all, which is why it has been so hard to pin down.** Three more studies died here, and every one of them surfaced as a *transport* error — `failed to decode DevBenchMessage ... The original data was not well encoded` — with no mention that a step had failed, let alone why. The `StepResult` carrying the diagnosis arrives **16 bytes short** and Core discards it and drops the link (see the bullet below). The two findings compose in the worst direction: **finding 4's fix is what made the reason long enough to trigger it.** Keeping the HCI byte turned `disconnected during service discovery` into `disconnected during … (HCI 0x08, supervision timeout)`, which pushed the frame from ~30 bytes to 81-88 — and it is only the long frames that lose their tail. So the improvement that made this diagnosable is the same change that stopped the diagnosis being delivered, and the failure now presents as if the link, not the DUT, were at fault.
+  **And later the same day it stopped being reportable at all, which is why it has been so hard to pin down.** Three more studies died here, and every one of them surfaced as a *transport* error — `failed to decode DevBenchMessage ... The original data was not well encoded` — with no mention that a step had failed, let alone why. The `StepResult` carrying the diagnosis arrives short of its own declared length, because dev-bench resets partway through sending it, and Core discarded it and dropped the link (see the bullet below for the root cause, found 2026-08-27 afternoon). The two findings compose in the worst direction: **finding 4's fix is what made the reason long enough to trigger it.** Keeping the HCI byte turned `disconnected during service discovery` into `disconnected during … (HCI 0x08, supervision timeout)`, which pushed the frame from ~30 bytes to 81-88 — and only frames that long fail to finish transmitting before the crash. So the improvement that made this diagnosable is the same change that stopped the diagnosis being delivered, and the failure presented as if the link, not the DUT, were at fault.
+
+  **Refined 2026-08-27 afternoon, and it is now a statement about the DUT rather than about the bench: the reference-dut cannot service a GATT operation within the supervision timeout while PPG is running.** Two runs of the same eleven steps, reordered, separate the two:
+
+  | order | what ran before the failing step | failing step | reason |
+  |---|---|---|---|
+  | as authored | nothing had started PPG | `nus-sensor01-start` (the NUS write that starts it) | `disconnected during write (HCI 0x08, supervision timeout)` |
+  | batchmgr pair moved *after* the NUS window | `sensor01 start` had run and returned `All SENSOR01 measurements started successfully` | `batchmgr-stop` | `disconnected during service discovery (HCI 0x08, supervision tim` |
+
+  The BDS service discovery that dies in the second run is the *same* discovery that passed as step 2 in the first — the difference is only that PPG is now flowing. So the link dies at whatever GATT operation follows PPG starting, and moving the steps around only moves which one that is. That also explains why the settle intervals, the `reset` between runs and the explicit `BDS_CMD_ABORT` all changed nothing: none of them stops PPG. **This is a DUT-side fault, observable from this bench and not fixable in it**, and it is what blocks a traced PPG capture — not the tracer, and not the frame truncation. Still `Unresolved`.
 
   **4. `disconnected_cb` throws away the disconnect reason** — see the next bullet.
 
@@ -442,6 +474,8 @@ embarch-dev-bench/                     (single repo, one shared application)
 
 
 ## 5. Changelog
+
+- 2026-08-27 (later) — **§4's short-`StepResult` fault is root-caused: dev-bench resets partway through transmitting the frame.** Not a transport fault and not an encoder omission — the two previous, well-evidenced diagnoses. The proof is an uptime comparison across the reset, which only became observable once Core stopped tearing the link down on the bad frame ([embarch-core/design.md](../embarch-core/design.md) §3 decision 40): handshake at `uptime 899843 ms`, short frame at `17:25:39.647`, next handshake at `uptime 46320 ms`. **"The number that identifies it is 16" is withdrawn** — it was an off-by-one in Core's own diagnostic, and the six corrected occurrences read 13, 15, 17, 17, 13, 17, with one identical frame arriving *complete*. Why it resets is still open, and the evidence is thin in two specific ways now written down: `reset cause` reads `0x00000000` on this board even 46 seconds after a confirmed reboot, and **no crash dump arrived** — which makes this the case that would finally exercise §4's own untested `log_panic()` path, and the cheap next step the forced `k_panic()` that bullet already proposes. §4 finding 3 also gets sharper: the DUT-side link loss is triggered by **PPG running**, not by the `batchmgr` pair — reordering the study moved the failure onto whichever GATT operation followed PPG starting, which retires the settle-interval, `reset` and `BDS_CMD_ABORT` experiments in one stroke ([embarch-decision-reversals.md](../embarch-decision-reversals.md) rows 92, 93). No firmware change in this pass.
 
 - 2026-08-27 — **Two of the four defects the first real `.eap` run recorded are fixed** (`9a8f0df`): a `StreamSource::GattNotify` tap on a `RunProtocol` source no longer loses data silently (a new `ble_drop_sink` carries the interpreter queue's drops out of the bridge, and `main.c`'s new per-tap `tap_dropped[]` puts each tap's own loss on its `StreamClose.dropped` instead of the transcript's for one tap and 0 for every other), and `disconnected_cb` keeps the HCI reason, routed through one `outcome_disconnected()` helper at all twelve call sites. Proven on hardware by an A/B against the previous firmware rather than by a clean capture, because §4's finding 3 kept killing the reproduction: same study, same three dropped entries, `truncated: false` on `79857be2` and `truncated: true` on `9a8f0df2`. The `StepResult` field for the disconnect reason is deliberately still open — that is a wire change. §4's finding 3 gained a much sharper account of the link deaths, including three causes ruled out by experiment and the fact that it is not a regression.
 
