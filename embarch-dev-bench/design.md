@@ -357,6 +357,10 @@ embarch-dev-bench/                     (single repo, one shared application)
 
     Verified: `west build -b native_sim app` and `-b esp32c5_devkitc/esp32c5/hpcore app` both clean, **57/57** ztest cases (up from 42). Fifteen are new: the pinned `StudyStart`-carrying-a-real-manifest decode asserted field by field, a corrupt-protocol-span check proving the third seal fails alone, a pinned populated `StepResult.protocol` frame, eight interpreter-semantics cases mirroring the crate's own, and four capacity cases including a control that the same shape at exactly the caps still decodes. **Never run against a real DUT** — see §4.
 
+    **Deployed and live-validated the same day, for what can be validated without a manifest.** Core redeployed to the Windows service and this firmware reflashed in one sitting, which the moved wire required: `GET /dev-bench/hello` reports `schema_version: 15, compatible: true, firmware_version: '79857be2'` with `link_identity: match`. A two-step `BleAdvertise` study then ran end to end and completed `Pass`/`Pass` — the first time `StepResult.protocol` has crossed a real link, hand-encoded here as the appended `0x00` and landing in `events.json` as `"protocol": null` on a step that ran no protocol. That is the *whole* v15 wire exercised except the one path that needs a manifest nobody has authored.
+
+    **The live pair was already broken before this pass, and nothing had said so.** Core was serving wire v13 against a bench flashed to v14 — the handshake refused, correctly and loudly, but only to whoever called `/dev-bench/hello` by hand. `embarch doctor`'s check 11, the one whose entire job is "`study_designer_schema_version` agrees", is a hardcoded `Warn` stub whose stated reason ("`embarch-study-designer` isn't wired into `embarch-core`/`embarch-api` as a dependency yet") stopped being true long ago — see [embarch-umbrella/design.md](../embarch-umbrella/design.md) §7 and [embarch-decision-reversals.md](../embarch-decision-reversals.md) row 71.
+
 
 ## 4. Open questions / future work
 
