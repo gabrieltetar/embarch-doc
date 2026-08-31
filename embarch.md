@@ -68,6 +68,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 ## 6. Index
 
 - [DOC-PROTOCOL.md](DOC-PROTOCOL.md) — how docs in this repo are organized and kept up to date
+- [DOC-COMPACTION.md](DOC-COMPACTION.md) — how a doc gets compacted once its work has landed: what must survive, what gets discarded, and the verification gate
 - [embarch-core/design.md](embarch-core/design.md) — embarch-core design
 - [embarch-core/milestone-1.md](embarch-core/milestone-1.md) — embarch-core's milestone 1 execution plan (Flash)
 - [embarch-core/milestone-1-implementation-guide.md](embarch-core/milestone-1-implementation-guide.md) — diagnoses and turns embarch-core's milestone-1 `EMBARCH_TOKEN`/Windows-service gap (§3.5) into a ready-to-run agent prompt
@@ -106,6 +107,8 @@ setup / verification, off to the side and out of the runtime path entirely:
 - `*.changelog-archive.md` files (one per doc whose Changelog `scripts/archive-changelog.py` has trimmed, e.g. [embarch.changelog-archive.md](embarch.changelog-archive.md)) — not individually indexed here since each lives beside its source doc and is linked from the top of that doc's own `## Changelog` section
 
 ## 7. Changelog
+
+- 2026-08-31 — Added [DOC-COMPACTION.md](DOC-COMPACTION.md) to §6's index: the compaction half of the docs protocol, for the pass that runs after a milestone closes. [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §4–5's append-only bias is correct while work is in flight and had left three design docs at 160–343 KB; the new file states what a compaction may and may not do, and forbids the renumbering that would silently invalidate the repo's 1335 prose `§N decision M` cross-references.
 
 - 2026-08-27 — **The outpost put bytes through a real UART, record layout 2 was withdrawn for layout 3, and four recorded-but-unfixed defects were fixed** (§3's `embarch-outpost`/`embarch-dev-bench`/`embarch-api` rows; [embarch-decision-reversals.md](embarch-decision-reversals.md) rows 79–83). The tracing half: the reference-dut builds and flashes an outpost image whose manifest Core accepts, the first real signal is declared and resolves over a `Route::Direct`, its `StreamSource::Signal` tap opens and is served — and the DUT emits a burst at boot and then stops, which looked like a far better-bounded blocker than the wiring question this had been stuck on. **That reading was overturned the next day** (row 84): the DUT emits continuously and the wire is the blocker after all. Layout 3 restores the DUT's per-record clock without the two nested `irq_lock`s that motivated removing it, and is numbered 3 rather than reverted to 1 because a version byte cannot go backwards; the change crossed `embarch-outpost`, `embarch-study-designer`, `embarch-core` and `embarch-ui` in one pass. The defect half: dev-bench's `GattNotify` tap no longer loses data silently and its disconnects name their HCI reason, and `embarch-api` resets after a DUT reflash and reseals all three of a study's seals. **Nearly lost the repo owner's 432 uncommitted lines to a routine `west update`** — row 79, and the reason this pass checked `git status` on a dependency before moving its pin.
 

@@ -34,6 +34,7 @@ embarch/
     ├── embarch-dev-workflow.md  <- local dev iteration across the 3 code repos, added 2026-08-17; §4a (deploying Core to the live Windows service) added 2026-08-25
     ├── embarch-stream-pipeline-proposal.md  <- proposal (not accepted): one generic stream pipeline, added 2026-08-24
     ├── DOC-PROTOCOL.md          <- this file
+    ├── DOC-COMPACTION.md        <- how a doc gets compacted once its work has landed, added 2026-08-31
     ├── embarch-core/design.md
     ├── embarch-core/milestone-1.md
     ├── embarch-api/design.md
@@ -91,6 +92,7 @@ So: **when a milestone step closes, also grep the open-questions sections** — 
 - Renaming or moving a file, or editing anything link-heavy? `scripts/check-links.py` walks every `.md` file and reports any relative link that no longer resolves — it also runs automatically on every push/PR via `.github/workflows/docs-ci.yml`, so a broken link fails CI rather than waiting to be noticed; run it locally first if you want the fast feedback.
 - Same workflow also runs `scripts/check-staleness.py`, the automated half of §4's pre-close grep — see §4 for what it does and doesn't cover.
 - Changelog sections don't need manual trimming: `scripts/archive-changelog.py` keeps each doc's `## Changelog` down to its most recent entries and moves the rest into a sibling `*.changelog-archive.md`, ranked by each entry's own date rather than its position (some docs here prepend newest-first, others append oldest-first — see the script's own docstring). `.github/workflows/changelog-archive.yml` runs it weekly and opens a PR with whatever moved, rather than requiring anyone to remember to run it or pushing straight to main unreviewed.
+- Everything above describes how a doc gets *written* while work happens, and its bias is deliberately append-only: during design and implementation, carrying a redundant fact costs less than losing one. [DOC-COMPACTION.md](DOC-COMPACTION.md) (added 2026-08-31) covers the opposite pass — how a doc gets compacted once its work has shipped, so the accretion turns into organized sections without losing a fact. It is a phase, not a habit: it runs at a milestone close, on one doc, in its own commit, and it is lossless about facts and lossy only about chronology.
 - Want the suite-wide view of every open question instead of reading six-plus docs' own §7/§10/§12-equivalent sections one at a time? `scripts/collect-open-questions.py` (added 2026-08-15) walks every `design.md` (plus `embarch-token.md`) for its "Open questions" heading and prints every bullet, grouped by doc. Read-only and not a CI gate — an open question existing isn't a failure the way a broken link or a stale status word is; run it locally when you want the index.
 
 ## 6. How a sub-project repo hooks into this
@@ -109,6 +111,8 @@ Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides 
 This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here. **A new sub-project repo needs both sections**, and it is worth checking an existing one actually has them: `embarch-topology` ran without a `CLAUDE.md` at all from its creation (2026-08-21) until 2026-08-25, so nothing in that repo pointed at its own design doc and §4–5 depended on whoever was working there already knowing. Nothing in this protocol had ever checked.
 
 ## Changelog
+
+- 2026-08-31 — Added [DOC-COMPACTION.md](DOC-COMPACTION.md) (§2's tree, §5's list): the pass this protocol never described. §4–5's append-only bias is right while work is happening and had produced a 343 KB `embarch-study-designer/design.md` whose §3 needed its own index to stay navigable, plus decisions readable only as their own amendment history. Compaction was therefore a judgment call re-made from scratch every time, with nothing protecting the content most at risk from it — rejected alternatives, the measured/assumed distinction, and the 1335 prose `§N decision M` cross-references `check-links.py` structurally cannot see (it validates file paths and skips in-page anchors). The new file's hard rule on that last point: decision and section numbers are permanent identifiers, grouped under topical headings rather than renumbered.
 
 - 2026-08-26 — §2's tree: `embarch-outpost` moves from *design-only, created empty* to *implemented* (Milestone 7 Phase C). §6's "a new sub-project repo needs both sections, and it is worth checking an existing one actually has them" was followed rather than assumed this time — the repo's first commit carries a `CLAUDE.md` with the docs pointer and the git rule, which is the gap `embarch-topology` ran four days with and which nothing in this protocol had ever checked before it was written down.
 
