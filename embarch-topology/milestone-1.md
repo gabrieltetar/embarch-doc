@@ -1,6 +1,8 @@
 # embarch-topology: milestone 1 — first rollout
 
-**Status: CLOSED, 2026-08-24.** The crate, the CLI/UI binary, and all three consumers' wiring are
+**Status:** done, 2026-08-24.
+
+**Where it stands: CLOSED, 2026-08-24.** The crate, the CLI/UI binary, and all three consumers' wiring are
 code-complete, merged to each repo's `main`, and pushed (§2 items 1-2). The live Windows Core is
 deployed, both real boards are enrolled and validated, a real `build_and_flash` + `run_study`
 cycle has completed clean end-to-end (§2 items 3-4's enroll/validate/regression parts) — a real

@@ -60,8 +60,11 @@ Because every sub-project sits as a sibling of `embarch-doc`, its docs are alway
 Two tiers:
 
 - **Suite-level docs** (`embarch-doc/` root): [embarch.md](embarch.md) (suite overview + sub-project index), [embarch-roadmap.md](embarch-roadmap.md) (numbered milestones plus Next/Later across the whole suite), [embarch-features.md](embarch-features.md) (feature inventory across the whole suite), [embarch-user-guide.md](embarch-user-guide.md) (getting started and day-to-day usage of the assembled suite — the one doc in this repo written for a reader who isn't already inside the project, so it explains rather than links), [embarch-token.md](embarch-token.md) (`EMBARCH_TOKEN`'s full lifecycle, since it's shared across `embarch-core` and `embarch-api`), [embarch-glossary.md](embarch-glossary.md) (added 2026-08-15 — load-bearing terms used across more than one sub-project doc, each linking to its owning doc rather than restating it), [embarch-decision-reversals.md](embarch-decision-reversals.md) (added 2026-08-15 — a standing list of assumptions reality has already overturned, across every sub-project; update it in the same pass as any decision correction, per §5 below), [embarch-dev-workflow.md](embarch-dev-workflow.md) (added 2026-08-17 — how to iterate locally across `embarch-core`/`embarch-api`/`embarch-umbrella` without cutting a release or a debug build touching a real machine's install; §4a, added 2026-08-25, covers the opposite trip — getting a Core change onto the live Windows service). These cover things that span more than one sub-project.
-- **Sub-project docs** (`embarch-doc/<sub-project>/`): every existing or planned sub-project gets a subfolder. `design.md` is the one required file — the durable, living source of truth for that sub-project's architecture, decisions, and open questions, per [embarch.md](embarch.md) §5's "design doc as source of truth" principle. Add more files to a subfolder later (e.g. `api-reference.md`) if `design.md` grows unwieldy — don't split preemptively.
+- **Sub-project docs** (`embarch-doc/<sub-project>/`): every existing or planned sub-project gets a subfolder. `design.md` is the one required file — the durable, living source of truth for that sub-project's architecture, decisions, and open questions, per [embarch.md](embarch.md) §5's "design doc as source of truth" principle. Add more files to a subfolder later (e.g. `api-reference.md`) if `design.md` grows unwieldy — don't split preemptively. One split is no longer a judgment call: **a decisions section past 40 entries or ~120 KB moves to its own `<sub-project>/decisions.md`**, leaving `design.md` §3 as a one-line pointer. As of 2026-08-31 that threshold is met by `embarch-study-designer` (62 entries, 183 KB), `embarch-api` (44), `embarch-dev-bench` (43), and `embarch-core` (40) — and nothing fired, because "unwieldy" had no number attached to it. The extraction is not its own churn event: it happens as part of that doc's compaction pass ([DOC-COMPACTION.md](DOC-COMPACTION.md)), so the cross-reference fixes land once. §7.3's reference form is what makes it safe — a decision number addresses a sub-project, not a file or a section.
 - **Milestone docs** (`embarch-doc/<sub-project>/milestone-N.md`): when a roadmap milestone (see [embarch-roadmap.md](embarch-roadmap.md)) touches a sub-project, that sub-project's half of the execution plan — concrete, ordered steps, a definition of done, open questions carried into execution — lives in its own `milestone-N.md`, separate from `design.md`. This keeps `design.md` as the architecture-of-record (what's true now) distinct from a milestone doc's job (what to do next, and why); once a milestone's steps actually ship, fold whatever they resolved back into `design.md` per §5 below rather than leaving the decision only recorded in the milestone doc.
+- **Proposal docs** (`embarch-doc/` root, `*-proposal.md`): a cross-repo design awaiting acceptance — neither a living `design.md` nor a milestone execution plan. It states, in its own closing section, exactly which decision number in which doc each piece folds into when accepted. §2's changelog raised the need for this tier twice (2026-08-24, 2026-08-25) and left it open both times; [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) is the case that forced it, having been *half* accepted — inbound direction folded into five design docs, outbound direction still proposed.
+
+  **The policy for a partially-accepted proposal: if it is not fully closed, it is still open.** Its `**Status:**` line stays `proposal` (§7.1) — not `accepted`, not `half-accepted` — until every piece has folded into an owning doc. A proposal is deleted only when fully absorbed, and its `Status:` line is the single place a reader has to look to know which it is. This exists because a doc marked half-done reads as done to everyone who didn't write it.
 
 ## 4. When to update a doc
 
@@ -91,6 +94,7 @@ So: **when a milestone step closes, also grep the open-questions sections** — 
 - Adding a new top-level file to `embarch-doc`? Add it to [embarch.md](embarch.md) §6 (Index) in the same edit — the index is only useful if it stays exhaustive.
 - Renaming or moving a file, or editing anything link-heavy? `scripts/check-links.py` walks every `.md` file and reports any relative link that no longer resolves — it also runs automatically on every push/PR via `.github/workflows/docs-ci.yml`, so a broken link fails CI rather than waiting to be noticed; run it locally first if you want the fast feedback.
 - Same workflow also runs `scripts/check-staleness.py`, the automated half of §4's pre-close grep — see §4 for what it does and doesn't cover.
+- Same workflow also runs two checks added 2026-08-31 alongside §7's conventions: `scripts/check-decision-refs.py` resolves every prose `decision N` reference in the repo against the entries its sub-project actually defines (§7.3 — the gap `check-links.py` structurally cannot see), and `scripts/check-doc-conventions.py` checks every doc's `**Status:**` state token and date (§7.1). The first one's first calibrated run found two decision entries that had been **silently deleted** while three other docs went on citing them — `embarch-api` decision 31 and `embarch-umbrella` decision 27, both lost in unrelated editing passes on 2026-08-23 and 2026-08-17, both restored verbatim from git history the same day. That is the class of drift §7.4's retire-don't-delete rule exists to prevent, and nothing had ever been able to see it.
 - Changelog sections don't need manual trimming: `scripts/archive-changelog.py` keeps each doc's `## Changelog` down to its most recent entries and moves the rest into a sibling `*.changelog-archive.md`, ranked by each entry's own date rather than its position (some docs here prepend newest-first, others append oldest-first — see the script's own docstring). `.github/workflows/changelog-archive.yml` runs it weekly and opens a PR with whatever moved, rather than requiring anyone to remember to run it or pushing straight to main unreviewed.
 - Everything above describes how a doc gets *written* while work happens, and its bias is deliberately append-only: during design and implementation, carrying a redundant fact costs less than losing one. [DOC-COMPACTION.md](DOC-COMPACTION.md) (added 2026-08-31) covers the opposite pass — how a doc gets compacted once its work has shipped, so the accretion turns into organized sections without losing a fact. It is a phase, not a habit: it runs at a milestone close, on one doc, in its own commit, and it is lossless about facts and lossy only about chronology.
 - Want the suite-wide view of every open question instead of reading six-plus docs' own §7/§10/§12-equivalent sections one at a time? `scripts/collect-open-questions.py` (added 2026-08-15) walks every `design.md` (plus `embarch-token.md`) for its "Open questions" heading and prints every bullet, grouped by doc. Read-only and not a CI gate — an open question existing isn't a failure the way a broken link or a stale status word is; run it locally when you want the index.
@@ -110,7 +114,93 @@ Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides 
 
 This is the mechanism that makes §4–5 happen without re-explaining it in chat — `CLAUDE.md` loads automatically every session and points here. **A new sub-project repo needs both sections**, and it is worth checking an existing one actually has them: `embarch-topology` ran without a `CLAUDE.md` at all from its creation (2026-08-21) until 2026-08-25, so nothing in that repo pointed at its own design doc and §4–5 depended on whoever was working there already knowing. Nothing in this protocol had ever checked.
 
+## 7. Doc conventions
+
+These are the shapes scripts parse and cross-references depend on. They are stated as conventions rather than prose habits because each one is either already checked mechanically or is about to be.
+
+### 7.1 `**Status:**` line
+
+Every doc carries one, as its first line after the title, in the form:
+
+```
+**Status:** <state>, <date>. <free prose, optional>
+```
+
+`<state>` is a single lowercase token, first thing after the label, exactly one of:
+
+| state | means |
+|---|---|
+| `draft` | written, not yet a settled record |
+| `active` | current and maintained — the live source of truth |
+| `done` | an execution/milestone doc whose work has closed |
+| `planned` | scoped, not started |
+| `paused` | started, deliberately stopped |
+| `proposal` | awaiting acceptance — including *partial* acceptance, per §3 |
+| `retired` | no longer describes anything true, kept for reference |
+| `superseded-by:<relative-path>` | replaced by another doc |
+
+`<date>` is when the doc last *changed state*, not when it was last edited — the changelog covers edits. **The token and the date are the whole machine-readable part**; whatever follows the date is free prose, and most docs here have some (`done, 2026-08-24, except §3.8 (real-hardware validation), gated on…`). `scripts/check-doc-conventions.py` checks the token and the date and deliberately does not look past them.
+
+Two notes on what this vocabulary is *not*:
+
+- **`half-accepted` is deliberately absent.** Per §3's proposal tier, a proposal that isn't fully closed is still `proposal`.
+- **`draft` vs `active` is not being mass-corrected.** Most long-lived design docs here say `draft` while being the live source of truth their own sub-project repo points at — [embarch-core/design.md](embarch-core/design.md) has said `draft, 2026-07-17` through every milestone it documents. That is a real inaccuracy, but it is a *status change* per §4, one per doc, and each is the owning doc's call to make at its next compaction pass rather than something to sweep in bulk.
+
+This convention exists because `scripts/check-staleness.py` is a heuristic over two tables and `embarch-core`'s `doctor` check 11 is a stub — both are guessing at status that no doc states in a form anything can read. One greppable token per doc is what lets them stop guessing.
+
+### 7.2 Decision entries
+
+A decisions section is a numbered list of entries. In a doc that has been through a compaction pass, entries are grouped under topical `###` headings and each entry is its own heading:
+
+```markdown
+### Serialization, framing, and the wire link
+
+#### 10 — COBS-framed postcard, versioned by an append-only enum
+...
+#### 12 — Manually-bumped schema version, checked at both connection points
+...
+```
+
+Two rules, both load-bearing:
+
+- **The number comes first in the heading**, so every entry is greppable and individually addressable by anchor.
+- **Numbers are permanent, unique within the sub-project, and never reused** — including for entries that get retired (§7.4). Groups can be reordered, renamed, or split freely; numbers cannot. Out-of-order numbers inside a group are the intended outcome of grouping, not untidiness.
+
+Pre-compaction docs use `N. **Title.** …` list items instead. Both forms are accepted and both parse; the heading form is what a compaction pass produces.
+
+### 7.3 Referring to a decision
+
+**A decision number addresses a sub-project, not a file and not a section.** The canonical forms:
+
+- Within the same sub-project's own docs: `decision 39`.
+- Across sub-projects: `embarch-study-designer decision 39`, or a link to the owning doc plus `decision 39`.
+- Legacy, still accepted: `§3 decision 39`. The `§3` is redundant under this convention and is not maintained — a decisions section that moves to `decisions.md` (§3) does not invalidate it.
+
+This matters more than it looks: a grep for `§N decision M`-shaped references across this repo on 2026-08-31 returned **1335 hits**, and `scripts/check-links.py` structurally cannot see one of them — it validates file paths and explicitly skips in-page anchors, and a prose reference to "decision 39" is not a link at all. `scripts/check-decision-refs.py` (§5) closes that gap: it resolves every reference against the entries that actually exist in the named sub-project, and runs in CI.
+
+### 7.4 Retiring an entry
+
+A decision that stops describing anything true is **retired, not deleted**. Its number keeps a one-line tombstone naming what it said, that it is retired, and what replaced it:
+
+```markdown
+#### 19 — Two-tier validation (retired 2026-08-25, see decision 48)
+Post-hoc content validation, alongside the real-time per-step `Outcome`. Removed outright; the real-time half stands and is decision 48's subject.
+```
+
+A dangling reference then lands on an explanation instead of a gap. Retiring is also what keeps §7.3's "never reused" promise cheap to honor.
+
+### 7.5 Measured vs. assumed constants
+
+Every load-bearing constant carries which one it is, inline, in a bracket:
+
+- `460800 baud [measured 2026-08-30, DK VCOM1 over the bridge]`
+- `250 ms step timeout [assumed]`
+
+Prose hedging ("the acceptable drift between resyncs is an open item, same posture as this doc's other hardware-unvalidated constants") carries the same information today and is invisible to grep — and, worse, it is exactly the kind of phrasing a compaction pass smooths away. [DOC-COMPACTION.md](DOC-COMPACTION.md) §4 requires the measured/assumed distinction to survive a compaction; that requirement is only enforceable if the distinction has a shape. Given [embarch-decision-reversals.md](embarch-decision-reversals.md)'s length, being able to grep every `[assumed]` in the suite is worth having independent of compaction.
+
 ## Changelog
+
+- 2026-08-31 — **§3 gained its fourth tier and a number; new §7 states the conventions scripts parse.** The proposal tier §2's changelog had raised twice and left open both times now exists, with the repo owner's policy attached: if a proposal is not fully closed it is still open, so a half-absorbed proposal stays `proposal` rather than reading as done to everyone who didn't write it. §3's "split when `design.md` grows unwieldy" got a threshold (40 decision entries or ~120 KB → `<sub-project>/decisions.md`), because four docs had already passed any reasonable reading of "unwieldy" and nothing fired. §7 turns four habits into checkable shapes: a one-line `**Status:**` state (so `check-staleness.py` and `doctor` check 11 stop guessing), number-first decision headings, decision references that address a *sub-project* rather than a file or section — which is what makes the §3 extraction safe for all 1335 of them — and `[measured <date>]`/`[assumed]` brackets on load-bearing constants.
 
 - 2026-08-31 — Added [DOC-COMPACTION.md](DOC-COMPACTION.md) (§2's tree, §5's list): the pass this protocol never described. §4–5's append-only bias is right while work is happening and had produced a 343 KB `embarch-study-designer/design.md` whose §3 needed its own index to stay navigable, plus decisions readable only as their own amendment history. Compaction was therefore a judgment call re-made from scratch every time, with nothing protecting the content most at risk from it — rejected alternatives, the measured/assumed distinction, and the 1335 prose `§N decision M` cross-references `check-links.py` structurally cannot see (it validates file paths and skips in-page anchors). The new file's hard rule on that last point: decision and section numbers are permanent identifiers, grouped under topical headings rather than renumbered.
 

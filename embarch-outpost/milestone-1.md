@@ -1,6 +1,8 @@
 # embarch-outpost: milestone-1 (roadmap Milestone 7 — MCU Load Tracing)
 
-**Status: Phase A CLOSED 2026-08-25; Phase B CLOSED 2026-08-25 (all four items); Phase C CLOSED 2026-08-26, and closing it also shipped the two host halves its own trigger fired; Phase D CLOSED 2026-08-26 across five repos, with its reflash item deliberately scoped out; E ATTEMPTED 2026-08-26 and BLOCKED ON HARDWARE — every software half is built, deployed and on the board, and the capture is waiting on one wire (§5).** Execution plan for [embarch-roadmap.md](../embarch-roadmap.md) Milestone 7. Every decision this implements is already settled — see [design.md](design.md) and the companion decisions listed per phase.
+**Status:** done, 2026-08-27.
+
+**Where it stands: Phase A CLOSED 2026-08-25; Phase B CLOSED 2026-08-25 (all four items); Phase C CLOSED 2026-08-26, and closing it also shipped the two host halves its own trigger fired; Phase D CLOSED 2026-08-26 across five repos, with its reflash item deliberately scoped out; E ATTEMPTED 2026-08-26 and BLOCKED ON HARDWARE — every software half is built, deployed and on the board, and the capture is waiting on one wire (§5).** Execution plan for [embarch-roadmap.md](../embarch-roadmap.md) Milestone 7. Every decision this implements is already settled — see [design.md](design.md) and the companion decisions listed per phase.
 
 ## 1. Why this is phased, and why the phases are ordered this way
 

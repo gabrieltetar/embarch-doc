@@ -1,6 +1,6 @@
 # embarch-api: milestone 8 — Dev Bench Self-Test
 
-**Status:** closed 2026-08-20 (draft 2026-08-18). Every DoD item done. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2 ("Dev Bench Self-Test" — filed on disk as `milestone-8`). Companion to [embarch-core/milestone-8.md](../embarch-core/milestone-8.md) (Core's `study.rs`) and [embarch-dev-bench/milestone-8.md](../embarch-dev-bench/milestone-8.md) (the firmware and self-test fixture this milestone drives). See [embarch-study-designer/design.md](../embarch-study-designer/design.md) §6 for the durable, already-locked-in tool/subcommand surface this doc implements for the first time.
+**Status:** done, 2026-08-20 (draft 2026-08-18). Every DoD item done. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2 ("Dev Bench Self-Test" — filed on disk as `milestone-8`). Companion to [embarch-core/milestone-8.md](../embarch-core/milestone-8.md) (Core's `study.rs`) and [embarch-dev-bench/milestone-8.md](../embarch-dev-bench/milestone-8.md) (the firmware and self-test fixture this milestone drives). See [embarch-study-designer/design.md](../embarch-study-designer/design.md) §6 for the durable, already-locked-in tool/subcommand surface this doc implements for the first time.
 
 ## 1. Goal, restated for embarch-api
 

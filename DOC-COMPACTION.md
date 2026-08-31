@@ -31,7 +31,7 @@ The reason 2 is stated as strictly as 1: a pass that both reorganizes 500 lines 
 Compaction is a phase, not a habit. It runs at the transition from "we are deciding this" to "this is what is true":
 
 - **A sub-project's `design.md`:** when a milestone touching it closes *and the work has shipped and been exercised*. This is the same moment [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3 already says to fold a milestone's resolutions back into `design.md` — compaction is the other half of that fold.
-- **A `milestone-N.md`:** once its steps have shipped, the doc's remaining job is nearly zero. Fold what it resolved into `design.md`, then either delete it or compact it down to a short record of what shipped and what was deliberately deferred. Do not leave a completed execution plan at full length; it competes with `design.md` for the reader who wants current truth.
+- **A `milestone-N.md`:** once its steps have shipped, the doc's remaining job is nearly zero. **Fold what it resolved into `design.md` and delete it** — that is the rule, not the preference. Keep it only if it holds something `design.md` genuinely cannot: work deliberately deferred with the reason, or a deferred item still gating something. Then it survives as that short record, not at full length. A completed execution plan left intact competes with `design.md` for the reader who wants current truth, and git history holds it either way.
 - **Suite-level docs:** [embarch-features.md](embarch-features.md) and [embarch-roadmap.md](embarch-roadmap.md) are already tabular and compact by growing rows, not paragraphs. Their compaction target is different (§10).
 
 **Do not compact:**
@@ -84,6 +84,8 @@ So the rule is: **decision numbers are permanent identifiers. Never renumber, ne
 - **Section numbers are identifiers too.** `§4.7`, `§3.10`, `§5.1` are cited across docs the same way. Renumbering sections is a link-breaking change: prefer adding `###` depth inside a section over renumbering its siblings, and if a section number must change, grep the repo for it and fix every citation in the same commit.
 - **Never let a heading anchor a doc links to disappear silently.** Six in-page anchor links exist today; grep `](#` before rewriting headings.
 
+The conventions this transform produces — number-first `#### N — Title` entry headings, the sub-project-scoped reference form, and the retirement tombstone — are stated once in [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2–7.4 rather than restated here. The one that changes what compaction is *allowed* to do: **a decision number addresses a sub-project, not a file and not a section** (§7.3). That is what makes DOC-PROTOCOL.md §3's extraction threshold safe — a decisions section past 40 entries or ~120 KB moves to `<sub-project>/decisions.md` **as part of the compaction pass**, not as its own churn event, and the 1335 existing `§3 decision N` references survive the move because the `§3` was never the address. `scripts/check-decision-refs.py` verifies this, and is the reason the pass is checkable at all.
+
 ## 7. Procedure
 
 Pre-flight:
@@ -109,6 +111,7 @@ Close-out:
 Mechanical, cheap, run every time:
 
 - `scripts/check-links.py` — every relative link still resolves.
+- `scripts/check-decision-refs.py` — every `decision N` reference in the repo still resolves to an entry that exists. This is the check that makes §6 enforceable rather than a request.
 - `scripts/check-staleness.py` — the compacted doc's status facts still agree with [embarch.md](embarch.md) §3 and [embarch-features.md](embarch-features.md).
 - `scripts/collect-open-questions.py`, diffed against the pre-flight capture. **Every open question that disappeared must be one you can name as answered.** A compaction has no business resolving open questions (§2 rule 2), so in practice the correct diff is empty, and any deletion is a bug.
 - **Identifier inventory diff.** Before and after, extract the doc's concrete nouns and numbers and diff the sets — every identifier that vanished must be explainable as a duplicate mention, never as the only mention:
@@ -142,7 +145,7 @@ Human, and not skippable:
 ## 10. Per-doc-type notes
 
 - **`<sub-project>/design.md`** — the main case; §§3–9 are written for it. Its §3-equivalent decision list is where nearly all the recoverable bytes are.
-- **`<sub-project>/milestone-N.md`** — after shipping, prefer folding into `design.md` and deleting over compacting in place (§3). If it survives, it survives as a short record of what shipped, what was deferred, and why.
+- **`<sub-project>/milestone-N.md`** — after shipping, fold into `design.md` and delete (§3). It survives only to hold what `design.md` cannot: deferred work and its reason.
 - **[embarch-features.md](embarch-features.md) / [embarch-roadmap.md](embarch-roadmap.md)** — already tabular. Their bloat is not entry accretion but per-row prose and changelog length; `scripts/archive-changelog.py` handles the latter. Rows for shipped features can lose their execution detail and keep a link.
 - **[embarch-decision-reversals.md](embarch-decision-reversals.md)** — do **not** compact by merging or dropping rows. Its value is the count and the specificity: each row is one reality-driven correction, and the list's length is itself the signal. Only the header prose is compactable.
 - **[embarch-glossary.md](embarch-glossary.md)** — already a compacted form by construction (a term, a one-line definition, a link to the owning doc). If an entry has grown an explanation, the explanation belongs in the owning doc.

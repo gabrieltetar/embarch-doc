@@ -1,6 +1,6 @@
 # embarch-dev-bench: milestone 8 — Dev Bench Self-Test
 
-**Status:** closed 2026-08-20 (draft 2026-08-18; target board retargeted 2026-08-19, see §2, §6a). Every DoD item is done except §3.6's bond-clearing specifically. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2 ("Dev Bench Self-Test" — filed on disk as `milestone-8`). Companion to [embarch-core/milestone-8.md](../embarch-core/milestone-8.md) (Core's `study.rs` half) and [embarch-api/milestone-8.md](../embarch-api/milestone-8.md) (the `run_study`/`study_status` surface used to drive this milestone's validation). See [design.md](design.md) §3 decisions 8/20/21/25/26 for the durable decisions this doc closes out.
+**Status:** done, 2026-08-20 (draft 2026-08-18; target board retargeted 2026-08-19, see §2, §6a). Every DoD item is done except §3.6's bond-clearing specifically. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2 ("Dev Bench Self-Test" — filed on disk as `milestone-8`). Companion to [embarch-core/milestone-8.md](../embarch-core/milestone-8.md) (Core's `study.rs` half) and [embarch-api/milestone-8.md](../embarch-api/milestone-8.md) (the `run_study`/`study_status` surface used to drive this milestone's validation). See [design.md](design.md) §3 decisions 8/20/21/25/26 for the durable decisions this doc closes out.
 
 ## 1. Goal, restated for dev-bench
 

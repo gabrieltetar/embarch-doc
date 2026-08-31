@@ -1,6 +1,8 @@
 # Proposal: one generic stream pipeline (DUT log capture and scripted shell interaction as instances of it)
 
-**Status: inbound half ACCEPTED 2026-08-25; outbound half still a proposal.** Originally: proposal, 2026-08-24, revised three times the same day, not accepted and deliberately not written into any `design.md`.
+**Status:** proposal, 2026-08-25.
+
+**Where it stands: inbound half ACCEPTED 2026-08-25; outbound half still a proposal.** Originally: proposal, 2026-08-24, revised three times the same day, not accepted and deliberately not written into any `design.md`.
 
 **What changed.** Scoping [embarch-outpost](embarch-outpost/design.md) — a DUT-side trace UART whose capture would have become the **fourth** near-identical pipeline here — the read direction was accepted and folded into the living docs: [embarch-study-designer/design.md](embarch-study-designer/design.md) §3 decision 39 (`Study.streams`, `StreamTap`/`StreamSource`/`StreamEncoding`, new §4.8; the schema bump written here as 5 → 6 landed as **7 → 8** — decisions 42/43 were implemented first and took v6/v7), [embarch-core/design.md](embarch-core/design.md) §3 decision 30 (`streams/`, retention, the parameterised route), [embarch-dev-bench/design.md](embarch-dev-bench/design.md) §3 decision 29 (dev-bench stops interpreting payloads; decision 22 marked **superseded**), [embarch-api/design.md](embarch-api/design.md) §3 decision 39, [embarch-ui/design.md](embarch-ui/design.md) §3 decision 10, and a row in [embarch-decision-reversals.md](embarch-decision-reversals.md). One genuinely new source variant the proposal never had, added by the outpost: **`StreamSource::Signal { name }`** — a signal **Core reads itself**, over a wire that bypasses dev-bench, with the carrier resolved by [embarch-topology](embarch-topology/design.md) §3 decision 18 rather than named in the study.
 

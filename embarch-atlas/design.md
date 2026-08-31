@@ -1,6 +1,6 @@
 # embarch-atlas: design
 
-**Status:** Paused, no repo yet.
+**Status:** paused, 2026-07-20. No repo yet.
 
 Placeholder — this doc becomes the source of truth once `embarch-atlas` design work resumes. See [embarch.md](../embarch.md) §2 for its lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose, and [embarch-roadmap.md](../embarch-roadmap.md)'s Later bucket.
 
