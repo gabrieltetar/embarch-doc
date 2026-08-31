@@ -393,6 +393,18 @@ embarch-dev-bench/                     (single repo, one shared application)
 
     **What this costs the ESP32-C5, deliberately: nothing.** Its workspace, board `.conf`, overlay and config shape all stay, exactly as `workspaces/nordic` stayed through the ESP32-C5's tenure and exactly as decision 2's per-vendor-family pattern intends. Two boards have now each been the bench twice-removed and back; the pattern has been load-bearing in both directions.
 
+    **Onboarded by re-running the last study, unchanged.** `ppg-drain-complete-records` — the 14-step BLE/PPG drain that last ran on the ESP32-C5 on 2026-08-30 — was submitted verbatim from the firmware repo's own saved-study library, against the same DUT, with no edit of any kind. **14 of 14 `Pass`, `completed`**, 185.6 s in the drain step. Side by side with the ESP32-C5 baseline:
+
+    | | ESP32-C5, 2026-08-30 | nRF54L15DK, 2026-08-31 |
+    |---|---|---|
+    | steps | 14/14 Pass | 14/14 Pass |
+    | `bds-data` | 77177 B | 76874 B |
+    | `outpost` | 8597980 B | 8312836 B, 0.62% frame loss |
+    | `gatt` | 11677 B, 315 entries dropped | 12036 B, 317 entries dropped |
+    | `dev-bench` log | 1021 B — **15 × `bt_hci_driver_esp32: No available ACL buffers!`** | 226 B — **none** |
+
+    The ACL-buffer exhaustion is the one real behavioural difference, and it is gone rather than reduced: Espressif's controller ran out of ACL buffers fifteen times in a run the SoftDevice Controller completes without a single complaint. The GATT-transcript drop is **unchanged** (315 → 317) and correctly so — that is dev-bench's own transcript queue filling, not a controller property, and both runs report `truncated: true` for it, which is decision 42's fix doing its job on a second board.
+
     **The premise this retires lived in another repo.** `embarch-api`'s `dev_bench.rs` held this bench's board, chip, flash format and flash offset as *constants*, on the stated ground that there is exactly one dev-bench board the suite will ever know about. That premise has now been falsified twice by this same physical bench, and the two boards agree about none of the four — nor about the artifact path, since NCS defaults to sysbuild (`build/app/zephyr/zephyr.hex`) and the vanilla-Zephyr espressif workspace does not (`build/zephyr/zephyr.bin`). See [embarch-api/design.md](../embarch-api/design.md).
 
 ## 4. Open questions / future work
@@ -541,6 +553,8 @@ embarch-dev-bench/                     (single repo, one shared application)
 
 
 ## 5. Changelog
+
+- 2026-08-31 — **Decision 43 closed by re-running the last study unchanged**: `ppg-drain-complete-records`, submitted verbatim from the saved-study library against the same DUT, **14/14 `Pass`**, 0.62% outpost frame loss. The ESP32-C5's fifteen `No available ACL buffers!` errors are gone entirely; the GATT-transcript drop is unchanged, which is the right answer — that one is dev-bench's own queue, not the controller.
 
 - 2026-08-31 — **New decision 43: the nRF54L15DK is the dev bench again.** The repo owner acquired a replacement DK and plugged it in, reversing decision 26's ESP32-C5 retarget ([embarch-decision-reversals.md](../embarch-decision-reversals.md) row 13's counter-reversal). `workspaces/nordic`, kept alive on exactly this bet, built first try after twelve days of app work with no source change — FLASH 18.97%, RAM 58.57%. One file added, one property: an overlay setting `uart20` to 1 Mbaud. The real cost was a host-side assumption: this DK's J-Link OB exposes two VCOMs under one serial and `uart20` is on the *higher* one, so detection's silent lowest-interface guess pointed at a port that never answers ([embarch-topology/design.md](../embarch-topology/design.md) §3 decision 20). Status line updated to match.
 
