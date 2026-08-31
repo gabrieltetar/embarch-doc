@@ -40,6 +40,7 @@ embarch/
     ├── embarch-api/design.md
     ├── embarch-api/milestone-1.md
     ├── embarch-study-designer/design.md
+    ├── embarch-study-designer/decisions.md  <- §3 extracted + compacted, 2026-08-31
     ├── embarch-study-designer/milestone-3.md
     ├── embarch-dev-bench/design.md
     ├── embarch-umbrella/design.md
@@ -153,17 +154,17 @@ This convention exists because `scripts/check-staleness.py` is a heuristic over 
 A decisions section is a numbered list of entries. In a doc that has been through a compaction pass, entries are grouped under topical `###` headings and each entry is its own heading:
 
 ```markdown
-### Serialization, framing, and the wire link
+## Serialization, framing, and the link          <- a group
 
-#### 10 — COBS-framed postcard, versioned by an append-only enum
+### 10 — COBS-framed postcard, versioned by an append-only enum
 ...
-#### 12 — Manually-bumped schema version, checked at both connection points
+### 12 — Two hand-bumped schema constants, checked at both connection points
 ...
 ```
 
 Two rules, both load-bearing:
 
-- **The number comes first in the heading**, so every entry is greppable and individually addressable by anchor.
+- **The number comes first in the heading**, so every entry is greppable and individually addressable by anchor. The heading *level* is one below its group's, whatever that is — `##`/`###` in a standalone `decisions.md` (as above), `###`/`####` where the section still sits inside `design.md` at `##`. `scripts/check-decision-refs.py` accepts either.
 - **Numbers are permanent, unique within the sub-project, and never reused** — including for entries that get retired (§7.4). Groups can be reordered, renamed, or split freely; numbers cannot. Out-of-order numbers inside a group are the intended outcome of grouping, not untidiness.
 
 Pre-compaction docs use `N. **Title.** …` list items instead. Both forms are accepted and both parse; the heading form is what a compaction pass produces.

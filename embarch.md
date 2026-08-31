@@ -83,6 +83,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-api/milestone-7.md](embarch-api/milestone-7.md) — embarch-api's execution plan for roadmap Milestone 1 (Flash & Build, real hardware)
 - [embarch-dev-bench/design.md](embarch-dev-bench/design.md) — embarch-dev-bench design (placeholder)
 - [embarch-study-designer/design.md](embarch-study-designer/design.md) — embarch-study-designer design (shared study-data-types library)
+- [embarch-study-designer/decisions.md](embarch-study-designer/decisions.md) — embarch-study-designer's 62 locked-in design decisions, extracted from `design.md` §3 and compacted 2026-08-31
 - [embarch-study-designer/milestone-3.md](embarch-study-designer/milestone-3.md) — embarch-study-designer's milestone 3 execution plan (Study Designer, design-only)
 - [embarch-study-designer/milestone-11.md](embarch-study-designer/milestone-11.md) — embarch-study-designer's execution plan for roadmap Milestone 5 (Study Designer UI)
 - [embarch-umbrella/design.md](embarch-umbrella/design.md) — embarch-umbrella design (setup/verify/start-Core tooling; the `embarch` binary)

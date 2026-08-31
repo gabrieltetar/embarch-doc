@@ -33,9 +33,10 @@ Three outcomes, and only two of them fail:
                canonical `<sub-project> decision N` form is the fix. Reported,
                does not fail.
 
-Entry definitions are read only from inside a doc's decisions section (the
-`## N. ...decision...` heading up to the next `## `), so an ordinary numbered
-list elsewhere in the doc cannot invent an entry.
+Entry definitions come from a sub-project's `design.md` decisions section (the
+`## N. ...decision...` heading up to the next `## `, so an ordinary numbered
+list elsewhere in that doc cannot invent an entry) and, where the extraction of
+DOC-PROTOCOL.md §3 has happened, from the whole of its `decisions.md`.
 
 Usage: scripts/check-decision-refs.py [--verbose] [--warnings]
 Exit status: 0 if no errors, 1 otherwise.
@@ -50,7 +51,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # (DOC-PROTOCOL.md §7.2) are both accepted; retired entries (§7.4) still count
 # as defined, which is the whole point of a tombstone.
 DEF_LIST = re.compile(r'^(\d+)\.\s+(?:~~)?\*\*')
-DEF_HEAD = re.compile(r'^####\s+(\d+)\s+[-—]\s')
+DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+)\s+[-—]\s')
 
 # References: "decision 39", "decisions 31/32/33", "decisions 58-62",
 # optionally prefixed by a section marker that this convention no longer needs.
@@ -97,10 +98,13 @@ def build_index():
         if sub is None:
             continue
         nums = index.setdefault(sub, set())
-        in_decisions = False
+        # A standalone decisions.md IS the decisions section end to end; inside
+        # a design.md, only the numbered section whose heading says "decision".
+        whole_file = os.path.basename(path) == 'decisions.md'
+        in_decisions = whole_file
         with open(path, encoding='utf-8') as f:
             for line in f:
-                if SECTION_HEAD.match(line):
+                if not whole_file and SECTION_HEAD.match(line):
                     in_decisions = bool(DECISIONS_HEAD.match(line))
                     continue
                 if not in_decisions:
