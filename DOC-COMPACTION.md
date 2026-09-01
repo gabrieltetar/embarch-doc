@@ -1,6 +1,6 @@
 # embarch-doc: compaction protocol
 
-**Status:** draft, 2026-08-31.
+**Status:** active, 2026-08-31.
 
 ## 1. Purpose
 

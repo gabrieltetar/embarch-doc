@@ -1,6 +1,6 @@
 # embarch-umbrella: milestone 6 — Onboarding
 
-**Status:** draft, 2026-08-05. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 6. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once it ships, and [embarch-user-guide.md](../embarch-user-guide.md) for the guide that doubles as this milestone's acceptance criteria (§5).
+**Status:** active, 2026-08-14. Deliberately **not** `done`: §3.8 (dogfood the guide) is still in progress and five §4 items are unmarked, even though Milestone 6 (Onboarding) ships in the foundation.. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 6. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once it ships, and [embarch-user-guide.md](../embarch-user-guide.md) for the guide that doubles as this milestone's acceptance criteria (§5).
 
 **Note on doc layout:** [DOC-PROTOCOL.md](../DOC-PROTOCOL.md) §3 puts each sub-project's half of a milestone in its own `milestone-N.md`. This milestone's `embarch-api` and `embarch-core` halves are one and two steps respectively (§3.5, §3.6), so they're recorded here rather than in near-empty files of their own. If either grows past a couple of steps during execution, split it out then.
 

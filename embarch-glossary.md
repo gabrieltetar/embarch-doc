@@ -1,6 +1,6 @@
 # embarch: glossary
 
-**Status:** draft, 2026-08-15. Added closing item 22 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): DUT, study, target, project, board qualifier, topology class, and discovery kind are all load-bearing terms used across every design doc in this repo, and none of them had one place defining what they mean. This doc doesn't restate any sub-project's design — it links to the section that owns each term, per `DOC-PROTOCOL.md` §5's "link, don't restate" rule.
+**Status:** active, 2026-08-15. Added closing item 22 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): DUT, study, target, project, board qualifier, topology class, and discovery kind are all load-bearing terms used across every design doc in this repo, and none of them had one place defining what they mean. This doc doesn't restate any sub-project's design — it links to the section that owns each term, per `DOC-PROTOCOL.md` §5's "link, don't restate" rule.
 
 | Term | Meaning | Owning doc |
 |---|---|---|

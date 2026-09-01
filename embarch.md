@@ -1,6 +1,6 @@
 # EmbArch
 
-**Status:** draft, 2026-07-17.
+**Status:** active, 2026-07-17.
 
 ## 1. What EmbArch is
 

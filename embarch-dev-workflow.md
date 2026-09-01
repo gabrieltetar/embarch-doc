@@ -1,6 +1,6 @@
 # embarch: local dev workflow
 
-**Status:** draft, 2026-08-17. How to iterate on `embarch-core`/`embarch-api`/`embarch-umbrella` locally without cutting a release, and without a debug build silently touching a real machine's install — plus, since 2026-08-25, the opposite case: how a Core change actually reaches this machine's live Windows service (§4a).
+**Status:** active, 2026-08-17. How to iterate on `embarch-core`/`embarch-api`/`embarch-umbrella` locally without cutting a release, and without a debug build silently touching a real machine's install — plus, since 2026-08-25, the opposite case: how a Core change actually reaches this machine's live Windows service (§4a).
 
 ## 1. Short answer
 

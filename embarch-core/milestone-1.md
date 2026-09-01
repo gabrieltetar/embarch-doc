@@ -1,6 +1,6 @@
 # embarch-core: milestone 1 — Flash
 
-**Status:** draft, 2026-07-20. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1. Companion to [embarch-api/milestone-1.md](../embarch-api/milestone-1.md) — that doc covers embarch-api's half of the same milestone. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once they actually ship. For §3.5's `EMBARCH_TOKEN`/Windows-service open question specifically, [milestone-1-implementation-guide.md](milestone-1-implementation-guide.md) diagnoses the root cause and turns the fix into a ready-to-run agent prompt against the real source tree.
+**Status:** done, 2026-08-11. Milestone 1 (Flash) is part of the shipped foundation ([embarch-roadmap.md](../embarch-roadmap.md) §1), released as `v0.1.0`.. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1. Companion to [embarch-api/milestone-1.md](../embarch-api/milestone-1.md) — that doc covers embarch-api's half of the same milestone. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once they actually ship. For §3.5's `EMBARCH_TOKEN`/Windows-service open question specifically, [milestone-1-implementation-guide.md](milestone-1-implementation-guide.md) diagnoses the root cause and turns the fix into a ready-to-run agent prompt against the real source tree.
 
 ## 1. Goal, restated for Core
 

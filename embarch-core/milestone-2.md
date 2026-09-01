@@ -1,6 +1,6 @@
 # embarch-core: milestone 2 — Token
 
-**Status:** draft, 2026-07-21. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2. Companion to [embarch-api/milestone-2.md](../embarch-api/milestone-2.md) — that doc covers embarch-api's half of the same milestone (token-file discovery, WSL2⟷Windows path translation). See [design.md](design.md) for the durable architecture record this plan folds decisions back into once it ships, and [embarch-token.md](../embarch-token.md) for the target design this milestone implements (§2, §3.1, §5, §6, §7 there).
+**Status:** done, 2026-08-11. Milestone 2 (Token) is part of the shipped foundation ([embarch-roadmap.md](../embarch-roadmap.md) §1), released as `v0.1.0`.. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 2. Companion to [embarch-api/milestone-2.md](../embarch-api/milestone-2.md) — that doc covers embarch-api's half of the same milestone (token-file discovery, WSL2⟷Windows path translation). See [design.md](design.md) for the durable architecture record this plan folds decisions back into once it ships, and [embarch-token.md](../embarch-token.md) for the target design this milestone implements (§2, §3.1, §5, §6, §7 there).
 
 ## 1. Goal, restated for Core
 

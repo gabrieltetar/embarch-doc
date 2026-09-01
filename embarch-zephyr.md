@@ -1,6 +1,6 @@
 # embarch: Zephyr relationship
 
-**Status:** draft, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/design.md` §3 decision 12, `embarch-dev-bench/design.md`, `embarch-umbrella/design.md` §3 decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
+**Status:** active, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/design.md` §3 decision 12, `embarch-dev-bench/design.md`, `embarch-umbrella/design.md` §3 decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
 
 ## 1. What this doc is for
 

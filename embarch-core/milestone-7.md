@@ -1,6 +1,6 @@
 # embarch-core: milestone 7 — Flash & Build (real hardware)
 
-**Status:** draft, 2026-08-17. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1 ("Flash & Build (real hardware)" — filed on disk as `milestone-7`, per that doc's filename note). Companion to [embarch-api/milestone-7.md](../embarch-api/milestone-7.md) — that doc covers embarch-api's half, including the live target-discovery steps that drive what gets flashed here. See [design.md](design.md) for the durable architecture record.
+**Status:** done, 2026-08-18. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1 ("Flash & Build (real hardware)" — filed on disk as `milestone-7`, per that doc's filename note). Companion to [embarch-api/milestone-7.md](../embarch-api/milestone-7.md) — that doc covers embarch-api's half, including the live target-discovery steps that drive what gets flashed here. See [design.md](design.md) for the durable architecture record.
 
 ## 1. Goal, restated for Core
 

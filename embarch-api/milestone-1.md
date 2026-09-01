@@ -1,6 +1,6 @@
 # embarch-api: milestone 1 — Flash
 
-**Status:** draft, 2026-07-20. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1. Companion to [embarch-core/milestone-1.md](../embarch-core/milestone-1.md) — that doc covers Core's half of the same milestone, including bringing Core up on Windows and making it reachable from WSL2, which this plan depends on. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once they actually ship. For §3.3 and §3.4 specifically, [milestone-1-implementation-guide.md](milestone-1-implementation-guide.md) turns those two steps into ready-to-run agent prompts against the real source tree.
+**Status:** done, 2026-08-11. Milestone 1 (Flash) is part of the shipped foundation ([embarch-roadmap.md](../embarch-roadmap.md) §1), released as `v0.1.0`.. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 1. Companion to [embarch-core/milestone-1.md](../embarch-core/milestone-1.md) — that doc covers Core's half of the same milestone, including bringing Core up on Windows and making it reachable from WSL2, which this plan depends on. See [design.md](design.md) for the durable architecture record this plan folds decisions back into once they actually ship. For §3.3 and §3.4 specifically, [milestone-1-implementation-guide.md](milestone-1-implementation-guide.md) turns those two steps into ready-to-run agent prompts against the real source tree.
 
 ## 1. Goal, restated for embarch-api
 

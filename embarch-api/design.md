@@ -1,6 +1,6 @@
 # embarch-api: design
 
-**Status:** draft, 2026-07-17. This document supersedes the chat-history discussion that produced it — treat this file, not a conversation transcript, as the source of truth going forward. Append changes to the Changelog (§13) rather than silently editing history above it.
+**Status:** active, 2026-07-17. This document supersedes the chat-history discussion that produced it — treat this file, not a conversation transcript, as the source of truth going forward. Append changes to the Changelog (§13) rather than silently editing history above it.
 
 ## 1. Purpose and scope
 

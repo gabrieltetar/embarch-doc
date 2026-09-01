@@ -1,6 +1,6 @@
 # embarch: feature roadmap
 
-**Status:** draft, 2026-07-20. Restructured 2026-08-17 — see Changelog.
+**Status:** active, 2026-07-20. Restructured 2026-08-17 — see Changelog.
 
 ## Shipped foundation
 

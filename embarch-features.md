@@ -1,6 +1,6 @@
 # embarch: features
 
-**Status:** draft, 2026-07-17. Hand-maintained. Todo rows should stay in sync with the source design docs' own "open questions" sections rather than duplicating their detail — link back, don't restate.
+**Status:** active, 2026-07-17. Hand-maintained. Todo rows should stay in sync with the source design docs' own "open questions" sections rather than duplicating their detail — link back, don't restate.
 
 **Verification column** (added 2026-08-15, closing item 62 of that day's design-improvement review — `.claude/design-improvements-2026-08-15.md`, local working notes): replaces the "not yet hardware-revalidated"/"never against a real Core" qualifiers that used to live only in prose, scattered across almost every row's Status/Notes cell. One of: **unit** (mocked/synthetic tests only, no live process), **live-local** (a real running Core/repo/CI on this machine, but no physical debug probe or board involved), **real-hardware** (validated against an actual physical probe, board, or a genuine OS service install), or **n/a** (not shipped yet).
 

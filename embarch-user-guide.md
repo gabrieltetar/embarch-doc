@@ -1,6 +1,6 @@
 # EmbArch: getting started
 
-**Status:** draft, 2026-08-05. For a firmware engineer who has never used EmbArch.
+**Status:** active, 2026-08-05. For a firmware engineer who has never used EmbArch.
 
 > **Read this first.** Chapters 3–9 describe the real `embarch` setup tool — it shipped as part of `v0.1.0` ([embarch-roadmap.md](embarch-roadmap.md)'s Shipped foundation, Onboarding). This guide was originally written ahead of that tool as its specification; it now describes the real, released binaries. If you're setting up a machine right now, this is the path to follow. [Appendix A](#appendix-a--the-manual-path-that-works-today) is kept only as the pre-release manual procedure, for reference or if you hit something `setup`/`init` genuinely can't do yet (§8's "separate-box Core" row).
 

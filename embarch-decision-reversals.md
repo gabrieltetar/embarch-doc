@@ -1,6 +1,6 @@
 # embarch: decision reversals
 
-**Status:** draft, 2026-08-15. Added closing item 65 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): every entry below is handled correctly in place, in its own owning doc — this page exists because there was no single place listing "assumptions reality has already overturned," which the review's own closing observation calls "the highest-signal document in the repo for anyone new, and the best predictor of which remaining assumptions to distrust." Per `DOC-PROTOCOL.md` §5, this doesn't restate any correction's full rationale — it links to the decision that recorded it.
+**Status:** active, 2026-08-15. Added closing item 65 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): every entry below is handled correctly in place, in its own owning doc — this page exists because there was no single place listing "assumptions reality has already overturned," which the review's own closing observation calls "the highest-signal document in the repo for anyone new, and the best predictor of which remaining assumptions to distrust." Per `DOC-PROTOCOL.md` §5, this doesn't restate any correction's full rationale — it links to the decision that recorded it.
 
 ## Reality-driven reversals — found by actually building or running something, not by review
 

@@ -1,6 +1,6 @@
 # embarch-study-designer: milestone 3 — Study Designer
 
-**Status:** draft, 2026-07-27. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 3. Unlike milestones 1–2 ([embarch-core/milestone-2.md](../embarch-core/milestone-2.md), [embarch-api/milestone-2.md](../embarch-api/milestone-2.md)), this milestone is **design-only** — `embarch-dev-bench` doesn't physically exist yet, so there's no hardware to validate against. See [design.md](design.md) for the durable architecture record this plan resolves questions into.
+**Status:** done, 2026-08-24. Milestone 3 closed ([embarch-roadmap.md](../embarch-roadmap.md) §7, 2026-08-24): all four companion docs' Definition of Done fully met.. Execution plan for [embarch-roadmap.md](../embarch-roadmap.md)'s Milestone 3. Unlike milestones 1–2 ([embarch-core/milestone-2.md](../embarch-core/milestone-2.md), [embarch-api/milestone-2.md](../embarch-api/milestone-2.md)), this milestone is **design-only** — `embarch-dev-bench` doesn't physically exist yet, so there's no hardware to validate against. See [design.md](design.md) for the durable architecture record this plan resolves questions into.
 
 ## 1. Goal, restated
 

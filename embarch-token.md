@@ -1,6 +1,6 @@
 # EMBARCH_TOKEN: design
 
-**Status:** draft, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/design.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
+**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/design.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
 
 ## 1. Purpose and scope
 
