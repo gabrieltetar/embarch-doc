@@ -468,7 +468,7 @@ Platform notes that will cost you time otherwise:
 
 - [embarch.md](embarch.md) — what the suite is, how the pieces fit, the sub-project index
 - [embarch-roadmap.md](embarch-roadmap.md) — what's coming, in what order
-- [embarch-features.md](embarch-features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
+- [suite/features.md](suite/features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
 - [embarch-token.md](embarch-token.md) — the auth token's full lifecycle
 - A specific component: `embarch-core/decisions.md`, `embarch-api/decisions.md`, `embarch-umbrella/decisions.md`, and so on
 

@@ -96,7 +96,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-topology/decisions.md](embarch-topology/decisions.md) — embarch-topology design (implemented, merged into all three consumer repos' `main`, deployed to the live Windows Core, live-validated end to end): the suite's single abstraction for software and hardware topology
 - [embarch-ui/decisions.md](embarch-ui/decisions.md) — embarch-ui: one consolidated human-facing UI, six tabs, having replaced embarch-topology's UI, embarch-study-designer's UI, and embarch-core's `/enroll` page outright; signal routing and the post-hoc Trace view live here
 - [embarch-token.md](embarch-token.md) — `EMBARCH_TOKEN`'s full lifecycle: generation, storage, transport, security model, rotation, known gaps
-- [embarch-features.md](embarch-features.md) — feature inventory across the suite
+- [suite/features.md](suite/features.md) — feature inventory across the suite
 - [embarch-roadmap.md](embarch-roadmap.md) — Now / Next / Later
 - [embarch-user-guide.md](embarch-user-guide.md) — getting started and day-to-day usage, written for a firmware engineer new to EmbArch
 - [embarch-zephyr.md](embarch-zephyr.md) — relationship to Zephyr RTOS: board-qualifier grammar, revisions, snippets, sysbuild

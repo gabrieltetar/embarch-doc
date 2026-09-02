@@ -1,7 +1,7 @@
 # status.d
 
 One file per **pending edit to a shared suite-level doc**. A worker never edits
-[../embarch.md](../embarch.md), [../embarch-features.md](../embarch-features.md),
+[../embarch.md](../embarch.md), [../suite/features.md](../suite/features.md),
 [../embarch-roadmap.md](../embarch-roadmap.md),
 [../embarch-decision-reversals.md](../embarch-decision-reversals.md),
 [../embarch-glossary.md](../embarch-glossary.md) or

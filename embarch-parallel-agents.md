@@ -37,7 +37,7 @@ Branches are the backstop. **This table is the actual mechanism** — if it is h
 | `embarch-doc/<another sub-project>/` | **never** | write | write |
 | `changelog.d/` (new fragment) | write | write | write |
 | `status.d/` (new fragment) | write | write | write |
-| [embarch.md](embarch.md), [embarch-features.md](embarch-features.md), [embarch-roadmap.md](embarch-roadmap.md) | **never** | write | write |
+| [embarch.md](embarch.md), [suite/features.md](suite/features.md), [embarch-roadmap.md](embarch-roadmap.md) | **never** | write | write |
 | [embarch-decision-reversals.md](embarch-decision-reversals.md), [embarch-glossary.md](embarch-glossary.md), [embarch-user-guide.md](embarch-user-guide.md) | **never** | write | write |
 | `tasks/` | claim + close its own | write | write |
 | [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md), this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) | **never** | **never** | write |

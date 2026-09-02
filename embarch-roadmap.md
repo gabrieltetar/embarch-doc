@@ -106,7 +106,7 @@ What this milestone can now claim is narrower and worth stating in the same brea
 
 ## Next
 
-Not yet numbered milestones — the buckets [embarch.md](embarch.md) and [embarch-features.md](embarch-features.md) refer to as "Next".
+Not yet numbered milestones — the buckets [embarch.md](embarch.md) and [suite/features.md](suite/features.md) refer to as "Next".
 
 - **`embarch-promptu`** — the curated library of firmware-specific skills, subagents, and prompt patterns. Planned, no repo ([embarch-promptu/design.md](embarch-promptu/design.md)).
 - **`embarch-ui`** — one consolidated human-facing UI, having replaced `embarch-topology`'s `ui` subcommand, `embarch-study-designer`'s `study-designer-ui` binary, and `embarch-core`'s `/enroll` page outright (all three deleted, 2026-08-24). milestone 1 **CLOSED**: repo created, its first five tabs (Dashboard/Topology/Study Designer/Enroll/Debug) live-validated against the real deployed Core, VS Code launcher extension built/packaged/installed for real and user-confirmed working (internal `.vsix` distribution, decided) ([embarch-ui/decisions.md](embarch-ui/decisions.md), milestone 1). **Pushed, and a sixth tab added by Milestone 7 Phase D (2026-08-26)**: signal-route declaration in Topology and a post-hoc **Trace** view. Supersedes this file's old "EmbArch UI" placeholder entry, previously in the Later bucket below.

@@ -1,0 +1,158 @@
+# embarch: feature inventory
+
+**Status:** active, 2026-09-02.
+
+**What is built, how far it has been verified, and who owns it.** One row per capability, grouped by sub-project. Hand-maintained, and deliberately a *pointer*: the reasoning is in the owning decision, never restated here.
+
+**Verified** is the column that matters, and it is not a synonym for Status. **unit** — mocked or synthetic tests only, no live process. **local** — a real running Core, repo or CI on this machine, but no physical probe or board. **hw** — validated against an actual probe, board, or a genuine OS service install. **n/a** — not shipped.
+
+A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` has none worth stating. Decision numbers cite the sub-project's own `decisions.md`.
+
+## embarch-core
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| `GET /status` — list connected probes | Shipped | hw | §4 |
+| `POST /flash` — flash from a local path | Shipped | hw | §4 |
+| `POST /reset` | Shipped | hw | §4 |
+| `GET /serial-log` — bounded capture | Shipped | hw | §4 |
+| `GET /dev-bench/port` — link auto-detection by vendor VID plus product/serial/interface, and its CLI | Shipped | hw | 21 |
+| `POST /resolve-chip` — Zephyr SoC name → probe-rs target, validated against probe-rs's own registry | Shipped | local | 8 |
+| `embarch-core chip-list` — enumerate the target database, no hardware needed | Shipped | local | 34 |
+| Bearer-token auth on every endpoint | Shipped | hw | §4 |
+| `hw_lock` — serializes all hardware access | Shipped | unit | 4 |
+| Cross-platform service install and control | Shipped — **all four need elevation on every OS, not just Windows** | hw | 3 |
+| `start`/`stop` CLI subcommands | Shipped — smoke-tested on Linux only | hw | 3 |
+| Auto-generated machine-wide token file | Shipped | unit | §6 |
+| Service environment token passthrough | Shipped | unit | 3 |
+| Serial bridge to dev-bench (`/study*`, `/dev-bench/hello`) | Shipped | hw | 21 |
+| Erase on flash | Shipped — **the brick hazard is closed: no backend maps it to a chip erase** | hw | 32, 36 |
+| Flashing backend per chip family, preferring the board's own runner | Shipped | hw | 36 |
+| Unframed-byte reporting — a reset banner on a shared console UART no longer reads as silence | Shipped | hw | 40 |
+| Multi-probe selection beyond "first found" | Todo — design resolved (a serial selector), unbuilt | n/a | 9 |
+| ESP-IDF bootloader flashing fallback | Todo — explicitly out of v1 scope | n/a | 18 |
+| Per-caller identity beyond one shared token | Todo | n/a | §6 |
+
+## embarch-api
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| `list_projects`, `status`, `build`, `flash`, `build_and_flash`, `reset`, `serial_log` — MCP tools | Shipped | hw | §5 |
+| `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
+| `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, instead of a hand-maintained static entry | Shipped | local | 12 |
+| CLI subcommands mirroring every tool (kebab-case, unlike the snake_case tools) | Shipped | hw | §5a |
+| `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
+| `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
+| Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
+| Per-project build concurrency lock | Shipped | unit | §6 |
+| Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
+| `base_url = "auto"` — Core's address resolved per process at first use, retiring a stale gateway IP | Shipped — never against a real remote Core | local | §7 |
+| `base_address` as a per-project field — a config-driven flash path | Shipped | unit | 44 |
+| `[dev_bench]` board/chip/flash-format/artifact-path/base-address | Shipped | hw | 45 |
+| Rolling **per-user** logfile, surfaced in the UI's Debug tab | Shipped | unit | 43 |
+| Artifact transfer to a Core on a genuinely separate machine | Todo — design resolved (multipart upload), unbuilt | n/a | 15 |
+| Config hot-reload | Todo | n/a | — |
+| `PATH`/toolchain preflight | **Moved** — lands as an umbrella `doctor` check | n/a | §12 |
+| The UNC artifact path | **Retired** — it only ever worked against a foreground Core, never the installed service | hw | §9 |
+
+## embarch-dev-bench
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| Shared firmware: COBS/postcard protocol, handshake, framed log lines | Shipped | hw | 6 |
+| BLE bridge: advertise, connect either role, discover, monitor-all | Shipped | hw | 11 |
+| Interrupt-driven inbound RX — **fixes a silent 128-byte ceiling that dropped every larger message** | Shipped | ztest | 36 |
+| GATT capture window spanning steps | Shipped | hw | 30 |
+| Central-side pairing callbacks — **without them an authenticated link is unreachable whatever a study asks** | Shipped | hw | 34 |
+| Busy-means-wait on a security request already in flight | Shipped | hw | 37 |
+| `CONFIG_LOG` forwarded to Core, per-study level, flushed before every level change | Shipped | hw | 38, 39 |
+| Firmware on the nRF54L15DK, built, flashed and handshaking | Shipped | hw | 43 |
+| Protocol interpreter for engineer-declared `.eap` files | Shipped | ztest, hw | 41 |
+| End-of-study tap closing — **a whole-study tap's truncated flag was unfalsifiable** | Shipped | hw | 42 |
+| `DataExchange` read-result observability | **Open question, not a diagnosed gap** | hw | §4 |
+| Stimulus and sensing hardware-in-the-loop rig | Proposed | n/a | — |
+
+## embarch-study-designer
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| Shared `no_std` study data types — a real dependency of Core, the API and the firmware | Shipped | unit, hw | §3 |
+| Vendor-defined GATT catalog, resolving to real UUIDs end to end | Shipped | unit, hw | 41 |
+| Authored step timing (`delay_before_ms`) | Shipped | hw | §4 |
+| Connect to a named DUT by advertised-name scan | Shipped | hw | 43 |
+| Free-text/raw GATT payload authoring alongside the registry | Shipped | unit | 35 |
+| Per-characteristic GATT capture, decoded against an engineer-declared struct | Shipped | hw | 52-55 |
+| Characteristics **and services** named, not numbered, in every picker | Shipped | hw | 56 |
+| Static GATT extraction across the whole repo, scoped by the repo's own ignore rules | Shipped | unit, local | 57 |
+| BLE security elevation as an authored step | Shipped | hw | 44 |
+| Dropping the bond mid-study, with a bond scoped to one study | Shipped | local | 46 |
+| Dev-bench link same-chip verification via the handshake's reported identity | Shipped | hw | 47 |
+| **Engineer-declared DUT protocols** (`.eap`: types, grammar, validator, interpreter, three seals) | Shipped, runnable end to end | ztest, hw | 58-62 |
+| One generic **inbound** stream pipeline (declared source, sink, scope, encoding) | Shipped | hw | 39 |
+| Study version requirements, operator-selected reflash, provenance on a result | Shipped — **the UI half of reflash is deliberately not built** | hw | 40 |
+| Declared GATT table on a study, reconciled against live discovery | **Design-only, no code** | n/a | 45 |
+| Post-hoc validation | **Retired** — fully typed, wired into two repos, and it never once ran | n/a | 48 |
+| The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
+
+## embarch-outpost
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| MCU load tracing on the DUT: tracing hooks, markers, GPIO dispatch, TX-only UART, build-ID-matched manifest | **Working end to end on real silicon**: 437,789 bytes in 20 s off a real nRF54L15, 43,948 records, zero lost | ztest, hw | §3 |
+| **Two clocks** — the DUT stamps each record from its own counter, Core stamps each frame on arrival | Shipped (record layout 3) | hw | 4, 17 |
+| Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — resolves 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |
+| Batch-fill framing — took the link's duty cycle from 99% to 37% | Shipped | hw | 20 |
+| Every Kconfig wire constant | **Unmeasured defaults**, and the instrumentation's own overhead is deliberately uncharacterised | n/a | §5 |
+
+## embarch-topology
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| One shared crate for software and hardware topology, called live in-process by three consumers | Shipped, merged, deployed | hw | 2, 3 |
+| Enrollment storage — which board holds which role, human-declared | Shipped | hw | 14 |
+| Enrolling by probe serial, so two visible boards need no isolating | Shipped | hw | 15 |
+| Early powered-target check instead of a raw access-port error chain | Shipped | hw | 16 |
+| Declared dev-bench link **serial**, distinct from its JTAG probe's | Shipped | hw | 17 |
+| Declared dev-bench link **interface** — closes the two-VCOM-on-one-probe gap the DK bench exposed | Shipped | hw | 20 |
+| A `role` is unique — moving one onto different silicon displaces the old row and says so | Shipped | hw | 20 |
+| Nordic arm of the self-reported-identity comparison — **the gate had never once run against Nordic silicon** | Shipped | hw | 21 |
+| DUT signal links and the dev-bench-bypass route | Shipped — declared, stored and resolved; **validation has no caller and no wire has been read** | unit, hw | 18 |
+| Live push of a mismatch alert | **Retired** — the durable log plus a fixed UI link replaced it | local | 19 |
+
+## embarch-umbrella
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run** | local | 3, 28 |
+| `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
+| `init`/`doctor` support for live target discovery | Shipped | local | 17 |
+| Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
+| `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **check 11 is a stub and check 14 is unbuilt** | local | §5 |
+| `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
+| `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
+| `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
+| Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
+| `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped and dogfooded — **the verification compared a byte count and reported success through a cancelled elevation** | hw | 32 |
+
+## embarch-ui
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the real deployed Core | local, hw | 1, 4 |
+| Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
+| Saved-study library in the firmware repo | Shipped | local | 14 |
+| Opening a firmware repo from the tab, and creating a study in it | Shipped | local | 14 |
+| Selective-monitor targets in a grouped dialog rather than a wall of inline checkboxes | Shipped | local | 17 |
+| Post-hoc **Trace** view — lanes, gap bands as overlays, a per-subject load repartition, a zoomable chart bounded by pixels not dataset, a projected study-step row | Shipped | local | 10 |
+| Signal routing in the Topology tab — **the only human surface there is** | Shipped | hw | 10 |
+| Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
+| Reflash selector in the run dialog | **Deliberately not built** — it is `embarch-api` orchestration | n/a | 11 |
+| Windowed trace fetch — the view serializes to a 13 MB JSON | Todo — sized, not built | n/a | 10 |
+
+## Not yet a sub-project
+
+| Feature | Status | Verified |
+|---|---|---|
+| Curated firmware-specific skills and prompt library (`embarch-promptu`) | Proposed | n/a |
+| Agent-facing codebase structural analysis (`embarch-atlas`) | Proposed | n/a |

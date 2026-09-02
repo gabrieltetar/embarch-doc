@@ -7,17 +7,25 @@ just made false"). Two independent, heuristic checks:
 
   A. Project-level: for each row of embarch.md §3's table, classify its
      maturity tier from the row text and from the linked sub-project's
-     design.md "**Status:**" line, using the keyword tiers below (highest
+     spec.md "**Status:**" line, using the keyword tiers below (highest
      matching keyword anywhere in the text wins — these status blurbs are
      already written as prose summaries, not single status words, so this
      matches how they actually read). Flags any row whose tier disagrees
-     with its design.md.
+     with its spec.md.
 
-  B. Feature-level: for each row of embarch-features.md still carrying a
+  B. Feature-level: for each row of suite/features.md still carrying a
      stale-tier word (Todo/Proposed/Planned/design-only/Paused), greps that
-     row's sub-project's design.md Changelog for the feature's own
-     backticked name next to shipped-language. Flags any row whose own
-     sub-project's changelog already says that feature shipped.
+     sub-project's spec.md for the feature's own backticked identifiers.
+     spec.md is "what is true now", so a name appearing there while the
+     inventory still says Todo is exactly the disagreement §4 asks about.
+
+     Both halves read spec.md because both used to read design.md, and
+     design.md stopped existing when each sub-project migrated to the
+     four-file shape (DOC-COMPACTION.md §3). Half B additionally grepped a
+     "## Changelog" section that no doc has any more, so it had been a
+     silent no-op -- reporting "no disagreements found" while reading
+     nothing at all. Anchor a check to a filename and it dies quietly when
+     the filename moves.
 
 Both are heuristics, not proof: a flagged row deserves a human read, not a
 blind edit, and a clean run doesn't mean every doc agrees — it means these
@@ -65,7 +73,7 @@ def read(path):
 
 
 def check_project_level():
-    """embarch.md §3 table vs. each sub-project's design.md Status line."""
+    """embarch.md §3 table vs. each sub-project's spec.md Status line."""
     findings = []
     embarch_md_path = os.path.join(REPO_ROOT, 'embarch.md')
     for line in read(embarch_md_path).splitlines():
@@ -73,10 +81,17 @@ def check_project_level():
         if not m:
             continue
         sub_project, _purpose, status_cell, doc_cell = m.groups()
-        design_match = re.search(r'\((%s/design\.md)\)' % re.escape(sub_project), doc_cell)
-        if not design_match:
-            continue  # e.g. embarch-doc's own row links to DOC-PROTOCOL.md, not a design.md
-        design_path = os.path.join(REPO_ROOT, design_match.group(1))
+        # A migrated sub-project's row links its decisions.md index; its status
+        # line lives in spec.md next to it. An unmigrated one still links design.md.
+        doc_match = re.search(r'\((%s/(?:decisions|design)\.md)\)' % re.escape(sub_project), doc_cell)
+        if not doc_match:
+            continue  # e.g. embarch-doc's own row links to DOC-PROTOCOL.md
+        linked = doc_match.group(1)
+        design_path = os.path.join(REPO_ROOT, linked)
+        spec_path = os.path.join(REPO_ROOT, sub_project, 'spec.md')
+        if os.path.exists(spec_path):
+            design_path = spec_path
+            linked = f'{sub_project}/spec.md'
         if not os.path.exists(design_path):
             continue
         design_status_m = STATUS_LINE_RE.search(read(design_path))
@@ -88,51 +103,44 @@ def check_project_level():
             continue
         findings.append(
             f"embarch.md §3 row for `{sub_project}` reads as "
-            f"{TIER_NAMES[row_tier]}, but {sub_project}/design.md's own Status "
+            f"{TIER_NAMES[row_tier]}, but {linked}'s own Status "
             f"line reads as {TIER_NAMES[design_tier]}."
         )
     return findings
 
 
 def check_feature_level():
-    """embarch-features.md rows vs. their sub-project's design.md changelog."""
+    """suite/features.md rows vs. their sub-project's spec.md."""
     findings = []
-    features_path = os.path.join(REPO_ROOT, 'embarch-features.md')
+    features_path = os.path.join(REPO_ROOT, 'suite', 'features.md')
+    if not os.path.exists(features_path):
+        return findings
+    sub_project = None
     for line in read(features_path).splitlines():
-        m = ROW_RE.match(line)
-        if not m:
+        heading = re.match(r'^##\s+(embarch-[\w-]+)\s*$', line)
+        if heading:
+            sub_project = heading.group(1)
             continue
-        feature_cell, sub_project_cell, status_cell, _notes = m.groups()
-        status_l = status_cell.lower()
-        if not any(w in status_l for w in STALE_FEATURE_WORDS):
+        if not sub_project or not line.startswith('| '):
             continue
-        sub_project = sub_project_cell.strip().strip('`').split('/')[0].strip()
-        design_path = os.path.join(REPO_ROOT, sub_project, 'design.md')
-        if not os.path.exists(design_path):
+        cells = [c.strip() for c in line.strip().strip('|').split('|')]
+        if len(cells) < 2:
             continue
-        feature_names = re.findall(r'`([\w./-]+)`', feature_cell)
-        if not feature_names:
+        feature_cell, status_cell = cells[0], cells[1]
+        if not any(w in status_cell.lower() for w in STALE_FEATURE_WORDS):
             continue
-        content = read(design_path)
-        changelog_m = re.search(r'^## .*Changelog.*$', content, re.MULTILINE)
-        changelog_text = content[changelog_m.start():] if changelog_m else content
-        for name in feature_names:
-            escaped = re.escape(name)
-            for shipped_word in SHIPPED_CHANGELOG_WORDS:
-                pattern = re.compile(
-                    rf'`{escaped}`[^\n]{{0,80}}{shipped_word}|{shipped_word}[^\n]{{0,80}}`{escaped}`',
-                    re.IGNORECASE,
+        spec_path = os.path.join(REPO_ROOT, sub_project, 'spec.md')
+        if not os.path.exists(spec_path):
+            continue
+        spec = read(spec_path)
+        for name in re.findall(r'`([\w./{}-]{4,})`', feature_cell):
+            if name in spec:
+                findings.append(
+                    f"suite/features.md row for `{name}` ({sub_project}) is still "
+                    f"marked '{status_cell}', but {sub_project}/spec.md -- which is "
+                    f"what is true now -- already names it."
                 )
-                if pattern.search(changelog_text):
-                    findings.append(
-                        f"embarch-features.md row for `{name}` ({sub_project}) is still "
-                        f"marked '{status_cell.strip()}', but {sub_project}/design.md's "
-                        f"changelog already reads as shipped (matched near \"{shipped_word.strip()}\")."
-                    )
-                    break
-            else:
-                continue
-            break
+                break
     return findings
 
 
