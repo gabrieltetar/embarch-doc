@@ -73,9 +73,10 @@ A worker that cannot finish writes what it found into the task file and exits. A
 
 One batch is five phases, in order. Phases 3 and 4 interleave — a worker's branch can land while others are still running, and should, because a branch that waits gets stale.
 
+0. **Recover.** A previous batch may have been killed outright — closing VS Code is the owner's kill switch and is expected to be used ([running the fleet](embarch-parallel-agents-ops.md) §3). Abort any in-progress merge or rebase, reclaim every stale claim, and delete dead worktrees **before** anything else. The exact rule and what a kill can leave behind: [running the fleet](embarch-parallel-agents-ops.md) §3.
 1. **Refill.** Sweep the roadmap, every `open.md`, and the reversals follow-ups; write any new task files. Reconcile: a task whose source doc no longer says the thing is closed, not dispatched.
-2. **Select and set up.** Ask `scripts/usage-budget.py --suggest` how wide this wave may be (§14); it, not the cap, sets the number. Pick at most one task per sub-project from `Hardware: none`/`verify-only` tasks. For each: create both worktrees under `embarch/.worktrees/`, create the branch in both repos, write the brief. **If nothing is dispatchable** — the queue is empty, or holds only `Hardware: required` or `blocked` tasks — the batch ends here: say so, list what is waiting on the owner, and do not invent work to fill the wave.
-3. **Dispatch.** Launch the workers in parallel as background agents. Do not block on the first one. Re-check the budget (§14) before each subsequent wave, never only at the start of the batch.
+2. **Select and set up.** Ask `scripts/usage-budget.py --suggest` how wide this wave may be ([running the fleet](embarch-parallel-agents-ops.md) §2); it, not the cap, sets the number. Pick at most one task per sub-project from `Hardware: none`/`verify-only` tasks. For each: create both worktrees under `embarch/.worktrees/`, create the branch in both repos, write the brief. **If nothing is dispatchable** — the queue is empty, or holds only `Hardware: required` or `blocked` tasks — the batch ends here: say so, list what is waiting on the owner, and do not invent work to fill the wave.
+3. **Dispatch.** Launch the workers in parallel as background agents. Do not block on the first one. Re-check the budget ([running the fleet](embarch-parallel-agents-ops.md) §2) before each subsequent wave, never only at the start of the batch.
 4. **Land.** As each worker reports, run the gate (§10) independently — do not trust the worker's word for green — then merge both of its branches in the order §10 fixes. Rebase the rest onto the new `main`. **Record every merge commit's SHA**: under §6 there is no merge commit and no branch name left afterwards, so the SHA is the only handle a revert has (§11). Delete a worker's worktrees once its branches have landed or been abandoned.
 5. **Fold and report.** Consume every `status.d/` fragment into the shared suite-level docs, run `build_changelog.py`, commit that as the supervisor's own single serialized change, then write the digest (§11).
 
@@ -138,61 +139,9 @@ Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest 
 - **Worktrees are already load-bearing elsewhere and bit this suite once.** A naive repo-wide source scan finds `.claude/worktrees/` copies and silently over-extracts (`embarch-study-designer` decision 57). Any new tool that walks a repo must honor ignore files; more worktrees make that failure more likely, not less.
 - **`status.d/` can be skipped silently.** A worker that ships without a fragment leaves a suite-level doc stale and nothing fails. `check-ownership.py` proves a worker did not edit a shared doc; nothing proves it *should* have asked to. `check-staleness.py` catches part of it, heuristically, and only for two tables.
 - **A worker's two branches can land apart.** The code lands, the doc branch fails its gate, and the suite ships an undocumented change — the failure §5.1's pairing is meant to prevent, and which only the supervisor's discipline actually prevents.
-- **The usage budget is calibrated against nothing.** §14's thresholds and its taper are guesses until several batches have run.
+- **The usage budget is calibrated against nothing.** [running the fleet](embarch-parallel-agents-ops.md) §2's thresholds and its taper are guesses until several batches have run.
 - **`git add -A` in the main checkout sweeps up whatever else is mid-edit.** Workers are safe — they are in worktrees (§5.1) — but the supervisor's phase-5 fold happens in the main checkout, so an owner committing everything while a batch is folding can land a half-written suite-level doc under an unrelated message. Observed twice on 2026-09-02, while this very doc was being written. Cheap habit: `git add <paths>`, not `-A`, in `embarch-doc` while a batch is running.
 
 ## 13. Running it
 
-**Invoke `/supervise` in a session; do not schedule it, yet.** The command is [.claude/commands/supervise.md](.claude/commands/supervise.md); the worker's agent definition is [.claude/agents/embarch-worker.md](.claude/agents/embarch-worker.md).
-
-The three options and why this one:
-
-- **A slash command you invoke** — the batch runs while the owner is present. A supervisor with full delegation and merge rights on eight repos is the wrong thing to leave alone on day one: a watched batch costs twenty minutes, an unattended bad one costs a day of cross-repo reverts.
-- **A self-paced loop** — `/loop /supervise`, once several batches have landed clean. This is a **free upgrade, not an alternative**: the loop composes the command, so nothing is rebuilt. This is the intended destination.
-- **Cron or a scheduled cloud agent** — ruled out for this suite, not on principle. A cloud runner cannot see `/mnt/c/…/embarch-core`, the west workspaces, or the local toolchains, so it could only ever do doc work.
-
-**Concurrency cap: 6 workers**, at most one per sub-project. The cap exists because rebase cost grows with the number of branches waiting behind a merge, not because of the seat.
-
-**The supervisor is singular.** Two supervisors would both refill, both dispatch, and both fold `status.d/` — the one job that must be serialized. Before starting one, check no other is running.
-
-## 14. How much to run: the usage budget
-
-The fleet exists because the seat is under-used (§1), so "how much is left" is an input to a batch, not an afterthought.
-
-**Where the number comes from.** Claude Code hands a status line command a JSON blob carrying `rate_limits.five_hour.used_percentage` and `rate_limits.seven_day.used_percentage` (0–100) plus each window's `resets_at`. That is the only first-party source: **quota state arrives over the wire, so nothing reading local files can say what is left** — a transcript parser totals what was spent and never what remains. So `~/.claude/statusline-usage.py` runs as the status line, caches those numbers to `~/.claude/usage-cache.json`, and `scripts/usage-budget.py` reads the cache.
-
-`statusLine.refreshInterval` is **required**, not decorative. The event-driven triggers go quiet while a session sits idle waiting on background subagents — precisely what the supervisor does for most of a batch — so without a timer the cache freezes at whatever it held when the wait began.
-
-**Two thresholds, deliberately different:**
-
-- **Weekly, default 70%.** The real budget, and the number the owner asked for.
-- **5-hour, default 85%.** Not a budget — a lockout. Burning it to 100% stops *the owner* working, not just the fleet. It refills in hours, so a batch that waits loses nothing.
-
-`usage-budget.py` exits `0` PROCEED, `1` HOLD, `2` UNKNOWN. **UNKNOWN is treated as HOLD**: no cache, a stale one, or no `rate_limits` at all (it appears only for a Claude.ai Pro/Max seat, and only after the session's first API response). Never dispatch a wide wave on numbers you do not have.
-
-`--suggest` prints a wave size: full width until the tighter window is within 25% of its cap, then tapering to one worker. Running at full width is the point; the taper only stops six workers hitting the ceiling together.
-
-**The backstop needs no percentage at all.** If a worker dies with a real rate-limit error, stop dispatching, finish landing what is already done — phases 4 and 5 are cheap — write the digest, and exit. That path is what keeps this safe when the numbers are wrong.
-
-## 15. Driving a batch from a phone
-
-A batch takes a while and mostly runs itself, so the natural place to watch it from is not the desk. Remote Control ([claude.ai/code](https://claude.ai/code) or the Claude app) does that — but it **attaches to a Claude Code process running on this machine; it does not start one.** Its hardest limitation is that the local process must keep running: close the terminal or quit VS Code and the session goes offline.
-
-**Two ways to have a process worth attaching to:**
-
-- **VS Code, no install** — run `/rc` in the session and drive it from the phone. Works today. VS Code has to stay open.
-- **tmux, survives everything** — `scripts/supervise-remote.sh`. Needs a `claude` CLI on `PATH`, which this machine does not have (VS Code bundles its own and exposes none), so the script says so and stops rather than half-starting. This is the one to want: the batch outlives closing the window and dropping SSH.
-
-**Reporting is different on a phone, and this is the part the supervisor has to get right.** A narrow column and a batch that runs for an hour do not survive walls of tool output. So while a batch runs:
-
-- **One short line per event** — a worker dispatched, a branch landed, a gate failed. Not the command, not its output.
-- **Never paste green output.** A passing `cargo test` is the word "green". Only failing lines get quoted, and only the failing lines.
-- **End with a summary that fits on one screen** — under ~15 lines — and the digest link for the rest ([supervisor-log.md](supervisor-log.md) is where the detail belongs).
-
-**Push, but rarely.** A notification pulls the owner out of whatever they are doing, so the supervisor sends one only at: batch finished, batch blocked and stopped, budget HOLD, or a `suite`-scope design it is about to execute. Never per worker. Both switches are on (`agentPushNotifEnabled`, `inputNeededNotifEnabled`), and pushes are skipped automatically while the owner is at the terminal.
-
-**Steering from the phone works, and the supervisor must let it.** A message sent mid-turn is queued and delivered. So the supervisor **checks for a queued message between phases** and honours a stop: finish landing what is in flight, fold `status.d/`, write the digest, exit. A stop is never "drop everything" — phases 4 and 5 are what keep `main` and the docs consistent.
-
-**Never ask a question mid-batch.** Permission prompts and `AskUserQuestion` do *not* expire while a device is connected, so a question will eventually be answered — but "eventually" is a batch frozen with workers in flight and a 5-hour window burning. Under full delegation there is nothing to ask; if something genuinely needs the owner, end the batch cleanly and ask once.
-
-**Two things that do not work remotely.** Terminal-only commands (`/resume`, `/plugin`) are local-only. Whether a *custom* slash command expands from mobile is not something this doc has verified — so the supervisor is invocable in plain English too (**"run a supervisor batch"**, wired in [CLAUDE.md](CLAUDE.md)), and nothing here depends on `/supervise` reaching the phone.
+Starting a batch, sizing it against the real usage limits, watching it from a phone, and stopping it: [running the fleet](embarch-parallel-agents-ops.md).

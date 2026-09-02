@@ -10,9 +10,15 @@ follow it. It overrides your defaults where they differ.
 Arguments: `$ARGUMENTS` — an optional worker cap (default 6, hard max 6) and an
 optional comma-separated list of sub-projects to restrict this batch to.
 
-**Before anything else:** two checks.
-1. Confirm no other supervisor is running (§13 — a second one would double-fold
-   `status.d/`). If one is, stop and say so.
+**Before anything else:** three steps.
+0. **Recover.** A previous batch may have been killed outright — closing VS Code
+   is the owner's kill switch and is meant to be used, so treat a killed batch as
+   normal, not as an incident. Abort any in-progress merge or rebase; reclaim
+   every stale claim (**if no supervisor is running, every claim is stale** — the
+   workers were its own subagents and died with it); delete worktrees with no
+   commits. `embarch-parallel-agents-ops.md` §3 has the full table.
+1. Confirm no other supervisor is running (`embarch-parallel-agents-ops.md` §1 —
+   a second one would double-fold `status.d/`). If one is, stop and say so.
 2. Run `scripts/usage-budget.py --suggest`. Exit `1` (HOLD) or `2` (UNKNOWN)
    means **do not start a batch** — report the numbers and the reset time and
    stop. Its suggested wave size, not the cap, is how many workers you launch.
@@ -31,7 +37,7 @@ optional comma-separated list of sub-projects to restrict this batch to.
   `suite/` task to a worker — you execute those yourself (§8).
 - **Only you write the shared suite-level docs** (§3's table).
 - **Report as if the owner is reading on a phone, because they probably are**
-  (§15). One short line per event — worker dispatched, branch landed, gate
+  (`embarch-parallel-agents-ops.md` §3). One short line per event — worker dispatched, branch landed, gate
   failed. Never paste passing output; a green `cargo test` is the word "green",
   and only failing lines get quoted. Finish under ~15 lines with the digest link.
 - **Never ask a question mid-batch.** A question freezes the batch with workers
@@ -47,10 +53,8 @@ optional comma-separated list of sub-projects to restrict this batch to.
 
 ## The batch
 
-**1. Refill.** Reclaim first: any task `claimed` for more than 4 hours goes back
-to `open`, or to `blocked` naming its branch if that branch has commits — a
-supervisor that died mid-batch would otherwise leave its tasks claimed forever
-(`tasks/README.md`). Then sweep `embarch-roadmap.md`'s Now/Next, every sub-project's
+**1. Refill.** Step 0 already reclaimed; anything still `claimed` belongs to a
+worker of yours. Sweep `embarch-roadmap.md`'s Now/Next, every sub-project's
 `open.md` (`scripts/collect-open-questions.py` prints them all in one pass), and
 `embarch-decision-reversals.md`'s unaddressed follow-ups. Write new task files
 per `tasks/README.md`. Reconcile first: a task whose source doc no longer says

@@ -51,14 +51,19 @@ task the supervisor invented; that is allowed, and it says so here.
   the worker after it starts. Two supervisors cannot both claim; one supervisor
   is what this relies on.
 
-  **The timestamp is load-bearing, not decoration.** A supervisor that dies
-  mid-batch — killed, rate-limited, crashed — leaves its tasks claimed by a
-  worker that no longer exists, and nothing would ever release them. So refill
-  (`embarch-parallel-agents.md` §6 phase 1) **reclaims any claim older than 4
-  hours** back to `open`, after checking whether its branch exists: a branch
-  with commits on it means the work may be salvageable and the task goes to
-  `blocked` with the branch named, not back to `open` where a second worker
-  would redo it.
+  **A claim outlives the worker that made it, so releasing it needs a rule.**
+  The rule is exact rather than a timeout, because the process tree makes it
+  exact: workers are the supervisor's own in-process subagents, so **if no
+  supervisor is running, every claim is stale.** A supervisor killed mid-batch
+  — and closing VS Code is the owner's kill switch, so this is routine — takes
+  its workers with it.
+
+  Recovery (`embarch-parallel-agents.md` §6 phase 0) therefore reclaims every
+  claim at startup, checking each branch first: no commits means back to `open`;
+  commits mean `blocked` with the branch named, so a second worker does not redo
+  salvageable work. The timestamp remains as the backstop for the one case the
+  process tree cannot settle — a supervisor that is alive but wedged — where a
+  claim older than 4 hours is reclaimed the same way.
 - **blocked** — the worker appends a `## Blocked` section saying what it found
   and exits. State returns to `open` only when whatever it named is resolved.
 - **done** — the file is deleted in the merge that closes it. Git holds it, and
