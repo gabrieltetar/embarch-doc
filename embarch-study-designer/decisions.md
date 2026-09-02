@@ -381,7 +381,7 @@ So it runs its own internal discovery, subscribes to every characteristic whose 
 
 **Overflow behavior:** if real traffic filled the inline record cap before `timeout_ms` elapsed, dev-bench stopped capturing further records for that step and reported what it had — not a `Fail`/`TimedOut` — matching `Sample::to_csv_row`'s "log and skip rather than corrupt" precedent (§4.7) rather than silently wrapping or truncating a record's payload. That cap is gone with decision 54; the tap pipeline it was replaced by is uncapped.
 
-The stack-safety risk this decision carried at the time — a `StepResult` variant substantially larger than `StudyStart`'s own worst case, which had already forced static rather than stack-allocated scratch buffers in [embarch-dev-bench/design.md](../embarch-dev-bench/design.md) decision 21 — was tracked as an implementation risk in `embarch-dev-bench/milestone-9.md` rather than re-litigated here, and went away with the field (decision 54).
+The stack-safety risk this decision carried at the time — a `StepResult` variant substantially larger than `StudyStart`'s own worst case, which had already forced static rather than stack-allocated scratch buffers in [embarch-dev-bench/design.md](../embarch-dev-bench/design.md) decision 21 — was tracked as an implementation risk in dev-bench milestone 9 rather than re-litigated here, and went away with the field (decision 54).
 
 `GattMonitorAll` is kept unchanged by both later monitor decisions (36, 53): pointing an unfamiliar DUT at "subscribe to everything and see what it does" is still the first thing anyone does, and still the simpler thing to author.
 
@@ -562,7 +562,7 @@ This is the durable form of decision 35's rule. That decision said engineer-supp
 
 ### 58 — A protocol manifest an engineer writes and the tool never infers: `embarch/protocols/*.eap`
 
-Opened by the repo owner with a design draft written against a real firmware's BLE stack rather than against this suite's own code, closing two things at once: decision 39's write direction, rejected at the time as premature because nothing in the model had conditional logic, branching or multi-step state; and [milestone-11.md](milestone-11.md) §3.8's real-hardware step, blocked since 2026-08-24 on "user-supplied DUT protocol knowledge" with no mechanism for a user to supply any.
+Opened by the repo owner with a design draft written against a real firmware's BLE stack rather than against this suite's own code, closing two things at once: decision 39's write direction, rejected at the time as premature because nothing in the model had conditional logic, branching or multi-step state; and milestone 11 §3.8's real-hardware step, blocked since 2026-08-24 on "user-supplied DUT protocol knowledge" with no mechanism for a user to supply any.
 
 A per-repo `<firmware-repo>/embarch/protocols/<name>.eap` ("EmbArch Protocol") holds one or more named `protocol { … }` blocks: characteristic aliases, frame shapes, session variables, and a state machine. It sits beside `study-actions.toml` (decision 35) and `study-structs.toml` (decision 52), for the reason those two are there — it is engineer-authored knowledge about *this* DUT, and it belongs in the repo that knows it. A protocol block is **self-contained**: it declares its own characteristic aliases rather than referencing a `Study`'s taps, so one `.eap` protocol is a portable unit any study can invoke without first being wired up to match.
 
@@ -652,7 +652,7 @@ Follows the suite-wide principle already established for Core/API (`embarch.md` 
 
 ### 34 — A Study Designer UI: an interactive, table-based `Study` builder
 
-**Implemented 2026-08-24** ([milestone-11.md](milestone-11.md)): `src/study_builder.rs` (table rows → `Study`) and `tools/study_designer_ui.rs` (the `axum` server, since retired — see below), live-smoke-tested against the real `reference-dut-fw` repo.
+**Implemented 2026-08-24** (milestone 11): `src/study_builder.rs` (table rows → `Study`) and `tools/study_designer_ui.rs` (the `axum` server, since retired — see below), live-smoke-tested against the real `reference-dut-fw` repo.
 
 Motivated by a real gap Milestone 3's own closing session hit directly: a real `GattMonitorAll` run against the reference-dut DUT came back with an **empty `gatt_activity`** — nothing was captured because nothing in that `Study` ever *wrote* anything, and there was no way for whoever authored it to know what to write, since that is DUT-specific knowledge no generic discovery can produce. Closing that gap needed two things: a real authoring UI (this decision) and a place for that DUT-specific knowledge to live (decision 35).
 
@@ -662,7 +662,7 @@ Motivated by a real gap Milestone 3's own closing session hit directly: a real `
 
 **Scope: author, run, and watch — read-only outside the authoring table.** It can submit the `Study` it just built and poll each step's live result, because a human shouldn't need a second tool to try what they built. It does **not** build or flash anything — provisioning the DUT/dev-bench (`build_and_flash`/`build_and_flash_dev_bench`) stays a separate `embarch-api` step, done before the "run" button means anything.
 
-**This crate's own `tools/study_designer_ui.rs` binary is retired** (2026-08-24, [embarch-ui/milestone-1.md](../embarch-ui/milestone-1.md) §4.9). `embarch-ui`'s Study Designer tab is the successor: the same merged action list, the same table model, the same registry, but calling `registry`/`merged_actions`/`study_builder` in-process rather than running a second local web server, and submitting via `embarch-core-client` over HTTP+Bearer rather than shelling out to `embarch-api`'s CLI — which is the "left to implementation" question this decision deliberately deferred, resolved by `embarch-ui` rather than here. `src/study_builder.rs`, `src/registry.rs` and `src/merged_actions.rs` are entirely unaffected; only the binary that wrapped them in a server is gone.
+**This crate's own `tools/study_designer_ui.rs` binary is retired** (2026-08-24, milestone 1 §4.9). `embarch-ui`'s Study Designer tab is the successor: the same merged action list, the same table model, the same registry, but calling `registry`/`merged_actions`/`study_builder` in-process rather than running a second local web server, and submitting via `embarch-core-client` over HTTP+Bearer rather than shelling out to `embarch-api`'s CLI — which is the "left to implementation" question this decision deliberately deferred, resolved by `embarch-ui` rather than here. `src/study_builder.rs`, `src/registry.rs` and `src/merged_actions.rs` are entirely unaffected; only the binary that wrapped them in a server is gone.
 
 ### 35 — A user-authored custom-action registry: names and enumerated parameter choices only, never a semantic description
 
@@ -670,7 +670,7 @@ This is the actual fix for what motivated decision 34. Closing Milestone 3, an a
 
 **What the engineer provides — mechanical, not documentary:** for a detected characteristic they want to use, a freely-chosen `name` (shown in the dropdown), which characteristic it targets, its `operation` (read/write/subscribe/notify/indicate), and — for a write — its payload described as one or more named fields, each with a small enumerated set of engineer-supplied `{label, value}` pairs. Building a step against a registered action means clicking a name and clicking a value; nothing is typed as raw hex, and **nothing describes *why* a value does what it does — there is deliberately no "what this does" field at all**, since that would be this crate inventing a place to write down another guess.
 
-A value's bytes are **the engineer's own literal bytes, never a numeric type this crate encodes itself** (which would require assuming a width and endianness nobody here is in a position to know). `ActionRegistry`/`RegisteredAction`/`ActionField`/`ActionFieldValue` in `src/registry.rs`, **implemented 2026-08-24** and confirmed round-tripping against the real `reference-dut-fw` repo; the correction that a value's bytes are the engineer's literal bytes, and why, is [milestone-11.md](milestone-11.md) §3.1's own account.
+A value's bytes are **the engineer's own literal bytes, never a numeric type this crate encodes itself** (which would require assuming a width and endianness nobody here is in a position to know). `ActionRegistry`/`RegisteredAction`/`ActionField`/`ActionFieldValue` in `src/registry.rs`, **implemented 2026-08-24** and confirmed round-tripping against the real `reference-dut-fw` repo; the correction that a value's bytes are the engineer's literal bytes, and why, is milestone 11 §3.1's own account.
 
 **Persisted in the firmware repo's own `embarch/` folder** as `study-actions.toml`, sibling to `embarch.toml` — it travels with the firmware, is versioned in that repo's git history, and is shared across engineers the same way `embarch.toml` already is; not a catalog this tool owns separately, and not re-entered per `Study`.
 
