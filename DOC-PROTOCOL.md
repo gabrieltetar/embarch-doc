@@ -73,7 +73,7 @@ general "branch before committing to the default branch" default, for this suite
 ends when the repo owner explicitly says so. See ../embarch-doc/embarch-dev-workflow.md §6.
 ```
 
-This is the mechanism that makes §4–5 happen without re-explaining it: `CLAUDE.md` loads every session and points here. **A new repo needs both sections, and it is worth checking an existing one has them** — `embarch-topology` ran from 2026-08-21 to 2026-08-25 with no `CLAUDE.md` at all, so nothing there pointed at its own design doc, and nothing in this protocol had ever checked.
+This is what makes §4–5 happen without re-explaining it: `CLAUDE.md` loads every session and points here. **A new repo needs both sections, and it is worth checking an existing one has them** — `embarch-topology` ran 2026-08-21 to 08-25 with no `CLAUDE.md` at all, so nothing there pointed at its own design doc, and nothing here had ever checked.
 
 ## 7. Doc conventions
 
@@ -89,17 +89,17 @@ This exists because `check-staleness.py` is a heuristic over two tables and `emb
 
 ### 7.2 Decision entries
 
-Number-first headings, one level below their topical group: `### 20, 21, 25, 27 — Streaming capture, batched, with units`. **Numbers are permanent** — unique within the sub-project, never renumbered, never reused, and an entry may own several where decisions were merged. Groups can be renamed, reordered, split, and moved between files freely; numbers cannot. Out-of-order numbers within a group are the intended outcome. Entry shape and length: [DOC-COMPACTION.md](DOC-COMPACTION.md) §5.
+Number-first headings, one level below their topical group: `### 20, 21, 25, 27 — Streaming capture, batched, with units`. **Numbers are permanent** — unique per sub-project, never renumbered or reused, and an entry may own several where decisions were merged. Groups can be renamed, reordered, split, and moved between files freely; numbers cannot, so out-of-order numbers in a group are intended. Entry shape and length: [DOC-COMPACTION.md](DOC-COMPACTION.md) §5.
 
 ### 7.3 Referring to a decision
 
-**A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39`. Legacy `§3 decision 39` still parses and is not maintained — which is what let §3's decisions move to their own file without touching one reference.
+**A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39`. Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
 
-This matters more than it looks: **2,354 such references exist**, and `check-links.py` structurally cannot see one — it validates file paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves every one against the entries its sub-project actually defines. Its first calibrated run found two entries that had been **silently deleted** while three other docs went on citing them (`embarch-api` decision 31, `embarch-umbrella` decision 27, lost in unrelated editing passes and restored from git).
+This matters more than it looks: **2,354 such references exist**, and `check-links.py` structurally cannot see one — it validates file paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves every one against the entries its sub-project actually defines. Its first calibrated run found two entries **silently deleted** while three other docs went on citing them (`embarch-api` decision 31, `embarch-umbrella` decision 27 — restored from git).
 
 ### 7.4 Retiring an entry
 
-A decision that stops describing anything true is **retired, not deleted** — a one-line tombstone naming what it said, that it is retired, and what replaced it:
+A decision that stops describing anything true is **retired, not deleted** — a one-line tombstone naming what it said and what replaced it:
 
 ```markdown
 ### 19 — Two-tier validation (retired 2026-08-25, see decision 48)
@@ -113,4 +113,4 @@ A dangling reference then lands on an explanation instead of a gap, which is wha
 
 Every load-bearing constant says which it is, inline: `460800 baud [measured 2026-08-30, DK VCOM1 over the bridge]`, `250 ms step timeout [assumed]`.
 
-The bracket earns its place on an **inventoried** constant — one in a table or declared list, where provenance would otherwise be vague. It does **not** earn its place where prose already derives a constant precisely: `DBM_MAX_TRANSCRIPT_PAYLOAD_LEN` is "244 (one full 247-byte ATT MTU minus the 3-byte ATT header)", and a bracket there is noise. Sweeping it on 2026-08-31 found only **five** sites repo-wide where vague hedging attached to a constant, not the dozens the rule's wording implied. So: mark an inventory, leave good prose alone, and mark the rest as each doc reaches a compaction pass — where its constants get inventoried anyway. [DOC-COMPACTION.md](DOC-COMPACTION.md) §4 requires the distinction to survive a compaction, which is only enforceable because it has a shape.
+The bracket earns its place on an **inventoried** constant — one in a table or declared list, where provenance would otherwise be vague. It does **not** earn its place where prose already derives a constant precisely: `DBM_MAX_TRANSCRIPT_PAYLOAD_LEN` is "244 (one full 247-byte ATT MTU minus the 3-byte ATT header)", and a bracket there is noise. Sweeping it on 2026-08-31 found only **five** sites repo-wide where vague hedging attached to a constant, not the dozens the rule's wording implied. So: mark an inventory, leave good prose alone, and mark the rest as each doc reaches a compaction pass — where its constants get inventoried anyway.
