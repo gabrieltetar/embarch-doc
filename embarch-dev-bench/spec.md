@@ -8,7 +8,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 The physical rig that plays the DUT's BLE counterpart during a `Study` — it advertises, connects as central or peripheral, exchanges GATT data, runs engineer-authored `.eap` protocol state machines, and will sample power. Zephyr-based C firmware, cross-vendor by design: "one firmware project" means **one shared application source tree** that different west workspaces build for different vendor targets, not one board.
 
-The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owned by [embarch-study-designer](../embarch-study-designer/design.md) and treated here as given. `embarch-core` never talks BLE or samples power itself.
+The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owned by [embarch-study-designer](../embarch-study-designer/decisions.md) and treated here as given. `embarch-core` never talks BLE or samples power itself.
 
 **The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** Decision 43 reversed the ESP32-C5 retarget once a replacement DK arrived; the ESP32-C5 workspace stays in the tree and working. **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
 

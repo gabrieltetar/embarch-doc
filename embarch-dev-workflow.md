@@ -80,7 +80,7 @@ This sandbox (and possibly yours) has no MSVC linker, so `cargo build --target x
 §4 (it is the operational other half of "Windows code, checked from Linux"),
 but §6 is referenced by name from nine `CLAUDE.md` files and from
 [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §6, so renumbering costs more than the odd
-label does. `embarch-study-designer/design.md` §4.3a already sets that
+label does. `embarch-study-designer/decisions.md` §4.3a already sets that
 precedent.
 
 **`embarch deploy-core` now does all of this in one command — start there.**
@@ -262,7 +262,7 @@ then `GET /status` through `embarch-api` (or `curl` the bind address).
 
 **Coupling 1 — the dev-bench wire schema.** If the redeploy carries a bump
 to `DEV_BENCH_WIRE_SCHEMA_VERSION`
-([embarch-study-designer/design.md](embarch-study-designer/design.md)), the
+([embarch-study-designer/decisions.md](embarch-study-designer/decisions.md)), the
 board's firmware **must be reflashed in the same sitting**. Core sends
 `Hello { schema_version }`; a bench on the older version answers
 `compatible: false` and Core refuses the link. There is no partial-upgrade

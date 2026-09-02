@@ -37,7 +37,7 @@ Every route requires `Authorization: Bearer <token>`. Semantics and rationale: [
 
 ## Studies
 
-Async and job-based rather than blocking, unlike everything above: a study's BLE steps can take unbounded time. One study in flight at a time via `study_lock`; no cancel endpoint; the in-memory job registry has no expiry and does not survive a restart. Design of record: [embarch-study-designer/design.md](../embarch-study-designer/design.md) §5.1.
+Async and job-based rather than blocking, unlike everything above: a study's BLE steps can take unbounded time. One study in flight at a time via `study_lock`; no cancel endpoint; the in-memory job registry has no expiry and does not survive a restart. Design of record: [embarch-study-designer/decisions.md](../embarch-study-designer/decisions.md) §5.1.
 
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
