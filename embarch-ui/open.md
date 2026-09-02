@@ -1,0 +1,13 @@
+# embarch-ui: open
+
+**Status:** active, 2026-09-02.
+
+Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
+
+- **Where the reflash selector should live is genuinely undecided.** `run_study --reflash` is `embarch-api` orchestration — it sequences check → build → flash → submit and owns the project config and build machinery — while `embarch-ui` posts studies straight to Core and builds nothing. Three shapes: duplicate that orchestration here, give `embarch-ui` a dependency on `embarch-api` (a direction the suite has nowhere), or leave reflash terminal-only. Settled as the third for now, **and the run dialog says so** — but "the UI cannot reflash" is a limitation rather than a design goal. The mismatch override and the before-the-run mismatch display are built and unaffected. Decision 11.
+
+- **Nothing has compared a trace's placement against a second stream in the same study.** The DUT clock measures; the host's *places*, at an observed 4.0 ms median placement resolution on the reference capture. Whether the two actually line up against, say, a power capture is the check the dual-clock flag exists to enable, **and it has not been run.** Every outpost wire constant is still an unmeasured default with the instrumentation's own overhead deliberately uncharacterised, so a working view is not validation of the numbers underneath it.
+
+- **The Trace view's cost at real volume is the transfer, not the cap.** The reference capture is 225,606 rows — **90% of the 250,000-row cap** — dropping nothing only because the study was two and a half minutes long; a five-minute one overflows it. But the view serializes to a **13 MB JSON** the browser waits for and then holds 112,801 spans from. Decision 10's aggregation made the *drawing* independent of dataset size, which leaves load time as the only remaining term: a `?from&to&width` endpoint binning server-side in Rust — the same aggregation the browser now does, on the right side of the wire. Deliberately **not** folded into the navigation work, because that was a redraw problem and this is a load-time one, and conflating them is how a measured decision turns back into a guess.
+
+- **A signal mismatch still has nowhere durable to land, so a declared-but-wrong signal shows up in the Topology tab or nowhere.** Closed upstream as not-needed-yet under a two-part trigger; **half of it has fired** — signals are declarable through this tab, which is the only surface for it — and the other half has not, since there is still no wire and no bridge. The consequence is carried by the row's own carrier cell ("not enumerated on Core right now" against a declared serial nothing answers to) rather than by the alert list.

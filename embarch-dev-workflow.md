@@ -298,13 +298,13 @@ message name the baud it opened at.
 
 **Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
 
-**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/decisions.md](embarch-api/decisions.md) §3 decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
+**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/decisions.md](embarch-api/decisions.md) decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
 
 **Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
 `/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
 affect the running MCP server; a client picks up the new binary only on a
 **fresh Claude Code session**. Deploy order across the two is Core first,
-then api ([embarch-core/decisions.md](embarch-core/decisions.md) §3 decision 30).
+then api ([embarch-core/decisions.md](embarch-core/decisions.md) decision 30).
 
 ## 5. Agent-driven iteration — what's safe unsupervised, what isn't
 
@@ -335,6 +335,6 @@ then api ([embarch-core/decisions.md](embarch-core/decisions.md) §3 decision 30
 **What does *not* change, and is what makes this safe:**
 
 - **`main` still has to build.** Nothing about skipping branches licenses committing something red. Run the crate's own `cargo build`/`test`/`clippy --all-targets -- -D warnings` — plus a native Windows build where `embarch-core` is involved (§4) — *before* the commit, not after.
-- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/decisions.md` §3 decision 30).
+- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/decisions.md` decision 30).
 - **Commit granularity is the thing carrying the history now.** With no branch name and no merge commit to hang a milestone off, the commit message is the only record of what a change was for. Write it accordingly.
 - **Real, risky, or exploratory work can still take a branch — and a background agent thread always does.** This is a default, not a prohibition: a rewrite you might abandon is exactly what a branch is for, and a parallel worker has real concurrency to isolate from ([embarch-parallel-agents.md](embarch-parallel-agents.md)). The rule is against branching *reflexively* for ordinary forward work.

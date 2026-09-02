@@ -24,7 +24,7 @@ Prompted directly, and it closed a gap wider than the one it was raised for: **a
 
 `requirement_satisfied(required, actual)` lives in this crate so Core's version gate holds no second copy of the comparison rule, and `VersionSource::is_verified` decides whether a version renders as verified so no UI re-derives which variants count.
 
-**The human surface landed 2026-08-26** ([embarch-ui/design.md](../../embarch-ui/design.md) decision 11), and it is the first thing that ever stated a real requirement: the Study Designer had been submitting `Requirements::any()` unconditionally — honestly, since it had no fields to say anything else in. Both fields are now prefilled from live bench state, `any` is a visible checkbox rather than an empty field that happens to validate, and a blank field is **refused rather than quietly promoted to `any`**, which is the distinction this decision rests on.
+**The human surface landed 2026-08-26** ([embarch-ui/decisions.md](../../embarch-ui/decisions.md) decision 11), and it is the first thing that ever stated a real requirement: the Study Designer had been submitting `Requirements::any()` unconditionally — honestly, since it had no fields to say anything else in. Both fields are now prefilled from live bench state, `any` is a visible checkbox rather than an empty field that happens to validate, and a blank field is **refused rather than quietly promoted to `any`**, which is the distinction this decision rests on.
 
 ### 45 — A study declares the GATT table it was authored against, and live discovery is what checks it
 
