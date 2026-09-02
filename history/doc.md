@@ -1,0 +1,47 @@
+# doc: history
+
+**Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB — older windows roll into [archive/](archive/).
+
+## 2026-09
+
+### Added
+- A decisions entry may own several numbers (`### 20, 21, 25, 27 — …`) so merging entries under a byte budget keeps all 2,354 prose `decision N` references resolvable.
+- A suite-scope task is announced by Slack DM and parked, not blocked; the owner can cancel it until the batch ends.
+- Background agent threads: one supervisor, 4-6 workers, one repo each, on branches. See embarch-parallel-agents.md.
+- Closing VS Code is the fleet kill switch by design; a killed batch is recovered by phase 0, not prevented.
+- Four outside surfaces distinguished: Remote Control steers, the fleet channel logs, cloud sessions investigate, channels are blocked.
+- Recorded the git add -A race: workers are safe in worktrees, the supervisor folding in the main checkout is not.
+- Slack #embarch-fleet starts, steers and questions the fleet; reactions are the watermark and cron dies with the session.
+- The supervisor sizes each wave from the real 5h/7d rate-limit percentages, and stops rather than guessing when they are missing.
+- `scripts/check-doc-size.py` enforces per-file size caps by role as a ratchet: a file may shrink freely, but never grow past `min(cap, baseline)`.
+- check-decision-refs now fails on a cited reversal row no range file defines.
+- check-ownership.py enforces the worker ownership map that was previously prose nothing read.
+- status.d/ fragments and a tasks/ queue: a worker never edits a shared suite-level doc or the queue it pulls from.
+
+### Changed
+- Compaction is lossy by design: efficiency and modularity over losslessness. Every file capped by role, a sub-project is four small files, and git holds what is dropped.
+- Dev-workflow compacted, 27 KB to 18 KB; the manual deploy steps are a fallback now that a command does them.
+- Every doc is within its cap and the size baseline holds no exceptions.
+- Feature inventory moved to suite/features.md and compacted, 45 KB to 13 KB.
+- Glossary compacted, 14 KB to 8 KB; it names three study seals now, and no version numbers.
+- Reversals split to an index plus stable numeric ranges; 109 rows, none over 17 KB.
+- Roadmap moved to suite/roadmap.md and compacted, 40 KB to 13 KB.
+- Stream-pipeline proposal reduced to its still-proposed half, 47 KB to 12 KB.
+- Token doc compacted, 14 KB to 8 KB.
+- User guide moved to suite/, split at the studies chapter, 45 KB to 32 KB across two files.
+- embarch.md compacted, 20 KB to 11 KB; the index is grouped tables.
+
+### Fixed
+- A worker branches both its code repo and embarch-doc; the two land together, and worktrees live outside every repo tree.
+- Reversal rows 59-105 restored: the changelog-stripping pass deleted 47 rows appended below that heading.
+- Roadmap said Milestone 7 Phase E was not started; it closed on 2026-08-27.
+- Stale section refs into a migrated sub-project decisions.md index dropped corpus-wide.
+- User guide said no outpost byte had crossed a real UART, and blamed a diagnosis that was withdrawn.
+- `check-doc-size.py --update` may raise a still-over-cap baseline by up to 1 KB for cross-cutting renames, refuses to pin a newly-over-cap file, and needs `--adopt` to bootstrap one.
+- check-doc-size prunes a baseline entry for a file that no longer exists.
+- check-ownership.py accepts a scope written as embarch-core, not only core.
+- check-staleness half A survives embarch.md changing its table shape.
+- check-staleness half B was a silent no-op: it read a design.md changelog no doc has.
+
+### Removed
+- Every doc's `## Changelog` section, plus the `*.changelog-archive.md` files and `archive-changelog.py` — 643 KB, 25% of the corpus. History now lives in `changelog.d/` fragments.
