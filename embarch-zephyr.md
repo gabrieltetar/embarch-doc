@@ -1,6 +1,6 @@
 # embarch: Zephyr relationship
 
-**Status:** active, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/design.md` §3 decision 12, `embarch-dev-bench/design.md`, `embarch-umbrella/design.md` §3 decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
+**Status:** active, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/design.md` §3 decision 12, `embarch-dev-bench/decisions.md`, `embarch-umbrella/design.md` §3 decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
 
 ## 1. What this doc is for
 
@@ -41,13 +41,13 @@ A **snippet** (`west build -S <name>`) is a named, reusable devicetree-overlay/K
 Recent Zephyr SDK releases (confirmed against NCS 3.4) wrap **every** application build in `sysbuild` regardless of whether one was explicitly requested — this is not opt-in behavior a project can avoid by not asking for it. The practical consequences:
 
 - The build artifact lands under `build/<app>/zephyr/zephyr.hex` (or `.elf`/`.bin`/`.uf2`), **not** `build/zephyr/...` as a pre-sysbuild build would have produced.
-- `build/domains.yaml` exists once sysbuild is active, naming each domain (image) in the build. A single-core, single-image application (this suite's dev-bench board, `embarch-dev-bench/design.md` §3 decision 4) still has exactly one domain, named `app` — sysbuild's presence doesn't by itself imply a multi-image build to coordinate, only that the *mechanism* is active.
+- `build/domains.yaml` exists once sysbuild is active, naming each domain (image) in the build. A single-core, single-image application (this suite's dev-bench board, `embarch-dev-bench/decisions.md` §3 decision 4) still has exactly one domain, named `app` — sysbuild's presence doesn't by itself imply a multi-image build to coordinate, only that the *mechanism* is active.
 - A tool locating the build artifact (`embarch-api`'s `artifact_path` resolution, `embarch-umbrella`'s `init`) has to search for the real file rather than assume a fixed layout, since which of the two layouts applies depends on the SDK version in use, not on anything the project's own config declares.
 
 ## 5. Cross-references
 
 - [embarch-api/design.md](embarch-api/design.md) §3 decision 12 — the live target-discovery implementation that applies everything in this doc mechanically.
-- [embarch-dev-bench/design.md](embarch-dev-bench/design.md) §3 decision 4 — the sysbuild correction (§4 above) as it was actually found.
+- [embarch-dev-bench/decisions.md](embarch-dev-bench/decisions.md) §3 decision 4 — the sysbuild correction (§4 above) as it was actually found.
 - [embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 17 — `init`/`doctor`'s trimmed, detection-only application of this same grammar.
 - [embarch-glossary.md](embarch-glossary.md) — one-line definitions of "board qualifier," "target," and "discovery kind."
 - [embarch-decision-reversals.md](embarch-decision-reversals.md) — the real bugs §2.1/§2.2 above describe, as they were actually found.

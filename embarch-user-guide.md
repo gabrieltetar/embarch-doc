@@ -460,7 +460,7 @@ cargo test
 Platform notes that will cost you time otherwise:
 - **Building on Windows natively needs Visual Studio Build Tools' "Desktop development with C++" workload** — a `rustup`-installed toolchain alone has no linker for the MSVC target.
 - **Don't build Core from a `\\wsl$`-mounted source tree.** Use a native Windows checkout.
-- `embarch-dev-bench` is Zephyr C, not Rust, and needs a west workspace per vendor — see its own [design doc](embarch-dev-bench/design.md) §2.
+- `embarch-dev-bench` is Zephyr C, not Rust, and needs a west workspace per vendor — see its own [design doc](embarch-dev-bench/decisions.md) §2.
 
 **Docs are part of the work, not a follow-up.** Each sub-project's `design.md` in `embarch-doc` is the source of truth for its architecture, and it gets updated in the same pass as the code that changes it — see [DOC-PROTOCOL.md](DOC-PROTOCOL.md). If you're using Claude Code in one of these repos, its `CLAUDE.md` already points there and it'll do this on its own.
 
