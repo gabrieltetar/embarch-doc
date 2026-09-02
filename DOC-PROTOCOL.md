@@ -34,7 +34,7 @@ Suite-level docs are mid-migration into `suite/`; several still sit at the root.
 
 Three tiers, and one non-tier:
 
-- **A sub-project** (`<sub-project>/`) is **four capped files**: `spec.md` (what is true now), `decisions.md` (why), `open.md` (unresolved), and `interfaces.md` only where the reference doesn't fit. Caps and what belongs in each: [DOC-COMPACTION.md](DOC-COMPACTION.md) §2–3. Every sub-project that exists or is planned gets a directory.
+- **A sub-project** (`<sub-project>/`) is **four capped files**: `spec.md` (what is true now), `decisions.md` (why — split by mission into `decisions/<topic>.md` where it outgrows one file, leaving an index), `open.md`, and `interfaces.md` only where the reference doesn't fit. Caps and contents: [DOC-COMPACTION.md](DOC-COMPACTION.md) §2–3. Every sub-project, existing or planned, gets a directory.
 - **Suite-level** docs cover what spans more than one sub-project: the overview and index, the roadmap, the feature inventory, the glossary, [embarch-token.md](embarch-token.md), [embarch-dev-workflow.md](embarch-dev-workflow.md), [embarch-decision-reversals.md](embarch-decision-reversals.md), and [embarch-user-guide.md](embarch-user-guide.md) — the one doc written for a reader who isn't already inside the project, and therefore the one place §5's link-don't-restate rule does not apply.
 - **A proposal** (`*-proposal.md`) is a cross-repo design awaiting acceptance, stating in its own closing section which decision in which doc each piece folds into. **The policy: if it is not fully closed, it is still open.** Its `Status:` stays `proposal` (§7.1) — never `accepted`, never `half-accepted` — until every piece has folded, because a doc marked half-done reads as done to everyone who didn't write it. Delete it only when fully absorbed. [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) is the case that forced this tier: its inbound direction folded into five docs while its outbound direction stayed proposed.
 - **A milestone doc is not a tier.** While a milestone runs, `<sub-project>/milestone-N.md` holds the execution plan. Once it ships, it **folds into the four files and is deleted** ([DOC-COMPACTION.md](DOC-COMPACTION.md) §3) — git holds it, and a completed plan left intact competes with `spec.md` for the reader who wants current truth.
@@ -89,7 +89,7 @@ This exists because `check-staleness.py` is a heuristic over two tables and `emb
 
 ### 7.2 Decision entries
 
-Number-first headings, one level below their topical group: `### 20, 21, 25, 27 — Streaming capture, batched, with units`. **Numbers are permanent** — unique per sub-project, never renumbered or reused, and an entry may own several where decisions were merged. Groups can be renamed, reordered, split, and moved between files freely; numbers cannot, so out-of-order numbers in a group are intended. Entry shape and length: [DOC-COMPACTION.md](DOC-COMPACTION.md) §5.
+Number-first headings, one level below their topical group: `### 20, 21, 25, 27 — Streaming capture, batched, with units`. A group is a section of `decisions.md` or a whole `decisions/<topic>.md`; the checker reads both. **Numbers are permanent** — unique per sub-project, never renumbered or reused, and an entry may own several where decisions were merged. Groups can be renamed, reordered, split, and moved between files freely; numbers cannot, so out-of-order numbers in a group are intended. Entry shape and length: [DOC-COMPACTION.md](DOC-COMPACTION.md) §5.
 
 ### 7.3 Referring to a decision
 

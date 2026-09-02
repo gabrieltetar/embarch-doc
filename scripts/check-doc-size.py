@@ -46,6 +46,9 @@ RENAME_ALLOWANCE = 1 * KB
 # role -> (cap in bytes, matcher on the repo-relative path)
 CAPS = [
     ("spec",        10 * KB, re.compile(r"^embarch-[a-z-]+/spec\.md$")),
+    # A sub-project whose decisions outgrow one file splits them by mission into
+    # decisions/<topic>.md, and decisions.md becomes the index (DOC-COMPACTION.md §3).
+    ("decision-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/decisions/[a-z-]+\.md$")),
     ("decisions",   25 * KB, re.compile(r"^embarch-[a-z-]+/decisions\.md$")),
     ("open",         5 * KB, re.compile(r"^embarch-[a-z-]+/open\.md$")),
     ("interfaces",  15 * KB, re.compile(r"^embarch-[a-z-]+/interfaces\.md$")),

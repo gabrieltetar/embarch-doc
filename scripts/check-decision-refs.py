@@ -36,7 +36,8 @@ Three outcomes, and only two of them fail:
 Entry definitions come from a sub-project's `design.md` decisions section (the
 `## N. ...decision...` heading up to the next `## `, so an ordinary numbered
 list elsewhere in that doc cannot invent an entry) and, where the extraction of
-DOC-PROTOCOL.md §3 has happened, from the whole of its `decisions.md`.
+DOC-PROTOCOL.md §3 has happened, from the whole of its `decisions.md` -- or,
+where those outgrew one file, from every `decisions/<topic>.md` under it.
 
 Usage: scripts/check-decision-refs.py [--verbose] [--warnings]
 Exit status: 0 if no errors, 1 otherwise.
@@ -95,15 +96,17 @@ def build_index():
     """sub-project -> set of decision numbers it defines."""
     index = {}
     for path in md_files():
-        if os.path.basename(path) not in ('design.md', 'decisions.md'):
+        rel_parts = os.path.relpath(path, REPO_ROOT).split(os.sep)
+        is_group = len(rel_parts) == 3 and rel_parts[1] == 'decisions'
+        if os.path.basename(path) not in ('design.md', 'decisions.md') and not is_group:
             continue
-        sub = subproject_of(path)
+        sub = rel_parts[0] if len(rel_parts) > 1 else None
         if sub is None:
             continue
         nums = index.setdefault(sub, set())
         # A standalone decisions.md IS the decisions section end to end; inside
         # a design.md, only the numbered section whose heading says "decision".
-        whole_file = os.path.basename(path) == 'decisions.md'
+        whole_file = os.path.basename(path) == 'decisions.md' or is_group
         in_decisions = whole_file
         with open(path, encoding='utf-8') as f:
             for line in f:

@@ -22,6 +22,7 @@ Three practices, in force from 2026-09-02:
 |---|---|---|
 | Spec — what is true now | **10 KB** | `<sub-project>/spec.md` |
 | Decisions — why | **25 KB** | `<sub-project>/decisions.md` |
+| One decision group, where they outgrow a file | **12 KB** | `<sub-project>/decisions/<topic>.md` |
 | Open questions | **5 KB** | `<sub-project>/open.md` |
 | Interface reference, only where big | **15 KB** | `<sub-project>/interfaces.md` |
 | Suite-level doc | **10 KB** | `suite/*.md` |
@@ -40,6 +41,7 @@ Split by *when a reader needs it*, so the default load is small:
 
 - **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. This is the file an agent loads to work on the component, and for most sessions it is the only one.
 - **`decisions.md` (25 KB)** — why, one entry per decision (§5). Loaded when someone asks "why is it like this" or is about to change it.
+  **Where a sub-project's decisions do not fit one file, split them by mission** into `decisions/<topic>.md` (12 KB each), leaving `decisions.md` as a ~2 KB index: a table of mission → file → the decision numbers in it. This is the shape for a component that owns several distinct jobs, because a session is usually there for one of them — `embarch-core` is the case that forced it, with 40 decisions across seven missions (platform, probes, flashing, studies, streams, logging, surfaces) that would not compress into 25 KB without cutting the rejected alternatives the budget exists to protect. Splitting costs a little total size (per-file headers) and buys every file being loadable, which is the actual goal. Do not split preemptively: one `decisions.md` is better while it fits.
 - **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. `scripts/collect-open-questions.py` reads these.
 - **`interfaces.md` (15 KB)** — only where the interface reference genuinely doesn't fit in `spec.md`. Do not create it preemptively.
 
@@ -86,7 +88,7 @@ There are **2,362 prose `decision N` references** across this repo and `scripts/
 ### 20, 21, 25, 27 — Streaming capture, batched, with units
 ```
 
-Every listed number stays resolvable, so every reference keeps working. Merging is the main tool for fitting 62 decisions into 25 KB, and 62 decisions for one crate is itself a sign that entries accreted past what is load-bearing.
+Every listed number stays resolvable, so every reference keeps working. Merging is the main tool for fitting 62 decisions into 25 KB, and 62 decisions for one crate is itself a sign that entries accreted past what is load-bearing. Where merging is not enough, split the file by mission (§3) rather than cutting rationale to hit a number.
 
 Retire an entry rather than deleting it, as a one-line tombstone naming what replaced it: a dangling reference should land on an explanation, not a gap.
 
@@ -134,7 +136,7 @@ Biggest first, one per commit, `--update` after each:
 
 | | Today | Target |
 |---|---|---|
-| `embarch-core` | 233 KB | 50 KB |
+| ~~`embarch-core`~~ | ~~233 KB~~ | **done: 53 KB, 11 files** |
 | `embarch-dev-bench` | 185 KB | 50 KB |
 | `embarch-api` | 158 KB | 50 KB |
 | `embarch-study-designer` | 94 + 138 KB | 50 KB |

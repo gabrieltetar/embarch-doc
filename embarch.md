@@ -71,7 +71,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [DOC-COMPACTION.md](DOC-COMPACTION.md) — how a doc gets compacted once its work has landed: what must survive, what gets discarded, and the verification gate
 - **Shipped milestone docs and implementation guides are deleted, not indexed** (2026-09-02, [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3): 22 of them, 334 KB, folded into their sub-project's own docs. A `milestone-N.md` named in prose elsewhere is one of these — recoverable with `git show <rev>:<path>`. The one live execution plan is [embarch-umbrella/milestone-6.md](embarch-umbrella/milestone-6.md).
 - [embarch-core/spec.md](embarch-core/spec.md) — embarch-core: what is true now (purpose, invariants, deployment, modules, constants)
-- [embarch-core/decisions.md](embarch-core/decisions.md) — embarch-core: why, 40 numbered decisions
+- [embarch-core/decisions.md](embarch-core/decisions.md) — embarch-core: why — an index over `decisions/` (platform, probes, flashing, studies, streams, logging, surfaces), 40 numbered decisions across seven missions
 - [embarch-core/interfaces.md](embarch-core/interfaces.md) — embarch-core: the HTTP surface
 - [embarch-core/open.md](embarch-core/open.md) — embarch-core: unresolved questions and structural limits
 - [embarch-api/design.md](embarch-api/design.md) — embarch-api design
