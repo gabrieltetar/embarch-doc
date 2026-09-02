@@ -54,7 +54,12 @@ TIER_NAMES = {1: "Planned/Paused", 2: "Design-only/Proposed", 3: "In progress", 
 STALE_FEATURE_WORDS = ["todo", "proposed", "planned", "design-only", "design only", "paused"]
 SHIPPED_CHANGELOG_WORDS = ["implement", "shipped", "ships", "done", "closing out"]
 
-ROW_RE = re.compile(r'^\|\s*`([\w-]+)`\s*\|(.*)\|(.*)\|(.*)\|\s*$')
+# embarch.md §3's row names its sub-project either bare-backticked or as a
+# markdown link to its spec, and carries either three or four cells. Both
+# shapes have existed; matching only one is how half A silently died twice.
+ROW_RE = re.compile(
+    r'^\|\s*(?:\[)?`([\w-]+)`(?:\]\([^)]*\))?\s*\|(.*)\|(.*?)(?:\|(.*))?\|\s*$'
+)
 STATUS_LINE_RE = re.compile(r'\*\*Status:\*\*(.*?)(?:\n\n|\Z)', re.DOTALL)
 
 
@@ -81,17 +86,21 @@ def check_project_level():
         if not m:
             continue
         sub_project, _purpose, status_cell, doc_cell = m.groups()
-        # A migrated sub-project's row links its decisions.md index; its status
-        # line lives in spec.md next to it. An unmigrated one still links design.md.
-        doc_match = re.search(r'\((%s/(?:decisions|design)\.md)\)' % re.escape(sub_project), doc_cell)
-        if not doc_match:
-            continue  # e.g. embarch-doc's own row links to DOC-PROTOCOL.md
-        linked = doc_match.group(1)
-        design_path = os.path.join(REPO_ROOT, linked)
+        doc_cell = doc_cell or ''
+        # The status line to diff against is the sub-project's own spec.md.
+        # Fall back to a decisions.md or design.md the row happens to link,
+        # for a sub-project that has not migrated to the four-file shape.
         spec_path = os.path.join(REPO_ROOT, sub_project, 'spec.md')
         if os.path.exists(spec_path):
-            design_path = spec_path
-            linked = f'{sub_project}/spec.md'
+            design_path, linked = spec_path, f'{sub_project}/spec.md'
+        else:
+            doc_match = re.search(
+                r'\((%s/(?:decisions|design)\.md)\)' % re.escape(sub_project),
+                doc_cell + _purpose)
+            if not doc_match:
+                continue  # e.g. embarch-doc's own row names no sub-project doc
+            linked = doc_match.group(1)
+            design_path = os.path.join(REPO_ROOT, linked)
         if not os.path.exists(design_path):
             continue
         design_status_m = STATUS_LINE_RE.search(read(design_path))
