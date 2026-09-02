@@ -139,6 +139,7 @@ Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest 
 - **`status.d/` can be skipped silently.** A worker that ships without a fragment leaves a suite-level doc stale and nothing fails. `check-ownership.py` proves a worker did not edit a shared doc; nothing proves it *should* have asked to. `check-staleness.py` catches part of it, heuristically, and only for two tables.
 - **A worker's two branches can land apart.** The code lands, the doc branch fails its gate, and the suite ships an undocumented change — the failure §5.1's pairing is meant to prevent, and which only the supervisor's discipline actually prevents.
 - **The usage budget is calibrated against nothing.** §14's thresholds and its taper are guesses until several batches have run.
+- **`git add -A` in the main checkout sweeps up whatever else is mid-edit.** Workers are safe — they are in worktrees (§5.1) — but the supervisor's phase-5 fold happens in the main checkout, so an owner committing everything while a batch is folding can land a half-written suite-level doc under an unrelated message. Observed twice on 2026-09-02, while this very doc was being written. Cheap habit: `git add <paths>`, not `-A`, in `embarch-doc` while a batch is running.
 
 ## 13. Running it
 
