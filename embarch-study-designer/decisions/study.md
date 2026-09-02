@@ -8,35 +8,35 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ### 13 — Per-step, not per-study, fail-continuation: `Step.continue_on_fail: bool`
 
-A study's steps mix "must pass or the rest is meaningless" checks (a `BleConnect` — nothing downstream works without a connection) with "record and move on" ones (a `DataExchange` that is informational for a fuzzing run rather than fatal to it). A single study-wide switch can't express that mix; a per-step bool can. Defaults to `false` (abort immediately on this step's `Fail`/`TimedOut`), matching typical test-runner semantics; an author opts a specific step into `true` only where continuing past its failure is useful.
+A study's steps mix **"must pass or the rest is meaningless"** checks — nothing downstream works without a connection — with **"record and move on"** ones. **A single study-wide switch cannot express that mix; a per-step flag can.** Defaults to aborting immediately, **and an author opts a specific step out only where continuing past its failure is useful.**
 
 This is also the knob for "attempt it but don't insist" wherever that comes up — decision 44 declined to add a second flag for exactly that reason.
 
 ### 14 — Correlation by array position (`step_index: u32`), not by `Step.name`
 
-`Step.name` stays purely a human-readable label — useful when a person reads `events.json` (§5.2) — and nothing in the wire types uses it to locate a step. `Study.steps` is already order-significant (§4.1), so a step's position is already a unique, stable-within-that-study identifier; reusing it costs no new field and sidesteps the ambiguity a name lookup would have if an author (or a fuzzer generating steps) gave two steps the same name.
+A step's name stays **purely a human-readable label, and nothing in the wire types uses it to locate a step.** The step list is already order-significant, **so a step's position is already a unique, stable-within-that-study identifier** — reusing it costs no new field and **sidesteps the ambiguity a name lookup would have if an author, or a fuzzer, gave two steps the same name.**
 
-Encoded as `u32`, not `usize`: `usize`'s width isn't fixed across the architectures this wire format actually crosses (a 64-bit host vs. a 32-bit nRF54 MCU, decision 7), and postcard would encode a mismatched-width `usize` inconsistently between them.
+A fixed-width integer rather than a pointer-sized one: **that width is not fixed across the architectures this wire format actually crosses, and postcard would encode a mismatched one inconsistently between them.**
 
 ### 42 — `Step.delay_before_ms` — the "when" half of authoring a stimulus
 
-Steps run strictly in sequence, so until this the only expressible timing was "immediately after the previous step finished". That isn't enough to author a stimulus: letting a DUT settle after a connect, or waiting inside an open `GattMonitorStart` window before writing so the transcript visibly separates unsolicited traffic from the response, both need a delay that isn't a side effect of some other step's `timeout_ms`.
+Steps run strictly in sequence, so **until this the only expressible timing was "immediately after the previous step finished". That is not enough to author a stimulus:** letting a DUT settle after a connect, or **waiting inside an open capture window before writing so the transcript visibly separates unsolicited traffic from the response**, both need a delay **that is not a side effect of some other step's timeout.**
 
-Deliberately **not folded into `timeout_ms`**: this is time spent before the action starts, so it doesn't consume the action's budget, and `Outcome::TimedOut` keeps meaning "the action took too long" rather than "the delay was too long". It also **replaced a workaround** — the UI's capture template previously held the run open with a `GattMonitorAll` step, which re-subscribes inside an already-open window; a delay on the `GattMonitorStop` step does that job without a second action.
+Deliberately **not folded into the timeout**: this is time spent *before* the action starts, **so a timed-out outcome keeps meaning "the action took too long" rather than "the delay was too long".** It also **replaced a workaround** — the UI's capture template held the run open with a second monitor step, **which re-subscribes inside an already-open window.**
 
-Declared and encoded **last**, on purpose: postcard is field-order-sensitive with no field names on the wire and dev-bench hand-decodes `Step` in C, so appending gave that decoder one extra trailing varint read instead of a reshuffled sequence. Wire v5 → v6 — appending is still a wire break in both directions, and the handshake refusing the mismatch outright is the point. Covered by `steps_crc`, so the timing an engineer authored is inside the integrity seal.
+Declared and encoded **last, on purpose**: postcard is field-order-sensitive with no field names on the wire and **the bench hand-decodes the step in C, so appending gave that decoder one extra trailing varint read instead of a reshuffled sequence.** Covered by the seal, **so the timing an engineer authored is inside the integrity check.**
 
 ### 51 — `Study.dev_bench_log_level` — how loud the bench should be is a property of the run
 
-[embarch-dev-bench/decisions.md](../../embarch-dev-bench/decisions.md) decision 38 made dev-bench's `CONFIG_LOG` output reach Core, and made it reach Core *always*, because the only knob was a compile-time Kconfig level. This is the type change that moves the knob to the study. `DevBenchLogLevel { Off, Error, Warn, Info, Debug }`, fieldless so postcard encodes a single varint discriminant, appended to `Study` and — after `streams_crc`, never inserted — to `StudyStart`. Wire v12 → v13, host v14 → v15: dev-bench parses the field and acts on it.
+Dev-bench's log output reaching Core **reached it *always*, because the only knob was a compile-time level.** This is the type change that **moves the knob to the study**: a fieldless level enum, appended rather than inserted, **which dev-bench parses and acts on.**
 
 Three shape decisions, each with a plausible alternative:
 
-- **On `Study`, not a submission-time override.** A `POST /study` query parameter would have avoided touching this crate at all, but would then need threading through `embarch-api`'s MCP tool, its CLI and the UI's submit path separately, and a saved study could not carry it. On `Study` it works through every path that already exists, and `#[serde(default)]` means every study file authored before the field still loads at `Warn` — which is what those studies effectively already ran at, so the default is *correct* rather than merely permissive.
-- **A scalar, not a property of the reserved `DevBenchLog` tap.** That tap looks like the more idiomatic home (capture is declared, not implicit — decision 39), but it is synthesized by Core, never crosses the dev-bench hop (§4.8), and a `StreamScope` window would drop precisely the lines emitted *between* steps.
-- **Outside both seals, deliberately** — decision 17's rule.
+- **On the study, not a submission-time override.** A query parameter would have avoided touching this crate at all, **but would then need threading through the MCP tool, the CLI and the UI's submit path separately — and a saved study could not carry it.** On the study it works through every path that already exists, and **defaulting means every study file authored before the field still loads at the level those studies effectively already ran at: the default is *correct* rather than merely permissive.**
+- **A scalar, not a property of the reserved log tap.** That tap looks like the more idiomatic home, **but it is synthesised by Core, never crosses the bench hop, and a scope window would drop precisely the lines emitted *between* steps.**
+- **Outside every seal, deliberately** — decision 17's rule.
 
-`Warn` is the default rather than `Off`, and the asymmetry is the point: an `<err>`/`<wrn>` line is rare by construction and is exactly what someone needs to read about the run that just failed. `Off` exists for the study that genuinely needs a clear link and accepts being blind, including to the fatal-error dump. `DevBenchLogLevel::zephyr_level()` lives here rather than in the firmware so the discriminant→severity mapping has one home; the C side reads the same numbers as `DBM_LOG_LEVEL_*`, which is why no translation table exists there — small, but this project has already had two hand-mirrored constants go stale (`embarch-dev-bench/app/CMakeLists.txt`'s own note on `STUDY_FFI_STUB_SCHEMA_VERSION`).
+**Warning is the default rather than silent, and the asymmetry is the point:** an error or warning line is **rare by construction and is exactly what someone needs to read about the run that just failed.** Silent exists for the study that **genuinely needs a clear link and accepts being blind, including to the fatal-error dump.** The discriminant-to-severity mapping lives here rather than in the firmware **so it has one home, and the C side reads the same numbers rather than a translation table — small, but this project has already had two hand-mirrored constants go stale.**
 
 ---
 
