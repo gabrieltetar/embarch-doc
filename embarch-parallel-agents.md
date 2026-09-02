@@ -14,7 +14,7 @@ The design principle throughout: **prevent collisions structurally; do not resol
 
 Three, and the boundaries between them are the whole design.
 
-**The owner.** Approves nothing routine — the supervisor is a full delegate (§11 is why that is a real risk and what it buys). Four things stay the owner's and cannot be delegated:
+**The owner.** Approves nothing routine — the supervisor is a full delegate, and steers by exception: a Remote Control message or a Slack DM stops a batch or cancels a task at any time ([running the fleet](embarch-parallel-agents-ops.md) §3, §4) (§11 is why that is a real risk and what it buys). Four things stay the owner's and cannot be delegated:
 
 - **Amending a standing rule** — this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) §6, [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md). A supervisor that can rewrite its own constraints has none. §6 already says its own rule "ends when the repo owner says it ends, and on no other condition"; this is the same property, stated once for the whole class.
 - **Anything physical** — plugging in a board, swapping hardware. Unchanged from [embarch-dev-workflow.md](embarch-dev-workflow.md) §5's Tier 3.
@@ -98,7 +98,7 @@ A schema change touching five repos must land as one sequenced pass, shared crat
 
 So a task that spans sub-projects is **never dispatched to a worker.** The supervisor executes it itself, in one session, sequenced — after designing it, which under the full-delegate model it may do without asking. Workers stay single-repo, always.
 
-Practically this means the supervisor's own hands do the riskiest work in the suite while unattended. §12 says what to watch.
+Practically this means the supervisor's own hands do the riskiest work in the suite while unattended. So it **announces before it starts**: a Slack DM naming what it is about to do, the task parked rather than begun, the rest of the batch running normally, and a reply from the owner able to cancel it right up until the batch ends ([running the fleet](embarch-parallel-agents-ops.md) §4). That is a veto that costs the batch nothing, which is why it is this rather than a delay. §12 says what to watch anyway.
 
 ## 9. Shared suite-level docs: `status.d/` fragments
 
@@ -133,7 +133,7 @@ Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest 
 ## 12. Known risks, stated rather than designed away
 
 - **Nothing reads a diff for intent before it lands, most of the time.** Full delegate plus a mechanical gate plus 4–6 parallel branches means `main` across eight repos moves on green alone. §10's shared-crate/wire-type/retirement carve-out is the mitigation, and it is deliberately narrow. Watch for the first change that passes every check and contradicts a locked-in decision — that is this design's characteristic failure, and it will not announce itself.
-- **The supervisor executes cross-repo passes unattended.** §8's reasoning is sound and its blast radius is still the largest in the suite.
+- **The supervisor executes cross-repo passes unattended.** §8's reasoning is sound and its blast radius is still the largest in the suite. The announce-and-park DM ([running the fleet](embarch-parallel-agents-ops.md) §4) narrows the window rather than closing it: an owner who does not read the DM within the batch gets the change anyway, which is what full delegation means.
 - **A worker's design authority is scoped by repo, not by consequence.** A one-repo change can be less reversible than a two-repo rename — a wire encoding, a retired decision, a deleted doc. The owner chose scope as the boundary because it is mechanically checkable; the cases where it is the wrong boundary will show up in [embarch-decision-reversals.md](embarch-decision-reversals.md), which is where to look for evidence this needs revisiting.
 - **The queue is a view of the docs and can drift from them.** Refill reconciles in one direction only.
 - **Worktrees are already load-bearing elsewhere and bit this suite once.** A naive repo-wide source scan finds `.claude/worktrees/` copies and silently over-extracts (`embarch-study-designer` decision 57). Any new tool that walks a repo must honor ignore files; more worktrees make that failure more likely, not less.
