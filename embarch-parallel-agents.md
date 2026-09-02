@@ -58,13 +58,13 @@ A queue that lives in git rather than in the supervisor's head buys three things
 
 A worker is handed exactly one task file and this contract. It must:
 
-1. **Work in its own worktree, on its own branch**, named `agent/<sub-project>/<NNN-slug>`. Set up by the supervisor before dispatch, not by the worker.
+1. **Work in two worktrees, on one branch name.** Almost every task changes both its code repo *and* `embarch-doc/<sub-project>/`, so a worker gets a branch called `agent/<sub-project>/<NNN-slug>` in **both** repos, and the supervisor lands both together (§10). This is not bookkeeping: a shipped change whose docs sit on an unmerged branch is exactly the drift [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §5 exists to prevent. Six workers branching `embarch-doc` at once is safe *because* of §3 — their paths are disjoint by construction. Both worktrees live under `embarch/.worktrees/<repo>/<NNN-slug>/`, **outside every repo tree**, and the supervisor creates and deletes them (§6). Not inside `.claude/worktrees/`: a checkout of a repo placed inside that repo is what made a naive source scan find six GATT service blocks instead of three (`embarch-study-designer` decision 57), and putting agent worktrees there would re-create that class of bug on purpose.
 2. **Stay inside its ownership row** (§3). If the task turns out to need another repo, it stops and reports that — it does not reach across. A task that needed two repos was mis-filed, and §8 owns the fix.
 3. **Never touch hardware** (§7).
 4. **Design freely within its own sub-project.** A new `decisions.md` entry scoped to one sub-project needs nobody's approval — that was the owner's call and it stands. Number it per [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2; numbers are permanent.
 5. **Update its own four files** — `spec.md`, `decisions.md`, `open.md`, `interfaces.md` — per [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §4–5. Edit the body; never append.
 6. **Drop a `changelog.d/` fragment**, and a `status.d/` fragment for every suite-level fact its change made false (§9). It does not edit the suite-level docs.
-7. **Pass the gate** (§10) before it says it is done. Green, or it reports red and does not claim otherwise.
+7. **Pass the gate** (§10) before it says it is done — including `scripts/check-ownership.py --scope <sub-project>`, the mechanical form of rule 2. Green, or it reports red and does not claim otherwise.
 8. **Close its task file** and push its branch. It does not merge.
 
 A worker that cannot finish writes what it found into the task file and exits. A half-done branch left with an honest note is worth more than a finished-looking one.
@@ -74,9 +74,9 @@ A worker that cannot finish writes what it found into the task file and exits. A
 One batch is five phases, in order. Phases 3 and 4 interleave — a worker's branch can land while others are still running, and should, because a branch that waits gets stale.
 
 1. **Refill.** Sweep the roadmap, every `open.md`, and the reversals follow-ups; write any new task files. Reconcile: a task whose source doc no longer says the thing is closed, not dispatched.
-2. **Select and set up.** Pick at most one task per sub-project, up to the concurrency cap (§13). For each: create the worktree and branch, write the brief.
-3. **Dispatch.** Launch the workers in parallel as background agents. Do not block on the first one.
-4. **Land.** As each worker reports, run the gate (§10) independently — do not trust the worker's word for green — then merge in the order §10 fixes. Rebase the rest onto the new `main`.
+2. **Select and set up.** Ask `scripts/usage-budget.py --suggest` how wide this wave may be (§14); it, not the cap, sets the number. Pick at most one task per sub-project from `Hardware: none`/`verify-only` tasks. For each: create both worktrees under `embarch/.worktrees/`, create the branch in both repos, write the brief. **If nothing is dispatchable** — the queue is empty, or holds only `Hardware: required` or `blocked` tasks — the batch ends here: say so, list what is waiting on the owner, and do not invent work to fill the wave.
+3. **Dispatch.** Launch the workers in parallel as background agents. Do not block on the first one. Re-check the budget (§14) before each subsequent wave, never only at the start of the batch.
+4. **Land.** As each worker reports, run the gate (§10) independently — do not trust the worker's word for green — then merge both of its branches in the order §10 fixes. Rebase the rest onto the new `main`. **Record every merge commit's SHA**: under §6 there is no merge commit and no branch name left afterwards, so the SHA is the only handle a revert has (§11). Delete a worker's worktrees once its branches have landed or been abandoned.
 5. **Fold and report.** Consume every `status.d/` fragment into the shared suite-level docs, run `build_changelog.py`, commit that as the supervisor's own single serialized change, then write the digest (§11).
 
 Phase 5 being one commit by one actor is what makes the shared tables conflict-free. It is the only phase that must not be parallelized.
@@ -113,6 +113,7 @@ The gate, run by the worker and then **re-run independently by the supervisor** 
 
 - `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in the touched repo, plus a native Windows build where `embarch-core` is involved ([embarch-dev-workflow.md](embarch-dev-workflow.md) §4).
 - All six `embarch-doc` checks: `check-links.py`, `check-staleness.py`, `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`, `build_changelog.py --check`.
+- **`check-ownership.py --scope <sub-project>`** on both branches — the mechanical form of §3. Without it §3 is prose nothing reads: a worker's edit to [embarch.md](embarch.md)'s status table is *plausible by construction*, so `check-staleness.py` (which only flags a row disagreeing with a sub-project doc) passes it, and the collision §9 exists to prevent happens anyway.
 
 That is [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's existing standard, unchanged, applied per branch instead of per commit. Nothing here licenses a lower bar because an agent wrote it.
 
@@ -135,7 +136,9 @@ Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest 
 - **A worker's design authority is scoped by repo, not by consequence.** A one-repo change can be less reversible than a two-repo rename — a wire encoding, a retired decision, a deleted doc. The owner chose scope as the boundary because it is mechanically checkable; the cases where it is the wrong boundary will show up in [embarch-decision-reversals.md](embarch-decision-reversals.md), which is where to look for evidence this needs revisiting.
 - **The queue is a view of the docs and can drift from them.** Refill reconciles in one direction only.
 - **Worktrees are already load-bearing elsewhere and bit this suite once.** A naive repo-wide source scan finds `.claude/worktrees/` copies and silently over-extracts (`embarch-study-designer` decision 57). Any new tool that walks a repo must honor ignore files; more worktrees make that failure more likely, not less.
-- **`status.d/` can be skipped silently.** A worker that ships without a fragment leaves a suite-level doc stale and nothing fails. `check-staleness.py` catches part of it, heuristically, and only for two tables.
+- **`status.d/` can be skipped silently.** A worker that ships without a fragment leaves a suite-level doc stale and nothing fails. `check-ownership.py` proves a worker did not edit a shared doc; nothing proves it *should* have asked to. `check-staleness.py` catches part of it, heuristically, and only for two tables.
+- **A worker's two branches can land apart.** The code lands, the doc branch fails its gate, and the suite ships an undocumented change — the failure §5.1's pairing is meant to prevent, and which only the supervisor's discipline actually prevents.
+- **The usage budget is calibrated against nothing.** §14's thresholds and its taper are guesses until several batches have run.
 
 ## 13. Running it
 
@@ -150,3 +153,22 @@ The three options and why this one:
 **Concurrency cap: 6 workers**, at most one per sub-project. The cap exists because rebase cost grows with the number of branches waiting behind a merge, not because of the seat.
 
 **The supervisor is singular.** Two supervisors would both refill, both dispatch, and both fold `status.d/` — the one job that must be serialized. Before starting one, check no other is running.
+
+## 14. How much to run: the usage budget
+
+The fleet exists because the seat is under-used (§1), so "how much is left" is an input to a batch, not an afterthought.
+
+**Where the number comes from.** Claude Code hands a status line command a JSON blob carrying `rate_limits.five_hour.used_percentage` and `rate_limits.seven_day.used_percentage` (0–100) plus each window's `resets_at`. That is the only first-party source: **quota state arrives over the wire, so nothing reading local files can say what is left** — a transcript parser totals what was spent and never what remains. So `~/.claude/statusline-usage.py` runs as the status line, caches those numbers to `~/.claude/usage-cache.json`, and `scripts/usage-budget.py` reads the cache.
+
+`statusLine.refreshInterval` is **required**, not decorative. The event-driven triggers go quiet while a session sits idle waiting on background subagents — precisely what the supervisor does for most of a batch — so without a timer the cache freezes at whatever it held when the wait began.
+
+**Two thresholds, deliberately different:**
+
+- **Weekly, default 70%.** The real budget, and the number the owner asked for.
+- **5-hour, default 85%.** Not a budget — a lockout. Burning it to 100% stops *the owner* working, not just the fleet. It refills in hours, so a batch that waits loses nothing.
+
+`usage-budget.py` exits `0` PROCEED, `1` HOLD, `2` UNKNOWN. **UNKNOWN is treated as HOLD**: no cache, a stale one, or no `rate_limits` at all (it appears only for a Claude.ai Pro/Max seat, and only after the session's first API response). Never dispatch a wide wave on numbers you do not have.
+
+`--suggest` prints a wave size: full width until the tighter window is within 25% of its cap, then tapering to one worker. Running at full width is the point; the taper only stops six workers hitting the ceiling together.
+
+**The backstop needs no percentage at all.** If a worker dies with a real rate-limit error, stop dispatching, finish landing what is already done — phases 4 and 5 are cheap — write the digest, and exit. That path is what keeps this safe when the numbers are wrong.

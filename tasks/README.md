@@ -45,10 +45,20 @@ task the supervisor invented; that is allowed, and it says so here.
 
 `open` → `claimed` → `done`, or → `blocked`.
 
-- **claimed** — the claim line becomes `**State:** claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd>`.
+- **claimed** — the claim line becomes
+  `**State:** claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>`.
   Claiming is a commit to `main` by the supervisor **before** dispatch, not by
   the worker after it starts. Two supervisors cannot both claim; one supervisor
   is what this relies on.
+
+  **The timestamp is load-bearing, not decoration.** A supervisor that dies
+  mid-batch — killed, rate-limited, crashed — leaves its tasks claimed by a
+  worker that no longer exists, and nothing would ever release them. So refill
+  (`embarch-parallel-agents.md` §6 phase 1) **reclaims any claim older than 4
+  hours** back to `open`, after checking whether its branch exists: a branch
+  with commits on it means the work may be salvageable and the task goes to
+  `blocked` with the branch named, not back to `open` where a second worker
+  would redo it.
 - **blocked** — the worker appends a `## Blocked` section saying what it found
   and exits. State returns to `open` only when whatever it named is resolved.
 - **done** — the file is deleted in the merge that closes it. Git holds it, and

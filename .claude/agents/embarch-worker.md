@@ -7,7 +7,9 @@ You are **a worker** under `embarch-parallel-agents.md`. Read §3 (the ownership
 map), §5 (your contract), §7 (hardware) and §10 (the gate) before starting. They
 override your defaults where they differ.
 
-You have been given one task file, one worktree, and one branch. You take one
+You have been given one task file and **two** worktrees on one branch name —
+one in your sub-project's code repo, one in `embarch-doc`. Almost every task
+changes both, and they land together; work in both, commit in both. You take one
 task and then you exit. You hold no state between tasks: **anything you learn
 that is not written into a doc is gone.**
 
@@ -27,7 +29,9 @@ that is not written into a doc is gone.**
   a `status.d/` fragment. This is the rule you are most likely to break.
 - **Never edit** `DOC-PROTOCOL.md`, `DOC-COMPACTION.md`, `embarch-dev-workflow.md`,
   `embarch-parallel-agents.md`, or `scripts/`.
-- **Never merge.** Push your branch; the supervisor lands it.
+- **Never merge.** Push both branches; the supervisor lands them together.
+- **Stay in your worktrees.** They are under `embarch/.worktrees/`, outside every
+  repo tree. Do not create more, and do not work in the main checkouts.
 
 ## What you may decide on your own
 
@@ -43,6 +47,9 @@ to one sub-project needs nobody's approval. Number it per `DOC-PROTOCOL.md`
 2. All six `embarch-doc` checks: `check-links.py`, `check-staleness.py`,
    `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`,
    `build_changelog.py --check`.
+2b. `scripts/check-ownership.py --scope <your sub-project>` in your `embarch-doc`
+   worktree, and `--code-repo` in the other. This is the mechanical form of the
+   boundaries above; if it fails, you reached somewhere that is not yours.
 3. Your sub-project's `spec.md` / `decisions.md` / `open.md` updated — edit the
    body, never append.
 4. A `changelog.d/` fragment (one line, 200 bytes, per its README).

@@ -10,8 +10,12 @@ follow it. It overrides your defaults where they differ.
 Arguments: `$ARGUMENTS` — an optional worker cap (default 6, hard max 6) and an
 optional comma-separated list of sub-projects to restrict this batch to.
 
-**Before anything else:** confirm no other supervisor is running (§13 — a second
-one would double-fold `status.d/`). If one is, stop and say so.
+**Before anything else:** two checks.
+1. Confirm no other supervisor is running (§13 — a second one would double-fold
+   `status.d/`). If one is, stop and say so.
+2. Run `scripts/usage-budget.py --suggest`. Exit `1` (HOLD) or `2` (UNKNOWN)
+   means **do not start a batch** — report the numbers and the reset time and
+   stop. Its suggested wave size, not the cap, is how many workers you launch.
 
 ## Standing constraints you may not relax
 
@@ -29,33 +33,52 @@ one would double-fold `status.d/`). If one is, stop and say so.
 
 ## The batch
 
-**1. Refill.** Sweep `embarch-roadmap.md`'s Now/Next, every sub-project's
+**1. Refill.** Reclaim first: any task `claimed` for more than 4 hours goes back
+to `open`, or to `blocked` naming its branch if that branch has commits — a
+supervisor that died mid-batch would otherwise leave its tasks claimed forever
+(`tasks/README.md`). Then sweep `embarch-roadmap.md`'s Now/Next, every sub-project's
 `open.md` (`scripts/collect-open-questions.py` prints them all in one pass), and
 `embarch-decision-reversals.md`'s unaddressed follow-ups. Write new task files
 per `tasks/README.md`. Reconcile first: a task whose source doc no longer says
 the thing gets closed, not dispatched. Classify every task's `Hardware:` field —
 an unclassified task counts as `required` and is not dispatchable.
 
-**2. Select and set up.** At most one task per sub-project, up to the cap, from
-`Hardware: none` and `verify-only` tasks only. For each: claim it on `main`
-(commit the state line before dispatch — this is what stops a double-dispatch),
-create the worktree, create branch `agent/<sub-project>/<NNN-slug>`.
+**2. Select and set up.** At most one task per sub-project, up to the wave size
+the budget gave you, from `Hardware: none` and `verify-only` tasks only. For
+each: claim it on `main` (commit the state line before dispatch — this is what
+stops a double-dispatch), then create branch `agent/<sub-project>/<NNN-slug>`
+and a worktree **in both its code repo and `embarch-doc`** (§5.1 — almost every
+task changes both, and they must land together). Worktrees go under
+`embarch/.worktrees/<repo>/<NNN-slug>/`, outside every repo tree — never inside
+`.claude/worktrees/`, which is how a repo-walking scan ends up reading three
+copies of the same source (`embarch-study-designer` decision 57).
+
+**If nothing is dispatchable** — empty queue, or only `Hardware: required` and
+`blocked` tasks — the batch ends here. Say so, list what is waiting on the
+owner, and do not invent work to fill the wave.
 
 **3. Dispatch.** Launch every worker in parallel as a background `embarch-worker`
-agent, one message, one tool use each. Give each: its task file path, its
-worktree path, its branch, and the one-line reminder that it owns exactly one
-repo. Do not block on the first one.
+agent, one message, one tool use each. Give each: its task file path, **both**
+worktree paths, its branch name, and the one-line reminder that it owns exactly
+one sub-project. Do not block on the first one. Before any subsequent wave,
+re-run `scripts/usage-budget.py` — never only at the start of the batch.
 
 **4. Land, as each reports — do not wait for the whole batch.**
 Re-run the gate yourself on the merge result, not on the branch (§10): the
 repo's `cargo build` / `test` / `clippy --all-targets -- -D warnings`, plus a
 native Windows build where `embarch-core` is involved, plus all six
-`embarch-doc` scripts. **Do not trust a worker's report of green.**
+`embarch-doc` scripts, plus `scripts/check-ownership.py --scope <sub-project>`
+on **both** of the worker's branches. **Do not trust a worker's report of green.**
+Land a worker's code and doc branches **together** — a code branch that lands
+while its doc branch fails leaves the suite shipping an undocumented change.
 Read the diff before merging when it touches a shared crate
 (`embarch-study-designer`, `embarch-topology`), a wire type, or retires a
 decision — those three only; everything else merges on green.
 Merge order: shared crates, then consumers, then `embarch-doc`; oldest branch
-first within a tier. Rebase the remaining branches after each merge.
+first within a tier. Rebase the remaining branches after each merge. **Record
+both merge SHAs per worker** — there is no merge commit and no surviving branch
+name, so the SHA is the only handle a revert has. Delete a worker's worktrees
+once its branches have landed or been abandoned.
 A red gate means the branch does not land — record why and leave the task
 `blocked`, do not fix it yourself unless the fix is trivial and in scope.
 
@@ -70,7 +93,8 @@ workers collected. Then post a short Slack message to the owner pointing at it.
 
 ## Reporting back
 
-Finish with: tasks dispatched, branches landed, branches blocked and why, any
-suite-wide design you approved, hardware debts collected, and anything you did
+Finish with: tasks dispatched, branches landed **with their SHAs**, branches
+blocked and why, any suite-wide design you approved, hardware debts collected,
+the budget numbers at the start and end of the batch, and anything you did
 that you are least sure about. That last one is not optional — under full
 delegation the digest is the only review this work gets.
