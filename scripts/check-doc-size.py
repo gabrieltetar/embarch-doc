@@ -51,6 +51,8 @@ CAPS = [
     ("decision-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/decisions/[a-z-]+\.md$")),
     ("decisions",   25 * KB, re.compile(r"^embarch-[a-z-]+/decisions\.md$")),
     ("open",         5 * KB, re.compile(r"^embarch-[a-z-]+/open\.md$")),
+    # An interface reference that outgrows one file splits the same way decisions do.
+    ("interface-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/interfaces/[a-z-]+\.md$")),
     ("interfaces",  15 * KB, re.compile(r"^embarch-[a-z-]+/interfaces\.md$")),
     ("suite-guide", 25 * KB, re.compile(r"^suite/user-guide\.md$")),
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),

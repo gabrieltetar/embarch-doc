@@ -1,6 +1,6 @@
 # EMBARCH_TOKEN: design
 
-**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/decisions.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
+**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/decisions.md` and `embarch-api/decisions.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
 
 ## 1. Purpose and scope
 
@@ -20,7 +20,7 @@
 |---|---|---|
 | `embarch-core` (HTTP server) | Reads `EMBARCH_TOKEN` once at startup (`main.rs`'s `run()`) if set. Otherwise reads the token file (§3.1) if present, or generates one and writes it there if not. No hardcoded fallback literal remains (§5). | `embarch-core/decisions.md` §6 |
 | `embarch-core` CLI (`run` foreground process) | Same resolution as the HTTP server — local CLI operation isn't a separate credential. | `embarch-core/decisions.md` §2 |
-| `embarch-api` | Config's `[core]` table: inline `token` or `token_env` (`token_env` wins if both are set). If neither resolves, falls back to reading the same token file (§3.1) Core uses. If that also isn't found, embarch-api fails to start with a clear error (§8). | `embarch-api/design.md` §4 |
+| `embarch-api` | Config's `[core]` table: inline `token` or `token_env` (`token_env` wins if both are set). If neither resolves, falls back to reading the same token file (§3.1) Core uses. If that also isn't found, embarch-api fails to start with a clear error (§8). | `embarch-api/decisions.md` §4 |
 
 Beyond process memory, embarch-api's own config file (for the inline `token` case) and the token file (§3.1) are the only two places the token is ever written to disk. If stored inline in config, that file should be `chmod 600` and excluded from version control — identical treatment to any other local secret.
 

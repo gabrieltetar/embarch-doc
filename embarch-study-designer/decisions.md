@@ -278,7 +278,7 @@ Recovering the *connection* in either direction is decision 12's `Hello`-as-hard
 
 ### 29 — The fuzz-testing loop is documented, not changed
 
-Review item 40 flagged that a 64-step ceiling, no queue, and a `409 Conflict` on concurrent submission make a fuzzing driver look like an awkward N-round-trip loop against a rejection. Examined and left as-is deliberately: raising the ceiling doesn't help a fuzzer exploring many *distinct* short studies rather than one long one (§4.1 already frames a `Study` as fuzzing's *output*, one concrete value per run), and a queue is real new machinery — persistence, ordering, partial-failure semantics — this suite has avoided everywhere else (`embarch-api/design.md` §3.6's no-database stance).
+Review item 40 flagged that a 64-step ceiling, no queue, and a `409 Conflict` on concurrent submission make a fuzzing driver look like an awkward N-round-trip loop against a rejection. Examined and left as-is deliberately: raising the ceiling doesn't help a fuzzer exploring many *distinct* short studies rather than one long one (§4.1 already frames a `Study` as fuzzing's *output*, one concrete value per run), and a queue is real new machinery — persistence, ordering, partial-failure semantics — this suite has avoided everywhere else (`embarch-api/decisions.md` §3.6's no-database stance).
 
 The intended shape, stated explicitly: a fuzzing driver runs entirely client-side, generating one `Study` at a time, submitting it, polling `GET /study/{id}` to a terminal status, then generating the next. **The poll loop *is* the intended backpressure mechanism**, not a workaround for a missing one.
 
@@ -288,7 +288,7 @@ The intended shape, stated explicitly: a fuzzing driver runs entirely client-sid
 
 ### 11 — Result storage splits by data shape: a JSON events file plus CSV data files, not one file and not a database
 
-Per-step pass/fail and captured BLE data go in a small, human-readable `events.json`; time-series samples — potentially large and high-rate — go in separate CSV files referenced from it rather than embedded. So the common case (did this study pass) never requires parsing a large series, while the small side still follows the suite's no-database principle (`embarch-api/design.md` §3.6). Full layout in §5.2. Decision 39 replaced the fixed `data.csv`/`waveform.csv`/`gatt.csv` set with `streams/<tap name>`; the split itself is unchanged, and is the same reasoning that keeps decision 36's inline summary separate from its streamed transcript.
+Per-step pass/fail and captured BLE data go in a small, human-readable `events.json`; time-series samples — potentially large and high-rate — go in separate CSV files referenced from it rather than embedded. So the common case (did this study pass) never requires parsing a large series, while the small side still follows the suite's no-database principle (`embarch-api/decisions.md` §3.6). Full layout in §5.2. Decision 39 replaced the fixed `data.csv`/`waveform.csv`/`gatt.csv` set with `streams/<tap name>`; the split itself is unchanged, and is the same reasoning that keeps decision 36's inline summary separate from its streamed transcript.
 
 ### 20 — A streaming sub-protocol from dev-bench to Core, replacing discrete end-of-window sampling
 

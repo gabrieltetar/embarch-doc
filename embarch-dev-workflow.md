@@ -17,7 +17,7 @@ This is already fully supported by existing config, no code changes needed:
    cd embarch-core
    EMBARCH_TOKEN=dev-token cargo run -- run --port 4885
    ```
-2. Point a dev `embarch-api` config at it explicitly — `base_url` set to a literal address, not `"auto"`, **always wins outright** over auto-detection (`embarch-api/design.md` §3.11, §7):
+2. Point a dev `embarch-api` config at it explicitly — `base_url` set to a literal address, not `"auto"`, **always wins outright** over auto-detection (`embarch-api/decisions.md` §3.11, §7):
    ```toml
    [core]
    base_url = "http://127.0.0.1:4885"
@@ -298,7 +298,7 @@ message name the baud it opened at.
 
 **Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
 
-**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/design.md](embarch-api/design.md) §3 decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
+**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/decisions.md](embarch-api/decisions.md) §3 decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
 
 **Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
 `/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
@@ -328,7 +328,7 @@ then api ([embarch-core/decisions.md](embarch-core/decisions.md) §3 decision 30
 
 **It ends when the repo owner says it ends, and on no other condition.** Not when a heuristic looks satisfied, not when someone judges the project "mature enough" — the trigger is an explicit call, and an agent working here does not get to decide it has been made.
 
-**Why this is a real rule and not just laziness.** A branch exists to keep concurrent work from colliding. This suite has one engineer (`embarch.md` §5's single-engineer scope, and `embarch-api/design.md` §3.1's), CI reports but gates nothing, and no one downstream installs from `main`. There is nothing to collide with, so a branch buys isolation nobody needs and costs something real: the suite spans **eight repos that must move together**, and a schema change touching five of them turns into five branches, five merges, and five chances to leave one behind. That is not hypothetical — Milestone 7 Phase B ran exactly that way across six repos, and every one of the six merges turned out to be a fast-forward with no divergence to resolve. The branches recorded nothing the commit messages didn't already say.
+**Why this is a real rule and not just laziness.** A branch exists to keep concurrent work from colliding. This suite has one engineer (`embarch.md` §5's single-engineer scope, and `embarch-api/decisions.md` §3.1's), CI reports but gates nothing, and no one downstream installs from `main`. There is nothing to collide with, so a branch buys isolation nobody needs and costs something real: the suite spans **eight repos that must move together**, and a schema change touching five of them turns into five branches, five merges, and five chances to leave one behind. That is not hypothetical — Milestone 7 Phase B ran exactly that way across six repos, and every one of the six merges turned out to be a fast-forward with no divergence to resolve. The branches recorded nothing the commit messages didn't already say.
 
 **What this changes for an agent working here, concretely.** The default instruction "if you're on the default branch, branch first" is **overridden in this suite**. Commit to `main`. Push when the work is done and green, per §5's autonomy rule — the same standard as before, applied one commit at a time rather than one branch at a time.
 

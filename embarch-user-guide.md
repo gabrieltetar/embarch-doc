@@ -223,7 +223,7 @@ embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --r
 
 - Give enough of `--board`/`--variant`/`--revision`/`--app` to narrow the live-scanned set to **exactly one** match, and the call proceeds.
 - Give a combination that still matches **more than one** — the call errors instead of guessing, and the error lists the narrowed remainder so you can see what's left to disambiguate.
-- Give **none of the four** and it lists everything `list-targets` would, rather than guessing a default — unless the project sets `default_target` (§4 of `embarch-api/design.md`), in which case that's the fallback, still overridable per-field on any individual call.
+- Give **none of the four** and it lists everything `list-targets` would, rather than guessing a default — unless the project sets `default_target` (§4 of `embarch-api/decisions.md`), in which case that's the fallback, still overridable per-field on any individual call.
 - `--snippet <name>` and `--extra-arg <flag>` (both repeatable) layer on top of a resolved target — additive, not narrowing. Omit them to fall back to the project's `default_snippets`/`default_extra_args`; pass `--snippet none` on its own to force zero snippets regardless of the default.
 - `flash --firmware-path <path>` still needs enough of the four selection flags to resolve a **chip** — the override only bypasses picking *which build*, not chip resolution, since a `zephyr-west` project has no stored chip to fall back to either.
 
@@ -470,7 +470,7 @@ Platform notes that will cost you time otherwise:
 - [embarch-roadmap.md](embarch-roadmap.md) — what's coming, in what order
 - [embarch-features.md](embarch-features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
 - [embarch-token.md](embarch-token.md) — the auth token's full lifecycle
-- A specific component: `embarch-core/decisions.md`, `embarch-api/design.md`, `embarch-umbrella/design.md`, and so on
+- A specific component: `embarch-core/decisions.md`, `embarch-api/decisions.md`, `embarch-umbrella/design.md`, and so on
 
 ---
 

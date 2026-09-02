@@ -1,0 +1,69 @@
+# embarch-api: MCP tools and CLI subcommands
+
+**Status:** active, 2026-09-02.
+
+**One table, because these are two front-ends over one implementation** — not two surfaces to keep in sync. Config schema: [config.md](config.md). Current truth: [../spec.md](../spec.md).
+
+**Naming differs by convention, and it is a real difference a user hits:** MCP tools are `snake_case`, CLI subcommands are `kebab-case` — `list_projects` over MCP, `embarch-api list-projects` on a terminal. Not a design choice so much as `clap` renaming variants and `rmcp` taking the Rust function name verbatim.
+
+`P` below is the project-selection set: `board?`, `variant?`, `revision?`, `app?`, `snippets?`, `extra_args?` (CLI: `--board`, `--variant`, `--revision`, `--app`, repeatable `--snippet` and `--extra-arg`). Selection semantics: [config.md](config.md).
+
+## Config and discovery
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `list_projects` | — | Configured projects: name, chip, flash_format, source_path, whether serial defaults are set. `chip` is omitted for a `zephyr-west` project, since it is resolved per call rather than stored. Pure config read — **works with Core down**, which matters when debugging config alone |
+| `list_targets` | `project` | For `zephyr-west`: every file-backing-validated tuple plus `snippets_by_app`, `default_snippets`, `default_extra_args`. For `static` with declared targets: those rows verbatim. Otherwise errors **with the exact TOML shape** needed to declare some |
+| `status` | — | Core `GET /status`; the probe list, or a clear "Core unreachable at `<base_url>`" |
+
+## Build and flash
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `build` | `project`, `P` | Runs the configured or call-time-assembled build command. Selection is validated against the live scan **before** assembly. Returns success, exit code, truncated stdout/stderr, artifact path, and whether a fresh artifact was found |
+| `flash` | `project`, `P`, `firmware_path?`, `erase?` | Core `POST /flash` with the resolved chip, format and offset. `firmware_path` flashes an already-built or one-off file — it bypasses *build*-target resolution, but a `zephyr-west` project still needs enough selection to resolve the **chip**, since none is stored |
+| `build_and_flash` | `project`, `P`, `erase?` | Runs `build`, and flashes only if the build succeeded **and** the freshness check passed. Returns both sub-results |
+| `reset` | `project`, `P` | Core `POST /reset` with the resolved chip. Needs the same selection as `flash` for the same reason |
+| `serial_log` | `project`, `port?`, `baud?`, `duration_ms?` | Core `GET /serial-log`. Falls back to the project's configured port and baud, then to 115200 / 2000 ms. `port` additionally falls back to Core's `GET /dev-bench/port` before erroring — **and this link is meant for the bench, not a DUT's own console** |
+
+**`erase` is the only argument in this surface that can leave a board unrecoverable by any other tool in the suite**, and an agent picking it because "a clean flash sounds more thorough" is a realistic failure mode. Both the MCP description and the CLI help state plainly that it is a **destructive full-chip erase**, that a non-erase flash cannot undo it, and that a normal reflash does not need it. Defaults to `false` and is never sent implicitly as `true`. Which tool performs the erase, and whether a target supports one at all, is Core's decision; a refusal from Core is surfaced verbatim rather than retried by another route.
+
+**Why `build` and `flash` stay separate as well as bundled:** the common agent workflow wants one call, and bundling prevents flashing a stale artifact after a build error — but iterating on compiler errors should not touch hardware every call, and re-flashing after a manual board reset should not require a rebuild.
+
+## Studies
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `run_study` | `study` (MCP) / `--study-file <path>` (CLI), `reflash?`, `allow_version_mismatch?`, `project?`, `P` | Recomputes and overwrites **all three seals**, then Core `POST /study`, returning `{ study_id }` immediately alongside what it reflashed. `reflash` is `none` (default) / `dev-bench` / `dut` / `both`, and builds the tree **as it stands** — never `git checkout`. `project` is required only by `dut`/`both`: a *study* is not project-shaped, but rebuilding a DUT's firmware is. `allow_version_mismatch` proceeds past an unsatisfied requirement and the override is **recorded** in the result, never silently honoured |
+| `study_status` | `study_id` | Core `GET /study/{id}` verbatim |
+| `study_stream_data` | `study_id`, `name`, `raw?` | One declared tap's capture, by the name the study gave it. Rendered file by default where the encoding has one; `raw` serves the bytes. **Nothing here inspects content to decide** — an encoding is declared, never sniffed. A non-UTF-8 capture returns a clear error saying that is *expected* for a raw tap and pointing at `--out`, rather than a decode failure that reads like the capture broke |
+| `list_study_streams` | `study_id` | Per declared tap: `name`, `bytes_written`, and **`truncated`** — which is the reason this exists, since the aliases below structurally cannot report it. Needed no new Core route: `GET /study/{id}` already returns the whole result inline. `bytes_written: 0` means a tap was declared and captured nothing, which is a different fact from a tap never declared |
+| `study_power_data` · `study_waveform_data` · `study_gatt_data` | `study_id` | **Aliases kept for one release**, each serving whichever tap answers that alias. Names, params and returned bytes are unchanged and pinned; their *descriptions* were updated to say what each resolves, that it is an alias, and that truncation lives in `list_study_streams` |
+
+CLI data subcommands take `[--out <path>]`. **`--out` is how a binary capture gets out intact** — a raw tap's bytes are not text, and the no-`--out` path writes them to stdout untouched rather than wrapping them. `list-study-streams` marks a short capture on its own row rather than in a column an eye slides past.
+
+## Dev bench
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `build_dev_bench` | — | `west build -b <board> app` in `[dev_bench] source_path`. No project or selection params: the bench is one board at a time, and *which* board is config, not a call-time choice |
+| `flash_dev_bench` | `firmware_path?`, `erase?` | Core `POST /flash` with `[dev_bench]`'s chip, format, offset and probe serial |
+| `build_and_flash_dev_bench` | — | Both, flashing only on a successful, fresh build |
+
+## Topology
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `enroll_probe` | `role`, `chip`, `probe_serial?` | Core `POST /probes/enroll`. No selection params — enrollment is not build-target selection. The guided flow is conversational: ensure only the intended board's probe is attached, *then* call. **Core's refusal on anything but exactly one attached probe is what enforces that**, not anything client-side |
+| `validate` | `role` | Core `POST /validate` — the same live identity re-check flash and reset run mid-attach, callable without touching hardware otherwise. A mismatch comes back naming recorded vs. live hardware ID **and a `fix_it_url` as plain text, never auto-opened** |
+| `alerts` | `limit?` | Core `GET /alerts`, most recent topology-mismatch alerts, default 20 |
+
+## Error handling
+
+**MCP.** An expected or recoverable failure — nonzero build exit, Core returning 4xx/5xx, a missing artifact — comes back as tool **error content**, never a protocol error, so the agent sees the real failure text. A protocol error is reserved for this crate's config being unloadable at all. **One documented exception:** an unknown project name is `invalid_params`, because MCP's `invalid_params` exists precisely for "the request itself is malformed", which a bad name is, as distinct from "well-formed but the operation failed".
+
+**CLI.** There is no protocol layer, so: success → exit `0` and the result on stdout; **any** failure → exit `1` and one line on stderr. Malformed invocation is `clap`'s own exit `2`. **The exit code stays a single `1` for every failure kind** — `--json`'s `error_kind` is what gives a scripted caller the finer signal, rather than a taxonomy of exit codes invented on top of it.
+
+**`--json`** switches stdout to a single object carrying the same fields the MCP result does, so a script does not scrape human text. It carries `schema_version: u32`, versioned from the start rather than after a consumer depends on an unversioned shape, bumped by hand only on a breaking change. On failure the error goes into **that same object on stdout** rather than to stderr, so a script only has to check the exit code, not which stream carried the result. `error_kind` is Core's own error code verbatim when the failure came from Core, or one of a small native set (`config_error`, `build_failed`, `target_unresolved`, `core_unreachable`) for a failure that never reached it.
+
+**There is deliberately no `doctor` tool here.** Adding one would mean either reimplementing `embarch-umbrella`'s whole diagnostic chain or depending on its binary, both of which break the one-way relationship that keeps this crate unaware umbrella exists. An agent that hits a misconfiguration it cannot diagnose from these tools' own errors should shell out to `embarch doctor --json`.
