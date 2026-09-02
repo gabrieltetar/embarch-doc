@@ -37,7 +37,7 @@ Branches are the backstop. **This table is the actual mechanism** — if it is h
 | `embarch-doc/<another sub-project>/` | **never** | write | write |
 | `changelog.d/` (new fragment) | write | write | write |
 | `status.d/` (new fragment) | write | write | write |
-| [embarch.md](embarch.md), [suite/features.md](suite/features.md), [embarch-roadmap.md](embarch-roadmap.md) | **never** | write | write |
+| [embarch.md](embarch.md), [suite/features.md](suite/features.md), [suite/roadmap.md](suite/roadmap.md) | **never** | write | write |
 | [embarch-decision-reversals.md](embarch-decision-reversals.md), [embarch-glossary.md](embarch-glossary.md), [embarch-user-guide.md](embarch-user-guide.md) | **never** | write | write |
 | `tasks/` | claim + close its own | write | write |
 | [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md), this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) | **never** | **never** | write |
@@ -52,7 +52,7 @@ The three "never" rows a worker will most want to break are the shared suite-lev
 
 A queue that lives in git rather than in the supervisor's head buys three things worth the extra doc kind: two supervisor runs cannot dispatch the same task, a task survives the thread that was working it, and the reason a task exists is written down next to it instead of being re-derived from the roadmap every batch.
 
-**The supervisor refills the queue itself** at the start of each batch, from [embarch-roadmap.md](embarch-roadmap.md)'s Now/Next, every sub-project's `open.md`, and [embarch-decision-reversals.md](embarch-decision-reversals.md)'s unaddressed follow-ups. No one hand-writes a backlog. The queue is therefore a *view* of the docs, which is only true as long as closing a task also updates the doc the task came from — §5's contract.
+**The supervisor refills the queue itself** at the start of each batch, from [suite/roadmap.md](suite/roadmap.md)'s Now/Next, every sub-project's `open.md`, and [embarch-decision-reversals.md](embarch-decision-reversals.md)'s unaddressed follow-ups. No one hand-writes a backlog. The queue is therefore a *view* of the docs, which is only true as long as closing a task also updates the doc the task came from — §5's contract.
 
 ## 5. The worker contract
 

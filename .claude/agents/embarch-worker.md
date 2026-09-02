@@ -24,7 +24,7 @@ that is not written into a doc is gone.**
   host-side half and write a **hardware-verification debt** into the task file
   saying exactly what needs running and on what.
 - **Never edit a shared suite-level doc** — `embarch.md`, `suite/features.md`,
-  `embarch-roadmap.md`, `embarch-decision-reversals.md`, `embarch-glossary.md`,
+  `suite/roadmap.md`, `embarch-decision-reversals.md`, `embarch-glossary.md`,
   `embarch-user-guide.md`. `DOC-PROTOCOL.md` §5 tells you to; §9 replaces it with
   a `status.d/` fragment. This is the rule you are most likely to break.
 - **Never edit** `DOC-PROTOCOL.md`, `DOC-COMPACTION.md`, `embarch-dev-workflow.md`,

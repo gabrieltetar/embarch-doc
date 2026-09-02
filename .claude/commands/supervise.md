@@ -68,7 +68,7 @@ optional comma-separated list of sub-projects to restrict this batch to.
 ## The batch
 
 **1. Refill.** Step 0 already reclaimed; anything still `claimed` belongs to a
-worker of yours. Sweep `embarch-roadmap.md`'s Now/Next, every sub-project's
+worker of yours. Sweep `suite/roadmap.md`'s Now/Next, every sub-project's
 `open.md` (`scripts/collect-open-questions.py` prints them all in one pass), and
 `embarch-decision-reversals.md`'s unaddressed follow-ups. Write new task files
 per `tasks/README.md`. Reconcile first: a task whose source doc no longer says

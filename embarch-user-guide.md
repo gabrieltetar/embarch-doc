@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-08-05. For a firmware engineer who has never used EmbArch.
 
-> **Read this first.** Chapters 3–9 describe the real `embarch` setup tool — it shipped as part of `v0.1.0` ([embarch-roadmap.md](embarch-roadmap.md)'s Shipped foundation, Onboarding). This guide was originally written ahead of that tool as its specification; it now describes the real, released binaries. If you're setting up a machine right now, this is the path to follow. [Appendix A](#appendix-a--the-manual-path-that-works-today) is kept only as the pre-release manual procedure, for reference or if you hit something `setup`/`init` genuinely can't do yet (§8's "separate-box Core" row).
+> **Read this first.** Chapters 3–9 describe the real `embarch` setup tool — it shipped as part of `v0.1.0` ([suite/roadmap.md](suite/roadmap.md)'s Shipped foundation, Onboarding). This guide was originally written ahead of that tool as its specification; it now describes the real, released binaries. If you're setting up a machine right now, this is the path to follow. [Appendix A](#appendix-a--the-manual-path-that-works-today) is kept only as the pre-release manual procedure, for reference or if you hit something `setup`/`init` genuinely can't do yet (§8's "separate-box Core" row).
 
 ---
 
@@ -342,7 +342,7 @@ export EMBARCH_TOKEN=<the contents of the token file on the Core machine>
 
 ## 10. Dev bench and studies
 
-> **Partly usable — this note has been narrowed twice, and needed narrowing again.** Core's `/study*` endpoints and `embarch-api`'s `run-study`/`study-status` are both implemented and have run against a real dev bench and a real DUT. What is missing is **hardware**: power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Read this chapter as "here is how the parts that exist work," not as a tutorial you can follow end to end. Progress: [embarch-roadmap.md](embarch-roadmap.md)'s Next bucket.
+> **Partly usable — this note has been narrowed twice, and needed narrowing again.** Core's `/study*` endpoints and `embarch-api`'s `run-study`/`study-status` are both implemented and have run against a real dev bench and a real DUT. What is missing is **hardware**: power-sampling hardware (no BOM decision yet), GPIO/analog stimulus, and any physical DUT connector. Read this chapter as "here is how the parts that exist work," not as a tutorial you can follow end to end. Progress: [suite/roadmap.md](suite/roadmap.md)'s Next bucket.
 
 `embarch-dev-bench` is a second board — a **test fixture**, not your DUT — that plays your device's BLE counterpart on demand. Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.
 
@@ -467,7 +467,7 @@ Platform notes that will cost you time otherwise:
 ## 12. Where to look next
 
 - [embarch.md](embarch.md) — what the suite is, how the pieces fit, the sub-project index
-- [embarch-roadmap.md](embarch-roadmap.md) — what's coming, in what order
+- [suite/roadmap.md](suite/roadmap.md) — what's coming, in what order
 - [suite/features.md](suite/features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
 - [embarch-token.md](embarch-token.md) — the auth token's full lifecycle
 - A specific component: `embarch-core/decisions.md`, `embarch-api/decisions.md`, `embarch-umbrella/decisions.md`, and so on

@@ -10,7 +10,7 @@ EmbArch is a suite of tools for firmware engineers that spans from software to t
 
 EmbArch was originally [gabrieltetar/embarch](https://github.com/gabrieltetar/embarch), a C#/WPF desktop application for static analysis and graph visualization of embedded C/C++ codebases — a "firmware-first architecture analysis and exploration platform" that turned a codebase into an interactive structural graph.
 
-Static analysis and graph visualization of a firmware codebase was always part of EmbArch's scope, alongside the hardware-facing tooling — it's just not prioritized right now, so it's paused rather than dropped. It will resurface as `embarch-atlas`: an analysis capability meant to be used by Claude Code and other coding agents (and by engineers directly) to reason about a firmware codebase's structure, not tied to any one protocol — MCP is a plausible transport `embarch-api` could expose it over, not the defining shape of the capability itself. The original C#/WPF GUI's role narrows accordingly: it becomes a debug/dev-facing feature of `embarch-atlas` — useful for visually inspecting the graph while working on the analysis engine — rather than the product itself. See [embarch-roadmap.md](embarch-roadmap.md)'s Later bucket.
+Static analysis and graph visualization of a firmware codebase was always part of EmbArch's scope, alongside the hardware-facing tooling — it's just not prioritized right now, so it's paused rather than dropped. It will resurface as `embarch-atlas`: an analysis capability meant to be used by Claude Code and other coding agents (and by engineers directly) to reason about a firmware codebase's structure, not tied to any one protocol — MCP is a plausible transport `embarch-api` could expose it over, not the defining shape of the capability itself. The original C#/WPF GUI's role narrows accordingly: it becomes a debug/dev-facing feature of `embarch-atlas` — useful for visually inspecting the graph while working on the analysis engine — rather than the product itself. See [suite/roadmap.md](suite/roadmap.md)'s Later bucket.
 
 ## 3. Sub-projects
 
@@ -97,7 +97,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-ui/decisions.md](embarch-ui/decisions.md) — embarch-ui: one consolidated human-facing UI, six tabs, having replaced embarch-topology's UI, embarch-study-designer's UI, and embarch-core's `/enroll` page outright; signal routing and the post-hoc Trace view live here
 - [embarch-token.md](embarch-token.md) — `EMBARCH_TOKEN`'s full lifecycle: generation, storage, transport, security model, rotation, known gaps
 - [suite/features.md](suite/features.md) — feature inventory across the suite
-- [embarch-roadmap.md](embarch-roadmap.md) — Now / Next / Later
+- [suite/roadmap.md](suite/roadmap.md) — Now / Next / Later
 - [embarch-user-guide.md](embarch-user-guide.md) — getting started and day-to-day usage, written for a firmware engineer new to EmbArch
 - [embarch-zephyr.md](embarch-zephyr.md) — relationship to Zephyr RTOS: board-qualifier grammar, revisions, snippets, sysbuild
 - [embarch-glossary.md](embarch-glossary.md) — DUT, study, target, project, board qualifier, topology class, discovery kind, and other load-bearing terms, each linking to its owning doc

@@ -4,7 +4,7 @@
 
 ## 1. Short answer
 
-**No — never use a release build to develop against, and you rarely need `--release` at all for iteration.** A debug build (`cargo build`, no flag) is faster to compile and behaves identically for everything except raw speed. Reach for `--release` only when actually producing the thing you (or CI) will ship — the release-CI workflows already do this per-repo (`embarch-roadmap.md`'s Release section); it's not something a dev loop needs.
+**No — never use a release build to develop against, and you rarely need `--release` at all for iteration.** A debug build (`cargo build`, no flag) is faster to compile and behaves identically for everything except raw speed. Reach for `--release` only when actually producing the thing you (or CI) will ship — the release-CI workflows already do this per-repo (`suite/roadmap.md`'s Release section); it's not something a dev loop needs.
 
 The three code-bearing repos — `embarch-core`, `embarch-api`, `embarch-umbrella` — are independent Cargo projects, not a workspace (`embarch-user-guide.md` §11's layout). Build each on its own: `cargo build` inside that repo, nothing cross-repo needed to compile.
 
