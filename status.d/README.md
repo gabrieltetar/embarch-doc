@@ -5,7 +5,7 @@ One file per **pending edit to a shared suite-level doc**. A worker never edits
 [../suite/roadmap.md](../suite/roadmap.md),
 [../embarch-decision-reversals.md](../embarch-decision-reversals.md),
 [../embarch-glossary.md](../embarch-glossary.md) or
-[../embarch-user-guide.md](../embarch-user-guide.md) directly; it drops a
+[../suite/user-guide.md](../suite/user-guide.md) directly; it drops a
 fragment here and the supervisor folds every fragment in one serialized commit
 at the end of a batch ([../embarch-parallel-agents.md](../embarch-parallel-agents.md) §9).
 

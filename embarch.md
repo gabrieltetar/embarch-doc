@@ -98,7 +98,7 @@ setup / verification, off to the side and out of the runtime path entirely:
 - [embarch-token.md](embarch-token.md) — `EMBARCH_TOKEN`'s full lifecycle: generation, storage, transport, security model, rotation, known gaps
 - [suite/features.md](suite/features.md) — feature inventory across the suite
 - [suite/roadmap.md](suite/roadmap.md) — Now / Next / Later
-- [embarch-user-guide.md](embarch-user-guide.md) — getting started and day-to-day usage, written for a firmware engineer new to EmbArch
+- [suite/user-guide.md](suite/user-guide.md) — getting started and day-to-day usage, written for a firmware engineer new to EmbArch
 - [embarch-zephyr.md](embarch-zephyr.md) — relationship to Zephyr RTOS: board-qualifier grammar, revisions, snippets, sysbuild
 - [embarch-glossary.md](embarch-glossary.md) — DUT, study, target, project, board qualifier, topology class, discovery kind, and other load-bearing terms, each linking to its owning doc
 - [embarch-decision-reversals.md](embarch-decision-reversals.md) — assumptions reality has already overturned, one page, across the whole suite

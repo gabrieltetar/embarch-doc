@@ -54,7 +54,7 @@ CAPS = [
     # An interface reference that outgrows one file splits the same way decisions do.
     ("interface-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/interfaces/[a-z-]+\.md$")),
     ("interfaces",  15 * KB, re.compile(r"^embarch-[a-z-]+/interfaces\.md$")),
-    ("suite-guide", 25 * KB, re.compile(r"^suite/user-guide\.md$")),
+    ("suite-guide", 25 * KB, re.compile(r"^suite/(user|studies)-guide\.md$")),
     # A complete inventory table gets the interfaces cap, for the interfaces
     # reason: every row must be present, and the budget is spent on rows.
     ("suite-inventory", 15 * KB, re.compile(r"^suite/(features|roadmap)\.md$")),
