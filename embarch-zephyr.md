@@ -51,7 +51,3 @@ Recent Zephyr SDK releases (confirmed against NCS 3.4) wrap **every** applicatio
 - [embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 17 — `init`/`doctor`'s trimmed, detection-only application of this same grammar.
 - [embarch-glossary.md](embarch-glossary.md) — one-line definitions of "board qualifier," "target," and "discovery kind."
 - [embarch-decision-reversals.md](embarch-decision-reversals.md) — the real bugs §2.1/§2.2 above describe, as they were actually found.
-
-## Changelog
-
-- 2026-08-15 — Replaced the 3-line placeholder with real content, closing item 59 of that day's design-improvement review: the board-qualifier grammar, revision semantics (declared-vs-real, custom revision formats), snippets, and sysbuild behavior, consolidated from where they were previously scattered (`embarch-api/design.md` §3 decision 12, `embarch-dev-bench/design.md` §3 decision 4, `embarch-umbrella/design.md` §3 decision 17).

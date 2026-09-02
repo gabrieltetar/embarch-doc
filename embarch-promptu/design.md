@@ -20,10 +20,3 @@ Three pieces already exist as prose elsewhere in this suite and are the natural 
 - **Repo shape isn't decided.** Whether this ships as its own repo (matching every other sub-project's one-repo-per-concern pattern) or as files living inside `embarch-umbrella`'s own `init` templates is open — the former is consistent with the rest of the suite; the latter avoids a seventh repo for what might end up being a handful of files.
 
 **Status of these questions, 2026-08-25.** Both were put up for decision in the suite-wide design pass, with a concrete recommendation (a Claude Code plugin in its own repo — the plugin mechanism now bundles skills, subagents, commands and MCP config in one installable unit, which is precisely this sub-project's content). The user's answer was to leave both for the future. Recorded as a deliberate deferral rather than an unexamined gap: nothing is blocked on either, the extension mechanisms are still moving, and deciding now would mean committing to a packaging shape before there is any content to package. The trigger is the work actually starting.
-
-## Changelog
-
-- 2026-08-25 — Suite-wide design pass: packaging mechanism and repo shape both deliberately left open (user's call), with the recommendation that was declined recorded alongside them.
-
-- 2026-08-15 — First concrete scoping pass, closing item 57 of that day's design-improvement review: identified three pieces of already-written guidance (`embarch-user-guide.md` §7.1's permission split and `CLAUDE.md` exemption, plus a new build→flash→serial-log→diagnose loop skill) as this sub-project's first real content, and recorded the two open questions (packaging mechanism, repo shape) that block turning this into a real repo. Still no repo, still `Planned` — this is scoping, not implementation.
-- 2026-07-20 — Placeholder created alongside the embarch-doc per-sub-project restructure.

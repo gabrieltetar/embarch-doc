@@ -40,8 +40,7 @@ def md_files():
     for dirpath, dirnames, filenames in os.walk(REPO_ROOT):
         dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
         for name in sorted(filenames):
-            if name.endswith('.md') and name not in EXEMPT \
-                    and 'changelog-archive' not in name:
+            if name.endswith('.md') and name not in EXEMPT:
                 yield os.path.join(dirpath, name)
 
 

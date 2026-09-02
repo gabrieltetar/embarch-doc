@@ -33,3 +33,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check every doc's **Status:** line (DOC-PROTOCOL.md §7.1)
         run: python3 scripts/check-doc-conventions.py
+
+  check-doc-size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check per-file size caps (DOC-COMPACTION.md §2 ratchet)
+        run: python3 scripts/check-doc-size.py
+
+  check-changelog-fragments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate changelog.d/ fragments
+        run: python3 scripts/build_changelog.py --check

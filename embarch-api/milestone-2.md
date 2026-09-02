@@ -58,8 +58,3 @@ Paired with [embarch-core/milestone-2.md](../embarch-core/milestone-2.md) §3.5:
 - Whether `wslpath` is a safe dependency to shell out to, or whether hand-parsing the drive letter is more robust, is unconfirmed until tried (§3.2).
 - Depends on `embarch-core/milestone-2.md`'s token-file generation actually existing before this milestone's discovery logic can be validated against a real file — sequencing matters if both are worked in parallel.
 - Native same-OS discovery (§3.3) is unvalidated against a real Core instance this milestone, matching the platform-scope decision in `embarch-core/milestone-2.md` §2/§5.
-
-## 6. Changelog
-
-- 2026-07-21 — Initial draft, scoping embarch-api's half of Milestone 2 (Token).
-- 2026-07-21 — §3.1–3.4 shipped (code-side): `token_discovery.rs` added and wired into `CoreConfig::resolve_token()`; `cargo build`/`cargo clippy -- -D warnings` clean, unit tests pass, and the WSL2⟷Windows translation (§3.2) was exercised for real on this machine (genuinely under WSL2), not just in isolation. Folded back into `design.md` §4/§7/§8/§10/§13. §3.5 (hardware re-validation against a real Core instance generating the file) and this doc's Definition of Done (§4) remain open until that's run.

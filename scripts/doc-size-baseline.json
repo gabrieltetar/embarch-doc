@@ -1,0 +1,22 @@
+{
+  "DOC-COMPACTION.md": 24524,
+  "DOC-PROTOCOL.md": 24564,
+  "embarch-api/design.md": 161619,
+  "embarch-core/design.md": 238312,
+  "embarch-decision-reversals.md": 60314,
+  "embarch-dev-bench/design.md": 189485,
+  "embarch-dev-workflow.md": 27683,
+  "embarch-features.md": 45650,
+  "embarch-outpost/design.md": 132256,
+  "embarch-outpost/milestone-1.md": 44588,
+  "embarch-roadmap.md": 42382,
+  "embarch-stream-pipeline-proposal.md": 48681,
+  "embarch-study-designer/decisions.md": 140953,
+  "embarch-study-designer/design.md": 96758,
+  "embarch-topology/design.md": 78502,
+  "embarch-ui/design.md": 93721,
+  "embarch-ui/milestone-1.md": 40291,
+  "embarch-umbrella/design.md": 88304,
+  "embarch-umbrella/milestone-6.md": 30196,
+  "embarch-user-guide.md": 45480
+}

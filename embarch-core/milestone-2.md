@@ -57,8 +57,3 @@ On the Windows machine, with the board-a attached: uninstall/stop any currently-
 - Native Linux/macOS path (`/var/lib/embarch/token`) ships as code but isn't validated against a real systemd/launchd service or real hardware this milestone — deferred per the platform-scope decision (`embarch-token.md` §6/§8).
 - Whether `/var/lib/embarch` is writable by an unprivileged (non-root) user running Core in the foreground on Linux is unconfirmed — if it isn't, Core would need a graceful fallback (e.g. a user-scoped XDG path with a logged warning) not yet designed. Not blocking this milestone since Linux validation is deferred, but worth flagging before Linux is actually exercised for real.
 - Depends on `embarch-api/milestone-2.md`'s WSL2⟷Windows path-translation step landing before §3.5 can be validated end-to-end.
-
-## 6. Changelog
-
-- 2026-07-21 — Initial draft, scoping embarch-core's half of Milestone 2 (Token).
-- 2026-07-21 — §3.1–3.4 shipped (code-side): `dev-token-change-me` removed, `token_store.rs` added, and the `sc.exe` service-environment fix applied to `service.rs`. See `design.md` §6, §8, §10, §11 for the durable record. §3.5 (hardware re-validation) and this milestone's definition-of-done line for it remain open until run on the real Windows machine.
