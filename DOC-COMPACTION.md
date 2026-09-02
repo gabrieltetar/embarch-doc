@@ -1,181 +1,149 @@
 # embarch-doc: compaction protocol
 
-**Status:** active, 2026-08-31.
+**Status:** active, 2026-09-02.
 
-## 1. Purpose
+## 1. What changed, and why this file was rewritten
 
-[DOC-PROTOCOL.md](DOC-PROTOCOL.md) says how a doc gets *written* while work happens. This file says how a doc gets *compacted* once that work has landed.
+The first version of this protocol had one invariant: **lossless about facts, lossy only about chronology.** It was followed, and it worked — and it produced a 2.66 MB corpus with single files at 311 KB. A doc nobody can load whole is a doc nobody reads, so "we kept every fact" bought accuracy nobody was consuming.
 
-The two need separating because they pull opposite ways. During design and implementation the correct bias is to write everything down: a rejected alternative, a constant nobody has measured yet, an amendment stacked onto an earlier decision. Losing a fact costs more than carrying a redundant one, so nothing is deleted and the doc grows by accretion. That bias is right, and it has a measurable cost — as of 2026-08-31:
+**The invariant is now the opposite: keep what a reader acts on, drop the rest, and let git hold it.** Efficiency and modularity are the goal; losslessness is not. Git is not a fallback here, it is the design: every deletion below is one `git log -p` away, forever, and that is what makes the deletions safe rather than reckless.
 
-- [embarch-study-designer/design.md](embarch-study-designer/design.md) is 343 KB across 1001 lines. Its §3 alone (locked-in decisions) runs from line 39 to line 610.
-- [embarch-core/design.md](embarch-core/design.md) is 314 KB; [embarch-outpost/design.md](embarch-outpost/design.md) is 160 KB after five weeks of existence.
-- `embarch-study-designer/design.md` §3 needed its own **decision index** table, added 2026-08-15, whose stated reason is that "this list outgrew comfortable linear reading well before decision 30" — a navigation aid bolted onto a section that had stopped being readable.
-- Individual decisions read as their own edit history rather than as a statement of what is true. Decision 12 there is three stacked paragraphs each opening `**Hello also now …**`; the index marks decision 10 `Amended by 20, 24, 25` and decision 15 `Amended (grows a constant per new field, incl. 25/27)`. A reader wanting the current wire behavior has to reconstruct it from four entries written weeks apart.
+Three practices, in force from 2026-09-02:
 
-Compaction is the pass that pays that debt down. **Its one invariant: compaction is lossless about facts and lossy only about chronology.** Every fact in the doc survives; the record of the order in which the facts arrived does not. Git history holds the pre-compaction text, so chronology stays recoverable without living in the doc — that is why this protocol has no `*.compaction-archive.md` counterpart to §5's changelog archive.
+1. **Every file has a size cap by role**, enforced as a ratchet (§2).
+2. **A sub-project is four small files, not one big one** (§3).
+3. **History does not live in a doc at all** — `changelog.d/` fragments, assembled into `history/` (§4).
 
-## 2. The contract
+## 2. The budget
 
-A compaction pass is admissible only if all four hold:
+`scripts/check-doc-size.py` enforces this in CI. A file may shrink freely; it may never grow past `min(cap, its baseline)`.
 
-1. **No fact is lost.** Anything the pre-compaction doc could answer, the post-compaction doc can still answer, at the same specificity. Not "at the same length" — at the same *specificity*.
-2. **No fact is added.** Compaction does not introduce a claim, resolve an open question, or update a status. If you learn something while compacting, that is a separate edit and a separate commit (§7).
-3. **No identifier changes meaning.** Decision numbers, section numbers, and heading anchors that other docs point at keep pointing at the same thing (§6).
-4. **The diff is reviewable as "same content, better shape."** If a reviewer cannot tell whether the meaning changed, the pass is too large — split it.
+| Role | Cap | Path |
+|---|---|---|
+| Spec — what is true now | **10 KB** | `<sub-project>/spec.md` |
+| Decisions — why | **25 KB** | `<sub-project>/decisions.md` |
+| Open questions | **5 KB** | `<sub-project>/open.md` |
+| Interface reference, only where big | **15 KB** | `<sub-project>/interfaces.md` |
+| Suite-level doc | **10 KB** | `suite/*.md` |
+| User guide (the one narrative doc) | **25 KB** | `suite/user-guide.md` |
+| This file, and DOC-PROTOCOL.md | **12 KB** | `DOC-*.md` |
+| Reversals | **25 KB** | `embarch-decision-reversals.md` |
+| Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
-The reason 2 is stated as strictly as 1: a pass that both reorganizes 500 lines and quietly changes three claims is unreviewable, and the claims are what matter. Keep the two kinds of change in separate commits even when they touch the same paragraph.
+**20 files are over cap today**, holding 1,615 KB. Each is pinned at its current size by `scripts/doc-size-baseline.json`; reaching its cap retires the baseline entry, and the file is capped from then on. `--report` shows the corpus, `--update` records progress.
 
-## 3. When to compact
+**The cap is the design constraint, not a target to approach.** A budget forces the question "is this the most valuable 10 KB I can write about this component", which is the question that was never being asked.
 
-Compaction is a phase, not a habit. It runs at the transition from "we are deciding this" to "this is what is true":
+## 3. Four files per sub-project
 
-- **A sub-project's `design.md`:** when a milestone touching it closes *and the work has shipped and been exercised*. This is the same moment [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3 already says to fold a milestone's resolutions back into `design.md` — compaction is the other half of that fold.
-- **A `milestone-N.md`:** once its steps have shipped, the doc's remaining job is nearly zero. **Fold what it resolved into `design.md` and delete it** — that is the rule, not the preference. Keep it only if it holds something `design.md` genuinely cannot: work deliberately deferred with the reason, or a deferred item still gating something. Then it survives as that short record, not at full length. A completed execution plan left intact competes with `design.md` for the reader who wants current truth, and git history holds it either way.
-- **Suite-level docs:** [embarch-features.md](embarch-features.md) and [embarch-roadmap.md](embarch-roadmap.md) are already tabular and compact by growing rows, not paragraphs. Their compaction target is different (§10).
+Split by *when a reader needs it*, so the default load is small:
 
-**Do not compact:**
+- **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. This is the file an agent loads to work on the component, and for most sessions it is the only one.
+- **`decisions.md` (25 KB)** — why, one entry per decision (§5). Loaded when someone asks "why is it like this" or is about to change it.
+- **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. `scripts/collect-open-questions.py` reads these.
+- **`interfaces.md` (15 KB)** — only where the interface reference genuinely doesn't fit in `spec.md`. Do not create it preemptively.
 
-- A doc for a subsystem still in flux. Compaction makes a doc a clean statement of current truth; doing it mid-design produces a clean statement of something that is about to be wrong, and destroys the accreted alternatives you are about to need.
-- Anything whose facts have not been exercised against reality. An unvalidated constant compacts into looking authoritative. If it has not run on hardware, it stays marked as unvalidated (§4).
-- More than one doc in a pass. One doc, one commit.
+A milestone doc is not on this list. Per §7, a shipped one folds into these four and is deleted.
 
-**Signals a doc is due** (none of these is a hard limit — they are the shapes that showed up in this repo):
+## 4. History
 
-- A section needs an index or a status table to be navigable at all.
-- A single decision's text describes its own amendment history, or two-plus paragraphs open with "also now".
-- Byte count badly out of proportion to line count — this repo writes one paragraph per line, so 300 KB across 1000 lines means the paragraphs themselves have grown, not that there are more of them.
-- The same fact is stated in three places in one file, each with slightly different hedging.
-- A "current" statement is only reachable by reading an earlier entry plus its later corrections.
+Not in a doc. Every change drops a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B hard limit — see [changelog.d/README.md](changelog.d/README.md)); `scripts/build_changelog.py` assembles them per sub-project into `history/<scope>.md`.
 
-## 4. What must survive
+What survives a compaction as history, and nowhere else:
 
-Treat this as a checklist, not prose. A compaction that drops any of these is a defect, not a trade-off:
+- **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. This stays a *design* doc rather than history, because it is predictive: it says which remaining assumptions to distrust. It is capped at 25 KB, which is ~250 B per row.
+- **Measurement provenance** — a measured number keeps its date and the conditions it was measured under, inline in the constants table. A constant that silently loses its provenance is the failure mode this suite keeps hitting.
 
-- **Every invariant, constraint, and interface fact that is currently true** — names, wire formats, message enums, endpoint paths, file paths, capacities, timeouts, baud rates, env var names.
-- **Every rejected alternative, with the reason it was rejected.** This is the highest-value and most-at-risk content in the repo: it reads as historical, so it is the first thing a careless compaction deletes, and it is the only thing that stops the same alternative being re-proposed in six months. A rejected alternative is a *current fact* about the design, not chronology.
-- **Every reality-driven correction's lesson.** An assumption reality overturned predicts which remaining assumptions to distrust — that is the whole premise of [embarch-decision-reversals.md](embarch-decision-reversals.md). The *narrative* of the correction can go; the *lesson* stays. Before deleting one, confirm decision-reversals has the row; if it does not, add it in a prior commit (that is a §2-rule-2 content change, so it is its own commit).
-- **The measured/assumed distinction.** A number that came off real hardware and a number somebody picked must stay visibly different after compaction, along with the conditions the measured one was measured under. Flattening those into one confident table is the worst single outcome of a bad compaction.
-- **Every open question and known limitation**, with what would unblock it. `scripts/collect-open-questions.py` gives you the before/after set to diff (§8).
-- **Anything another doc links to**, by file, section number, decision number, or heading anchor (§6).
-- **Any fact that exists only in this doc.** Before deleting a paragraph because it "belongs in another doc," check the other doc actually says it. Moving a fact is fine; assuming it is already elsewhere is how facts die.
+Everything else about the past is dropped: amendment chains, "reversed same day", schema-bump re-derivations, "**Implemented 2026-08-25**", "three things implementation settled", review-item numbers, and every "this pass"/"the same session"/"recorded rather than discovered later".
 
-## 5. What gets discarded
+## 5. What a decision entry looks like
 
-- **The chronology of a decision's arrival.** Intermediate states, superseded phrasings, "originally X, then Y, now Z" — the doc states Z.
-- **Amendment bookkeeping** (`Amended by 20, 24, 25`, `**X also now carries…**`) — once the entry's text states the current behavior directly and completely, the bookkeeping has nothing left to point at.
-- **Restatement.** A fact stated once in its owning section, linked from elsewhere per [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §5's link-don't-restate rule.
-- **Meta-narration about the doc's own editing** — "closing item 37 of the 2026-08-15 review", "added in the same pass as", "see the changelog entry below" — unless it carries a lesson, in which case §4 applies and it moves to wherever that lesson belongs.
-- **Hedging and self-justification.** "It is worth noting that", "this is deliberate rather than accidental", "as described above". Say the thing.
-- **Navigation aids the compaction makes unnecessary** — a decision index that existed because the list was unreadable comes out when the list becomes readable. Do not compact around an index; compact the thing the index was compensating for.
-- **Superseded designs whose replacement fully covers the ground**, subject to §4's rejected-alternatives and decision-reversals rules. "Superseded" is a much higher bar than "old".
+Target **400 B**, hard ceiling **1,200 B** for the few that earn it. Structure:
 
-## 6. Entries become sections — without breaking 1335 cross-references
+```markdown
+### 8 — One implementation, multiple call sites
+`embarch-topology`'s UI/CLI and Core/api/umbrella's live calls run the same
+crate `validate()`, not two layers that agree: it confirms the device is
+enumerated and still matches its role's recorded identity, erroring with what
+is stale.
+Rejected: two independent mechanisms that happen to agree — there is no way
+for one implementation to disagree with itself.
+Gap: Core checks JTAG roles only; the dev-bench link has none (open.md).
+```
 
-This is the transform the compaction exists to perform: an append-only numbered list is a *log format*, and the compacted doc should be a *topic format* — sections named for what they describe, each stating what is true once.
+That is 430 B, from a 1,621 B original — and the original was the *median* entry.
 
-The hazard is that decision numbers are load-bearing across the whole repo. A grep for `§N decision M`-shaped references on 2026-08-31 returns **1335 hits**, spread across every design doc, [embarch-features.md](embarch-features.md), [embarch-roadmap.md](embarch-roadmap.md), and every row of [embarch-decision-reversals.md](embarch-decision-reversals.md). `scripts/check-links.py` does not and cannot catch these — it validates file paths, explicitly skipping in-page anchors, and a prose reference to "decision 39" is not a link at all. Renumbering silently invalidates cross-references that nothing checks.
+- **The claim first, in the heading.** Number, em dash, what was decided.
+- **Rationale as tightly as it can be said**, including the constraint that forced it.
+- **`Rejected: <alternative> — <reason>.`** One line each. This is the one thing that gets kept in preference to almost everything else, because it is what stops the same idea being re-proposed — but one line, not the argument. The full argument is in git.
+- **No history.** Not what it was before, not when it shipped, not which pass renumbered it.
 
-So the rule is: **decision numbers are permanent identifiers. Never renumber, never reuse, never renumber-and-remap.** Compaction reorganizes *around* the numbers:
+### Numbers are permanent, and an entry may own several
 
-- **Group, don't renumber.** Add topical `###` subsections and move whole entries under them, keeping each entry's number in its own heading (`### 39 — Stream taps`). The list stops needing linear reading because the grouping carries the navigation; the numbers survive untouched. Out-of-order numbers within a section are the intended outcome, not untidiness.
-- **Merge an amendment chain into its base entry.** Decision 12 plus its three "also now" paragraphs becomes one entry 12 stating current behavior. If a later-numbered decision (20, 24, 25) amended an earlier one, the earlier entry states the current truth and keeps a one-clause pointer to the later number — the later entry is still a real referent for the 1335 references and cannot be absorbed away.
-- **Retire, don't delete, a superseded entry.** A number that no longer describes anything true becomes a one-line tombstone: what it said, that it is retired, and which entry replaced it. A dangling prose reference then lands on an explanation instead of a gap.
-- **Section numbers are identifiers too.** `§4.7`, `§3.10`, `§5.1` are cited across docs the same way. Renumbering sections is a link-breaking change: prefer adding `###` depth inside a section over renumbering its siblings, and if a section number must change, grep the repo for it and fix every citation in the same commit.
-- **Never let a heading anchor a doc links to disappear silently.** Six in-page anchor links exist today; grep `](#` before rewriting headings.
+There are **2,362 prose `decision N` references** across this repo and `scripts/check-decision-refs.py` resolves every one. So a number is never renumbered, reused, or dropped. But under a byte budget several small decisions about one thing should be **one entry**, so an entry may own a list:
 
-The conventions this transform produces — number-first `#### N — Title` entry headings, the sub-project-scoped reference form, and the retirement tombstone — are stated once in [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2–7.4 rather than restated here. The one that changes what compaction is *allowed* to do: **a decision number addresses a sub-project, not a file and not a section** (§7.3). That is what makes DOC-PROTOCOL.md §3's extraction threshold safe — a decisions section past 40 entries or ~120 KB moves to `<sub-project>/decisions.md` **as part of the compaction pass**, not as its own churn event, and the 1335 existing `§3 decision N` references survive the move because the `§3` was never the address. `scripts/check-decision-refs.py` verifies this, and is the reason the pass is checkable at all.
+```markdown
+### 20, 21, 25, 27 — Streaming capture, batched, with units
+```
 
-## 7. Procedure
+Every listed number stays resolvable, so every reference keeps working. Merging is the main tool for fitting 62 decisions into 25 KB, and 62 decisions for one crate is itself a sign that entries accreted past what is load-bearing.
 
-Pre-flight:
+Retire an entry rather than deleting it, as a one-line tombstone naming what replaced it: a dangling reference should land on an explanation, not a gap.
 
-1. Working tree clean and pushed. Git history is the archive for what you are about to delete — if the pre-compaction text is not committed, it is not recoverable.
-2. Capture the baselines: `scripts/collect-open-questions.py > /tmp/oq-before.txt`, and an identifier inventory of the target doc (§8).
-3. Read the whole doc first. Compaction decided paragraph-by-paragraph produces a doc that is locally tidy and globally redundant — the merges that matter are between paragraphs 200 lines apart.
+## 6. Procedure
 
-The pass:
+1. **Pre-flight.** Working tree clean and pushed — git is where everything you are about to delete goes. `scripts/collect-open-questions.py > /tmp/oq-before.txt`.
+2. **Read the whole doc first.** The merges that matter are between paragraphs 200 lines apart.
+3. **Write `spec.md` first, from scratch, to its cap.** Not by deleting from `design.md` — by writing what is true now and then checking the old doc for facts you missed. Compaction by deletion preserves the old doc's shape, which is the problem.
+4. **Then `decisions.md`**, grouping under topical headings, merging where §5 says to, one line per rejected alternative.
+5. **Then `open.md`**, from the old open-questions section, dropping anything the work has since answered.
+6. **Delete the old files**, fix every inbound link, in the same commit — this repo commits straight to `main` and must not be left broken in between.
+7. **Gate** (§7), then commit, one sub-project per commit, with a `changelog.d/` fragment.
 
-4. Decide the target section structure before editing anything. Write it down (even as a scratch list of headings) — that is what makes the pass a transform rather than a cleanup.
-5. Do the structural move first: group entries, no rewording. Then merge amendment chains. Then delete redundancy. Three sweeps, not one, so that a deletion is never made before you have seen where the fact landed.
-6. Update the doc's own status line and heading numbering if they changed; grep-and-fix every cross-reference the pass invalidated (§6), in this same commit — a link-breaking commit that fixes links in a follow-up leaves `main` broken in between, and this repo commits straight to `main` ([embarch-dev-workflow.md](embarch-dev-workflow.md) §6).
+## 7. The gate
 
-Close-out:
+Mechanical, all five in CI:
 
-7. Run the verification gate (§8). Fix, do not rationalize, anything it flags.
-8. Add one `## Changelog` bullet per [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §5, stating that the pass was a compaction, what the new section structure is, and — explicitly — what was deleted as chronology. A compaction changelog entry is the one place a reader is told that absence of text is deliberate.
-9. Commit alone. No compaction commit also changes a fact, a status, or another doc's content beyond the cross-reference fixes §6 requires.
+- `check-doc-size.py` — caps and the ratchet.
+- `check-decision-refs.py` — every `decision N` still resolves. This is what makes merging and file-moving safe.
+- `check-links.py`, `check-staleness.py`, `check-doc-conventions.py`.
+- `build_changelog.py --check` — fragments are valid.
 
-## 8. The verification gate
+Plus a diff of `collect-open-questions.py` before and after: a question may disappear only if you can name it as answered.
 
-Mechanical, cheap, run every time:
+Human, and not skippable — **one question, asked honestly:**
 
-- `scripts/check-links.py` — every relative link still resolves.
-- `scripts/check-decision-refs.py` — every `decision N` reference in the repo still resolves to an entry that exists. This is the check that makes §6 enforceable rather than a request.
-- `scripts/check-staleness.py` — the compacted doc's status facts still agree with [embarch.md](embarch.md) §3 and [embarch-features.md](embarch-features.md).
-- `scripts/collect-open-questions.py`, diffed against the pre-flight capture. **Every open question that disappeared must be one you can name as answered.** A compaction has no business resolving open questions (§2 rule 2), so in practice the correct diff is empty, and any deletion is a bug.
-- **Identifier inventory diff.** Before and after, extract the doc's concrete nouns and numbers and diff the sets — every identifier that vanished must be explainable as a duplicate mention, never as the only mention:
+> Can `spec.md` alone answer what someone needs to work on this component today?
 
-  ```sh
-  # symbols, paths, env vars, quoted names
-  grep -ohE '`[^`]+`' <doc> | sort -u > /tmp/ids-before.txt
-  # numbers with units, and bare constants
-  grep -ohE '[0-9]+(\.[0-9]+)?\s*(ms|s|us|Hz|kHz|MHz|KB|MB|bytes?|baud|B/s)' <doc> | sort -u >> /tmp/ids-before.txt
-  ```
+If yes, the pass is done, whatever it deleted. If no, the pass moved bytes rather than choosing between them.
 
-  This is the check that catches the failure this whole protocol is guarding against, and it takes thirty seconds.
-- Byte and line delta, recorded in the changelog bullet. A pass that removes 40% of the bytes and 0 facts is the shape you want; one that removes 5% has probably only tidied.
+The old identifier-set diff (`grep -ohE '\`[^\`]+\`'` before and after) is now advisory rather than a gate — under a lossy regime an identifier is *allowed* to go. Run it anyway when you want a list of what you dropped, and use it to catch the one failure mode that is still a defect: **a concrete noun replaced by its category.** "provisioning is a separate step" instead of `build_and_flash`. Never replace a name with the kind of thing it is; drop the sentence instead.
 
-Human, and not skippable:
+## 8. Failure modes
 
-- **The restoration question, per deleted block:** which surviving sentence carries this fact? If the answer is "the reader can infer it", restore it.
-- **Re-read as a stranger.** Pick three questions the original doc answered — a specific constant, a specific "why not X", a specific failure mode — and answer them from the compacted doc alone.
-- **Check the rejected alternatives are still there.** Count them before and after if you have to. This is the failure mode that does not announce itself.
+- **Summarising instead of choosing.** "Handles the error cases" for four named ones. A budget is spent by *dropping whole topics*, not by making every sentence vaguer.
+- **Deleting the "why not".** One line each, always. §5.
+- **Flattening measured into assumed.** §4.
+- **Renumbering.** §5. 2,362 references, invisible to detect.
+- **Compacting a doc whose subsystem is still in flux** — you would be writing a clean statement of something about to be wrong, and destroying the alternatives you are about to need. Wait for the milestone to close.
+- **Moving bytes instead of choosing between them.** Four files that add up to 300 KB is the old problem with more filenames. §7's human question is the check.
 
-## 9. Failure modes
+## 9. Migration order
 
-- **Summarizing instead of compacting.** "Handles the error cases" replacing four named error cases. Compaction removes *redundancy*, never *specificity* — the rule that catches it: never replace a concrete noun with its category.
-- **Deleting the "why not".** §4 and §8's last human check exist for this one.
-- **Flattening measured into assumed.** A compacted table reads authoritative whether or not its numbers came off hardware.
-- **Renumbering.** §6. Cheap to avoid, invisible to detect, 1335 references deep.
-- **Compacting a doc that is still arguing with itself.** If two sections disagree, that is a content bug — fix it as a content change first, in its own commit, then compact. Compaction must never be the pass that silently picks a winner.
-- **Scope creep into a rewrite.** A compaction that touches everything is not reviewable, and this repo pushes straight to `main`. One doc, three sweeps, one commit.
-- **Compacting to a length target.** The target is one statement per fact. Whatever length that produces is the right length.
+Biggest first, one per commit, `--update` after each:
 
-## 10. Per-doc-type notes
+| | Today | Target |
+|---|---|---|
+| `embarch-core` | 233 KB | 50 KB |
+| `embarch-dev-bench` | 185 KB | 50 KB |
+| `embarch-api` | 158 KB | 50 KB |
+| `embarch-study-designer` | 94 + 138 KB | 50 KB |
+| `embarch-outpost` | 129 KB | 40 KB |
+| `embarch-ui` | 92 KB | 40 KB |
+| `embarch-umbrella` | 86 KB | 40 KB |
+| `embarch-topology` | 77 KB | 40 KB |
+| suite-level docs | 220 KB | 70 KB |
+| `embarch-decision-reversals.md` | 59 KB | 25 KB |
+| DOC-PROTOCOL.md / this file | 24 + 12 KB | 12 + 12 KB |
 
-- **`<sub-project>/design.md`** — the main case; §§3–9 are written for it. Its §3-equivalent decision list is where nearly all the recoverable bytes are.
-- **`<sub-project>/milestone-N.md`** — after shipping, fold into `design.md` and delete (§3). It survives only to hold what `design.md` cannot: deferred work and its reason.
-- **[embarch-features.md](embarch-features.md) / [embarch-roadmap.md](embarch-roadmap.md)** — already tabular. Their bloat is not entry accretion but per-row prose and changelog length; `scripts/archive-changelog.py` handles the latter. Rows for shipped features can lose their execution detail and keep a link.
-- **[embarch-decision-reversals.md](embarch-decision-reversals.md)** — do **not** compact by merging or dropping rows. Its value is the count and the specificity: each row is one reality-driven correction, and the list's length is itself the signal. Only the header prose is compactable.
-- **[embarch-glossary.md](embarch-glossary.md)** — already a compacted form by construction (a term, a one-line definition, a link to the owning doc). If an entry has grown an explanation, the explanation belongs in the owning doc.
-- **[embarch-user-guide.md](embarch-user-guide.md)** — the one doc written for an outside reader, and [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3 already exempts it from link-don't-restate. Restatement there is a feature; compact it for *reading order* and dead paths, not for redundancy.
-- **[DOC-PROTOCOL.md](DOC-PROTOCOL.md) and this file** — same rules, same gate. Both are already accreting the shape §3 warns about.
-
-## 11. A worked pass: `embarch-study-designer` §3
-
-The first real exercise of this protocol, 2026-08-31, kept here because the numbers and the two things the gate caught are more useful than the rules restated.
-
-**The target.** §3 of [embarch-study-designer/design.md](embarch-study-designer/design.md): 62 decisions, 183,569 bytes, 572 lines, and — since 2026-08-15 — its own status-table index whose stated reason was that "this list outgrew comfortable linear reading well before decision 30".
-
-**What it became.** [embarch-study-designer/decisions.md](embarch-study-designer/decisions.md), extracted per [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3's threshold in the same pass: 12 topical groups plus one for removals, each entry a `### N — Title` heading, 142,263 bytes. `design.md` went 343,229 → 160,756 bytes; the two files together, 343,229 → 303,019, **−12%**.
-
-**−12% is the honest number and it is smaller than it looks like it should be.** Almost all of §3's bulk was *facts* — 24 capacity constants with their sizing reasons, ~60 rejected alternatives, measured numbers with the conditions they were measured under — and this protocol forbids touching any of that (§4). The recoverable bytes were the chronology: stacked amendments, the index, meta-narration, hedging. A pass on a doc whose bulk is genuinely content should come back with a modest byte win and a large navigability win, and if it comes back with 50% it is worth asking what left. The win here is that a reader looking for the wire framing rule reads one group of five entries instead of scanning 572 lines for entries 3, 4, 10, 24 and 25.
-
-**The shape of the transform, on the worst entry.** Decision 12 (schema versioning) was, before: an entry, then a "this is a detector not a negotiator" paragraph, then `**Hello also now doubles as a hard reset.**`, then `**Hello also now carries host_utc_ms.**`, then a 2026-08-25 amendment splitting one constant into two, then an implementation note, then a *second* amendment reporting that the split's prediction held, then a "three things implementation settled" list. A reader wanting the current handshake had to reconstruct it from eight blocks written across three weeks. After: one entry stating both constants and what bumps each, the detector-not-negotiator rule, the compile-time assertion that holds the invariant, the three implementation findings, and a closing paragraph on `Hello`'s two other jobs. **Every fact survived; the order in which they were learned did not.** The "why one constant became two" reasoning is kept in full — it is a rejected alternative (dropping validation from the trigger list) with a real consequence attached, which §4 protects.
-
-**What the identifier diff caught, which is the whole reason §8 has one.** First run: 751 backticked identifiers before, 152 gone. Most were artifacts — `MAX_NAME_LEN = 32` "vanished" because the name and the value now sit in adjacent table cells. **Seventeen were real**: concrete nouns replaced by their category, which is §9's first named failure mode, committed by the same pass that wrote §9 down.
-
-- "provisioning stays a separate `embarch-api` step" had eaten `build_and_flash`/`build_and_flash_dev_bench`
-- "(Batch Data Service)" had eaten `bds_ctrl_char_uuid`/`bds_status_char_uuid`/`bds_data_char_uuid` and `ble_def.h:141-147`
-- "the v14 test vector pins" had eaten `tests/firmware_test_vectors.rs`
-- "a blank one is a separate pre-flight failure" had eaten `Requirements::validate`
-- and similarly `crc.rs`, `StreamTapTooLargeError`, `validate_study`/`validate_taps`, `STUDY_FFI_STUB_SCHEMA_VERSION`, `csv_escape_ok`, `zephyr-dc4cc07-current.bin`, two commit hashes, `extern crate alloc`, `impl GattConfigExtractor`, `[study_designer]`, and two `milestone-11.md` implementation pointers
-
-All restored. Of the rest, the ones that genuinely appear nowhere in the compacted text were checked individually against the doc that owns them — `GattConfigExtractor`'s method signature, `steps_crc()`'s signature and the `"completed"` status string are all still in `design.md` §4/§5, which own the type shapes, so removing them from a decision entry is §5's link-don't-restate rule rather than a loss. The retired validation type family (`ValidationSource::*`, `PostHocValidation`, `ContentValidity::*`) is gone deliberately, tombstoned at entries 19 and 28.
-
-**The open-questions diff was empty**, which is the correct result: a compaction has no business resolving one (§2 rule 2).
-
-**The gate also caught a bug in the gate.** `scripts/check-decision-refs.py` read entries only from a `## N. …decisions…` section heading, so a standalone `decisions.md` — whose groups are plain `##` headings — contributed **zero** entries, and the run came back with 342 "unresolved" references. Nothing was actually wrong with the compacted doc; the check that was supposed to prove the extraction safe could not see the extracted file. Fixed (a `decisions.md` is the decisions section end to end, and an entry heading may be `###` or `####`), and [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2 now states the heading rule as a *level relative to the group* rather than a fixed depth. The lesson is narrow and worth keeping: **the first real use of a checker is also the first real test of it**, and a green run on the old shape proved nothing about the new one.
-
-**After the fix: 3,426 references resolve, and `embarch-study-designer` still defines 62 entries numbered 1..62.** That is the property the whole of §6 exists to protect, and it is now a mechanical fact rather than a claim.
+Corpus **1.93 MB → ~450 KB**. Shipped milestone docs and implementation guides (11 marked `done`, ~200 KB) fold into the four files and are deleted as their sub-project is migrated.

@@ -51,7 +51,10 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # (DOC-PROTOCOL.md §7.2) are both accepted; retired entries (§7.4) still count
 # as defined, which is the whole point of a tombstone.
 DEF_LIST = re.compile(r'^(\d+)\.\s+(?:~~)?\*\*')
-DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+)\s+[-—]\s')
+# An entry may own several numbers when decisions were merged under a byte
+# budget (DOC-COMPACTION.md §5): '### 20, 21, 25, 27 — Streaming capture'.
+# Every listed number stays resolvable, so every reference keeps working.
+DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+(?:\s*,\s*\d+)*)\s+[-—]\s')
 
 # References: "decision 39", "decisions 31/32/33", "decisions 58-62",
 # optionally prefixed by a section marker that this convention no longer needs.
@@ -111,7 +114,7 @@ def build_index():
                     continue
                 m = DEF_LIST.match(line) or DEF_HEAD.match(line)
                 if m:
-                    nums.add(int(m.group(1)))
+                    nums.update(int(n) for n in re.findall(r'\d+', m.group(1)))
     return index
 
 

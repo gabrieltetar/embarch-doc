@@ -33,7 +33,10 @@ ANY_STATUS = re.compile(r'^\*\*Status:', re.I)
 
 # Docs that carry no status: instruction files for tools, not records of state.
 EXEMPT = {'README.md', 'CLAUDE.md', 'LICENSE'}
-SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
+# changelog.d/ holds one-line fragments, not docs (changelog.d/README.md is
+# already exempt by name); history/archive/ holds rolled-out windows that carry
+# their own status from the roll.
+SKIP_DIRS = {'.git', '.github', 'scripts', '.claude', 'changelog.d'}
 
 
 def md_files():
