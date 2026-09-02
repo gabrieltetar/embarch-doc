@@ -1,158 +1,99 @@
 # embarch: local dev workflow
 
-**Status:** active, 2026-08-17. How to iterate on `embarch-core`/`embarch-api`/`embarch-umbrella` locally without cutting a release, and without a debug build silently touching a real machine's install — plus, since 2026-08-25, the opposite case: how a Core change actually reaches this machine's live Windows service (§4a).
+**Status:** active, 2026-09-02.
+
+How to iterate on `embarch-core`, `embarch-api` and `embarch-umbrella` locally **without cutting a release and without a debug build silently touching a real machine's install** — plus the opposite case: how a Core change actually reaches this machine's live Windows service (§4a).
 
 ## 1. Short answer
 
-**No — never use a release build to develop against, and you rarely need `--release` at all for iteration.** A debug build (`cargo build`, no flag) is faster to compile and behaves identically for everything except raw speed. Reach for `--release` only when actually producing the thing you (or CI) will ship — the release-CI workflows already do this per-repo (`suite/roadmap.md`'s Release section); it's not something a dev loop needs.
+**Never develop against a release build, and you rarely need `--release` at all for iteration.** A debug build compiles faster and behaves identically for everything except raw speed. Reach for `--release` only when producing the thing you or CI will ship.
 
-The three code-bearing repos — `embarch-core`, `embarch-api`, `embarch-umbrella` — are independent Cargo projects, not a workspace (`suite/user-guide.md` §11's layout). Build each on its own: `cargo build` inside that repo, nothing cross-repo needed to compile.
+The three code-bearing repos are **independent Cargo projects, not a workspace**. Build each on its own; nothing cross-repo is needed to compile.
 
-## 2. Wiring a dev `embarch-core` + `embarch-api` together
+## 2. Wiring a dev Core and API together
 
-This is already fully supported by existing config, no code changes needed:
+Fully supported by existing config, no code changes:
 
-1. Run a dev Core in the foreground, on a port that won't collide with a real installed service (default `4884`):
-   ```sh
-   cd embarch-core
-   EMBARCH_TOKEN=dev-token cargo run -- run --port 4885
-   ```
-2. Point a dev `embarch-api` config at it explicitly — `base_url` set to a literal address, not `"auto"`, **always wins outright** over auto-detection (`embarch-api/decisions.md` §3.11, §7):
-   ```toml
-   [core]
-   base_url = "http://127.0.0.1:4885"
-   token = "dev-token"
+```sh
+cd embarch-core
+EMBARCH_TOKEN=dev-token cargo run -- run --port 4885     # scratch port, not 4884
+```
 
-   [[projects]]
-   name = "scratch"
-   source_path = "/tmp/scratch-fw"
-   build_command = ["true"]
-   artifact_path = "nonexistent.hex"
-   chip = "nRF54L15"
-   ```
-3. Run the dev `embarch-api` directly against it, no install/PATH involved:
-   ```sh
-   cd embarch-api
-   cargo run -- --config /path/to/dev-config.toml status
-   ```
-   Or point an MCP client at the debug binary directly, e.g. `claude mcp add embarch-dev -- /path/to/embarch-api/target/debug/embarch-api --config /path/to/dev-config.toml`.
+Then point a dev `embarch-api` config at it with a **literal** `base_url`, which **always wins outright over auto-detection**, and run it directly:
 
-Nothing here touches a real installed Core, a real token file, or `PATH` — it's two foreground processes on a scratch port, talking over an explicit `base_url`.
+```sh
+cd embarch-api
+cargo run -- --config /path/to/dev-config.toml status
+```
+
+Or point an MCP client at the debug binary: `claude mcp add embarch-dev -- /path/to/target/debug/embarch-api --config /path/to/dev-config.toml`.
+
+**Nothing here touches a real installed Core, a real token file, or `PATH`** — two foreground processes on a scratch port, talking over an explicit address.
 
 ## 3. Testing `embarch-umbrella` changes — the dangerous one
 
-`embarch-umbrella`'s `setup` (decision 28, `embarch-umbrella/decisions.md` §3) **writes to real, shared machine state**: it copies binaries into the canonical per-user install location, and edits `PATH` for real — the Windows registry (`HKCU\Environment\Path`) or your actual `~/.bashrc`/`~/.zshrc`. Running `cargo run -- setup` straight from a dev checkout, with no precautions, will silently overwrite your real, working install with an untested debug build and mutate your real shell config. Don't do that by default.
+**`setup` writes real, shared machine state**: it copies binaries into the canonical per-user install location and **edits `PATH` for real** — the Windows user registry, or your actual shell rc files. **Running `cargo run -- setup` from a dev checkout with no precautions silently overwrites your real, working install with an untested debug build and mutates your real shell config.**
 
-**Prefer unit tests first.** `install.rs`/`locate.rs`'s logic is written to be tested without touching the real filesystem/registry at all (`cargo test` — the pure functions and idempotent file operations are exactly what decision 28's own test suite exercises). This is how decision 28 was verified originally; reach for a live `setup` run only to confirm the parts unit tests structurally can't reach (an actual registry write taking effect, a real shell picking up the new `PATH`).
+**Prefer unit tests first.** The install and locate logic is written to be tested without touching the real filesystem or registry at all. Reach for a live run only for what tests structurally cannot reach: a registry write actually taking effect, a real shell actually picking up the new `PATH`.
 
 **If you do need a live run, sandbox it — on Unix, override both of these together:**
+
 ```sh
-export XDG_DATA_HOME=/tmp/embarch-dev-test/data   # redirects canonical_bin_dir()
+export XDG_DATA_HOME=/tmp/embarch-dev-test/data   # redirects the install dir
 export HOME=/tmp/embarch-dev-test/home            # redirects which rc files get edited
-mkdir -p "$XDG_DATA_HOME" "$HOME"
-touch "$HOME/.bashrc"                              # ensure_sourced only touches rc files that already exist
+mkdir -p "$XDG_DATA_HOME" "$HOME" && touch "$HOME/.bashrc"   # only existing rc files are touched
 cargo run -- setup
 ```
-**`XDG_DATA_HOME` alone is not enough** — `install.rs`'s rc-file editing (`ensure_path_unix`) reads the real `$HOME` directly to find `.bashrc`/`.zshrc`, independent of `XDG_DATA_HOME`. Overriding only one of the two still edits your real shell config even though the binaries land somewhere harmless.
 
-**On Windows, there is currently no equivalent sandbox.** `install.rs`'s registry code always opens the real `HKCU\Environment` — there's no env-var-style redirect the way Unix has via `HOME`. Until one exists (worth adding if this becomes frequent — a `EMBARCH_TEST_REGISTRY_ROOT`-style override, or reusing decision 21's still-unimplemented `--dry-run`), a live Windows test of the registry-write path means touching the real per-user registry. Treat it as reversible rather than harmless: `setup --uninstall` removes exactly what `setup` added, so run it after testing, and confirm with `reg query HKCU\Environment` (or the System Properties GUI) that nothing unexpected remains.
+**The data-dir override alone is not enough** — the rc-file editing reads the real `$HOME` directly, independent of it, **so overriding only one still edits your real shell config even though the binaries land somewhere harmless.**
 
-**To exercise `up`/`down`/`status`/`doctor` without ever calling `setup`'s install step at all**, point umbrella straight at dev binaries via the existing override env vars rather than relying on PATH or the canonical location:
-```sh
-export EMBARCH_CORE_EXE=/path/to/embarch-core/target/debug/embarch-core
-export EMBARCH_API_BIN=/path/to/embarch-api/target/debug/embarch-api   # locate_api's own override, see locate.rs
-cargo run -- status
-```
+**On Windows there is no equivalent sandbox.** The registry code always opens the real per-user hive; there is no env-var redirect the way Unix has. Treat a live Windows test as **reversible rather than harmless**: `setup --uninstall` removes exactly what `setup` added, so run it afterwards and confirm nothing unexpected remains.
+
+**To exercise `up`/`down`/`status`/`doctor` without calling `setup`'s install step at all**, point umbrella straight at dev binaries with `EMBARCH_CORE_EXE` and `EMBARCH_API_BIN` rather than relying on `PATH`.
 
 ## 4. Windows-specific code, checked from Linux/WSL2
 
-This sandbox (and possibly yours) has no MSVC linker, so `cargo build --target x86_64-pc-windows-msvc` for the full `embarch-umbrella` binary fails on native-TLS dependencies (`aws-lc-sys`, pulled in via `reqwest`) that need a real C toolchain for that target — unrelated to any Windows-`cfg`-gated code you write yourself. To type-check Windows-only logic (registry code, anything behind `#[cfg(windows)]`) without a full build:
+With no MSVC linker present, a full cross-build of `embarch-umbrella` fails on native-TLS C dependencies — **unrelated to any Windows-gated code you wrote.** To type-check Windows-only logic without a full build:
 
-1. Extract just the Windows-`cfg`-gated module into a standalone throwaway crate (a `Cargo.toml` depending only on what that module needs — e.g. `winreg`, `anyhow` — not the whole `embarch-umbrella` dependency tree).
-2. `cargo check --target x86_64-pc-windows-msvc` against that crate — this only type-checks and borrow-checks, no linking, so it works even without an MSVC toolchain present.
-3. This catches real API-usage mistakes (wrong `winreg` signature, wrong types) but **not** runtime behavior — a real Windows machine is still the only way to confirm the registry write actually takes effect and a new shell actually picks up the change.
-
-`rustup target list --installed` needs `x86_64-pc-windows-msvc` present for this to work at all; add it with `rustup target add x86_64-pc-windows-msvc` if it isn't.
+1. **Extract just the Windows-gated module into a standalone throwaway crate**, depending only on what that module needs rather than the whole tree.
+2. `cargo check --target x86_64-pc-windows-msvc` against it — **type- and borrow-check only, no linking, so it works with no MSVC toolchain present.**
+3. **It catches real API-usage mistakes and not runtime behaviour.** A real Windows machine is still the only way to confirm a registry write takes effect and a new shell picks it up.
 
 ## 4a. Getting a Core change onto the real Windows service
 
-**Numbered `4a` rather than `5` deliberately.** This section belongs next to
-§4 (it is the operational other half of "Windows code, checked from Linux"),
-but §6 is referenced by name from nine `CLAUDE.md` files and from
-[DOC-PROTOCOL.md](DOC-PROTOCOL.md) §6, so renumbering costs more than the odd
-label does. `embarch-study-designer/decisions.md` §4.3a already sets that
-precedent.
+**Numbered `4a` rather than `5` deliberately:** this belongs next to §4 as the operational other half of it, but **§6 is referenced by name from nine `CLAUDE.md` files and from [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §6, so renumbering costs more than the odd label does.**
 
-**`embarch deploy-core` now does all of this in one command — start there.**
-[embarch-umbrella/decisions.md](embarch-umbrella/decisions.md) decision 32. It
-runs steps 1–3 below, and — the part worth having a command for — it
-**verifies the installed binary actually changed** afterwards, which is the
-one thing the manual procedure cannot do for you and the failure this section
-warns about twice:
+§1–2 cover a *dev* Core on a scratch port, which is the right default and touches nothing real. This is the other case: **a change that has to reach the installed Windows service the whole bench actually talks to.**
+
+**`embarch deploy-core` does all of this in one command — start there.**
 
 ```sh
 embarch deploy-core --windows-root /mnt/c/Users/<you>/source/repos   # first run
 embarch deploy-core                                                  # thereafter
 ```
 
-`--dry-run` prints the resolved plan and touches nothing; `--print-script`
-does the unelevated half and hands you the privileged step.
+`--dry-run` prints the resolved plan and touches nothing; `--print-script` does the unelevated half and hands you the privileged step.
 
-**Be at the machine when you run it, and verify by hash afterwards (found 2026-08-27).** Self-elevation works, but the UAC dialog needs answering, and `deploy-core` reports **`landed`** whether or not it was — twice in one session it printed success after the elevated child was cancelled and nothing was installed ([embarch-umbrella/decisions.md](embarch-umbrella/decisions.md) decision 32's amendment). Its own check compares byte *length*, and a release rebuild of one constant is the same size, so it cannot discriminate the most common development deploy. Confirm with
+**Be at the machine when you run it, and verify by hash afterwards.** Self-elevation works, but **the consent dialog needs answering, and `deploy-core` reports `landed` whether or not it was** — twice in one session it printed success after the elevated child was cancelled and nothing was installed. **Its own check compares byte *length*, and a release rebuild of one constant is the same size, so it cannot discriminate the most common development deploy.** Confirm with:
 
 ```sh
 md5sum /mnt/c/Users/<you>/source/repos/embarch-core/target/release/embarch-core.exe \
        "$(/mnt/c/Windows/System32/sc.exe qc com.embarch.core | tr -d '\r' | sed -n 's/.*BINARY_PATH_NAME *: *//p' | cut -d' ' -f1)"
 ```
 
-`--print-script` remains the fallback when you would rather run the privileged half yourself. Everything below
-is still accurate and is what the command automates — read it to understand
-what it is doing, or when it refuses and you need to do a step by hand.
-
-**Why this section still exists in full, and why it read as pure prose for two
-weeks.** It is *"the single most-repeated undocumented step in the suite"* —
-two handoffs in a row pointed at "`embarch-dev-workflow.md`" for it while it
-was not written down anywhere, and every session rediscovered it from scratch.
-Writing it down fixed the forgetting and not the re-typing: every deploy after
-that was still a hand-assembled `rsync` loop and a from-scratch PowerShell
-script. That gap between "documented" and "automated" is the thing worth
-noticing here.
-§1–2 cover a *dev* Core on a scratch port, which is the right default and
-touches nothing real. This section is the other case: a change to
-`embarch-core` that has to reach the **installed Windows service** the whole
-bench actually talks to.
-
 ### The shape of the problem
 
-Three facts combine into a workflow that isn't obvious from any one of them:
+Three facts combine into a workflow that is not obvious from any one of them:
 
-1. The live Core is a **Windows service**, `com.embarch.core`, whose
-   `BINARY_PATH_NAME` is
-   `C:\Users\tmp12\embarch-setup\embarch-0.1.0-x86_64-pc-windows-msvc\embarch-core.exe run --bind 0.0.0.0`.
-   The `0.1.0` is in the *directory* name only — the binary inside is
-   whatever was last copied there, and its version tells you nothing.
-2. **WSL2 cannot build it.** No MSVC linker here (§4), so the binary has to
-   be produced by a native Windows `cargo.exe`.
-3. The canonical git checkouts live on the **Linux** side
-   (`/home/gabriel/Github/embarch/`). The Windows side has *source copies*,
-   not clones.
+1. **The live Core is a Windows service** whose registered path names a versioned *directory* — **the binary inside is whatever was last copied there, and its version tells you nothing.**
+2. **WSL2 cannot build it.** No MSVC linker, so the binary has to come from a native Windows `cargo.exe`.
+3. **The canonical git checkouts live on the Linux side. The Windows side has *source copies*, not clones.**
 
-So: sync source Linux → Windows, build on Windows, install the result into
-the service's path, restart the service.
+So: sync source Linux → Windows, build on Windows, install into the service's path, restart the service.
 
 ### Step 1 — sync the source, all three crates
 
-`embarch-core`'s `Cargo.toml` has two `path` dependencies, so syncing Core
-alone produces a build against stale siblings — which compiles, and is
-wrong:
-
-```toml
-embarch-study-designer = { path = "../embarch-study-designer", features = ["std"] }
-embarch-topology       = { path = "../embarch-topology", default-features = false, features = ["hardware"] }
-```
-
-Sync **shared crates first, Core last** — the same ordering §6 requires for
-commits, for the same reason:
+Core has two `path` dependencies, **so syncing Core alone produces a build against stale siblings — which compiles, and is wrong.** Sync **shared crates first, Core last** — the same ordering §6 requires for commits, for the same reason:
 
 ```sh
 for r in embarch-study-designer embarch-topology embarch-core; do
@@ -161,29 +102,11 @@ for r in embarch-study-designer embarch-topology embarch-core; do
 done
 ```
 
-Excluding `/target/` matters in both directions: it keeps the sync fast, and
-it keeps the Windows-side build cache (a *different* target triple's) from
-being clobbered by Linux artifacts.
+**Excluding `/target/` matters in both directions:** it keeps the sync fast, and it keeps the Windows-side build cache — a *different* target triple's — from being clobbered by Linux artifacts.
 
-**`--delete` is deliberately not used here**, so a file deleted on the Linux
-side lingers on the Windows side as an orphan. Cargo ignores a `.rs` file
-nothing declares as a module, so this does not affect the build — but it
-does mean **a grep of the Windows copy can turn up source that no longer
-exists**. Treat the Linux checkout as the only thing worth reading; the
-Windows copy is a build input, not a reference. Verify what drifted with:
+**`--delete` is deliberately not used**, so a file deleted on Linux lingers on Windows as an orphan. Cargo ignores a source file nothing declares as a module, so the build is unaffected — but **a grep of the Windows copy can turn up source that no longer exists.** Treat the Linux checkout as the only thing worth reading; **the Windows copy is a build input, not a reference.**
 
-```sh
-diff -rq --exclude=target --exclude=.git \
-  /home/gabriel/Github/embarch/embarch-core /mnt/c/Users/tmp12/source/repos/embarch-core
-```
-
-**These directories are not git clones — there is no `.git` at all.** That
-is the hazard worth internalizing: an edit made directly on the Windows side
-can reach a deployed binary without ever being version-controlled, and
-`git status` on the Linux repo will look perfectly clean while it happens.
-This has really occurred (`embarch-topology`'s `check_target_powered` shipped
-that way and had to be recovered afterwards). **Never edit the Windows copy.
-Edit on Linux, commit, then rsync.**
+**These directories are not git clones — there is no `.git` at all, and that is the hazard worth internalizing.** An edit made directly on the Windows side **can reach a deployed binary without ever being version-controlled, while `git status` on the Linux repo looks perfectly clean.** This has really happened: one function shipped that way and had to be recovered afterwards. **Never edit the Windows copy. Edit on Linux, commit, then rsync.**
 
 ### Step 2 — build natively
 
@@ -192,149 +115,69 @@ cd /mnt/c/Users/tmp12/source/repos/embarch-core
 /mnt/c/Users/tmp12/.cargo/bin/cargo.exe build --release
 ```
 
-`cargo.exe` is not on the WSL `PATH`; give it the absolute path. The result
-is `target/release/embarch-core.exe`.
+**`cargo.exe` is not on the WSL `PATH`; give it the absolute path.** Then **sanity-check that you built what you think you built, *before* deploying** — pick something the new commit adds and look for it in `--help`.
 
-Sanity-check that you built what you think you built, *before* deploying —
-pick something the new commit adds and look for it:
-
-```sh
-./target/release/embarch-core.exe --help          # e.g. is `chip-list` there?
-```
-
-Running the fresh exe from WSL2 logs one benign warning first — `failed to
-set up daily-rolling log file ... Access is denied` for
-`C:\ProgramData\embarch\logs`, which only the service account can write.
-It falls back to stderr and the command still runs. Not a symptom of
-anything.
+Running the fresh exe from WSL2 logs one **benign** warning first: it cannot open the service account's log directory, falls back to stderr, and runs anyway. **Not a symptom of anything.**
 
 ### Step 3 — install it into the service path
 
-Two ways, and the supported one has a real footgun.
+**The supported path is `update`, and it has a real footgun: it must be invoked *from the currently-installed binary*, passing the new build as the argument.**
 
-**`update` (supported, self-elevating).** It must be invoked **from the
-currently-installed binary**, passing the new build as the argument:
+**Never run the new build against itself.** `update` resolves the binary it replaces via **whichever binary is running the command**, so a self-update renames that file aside, then tries to copy from the path it just renamed away, fails, rolls back, and **never reaches the start step. The binary looks untouched and the service is left stopped.** This has happened, and **left the live Core down for several minutes.**
 
-```sh
-/mnt/c/Users/tmp12/embarch-setup/embarch-0.1.0-x86_64-pc-windows-msvc/embarch-core.exe \
-  update /mnt/c/Users/tmp12/source/repos/embarch-core/target/release/embarch-core.exe
-```
+Two further properties worth knowing rather than rediscovering: **it rolls back automatically if the new binary fails to start** (so a bad build costs a restart, not a broken bench), and **it deliberately leaves its own backup copy behind on success** — the process doing the replacing is still executing from that file — cleaned up by the *next* call. **A lingering backup is expected, not a failed run.**
 
-**Never run the new build against itself** (`target/release/embarch-core.exe
-update target/release/embarch-core.exe`). `service.rs::update` resolves the
-binary it replaces via `std::env::current_exe()` — *whichever binary is
-running the command* — so a self-update renames that file aside to `.bak`,
-then tries to copy from the path it just renamed away, fails "file not
-found", rolls the exe back, and **never reaches `start()`**. The binary
-looks untouched and the service is left stopped. This has happened, and left
-the live Core down for several minutes.
+**A refusal is reported; a prompt that never appears is not.** `update` prints an error when the user declines. But a launch where the consent dialog **never renders at all exits `0`, prints nothing but the benign warning, and does nothing** — the exe untouched, no backup, the service still on the old binary. **So do not read a clean exit as a successful deploy:** check the binary's hash, or probe a route only the new build has.
 
-Two further properties of `update` worth knowing rather than rediscovering:
-it **rolls back automatically** if the new binary fails to start (so a bad
-build costs a restart, not a broken bench), and it deliberately **leaves its
-own `.bak` behind** on success — the process doing the replacing is still
-executing from that file — cleaned up by the *next* `update` call. A
-lingering `.bak` is expected, not a failed run.
+**There is no unelevated fallback either.** The service's own ACL grants Interactive Users query rights only, **so a non-admin can neither stop nor start it — even though the install directory itself is writable**, because it lives under the user's own profile. **The writable directory is a trap: you can swap the binary and still not be able to restart the service onto it.**
 
-**A refusal is reported; a prompt that never appears is not — found 2026-08-26.** `update` prints `Error: elevation declined (UAC prompt cancelled)` when the user says no. But a launch where the consent dialog never renders at all **exits `0`, prints nothing but the benign log warning, and does nothing** — the exe is untouched, no `.bak` appears, and the service keeps running the old binary. So do not read a clean exit as a successful deploy: check the binary's size/timestamp, or probe a route only the new build has. There is no unelevated fallback to reach for either — `sc.exe sdshow com.embarch.core` grants Interactive Users `CCLCSWLOCRRC` (query only, no `RP`/`WP`), so a non-admin can neither stop nor start it, **even though the install directory itself is writable** because it lives under the user's own profile. The writable directory is a trap: you can swap the binary and still not be able to restart the service onto it.
-
-When `update` will not go through, the reliable path is to do the elevation yourself around a script that logs from *inside* the elevated context — `Start-Process powershell -Verb RunAs -Wait` running a `.ps1` that `Tee-Object`s each step to a file. That gives one UAC prompt and a readable transcript of stop/copy/start, instead of a child console that vanishes.
-
-**`stop` → copy → `start` (simpler when you want to see each step).** Same
-outcome, no `current_exe()` subtlety, at the cost of doing the elevation
-yourself.
-
-Either way, if you need to see what the elevated child actually printed:
-`ShellExecuteExW`'s relaunch gives it its own console, so a
-`Start-Process -Wait -Redirect...` wrapped around the *unelevated* launcher
-captures nothing. Do the elevation yourself (`Start-Process powershell -Verb
-RunAs -Wait ...` running a script that redirects `*>` to a file from inside
-the already-elevated context).
+When `update` will not go through, the reliable path is **to do the elevation yourself around a script that logs from *inside* the elevated context.** The relaunch gives the child its own console, **so a redirect wrapped around the *unelevated* launcher captures nothing.** One prompt, and a readable transcript of stop, copy and start.
 
 ### Step 4 — verify, and mind two couplings
 
-Confirm the service is back and serving:
+Confirm the service is back (`sc.exe query com.embarch.core` → `RUNNING`), then `GET /status` through the API.
 
-```sh
-/mnt/c/Windows/System32/sc.exe query com.embarch.core     # STATE : 4 RUNNING
-```
-then `GET /status` through `embarch-api` (or `curl` the bind address).
+**Coupling 1 — the dev-bench wire schema.** If the redeploy carries a bump to the dev-bench wire version, **the board's firmware must be reflashed in the same sitting.** Core sends its version in the handshake; a bench on the older one answers incompatible and **Core refuses the link. There is no partial-upgrade mode, by design** — so check the constant against what the board is running **before you deploy, not after the handshake fails.** `deploy-core` prints the constant out of the source it is about to deploy, so the check happens before the build.
 
-**Coupling 1 — the dev-bench wire schema.** If the redeploy carries a bump
-to `DEV_BENCH_WIRE_SCHEMA_VERSION`
-([embarch-study-designer/decisions.md](embarch-study-designer/decisions.md)), the
-board's firmware **must be reflashed in the same sitting**. Core sends
-`Hello { schema_version }`; a bench on the older version answers
-`compatible: false` and Core refuses the link. There is no partial-upgrade
-mode, by design — so check that constant against what the board is running
-before you deploy, not after the handshake fails. `GET /dev-bench/hello`
-reports what the bench claims, and `embarch deploy-core` prints the constant
-out of the source it is about to deploy so the check happens before the build
-rather than after the handshake fails.
+**Coupling 1a — flashing does not reset the target.** `flash` and `build_and_flash` write the image and **leave the chip running whatever it was already running.** Found on both boards at once: the bench reported `flashed: true` and **kept answering the old schema version**, and the DUT reported `flashed: true` and **kept serving the previous build's GATT table.** It presents as *"I flashed it and nothing changed"*, **which reads like a build going to the wrong place rather than like a missing reset.** Call `reset` after every flash before believing anything about the new image.
 
-**Setting an environment variable for the installed Core.** Core reads knobs
-like `EMBARCH_SIGNAL_BAUD`, `EMBARCH_FLASH_BACKEND` and the tool-path overrides
-from its process environment — and as a Windows service it gets none of your
-shell's. Exporting the variable in WSL, or in the terminal you deploy from,
-reaches nothing. Write it to the service's own registration instead:
+**And `run_study --reflash dut` does not do it for you.** The bench half of that call resets; the DUT half flashes and goes straight on to submitting the study — **so the one call that exists to spare you this coupling walks into it, and records a successful reflash in the result while the board runs the old image.** Until that is fixed, reflash a DUT with `build_and_flash` plus `reset` and submit with `reflash: none`.
+
+**Coupling 2 — the API's MCP process is long-lived.** Rebuilding its debug binary **does not affect the running MCP server**; a client picks up the new one only on a **fresh session.** Deploy order across the two is **Core first, then the API.**
+
+**Setting an environment variable for the installed Core.** Core reads knobs like `EMBARCH_SIGNAL_BAUD` and `EMBARCH_FLASH_BACKEND` from its process environment — and **as a Windows service it gets none of your shell's.** Exporting the variable in WSL, or in the terminal you deploy from, **reaches nothing.** Write it into the service's own registration instead:
 
 ```powershell
 Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Services\com.embarch.core' `
-  -Name Environment -Value @('EMBARCH_SIGNAL_BAUD=230400') -Type MultiString
+  -Name Environment -Value @('EMBARCH_SIGNAL_BAUD=460800') -Type MultiString
 ```
 
-`REG_MULTI_SZ`, one `KEY=VALUE` per element, and the SCM injects them at
-service start — so **restart the service afterwards** or nothing changes. Needs
-elevation, same as everything else here. It is deliberately per-service rather
-than a system-wide environment variable: these knobs are Core's, and a
-machine-wide `EMBARCH_*` would leak into every other process.
+One `KEY=VALUE` per element, injected at service start — **so restart the service afterwards or nothing changes.** Deliberately per-service rather than machine-wide: **these knobs are Core's, and a machine-wide `EMBARCH_*` would leak into every other process.**
 
-Verifying it took is the awkward part, because Core does not print its
-configuration anywhere. `EMBARCH_FLASH_BACKEND` and the tool paths have a
-direct read-out — `embarch-core.exe flash-backend` reports what it resolved.
-For the others, provoke an error that quotes the value back: declaring a signal
-against a port you hold open from another process makes Core's own failure
-message name the baud it opened at.
+**Verifying it took is the awkward part, because Core does not print its configuration anywhere.** The flash-backend override has a direct read-out. For the others, **provoke an error that quotes the value back** — declaring a signal against a port you hold open from another process makes Core's own failure message name the baud it opened at.
 
-**Coupling 1a — flashing does not reset the target.** `embarch-api`'s `flash`/`flash_dev_bench` (and so `build_and_flash`) write the image and leave the chip running whatever it was already running. Found 2026-08-26 on both boards at once: dev-bench reported `flashed: true` and kept answering the old schema version, and the DUT reported `flashed: true` and kept serving the previous build's GATT table. It presents as "I flashed it and nothing changed", which reads like a build going to the wrong place rather than like a missing reset. Call `reset`/`reset_dev_bench` after every flash before believing anything about the new image.
+## 5. Agent-driven iteration — what is safe unsupervised
 
-**And `run_study --reflash dut` does not do it for you (found 2026-08-27).** The dev-bench half of that call resets; the DUT half flashes and goes straight on to submitting the study, so the one call that exists to spare you this coupling walks into it — and records a successful reflash in the result's `provenance` while the board runs the old image. Until that is fixed ([embarch-api/decisions.md](embarch-api/decisions.md) decision 44), reflash a DUT with `build_and_flash` + `reset` and submit the study with `reflash: none`.
+**The general rule, on the repo owner's own daily-use machine: full autonomy to build, test, flash and develop. The only thing worth asking about is a physical action only the user can do** — plugging in a board or cable, pressing a button, swapping hardware. Below is that rule applied to this suite specifically, kept for the detail rather than as a narrower policy.
 
-**Coupling 2 — `embarch-api`'s MCP process is long-lived.** Rebuilding
-`/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
-affect the running MCP server; a client picks up the new binary only on a
-**fresh Claude Code session**. Deploy order across the two is Core first,
-then api ([embarch-core/decisions.md](embarch-core/decisions.md) decision 30).
+- **Tier 1, no real state touched at all:** everything in §1–2. Builds, clippy, tests, and a dev Core plus API on scratch ports **touch nothing but disposable local processes.**
+- **Tier 2, writes real shared machine state but needs no physical action:** any *live* `setup`, `up`/`down`, `setup --uninstall`, or Core's own `install`/`start`/`stop`/`uninstall`. These touch a real OS service, the real per-user `PATH`, and **a real system-wide token file that `HOME`/`XDG_DATA_HOME` do not redirect, because it is a fixed system path.** On a WSL-host machine the uninstall's token step resolves to **the real Windows-hosted Core's real token file, with no override anywhere.** Covered by the general rule — no asking, on the owner's own machine.
+- **Tier 3, the one real checkpoint left:** attaching a probe or board to a USB port. **Everything downstream of that proceeds without asking once the hardware is physically present. The checkpoint is "is it plugged in", not "may I flash it".**
 
-## 5. Agent-driven iteration — what's safe unsupervised, what isn't
+**Elsewhere** — a different machine, a different person, or anywhere the owner's standing authorization does not clearly apply — **ask before running a Tier 2 command live**, unless it is provably inside a disposable environment built for exactly this:
 
-**The general rule, on the repo owner's own real daily-use machine (global `CLAUDE.md`, 2026-08-17): full autonomy to build, test, flash, and develop — the only thing worth asking about is a physical action only the user can do** (plugging in a board/cable, pressing a physical button, swapping hardware). Everything below is that rule applied to this suite specifically, kept for the detail (which exact commands, which real files) rather than as a separate, narrower policy.
-
-**Tier 1 — no real state touched at all:** everything in §1–2. Building, `cargo clippy`/`cargo test` on any of the three repos, and running dev `embarch-core`+`embarch-api` together via explicit `base_url`/scratch ports touch nothing but disposable local processes and a scratch config file.
-
-**Tier 2 — writes real, shared machine state, but still no physical action needed:** any *live* invocation of `embarch setup`, `embarch up`/`down`, `embarch setup --uninstall`, or `embarch-core`'s own `install`/`start`/`stop`/`uninstall`. These touch a real OS service, the real per-user `PATH` (registry or rc files, §3), and a real system-wide token file (`/var/lib/embarch/token` on Linux, `%ProgramData%\embarch\token` on Windows — **not** redirectable by `HOME`/`XDG_DATA_HOME`, since it's a fixed system path, not per-user). Concretely, on a real `wsl-host` machine: `setup --uninstall`'s token-removal step resolves to `/mnt/c/ProgramData/embarch/token` — the real Windows-hosted Core's real token file, with no env-var override that redirects it anywhere else. Covered by the general rule above — no asking, on the owner's own machine.
-
-**Tier 3 — needs a physical action, the one real checkpoint left:** attaching a debug probe or board to a USB port. Everything downstream of that — `probe-rs list`, chip resolution, `build`/`flash`/`build_and_flash`/`reset`/`serial_log` against the now-connected hardware, including Milestone 1's real reference-dut flash (api milestone 7) — proceeds without asking once the hardware is physically present. The checkpoint is specifically "is it plugged in," not "may I flash it."
-
-**Elsewhere** — a different machine, a different person, or anything where the owner's own standing authorization doesn't clearly apply — ask before running a Tier 2 command live, unless it's provably running inside a disposable environment built for exactly this, in which case asking isn't needed because nothing real is at stake:
-
-- **[`dev-sandbox/`](../embarch-umbrella/dev-sandbox/) (in `embarch-umbrella`)** — a Docker container with its own `/root`/`/var/lib` and no WSL2 interop or `/mnt/c`, so a live `setup`/`up`/`down`/`uninstall` run inside it can't reach anything real. `./dev-sandbox/run.sh` builds the image and drops into a shell with all three repos bind-mounted. **Not yet verified** — written with no `docker` binary available in the session that wrote it; watch its first real run. It deliberately stops short of a real init system (no systemd/D-Bus), so `embarch-core install`/`start` will fail cleanly (service manager unreachable) inside it rather than persist a real service — enough to confirm the *code path* an agent is testing, without widening what the container can affect on the host by adding `--privileged`.
-- **A CI runner is already this kind of sandbox, no new tooling needed.** If any of this ever gets scripted into a GitHub Actions workflow, a `setup`/`doctor` step running there is already unsupervised-safe — the runner is destroyed after, same property the dev-sandbox container is built to have locally.
-- **Unit tests are the fully-autonomous default whenever they can reach the logic in question** — pure functions and idempotent file operations, as most of `install.rs`/`locate.rs` already are. This is how decision 28 itself was verified in the same session it was written (§4 also covers checking Windows-`cfg` code this way). Reach for the sandbox above only for what tests structurally can't reach — real registry/service-manager behavior.
+- **`dev-sandbox/` in `embarch-umbrella`** — a container with its own root and no WSL2 interop, so a live `setup`/`up`/`down` run inside it **cannot reach anything real.** **Not yet verified** — written with no container runtime available in the session that wrote it. It deliberately stops short of a real init system, so a service install **fails cleanly rather than persisting a real service** — enough to confirm the code path without widening what the container can affect.
+- **A CI runner is already this kind of sandbox, no new tooling needed** — destroyed afterwards, the same property the container is built to have locally.
+- **Unit tests are the fully-autonomous default whenever they can reach the logic in question.** Reach for the sandbox only for what tests structurally cannot: real registry and service-manager behaviour.
 
 ## 6. Branching: don't, for now — work directly on `main`
 
-**The rule, across every EmbArch repo (2026-08-25): commit straight to `main`. No feature branches, no PRs, no merges.** This includes `embarch-doc` — the docs move in the same pass as the code they describe (DOC-PROTOCOL.md §5), so putting them on a separate branch just splits one change in two.
+**The rule, across every EmbArch repo: commit straight to `main`. No feature branches, no PRs, no merges.** This includes `embarch-doc` — the docs move in the same pass as the code they describe, **so putting them on a separate branch just splits one change in two.**
 
-**It ends when the repo owner says it ends, and on no other condition.** Not when a heuristic looks satisfied, not when someone judges the project "mature enough" — the trigger is an explicit call, and an agent working here does not get to decide it has been made.
+**It ends when the repo owner says it ends, and on no other condition.** Not when a heuristic looks satisfied, not when someone judges the project mature enough — **the trigger is an explicit call, and an agent working here does not get to decide it has been made.**
 
-**Why this is a real rule and not just laziness.** A branch exists to keep concurrent work from colliding. This suite has one engineer (`embarch.md` §5's single-engineer scope, and `embarch-api/decisions.md` §3.1's), CI reports but gates nothing, and no one downstream installs from `main`. There is nothing to collide with, so a branch buys isolation nobody needs and costs something real: the suite spans **eight repos that must move together**, and a schema change touching five of them turns into five branches, five merges, and five chances to leave one behind. That is not hypothetical — Milestone 7 Phase B ran exactly that way across six repos, and every one of the six merges turned out to be a fast-forward with no divergence to resolve. The branches recorded nothing the commit messages didn't already say.
+**Why this is a real rule and not laziness.** A branch exists to keep concurrent work from colliding. **This suite has one engineer, CI reports but gates nothing, and nobody downstream installs from `main`. There is nothing to collide with**, so a branch buys isolation nobody needs and costs something real: **the suite spans eight repos that must move together, and a schema change touching five of them turns into five branches, five merges, and five chances to leave one behind.** Not hypothetical — one milestone phase ran exactly that way across six repos, **and every one of the six merges was a fast-forward with no divergence to resolve. The branches recorded nothing the commit messages did not already say.**
 
-**What this changes for an agent working here, concretely.** The default instruction "if you're on the default branch, branch first" is **overridden in this suite**. Commit to `main`. Push when the work is done and green, per §5's autonomy rule — the same standard as before, applied one commit at a time rather than one branch at a time.
+**The sequencing rules that keep it safe**, and they matter more than the branching question: **commit shared crates before their consumers**, so a checkout of any single commit builds; **land a wire-schema bump and the firmware that speaks it in the same sitting** (§4a coupling 1); and **push each repo as it is committed** rather than batching, because **a path dependency that exists only locally makes another repo's CI fail for a reason its own diff cannot explain.**
 
-**What does *not* change, and is what makes this safe:**
-
-- **`main` still has to build.** Nothing about skipping branches licenses committing something red. Run the crate's own `cargo build`/`test`/`clippy --all-targets -- -D warnings` — plus a native Windows build where `embarch-core` is involved (§4) — *before* the commit, not after.
-- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/decisions.md` decision 30).
-- **Commit granularity is the thing carrying the history now.** With no branch name and no merge commit to hang a milestone off, the commit message is the only record of what a change was for. Write it accordingly.
-- **Real, risky, or exploratory work can still take a branch — and a background agent thread always does.** This is a default, not a prohibition: a rewrite you might abandon is exactly what a branch is for, and a parallel worker has real concurrency to isolate from ([embarch-parallel-agents.md](embarch-parallel-agents.md)). The rule is against branching *reflexively* for ordinary forward work.
+**The one case that still warrants a branch:** a change you genuinely might abandon, where the intermediate states would leave `main` broken for more than the moment it takes to finish — **a spike, not a feature.** Branch it, and delete the branch rather than merging it if the spike does not pan out.
