@@ -61,6 +61,9 @@ CAPS = [
     # The reversals page split the way any over-cap doc does: an index plus stable
     # numeric ranges (DOC-COMPACTION.md §3). A range never re-splits an existing row.
     ("reversal-group", 20 * KB, re.compile(r"^reversals/rows-\d+-\d+\.md$")),
+    # A proposal keeps only what is still proposed: an accepted half belongs in the
+    # living docs, and restating it here makes a second source of truth.
+    ("proposal",    15 * KB, re.compile(r"^embarch-[a-z-]+-proposal\.md$")),
     ("reversals",   10 * KB, re.compile(r"^embarch-decision-reversals\.md$")),
     # Anything else still under a sub-project or the root is legacy, and the
     # migration's job is to turn it into one of the roles above.

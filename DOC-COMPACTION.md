@@ -147,8 +147,9 @@ Biggest first, one per commit, `--update` after each:
 | ~~`embarch-ui`~~ | ~~92 KB~~ | **done: 68 KB, 12 files** |
 | ~~`embarch-umbrella`~~ | ~~116 KB~~ | **done: 54 KB, 10 files** |
 | ~~`embarch-topology`~~ | ~~77 KB~~ | **done: 46 KB, 8 files** |
+| ~~`embarch-stream-pipeline-proposal.md`~~ | ~~47 KB~~ | **done: 12 KB — the accepted half deleted, not restated** |
 | suite-level docs | 220 KB | 70 KB |
 | ~~`embarch-decision-reversals.md`~~ | ~~59 KB~~ | **done: 8 KB index + 4 range files, 65 KB — holding 109 rows where 59 KB held 58** |
-| DOC-PROTOCOL.md / this file | 24 + 12 KB | 12 + 12 KB |
+| ~~DOC-PROTOCOL.md / this file~~ | ~~24 + 12 KB~~ | **done: 12 + 12 KB, both at cap** |
 
 Corpus **1.93 MB → ~450 KB**. Shipped milestone docs and implementation guides (11 marked `done`, ~200 KB) fold into the four files and are deleted as their sub-project is migrated.
