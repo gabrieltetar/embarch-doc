@@ -114,7 +114,7 @@ The gate, run by the worker and then **re-run independently by the supervisor** 
 
 - `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in the touched repo, plus a native Windows build where `embarch-core` is involved ([embarch-dev-workflow.md](embarch-dev-workflow.md) §4).
 - All six `embarch-doc` checks: `check-links.py`, `check-staleness.py`, `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`, `build_changelog.py --check`.
-- **`check-ownership.py --scope <sub-project>`** on both branches — the mechanical form of §3. Without it §3 is prose nothing reads: a worker's edit to [embarch.md](embarch.md)'s status table is *plausible by construction*, so `check-staleness.py` (which only flags a row disagreeing with a sub-project doc) passes it, and the collision §9 exists to prevent happens anyway.
+- **`check-ownership.py --scope <sub-project>`** on both branches — the mechanical form of §3. Either `core` or `embarch-core` is accepted; **`suite` is refused outright, because a cross-repo change is §8's, not a worker's.** Without it §3 is prose nothing reads: a worker's edit to [embarch.md](embarch.md)'s status table is *plausible by construction*, so `check-staleness.py` (which only flags a row disagreeing with a sub-project doc) passes it, and the collision §9 exists to prevent happens anyway.
 
 That is [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's existing standard, unchanged, applied per branch instead of per commit. Nothing here licenses a lower bar because an agent wrote it.
 
@@ -126,7 +126,7 @@ That is [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's existing standa
 
 Canon is a doc; Slack is the ping.
 
-Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest first: what it **decided**, what merged, what blocked and why, and every hardware-verification debt it collected. What *shipped* is already recorded by the workers' own `changelog.d` fragments and assembled into `history/<scope>.md` — the digest does not restate it. When the log passes 25 KB the oldest batches roll into `history/archive/`, matching what `build_changelog.py` already does for a history file. Then a short Slack message to the owner pointing at it.
+Each batch prepends one entry to [supervisor-log.md](supervisor-log.md), newest first: what it **decided**, what merged, what blocked and why, and every hardware-verification debt it collected. What *shipped* is already recorded by the workers' own `changelog.d` fragments and assembled into `history/<scope>.md` — the digest does not restate it. When the log passes 25 KB the oldest batches roll into `history/archive/`, the same way `build_changelog.py` rolls a history file at its own cap. Then a short Slack message to the owner pointing at it.
 
 **This is the review surface, and under full delegate it is the only one.** It is read after the fact, so it must be honest about what was decided and not just what was shipped — a suite-wide design the supervisor approved on the owner's behalf is the single most important line it will ever write, and it belongs at the top of the entry, not buried under the merge list.
 

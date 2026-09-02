@@ -108,6 +108,13 @@ def main() -> int:
         print("REFUSED: `suite` is not a worker scope -- a cross-repo change is the")
         print("supervisor's to execute in one sequenced pass (embarch-parallel-agents.md §8).")
         return 1
+    # Every doc that names this check writes it as `--scope <sub-project>`, which a
+    # reader fills in as `embarch-core`, while the scope vocabulary is the bare
+    # `core`. Accept both: the prefixed form identifies exactly one scope, so
+    # refusing it is a false red on a correct branch -- found by running it.
+    if args.scope.startswith("embarch-") and args.scope[len("embarch-"):] in KNOWN_SCOPES:
+        args.scope = args.scope[len("embarch-"):]
+
     if args.scope not in KNOWN_SCOPES:
         print(f"unknown scope '{args.scope}' (known: {', '.join(sorted(KNOWN_SCOPES))})")
         return 1
