@@ -28,7 +28,8 @@ Three practices, in force from 2026-09-02:
 | Suite-level doc | **10 KB** | `suite/*.md` |
 | User guide (the one narrative doc) | **25 KB** | `suite/user-guide.md` |
 | This file, and DOC-PROTOCOL.md | **12 KB** | `DOC-*.md` |
-| Reversals | **25 KB** | `embarch-decision-reversals.md` |
+| Reversals index | **10 KB** | `embarch-decision-reversals.md` |
+| Reversal range | **20 KB** | `reversals/rows-<a>-<b>.md` |
 | Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
 **20 files are over cap today**, holding 1,615 KB. Each is pinned at its current size by `scripts/doc-size-baseline.json`; reaching its cap retires the baseline entry, and the file is capped from then on. `--report` shows the corpus, `--update` records progress.
@@ -53,7 +54,9 @@ Not in a doc. Every change drops a one-line fragment in `changelog.d/` (`<scope>
 
 What survives a compaction as history, and nowhere else:
 
-- **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. This stays a *design* doc rather than history, because it is predictive: it says which remaining assumptions to distrust. It is capped at 25 KB, which is ~250 B per row.
+- **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. This stays a *design* doc rather than history, because it is predictive: it says which remaining assumptions to distrust. **It does not restate a correction's mechanism** — that is the owning decision's job — but it does keep the *transferable* clause, which usually exists nowhere else.
+
+  It outgrew one file and split the way §3 splits any over-cap doc: an index plus `reversals/rows-<a>-<b>.md`. **A row number is a permanent identity, so a range file never re-splits an existing row into a different file** — a new range is appended, and an unbalanced range is left unbalanced. The index carries the range table, the owner key, and the recurring *shapes* read across the rows, which is the one thing no individual row holds.
 - **Measurement provenance** — a measured number keeps its date and the conditions it was measured under, inline in the constants table. A constant that silently loses its provenance is the failure mode this suite keeps hitting.
 
 Everything else about the past is dropped: amendment chains, "reversed same day", schema-bump re-derivations, "**Implemented 2026-08-25**", "three things implementation settled", review-item numbers, and every "this pass"/"the same session"/"recorded rather than discovered later".
@@ -145,7 +148,7 @@ Biggest first, one per commit, `--update` after each:
 | ~~`embarch-umbrella`~~ | ~~116 KB~~ | **done: 54 KB, 10 files** |
 | ~~`embarch-topology`~~ | ~~77 KB~~ | **done: 46 KB, 8 files** |
 | suite-level docs | 220 KB | 70 KB |
-| `embarch-decision-reversals.md` | 59 KB | 25 KB |
+| ~~`embarch-decision-reversals.md`~~ | ~~59 KB~~ | **done: 8 KB index + 4 range files, 65 KB — holding 109 rows where 59 KB held 58** |
 | DOC-PROTOCOL.md / this file | 24 + 12 KB | 12 + 12 KB |
 
 Corpus **1.93 MB → ~450 KB**. Shipped milestone docs and implementation guides (11 marked `done`, ~200 KB) fold into the four files and are deleted as their sub-project is migrated.

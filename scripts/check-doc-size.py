@@ -58,7 +58,10 @@ CAPS = [
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),
     ("protocol",    12 * KB, re.compile(r"^DOC-(PROTOCOL|COMPACTION)\.md$")),
     ("history",     20 * KB, re.compile(r"^history/[a-z-]+\.md$")),
-    ("reversals",   25 * KB, re.compile(r"^embarch-decision-reversals\.md$")),
+    # The reversals page split the way any over-cap doc does: an index plus stable
+    # numeric ranges (DOC-COMPACTION.md §3). A range never re-splits an existing row.
+    ("reversal-group", 20 * KB, re.compile(r"^reversals/rows-\d+-\d+\.md$")),
+    ("reversals",   10 * KB, re.compile(r"^embarch-decision-reversals\.md$")),
     # Anything else still under a sub-project or the root is legacy, and the
     # migration's job is to turn it into one of the roles above.
     ("legacy",      25 * KB, re.compile(r"^(embarch-[a-z-]+/|embarch-|DOC-|README)")),
