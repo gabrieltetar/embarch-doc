@@ -14,7 +14,7 @@ The design principle throughout: **prevent collisions structurally; do not resol
 
 Three, and the boundaries between them are the whole design.
 
-**The owner.** Approves nothing routine — the supervisor is a full delegate, and steers by exception, and can start, stop, question or redirect the fleet from **#embarch-fleet** on a phone ([running the fleet](embarch-parallel-agents-ops.md) §3–§5) (§11 is why that is a real risk and what it buys). Four things stay the owner's and cannot be delegated:
+**The owner.** Approves nothing routine — the supervisor is a full delegate, and steers by exception, and can start, stop, question or redirect the fleet from Remote Control or **#embarch-fleet** on a phone ([running the fleet](embarch-parallel-agents-ops.md) §3–§5) (§11 is why that is a real risk and what it buys). Four things stay the owner's and cannot be delegated:
 
 - **Amending a standing rule** — this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) §6, [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md). A supervisor that can rewrite its own constraints has none. §6 already says its own rule "ends when the repo owner says it ends, and on no other condition"; this is the same property, stated once for the whole class.
 - **Anything physical** — plugging in a board, swapping hardware. Unchanged from [embarch-dev-workflow.md](embarch-dev-workflow.md) §5's Tier 3.
