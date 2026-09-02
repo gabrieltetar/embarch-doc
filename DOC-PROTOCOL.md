@@ -97,7 +97,10 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 
 **A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39`. Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
 
-This matters more than it looks: **2,354 such references exist**, and `check-links.py` structurally cannot see one — it validates file paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves every one against the entries its sub-project actually defines. Its first calibrated run found two entries **silently deleted** while three other docs went on citing them (`embarch-api` decision 31, `embarch-umbrella` decision 27 — restored from git).
+This matters more than it looks, and `check-links.py` structurally cannot see one of these references — it validates file paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves every one against the entries its sub-project actually defines, and it has found two real classes of breakage:
+
+- **A number an insertion renumbered.** Two entries looked deleted while other docs cited them (`embarch-api` 31, `embarch-umbrella` 27). Neither was deleted: **a commit inserted a new decision in the middle and renumbered the entry below it**, so every prose reference to the old number silently began pointing at a different entry. **This is why a decision number is permanent here** (DOC-COMPACTION.md §5) and why both entries now own both numbers.
+- **A reversal row cited and gone.** It also resolves `reversals ... row N` against the union of `reversals/rows-*.md`. That check exists because 47 rows were deleted along with a `## Changelog` heading they had been appended below, and **fifteen citations across seven docs went on pointing at them with nothing to notice.**
 
 ### 7.4 Retiring an entry
 

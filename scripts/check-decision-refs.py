@@ -42,6 +42,7 @@ where those outgrew one file, from every `decisions/<topic>.md` under it.
 Usage: scripts/check-decision-refs.py [--verbose] [--warnings]
 Exit status: 0 if no errors, 1 otherwise.
 """
+import glob
 import os
 import re
 import sys
@@ -65,6 +66,48 @@ DOC_PATH = re.compile(r'([a-z0-9-]+)/(?:design|decisions)\.md')
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
+
+# A reversal row is cited as "reversals.md ... row 86" / "rows 83-85". The rows
+# live in reversals/rows-<a>-<b>.md and a row number is a permanent identity, so
+# a citation resolves against the union of every range file -- not against a
+# path. Nothing checked this until 47 rows were deleted with a changelog section
+# and fifteen citations went on pointing at them.
+ROW_DEF = re.compile(r'^\|\s*(\d+)\s*\|', re.M)
+ROW_REF = re.compile(r'reversals(?:/rows-[\d-]+)?\.md\)?[^.]{0,8}?'
+                     r'rows?\s+((?:\d+)(?:\s*[,/]\s*\d+|\s*[-\u2013\u2014]\s*\d+'
+                     r'|\s+and\s+\d+)*)', re.I)
+
+
+def reversal_rows():
+    """Every row number defined by a reversals/rows-*.md range file."""
+    rows = set()
+    pattern = os.path.join(REPO_ROOT, 'reversals', 'rows-*.md')
+    for path in sorted(glob.glob(pattern)):
+        with open(path, encoding='utf-8') as fh:
+            rows |= {int(n) for n in ROW_DEF.findall(fh.read())}
+    return rows
+
+
+def check_reversal_rows():
+    """Return a list of (rel, lineno, num, excerpt) for rows cited and undefined."""
+    defined = reversal_rows()
+    if not defined:
+        return [], 0, 0
+    bad, checked = [], 0
+    for path in md_files():
+        rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
+        if rel.startswith('reversals/'):
+            continue
+        with open(path, encoding='utf-8') as fh:
+            lines = fh.read().splitlines()
+        for lineno, line in enumerate(lines, 1):
+            for m in ROW_REF.finditer(line):
+                for num in expand(m.group(1)):
+                    checked += 1
+                    if num not in defined:
+                        excerpt = line[max(0, m.start() - 40):m.end() + 40].strip()
+                        bad.append((rel, lineno, num, excerpt))
+    return bad, checked, len(defined)
 # How far back from a reference to look for an explicit sub-project path.
 # Deliberately short: at 140 chars a paragraph's earlier mention of a different
 # sub-project hijacked references that belonged to the file's own, which was
@@ -196,6 +239,15 @@ def main():
             print(f'      {excerpt}')
         print()
 
+    bad_rows, rows_checked, rows_defined = check_reversal_rows()
+    if bad_rows:
+        print(f'{len(bad_rows)} citation(s) of a reversal row no range file '
+              f'defines (of {rows_defined} rows present):\n')
+        for rel, lineno, num, excerpt in bad_rows:
+            print(f'  {rel}:{lineno} reversals row {num} -- not defined')
+            print(f'      {excerpt}')
+        print()
+
     if errors:
         print(f'{len(errors)} unresolved decision reference(s):\n')
         for rel, lineno, target, num, excerpt, why in errors:
@@ -205,8 +257,13 @@ def main():
               f'(--warnings to list).')
         return 1
 
+    if bad_rows:
+        return 1
+
     print(f'All {checked} decision references resolve. '
           f'{len(warnings)} ambiguous (--warnings to list), not an error.')
+    print(f'All {rows_checked} reversal-row citations resolve '
+          f'({rows_defined} rows defined).')
     return 0
 
 
