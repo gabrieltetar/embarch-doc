@@ -135,10 +135,8 @@ The old identifier-set diff (`grep -ohE '\`[^\`]+\`'` before and after) is now a
 
 ## 9. Migration order
 
-Biggest first, one per commit, `--update` after each.
+Done, biggest first, one per commit, `--update` after each.
 
-**Done:** `embarch-core` 233→53 KB · `embarch-dev-bench` 185→81 · `embarch-api` 158→68 · `embarch-study-designer` 232→156 · `embarch-outpost` 129→76 · `embarch-ui` 92→68 · `embarch-umbrella` 116→54 · `embarch-topology` 77→46 · the reversals page 59→65 KB **while restoring 47 rows it had lost** · the stream proposal 47→12 · DOC-PROTOCOL and this file, both at cap.
+`embarch-core` 233→53 KB · `embarch-dev-bench` 185→81 · `embarch-api` 158→68 · `embarch-study-designer` 232→156 · `embarch-outpost` 129→76 · `embarch-ui` 92→68 · `embarch-umbrella` 116→54 · `embarch-topology` 77→46 · the reversals page 59→65 KB **while restoring 47 rows it had lost** · the stream proposal 47→12 · the feature inventory 45→13 · the user guide 45→32 across two files · the roadmap 40→13 · the dev-workflow 27→18 · the suite index 20→11 · the glossary 14→8 · the token doc 14→8 · DOC-PROTOCOL and this file, both at cap.
 
-**Left:** the suite-level docs, 220 KB → ~70 KB — the feature inventory, the roadmap, the user guide, the overview and index, the glossary, the token and dev-workflow notes, and the Zephyr note.
-
-Corpus **1.93 MB → ~450 KB**. Shipped milestone docs and implementation guides (11 marked `done`, ~200 KB) fold into the four files and are deleted as their sub-project is migrated.
+**The ratchet is closed: every doc in the corpus is within its role's cap, and the baseline holds no exceptions at all** — down from 20 files over cap holding 1,615 KB. From here the cap is the cap, and `--update` refuses a regression rather than pinning one.

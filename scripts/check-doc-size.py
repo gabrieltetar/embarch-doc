@@ -125,6 +125,13 @@ def main() -> int:
             base[rel] = size
         for rel in capped:
             base.pop(rel, None)
+        # A baseline entry for a file that no longer exists is dead weight that
+        # makes the ratchet report "N still over cap, holding 0 KB". Deleting or
+        # renaming an over-cap file is the whole point of a migration, so prune.
+        present = {rel for rel, _ in docs()}
+        gone = sorted(set(base) - present)
+        for rel in gone:
+            base.pop(rel)
         for rel, size in docs():
             role, cap = role_and_cap(rel)
             if not cap or size <= cap:
@@ -144,6 +151,8 @@ def main() -> int:
             print(f"  ratcheted {rel}: {was/KB:.0f}K -> {now/KB:.0f}K")
         for rel in capped:
             print(f"  AT CAP, baseline dropped: {rel}")
+        for rel in gone:
+            print(f"  GONE, baseline pruned: {rel}")
         for rel, was, now in raised:
             print(f"  RAISED (within the {RENAME_ALLOWANCE} B rename allowance) "
                   f"{rel}: {was} -> {now} B")
