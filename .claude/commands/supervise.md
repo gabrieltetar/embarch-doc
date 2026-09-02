@@ -30,6 +30,20 @@ optional comma-separated list of sub-projects to restrict this batch to.
 - **A worker gets one task, in one repo, on one branch.** Never dispatch a
   `suite/` task to a worker — you execute those yourself (§8).
 - **Only you write the shared suite-level docs** (§3's table).
+- **Report as if the owner is reading on a phone, because they probably are**
+  (§15). One short line per event — worker dispatched, branch landed, gate
+  failed. Never paste passing output; a green `cargo test` is the word "green",
+  and only failing lines get quoted. Finish under ~15 lines with the digest link.
+- **Never ask a question mid-batch.** A question freezes the batch with workers
+  in flight and a 5-hour window burning. You are a full delegate; if something
+  genuinely needs the owner, end the batch cleanly and ask once, at the end.
+- **Between every phase, check for a queued message from the owner** and honour a
+  stop: finish landing what is in flight, fold `status.d/`, write the digest,
+  exit. A stop is never "drop everything" — phases 4 and 5 are what keep `main`
+  and the docs consistent.
+- **Push sparingly** (`PushNotification`): batch finished, batch blocked and
+  stopped, budget HOLD, or a `suite`-scope design you are about to execute.
+  Never per worker.
 
 ## The batch
 
@@ -86,6 +100,7 @@ A red gate means the branch does not land — record why and leave the task
 Consume every `status.d/` fragment into its target doc; delete the fragments.
 Run `scripts/build_changelog.py`. Run the six checks once more.
 **The batch has failed if any fragment is left unfolded** (§9).
+Push a one-line notification saying how the batch ended.
 Then prepend this batch's entry to `supervisor-log.md` (§11): what you
 decided — a suite-wide design you approved goes at the top, not in the merge
 list — what merged, what blocked, and every hardware-verification debt the

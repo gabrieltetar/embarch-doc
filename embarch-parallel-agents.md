@@ -172,3 +172,26 @@ The fleet exists because the seat is under-used (§1), so "how much is left" is 
 `--suggest` prints a wave size: full width until the tighter window is within 25% of its cap, then tapering to one worker. Running at full width is the point; the taper only stops six workers hitting the ceiling together.
 
 **The backstop needs no percentage at all.** If a worker dies with a real rate-limit error, stop dispatching, finish landing what is already done — phases 4 and 5 are cheap — write the digest, and exit. That path is what keeps this safe when the numbers are wrong.
+
+## 15. Driving a batch from a phone
+
+A batch takes a while and mostly runs itself, so the natural place to watch it from is not the desk. Remote Control ([claude.ai/code](https://claude.ai/code) or the Claude app) does that — but it **attaches to a Claude Code process running on this machine; it does not start one.** Its hardest limitation is that the local process must keep running: close the terminal or quit VS Code and the session goes offline.
+
+**Two ways to have a process worth attaching to:**
+
+- **VS Code, no install** — run `/rc` in the session and drive it from the phone. Works today. VS Code has to stay open.
+- **tmux, survives everything** — `scripts/supervise-remote.sh`. Needs a `claude` CLI on `PATH`, which this machine does not have (VS Code bundles its own and exposes none), so the script says so and stops rather than half-starting. This is the one to want: the batch outlives closing the window and dropping SSH.
+
+**Reporting is different on a phone, and this is the part the supervisor has to get right.** A narrow column and a batch that runs for an hour do not survive walls of tool output. So while a batch runs:
+
+- **One short line per event** — a worker dispatched, a branch landed, a gate failed. Not the command, not its output.
+- **Never paste green output.** A passing `cargo test` is the word "green". Only failing lines get quoted, and only the failing lines.
+- **End with a summary that fits on one screen** — under ~15 lines — and the digest link for the rest ([supervisor-log.md](supervisor-log.md) is where the detail belongs).
+
+**Push, but rarely.** A notification pulls the owner out of whatever they are doing, so the supervisor sends one only at: batch finished, batch blocked and stopped, budget HOLD, or a `suite`-scope design it is about to execute. Never per worker. Both switches are on (`agentPushNotifEnabled`, `inputNeededNotifEnabled`), and pushes are skipped automatically while the owner is at the terminal.
+
+**Steering from the phone works, and the supervisor must let it.** A message sent mid-turn is queued and delivered. So the supervisor **checks for a queued message between phases** and honours a stop: finish landing what is in flight, fold `status.d/`, write the digest, exit. A stop is never "drop everything" — phases 4 and 5 are what keep `main` and the docs consistent.
+
+**Never ask a question mid-batch.** Permission prompts and `AskUserQuestion` do *not* expire while a device is connected, so a question will eventually be answered — but "eventually" is a batch frozen with workers in flight and a 5-hour window burning. Under full delegation there is nothing to ask; if something genuinely needs the owner, end the batch cleanly and ask once.
+
+**Two things that do not work remotely.** Terminal-only commands (`/resume`, `/plugin`) are local-only. Whether a *custom* slash command expands from mobile is not something this doc has verified — so the supervisor is invocable in plain English too (**"run a supervisor batch"**, wired in [CLAUDE.md](CLAUDE.md)), and nothing here depends on `/supervise` reaching the phone.

@@ -140,7 +140,7 @@ Biggest first, one per commit, `--update` after each:
 | ~~`embarch-dev-bench`~~ | ~~185 KB~~ | **done: 81 KB, 11 files** |
 | ~~`embarch-api`~~ | ~~158 KB~~ | **done: 68 KB, 11 files** |
 | ~~`embarch-study-designer`~~ | ~~232 KB~~ | **done: 156 KB, 24 files** |
-| `embarch-outpost` | 129 KB | 40 KB |
+| ~~`embarch-outpost`~~ | ~~129 KB~~ | **done: 76 KB, 14 files** |
 | `embarch-ui` | 92 KB | 40 KB |
 | `embarch-umbrella` | 86 KB | 40 KB |
 | `embarch-topology` | 77 KB | 40 KB |

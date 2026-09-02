@@ -401,7 +401,7 @@ Flashing the bench itself goes through EmbArch like anything else: `embarch-api 
 
 ### 10.2 Wiring a DUT signal in, and reading the trace afterwards
 
-A study can record more than pass/fail: if your DUT's firmware has the [embarch-outpost](embarch-outpost/design.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART, and a study can capture it. Two things have to be true first, and both are done in the UI (`embarch-ui`, the tool the VS Code launcher opens — there is deliberately no CLI for either).
+A study can record more than pass/fail: if your DUT's firmware has the [embarch-outpost](embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART, and a study can capture it. Two things have to be true first, and both are done in the UI (`embarch-ui`, the tool the VS Code launcher opens — there is deliberately no CLI for either).
 
 **1. Tell EmbArch where the wire goes.** A cable between two headers is invisible to software — nothing can detect it — so it can only be stated. In the **Topology** tab, "Declare a signal": give it a name (that's what a study will tap it by), and pick a route.
 
