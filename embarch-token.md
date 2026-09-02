@@ -1,84 +1,67 @@
-# EMBARCH_TOKEN: design
+# EMBARCH_TOKEN
 
-**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/decisions.md` and `embarch-api/decisions.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
+**Status:** active, 2026-09-02.
 
-## 1. Purpose and scope
+The single shared secret authenticating every caller of Core's HTTP API. **The source of truth for its full lifecycle** — generation, storage, transport, security model, rotation, known gaps. Component docs link here rather than restate it.
 
-`EMBARCH_TOKEN` is the single shared secret that authenticates every caller of `embarch-core`'s HTTP API. This doc is the source of truth for its full lifecycle — generation, storage, transport, security model, rotation, and known gaps — across every component that touches it (`embarch-core`, `embarch-api`). Component-specific docs link here rather than restate this content, per `DOC-PROTOCOL.md` §5.
+## 1. What it is
 
-## 2. What it is
+**A single opaque string, shared across every caller.** Not a JWT, not signed, not structured — Core does a plain exact-string comparison against every request's bearer header. **No expiry, no issued-at, no claims:** it is valid until the token file is deleted and Core regenerates one, or an explicit override changes it.
 
-- A single opaque string, shared across every caller. Not a JWT, not signed, not structured — Core's `auth_middleware` (`api.rs`) does a plain exact-string comparison against every request's `Authorization: Bearer <token>` header.
-- **Two ways a value gets chosen, in strict precedence order:**
-  1. **Explicit override**, unchanged from today: `EMBARCH_TOKEN` env var on Core, `token`/`token_env` in embarch-api's `[core]` config. If set, it's used as-is — no file is read or written.
-  2. **Auto-generated and persisted**, when nothing explicit is set: Core generates a random value on first startup with no `EMBARCH_TOKEN` set, and persists it to a machine-wide file (§3.1) so the same value survives a restart. embarch-api, when neither `token` nor `token_env` is configured, reads that same file. This replaces the old `dev-token-change-me` hardcoded fallback entirely (§5) — no insecure default literal remains in the codebase.
-- No expiry, no issued-at, no claims — it's valid until the token file is deleted and Core regenerates one (§7), or an explicit override changes it.
+**Two ways a value gets chosen, in strict precedence order:**
 
-## 3. Where it lives
+1. **An explicit override** — the env var on Core, or an inline value or env-var name in the API's config. **If set it is used as-is; no file is read or written.**
+2. **Auto-generated and persisted**, when nothing explicit is set: **Core generates a random value on first startup and persists it to a machine-wide file**, so the same value survives a restart. The API reads that same file when nothing is configured.
 
-| Component | How it holds the token | Reference |
-|---|---|---|
-| `embarch-core` (HTTP server) | Reads `EMBARCH_TOKEN` once at startup (`main.rs`'s `run()`) if set. Otherwise reads the token file (§3.1) if present, or generates one and writes it there if not. No hardcoded fallback literal remains (§5). | `embarch-core/decisions.md` §6 |
-| `embarch-core` CLI (`run` foreground process) | Same resolution as the HTTP server — local CLI operation isn't a separate credential. | `embarch-core/decisions.md` §2 |
-| `embarch-api` | Config's `[core]` table: inline `token` or `token_env` (`token_env` wins if both are set). If neither resolves, falls back to reading the same token file (§3.1) Core uses. If that also isn't found, embarch-api fails to start with a clear error (§8). | `embarch-api/decisions.md` §4 |
+**That replaced a hardcoded insecure default entirely.** An unset token used to fall back to a literal `dev-token-change-me` with a warning — **a known-insecure value baked into the binary.** It is gone, and Core logs loudly either way — on generating a new token *and* on reusing an existing one — **so which happened is never silent.**
 
-Beyond process memory, embarch-api's own config file (for the inline `token` case) and the token file (§3.1) are the only two places the token is ever written to disk. If stored inline in config, that file should be `chmod 600` and excluded from version control — identical treatment to any other local secret.
+## 2. Where it lives
 
-### 3.1 The auto-generated token file
+| Component | How it holds the token |
+|---|---|
+| **Core**, HTTP server and foreground CLI alike | The env var if set; otherwise the token file if present, or generate one and write it there. **Local CLI operation is not a separate credential** |
+| **`embarch-api`** | Its config's inline value or env-var name (the latter wins if both are set); **otherwise the same token file Core uses.** If neither resolves it **fails to start with a clear error** rather than proceeding unauthenticated |
 
-A canonical, machine-wide path per OS, independent of which user account runs Core or embarch-api — this is what lets an installed Windows service (typically running as a different account than the interactive user) still find the same file, sidestepping §6's service-environment gap for the common case:
+**Beyond process memory, the API's own config file and the token file are the only two places the token is ever written to disk.** Stored inline in a config, that file wants owner-only permissions and exclusion from version control — identical treatment to any other local secret.
 
-- Windows: `%ProgramData%\embarch\token` (typically `C:\ProgramData\embarch\token`).
-- Linux/macOS: `/var/lib/embarch/token`.
+### The auto-generated token file
 
-Core creates the directory and file — with owner-restricted permissions (`chmod 600` on Linux/macOS; on Windows, shelling out to `icacls` to grant only the creating account, `SYSTEM`, and `Administrators`, rather than relying on `ProgramData`'s default inheritance, which is more permissive than a user-profile directory — chosen over the `windows-acl` crate, which is a thin and infrequently-updated wrapper worth avoiding for a security-relevant, currently-Windows-unvalidated operation) — the first time it starts with no explicit `EMBARCH_TOKEN` set, and reuses the existing file on every subsequent startup rather than regenerating. The same value survives a restart, matching today's env-var behavior of not changing unless someone changes it.
+**A canonical, machine-wide path per OS, independent of which account runs Core or the API** — `%ProgramData%\embarch\token` on Windows, `/var/lib/embarch/token` on Linux and macOS. **That is what lets an installed Windows service, typically running as a different account than the interactive user, still find the same file.**
 
-**WSL2⟷Windows discovery**, since that's this suite's primary deployment split (§4): embarch-api running under WSL2, talking to a Windows-hosted Core, resolves the real `%ProgramData%` value via a one-time shell-out to the Windows side — rather than hardcoding `C:\ProgramData`, which could be wrong on a machine that customized it — and maps the result through WSL2's `/mnt/<drive>` convention to read the same file.
+Core creates the directory and file with **owner-restricted permissions**. On Windows that means **explicitly granting only the creating account, `SYSTEM` and Administrators rather than relying on `ProgramData`'s default inheritance, which is more permissive than a user-profile directory** — done by shelling out to `icacls` rather than through an ACL crate, **a thin and infrequently-updated wrapper worth avoiding for a security-relevant, Windows-unvalidated operation.**
 
-**Scope limit.** This only bridges same-machine deployments — including the WSL2⟷Windows split, since both sides are really one physical machine — not a genuinely separate host. Core running on a real LAN/Pi deployment (§4; `embarch-core/decisions.md` §7) has no local file for embarch-api to discover at all; that case still requires explicit `token`/`token_env` config. No filesystem convention can bridge two actual machines (§8).
+**WSL2⟷Windows discovery**, since that is this suite's primary split: the API under WSL2 **resolves the real `%ProgramData%` value by shelling out to the Windows side rather than hardcoding `C:\ProgramData`, which could be wrong on a machine that customized it**, then maps the result through WSL2's mount convention to read the same file.
 
-## 4. Transport
+**Scope limit, and it is structural.** This bridges same-machine deployments only — **including the WSL2 split, since both sides are really one physical machine** — not a genuinely separate host. A Core on a real LAN box **has no local file for the API to discover at all**, so that case needs explicit config. **No filesystem convention can bridge two actual machines.**
 
-Every request from `embarch-api` to `embarch-core` carries `Authorization: Bearer <token>` (`core_client.rs`'s `.bearer_auth(&token)`), checked via exact-string comparison in Core's `auth_middleware`. There is currently no TLS anywhere in this path — Core's HTTP server is plain HTTP (`embarch-core/decisions.md` §7's WSL2⟷Windows and future LAN/Pi deployment models). This means the token crosses the network in cleartext on every call; anyone who can observe that traffic (a shared LAN segment, a compromised host on the same network) can read and replay it. Recorded as an open question (§8) — it wasn't an explicit design decision anywhere else.
+## 3. Transport and security model
 
-## 5. Security model
+Every request carries the token as a bearer header, checked by exact-string comparison. **There is no TLS anywhere in this path** — Core's server is plain HTTP — **so the token crosses the network in cleartext on every call.**
 
-- **Single shared secret, no per-caller identity.** The same token authenticates the embarch-core CLI's local `run` process and any remote embarch-api caller — Core can tell "authorized" from "not," never "which caller." Adequate for the suite's single-engineer scope (`embarch.md` §5); revisit if Core ever needs to distinguish who is calling (§8).
-- **No more hardcoded insecure default (§3.1).** Previously, an unset `EMBARCH_TOKEN` fell back to the literal string `dev-token-change-me` with a `tracing::warn!` — a real known-insecure value baked into the binary. That literal is now gone entirely: an unset `EMBARCH_TOKEN` instead generates and persists a real random token to the machine-wide file, and Core logs loudly either way (`tracing::info!` on both generating a new token and reusing an existing one, so which happened is never silent). embarch-api's behavior when nothing resolves also changed: instead of failing to start outright, it checks the same token file before giving up (§8).
-- **No TLS** (§4) — the token's confidentiality in transit relies entirely on the trustworthiness of the local network segment it crosses (localhost, WSL2⟷Windows loopback, or eventually a LAN to a Pi).
-- **Threat model, explicitly:** this protects against an unauthenticated stranger on the same network hitting Core's endpoints directly. It does **not** protect against anyone with access to the machine(s) running Core or embarch-api (env vars, config files, and process memory are all readable at that level of access), nor against network-level eavesdropping (§4). Appropriate tradeoff for a single-engineer local tool, not an oversight — but worth stating plainly rather than leaving implicit.
+- **Single shared secret, no per-caller identity.** The same token authenticates Core's own local process and any remote API caller: **Core can tell "authorized" from "not", never "which caller."** Adequate for the suite's single-engineer scope.
+- **The token's confidentiality in transit relies entirely on the trustworthiness of the network segment it crosses** — localhost, a WSL2 loopback, or eventually a LAN.
+- **The threat model, explicitly:** this protects against **an unauthenticated stranger on the same network hitting Core's endpoints directly.** It does **not** protect against anyone with access to the machines running Core or the API — env vars, config files and process memory are all readable at that level — **nor against network-level eavesdropping. An appropriate trade-off for a single-engineer local tool, not an oversight, but worth stating plainly rather than leaving implicit.**
 
-## 6. Known gaps
+## 4. Rotation
 
-- **`sc.exe`-installed Windows service environment fix is code-complete but Windows-unvalidated.** `service.rs`'s `install()` previously passed `environment: None` unconditionally to `ServiceInstallCtx`, so an installed Windows service ignored whatever `EMBARCH_TOKEN` was set to at install time. Root cause fully diagnosed in core milestone 1; the fix shipped as part of core milestone 2 (folded in alongside the token-file work since both touch `service.rs`): `install()` now passes `environment` through only when an explicit `EMBARCH_TOKEN` was set (fixing Linux/macOS for free via `systemd.rs`/`launchd.rs`'s existing handling), and writes the Windows `Environment` registry value via the `winreg` crate. That registry-write path hasn't been exercised on real Windows hardware yet (core milestone 2 §3.5). Since §3.1's auto-generated file has also shipped, this gap only matters for someone who specifically wants an explicit (not auto-generated) token on an installed service — the common case is unaffected, since the machine-wide file doesn't depend on which account the service runs as.
-- **WSL2⟷Windows path translation (§3.1) assumes `%ProgramData%` resolves to something WSL2 can reach via `/mnt/<drive>`.** Mitigated by resolving the real value via a shell-out rather than hardcoding `C:\ProgramData`, but an unusual Windows install (e.g. `ProgramData` relocated to a non-`C:` drive not mounted in WSL2) isn't yet an exercised edge case. embarch-api's side of this translation shipped and was exercised against the real `%ProgramData%`/`wslpath` shell-outs on the standard (`C:` drive) case (api milestone 2 §6) — the non-standard-drive case above remains untested either way.
-- **Native Linux/macOS path (`/var/lib/embarch/token`) ships as code but isn't hardware/service-validated yet.** core milestone 2 scopes real validation to the Windows+WSL2 topology actually in use today (matching how core milestone 1 scoped board validation), deferring native-Linux/macOS validation as a fast-follow.
+**No hot-reload on either side** — both read the token once at startup, **so rotation always requires restarting both.** Accepted rather than designed around: no dual-token grace window, no config-reload mechanism.
 
-## 7. Rotation
+**To rotate an explicit override:** pick a new value, update wherever Core reads it from — the shell environment for a foreground run, or **the service's own registration for an installed service** — restart Core, update every API config to match, then restart or reconnect each API instance.
 
-No hot-reload on either side — both `embarch-core` and `embarch-api` read the token once at startup, so rotation always requires restarting both. Given the suite's single-engineer, mostly-local scope, this cost is accepted rather than designed around (no dual-token grace window, no config-reload mechanism — see §8).
+**To rotate an auto-generated token:** delete the file, restart Core — **it regenerates one on next startup since the file is now absent** — then restart or reconnect every API instance. Simpler, since there is no value to pick or copy between two places.
 
-**To rotate an explicit override** (`EMBARCH_TOKEN` set on Core, or `token`/`token_env` set on embarch-api):
+**Because there is no grace window, any call made after Core's restart but before every API instance re-reads the new value will fail authentication until they agree.** Acceptable downtime for one engineer rotating their own token, **but worth knowing before doing it mid-session.**
 
-1. Choose a new token value (§2 — no prescribed method, just avoid reusing the old value).
-2. Update wherever `embarch-core` reads `EMBARCH_TOKEN` from — the shell environment for a foreground `run`, or the service's environment for an installed service (subject to §6's Windows gap).
-3. Restart `embarch-core` so the new value takes effect.
-4. Update every `embarch-api` instance's `[core]` config to match before its next call to Core.
-5. Restart (or reconnect, for an MCP-spawned instance) `embarch-api`.
+**This doc does not prescribe *when* to rotate** — no expiry, no cadence. That judgment is the engineer's: suspected exposure, a machine change.
 
-**To rotate an auto-generated token** (§3.1): delete the machine-wide token file, restart Core — it regenerates a new one on next startup since the file is now absent — then restart/reconnect every embarch-api instance so it re-reads the new file. Simpler than the explicit case, since there's no value to pick or copy between two places, but the restart requirement and the no-grace-window caveat below still apply identically.
+## 5. Known gaps and open questions
 
-Because there's no grace window, any call made after Core's restart but before every embarch-api instance re-reads the new value will 401 until they agree — acceptable downtime for a single engineer rotating their own token, but worth knowing before doing this mid-session.
+**Every item below was re-examined in a suite-wide design pass and every one was deliberately kept open rather than answered — the repo owner's explicit call.** Worth stating at the top, because **a list of open security questions reads as neglect when it is in fact a posture**: today every byte of this token stays on one machine's loopback, where **TLS buys nothing, per-caller identity distinguishes one caller from itself, and a rotation cadence protects against nothing that is happening.**
 
-This doc doesn't prescribe *when* to rotate (no expiry, no scheduled cadence) — that judgment call is left to the engineer (e.g. suspected exposure, a machine change).
-
-## 8. Open questions / future work
-
-**All six items below were re-examined in the 2026-08-25 suite-wide design pass and every one was deliberately kept open rather than answered — the user's explicit call.** That is worth stating at the top of the section, because a list of six open security questions reads as neglect when it is in fact a posture: today every byte of this token stays on one machine's loopback (WSL2⟷Windows), where TLS buys nothing, per-caller identity distinguishes one caller from itself, and a rotation cadence would be process for a risk a single-engineer deployment does not yet carry. **The trigger that turns most of this from deferred into owed is precise and mechanical: the first time Core binds to anything other than a loopback address.** `embarch_topology::software::recommended_bind_address` already computes exactly that, so it is a gate something can check rather than a judgment someone has to remember — and the LAN/Pi milestone must not quietly ship without it.
-
-- **Per-caller identity.** One shared token can't distinguish which caller made a request. Revisit if Core ever needs to tell "which caller," not just "authorized or not" (`embarch-core/decisions.md` §6, §10).
-- **No TLS in transit** (§4/§5) — the token crosses the network in cleartext. Not yet assessed against the anticipated LAN/Pi deployment (`embarch-core/decisions.md` §7); may need revisiting before Core is reachable over a real, less-trusted LAN rather than a WSL2⟷Windows loopback.
-- **No rotation grace window / hot-reload.** Both components must restart to pick up a new token, with no dual-token overlap period (§7). Not designed around further since it's an accepted, low-frequency cost — revisit only if rotation ever needs to happen without a stop-the-world restart.
-- **No rotation trigger/cadence policy.** §7 covers mechanics only; there's no guidance on when to rotate. Left to engineer judgment for now.
-- **Cross-machine (LAN/Pi) token distribution remains unsolved.** §3.1's file-based mechanism only bridges same-machine deployments; a genuinely separate host still needs explicit `token`/`token_env` config, with no auto-discovery. Revisit once a real LAN/Pi deployment (`embarch-core/decisions.md` §7) actually needs this.
-- **Native Linux/macOS path is unvalidated against real hardware/service.** core milestone 2 deliberately scoped hardware validation to Windows+WSL2 (today's actual topology); `/var/lib/embarch/token` ships as code without the same real-world confirmation the Windows path gets.
+- **No TLS in transit.** Not yet assessed against the anticipated LAN deployment; **may need revisiting before Core is reachable over a real, less-trusted network rather than a loopback.**
+- **No per-caller identity.** Revisit if Core ever needs to tell *which* caller, not just authorized or not.
+- **No rotation grace window or hot-reload.** An accepted low-frequency cost; **revisit only if rotation ever needs to happen without a stop-the-world restart.**
+- **No rotation trigger or cadence policy.** Mechanics only, above.
+- **Cross-machine token distribution remains unsolved.** The file mechanism bridges same-machine deployments only; **a genuinely separate host needs explicit config, with no auto-discovery.** Revisit once a real remote deployment needs it.
+- **The native Linux and macOS path ships as code and is not service-validated.** Hardware validation was deliberately scoped to the Windows+WSL2 topology actually in use, **so that path has not had the same real-world confirmation the Windows one gets.**
+- **The Windows path assumes `%ProgramData%` resolves to something WSL2 can reach** through its mount convention. Mitigated by resolving the real value rather than hardcoding it, **but a relocated `ProgramData` on a drive WSL2 does not mount is not an exercised edge case.**
