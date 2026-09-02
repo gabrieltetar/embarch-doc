@@ -24,6 +24,8 @@ embarch/
     ├── suite/               overview, index, roadmap, features, glossary, user-guide
     ├── embarch-decision-reversals.md
     ├── changelog.d/         one-line history fragments
+    ├── status.d/            pending edits to a shared suite-level doc
+    ├── tasks/               the background agents' work queue
     ├── history/             assembled per sub-project, + archive/
     └── scripts/             the six CI checks
 ```
@@ -51,8 +53,8 @@ Those triggers are reactive — they fire when work happens, and don't catch a d
 ## 5. How to update
 
 - **Edit the body**, so the doc stays a description of current reality. Never append.
-- **No changelog.** History does not live in a doc: drop a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B hard limit — [changelog.d/README.md](changelog.d/README.md)) and `scripts/build_changelog.py` assembles it into `history/<scope>.md`. The `## Changelog` section every doc used to carry had reached **642 KB, 25% of the corpus**, at a mean of 1,100 B per entry against this section's own former "one-line pointer" rule — and `archive-changelog.py`, which was meant to trim them to 8 entries, delivered its trims **as pull requests** into a repo whose standing rule is no PRs. Not one was ever merged; `embarch-core` reached 70 entries. Both are retired.
-- **Update suite-level facts in the same pass** — [embarch.md](embarch.md) §3's status table, a [roadmap](embarch-roadmap.md) bucket, a [features](embarch-features.md) row. A sub-project doc and the suite-level docs must never disagree about status.
+- **No changelog.** History does not live in a doc: drop a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B hard limit) and `scripts/build_changelog.py` assembles it into `history/<scope>.md`. Why, and the **642 KB** of in-doc `## Changelog` sections it replaced: [changelog.d/README.md](changelog.d/README.md).
+- **Update suite-level facts in the same pass** — *unless you are a background worker, which drops a `status.d/` fragment instead ([embarch-parallel-agents.md](embarch-parallel-agents.md) §9)* — [embarch.md](embarch.md) §3's status table, a [roadmap](embarch-roadmap.md) bucket, a [features](embarch-features.md) row. A sub-project doc and the suite-level docs must never disagree about status.
 - **Link, don't restate.** [embarch-features.md](embarch-features.md) and [embarch-roadmap.md](embarch-roadmap.md) point at a decision rather than duplicating it. Exception: [embarch-user-guide.md](embarch-user-guide.md), where a getting-started guide that only links is useless.
 - **Adding a top-level file?** Add it to [embarch.md](embarch.md) §6 in the same edit — an index is useful only while exhaustive.
 - **Run the checks.** All six run in CI on every push: `check-links.py`, `check-staleness.py`, `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`, and `build_changelog.py --check`. Run them locally for fast feedback. `collect-open-questions.py` is a read-only index, not a gate.
