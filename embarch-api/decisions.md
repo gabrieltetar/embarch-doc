@@ -15,4 +15,4 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Submitting and orchestrating studies](decisions/studies.md) — seals, schemas, reflash | 27, 28, 30, 31, 33, 39, 40, 44 | 12.0 KB |
 | [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, and no longer constants | 32, 45 | 3.6 KB |
 
-**Decisions 31 and 33 are the same decision, recorded twice** — byte-identical text, the duplicate created in the very commit that deleted 31. One entry owns both numbers, in [studies.md](decisions/studies.md).
+**Decisions 31 and 33 are one decision under two numbers.** The commit that added decision 32 inserted it in the middle and **renumbered the entry below it from 31 to 33**, so every prose reference to `decision 31` written before that commit silently began pointing at a different entry. One entry owns both numbers, in [studies.md](decisions/studies.md) — which is why numbers are permanent here now (DOC-COMPACTION.md §5).

@@ -87,7 +87,7 @@ First line after the title: `**Status:** <state>, <yyyy-mm-dd>` followed by any 
 
 `<state>` is one of `draft` · `active` · `done` · `planned` · `paused` · `proposal` · `retired` · `superseded-by:<path>`. The date is when the doc last *changed state*. `half-accepted` is deliberately absent (§3).
 
-This exists because `check-staleness.py` is a heuristic over two tables and `embarch-core`'s `doctor` check 11 is a stub — both guessing at status no doc stated readably. As of 2026-08-31 no doc is `draft`: 16 became `active`, 11 `done`, and [embarch-umbrella/milestone-6.md](embarch-umbrella/milestone-6.md) deliberately stayed `active` because its own §3.8 is in progress and five §4 items are unmarked. A `done` asserted over an unmarked Definition of Done is the status claim §4 exists to prevent.
+This exists because `check-staleness.py` is a heuristic over two tables and `embarch-core`'s `doctor` check 11 is a stub — both guessing at status no doc stated readably. As of 2026-08-31 no doc is `draft`: 16 became `active` and 11 `done`. A `done` asserted over an unmarked Definition of Done is the status claim §4 exists to prevent — the last milestone doc deliberately stayed `active` for exactly that reason, until its residue moved into [embarch-umbrella/open.md](embarch-umbrella/open.md) and the doc was deleted.
 
 ### 7.2 Decision entries
 

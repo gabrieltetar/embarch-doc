@@ -41,7 +41,7 @@ Nothing here touches a real installed Core, a real token file, or `PATH` — it'
 
 ## 3. Testing `embarch-umbrella` changes — the dangerous one
 
-`embarch-umbrella`'s `setup` (decision 28, `embarch-umbrella/design.md` §3) **writes to real, shared machine state**: it copies binaries into the canonical per-user install location, and edits `PATH` for real — the Windows registry (`HKCU\Environment\Path`) or your actual `~/.bashrc`/`~/.zshrc`. Running `cargo run -- setup` straight from a dev checkout, with no precautions, will silently overwrite your real, working install with an untested debug build and mutate your real shell config. Don't do that by default.
+`embarch-umbrella`'s `setup` (decision 28, `embarch-umbrella/decisions.md` §3) **writes to real, shared machine state**: it copies binaries into the canonical per-user install location, and edits `PATH` for real — the Windows registry (`HKCU\Environment\Path`) or your actual `~/.bashrc`/`~/.zshrc`. Running `cargo run -- setup` straight from a dev checkout, with no precautions, will silently overwrite your real, working install with an untested debug build and mutate your real shell config. Don't do that by default.
 
 **Prefer unit tests first.** `install.rs`/`locate.rs`'s logic is written to be tested without touching the real filesystem/registry at all (`cargo test` — the pure functions and idempotent file operations are exactly what decision 28's own test suite exercises). This is how decision 28 was verified originally; reach for a live `setup` run only to confirm the parts unit tests structurally can't reach (an actual registry write taking effect, a real shell picking up the new `PATH`).
 
@@ -84,7 +84,7 @@ label does. `embarch-study-designer/decisions.md` §4.3a already sets that
 precedent.
 
 **`embarch deploy-core` now does all of this in one command — start there.**
-[embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32. It
+[embarch-umbrella/decisions.md](embarch-umbrella/decisions.md) decision 32. It
 runs steps 1–3 below, and — the part worth having a command for — it
 **verifies the installed binary actually changed** afterwards, which is the
 one thing the manual procedure cannot do for you and the failure this section
@@ -98,7 +98,7 @@ embarch deploy-core                                                  # thereafte
 `--dry-run` prints the resolved plan and touches nothing; `--print-script`
 does the unelevated half and hands you the privileged step.
 
-**Be at the machine when you run it, and verify by hash afterwards (found 2026-08-27).** Self-elevation works, but the UAC dialog needs answering, and `deploy-core` reports **`landed`** whether or not it was — twice in one session it printed success after the elevated child was cancelled and nothing was installed ([embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 32's amendment). Its own check compares byte *length*, and a release rebuild of one constant is the same size, so it cannot discriminate the most common development deploy. Confirm with
+**Be at the machine when you run it, and verify by hash afterwards (found 2026-08-27).** Self-elevation works, but the UAC dialog needs answering, and `deploy-core` reports **`landed`** whether or not it was — twice in one session it printed success after the elevated child was cancelled and nothing was installed ([embarch-umbrella/decisions.md](embarch-umbrella/decisions.md) decision 32's amendment). Its own check compares byte *length*, and a release rebuild of one constant is the same size, so it cannot discriminate the most common development deploy. Confirm with
 
 ```sh
 md5sum /mnt/c/Users/<you>/source/repos/embarch-core/target/release/embarch-core.exe \

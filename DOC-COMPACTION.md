@@ -142,7 +142,7 @@ Biggest first, one per commit, `--update` after each:
 | ~~`embarch-study-designer`~~ | ~~232 KB~~ | **done: 156 KB, 24 files** |
 | ~~`embarch-outpost`~~ | ~~129 KB~~ | **done: 76 KB, 14 files** |
 | ~~`embarch-ui`~~ | ~~92 KB~~ | **done: 68 KB, 12 files** |
-| `embarch-umbrella` | 86 KB | 40 KB |
+| ~~`embarch-umbrella`~~ | ~~116 KB~~ | **done: 54 KB, 10 files** |
 | `embarch-topology` | 77 KB | 40 KB |
 | suite-level docs | 220 KB | 70 KB |
 | `embarch-decision-reversals.md` | 59 KB | 25 KB |

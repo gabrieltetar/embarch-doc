@@ -1,6 +1,6 @@
 # embarch: Zephyr relationship
 
-**Status:** active, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/decisions.md` decision 12, `embarch-dev-bench/decisions.md`, `embarch-umbrella/design.md` §3 decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
+**Status:** active, 2026-08-15. Replaces the 3-line placeholder, closing item 59 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed): Zephyr is load-bearing across three design docs (`embarch-api/decisions.md` decision 12, `embarch-dev-bench/decisions.md`, `embarch-umbrella/decisions.md` decision 17), and the board-qualifier grammar, revision semantics, snippets, and sysbuild behavior those docs assume were scattered across all three with no single home. This doc doesn't restate any of their decisions — per `DOC-PROTOCOL.md` §5, it's the concept-level reference those decisions link back to.
 
 ## 1. What this doc is for
 
@@ -48,6 +48,6 @@ Recent Zephyr SDK releases (confirmed against NCS 3.4) wrap **every** applicatio
 
 - [embarch-api/decisions.md](embarch-api/decisions.md) decision 12 — the live target-discovery implementation that applies everything in this doc mechanically.
 - [embarch-dev-bench/decisions.md](embarch-dev-bench/decisions.md) decision 4 — the sysbuild correction (§4 above) as it was actually found.
-- [embarch-umbrella/design.md](embarch-umbrella/design.md) §3 decision 17 — `init`/`doctor`'s trimmed, detection-only application of this same grammar.
+- [embarch-umbrella/decisions.md](embarch-umbrella/decisions.md) decision 17 — `init`/`doctor`'s trimmed, detection-only application of this same grammar.
 - [embarch-glossary.md](embarch-glossary.md) — one-line definitions of "board qualifier," "target," and "discovery kind."
 - [embarch-decision-reversals.md](embarch-decision-reversals.md) — the real bugs §2.1/§2.2 above describe, as they were actually found.

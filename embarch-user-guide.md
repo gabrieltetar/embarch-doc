@@ -84,7 +84,7 @@ On **macOS**, the binaries aren't code-signed yet, so Gatekeeper will block them
 
 ### 3.1 Add the binaries to your PATH
 
-**Fixed in source 2026-08-17 (`embarch-umbrella/design.md` §3 decision 28), not yet in a released binary.** Once the release you downloaded includes it, `setup` copies `embarch`/`embarch-core`/`embarch-api` to a canonical per-user location (`~/.local/share/embarch/bin` on Linux/macOS/WSL2, `%LOCALAPPDATA%\embarch\bin` on Windows) and adds it to `PATH` for real — no manual step, nothing printed to translate by hand. A brand-new shell picks it up automatically; a shell already open when `setup` ran still needs restarting, since that's an OS-level constraint no installer works around.
+**Fixed in source 2026-08-17 (`embarch-umbrella/decisions.md` decision 28), not yet in a released binary.** Once the release you downloaded includes it, `setup` copies `embarch`/`embarch-core`/`embarch-api` to a canonical per-user location (`~/.local/share/embarch/bin` on Linux/macOS/WSL2, `%LOCALAPPDATA%\embarch\bin` on Windows) and adds it to `PATH` for real — no manual step, nothing printed to translate by hand. A brand-new shell picks it up automatically; a shell already open when `setup` ran still needs restarting, since that's an OS-level constraint no installer works around.
 
 **If your release predates that fix**, `setup` only prints the line to add, and prints it as POSIX `export PATH=...` syntax unconditionally — including on native Windows `cmd.exe`, where that line isn't valid (`export` isn't a `cmd.exe` builtin). Translate it by hand for the shell you're actually in:
 
@@ -470,7 +470,7 @@ Platform notes that will cost you time otherwise:
 - [embarch-roadmap.md](embarch-roadmap.md) — what's coming, in what order
 - [embarch-features.md](embarch-features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
 - [embarch-token.md](embarch-token.md) — the auth token's full lifecycle
-- A specific component: `embarch-core/decisions.md`, `embarch-api/decisions.md`, `embarch-umbrella/design.md`, and so on
+- A specific component: `embarch-core/decisions.md`, `embarch-api/decisions.md`, `embarch-umbrella/decisions.md`, and so on
 
 ---
 
