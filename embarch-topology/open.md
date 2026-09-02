@@ -1,0 +1,21 @@
+# embarch-topology: open
+
+**Status:** active, 2026-09-02.
+
+Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
+
+- **The durable half of a signal alert is not built, and the trigger is named rather than left as owed work.** The shape is settled — a subject discriminator on the alert record, defaulted so the existing log and endpoint stay readable — and it is simply **the durable half of an alert nothing can currently raise.** Revisit when a signal is declarable **and** a route is physically real. **The first half has fired**; the second has not, because no capture has been read off a DUT over a direct route. Two supporting facts, so they need not be re-derived: **`embarch-ui` needs no change when it happens** — it renders only an alert's reason, role and timestamp — while **the mirrored alert type in the shared Core client declares those fields non-optional and would have to move in lockstep.**
+
+- **`validate_signal` has no caller anywhere, deliberately, and that is the honest state rather than a gap.** Resolving a route at the point of use *is* the validation and returns the identical mismatch, so **calling both would check twice and report once.** Recorded because "real, tested, called by nothing" is a state worth naming — the same posture the suite takes toward `embarch-study-designer`'s advertise-scoped decode surface: **validated infrastructure with no caller, left exactly as it is rather than extended on speculation.**
+
+- **No signal tap has read a byte.** Resolution has touched physical hardware — a declared serial resolved to a real port and Core attempted a real open — but **that open failed by design, because the port was deliberately held busy to verify Core's effective baud.** None of this touches the signal entity, its route, or its storage.
+
+- **One narrow bench fact is genuinely unknown and is not inferred here:** whether the DUT board's USB exposes a **second** serial interface for the outpost's dedicated UART, or whether it contends with the DUT's console. The larger question this waited on is settled — **there is no separate bridge to buy**, since the DUT board's own USB carries the outpost's UART and *is* a direct route.
+
+- **The Nordic identity relation is verified by construction, not by every path it covers.** The driver it derives from has fallbacks to other registers for parts where the device ID is inaccessible, **and those would come back *mismatch* rather than *undeclared* — the one way this arm can be wrong**, and the same exposure the first arm carries, accepted on the same terms.
+
+- **Call-site granularity is not fully specified.** Resolution and validation are fresh-every-call by construction, with no cache in the crate. The recommended-bind-address function has one real caller — umbrella's setup, which bakes the answer into every install it runs or prints — and **umbrella's own bind-versus-topology doctor check is a separate, still-unwired consumer of the same function.**
+
+- **The token and config mirrors of `embarch-api`-internal logic are untouched by this crate's existence** and still raise the extract-or-CI-diff question independently. Extracting this crate removed the *topology* copy; **those two mirror internals, not a shared concern the way topology turned out to be.** Tracked in [embarch-umbrella/open.md](../embarch-umbrella/open.md).
+
+- **Centralizing a remote Core's declared host here was considered and rejected, not left unexamined** — every consumer declares it independently today, at different scopes: per firmware repo for the API, per machine for umbrella. **Two things would have to be true for centralizing to be an improvement rather than a migration nobody asked for**: a real disagreement or stale value actually observed causing a wrong connection, and a clear answer for *whose* scope wins when a repo-level override and a machine-level default genuinely differ. Neither is true. **The reasoning cuts the other way too**: the API deliberately did *not* centralize address resolution at setup time, precisely because **the value has to be right at the moment a build is flashed, not at the moment setup last ran** — a stored answer read by a third party is exactly that staleness risk, and a literal remote host is no more exempt from it than a dynamic gateway IP was. Revisit only on a real wrong connection.

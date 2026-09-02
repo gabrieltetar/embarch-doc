@@ -12,7 +12,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
    *Rejected: a vendor-neutral portable C core with a porting layer.* Genuinely wider reach, and genuinely more design for a reach nothing currently needs — both real DUT firmware repos in play are Zephyr. Revisit when a non-Zephyr DUT is real, not before.
 
-### 14 — Repo created 2026-08-25: [gabrieltetar/embarch-outpost](https://github.com/gabrieltetar/embarch-outpost), empty, ahead of any implementation — matching how `embarch-umbrella`, `embarch-topology`, `embarch-dev-bench`, and `embarch-ui` each started, and for the same concrete reason `embarch-topology/design.md` decision 13 recorded: a west module needs somewhere for a DUT firmware repo's manifest to point.
+### 14 — Repo created 2026-08-25: [gabrieltetar/embarch-outpost](https://github.com/gabrieltetar/embarch-outpost), empty, ahead of any implementation — matching how `embarch-umbrella`, `embarch-topology`, `embarch-dev-bench`, and `embarch-ui` each started, and for the same concrete reason `embarch-topology/decisions.md` decision 13 recorded: a west module needs somewhere for a DUT firmware repo's manifest to point.
 
 ### 21 — `<embarch/outpost.h>` is includable in a build that does not have the module, and `OUTPOST_EVT()` compiles to nothing there — 2026-08-27. A one-line CMake fix for a defect that made decision 6's markers unusable in exactly the code they are most worth putting in.
 
