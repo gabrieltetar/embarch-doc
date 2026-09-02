@@ -1,6 +1,6 @@
 # embarch-promptu: design
 
-**Status:** planned, 2026-08-15. No repo yet. First concrete scoping pass below, added 2026-08-15 — closing item 57 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed). This remains scoping ahead of a repo — no code, same as every other doc in this suite that records a decision before building it (e.g. `embarch-api/design.md` §3 decision 10, `embarch-core/design.md` §4's `/study*` rows).
+**Status:** planned, 2026-08-15. No repo yet. First concrete scoping pass below, added 2026-08-15 — closing item 57 of that day's design-improvement review (`.claude/design-improvements-2026-08-15.md`, local working notes — not committed). This remains scoping ahead of a repo — no code, same as every other doc in this suite that records a decision before building it (e.g. `embarch-api/design.md` §3 decision 10, `embarch-core/decisions.md` §4's `/study*` rows).
 
 ## 1. Purpose and scope
 

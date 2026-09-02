@@ -304,7 +304,7 @@ message name the baud it opened at.
 `/home/gabriel/Github/embarch/embarch-api/target/debug/embarch-api` does not
 affect the running MCP server; a client picks up the new binary only on a
 **fresh Claude Code session**. Deploy order across the two is Core first,
-then api ([embarch-core/design.md](embarch-core/design.md) §3 decision 30).
+then api ([embarch-core/decisions.md](embarch-core/decisions.md) §3 decision 30).
 
 ## 5. Agent-driven iteration — what's safe unsupervised, what isn't
 
@@ -335,6 +335,6 @@ then api ([embarch-core/design.md](embarch-core/design.md) §3 decision 30).
 **What does *not* change, and is what makes this safe:**
 
 - **`main` still has to build.** Nothing about skipping branches licenses committing something red. Run the crate's own `cargo build`/`test`/`clippy --all-targets -- -D warnings` — plus a native Windows build where `embarch-core` is involved (§4) — *before* the commit, not after.
-- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/design.md` §3 decision 30).
+- **A cross-repo change still lands as one logical pass.** Sequence the repos so each one's `main` compiles on its own: the shared crate first (`embarch-study-designer`, `embarch-topology`), then its consumers. Deploy order is a separate question and is not always the same order (Milestone 7's is Core-before-api, `embarch-core/decisions.md` §3 decision 30).
 - **Commit granularity is the thing carrying the history now.** With no branch name and no merge commit to hang a milestone off, the commit message is the only record of what a change was for. Write it accordingly.
 - **Real, risky, or exploratory work can still take a branch.** This is a default, not a prohibition — a rewrite you might abandon is exactly what a branch is for. The rule is against branching *reflexively* for ordinary forward work.

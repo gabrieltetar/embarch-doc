@@ -470,7 +470,7 @@ Platform notes that will cost you time otherwise:
 - [embarch-roadmap.md](embarch-roadmap.md) — what's coming, in what order
 - [embarch-features.md](embarch-features.md) — every feature and how far it's actually verified. Worth reading before relying on something: "shipped" and "validated against real hardware" are tracked separately, on purpose
 - [embarch-token.md](embarch-token.md) — the auth token's full lifecycle
-- A specific component: `embarch-core/design.md`, `embarch-api/design.md`, `embarch-umbrella/design.md`, and so on
+- A specific component: `embarch-core/decisions.md`, `embarch-api/design.md`, `embarch-umbrella/design.md`, and so on
 
 ---
 

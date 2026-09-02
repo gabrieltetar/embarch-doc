@@ -1,6 +1,6 @@
 # EMBARCH_TOKEN: design
 
-**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/design.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
+**Status:** active, 2026-07-21. Consolidates token-handling content previously scattered across `embarch-core/decisions.md` and `embarch-api/design.md` into one canonical doc. Append changes to the Changelog (§9) rather than silently editing history above it.
 
 ## 1. Purpose and scope
 
@@ -18,8 +18,8 @@
 
 | Component | How it holds the token | Reference |
 |---|---|---|
-| `embarch-core` (HTTP server) | Reads `EMBARCH_TOKEN` once at startup (`main.rs`'s `run()`) if set. Otherwise reads the token file (§3.1) if present, or generates one and writes it there if not. No hardcoded fallback literal remains (§5). | `embarch-core/design.md` §6 |
-| `embarch-core` CLI (`run` foreground process) | Same resolution as the HTTP server — local CLI operation isn't a separate credential. | `embarch-core/design.md` §2 |
+| `embarch-core` (HTTP server) | Reads `EMBARCH_TOKEN` once at startup (`main.rs`'s `run()`) if set. Otherwise reads the token file (§3.1) if present, or generates one and writes it there if not. No hardcoded fallback literal remains (§5). | `embarch-core/decisions.md` §6 |
+| `embarch-core` CLI (`run` foreground process) | Same resolution as the HTTP server — local CLI operation isn't a separate credential. | `embarch-core/decisions.md` §2 |
 | `embarch-api` | Config's `[core]` table: inline `token` or `token_env` (`token_env` wins if both are set). If neither resolves, falls back to reading the same token file (§3.1) Core uses. If that also isn't found, embarch-api fails to start with a clear error (§8). | `embarch-api/design.md` §4 |
 
 Beyond process memory, embarch-api's own config file (for the inline `token` case) and the token file (§3.1) are the only two places the token is ever written to disk. If stored inline in config, that file should be `chmod 600` and excluded from version control — identical treatment to any other local secret.
@@ -35,11 +35,11 @@ Core creates the directory and file — with owner-restricted permissions (`chmo
 
 **WSL2⟷Windows discovery**, since that's this suite's primary deployment split (§4): embarch-api running under WSL2, talking to a Windows-hosted Core, resolves the real `%ProgramData%` value via a one-time shell-out to the Windows side — rather than hardcoding `C:\ProgramData`, which could be wrong on a machine that customized it — and maps the result through WSL2's `/mnt/<drive>` convention to read the same file.
 
-**Scope limit.** This only bridges same-machine deployments — including the WSL2⟷Windows split, since both sides are really one physical machine — not a genuinely separate host. Core running on a real LAN/Pi deployment (§4; `embarch-core/design.md` §7) has no local file for embarch-api to discover at all; that case still requires explicit `token`/`token_env` config. No filesystem convention can bridge two actual machines (§8).
+**Scope limit.** This only bridges same-machine deployments — including the WSL2⟷Windows split, since both sides are really one physical machine — not a genuinely separate host. Core running on a real LAN/Pi deployment (§4; `embarch-core/decisions.md` §7) has no local file for embarch-api to discover at all; that case still requires explicit `token`/`token_env` config. No filesystem convention can bridge two actual machines (§8).
 
 ## 4. Transport
 
-Every request from `embarch-api` to `embarch-core` carries `Authorization: Bearer <token>` (`core_client.rs`'s `.bearer_auth(&token)`), checked via exact-string comparison in Core's `auth_middleware`. There is currently no TLS anywhere in this path — Core's HTTP server is plain HTTP (`embarch-core/design.md` §7's WSL2⟷Windows and future LAN/Pi deployment models). This means the token crosses the network in cleartext on every call; anyone who can observe that traffic (a shared LAN segment, a compromised host on the same network) can read and replay it. Recorded as an open question (§8) — it wasn't an explicit design decision anywhere else.
+Every request from `embarch-api` to `embarch-core` carries `Authorization: Bearer <token>` (`core_client.rs`'s `.bearer_auth(&token)`), checked via exact-string comparison in Core's `auth_middleware`. There is currently no TLS anywhere in this path — Core's HTTP server is plain HTTP (`embarch-core/decisions.md` §7's WSL2⟷Windows and future LAN/Pi deployment models). This means the token crosses the network in cleartext on every call; anyone who can observe that traffic (a shared LAN segment, a compromised host on the same network) can read and replay it. Recorded as an open question (§8) — it wasn't an explicit design decision anywhere else.
 
 ## 5. Security model
 
@@ -76,9 +76,9 @@ This doc doesn't prescribe *when* to rotate (no expiry, no scheduled cadence) �
 
 **All six items below were re-examined in the 2026-08-25 suite-wide design pass and every one was deliberately kept open rather than answered — the user's explicit call.** That is worth stating at the top of the section, because a list of six open security questions reads as neglect when it is in fact a posture: today every byte of this token stays on one machine's loopback (WSL2⟷Windows), where TLS buys nothing, per-caller identity distinguishes one caller from itself, and a rotation cadence would be process for a risk a single-engineer deployment does not yet carry. **The trigger that turns most of this from deferred into owed is precise and mechanical: the first time Core binds to anything other than a loopback address.** `embarch_topology::software::recommended_bind_address` already computes exactly that, so it is a gate something can check rather than a judgment someone has to remember — and the LAN/Pi milestone must not quietly ship without it.
 
-- **Per-caller identity.** One shared token can't distinguish which caller made a request. Revisit if Core ever needs to tell "which caller," not just "authorized or not" (`embarch-core/design.md` §6, §10).
-- **No TLS in transit** (§4/§5) — the token crosses the network in cleartext. Not yet assessed against the anticipated LAN/Pi deployment (`embarch-core/design.md` §7); may need revisiting before Core is reachable over a real, less-trusted LAN rather than a WSL2⟷Windows loopback.
+- **Per-caller identity.** One shared token can't distinguish which caller made a request. Revisit if Core ever needs to tell "which caller," not just "authorized or not" (`embarch-core/decisions.md` §6, §10).
+- **No TLS in transit** (§4/§5) — the token crosses the network in cleartext. Not yet assessed against the anticipated LAN/Pi deployment (`embarch-core/decisions.md` §7); may need revisiting before Core is reachable over a real, less-trusted LAN rather than a WSL2⟷Windows loopback.
 - **No rotation grace window / hot-reload.** Both components must restart to pick up a new token, with no dual-token overlap period (§7). Not designed around further since it's an accepted, low-frequency cost — revisit only if rotation ever needs to happen without a stop-the-world restart.
 - **No rotation trigger/cadence policy.** §7 covers mechanics only; there's no guidance on when to rotate. Left to engineer judgment for now.
-- **Cross-machine (LAN/Pi) token distribution remains unsolved.** §3.1's file-based mechanism only bridges same-machine deployments; a genuinely separate host still needs explicit `token`/`token_env` config, with no auto-discovery. Revisit once a real LAN/Pi deployment (`embarch-core/design.md` §7) actually needs this.
+- **Cross-machine (LAN/Pi) token distribution remains unsolved.** §3.1's file-based mechanism only bridges same-machine deployments; a genuinely separate host still needs explicit `token`/`token_env` config, with no auto-discovery. Revisit once a real LAN/Pi deployment (`embarch-core/decisions.md` §7) actually needs this.
 - **Native Linux/macOS path is unvalidated against real hardware/service.** core milestone 2 deliberately scoped hardware validation to Windows+WSL2 (today's actual topology); `/var/lib/embarch/token` ships as code without the same real-world confirmation the Windows path gets.
