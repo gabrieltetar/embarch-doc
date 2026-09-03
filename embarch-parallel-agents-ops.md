@@ -144,3 +144,24 @@ Cloud sessions are good for exactly the work that needs no local anything: **doc
 They are useless for the firmware repos and for anything hardware-gated, which is most of what blocks this suite. That is not a gap to close: it is the same boundary that keeps the fleet local.
 
 **Cloud sessions investigate; they do not land.** A cloud session's natural output is a pull request, and [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's standing rule is no branches and no PRs. Rather than carve an exception into a rule only the owner may amend, cloud work comes home: it reads, diagnoses, drafts and reports in the thread, and anything that changes a repo lands through the fleet or an ordinary session, on `main`. A cloud session that has produced something worth keeping should say so in the thread; the supervisor can then file it as a task.
+
+## 7. Dreaming: what to do with an empty queue
+
+An empty queue is not idleness to fill. It is the one moment the fleet genuinely does not know what is worth doing next — every other moment it is executing something already judged worth doing. So it asks, once, with real options.
+
+When phase 1 finds nothing dispatchable, the supervisor posts **exactly three proposals** to `#embarch-fleet`, mentions `<@U0AGQGSHM2P>`, and **ends the batch**. It does not pick one.
+
+**Three, not one and not ten.** One is a decision wearing a question's clothes. Ten is a survey the owner has to do the work of reading. Three is enough to show a choice was made and cheap enough to answer from a phone with a single word.
+
+**Every proposal must come from something already written down** — [suite/roadmap.md](suite/roadmap.md)'s Next, a sub-project's `open.md`, an unaddressed [reversals](embarch-decision-reversals.md) follow-up, or a finding a worker dropped in `inbox/`. **Nothing invented.** A fleet that proposes work it thought of itself, on a queue it also fills itself, is a machine for generating plausible busywork.
+
+Each proposal carries what the owner needs to answer in one word, and no more:
+
+- **what** it would do, in one line
+- **why now** — the doc that already says it matters, linked
+- **scope** and **`Hardware:`**, because a `required` proposal is asking for his hands, not the fleet's
+- **the cost**, honestly: one worker, or a cross-repo pass the supervisor would run itself
+
+Then: *"reply `do 2`, or tell me what you actually want."* The second half matters — the three are a starting point, not a menu, and the most useful answer is often none of them.
+
+**A dream is recorded like anything else.** The proposals and the reply go in the digest, so a pattern of the owner rejecting all three is visible rather than lost — that pattern would mean the refill sources have drifted from what he actually cares about, which is worth knowing early.

@@ -11,9 +11,19 @@ Arguments: `$ARGUMENTS` — an optional worker cap (default 6, hard max 6) and a
 optional comma-separated list of sub-projects to restrict this batch to.
 
 **Before anything else:** three steps.
-0. **Recover.** A previous batch may have been killed outright — closing VS Code
-   is the owner's kill switch and is meant to be used, so treat a killed batch as
-   normal, not as an incident. Abort any in-progress merge or rebase; reclaim
+0. **Refresh, then recover.** *Refresh first, and do not skip it because the
+   session "already knows" the repo.* `git pull --rebase` every repo this batch
+   may touch, then **re-read from disk** the docs you are about to act on — the
+   queue, the ownership map, the sub-project docs in scope. A supervisor session
+   is long-lived and the repos move under it: on 2026-09-02 a sub-project's
+   `design.md` was split into four files mid-session, another session's `git add
+   -A` swept this one's uncommitted work into two unrelated commits, and `main`
+   moved between two phases of a single batch. Session memory is a cache with no
+   invalidation; `git pull` and a fresh read are the invalidation.
+
+   Then **recover.** A previous batch may have been killed outright — closing VS
+   Code is the owner's kill switch and is meant to be used, so treat a killed
+   batch as normal, not as an incident. Abort any in-progress merge or rebase; reclaim
    every stale claim (**if no supervisor is running, every claim is stale** — the
    workers were its own subagents and died with it); delete worktrees with no
    commits. `embarch-parallel-agents-ops.md` §3 has the full table.
@@ -109,8 +119,11 @@ into the worktree's parent, pointing at the main checkout. Batch 001's api
 worker hit this and fixed it by hand — do it in setup so no worker has to.
 
 **If nothing is dispatchable** — empty queue, or only `Hardware: required` and
-`blocked` tasks — the batch ends here. Say so, list what is waiting on the
-owner, and do not invent work to fill the wave.
+`blocked` tasks — **dream, then stop** (`embarch-parallel-agents-ops.md` §7).
+Post exactly three proposals to `#embarch-fleet`, mention `<@U0AGQGSHM2P>`, and
+end the batch. Do not pick one yourself and do not invent work to fill the wave:
+an empty queue is the one moment the fleet genuinely does not know what is
+worth doing, which is why it asks instead of guessing.
 
 **3. Dispatch.** Launch every worker in parallel as a background `embarch-worker`
 agent, one message, one tool use each. Give each: its task file path, **both**

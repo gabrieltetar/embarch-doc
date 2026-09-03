@@ -15,20 +15,31 @@ disarms it, `status` reports whether it is armed.
 Create one recurring cron job, `*/10 * * * *`, whose prompt is exactly:
 
 > **Fleet tick.** Read `#embarch-fleet` (`C0BUKTL2FPC`), newest 20 messages,
-> `response_format: detailed`. For every message authored by `U0AGQGSHM2P` that
-> does **not** already carry an `eyes`, `white_check_mark` or `x` reaction:
-> react `eyes` first (that claims it, so the next tick does not redo it), act on
-> it per `.claude/commands/fleet.md`, reply **in its thread** with the result,
-> then react `white_check_mark`, or `x` if it failed. If nothing is unhandled,
-> do nothing and print nothing.
+> `response_format: detailed`. Consider a message **only** if it is authored by
+> `U0AGQGSHM2P`, does **not** carry an `eyes`, `white_check_mark`, `x` or
+> `robot_face` reaction, and does **not** end with a `Sent using ... Claude`
+> app attribution. **That last test is what separates the owner from the fleet**:
+> the connector authenticates as the owner, so the fleet's own posts are authored
+> by `U0AGQGSHM2P` too and are otherwise indistinguishable. For each such
+> message: react `eyes` first (that claims it, so the next tick does not redo
+> it), act on it per `.claude/commands/fleet.md`, reply **in its thread**, then
+> react `white_check_mark`, or `x` if it failed. If nothing is unhandled, do
+> nothing and print nothing.
 
 Then post one line to the channel saying the listener is armed and at what
 cadence, and tell the owner in the terminal.
 
 **The reactions are the watermark** — there is no state file. `eyes` means
-claimed, `white_check_mark` done, `x` failed. This survives a restart, and it
-shows the owner from their phone that a message was picked up before any work
-finishes.
+claimed, `white_check_mark` done, `x` failed, and **`robot_face` means the fleet
+wrote this itself**. Always react `robot_face` to your own post immediately
+after sending it. This survives a restart, and it shows the owner from their
+phone that a message was picked up before any work finishes.
+
+**Why `robot_face` is load-bearing and not decoration.** The Slack connector
+posts *as the owner*, so every message in this channel — including the fleet's
+own batch reports — is authored by `U0AGQGSHM2P`. Without a marker, the first
+tick after a batch would read the batch's own summary as a fresh instruction and
+act on it. Caught on 2026-09-03, on the first real tick, before it did.
 
 **Cron fires only while the session is idle,** so during a running batch these
 ticks do not happen. That gap is covered: the supervisor polls this same channel
