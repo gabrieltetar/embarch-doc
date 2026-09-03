@@ -16,7 +16,7 @@ Its job — checking a prior step's captured data against an expected value — 
 
 **It was never once used. That is the decision, and everything else is detail.** Core's result writer emitted a hardcoded empty array — **not "empty because this run had none" but a literal string in the source, because Core never evaluated a validation in its life.** Decision 28's field **was designed and never added to the type at all.** The signal-check variants were described in the doc's own words as an "illustrative placeholder", and one was **implemented as a naive quadratic transform against synthetic signals, because no real signal ever reached it.** The one thing that would have made any of it real — **hardware producing data worth checking — was deferred earlier the same day.**
 
-**What it cost to keep, [measured 2026-08-25].** Two inline payload buffers per check, times the step cap, gives a **36,872-byte inline array**. After decision 46 fixed the field that actually crashed a debug build, **this was 97% of what remained**: the type went 77,368 bytes → 37,960 → **1,088**. **Decision 46 got a 2× reduction; removing this got a further 35×.**
+**What it cost to keep.** Two inline payload buffers per check, times the step cap, made it **an inline array of tens of kilobytes** — and after decision 46 fixed the field that actually crashed a debug build, **this was 97% of what remained. Decision 46 got a 2× reduction; removing this got a further 35×.**
 
 **The wire constant is untouched.** None of it ever crossed the bench wire — decision 17 said so from the start and it held — **so dev-bench needed no reflash and its decoder no change, only three stale comments. This is the cleanest evidence yet for decision 12's split: under the old single constant, deleting a type dev-bench cannot observe would have charged a firmware reflash.** A removal is **exactly as breaking as an addition on the host hop, which is why it bumps at all.**
 
@@ -26,13 +26,13 @@ Done **on a branch**, unlike the rest of that pass, at the repo owner's explicit
 
 ### 54 — `StepResult.gatt_activity` retired outright — the capture is the file, and it was never the field
 
-Raised as **"can we get free of the 32 cap?"**: even a characteristic that notifies rarely exceeds 32 records in a study of any length.
+**Even a characteristic that notifies rarely exceeds the record cap in a study of any length.**
 
-**The answer is that the cap should not be raised, because the field should not exist.** It held **a bounded, in-memory copy of something unbounded and streamed** — the tap pipeline already writes every record incrementally as it arrives. **Keeping the capped copy alongside it meant a study could *look* like it had captured everything while holding 32 of several thousand records** — the **"nothing captured, no error" family of failure this suite has now been opened by from four directions.**
+**The answer is that the cap should not be raised, because the field should not exist.** It held **a bounded, in-memory copy of something unbounded and streamed** — the tap pipeline already writes every record incrementally as it arrives. **Keeping the capped copy alongside it meant a study could *look* like it had captured everything while holding a fraction of what arrived** — the **"nothing captured, no error" family of failure this suite has now been opened by from four directions.**
 
 **What replaces it is not nothing.** Every study with a monitor step now gets a transcript tap declared automatically — **uncapped, both directions, written as it arrives.** Before that pass **the Study Designer authored no GATT tap at all**, so those 32 records were genuinely the only inline record a UI-authored study produced: **retiring the field without that half would have removed the answer along with the wrong one.**
 
-**[Measured, not asserted]:** the bench's RAM segment goes **90.87% → 81.12%**, about 37 KB, **on a board whose SRAM had already overflowed twice in this suite's history.**
+**Measured, not asserted:** it returned about 37 KB of the bench's RAM segment, **on a board whose SRAM had already overflowed twice in this suite's history.**
 
 **The removal is mid-struct in a message dev-bench hand-encodes, which is what makes this unambiguously a wire bump:** an encoder that kept writing even the absent-marker byte **would put the next field one byte late and Core would read the activity byte as a security level.** Both pinned vectors are re-pinned one byte shorter, and **the populated one is where that shows up as a wrong *value* rather than only a wrong length** — the same class of drift two retired fields caused for a whole schema version before the pinning rule caught them.
 

@@ -78,6 +78,6 @@ Core writes `study_results/<study_id>/`, and this crate owns every **row shape**
 
 ## 7. Constants
 
-Every capacity bound lives in one `limits` module. Values, sizing and provenance: [decisions/limits.md](decisions/limits.md) — 24 constants, each marked `[measured <date>]` or `[assumed]`. The two schema constants and what each guards: [decisions/versioning.md](decisions/versioning.md).
+Every capacity bound lives in one `limits` module. Values and provenance: [interfaces/limits.md](interfaces/limits.md); why they are fixed-capacity: [decisions/limits.md](decisions/limits.md). The two schema constants and what each guards: [decisions/versioning.md](decisions/versioning.md).
 
 `Study` is **1,088 bytes**, down from 77,368 before three size passes: a heap container for `steps`, a generalised bounded newtype for the result types, and the outright removal of post-hoc validation, which was 97% of what remained after the first.
