@@ -165,3 +165,15 @@ Each proposal carries what the owner needs to answer in one word, and no more:
 Then: *"reply `do 2`, or tell me what you actually want."* The second half matters — the three are a starting point, not a menu, and the most useful answer is often none of them.
 
 **A dream is recorded like anything else.** The proposals and the reply go in the digest, so a pattern of the owner rejecting all three is visible rather than lost — that pattern would mean the refill sources have drifted from what he actually cares about, which is worth knowing early.
+
+## 8. Clearing the supervisor's context
+
+A supervisor session is long-lived and accumulates every batch it has run. Workers do not have this problem — they are one task then dead, so everything they learned is in a doc or gone, deliberately (§5 of [the protocol](embarch-parallel-agents.md)). The supervisor is the opposite, and needs the same discipline applied by hand.
+
+**The batch boundary is the handoff boundary, and it is the only safe one.** Phase 5 ends with nothing in flight: no worktrees, no agent branches, no unfolded `status.d/` fragments, no claimed tasks. Verified at the end of batch 001 — all four counts zero. Mid-batch there is no equivalent point, because workers are running and the fold has not happened, so a clear there loses state nothing can reconstruct.
+
+**The digest is the handoff.** [supervisor-log.md](supervisor-log.md)'s newest entry already carries what a cold successor needs: what was decided, what merged with its SHAs, what blocked, what was opened, the hardware debts, the budget, and what the last supervisor was least sure about. It is written to be read by someone with no memory of writing it — which after a clear is literally true. Phase 0 reads it before deciding anything.
+
+**Only the owner can clear.** `/clear` is a user-side command; a session cannot invoke it on itself. So phase 5 ends by *saying* clearing is now safe, and the owner does it or does not. Auto-compaction handles overflow either way, but compaction is a summary of a transcript, while the digest is a record written on purpose — the second is the better thing to resume from.
+
+**The alternative, not built:** run each batch as a disposable subagent, so the supervisor's context is bounded by one batch the way a worker's is bounded by one task, and the long-lived session holds only the cron tick. That would make clearing unnecessary rather than merely safe. It costs a nesting level — an agent spawning agents — and has not been tried.

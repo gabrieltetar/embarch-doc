@@ -21,6 +21,12 @@ optional comma-separated list of sub-projects to restrict this batch to.
    moved between two phases of a single batch. Session memory is a cache with no
    invalidation; `git pull` and a fresh read are the invalidation.
 
+   **Then read the handoff**: the newest entry in `supervisor-log.md`. It is
+   written to be read cold, by a supervisor with no memory of writing it — what
+   the last batch decided, what it opened, what it was least sure about. If this
+   session was cleared since the last batch, that entry is the only thing
+   carrying it forward, so read it before deciding anything.
+
    Then **recover.** A previous batch may have been killed outright — closing VS
    Code is the owner's kill switch and is meant to be used, so treat a killed
    batch as normal, not as an incident. Abort any in-progress merge or rebase; reclaim
@@ -160,6 +166,13 @@ Then prepend this batch's entry to `supervisor-log.md` (§11): what you
 decided — a suite-wide design you approved goes at the top, not in the merge
 list — what merged, what blocked, and every hardware-verification debt the
 workers collected. Then post a short Slack message to the owner pointing at it.
+
+**Finally, tell the owner in the terminal that clearing is now safe**, because
+only they can do it and only here is it safe. A completed batch leaves nothing in
+flight — no worktrees, no agent branches, no unfolded fragments, no claims — and
+the digest you just wrote is a handoff meant to be read cold. Mid-batch there is
+no such point: workers are running and the fold has not happened, so a clear
+there loses state nothing can reconstruct.
 
 ## Reporting back
 
