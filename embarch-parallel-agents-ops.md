@@ -149,7 +149,12 @@ They are useless for the firmware repos and for anything hardware-gated, which i
 
 An empty queue is not idleness to fill. It is the one moment the fleet genuinely does not know what is worth doing next — every other moment it is executing something already judged worth doing. So it asks, once, with real options.
 
-When phase 1 finds nothing dispatchable, the supervisor posts **exactly three proposals** to `#embarch-fleet`, mentions `<@U0AGQGSHM2P>`, and **ends the batch**. It does not pick one.
+**Two triggers, because the owner should not have to ask.**
+
+- **Phase 1 of a batch** finds nothing dispatchable: post three proposals, mention `<@U0AGQGSHM2P>`, and **end the batch**. Do not pick one.
+- **An idle tick** (§5) finds no message to act on *and* an empty queue: the same three proposals. Rate-limited to one dream per **6 hours**, using the channel's own history as the watermark.
+
+The second trigger is the one that matters. Without it, dreaming is only reachable by starting a batch on an empty queue — which means the fleet sits idle until the owner notices and pokes it, and noticing is exactly the work the fleet exists to take off him. Six hours rather than the tick's ten minutes because an empty queue stays empty until someone acts, and a proposal repeated twice an hour is noise, not a prompt.
 
 **Three, not one and not ten.** One is a decision wearing a question's clothes. Ten is a survey the owner has to do the work of reading. Three is enough to show a choice was made and cheap enough to answer from a phone with a single word.
 

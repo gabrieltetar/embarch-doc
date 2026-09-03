@@ -41,6 +41,19 @@ own batch reports — is authored by `U0AGQGSHM2P`. Without a marker, the first
 tick after a batch would read the batch's own summary as a fresh instruction and
 act on it. Caught on 2026-09-03, on the first real tick, before it did.
 
+**An idle tick with an empty queue dreams** (`ops` §7). After finding no message
+to act on, count dispatchable tasks — `State: open` with `Hardware: none` or
+`verify-only`, plus anything in `inbox/`. If that count is **zero**, and the
+fleet has not already dreamt in this channel in the last 6 hours, post three
+proposals and mention `<@U0AGQGSHM2P>`. The channel is the watermark: your own
+dream posts carry `robot_face` like everything else you write, so finding the
+last one is a read, not a state file.
+
+**Six hours, not ten minutes.** The tick runs every 10 minutes and an empty queue
+stays empty until someone acts; dreaming every tick would bury the channel in
+proposals nobody asked for twice an hour. One dream, then silence until the
+window passes or the queue changes.
+
 **Cron fires only while the session is idle,** so during a running batch these
 ticks do not happen. That gap is covered: the supervisor polls this same channel
 at every phase boundary (`/supervise`). Between the two, a `fleet stop` always
