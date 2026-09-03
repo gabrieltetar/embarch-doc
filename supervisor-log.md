@@ -38,6 +38,53 @@ branch name, so the SHA is the only handle a revert has.
 
 ---
 
+## 2026-09-03 — batch 002
+
+**Decided:** nothing suite-wide. But **I merged past a red check**: on
+`study-designer/002`'s doc branch `check-doc-conventions` FAILED and the merge
+ran anyway, because it was a separate command in my script rather than gated on
+the result. `main` was never red — the offending file was untracked — but §10
+exists to stop exactly that, and batch 001's deliberate red-gate exception is the
+precedent that makes walking past the next one easier. Second batch running, and
+the gate has now been bypassed in both.
+
+**Merged:** `agent/study-designer/002-test-harness-stack-overflow` (sd `9add296`,
+doc `2a5573b`) · `agent/api/001-sse-client` (api `974e8f9`, doc `cda9df9`).
+All fast-forward.
+
+**Blocked:** none.
+
+**Opened:** `study-designer/003` (`cargo test --features alloc` has never
+compiled) and `core/001` (embarch-core's `interfaces.md` lists three event kinds;
+Core emits four, so a client written from that row cannot decode transcripts) —
+both worker findings, both handed over through `inbox/` rather than fixed in
+place. One inbox drop was **closed rather than filed**: `inbox/` failing
+`check-doc-conventions` was real and I had already fixed it hours earlier.
+
+**Hardware debts:** `api/001` owes a six-step rig on the deployed Core + bench +
+DUT. The one that matters: **provoking `lagged` for real** — host tests
+structurally cannot, and if no realistic study can outrun Core's buffer, that is
+itself worth recording. Also a `[assumed]` 45 s idle timeout read off axum's
+default rather than measured against the deployed build.
+
+**Budget:** DEGRADED throughout, wave 2, no 429.
+
+**What the batch found that I had to act on as the owner, not as supervisor:**
+`embarch-core-client` lives in `embarch-api` but `embarch-ui` path-depends on it,
+so §10's read-the-diff carve-out named the wrong set — a worker owning `api` can
+change `ui`'s dependency without owning `ui`. The worker flagged it and could not
+fix it; I widened the carve-out and built `embarch-ui` against the merge result
+(green, 87 tests) before landing. **This is the first case where the
+owner/supervisor split earned itself**, one commit after being built.
+
+**Least sure about:** the same thing as batch 001, which is the signal. A gate
+that has been bypassed in two consecutive batches — once deliberately, once
+carelessly — is not a gate. The deliberate one was defensible; the careless one
+means the next supervisor should run the checks and the merge as one gated
+command, not two.
+
+---
+
 ## 2026-09-03 — batch 001
 
 **Decided:** one call worth reviewing. I **landed `study-designer/001` on a red

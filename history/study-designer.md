@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `cargo test` no longer aborts: the crate sets a 64 MiB harness stack for the allocator-free shape it tests (decision 63).
+## 2026-09
+
 ### Changed
 - embarch-study-designer decisions compacted, 175 KB to 154 KB across 24 files.
 - study-designer capacity constants moved to interfaces/limits.md, where a reference belongs.

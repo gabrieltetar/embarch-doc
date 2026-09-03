@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Added
+- study-status --follow and the study_watch tool consume Core's SSE study events; lagged is reported, a drop falls back to polling.
+## 2026-09
+
+### Added
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Fixed

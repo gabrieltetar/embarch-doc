@@ -42,6 +42,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, instead of a hand-maintained static entry | Shipped | local | 12 |
 | CLI subcommands mirroring every tool (kebab-case, unlike the snake_case tools) | Shipped | hw | §5a |
 | `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
+| `study-status --follow` / `study_watch` — live study events over SSE, `lagged` reported not raised, polling fallback | Shipped, never against a real Core | unit | 48, 49 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
 | Per-project build concurrency lock | Shipped | n/a | §6 |

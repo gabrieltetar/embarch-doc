@@ -118,7 +118,7 @@ The gate, run by the worker and then **re-run independently by the supervisor** 
 
 That is [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's existing standard, unchanged, applied per branch instead of per commit. Nothing here licenses a lower bar because an agent wrote it.
 
-**The gate is mechanical and catches broken, not wrong.** The one judgement the supervisor adds: it reads the diff before merging when the change touches a shared crate (`embarch-study-designer`, `embarch-topology`), a wire type, or retires a decision — the three places where passing and correct diverge most expensively. Everything else merges on green.
+**The gate is mechanical and catches broken, not wrong.** The one judgement the supervisor adds: it reads the diff before merging when the change touches a shared crate (`embarch-study-designer`, `embarch-topology`, and `embarch-core-client` — which lives inside `embarch-api` but is path-depended on by `embarch-ui`, so a worker who owns `api` can change `ui`'s dependency without owning `ui`), a wire type, or retires a decision — the three places where passing and correct diverge most expensively. Everything else merges on green.
 
 **Merge order** is shared crates first, then consumers, then `embarch-doc` — the same sequencing §6 already fixes for a cross-repo pass, applied to a batch of independent ones. Within a tier, order by branch age, oldest first, so nothing sits.
 

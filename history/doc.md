@@ -4,6 +4,24 @@
 
 ## 2026-09
 
+### Added
+- An empty queue makes the supervisor propose three real options and stop, rather than inventing work.
+- An idle tick with an empty queue dreams too, rate-limited to once per 6 hours.
+- The batch boundary is the only safe clear point; the digest is the handoff and phase 0 now reads it.
+- inbox/ lets any thread or worker hand the fleet a task without touching git or the queue.
+
+### Changed
+- The supervisor is a disposable agent; check-ownership --supervisor rejects owner-reserved paths mechanically.
+- fleet start spawns a supervisor agent rather than running the batch in the listener session.
+
+### Fixed
+- Phase 0 refreshes from origin and re-reads docs; session memory is a cache with no invalidation.
+- The fleet marks its own Slack posts robot_face; without it a tick reads its own batch report as a command.
+- check-ownership --code-repo died in every code repo; recovery greps matched documentation.
+- embarch-core-client is a shared crate too: api owns it, ui path-depends on it.
+- inbox/ was missing from check-doc-conventions SKIP_DIRS, so a queue entry failed a doc rule.
+## 2026-09
+
 ### Fixed
 - DOC-COMPACTION s10 projection corrected: deletable cold is ~18 percent corpus-wide, not 54.
 - The usage gate degrades to a capped wave when percentages are unavailable, and HOLDs on a real 429 instead.
