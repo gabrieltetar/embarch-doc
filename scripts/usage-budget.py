@@ -63,8 +63,11 @@ TRANSCRIPTS = os.path.expanduser("~/.claude/projects")
 def read_cache(path: str, max_age: int):
     """(payload, None) or (None, reason-it-is-unusable)."""
     if not os.path.exists(path):
-        return None, (f"no cache at {path} -- is statusline-usage.py wired up "
-                      "as statusLine in ~/.claude/settings.json?")
+        return None, (f"no cache at {path} -- either no status line ran, or it "
+                      "ran and its payload carried no rate_limits. Those are "
+                      "indistinguishable from disk: statusline-usage.py writes "
+                      "nothing unless rate_limits is present "
+                      "(embarch-parallel-agents-ops.md section 2)")
     try:
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
