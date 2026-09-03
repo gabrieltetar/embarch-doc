@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- `cargo test --features alloc` did not compile; two tests now use `String::from`, per crate convention.
+## 2026-09
+
+### Fixed
 - `cargo test` no longer aborts: the crate sets a 64 MiB harness stack for the allocator-free shape it tests (decision 63).
 ## 2026-09
 

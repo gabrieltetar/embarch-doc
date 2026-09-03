@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- The documented tick prompt had drifted from the live one and lost the dream step.
+## 2026-09
+
 ### Added
 - An empty queue makes the supervisor propose three real options and stop, rather than inventing work.
 - An idle tick with an empty queue dreams too, rate-limited to once per 6 hours.

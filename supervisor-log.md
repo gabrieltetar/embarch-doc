@@ -38,6 +38,83 @@ branch name, so the SHA is the only handle a revert has.
 
 ---
 
+## 2026-09-03 — batch 003
+
+**First batch run by a supervisor agent rather than the owner's session, and the
+nesting works.** Two `embarch-worker` agents dispatched from inside an
+`embarch-supervisor` agent, both ran to completion, both reported honestly. The
+role split from [ops](embarch-parallel-agents-ops.md) §8.1 is no longer
+theoretical: `check-ownership.py --supervisor` ran on this batch's own 16 changed
+paths and came back clean, so nothing here reached into the rules.
+
+**Decided:** nothing suite-wide. **The gate held this time.** Checks and merge
+ran as one script — pre-merge ownership, then `--ff-only`, then the full gate on
+the *merge result*, with an automatic `git reset --hard` back to the pre-merge
+SHA on any red. Nothing merged that had not already passed, and there was no
+second command that could run past a failure. That closes the thing batches 001
+and 002 both flagged; it is worth keeping the shape rather than the habit.
+
+**Merged:** `agent/core/001-events-route-doc-corrections` (doc `e3cdd4e`, **no
+code branch** — doc-only, the code worktree carried no commits) ·
+`agent/study-designer/003-alloc-only-test-build` (sd `dcefe37`, doc `c6b3c3b`).
+Both fast-forward. On the sd merge result I ran the whole feature matrix myself,
+not just the default cell the script runs: `alloc` 109 passed, `std`, and
+`--all-features` 212 passed, plus `clippy --all-targets --features alloc`.
+
+**Blocked:** none.
+
+**Opened:** three, all from reading the eight `open.md` files by hand —
+`api/003` (`schema_version`/`error_kind` are documented on every `--json` object
+and appear nowhere in the source), `umbrella/001` (`doctor` check 11 is a
+hardcoded warn whose stated reason is false, on the one check meant to catch a
+wire mismatch unasked), `core/002` (`/status` version fields, designed in
+decisions 12/13 and never built — `umbrella/001` wants one of them). Inbox was
+empty; nothing was taken from it.
+
+**Hardware debts:** none new. Both tasks were `Hardware: none` and both were
+fully verified host-side. `api/001`'s debt from batch 002 still stands.
+
+**Budget:** DEGRADED at start and at end — no cache on this machine, which is
+the documented normal — no 429 in the window either time. Wave 2, both slots
+used.
+
+**Two defects in owner-reserved files, reported not fixed** (both dropped in
+`inbox/`, both marked owner-only since a worker cannot touch `scripts/` either):
+
+1. **`collect-open-questions.py` does not read the files phase 1 is told it
+   reads.** `supervise.md` says it prints "every sub-project's `open.md` … in one
+   pass". It reads `design.md`'s *Open questions* section instead, and today
+   printed 10 questions across 3 docs — `atlas`, `promptu`, `embarch-token.md`,
+   two of which are sub-projects that have not started. The eight `open.md`
+   files, 34 KB, are invisible to it. A supervisor following the instruction
+   literally sweeps three dormant docs, finds nothing, and **dreams on an empty
+   queue while eight active sub-projects' open questions sit unread.** All three
+   tasks this batch filed came from files that script cannot see.
+2. **`check-ownership.py`'s `--base` defaults to `origin/main`, so every worker
+   gets false positives for the whole batch.** The claim commit is made on local
+   `main` and not pushed, so local `main` is always ahead mid-batch, and a
+   worker's ownership check reports the supervisor's task files for *other*
+   scopes as paths it does not own. The `core` worker saw 3, the `study-designer`
+   worker saw 4; both diagnosed it correctly and both spent tokens on it. Second
+   batch in three where both workers independently hit the same script.
+
+**Worth noting about worker output, not a defect:** both workers marked their
+task file `done` in the body rather than deleting it, and `tasks/README.md` says
+a done task's file is deleted in the merge that closes it. I deleted both in the
+fold. A worker cannot delete it itself without the deletion racing its own
+branch, so this may just be how it works — but the README and the observed
+behaviour disagree, and one of them should move.
+
+**Least sure about:** filing `core/002` and `umbrella/001` at all. Both are real
+and both are quoted verbatim from their own `open.md`, but each one's honest
+answer might be "retire the design, do not build it", and I wrote the task so a
+worker can reach that conclusion. A queue that grows from what the fleet noticed
+while working is the drift `inbox/README.md` already warns about, and three
+tasks filed from a sweep the owner did not ask for is exactly that shape. If he
+does not want them, that is the signal — not a failure of the tasks.
+
+---
+
 ## 2026-09-03 — batch 002
 
 **Decided:** nothing suite-wide. But **I merged past a red check**: on
