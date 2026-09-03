@@ -1,6 +1,6 @@
 # 003 — `cargo test --features alloc` does not compile
 
-**State:** claimed by agent/study-designer/003-alloc-only-test-build, 2026-09-02 23:48
+**State:** done on agent/study-designer/003-alloc-only-test-build, 2026-09-02 — pushed, not merged.
 **Source:** found by the study-designer/002 worker, 2026-09-02, while running the feature matrix; reproduced on `main` at `2a136be`, so it predates that task and is not caused by it.
 **Scope:** study-designer
 **Hardware:** none
@@ -37,7 +37,40 @@ Small: two lines plus whichever import is chosen.
 
 ## Done when
 
-- [ ] `cargo test --features alloc` compiles and passes.
-- [ ] The rest of the matrix stays green: default, `--features std`, `--all-features`.
-- [ ] `cargo clippy --all-targets --features alloc -- -D warnings` clean.
-- [ ] `changelog.d/study-designer-<slug>.fixed.md` dropped.
+- [x] `cargo test --features alloc` compiles and passes.
+- [x] The rest of the matrix stays green: default, `--features std`, `--all-features`.
+- [x] `cargo clippy --all-targets --features alloc -- -D warnings` clean.
+- [x] `changelog.d/study-designer-<slug>.fixed.md` dropped.
+
+## What shipped
+
+Both `to_string()` calls in `a_layout_2_stream_is_refused_rather_than_misread`
+(`src/outpost.rs`) became `String::from(...)`, with a local
+`use alloc::string::String;` inside the test function. **Chose `String::from`
+over importing `alloc::string::ToString`** to match the rest of this file: the
+`render` module (same file, ~line 620) already carries a comment explaining
+why it uses `format!`/`String::from` rather than `.to_string()` under `alloc`
+without `std` — this test now follows the same rule instead of introducing the
+second style the comment was written to avoid.
+
+Full matrix, run explicitly rather than trusting feature unification:
+
+| Build | Result |
+|---|---|
+| `cargo test` (default) | 108 passed, 0 failed — no stack overflow. study-designer/002's harness fix holds. |
+| `cargo test --features alloc` | 109 passed, 0 failed (the previously-uncompilable test now runs) |
+| `cargo test --features std` | passes |
+| `cargo test --all-features` | passes |
+| `cargo clippy --all-targets --features alloc -- -D warnings` | clean |
+| `cargo build`, `cargo clippy --all-targets -- -D warnings` (default) | clean |
+
+No hardware verification debt: host-side only, `lib test` target, no wire or
+library-code change (`cargo build --features alloc` was already fine, per the
+task's own note).
+
+**On "nothing stops this from breaking again":** true, and worth a check —
+recorded as one paragraph in
+[open.md](../../embarch-study-designer/open.md) §"Not exercised by any routine
+check" rather than as new CI machinery here, since any such check would live
+outside this crate's own row (a schedule or workflow, not a source file this
+task owns).

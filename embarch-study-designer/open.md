@@ -29,3 +29,7 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 
 - **The GATT extractor is scoped to one firmware's macro convention** — generic at the trait boundary, deliberately narrow at the implementation, at the repo owner's explicit call. A second firmware's extractor is new work, **not a generalization of this one**. Narrowed further by decision 57: the hardcoded filenames are gone, so what remains project-specific is only the convention that a 128-bit UUID reaches its type through a particular macro shape. The name is kept because it is a value in real configs and because that remaining assumption is real.
 - **Live BLE dispatch of every action this crate declares is dev-bench's scope, not this crate's** — a deliberate split, and the same one that shipped the discovery and monitoring wire types here while the radio work happened there.
+
+## Not exercised by any routine check
+
+- **Nothing builds or tests the `alloc`-only feature cell on a schedule.** Task 003 fixed a real `cargo test --features alloc` compile failure that sat undetected on `main` because every real consumer of this crate also turns on `serde/std`, so feature unification always supplied what `alloc` alone is missing — the same shape of gap decision 46's changelog note already flagged once for `cargo build`. The fix here is two lines; the hole that let it sit unnoticed is still open, since this crate owns no CI of its own to close it. Worth a periodic full-matrix check somewhere upstream of this crate — not something this row can add itself.
