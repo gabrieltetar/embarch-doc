@@ -22,6 +22,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **An expected failure comes back as tool content, not a protocol error**, so a calling agent sees the actual compiler error and can reason about it. A protocol error is reserved for this crate's own config being unloadable at all. The one exception: an unknown project name is `invalid_params`, because a bad name makes the *request* malformed rather than the operation failed.
 - **This crate never runs `git checkout`.** "Reflash" means build and flash the tree **as it stands**, then verify; it never means "make my tree be that version". Enforced against the config file too, not just this code.
 - **No inference presented as fact.** Anything about a DUT that this crate cannot observe is declared by the operator or reported as unknown.
+- **A live event stream is an optimisation, never the source of truth.** Losing it falls back to polling and is reported; it never fails a call. Core's `lagged` frame is a fact to relay, not an error ([decisions](decisions/core-link.md) 48).
 
 ## 3. Build orchestration
 
@@ -35,13 +36,11 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 
 Today `embarch-api` runs under WSL2 and Core runs native on Windows on the same physical machine, reached over the WSL2⟷Windows network boundary rather than loopback.
 
-**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or a declared explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. The WSL2 case needs it because `\\wsl.localhost\…` UNC shares are exposed by a per-session network provider tied to an interactive logon, and Core's installed service runs as `LocalSystem` in **Session 0**, which has no such provider: the identical path resolves fine from an interactive shell and fails with "the network name cannot be found" from the service. Not about which account the service uses — Windows services are always in Session 0. Every earlier "confirmed working" claim for the UNC mechanism had been validated against a *foreground* Core, never the installed service.
-
-`artifact_path_for_core` and its UNC computation are **fully retired**, not merely superseded: multipart works identically whether Core is foreground or a service, and covers a genuinely remote Core by the same path.
+**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or a declared explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. The WSL2 case needs it because `\\wsl.localhost\…` UNC shares are exposed by a per-session network provider tied to an interactive logon, and Core's installed service runs as `LocalSystem` in **Session 0**, which has no such provider: the identical path resolves fine from an interactive shell and fails with "the network name cannot be found" from the service. Not about which account the service uses — Windows services are always in Session 0. So `artifact_path_for_core` and its UNC computation are **fully retired**, not merely superseded: multipart works identically foreground or service, and covers a remote Core by the same path.
 
 **`base_url = "auto"`** resolves per-process on first use — a short-timeout `GET /status` race over an ordered candidate list (loopback, then the WSL2 default-gateway IP, then a configured host), taking the first that answers, where a `401` **counts as an answer**: Core is there and the token is wrong, which is a distinct problem needing a distinct message. Cached for the process lifetime, never written back to config, so a WSL2 restart's new gateway IP is picked up by the next invocation. **Resolution must be lazy**: the startup connectivity check is MCP-mode-only and `list_projects` deliberately works with Core down, and resolving at config-load time would regress both.
 
-**The startup connectivity check warns; it does not refuse.** Refusing meant every MCP tool vanished from the agent's view with no way to learn why. Every hardware-facing tool now fails per-call with the same message plus the resolved-candidate list.
+**The startup connectivity check warns; it does not refuse.** Refusing made every MCP tool vanish from the agent's view with no way to learn why. Every hardware-facing tool fails per-call instead, with that message plus the resolved-candidate list.
 
 ## 5. Modules
 
@@ -56,14 +55,14 @@ Today `embarch-api` runs under WSL2 and Core runs native on Windows on the same 
 | `study.rs` | the shared seal-recomputation helper both front-ends call |
 | `tools.rs` / `cli.rs` | the two front-ends; thin glue over the same modules |
 | `logging.rs` | the rolling per-user logfile |
-| `tests/` | the six recorded acceptance criteria, split `core_client_http.rs` (bearer, timeouts, non-2xx — against a loopback mock Core) / `build_capture.rs` (drain, truncation, freshness). No hardware, no live Core, no added dependency |
-| `crates/embarch-core-client/` | `CoreClient` (every Core endpoint, bearer injection, per-call timeouts, the topology-branched flash transport, typed `409`/`404` errors), `CoreConfig`, token discovery, and `version.rs`. A plain path dependency, not a workspace member |
+| `tests/` | the six recorded acceptance criteria: `core_client_http.rs` (bearer, timeouts, non-2xx, against a loopback mock Core), `build_capture.rs` (drain, truncation, freshness), `study_events_sse.rs` (SSE framing, `lagged`, fallback). No hardware, no live Core, no added dependency |
+| `crates/embarch-core-client/` | `CoreClient` (every Core endpoint, bearer injection, per-call timeouts, the topology-branched flash transport, typed `409`/`404` errors), `CoreConfig`, token discovery, `version.rs`, and the study event stream (`sse.rs`, a byte-fed decoder with no I/O; `study_events.rs`, the follow loop and its polling fallback). A plain path dependency, not a workspace member |
 
-`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**. `Builder::thread_stack_size` only sizes threads the runtime spawns; the top-level future runs on whatever thread calls `block_on`, which for `#[tokio::main]` is the process main thread at the OS default, with no knob. One fix, two bugs that only looked unrelated ([decisions](decisions/core-link.md) 36).
+`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size the thread that calls `block_on`, and there is no knob that does ([decisions](decisions/core-link.md) 36).
 
 ## 6. Security
 
-**Inbound is "whoever can spawn the process"** — for MCP and for the CLI alike. No API key, bearer token, or session exists at this layer. A deliberate simplification: if this is ever run detached from an interactive client, that needs revisiting.
+**Inbound is "whoever can spawn the process"** — for MCP and for the CLI alike. No API key, bearer token, or session exists at this layer. A deliberate simplification, and [open.md](open.md) carries what it costs.
 
 **Outbound** is `EMBARCH_TOKEN`, resolved from config `token`, then `token_env`, then machine-wide token-file discovery (same-OS path, or the WSL2⟷Windows-translated path). Full lifecycle: [embarch-token.md](../embarch-token.md).
 
@@ -78,4 +77,4 @@ Today `embarch-api` runs under WSL2 and Core runs native on Windows on the same 
 | default Core port | 4884 | — |
 | log retention | 7 daily files, `api.log.<date>` | deliberately the same scheme as Core's, so one reader covers both |
 
-The logfile is **per-user**, not machine-wide: this crate runs as the engineer, and `/var/lib` is root-owned, so creating a subdirectory there is permission-denied — verified on this bench rather than assumed.
+The logfile is **per-user**, not machine-wide — this runs as the engineer and `/var/lib` is root-owned, verified on this bench rather than assumed ([decisions](decisions/core-link.md) 43).
