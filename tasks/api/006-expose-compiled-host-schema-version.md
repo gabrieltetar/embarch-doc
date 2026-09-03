@@ -1,6 +1,6 @@
 # 006 — Expose `embarch-api`'s compiled `HOST_TYPE_SCHEMA_VERSION`, so `doctor` can read it
 
-**State:** claimed by agent/api/006-expose-compiled-host-schema-version, 2026-09-03 12:30
+**State:** done on agent/api/006-expose-compiled-host-schema-version, 2026-09-03
 **Source:** embarch-umbrella/open.md — "Check 11 compares *this* `embarch` binary's compiled host schema version, not the located `embarch-api`'s"
 **Scope:** api
 **Hardware:** none
@@ -38,12 +38,29 @@ approximate rather than exact.
 
 ## Done when
 
-- [ ] `embarch-api` exposes its compiled `HOST_TYPE_SCHEMA_VERSION` on a
+- [x] `embarch-api` exposes its compiled `HOST_TYPE_SCHEMA_VERSION` on a
       machine-readable surface, documented in `embarch-api/interfaces/`.
-- [ ] `embarch-api/decisions/` records which surface and why.
-- [ ] A follow-up task (or this one's second half, if `suite`) points
-      `embarch-umbrella`'s check 11 at it and closes that `open.md` bullet.
-- [ ] Gate green (`embarch-parallel-agents.md` §10).
+      `embarch-api versions [--json]`, key `host_type_schema_version`; row in
+      `interfaces/tools.md`.
+- [x] `embarch-api/decisions/` records which surface and why — decision 52 in
+      `decisions/surface.md`, including why the suggested `status --json` field
+      was rejected.
+- [x] A follow-up task points `embarch-umbrella`'s check 11 at it:
+      `inbox/umbrella-check-11-reads-embarch-api-versions.md` (scope `umbrella`,
+      unnumbered per `inbox/README.md`). **The `open.md` bullet is not closed
+      yet** — that closes when the umbrella task lands, and `embarch-api/open.md`
+      carries a matching "nothing reads `versions` yet" bullet until then.
+- [x] Gate green (`embarch-parallel-agents.md` §10) — build/test/clippy in
+      `embarch-api`, all six doc checks, both ownership scopes. No native
+      Windows build: this is not `embarch-core`.
+
+## Verification debt
+
+**No live consumer has read this surface.** The number is pinned against the
+constant by `tests/json_surface.rs` and printed by the real binary, but nothing
+outside the process has consumed it yet, and no MCP round trip or live Core was
+available. `embarch doctor` reading it is the first real exercise, and that is
+the follow-up above. No hardware is involved either way.
 
 ## Added by the supervisor when dispatching (2026-09-03)
 
