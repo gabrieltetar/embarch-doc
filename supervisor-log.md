@@ -61,6 +61,67 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 13:15 — leg 006, zero units: stopped before the first dispatch
+
+**Decided:** nothing. This entry exists because a leg with no units is exactly
+the case where the next one most needs a handoff, and it carries one fact that is
+not recoverable from anywhere else — see **suite/001** below.
+
+**Merged:** nothing. **Blocked:** nothing. **Hardware debts:** none — nothing ran.
+
+**What happened.** Step 0 was clean: both code repos and `embarch-doc` already up
+to date at `193a1db`, no stale claims, no worktrees with commits, no unfolded
+`status.d/` fragments, `inbox/` empty but for its README. Budget DEGRADED, wave
+2, no 429. `queue-status.py --tasks-only` exited 0 at **8 dispatchable**, so no
+sweep and no dream. I had selected `api/005` and `umbrella/003` for the two
+slots and written both claim lines **in the working tree only** when the `fleet
+stop` arrived. I reverted both edits rather than committing them; **no task was
+ever claimed on `main` and no worker was ever spawned.** The queue is untouched
+at 8.
+
+**`tasks/suite/001-release-tag-version-assertion.md`: its window is closed and
+this is the fact worth carrying.** Leg 005 announced it at ts
+`1788460873.097499` (12:41 MDT — its own log entry says 13:41, which is wrong;
+Slack renders 12:41 and the `ts` is authoritative) and ended before the 30
+minutes were up. I completed that window as instructed: read the thread, **zero
+replies**, and the 30 minutes elapsed at 13:11:13 MDT. So the §4 obligation is
+**discharged** — the state line in the task file now says so. I did not execute
+it, because the stop landed in the same minute and a stop dispatches nothing new.
+**The next supervisor runs it directly: no re-announcement, no new clock.**
+Without this entry the next leg would read a parked task with a two-hour-old `ts`
+and most likely restart a window that has already been served.
+
+**I did not run `build_changelog.py` and I did not fold.** There was nothing to
+fold, and `changelog.d/doc-legs-emit-allowlistable-shell.fixed.md` is **the
+owner's**, from his `193a1db`. Legs 004 and 005 both swept his fragments into
+their folds as a side effect of folding at all; with no unit to fold, the correct
+action was to leave it where he put it. It is still there.
+
+**The `git add -A` hazard did not bite this leg**, and not because it was fixed.
+I was told to stage by explicit path and did — this commit is `supervisor-log.md`
+and `tasks/suite/001-...md`, named. The underlying defect (`git add -A` in the
+fold while the owner edits the same checkout) is unchanged and still his to
+decide on.
+
+**Doc size is still binding in three files** and the next leg inherits it:
+`embarch-umbrella/decisions/doctor.md` 12245/12288, `embarch-umbrella/open.md`
+5108/5120, `embarch-api/spec.md` 10237/10240 — plus
+`embarch-api/interfaces/tools.md` at 12284/12288 and `open.md` at 5113/5120,
+which leg 005's entry did not name. **Five files, not three.** `api/005` cannot
+be done without writing into `spec.md` and `open.md`, so it is a compaction task
+wearing a feature task's clothes; say so in the task file before dispatching it.
+
+**Budget:** DEGRADED at start, wave 2, no 429. Unchanged at end — this leg spent
+almost nothing.
+
+**Least sure about:** reverting the two claim lines instead of committing them as
+`open`-again. Nothing was dispatched, so an uncommitted claim is genuinely just a
+dirty working tree and the queue reads correctly either way — but it means there
+is no committed trace that `api/005` and `umbrella/003` were the two tasks
+selected, and the only record that they were is this sentence.
+
+---
+
 ## 2026-09-03 14:05 — api/006 expose-compiled-host-schema-version
 
 **Decided:** one thing worth the owner's eye, and it is the worker's call which I

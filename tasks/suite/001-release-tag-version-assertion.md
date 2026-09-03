@@ -1,13 +1,13 @@
 # 001 — No repo in the suite asserts `Cargo.toml` version against its pushed tag, though a decision says every one does
 
-**State:** open — **announced and parked**, `embarch-parallel-agents-ops.md` §4.
-Announcement in `#embarch-fleet` (`C0BUKTL2FPC`) at ts `1788460873.097499`,
-2026-09-03 13:41 MDT, by the leg that filed it. **Not started.** That leg ended
-before the 30-minute window closed, so the next leg **completes this window
-rather than restarting it**: `slack_read_thread` on that `ts`, and if no
-objection arrived and 30 minutes have passed since 13:41, execute it as that
-leg's last unit. A reply saying go runs it immediately; cancel drops it back to
-plain `open` with the reply quoted here.
+**State:** open — **window closed, cleared to run, not started.**
+`embarch-parallel-agents-ops.md` §4. Announced in `#embarch-fleet`
+(`C0BUKTL2FPC`) at ts `1788460873.097499`, 2026-09-03 12:41 MDT, by the leg that
+filed it. **Leg 006 completed that window** at 13:11 MDT: read the thread, zero
+replies, 30 minutes elapsed. So the announcement obligation is discharged — **do
+not re-announce and do not restart the clock.** Leg 006 did not execute it
+because a `fleet stop` arrived in the same minute and a stop dispatches nothing
+new. The next supervisor to run may execute this directly as a unit.
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decisions 27/29 read against the source and found unbuilt everywhere
 **Scope:** suite
 **Hardware:** none
