@@ -32,6 +32,8 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 - **A refusal renders nothing rather than guessing.** A manifest that does not verify costs the *names* in a trace, not the trace; an unverifiable time join stamps nothing.
 - **Core keeps no persisted "current firmware" record.** A manifest binding lives only as long as the study that made it. Write-ahead state that can go stale is the pattern this suite forbids.
 - **Core never orchestrates a build.** It gates and records; `embarch-api` sequences check → build → flash → submit.
+- **`GET /status` says which build answered.** `core_version` is compiled in from `CARGO_PKG_VERSION`, so a caller learns the deployed binary's version **over HTTP** without running it — the check for a `deploy-core` that reported success and installed nothing (§3, [embarch-dev-workflow.md](../embarch-dev-workflow.md) §4a). Consumers **warn** on a skew, never refuse (decision 13). There is no hand-bumped `contract_version` beside it.
+- **Errors are plain text on every non-2xx**, so an error's *kind* is only its HTTP status. The designed `{code, message, cause}` body is deferred as cross-repo work (decision 12).
 - **Default bind is `127.0.0.1`.** Widening is `embarch-umbrella setup`'s job, per detected topology.
 
 ## 3. Deployment

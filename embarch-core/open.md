@@ -6,7 +6,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 ## Never exercised
 
-- **`study_schema_mismatch` was never reconciled against the rest of the error `code` enum, and has never fired.** Proposed for the handshake mismatch path (decision 12), never checked against what that enum gained since, never exercised on a real mismatch.
+- **`study_schema_mismatch` has never fired and is reachable by nothing**: it names a member of an error `code` enum that does not exist. Deferred below.
 - **The signal-tap path has never run against real hardware.** It is unit-tested at its scope boundaries and compiles into both a Linux and a native Windows Core, but **no real port has ever been resolved or read** — resolution matches on a USB serial, and this bench has no USB-UART bridge. `validate_signal` still has **no caller anywhere**, deliberately: resolving a route at the moment of use *is* the validation, and returns the same error, so calling both would check twice and report once.
 - **Decision 35's gate has never been confirmed against ESP32-C5 silicon by a live handshake.** The Nordic arm is live and answers `match`; the Espressif relation is verified by construction against the checked-out HAL headers and by unit test, but that board is unplugged. Noted so the two are not conflated.
 - **The Windows registry write for an *explicit* `EMBARCH_TOKEN` on an installed service has never executed on real hardware.** A real service install and start is verified, but that run did not set an explicit token at install time, and the registry path is only reached when one is. Narrow: the common case (an auto-generated token) never touches it.
@@ -19,7 +19,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 ## Designed, not built
 
 - **`core.toml`** (decision 11), narrowed to `bind`/`port`.
-- **A `{code, message, cause}` JSON error body**, and `core_version`/`contract_version` on `/status` (decisions 12, 13). The study schema version is the only one of the three that is real.
+- **A `{code, message, cause}` JSON error body** — **deferred with a trigger, not pending**: the `code` enum is a wire contract three consumers branch on, so it is cross-repo work rather than Core's alone. Cost and trigger: decision 12. (`core_version` shipped 2026-09-03; the `contract_version` beside it is retired — decision 13.)
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Closed as not-needed-yet with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked, and this suite's posture is not to build the machinery first.
 

@@ -9,8 +9,17 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ## Errors and version handshakes
 
-### 12, 13 — A structured error body and a contract version — designed, not built
-Plain-text errors suit a human reading a CLI error, but `doctor --json` and a UI need to branch on error *kind*; a `{code, message, cause}` body would also retire the "finer CLI exit codes" idea, since a script branching on failure kind wants a field, not an exit code. Separately, the only cross-boundary version check is the study schema, so nothing can notice a materially different HTTP contract until a call breaks — `contract_version` would be hand-bumped only for a wire-visible change, and `embarch-api` would **warn, not refuse**, matching the suite's posture on skew. The endpoint table described all three fields as shipped for months when none were.
+### 13 — `core_version` on `/status`; no hand-bumped `contract_version` (built 2026-09-03)
+The only cross-boundary version check was the study schema, so nothing talking to Core **over HTTP** could say which build answered — the version was reachable only by running the binary, and a deploy that silently did not land is indistinguishable from one that did (`embarch-dev-workflow.md` §4a: `deploy-core` reports `landed` either way, and its own length check cannot discriminate a rebuild of one constant). `/status` now serves `core_version` from `env!("CARGO_PKG_VERSION")`. **Mechanical, not maintained**: `Cargo.toml`'s version already tracks the release tags, so the field cannot drift from the build serving it. Consumers **warn, not refuse**, on a difference from the version they were built against — this decision's original posture on skew, unchanged.
+
+**The `contract_version` half is retired rather than built.** It was to be hand-bumped only for a wire-visible change, and nothing forces the bump: the failure mode is a number reading "same" across contracts that differ, which is worse than no number, and this entry's own history is the evidence — the endpoint table described all three designed fields as shipped **for months when none were**. `core_version` covers the case mechanically and **over**-warns rather than under-warns, the safe direction for a warn-not-refuse consumer. Revisit if a `core_version` skew warning is ever silenced as too noisy to act on; that is the first real evidence a finer-grained number would earn its keep.
+
+The served field set is pinned by a test on `StatusResponse`'s serialized keys (`api.rs`), so **adding** a field without editing [../interfaces.md](../interfaces.md)'s `/status` row fails the suite. That test, not a note, is what answers the "described as shipped when it wasn't" shape here.
+
+### 12 — A `{code, message, cause}` JSON error body — deferred, and it is not Core's alone
+Plain-text errors suit a human reading a CLI error, but `doctor --json` and a UI need to branch on error *kind*; a `{code, message, cause}` body would also retire the "finer CLI exit codes" idea, since a script branching on failure kind wants a field, not an exit code. Still worth building, and **deliberately not built here.**
+
+Its value is **entirely** in consumers branching on `code`, which makes the `code` enum a wire contract shared with `embarch-api`, `embarch-ui` and `embarch-umbrella`'s `doctor` — so this is a cross-repo sequenced change (`embarch-parallel-agents.md` §8), not a Core-local one. Core-side alone it is ~40 error-construction sites re-shaped, every one needing a stable `code` invented for it, while every consumer still reads plain text: the whole cost and none of the benefit. **Trigger:** the first consumer that must distinguish two error kinds sharing one HTTP status and cannot; `study_schema_mismatch` — proposed here, never reconciled against the enum, never fired ([../open.md](../open.md)) — is reachable by nothing until then.
 
 ---
 
