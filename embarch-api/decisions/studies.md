@@ -1,6 +1,6 @@
 # embarch-api decisions: Submitting and orchestrating studies
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-03.
 
 Seals, the MCP schema that read as "anything", reflash sequencing, and three gaps in run_study's own contract.
 
@@ -56,7 +56,7 @@ Not design questions — the surface having been extended past the code that imp
 
 **(b) Resealing recomputed two of the study's three seals.** The third shipped as a deliberate sibling, checked independently so a mismatch names which third is corrupt, and Core validates all three — but the reseal helper overwrote the first two. **Every study to date had an empty protocol list, whose CRC is stable, so nothing noticed.** A study carrying a real protocol is rejected unless its author computed the third seal by hand. The tool description and CLI help both still said "both seals", which was a statement about which seal a caller was silently responsible for. Fixed, along with the text and three comments carrying the same hardcoded word. **The regression test asserts against a non-empty list deliberately:** the empty-list CRC is 0, so a protocol-free study cannot distinguish "recomputed to 0" from "never written" — which is precisely how every existing test passed against a function that never touched the field.
 
-**(c) `snippets` is accepted and silently ignored for a project with an explicit build command, and the build reports success — open.** A build with two snippets returned success having produced an image whose config said the corresponding option was not set. The CLI help already says snippets are only meaningful for a Zephyr-discovery project, and **that is documentation rather than a gate** — the flags reach a code path with nowhere to put them and drop them. Same shape as (a) and (b): **an input accepted, quietly discarded, and reported as success**, against the rule this suite keeps re-deriving that a flag which cannot be honoured must fail rather than be ignored. Recorded rather than fixed because the right fix is a decision — reject, or teach that path to splice the flags in — and the pass that found it was mid-deploy.
+**(c) `snippets` was accepted and silently ignored for a project with an explicit build command, and the build reported success — fixed, and never only `snippets`.** A build with two snippets returned success having produced an image whose config said the corresponding option was not set. The CLI help already says snippets are only meaningful for a Zephyr-discovery project, and **that is documentation rather than a gate** — the flags reach a code path with nowhere to put them and drop them. Same shape as (a) and (b): **an input accepted, quietly discarded, and reported as success**, against the rule this suite keeps re-deriving that a flag which cannot be honoured must fail rather than be ignored. Recorded rather than fixed because the right fix was a decision — reject, or splice the flags in — and the pass that found it was mid-deploy. **Closed by [decision 51](zephyr.md): reject** — and the same check covers `board`/`variant`/`revision`/`app`/`extra_args`, discarded identically.
 
 ---
 

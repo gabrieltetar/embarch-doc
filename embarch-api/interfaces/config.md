@@ -1,6 +1,6 @@
 # embarch-api: configuration schema
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-03.
 
 Current truth: [../spec.md](../spec.md). Why the shape is this: [../decisions.md](../decisions.md). See `config.example.toml` in the repo for a runnable version with real values.
 
@@ -48,9 +48,11 @@ The upward search exists because an engineer working across several firmware rep
 | `default_target` | table (`board?`, `variant?`, `revision?`, `app?`) | no | none | `zephyr-west` only. Applied as the **base** selection before a call's own params narrow further, pinning the common single-target case so it does not start erroring the moment a second real target lands in the repo |
 | `version_command` | array of strings | no | `git describe --always --dirty --abbrev=8` | Only consulted by a DUT reflash. argv, run in `source_path`, trimmed stdout becomes the version this run reports flashing. **It describes the tree that was built, not the image running on the board.** A `git` argv naming a tree-mutating subcommand is **refused, wherever in the argv it appears** |
 | `soc_chip_overrides` | array of `{ soc, chip }` | no | empty | `zephyr-west` only. Consulted **before** calling Core's `/resolve-chip`; a hit short-circuits the HTTP call entirely. The escape hatch for a SoC Core has no mapping for |
-| `[[projects.targets]]` | rows of `{ name, build_command, chip, artifact_path }` | no | — | `static` only. A hand-declared menu, returned verbatim by `list_targets`; without any, that tool errors with the exact TOML shape needed rather than a bare "not applicable" |
+| `[[projects.targets]]` | rows of `{ name, build_command, chip, artifact_path }` | no | — | `static` only. A hand-declared menu, returned verbatim by `list_targets`; without any, that tool errors with the exact TOML shape needed rather than a bare "not applicable". **Nothing selects a row** — a build always runs the project's own `build_command` — which [../open.md](../open.md) now carries |
 
 **For a `zephyr-west` project nothing is stored that the repo can answer.** Board, SoC, cpucluster, variant, revision and app enumeration is a pure filesystem and YAML read, re-run every call and **never cached** — caching would reintroduce the staleness this exists to eliminate. A tuple is real only if a `.dts` exists for that combination, the revision is `board.yml`'s declared default or has a revision-suffixed overlay, and a board using a custom revision format does not itself reject it.
+
+**A `static` project refuses a selection outright** ([../decisions](../decisions/zephyr.md) 51): its `build_command` is a hand-authored argv, so `board`, `variant`, `revision`, `app`, `snippets` or `extra_args` given on a call to it fail naming which were given, rather than being accepted and dropped. Everything below is `zephyr-west`.
 
 **Selection is never guessed, but it is narrowed:** whatever subset of `board`/`variant`/`revision`/`app` is given filters the live-scanned set; exactly one match proceeds, more than one errors listing the remainder, none given lists everything. `reset` needs the same four as `flash`, because it sends a chip too and a `zephyr-west` project has none stored.
 

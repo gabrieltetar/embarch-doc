@@ -1,6 +1,6 @@
 # embarch-api decisions: Build orchestration and target discovery
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-03.
 
 A generic build command, and the one scoped exception where this crate had to learn Zephyr.
 
@@ -37,3 +37,12 @@ A `bin` artifact carries no address, so flashing one needs an offset, and this c
 It wins the same argument `flash_format` already won: the offset is a fact about how the project builds, not something varying call to call, so **an agent should never have to know a hex number to flash a board**. *Rejected: a per-call parameter, and a config-default-with-override.* The override shape has a real precedent here — `--firmware-path` overrides the configured artifact — but that flag exists to flash *something other than what the project builds*, which is a genuinely per-call intent. An offset is not.
 
 Opaque pass-through, like chip and format: this crate does not validate it against the target's memory map. Two shape details that were not free choices: the field is a **TOML integer** using TOML's own hex literal while Core takes a hex-or-decimal *string*, so the round trip lands a config-driven flash on byte-identical wire form to a dev-bench flash; and **a `bin` project that omits it is not a config-load failure**, despite being wrong in practice, because enforcing it is one step from validating the offset itself.
+
+### 51 — A static project rejects a selection it cannot honour, rather than ignoring it
+`resolve` branches on `discovery`, and the `static` arm took the `ProjectConfig` alone: **every one of `board`, `variant`, `revision`, `app`, `snippets` and `extra_args` was accepted and dropped**, and the build reported success. Decision 44c recorded the observed cost for `snippets` — a build with two of them returned success having produced an image whose config said the option was unset — and left the fork open. **Verified before widening the fix**: nothing upstream honoured the other five either, since both front-ends do nothing with these params but hand them to `resolve` (`TargetSelection::selection`, `TargetParams::selection`, `FlashParams::selection`, `RunStudyParams::selection`), so all six were the same defect and all six are now refused together.
+
+**Reject, not splice**, which was the fork decision 44c named. A `static` project's `build_command` is an opaque hand-authored argv this crate did not assemble: there is no `-S` to add to it and no scan to narrow, so splicing would mean guessing at another build system's flag grammar — the exact thing decision 5 exists to keep out and decision 12 admitted only as a scoped Zephyr exception. Refusing costs a caller one error and a re-run; splicing wrongly costs a flashed board and a wrong answer nobody can see.
+
+**Absent stays absent.** An omitted param and an explicitly empty list are indistinguishable through the plain slices `Selection` carries — and for a `zephyr-west` project empty already means "use the configured default" — so "given" is `Some(_)` or a non-empty slice, and a call passing nothing resolves byte-for-byte as before. That half is asserted over the whole `Resolved`, not just the error path.
+
+The help text that already said these were Zephyr-only was documentation rather than a gate; this is that sentence made mechanical, and the tool descriptions, CLI help and `config.example.toml` now say *refused* rather than *ignored* — decision 44's own lesson that the surface text is what a caller reads.

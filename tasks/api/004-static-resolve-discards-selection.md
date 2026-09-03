@@ -1,6 +1,6 @@
 # 004 — A static project silently discards everything the caller selected
 
-**State:** claimed by agent/api/004-static-resolve-discards-selection, 2026-09-03 12:10
+**State:** done, 2026-09-03 — branch `agent/api/004-static-resolve-discards-selection` in `embarch-api` and `embarch-doc`, pushed, not merged.
 **Source:** embarch-api/open.md — "**`snippets` is accepted, silently discarded, and reported as success** for a project with an explicit build command"
 **Scope:** api
 **Hardware:** none
@@ -41,23 +41,56 @@ host-side: config in, error or plan out.
 
 ## Done when
 
-- [ ] A static-discovery project given a selection field it cannot honour fails
+- [x] A static-discovery project given a selection field it cannot honour fails
       with an error that names the fields and the reason, rather than succeeding.
-- [ ] The empty/default case is unchanged: a static project resolved with no
+- [x] The empty/default case is unchanged: a static project resolved with no
       selection still resolves exactly as it does today. Confirm this against
       the existing `resolve_static_*` tests rather than by reading.
-- [ ] Whatever the CLI and MCP surfaces do with the new error is coherent — a
+- [x] Whatever the CLI and MCP surfaces do with the new error is coherent — a
       caller sees the reason, not a panic and not a bare `anyhow` chain.
-- [ ] Unit tests at the `resolve` boundary for both the rejected and the
+- [x] Unit tests at the `resolve` boundary for both the rejected and the
       unaffected case.
-- [ ] `embarch-api/spec.md` says what a static project does with a selection,
+- [x] `embarch-api/spec.md` says what a static project does with a selection,
       and `open.md`'s first "Known wrong" bullet is rewritten to whatever is
       still open (or removed if nothing is).
-- [ ] Gate green (`embarch-parallel-agents.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`embarch-parallel-agents.md` §10).
+- [x] `changelog.d/` fragment dropped.
 
 ## Not in scope
 
 The other two bullets under "Known wrong, not fixed" — the inferred `board`
 field and the build-log head/tail cap — are separate and are not to be touched
 here. The board one is not even this repo's `init`.
+
+## What was done
+
+**The premise was checked and is true, and it is wider than `open.md` said.** Both
+front-ends do nothing with these params except hand them to `resolve` —
+`TargetSelection::selection` (CLI), `TargetParams`/`FlashParams`/`RunStudyParams`
+`::selection` (MCP) are the only construction sites, and `reflash.rs` passes its
+`Selection` straight through. So all six fields were discarded identically; none
+was honoured upstream. All six are now refused together, in `resolve_static`.
+
+**Reject, as expected** — reasoning in `embarch-api` decision 51. The empty case
+is asserted unchanged over the whole `Resolved`, not just the error path.
+
+Surface text moved with it: MCP tool descriptions (`build`, `flash`,
+`build_and_flash`, `reset`, `run_study`), every selection param's description,
+CLI help, and `config.example.toml` now say *refused*, not *ignored*.
+`interfaces/tools.md` was **not** edited — it was 3 bytes under its 12 KB cap and
+already points at `interfaces/config.md` for selection semantics, which carries
+the new rule.
+
+## Found on the way, not fixed (now in `embarch-api/open.md`)
+
+- `[[projects.targets]]` rows are advertised by `list_targets` and read by
+  nothing else, so a `static` project's menu cannot be picked from at all.
+- Decisions 20 (`default_target`) and 21 (the `["none"]` snippet sentinel) are
+  documented in `interfaces/config.md` as truth and exist nowhere in the crate.
+  `suite/user-guide.md` §5.2 repeats the sentinel claim — `status.d/api-user-guide-snippet-none.md`
+  carries that one, since a worker does not edit a suite-level doc.
+
+## Hardware-verification debt
+
+None. The change is config in, error or plan out; every claim here is covered by
+host unit tests.
