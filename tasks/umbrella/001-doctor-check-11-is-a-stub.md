@@ -1,6 +1,6 @@
 # 001 — `doctor` check 11 checks nothing, and its stated reason is false
 
-**State:** open — reclaimed 2026-09-03 by leg recovery. Its worker died mid-write when batch 004 hit repeated HTTP 529; the branch had no commits and the worktrees held only uncommitted edits, both deleted. Nothing of that attempt survives; start from scratch.
+**State:** claimed by agent/umbrella/001-doctor-check-11-is-a-stub, 2026-09-03 12:0x (leg 005). Previous attempt died mid-write on HTTP 529 with no commits; nothing of it survives, start from scratch.
 **Source:** embarch-umbrella/open.md — "**`doctor` check 11 never checks anything, and its stated reason is false.**"
 **Scope:** umbrella
 **Hardware:** verify-only
