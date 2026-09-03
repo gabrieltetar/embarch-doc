@@ -36,6 +36,14 @@ Each repo has its own tag-triggered release workflow; this repo additionally ass
 
 The elevation friction decision 7 flags is partly a **"what is this about to do to my machine" problem, worse when the answer requires trusting a binary you just downloaded.** It runs every detection step exactly as `setup` does, then prints the concrete actions — which service calls, which files, whether elevation is needed — **reusing `setup`'s own detection path, not a second parallel implementation.**
 
+**Not built, as of 2026-09-03.** `Command::Setup` carries `--host`, `--port`,
+`--uninstall` and `--dev-bench-repo` and no `--dry-run`; the only `--dry-run` in
+the binary is `deploy-core`'s (decision 32). **The reusable detection path this
+decision asks for does exist** — `setup`'s `make_plan` runs every detection step
+and returns a `Plan` before anything is acted on — so what is missing is the flag
+and an early return, not the design. [../spec.md](../spec.md) claimed the flag as
+shipped until the 2026-09-03 audit.
+
 ### 25 — `embarch setup --uninstall` reverses a machine setup
 
 `init --uninstall` already reversed a repo integration; **nothing symmetric existed for `setup` itself.** It stops and unregisters the Core service, removes the machine-wide token file (a fresh `setup` regenerates one, matching normal first-run behaviour), and — per decision 28 — **removes the canonical install directory and the real `PATH` additions**, where it originally only printed the line to remove. It does not touch a firmware repo's own integration; that stays `init --uninstall`'s job.

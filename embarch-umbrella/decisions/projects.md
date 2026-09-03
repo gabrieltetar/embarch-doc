@@ -36,6 +36,24 @@ For a repo shaped like a Zephyr/west project, `init` now writes the minimal disc
 
 **Amended: the target count check now shells out to `embarch-api`'s own listing instead of maintaining a second scanner.** The trimmed copy this decision introduced was deliberately coarser than the real scan — it counted a hardware revision as backed if *any* revision-suffixed file named it, rather than checking the exact tuple. But **unlike topology detection or token parsing, there is no bootstrapping problem here**: by the time that check runs, `init` has already run and a real config exists, so nothing stops asking the real thing. The lightweight *shape detection* stays, because `init`'s own detection genuinely does run before a config exists.
 
+**The amendment is not built, as of 2026-09-03** — everything above it is.
+Check 8 still calls this crate's own `zephyr::count_valid_targets`, the trimmed
+scanner the amendment says was replaced, and its code comment still records the
+deliberate overcount it describes: a revision counts as backed if *any*
+revision-suffixed file in the board directory names it. Nothing in the crate
+shells out to `embarch-api list-targets` — the one mention of that command is a
+fix line telling a human to run it. The bootstrapping argument the amendment
+makes is untouched by this; it simply was never acted on.
+
 ### 26 — `study_results/` retention and per-target build-directory pruning get an explicit policy instead of "grows forever"
 
 Both currently have **no cleanup mechanism at all.** A `doctor --prune` flag — **opt-in, never automatic, because deleting build artifacts or study results is not something `doctor`'s normal read-only pass should ever do silently.** It always *reports* how many result entries exist and their size, and how many distinct build-directory combinations exist per project; with the flag it offers to delete results older than a configurable age and build directories for a target combination **no longer among the project's currently-valid targets** — never a currently-valid target's directory regardless of age, **since rebuilding it is the expensive part.**
+
+**Not built, as of 2026-09-03 — including the half that was never opt-in.**
+There is no `--prune` flag on `doctor` and no occurrence of the word in the
+crate, and the unconditional reporting this entry promises *always* happens —
+how many result entries exist and their size, how many build-directory
+combinations per project — is absent too: `doctor` assembles exactly checks 1-15
+and none of them reads `study_results/` or measures the build tree. **So "grows
+forever" is still what happens**, and the policy exists only here.
+[../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit.

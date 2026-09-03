@@ -10,7 +10,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 15 catches a *cross-version* stale deploy and not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so it moves only when the crate version moves: a rebuild-and-failed-deploy at the same version reads as a match. Strictly better than nothing — `deploy-core` has reported `landed` with nothing installed, and its own check compares byte length — but **it is not a hash comparison and should not be read as one.** A content hash served on `/status` would close it and is `embarch-core`'s to decide, not this sub-project's.
 
-- **Several later decisions are recorded as designs with no implementation note, and whether each shipped is not established here.** Check 16 (bind address versus topology) is explicitly design-only. Also unconfirmed: `setup --dry-run` (21), the firewall and disk checks (22b, 22c), the MCP-handshake spawn (23), `doctor --prune` (26), and the release version assertion (27/29). Reading the code is the way to close this, not reading this repo.
+- **Seven designed pieces are confirmed unbuilt; what is open is whether each is still wanted.** Decisions 18, 21, 22(a-c), 23, 26, 27/29 and 17's amendment, read against the source 2026-09-03: **none is built**. [spec.md](spec.md) and each entry say so, and the work is queued in `inbox/`. **Some may be worth retiring instead**: 26's pruning has drawn no pressure, and 18 is a Linux-first-run fix on a Windows-primary suite. Nobody has weighed that.
 
 - **Config fragments or includes**, so the Core section is not duplicated into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s config loader. **Deferred rather than rejected.**
 

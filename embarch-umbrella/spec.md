@@ -57,9 +57,9 @@ The first two are mechanically simplest and expected to work first try; **the th
 
 | Command | Scope | Behaviour |
 |---|---|---|
-| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--dry-run` prints the plan; `--uninstall` reverses it; `--dev-bench-repo` records the checkout the staleness check compares against |
+| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; `--dev-bench-repo` records the checkout the staleness check compares against. **`--dry-run` is designed and unbuilt** (decision 21) |
 | `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
-| `embarch doctor` | anytime | The full check chain. `--json`. `--prune` reports and cleans stale results and build dirs, opt-in only |
+| `embarch doctor` | anytime | The full check chain. `--json`. **`--prune` is designed and unbuilt** (decision 26), and so is the unconditional half that reports result counts and build-directory combinations — nothing measures or cleans either today |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
 | `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
@@ -76,12 +76,12 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 2 | Core service installed, and running |
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |
-| 5 | At least one probe visible; on Linux, **"not permitted" distinguished from "unplugged"** |
+| 5 | At least one probe visible — a count off `/status`, warn on zero. The Linux **"not permitted" versus "unplugged"** branch is **designed and unbuilt** (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
-| 10 | MCP server registered **and the registered command completes a handshake** |
+| 10 | The registration entry exists — one `claude mcp get`. **Spawning the registered command and completing a handshake is designed and unbuilt** (decision 23), so registered-but-broken still passes |
 | 11 | The study-designer schema versions: Core's served host version against this binary's compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
@@ -90,11 +90,13 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 16 | Core's bind address matches what the detected topology needs — **design-only** |
 | 17 | Firewall state, best-effort, informational — **design-only** |
 | 18 | Disk space behind the build and results directories — **design-only** |
-| 19 | Tail of Core's log file, informational — **design-only** |
+| 19 | Tail of Core's log file, informational — **design-only** (the file is [embarch-core](../embarch-core/decisions/logging.md)'s single daily-rolling log) |
 
-Checks 12, 15, 17 and 18 never fail the run outright, and neither does check 5 **except its not-permitted branch, which does.** **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
+Checks 12 and 15 never fail the run outright, and neither does check 5 — **every state check 5 can currently report is a pass or a warn**, because the branch that was to fail is one of the unbuilt ones. **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 11 and 13-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
+Numbers 1-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
+
+**Designed-and-unbuilt is not only a tail of the table.** Audited against the source on 2026-09-03: decisions 18 (check 5's not-permitted branch), 21 (`setup --dry-run`), 22 (checks 16-18), 23 (check 10's handshake) and 26 (`doctor --prune`) are all designed and unbuilt, and each of the first four sits *inside* a command or a check that otherwise ships — which is why the doc claimed them. Decision 17's amendment is a fifth: check 8 still counts zephyr-west targets with this crate's own scanner ([decisions/projects.md](decisions/projects.md)), not `embarch-api`'s listing.
 
 ## Token handling
 

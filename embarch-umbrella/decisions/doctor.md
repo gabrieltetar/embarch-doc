@@ -14,6 +14,12 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 Reporting zero probes as "warn — a probe can legitimately be unplugged" is true but **actively misleading for the most common Linux first-run failure:** a probe that *is* physically attached but inaccessible because no udev rule grants the current user permission to open it, which probe enumeration can silently under-report. So on Linux only — **macOS and Windows do not have this permission model** — after zero probes are reported, `doctor` checks the USB device tree for a known debug-probe vendor ID the enumeration missed. **A hit means "attached but not permitted", reported as a distinct fail rather than a warn**, with the udev-rules fix line; a genuine miss on both stays the existing warn.
 
+**Not built, as of 2026-09-03.** Check 5 reports the probe count off `/status`
+and warns on zero: no USB device-tree lookup, no vendor-ID list, and **no `Fail`
+branch in it at all.** The state this decision exists to separate is still
+reported as exactly the warn it calls misleading, and
+[../spec.md](../spec.md) asserted the branch twice until this audit.
+
 ### 19 — A stale-dev-bench-firmware check
 
 It compares the bench's reported firmware version, over a handshake-only endpoint Core added for exactly this, against `git describe` run in whichever local dev-bench checkout is configured — a new machine-level state field, settable at setup or overridable per call. A mismatch fails with a fix line naming the reflash step, **whose exact command depends on which board, unlike this decision's original text assumed.**
@@ -30,9 +36,25 @@ It compares the bench's reported firmware version, over a handshake-only endpoin
 
 **(a) is still design-only.** Worth recording for whoever implements it: **`embarch-topology` already exposes a recommended-bind-address function for exactly this comparison** — "what the detected topology needs" is that function's return value, not new logic to write here.
 
+**(b) and (c) are not built either, as of 2026-09-03** — the line above implied
+they were. `doctor` assembles exactly checks 1-15, and *firewall* and *disk*
+appear nowhere in the crate; [../spec.md](../spec.md)'s rows 16-18 now say all
+three are unbuilt. (a)'s note gains a detail: `setup` **already calls** that
+recommended-bind-address function and bakes it into the `install` invocation, so
+the address does get widened — what is missing is the check that would notice
+when it hadn't been.
+
 ### 23 — Check 10 spawns `embarch-api` and confirms the MCP handshake completes, not just that a registration entry exists
 
 **The failure mode the check exists to catch — registered but broken — was exactly the one it could not detect:** adding a registration says nothing about whether the registered command actually starts and speaks the protocol. It now spawns the exact registered command with a short timeout and sends a minimal initialize handshake, **reporting success, failure and timeout distinctly.** A hand-rolled one-shot JSON-RPC exchange is sufficient; a full client is not needed for one round trip.
+
+**Not built, as of 2026-09-03.** Check 10 runs `claude mcp get embarch` and
+passes on a zero exit — **the registration-entry test this decision was written
+to replace.** Nothing spawns the registered command; the only handshake in
+`doctor` is the dev-bench serial one checks 11 and 13 share. **So the failure
+mode this entry's first line names — registered but broken — is still exactly
+the one the check cannot detect.** [../spec.md](../spec.md) claimed the handshake
+until this audit.
 
 ### 24 — Version skew between Core and the API stays a warning, not a refusal
 
