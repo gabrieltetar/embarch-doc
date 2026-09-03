@@ -80,7 +80,7 @@ EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|^CLAUDE\.md$|^LIC
 # finished migration cannot drift back. Default caps above apply to the rest;
 # add a sub-project here the moment its pass lands, never before.
 TIGHTENED = {
-    # "embarch-ui": {"decision-group": 8 * KB, "spec": 8 * KB},
+    "embarch-outpost": {"decision-group": 8 * KB},
 }
 
 
