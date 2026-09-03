@@ -90,7 +90,8 @@ Three steps, in this order.
 >
 > **One spawn attempt per tick, then end the turn.** If the spawn fails for any
 > reason — an overloaded API, a 529, a transport error — post one line naming
-> the failure, react `x`, `PushNotification` the owner, and **stop**. Do not
+> the failure, react `x`, run `scripts/fleet-alert.py "spawn failed: <reason>"`
+> (a bare `@` from this channel notifies nobody), and **stop**. Do not
 > retry inside this tick, do not wait and try again, do not loop. **Cron cannot
 > fire while this tick is running**, so an in-turn retry is the fleet disabling
 > its own recovery; ending the turn returns this session to idle, and the next

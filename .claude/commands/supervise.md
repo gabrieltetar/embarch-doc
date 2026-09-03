@@ -122,10 +122,16 @@ not an ending, and the entries you leave are the only thing that crosses it.
   not. Honouring a stop means: finish landing what is in flight, fold `status.d/`,
   write your log entries, exit. A stop is never "drop everything" — the landing
   and the fold are what keep `main` and the docs consistent.
-- **Push sparingly** (`PushNotification`): leg blocked and stopped, budget HOLD,
-  or a `suite`-scope design you are about to execute. **Never per unit and never
-  per leg** — the relay means legs end every twenty minutes, and a push each time
-  is a pager, not a notification.
+- **Alert sparingly, with `scripts/fleet-alert.py`.** A Slack `@` from the fleet
+  notifies nobody — the connector posts as the owner, and Slack does not notify
+  him about his own message — and `PushNotification` reaches a phone only while
+  Remote Control is connected, so send that too but never instead. The set is
+  closed (`embarch-parallel-agents-ops.md` §3): leg blocked and stopped, budget
+  HOLD, a failed spawn, **the same failure blocking two units**, a dream, or a
+  `suite` task parked awaiting its window. If the script exits 2 it is not
+  configured — post to the channel anyway and say in your log entry that the
+  alert did not send. **Never per unit and never per leg** — legs end every
+  twenty minutes, and an alert each time is a pager, not a notification.
 
 ## The leg
 
