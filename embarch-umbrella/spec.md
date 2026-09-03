@@ -1,6 +1,6 @@
 # embarch-umbrella: spec
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-03.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md).
 
@@ -82,15 +82,19 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
 | 10 | MCP server registered **and the registered command completes a handshake** |
-| 11 | Schema version from `/status` agrees with `embarch-api`'s compiled constant — **a stub; see [open.md](open.md)** |
+| 11 | The study-designer schema versions: Core's served host version against this binary's compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
-| 14 | Core's bind address matches what the detected topology needs — **design-only** |
-| 15 | Firewall state, best-effort, informational |
-| 16 | Disk space behind the build and results directories |
-| 17 | Tail of Core's log file, informational |
+| 14 | Which program Core would flash each chip family with |
+| 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
+| 16 | Core's bind address matches what the detected topology needs — **design-only** |
+| 17 | Firewall state, best-effort, informational — **design-only** |
+| 18 | Disk space behind the build and results directories — **design-only** |
+| 19 | Tail of Core's log file, informational — **design-only** |
 
-Checks 5, 11, 12, 15 and 16 never fail the run outright — **except check 5's not-permitted branch, which does.**
+Checks 12, 15, 17 and 18 never fail the run outright, and neither does check 5 **except its not-permitted branch, which does.** **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
+
+Numbers 11 and 13-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
 
 ## Token handling
 

@@ -1,6 +1,6 @@
 # embarch-umbrella decisions: What `doctor` checks
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-03.
 
 The checks, and why several of them distinguish states that look the same.
 
@@ -47,3 +47,30 @@ Core refuses to flash an nRF54L part with probe-rs, because that family stores c
 **Wiring it up immediately found a real bug in the thing it checks, which is the best argument for the check existing.** Run through WSL2 interop, the Windows Core reported a tool at a **Linux path — an ELF a Windows process cannot execute** — because interop merges WSL's `PATH` into the Windows process and the existence test resolves it through the filesystem redirector. **The *service*, whose environment is the system `PATH`, resolves a different tool.** So the check was reporting a backend the thing it checks would never choose, **which is worse than no check.** Fixed in Core.
 
 **An older Core with no such subcommand is a Warn naming what it predates, not a Fail** — a real and recoverable state during a staged rollout, and the deployment procedure already assumes Core and the tooling around it move separately.
+
+### 33 — Check 11 compares three real numbers, and says which one it could not get
+
+The check returned a hardcoded warn for months — *"not available yet, `embarch-study-designer` isn't wired into `embarch-core`/`embarch-api` as a dependency yet"* — after that had stopped being true. **It is a direct dependency of both**, and on 2026-08-26 the live pair sat at Core wire v13 against a bench flashed to v14 while this check reported "not available yet" the whole time. The handshake refused that state correctly and loudly, **but only to whoever called it by hand**; saying it unasked is the entire job of the surface that was silent.
+
+**Three numbers, and they are not three of a kind.**
+
+- **Core's served `study_designer_schema_version`** versus **the `HOST_TYPE_SCHEMA_VERSION` this `embarch` binary compiled** — the `embarch-api`⟷`embarch-core` hop, the one `embarch-api` itself refuses to submit a `Study` across. A difference is a **fail**: the pair cannot run a study at all.
+- **The bench's wire version** cannot be compared against either of those. `DEV_BENCH_WIRE_SCHEMA_VERSION` counts its own sequence and is only guaranteed `<=` the host one, so equality means nothing and inequality means less. What *is* comparable is `/dev-bench/hello`'s `compatible` — **Core's own verdict**, Core comparing the bench's number against the wire constant Core compiled. Core's wire constant is served nowhere, so recomputing the verdict here would be a mirror with nothing to mirror.
+
+**This binary's constant stands in for the located `embarch-api`'s, and the check is not pretending otherwise.** `embarch-api` exposes its compiled host version nowhere — not on `--version`, not on `status --json` — so there is no way to read the number that binary actually holds without changing `embarch-api`, which is a different repo's change. All three binaries ship from one suite archive, so the stand-in is exact whenever check 1's manifest agrees, and check 1 is the check that says so. The gap is filed rather than papered over.
+
+**A missing number is a skip that names it, never a pass.** Core unreachable, no token, no bench, a `409` mid-study, a Core predating the field: each is a distinct `Warn` carrying its own reason, and the numbers that *were* obtained are still printed. A `Fail` always outranks a skip, so an absent bench cannot mask a host disagreement.
+
+**`/dev-bench/hello` is fetched once for checks 11 and 13.** It is not a read — it opens the serial link long enough to handshake — so two checks asking separately would be two link opens for one answer. The visible consequence: the handshake now runs even when no dev-bench checkout is configured, where check 13 alone used to skip before calling it.
+
+**The comparison is a pure function over injected numbers**, which is what lets the whole matrix be tested with no Core, no bench and no network — the check that gates deploys being untestable without the hardware it gates was most of why it stayed a stub.
+
+### 34 — Check 15: `core_version` is a different question, so it is a different check
+
+`GET /status` also serves `core_version` (`embarch-core` decision 13). **It is deliberately not one of check 11's three numbers.** Schema skew asks whether the pieces agree on a wire contract; this asks whether the Core answering on the network is the binary that was last built and deployed — and folding it into check 11 would present one verdict over two unrelated questions.
+
+It compares `/status`'s `core_version` against the located `embarch-core` binary's own `--version`, both of which `doctor` already has. `deploy-core` has printed `landed` twice in one session with nothing installed, when the elevated child was cancelled ([embarch-dev-workflow.md](../../embarch-dev-workflow.md) §4a), and its own check compares byte *length*, which cannot discriminate a release rebuild of one constant.
+
+**The limit is stated in the check's own output, not only here:** `core_version` is `CARGO_PKG_VERSION`, so it moves only when the crate version does. This catches a **cross-version** stale deploy and is blind to a same-version one. Strictly better than nothing, and not a hash comparison — a test asserts the blind spot rather than leaving it to the prose.
+
+**Warn, never fail**, following `embarch-core` decision 13's "consumers warn, never refuse" and decision 24 above: independent per-repo versions are an expected state in a suite iterating this fast.
