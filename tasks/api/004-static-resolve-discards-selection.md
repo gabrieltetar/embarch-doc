@@ -1,6 +1,6 @@
 # 004 — A static project silently discards everything the caller selected
 
-**State:** open
+**State:** claimed by agent/api/004-static-resolve-discards-selection, 2026-09-03 12:10
 **Source:** embarch-api/open.md — "**`snippets` is accepted, silently discarded, and reported as success** for a project with an explicit build command"
 **Scope:** api
 **Hardware:** none
