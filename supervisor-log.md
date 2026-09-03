@@ -61,6 +61,83 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 01:52 — core/002 status-versions-and-json-error-body
+
+**Decided:** nothing suite-wide. Within `core` the worker made three calls on one
+`open.md` bullet and I read the whole diff before merging (it retires a decision,
+which §10 requires): **built** `core_version` on `/status` from
+`env!("CARGO_PKG_VERSION")`, **retired** the hand-bumped `contract_version`
+(nothing forces the bump, so its failure mode is a number reading "same" across
+contracts that differ), and **deferred with a trigger** the `{code, message,
+cause}` error body — correctly reclassified as **cross-repo §8 work, not a
+worker's task**, because the `code` enum is a wire contract `api`, `ui` and
+`umbrella`'s `doctor` all branch on. Two tests pin `StatusResponse`'s serialized
+key set, so adding a field without moving `interfaces.md`'s `/status` row now
+fails the suite.
+
+**Merged:** `agent/core/002-status-versions-and-json-error-body` (core `d4fa396`,
+doc `df97ecd`). Both fast-forward; gate re-run by me on the merge result — build,
+171 tests, `clippy --all-targets -D warnings`, all six doc checks, ownership on
+both branches. Fold commit updates `suite/features.md`'s `GET /status` row to
+`unit, hw` and names both version fields.
+
+**Blocked:** none.
+
+**I did NOT re-run the native Windows build myself, and that is a gap.**
+`cargo check --target x86_64-pc-windows-msvc` cannot build this crate from WSL —
+it dies in `probe-rs`'s `hidapi` C sources on a missing `guiddef.h`, which is
+`embarch-dev-workflow.md` §4's documented cross-build failure class — and §4's
+"extract the Windows-gated module into a throwaway crate" does not apply to a
+diff with **no** Windows-gated code in it. The worker improvised: it rsynced the
+three crates to a scratch tree at `C:\Users\tmp12\embarch-agent-scratch\core-002`,
+deliberately not the `source/repos` deploy tree, and ran native `cargo.exe` —
+`build` and `test --no-run` both exit 0, tests compiled but not executed. The
+merge was fast-forward, so that tree is byte-identical to the merge result and
+the run was on the right content. I accepted it rather than repeating it,
+because repeating it means a supervisor writing outside the suite's own repos
+onto the Windows filesystem, which §2 reserves to the owner. **The next leg
+should not treat this as precedent** until the drop below is answered.
+
+**Hardware debts:** none from the change itself — `core_version` is a
+compile-time constant asserted through the real router. One thing only a deploy
+can show: that the live Windows service answers with the version of the binary
+actually installed, which is the exact `deploy-core` footgun the field exists to
+catch. First thing to look at on the next real `deploy-core`.
+
+**Two `inbox/` drops rescued into the main checkout** (they are gitignored and
+lived only in the worker's worktree, which I then deleted — a drop written in a
+worktree is lost unless the supervisor moves it):
+`inbox/doc-worker-native-windows-build-procedure.md` (owner-only: §10 makes a
+native Windows build a gate step and §4 cannot perform it for this crate; asks
+for a sanctioned procedure and a named scratch path) and
+`inbox/umbrella-doctor-check-11-fourth-number.md` (queue work — probably an
+amendment to the open `umbrella/001` rather than a new task).
+
+**The task file's stated premise was wrong and the worker said so.** `core/002`
+claimed `umbrella`'s `doctor` check 11 was "a named consumer waiting" on this
+change. It was not: `umbrella/open.md` names Core's served **host** version,
+which is `study_designer_schema_version` and has existed since 2026-08-25. Check
+11 could always have been built. `core_version` is newly *available* to it as a
+fourth number, not a dependency. **I wrote that premise into the task last leg
+from a sweep** — a filed task's "Why now" is not evidence, and this one was
+wrong in exactly the direction that makes a task look more urgent than it is.
+
+**`build_changelog.py` also consumed five of the owner's pending `doc-*`
+fragments** into `history/doc.md` in this fold — the fleet-listener, fleet-risks,
+remote-surfaces, open-questions-sweep and ownership-base entries. Correct tool
+behaviour (it drains everything in `changelog.d/`), but they were the owner's
+commits, not this unit's, and they landed under this unit's fold commit.
+
+**Budget:** DEGRADED at start, wave 2, no 429.
+
+**Least sure about:** accepting a worker's native Windows build instead of
+re-running it, and doing so on the reasoning that a fast-forward makes branch
+tip and merge result identical. That reasoning is sound and it is also the exact
+shape of "the gate was satisfied by an argument rather than a run" that batches
+001 and 002 flagged twice.
+
+---
+
 ## 2026-09-03 — batch 003
 
 **First batch run by a supervisor agent rather than the owner's session, and the

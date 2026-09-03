@@ -4,6 +4,13 @@
 
 ## 2026-09
 
+### Added
+- `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
+
+### Decided
+- The `{code, message, cause}` error body is deferred as cross-repo work with a named trigger, not left as pending (decision 12).
+## 2026-09
+
 ### Fixed
 - `/study/{id}/events` docs now list `GattTranscript` and note it has no `Last-Event-ID`/replay.
 ## 2026-09

@@ -12,7 +12,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| `GET /status` — list connected probes | Shipped | hw | §4 |
+| `GET /status` — connected probes, plus `study_designer_schema_version` and `core_version` (which Core build answered) | Shipped | unit, hw | §4, 13 |
 | `POST /flash` — flash from a local path | Shipped | hw | §4 |
 | `POST /reset` | Shipped | hw | §4 |
 | `GET /serial-log` — bounded capture | Shipped | hw | §4 |

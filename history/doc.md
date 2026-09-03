@@ -4,6 +4,16 @@
 
 ## 2026-09
 
+### Changed
+- The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-parallel-agents.md](../embarch-parallel-agents.md) §6.
+- The fleet's risk register moved out of embarch-parallel-agents.md §12 into [embarch-fleet-risks.md](../embarch-fleet-risks.md), which hit its size cap.
+- The four-surfaces comparison and the cloud-session rules moved out of the ops doc into [embarch-remote-surfaces.md](../embarch-remote-surfaces.md).
+
+### Fixed
+- check-ownership defaulted to origin/main, so an unpushed claim commit gave workers phantom violations.
+- collect-open-questions read design.md only and missed 88 questions in eight open.md files.
+## 2026-09
+
 ### Fixed
 - The documented tick prompt had drifted from the live one and lost the dream step.
 ## 2026-09
