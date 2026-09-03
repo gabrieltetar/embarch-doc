@@ -1,6 +1,6 @@
 # 003 — `cargo test --features alloc` does not compile
 
-**State:** open
+**State:** claimed by agent/study-designer/003-alloc-only-test-build, 2026-09-02 23:48
 **Source:** found by the study-designer/002 worker, 2026-09-02, while running the feature matrix; reproduced on `main` at `2a136be`, so it predates that task and is not caused by it.
 **Scope:** study-designer
 **Hardware:** none

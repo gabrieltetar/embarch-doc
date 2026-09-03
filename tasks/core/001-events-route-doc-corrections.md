@@ -1,6 +1,6 @@
 # 001 — Correct two facts about `GET /study/{id}/events` in embarch-core's docs
 
-**State:** open
+**State:** claimed by agent/core/001-events-route-doc-corrections, 2026-09-02 23:48
 **Source:** found while building `embarch-api`'s consumer of that route (`tasks/api/001-sse-client.md`); both facts read out of `embarch-core/src/study.rs`
 **Scope:** core
 **Hardware:** none
