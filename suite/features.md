@@ -126,18 +126,19 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run** | local | 3, 28 |
+| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run**, and `--dry-run` is designed and unbuilt | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
-| `init`/`doctor` support for live target discovery | Shipped | local | 17 |
+| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: `doctor` check 8 still counts targets with umbrella's own approximating scanner rather than `embarch-api`'s listing | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
-| `embarch doctor` — the whole chain, `--json` | Shipped — **checks 16–19 are designed and unbuilt** | local | §5 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **and more of it is unbuilt than the tail of the table**: checks 16–19, plus check 5's not-permitted branch (18), check 10's handshake spawn so registered-but-broken passes (23), and `--prune` with its always-on reporting half (26). Audited against the source 2026-09-03 | local | §5, 18, 22, 23, 26 |
 | `doctor` check 11 — study-designer schema skew: Core's served host version against this binary's compiled one, plus Core's own `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
 | `doctor` check 15 — the running Core's `core_version` is the located `embarch-core` build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
+| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | **Designed, unbuilt in every repo** — `embarch-umbrella`, `embarch-core`, `embarch-api` and `embarch-topology` have no such step, and the other four have no release workflow at all | n/a | 27, 29 |
 | `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped and dogfooded — **the verification compared a byte count and reported success through a cancelled elevation** | hw | 32 |
 
 ## embarch-ui

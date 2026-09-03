@@ -61,6 +61,91 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 13:35 — umbrella/002 design-only-decisions-audit
+
+**Decided:** nothing suite-wide. The judgement worth recording is what I did
+**not** let this become: the task said *build nothing*, and the worker held to it
+across seven findings it could have started fixing. Every one came back as a
+finding plus an `inbox/` drop. That is the shape I want repeated — an audit that
+starts repairing what it finds stops being an audit halfway through.
+
+**All seven audited items are unbuilt**, each settled from source alone with a
+function or an absence named: `setup --dry-run` (21), the bind-address, firewall
+and disk checks (22a-c, checks 16-18), the MCP handshake spawn (23),
+`doctor --prune` (26), and the release version assertion (27/29). It found two
+more of the same class off-list: **decision 18** — check 5 has no `Fail` branch
+at all, while `spec.md` asserted the not-permitted branch twice — and
+**decision 17's amendment**, where check 8 still uses umbrella's own
+approximating target scanner rather than shelling out to `embarch-api`.
+
+**Four of these were claimed as *shipped* by `spec.md`, not merely left
+unmarked.** That is the finding under the findings, and it is why the task was
+worth running: the unbuilt pieces sit *inside* commands and checks that do ship,
+so a row saying "Shipped" was true about the command and false about the piece.
+The same shape produced the check-14 numbering collision `umbrella/001` fixed
+this morning.
+
+**On the numbering question I asked it to watch for: no second collision.**
+Decisions 1-34 are all present across the six group files, none duplicated,
+27/29 the recorded pair. One provenance gap only — `spec.md`'s check 19 descends
+from `embarch-core` decision 16 with the citation lost in a compaction, restored
+as a link. **So the numbering does not need a new rule on this evidence**, which
+is the answer I was hoping not to have to take on faith.
+
+**Merged:** `agent/umbrella/002-design-only-decisions-audit` (doc `35c9285`,
+**no code branch** — doc-only, the code worktree carried no commits, exactly as
+the task specified). Fast-forward after a clean rebase. Gate on the merge result:
+all six doc checks, ownership on the doc branch. **No `cargo` run**, because the
+branch changes no code and the merge result's tree is `main`'s, which unit 1 had
+already built and tested at `1aa0709`.
+
+**`main` moved under me mid-leg.** The rebase picked up the owner's `e55535a`
+("A Slack alert that can actually notify the owner, unwired for now"), committed
+during this leg. Step 0's warning about a repo that moves under a session is not
+hypothetical on this machine — it happened twice today.
+
+**Blocked:** none.
+
+**Fold:** four row changes in [suite/features.md](suite/features.md)'s umbrella
+table plus one new row. The `embarch doctor` row's caveat is now much larger than
+"checks 16-19"; the `setup` row names `--dry-run`; the live-target-discovery row
+names the unbuilt amendment; and the release version assertion gets a row of its
+own, which it never had — **designed, unbuilt in every repo.**
+
+**Six `inbox/` drops**, all written to the main checkout rather than the worktree
+(the `umbrella/001` lesson, applied without being told). Five are umbrella
+work — `setup --dry-run`, the MCP handshake spawn, `--prune`, check 5's
+not-permitted branch, and the target-count shellout. **The sixth,
+`suite-release-tag-version-assertion.md`, is `suite` scope across four repos and
+is not a worker's** (§8). **Announced and parked**, not started: `#embarch-fleet`
+ts `1788460873.097499` at 13:41 MDT, recorded in the task file. My leg ends before
+the 30 minutes are up, so **the next leg completes that window rather than
+restarting it** — read the thread on that `ts`, and if nothing objects and 30
+minutes have passed, run it as that leg's last unit.
+
+**Hardware debts:** none. Nothing here ran.
+
+**Doc size is now binding in three places, and this is the handoff line that
+matters.** `embarch-umbrella/decisions/doctor.md` sits at 12245 of 12288 and
+`open.md` at 5108 of 5120 — this worker trimmed its own notes twice to fit —
+and `embarch-api/spec.md` is at exactly 10240 from `api/004`. **A worker touching
+any of the three fails `check-doc-size.py` before it writes a sentence.** Whoever
+dispatches the next `umbrella` or `api` unit should either say so in the task
+file, as I did for `api/006`, or file a `DOC-COMPACTION.md` pass first. That is a
+decision for the owner, since the compaction rules are his.
+
+**Budget:** DEGRADED, wave 2, no 429.
+
+**Least sure about:** accepting a doc-only unit with no `cargo` run in the gate.
+The reasoning is airtight — no code changed, so the merge result's code tree is
+byte-identical to a `main` I built two units ago — and it is *also* the exact
+"the gate was satisfied by an argument rather than a run" shape that batches 001
+and 002 flagged and that `core/002` flagged again last leg. Third time this
+argument has been made in this log. It has been right every time so far, and that
+is precisely what would make it easy to be wrong with.
+
+---
+
 ## 2026-09-03 13:05 — api/004 static-resolve-discards-selection
 
 **Decided:** nothing suite-wide, and one thing worth reviewing. **I let the
