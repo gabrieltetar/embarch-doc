@@ -114,6 +114,21 @@ place for it, and no worker can see that from where it sits.
 **Hardware debts:** none. Nothing here touches a board, and the worker said so
 rather than inventing one.
 
+**I swept two of the owner's uncommitted files into this fold commit.** `b2e7279`
+carries `scripts/check-docs.py` (new, 72 lines) and four lines of `.gitignore`,
+neither of them mine and neither of them this unit's — my fold does `git add -A`
+in the main checkout, and the owner was working there at the same time. It also
+consumed his `changelog.d/doc-fleet-alert-webhook.added.md` into `history/doc.md`,
+which is the same `build_changelog.py` behaviour `core/002` and `umbrella/001`
+both recorded. **Nothing is lost and I did not revert any of it** — reverting
+would delete his work — but the commit message lies about what the commit
+contains, and `check-ownership.py --supervisor` flags `scripts/check-docs.py`
+against my own leg because of it. This is step 0's "another session's `git add -A`
+swept this one's work into unrelated commits", with the fleet on the other side
+of it for the first time. **A `git add -A` fold is not safe while the owner is
+editing the same checkout**, and that is a rule change, so it is his to make and
+not mine.
+
 **Budget:** DEGRADED, wave 2, no 429. Four units, no 429 in the whole leg — the
 529 storm that killed batch 004 did not recur.
 
