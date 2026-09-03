@@ -14,7 +14,6 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 ## Unvalidated against real hardware
 
 - **The bench's UTC clock-resync accuracy.** Resync happens only on a handshake, so drift between resyncs — and whether it is acceptable for post-hoc analysis — is unmeasured. Core's own arrival stamp gives analysis the raw material to *detect* drift after the fact, but does not correct it or say how much is acceptable. **That judgment needs real hardware.**
-- **`MAX_GATT_ACTIVITY_RECORDS` was never sized against live notification traffic** — and it never will be: decision 54 retired the field it bounded. Kept here only because this question stood open for weeks after its subject was removed, which is its own small lesson about resolved-by-removal items not closing themselves.
 
 ## Parsed and pinned, with no consumer
 

@@ -36,6 +36,8 @@ Done **on a branch**, unlike the rest of that pass, at the repo owner's explicit
 
 **The removal is mid-struct in a message dev-bench hand-encodes, which is what makes this unambiguously a wire bump:** an encoder that kept writing even the absent-marker byte **would put the next field one byte late and Core would read the activity byte as a security level.** Both pinned vectors are re-pinned one byte shorter, and **the populated one is where that shows up as a wrong *value* rather than only a wrong length** — the same class of drift two retired fields caused for a whole schema version before the pinning rule caught them.
 
+**Its residue outlived it by a week, and this is the part worth keeping.** The type, the field and `MAX_GATT_ACTIVITY_RECORDS` went; three comments naming them did not, and one was **a rustdoc link to the deleted constant, so `cargo doc` had been reporting the defect the whole time.** A fourth site was `open.md` still asking whether the cap was sized right. Cleared 2026-09-02. **A removal is not done when the code compiles — the names survive in prose, and prose is where a reader looks for whether something still exists.** Grep the retired name at removal time; a retired *constant* also needs its tombstone row in [../interfaces/limits.md](../interfaces/limits.md), which is the one thing this removal did get right.
+
 ### 19 — Two-tier validation: real-time `Outcome` plus a Core-side post-hoc content check
 
 **Retired 2026-08-25** (decision 48). The post-hoc half — `Study.validations`, `PostHocValidation`/`PostHocCheck`/`ValidationSource`/`DataChannel`/`ContentValidity`/`ValidationResult`, and the `core-validation` feature that evaluated them — is gone.

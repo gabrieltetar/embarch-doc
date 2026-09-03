@@ -26,10 +26,29 @@ example of "resolved-by-removal items not closing themselves."
 
 ## Done when
 
-- [ ] No reference to `MAX_GATT_ACTIVITY_RECORDS` survives that implies a live cap.
-- [ ] `cargo doc --no-deps` produces no broken-intra-doc-link warning for it.
-- [ ] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`.
-- [ ] The `MAX_GATT_ACTIVITY_RECORDS` bullet in `embarch-study-designer/open.md`
+- [x] No reference to `MAX_GATT_ACTIVITY_RECORDS` survives that implies a live cap.
+- [x] `cargo doc --no-deps` produces no broken-intra-doc-link warning for it.
+- [~] Gate green: `cargo build` and `cargo clippy --all-targets -- -D warnings` are
+      clean. **`cargo test` is red, and was red on `main` before this change** —
+      see "Pre-existing failure" below.
+- [x] The `MAX_GATT_ACTIVITY_RECORDS` bullet in `embarch-study-designer/open.md`
       is closed, not reworded. If decision 54 needs a tombstone line instead
       (DOC-PROTOCOL §7.4), write that.
-- [ ] `changelog.d/study-designer-<slug>.fixed.md` dropped.
+- [x] `changelog.d/study-designer-<slug>.fixed.md` dropped.
+
+## Pre-existing failure, not caused by this change
+
+`cargo test` aborts in `tests::dev_bench_message_discriminants_are_pinned` with
+`has overflowed its stack`. Reproduced on the unmodified base commit (`2a136be`,
+on `main`) by stashing this change, so it is **not** this task's doing; this
+task edited comments only.
+
+Diagnosed, not guessed: `RUST_MIN_STACK=33554432 cargo test` passes 9/9. It is
+the libtest harness's default 2 MiB per-test-thread stack against this crate's
+inline result types — the same class of failure `decisions/limits.md` decision
+49 records Core solving with a 64 MiB thread stack. **Nothing in the test setup
+does the equivalent, so the crate's own test suite cannot run at defaults.**
+
+Left for a task of its own: the fix is a design call (a `.cargo/config.toml`
+stack setting, boxing in the test, or shrinking the type further), not a
+comment edit, and choosing it inside this task would have hidden it.
