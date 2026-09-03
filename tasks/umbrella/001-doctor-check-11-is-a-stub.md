@@ -1,6 +1,6 @@
 # 001 — `doctor` check 11 checks nothing, and its stated reason is false
 
-**State:** open
+**State:** claimed by agent/umbrella/001-doctor-check-11-is-a-stub, 2026-09-03 01:56
 **Source:** embarch-umbrella/open.md — "**`doctor` check 11 never checks anything, and its stated reason is false.**"
 **Scope:** umbrella
 **Hardware:** verify-only
@@ -45,3 +45,33 @@ it exists to catch has already happened once undetected.
       deployed Core and a flashed bench is the owner's, not a worker's.
 - [ ] Gate green (`embarch-parallel-agents.md` §10).
 - [ ] `changelog.d/` fragment dropped.
+
+## Amended 2026-09-03 by the supervisor: a fourth number
+
+Folded in from `inbox/umbrella-doctor-check-11-fourth-number.md`, dropped by
+the `core/002` worker. **Amended into this task rather than filed as its own,
+because otherwise check 11 gets touched twice** — this task is open and
+unclaimed and the field already exists with no reader.
+
+`GET /status` now also serves **`core_version`**, Core's own crate version
+compiled in from `CARGO_PKG_VERSION` (`embarch-core/interfaces.md`'s `/status`
+row, decision 13, built and merged 2026-09-03). Note carefully what this does
+*not* change: the three numbers named above stay the three numbers, and
+**nothing this task needed was blocked on `core/002`.** The task text's earlier
+implication that check 11 was waiting on Core was wrong — Core's served *host*
+version is `study_designer_schema_version` and has existed since 2026-08-25.
+
+`core_version` answers a **different question** from schema skew: a Core running
+an **older binary than the one that was built and deployed.**
+`embarch-dev-workflow.md` §4a records `deploy-core` printing `landed` twice in
+one session when the elevated child was cancelled and nothing installed, and its
+own check compares byte *length*, which cannot discriminate a release rebuild of
+one constant.
+
+- [ ] Check 11 (or whichever check owns it) reports the `core_version` Core
+      answered with, and **does not present it as a skew check** against the
+      three schema numbers — it is a different question, reported separately.
+- [ ] `embarch-umbrella/open.md` states the honest limit: `core_version` only
+      moves when the crate version does, so this catches a **cross-version**
+      stale deploy and **not** a same-version one. Strictly better than nothing,
+      not a hash comparison.
