@@ -20,7 +20,6 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 - **`core.toml`** (decision 11), narrowed to `bind`/`port`.
 - **A `{code, message, cause}` JSON error body**, and `core_version`/`contract_version` on `/status` (decisions 12, 13). The study schema version is the only one of the three that is real.
-- **`embarch-api` consumption of `GET /study/{id}/events`** (decision 24). The SSE endpoint has no CLI or MCP consumer.
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Closed as not-needed-yet with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked, and this suite's posture is not to build the machinery first.
 
@@ -30,6 +29,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **A separate-machine deployment still has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design and unusable for flashing in practice.
 - **macOS is reasoned-only.** The elevation paths are written and unexercised; nothing in this suite has run on a Mac.
 - **`FlashedThisRun` is unreachable from Core alone** (decision 31), by construction rather than omission — `/flash` and `/study` are separate calls with nothing linking them, and the alternative is a persisted "last thing I flashed" record this suite forbids. `embarch-api` is what makes it reachable.
+- **`GET /study/{id}/events` offers no `Last-Event-ID` and no replay** (decisions 24, 41). Now consumed — `embarch-api`'s `study-status --follow` and `study_watch` (`embarch-api/decisions/core-link.md` 48, 49) — but a reconnect still resumes at "now" with no way to ask for what it missed; both consumers fall back to polling `GET /study/{id}` on a drop rather than pretending to resume. Resumable subscribers would be new Core-side design, closed here as not needed yet.
 
 ## Moved elsewhere, not resolved
 
