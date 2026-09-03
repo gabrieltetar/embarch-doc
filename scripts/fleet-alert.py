@@ -16,6 +16,16 @@ the connector, because it is not supposed to interrupt anyone.
 for progress. `embarch-parallel-agents-ops.md` §3 fixes the set; adding to it is
 how a notification channel becomes a feed nobody reads.
 
+**A `PermissionRequest` hook also fires this**, and that case is worth stating
+because it cannot be handled any other way: an agent blocked on a permission
+prompt is *suspended*, so it cannot alert for itself, and a leg runs unattended
+where a prompt stops it until the owner happens to look. Two shell shapes can
+never be allowlisted -- a `for ... done` loop, which has no prefix to match, and
+a heredoc or `>` file write, judged as a write whatever it starts with -- so
+`supervise.md` forbids both. The hook is the backstop for when one slips
+through anyway. It is async and swallows its own failure: a hook that blocks the
+tool call it was reporting on would be worse than the prompt.
+
 The webhook URL is a secret, so it lives OUTSIDE every repo, next to the pump
 latch in `embarch/.fleet/`. Absent, this script says so and exits 2 rather than
 failing silently -- a muted alarm that looks fine is worse than no alarm.

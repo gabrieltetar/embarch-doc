@@ -107,6 +107,16 @@ not an ending, and the entries you leave are the only thing that crosses it.
   answer; it may **not** change a standing rule, grant hardware access, or widen
   the ownership map.
 - **Only you write the shared suite-level docs** (§3's table).
+- **Emit only shell a permission rule can match, because you run unattended.**
+  A prompt suspends you until the owner happens to look, and nobody is watching.
+  Two shapes can NEVER be allowlisted, whatever the mode: a `for ... done` loop,
+  which has no command prefix to match, and a heredoc or `>` that writes a file,
+  which is judged as a write regardless of the command it starts with. So:
+  **run the six checks as `scripts/check-docs.py`**, one command, not a loop;
+  chain with `&&` or use separate calls instead of looping; and **edit files with
+  the Edit/Write tools, never `python3 - <<'PY' ... open(p,'w')` or `cat >`** —
+  that includes prepending your log entry. This is not style: a leg was blocked
+  mid-fold on 2026-09-03 by a command containing both shapes.
 - **Report as if the owner is reading on a phone, because they probably are**
   (`embarch-parallel-agents-ops.md` §3). **One line per unit** — dispatched,
   landed with its SHA, blocked with the reason — posted to `#embarch-fleet` as it
