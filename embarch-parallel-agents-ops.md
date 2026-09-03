@@ -29,7 +29,11 @@ The fleet exists because the seat is under-used (§1), so "how much is left" is 
 - **Weekly, default 70%.** The real budget, and the number the owner asked for.
 - **5-hour, default 85%.** Not a budget — a lockout. Burning it to 100% stops *the owner* working, not just the fleet. It refills in hours, so a batch that waits loses nothing.
 
-`usage-budget.py` exits `0` PROCEED, `1` HOLD, `2` UNKNOWN. **UNKNOWN is treated as HOLD**: no cache, a stale one, or no `rate_limits` at all (it appears only for a Claude.ai Pro/Max seat, and only after the session's first API response). Never dispatch a wide wave on numbers you do not have.
+**On this machine the percentages never arrive, and that is the normal case.** The VS Code extension does not run a status line — measured 2026-09-03, after a restart, no cache ever appeared — and there is no `claude` CLI here to run one (§3). Nothing else exposes the numbers: they are not in the session transcript, which carries token counts and `429` errors but no quota state.
+
+So the gate degrades rather than blocking. `usage-budget.py` exits `0` PROCEED, `1` HOLD, `2` DEGRADED. **DEGRADED proceeds with a capped wave of 2** instead of the full six, because treating it as HOLD would mean the fleet never starts at all — which is a worse failure than running narrow. `--strict` restores the old refuse-without-numbers behaviour.
+
+**What actually protects the seat is the hard signal, not the estimate.** Claude Code records a throttled request in the transcript as `"error":"rate_limit"` with `apiErrorStatus: 429`; `--check-429` finds one in the last 90 minutes and turns any verdict into HOLD. The percentages were only ever a way to avoid reaching that. This machine has hit it four times historically, most recently 2026-08-20, so it is a real path and not a theoretical one.
 
 `--suggest` prints a wave size: full width until the tighter window is within 25% of its cap, then tapering to one worker. Running at full width is the point; the taper only stops six workers hitting the ceiling together.
 

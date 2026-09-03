@@ -6,9 +6,10 @@ Why this file exists: the supervisor's whole point is to keep the seat busy
 (embarch-parallel-agents.md §1), and the only way to do that safely is to know
 how close to the ceiling it already is. Claude Code publishes exactly that --
 ``rate_limits.five_hour.used_percentage`` and ``rate_limits.seven_day.*`` -- but
-ONLY on the JSON it hands a status line command. Nothing else, local or remote,
-exposes it: quota state arrives over the wire, so a tool that reads only files
-can say what was consumed and never what is left.
+ONLY on the JSON it hands a status line command. Quota state arrives over the
+wire, so a tool that reads only files can say what was consumed and never what
+is left -- see the degradation note below, which is the case that actually
+applies on this machine.
 
 So ``~/.claude/statusline-usage.py`` runs as the status line, caches those
 numbers to ``~/.claude/usage-cache.json``, and this script reads that cache.
@@ -22,12 +23,22 @@ Two thresholds, deliberately different, both overridable:
   gets a higher ceiling but is still a stop: the window refills on its own in
   hours, and a batch that waits loses nothing.
 
+**The percentages are often unavailable, and that is the normal case here.**
+They arrive only on the JSON Claude Code hands a status line command, and the VS
+Code extension does not run one -- measured 2026-09-03, after a restart, no
+cache ever appeared. So UNKNOWN is not an incident: it is this machine's steady
+state, and treating it as HOLD would mean the fleet never starts.
+
+Instead UNKNOWN degrades to a **capped wave** (``DEGRADED_WORKERS``) and leans on
+the signal that *is* available locally: an actual HTTP 429 recorded in the
+session transcript. ``--check-429`` finds one. That is the real protection --
+the percentages were only ever there to avoid reaching it.
+
 Exit status is the whole interface:
-  0  PROCEED -- headroom on both windows; ``--suggest`` prints a wave size
-  1  HOLD    -- a threshold is reached; stop dispatching, finish landing
-  2  UNKNOWN -- no cache, stale cache, or no rate_limits (not a Pro/Max seat,
-                or no API response yet this session). Treated as HOLD by the
-                supervisor: never dispatch a wide wave on numbers you don't have.
+  0  PROCEED  -- headroom on both windows; ``--suggest`` prints a wave size
+  1  HOLD     -- a threshold is reached, or a recent 429; stop dispatching
+  2  DEGRADED -- no percentages available; proceed with a capped wave.
+                 ``--strict`` turns this back into HOLD.
 
 Usage:
   scripts/usage-budget.py                       check, human-readable
@@ -44,7 +55,9 @@ import sys
 import time
 
 CACHE = os.path.expanduser("~/.claude/usage-cache.json")
-MAX_WORKERS = 6  # embarch-parallel-agents.md §13's cap.
+MAX_WORKERS = 6        # embarch-parallel-agents-ops.md §1's cap
+DEGRADED_WORKERS = 2   # wave size when the percentages are unavailable
+TRANSCRIPTS = os.path.expanduser("~/.claude/projects")
 
 
 def read_cache(path: str, max_age: int):
@@ -79,6 +92,41 @@ def window(limits: dict, key: str):
     if not isinstance(used, (int, float)):
         return None, None
     return float(used), node.get("resets_at")
+
+
+def recent_429(minutes: int) -> str | None:
+    """An actual rate-limit error in any transcript within the window.
+
+    This is the signal the percentages were a proxy for. Claude Code records a
+    throttled request as `"error":"rate_limit"` with `apiErrorStatus":429`, so a
+    real limit is detectable locally even when no percentage ever is.
+    """
+    cutoff = time.time() - minutes * 60
+    newest = None
+    for root, _dirs, files in os.walk(TRANSCRIPTS):
+        for name in files:
+            if not name.endswith(".jsonl"):
+                continue
+            path = os.path.join(root, name)
+            try:
+                if os.path.getmtime(path) < cutoff:
+                    continue                      # cheap reject before reading
+                with open(path, encoding="utf-8", errors="replace") as f:
+                    for line in f:
+                        if '"error":"rate_limit"' not in line:
+                            continue
+                        try:
+                            ts = json.loads(line).get("timestamp", "")
+                            when = time.mktime(time.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S"))
+                        except Exception:
+                            continue
+                        if when >= cutoff and (newest is None or when > newest):
+                            newest = when
+            except OSError:
+                continue
+    if newest is None:
+        return None
+    return f"a real 429 was recorded {int((time.time()-newest)/60)} min ago"
 
 
 def human_reset(ts) -> str:
@@ -132,22 +180,42 @@ def main() -> int:
                          "toward 1 worker; below it, run full width (default 0.25)")
     ap.add_argument("--suggest", action="store_true", help="print a suggested wave size")
     ap.add_argument("--json", action="store_true", dest="as_json")
+    ap.add_argument("--strict", action="store_true",
+                    help="treat missing percentages as HOLD instead of a capped wave")
+    ap.add_argument("--check-429", type=int, default=90, metavar="MIN",
+                    help="HOLD if a real 429 was recorded in the last MIN minutes (default 90)")
     args = ap.parse_args()
+
+    throttled = recent_429(args.check_429)
 
     data, why = read_cache(args.cache, args.max_age)
     if why:
+        if throttled:
+            if args.as_json:
+                print(json.dumps({"verdict": "HOLD", "reason": throttled, "workers": 0}))
+            else:
+                print(f"HOLD -- {throttled}")
+            return 1
+        workers = 0 if args.strict else DEGRADED_WORKERS
+        verdict = "HOLD" if args.strict else "DEGRADED"
         if args.as_json:
-            print(json.dumps({"verdict": "UNKNOWN", "reason": why, "workers": 0}))
+            print(json.dumps({"verdict": verdict, "reason": why, "workers": workers}))
         else:
-            print(f"UNKNOWN -- {why}")
-            print("Treat as HOLD: do not dispatch a wave on numbers you do not have.")
-        return 2
+            print(f"{verdict} -- {why}")
+            if args.strict:
+                print("--strict: not dispatching without numbers.")
+            else:
+                print(f"Proceeding with a capped wave of {workers}. No 429 in the last "
+                      f"{args.check_429} min, which is the signal that actually matters.")
+        return 1 if args.strict else 2
 
     limits = data["rate_limits"]
     five, five_reset = window(limits, "five_hour")
     seven, seven_reset = window(limits, "seven_day")
 
     blocking = []
+    if throttled:
+        blocking.append(throttled)
     if five is not None and five >= args.five_hour_max:
         blocking.append(f"5-hour at {five:.1f}% (max {args.five_hour_max:g}%), "
                         f"resets in {human_reset(five_reset)}")
