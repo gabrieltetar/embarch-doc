@@ -61,6 +61,38 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 07:50 — api/003 schema-version-error-kind
+
+**Reconstructed by the owner on 2026-09-03, not written by the supervisor that
+landed it.** This unit landed and left no entry: fold commit `1b0960b` consumed
+its `status.d/` fragment, assembled `history/api.md`, updated
+[suite/features.md](suite/features.md) and deleted the task file, and never
+touched this log. The leg had already died on repeated HTTP 529 (see the
+`batch 004` note in #embarch-fleet, 07:34); the landing was a hand-resume.
+§11 now puts the entry in the fold commit so this state cannot recur.
+
+**Decided:** unknown, and not recoverable. Whatever this unit's supervisor
+judged — and it retired a decision, which §10 says warrants reading the diff —
+is gone. The shipped result is in `embarch-api/decisions.md` decision 50 and in
+`history/api.md`; the *reasoning* is not.
+
+**Merged:** `agent/api/003-schema-version-error-kind` (api `2b607f7`, doc
+`334583e`), folded in `1b0960b`. Both branches and both worktrees outlived the
+unit and were still present at 09:00; the next leg's step 0 clears them.
+
+**Blocked:** none.
+
+**Hardware debts:** none recorded, and none can be recovered from the artefacts.
+
+**Budget:** not recorded. The leg reported DEGRADED, wave 2 at 01:29.
+
+**Least sure about:** this reconstruction. It is assembled from the commits, the
+task file's deletion diff and the Slack thread — every SHA is verified, and
+every judgement is absent. Treat the **Decided** line as a gap, not as "nothing
+was decided".
+
+---
+
 ## 2026-09-03 01:52 — core/002 status-versions-and-json-error-body
 
 **Decided:** nothing suite-wide. Within `core` the worker made three calls on one

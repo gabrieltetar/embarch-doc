@@ -156,7 +156,11 @@ top it up, and he should hear it before it reaches zero:
   field — an unclassified task counts as `required` and is not dispatchable.
 - **If refill also finds nothing, dream and end the leg**
   (`embarch-parallel-agents-ops.md` §7). Post exactly three proposals to
-  `#embarch-fleet`, mention `<@U0AGQGSHM2P>`, and exit. Do not pick one yourself,
+  `#embarch-fleet`, mention `<@U0AGQGSHM2P>`, **react `crystal_ball` to that post
+  as well as `robot_face`**, and exit. The extra reaction is not decoration: the
+  connector posts as the owner so every fleet message carries `robot_face`, and
+  `crystal_ball` is the only thing that lets the listener's 6-hour dream gate
+  tell a dream from an ordinary unit line. Do not pick one yourself,
   do not invent work to fill a slot, and **do not write a dreamt item into the
   queue** — an empty queue is the one moment the fleet genuinely does not know
   what is worth doing, which is why it asks instead of guessing. The pump stays
@@ -214,18 +218,26 @@ block several tasks in a row before anyone notices. If you see the *same* failur
 block two units, say so loudly in your log entry and in Slack; that is the shape
 the choice cannot catch on its own.
 
-**Fold and log, per unit, serialized.** As part of landing each unit: consume its
-`status.d/` fragments into their target docs and delete them, run
-`scripts/build_changelog.py`, run the six checks once more, and commit that as
-one change. **A unit has failed if it leaves a fragment unfolded** (§9). You are
-the only actor touching `main`, so this needs no lock — but it does need to be
-one commit per unit, never interleaved with another unit's fold.
+**Fold and log, per unit, serialized — in ONE commit.** As part of landing each
+unit: consume its `status.d/` fragments into their target docs and delete them,
+run `scripts/build_changelog.py`, **prepend that unit's entry to
+`supervisor-log.md`**, run the six checks once more, and commit all of that as
+one change. **A unit has failed if it leaves a fragment unfolded, and equally if
+it lands without its log entry** (§9, §11). You are the only actor touching
+`main`, so this needs no lock — but it does need to be one commit per unit, never
+interleaved with another unit's fold.
 
-Then prepend that unit's entry to `supervisor-log.md` (§11) — short, complete,
-readable cold: what it decided, what merged with SHAs, what blocked, any hardware
-debt. **On your first unit after local midnight, fold the previous day's unit
-entries into one dated entry first**, keeping every SHA and every debt; that is
-what stops per-unit logging from rolling the file every few days.
+**The entry is part of the fold commit, not a step after it.** Writing it
+afterwards leaves a window in which a unit is landed and unlogged, and `api/003`
+landed in exactly that window on 2026-09-03: its fold commit did every other
+part correctly and never touched the log, nothing failed, and that unit's
+handoff is permanently gone. One commit makes the state impossible instead of
+merely detectable. The entry is short, complete and readable cold: what it
+decided, what merged with SHAs, what blocked, any hardware debt.
+
+**On your first unit after local midnight, fold the previous day's unit entries
+into one dated entry first**, keeping every SHA and every debt; that is what
+stops per-unit logging from rolling the file every few days.
 
 **Then check your own hands**, once, before you exit:
 `git diff --name-only <leg-start-sha>...HEAD | python3

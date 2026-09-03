@@ -76,9 +76,12 @@ Three steps, in this order.
 > so with none alive every claim is stale (`tasks/README.md`) and a claimed task
 > counts as dispatchable-with-recovery. **Do not count `State:` lines yourself.**
 > If it prints above zero, spawn the next leg. If it prints zero, spawn a leg
-> **only if** no `robot_face` dream post appears in the 20 messages you just
-> read within the last 6 hours — refill may find something the queue does not
-> have yet, and the leg dreams if it does not.
+> **only if** no `crystal_ball` post appears in the 20 messages you just read
+> within the last 6 hours. **`crystal_ball` is what marks a dream** — every
+> fleet post carries `robot_face`, so a gate reading `robot_face` cannot tell a
+> dream from an ordinary unit line and is unfalsifiable in both directions.
+> Refill may find something the queue does not have yet, and the leg dreams if
+> it does not.
 >
 > **Spawning a leg** means one background `embarch-supervisor` agent, working
 > directory `/home/gabriel/Github/embarch/embarch-doc`, told: run one leg per
@@ -141,9 +144,11 @@ live supervisor; closing VS Code covers the rest.
 ## The reactions are the watermark
 
 There is no state file for messages. `eyes` means claimed,
-`white_check_mark` done, `x` failed, and **`robot_face` means the fleet wrote
-this itself**. Always react `robot_face` to your own post immediately after
-sending it. This survives a restart, and it shows the owner from their phone that
+`white_check_mark` done, `x` failed, **`robot_face` means the fleet wrote this
+itself**, and **`crystal_ball` marks a dream post** — the three-proposal post a
+leg makes when refill finds nothing (`ops` §7), and the only thing STEP 2's
+6-hour dream gate can actually read. Always react `robot_face` to your own post
+immediately after sending it, and `crystal_ball` too when it is a dream. This survives a restart, and it shows the owner from their phone that
 a message was picked up before any work finishes.
 
 **Why `robot_face` is load-bearing and not decoration.** The Slack connector
