@@ -75,10 +75,20 @@ CAPS = [
 EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|^CLAUDE\.md$|^LICENSE$)")
 
 
+# A sub-project whose decisions have been reduced to their hot half
+# (DOC-COMPACTION.md §10) is held at a tighter cap than one that has not, so a
+# finished migration cannot drift back. Default caps above apply to the rest;
+# add a sub-project here the moment its pass lands, never before.
+TIGHTENED = {
+    # "embarch-ui": {"decision-group": 8 * KB, "spec": 8 * KB},
+}
+
+
 def role_and_cap(rel: str):
     for role, cap, pat in CAPS:
         if pat.search(rel):
-            return role, cap
+            sub = rel.split("/")[0]
+            return role, TIGHTENED.get(sub, {}).get(role, cap)
     return None, None
 
 

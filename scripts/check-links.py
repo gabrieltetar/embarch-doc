@@ -3,7 +3,14 @@
 
 Walks all *.md files, extracts `[text](target)` links, and reports any
 relative target (link or embedded anchor target) that doesn't resolve on
-disk. http(s) links and bare in-page anchors (`#section`) are skipped.
+disk, **and any `file.md#fragment` whose fragment names nothing in that
+file**. http(s) links and bare in-page anchors (`#section`) are skipped.
+
+The fragment half was added 2026-09-02: a link like `embarch.md#6-index`
+kept "resolving" after that heading was renamed or removed, because only the
+filename was ever validated. That is reversals row 50's shape -- a bounded
+check that cannot report the thing it does not look at. A fragment resolves
+against an explicit `<a id="...">` or a GitHub-style heading slug.
 
 Usage: scripts/check-links.py   (run from anywhere; paths are repo-relative)
 Exit status: 0 if every relative link resolves, 1 otherwise.
@@ -20,6 +27,36 @@ import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LINK_RE = re.compile(r'\[[^\]]*\]\(([^)]+)\)')
+EXPLICIT_ID_RE = re.compile(r'<a\s+id="([^"]+)"', re.I)
+HEADING_RE = re.compile(r'^#{1,6}\s+(.*?)\s*$', re.M)
+
+
+def slug(text):
+    """GitHub's heading-slug rules, close enough for this repo's headings."""
+    text = re.sub(r'`', '', text)
+    text = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', text)   # link -> its text
+    text = re.sub(r'[*_]', '', text)
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\- ]', '', text)
+    return re.sub(r'\s+', '-', text)
+
+
+_anchor_cache = {}
+
+
+def anchors_of(path):
+    if path in _anchor_cache:
+        return _anchor_cache[path]
+    try:
+        with open(path, encoding='utf-8') as f:
+            body = f.read()
+    except OSError:
+        _anchor_cache[path] = set()
+        return _anchor_cache[path]
+    found = set(EXPLICIT_ID_RE.findall(body))
+    found |= {slug(h) for h in HEADING_RE.findall(body)}
+    _anchor_cache[path] = found
+    return found
 
 
 def find_md_files(root):
@@ -41,12 +78,15 @@ def main():
                 continue
             if target.startswith('#'):
                 continue  # in-page anchor, not checked here
-            file_part = target.split('#', 1)[0]
+            file_part, _, frag = target.partition('#')
             if not file_part:
                 continue
             resolved = os.path.normpath(os.path.join(os.path.dirname(path), file_part))
             if not os.path.exists(resolved):
                 missing.append((os.path.relpath(path, REPO_ROOT), target))
+            elif frag and resolved.endswith('.md') and frag not in anchors_of(resolved):
+                missing.append((os.path.relpath(path, REPO_ROOT),
+                                f"{target}  (file exists; nothing named '{frag}' in it)"))
 
     if missing:
         print(f"Found {len(missing)} broken relative link(s):\n")

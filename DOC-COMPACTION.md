@@ -2,11 +2,11 @@
 
 **Status:** active, 2026-09-02.
 
-## 1. What changed, and why this file was rewritten
+## 1. The invariant
 
-The first version of this protocol had one invariant: **lossless about facts, lossy only about chronology.** It was followed, and it worked — and it produced a 2.66 MB corpus with single files at 311 KB. A doc nobody can load whole is a doc nobody reads, so "we kept every fact" bought accuracy nobody was consuming.
+**Keep what a reader acts on, drop the rest, and let git hold it.** Efficiency and modularity are the goal; losslessness is not — the first version of this protocol was lossless about facts, was followed faithfully, and produced a 2.66 MB corpus with single files at 311 KB. **A doc nobody can load whole is a doc nobody reads**, so "we kept every fact" bought accuracy nobody was consuming.
 
-**The invariant is now the opposite: keep what a reader acts on, drop the rest, and let git hold it.** Efficiency and modularity are the goal; losslessness is not. Git is not a fallback here, it is the design: every deletion below is one `git log -p` away, forever, and that is what makes the deletions safe rather than reckless.
+**Git is not a fallback here, it is the design:** every deletion is one `git log -p` away, forever, and that is what makes these deletions safe rather than reckless.
 
 Three practices, in force from 2026-09-02:
 
@@ -56,44 +56,18 @@ What survives a compaction as history, and nowhere else:
 
 - **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. This stays a *design* doc rather than history, because it is predictive: it says which remaining assumptions to distrust. **It does not restate a correction's mechanism** — that is the owning decision's job — but it does keep the *transferable* clause, which usually exists nowhere else.
 
-  It outgrew one file and split the way §3 splits any over-cap doc: an index plus `reversals/rows-<a>-<b>.md`. **A row number is a permanent identity, so a range file never re-splits an existing row into a different file** — a new range is appended, and an unbalanced range is left unbalanced. The index carries the range table, the owner key, and the recurring *shapes* read across the rows, which is the one thing no individual row holds.
+  It split the way §3 splits any over-cap doc: an index plus `reversals/rows-<a>-<b>.md`. **A row number is a permanent identity, so a range never re-splits an existing row into a different file** — a new range is appended, and an unbalanced one is left unbalanced. The index carries the range table, the owner key, and the recurring *shapes* read across the rows, **which is the one thing no individual row holds.**
 - **Measurement provenance** — a measured number keeps its date and the conditions it was measured under, inline in the constants table. A constant that silently loses its provenance is the failure mode this suite keeps hitting.
 
 Everything else about the past is dropped: amendment chains, "reversed same day", schema-bump re-derivations, "**Implemented 2026-08-25**", "three things implementation settled", review-item numbers, and every "this pass"/"the same session"/"recorded rather than discovered later".
 
 ## 5. What a decision entry looks like
 
-Target **400 B**, hard ceiling **1,200 B** for the few that earn it. Structure:
-
-```markdown
-### 8 — One implementation, multiple call sites
-`embarch-topology`'s UI/CLI and Core/api/umbrella's live calls run the same
-crate `validate()`, not two layers that agree: it confirms the device is
-enumerated and still matches its role's recorded identity, erroring with what
-is stale.
-Rejected: two independent mechanisms that happen to agree — there is no way
-for one implementation to disagree with itself.
-Gap: Core checks JTAG roles only; the dev-bench link has none (open.md).
-```
-
-That is 430 B, from a 1,621 B original — and the original was the *median* entry.
-
-- **The claim first, in the heading.** Number, em dash, what was decided.
-- **Rationale as tightly as it can be said**, including the constraint that forced it.
-- **`Rejected: <alternative> — <reason>.`** One line each. This is the one thing that gets kept in preference to almost everything else, because it is what stops the same idea being re-proposed — but one line, not the argument. The full argument is in git.
-- **No history.** Not what it was before, not when it shipped, not which pass renumbered it.
+Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, and one clause per rejected alternative. §10 is what belongs in it and what does not.
 
 ### Numbers are permanent, and an entry may own several
 
-There are **2,362 prose `decision N` references** across this repo and `scripts/check-decision-refs.py` resolves every one. So a number is never renumbered, reused, or dropped. But under a byte budget several small decisions about one thing should be **one entry**, so an entry may own a list:
-
-```markdown
-### 20, 21, 25, 27 — Streaming capture, batched, with units
-```
-
-Every listed number stays resolvable, so every reference keeps working. Merging is the main tool for fitting 62 decisions into 25 KB, and 62 decisions for one crate is itself a sign that entries accreted past what is load-bearing. Where merging is not enough, split the file by mission (§3) rather than cutting rationale to hit a number.
-
-Retire an entry rather than deleting it, as a one-line tombstone naming what replaced it: a dangling reference should land on an explanation, not a gap.
+A number addresses the **sub-project**, never a file or a section: `### 20, 21, 25, 27 — Streaming capture, batched, with units` is one entry owning four, because four decisions converged. **Never renumber and never reuse** — 2,362 prose references point at these, `scripts/check-decision-refs.py` resolves every one, and an insertion that renumbers the entry below it silently repoints every reference to a different decision (this has happened twice; see DOC-PROTOCOL.md §7.3). A retired entry becomes a one-line tombstone keeping its number.
 
 ## 6. Procedure
 
@@ -135,8 +109,23 @@ The old identifier-set diff (`grep -ohE '\`[^\`]+\`'` before and after) is now a
 
 ## 9. Migration order
 
-Done, biggest first, one per commit, `--update` after each.
+**First pass, done:** all eight sub-projects plus every suite-level doc, 2.66 MB → 887 KB, one commit each. **The ratchet is closed — every doc is within its role's cap and the baseline holds no exceptions**, down from 20 files over cap holding 1,615 KB. From here the cap is the cap, and `--update` refuses a regression rather than pinning one.
 
-`embarch-core` 233→53 KB · `embarch-dev-bench` 185→81 · `embarch-api` 158→68 · `embarch-study-designer` 232→156 · `embarch-outpost` 129→76 · `embarch-ui` 92→68 · `embarch-umbrella` 116→54 · `embarch-topology` 77→46 · the reversals page 59→65 KB **while restoring 47 rows it had lost** · the stream proposal 47→12 · the feature inventory 45→13 · the user guide 45→32 across two files · the roadmap 40→13 · the dev-workflow 27→18 · the suite index 20→11 · the glossary 14→8 · the token doc 14→8 · DOC-PROTOCOL and this file, both at cap.
+## 10. The second pass: keep the hot half, delete the cold
 
-**The ratchet is closed: every doc in the corpus is within its role's cap, and the baseline holds no exceptions at all** — down from 20 files over cap holding 1,615 KB. From here the cap is the cap, and `--update` refuses a regression rather than pinning one.
+The first pass made every doc loadable. **It did not separate what an agent must not break from what merely justifies it**, and after it, decision prose was still 456 KB — the largest thing an agent loads.
+
+**The test, per sentence: would someone about to change this code make a wrong move without it?**
+
+- **Yes → hot. It stays.**
+- **No, it only answers "how do we know?" → cold. It goes.** Git holds it, and the highest-signal cold content already has a home: a row on [embarch-decision-reversals.md](embarch-decision-reversals.md). **If a cold item is worth keeping at all, it earns a row there** — 250 B, cited by number — rather than a paragraph here.
+
+**Hot, and none of it is negotiable:** the claim · the constraint that makes it necessary · the invariant or prohibition · **rejected alternatives, one clause each with their reason** · **the failure signature** — what it looks like when this is wrong, which is what makes a rule actionable · and any live property of another component a reader would otherwise get wrong.
+
+**Cold:** provenance and dates · the incident narrative · the investigation log (refuted hypotheses, register reads, what was tried) · measurements and their tables · validation records · superseded reasoning · meta-lessons.
+
+**The refinement that keeps this from gutting the docs: "why" is two things and only one is cold.** A *constraint* reason — *"a serial cannot help here: that one probe exposes two VCOMs under one serial"* — **is hot, because a reader who does not know it re-proposes the fix that was already rejected.** An *evidential* reason — *"a naive glob reads 1663 files and finds six matches; honouring ignore files reads 218 and finds three"* — is cold. **Rejections and constraints never go.** The reversals page is largely a record of already-rejected things being re-proposed; deleting the rejections would grow it.
+
+**Measured on one real entry** (outpost decision 17, 7.0 KB): hot came to **3.2 KB, 46%**, with every rule and prohibition intact. Note the two halves summed to 5.2 KB, *under* the original — **prose that interleaves rule and evidence has to restate each rule to reattach its evidence, so splitting deletes that restatement for free.**
+
+**Caps tighten per sub-project as its pass lands**, via `TIGHTENED` in `check-doc-size.py` — a finished migration cannot drift back, and an unfinished one is not failed by a cap it has not been given yet.
