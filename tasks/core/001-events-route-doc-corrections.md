@@ -1,6 +1,6 @@
 # 001 — Correct two facts about `GET /study/{id}/events` in embarch-core's docs
 
-**State:** claimed by agent/core/001-events-route-doc-corrections, 2026-09-02 23:48
+**State:** done by agent/core/001-events-route-doc-corrections, 2026-09-02; doc-only, no code branch commits, pushed to embarch-doc
 **Source:** found while building `embarch-api`'s consumer of that route (`tasks/api/001-sse-client.md`); both facts read out of `embarch-core/src/study.rs`
 **Scope:** core
 **Hardware:** none
@@ -39,10 +39,18 @@ line left saying something untrue can be re-dispatched as new work.
 
 ## Done when
 
-- [ ] `embarch-core/interfaces.md`'s `/study/{id}/events` row names all four
+- [x] `embarch-core/interfaces.md`'s `/study/{id}/events` row names all four
       `StudyEvent` kinds, `GattTranscript` included.
-- [ ] `embarch-core/open.md` no longer claims the endpoint has no consumer.
-- [ ] A decision taken on whether the no-replay/no-`Last-Event-ID` property is
-      stated in `interfaces.md`, or deliberately left unstated.
-- [ ] Gate green (`embarch-parallel-agents.md` §10).
-- [ ] `changelog.d/` fragment dropped if anything reader-facing changed.
+- [x] `embarch-core/open.md` no longer claims the endpoint has no consumer.
+- [x] A decision taken on whether the no-replay/no-`Last-Event-ID` property is
+      stated in `interfaces.md`, or deliberately left unstated. **Decided:
+      stated.** New decision 41 (`embarch-core/decisions/studies.md`): no
+      `Last-Event-ID`, no replay buffer, verified against `study_events_handler`
+      in `src/study.rs`. `interfaces.md`'s row now names it and points at the
+      decision; `open.md`'s entry moved from "Designed, not built" (resolved —
+      it's built) to "Structural limits" (the gap itself is permanent, closed
+      as not-needed-yet since both current consumers already poll-fallback).
+- [x] Gate green (`embarch-parallel-agents.md` §10) — all six `embarch-doc`
+      checks and both `check-ownership.py` invocations pass; no code changed,
+      so no `cargo` gate applies.
+- [x] `changelog.d/core-events-route-doc.fixed.md` dropped.
