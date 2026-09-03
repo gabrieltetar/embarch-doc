@@ -4,6 +4,11 @@
 
 ## 2026-09
 
+### Fixed
+- DOC-COMPACTION s10 projection corrected: deletable cold is ~18 percent corpus-wide, not 54.
+- The usage gate degrades to a capped wave when percentages are unavailable, and HOLDs on a real 429 instead.
+## 2026-09
+
 ### Added
 - A decisions entry may own several numbers (`### 20, 21, 25, 27 — …`) so merging entries under a byte budget keeps all 2,354 prose `decision N` references resolvable.
 - A suite-scope task is announced by Slack DM and parked, not blocked; the owner can cancel it until the batch ends.

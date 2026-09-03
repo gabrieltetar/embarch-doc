@@ -30,6 +30,11 @@ that is not written into a doc is gone.**
 - **Never edit** `DOC-PROTOCOL.md`, `DOC-COMPACTION.md`, `embarch-dev-workflow.md`,
   `embarch-parallel-agents.md`, or `scripts/`.
 - **Never merge.** Push both branches; the supervisor lands them together.
+- **Found something outside your task? Drop it in `inbox/`,** one file, full task
+  format minus the number (`inbox/README.md`). That is how you report work you
+  must not do yourself — never reach outside your ownership row to fix it, and
+  never leave it only in your final report where it depends on someone reading
+  carefully.
 - **Stay in your worktrees.** They are under `embarch/.worktrees/`, outside every
   repo tree. Do not create more, and do not work in the main checkouts.
 

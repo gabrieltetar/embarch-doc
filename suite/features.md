@@ -44,7 +44,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
-| Per-project build concurrency lock | Shipped | unit | §6 |
+| Per-project build concurrency lock | Shipped | n/a | §6 |
 | Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
 | `base_url = "auto"` — Core's address resolved per process at first use, retiring a stale gateway IP | Shipped — never against a real remote Core | local | §7 |
 | `base_address` as a per-project field — a config-driven flash path | Shipped | unit | 44 |

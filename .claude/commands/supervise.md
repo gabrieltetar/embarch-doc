@@ -17,11 +17,16 @@ optional comma-separated list of sub-projects to restrict this batch to.
    every stale claim (**if no supervisor is running, every claim is stale** — the
    workers were its own subagents and died with it); delete worktrees with no
    commits. `embarch-parallel-agents-ops.md` §3 has the full table.
+   **Exclude `tasks/README.md` and `supervisor-log.md` when you scan**: both
+   *describe* claims and batch entries, and a naive grep reports the format
+   documentation as live state. Batch 001 hit exactly this.
 1. Confirm no other supervisor is running (`embarch-parallel-agents-ops.md` §1 —
    a second one would double-fold `status.d/`). If one is, stop and say so.
-2. Run `scripts/usage-budget.py --suggest`. Exit `1` (HOLD) or `2` (UNKNOWN)
-   means **do not start a batch** — report the numbers and the reset time and
-   stop. Its suggested wave size, not the cap, is how many workers you launch.
+2. Run `scripts/usage-budget.py --suggest`. Exit `1` (HOLD) means **do not
+   start** — report the numbers and the reset time and stop. Exit `2` (DEGRADED)
+   is the normal case on this machine, not a failure: the percentages are
+   unavailable and you proceed with the capped wave it prints. Its suggested
+   wave size, not the cap, is how many workers you launch.
 
 ## Standing constraints you may not relax
 
@@ -68,7 +73,18 @@ optional comma-separated list of sub-projects to restrict this batch to.
 ## The batch
 
 **1. Refill.** Step 0 already reclaimed; anything still `claimed` belongs to a
-worker of yours. Sweep `suite/roadmap.md`'s Now/Next, every sub-project's
+worker of yours.
+
+**Drain `inbox/` first** (`inbox/README.md`). Each file there is a complete task
+written by another thread or by a worker, minus its number. For each: validate it
+parses, re-check its `Hardware:` claim yourself, assign the next free `NNN` for
+its scope, move it into `tasks/<scope>/`, and delete the drop. A file that does
+not parse stays in `inbox/` and is named in the digest — never delete someone's
+request silently. **Announce in `#embarch-fleet` what you took from the inbox
+before dispatching any of it**, naming the file and what you will do, so there is
+a window to say stop.
+
+Then sweep `suite/roadmap.md`'s Now/Next, every sub-project's
 `open.md` (`scripts/collect-open-questions.py` prints them all in one pass), and
 `embarch-decision-reversals.md`'s unaddressed follow-ups. Write new task files
 per `tasks/README.md`. Reconcile first: a task whose source doc no longer says
@@ -84,6 +100,13 @@ task changes both, and they must land together). Worktrees go under
 `embarch/.worktrees/<repo>/<NNN-slug>/`, outside every repo tree — never inside
 `.claude/worktrees/`, which is how a repo-walking scan ends up reading three
 copies of the same source (`embarch-study-designer` decision 57).
+
+**A code worktree needs its sibling path-deps symlinked or `cargo build` fails
+outright.** `Cargo.toml` names `../embarch-study-designer` and
+`../../../embarch-topology`; from `.worktrees/<repo>/<slug>/` those resolve to
+nothing. After creating a code worktree, symlink each sibling the crate names
+into the worktree's parent, pointing at the main checkout. Batch 001's api
+worker hit this and fixed it by hand — do it in setup so no worker has to.
 
 **If nothing is dispatchable** — empty queue, or only `Hardware: required` and
 `blocked` tasks — the batch ends here. Say so, list what is waiting on the

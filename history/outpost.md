@@ -5,6 +5,13 @@
 ## 2026-09
 
 ### Changed
+- embarch-outpost reduced to its hot half, 69 KB to 46 KB of decisions; cap tightened to 8 KB.
+
+### Fixed
+- embarch-outpost decision 16 still concluded Phase E needed a wire; it needed the right board target.
+## 2026-09
+
+### Changed
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed

@@ -104,6 +104,19 @@ def main() -> int:
     global KNOWN_SCOPES
     KNOWN_SCOPES = known_scopes(args.repo)
 
+    # A code repo has no `embarch-*` directories to derive the scope list from,
+    # so validating the scope there is impossible -- and it used to run BEFORE
+    # the --code-repo return, which made the documented worker invocation die
+    # with `unknown scope 'api' (known: doc, suite)`. Both workers of batch 001
+    # hit it independently. The scope is already validated by the task file that
+    # named it, so --code-repo skips the check rather than faking a list.
+    if args.code_repo:
+        paths = ([p.strip() for p in sys.stdin.read().split("\n") if p.strip()]
+                 if args.stdin else changed_paths(args.base, args.repo))
+        print(f"OK: code repo, worker for '{args.scope}' owns the whole tree "
+              f"({len(paths)} path(s) changed, not path-checked).")
+        return 0
+
     if args.scope == "suite":
         print("REFUSED: `suite` is not a worker scope -- a cross-repo change is the")
         print("supervisor's to execute in one sequenced pass (embarch-parallel-agents.md §8).")
@@ -121,11 +134,6 @@ def main() -> int:
 
     paths = ([p.strip() for p in sys.stdin.read().split("\n") if p.strip()]
              if args.stdin else changed_paths(args.base, args.repo))
-
-    if args.code_repo:
-        print(f"OK: code repo, worker for '{args.scope}' owns the whole tree "
-              f"({len(paths)} path(s) changed, not path-checked).")
-        return 0
 
     bad = [p for p in paths if not allowed(p, args.scope)]
     if bad:
