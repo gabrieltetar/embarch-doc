@@ -1,15 +1,31 @@
 # Supervisor log
 
-**Status:** active, 2026-09-02. Empty — no batch has run yet.
+**Status:** active, 2026-09-03. Three batches ran before the relay ([embarch-parallel-agents.md](embarch-parallel-agents.md) §6) replaced them; entries below `batch 003` are per-batch, and everything after is per-unit.
 
-One entry per supervisor batch, **newest first**. Written by the supervisor at
-the end of phase 5 ([embarch-parallel-agents.md](embarch-parallel-agents.md) §6),
-and read by the owner as the review surface for work that landed without
-approval (§11).
+One entry per **unit** — one task landed or blocked — **newest first**. Written
+by the supervisor as part of landing that unit
+([embarch-parallel-agents.md](embarch-parallel-agents.md) §6 step 4), and read by
+the owner as the review surface for work that landed without approval (§11).
+
+**It is also the relay handoff.** A leg dies after four units and the listener
+spawns a successor whose step 0 reads these entries cold, with no other memory of
+its predecessor at all. So an entry that omits something — a rebase that has not
+settled, a `suite` task parked with a live 30-minute window, a failure likely to
+recur — is a fact the next leg cannot recover, and it will act confidently
+without it.
+
+**Per unit rather than per leg** because a leg can be killed at any moment;
+closing VS Code is a normal thing to do. An entry written at the end of a leg is
+an entry that does not exist for the leg that got killed.
 
 What *shipped* is not restated here — the workers' own `changelog.d` fragments
 carry that into `history/<scope>.md`. This file carries what was **decided**,
 what did not land, and what still needs a board.
+
+**Folded daily.** On its first unit after local midnight a supervisor folds the
+previous day's unit entries into one dated entry, keeping every SHA and every
+debt. Per-unit entries would otherwise hit the roll cap every few days and the
+handoff would get shorter and shorter — the opposite of what a relay needs.
 
 When this file passes 25 KB the oldest entries roll into `history/archive/`,
 matching what `scripts/build_changelog.py` already does for a history file.
@@ -17,13 +33,13 @@ matching what `scripts/build_changelog.py` already does for a history file.
 ## Entry shape
 
 The example below uses placeholders on purpose. It once used a real-looking date
-and real-looking SHAs, and phase 0 — which reads the newest entry as its handoff
-— picked the *template* up as a batch that had run, complete with a hardware debt
-that never existed. Second instance of the same root cause as batch 001's
+and real-looking SHAs, and step 0 — which reads the newest entries as its
+handoff — picked the *template* up as work that had run, complete with a hardware
+debt that never existed. Second instance of the same root cause as batch 001's
 recovery greps: documentation shaped exactly like the data it documents.
 
 ```markdown
-## <yyyy-mm-dd> — batch <NNN>
+## <yyyy-mm-dd HH:MM> — <scope>/<NNN> <slug>
 
 **Decided:** anything the supervisor approved on the owner's behalf, suite-wide
 first. If it decided nothing, say "nothing" — an empty line here is ambiguous.
@@ -34,6 +50,13 @@ branch name, so the SHA is the only handle a revert has.
 **Hardware debts:** what needs a board, and what board.
 **Budget:** verdict at start and end, and the wave size it produced.
 **Least sure about:** one sentence. Not optional.
+```
+
+A folded day collapses that into one entry with the same fields, listing every
+unit under **Merged** and **Blocked**:
+
+```markdown
+## <yyyy-mm-dd> — <N> units
 ```
 
 ---

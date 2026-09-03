@@ -101,8 +101,10 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-zephyr.md](embarch-zephyr.md) | Relationship to Zephyr: board-qualifier grammar, revisions, snippets, sysbuild |
 | [embarch-dev-workflow.md](embarch-dev-workflow.md) | Iterating locally without touching a real install; **§4a is the reverse trip** — how a Core change reaches the live Windows service |
 | [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) | **Inbound half accepted and built**; the outbound half — an authored step that writes to a DUT and confirms the reply — is **still a proposal** |
-| [embarch-parallel-agents.md](embarch-parallel-agents.md) | How background agent threads work in parallel across the suite without colliding. **Nothing has run under it yet** |
-| [embarch-parallel-agents-ops.md](embarch-parallel-agents-ops.md) | Running the fleet: starting a batch, sizing it, watching it from a phone, stopping it |
+| [embarch-parallel-agents.md](embarch-parallel-agents.md) | How background agent threads work in parallel across the suite without colliding: the listener, the leg, the relay |
+| [embarch-parallel-agents-ops.md](embarch-parallel-agents-ops.md) | Running the fleet: arming the listener, latching the pump, sizing a leg, watching it from a phone, stopping it |
+| [embarch-fleet-risks.md](embarch-fleet-risks.md) | The fleet's risk register — what each design choice traded away, and what its failure looks like |
+| [embarch-remote-surfaces.md](embarch-remote-surfaces.md) | The four things that reach this suite from outside the terminal, and which one is the remote control |
 | [supervisor-log.md](supervisor-log.md) | One entry per supervisor batch, newest first — the review surface for work that landed without approval |
 | [history/](history/) | Per-sub-project history, assembled from `changelog.d/` fragments |
 
