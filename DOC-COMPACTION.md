@@ -42,7 +42,7 @@ Split by *when a reader needs it*, so the default load is small:
 
 - **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. This is the file an agent loads to work on the component, and for most sessions it is the only one.
 - **`decisions.md` (25 KB)** — why, one entry per decision (§5). Loaded when someone asks "why is it like this" or is about to change it.
-  **Where a sub-project's decisions do not fit one file, split them by mission** into `decisions/<topic>.md` (12 KB each), leaving `decisions.md` as a ~2 KB index: a table of mission → file → the decision numbers in it. This is the shape for a component that owns several distinct jobs, because a session is usually there for one of them — `embarch-core` is the case that forced it, with 40 decisions across seven missions (platform, probes, flashing, studies, streams, logging, surfaces) that would not compress into 25 KB without cutting the rejected alternatives the budget exists to protect. Splitting costs a little total size (per-file headers) and buys every file being loadable, which is the actual goal. Do not split preemptively: one `decisions.md` is better while it fits.
+  **Where a sub-project's decisions do not fit one file, split them by mission** into `decisions/<topic>.md` (12 KB each), leaving `decisions.md` as a ~2 KB index: mission → file → the decision numbers in it. **A session is usually there for one mission**, and a component owning several distinct jobs will not compress into 25 KB **without cutting the rejected alternatives the budget exists to protect.** Splitting costs a little total size and buys every file being loadable. **Do not split preemptively: one `decisions.md` is better while it fits.**
 - **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. `scripts/collect-open-questions.py` reads these.
 - **`interfaces.md` (15 KB)** — only where the interface reference genuinely doesn't fit in `spec.md`. Do not create it preemptively.
 
@@ -59,7 +59,7 @@ What survives a compaction as history, and nowhere else:
   It split the way §3 splits any over-cap doc: an index plus `reversals/rows-<a>-<b>.md`. **A row number is a permanent identity, so a range never re-splits an existing row into a different file** — a new range is appended, and an unbalanced one is left unbalanced. The index carries the range table, the owner key, and the recurring *shapes* read across the rows, **which is the one thing no individual row holds.**
 - **Measurement provenance** — a measured number keeps its date and the conditions it was measured under, inline in the constants table. A constant that silently loses its provenance is the failure mode this suite keeps hitting.
 
-Everything else about the past is dropped: amendment chains, "reversed same day", schema-bump re-derivations, "**Implemented 2026-08-25**", "three things implementation settled", review-item numbers, and every "this pass"/"the same session"/"recorded rather than discovered later".
+Everything else about the past is dropped: amendment chains, schema-bump re-derivations, "**Implemented 2026-08-25**", review-item numbers, and every "this pass" or "the same session".
 
 ## 5. What a decision entry looks like
 
@@ -96,7 +96,7 @@ Human, and not skippable — **one question, asked honestly:**
 
 If yes, the pass is done, whatever it deleted. If no, the pass moved bytes rather than choosing between them.
 
-The old identifier-set diff (`grep -ohE '\`[^\`]+\`'` before and after) is now advisory rather than a gate — under a lossy regime an identifier is *allowed* to go. Run it anyway when you want a list of what you dropped, and use it to catch the one failure mode that is still a defect: **a concrete noun replaced by its category.** "provisioning is a separate step" instead of `build_and_flash`. Never replace a name with the kind of thing it is; drop the sentence instead.
+An identifier-set diff before and after is advisory, not a gate — **under a lossy regime an identifier is *allowed* to go.** Run it to catch the one failure mode that is still a defect: **a concrete noun replaced by its category** — "provisioning is a separate step" instead of `build_and_flash`. **Never replace a name with the kind of thing it is; drop the sentence instead.**
 
 ## 8. Failure modes
 
