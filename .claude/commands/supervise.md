@@ -3,6 +3,23 @@ description: Run one supervisor batch - refill the task queue, dispatch workers,
 argument-hint: "[max-workers] [scope filter, e.g. core,ui]"
 ---
 
+**Spawn one `embarch-supervisor` agent to run this batch, and do not run it
+yourself.** Pass it the arguments below and the working directory
+`/home/gabriel/Github/embarch/embarch-doc`. Relay its final report; do not
+predict it. The rest of this file is the instruction set *it* follows.
+
+Why the indirection: the owner's session holds the pen for standing rules,
+`scripts/` and `.claude/`, and the supervisor must not. Running the batch in the
+owner's session collapsed those two roles into one context with no boundary —
+`embarch-parallel-agents-ops.md` §8. A batch-scoped agent cannot amend its own
+constraints because it dies at the batch boundary and
+`check-ownership.py --supervisor` rejects the paths on the way out.
+
+If the owner explicitly says to run a batch inline instead, that is their call
+and it is legitimate — say plainly that the role separation is off for that run.
+
+---
+
 You are **the supervisor** defined in `embarch-parallel-agents.md`. Read that doc
 now — §2 (roles), §3 (the ownership map), §6 (this batch), §8, §9, §10, §11 — and
 follow it. It overrides your defaults where they differ.
@@ -160,6 +177,10 @@ A red gate means the branch does not land — record why and leave the task
 Consume every `status.d/` fragment into its target doc; delete the fragments.
 Run `scripts/build_changelog.py`. Run the six checks once more.
 **The batch has failed if any fragment is left unfolded** (§9).
+**Then check your own hands**: `git diff --name-only <batch-start-sha>...HEAD |
+python3 scripts/check-ownership.py --supervisor --stdin`. Red means you wrote a
+path §2 reserves to the owner — report it at the top of the digest rather than
+reverting it quietly.
 Post the digest summary to `#embarch-fleet` and push a one-line notification
 saying how the batch ended.
 Then prepend this batch's entry to `supervisor-log.md` (§11): what you

@@ -65,6 +65,25 @@ def _frag_scope(path: str, prefix: str) -> str | None:
     return None
 
 
+# Paths embarch-parallel-agents.md §2 reserves to the OWNER. Neither a worker nor
+# the supervisor may write them: they are the rules the fleet runs under, the
+# scripts that enforce those rules, and the agent definitions that carry them.
+# A supervisor that can edit its own constraints has none.
+RESERVED = (
+    "embarch-parallel-agents.md",
+    "embarch-parallel-agents-ops.md",
+    "embarch-dev-workflow.md",
+    "DOC-PROTOCOL.md",
+    "DOC-COMPACTION.md",
+    "scripts/",
+    ".claude/",
+)
+
+
+def reserved_hits(paths):
+    return [p for p in paths if any(p == r or p.startswith(r) for r in RESERVED)]
+
+
 def known_scopes(repo_root: str) -> set[str]:
     out = subprocess.run(["git", "-C", repo_root, "ls-tree", "--name-only", "HEAD"],
                          capture_output=True, text=True).stdout.split()
@@ -93,13 +112,31 @@ def changed_paths(base: str | None, repo_root: str) -> list[str]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--scope", required=True, help="sub-project, without the embarch- prefix")
+    ap.add_argument("--scope", default="", help="sub-project, without the embarch- prefix")
     ap.add_argument("--base", help="ref to diff against (default: origin/main, else main)")
     ap.add_argument("--repo", default=".", help="repo root (default: cwd)")
     ap.add_argument("--stdin", action="store_true", help="read changed paths from stdin instead of git")
+    ap.add_argument("--supervisor", action="store_true",
+                    help="check a supervisor's own batch commits: reject any path "
+                         "§2 reserves to the owner (standing rules, scripts/, .claude/)")
     ap.add_argument("--code-repo", action="store_true",
                     help="this is the worker's own code repo, where it owns the whole tree")
     args = ap.parse_args()
+
+    if args.supervisor:
+        paths = ([p.strip() for p in sys.stdin.read().split("\n") if p.strip()]
+                 if args.stdin else changed_paths(args.base, args.repo))
+        bad = reserved_hits(paths)
+        if bad:
+            print(f"{len(bad)} path(s) the supervisor may not write "
+                  f"(embarch-parallel-agents.md §2 reserves them to the owner):\n")
+            for p in bad:
+                print(f"  {p}")
+            print("\nA supervisor that can edit its own constraints has none. If one of\n"
+                  "these genuinely needs changing, that is the owner's commit, not a batch's.")
+            return 1
+        print(f"OK: none of the {len(paths)} changed path(s) is owner-reserved.")
+        return 0
 
     global KNOWN_SCOPES
     KNOWN_SCOPES = known_scopes(args.repo)
@@ -116,6 +153,10 @@ def main() -> int:
         print(f"OK: code repo, worker for '{args.scope}' owns the whole tree "
               f"({len(paths)} path(s) changed, not path-checked).")
         return 0
+
+    if not args.scope:
+        print("--scope is required unless --supervisor is passed")
+        return 2
 
     if args.scope == "suite":
         print("REFUSED: `suite` is not a worker scope -- a cross-repo change is the")

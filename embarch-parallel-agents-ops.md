@@ -181,4 +181,16 @@ A supervisor session is long-lived and accumulates every batch it has run. Worke
 
 **Only the owner can clear.** `/clear` is a user-side command; a session cannot invoke it on itself. So phase 5 ends by *saying* clearing is now safe, and the owner does it or does not. Auto-compaction handles overflow either way, but compaction is a summary of a transcript, while the digest is a record written on purpose — the second is the better thing to resume from.
 
-**The alternative, not built:** run each batch as a disposable subagent, so the supervisor's context is bounded by one batch the way a worker's is bounded by one task, and the long-lived session holds only the cron tick. That would make clearing unnecessary rather than merely safe. It costs a nesting level — an agent spawning agents — and has not been tried.
+### 8.1 The supervisor is a disposable agent (2026-09-03)
+
+**Built, after the owner asked whether his own session was part of the fleet.** It was — and it was also the listener, *and* the session that wrote the rules the supervisor obeys. Three roles in one context, with no visible boundary between "the owner instructed a rule change" and "the supervisor decided to change its own constraints." Legitimate every time, because he asked every time, and structurally unenforced.
+
+Now `/supervise` **spawns an [`embarch-supervisor`](.claude/agents/embarch-supervisor.md) agent** rather than running the batch inline. That separates the roles physically:
+
+- **The owner's session** keeps the cron listener and the pen for standing rules, `scripts/` and `.claude/`.
+- **The supervisor agent** runs one batch and dies. Its context is bounded by a batch the way a worker's is bounded by a task, which also makes §8's clearing question moot for it — there is nothing to clear.
+- **`scripts/check-ownership.py --supervisor`** rejects every owner-reserved path, and the supervisor runs it on its own batch commits before finishing. That is what turns the boundary from a convention into a fact; the agent definition alone would just be a politer request.
+
+**A supervisor that can edit its own constraints has none** — including when it is right. Batch 002 found three real defects in exactly those reserved files. Every one was worth fixing and none was the supervisor's to fix: they belong in the digest and in `inbox/`, and the owner's commit closes them.
+
+**Unproven: the nesting.** A supervisor agent spawning worker agents has not run yet. If it fails structurally the supervisor stops and says so rather than doing six repos in one context, which is the thing the ownership map exists to prevent. Running a batch inline stays available if the owner asks for it, with the separation explicitly off for that run.
