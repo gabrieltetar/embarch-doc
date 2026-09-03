@@ -92,7 +92,12 @@ def known_scopes(repo_root: str) -> set[str]:
 
 def changed_paths(base: str | None, repo_root: str) -> list[str]:
     if base is None:
-        for cand in ("origin/main", "main"):
+        # Local `main` FIRST. Worker worktrees are branched from local main, and
+        # the supervisor's claim commit is often still unpushed when a worker
+        # runs -- diffing against origin/main then shows every other task file
+        # in that commit as a foreign path the worker "changed". Batch 003 hit
+        # this on both workers (3 and 4 phantom violations).
+        for cand in ("main", "origin/main"):
             r = subprocess.run(["git", "-C", repo_root, "rev-parse", "--verify", "-q", cand],
                                capture_output=True, text=True)
             if r.returncode == 0:

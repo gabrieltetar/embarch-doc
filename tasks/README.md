@@ -66,9 +66,14 @@ task the supervisor invented; that is allowed, and it says so here.
   claim older than 4 hours is reclaimed the same way.
 - **blocked** — the worker appends a `## Blocked` section saying what it found
   and exits. State returns to `open` only when whatever it named is resolved.
-- **done** — the file is deleted in the merge that closes it. Git holds it, and
-  a completed task left in the queue competes with the open ones for attention
-  — the same reasoning `DOC-PROTOCOL.md` §3 applies to a shipped milestone doc.
+- **done** — the worker ticks its `Done when` boxes and appends what shipped;
+  the **supervisor deletes the file in the fold**, so a landed task leaves the
+  queue in the same commit that folds its fragments. Git holds it, and a
+  completed task left in the queue competes with the open ones for attention —
+  the same reasoning `DOC-PROTOCOL.md` §3 applies to a shipped milestone doc.
+  (Batch 003's supervisor flagged that this said only "deleted in the merge"
+  while both its workers had marked the body `done`. Both behaviours are right;
+  only the description was missing half of it.)
 
 ## Hardware field
 

@@ -8,7 +8,12 @@ sections, with no suite-wide index — this fits the existing scripts/
 tooling pattern (check-links.py, check-staleness.py) exactly, per that
 review's own suggestion.
 
-Walks every design.md (plus embarch-token.md, which carries its own §8) for
+Walks every sub-project's open.md -- the four-file layout's home for open
+questions -- plus any legacy design.md still carrying its own section, plus
+embarch-token.md. Until 2026-09-03 it read design.md ONLY, which after the
+migration meant it saw 10 questions across 3 docs while 88 sat unread in eight
+open.md files. Every refill sweep since the migration has been mostly blind, and
+a dream would have proposed from that same blind view. It walks
 a heading whose text contains "open question" (case-insensitive — headings
 vary: "Open questions / future work", "Open questions"), and prints every
 top-level bullet under it, grouped by doc.
@@ -36,7 +41,7 @@ def find_design_docs(root):
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d != '.git']
         for name in filenames:
-            if name == 'design.md':
+            if name in ('open.md', 'design.md'):
                 docs.append(os.path.join(dirpath, name))
     for extra in ('embarch-token.md',):
         path = os.path.join(root, extra)
