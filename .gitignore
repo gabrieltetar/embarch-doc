@@ -6,3 +6,7 @@
 # The supervisor converts these into tasks/ (which ARE committed) at phase 1.
 inbox/*.md
 !inbox/README.md
+
+# Owner-local permission config: never commit, and never let a leg sweep it up
+# with `git add -A` during a fold (embarch-fleet-risks.md).
+.claude/settings.local.json

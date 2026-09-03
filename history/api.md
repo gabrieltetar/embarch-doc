@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- `embarch-api versions` prints the compiled study-designer host schema version, with no config and no Core: embarch-api/decisions/surface.md 52.
+## 2026-09
+
 ### Fixed
 - A static project now refuses board/variant/revision/app/snippets/extra_args, naming them, instead of discarding them and reporting success. See embarch-api decision 51.
 ## 2026-09

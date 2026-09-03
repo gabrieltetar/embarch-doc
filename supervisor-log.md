@@ -61,6 +61,72 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 14:05 — api/006 expose-compiled-host-schema-version
+
+**Decided:** one thing worth the owner's eye, and it is the worker's call which I
+accepted after checking the argument. **The task told it to put the number on
+`status --json`, and it refused, correctly.** That suggestion came from the
+`umbrella/001` worker's `inbox/` drop — from outside `api` — and it was cheap and
+wrong: `status` resolves config and needs a reachable, authenticated Core, so it
+answers "what is this binary" **only when nothing is broken**, handing the check
+that catches a mismatched install its number on exactly the machines least likely
+to have one. It shipped `embarch-api versions` instead, dispatched in `main`
+*before* config resolution, with a test pinning that it answers against a
+nonexistent config path and against none at all. **A diagnostic's input has to
+survive a broken machine** is the general form, and it is worth keeping.
+
+**I dispatched this task believing it had a live consumer, and it does — but the
+consumer does not read it yet.** `doctor` check 11 still compares `embarch`'s own
+constant, and closing that is `embarch-umbrella`'s work, filed as `umbrella/008`
+from the worker's own drop. So the honest state is a surface built with **no
+reader**, which is the state `embarch-topology`'s `validate_signal` and
+`embarch-study-designer`'s advertise-scoped decode surface are both already in.
+Unlike those two, this one has a named consumer and a queued task pointing at it.
+
+**Merged:** `agent/api/006-expose-compiled-host-schema-version` (api `1a396ba`,
+doc `26b22bd`). Both fast-forward after a clean rebase. Gate re-run on the merge
+result: build, 86 tests, `clippy --all-targets -D warnings`, six doc checks,
+ownership on both branches. **`crates/embarch-core-client/` untouched**, checked
+by path — nothing reaches `embarch-ui`.
+
+**Blocked:** none.
+
+**Fold:** the `status.d/` fragment corrected [suite/features.md](suite/features.md)'s
+`embarch-api` table — **the CLI is a superset of the MCP surface, not a mirror**,
+which that row had claimed since it was written — and added a `versions` row
+carrying its own "nothing reads it yet".
+
+**The doc-size wall I flagged last unit was real and it cost this worker a
+compaction pass.** All four `api` docs were at or within a few bytes of their
+caps; it compressed prose in `spec.md`, `interfaces/tools.md`,
+`decisions/surface.md` and `open.md` to fit, and says no argument was dropped.
+Naming the wall in the task file up front is what made that a planned step rather
+than a red gate — worth repeating for `umbrella`, whose `decisions/doctor.md` and
+`open.md` are in the same state.
+
+**A worker wrote an `inbox/` drop inside its worktree again**, where it is
+gitignored and dies with the worktree. I rescued it before deleting — same as
+`core/002` last leg. **Two of five workers have now done this**, and the drop was
+the most valuable artefact of the unit both times. `inbox/README.md` telling
+workers to leave a drop uncommitted is exactly what makes a worktree the wrong
+place for it, and no worker can see that from where it sits.
+
+**Hardware debts:** none. Nothing here touches a board, and the worker said so
+rather than inventing one.
+
+**Budget:** DEGRADED, wave 2, no 429. Four units, no 429 in the whole leg — the
+529 storm that killed batch 004 did not recur.
+
+**Least sure about:** that this leg filed nine tasks and landed four. The queue
+went from 1 dispatchable to 8 plus a parked `suite` item, and **every one of the
+nine came from the fleet noticing something while working, not from the owner
+asking.** Each is individually well-evidenced and quoted from a doc that already
+said it — and that is precisely the drift `inbox/README.md` warns about, at four
+times batch 003's rate. The fleet is now substantially working on what the fleet
+found. If that is not what he wants, this is the leg where it became visible.
+
+---
+
 ## 2026-09-03 13:35 — umbrella/002 design-only-decisions-audit
 
 **Decided:** nothing suite-wide. The judgement worth recording is what I did

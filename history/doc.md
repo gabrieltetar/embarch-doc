@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Added
+- Blocking conditions alert via `scripts/fleet-alert.py` and a Slack webhook: a fleet `@` notifies nobody, since the connector posts as the owner.
+## 2026-09
+
+### Added
 - `check-ownership.py --supervisor` now fails on a top-level doc classified by neither list, so a compaction split cannot silently drop a file's protection again.
 
 ### Fixed
