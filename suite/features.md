@@ -55,6 +55,8 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Config hot-reload | Todo | n/a | — |
 | `PATH`/toolchain preflight | **Moved** — lands as an umbrella `doctor` check | n/a | §12 |
 | The UNC artifact path | **Retired** — it only ever worked against a foreground Core, never the installed service | hw | §9 |
+| `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |
+| `error_kind` — a machine-readable failure kind | **Retired** — documented from the first commit, never built; needs Core to serve error codes at all | n/a | 16, 50 |
 
 ## embarch-dev-bench
 

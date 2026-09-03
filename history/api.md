@@ -4,6 +4,13 @@
 
 ## 2026-09
 
+### Fixed
+- A CLI startup failure (unreadable config, unresolvable token) now emits a `--json` object on stdout, not a Rust error on stderr. See embarch-api/interfaces/tools.md.
+
+### Decided
+- `schema_version` is on every `--json` and MCP object, stamped by one serializer; `error_kind` retired unbuilt — Core serves no error codes. See embarch-api/decisions/surface.md 16, 24, 50.
+## 2026-09
+
 ### Added
 - study-status --follow and the study_watch tool consume Core's SSE study events; lagged is reported, a drop falls back to polling.
 ## 2026-09
