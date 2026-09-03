@@ -61,6 +61,74 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 13:05 — api/004 static-resolve-discards-selection
+
+**Decided:** nothing suite-wide, and one thing worth reviewing. **I let the
+worker widen the task's own scope**, and I think that was right: the task was
+filed from `open.md`'s bullet about `snippets` alone, and told the worker to
+verify the premise before widening. It did — `Selection` has five construction
+sites and every one of them does nothing but hand the struct to
+`resolve::resolve`, whose `static` arm never reads it — so `board`, `variant`,
+`revision`, `app` and `extra_args` were being discarded identically. All six now
+refuse together. **The fork `open.md` named was reject-or-splice and it rejected**
+(decision 51), on the argument that a `static` project's `build_command` is an
+opaque hand-authored argv with no `-S` to add to it, so splicing means guessing
+another build system's flag grammar — which decision 5 exists to keep out.
+
+**Merged:** `agent/api/004-static-resolve-discards-selection` (api `4a07fb8`,
+doc `f926fd9`). Both fast-forward after I rebased the doc branch onto `main`;
+that rebase was clean, unlike `umbrella/001`'s. Gate re-run by me on the merge
+result: build, 86 tests across three binaries, `clippy --all-targets -D
+warnings`, all six doc checks, ownership on both branches. **No Windows build:**
+not `embarch-core`. **`crates/embarch-core-client/` is untouched** — I checked
+the diff by path rather than taking the report, because that carve-out is what
+bit batch 002, and with it clean nothing reaches `embarch-ui`'s path dependency.
+
+**Blocked:** none.
+
+**Fold:** the worker's `status.d/` fragment went into
+[suite/user-guide.md](suite/user-guide.md) §5.2, and I fixed **two** false lines
+there rather than the one it flagged. It found `--snippet none forces zero
+regardless of the project default` — no such sentinel exists. The bullet above it
+carried the same defect from decision 20: "unless the project declares one" is
+`default_target`, also never built. Both are now gone, and the section says these
+flags are `zephyr-west`-only and that a static project refuses them.
+
+**Two findings recorded, not fixed** (`embarch-api/open.md`, both verified by
+grep rather than inferred): `[[projects.targets]]` rows are returned by
+`list_targets` and **read by nothing** — a build always runs the project-level
+`build_command` — and **decisions 20 and 21 describe config the crate does not
+have**. The second is the more awkward: `embarch-api/interfaces/config.md` still
+states the `["none"]` sentinel as truth in its snippets paragraph. `open.md` names
+that contradiction explicitly, so it is recorded rather than hidden, and closing
+it is a build-or-retire decision rather than a doc repair. **I did not fix it
+myself** — that file is `api`'s, not mine.
+
+**Hardware debts:** none. Nothing here touches a board.
+
+**Not verified, and the worker said so:** the MCP surface against a live client —
+none available. Both surfaces render through one `format!("{e:#}")` on one
+`bail!` and a test pins the flattened render, so it is the CLI half plus an
+argument, not a round trip.
+
+**Doc size is now binding in this sub-project.** `embarch-api/spec.md` sits at
+exactly 10240 bytes, `interfaces/tools.md` at 3 bytes of headroom, `open.md` at
+9. This unit paid for its additions by compressing adjacent prose. **The next
+`api` unit has no room and must compress before it writes** — worth putting in
+that task's file rather than letting a worker discover it at gate time.
+
+**Budget:** DEGRADED, wave 2, no 429.
+
+**Least sure about:** nothing about the change itself, which is well-evidenced.
+The thing to watch is that this is the second unit in a row whose worker found
+the filed task's premise **narrower than the truth** — `core/002`'s was wrong in
+the other direction last leg. Task files written from a sweep are turning out to
+be a lossy summary of the `open.md` bullet they came from, and the workers are
+catching it each time. That is the mechanism working, but it is working by
+spending a worker's context on re-deriving what the filer already read.
+
+---
+
 ## 2026-09-03 12:36 — umbrella/001 doctor-check-11-is-a-stub
 
 **Decided:** nothing suite-wide. Three calls inside `umbrella`, all the worker's

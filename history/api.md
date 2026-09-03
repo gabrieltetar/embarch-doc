@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- A static project now refuses board/variant/revision/app/snippets/extra_args, naming them, instead of discarding them and reporting success. See embarch-api decision 51.
+## 2026-09
+
+### Fixed
 - A CLI startup failure (unreadable config, unresolvable token) now emits a `--json` object on stdout, not a Rust error on stderr. See embarch-api/interfaces/tools.md.
 
 ### Decided

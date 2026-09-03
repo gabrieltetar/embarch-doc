@@ -156,8 +156,9 @@ embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --r
 
 - Narrow to **exactly one** match and the call proceeds.
 - Match **more than one** and the call **errors instead of guessing**, listing the narrowed remainder.
-- Give **none** and it lists everything, rather than guessing a default — unless the project declares one, still overridable per field.
-- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** `--snippet none` forces zero regardless of the project default.
+- Give **none** and it lists everything, rather than guessing a default.
+- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** Omitting `--snippet` uses the project's `default_snippets`, and there is currently **no way to force zero snippets** over a configured default.
+- **All six of these flags are for a `zephyr-west` project.** Pass any of them to a `discovery = "static"` project and the call now **fails naming which were given** (`embarch-api` decision 51) — until 2026-09-03 they were accepted, discarded, and the build reported success.
 - `flash --firmware-path` still needs enough flags to resolve a **chip**: the override bypasses picking which *build*, not chip resolution.
 
 **There is no interactive picker.** `list-targets` shows the options; you re-run with more flags.
