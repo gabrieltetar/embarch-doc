@@ -1,6 +1,6 @@
 # 006 — Expose `embarch-api`'s compiled `HOST_TYPE_SCHEMA_VERSION`, so `doctor` can read it
 
-**State:** open
+**State:** claimed by agent/api/006-expose-compiled-host-schema-version, 2026-09-03 12:30
 **Source:** embarch-umbrella/open.md — "Check 11 compares *this* `embarch` binary's compiled host schema version, not the located `embarch-api`'s"
 **Scope:** api
 **Hardware:** none
@@ -44,3 +44,19 @@ approximate rather than exact.
 - [ ] A follow-up task (or this one's second half, if `suite`) points
       `embarch-umbrella`'s check 11 at it and closes that `open.md` bullet.
 - [ ] Gate green (`embarch-parallel-agents.md` §10).
+
+## Added by the supervisor when dispatching (2026-09-03)
+
+**`embarch-api`'s docs are at their size cap.** As of `api/004` landing,
+`spec.md` is at exactly 10240 bytes — **zero headroom** — `interfaces/tools.md`
+has 3 and `open.md` has 9. `check-doc-size.py` is part of the gate, so budget for
+compressing adjacent prose *before* you add a sentence, not after the check goes
+red. `api/004` did exactly this and it worked; the same trick is available.
+
+**There is a live consumer, and this one is real** — unlike `core/002`'s stated
+premise last leg, which was not. `embarch-umbrella`'s `doctor` check 11 shipped
+2026-09-03 comparing Core's served `study_designer_schema_version` against the
+**`embarch` binary's own** compiled constant, because yours is unreadable. Pointing
+it at the real number is a follow-up in `umbrella`, not yours — but it means the
+surface you choose has to be readable by a *different process*, so a value only
+reachable inside this crate does not close it.
