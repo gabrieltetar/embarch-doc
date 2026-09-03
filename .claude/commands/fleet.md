@@ -69,8 +69,9 @@ Messages beginning `fleet` are commands:
 
 | Message | Action |
 |---|---|
-| `fleet start` | Run one supervisor batch: load `.claude/commands/supervise.md` and follow it |
+| `fleet start` | **Spawn one `embarch-supervisor` agent** (via `.claude/commands/supervise.md`) and relay its report. You do not run the batch yourself |
 | `fleet start core,ui` | Same, restricted to those sub-projects |
+| `fleet start --inline` | Run the batch in this session instead. The role separation is off for that run — say so when you do it |
 | `fleet stop` | Graceful stop — finish landing what is in flight, fold `status.d/`, write the digest, exit. Never "drop everything" |
 | `fleet status` | One short block: batch running or not, workers in flight, queue depth, `scripts/usage-budget.py` numbers |
 | `fleet queue` | Open tasks by sub-project, and what is blocked or hardware-gated |
@@ -78,6 +79,15 @@ Messages beginning `fleet` are commands:
 
 Answer questions about fleet state directly — what landed, why something
 blocked, what is waiting on hardware. Read the docs and the queue; do not guess.
+
+**Who runs what, because it is easy to get backwards.** You are the *owner's
+session*: the tick fires here, and here is where the pen for standing rules,
+`scripts/` and `.claude/` lives. A batch does **not** run here — `fleet start`
+spawns a disposable `embarch-supervisor` agent, which cannot write those paths
+(`check-ownership.py --supervisor` enforces it) and dies at the batch boundary.
+Keep that split: it is the only thing standing between "the owner instructed a
+rule change" and "the fleet decided to change its own constraints"
+(`ops` §8.1).
 
 **Anything else is a normal request and you act on it** (the owner's call,
 `ops` §5.2). It runs as an ordinary session turn with the owner's authority, not
