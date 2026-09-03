@@ -27,7 +27,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 
 - **Working directory** is `source_path` joined with `build_cwd` if set, validated to exist before spawning. `artifact_path` resolves against that same directory, **not against `source_path` alone** — and that distinction is load-bearing: `west`'s default output is `<cwd>/build`, so an invocation that runs from the repo root and passes the app path as an argument must leave `build_cwd` **unset**, even though the app lives in a subdirectory. Setting it makes the resolved artifact path point at a `build/` directory nothing writes to.
 - **Capture** uses two concurrent tasks draining stdout and stderr — draining one while the other fills its OS buffer is a classic way to hang a child.
-- **Truncation keeps head *and* tail** (~32 KB each side of a ~64 KB budget, with a marker naming what was dropped), because for a Zephyr build the *first* compiler error is usually the actionable one and a long build can scroll it out of a tail-only cap.
+- **Truncation keeps the tail only** — the last 64 KB behind a marker naming the cap, cut on a UTF-8 character boundary because an offset inside a codepoint panics `String::replace_range`. Head-and-tail was the intent and has never been built: [open.md](open.md) carries the gap.
 - **Timeout kills the process group**, not just the immediate child — `west`/`cmake`/`make` fork subprocesses a plain kill would orphan. A killed or timed-out build is reported **distinctly** from a nonzero exit, so a hang is not misdiagnosed as a code problem.
 - **One build in flight per project name**, via a per-project async lock. Separate from Core's hardware lock: this guards two calls stomping the same output directory, not USB contention.
 
@@ -51,11 +51,12 @@ Today `embarch-api` runs under WSL2 and Core runs native on Windows on the same 
 | `config.rs` | TOML schema, load, validation (unique names, path existence, discovery-branched required fields) |
 | `zephyr.rs` | the live `boards/`/`app/` scan, target cross-product, file-backing validation, build-dir and artifact-path assembly. Pure filesystem and YAML reads — no `west` invocation, no network |
 | `resolve.rs` | the one place every front-end branches on `discovery`, turning a project plus a selection into a build plan and a chip |
-| `build.rs` | subprocess execution for a discovery-agnostic build plan |
+| `build.rs` | subprocess execution for a discovery-agnostic build plan. The one module behind this package's `lib` target, because a binary crate exposes nothing to `tests/` ([decisions](decisions/shape.md) 46) |
 | `reflash.rs` | the check → build → flash → submit sequence, and the no-`git checkout` refusal with its test |
 | `study.rs` | the shared seal-recomputation helper both front-ends call |
 | `tools.rs` / `cli.rs` | the two front-ends; thin glue over the same modules |
 | `logging.rs` | the rolling per-user logfile |
+| `tests/` | the six recorded acceptance criteria, split `core_client_http.rs` (bearer, timeouts, non-2xx — against a loopback mock Core) / `build_capture.rs` (drain, truncation, freshness). No hardware, no live Core, no added dependency |
 | `crates/embarch-core-client/` | `CoreClient` (every Core endpoint, bearer injection, per-call timeouts, the topology-branched flash transport, typed `409`/`404` errors), `CoreConfig`, token discovery, and `version.rs`. A plain path dependency, not a workspace member |
 
 `main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**. `Builder::thread_stack_size` only sizes threads the runtime spawns; the top-level future runs on whatever thread calls `block_on`, which for `#[tokio::main]` is the process main thread at the OS default, with no knob. One fix, two bugs that only looked unrelated ([decisions](decisions/core-link.md) 36).
@@ -72,7 +73,7 @@ Today `embarch-api` runs under WSL2 and Core runs native on Windows on the same 
 |---|---|---|
 | runtime thread stack | 512 MiB | [measured 2026-08-24] 64 MiB was empirically insufficient against a real GATT-heavy `StudyResult` |
 | `FRESHNESS_CLOCK_GRACE` | 500 ms | [measured] WSL2 clock jitter put a child's file mtime *before* the parent's pre-spawn timestamp; a real build takes seconds, so this cannot mask a stale artifact |
-| capture cap | ~64 KB, head+tail | [assumed] |
+| capture cap | 64 KB, tail only | [assumed] |
 | default `build_timeout_secs` | 300 | [assumed] |
 | default Core port | 4884 | — |
 | log retention | 7 daily files, `api.log.<date>` | deliberately the same scheme as Core's, so one reader covers both |

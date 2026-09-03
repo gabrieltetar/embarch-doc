@@ -9,13 +9,14 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **`snippets` is accepted, silently discarded, and reported as success** for a project with an explicit build command ([decisions](decisions/studies.md) 44c). A build with two snippets returned success having produced an image whose config said the option was not set. The help text says snippets are Zephyr-discovery-only, and that is documentation rather than a gate. The right fix is a decision: **reject the flags, or teach that path to splice them in.**
 - **A `[[projects]]` `board` is a hardware fact, and this config has been deriving it from build artifacts.** The reference-dut entry carried a board value for three weeks with an inline comment presenting it as authoritative *because the repo's own `build_info.yml` recorded it* — which is a derivation from an artifact left by whatever someone last typed, not a statement about the board on the desk, which was a different revision entirely. **Cost: a day of bring-up spent measuring a UART faithfully transmitting into the wrong pin**, across two well-evidenced and wrong diagnoses.
 
-  The rule this violates is one the suite already wrote down: never present an inference about a DUT as established fact, and `board` is the most load-bearing DUT fact in this file. **Two things would have caught it and neither exists:** `init` could refuse to *write* a board it inferred without the operator confirming it, and `validate`/`status` could compare the configured board against something the attached hardware reports. The second is the real fix and the harder one; the first is cheap and would have been enough here.
+  It violates [spec.md](spec.md) §2's own invariant — no inference presented as fact — and `board` is the most load-bearing DUT fact in this file. **Two things would have caught it and neither exists:** `init` could refuse to *write* an inferred board without operator confirmation, and `validate`/`status` could compare the configured board against what the attached hardware reports. The second is the real fix and the harder one; the first is cheap and would have been enough here.
+- **The build-log cap keeps the tail only**, while `spec.md` claimed "head and tail" from the initial commit until 2026-09-03 — an intent nobody built. A Zephyr build's *first* error is usually the actionable one, and a 64 KB tail can scroll it away. **Build the split, or accept tail-only.**
 
 ## Unfinished couplings
 
 - **The alert and enrolled-board response types are unpinned mirrors.** The signal-route mirrors are pinned from each side against the same JSON literal, because no crate in the suite compiles both sides and so nothing can typecheck the coupling. These two have the same coupling and no pin.
 - **Decision 27's friendlier capacity error was never built.** Oversized submissions *are* rejected before the HTTP call, but by `serde`'s own raw error rather than the "which field, what limit" message the decision described calling a dedicated helper for.
-- **The mocked unit-test suite is specified and unwritten.** The acceptance criteria are recorded — bearer injection, per-endpoint timeout independence, plain-text-on-non-2xx, the two-pipe drain invariant, truncation on a UTF-8 boundary, and an untouched pre-existing artifact **not** counting as fresh — and no test files exist. The smoke harness ([decisions](decisions/studies.md) 30) is likewise named and unwritten.
+- **The smoke harness ([decisions](decisions/studies.md) 30) is named and unwritten.** The six mocked criteria beside it now live in `tests/` ([decisions](decisions/shape.md) 46), with two gaps: the end-to-end half is `#[cfg(unix)]`, and a new endpoint escapes the bearer sweep unless its route list grows.
 - **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads at all, from its own lifted copy of the retired UNC helpers. A different repo's correction to make.
 
 ## Structural limits
@@ -26,7 +27,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Settled-deferred
 
-Each was re-read in a suite-wide pass rather than carried forward unexamined, and none acquired a new argument:
+Re-read suite-wide; none acquired a new argument:
 
 - **PATH/toolchain preflight validation** — kept out of the build path deliberately, since a build failure surfaces naturally and preflighting every build adds latency to the common case to improve one uncommon message. Expected to land as an `embarch doctor` check instead, which is what a diagnostic run on demand is for.
 - **Config fragments / `include`**, so `[core]` is not duplicated per repo. Tolerable for v1 because `[core]` is three lines with `base_url = "auto"`.

@@ -25,3 +25,14 @@ Core's own design already anticipates moving to a LAN-reachable machine, and thi
 
 ### 25 — Config resolution happens once, at process start
 True already and probably right — an MCP client's spawn cwd *is* "which repo am I working in" for the session's lifetime — but the cwd-upward search never said so, leaving a reader to infer it. Stated as a property of the design rather than a gap: switching repos mid-session means reconnecting the client, same as any other config change.
+
+### 46 — A one-module `lib` target, so the mocked suite can reach anything at all
+`open.md` carried six recorded acceptance criteria as "specified and unwritten" for weeks. Three of them — the two-pipe drain invariant, truncation on a UTF-8 character boundary, an untouched artifact not counting as fresh — are properties of `build.rs`, and `build.rs` lived in a **binary** crate. Each file under `tests/` compiles as its own crate and can reach a package's `lib` and nothing else, so those three were not merely untested, they were **untestable from an integration test**. The suite was unwritten partly because writing it was blocked and nobody had said so.
+
+`build` therefore moves behind a `lib` target and `main.rs` imports it rather than declaring it a second time — one compiled copy, exercised by the bin and the tests alike. Deliberately **one module wide**: the rest of `main.rs` stays where it is. A whole-crate lib/bin split would have meant moving `Cli`/`Commands`/`TargetSelection` too, which is a refactor of the front end bought for nothing the tests need.
+
+The other three criteria are properties of `CoreClient`, and their tests live in **`embarch-api/tests/`, not `crates/embarch-core-client/tests/`**, deliberately: the core-client crate is a plain path dependency rather than a workspace member, so `cargo test` at the repo root — the command the gate runs and the only one anybody types — would never execute them there.
+
+The mock Core is **hand-rolled on `tokio::net`, not `wiremock`/`httpmock`**. Two of the three invariants cannot be expressed against a well-behaved mock anyway: per-endpoint timeout independence needs a socket that accepts and then goes silent, and the plain-text-on-non-2xx rule needs a response that is deliberately not JSON. Both are a few dozen lines against a dependency this crate already has. **The suite adds no dependency at all**, dev- or otherwise.
+
+Six mutations — one per criterion, each reverted — confirmed every test goes red when its invariant is broken. Two limits worth stating: the four end-to-end tests need a POSIX shell and are `#[cfg(unix)]`, so **Windows runs the direct tests only and covers the two-pipe invariant not at all**; and a `CoreClient` endpoint added without `.bearer_auth(…)` is caught only if the sweep's route list is extended to call it.
