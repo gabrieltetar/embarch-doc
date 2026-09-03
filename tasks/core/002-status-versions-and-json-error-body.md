@@ -1,6 +1,6 @@
 # 002 — `core_version`/`contract_version` on `/status`, and the `{code, message, cause}` error body
 
-**State:** open
+**State:** claimed by agent/core/002-status-versions-and-json-error-body, 2026-09-03 01:30
 **Source:** embarch-core/open.md — "Designed, not built": "**A `{code, message, cause}` JSON error body**, and `core_version`/`contract_version` on `/status` (decisions 12, 13). The study schema version is the only one of the three that is real."
 **Scope:** core
 **Hardware:** none

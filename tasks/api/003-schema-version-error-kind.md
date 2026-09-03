@@ -1,6 +1,6 @@
 # 003 — `schema_version` and `error_kind` are documented and were never built
 
-**State:** open
+**State:** claimed by agent/api/003-schema-version-error-kind, 2026-09-03 01:30
 **Source:** embarch-api/open.md — "**`schema_version` and `error_kind` are documented and were never built.**"
 **Scope:** api
 **Hardware:** none
