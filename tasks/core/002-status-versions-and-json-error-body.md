@@ -1,6 +1,6 @@
 # 002 — `core_version`/`contract_version` on `/status`, and the `{code, message, cause}` error body
 
-**State:** claimed by agent/core/002-status-versions-and-json-error-body, 2026-09-03 01:30
+**State:** done by agent/core/002-status-versions-and-json-error-body, 2026-09-03
 **Source:** embarch-core/open.md — "Designed, not built": "**A `{code, message, cause}` JSON error body**, and `core_version`/`contract_version` on `/status` (decisions 12, 13). The study schema version is the only one of the three that is real."
 **Scope:** core
 **Hardware:** none
@@ -93,6 +93,18 @@ newly *available* to check 11 as a fourth number — a `doctor` that reports
 which Core binary answered alongside the schema numbers — but that is an
 addition to an `embarch-umbrella` task, not a dependency of one. **Nothing
 about what check 11 should read has changed.**
+
+## One thing the supervisor should carry to `api/003`
+
+`tasks/api/003-schema-version-error-kind.md` is claimed this same leg and its
+subject is `embarch-api`'s `error_kind` on every `--json` object. **If that
+worker builds `error_kind` rather than retiring it, it cannot derive the kind
+from Core** — Core still serves plain-text errors, so the only machine-readable
+signal crossing that hop is the HTTP status code. An `error_kind` derived from a
+status code is a coarser thing than decision 12's `code` enum and should say so
+in its own docs, or the two will later be assumed to be the same vocabulary.
+Nothing in this branch blocks that worker; it just narrows what it can honestly
+claim `error_kind` means.
 
 ## Gate
 
