@@ -241,9 +241,16 @@ stops per-unit logging from rolling the file every few days.
 
 **Then check your own hands**, once, before you exit:
 `git diff --name-only <leg-start-sha>...HEAD | python3
-scripts/check-ownership.py --supervisor --stdin`. Red means you wrote a path §2
-reserves to the owner — report it at the top of your final message rather than
-reverting it quietly.
+scripts/check-ownership.py --supervisor --stdin`. **Red now means one of two
+things and the output says which.** Either you wrote a path §2 reserves to the
+owner — report it at the top of your final message rather than reverting it
+quietly — or a top-level doc exists that neither of the script's lists
+classifies, which is a fact about the repo rather than about your diff. The
+second is usually a [DOC-COMPACTION.md](../../DOC-COMPACTION.md) split: a doc
+that appears from one carries its old file's rules and none of its old file's
+protection. **Classifying it is the owner's call, not yours** — the lists live
+in `scripts/`. Name the file in your final message and carry on; do not guess a
+classification and do not edit the script.
 
 ## Ending the leg
 

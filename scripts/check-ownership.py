@@ -95,6 +95,46 @@ def reserved_hits(paths):
     return [p for p in paths if any(p == r or p.startswith(r) for r in RESERVED)]
 
 
+# Top-level docs the fleet legitimately writes. This list exists only so that
+# RESERVED plus this one is EXHAUSTIVE over top-level *.md -- see audit() for
+# why that matters. Adding a doc here is a decision that it is not a rule the
+# fleet runs under; if in doubt, reserve it, because the cost of a wrong
+# reservation is a blocked commit and the cost of a wrong omission is a
+# supervisor editing its own constraints.
+FLEET_WRITABLE = (
+    "README.md",
+    "embarch.md",
+    "embarch-decision-reversals.md",
+    "embarch-glossary.md",
+    "embarch-remote-surfaces.md",
+    "embarch-stream-pipeline-proposal.md",
+    "embarch-token.md",
+    "embarch-zephyr.md",
+    "supervisor-log.md",
+)
+
+
+def audit(repo_root: str):
+    """Every tracked top-level *.md must be classified, in one list or the other.
+
+    RESERVED is a denylist of filenames, and that broke once already: the risk
+    register was §12 of embarch-parallel-agents.md until its size cap split it
+    into embarch-fleet-risks.md on 2026-09-03, and reserved content stopped
+    being reserved purely by moving. Nothing noticed for a day. DOC-COMPACTION.md
+    tells a doc to split at its cap and knows nothing about ownership, so the
+    same split can happen again at any time.
+
+    This makes the next one loud instead of silent. A new top-level doc -- from a
+    split, or written from scratch -- is unclassified until a human puts it in a
+    list, and that is exactly the moment to decide which one.
+    """
+    out = subprocess.run(["git", "-C", repo_root, "ls-files", "*.md"],
+                         capture_output=True, text=True).stdout.split()
+    top = sorted(p for p in out if "/" not in p)
+    known = set(RESERVED) | set(FLEET_WRITABLE)
+    return [p for p in top if p not in known], len(top)
+
+
 def known_scopes(repo_root: str) -> set[str]:
     out = subprocess.run(["git", "-C", repo_root, "ls-tree", "--name-only", "HEAD"],
                          capture_output=True, text=True).stdout.split()
@@ -142,6 +182,7 @@ def main() -> int:
     if args.supervisor:
         paths = ([p.strip() for p in sys.stdin.read().split("\n") if p.strip()]
                  if args.stdin else changed_paths(args.base, args.repo))
+        rc = 0
         bad = reserved_hits(paths)
         if bad:
             print(f"{len(bad)} path(s) the supervisor may not write "
@@ -150,9 +191,26 @@ def main() -> int:
                 print(f"  {p}")
             print("\nA supervisor that can edit its own constraints has none. If one of\n"
                   "these genuinely needs changing, that is the owner's commit, not a batch's.")
-            return 1
-        print(f"OK: none of the {len(paths)} changed path(s) is owner-reserved.")
-        return 0
+            rc = 1
+        else:
+            print(f"OK: none of the {len(paths)} changed path(s) is owner-reserved.")
+
+        # Repo-state assertion, not a fact about this diff: see audit().
+        unclassified, total = audit(args.repo)
+        if unclassified:
+            print(f"\n{len(unclassified)} top-level doc(s) classified by neither "
+                  f"list, so nothing knows whether the fleet may write them:\n")
+            for u in unclassified:
+                print(f"  {u}")
+            print("\nAdd each to RESERVED or to FLEET_WRITABLE in this script, and to\n"
+                  "embarch-parallel-agents.md §3's table if it is reserved. A doc that\n"
+                  "appears from a DOC-COMPACTION.md split carries its old file's rules\n"
+                  "and none of its old file's protection -- that is how the risk register\n"
+                  "stopped being owner-reserved on 2026-09-03.")
+            rc = 1
+        else:
+            print(f"OK: all {total} top-level doc(s) classified.")
+        return rc
 
     global KNOWN_SCOPES
     KNOWN_SCOPES = known_scopes(args.repo)
