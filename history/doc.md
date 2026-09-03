@@ -4,6 +4,18 @@
 
 ## 2026-09
 
+### Added
+- `check-ownership.py --supervisor` now fails on a top-level doc classified by neither list, so a compaction split cannot silently drop a file's protection again.
+
+### Fixed
+- A status line *is* configured; DEGRADED is a missing `rate_limits` payload, not a missing status line — and the two look identical on disk.
+- A unit's log entry goes in its fold commit, so landing unlogged is impossible; a dream post now carries `crystal_ball`, which the 6-hour gate can actually read.
+- An `inbox/` drop no longer starves itself: the leg drains `inbox/` every leg and counts with `--tasks-only`, so a drop cannot suppress the refill that files it.
+- Six rule-bearing files a leg could write are now owner-reserved, and §3's table no longer grants it `scripts/` when the check always refused.
+- The dispatchable count is `scripts/queue-status.py`, not four prose copies of "State is open"; a claim held by a dead worker now counts as recoverable.
+- The listener's cron fires only while it is idle, so a tick now makes one spawn attempt and ends; an in-turn retry suppressed its own recovery.
+## 2026-09
+
 ### Changed
 - The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-parallel-agents.md](../embarch-parallel-agents.md) §6.
 - The fleet's risk register moved out of embarch-parallel-agents.md §12 into [embarch-fleet-risks.md](../embarch-fleet-risks.md), which hit its size cap.

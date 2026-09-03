@@ -61,6 +61,79 @@ unit under **Merged** and **Blocked**:
 
 ---
 
+## 2026-09-03 12:36 — umbrella/001 doctor-check-11-is-a-stub
+
+**Decided:** nothing suite-wide. Three calls inside `umbrella`, all the worker's
+and all read by me before merging. **Check 11 fails rather than warns** on a host
+schema disagreement, which is a change of kind: `doctor` previously failed on
+almost nothing, and this makes a deploy gate that can stop a deploy. It is right
+— `embarch-api` refuses to submit a study across that gap, so a warn would be
+describing a broken pair as a caution. **Check 15 is a separate check rather than
+a fourth number in 11**, which is exactly the split `core/002` asked for last
+leg. And **the spec's check numbering collided on `main`** — `spec.md` gave 14 to
+the design-only bind-address check while decision 31's flashing-backend check had
+shipped as 14 in code; built keeps 14, the four unbuilt ones moved to 16–19.
+
+**I accepted the worker's skip of the native Windows build, and I verified the
+argument instead of taking it.** `cargo check --target x86_64-pc-windows-msvc`
+dies in `aws-lc-sys`'s C build. Two facts settle it: `aws-lc-sys` is already in
+**`main`'s** `Cargo.lock` (so the failure predates this branch), and every
+dependency this branch adds is pure Rust — `embarch-study-designer`, `postcard`,
+`heapless`, `cobs`, `crc`, `byteorder`, `hash32`. §10 requires a native Windows
+build "where `embarch-core` is involved" and `embarch-umbrella` does not depend
+on it — it shells out. **This is not the `core/002` precedent** the last leg
+warned against: that one accepted a build a worker ran somewhere else, this one
+establishes that the cell was never in the gate.
+
+**Merged:** `agent/umbrella/001-doctor-check-11-is-a-stub` (umbrella `1aa0709`,
+doc `98f2a1a`). Both fast-forward, after I rebased the doc branch onto `main` —
+it had diverged over this leg's own `api/004`/`api/005` task commits, and the
+task file conflicted because I had corrected the claim timestamp on `main` after
+branching. Gate re-run by me on the merge result: build, 102 tests, `clippy
+--all-targets -D warnings`, all six doc checks, ownership on both branches.
+
+**`embarch-umbrella` now path-depends on `embarch-study-designer`** (types only,
+default features). A shared crate gained a consumer; the crate itself is
+untouched.
+
+**Blocked:** none.
+
+**Hardware debts:** two, and they are the same run. Neither check 11 nor check 15
+has been run against a live Core or a flashed bench — every number in both is
+injected in the tests. One `embarch doctor` against the real pair is what would
+establish that `/status` really carries both fields on the deployed build, that
+`/dev-bench/hello` returns a readable `compatible`, and that a healthy pair reads
+**pass** rather than warning on some field-name detail no host test can see.
+Recorded in `embarch-umbrella/open.md`. The stub this replaces reported "not
+available yet" straight through the 2026-08-26 v13-against-v14 incident, so a
+green there is the first evidence the check works at all.
+
+**One inbox drop, filed by the worker into the main checkout** (deliberately, so
+it survives the worktree deletion):
+`inbox/api-expose-compiled-host-schema-version.md`. Check 11 compares Core's
+served host version against **this `embarch` binary's** compiled constant, not
+the located `embarch-api`'s, because `embarch-api` exposes its own nowhere. Exact
+for a single-archive install; **wrong exactly in the hand-built mixed install,
+which is how this suite is actually developed.**
+
+**`build_changelog.py` again consumed seven of the owner's pending `doc-*`
+fragments** into `history/doc.md` under this unit's fold commit — the same
+correct-but-surprising behaviour `core/002` recorded. It drains everything in
+`changelog.d/`; there is no per-unit filter and a supervisor cannot add one.
+
+**Budget:** DEGRADED at start, wave 2, no 429.
+
+**Least sure about:** check 11 failing on a number that is a stand-in. A `Fail`
+stops a deploy, and the value it fails on is this binary's rather than the one
+`embarch-api` holds — so the exact case the drop describes is the case where a
+hard failure would be wrong. The worker documented it honestly in `open.md` and
+in decision 33, and the alternative (warn until the drop lands) would have
+shipped the same silence that let the v13/v14 incident run. I would not reverse
+it, but that is the line to look at first if `doctor` starts failing on a
+healthy machine.
+
+---
+
 ## 2026-09-03 07:50 — api/003 schema-version-error-kind
 
 **Reconstructed by the owner on 2026-09-03, not written by the supervisor that

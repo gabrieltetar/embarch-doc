@@ -131,9 +131,11 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `init`/`doctor` support for live target discovery | Shipped | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
-| `embarch doctor` — the whole chain, `--json` | Shipped — **check 11 is a stub and check 14 is unbuilt** | local | §5 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **checks 16–19 are designed and unbuilt** | local | §5 |
+| `doctor` check 11 — study-designer schema skew: Core's served host version against this binary's compiled one, plus Core's own `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
+| `doctor` check 15 — the running Core's `core_version` is the located `embarch-core` build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
 | `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped and dogfooded — **the verification compared a byte count and reported success through a cancelled elevation** | hw | 32 |

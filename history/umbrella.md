@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `doctor` check 11 compares real schema versions instead of a hardcoded warn, and new check 15 catches a cross-version stale Core deploy.
+## 2026-09
+
+### Changed
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
