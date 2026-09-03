@@ -16,7 +16,7 @@ Four, and the boundaries between them are the whole design.
 
 **The owner.** Approves nothing routine — the supervisor is a full delegate, and steers by exception, and can start, stop, question or redirect the fleet from Remote Control or **#embarch-fleet** on a phone ([running the fleet](embarch-parallel-agents-ops.md) §3–§5) (§11 is why that is a real risk and what it buys). Four things stay the owner's and cannot be delegated:
 
-- **Amending a standing rule** — this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) §6, [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md). A supervisor that can rewrite its own constraints has none. Dev-workflow §6 already says its own rule "ends when the repo owner says it ends, and on no other condition"; this is that property stated once for the whole class.
+- **Amending a standing rule** — this doc, [running the fleet](embarch-parallel-agents-ops.md), [the risks](embarch-fleet-risks.md), [embarch-dev-workflow.md](embarch-dev-workflow.md) §6, [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md), `CLAUDE.md`, the four protocol READMEs, `scripts/` and `.claude/` — §3's table is the full list and `check-ownership.py --supervisor` is what enforces it. A supervisor that can rewrite its own constraints has none. Dev-workflow §6 already says its own rule "ends when the repo owner says it ends, and on no other condition"; this is that property stated once for the whole class.
 - **Anything physical** — plugging in a board, swapping hardware. Unchanged from [embarch-dev-workflow.md](embarch-dev-workflow.md) §5's Tier 3.
 - **Anything outside the suite's own repos** — a client firmware repo, a deployed machine, a release.
 - **Latching the pump.** Neither a supervisor nor the fleet starts itself: `fleet start` and `fleet stop` in #embarch-fleet are the owner's. **Amended 2026-09-03:** what they start is the *pump*, not each leg — once latched, the listener spawns leg after leg until told to stop ([running the fleet](embarch-parallel-agents-ops.md) §5). They still decide that the fleet runs at all, and closing VS Code still ends it; what they no longer do is start each piece of work by hand.
@@ -42,11 +42,14 @@ Branches are the backstop. **This table is the actual mechanism** — if it is h
 | [embarch.md](embarch.md), [suite/features.md](suite/features.md), [suite/roadmap.md](suite/roadmap.md) | **never** | write | write |
 | [embarch-decision-reversals.md](embarch-decision-reversals.md), [embarch-glossary.md](embarch-glossary.md), [suite/user-guide.md](suite/user-guide.md) | **never** | write | write |
 | `tasks/` | claim + close its own | write | write |
-| [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md), this doc, [embarch-dev-workflow.md](embarch-dev-workflow.md) | **never** | **never** | write |
-| `scripts/` | **never** | write | write |
+| [DOC-PROTOCOL.md](DOC-PROTOCOL.md), [DOC-COMPACTION.md](DOC-COMPACTION.md), this doc, [running the fleet](embarch-parallel-agents-ops.md), [the risks](embarch-fleet-risks.md), [embarch-dev-workflow.md](embarch-dev-workflow.md), `CLAUDE.md` | **never** | **never** | write |
+| `tasks/README.md`, `inbox/README.md`, `changelog.d/README.md`, `status.d/README.md` | **never** | **never** | write |
+| `scripts/`, `.claude/` | **never** | **never** | write |
 | Hardware (probe, DUT, dev-bench, live Core) | **never** | **never** | write |
 
 The three "never" rows a worker will most want to break are the shared suite-level docs, and [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §5 explicitly tells it to edit them. §9 is the replacement.
+
+**Two of those rows are new, and one was wrong, because a table of filenames drifts from what it means to protect.** `scripts/` read `write` for the supervisor while `check-ownership.py` had rejected it from the start — the script was right and every other doc agreed with it, so the table was the stale copy. The rest went missing two ways. [The risks](embarch-fleet-risks.md) was **reserved content that stopped being reserved by moving**: it was §12 of this doc until the size cap split it out on 2026-09-03, and the check names files. The four protocol READMEs were never named at all, because each one documents a rule the fleet runs under while sitting inside a directory the fleet legitimately writes — `tasks/README.md` carries the claim and staleness protocol that `queue-status.py` now implements, so a leg editing it would be editing its own dispatch predicate. **`check-ownership.py --supervisor` is the enforcement; this table is only its description**, and when they disagree the script wins until the owner says otherwise. A future compaction split can reopen exactly this hole, and nothing yet prevents that.
 
 ## 4. The task queue
 

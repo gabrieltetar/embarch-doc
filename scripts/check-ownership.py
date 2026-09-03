@@ -72,11 +72,22 @@ def _frag_scope(path: str, prefix: str) -> str | None:
 RESERVED = (
     "embarch-parallel-agents.md",
     "embarch-parallel-agents-ops.md",
+    "embarch-fleet-risks.md",
     "embarch-dev-workflow.md",
     "DOC-PROTOCOL.md",
     "DOC-COMPACTION.md",
+    "CLAUDE.md",
     "scripts/",
     ".claude/",
+    # Protocol READMEs. Each one documents a rule the fleet runs under while
+    # sitting inside a directory the fleet legitimately writes, so naming the
+    # directory is not enough -- tasks/README.md carries the claim and staleness
+    # protocol that queue-status.py implements, and a leg editing it would be
+    # editing its own dispatch predicate.
+    "tasks/README.md",
+    "inbox/README.md",
+    "changelog.d/README.md",
+    "status.d/README.md",
 )
 
 
