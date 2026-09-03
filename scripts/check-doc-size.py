@@ -197,6 +197,10 @@ def main() -> int:
             why = "cap" if limit == cap else "ratchet baseline"
             print(f"  {rel}  {size/KB:.1f}K > {limit/KB:.1f}K ({why}; {role} cap is {cap/KB:.0f}K)")
         print("\nA file may shrink freely. To record progress: scripts/check-doc-size.py --update")
+        # Last line must read as a failure on its own. A neutral footer here was
+        # misread as a pass three times in one session when only the tail was
+        # checked -- and the commits went out over-cap.
+        print(f"FAIL: {len(fails)} file(s) over their limit.")
         return 1
 
     print(f"All {sum(1 for _ in docs())} docs within their limit. "
