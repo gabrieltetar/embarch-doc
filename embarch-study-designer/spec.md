@@ -80,4 +80,6 @@ Core writes `study_results/<study_id>/`, and this crate owns every **row shape**
 
 Every capacity bound lives in one `limits` module. Values and provenance: [interfaces/limits.md](interfaces/limits.md); why they are fixed-capacity: [decisions/limits.md](decisions/limits.md). The two schema constants and what each guards: [decisions/versioning.md](decisions/versioning.md).
 
-`Study` is **1,088 bytes**, down from 77,368 before three size passes: a heap container for `steps`, a generalised bounded newtype for the result types, and the outright removal of post-hoc validation, which was 97% of what remained after the first.
+On the host — the `alloc`/`std` shape both Cargo dependents build — `Study` is **1,080 bytes**, down from 77,368 before three size passes: a heap container for `steps`, a generalised bounded newtype for the result types, and the outright removal of post-hoc validation, which was 97% of what remained after the first.
+
+**The default `no_std` shape is still large, and that is the point**: with no allocator every one of those containers is an inline array, so the same `Study` is 83,512 bytes and a `DevBenchMessage` is 75,288 ([measured 2026-09-02]). `cargo test` builds default features, so the test harness runs against *that* shape and needs more than libtest's 2 MiB per-thread stack — `.cargo/config.toml` in the crate sets `RUST_MIN_STACK` to the 64 MiB Core already uses ([decisions/limits.md](decisions/limits.md) decision 63).

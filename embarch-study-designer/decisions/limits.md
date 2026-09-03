@@ -40,5 +40,25 @@ The newtype leaves decision 46's call sites unchanged. The captured-data field i
 
 Still no schema bump, **now asserted for more than one element type.** One round-trip test **encodes from the newtype and decodes into the plain fixed-capacity shape — the host-encodes/bench-decodes case in miniature, and the first test here to *prove* the two agree rather than assert it in prose.** And the opposite direction is asserted too: a test **requires the `no_std` result type to stay large**, so **"make it smaller" can never be applied to the one build with no allocator to make it smaller with.**
 
+### 63 — `cargo test` runs the allocator-free shape, so the crate ships a 64 MiB harness stack rather than shrinking a type that must stay big
+
+**`cargo test` aborted on `main`** — `thread 'tests::dev_bench_message_discriminants_are_pinned' has overflowed its stack`, SIGABRT, part-way through the run. Not a flaky test: it made this crate's merge gate structurally unenforceable, so a branch either landed on a red gate by exception or nothing landed at all.
+
+The cause is the collision of two things decisions 46 and 49 each got right separately. **`cargo test` builds with *default* features, which is the allocator-free `no_std` shape dev-bench links** — the one configuration where the inline arrays are mandatory and where `the_no_std_build_keeps_its_fixed_capacity_arrays` deliberately forbids shrinking them. Decision 49's table reports the host shape; the default shape is a different set of numbers entirely:
+
+| Type | default (`no_std`) | `alloc` / `std` |
+|---|---:|---:|
+| `DevBenchMessage` | 75,288 | 2,128 |
+| `Study` | 83,512 | 1,080 |
+| `StudyResult` | 202,536 | 824 |
+
+All [measured 2026-09-02]. A debug-profile test that builds four `DevBenchMessage`s copies each of them tens of times, and libtest gives every test thread 2 MiB. [Measured] on rustc 1.97.1: 2 MiB and 3 MiB abort, 4 MiB passes 108/108.
+
+**So the type is genuinely oversized and that is the requirement, not the defect** — under `alloc` it is already 2 KB, and the 75 KB form exists precisely because dev-bench has no allocator. Of the three fixes available, two are unavailable here: *shrinking the type* reverses decision 15 for the only build that cannot afford it, and *boxing the value in the test* needs `alloc` that this configuration does not have, fixes one test, and leaves every other test that touches a `StudyStart` sitting on the same cliff — the measured margin says the worst one was already within 1 MiB of it. The remaining fix is `.cargo/config.toml` setting `RUST_MIN_STACK`.
+
+**64 MiB, because that is the number `embarch-core`'s runtime already uses for this same class of value** (decision 49) — one figure to remember rather than two, and 16x over the 4 MiB actually needed, deliberately, since the measured need moves with the debug profile and the compiler version. Thread stacks are reserved and not committed, so it costs address space. Cargo resolves config from the invocation directory, so it applies to developing this crate and **not** to `embarch-core`/`embarch-api` building it as a dependency. `force` is off, so `RUST_MIN_STACK=2097152 cargo test` still reproduces the overflow.
+
+**This is the fix decision 46 warned about, and it is chosen with that warning read.** Decision 46 called Core's big-stack mitigation "a workaround sized against today's code rather than against the type", and it was right — because on the host the type *could* be shrunk, and was. Here it cannot be, so the same shape of mitigation is the answer rather than the deferral. What keeps it from silently papering over unbounded growth is a **ceiling test on the `no_std` `DevBenchMessage`**, the counterpart to decision 49's floor: the inline shape may be big, but past ~3.5x today's size it fails as a named assertion instead of as a SIGABRT that takes the whole binary down mid-run.
+
 ---
 

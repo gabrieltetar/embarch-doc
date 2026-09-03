@@ -9,7 +9,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | Load this for | Decisions |
 |---|---|
 | [Crate shape and boundaries](decisions/crate.md) — what it links, and how it reaches three consumers in two languages | 1, 2, 5, 7, 8, 23 |
-| [Bounded collections and type size](decisions/limits.md) — every capacity, and 77 KB → 1 KB | 15, 46, 49 |
+| [Bounded collections and type size](decisions/limits.md) — every capacity, 77 KB → 1 KB on the host, and why the `no_std` shape stays big | 15, 46, 49, 63 |
 | [Serialization, framing, and the link](decisions/wire.md) — two formats, COBS, an append-only enum | 3, 4, 10, 24, 25 |
 | [Schema versioning, handshake, clocks](decisions/versioning.md) — two constants, and where time comes from | 12, 30, 47 |
 | [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, and what sits outside them | 17, 18, 26 |
