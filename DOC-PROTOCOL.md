@@ -27,7 +27,7 @@ embarch/
     ├── status.d/            pending edits to a shared suite-level doc
     ├── tasks/               the background agents' work queue
     ├── history/             assembled per sub-project, + archive/
-    └── scripts/             the six CI checks
+    └── scripts/             the six CI checks, plus the fleet's own tools
 ```
 
 Suite-level docs are mid-migration into `suite/`; several still sit at the root. [embarch.md](embarch.md) §6 is the authoritative index either way.
@@ -57,7 +57,7 @@ Those triggers are reactive — they fire when work happens, and don't catch a d
 - **Update suite-level facts in the same pass** — *unless you are a background worker, which drops a `status.d/` fragment instead ([embarch-parallel-agents.md](embarch-parallel-agents.md) §9)* — [embarch.md](embarch.md) §3's status table, a [roadmap](suite/roadmap.md) bucket, a [features](suite/features.md) row. A sub-project doc and the suite-level docs must never disagree about status.
 - **Link, don't restate.** [suite/features.md](suite/features.md) and [suite/roadmap.md](suite/roadmap.md) point at a decision rather than duplicating it. Exception: [suite/user-guide.md](suite/user-guide.md), where a getting-started guide that only links is useless.
 - **Adding a top-level file?** Add it to [embarch.md](embarch.md) §6 in the same edit — an index is useful only while exhaustive.
-- **Run the checks.** All six run in CI on every push: `check-links.py`, `check-staleness.py`, `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`, and `build_changelog.py --check`. Run them locally for fast feedback. `collect-open-questions.py` is a read-only index, not a gate.
+- **Run the checks.** All six run in CI on every push: `check-links.py`, `check-staleness.py`, `check-decision-refs.py`, `check-doc-conventions.py`, `check-doc-size.py`, and `build_changelog.py --check`. Run them locally for fast feedback. `collect-open-questions.py` and `queue-status.py` are read-only indexes, not gates.
 
 ## 6. How a sub-project repo hooks into this
 

@@ -21,9 +21,13 @@ live all day — each tick costs a channel read and at most one spawn, so its
 context grows by a few hundred tokens an hour instead of by a batch.
 
 The one exception, because the heartbeat needs it: the listener may run the
-**dispatchable count** — `tasks/` files whose State is open and whose Hardware is
-`none` or `verify-only`, plus `*.md` in `inbox/` — as a read-only predicate. Two
-shell commands. Nothing else in the repo is its business.
+**dispatchable count** — `scripts/queue-status.py --no-supervisor --count`, one
+command — as a read-only predicate. **It does not read task files itself.** The
+predicate is not "State is open": a claim held by a dead worker is recoverable
+work, and restating the rule in prose is exactly how this window spent five
+hours on 2026-09-03 believing the queue was empty. The script owns the
+definition; `tasks/README.md` owns the staleness rule it implements. Nothing
+else in the repo is this window's business.
 
 **So this window is not the owner's window.** Standing rules, `scripts/`,
 `.claude/`, hardware and `inbox/` drops belong to an ordinary session the owner
@@ -65,13 +69,16 @@ Three steps, in this order.
 >
 > **STEP 2 — pump.** Read `/home/gabriel/Github/embarch/.fleet/pump`. If it is
 > absent, stop. If it is present, `ListAgents`: if an `embarch-supervisor` is
-> alive, stop — a leg is running. Otherwise count dispatchable work in
-> `/home/gabriel/Github/embarch/embarch-doc`: files under `tasks/` (excluding
-> `README.md`) whose State is open and whose Hardware is none or verify-only,
-> plus any `*.md` in `inbox/`. If that count is above zero, spawn the next leg.
-> If it is zero, spawn a leg **only if** no `robot_face` dream post appears in
-> the 20 messages you just read within the last 6 hours — refill may find
-> something the queue does not have yet, and the leg dreams if it does not.
+> alive, stop — a leg is running. Otherwise run, in
+> `/home/gabriel/Github/embarch/embarch-doc`, exactly:
+> `scripts/queue-status.py --no-supervisor --count`. **Pass `--no-supervisor`
+> because you just established it** — workers are a supervisor's own subagents,
+> so with none alive every claim is stale (`tasks/README.md`) and a claimed task
+> counts as dispatchable-with-recovery. **Do not count `State:` lines yourself.**
+> If it prints above zero, spawn the next leg. If it prints zero, spawn a leg
+> **only if** no `robot_face` dream post appears in the 20 messages you just
+> read within the last 6 hours — refill may find something the queue does not
+> have yet, and the leg dreams if it does not.
 >
 > **Spawning a leg** means one background `embarch-supervisor` agent, working
 > directory `/home/gabriel/Github/embarch/embarch-doc`, told: run one leg per
@@ -147,8 +154,8 @@ Messages beginning `fleet` are commands:
 | `fleet start core,ui` | Same, with a scope filter recorded in the latch file and passed to every leg |
 | `fleet stop` | **Pump off.** Delete the latch, then `SendMessage` the live supervisor a graceful stop — finish landing what is in flight, fold `status.d/`, write its log entries, exit. Never "drop everything" |
 | `fleet go` | One leg, pump untouched. The manual kick, same as `/supervise` in a session |
-| `fleet status` | Pump on or off, which leg is running and how many units into it, workers in flight, dispatchable count, `scripts/usage-budget.py` numbers. Spawn an agent for it — you do not read the repo |
-| `fleet queue` | Open tasks by sub-project, and what is blocked or hardware-gated. Also an agent |
+| `fleet status` | Pump on or off, which leg is running and how many units into it, workers in flight, `scripts/queue-status.py` (dispatchable, recoverable claims and why, hardware-gated, and its `LOW QUEUE` line), `scripts/usage-budget.py` numbers. Spawn an agent for it — you do not read the repo |
+| `fleet queue` | Open tasks by sub-project, and what is blocked or hardware-gated — `scripts/queue-status.py` is the answer, not a hand count. Also an agent |
 | `fleet cancel <NNN>` | Return that task to `open`, quoting the reason in the task file. Also an agent |
 
 Questions about fleet state — what landed, why something blocked, what is waiting
