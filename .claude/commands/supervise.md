@@ -129,18 +129,28 @@ not an ending, and the entries you leave are the only thing that crosses it.
 
 ## The leg
 
-**Refill only when nothing is dispatchable.** Not at the top of every leg — the
-relay would sweep eight `open.md` files every twenty minutes for a queue that
-already has work. So: run `scripts/queue-status.py`, and do not hand-count
-`State:` lines. **Run it after step 0, never before** — recovery has already
+**Drain `inbox/` at the top of every leg, before you count anything.** It is a
+directory listing and a few file moves — not the expensive half of refill — and
+it is the only thing that ever files a drop. **It must not be gated on the
+count.** `queue-status.py` counts a drop as dispatchable, so gating the drain on
+a non-zero count means a lone drop holds the count up, suppresses its own drain,
+and sits in `inbox/` forever. That is exactly the state this queue was in on
+2026-09-03.
+
+**Then sweep the sources only when no dispatchable task remains.** Not at the top
+of every leg — the relay would sweep eight `open.md` files every twenty minutes
+for a queue that already has work. So: run `scripts/queue-status.py
+--tasks-only`, and do not hand-count `State:` lines. **`--tasks-only` is required
+here**: you have just drained `inbox/`, so a drop must not still count as "there
+is already work". **Run it after step 0, never before** — recovery has already
 reclaimed stale claims to `open` by then, which is exactly why you do *not* pass
 `--no-supervisor` here: you are the supervisor and you are alive, so a claim
 still standing after recovery is one to respect. Exit 0 means work exists — skip
-straight to selecting. Exit 1 means refill now. Relay its `LOW QUEUE` line if it
-prints one, even when you are not refilling; a thin queue is the owner's cue to
+straight to selecting. Exit 1 means sweep now. Relay its `LOW QUEUE` line if it
+prints one, even when you are not sweeping; a thin queue is the owner's cue to
 top it up, and he should hear it before it reaches zero:
 
-- **Drain `inbox/` first** (`inbox/README.md`). Each file there is a complete task
+- **The drain, in detail** (`inbox/README.md`). Each file there is a complete task
   written by another thread or by a worker, minus its number. For each: validate
   it parses, re-check its `Hardware:` claim yourself, assign the next free `NNN`
   for its scope, move it into `tasks/<scope>/`, and delete the drop. A file that

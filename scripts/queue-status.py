@@ -26,6 +26,13 @@ The timeout survives as the backstop for the one case the process tree cannot
 settle -- a supervisor alive but wedged -- as --stale-after, default 4 hours,
 matching `tasks/README.md`.
 
+**--tasks-only exists because an inbox drop can starve itself.** A drop counts as
+dispatchable, and refill is the only thing that drains `inbox/`. So a leg whose
+refill gate counts drops sees a non-zero count, skips refill, never drains, and
+the drop sits there permanently keeping the count non-zero. The leg passes
+--tasks-only and drains `inbox/` unconditionally before counting; the listener
+does not, because for it a drop is a real reason to spawn a leg.
+
 Exit status is the interface:
   0  there is work (dispatchable > 0)
   1  there is nothing dispatchable
@@ -34,6 +41,7 @@ Usage:
   scripts/queue-status.py                     human-readable breakdown
   scripts/queue-status.py --count             just the integer
   scripts/queue-status.py --no-supervisor     the listener's question
+  scripts/queue-status.py --tasks-only        a leg's refill gate (see below)
   scripts/queue-status.py --json
   scripts/queue-status.py --warn-below 3      louder about a thin queue
 """
@@ -154,6 +162,13 @@ def main() -> int:
     ap.add_argument("--warn-below", type=int, default=2, metavar="N",
                     help="print a LOW QUEUE line when dispatchable is under N "
                          "(default 2); 0 disables")
+    ap.add_argument("--tasks-only", action="store_true",
+                    help="exclude inbox/ drops from the count. A leg's refill "
+                         "gate must pass this: refill is the only thing that "
+                         "drains inbox/, so counting a drop as dispatchable "
+                         "keeps the count non-zero, suppresses refill, and the "
+                         "drop starves itself. The listener does NOT pass it -- "
+                         "a drop is a real reason to spawn a leg.")
     ap.add_argument("--count", action="store_true",
                     help="print only the dispatchable integer")
     ap.add_argument("--json", action="store_true", dest="as_json")
@@ -162,7 +177,7 @@ def main() -> int:
 
     now = dt.datetime.now()
     tasks = [parse(p) for p in task_files(os.path.join(args.root, TASKS))]
-    drops = inbox_drops(os.path.join(args.root, INBOX))
+    drops = [] if args.tasks_only else inbox_drops(os.path.join(args.root, INBOX))
     b = classify(tasks, args.no_supervisor, args.stale_after, now)
 
     dispatchable = len(b["open"]) + len(b["recoverable"]) + len(drops)
