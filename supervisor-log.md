@@ -16,19 +16,23 @@ matching what `scripts/build_changelog.py` already does for a history file.
 
 ## Entry shape
 
+The example below uses placeholders on purpose. It once used a real-looking date
+and real-looking SHAs, and phase 0 — which reads the newest entry as its handoff
+— picked the *template* up as a batch that had run, complete with a hardware debt
+that never existed. Second instance of the same root cause as batch 001's
+recovery greps: documentation shaped exactly like the data it documents.
+
 ```markdown
-## 2026-09-02 — batch 001
+## <yyyy-mm-dd> — batch <NNN>
 
 **Decided:** anything the supervisor approved on the owner's behalf, suite-wide
 first. If it decided nothing, say "nothing" — an empty line here is ambiguous.
-**Merged:** `agent/core/007-sse-drain` (core `a1b2c3d`, doc `e4f5a6b`),
-`agent/ui/012-trace-legend` (ui `9c8d7e6`, doc `1f2e3d4`). Always both SHAs —
+**Merged:** `agent/<scope>/<task>` (code `<sha>`, doc `<sha>`). Always both SHAs —
 under `embarch-dev-workflow.md` §6 there is no merge commit and no surviving
 branch name, so the SHA is the only handle a revert has.
-**Blocked:** `agent/api/004-…` — clippy red on a pre-existing warning, task
-reopened.
-**Hardware debts:** core 007 needs a real study to confirm the SSE drain.
-**Budget:** started 5h 31% / 7d 44%, ended 5h 58% / 7d 49%; wave was 4.
+**Blocked:** `agent/<scope>/<task>` — why, and what state the task was left in.
+**Hardware debts:** what needs a board, and what board.
+**Budget:** verdict at start and end, and the wave size it produced.
 **Least sure about:** one sentence. Not optional.
 ```
 

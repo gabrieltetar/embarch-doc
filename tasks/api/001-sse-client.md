@@ -1,6 +1,6 @@
 # 001 — Consume Core's `/study/{id}/events` SSE stream from embarch-api
 
-**State:** open
+**State:** claimed by agent/api/001-sse-client, 2026-09-02 22:34
 **Source:** [embarch-core/open.md](../../embarch-core/open.md) — "`embarch-api` consumption of `GET /study/{id}/events` (decision 24). The SSE endpoint has no CLI or MCP consumer."
 **Scope:** api
 **Hardware:** verify-only

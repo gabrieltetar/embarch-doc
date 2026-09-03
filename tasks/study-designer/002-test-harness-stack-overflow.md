@@ -1,6 +1,6 @@
 # 002 — The crate's own test suite cannot run at default stack size
 
-**State:** open
+**State:** claimed by agent/study-designer/002-test-harness-stack-overflow, 2026-09-02 22:34
 **Source:** surfaced by task 001's worker, 2026-09-03, and independently reproduced on `main` at `2a136be`.
 **Scope:** study-designer
 **Hardware:** none
