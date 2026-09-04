@@ -46,7 +46,7 @@ is in place.
 - [ ] `spec.md`'s truncation paragraph and the `capture cap` row in its table
       match what the code now does. The row is marked `[assumed]` today; if your
       change makes it measured, say so.
-- [ ] Gate green (`embarch-parallel-agents.md` §10).
+- [ ] Gate green (`embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/` fragment dropped.
 
 ## Not in scope

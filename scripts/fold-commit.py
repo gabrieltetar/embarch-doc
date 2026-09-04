@@ -6,7 +6,7 @@ copy and re-run the installer. A shim rather than a copy because there must be
 exactly one implementation: two that a checker holds equal is still two.
 """
 import os, sys
-TARGET = '/home/gabriel/Github/embarch/embarch-fleet/scripts/usage-budget.py'
+TARGET = '/home/gabriel/Github/embarch/embarch-fleet/scripts/fold-commit.py'
 if not os.path.exists(TARGET):
     sys.exit(f"fleet framework missing: {TARGET}\n"
              "Clone embarch-fleet beside this repo and re-run its scripts/install.py.")

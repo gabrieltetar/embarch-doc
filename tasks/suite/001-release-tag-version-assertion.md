@@ -1,7 +1,7 @@
 # 001 — No repo in the suite asserts `Cargo.toml` version against its pushed tag, though a decision says every one does
 
 **State:** open — **window closed, cleared to run, not started.**
-`embarch-parallel-agents-ops.md` §4. Announced in `#embarch-fleet`
+`embarch-fleet/ops.md` §4. Announced in `#embarch-fleet`
 (`C0BUKTL2FPC`) at ts `1788460873.097499`, 2026-09-03 12:41 MDT, by the leg that
 filed it. **Leg 006 completed that window** at 13:11 MDT: read the thread, zero
 replies, 30 minutes elapsed. So the announcement obligation is discharged — **do

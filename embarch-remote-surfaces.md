@@ -1,6 +1,6 @@
 # EmbArch: the four remote surfaces
 
-**Status:** active, 2026-09-03. Which things reach this suite from outside the terminal, how they fail differently, and which one is actually a remote control. Split out of [embarch-parallel-agents-ops.md](embarch-parallel-agents-ops.md) §6 on 2026-09-03 when that doc reached its size cap ([DOC-COMPACTION.md](DOC-COMPACTION.md) §3). Section references below are that doc's unless named otherwise.
+**Status:** active, 2026-09-03. Which things reach this suite from outside the terminal, how they fail differently, and which one is actually a remote control. Split out of [running the fleet](../embarch-fleet/ops.md) §6 on 2026-09-03 when that doc reached its size cap ([DOC-COMPACTION.md](DOC-COMPACTION.md) §3). Section references below are that doc's unless named otherwise.
 
 Four things reach this suite from outside the terminal. They are easy to confuse, they fail differently, and only one is actually a remote control.
 

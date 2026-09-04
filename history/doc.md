@@ -4,6 +4,13 @@
 
 ## 2026-09
 
+### Changed
+- The fleet's standing rules, log and scripts move to the embarch-fleet repo; `.claude/` and the protocol READMEs here are now generated from it.
+
+### Fixed
+- A leg no longer emits shell no permission rule can match (`for` loops, heredoc writes); a `PermissionRequest` hook alerts Slack if one blocks anyway.
+## 2026-09
+
 ### Added
 - Blocking conditions alert via `scripts/fleet-alert.py` and a Slack webhook: a fleet `@` notifies nobody, since the connector posts as the owner.
 ## 2026-09
@@ -21,8 +28,8 @@
 ## 2026-09
 
 ### Changed
-- The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-parallel-agents.md](../embarch-parallel-agents.md) §6.
-- The fleet's risk register moved out of embarch-parallel-agents.md §12 into [embarch-fleet-risks.md](../embarch-fleet-risks.md), which hit its size cap.
+- The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-fleet/protocol.md](../../embarch-fleet/protocol.md) §6.
+- The fleet's risk register moved out of embarch-fleet/protocol.md §12 into [embarch-fleet/risks.md](../../embarch-fleet/risks.md), which hit its size cap.
 - The four-surfaces comparison and the cloud-session rules moved out of the ops doc into [embarch-remote-surfaces.md](../embarch-remote-surfaces.md).
 
 ### Fixed
@@ -60,7 +67,7 @@
 ### Added
 - A decisions entry may own several numbers (`### 20, 21, 25, 27 — …`) so merging entries under a byte budget keeps all 2,354 prose `decision N` references resolvable.
 - A suite-scope task is announced by Slack DM and parked, not blocked; the owner can cancel it until the batch ends.
-- Background agent threads: one supervisor, 4-6 workers, one repo each, on branches. See embarch-parallel-agents.md.
+- Background agent threads: one supervisor, 4-6 workers, one repo each, on branches. See embarch-fleet/protocol.md.
 - Closing VS Code is the fleet kill switch by design; a killed batch is recovered by phase 0, not prevented.
 - Four outside surfaces distinguished: Remote Control steers, the fleet channel logs, cloud sessions investigate, channels are blocked.
 - Recorded the git add -A race: workers are safe in worktrees, the supervisor folding in the main checkout is not.

@@ -8,7 +8,7 @@ each other.
 **Nothing here is in git** (`.gitignore`, except this README). That is the point:
 a thread drops a file and is done — no commit, no push, no rebase, and no chance
 of sweeping someone else's in-progress edits into a commit, which is the
-collision [embarch-parallel-agents.md](../embarch-parallel-agents.md) §12
+collision [the protocol](../../embarch-fleet/protocol.md) §12
 records happening twice on 2026-09-02. One file per request rather than one
 shared file, for the same reason `changelog.d/` is shaped that way: two threads
 appending to one file conflict on the same lines.
@@ -38,7 +38,7 @@ next free number for its scope, moves it into `tasks/<scope>/`, commits that, an
 deletes the drop. **It announces what it picked up in `#embarch-fleet` before
 dispatching** — naming the file and what it will do — so there is a window to say
 stop, the same one suite-scope work gets
-([ops](../embarch-parallel-agents-ops.md) §4).
+([ops](../../embarch-fleet/ops.md) §4).
 
 A file that does not parse is **left here, not deleted**, and named in the digest.
 Silently dropping someone's request is worse than carrying a broken one.

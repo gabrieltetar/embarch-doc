@@ -4,7 +4,7 @@ argument-hint: "[start | stop | status]"
 ---
 
 Slack control plane for the agent fleet. Full design:
-`embarch-parallel-agents-ops.md` §5. Channel: **#embarch-fleet**, id
+`/home/gabriel/Github/embarch/embarch-fleet/ops.md` §5. Channel: **#embarch-fleet**, id
 `C0BUKTL2FPC`, private, one member. Owner: `U0AGQGSHM2P`.
 
 Argument: `$ARGUMENTS` — `start` (default) arms the listener in this window,
@@ -85,7 +85,7 @@ Three steps, in this order.
 >
 > **Spawning a leg** means one background `embarch-supervisor` agent, working
 > directory `/home/gabriel/Github/embarch/embarch-doc`, told: run one leg per
-> `.claude/commands/supervise.md`, read the newest `supervisor-log.md` entry as
+> `.claude/commands/supervise.md`, read the newest `/home/gabriel/Github/embarch/embarch-fleet/supervisor-log.md` entry as
 > your handoff.
 >
 > **One spawn attempt per tick, then end the turn.** If the spawn fails for any
@@ -114,7 +114,7 @@ Three words, and keeping them apart is most of understanding this.
   — or sooner on a stop, a budget HOLD, or a drained queue. Then it dies.
 - The **pump** is the latch. While `embarch/.fleet/pump` exists, a leg's death
   wakes this window and the next leg is spawned with the previous one's
-  `supervisor-log.md` entry as its handoff. That chain is the **relay**, and it
+  `/home/gabriel/Github/embarch/embarch-fleet/supervisor-log.md` entry as its handoff. That chain is the **relay**, and it
   is why a leg may be short-lived without the fleet being.
 
 **The relay exists because only the owner can `/clear`, and `/clear` does not

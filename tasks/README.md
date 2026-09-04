@@ -2,7 +2,7 @@
 
 The work queue background agents pull from. One file per task, committed to
 `main`, claimed by editing the file. Governed by
-[../embarch-parallel-agents.md](../embarch-parallel-agents.md).
+[the protocol](../../embarch-fleet/protocol.md).
 
     tasks/<sub-project>/<NNN>-<slug>.md
 
@@ -10,7 +10,7 @@ The work queue background agents pull from. One file per task, committed to
   `study-designer`, `outpost`, `ui`, `topology`, `umbrella`, `promptu`,
   `atlas`), or `doc` for this repo, or `suite` for a task spanning several.
   A `suite/` task is **never dispatched to a worker** — the supervisor executes
-  it itself (`embarch-parallel-agents.md` §8).
+  it itself (`../../embarch-fleet/protocol.md` §8).
 - **NNN** — three digits, monotonic per sub-project, never reused.
 - **slug** — short, hyphenated.
 
@@ -36,7 +36,7 @@ task the supervisor invented; that is allowed, and it says so here.
 ## Done when
 
 - [ ] Concrete, checkable items.
-- [ ] Gate green (`embarch-parallel-agents.md` §10).
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
 ```
@@ -58,7 +58,7 @@ task the supervisor invented; that is allowed, and it says so here.
   — and closing VS Code is the owner's kill switch, so this is routine — takes
   its workers with it.
 
-  Recovery (`embarch-parallel-agents.md` §6 phase 0) therefore reclaims every
+  Recovery (`../../embarch-fleet/protocol.md` §6 phase 0) therefore reclaims every
   claim at startup, checking each branch first: no commits means back to `open`;
   commits mean `blocked` with the branch named, so a second worker does not redo
   salvageable work. The timestamp remains as the backstop for the one case the
@@ -89,4 +89,4 @@ Two supervisor runs cannot dispatch the same task; a task outlives the thread
 working it; and the reason a task exists is written next to it rather than
 re-derived from the roadmap each batch. The cost is that the queue is a *view*
 of the docs and can drift from them — refill reconciles, in one direction only
-(`embarch-parallel-agents.md` §12).
+(`../../embarch-fleet/protocol.md` §12).
