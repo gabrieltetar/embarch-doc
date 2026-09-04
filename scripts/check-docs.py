@@ -43,7 +43,8 @@ CHECKS = (
     ("check-doc-conventions.py", []),
     ("check-doc-size.py", []),
     ("build_changelog.py", ["--check"]),
-    (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"), ["--check"]),
+    (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"),
+     ["--check", "--repo", os.path.dirname(HERE)]),
 )
 
 

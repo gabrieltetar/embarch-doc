@@ -106,6 +106,10 @@ def main() -> int:
     ap.add_argument("--adopt", action="store_true",
                     help="pin files that are newly over cap (bootstrap only; --update refuses to)")
     ap.add_argument("--report", action="store_true", help="print the whole corpus")
+    ap.add_argument("--pressure", action="store_true",
+                    help="list files within --pressure-pct of their effective limit")
+    ap.add_argument("--pressure-pct", type=float, default=95.0,
+                    help="what counts as pressure (default 95%% of min(cap, baseline))")
     args = ap.parse_args()
 
     base = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
@@ -128,6 +132,41 @@ def main() -> int:
             limit = cap
         if size > limit:
             fails.append((rel, role, size, limit, cap))
+
+    if args.pressure:
+        # A cap is a hard wall a worker meets only when it tries to write, so a
+        # task that cannot be done without exceeding one is a compaction task
+        # wearing a feature task's clothes -- and the supervisor finds that out
+        # when the worker reports, not when it dispatches. This makes the wall
+        # visible one step earlier.
+        #
+        # It reports rather than files: DOC-COMPACTION.md §8 warns against
+        # compacting a subsystem still in flux, and nothing here can tell. The
+        # caller decides.
+        near = []
+        for rel, size in docs():
+            role, cap = role_and_cap(rel)
+            if cap is None:
+                continue
+            limit = min(cap, base[rel]) if rel in base else cap
+            pct = 100.0 * size / limit
+            if pct >= args.pressure_pct:
+                near.append((pct, rel, role, size, limit))
+        near.sort(reverse=True)
+        if not near:
+            print(f"no file is within {100 - args.pressure_pct:g}% of its limit.")
+            return 0
+        print(f"{len(near)} file(s) at or above {args.pressure_pct:g}% of "
+              f"min(cap, baseline):\n")
+        for pct, rel, role, size, limit in near:
+            print(f"  {pct:5.1f}%  {rel}  ({role}) {size}/{limit} B, "
+                  f"{limit - size} B left")
+        print("\nA task that must write one of these cannot be done without a\n"
+              "compaction pass first (DOC-COMPACTION.md §10). Say so in the task\n"
+              "file before dispatching it, and record §7's human question in the\n"
+              "log -- 'can spec.md alone answer what someone needs to work on this\n"
+              "component today' is not a thing a script can answer.")
+        return 1
 
     if args.update or args.adopt:
         raised, adopted_refused = [], []
