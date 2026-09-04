@@ -32,7 +32,7 @@ what you would revert a landed commit for.**
 - The unit: `<scope>/<NNN>`, and the merge SHAs, one per repo.
 - The diff, or the SHAs to read it from.
 - That sub-project's `decisions.md` (or `decisions/<topic>.md` files) and
-  `../../../embarch-fleet/../embarch-doc/embarch-decision-reversals.md`.
+  `/home/gabriel/Github/embarch/embarch-doc/embarch-decision-reversals.md`.
 
 ## How to read
 
