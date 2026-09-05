@@ -66,9 +66,12 @@ Each sub-project's own `CLAUDE.md` carries a short pointer plus the suite's git 
 
 ```markdown
 ## Docs
-Spec: ../embarch-doc/embarch-core/spec.md — what is true now. Decisions: decisions.md.
-Update proactively per ../embarch-doc/DOC-PROTOCOL.md whenever a notable design
-decision, feature, or status change happens here.
+**Four files, not one.** Current truth: ../embarch-doc/<sub-project>/spec.md. Why it is
+that way: decisions.md — an index over decisions/, and a decision number addresses this
+sub-project, not a file. Unresolved: open.md. [Reference: interfaces.md, where there is one.]
+Update them proactively per ../embarch-doc/DOC-PROTOCOL.md whenever a notable design
+decision, feature, or status change happens here — §4 says when, §5 says how, and
+history goes in a changelog.d/ fragment rather than into a doc.
 
 ## Git
 Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides the
@@ -77,3 +80,5 @@ ends when the repo owner explicitly says so. See ../embarch-doc/embarch-dev-work
 ```
 
 This is what makes §4–5 happen without re-explaining it: `CLAUDE.md` loads every session and points here. **A new repo needs both sections, and it is worth checking an existing one has them** — one sub-project ran for five days with no `CLAUDE.md` at all, so nothing there pointed at its own design doc, and nothing here had ever checked.
+
+**And having them is not enough: on 2026-09-05 all eight pointed at `design.md`, a file the four-file split deleted a week earlier**, two of them at a milestone doc deleted with it. So every agent session in every sub-project repo opened on a dead pointer to its own design doc, and the §6 hook that exists to make §4–5 automatic had been silently disconnected the whole time. **`check-links.py` cannot see this** — it runs inside this repo and a sub-project's `CLAUDE.md` lives in that sub-project's repo, which is exactly why it went a week unnoticed. Nothing mechanical guards it, so **changing the shape of a sub-project's docs means sweeping the eight `CLAUDE.md` files in the same pass.**
