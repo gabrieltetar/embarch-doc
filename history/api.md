@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- A truncated build log now keeps its first 16 KB as well as its last 48 KB, so an early error is not scrolled off; total still capped at 64 KB (decision 18).
+## 2026-09
+
+### Changed
 - Four api docs off their caps: study tools split to interfaces/studies.md, three decision groups cut to their hot half.
 ## 2026-09
 
