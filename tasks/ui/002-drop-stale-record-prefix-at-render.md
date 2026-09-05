@@ -1,6 +1,6 @@
 # 002 — A capture still opens with stale records; drop the discontinuous prefix at render time
 
-**State:** claimed by agent/ui/002-drop-stale-record-prefix-at-render, 2026-09-05 00:32
+**State:** open
 
 **Doc-size reserve at dispatch (supervisor, leg 009):** **no `embarch-ui` file is in
 reserve** — the five files in reserve suite-wide are all `api` and `umbrella`, and all
