@@ -44,7 +44,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `snippets = ["none"]` — the reserved literal forcing zero snippets over a configured `default_snippets` | Shipped — documented as truth since it was decided, **built 2026-09-04**; a mixed list, or an app really declaring a `none` snippet, is refused naming the ambiguity | unit | 21 |
 | CLI subcommands for every tool (kebab-case, unlike the snake_case tools) — **a superset, not a mirror**: `versions` has no MCP twin | Shipped | hw | §5a |
 | `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped; `doctor` check 11 reads it as of 2026-09-04 | unit | 52 |
-| `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
+| `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped — seals filled and capacity refused host-side before the HTTP call, the refusal naming field and limit | hw | §5 |
 | `study-status --follow` / `study_watch` — live study events over SSE, `lagged` reported not raised, polling fallback | Shipped, never against a real Core | unit | 48, 49 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
