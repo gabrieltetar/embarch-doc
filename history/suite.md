@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- suite/features.md is assembled from features.d/ row fragments, and a worker now writes its own inventory row.
+## 2026-09
+
 ### Added
 - Every release workflow now fails before building when `Cargo.toml`'s version disagrees with the pushed tag ([decisions 27, 29](../embarch-umbrella/decisions/release.md)).
 ## 2026-09
