@@ -16,7 +16,14 @@ scope really is `api` — every file below is `embarch-api`'s. Reported to
 `inbox/` as `doc-compaction-debt-path-conflicts-with-ownership.md`; if the
 resolution is to widen `check-ownership.py`, move this file.
 
-**Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md
+**Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md, embarch-api/open.md
+
+**`open.md` added by the supervisor, leg 009**, in the commit that spent its reserve
+(4371 → 4981 B, 97.3%). What spent it: a bullet recording the two loose ends the
+`api/009` reviewer found — the `none`-collision error's unfollowable advice, and the
+asymmetric load-time refusal. I wrote it long and it cost more than I estimated;
+**a compaction pass may shorten it freely, but must not drop either fact**, because
+each is a live inconsistency in shipped behaviour with nothing else recording it.
 **In flux:** yes — unparked when `tasks/api/010-static-project-target-menu.md` closes
 **Must not delete:** decision 21's *first* paragraph as written, which asserts the
 `"none"` literal "cannot collide with a real snippet name" — it is wrong, the
