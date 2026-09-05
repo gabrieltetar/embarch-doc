@@ -1,13 +1,10 @@
-# embarch-api decisions: Build orchestration and target discovery
+# embarch-api decisions: Target discovery and selection
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
-A generic build command, and the one scoped exception where this crate had to learn Zephyr.
+The one scoped exception where this crate had to learn Zephyr: what a call may name, what that resolves to against the repo as it stands, and what is refused rather than ignored.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
-
-### 5 — A generic configurable command per project, not toolchain-specific logic
-Originally motivated by an assumption that the two day-one projects used different toolchains. On inspection **both turned out to be Zephyr/west-based** — one reads as an Arduino board by name and its own `board.yml` confirms otherwise, confirmed by reading the real repo rather than assuming from the name. The generic design is kept regardless: it is the right call on its own merits, even though the two-toolchain premise did not hold.
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). How a build then runs and what it produces: [build.md](build.md).
 
 ### 12 — Live target discovery for Zephyr projects; every other build system keeps the static schema
 A Zephyr board's buildable surface is a property of the **current** state of `boards/*/board.yml` and `app/*/`, not something safe to snapshot into config once — and not every combination `board.yml` *declares* is real. So a `zephyr-west` project stores only what cannot be derived from the repo, and board, variant, revision, app, chip, build directory and artifact path all resolve live per call, **never cached**: caching would reintroduce the exact staleness this exists to eliminate.
@@ -18,19 +15,6 @@ Shapes, semantics and the narrowing rules: [../interfaces/config.md](../interfac
 
 ### 13 — `soc_chip_overrides`, an escape hatch for a SoC Core cannot map
 Decision 12 removed the stored chip field entirely for a Zephyr project, and Core's resolver returns a 404 naming the unmapped SoC — but there was **nowhere to write the answer** once `chip-list` found the right string. Consulted *before* the HTTP call, so a hit short-circuits it entirely: no reason to ask Core about a SoC the operator already resolved by hand. Keeps Core's table as the source of truth for the common case while giving the uncommon one a real fix instead of a dead end.
-
-### 18 — A truncated build log keeps the head *and* the tail
-For a Zephyr build the **first** compiler error is usually the actionable one and everything after it is cascade, so an early failure followed by `cmake` and `ninja` grinding on can scroll the only useful line out of a tail-only cap entirely. What that produces — the split, the marker and the byte counts — is [spec.md](../spec.md) §3, with the number itself in §7.
-
-**Written at the start and built 2026-09-04**, three months after `truncate_tail` shipped keeping the tail only — the gap [open.md](../open.md) carried as "an intent nobody built". It is built rather than retired, unlike decision 16, because nothing here was blocked on another repo: the whole cost is a second boundary walk. **Two calls this entry did not originally make:**
-
-- **The cap bounds the retained bytes, not each half.** The marker sits on top of it exactly as the old one did, so this buys a head without doubling a response an MCP client has to carry. *Rejected: a cap per half* — one constant meaning two different things depending on whether a log overflowed.
-- **The split is 1:3, and it is `[assumed]`** ([spec.md](../spec.md) §7). Nothing here has measured a real Zephyr failure's log; 16 KB is reasoned as far more than one diagnostic plus the Kconfig/`cmake` preamble it follows, while the tail keeps the failing recipe and the final summary a reader reaches for first. The **provenance is the load-bearing part**: if a real over-cap failure ever shows the first error past 16 KB, the number moves and this entry is where it says so.
-
-**Both cuts must land on a UTF-8 boundary now, not one.** Slicing a `str` inside a codepoint panics, so a boundary walk is what stops a build log from taking the MCP server down rather than returning a truncated one — the head rounds **down** and the tail rounds **up**, which also makes "within the cap" hold by construction, since an adjustment can only ever drop bytes. The two constants are congruent differently (16384 ≡ 1 and 49152 ≡ 0, mod 3), so **a fixture of pure 3-byte characters exercises the head cut and not the tail one** — `tests/build_capture.rs` appends one ASCII byte specifically to shift the tail offset off a boundary. A both-ends test that does not actually straddle a character at both ends proves half of what it claims.
-
-### 19 — A readable build-dir prefix, and a `target.json` beside the output
-`extra_args` folds into the directory name via a hash, since an arbitrary flag can contain directory-unsafe characters — but **a bare hash makes a directory listing undebuggable to a human staring at it**. Two additions without touching the hash: every other axis spelled out ahead of it, and a `target.json` recording the full resolved selection, so `cat target.json` recovers exactly what produced that directory.
 
 ### 20 — `default_target`, and the narrowing caveat stated rather than left implicit
 Decision 12's narrowing means **a call that works today can start erroring the moment a second board lands in the repo** — behaviour changing silently as the repo grows, with nothing warning a reader. Stated here explicitly, and given a fix: a per-project base selection applied before a call's own params narrow further, so a repo's common case stays stable after a second target appears.
@@ -51,13 +35,6 @@ There was no third state between "use the default" and "use this explicit list".
 
 ### 22 — The uncached scan's cost bound is written down
 Decision 12 never caches, reasoned as "already cheap enough", and **no bound was ever stated for what that assumes**. Stated: single-digit boards, low tens of variant/revision/app combinations, low hundreds of files, comfortably sub-100 ms on ordinary local storage. A repo an order of magnitude larger has not been measured — if the scan ever becomes perceptibly slow, *that* is the signal to revisit caching, not a reason to add it pre-emptively.
-
-### 42 — `base_address` is a per-project config field, not a per-call parameter
-A `bin` artifact carries no address, so flashing one needs an offset, and this crate had no way to supply it. **The consequence was concrete rather than theoretical:** a validation flashed via a hand-written call straight to Core, bypassing this crate entirely for that step, because there was no config-driven path through it.
-
-It wins the same argument `flash_format` already won: the offset is a fact about how the project builds, not something varying call to call, so **an agent should never have to know a hex number to flash a board**. *Rejected: a per-call parameter, and a config-default-with-override.* The override shape has a real precedent here — `--firmware-path` overrides the configured artifact — but that flag exists to flash *something other than what the project builds*, which is a genuinely per-call intent. An offset is not.
-
-Opaque pass-through, like chip and format: this crate does not validate it against the target's memory map. Two shape details that were not free choices: the field is a **TOML integer** using TOML's own hex literal while Core takes a hex-or-decimal *string*, so the round trip lands a config-driven flash on byte-identical wire form to a dev-bench flash; and **a `bin` project that omits it is not a config-load failure**, despite being wrong in practice, because enforcing it is one step from validating the offset itself.
 
 ### 51 — A static project rejects a selection it cannot honour, rather than ignoring it
 `resolve` branches on `discovery`, and the `static` arm took the `ProjectConfig` alone: **every one of `board`, `variant`, `revision`, `app`, `snippets` and `extra_args` was accepted and dropped**, and the build reported success. Decision 44c recorded the observed cost for `snippets` — a build with two of them returned success having produced an image whose config said the option was unset — and left the fork open. **Verified before widening the fix**: nothing upstream honoured the other five either, since both front-ends do nothing with these params but hand them to `resolve` (`TargetSelection::selection`, `TargetParams::selection`, `FlashParams::selection`, `RunStudyParams::selection`), so all six were the same defect and all six are now refused together.

@@ -5,6 +5,16 @@
 **Scope:** api
 **Hardware:** none
 
+**Compacts:** embarch-api/interfaces/config.md
+**In flux:** yes — by this task, which is the point: `tasks/api/012-compact-api.md` is `blocked` on exactly
+that, and a blocked compaction task parks the pass, not the reserve (`DOC-COMPACTION.md`
+§2). You are the unit that rewrites that file's build-directory paragraph, so **compact it as part of this
+commit**, honour `tasks/api/012-compact-api.md`'s `Must not delete:` list, and close only its item there.
+**Headroom: 873 B of 12,288** — enough to write the answer, not enough to write it
+cleanly and leave the file usable. `Must not delete:` here, carried from 012: decision 21's
+*first* paragraph as written, decision 18's `[assumed]` 1:3 split, and decision 22's cost
+bound — all three are provenance that reads as measurement once shortened.
+
 ## What
 
 `embarch-api` decision 19 says "**a `target.json` recording the full resolved

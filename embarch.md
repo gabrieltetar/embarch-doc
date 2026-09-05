@@ -28,6 +28,7 @@ Each has four capped docs: `spec.md` for what is true now, `decisions.md` for wh
 | [`embarch-umbrella`](embarch-umbrella/spec.md) | **The one binary a new engineer downloads**: sets up the suite on whatever topology their machine is, integrates a firmware repo, verifies the chain, and starts Core when it is not already a service. **Deliberately not a supervisor and not in the runtime path** | Shipped |
 | [`embarch-promptu`](embarch-promptu/design.md) | Curated library of firmware-specific agent skills, subagents and prompt patterns | Planned, no repo |
 | [`embarch-atlas`](embarch-atlas/design.md) | Static analysis and graph visualization of a firmware codebase, for agents and engineers | Paused, no repo |
+| [`embarch-fleet`](embarch-fleet/spec.md) | **The machine that runs this suite's own work in parallel** — a supervisor keeps four to six short-lived workers in flight, one repo each, runs the gate and lands them itself. Its rules live in [their own repo](../embarch-fleet/README.md) and a leg never checks it out, because a supervisor that can edit its own constraints has none | Shipped, ten legs run |
 | `embarch-doc` | This repo — the design record, the inventory, the roadmap, the guides | Ongoing |
 
 ## 4. Architecture sketch
@@ -101,6 +102,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-zephyr.md](embarch-zephyr.md) | Relationship to Zephyr: board-qualifier grammar, revisions, snippets, sysbuild |
 | [embarch-dev-workflow.md](embarch-dev-workflow.md) | Iterating locally without touching a real install; **§4a is the reverse trip** — how a Core change reaches the live Windows service |
 | [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) | **Inbound half accepted and built**; the outbound half — an authored step that writes to a DUT and confirms the reply — is **still a proposal** |
+| [embarch-fleet/spec.md](embarch-fleet/spec.md) | **Start here for the fleet** — what it is, the three windows, what lives in which repo, and what it deliberately does not do |
 | [the protocol](../embarch-fleet/protocol.md) | How background agent threads work in parallel across the suite without colliding: the listener, the leg, the relay |
 | [running the fleet](../embarch-fleet/ops.md) | Running the fleet: arming the listener, latching the pump, sizing a leg, watching it from a phone, stopping it |
 | [the risks](../embarch-fleet/risks.md) | The fleet's risk register — what each design choice traded away, and what its failure looks like |

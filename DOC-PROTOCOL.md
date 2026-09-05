@@ -17,6 +17,8 @@ embarch/
 ├── embarch-study-designer/ embarch-outpost/      (implemented)
 ├── embarch-dev-bench/      embarch-promptu/      (planned, no repo)
 ├── embarch-umbrella/       embarch-atlas/        (paused, no repo)
+├── embarch-fleet/          the agent fleet's own repo: its rules, scripts and
+│                           agent definitions. A leg never checks it out
 └── embarch-doc/
     ├── DOC-PROTOCOL.md      this file
     ├── DOC-COMPACTION.md    sizes, file split, how a doc shrinks
@@ -31,7 +33,7 @@ embarch/
     └── scripts/             the CI checks, plus the fleet's own tools
 ```
 
-Suite-level docs are mid-migration into `suite/`; several still sit at the root. [embarch.md](embarch.md) §6 is the authoritative index either way.
+Suite-level docs are mid-migration into `suite/`; several still sit at the root. **`embarch-fleet/` is the one sub-project directory that is a single file**, and deliberately: its `decisions.md`, `open.md` and reference all exist in the framework repo itself, and a second copy here would be a second source of truth about the rules an agent is running under. Creating the directory at all also created a `fleet` *worker scope*, which `check-ownership.py` refuses outright and `fleet.toml` reserves — a doc-layout convention had quietly opened a door back into the fleet's own rules. [embarch.md](embarch.md) §6 is the authoritative index either way.
 
 ## 3. Where a doc lives
 

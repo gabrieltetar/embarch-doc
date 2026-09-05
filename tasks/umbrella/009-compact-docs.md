@@ -31,6 +31,14 @@ means writing a clean statement of five things about to become false.
 **Unparks when the umbrella queue is down to one open task**, whichever it is.
 Not on a timer, and not on "enough of them landed".
 
+**And meanwhile the reserve is not parked with it, 2026-09-05.** `spec.md` has 151 B and
+`open.md` has 69 B; neither can be split, because 10 KB and 5 KB are role caps on single
+files. So `tasks/umbrella/006` and `tasks/umbrella/007` each now carry the compaction of
+both files as part of their own unit, under this task's `Must not delete:` list
+(`DOC-COMPACTION.md` §2). Expect the counts above to have moved by the time this runs —
+**refresh them before trusting them**, and expect the files to be out of reserve already,
+in which case what is left here is the `spec.md`-alone question, not a byte target.
+
 ## Done when
 
 - [ ] Both files out of reserve.

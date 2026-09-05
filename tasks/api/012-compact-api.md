@@ -1,11 +1,11 @@
-# 012 — Compact `embarch-api`'s spec, two decision groups and the config interface
+# 012 — Compact `embarch-api`'s spec and its studies decisions
 
-**State:** blocked — **re-blocked by the supervisor, 2026-09-05 13:10.** `agent/api/011`
-moved this to `open` and was right on everything it could see: `tasks/api/010` had
-landed, which is what it was parked behind. **It could not see that three `api` tasks
-were filed from `inbox/` twenty minutes earlier in the same leg**, and two of them
-rewrite files this task compacts. `In flux:` is **yes** again, and what unparks it is
-named below.
+**State:** open — **unparked by the owner, 2026-09-05, by narrowing it rather than by
+overriding `In flux:`.** Two of the four files left this task: `decisions/zephyr.md` was
+**split by mission** and is out of reserve, and `interfaces/config.md`'s compaction now
+rides in `tasks/api/013`, which is the unit that rewrites it (`DOC-COMPACTION.md` §2).
+What is left — `spec.md` and `decisions/studies.md` — is settled, so `In flux:` is **no**
+and this is dispatchable.
 **Source:** `scripts/check-doc-size.py` — `embarch-api` files entering reserve, on tasks 009 and 011
 **Scope:** api
 **Hardware:** none
@@ -17,7 +17,7 @@ refuses `tasks/doc/**`, reported it, and `tasks/doc/004` settled it on 2026-09-0
 in this file's favour: a compaction debt goes in the scope directory of the doc
 being compacted. `tasks/README.md` and `check-doc-size.py`'s message say so.
 
-**Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md, embarch-api/decisions/studies.md
+**Compacts:** embarch-api/spec.md, embarch-api/decisions/studies.md
 
 **`open.md`'s item is closed, 2026-09-05** — `api/011` answered and removed decision
 27's capacity bullet and the file fell to 89.2%, out of reserve. The two loose ends
@@ -25,30 +25,36 @@ leg 009 recorded there (the `none`-collision error's unfollowable advice, and th
 asymmetric load-time refusal) are **still in the file and still live inconsistencies
 in shipped behaviour**; a later pass may shorten them freely but must not drop either.
 
+**`decisions/zephyr.md` is paid, and not by compacting it.** The owner split it by
+mission on 2026-09-05: decisions 5, 18, 19 and 42 moved verbatim to
+**`decisions/build.md`** ("Running a build"), leaving 12, 13, 20, 21, 22 and 51 in
+`zephyr.md` ("Target discovery and selection"). 12,192 B became 5,234 + 7,499. A split
+moves entries without restating them, so `In flux: yes` never applied to it — which is
+why this was the move rather than an override. `decisions.md`'s index carries both rows,
+and its two stale `Size` cells were corrected in the same pass.
+
 **`decisions/studies.md` added by `agent/api/011`**, which spent 609 B of its reserve
 (10,640 → 11,249 B, 91.5%) recording that decision 27 shipped: the message's shape,
 the `serde` string it replaces, and why the check is diagnostic-only rather than a
 second gate. That file specifically is settled — decision 27's both halves are built and
 30/39/40/44 have no open task against them.
 
-**In flux:** **yes**, for the other three files, and this is the supervisor's correction
-to `agent/api/011`'s `no`. Three `api` tasks were drained from `inbox/` on 2026-09-05
-and two of them rewrite exactly what this task would compact:
+**In flux:** **no**, for the two files this task still names. It was `yes` for the other
+two and that is what the narrowing answered rather than overrode. Three `api` tasks were
+drained from `inbox/` on 2026-09-05; here is where each of them landed:
 
 - **`tasks/api/013-target-json-not-written.md`** rewrites `interfaces/config.md`'s
   build-directory paragraph, which states decision 19's per-directory `target.json` as
   current truth while nothing in `embarch-api` writes it. Whichever way 013 answers —
-  write the file, or strike the claim — that paragraph changes.
+  write the file, or strike the claim — that paragraph changes. **So 013 now carries that
+  file's compaction itself**, with the `Must not delete:` clause it needs, and this task
+  no longer names it.
 - **`tasks/api/014-extra-args-hash-not-stable.md`** rewrites the `-args<hash>` segment of
-  `zephyr::Target::build_dir_name`, which is `decisions/zephyr.md`'s territory — the
-  96-byte file this task calls "the tight one and the natural target".
+  `zephyr::Target::build_dir_name` — decision 19, which used to sit in the 96-byte
+  `decisions/zephyr.md` and now sits in **`decisions/build.md` with ~7 KB free.**
 - `tasks/api/015-retired-targets-error-misadvises-zephyr.md` is a message-only fix in
-  `config.rs` and probably does not move a doc, so it is not what blocks this.
-
-**Unparks when 013 and 014 have both closed**, or when whoever runs this narrows it to
-`decisions/studies.md` alone — that one file could be compacted today. Compacting the
-other three now writes a clean statement of something about to be wrong, which is the
-exact reason this task was parked behind `api/010` in the first place.
+  `config.rs` and probably does not move a doc. It cites decision 12, which stayed in
+  `decisions/zephyr.md`.
 **Must not delete:** decision 21's *first* paragraph as written, which asserts the
 `"none"` literal "cannot collide with a real snippet name" — it is wrong, the
 amendment below it says so and says how it is now checked, and a compaction that
@@ -60,20 +66,19 @@ were the same defect — is evidence, not a restatement of the rule.
 
 ## What
 
-Four files are in reserve: `decisions/zephyr.md` 12,192/12,288 B (96 B left),
-`spec.md` 10,105/10,240 B (135 B left), `interfaces/config.md` 11,415/12,288 B,
-and `decisions/studies.md` 11,249/12,288 B. Nothing is blocked and nothing is being
-asked for yet — this records that the runway is nearly spent.
+Two files are still in reserve here: `spec.md` 10,105/10,240 B (135 B left) and
+`decisions/studies.md` 11,249/12,288 B (1,039 B left). `spec.md` is the tight one and is
+the natural target.
 
-`decisions/zephyr.md` is the tight one and is the natural target: it carries ten
-entries, several of which (12, 18, 20, 21, 51) now restate parts of
-`interfaces/config.md`'s own prose, which is where the *surface* belongs. The
-likely pass is moving surface description out of the decisions and leaving the
-reasoning, not shortening the reasoning itself.
+The shape that worked on `zephyr.md` and is worth trying first: several decisions restate
+parts of `interfaces/config.md`'s own prose, which is where the *surface* belongs. Move
+surface description out of the decisions and leave the reasoning; do not shorten the
+reasoning itself. Where a file holds more than one mission, **split it instead** — that
+costs nothing and restates nothing (`DOC-COMPACTION.md` §2–3).
 
 ## Why now
 
-**The `api/010` blocker is gone and a new one took its place, 2026-09-05.**
+**The `api/010` blocker is gone, a new one took its place, and the narrowing answered it, 2026-09-05.**
 `tasks/api/010` closed, retiring `[[projects.targets]]` — decision 12's escape-hatch
 sentence, decision 51's argument, `spec.md` §3's static bullet and
 `interfaces/config.md`'s row have all been rewritten to match. That ground *is* stable
@@ -81,20 +86,23 @@ now. But `tasks/api/013` and `014`, filed the same day, put `interfaces/config.m
 `decisions/zephyr.md` back in motion. See the `In flux:` note above for exactly which
 paragraphs.
 
-**It is still worth doing and it is getting more expensive to defer.** `decisions/zephyr.md`
-has **96 bytes** left, and on 2026-09-05 that cap did something new: `api/010` had a
-decision to write about static-project build orchestration, could not fit it in
-`zephyr.md`, and filed **decision 53 in `decisions/shape.md` instead**. That is the
-first time in this suite a byte cap has *moved* a decision rather than shortened one,
-and a reader who opens `zephyr.md` for the static-project mission now reads decision 51
-with no sign the menu is gone. **A pass here should add the pointer 51 is missing** —
-the reviewer noted it would have fitted inside the 96 bytes.
+**What made this urgent, and is now the standing rule.** `decisions/zephyr.md` had **96
+bytes** left, and on 2026-09-05 that cap did something new: `api/010` had a decision to
+write about static-project build orchestration, could not fit it in `zephyr.md`, and
+filed **decision 53 in `decisions/shape.md` instead**. That is the first time in this
+suite a byte cap has *moved* a decision rather than shortened one — a cap that misfiles
+is worse than a cap that refuses, because nothing fails and the reader never learns. It
+is why `DOC-COMPACTION.md` §2 now says a parked task parks the pass and not the reserve.
+**Decision 51 still lacks the pointer saying the menu is gone**, and `zephyr.md` now has
+4.8 KB of room for it — carry that into whichever pass touches 51.
 
 ## Done when
 
 - [x] `tasks/api/010` is closed, and this task is moved to `open`.
-- [ ] The four files are compacted per `DOC-COMPACTION-PASS.md`, one commit for
-      the sub-project, with the `Must not delete:` list above honoured.
+- [x] `decisions/zephyr.md` and `interfaces/config.md` are off this task — split, and
+      handed to `api/013`.
+- [ ] `spec.md` and `decisions/studies.md` are compacted per `DOC-COMPACTION-PASS.md`,
+      one commit for the sub-project, with the `Must not delete:` list above honoured.
 - [ ] The human question answered in the compactor's own words in the commit
       message: can `embarch-api/spec.md` alone answer what someone needs to work
       on this component today?
