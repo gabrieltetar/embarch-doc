@@ -56,13 +56,13 @@ The upward search exists because an engineer working across several firmware rep
 
 **Selection is never guessed, but it is narrowed:** whatever subset of `board`/`variant`/`revision`/`app` is given filters the live-scanned set; exactly one match proceeds, more than one errors listing the remainder, none given lists everything. `reset` needs the same four as `flash`, because it sends a chip too and a `zephyr-west` project has none stored.
 
-**`snippets`** is additive rather than narrowing — a snippet choice does not change which target tuple exists. Omitting it falls back to `default_snippets`, *not* to "no snippets"; the reserved literal `["none"]` forces zero snippets over a configured default, and any other list containing `"none"` is a call-time error naming the ambiguity. **`extra_args`** is opaque passthrough, unvalidated, inserted right after the `build` subcommand.
+**`snippets`** is additive rather than narrowing — a snippet choice does not change which target tuple exists. Omitting it falls back to `default_snippets`, *not* to "no snippets"; the reserved literal `["none"]` forces zero snippets over a configured default, and a list mixing `"none"` with real snippet names is a call-time error naming the ambiguity ([../decisions](../decisions/zephyr.md) 21). **`extra_args`** is opaque passthrough, unvalidated, inserted right after the `build` subcommand.
 
 **Build directory:** `build_dir_root/<board>-<variant-or-default>-<revision>-<app>-<snippets-or-none>-<extra-args-hash>/`, one per distinct target. Only `extra_args` is hashed, because an arbitrary flag can contain directory-unsafe characters; every other axis is spelled out so a directory listing is readable, and each build directory gets a `target.json` recording the full resolved selection so a human can recover what produced it without reverse-engineering a hash.
 
 ## `[dev_bench]` — zero or one
 
-The `embarch-dev-bench` build target *this machine's bench* is wired to. Deliberately **not** a `[[projects]]` entry: dev-bench is not a DUT anyone configures per repo, it is EmbArch's own rig, one board at a time, addressed by no project name. **Every field is required and none is defaulted** — a default would have to pick one of two real boards, and picking wrong means building the wrong image and handing it to Core to flash through the wrong debug interface at the wrong chip.
+The `embarch-dev-bench` build target *this machine's bench* is wired to. Deliberately **not** a `[[projects]]` entry: dev-bench is not a DUT anyone configures per repo, it is EmbArch's own rig, one board at a time, addressed by no project name. **None of the five board-identifying fields is defaulted** — a missing one is a startup error naming it, which is cheap. Why the bench sits outside `[[projects]]` at all, and the two real boards that agree about none of these values: [decisions](../decisions/dev-bench.md) 32 and 45.
 
 | Field | Type | Req | Notes |
 |---|---|---|---|
@@ -71,7 +71,7 @@ The `embarch-dev-bench` build target *this machine's bench* is wired to. Deliber
 | `board` | string | yes | The west board target. Must be one `app/boards/` carries a `.conf` fragment for — the shared app builds for any board, but only one with that fragment gets the BLE and logging Kconfig this firmware needs |
 | `chip` | string | yes | The probe-rs target Core attaches as. **Not derivable from `board`** by anything this crate should be inventing |
 | `flash_format` | string | yes | `hex` or `bin`; anything else is rejected at load |
-| `artifact_path` | path | yes | Relative to `source_path`. Declared rather than derived because it varies by more than the format: **NCS defaults sysbuild on and vanilla Zephyr does not**, which puts the image a directory deeper |
+| `artifact_path` | path | yes | Relative to `source_path`. Declared rather than derived: it varies with which SDK the workspace pulls as well as with the format, and no rule over the other fields predicts it ([decisions](../decisions/dev-bench.md) 45) |
 | `base_address` | integer (TOML hex literal) | conditional | **Required when `flash_format = "bin"` and rejected when `hex`.** A raw binary carries no load address, so an absent offset is nobody having said where the image goes; a hex carries its own, so an offset beside one would be ignored rather than honoured. Both are config-load errors |
 | `build_timeout_secs` | integer | no | 300 |
 | `env` | table string→string | no | **Replaces** the inherited environment rather than extending it. `cargo` must be on `PATH` for every board (the build cross-compiles the shared crate to a staticlib from CMake), and the ESP32-C5 additionally needs `esptool` on bare `PATH`. The Arm and RISC-V compilers do **not** — Zephyr finds its SDK through the CMake package registry |
