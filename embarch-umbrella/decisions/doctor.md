@@ -30,7 +30,7 @@ It compares the bench's reported firmware version, over a handshake-only endpoin
 
 **(c) Disk space** on the filesystem backing the build and results directories — warn below a generous threshold, **since a build failing from a full disk reads as a mystifying compiler error otherwise.**
 
-**All three unbuilt:** `doctor` assembles exactly checks 1-15, and *firewall* and *disk* appear nowhere in the crate.
+**All three unbuilt:** `doctor` assembles exactly checks 1-16, and *firewall* and *disk* appear nowhere in the crate.
 
 ### 23 — Check 10 spawns `embarch-api` and confirms the MCP handshake completes, not just that a registration entry exists
 

@@ -5,8 +5,10 @@
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/spec.md, embarch-umbrella/open.md
-**In flux:** yes — six open tasks, and every one of them rewrites the doctor table in spec.md
-**Must not delete:** spec.md's nineteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — five decisions describe checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one.
+**In flux:** yes — four open tasks, and every one of them rewrites the doctor table in spec.md
+**Must not delete:** spec.md's twenty-row `doctor` table, and in particular which rows are **designed and unbuilt** — four decisions describe checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one.
+
+**Counts refreshed by the supervisor, 2026-09-05, after `umbrella/005` landed** — they were *nineteen rows / five decisions / six open tasks* and are now twenty / four / four. `umbrella/005` built check 16 (so one designed-and-unbuilt decision became built) and renumbered the design-only checks 16-19 → 17-20. Refreshed because a `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale: whoever runs this task would have protected the wrong shape. **Urgency, also from `umbrella/005`: `open.md` is at 5051/5120 B — 69 B left — and `spec.md` at 10089/10240 B, 151 B left.** This task stays `blocked` on `In flux: yes`, which is still true, but the next `umbrella` task to touch either file has effectively no room.
 
 ## What
 
