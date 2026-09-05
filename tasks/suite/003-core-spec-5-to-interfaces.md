@@ -1,11 +1,20 @@
 # Move embarch-core/spec.md §5 into interfaces.md, and fix the one inbound §5 citation
 
 **State:** open — **not announced; the §4 window has not started.**
-Leg 007 filed this from an `inbox/` drop but had **no Slack surface** (no connector tool
-in the supervisor agent's toolset), so it could neither announce this nor poll
-`#embarch-fleet`. `embarch-fleet/ops.md` §4 requires the announcement before a `suite`
-task runs. **The next leg must announce it and start a fresh 30-minute clock** — there is
-no prior `ts` to complete, unlike `suite/001`, which leg 006 had already served.
+Leg 007 filed this from an `inbox/` drop believing it had **no Slack surface**, so it
+could neither announce this nor poll `#embarch-fleet`. `embarch-fleet/ops.md` §4 requires
+the announcement before a `suite` task runs. **The next leg must announce it and start a
+fresh 30-minute clock** — there is no prior `ts` to complete, unlike `suite/001`, which
+leg 006 had already served.
+
+**The blocker is gone as of 2026-09-05.** The connector resolved into the owner's session
+at 10:39 MDT, and a spawned `embarch-supervisor` was confirmed to inherit it — *deferred*,
+so it is absent from the agent's initial tool list and must be pulled in with `ToolSearch`
+(`select:mcp__claude_ai_Slack__slack_read_channel`) before it can be called. That is why
+three legs read their tool list and concluded they had no channel; see `ops.md` §5.2a.
+The owner's window attempted the announcement on 2026-09-05 and **the Slack post was
+refused by the session's permission classifier**, so the clock still has not started.
+Announce it and record the `ts` here.
 **Source:** tasks/core/003-compact-docs.md, the compaction pass that could not do it
 **Scope:** suite
 **Hardware:** none
