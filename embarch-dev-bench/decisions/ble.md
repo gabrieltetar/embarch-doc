@@ -58,4 +58,4 @@ Three things running it against the DUT changed:
 
 **Auth callbacks are registered before `bt_enable`:** Zephyr latches them the first time it needs a capability, so a peer that paired before registration ran would latch NULL — unauthenticated, with nothing in the failure pointing at registration order. The same class of failure as decision 34's own.
 
-**What is still not claimed:** nothing here has been validated against a DUT that presents no input/output capability. [../open.md](../open.md) carries what that would look like.
+**What is still not claimed:** validation against a DUT that presents no I/O capability at all — [../open.md](../open.md) carries what that would look like.

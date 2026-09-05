@@ -1,6 +1,6 @@
 # embarch-dev-bench: spec
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-04.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md).
 
@@ -10,9 +10,9 @@ The physical rig that plays the DUT's BLE counterpart during a `Study` — it ad
 
 The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owned by [embarch-study-designer](../embarch-study-designer/decisions.md) and treated here as given. `embarch-core` never talks BLE or samples power itself.
 
-**The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** Decision 43 reversed the ESP32-C5 retarget once a replacement DK arrived; the ESP32-C5 workspace stays in the tree and working. **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
+**The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** The ESP32-C5 workspace stays in the tree and working (decision 43). **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
 
-**v1 scope, explicitly bounded:** BLE plus power sampling only. GPIO/analog stimulus is real future scope and needs a new `Action` variant upstream first, not just firmware. **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: the bench's state is observable only through `embarch-core`.
+**v1 scope, explicitly bounded:** BLE plus power sampling only. GPIO/analog stimulus is future scope ([open.md](open.md)). **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: the bench's state is observable only through `embarch-core`.
 
 ## 2. Repository layout
 
@@ -76,19 +76,17 @@ Three sinks, with deliberately different threading contracts:
 |---|---|---|
 | link baud | 1 Mbaud | must equal Core's `DEV_BENCH_BAUD` exactly, or the first `Hello` fails to decode |
 | `current-speed` overlay | `&uart20` on the DK | [measured 2026-08-31] the DK's `zephyr,console` is already `uart20`, so only the baud needed setting |
-| `link_rx_ring` | 2 KB | [assumed] sized to scheduling latency, deliberately not to `DBM_MAX_FRAME_LEN` |
-| `DBM_MAX_INBOUND_FRAME_LEN` | 9,415 B | [measured] Core sends only `Hello` and `StudyStart`; the general bound was `StepResult`'s 19,887 and freed ~10.5 KB |
-| `DBM_MAX_OUTBOUND_FRAME_LEN` | 3,082 B | [measured] `StepResult`'s bound; was 9,270 sized for a message dev-bench cannot produce |
+| `link_rx_ring` | 2 KB | [assumed] scheduling latency, deliberately not `DBM_MAX_FRAME_LEN` — §4 |
+| `DBM_MAX_INBOUND_FRAME_LEN` | 9,415 B | [measured] Core sends only `Hello` and `StudyStart`; sized to `StudyStart`, not the general bound |
+| `DBM_MAX_OUTBOUND_FRAME_LEN` | 3,082 B | [measured] `StepResult`'s bound — the largest message dev-bench can produce |
 | `DBM_MAX_TRANSCRIPT_PAYLOAD_LEN` | 244 B | one full 247-byte ATT MTU minus the 3-byte ATT header |
-| `DBM_MAX_EVENT_ARMS_PER_STATE` | 2 | [measured] the crate allows 4; an arm is the heaviest thing a state holds, and 4 costs ~9 KB more. Both worked protocols use one arm per state |
-| `DBM_MAX_PROTOCOLS_WIRE_LEN` | 3 KB | [measured] a byte cap over the whole span, because the eleven count ceilings multiply to ~7.4 KB per protocol against a real worked protocol's 398-byte `StudyStart` |
-| `SCAN_SEEN_MAX` | 256 | [measured] the first census hit an 8-entry cap; the next found 12 advertisers in three minutes. ~9 KB of static RAM |
+| `DBM_MAX_EVENT_ARMS_PER_STATE` | 2 | [measured] the crate allows 4; an arm is the heaviest thing a state holds and 4 costs ~9 KB more, and both worked protocols use one |
+| `DBM_MAX_PROTOCOLS_WIRE_LEN` | 3 KB | [measured] a byte cap over the whole span; the eleven count ceilings multiply to a bound nothing would send (decision 41) |
+| `SCAN_SEEN_MAX` | 256 | [measured] 12 advertisers seen in three minutes at the bench; costs ~9 KB of static RAM |
 | `BLE_MAX_MONITOR_SUBSCRIPTIONS` | 32 | [assumed] deliberately not the wire type's 128 worst case |
-| `CONFIG_MAIN_STACK_SIZE` | 8192 | [measured] board fragments had silently overridden `prj.conf`'s value with 2048 — Zephyr merges the fragment last and the later value wins with no warning |
+| `CONFIG_MAIN_STACK_SIZE` | 8192 | [measured] a board fragment silently overrode `prj.conf` with 2048 — Zephyr merges the fragment last and the later value wins with no warning |
 | `CONFIG_BT_MAX_CONN` | 2 | on Nordic this is forced: the SoftDevice Controller gives central `BT_MAX_CONN − BT_CTLR_SDC_PERIPHERAL_COUNT` slots, so 1 leaves central **zero** and builds cleanly with a silently broken role |
-| `CONFIG_LOG_BUFFER_SIZE` | 1 KB | [measured] a `Debug` burst overruns it and says so (`191 record(s) dropped`) |
+| `CONFIG_LOG_BUFFER_SIZE` | 1 KB | [measured] a `Debug` burst overruns it and says so (`N record(s) dropped`) |
 | disconnect wait | 2 s | [assumed] far longer than a local disconnect needs; timing out leaves the prior behaviour |
 
-**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times. Its history is the record worth keeping: 90.87% after the GATT actions, 98.44% after the 256-entry scan table, 99.18% after per-study log filtering (**3,088 bytes free**), then 81.12% once `gatt_activity` was deleted (~37 KB back), then 87.04% after the `.eap` interpreter. The nRF54L15DK is far roomier: FLASH 18.97%, RAM 58.57% of 256 KB.
-
-**The remaining lever, written down rather than rediscovered:** `tx_scratch` still holds a `struct dbm_study_start` it can never contain (~15.7 KB), which a TX-only message type would reclaim.
+**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **87.04%** [measured], and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](open.md)). The nRF54L15DK is far roomier: FLASH 18.97%, RAM 58.57% of 256 KB.
