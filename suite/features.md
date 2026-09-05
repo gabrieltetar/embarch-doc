@@ -39,16 +39,16 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `list_projects`, `status`, `build`, `flash`, `build_and_flash`, `reset`, `serial_log` — MCP tools | Shipped | hw | §5 |
 | `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
-| `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, instead of a hand-maintained static entry | Shipped | local | 12 |
+| `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, replacing a hand-maintained static entry | Shipped | local | 12 |
 | CLI subcommands for every tool (kebab-case, unlike the snake_case tools) — **a superset, not a mirror**: `versions` has no MCP twin | Shipped | hw | §5a |
-| `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped — **nothing reads it yet**; `doctor` check 11 still compares `embarch`'s own constant until `embarch-umbrella` points it here | unit | 52 |
+| `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped — **nothing reads it yet** | unit | 52 |
 | `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
 | `study-status --follow` / `study_watch` — live study events over SSE, `lagged` reported not raised, polling fallback | Shipped, never against a real Core | unit | 48, 49 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
 | Per-project build concurrency lock | Shipped | n/a | §6 |
 | Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
-| `base_url = "auto"` — Core's address resolved per process at first use, retiring a stale gateway IP | Shipped — never against a real remote Core | local | §7 |
+| `base_url = "auto"` — Core's address resolved per process at first use | Shipped — never against a real remote Core | local | §7 |
 | `base_address` as a per-project field — a config-driven flash path | Shipped | unit | 44 |
 | `[dev_bench]` board/chip/flash-format/artifact-path/base-address | Shipped | hw | 45 |
 | Rolling **per-user** logfile, surfaced in the UI's Debug tab | Shipped | unit | 43 |
@@ -57,7 +57,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `PATH`/toolchain preflight | **Moved** — lands as an umbrella `doctor` check | n/a | §12 |
 | The UNC artifact path | **Retired** — it only ever worked against a foreground Core, never the installed service | hw | §9 |
 | `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |
-| `error_kind` — a machine-readable failure kind | **Retired** — documented from the first commit, never built; needs Core to serve error codes at all | n/a | 16, 50 |
+| `error_kind` — a machine-readable failure kind | **Retired** — never built; needs Core to serve error codes at all | n/a | 16, 50 |
 
 ## embarch-dev-bench
 
@@ -93,7 +93,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Dev-bench link same-chip verification via the handshake's reported identity | Shipped | hw | 47 |
 | **Engineer-declared DUT protocols** (`.eap`: types, grammar, validator, interpreter, three seals) | Shipped, runnable end to end | ztest, hw | 58-62 |
 | One generic **inbound** stream pipeline (declared source, sink, scope, encoding) | Shipped | hw | 39 |
-| Study version requirements, operator-selected reflash, provenance on a result | Shipped — **the UI half of reflash is deliberately not built** | hw | 40 |
+| Study version requirements, operator-selected reflash, provenance on a result | Shipped — **the UI half is deliberately not built** | hw | 40 |
 | Declared GATT table on a study, reconciled against live discovery | **Design-only, no code** | n/a | 45 |
 | Post-hoc validation | **Retired** — fully typed, wired into two repos, and it never once ran | n/a | 48 |
 | The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
@@ -104,7 +104,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | MCU load tracing on the DUT: tracing hooks, markers, GPIO dispatch, TX-only UART, build-ID-matched manifest | **Working end to end on real silicon**: 437,789 bytes in 20 s off a real nRF54L15, 43,948 records, zero lost | ztest, hw | §3 |
 | **Two clocks** — the DUT stamps each record from its own counter, Core stamps each frame on arrival | Shipped (record layout 3) | hw | 4, 17 |
-| Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — resolves 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |
+| Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |
 | Batch-fill framing — took the link's duty cycle from 99% to 37% | Shipped | hw | 20 |
 | Every Kconfig wire constant | **Unmeasured defaults**, and the instrumentation's own overhead is deliberately uncharacterised | n/a | §5 |
 
@@ -127,31 +127,31 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run**, and `--dry-run` is designed and unbuilt | local | 3, 21, 28 |
+| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run**; `--dry-run` unbuilt | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
-| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: `doctor` check 8 still counts targets with umbrella's own approximating scanner rather than `embarch-api`'s listing | local | 17 |
+| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
-| `embarch doctor` — the whole chain, `--json` | Shipped — **and more of it is unbuilt than the tail of the table**: checks 16–19, plus check 5's not-permitted branch (18), check 10's handshake spawn so registered-but-broken passes (23), and `--prune` with its always-on reporting half (26). Audited against the source 2026-09-03 | local | §5, 18, 22, 23, 26 |
-| `doctor` check 11 — study-designer schema skew: Core's served host version against this binary's compiled one, plus Core's own `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, check 10's handshake spawn so registered-but-broken passes, and `--prune` | local | §5, 18, 22, 23, 26 |
+| `doctor` check 11 — schema skew: Core's served host version against this binary's compiled one, plus Core's `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
-| `doctor` check 15 — the running Core's `core_version` is the located `embarch-core` build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
+| `doctor` check 15 — the running Core's `core_version` is the located build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
-| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | **Designed, unbuilt in every repo** — `embarch-umbrella`, `embarch-core`, `embarch-api` and `embarch-topology` have no such step, and the other four have no release workflow at all | n/a | 27, 29 |
-| `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped and dogfooded — **the verification compared a byte count and reported success through a cancelled elevation** | hw | 32 |
+| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | **Designed, unbuilt in every repo** — four have no such step, the other four no release workflow at all | n/a | 27, 29 |
+| `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped — **the verification compared a byte count and reported `landed` through a cancelled elevation** | hw | 32 |
 
 ## embarch-ui
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the real deployed Core | local, hw | 1, 4 |
+| One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
 | Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
 | Saved-study library in the firmware repo | Shipped | local | 14 |
 | Opening a firmware repo from the tab, and creating a study in it | Shipped | local | 14 |
 | Selective-monitor targets in a grouped dialog rather than a wall of inline checkboxes | Shipped | local | 17 |
-| Post-hoc **Trace** view — lanes, gap bands as overlays, a per-subject load repartition, a zoomable chart bounded by pixels not dataset, a projected study-step row | Shipped | local | 10 |
+| Post-hoc **Trace** view — lanes, gap bands as overlays, per-subject load repartition, a chart bounded by pixels not dataset, a projected study-step row | Shipped | local | 10 |
 | Signal routing in the Topology tab — **the only human surface there is** | Shipped | hw | 10 |
 | Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
 | Reflash selector in the run dialog | **Deliberately not built** — it is `embarch-api` orchestration | n/a | 11 |
