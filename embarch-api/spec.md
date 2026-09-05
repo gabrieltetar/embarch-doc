@@ -30,7 +30,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **A selection a `static` project cannot honour fails, naming the fields** ([decisions](decisions/zephyr.md) 51); none given resolves as before.
 - **Working directory** is `source_path` joined with `build_cwd` if set, validated before spawning. `artifact_path` resolves against **that** directory, not `source_path` alone: `west`'s default output is `<cwd>/build`, so an invocation from the repo root with the app path as an argument must leave `build_cwd` **unset**, or the artifact path points at a `build/` nothing writes to.
 - **Capture** drains stdout and stderr in two concurrent tasks — draining one while the other fills its OS buffer is a classic way to hang a child.
-- **Truncation keeps the tail only** — the last 64 KB behind a marker naming the cap, cut on a UTF-8 boundary, since an offset inside a codepoint panics `String::replace_range`. Head-and-tail was the intent, never built: [open.md](open.md) carries it.
+- **Truncation keeps the head *and* the tail** — the first 16 KB and the last 48 KB, the middle dropped behind a marker naming how many bytes went and how many were kept at each end ([decisions](decisions/zephyr.md) 18). Both cuts land on a UTF-8 boundary — the head rounding down, the tail rounding up — since slicing inside a codepoint panics. **The cap bounds the retained bytes, not each half**: head plus tail is never more than 64 KB, so the split does not double it. Under the cap the text is untouched and unmarked.
 - **Timeout kills the process group**, not just the immediate child — `west`/`cmake`/`make` fork subprocesses a plain kill would orphan. A killed or timed-out build is reported **distinctly** from a nonzero exit, so a hang is not misread as a code problem.
 - **One build in flight per project name**, via a per-project async lock. Separate from Core's hardware lock: it guards two calls stomping one output directory, not USB contention.
 
@@ -72,7 +72,7 @@ the thread calling `block_on`, and no knob does ([decisions](decisions/core-link
 |---|---|---|
 | runtime thread stack | 512 MiB | [measured 2026-08-24] 64 MiB overflowed on a real GATT-heavy `StudyResult` |
 | `FRESHNESS_CLOCK_GRACE` | 500 ms | [measured] WSL2 clock jitter put a child's mtime *before* the parent's pre-spawn timestamp. A real build takes seconds, so this cannot mask a stale artifact |
-| capture cap | 64 KB, tail only | [assumed] |
+| capture cap | 64 KB retained, first 16 KB + last 48 KB | [assumed] — the cap and the split alike. Nothing here has measured a real Zephyr failure's log, so the head share is reasoned (a compiler diagnostic plus the `cmake`/Kconfig preamble is a few KB) rather than sized against one |
 | default `build_timeout_secs` | 300 | [assumed] |
 | default Core port | 4884 | — |
 | log retention | 7 daily files, `api.log.<date>` | deliberately Core's scheme, so one reader covers both |

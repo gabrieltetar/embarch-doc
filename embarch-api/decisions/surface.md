@@ -25,9 +25,6 @@ Decisions 16 and 24 were written together and neither was built, while [tools.md
 
 **The field is unconditional by construction, not by convention** — the thing whose absence let this rot for the crate's whole life. `json_out` is the only module turning a `serde_json` value into text; `finish`, the NDJSON sites and MCP's `ok_json`/`err_json` route through it, so an emitter gets the stamp by existing. A guard test fails if `cli.rs` or `tools.rs` grows a serializer of its own, `tests/json_surface.rs` drives **every** subcommand through the real binary, and a tripwire on the subcommand count stops a new one being added without being added there. **The same path carries a startup failure** — unreadable config, unresolvable token — which had escaped as `main`'s `anyhow::Error`, printing **nothing at all** under `--json`; MCP mode still returns the error, having no JSON surface to put it on.
 
-### 18 — Truncation keeps head *and* tail, not just the tail
-For a Zephyr build the **first** compiler error is usually the actionable one, and a long build's early failure can scroll out of a tail-only cap entirely by the time `cmake` and `ninja` finish emitting later, less useful output. Head plus tail with a marker naming how much was dropped; unchanged below the cap.
-
 ### 23 — No `doctor` tool here, deliberately
 Adding one means reimplementing `embarch-umbrella`'s diagnostic chain or depending on its binary — both break the one-way relationship that keeps this crate unaware umbrella exists. Resolved by **stating what was left for an agent to discover**: shell out to `embarch doctor --json`, assume no equivalent here. (Reporting one compiled constant is not diagnosing — decision 52.)
 
