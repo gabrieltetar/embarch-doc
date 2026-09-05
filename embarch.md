@@ -14,7 +14,7 @@ EmbArch was originally [gabrieltetar/embarch](https://github.com/gabrieltetar/em
 
 ## 3. Sub-projects
 
-Each has four capped docs: `spec.md` for what is true now, `decisions.md` for why, `open.md` for what is unresolved, and `interfaces.md` where a reference does not fit in the spec. [DOC-PROTOCOL.md](DOC-PROTOCOL.md) is the layout; [DOC-COMPACTION.md](DOC-COMPACTION.md) is how a doc gets there.
+Each has four capped docs: `spec.md` for what is true now, `decisions.md` for why, `open.md` for what is unresolved, and `interfaces.md` where a reference does not fit in the spec. [DOC-PROTOCOL.md](DOC-PROTOCOL.md) is the layout, [DOC-COMPACTION.md](DOC-COMPACTION.md) the budget, and [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md) how a doc is made smaller.
 
 | Sub-project | Purpose | Status |
 |---|---|---|

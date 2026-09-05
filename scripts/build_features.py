@@ -3,7 +3,7 @@
 
 ``suite/features.md`` is an inventory of a suite under active development, so a
 row lands about as often as a task does. That made it the one doc with no quiet
-state: DOC-COMPACTION.md §8 says do not compact a subsystem in flux, and this
+state: DOC-COMPACTION-PASS.md says do not compact a subsystem in flux, and this
 one is in flux permanently, so "wait for the flux to pass" was never an
 available answer. Measured 2026-09-04, it gained ~200 B per four-unit leg
 against 939 B of headroom -- four legs from its cap, with no compaction pass

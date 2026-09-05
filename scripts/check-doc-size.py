@@ -95,7 +95,10 @@ CAPS = [
     # discipline to exercise. This cap is a backstop, not the constraint.
     ("suite-assembled", 20 * KB, re.compile(r"^suite/features\.md$")),
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),
-    ("protocol",    12 * KB, re.compile(r"^DOC-(PROTOCOL|COMPACTION)\.md$")),
+    # Any DOC-*.md: the protocol layer. It splits the way anything else does
+    # (DOC-COMPACTION-PASS.md came out of DOC-COMPACTION.md §6-§9), so this
+    # matches the family rather than naming its members.
+    ("protocol",    12 * KB, re.compile(r"^DOC-[A-Z][A-Z-]*\.md$")),
     ("history",     20 * KB, re.compile(r"^history/[a-z-]+\.md$")),
     # The reversals page split the way any over-cap doc does: an index plus stable
     # numeric ranges (DOC-COMPACTION.md §3). A range never re-splits an existing row.
@@ -335,7 +338,7 @@ def main() -> int:
               "tasks/doc/<NNN>-compact-<scope>.md, listing these paths on a\n"
               "**Compacts:** line, in the same commit that spent the reserve. The\n"
               "task carries the judgements no script can make: **In flux:**\n"
-              "(DOC-COMPACTION.md \u00a78), \u00a77's question, and what the pass\n"
+              "(DOC-COMPACTION-PASS.md), its human question, and what the pass\n"
               "may not delete. tasks/README.md has the shape.")
         print(f"FAIL: {len(unfiled)} file(s) in reserve with no debt filed.")
         return 1

@@ -14,6 +14,8 @@ Three practices:
 2. **A sub-project is four small files, not one big one** (§3).
 3. **History does not live in a doc at all** — `changelog.d/` fragments, assembled into `history/` (§4).
 
+**How a doc is made smaller is [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md)** — the procedure, the gate, the failure modes and the hot/cold test. This file is the budget every session writing a doc needs; that one is needed only while compacting.
+
 ## 2. The budget
 
 `scripts/check-doc-size.py` enforces this in CI. A file may shrink freely; it may never grow past `min(cap, its baseline)`.
@@ -30,16 +32,16 @@ Three practices:
 | A complete inventory table — every row must be there | **15 KB** | `suite/roadmap.md` |
 | An assembled inventory — the budget is per row, not per file | **20 KB** | `suite/features.md`, from `features.d/` |
 | A narrative guide | **25 KB** | `suite/{user,studies}-guide.md` |
-| This file, and DOC-PROTOCOL.md | **12 KB** | `DOC-*.md` |
+| A protocol doc | **12 KB** | `DOC-*.md` |
 | Reversals index | **10 KB** | `embarch-decision-reversals.md` |
 | Reversal range | **20 KB** | `reversals/rows-<a>-<b>.md` |
 | Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
-**Nothing is over cap and the baseline holds no exceptions.** A file that is somehow pinned reaches its cap, retires its entry, and is capped from then on. `--report` shows the corpus, `--update` records progress and **refuses a regression**, `--pressure` lists what is near its limit **before** a task that must write there is dispatched. Per-sub-project overrides tighten a cap where §9's pass has landed.
+**Nothing is over cap and the baseline holds no exceptions.** A file that is somehow pinned reaches its cap, retires its entry, and is capped from then on. `--report` shows the corpus, `--update` records progress and **refuses a regression**, `--pressure` lists what is near its limit **before** a task that must write there is dispatched. Per-sub-project overrides tighten a cap where [the second pass](DOC-COMPACTION-PASS.md) has landed.
 
-**An inventory of a suite still being built has no quiet state**, so §8's wait-for-the-flux never comes and no pass helps — every row must be there. `suite/features.md` is therefore **assembled**, one fragment per row, and the budget it answers to is the row's ([features.d/](features.d/README.md)).
+**An inventory of a suite still being built has no quiet state**, so the in-flux warning's wait never comes and no pass helps — every row must be there. `suite/features.md` is therefore **assembled**, one fragment per row, and the budget it answers to is the row's ([features.d/](features.d/README.md)).
 
-**The last 10% of a limit is the RESERVE, and it is writable** — a cap a worker meets only when its edit is refused turns unrelated work into a compaction task mid-flight. A file in reserve still passes the gate but must be named on a `**Compacts:**` line of an open `tasks/doc/` task, **filed by whoever spends it, in the same commit**: that actor alone can answer §8's in-flux question. `--pressure` lists the reserve, filed and unfiled; `tasks/README.md` has the shape.
+**The last 10% of a limit is the RESERVE, and it is writable** — a cap a worker meets only when its edit is refused turns unrelated work into a compaction task mid-flight. A file in reserve still passes the gate but must be named on a `**Compacts:**` line of an open `tasks/doc/` task, **filed by whoever spends it, in the same commit**: that actor alone can answer the in-flux question ([DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md)). `--pressure` lists the reserve, filed and unfiled; `tasks/README.md` has the shape.
 
 **The cap is the design constraint, not a target to approach.** A budget forces the question "is this the most valuable 10 KB I can write about this component", never asked before there was one.
 
@@ -68,51 +70,6 @@ Everything else about the past is dropped: amendment chains, schema-bump re-deri
 
 ## 5. What a decision entry looks like
 
-Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, one clause per rejected alternative. §9 is what belongs in it and what does not.
+Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, one clause per rejected alternative. [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md) is what belongs in it and what does not.
 
 **The number is permanent and an entry may own several** — `### 20, 21, 25, 27 — Streaming capture, batched, with units` is one entry owning four, because four decisions converged. Never renumbered, never reused, and a retired one becomes a tombstone keeping its number: [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2–7.4 owns that rule and the two ways it has broken.
-
-## 6. Procedure
-
-Working tree clean and pushed first — **git is where everything you delete goes.** Snapshot `collect-open-questions.py` before and after.
-
-`scripts/check-duplication.py` first: the cheapest bytes are a claim held in two of the four files, which is a §3 error rather than a cold sentence. Then **read the whole doc**, because **the merges that matter are between paragraphs 200 lines apart.** Then **write `spec.md` from scratch, to its cap** — not by deleting from the old doc, **because compaction by deletion preserves the old doc's shape, which is the problem** — and check the old one afterwards for facts you missed. Then `decisions.md` (§5, §9), then `open.md`.
-
-**Delete the old files and fix every inbound link in the same commit**: this repo commits straight to `main` and **must not be left broken in between.** One sub-project per commit, with a `changelog.d/` fragment.
-
-## 7. The gate
-
-**Mechanical, in CI**, all at once via `scripts/check-docs.py`: `check-doc-size.py` (caps and the ratchet), `check-decision-refs.py` (**every `decision N` still resolves — what makes merging and file-moving safe**), `check-links.py`, `check-staleness.py`, `check-doc-conventions.py`, `build_changelog.py --check`. Plus a diff of `collect-open-questions.py`: **a question may disappear only if you can name it as answered.**
-
-**Human, and not skippable — one question, asked honestly:**
-
-> Can `spec.md` alone answer what someone needs to work on this component today?
-
-**If yes, the pass is done, whatever it deleted. If no, the pass moved bytes rather than choosing between them.**
-
-**Never replace a name with the kind of thing it is** — "provisioning is a separate step" instead of `build_and_flash`; drop the sentence instead. An identifier-set diff catches it, advisory only: under a lossy regime an identifier is *allowed* to go.
-
-## 8. Failure modes
-
-- **Summarising instead of choosing.** "Handles the error cases" for four named ones. A budget is spent by *dropping whole topics*, not by making every sentence vaguer.
-- **Deleting the "why not".** One line each, always. §5.
-- **Flattening measured into assumed.** §4.
-- **Renumbering.** §5. 2,362 references, invisible to detect.
-- **Compacting a doc whose subsystem is still in flux** — you would write a clean statement of something about to be wrong, and destroy the alternatives you are about to need. Wait for the milestone to close.
-- **Moving bytes instead of choosing between them.** Four files that add up to 300 KB is the old problem with more filenames. §7's human question is the check.
-
-## 9. The second pass: keep the hot half, delete the cold
-
-The first pass made every doc loadable — every sub-project and every suite-level doc, one commit each. **It did not separate what an agent must not break from what merely justifies it**, and decision prose remained the largest thing an agent loads.
-
-**The test, per sentence: would someone about to change this code make a wrong move without it?** **Yes → hot, it stays. No, it only answers "how do we know?" → cold, it goes** — git holds it, and **a cold item worth keeping at all earns a 250 B row on [embarch-decision-reversals.md](embarch-decision-reversals.md), cited by number, not a paragraph here.**
-
-**Hot, none of it negotiable:** the claim · the constraint that makes it necessary · the invariant or prohibition · **rejected alternatives, one clause each with their reason** · **the failure signature**, what it looks like when this is wrong, which is what makes a rule actionable · any live property of another component a reader would get wrong.
-
-**Cold:** provenance and dates · the incident narrative · the investigation log · measurements · validation records · superseded reasoning · meta-lessons. **A reference table is not cold — it moves to `interfaces/`, loaded deliberately.**
-
-**The refinement that keeps this from gutting the docs: "why" is two things and only one is cold.** A *constraint* reason — *"a serial cannot help here: that one probe exposes two VCOMs under one serial"* — **is hot, because a reader who does not know it re-proposes the fix that was already rejected.** The evidence behind that rule is cold. **Rejections and constraints never go:** the reversals page is largely a record of already-rejected things being re-proposed, so deleting the rejections would grow it.
-
-**The decisions layer bottoms out near 350 KB, and past that the cuts take rules.** A sub-project at ~900 B per decision has no cold half left. **Run this pass on one that has not had it; do not run it twice** — measured across all eight, deletable cold is ~18% by sentence and the deletion recovers less again, almost all of it from sub-projects that have never had a pass at this density. Projecting that figure from a single entry gave ~210 KB and was wrong: reversals row 18's trap.
-
-**Caps tighten per sub-project as its pass lands**, via `TIGHTENED` in `check-doc-size.py` — a finished migration cannot drift back, and an unfinished one is not failed by a cap it has not been given yet.
