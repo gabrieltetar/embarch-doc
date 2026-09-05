@@ -159,6 +159,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
 | Reflash selector in the run dialog | **Deliberately not built** — it is `embarch-api` orchestration | n/a | 11 |
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**: first paint is 12.7 KB + 30.5 KB and a window costs 1–6 ms. Pinned against the browser aggregation it replaces; driven against the real binary in headless Firefox, never against a live Core or a real DUT capture | local | 18 |
+| A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: both signs covered by crafted fixtures, and the 18-record bridge-buffered case that motivates it has not been replayed through it | unit | 19 |
 
 ## Not yet a sub-project
 

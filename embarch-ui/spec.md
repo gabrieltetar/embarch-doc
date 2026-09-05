@@ -59,6 +59,7 @@ Everything live is **SSE**; there is no client-side interval polling anywhere.
 - **A trace whose build ID did not match is never rendered as a *named* trace.** It renders unnamed, with Core's reason verbatim, every lane the raw pointer or vector number it is.
 - **A dropped-record gap is drawn as a gap**, as an overlay over the records that survived, never bridged into a continuous timeline.
 - **An axis tier is chosen once per view, never per span**, and one row missing the stamp its tier needs drops the whole view down a tier.
+- **A capture that opens with records from before the DUT reset loses the prefix, not the microsecond axis** (decision 19) — and only where the clock is already refused, so an inherent 13 µs inversion never costs a record. The count dropped and how far their clock sat is stated in the axis note; `rows` counts what was kept.
 - **A limit enforced server-side is *served*, never restated in `app.js`.**
 - **Unreadable is rendered as unreadable, not as a mismatch or an empty list.** A bench that is not plugged in has no version to disagree with; a Core that answered `404` to the signals route has not told you there are no signals.
 

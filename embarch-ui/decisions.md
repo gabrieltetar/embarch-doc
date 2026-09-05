@@ -13,7 +13,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/shell.md](decisions/shell.md) | 4, 8 | The six-section shell, fragment navigation, the design system |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing) | Signal routing: the one human surface for declaring a wire |
-| [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace) | What a trace renders, on which clock, and the load repartition |
+| [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace), 19 | What a trace renders, on which clock, the load repartition, and dropping a stale pre-reset head |
 | [decisions/trace-chart.md](decisions/trace-chart.md) | 10 (chart) | Zoom, pan, exact aggregation, the study-step row |
 | [decisions/trace-transfer.md](decisions/trace-transfer.md) | 18 | Server-side binning: the view asks for the window it draws |
 | [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14 | Version fields, security level, declared GATT, opening a project |

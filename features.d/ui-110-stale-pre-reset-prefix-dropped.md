@@ -1,0 +1,1 @@
+| A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: both signs covered by crafted fixtures, and the 18-record bridge-buffered case that motivates it has not been replayed through it | unit | 19 |

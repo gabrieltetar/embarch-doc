@@ -14,7 +14,6 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 ## Unverified diagnoses
 
 - **Whether probe-rs writes are what killed the nRF54L15 is evidence, not proof** (decision 36). One erase-and-program over J-Link recovered a board unresponsive across a whole session — the strongest available evidence — but **the counterfactual is not established**: a full erase-and-reprogram may have cleared something else.
-- **Discarding a signal port's buffered input on open is not sufficient** (decision 30). With the clear in place a capture still began with **18 stale records** carrying a cycle count seconds from the rest, and the purge reported no error — so the bytes are presumably inside the USB-UART bridge or in flight, beyond an OS-level purge. The clear stays, being correct and free. The working defence is `embarch-ui` refusing the DUT clock when a capture's two clocks contradict, which costs the microsecond axis for the whole capture. **Candidate fix:** drop a leading run of records whose cycles are discontinuous with the bulk, at render time, where the whole file is in hand.
 
 ## Designed, not built
 
@@ -32,5 +31,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **`GET /study/{id}/events` offers no `Last-Event-ID` and no replay** (decisions 24, 41): a reconnect resumes at "now" with no way to ask for what it missed. Both consumers — `embarch-api`'s `study-status --follow` and `study_watch` (`embarch-api/decisions/core-link.md` 48, 49) — fall back to polling `GET /study/{id}` on a drop rather than pretending to resume, so this is closed as not needed yet; a resumable subscriber would be new Core-side design.
 
 ## Moved elsewhere, not resolved
+
+- **Discarding a signal port's buffered input on open is not sufficient, and the defence is now `embarch-ui`'s** (decision 30). A capture still began with **18 stale records** seconds from the rest with the purge reporting no error: those bytes are inside the USB-UART bridge, where an OS-level purge does not reach — **a limit of the purge, not a defect to fix here**, so the clear stays, being correct and free. This bullet's candidate fix is built as `embarch-ui` decision 19; what is still unresolved is that it has never met the real prefix ([embarch-ui/open.md](../embarch-ui/open.md)).
 
 - **The nRF54L15 hardware-ID register address**, and the end-to-end validation of the moved identity gate, are `embarch-topology`'s open questions since decision 22's move. Relocating the code changed nothing about whether that address is confirmed against real silicon.

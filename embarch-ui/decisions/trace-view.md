@@ -41,3 +41,13 @@ Five rules, each a lie this view would otherwise tell:
 - **Records in one frame are drawn at one instant *on the host's clock*.** Spreading them across the interval would look better and be fabricated. On the DUT's they have their own instants — not interpolation, the stamp the firmware wrote.
 - **What is below the resolution is a property of the clock, not of the wire.** On the host's clock most ISR spans are exactly that, so **on that clock this view reports ISR entries and refuses to report ISR time.** On the DUT's it reports both.
 - **A backwards axis position is reported, not smoothed**, and the axis note says which clock stepped — the wall clock (an NTP correction) or a lost counter wrap.
+
+### 19 — A stale leading prefix is dropped at render, so one bad head costs its own records and not the whole capture's microsecond axis
+
+Decision 10's last rule — refuse the DUT clock when the two clocks contradict — charged every row for a fault in a handful. [`embarch-core`](../../embarch-core/open.md) clears the port on open (embarch-core decision 30) and a capture still opened with **18 stale records** seconds from the rest: those bytes were already inside the USB-UART bridge, where an OS-level purge does not reach. Only at render is the whole file in hand, which is what makes the head identifiable here and not there.
+
+**It runs only on a capture whose clock is already refused**, which is the discrimination and not an optimisation: [`embarch-outpost`](../../embarch-outpost/open.md)'s inherent 13 µs inversion can never refuse a clock, so a capture carrying one is never searched and can never lose a record.
+
+Four conditions, each one a way this would otherwise eat real data. **The step exceeds the other clock**, never a threshold chosen here. **It is a leading run** — within 512 rows [assumed: an order of magnitude over the 6 and 18 seen, itself bounded by a bridge FIFO] and no longer than the bulk after it. **The drop fixes the contradiction**, or this is a reset trimming cannot repair and the clock is refused as before. **Sign is not the signal**: with no reset the prefix is *behind* the fresh stream and steps forwards, and a backwards-only check read a 38-second capture as 563.
+
+**Stated, never silent** — `rows` counts what was kept, so the axis note says how many went and how far their clock sat, on `embarch-outpost`'s own report-the-hole standard. **Unverified against the real 18-record prefix**; both signs have crafted fixtures, the bench debt is [open.md](../open.md)'s.
