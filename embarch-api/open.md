@@ -6,7 +6,6 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Known wrong, not fixed
 
-- **A `static` project's `[[projects.targets]]` menu cannot be picked from.** Nothing reads the rows `list_targets` returns; a build runs the project-level `build_command`. **A `target` param, or drop them.**
 - **A `[[projects]]` `board` is a hardware fact, and this config has been deriving it from build artifacts.** An entry derived from the repo's own `build_info.yml` records whatever was last built, not the board on the desk — a different revision entirely, and a day of bring-up lost to it. Violates [spec.md](spec.md) §2's no-inference-as-fact invariant on the most load-bearing DUT fact here. **Two fixes, neither built:** `init` refusing to *write* an inferred board unconfirmed — cheap, and enough — and `validate`/`status` comparing it against the hardware.
 
 ## Unfinished couplings

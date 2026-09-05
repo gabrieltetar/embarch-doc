@@ -1,6 +1,6 @@
 # 010 — A static project declares a `[[projects.targets]]` menu nothing can pick from
 
-**State:** claimed by agent/api/010-static-project-target-menu, 2026-09-05 12:07
+**State:** done, agent/api/010-static-project-target-menu, 2026-09-05
 **Source:** [embarch-api/open.md](../../embarch-api/open.md) — "A `static` project's `[[projects.targets]]` menu cannot be picked from. Nothing reads the rows `list_targets` returns; a build runs the project-level `build_command`. **A `target` param, or drop them.**"
 **Scope:** api
 **Hardware:** none
@@ -42,12 +42,47 @@ the same interface doc.
 
 ## Done when
 
-- [ ] Either a static project accepts a target selection and honours it, or it no
+- [x] Either a static project accepts a target selection and honours it, or it no
       longer advertises `[[projects.targets]]` rows at all.
-- [ ] `list_targets`' behaviour for a static project matches whichever was chosen,
+- [x] `list_targets`' behaviour for a static project matches whichever was chosen,
       covered by a test.
-- [ ] `interfaces/config.md` and the owning decision updated to match.
-- [ ] The `embarch-api/open.md` bullet answered and removed.
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for anything suite-level
+- [x] `interfaces/config.md` and the owning decision updated to match.
+- [x] The `embarch-api/open.md` bullet answered and removed.
+- [x] `changelog.d/` fragment dropped; `status.d/` fragment for anything suite-level
       made false; `features.d/api-*` row if the surface changed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Answer
+
+**Dropped the rows** (`embarch-api` decision 53, in `decisions/shape.md` — not
+`decisions/zephyr.md`, which has 96 B of headroom and could not take an entry).
+
+*Rejected: a `target` param.* It is buildable and does **not** contradict
+decision 51 — a row replaces the whole argv rather than splicing into one — but
+it would add a second, differently-shaped selection grammar to
+`build`/`flash`/`build_and_flash`/`reset`/`run_study` and the CLI for a feature
+**no config in this suite uses**: the rows are absent from
+`config.example.toml`, from `/home/gabriel/.config/embarch/`, and from every
+other repo's docs and source, and every field a row can carry is already
+expressible as one more `[[projects]]` entry.
+
+Two things make the removal lossless rather than merely smaller:
+
+- `list_targets` for a `static` project **no longer errors** demanding a menu.
+  It returns exactly one row — the project itself, with its configured
+  `build_command`, `chip` and *resolved* `artifact_path` — so the tool answers
+  "what can I build?" for every project kind, and the row it names is the build
+  a bare `build` actually runs. Covered by
+  `list_targets_reports_a_static_project_as_its_own_single_target` in
+  `src/resolve.rs`.
+- A config still carrying `[[projects.targets]]` **fails at load naming the
+  retirement** rather than parsing into a field nothing reads — decision 51's
+  reject-rather-than-ignore posture applied to config. Covered for both
+  discovery kinds in `src/config.rs`.
+
+**No hardware-verification debt**: every path here is config and JSON shape,
+exercised host-side, and `tests/json_surface.rs` drives the real binary.
+
+**Doc-size:** `spec.md` spent ~220 B of its reserve (357 B → 135 B left);
+`interfaces/config.md` net +41 B (873 B left); `open.md` shrank by 209 B.
+`tasks/api/012-compact-api.md` already covers all three. Nothing new filed.

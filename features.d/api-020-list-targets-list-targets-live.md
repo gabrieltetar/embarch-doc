@@ -1,1 +1,1 @@
-| `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
+| `list_targets` + `list-targets` — live target discovery (`zephyr-west`); a `static` project's one target (itself) | Shipped — the hand-authored `[[projects.targets]]` menu is **retired**, refused at config load, having never been selectable | local | 12, 53 |
