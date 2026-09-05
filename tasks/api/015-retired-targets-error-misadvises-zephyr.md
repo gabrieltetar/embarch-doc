@@ -1,6 +1,6 @@
 # 015 — The retired-`[[projects.targets]]` load error tells a `zephyr-west` project to store the three fields decision 12 removed
 
-**State:** open
+**State:** claimed by agent/api/015-retired-targets-error-misadvises-zephyr, 2026-09-05 18:10
 **Source:** review of `api/010-static-project-target-menu` (`embarch-api` `863f187`, `embarch-doc` `f46fb80`) against `embarch-api` decision 12
 **Scope:** api
 **Hardware:** none
