@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Sixteen claims that lived in two api docs each now live in one, with a pointer where each moved from; the reflash invariant stays in both, on purpose (decision 40).
+## 2026-09
+
+### Changed
 - A truncated build log now keeps its first 16 KB as well as its last 48 KB, so an early error is not scrolled off; total still capped at 64 KB (decision 18).
 ## 2026-09
 
