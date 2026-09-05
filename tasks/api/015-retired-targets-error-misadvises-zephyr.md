@@ -1,6 +1,6 @@
 # 015 — The retired-`[[projects.targets]]` load error tells a `zephyr-west` project to store the three fields decision 12 removed
 
-**State:** claimed by agent/api/015-retired-targets-error-misadvises-zephyr, 2026-09-05 18:10
+**State:** done, 2026-09-05, on agent/api/015-retired-targets-error-misadvises-zephyr
 **Source:** review of `api/010-static-project-target-menu` (`embarch-api` `863f187`, `embarch-doc` `f46fb80`) against `embarch-api` decision 12
 **Scope:** api
 **Hardware:** none
@@ -68,10 +68,49 @@ restore the menu decision 53 correctly retired. This is a message-only fix.
 
 ## Done when
 
-- [ ] A `zephyr-west` project declaring `[[projects.targets]]` is refused with
+- [x] A `zephyr-west` project declaring `[[projects.targets]]` is refused with
       advice it can actually follow — not "set build_command/chip/artifact_path",
       which the same `validate()` rejects on the next branch.
-- [ ] A `static` project's message is unchanged, or equivalently truthful.
-- [ ] `a_zephyr_west_project_is_refused_the_retired_menu_too` asserts on the
+- [x] A `static` project's message is unchanged, or equivalently truthful.
+- [x] `a_zephyr_west_project_is_refused_the_retired_menu_too` asserts on the
       advice, not only on the word "retired", so the two branches cannot drift.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What shipped
+
+`embarch-api/src/config.rs` — the `retired_targets` refusal stays **one check
+above** the `match project.discovery`, and only its remediation branches. Chosen
+over moving the check into the two arms: the refusal is one invariant of decision
+53, it must fire before the per-kind field errors so a config carrying both hears
+about the retired menu first, and duplicating the `is_empty()` condition into two
+arms is exactly how the two texts drift apart again.
+
+A `zephyr-west` caller now reads: *"…which is retired. Nothing ever selected a
+row. This project already discovers its targets live from the repo on every call,
+so the rows were a second, stale copy of what west reports. Delete them: a caller
+picks a target with board/variant/revision/app on the call itself, and
+[projects.default_target] sets the one used when a call names none. Do not move
+them into build_command/chip/artifact_path — a discovery = \"zephyr-west\"
+project is refused those three fields outright, because caching them is the
+staleness this discovery kind exists to eliminate."* The `static` message is
+unchanged in substance; its first clause is re-punctuated by the split.
+
+Both tests now assert the **advice**. `a_retired_projects_targets_menu_is_refused_by_name`
+pins `Declare one [[projects]] entry per target` and
+`name/build_command/chip/artifact_path`;
+`a_zephyr_west_project_is_refused_the_retired_menu_too` pins `discovers its
+targets live`, `board/variant/revision/app on the call itself` and
+`[projects.default_target]`, asserts the **absence** of the static remedy's
+pinned phrase, and — stronger than a phrase check — asserts that if the message
+names `build_command` at all it does so only under the explicit prohibition. A
+future shared tail therefore fails a test rather than shipping.
+
+Docs: decision 53 (`embarch-api/decisions/shape.md`) records the branched
+remediation, why the check stays above the match, and why the gate was blind;
+`embarch-api/interfaces/config.md`'s `[[projects.targets]]` row now branches its
+advice too (row shortened to keep that file out of the doc-size reserve — 11,040
+of 12,288 B, 89.8%). `spec.md` needed no edit and was not touched: its sentence
+says the menu is retired and refused at load, which stays true.
+
+**A reversals row may be owed** and is not a worker's to write — reported to the
+supervisor rather than filed here.
