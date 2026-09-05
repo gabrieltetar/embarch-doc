@@ -6,11 +6,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 1. What it is
 
-Three responsibilities on top of `embarch-core`: **(a)** exposing Core's capabilities as MCP tools for any MCP client, **(b)** exposing the same capabilities as CLI subcommands for a human with no MCP client — a **superset**: `versions` reports this binary's own compiled versions and has no tool ([decisions](decisions/surface.md) 52) — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`.
+Three responsibilities on top of `embarch-core`: **(a)** Core's capabilities as MCP tools, **(b)** the same as CLI subcommands — a **superset**, since `versions` reports this binary's own compiled versions and has no tool ([decisions](decisions/surface.md) 52) — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`.
 
 **Subcommand presence is the mode switch.** No subcommand → an MCP stdio server. A subcommand → run that one operation and exit. Both front-ends call the same modules; neither is privileged.
 
-Core owns all direct hardware access — `probe-rs` and `serialport` live exclusively there, and this crate links neither. Core has no idea this crate, MCP or Claude Code exist, and that one-way relationship is load-bearing well beyond any single feature. `embarch-umbrella` sits on the far side of the same boundary: it writes this crate's config and shells out to its CLI, unknown here.
+Core owns all direct hardware access — `probe-rs` and `serialport` live exclusively there, and this crate links neither. **Core has no idea this crate, MCP or Claude Code exist**, and that one-way relationship is load-bearing well beyond any single feature. `embarch-umbrella` sits on the far side of the same boundary: it writes this crate's config and shells out to its CLI, unknown here.
 
 ## 2. Invariants
 
@@ -28,9 +28,9 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 ## 3. Build orchestration
 
 - **A selection a `static` project cannot honour fails, naming the fields** ([decisions](decisions/zephyr.md) 51); none given resolves as before.
-- **Working directory** is `source_path` joined with `build_cwd` if set, validated to exist before spawning. `artifact_path` resolves against that same directory, **not `source_path` alone**, which is load-bearing: `west`'s default output is `<cwd>/build`, so an invocation from the repo root with the app path as an argument must leave `build_cwd` **unset**. Setting it points the artifact path at a `build/` nothing writes to.
+- **Working directory** is `source_path` joined with `build_cwd` if set, validated before spawning. `artifact_path` resolves against **that** directory, not `source_path` alone: `west`'s default output is `<cwd>/build`, so an invocation from the repo root with the app path as an argument must leave `build_cwd` **unset**, or the artifact path points at a `build/` nothing writes to.
 - **Capture** drains stdout and stderr in two concurrent tasks — draining one while the other fills its OS buffer is a classic way to hang a child.
-- **Truncation keeps the tail only** — the last 64 KB behind a marker naming the cap, cut on a UTF-8 boundary since an offset inside a codepoint panics `String::replace_range`. Head-and-tail was the intent, never built: [open.md](open.md) carries it.
+- **Truncation keeps the tail only** — the last 64 KB behind a marker naming the cap, cut on a UTF-8 boundary, since an offset inside a codepoint panics `String::replace_range`. Head-and-tail was the intent, never built: [open.md](open.md) carries it.
 - **Timeout kills the process group**, not just the immediate child — `west`/`cmake`/`make` fork subprocesses a plain kill would orphan. A killed or timed-out build is reported **distinctly** from a nonzero exit, so a hang is not misread as a code problem.
 - **One build in flight per project name**, via a per-project async lock. Separate from Core's hardware lock: it guards two calls stomping one output directory, not USB contention.
 
@@ -38,7 +38,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 
 Today `embarch-api` runs under WSL2 and Core native on Windows on the same physical machine, reached over the WSL2⟷Windows network boundary rather than loopback.
 
-**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or an explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. WSL2 needs it because `\\wsl.localhost\…` UNC shares come from a per-session network provider tied to an interactive logon, and Core's service runs as `LocalSystem` in **Session 0**, which has none: the identical path resolves from an interactive shell and fails with "the network name cannot be found" from the service. Not about the account — services are always in Session 0. So `artifact_path_for_core` and its UNC computation are **fully retired**, not superseded: multipart works the same foreground or service, and covers a remote Core the same way.
+**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or an explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. WSL2 needs it because `\\wsl.localhost\…` UNC shares come from a per-session network provider tied to an interactive logon, and a service runs in **Session 0**, which has none. **Failure signature:** the identical path resolves from an interactive shell and fails with "the network name cannot be found" from the service. It is not about the account. So `artifact_path_for_core` and its UNC computation are **fully retired**, not superseded: multipart works the same foreground or service, and covers a remote Core the same way.
 
 **`base_url = "auto"`** resolves per-process on first use — a short-timeout `GET /status` race over an ordered candidate list (loopback, the WSL2 default-gateway IP, a configured host), first answer wins, and a `401` **counts as an answer**: Core is there and the token is wrong, which needs its own message. Cached for the process lifetime, never written back to config, so a WSL2 restart's new gateway IP is picked up next run. **Resolution must be lazy**: the startup check is MCP-mode-only and `list_projects` works with Core down; resolving at config-load time regresses both.
 
@@ -46,35 +46,32 @@ Today `embarch-api` runs under WSL2 and Core native on Windows on the same physi
 
 ## 5. Modules
 
-| Module | Owns |
-|---|---|
-| `main.rs` | clap CLI, config resolution, logging init, dispatch to the MCP server or `cli.rs` — and `versions`, answered *before* config resolution so a broken config cannot hide it |
-| `config.rs` | TOML schema, load, validation (unique names, path existence, discovery-branched required fields) |
-| `zephyr.rs` | the live `boards/`/`app/` scan, target cross-product, file-backing validation, build-dir and artifact-path assembly. Pure filesystem and YAML reads — no `west`, no network |
-| `resolve.rs` | the one place every front-end branches on `discovery`, turning a project plus a selection into a build plan and a chip |
-| `build.rs` | subprocess execution for a discovery-agnostic build plan. The one module behind this package's `lib` target, since a binary crate exposes nothing to `tests/` ([decisions](decisions/shape.md) 46) |
-| `reflash.rs` | the check → build → flash → submit sequence, and the no-`git checkout` refusal with its test |
-| `study.rs` | the shared seal-recomputation helper both front-ends call |
-| `tools.rs` / `cli.rs` | the two front-ends; thin glue over the same modules |
-| `logging.rs` | the rolling per-user logfile |
-| `json_out.rs` | the one place a `serde_json` value becomes text, so the only place `schema_version` is stamped |
-| `tests/` | the six recorded acceptance criteria: `core_client_http.rs` (bearer, timeouts, non-2xx, against a loopback mock Core), `build_capture.rs` (drain, truncation, freshness), `study_events_sse.rs` (SSE framing, `lagged`, fallback), `json_surface.rs` (the `--json` stamp, and that `versions` answers with no config). No hardware, no live Core, no added dependency |
-| `crates/embarch-core-client/` | `CoreClient` (every Core endpoint, bearer injection, per-call timeouts, the topology-branched flash transport, typed `409`/`404` errors), `CoreConfig`, token discovery, `version.rs`, and the study event stream (`sse.rs`, a byte-fed decoder with no I/O; `study_events.rs`, the follow loop and polling fallback). A path dependency, not a workspace member |
+Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither
+privileged. `resolve.rs` is the single place anything branches on `discovery`;
+`json_out.rs` is the single place `schema_version` is stamped; `build.rs` is the
+only module behind the `lib` target, since a binary crate exposes nothing to
+`tests/` ([decisions](decisions/shape.md) 46). `crates/embarch-core-client/` is a
+path dependency rather than a workspace member, and `embarch-ui` path-depends on
+it too — **a change there reaches a repo this one does not own.**
 
-`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
+The full map, module by module: [interfaces/modules.md](interfaces/modules.md).
+
+`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated
+thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size
+the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
 
 ## 6. Security
 
 **Inbound is "whoever can spawn the process"** — MCP and CLI alike. No API key, bearer token or session at this layer. A deliberate simplification; [open.md](open.md) carries what it costs.
 
-**Outbound** is `EMBARCH_TOKEN`, from config `token`, then `token_env`, then machine-wide token-file discovery (same-OS path, or the WSL2⟷Windows-translated one). Full lifecycle: [embarch-token.md](../embarch-token.md).
+**Outbound** is `EMBARCH_TOKEN`: config `token`, then `token_env`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../embarch-token.md).
 
 ## 7. Constants
 
 | Name | Value | Provenance |
 |---|---|---|
-| runtime thread stack | 512 MiB | [measured 2026-08-24] 64 MiB was insufficient against a real GATT-heavy `StudyResult` |
-| `FRESHNESS_CLOCK_GRACE` | 500 ms | [measured] WSL2 clock jitter put a child's file mtime *before* the parent's pre-spawn timestamp; a real build takes seconds, so it cannot mask a stale artifact |
+| runtime thread stack | 512 MiB | [measured 2026-08-24] 64 MiB overflowed on a real GATT-heavy `StudyResult` |
+| `FRESHNESS_CLOCK_GRACE` | 500 ms | [measured] WSL2 clock jitter put a child's mtime *before* the parent's pre-spawn timestamp. A real build takes seconds, so this cannot mask a stale artifact |
 | capture cap | 64 KB, tail only | [assumed] |
 | default `build_timeout_secs` | 300 | [assumed] |
 | default Core port | 4884 | — |

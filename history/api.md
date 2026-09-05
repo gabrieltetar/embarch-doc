@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `embarch-api`'s spec and open questions had run out of headroom; the module map moved to `interfaces/modules.md` and the cold narrative is gone.
+## 2026-09
+
 ### Added
 - `embarch-api versions` prints the compiled study-designer host schema version, with no config and no Core: embarch-api/decisions/surface.md 52.
 ## 2026-09
