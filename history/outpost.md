@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- spec.md 9235 → 8317 B: purpose cut to its three sentences, and the tunables' measured provenance now lives only with the Kconfig symbols in interfaces/integration.md.
+## 2026-09
+
+### Changed
 - embarch-outpost reduced to its hot half, 69 KB to 46 KB of decisions; cap tightened to 8 KB.
 
 ### Fixed
