@@ -131,15 +131,16 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
-| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner | local | 17 |
+| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner, which is now what blocks decision 26's `--prune` as well | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
-| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, and `--prune` | local | §5, 18, 22, 26 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 17–20, check 5's not-permitted branch, and `--prune`, now deferred rather than pending (decision 26) | local | §5, 18, 22, 26 |
 | `doctor` check 10 — the MCP server is registered **and answers**: spawns the exact registered command, one `initialize` over its stdio, 10 s; answered, failed and timed out stay distinct in `--json`'s `code` | Shipped — **the parse of `claude mcp get`'s output is assumed, never once seen for real**, so an entry it cannot read is a warn rather than any verdict | unit | 23, 37 |
 | `doctor` check 11 — schema skew: Core's served host version against the **located `embarch-api`**'s, via `embarch-api --json versions`; unaskable is a warn naming why, never a fall back to `embarch`'s own constant, which survives as a mixed-install warn | Shipped, never run against a live Core, a flashed bench or an installed `embarch-api` | unit | 33, 35, 36 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
 | `doctor` check 15 — the running Core's `core_version` is the located build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
+| `doctor` check 16 — `study_results/` entries and bytes, plus per-project build directories; informational, never fails | Shipped, and it **measures rather than deletes**: results retention is `embarch-core`'s `EMBARCH_STUDY_RESULTS_KEEP`, and build-dir `--prune` waits on something that can name a valid target | unit | 26 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
 | Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | Shipped in all four repos that release; the other four still have no release workflow. Proven by running the step, not by a tag | n/a | 27, 29 |
