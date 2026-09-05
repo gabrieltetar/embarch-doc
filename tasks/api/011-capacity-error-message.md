@@ -1,6 +1,6 @@
 # 011 — Decision 27's "which field, what limit" capacity error was never built
 
-**State:** claimed by agent/api/011-capacity-error-message, 2026-09-05 12:52
+**State:** done
 **Source:** [embarch-api/open.md](../../embarch-api/open.md) — "Decision 27's friendlier capacity error was never built. Oversized submissions *are* rejected before the HTTP call, but by `serde`'s raw error, not the 'which field, what limit' message described."
 **Scope:** api
 **Hardware:** none
@@ -40,11 +40,35 @@ Good filler for a slot; not urgent on its own.
 
 ## Done when
 
-- [ ] An oversized submission is rejected with a message naming the field and the
+- [x] An oversized submission is rejected with a message naming the field and the
       limit, covered by a test.
-- [ ] Decision 27's implementation note updated to say it shipped (or the decision
+- [x] Decision 27's implementation note updated to say it shipped (or the decision
       amended to say it was retired unbuilt, with the reason).
-- [ ] The `embarch-api/open.md` bullet answered and removed.
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for anything suite-level
-      made false.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] The `embarch-api/open.md` bullet answered and removed.
+- [x] `changelog.d/` fragment dropped. **No `status.d/` fragment:** no suite-level doc
+      states anything about this rejection, so nothing became false. `features.d/api-060`
+      amended instead, since the caller-visible refusal changed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+**Built, not retired.** `src/capacity.rs`: on a deserialize failure, the submitted
+JSON is walked against a partial table of bounds and every field over one is named
+with its count and its limit — the four lists by entry count, names by **byte**
+length, since bytes are what `heapless::String<N>` bounds. It runs **only on the
+error path**, after `serde` has already refused, so the table can be partial and a
+wrong entry in it can only worsen a message, never reject a study `serde` would
+accept. Both front-ends changed; `tools.rs` now deserializes from `&Value` so the
+value survives the failure.
+
+What the caller used to get, asserted in a test rather than remembered:
+`sequence exceeds its bound at line 1 column 8785`.
+
+**Decision 27 lives in `decisions/studies.md`, not `decisions/zephyr.md`** — the
+reserve block's worry did not apply. `studies.md` was at 10,640/12,288 B and had
+room; recording this cost 609 B and pushed it to 91.5%, into reserve, so it was
+**added to `tasks/api/012-compact-api.md`** (`In flux: no`). Nothing was displaced
+into a file it does not belong in. `spec.md`, the tight one, needed no change: the
+new module is a row in `interfaces/modules.md`, which `spec.md` §5 already delegates
+to. `open.md` fell to 89.2% when its bullet went, out of reserve, and that item in
+012 is closed.

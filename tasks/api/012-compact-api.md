@@ -1,7 +1,7 @@
-# 012 — Compact `embarch-api`'s spec, zephyr decisions and config interface
+# 012 — Compact `embarch-api`'s spec, two decision groups and the config interface
 
-**State:** blocked
-**Source:** `scripts/check-doc-size.py` — three `embarch-api` files entered reserve on task 009's commit
+**State:** open
+**Source:** `scripts/check-doc-size.py` — `embarch-api` files entering reserve, on tasks 009 and 011
 **Scope:** api
 **Hardware:** none
 **Owner:** no
@@ -12,15 +12,20 @@ refuses `tasks/doc/**`, reported it, and `tasks/doc/004` settled it on 2026-09-0
 in this file's favour: a compaction debt goes in the scope directory of the doc
 being compacted. `tasks/README.md` and `check-doc-size.py`'s message say so.
 
-**Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md, embarch-api/open.md
+**Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md, embarch-api/decisions/studies.md
 
-**`open.md` added by the supervisor, leg 009**, in the commit that spent its reserve
-(4371 → 4981 B, 97.3%). What spent it: a bullet recording the two loose ends the
-`api/009` reviewer found — the `none`-collision error's unfollowable advice, and the
-asymmetric load-time refusal. I wrote it long and it cost more than I estimated;
-**a compaction pass may shorten it freely, but must not drop either fact**, because
-each is a live inconsistency in shipped behaviour with nothing else recording it.
-**In flux:** yes — unparked when `tasks/api/010-static-project-target-menu.md` closes
+**`open.md`'s item is closed, 2026-09-05** — `api/011` answered and removed decision
+27's capacity bullet and the file fell to 89.2%, out of reserve. The two loose ends
+leg 009 recorded there (the `none`-collision error's unfollowable advice, and the
+asymmetric load-time refusal) are **still in the file and still live inconsistencies
+in shipped behaviour**; a later pass may shorten them freely but must not drop either.
+
+**`decisions/studies.md` added by `agent/api/011`**, which spent 609 B of its reserve
+(10,640 → 11,249 B, 91.5%) recording that decision 27 shipped: the message's shape,
+the `serde` string it replaces, and why the check is diagnostic-only rather than a
+second gate. **In flux:** no. Decision 27's subsystem is settled — both halves are now
+built, and 30/39/40/44 in that file are closed decisions with no open task against
+them. A pass may compact it whenever it is convenient.
 **Must not delete:** decision 21's *first* paragraph as written, which asserts the
 `"none"` literal "cannot collide with a real snippet name" — it is wrong, the
 amendment below it says so and says how it is now checked, and a compaction that
@@ -32,9 +37,9 @@ were the same defect — is evidence, not a restatement of the rule.
 
 ## What
 
-All three files are in reserve after task 009 built decisions 20 and 21:
-`decisions/zephyr.md` 12,192/12,288 B (96 B left), `spec.md` ~9.9K/10K,
-`interfaces/config.md` ~11.4K/12.3K. Nothing is blocked and nothing is being
+Four files are in reserve: `decisions/zephyr.md` 12,192/12,288 B (96 B left),
+`spec.md` 10,105/10,240 B (135 B left), `interfaces/config.md` 11,415/12,288 B,
+and `decisions/studies.md` 11,249/12,288 B. Nothing is blocked and nothing is being
 asked for yet — this records that the runway is nearly spent.
 
 `decisions/zephyr.md` is the tight one and is the natural target: it carries ten
@@ -45,17 +50,17 @@ reasoning, not shortening the reasoning itself.
 
 ## Why now
 
-**Blocked, deliberately.** `tasks/api/010` reopens exactly this subsystem: it
-either adds a `target` param for a `static` project's `[[projects.targets]]`
-menu or drops the rows, and either answer rewrites decision 12's escape-hatch
-sentence, decision 51's reject-not-splice argument, `spec.md` §3's static bullet
-and `interfaces/config.md`'s `[[projects.targets]]` row. Compacting before that
-lands writes a clean statement of something about to be wrong.
+**Unblocked 2026-09-05**: `tasks/api/010` closed, retiring `[[projects.targets]]`,
+which is what this was parked behind — compacting before it landed would have
+written a clean statement of something about to be wrong. Decision 12's
+escape-hatch sentence, decision 51's argument, `spec.md` §3's static bullet and
+`interfaces/config.md`'s row have all now been rewritten to match, so the ground
+under a pass is stable.
 
 ## Done when
 
-- [ ] `tasks/api/010` is closed, and this task is moved to `open`.
-- [ ] The three files are compacted per `DOC-COMPACTION-PASS.md`, one commit for
+- [x] `tasks/api/010` is closed, and this task is moved to `open`.
+- [ ] The four files are compacted per `DOC-COMPACTION-PASS.md`, one commit for
       the sub-project, with the `Must not delete:` list above honoured.
 - [ ] The human question answered in the compactor's own words in the commit
       message: can `embarch-api/spec.md` alone answer what someone needs to work

@@ -18,6 +18,7 @@ Current truth: [spec.md](../spec.md). Why: [decisions.md](../decisions.md).
 | `build.rs` | subprocess execution for a discovery-agnostic build plan. The one module behind this package's `lib` target ([decisions](../decisions/shape.md) 46) |
 | `reflash.rs` | the check → build → flash → submit sequence, and the no-`git checkout` refusal with its test |
 | `study.rs` | the shared seal-recomputation helper both front-ends call |
+| `capacity.rs` | decision 27's capacity message — which field overflowed, and its limit. Runs **only after `serde` has already refused** a submission, so it can never reject one `serde` would accept |
 | `tools.rs` / `cli.rs` | the two front-ends; thin glue over the same modules |
 | `logging.rs` | the rolling per-user logfile |
 | `json_out.rs` | the one place a `serde_json` value becomes text, so the only place `schema_version` is stamped |

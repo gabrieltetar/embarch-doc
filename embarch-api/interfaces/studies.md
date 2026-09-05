@@ -15,6 +15,8 @@ MCP tools are `snake_case`, CLI subcommands `kebab-case`, over one implementatio
 | `list_study_streams` | `study_id` | Per declared tap: `name`, `bytes_written`, and **`truncated`** — the reason this exists, since the aliases below structurally cannot report it. `bytes_written: 0` means a tap was declared and captured nothing, a different fact from one never declared |
 | `study_power_data` · `study_waveform_data` · `study_gatt_data` | `study_id` | **Aliases kept for one release**, each serving whichever tap answers that alias. Names, params and returned bytes are pinned; their *descriptions* say what each resolves, that it is an alias, and that truncation lives in `list_study_streams` |
 
+**A submission over a capacity bound is refused here, before the HTTP call, naming every field it overflowed and that field's limit** ([decisions](../decisions/studies.md) 27) — counts for the four lists, **bytes** for a name, and one closing line saying the bounds are dev-bench's compile-time buffer sizes and cannot be raised for one submission. Same message on both front-ends. A failure that was *not* a capacity overflow still reports `serde`'s own schema error, which for that case is the better one.
+
 CLI data subcommands take `[--out <path>]`. **`--out` is how a binary capture gets out intact** — a raw tap's bytes are not text, and the no-`--out` path writes them to stdout untouched. `list-study-streams` marks a short capture on its own row, not a column an eye slides past.
 
 ## Watching a study live
