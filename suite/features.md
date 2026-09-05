@@ -41,7 +41,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
 | `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, replacing a hand-maintained static entry | Shipped | local | 12 |
 | CLI subcommands for every tool (kebab-case, unlike the snake_case tools) — **a superset, not a mirror**: `versions` has no MCP twin | Shipped | hw | §5a |
-| `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped — **nothing reads it yet** | unit | 52 |
+| `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped; `doctor` check 11 reads it as of 2026-09-04 | unit | 52 |
 | `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
 | `study-status --follow` / `study_watch` — live study events over SSE, `lagged` reported not raised, polling fallback | Shipped, never against a real Core | unit | 48, 49 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
@@ -133,7 +133,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
 | `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, check 10's handshake spawn so registered-but-broken passes, and `--prune` | local | §5, 18, 22, 23, 26 |
-| `doctor` check 11 — schema skew: Core's served host version against this binary's compiled one, plus Core's `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33 |
+| `doctor` check 11 — schema skew: Core's served host version against the **located `embarch-api`**'s, via `embarch-api --json versions`; unaskable is a warn naming why, never a fall back to `embarch`'s own constant, which survives as a mixed-install warn | Shipped, never run against a live Core, a flashed bench or an installed `embarch-api` | unit | 33, 35, 36 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
 | `doctor` check 15 — the running Core's `core_version` is the located build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |

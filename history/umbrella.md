@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `doctor` check 11 reads the located `embarch-api`'s `versions`, not `embarch`'s own constant; unaskable is its own warn.
+## 2026-09
+
+### Changed
 - umbrella spec.md, open.md and decisions/doctor.md off their caps; "is it built" now lives once, in spec.md's table.
 ## 2026-09
 

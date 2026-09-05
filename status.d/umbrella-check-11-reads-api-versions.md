@@ -1,3 +1,0 @@
-**Target:** suite/features.md — the `doctor` check 11 row (umbrella section)
-**Was:** "`doctor` check 11 — schema skew: Core's served host version against this binary's compiled one, plus Core's `compatible` verdict on the bench | Shipped, never run against a live Core or a flashed bench | unit | 33"
-**Now:** check 11 compares Core's served host version against the **located `embarch-api`**'s compiled one, read by shelling out to `embarch-api --json versions`; a binary that cannot be asked is a warn naming why, never a fall back to `embarch`'s own constant, which survives only as a mixed-install warn. Decisions 33, 35, 36. Still never run against a live Core, a flashed bench, or an installed `embarch-api`.
