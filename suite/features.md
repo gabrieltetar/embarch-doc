@@ -38,7 +38,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
 | `list_projects`, `status`, `build`, `flash`, `build_and_flash`, `reset`, `serial_log` — MCP tools | Shipped | hw | §5 |
-| `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
+| `list_targets` + `list-targets` — live target discovery (`zephyr-west`); a `static` project's one target (itself) | Shipped — the hand-authored `[[projects.targets]]` menu is **retired**, refused at config load, having never been selectable | local | 12, 53 |
 | `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, replacing a hand-maintained static entry | Shipped | local | 12 |
 | `[projects.default_target]` — a `zephyr-west` base selection a call narrows from, per field, so a repo growing a board does not start erroring unchanged calls | Shipped — documented as truth since it was decided, **built 2026-09-04**; refused at config load for a `static` project | unit | 20 |
 | `snippets = ["none"]` — the reserved literal forcing zero snippets over a configured `default_snippets` | Shipped — documented as truth since it was decided, **built 2026-09-04**; a mixed list, or an app really declaring a `none` snippet, is refused naming the ambiguity | unit | 21 |
