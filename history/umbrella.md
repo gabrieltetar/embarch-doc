@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `embarch doctor` check 10 now spawns the registered MCP command and completes an `initialize`; registered-but-broken reads Fail, not Pass.
+## 2026-09
+
 ### Added
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 ## 2026-09

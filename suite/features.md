@@ -132,7 +132,8 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
-| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, check 10's handshake spawn so registered-but-broken passes, and `--prune` | local | §5, 18, 22, 23, 26 |
+| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, and `--prune` | local | §5, 18, 22, 26 |
+| `doctor` check 10 — the MCP server is registered **and answers**: spawns the exact registered command, one `initialize` over its stdio, 10 s; answered, failed and timed out stay distinct in `--json`'s `code` | Shipped — **the parse of `claude mcp get`'s output is assumed, never once seen for real**, so an entry it cannot read is a warn rather than any verdict | unit | 23, 37 |
 | `doctor` check 11 — schema skew: Core's served host version against the **located `embarch-api`**'s, via `embarch-api --json versions`; unaskable is a warn naming why, never a fall back to `embarch`'s own constant, which survives as a mixed-install warn | Shipped, never run against a live Core, a flashed bench or an installed `embarch-api` | unit | 33, 35, 36 |
 | `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
 | `doctor` check 14 — flashing backend per chip family | Shipped | hw | 31 |
