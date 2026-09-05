@@ -1,6 +1,6 @@
 # 008 — Point `doctor` check 11 at `embarch-api versions`, not at `embarch`'s own constant
 
-**State:** claimed by agent/umbrella/008-check-11-reads-embarch-api-versions, 2026-09-04 20:02
+**State:** done on agent/umbrella/008-check-11-reads-embarch-api-versions, 2026-09-04 — pushed, not merged
 **Source:** embarch-api/006 (decision 52) — the surface check 11 was missing now exists
 **Scope:** umbrella
 **Hardware:** none
@@ -47,10 +47,51 @@ is built and landed; this is the half that closes the bullet.
 
 ## Done when
 
-- [ ] Check 11 reads the located `embarch-api`'s `versions --json`
+- [x] Check 11 reads the located `embarch-api`'s `versions --json`
       `host_type_schema_version`, with a distinct verdict when it cannot be asked.
-- [ ] `embarch-umbrella/open.md`'s stand-in bullet closes; `decisions/` records
+- [x] `embarch-umbrella/open.md`'s stand-in bullet closes; `decisions/` records
       what happened to the local constant.
-- [ ] `embarch-api/open.md`'s "Nothing reads `versions` yet" bullet is named as
-      closable in the report (a different repo — do not edit it).
-- [ ] Gate green.
+- [x] `embarch-api/open.md`'s "Nothing reads `versions` yet" bullet is named as
+      closable in the report (a different repo — do not edit it), and in
+      `status.d/umbrella-api-versions-has-a-consumer.md`.
+- [x] Gate green. `cargo build`/`test`/`clippy --all-targets -D warnings` clean;
+      `check-docs.py` green on all six doc checks. The one red is
+      `install.py --check`, which the supervisor pre-declared as a worktree-depth
+      artefact and not this task's.
+
+## Both judgements, decided
+
+- **`local_host` is now `api_host: Result<u32, String>`** — the located
+  `embarch-api`'s own number, and a `Warn` naming which failure when it cannot be
+  had (not located / clap-exit-2 too old / not executable / no field). Never a
+  fall back to the local constant; a test pins that "could not ask" and "they
+  disagree" reach different verdicts on the same numbers. Decision 35.
+- **`embarch`'s own constant stays, as a fourth number that can only warn.** It
+  is free, and an `embarch` disagreeing with the `embarch-api` it just located is
+  a mixed install nothing else notices without a suite manifest — but it blocks
+  no study, because `embarch` submits none. Decision 36.
+
+## Two things found on the way
+
+- **The invocation in this task file is wrong.** `--json` is a top-level flag on
+  `embarch-api`'s parser and is not `global`, so `embarch-api versions --json`
+  exits **2** with `unexpected argument '--json' found`. It has to be
+  `embarch-api --json versions` [verified 2026-09-04 against a local build].
+  Nothing in `embarch-api`'s own docs states the wrong order; only this task did.
+- **`embarch-umbrella/decisions/doctor.md` could not hold two more entries** —
+  it was 4 B under its reserve and 1233 B under its 12 KB cap, with five more
+  open umbrella tasks queued to write there. Decisions 24, 33, 34 and the two new
+  ones moved into `decisions/schema-skew.md`; `doctor.md` is now 6.5 KB and the
+  new group 7.0 KB. No compaction debt filed: nothing was left in reserve that
+  `tasks/umbrella/009` does not already name, and `open.md` came *out* of reserve
+  when the stand-in bullet closed (4795 -> 4512 B). `009` is untouched and stays
+  blocked.
+
+## Verification debt (not hardware)
+
+Everything here is host-side: the check is exercised against fabricated
+`embarch-api` binaries (a good one, one exiting 2, one with no execute bit) and
+a local debug build. **What has not happened is one `embarch doctor` against the
+installed suite**, which would confirm the installed `embarch-api` answers
+`--json versions` with the field. Carried in `embarch-umbrella/open.md`'s first
+bullet alongside the live-Core debt that was already there.

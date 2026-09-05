@@ -82,7 +82,7 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
 | 10 | The registration entry exists — one `claude mcp get`. **Spawning the registered command and completing a handshake is designed and unbuilt** (decision 23), so registered-but-broken still passes |
-| 11 | The study-designer schema versions: Core's served host version against this binary's compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports |
+| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with |
