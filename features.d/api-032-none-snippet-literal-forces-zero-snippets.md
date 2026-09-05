@@ -1,0 +1,1 @@
+| `snippets = ["none"]` — the reserved literal forcing zero snippets over a configured `default_snippets` | Shipped — documented as truth since it was decided, **built 2026-09-04**; a mixed list, or an app really declaring a `none` snippet, is refused naming the ambiguity | unit | 21 |

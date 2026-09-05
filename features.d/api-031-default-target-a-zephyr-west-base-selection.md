@@ -1,0 +1,1 @@
+| `[projects.default_target]` — a `zephyr-west` base selection a call narrows from, per field, so a repo growing a board does not start erroring unchanged calls | Shipped — documented as truth since it was decided, **built 2026-09-04**; refused at config load for a `static` project | unit | 20 |

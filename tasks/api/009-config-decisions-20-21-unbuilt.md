@@ -1,6 +1,6 @@
 # 009 — `interfaces/config.md` states two config fields as truth; neither exists
 
-**State:** claimed by agent/api/009-config-decisions-20-21-unbuilt, 2026-09-04 23:36
+**State:** done — both built, neither retired (agent/api/009-config-decisions-20-21-unbuilt, 2026-09-04)
 
 **Doc-size reserve at dispatch (supervisor, leg 009):** **no `embarch-api` file is in
 reserve.** The only file in reserve suite-wide is `embarch-umbrella/spec.md` (97.6%,
@@ -48,12 +48,50 @@ in the queue.
 
 ## Done when
 
-- [ ] Each of `default_target` and the `["none"]` snippet is either built and tested,
+- [x] Each of `default_target` and the `["none"]` snippet is either built and tested,
       or removed from `interfaces/config.md` with its decision amended to say it was
       retired unbuilt and why.
-- [ ] The `embarch-api/open.md` bullet is answered and removed, or narrowed to what
+- [x] The `embarch-api/open.md` bullet is answered and removed, or narrowed to what
       is genuinely left.
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for any suite-level fact
+- [x] `changelog.d/` fragment dropped; `status.d/` fragment for any suite-level fact
       this makes false; `suite/user-guide.md` checked for either field (a
       `status.d/` fragment if it names one — you do not edit that file yourself).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+**Both built, neither retired.** Each was small — the interface doc's text was a
+faithful description of a design worth having, so the cheaper honest fix was to
+make it true rather than to delete it.
+
+- `[projects.default_target]` — a `zephyr-west` base selection, applied **per
+  field** before a call narrows further. Refused at config load for a `static`
+  project (decision 51 refuses every selection field on a call to one) and when
+  the table is empty. A `NoMatch`/`Ambiguous` error now names which axes came
+  from it, and `list_targets` reports it.
+- `snippets = ["none"]` — the reserved literal, alone, forces zero snippets over
+  a configured `default_snippets`. Two things decision 21 asserted turned out to
+  need checks: a snippet name is just a directory name, so a real `none` snippet
+  **can** exist and `["none"]` against such an app is refused naming the
+  collision; and `"none"` inside `default_snippets` is a config-load error.
+
+Also fixed in `interfaces/config.md` while there: the build-directory shape it
+described (`<snippets-or-none>-<extra-args-hash>`) was never what
+`Target::build_dir_name` produces — both trailing segments are **absent**, not
+spelled `none`, when empty.
+
+**Gate:** `cargo build` / `cargo test` (131) / `clippy --all-targets -D warnings`
+green; `check-ownership.py --scope api` green on both branches; seven of eight
+doc checks green. **`build_features.py --check` is red and left red on purpose**
+— the quirk named at the top of this file: two `features.d/api-03*` rows were
+added and `check-ownership.py` refuses `suite/features.md` for a worker scope, so
+both cannot be green at once. The supervisor assembles it in the fold.
+
+**Reserve debt filed** as `tasks/api/012-compact-api.md` — three `embarch-api`
+files entered reserve on this commit. It is **not** at `tasks/doc/001-...` as
+`tasks/README.md` says, because `check-ownership.py --scope api` refuses
+`tasks/doc/**` for a worker; that contradiction is dropped in `inbox/` as
+`doc-compaction-debt-path-conflicts-with-ownership.md` and noted in the task.
+
+**Hardware-verification debt:** none. Both changes are host-side config
+resolution with unit coverage; nothing here reaches a probe or a board.
