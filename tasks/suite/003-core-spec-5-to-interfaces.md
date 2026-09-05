@@ -7,14 +7,17 @@ the announcement before a `suite` task runs. **The next leg must announce it and
 fresh 30-minute clock** — there is no prior `ts` to complete, unlike `suite/001`, which
 leg 006 had already served.
 
-**The blocker is gone as of 2026-09-05.** The connector resolved into the owner's session
-at 10:39 MDT, and a spawned `embarch-supervisor` was confirmed to inherit it — *deferred*,
-so it is absent from the agent's initial tool list and must be pulled in with `ToolSearch`
-(`select:mcp__claude_ai_Slack__slack_read_channel`) before it can be called. That is why
-three legs read their tool list and concluded they had no channel; see `ops.md` §5.2a.
-The owner's window attempted the announcement on 2026-09-05 and **the Slack post was
-refused by the session's permission classifier**, so the clock still has not started.
-Announce it and record the `ts` here.
+**Announced 2026-09-05 11:32 MDT — `ts 1788629535.009729`.** The §4 window is open and
+**elapses 12:02 MDT**; poll that `ts` with `slack_read_thread`. No objection by then clears
+this to run as a leg's **last unit**. Do not restart the clock — complete this window.
+
+The blocker that held it through legs 007–009 is gone. The connector resolved into the
+owner's session at 10:39 MDT, and a spawned `embarch-supervisor` was confirmed to inherit
+it — *deferred*, so it is absent from the agent's initial tool list and must be pulled in
+with `ToolSearch` (`select:mcp__claude_ai_Slack__slack_read_channel`) before it can be
+called. That is why three legs read their tool list and concluded they had no channel; see
+`ops.md` §5.2a. Announced from the owner's window rather than a leg, so the clock is real
+and already running.
 **Source:** tasks/core/003-compact-docs.md, the compaction pass that could not do it
 **Scope:** suite
 **Hardware:** none

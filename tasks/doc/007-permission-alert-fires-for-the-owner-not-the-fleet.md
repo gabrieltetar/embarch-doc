@@ -81,10 +81,15 @@ because it is the one thing that buzzes his phone.
 
 ## Done when
 
-- [ ] The hook no longer alerts for `AskUserQuestion` — principled, not a
-      denylist: `ops.md` §3 forbids a leg asking mid-leg, so the prompt cannot be
-      the condition the hook is for. *(This is the light fix and it clears 9/9 of
-      the observed noise.)*
+- [x] **Done 2026-09-05, owner's window.** The hook no longer alerts for
+      `AskUserQuestion` — principled, not a denylist: `ops.md` §3 forbids a leg
+      asking mid-leg, so the prompt cannot be the condition the hook is for. This
+      is the light fix and it clears 9/9 of the observed noise. Verified against
+      four payloads: silent on `AskUserQuestion`; still alerts on a heredoc, on a
+      `for ... done` loop, and on an MCP tool. **The change is in
+      `.claude/settings.local.json`, so it is not in this commit and not in any
+      commit** — which is the second finding below, now demonstrated rather than
+      argued.
 - [ ] `ops.md` §3 either lists the permission-prompt alert in its closed set or
       says explicitly that the hook is out of band — the set may not stay silent
       about a live alert source.
