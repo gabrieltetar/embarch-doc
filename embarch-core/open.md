@@ -8,8 +8,8 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 - **`study_schema_mismatch` is reachable by nothing**: it names a member of the error `code` enum that does not exist. Deferred below.
 - **The signal-tap path has never run against real hardware.** Unit-tested at its scope boundaries and compiled into both a Linux and a native Windows Core, but **no real port has ever been resolved or read** — resolution matches on a USB serial, and this bench has no USB-UART bridge. `validate_signal` has **no caller anywhere**, deliberately: resolving a route at the moment of use *is* the validation and returns the same error, so calling both would check twice and report once.
-- **Decision 35's gate has never met ESP32-C5 silicon.** The Nordic arm is live and answers `match`; the Espressif relation is verified only by construction against the checked-out HAL headers and by unit test, that board being unplugged. Noted so the two are not conflated.
-- **The Windows registry write for an *explicit* `EMBARCH_TOKEN` on an installed service has never executed on real hardware.** A real service install and start is verified, but that run set no explicit token, and the registry path is only reached when one is set. Narrow: the common case, an auto-generated token, never touches it.
+- **Decision 35's gate has never met ESP32-C5 silicon.** The Nordic arm is live and answers `match`; the Espressif relation is verified only by construction against the checked-out HAL headers and by unit test, that board being unplugged.
+- **The Windows registry write for an *explicit* `EMBARCH_TOKEN` on an installed service has never executed on real hardware.** A real service install and start is verified, but that run set no explicit token, and only an explicit one reaches that path; the common case, an auto-generated token, never does.
 
 ## Unverified diagnoses
 
@@ -19,7 +19,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 ## Designed, not built
 
 - **`core.toml`** (decision 11), narrowed to `bind`/`port`.
-- **A `{code, message, cause}` JSON error body** — **deferred with a trigger, not pending**: the `code` enum is a wire contract three consumers branch on, so it is cross-repo work rather than Core's alone. Cost and trigger: decision 12. (`core_version` shipped; the `contract_version` beside it is retired — decision 13.)
+- **A `{code, message, cause}` JSON error body** — **deferred with a trigger, not pending**: the `code` enum is a wire contract three consumers branch on, so it is cross-repo work rather than Core's alone. Cost and trigger: decision 12.
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not-needed-yet with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked, and this suite's posture is not to build the machinery first.
 
@@ -28,8 +28,8 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **`EMBARCH_TOKEN` is one shared static token, not per-caller credentials**, and there is no TLS. Source of truth: [embarch-token.md](../embarch-token.md) §8.
 - **A separate-machine deployment still has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design and unusable for flashing in practice.
 - **macOS is reasoned-only.** The elevation paths are written and unexercised; nothing in this suite has run on a Mac.
-- **`FlashedThisRun` is unreachable from Core alone** (decision 31), by construction — `/flash` and `/study` are separate calls with nothing linking them, and the alternative is a persisted "last thing I flashed" record this suite forbids. `embarch-api` is what makes it reachable.
-- **`GET /study/{id}/events` offers no `Last-Event-ID` and no replay** (decisions 24, 41). Now consumed by `embarch-api`'s `study-status --follow` and `study_watch` (`embarch-api/decisions/core-link.md` 48, 49), but a reconnect resumes at "now" with no way to ask for what it missed; both consumers fall back to polling `GET /study/{id}` on a drop rather than pretending to resume. Resumable subscribers would be new Core-side design, closed here as not needed yet.
+- **`FlashedThisRun` is unreachable from Core alone** (decision 31), by construction, and `embarch-api` is what makes it reachable.
+- **`GET /study/{id}/events` offers no `Last-Event-ID` and no replay** (decisions 24, 41): a reconnect resumes at "now" with no way to ask for what it missed. Both consumers — `embarch-api`'s `study-status --follow` and `study_watch` (`embarch-api/decisions/core-link.md` 48, 49) — fall back to polling `GET /study/{id}` on a drop rather than pretending to resume, so this is closed as not needed yet; a resumable subscriber would be new Core-side design.
 
 ## Moved elsewhere, not resolved
 

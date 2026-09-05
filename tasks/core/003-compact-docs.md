@@ -1,6 +1,6 @@
 # 003 — embarch-core's spec.md and open.md are in reserve
 
-**State:** claimed by agent/core/003-compact-docs, 2026-09-04 20:02
+**State:** done by agent/core/003-compact-docs, 2026-09-04
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** core
 **Hardware:** none
@@ -31,10 +31,45 @@ its `open.md` is where three other repos' blocked items are named.
 
 ## Done when
 
-- [ ] Both files out of reserve, or this task rewritten to say why one of them
-      should not be (an honest "this is the hot floor" is an answer).
-- [ ] No question disappears from `collect-open-questions.py` unless you can
-      name it as answered. **Merging two questions into one is not answering** —
-      that was tried on 2026-09-04 and reverted.
-- [ ] `DOC-COMPACTION.md` §7's question answered in the commit message.
-- [ ] Gate green, `changelog.d/core-*` fragment dropped.
+- [x] Both files out of reserve. `spec.md` 9537 → 8988 B (87.8%), `open.md`
+      4810 → 4504 B (88.0%). `--pressure` reports both `PAID`.
+- [x] No question disappeared. All 16 of `open.md`'s bullets survive with their
+      lead claims byte-identical except one reworded in place; none was merged
+      into another. `collect-open-questions.py` diffed before and after.
+- [x] `DOC-COMPACTION.md` §7's question answered in the commit message — the
+      honest answer is **no**, and why is written there.
+- [x] Gate green but for one pre-announced red, `changelog.d/core-*` dropped.
+      `check-docs.py` is 6/7: the only failure is `install.py --check`, which
+      renders the three generated READMEs' cross-repo link from the resolved
+      repo path and so reports drift for any worktree at a different depth than
+      the main checkout. The committed READMEs are untouched by this branch.
+
+## What was cut, and what was not
+
+The one `check-duplication.py` overlap is gone: `open.md`'s `FlashedThisRun`
+bullet no longer restates decision 31's "`/flash` and `/study` are separate
+calls" reasoning, which the decision owns. Four more single-claim-in-two-files
+cases went the same way — the Raspberry Pi artifact-transfer limit (spec.md →
+`open.md`, which owns limitations), `contract_version`'s retirement (`open.md` →
+spec.md §2 and decision 13), "Core never orchestrates a build" (a §2 invariant
+folded into §1's already-sharper "it is not a build system"), and §7 Security,
+whose three facts were one invariant, one line already in the constants table,
+and a pointer — folded into §2's auth invariant and the section dropped.
+
+Cold under §9, dropped: the `GET /enroll` retirement date (decision 25 is its
+tombstone), the `deploy-core`-reported-success-and-installed-nothing incident
+behind `core_version` (decision 13), the 2026-08-21 date on the
+`embarch-topology` move, and "count-based, so it needs no clock" beside
+`EMBARCH_STUDY_RESULTS_KEEP` (decisions/streams.md).
+
+All three `**Must not delete:**` items are present verbatim.
+
+## Debt, for whoever compacts this next
+
+**`spec.md` has 228 B above the reserve line and no cheap cut left.** The
+obvious next move is §9's own — §5's result-layout tree is a reference table,
+which §9 says belongs in `interfaces/`, and `interfaces.md` has 5 KB spare. It
+was **not** done here because `embarch-study-designer/spec.md` cites
+`embarch-core/spec.md` **§5** by section, and fixing that inbound link is
+another sub-project's file. That makes it a supervisor's cross-repo pass;
+dropped in `inbox/` as `core-spec-5-to-interfaces.md`.

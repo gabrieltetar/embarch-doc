@@ -8,7 +8,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 The OS-level service that owns the debug probe (flash/reset), the DUT serial console, and the `embarch-dev-bench` serial link. It is the lowest layer in EmbArch and has no idea `embarch-api` or Claude Code exist. It exposes a bearer-token-authed HTTP API and holds the hardware connections so nothing else fights over a USB port.
 
-It is **not**: aware of projects, toolchains, or build commands (it takes a bare `chip`/`firmware_path`/`format` per call); a build system (it never invokes `west` or `arduino-cli` — see decision 36 for the one exception, where it *delegates* to a vendor flasher); or multi-tenant (one process, one hardware connection, one shared token).
+It is **not**: aware of projects, toolchains, or build commands (it takes a bare `chip`/`firmware_path`/`format` per call); a build system — it never invokes `west` or `arduino-cli`, `embarch-api` sequences check → build → flash → submit, and decision 36 is the one exception, where Core *delegates* to a vendor flasher; or multi-tenant (one process, one hardware connection, one shared token).
 
 ```
 embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> DUT hardware
@@ -22,7 +22,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 
 ## 2. Invariants
 
-- **Every route requires `Authorization: Bearer <token>`.** No exceptions — the one unauthenticated route (`GET /enroll`) was retired 2026-08-24.
+- **Every route requires `Authorization: Bearer <token>`**, no exceptions. One shared secret, exact-string compared in `auth_middleware`, resolved from `EMBARCH_TOKEN` and otherwise from the machine-wide file, generated and persisted on first startup. No per-caller identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md).
 - **One `hw_lock` serialises all hardware access**, held for the whole handler body. Contention returns `503` naming the holder rather than queueing. A separate `study_lock` serialises studies; a signal tap's read-only port takes neither.
 - **Every blocking hardware call runs in `tokio::task::spawn_blocking`.** `probe-rs` and `serialport` are synchronous.
 - **Probe attach is per-call, never held open.** Open, attach, operate, drop.
@@ -31,8 +31,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 - **Raw bytes are written before any decode is attempted.** A failed decode costs a rendering, never a capture.
 - **A refusal renders nothing rather than guessing.** A manifest that does not verify costs the *names* in a trace, not the trace; an unverifiable time join stamps nothing.
 - **Core keeps no persisted "current firmware" record.** A manifest binding lives only as long as the study that made it. Write-ahead state that can go stale is the pattern this suite forbids.
-- **Core never orchestrates a build.** It gates and records; `embarch-api` sequences check → build → flash → submit.
-- **`GET /status` says which build answered.** `core_version` is compiled in from `CARGO_PKG_VERSION`, so a caller learns the deployed binary's version **over HTTP** without running it — the check for a `deploy-core` that reported success and installed nothing (§3, [embarch-dev-workflow.md](../embarch-dev-workflow.md) §4a). Consumers **warn** on a skew, never refuse (decision 13). There is no hand-bumped `contract_version` beside it.
+- **`GET /status` says which build answered.** `core_version` is compiled in from `CARGO_PKG_VERSION`, so a caller learns the deployed binary's version **over HTTP** without running it. Consumers **warn** on a skew, never refuse (decision 13). There is no hand-bumped `contract_version` beside it.
 - **Errors are plain text on every non-2xx**, so an error's *kind* is only its HTTP status. The designed `{code, message, cause}` body is deferred as cross-repo work (decision 12).
 - **Default bind is `127.0.0.1`.** Widening is `embarch-umbrella setup`'s job, per detected topology.
 
@@ -44,9 +43,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 
 `install`/`uninstall`/`start`/`stop`/`update` **self-elevate** (UAC `runas` on Windows, `pkexec`→`sudo` on Linux, `osascript`→`sudo` on macOS); with no GUI and no TTY they print the command and exit nonzero. `update <new-exe>` must be invoked **from the installed binary's own path**, pointing at the new build — the reverse renames the source aside as its own backup and fails mid-way, leaving the service stopped.
 
-On Windows the SCM handshake matters: an `sc create`-registered binary must call `StartServiceCtrlDispatcherW` and report `SERVICE_RUNNING` within 30 s or SCM kills the start (error 1053). `run` self-detects SCM versus a console and branches internally.
-
-A LAN-reachable Raspberry Pi is anticipated and needs no code change to reach; what blocks it is artifact transfer ([open.md](open.md)).
+`run` self-detects SCM versus a console and branches internally: an `sc create`-registered binary must call `StartServiceCtrlDispatcherW` and report `SERVICE_RUNNING` within 30 s or SCM kills the start (error 1053).
 
 ## 4. Modules
 
@@ -67,7 +64,7 @@ A LAN-reachable Raspberry Pi is anticipated and needs no code change to reach; w
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep. Holds no column knowledge |
 
-Board identity, enrollment, hardware-ID readback and dev-bench port detection are **not here** — they moved to `embarch-topology` on 2026-08-21 and Core calls `embarch_topology::hardware` directly.
+Board identity, enrollment, hardware-ID readback and dev-bench port detection are **not here**: they live in `embarch-topology`, which Core calls as `embarch_topology::hardware`.
 
 ## 5. Result layout
 
@@ -95,7 +92,7 @@ study_results/<study_id>/
 | dev-bench link baud | 1 Mbaud | [assumed] |
 | `EMBARCH_SIGNAL_BAUD` | 1 Mbaud | [assumed] a `SignalLink` records where a signal goes, not how fast it talks |
 | `EMBARCH_STREAM_MAX_BYTES` | 32 MiB, 2 segments | [assumed] |
-| `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] count-based, so it needs no clock |
+| `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] |
 | `MAX_UNDECODABLE_FRAMES` | 10 | [assumed] separates one lost frame from a noise stream |
 | log retention | 7 daily files | [assumed] |
 | `EMBARCH_FLASH_BACKEND` | — | forces a backend; forcing probe-rs onto a refused family logs a warning |
@@ -103,7 +100,3 @@ study_results/<study_id>/
 | `EMBARCH_TOKEN` | — | explicit env var wins over the machine-wide file |
 
 Paths follow one convention: `%ProgramData%\embarch\` on Windows, `/var/lib/embarch/` elsewhere — token, `logs/core.log.<date>`, `logs/dev-bench.log.<date>`, `study_results/`, and `embarch-topology`'s `enrollment.toml`.
-
-## 7. Security
-
-A single shared secret, `EMBARCH_TOKEN`, exact-string compared in `auth_middleware`. Resolution order: explicit env var, then the machine-wide file, generated and persisted on first startup. Full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md). There is no per-caller identity and no TLS.
