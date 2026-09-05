@@ -1,6 +1,6 @@
 # embarch-ui: open
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-04.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -8,6 +8,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Nothing has compared a trace's placement against a second stream in the same study.** The DUT clock measures; the host's *places*, at an observed 4.0 ms median placement resolution on the reference capture. Whether the two actually line up against, say, a power capture is the check the dual-clock flag exists to enable, **and it has not been run.** Every outpost wire constant is still an unmeasured default with the instrumentation's own overhead deliberately uncharacterised, so a working view is not validation of the numbers underneath it.
 
-- **The Trace view's cost at real volume is the transfer, not the cap.** The reference capture is 225,606 rows — **90% of the 250,000-row cap** — dropping nothing only because the study was two and a half minutes long; a five-minute one overflows it. But the view serializes to a **13 MB JSON** the browser waits for and then holds 112,801 spans from. Decision 10's aggregation made the *drawing* independent of dataset size, which leaves load time as the only remaining term: a `?from&to&width` endpoint binning server-side in Rust — the same aggregation the browser now does, on the right side of the wire. Deliberately **not** folded into the navigation work, because that was a redraw problem and this is a load-time one, and conflating them is how a measured decision turns back into a guess.
+- **The transfer is fixed; the 250,000-row cap is now the only term left, and the reason it was set is gone.** Decision 18 moved the binning server-side, so the browser no longer holds a capture's spans at all — and holding 112,801 of them was one of the reasons for the cap. What remains is the server's own decode: **225,627 rows decode and serve in 177 ms including the 16.9 MB fetch from Core** [measured 2026-09-04, release build, loopback], and nothing has been measured past that. The reference capture is 90% of the cap only because the study was two and a half minutes long; a five-minute one still overflows it and still says so rather than shortening the timeline silently. **Raising it is a decision about server memory and decode time**, which is a different question from the one decision 18 answered, and it should be made against a measurement at the new number rather than by extrapolating this one.
 
 - **A signal mismatch still has nowhere durable to land, so a declared-but-wrong signal shows up in the Topology tab or nowhere.** Closed upstream as not-needed-yet under a two-part trigger; **half of it has fired** — signals are declarable through this tab, which is the only surface for it — and the other half has not, since there is still no wire and no bridge. The consequence is carried by the row's own carrier cell ("not enumerated on Core right now" against a declared serial nothing answers to) rather than by the alert list.

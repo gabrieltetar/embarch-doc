@@ -1,1 +1,1 @@
-| Windowed trace fetch — the view serializes to a 13 MB JSON | Todo — sized, not built | n/a | 10 |
+| Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**: first paint is 12.7 KB + 30.5 KB and a window costs 1–6 ms. Pinned against the browser aggregation it replaces; driven against the real binary in headless Firefox, never against a live Core or a real DUT capture | local | 18 |
