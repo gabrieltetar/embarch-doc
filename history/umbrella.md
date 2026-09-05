@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
+## 2026-09
+
 ### Changed
 - `doctor` check 11 reads the located `embarch-api`'s `versions`, not `embarch`'s own constant; unaskable is its own warn.
 ## 2026-09

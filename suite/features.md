@@ -127,7 +127,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped — **the Windows registry half is type-checked, not run**; `--dry-run` unbuilt | local | 3, 21, 28 |
+| `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
 | `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner | local | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
