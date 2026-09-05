@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- Every `zephyr-west` build directory now gets a `target.json` recording the resolved selection ([decisions](../embarch-api/decisions/build.md) 19).
+## 2026-09
+
 ### Changed
 - `decisions/zephyr.md` split by mission: `decisions/build.md` takes 5, 18, 19, 42; discovery and selection stay.
 ## 2026-09

@@ -48,6 +48,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `study-status --follow` / `study_watch` — live study events over SSE, `lagged` reported not raised, polling fallback | Shipped, never against a real Core | unit | 48, 49 |
 | `validate`/`alerts` — topology validation and the alert log | Shipped | local | 35 |
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
+| `target.json` beside each `zephyr-west` build directory — the resolved selection, so a listing stays attributable past its `-args<hash>` segment | Shipped — documented as truth since it was decided, **built 2026-09-05**; absent means unattributable, never orphaned | unit | 19 |
 | Per-project build concurrency lock | Shipped | n/a | §6 |
 | Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
 | `base_url = "auto"` — Core's address resolved per process at first use | Shipped — never against a real remote Core | local | §7 |
