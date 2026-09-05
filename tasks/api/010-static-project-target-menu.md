@@ -1,9 +1,17 @@
 # 010 — A static project declares a `[[projects.targets]]` menu nothing can pick from
 
-**State:** open
+**State:** claimed by agent/api/010-static-project-target-menu, 2026-09-05 12:07
 **Source:** [embarch-api/open.md](../../embarch-api/open.md) — "A `static` project's `[[projects.targets]]` menu cannot be picked from. Nothing reads the rows `list_targets` returns; a build runs the project-level `build_command`. **A `target` param, or drop them.**"
 **Scope:** api
 **Hardware:** none
+
+**Doc-size reserve (supervisor, 2026-09-05):** four `api` files are already in the
+last 10% of their caps and **all four are already filed against
+`tasks/api/012-compact-api.md`** — `decisions/zephyr.md` 99.2% (96 B left),
+`open.md` 97.3% (139 B), `spec.md` 96.5% (357 B), `interfaces/config.md` 92.6%
+(914 B). Plan your edits around that headroom; prefer replacing text to appending
+it. You owe **no new compaction task** — 012 already covers every one of them —
+but say in your report if you spent so much of a reserve that 012 is now urgent.
 
 ## What
 
