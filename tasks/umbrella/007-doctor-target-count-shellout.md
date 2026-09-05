@@ -35,7 +35,7 @@ genuinely still there, which is what makes the drift easy to miss.
 ## Done when
 
 - [ ] Check 8's zephyr-west branch either shells out to `embarch-api`'s listing,
-      or the amendment is retired per `DOC-PROTOCOL.md` §7.4 and the local scanner
+      or the amendment is retired per `DOC-CONVENTIONS.md` and the local scanner
       is documented as the intended answer.
 - [ ] Decision 17's implementation note updated to match whichever was chosen.
 - [ ] `status.d/` fragment for `suite/features.md`'s live-target-discovery row.

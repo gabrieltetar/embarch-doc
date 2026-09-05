@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check that every prose reference to a numbered design decision resolves.
 
-DOC-PROTOCOL.md §7.3: a decision number addresses a *sub-project*, not a file
+DOC-CONVENTIONS.md: a decision number addresses a *sub-project*, not a file
 and not a section. This script builds the set of decision numbers each
 sub-project actually defines (from its `design.md`, plus `decisions.md` once
 DOC-PROTOCOL.md §3's extraction threshold has moved them there), then walks
@@ -29,7 +29,7 @@ Three outcomes, and only two of them fail:
                the one a compaction pass must never produce.
   * WARNING -- number missing from the file's own sub-project but defined by
                some other one, with no path nearby to say which. That is
-               ambiguous prose, not a broken reference: DOC-PROTOCOL.md §7.3's
+               ambiguous prose, not a broken reference: DOC-CONVENTIONS.md's
                canonical `<sub-project> decision N` form is the fix. Reported,
                does not fail.
 
@@ -50,7 +50,7 @@ import sys
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Entry definitions. Pre-compaction list form and post-compaction heading form
-# (DOC-PROTOCOL.md §7.2) are both accepted; retired entries (§7.4) still count
+# (DOC-CONVENTIONS.md) are both accepted; retired entries still count
 # as defined, which is the whole point of a tombstone.
 DEF_LIST = re.compile(r'^(\d+)\.\s+(?:~~)?\*\*')
 # An entry may own several numbers when decisions were merged under a byte
@@ -113,7 +113,7 @@ def check_reversal_rows():
 # sub-project hijacked references that belonged to the file's own, which was
 # 10 of this script's first 179 reported "errors" -- all of them wrong.
 ATTRIB_WINDOW = 44
-# DOC-PROTOCOL.md §7.3's canonical cross-project form, which IS unambiguous:
+# DOC-CONVENTIONS.md's canonical cross-project form, which IS unambiguous:
 # "embarch-study-designer decision 39". Attribution from this is trusted.
 CANONICAL = re.compile(r'\b(embarch-[a-z0-9-]+)\W{1,3}$')
 # Above this, a "decision" number is a year or a version, not an entry.
@@ -233,7 +233,7 @@ def main():
     if show_warnings and warnings:
         print(f'{len(warnings)} ambiguous reference(s) -- number not in the '
               f"file's own sub-project, defined elsewhere, no path nearby.")
-        print(f'Name the sub-project per DOC-PROTOCOL.md §7.3. Not an error.\n')
+        print(f'Name the sub-project per DOC-CONVENTIONS.md. Not an error.\n')
         for rel, lineno, own, num, excerpt in warnings:
             print(f'  {rel}:{lineno} decision {num} (not in {own})')
             print(f'      {excerpt}')

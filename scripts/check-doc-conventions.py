@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Check every doc's `**Status:**` line against DOC-PROTOCOL.md §7.1.
+"""Check every doc's `**Status:**` line against DOC-CONVENTIONS.md.
 
 The line must be the first non-blank line after the title, and must read:
 
     **Status:** <state>, <date><anything>
 
-where <state> is exactly one of §7.1's tokens and <date> is ISO yyyy-mm-dd.
+where <state> is exactly one of DOC-CONVENTIONS.md's tokens and <date> is ISO yyyy-mm-dd.
 Only those two are the machine-readable part; whatever prose follows the date
 is free, and most docs here have some.
 
@@ -81,14 +81,14 @@ def main():
         print()
 
     if problems:
-        print(f'{len(problems)} doc(s) violate DOC-PROTOCOL.md §7.1:\n')
+        print(f'{len(problems)} doc(s) violate DOC-CONVENTIONS.md:\n')
         for rel, lineno, why in problems:
             where = f'{rel}:{lineno}' if lineno else rel
             print(f'  {where} -- {why}')
         return 1
 
     print(f'All {len(ok)} docs carry a conformant **Status:** line '
-          f'(DOC-PROTOCOL.md §7.1).')
+          f'(DOC-CONVENTIONS.md).')
     return 0
 
 

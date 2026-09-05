@@ -72,4 +72,4 @@ Everything else about the past is dropped: amendment chains, schema-bump re-deri
 
 Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, one clause per rejected alternative. [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md) is what belongs in it and what does not.
 
-**The number is permanent and an entry may own several** — `### 20, 21, 25, 27 — Streaming capture, batched, with units` is one entry owning four, because four decisions converged. Never renumbered, never reused, and a retired one becomes a tombstone keeping its number: [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2–7.4 owns that rule and the two ways it has broken.
+**The number is permanent and an entry may own several** — `### 20, 21, 25, 27 — Streaming capture, batched, with units` is one entry owning four, because four decisions converged. Never renumbered, never reused, and a retired one becomes a tombstone keeping its number: [DOC-CONVENTIONS.md](DOC-CONVENTIONS.md) owns that rule and the two ways it has broken.

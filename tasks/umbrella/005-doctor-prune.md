@@ -32,7 +32,7 @@ all, or should be retired: nothing has reported disk pressure from this.
 
 ## Done when
 
-- [ ] Either both halves built, or decision 26 retired per `DOC-PROTOCOL.md` §7.4
+- [ ] Either both halves built, or decision 26 retired per `DOC-CONVENTIONS.md`
       with a one-line tombstone saying why.
 - [ ] If built: `spec.md`'s `doctor` row updated, decision 26's implementation
       note updated, and a test that a currently-valid target's build directory is

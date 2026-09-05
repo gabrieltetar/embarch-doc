@@ -4,7 +4,7 @@
 
 Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-PROTOCOL.md](../DOC-PROTOCOL.md) §7.2–7.4). They address the *sub-project*, not a file, which is what let them move out of `design.md` §3 into these eight files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file, which is what let them move out of `design.md` §3 into these eight files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
 
 | Load this for | Decisions | Size |
 |---|---|---|
