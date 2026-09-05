@@ -1,6 +1,6 @@
 # 010 — Check 1 fails on a correctly set-up wsl-host machine, and takes check 14 with it
 
-**State:** open
+**State:** claimed by agent/umbrella/010-doctor-check-1-fails-on-a-healthy-wsl-host, 2026-09-05 18:10
 **Source:** the owner's live `embarch doctor` run, 2026-09-05 — the first one ever made against the real installed suite
 **Scope:** umbrella
 **Hardware:** none
