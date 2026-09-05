@@ -8,11 +8,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 1. What it is
 
-**The first EmbArch component that ships inside the thing under test.** Every other sub-project observes a DUT from outside — Core through a debug probe, dev-bench over the air, `embarch-api` over HTTP. The outpost is a small Zephyr module an engineer compiles into their *own* DUT firmware for debug builds, emitting a running account of what the MCU is doing — which thread ran, in what order, when it was in interrupt context, and whatever application spans the engineer marked — out a dedicated TX-only UART, recorded and rendered host-side.
+**The first EmbArch component that ships inside the thing under test.** Every other sub-project observes a DUT from outside. The outpost is a small Zephyr module an engineer compiles into their *own* DUT firmware for debug builds, emitting a running account of what the MCU is doing — which thread ran, in what order, when it was in interrupt context, and whatever application spans the engineer marked — out a dedicated TX-only UART, recorded and rendered host-side.
 
-**The question it answers is the one no external instrument here can:** *the study passed, but what was the CPU doing while it did?* A study can tell you a GATT write produced a notification 40 ms later. It cannot tell you whether those 40 ms were one busy thread, forty context switches, or an ISR storm — and, since layout 3, it can also tell you that a particular ISR took 9.9 µs.
+**The question it answers is the one no external instrument here can:** *the study passed, but what was the CPU doing while it did?*
 
-**Why this is not a violation of the no-inference rule.** The suite forbids any component presenting an inference about what a specific piece of hardware or firmware does as established fact. The outpost is the structural opposite: the engineer compiles it in, chooses what to mark, and ships a build-time manifest declaring what every ID means. **Nothing here reads a DUT's source and guesses.** It is the explicit engineer-supplied-knowledge pipeline that rule implies should exist, applied to timing.
+**Not a violation of the no-inference rule**, which forbids any component presenting an inference about what a specific piece of hardware or firmware does as established fact. The engineer compiles the outpost in, chooses what to mark, and ships a build-time manifest declaring what every ID means. **Nothing here reads a DUT's source and guesses.**
 
 **v1 scope, explicitly bounded:**
 
@@ -57,10 +57,10 @@ Three properties carry the design:
 - **The emit path takes no lock and reads no locked clock.** It writes one ring slot and returns. A trace whose cost is a latency floor on unrelated interrupts distorts exactly the thing it measures.
 - **No strings on the wire, ever**, except two in the header frame once a second. IDs are resolved through the manifest.
 - **Overflow drops, counts, and says so** — never blocks, never overwrites. The host renders a gap **as a gap** rather than drawing a continuous, plausible, wrong picture across it.
-- **A mismatched manifest refuses to render the names**, keeping the capture. A stale manifest against a rebuilt firmware would silently relabel every marker, producing a trace that is entirely readable and entirely wrong.
+- **A mismatched manifest refuses to render the names**, keeping the capture — a manifest from another build would silently relabel every marker, readable and entirely wrong.
 - **A join that cannot be verified stamps nothing.** A trace shifted by three frames is readable, wrong, and indistinguishable from a correct one.
 - **Nothing interpolates, on any clock.** Even spacing inside a frame would look better and be fabricated.
-- **Every board-specific fact is declared in the DUT's own repo, never here** — which UART, which pins, what baud, how big the ring is. An outpost shipping an opinion about which UART instance to use would be asserting a fact about someone else's board it is in no position to know.
+- **Every board-specific fact is declared in the DUT's own repo, never here** — which UART, which pins, what baud, how big the ring is. Why the module may not hold an opinion about any of them: [decisions/module.md](decisions/module.md) decision 1.
 - **What the firmware chose is on the wire, not inferred from what is missing.** Which hook families are compiled in, and whether the outpost excluded itself, are header flags — because **an absence of records is indistinguishable from an idle subject.**
 
 ## 4. The instrument's measured cost
@@ -74,15 +74,11 @@ All on a quiet `dut_dev@7` nRF54L15 at 460800 baud, and the numbers are why seve
 | resolution, host clock | 4.0 ms — 4286 of 4955 spans below it |
 | the outpost's own CPU share | **1.6%** on the DUT clock (66.3 ms over 778 drain runs, 85 µs each) |
 | the same, misread on the host clock | **78.1%** — the drain thread switches in on one frame and out on the next, so it is charged the whole frame interval, 46× over |
-| self-trace records before exclusion | **50.4%** of the capture was the instrument describing its own transmission |
-| link duty cycle, before/after the fill wait | 94% → **37%** |
-| frame contents, before/after | 3.3 records / 42.8 B → **20.2 records / 200.6 B** |
 | burst loss under a real study load | **19.7% across 3 gaps** while the link averaged 36% busy |
-| ring 512 → 2048 slots | 6962 records lost across 48 gaps → **8036 across 5** — the ring absorbed 43 of 48 overflow events |
 
 **Average capacity was never the constraint.** The ring is the burst knob, the fill wait is the latency knob, and the record's size is the throughput knob — and only the third is still unturned ([open.md](open.md)).
 
-Kconfig symbols, their defaults, and which are measured rather than assumed: [interfaces/integration.md](interfaces/integration.md).
+Every Kconfig symbol, its default, and the measurement that set it — the ring's, the fill wait's and self-exclusion's included: [interfaces/integration.md](interfaces/integration.md).
 
 ## 5. Host-side outputs
 

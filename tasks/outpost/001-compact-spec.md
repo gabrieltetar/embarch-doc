@@ -1,6 +1,6 @@
 # 001 — embarch-outpost/spec.md is in reserve
 
-**State:** claimed by agent/outpost/001-compact-spec, 2026-09-04 21:31
+**State:** done, 2026-09-04, agent/outpost/001-compact-spec
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** outpost
 **Hardware:** none
@@ -30,8 +30,49 @@ are there without touching a rule.
 
 ## Done when
 
-- [ ] `spec.md` out of reserve, and the duplication count down.
-- [ ] No decision text is cut. If you conclude bytes can only come from rules,
-      say so here and stop — that is a real answer and §9 predicts it.
-- [ ] `DOC-COMPACTION.md` §7's question answered in the commit message.
-- [ ] Gate green, `changelog.d/outpost-*` fragment dropped.
+- [x] `spec.md` out of reserve, and the duplication count down.
+- [x] No decision text is cut. Nothing under `decisions/` was touched.
+- [x] `DOC-COMPACTION.md` §7's question answered in the commit message.
+- [x] Gate green, `changelog.d/outpost-*` fragment dropped.
+
+## What shipped
+
+`spec.md` **9235 → 8317 B** (90.2% → 81.2% of 10 KB, 1923 B of headroom). Only
+`spec.md` changed; `decisions/`, `interfaces/` and `open.md` are untouched.
+Duplication **31 → 29** overlaps, `spec.md`'s own share **9 → 7**.
+
+Three cuts, all of them a claim another file already owns:
+
+- **§1's purpose, ~1815 → ~900 B.** The illustration of the question (a GATT
+  write, forty context switches, a 9.9 µs ISR) went whole — §4's resolution rows
+  are the same fact as a number. The no-inference paragraph is one sentence now,
+  keeping the claim, the mechanism and **"nothing here reads a DUT's source and
+  guesses."**
+- **§4 lost four rows** — self-trace 50.4%, link duty 94% → 37%, frame contents
+  3.3 → 20.2, ring 512 → 2048. Each is the *measured provenance of a Kconfig
+  default*, and each already sits verbatim against its own symbol in
+  `interfaces/integration.md`, which §4 already pointed at and now points at by
+  name. What the `Must not delete:` line protects stayed: the record's 9.92 B,
+  both resolutions, the 1.6% CPU share **with the 78.1% host-clock misreading
+  beside it**, the burst loss, and the dates.
+- **§3 lost decision 1's rejection argument** ("an opinion about which UART
+  instance … a fact about someone else's board"), replaced by a pointer to
+  decision 1. The prohibition itself — *never here* — is absolute in `spec.md`
+  with no discretion left to a reader, which is the test I applied.
+
+Deliberately kept, against the duplication report: the *anti-footgun* clause of
+every invariant that has one — the latency floor, the fabricated interpolation,
+the trace shifted by three frames, and the relabelling manifest (tightened, not
+dropped). §9 calls a constraint reason hot because a reader who does not know it
+re-proposes the rejected fix, and each of these is a fix someone would propose.
+
+Deliberately not touched: the three `open.md` ↔ `decisions/` overlaps, including
+the 36-word one. `open.md` is not under pressure, and neither copy is the wrong
+one — a decision stating its own limits and `open.md` tracking them as live is
+DOC-PROTOCOL.md §3 working. Resolving them would have meant cutting either
+decision text or a known limitation.
+
+**§7's question — can `spec.md` alone answer what someone needs to work on this
+component today?** Yes, and on one point better than before: what it lost was
+evidence for numbers that are not its own, and every one of those numbers is now
+exactly one file away, next to the knob it sets.
