@@ -97,7 +97,7 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 
 **A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39`. Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
 
-`check-links.py` structurally cannot see one of these — it validates paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves every one, and has found two real classes of breakage:
+`check-links.py` structurally cannot see one of these — it validates paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves all 2,362 of them, and has found two real classes of breakage:
 
 - **A number an insertion renumbered.** Two entries looked deleted while other docs cited them (`embarch-api` 31, `embarch-umbrella` 27). Neither was: **a commit inserted a decision in the middle and renumbered the entry below it**, so every reference to the old number silently pointed elsewhere. **This is why a number is permanent here** (DOC-COMPACTION.md §5); both entries own both numbers.
 - **A reversal row cited and gone.** It resolves `reversals ... row N` against the union of `reversals/rows-*.md`: 47 rows were once deleted along with a `## Changelog` heading they sat below, and **fifteen citations went on pointing at them with nothing to notice.**

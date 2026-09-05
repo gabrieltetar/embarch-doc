@@ -19,11 +19,24 @@ every doc that links to the renamed file by a few bytes each, and blocking that
 would block changes that shrink the corpus enormously. Every migration pass lowers a baseline, and a file that
 reaches its cap loses its baseline entry and is capped for good.
 
+The cap is a wall, and a wall is discovered by the worker whose edit it
+refuses -- which converts unrelated work into a compaction task mid-flight. So
+above the cap there is a RESERVE: the last RESERVE_PCT..100% of a file's limit.
+A file in reserve is still writable, and the gate still passes, but it must be
+named by an open item in ``tasks/`` or ``inbox/``. **The debt is filed by
+whoever spends the reserve**, in the same commit, because that actor is the only
+one who knows the thing no script can decide -- whether the subsystem is still
+in flux (DOC-COMPACTION.md §8), which is when compaction writes a clean
+statement of something about to be wrong. A parked item naming what unparks it
+is a legitimate resting state; an unfiled file in reserve is not.
+
 Usage:
-  scripts/check-doc-size.py              check (CI)
+  scripts/check-doc-size.py              check (CI): caps, the ratchet, and the reserve
   scripts/check-doc-size.py --update     re-baseline anything now smaller
   scripts/check-doc-size.py --report     show the whole corpus against caps
-Exit status: 0 if nothing exceeds min(cap, baseline), 1 otherwise.
+  scripts/check-doc-size.py --pressure   what is in reserve, filed and unfiled
+Exit status: 0 if nothing exceeds min(cap, baseline) and every file in reserve
+is filed against, 1 otherwise.
 """
 from __future__ import annotations
 
@@ -42,6 +55,24 @@ KB = 1024
 # ~100 B each) would otherwise block a change that shrank the corpus by 190 KB.
 # A file that has reached its cap gets no allowance at all: it is capped for good.
 RENAME_ALLOWANCE = 1 * KB
+
+# A file at or above this fraction of its effective limit is *in reserve*: it
+# may still be written, and the gate still passes, but the debt must be filed.
+# 90% of a 12 KB decision group is ~1.2 KB and of a 5 KB open.md is ~512 B --
+# roughly one cycle of runway, deliberately not more. It buys the crossing being
+# recorded and judged, not a steady state; the corpus still grows.
+RESERVE_PCT = 90.0
+
+# Where a filed debt lives. `tasks/doc/` for a doc the fleet may write,
+# `inbox/` for one reserved to the owner -- DOC-PROTOCOL.md and DOC-COMPACTION.md
+# are the case that forced this: no agent can compact them, so a wall there can
+# only ever be taken down in the owner's own session, and nothing said so.
+DEBT_DIRS = ("tasks", "inbox")
+DONE_STATE = re.compile(r"^\*\*State:\*\*\s*done\b", re.M)
+# A debt is DECLARED, never inferred from a path appearing somewhere in an item.
+# Matching on a mention made five of today's twelve read as filed by tasks that
+# merely cite the doc they are about to edit -- which is every task.
+COMPACTS = re.compile(r"^\*\*Compacts:\*\*[ \t]*(.+)$", re.M)
 
 # role -> (cap in bytes, matcher on the repo-relative path)
 CAPS = [
@@ -92,6 +123,54 @@ def role_and_cap(rel: str):
     return None, None
 
 
+def open_debt_items():
+    """Every queue item not marked done, as (repo-relative path, text).
+
+    A `done` item is about to be deleted by the fold, so it cannot carry a
+    debt forward. Everything else counts, `blocked` and parked included --
+    a parked compaction task is the mechanism working, not a gap in it.
+    """
+    for d in DEBT_DIRS:
+        root = REPO / d
+        if not root.is_dir():
+            continue
+        for p in sorted(root.rglob("*.md")):
+            if p.name == "README.md":
+                continue
+            text = p.read_text(encoding="utf-8", errors="replace")
+            if DONE_STATE.search(text):
+                continue
+            paths = set()
+            for m in COMPACTS.finditer(text):
+                paths.update(t.strip().strip("`,") for t in m.group(1).split(","))
+            if paths:
+                yield str(p.relative_to(REPO)), {q for q in paths if q}
+
+
+def reserve_state(base, reserve_pct):
+    """(in_reserve, filed_but_clear) -- both as (rel, size, limit, [items]).
+
+    A file over its limit is a hard failure elsewhere and is not reported here
+    twice. `filed_but_clear` is a debt named by an item that a later pass has
+    already paid: worth closing, never worth failing on.
+    """
+    items = list(open_debt_items())
+    in_reserve, filed_clear = [], []
+    for rel, size in docs():
+        role, cap = role_and_cap(rel)
+        if cap is None:
+            continue
+        limit = min(cap, base[rel]) if rel in base else cap
+        if size > limit:
+            continue
+        filed = [i for i, paths in items if rel in paths]
+        if 100.0 * size / limit >= reserve_pct:
+            in_reserve.append((rel, size, limit, filed))
+        elif filed:
+            filed_clear.append((rel, size, limit, filed))
+    return in_reserve, filed_clear
+
+
 def docs():
     for p in sorted(REPO.rglob("*.md")):
         rel = str(p.relative_to(REPO))
@@ -107,9 +186,9 @@ def main() -> int:
                     help="pin files that are newly over cap (bootstrap only; --update refuses to)")
     ap.add_argument("--report", action="store_true", help="print the whole corpus")
     ap.add_argument("--pressure", action="store_true",
-                    help="list files within --pressure-pct of their effective limit")
-    ap.add_argument("--pressure-pct", type=float, default=95.0,
-                    help="what counts as pressure (default 95%% of min(cap, baseline))")
+                    help="list what is in reserve, filed and unfiled")
+    ap.add_argument("--reserve-pct", type=float, default=RESERVE_PCT,
+                    help="what counts as reserve (default %(default)g%% of min(cap, baseline))")
     args = ap.parse_args()
 
     base = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
@@ -134,39 +213,35 @@ def main() -> int:
             fails.append((rel, role, size, limit, cap))
 
     if args.pressure:
-        # A cap is a hard wall a worker meets only when it tries to write, so a
-        # task that cannot be done without exceeding one is a compaction task
-        # wearing a feature task's clothes -- and the supervisor finds that out
-        # when the worker reports, not when it dispatches. This makes the wall
-        # visible one step earlier.
-        #
-        # It reports rather than files: DOC-COMPACTION.md §8 warns against
-        # compacting a subsystem still in flux, and nothing here can tell. The
-        # caller decides.
-        near = []
-        for rel, size in docs():
-            role, cap = role_and_cap(rel)
-            if cap is None:
-                continue
-            limit = min(cap, base[rel]) if rel in base else cap
-            pct = 100.0 * size / limit
-            if pct >= args.pressure_pct:
-                near.append((pct, rel, role, size, limit))
-        near.sort(reverse=True)
-        if not near:
-            print(f"no file is within {100 - args.pressure_pct:g}% of its limit.")
+        # This reports rather than files, and that is the whole point:
+        # DOC-COMPACTION.md §8 warns against compacting a subsystem still in
+        # flux and nothing here can tell, so the actor who spends the reserve
+        # writes the item and answers that question in it.
+        in_reserve, filed_clear = reserve_state(base, args.reserve_pct)
+        if not in_reserve and not filed_clear:
+            print(f"nothing is in reserve (the last "
+                  f"{100 - args.reserve_pct:g}% of any file's limit).")
             return 0
-        print(f"{len(near)} file(s) at or above {args.pressure_pct:g}% of "
-              f"min(cap, baseline):\n")
-        for pct, rel, role, size, limit in near:
-            print(f"  {pct:5.1f}%  {rel}  ({role}) {size}/{limit} B, "
-                  f"{limit - size} B left")
-        print("\nA task that must write one of these cannot be done without a\n"
-              "compaction pass first (DOC-COMPACTION.md §9). Say so in the task\n"
-              "file before dispatching it, and record §7's human question in the\n"
-              "log -- 'can spec.md alone answer what someone needs to work on this\n"
-              "component today' is not a thing a script can answer.")
-        return 1
+        unfiled = [r for r in in_reserve if not r[3]]
+        for rel, size, limit, filed in sorted(
+                in_reserve, key=lambda r: -r[1] / r[2]):
+            mark = "UNFILED" if not filed else "filed   "
+            print(f"  {mark} {100.0 * size / limit:5.1f}%  {rel}  "
+                  f"{size}/{limit} B, {limit - size} B left")
+            for i in filed:
+                print(f"           -> {i}")
+        for rel, size, limit, filed in filed_clear:
+            print(f"  PAID     {100.0 * size / limit:5.1f}%  {rel} is out of "
+                  f"reserve; close its item")
+            for i in filed:
+                print(f"           -> {i}")
+        if unfiled:
+            print(f"\n{len(unfiled)} file(s) in reserve with nothing filed. "
+                  f"One item may name several\nfiles of one sub-project; a "
+                  f"compaction pass is a sub-project act.")
+            return 1
+        print(f"\n{len(in_reserve)} file(s) in reserve, every one filed against.")
+        return 0
 
     if args.update or args.adopt:
         raised, adopted_refused = [], []
@@ -242,7 +317,25 @@ def main() -> int:
         print(f"FAIL: {len(fails)} file(s) over their limit.")
         return 1
 
-    print(f"All {sum(1 for _ in docs())} docs within their limit. "
+    in_reserve, _ = reserve_state(base, args.reserve_pct)
+    unfiled = [r for r in in_reserve if not r[3]]
+    if unfiled:
+        print(f"{len(unfiled)} file(s) in reserve with no debt filed:\n")
+        for rel, size, limit, _ in sorted(unfiled, key=lambda r: -r[1] / r[2]):
+            print(f"  {100.0 * size / limit:5.1f}%  {rel}  {size}/{limit} B, "
+                  f"{limit - size} B left")
+        print("\nThe reserve is writable and this is not a wall -- it is the debt\n"
+              "going unrecorded. File one task per sub-project as\n"
+              "tasks/doc/<NNN>-compact-<scope>.md, listing these paths on a\n"
+              "**Compacts:** line, in the same commit that spent the reserve. The\n"
+              "task carries the judgements no script can make: **In flux:**\n"
+              "(DOC-COMPACTION.md \u00a78), \u00a77's question, and what the pass\n"
+              "may not delete. tasks/README.md has the shape.")
+        print(f"FAIL: {len(unfiled)} file(s) in reserve with no debt filed.")
+        return 1
+
+    print(f"All {sum(1 for _ in docs())} docs within their limit; "
+          f"{len(in_reserve)} in reserve, all filed. "
           f"Corpus {total/KB:.0f} KB; {len(base)} still over cap.")
     return 0
 
