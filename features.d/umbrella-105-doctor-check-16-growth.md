@@ -1,0 +1,1 @@
+| `doctor` check 16 — `study_results/` entries and bytes, plus per-project build directories; informational, never fails | Shipped, and it **measures rather than deletes**: results retention is `embarch-core`'s `EMBARCH_STUDY_RESULTS_KEEP`, and build-dir `--prune` waits on something that can name a valid target | unit | 26 |

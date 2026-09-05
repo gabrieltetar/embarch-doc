@@ -1,1 +1,1 @@
-| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner | local | 17 |
+| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner, which is now what blocks decision 26's `--prune` as well | local | 17 |

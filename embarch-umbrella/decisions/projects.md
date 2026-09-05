@@ -49,11 +49,44 @@ makes is untouched by this; it simply was never acted on.
 
 Both currently have **no cleanup mechanism at all.** A `doctor --prune` flag — **opt-in, never automatic, because deleting build artifacts or study results is not something `doctor`'s normal read-only pass should ever do silently.** It always *reports* how many result entries exist and their size, and how many distinct build-directory combinations exist per project; with the flag it offers to delete results older than a configurable age and build directories for a target combination **no longer among the project's currently-valid targets** — never a currently-valid target's directory regardless of age, **since rebuilding it is the expensive part.**
 
-**Not built, as of 2026-09-03 — including the half that was never opt-in.**
-There is no `--prune` flag on `doctor` and no occurrence of the word in the
-crate, and the unconditional reporting this entry promises *always* happens —
-how many result entries exist and their size, how many build-directory
-combinations per project — is absent too: `doctor` assembles exactly checks 1-15
-and none of them reads `study_results/` or measures the build tree. **So "grows
-forever" is still what happens**, and the policy exists only here.
-[../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit.
+**Amended 2026-09-05: the reporting half is built as `doctor` check 16; the
+`--prune` half is deferred, and the `study_results/` half of the premise is
+dead.** Three things the 2026-09-03 audit could not see, each found by reading
+the other repos rather than this one:
+
+- **`study_results/` retention is not unaddressed, and is not this
+  sub-project's.** `embarch-core` ships `sweep_study_results` /
+  `EMBARCH_STUDY_RESULTS_KEEP` (default 50, `0` disables), swept at
+  `POST /study`, unit-tested, and documented as a user-facing knob in
+  [../../suite/studies-guide.md](../../suite/studies-guide.md). This entry's
+  "no cleanup mechanism at all" was true of both halves when written and is
+  now true of one. **Umbrella will not build a second retention policy for a
+  directory it does not own and cannot even reach on a `remote` topology** —
+  that is the mirror-that-drifts mistake decision 17's amendment already
+  refused for the target scan. What survives is a real gap check 16 reports
+  instead: the sweep bounds a **count**, so the bytes behind those 50 runs are
+  still nobody's bound.
+- **Nothing in this crate can name a valid build directory, only count
+  directories.** `crate::zephyr` returns a count and deliberately overcounts
+  (decision 17); it does not model variant names or cpucluster, so it cannot
+  produce `embarch-api`'s `build_dir_name`. Naming them is
+  `embarch-api list-targets`'s job, and **wiring that shell-out is decision
+  17's amendment, which is itself unbuilt.** Deleting on an oracle this crate
+  does not have is precisely what "never a currently-valid target's directory"
+  exists to prevent.
+- **The rule is under-specified against the build-dir name it would judge.**
+  `embarch-api` decision 19 later folded snippets and an `extra_args` hash into
+  that name, so a directory is not a target tuple and is not reliably parseable
+  back into one — every segment can contain `-`, as `…-ble-shell_wdt31` shows.
+  The sound test is a prefix match against enumerated valid names, which is the
+  previous bullet's blocker. The per-directory `target.json` decision 19 says
+  would record the resolved selection **is not written by `embarch-api`** (no
+  occurrence in its source, 2026-09-05), so a build directory carries no
+  provenance to read either.
+
+So: **measure now, delete never, and no `--prune` until a valid-target oracle
+exists.** Nothing has reported disk pressure, which is the reason visibility is
+the proportionate step and not the reason to skip it — "grows forever" is still
+literally true of build directories, and check 16 is what makes it visible.
+[../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit and now
+says what actually ships.

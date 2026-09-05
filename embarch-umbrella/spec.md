@@ -59,7 +59,7 @@ The first two are mechanically simplest and expected to work first try; **the th
 |---|---|---|
 | `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` runs every detection step and prints the plan — install, `PATH` write, service call, elevation — changing nothing** (decision 21); `--dev-bench-repo` records the checkout the staleness check compares against |
 | `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
-| `embarch doctor` | anytime | The full check chain. `--json`. **`--prune` is designed and unbuilt** (decision 26), and so is the unconditional half that reports result counts and build-directory combinations — nothing measures or cleans either today |
+| `embarch doctor` | anytime | The full check chain. `--json`. Check 16 reports what grows; **`--prune` stays unbuilt** (decision 26) — nothing here deletes anything |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
 | `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
@@ -87,16 +87,17 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
-| 16 | Core's bind address matches what the detected topology needs — **design-only** |
-| 17 | Firewall state, best-effort, informational — **design-only** |
-| 18 | Disk space behind the build and results directories — **design-only** |
-| 19 | Tail of Core's log file, informational — **design-only** (the file is [embarch-core](../embarch-core/decisions/logging.md)'s single daily-rolling log) |
+| 16 | `study_results/` entries and their bytes, and build directories per project — informational, never fails, **deletes nothing** (decision 26) |
+| 17 | Core's bind address matches what the detected topology needs — **design-only** |
+| 18 | Firewall state, best-effort, informational — **design-only** |
+| 19 | Free disk space behind the build and results directories — **design-only** |
+| 20 | Tail of Core's log file, informational — **design-only** (the file is [embarch-core](../embarch-core/decisions/logging.md)'s single daily-rolling log) |
 
-Checks 12 and 15 never fail the run outright, and neither does check 5 — **every state check 5 can currently report is a pass or a warn**, because the branch that was to fail is one of the unbuilt ones. **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
+Checks 12, 15 and 16 never fail the run outright, and neither does check 5 — **every state check 5 can currently report is a pass or a warn**, because the branch that was to fail is one of the unbuilt ones. **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-15 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; check 10 only). 16-19 are designed and unbuilt, and their numbers move if something is built before them.
+Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; check 10 only). 17-20 are designed and unbuilt, and their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 26's `--prune` half and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 
