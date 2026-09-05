@@ -1,6 +1,6 @@
 # 008 — `embarch-api` holds fifteen claims in two files each
 
-**State:** open
+**State:** claimed by agent/api/008-duplication-overlaps, 2026-09-04 21:15
 **Source:** tasks/api/007-compact-docs.md, closed 2026-09-04 when its reserve debt was paid — this is the half of it that was never about size
 **Scope:** api
 **Hardware:** none

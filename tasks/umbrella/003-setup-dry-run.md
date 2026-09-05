@@ -1,9 +1,15 @@
 # 003 — `embarch setup --dry-run` is one flag and an early return away, and does not exist
 
-**State:** open
+**State:** claimed by agent/umbrella/003-setup-dry-run, 2026-09-04 21:15
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 21 read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** none
+**In reserve for this sub-project:** `embarch-umbrella/spec.md` — 9671/10240 B,
+**569 B of headroom**, already filed against `tasks/umbrella/009-compact-docs.md`
+(which is `blocked`, `In flux: yes`). `open.md` is out of reserve (88.1%). Plan
+the `setup` row edit inside 569 bytes; if you spend past the cap or push
+`open.md` back into reserve, file `tasks/doc/<NNN>-compact-umbrella.md` in the
+same commit per `tasks/README.md` § "Compaction tasks".
 
 ## What
 
