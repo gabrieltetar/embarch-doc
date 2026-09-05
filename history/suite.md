@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Core's on-disk result layout moved from spec.md §5 to interfaces.md, beside the routes that serve it; study-designer's citation follows.
+## 2026-09
+
+### Changed
 - suite/features.md is assembled from features.d/ row fragments, and a worker now writes its own inventory row.
 ## 2026-09
 

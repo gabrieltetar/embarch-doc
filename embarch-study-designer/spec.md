@@ -63,7 +63,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 
 ## 5. Result storage
 
-Core writes `study_results/<study_id>/`, and this crate owns every **row shape** in it while Core owns the paths and the storage. Layout and the endpoint surface: [embarch-core/spec.md](../embarch-core/spec.md) §5, [embarch-core/interfaces.md](../embarch-core/interfaces.md).
+Core writes `study_results/<study_id>/`, and this crate owns every **row shape** in it while Core owns the paths and the storage. Layout and the endpoint surface: [embarch-core/interfaces.md](../embarch-core/interfaces.md) — *Result layout on disk*, and the `/study/{id}/…` routes above it.
 
 - `events.json` — the `StudyResult`: per-step outcomes with both time edges, provenance, and one entry per declared tap. Written incrementally, one step result at a time, because the type is ~9 KB even after the size passes and Core never materialises a whole one.
 - `streams/<tap>.*` — raw bytes **always written before any decode is attempted**, plus a rendered file where the declared encoding has one. Row shapes are this crate's: a sample row, a transcript row (with the payload rendered **twice** — exact hex and printable-ASCII, so a shell transcript is readable without decoding by hand while nothing is lost for a binary protocol), and a struct row.

@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). HTTP surface: [interfaces.md](interfaces.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). HTTP surface **and the on-disk result layout**: [interfaces.md](interfaces.md).
 
 ## 1. What it is
 
@@ -66,24 +66,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 
 Board identity, enrollment, hardware-ID readback and dev-bench port detection are **not here**: they live in `embarch-topology`, which Core calls as `embarch_topology::hardware`.
 
-## 5. Result layout
-
-```
-study_results/<study_id>/
-├── events.json          the StudyResult: steps (with both time edges), provenance, streams
-│                        written incrementally, `.partial` until StudyDone
-└── streams/
-    ├── index.json       per tap: id, name, files, encoding, alias, rendered, note
-    ├── <tap>.bin        byte-for-byte what arrived — written first, always
-    ├── <tap>.1.bin      the previous segment, after one rotation
-    ├── <tap>.csv        the rendering, for Samples / GattTranscript / Struct
-    ├── <tap>.txt        a Text tap: raw and rendering are the same bytes
-    └── <tap>.arrival.csv  OutpostTrace only: frame_index,rx_utc_ms,frame_bytes
-```
-
-`named` and `timed` are two independent booleans in the index and on the wire — a trace can be named and untimed, or neither.
-
-## 6. Constants and knobs
+## 5. Constants and knobs
 
 | Name | Value | Provenance |
 |---|---|---|

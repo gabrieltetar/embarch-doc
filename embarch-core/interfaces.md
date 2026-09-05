@@ -49,3 +49,24 @@ Async and job-based rather than blocking, unlike everything above: a study's BLE
 | `GET` | `/study/{id}/streams` | — | `{streams: [{id, name, encoding, alias, rendered, note?}]}` — what the taps captured and, the reason this route exists, **why a trace has no names when it has none**. `rendered` is a boolean, not a file name: a caller never opens the file |
 | `GET` | `/study/{id}/stream/{name}` | `?raw=1` | One tap's capture as bytes. By default the rendered file where the encoding has one (`text/csv`); `?raw=1` serves the `.bin`. A tap with no rendering serves raw either way; a `Text` tap comes back `text/plain`. `404` if the study declared no such tap (listing the ones it did) or if it captured nothing. Names resolve through `streams/index.json`, so only a declared name resolves to any file |
 | `GET` | `/study/{id}/power-data` · `/waveform-data` · `/gatt-data` | — | Raw CSV for the `power`/`waveform`/`gatt` alias. **Aliases kept for one release**; they fall back to the pre-`streams/` fixed paths for older results |
+
+## Result layout on disk
+
+What the four routes above are reading. Moved here from `spec.md` §5 on 2026-09-05 ([DOC-COMPACTION.md](../DOC-COMPACTION.md) §9: a reference table is loaded deliberately, not carried by everyone who opens the spec). Core owns these paths and this storage; `embarch-study-designer` owns every **row shape** inside them.
+
+```
+study_results/<study_id>/
+├── events.json          the StudyResult: steps (with both time edges), provenance, streams
+│                        written incrementally, `.partial` until StudyDone
+└── streams/
+    ├── index.json       per tap: id, name, files, encoding, alias, rendered, note
+    ├── <tap>.bin        byte-for-byte what arrived — written first, always
+    ├── <tap>.1.bin      the previous segment, after one rotation
+    ├── <tap>.csv        the rendering, for Samples / GattTranscript / Struct
+    ├── <tap>.txt        a Text tap: raw and rendering are the same bytes
+    └── <tap>.arrival.csv  OutpostTrace only: frame_index,rx_utc_ms,frame_bytes
+```
+
+`named` and `timed` are two independent booleans in the index and on the wire — a trace can be named and untimed, or neither.
+
+**Retention is bounded by count, not bytes**: `EMBARCH_STUDY_RESULTS_KEEP` (default 50, `0` disables) sweeps at `POST /study`. `embarch doctor` check 16 reports the count *and* the size, because the bytes behind those runs are still nobody's bound.
