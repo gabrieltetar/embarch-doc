@@ -157,7 +157,8 @@ embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --r
 - Narrow to **exactly one** match and the call proceeds.
 - Match **more than one** and the call **errors instead of guessing**, listing the narrowed remainder.
 - Give **none** and it lists everything, rather than guessing a default.
-- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** Omitting `--snippet` uses the project's `default_snippets`, and there is currently **no way to force zero snippets** over a configured default.
+- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** Omitting `--snippet` uses the project's `default_snippets`; **`--snippet none`, alone, forces zero snippets** over that default (2026-09-04). Mixing the literal with real snippet names, or using it where the app genuinely declares a snippet called `none`, is refused naming the ambiguity rather than guessed at.
+- **`[projects.default_target]`** gives a `zephyr-west` project a base board/variant/revision/app selection, and a call narrows it **per field** — so overriding the revision does not make you restate the other three. An error names which axes came from the default, and `list-targets` reports it. Not accepted for a `static` project.
 - **All six of these flags are for a `zephyr-west` project.** Pass any of them to a `discovery = "static"` project and the call now **fails naming which were given** (`embarch-api` decision 51) — until 2026-09-03 they were accepted, discarded, and the build reported success.
 - `flash --firmware-path` still needs enough flags to resolve a **chip**: the override bypasses picking which *build*, not chip resolution.
 

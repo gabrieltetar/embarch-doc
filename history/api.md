@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- Decisions 20/21 built, not retired: `[projects.default_target]` pins a zephyr-west base selection, and `snippets = ["none"]` forces zero over a default.
+## 2026-09
+
 ### Changed
 - Sixteen claims that lived in two api docs each now live in one, with a pointer where each moved from; the reflash invariant stays in both, on purpose (decision 40).
 ## 2026-09

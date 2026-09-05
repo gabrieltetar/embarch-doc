@@ -40,6 +40,8 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `list_projects`, `status`, `build`, `flash`, `build_and_flash`, `reset`, `serial_log` — MCP tools | Shipped | hw | §5 |
 | `list_targets` + `list-targets` — live target discovery | Shipped | local | 12 |
 | `discovery = "zephyr-west"` — per-call board/variant/revision/app resolution, file-backing-validated, replacing a hand-maintained static entry | Shipped | local | 12 |
+| `[projects.default_target]` — a `zephyr-west` base selection a call narrows from, per field, so a repo growing a board does not start erroring unchanged calls | Shipped — documented as truth since it was decided, **built 2026-09-04**; refused at config load for a `static` project | unit | 20 |
+| `snippets = ["none"]` — the reserved literal forcing zero snippets over a configured `default_snippets` | Shipped — documented as truth since it was decided, **built 2026-09-04**; a mixed list, or an app really declaring a `none` snippet, is refused naming the ambiguity | unit | 21 |
 | CLI subcommands for every tool (kebab-case, unlike the snake_case tools) — **a superset, not a mirror**: `versions` has no MCP twin | Shipped | hw | §5a |
 | `versions` — the compiled study-designer host type schema version, readable with no config and no live Core | Shipped; `doctor` check 11 reads it as of 2026-09-04 | unit | 52 |
 | `run_study`/`study_status`/`study_*_data` — submit and read a study | Shipped | hw | §5 |
