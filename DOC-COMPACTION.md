@@ -27,7 +27,8 @@ Three practices:
 | Interface reference, only where big | **15 KB** | `<sub-project>/interfaces.md` |
 | One interface group, where they outgrow a file | **12 KB** | `<sub-project>/interfaces/<topic>.md` |
 | Suite-level doc | **10 KB** | `suite/*.md` |
-| A complete inventory table — every row must be there | **15 KB** | `suite/features.md`, `suite/roadmap.md` |
+| A complete inventory table — every row must be there | **15 KB** | `suite/roadmap.md` |
+| An assembled inventory — the budget is per row, not per file | **20 KB** | `suite/features.md`, from `features.d/` |
 | A narrative guide | **25 KB** | `suite/{user,studies}-guide.md` |
 | This file, and DOC-PROTOCOL.md | **12 KB** | `DOC-*.md` |
 | Reversals index | **10 KB** | `embarch-decision-reversals.md` |
@@ -35,6 +36,8 @@ Three practices:
 | Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
 **Nothing is over cap and the baseline holds no exceptions.** A file that is somehow pinned reaches its cap, retires its entry, and is capped from then on. `--report` shows the corpus, `--update` records progress and **refuses a regression**, `--pressure` lists what is near its limit **before** a task that must write there is dispatched. Per-sub-project overrides tighten a cap where §9's pass has landed.
+
+**An inventory of a suite still being built has no quiet state**, so §8's wait-for-the-flux never comes and no pass helps — every row must be there. `suite/features.md` is therefore **assembled**, one fragment per row, and the budget it answers to is the row's ([features.d/](features.d/README.md)).
 
 **The last 10% of a limit is the RESERVE, and it is writable** — a cap a worker meets only when its edit is refused turns unrelated work into a compaction task mid-flight. A file in reserve still passes the gate but must be named on a `**Compacts:**` line of an open `tasks/doc/` task, **filed by whoever spends it, in the same commit**: that actor alone can answer §8's in-flux question. `--pressure` lists the reserve, filed and unfiled; `tasks/README.md` has the shape.
 
@@ -44,7 +47,7 @@ Three practices:
 
 Split by *when a reader needs it*, so the default load is small:
 
-- **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. **This is the file an agent loads to work on the component, and usually the only one.**
+- **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. **This is what an agent loads to work on the component, usually the only file.**
 - **`decisions.md` (25 KB)** — why, one entry per decision (§5). Loaded when someone asks "why is it like this" or is about to change it.
   **Where they do not fit one file, split them by mission** into `decisions/<topic>.md` (12 KB each), leaving `decisions.md` as a ~2 KB index: mission → file → the decision numbers in it. **A session is usually there for one mission**, and a component owning several distinct jobs will not compress into 25 KB **without cutting the rejected alternatives the budget exists to protect.** **Do not split preemptively: one `decisions.md` is better while it fits.**
 - **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. `collect-open-questions.py` reads these.
@@ -54,24 +57,24 @@ A milestone doc is not on this list: a shipped one folds into the four and is de
 
 ## 4. History
 
-Not in a doc. Every change drops a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B hard limit — [changelog.d/README.md](changelog.d/README.md)); `build_changelog.py` assembles them per sub-project into `history/<scope>.md`.
+Not in a doc. Every change drops a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B — [its README](changelog.d/README.md)); `build_changelog.py` assembles them per sub-project into `history/<scope>.md`.
 
 What survives a compaction as history, and nowhere else:
 
-- **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. A *design* doc rather than history, because it is predictive: which remaining assumptions to distrust. **It does not restate a correction's mechanism** — that is the owning decision's job — but it keeps the *transferable* clause, which usually exists nowhere else. It is an index plus `reversals/rows-<a>-<b>.md`; **a row number is a permanent identity, so a range never re-splits an existing row** — a new range is appended, an unbalanced one left unbalanced. The index carries the recurring *shapes* across the rows, **the one thing no individual row holds.**
+- **Reality-driven reversals** — [embarch-decision-reversals.md](embarch-decision-reversals.md), one row: what was assumed, what reality showed, which decision owns it. A *design* doc, not history: it is predictive — which assumptions to distrust. **It does not restate a correction's mechanism** — that is the owning decision's job — but it keeps the *transferable* clause, which usually exists nowhere else. It is an index plus `reversals/rows-<a>-<b>.md`; **a row number is a permanent identity, so a range never re-splits an existing row** — a new range is appended, an unbalanced one left unbalanced. The index carries the recurring *shapes* across the rows, **the one thing no individual row holds.**
 - **Measurement provenance** — a measured number keeps its date and the conditions it was taken under, inline in the constants table. A constant that silently loses its provenance is the failure mode this suite keeps hitting.
 
 Everything else about the past is dropped: amendment chains, schema-bump re-derivations, "**Implemented 2026-08-25**", review-item numbers, "this pass", "the same session".
 
 ## 5. What a decision entry looks like
 
-Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, and one clause per rejected alternative. §9 is what belongs in it and what does not.
+Target **400 B**, ceiling **1,200 B**. A number-first heading stating the claim, then the constraint, the prohibitions, one clause per rejected alternative. §9 is what belongs in it and what does not.
 
 **The number is permanent and an entry may own several** — `### 20, 21, 25, 27 — Streaming capture, batched, with units` is one entry owning four, because four decisions converged. Never renumbered, never reused, and a retired one becomes a tombstone keeping its number: [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §7.2–7.4 owns that rule and the two ways it has broken.
 
 ## 6. Procedure
 
-Working tree clean and pushed first — **git is where everything you are about to delete goes.** Snapshot `collect-open-questions.py` before and after.
+Working tree clean and pushed first — **git is where everything you delete goes.** Snapshot `collect-open-questions.py` before and after.
 
 `scripts/check-duplication.py` first: the cheapest bytes are a claim held in two of the four files, which is a §3 error rather than a cold sentence. Then **read the whole doc**, because **the merges that matter are between paragraphs 200 lines apart.** Then **write `spec.md` from scratch, to its cap** — not by deleting from the old doc, **because compaction by deletion preserves the old doc's shape, which is the problem** — and check the old one afterwards for facts you missed. Then `decisions.md` (§5, §9), then `open.md`.
 

@@ -1,0 +1,1 @@
+| `doctor` check 11 — schema skew: Core's served host version against the **located `embarch-api`**'s, via `embarch-api --json versions`; unaskable is a warn naming why, never a fall back to `embarch`'s own constant, which survives as a mixed-install warn | Shipped, never run against a live Core, a flashed bench or an installed `embarch-api` | unit | 33, 35, 36 |

@@ -1,0 +1,1 @@
+| Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |

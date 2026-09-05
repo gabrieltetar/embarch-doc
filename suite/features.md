@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-**What is built, how far it has been verified, and who owns it.** One row per capability, grouped by sub-project. Hand-maintained, and deliberately a *pointer*: the reasoning is in the owning decision, never restated here.
+**What is built, how far it has been verified, and who owns it.** One row per capability, grouped by sub-project. **Assembled from [features.d/](../features.d/README.md), never edited here** — a hand-edit is reverted by the next `scripts/build_features.py`. Deliberately a *pointer*: the reasoning is in the owning decision, never restated here.
 
 **Verified** is the column that matters, and it is not a synonym for Status. **unit** — mocked or synthetic tests only, no live process. **local** — a real running Core, repo or CI on this machine, but no physical probe or board. **hw** — validated against an actual probe, board, or a genuine OS service install. **n/a** — not shipped.
 
@@ -159,7 +159,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 ## Not yet a sub-project
 
-| Feature | Status | Verified |
-|---|---|---|
-| Curated firmware-specific skills and prompt library (`embarch-promptu`) | Proposed | n/a |
-| Agent-facing codebase structural analysis (`embarch-atlas`) | Proposed | n/a |
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| Curated firmware-specific skills and prompt library (`embarch-promptu`) | Proposed | n/a | — |
+| Agent-facing codebase structural analysis (`embarch-atlas`) | Proposed | n/a | — |

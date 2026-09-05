@@ -1,0 +1,1 @@
+| MCU load tracing on the DUT: tracing hooks, markers, GPIO dispatch, TX-only UART, build-ID-matched manifest | **Working end to end on real silicon**: 437,789 bytes in 20 s off a real nRF54L15, 43,948 records, zero lost | ztest, hw | §3 |

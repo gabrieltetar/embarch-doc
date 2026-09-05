@@ -1,0 +1,1 @@
+| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 16–19, check 5's not-permitted branch, check 10's handshake spawn so registered-but-broken passes, and `--prune` | local | §5, 18, 22, 23, 26 |

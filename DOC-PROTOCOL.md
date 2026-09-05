@@ -24,6 +24,7 @@ embarch/
     ├── suite/               overview, index, roadmap, features, glossary, user-guide
     ├── embarch-decision-reversals.md
     ├── changelog.d/         one-line history fragments
+    ├── features.d/          one fragment per feature-inventory row
     ├── status.d/            pending edits to a shared suite-level doc
     ├── tasks/               the background agents' work queue
     ├── history/             assembled per sub-project, + archive/
@@ -54,7 +55,7 @@ Those triggers are reactive — they fire when work happens, and don't catch a d
 
 - **Edit the body**, so the doc stays a description of current reality. Never append.
 - **No changelog.** History does not live in a doc: drop a one-line fragment in `changelog.d/` (`<scope>-<slug>.<category>.md`, 200 B hard limit) and `scripts/build_changelog.py` assembles it into `history/<scope>.md`. Why, and the **642 KB** of in-doc `## Changelog` sections it replaced: [changelog.d/README.md](changelog.d/README.md).
-- **Update suite-level facts in the same pass** — *unless you are a background worker, which drops a `status.d/` fragment instead ([the protocol](../embarch-fleet/protocol.md) §9)* — [embarch.md](embarch.md) §3's status table, a [roadmap](suite/roadmap.md) bucket, a [features](suite/features.md) row. A sub-project doc and the suite-level docs must never disagree about status.
+- **Update suite-level facts in the same pass** — *unless you are a background worker, which drops a `status.d/` fragment instead ([the protocol](../embarch-fleet/protocol.md) §9)* — [embarch.md](embarch.md) §3's status table, a [roadmap](suite/roadmap.md) bucket. A **[features](suite/features.md) row is different**: it is assembled from `features.d/<scope>-*`, which a worker owns, so the row lands with the work rather than as a request. A sub-project doc and the suite-level docs must never disagree about status.
 - **Link, don't restate.** [suite/features.md](suite/features.md) and [suite/roadmap.md](suite/roadmap.md) point at a decision rather than duplicating it. Exception: [suite/user-guide.md](suite/user-guide.md), where a getting-started guide that only links is useless.
 - **Adding a top-level file?** Add it to [embarch.md](embarch.md) §6 in the same edit — an index is useful only while exhaustive.
 - **Run the checks.** `scripts/check-docs.py` runs the whole gate in one command; it and CI run the same set ([DOC-COMPACTION.md](DOC-COMPACTION.md) §7). `collect-open-questions.py` and `queue-status.py` are read-only indexes, not gates.

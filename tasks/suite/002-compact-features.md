@@ -1,6 +1,6 @@
 # 002 — suite/features.md is in reserve, and it is the one file that always will be
 
-**State:** blocked
+**State:** done
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** suite
 **Hardware:** none

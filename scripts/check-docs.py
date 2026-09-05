@@ -28,7 +28,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
-# build_changelog is a gate only with --check; it assembles without it.
+# build_changelog and build_features are gates only with --check; they
+# assemble without it.
 #
 # install.py is the seventh and it checks a different kind of thing: this repo's
 # `.claude/`, its four protocol READMEs and the fleet shims in `scripts/` are
@@ -43,6 +44,7 @@ CHECKS = (
     ("check-doc-conventions.py", []),
     ("check-doc-size.py", []),
     ("build_changelog.py", ["--check"]),
+    ("build_features.py", ["--check"]),
     (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"),
      ["--check", "--repo", os.path.dirname(HERE)]),
 )

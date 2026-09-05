@@ -33,11 +33,14 @@ ANY_STATUS = re.compile(r'^\*\*Status:', re.I)
 
 # Docs that carry no status: instruction files for tools, not records of state.
 EXEMPT = {'README.md', 'CLAUDE.md', 'LICENSE'}
-# changelog.d/ and status.d/ hold fragments; tasks/ and inbox/ hold queue
-# entries, which carry **State:** not **Status:** and are not docs with a state
-# (their READMEs are exempt by name);
+# changelog.d/, status.d/ and features.d/ hold fragments; tasks/ and inbox/ hold
+# queue entries, which carry **State:** not **Status:** and are not docs with a
+# state (their READMEs are exempt by name);
 # history/archive/ holds rolled-out windows carrying their status from the roll.
-SKIP_DIRS = {'.git', '.github', 'scripts', '.claude', 'changelog.d', 'status.d', 'tasks', 'inbox'}
+# features.d/HEADER.md is the one fragment that DOES carry a Status line -- it is
+# the head of the assembled suite/features.md -- and that file is checked.
+SKIP_DIRS = {'.git', '.github', 'scripts', '.claude', 'changelog.d', 'status.d',
+             'tasks', 'inbox', 'features.d'}
 
 
 def md_files():

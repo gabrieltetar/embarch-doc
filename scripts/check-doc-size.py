@@ -88,7 +88,12 @@ CAPS = [
     ("suite-guide", 25 * KB, re.compile(r"^suite/(user|studies)-guide\.md$")),
     # A complete inventory table gets the interfaces cap, for the interfaces
     # reason: every row must be present, and the budget is spent on rows.
-    ("suite-inventory", 15 * KB, re.compile(r"^suite/(features|roadmap)\.md$")),
+    ("suite-inventory", 15 * KB, re.compile(r"^suite/roadmap\.md$")),
+    # features.md is assembled from features.d/, so the budget that bites is the
+    # per-row one build_features.py enforces (600 B) -- the file's size is a
+    # function of how many capabilities the suite has, which is not anyone's
+    # discipline to exercise. This cap is a backstop, not the constraint.
+    ("suite-assembled", 20 * KB, re.compile(r"^suite/features\.md$")),
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),
     ("protocol",    12 * KB, re.compile(r"^DOC-(PROTOCOL|COMPACTION)\.md$")),
     ("history",     20 * KB, re.compile(r"^history/[a-z-]+\.md$")),
@@ -103,7 +108,8 @@ CAPS = [
     # migration's job is to turn it into one of the roles above.
     ("legacy",      25 * KB, re.compile(r"^(embarch-[a-z-]+/|embarch-|DOC-|README)")),
 ]
-EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|^CLAUDE\.md$|^LICENSE$)")
+EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|features\.d/"
+                    r"|^CLAUDE\.md$|^LICENSE$)")
 
 
 # A sub-project whose decisions have been reduced to their hot half

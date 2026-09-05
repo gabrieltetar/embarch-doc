@@ -1,0 +1,1 @@
+| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | Shipped in all four repos that release; the other four still have no release workflow. Proven by running the step, not by a tag | n/a | 27, 29 |
