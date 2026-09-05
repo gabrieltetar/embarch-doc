@@ -57,7 +57,7 @@ The first two are mechanically simplest and expected to work first try; **the th
 
 | Command | Scope | Behaviour |
 |---|---|---|
-| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; `--dev-bench-repo` records the checkout the staleness check compares against. **`--dry-run` is designed and unbuilt** (decision 21) |
+| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` runs every detection step and prints the plan — install, `PATH` write, service call, elevation — changing nothing** (decision 21); `--dev-bench-repo` records the checkout the staleness check compares against |
 | `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
 | `embarch doctor` | anytime | The full check chain. `--json`. **`--prune` is designed and unbuilt** (decision 26), and so is the unconditional half that reports result counts and build-directory combinations — nothing measures or cleans either today |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
@@ -96,7 +96,7 @@ Checks 12 and 15 never fail the run outright, and neither does check 5 — **eve
 
 Numbers 1-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 21, 22, 23, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 23, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 

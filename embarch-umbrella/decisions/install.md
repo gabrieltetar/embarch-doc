@@ -36,13 +36,25 @@ Each repo has its own tag-triggered release workflow; this repo additionally ass
 
 The elevation friction decision 7 flags is partly a **"what is this about to do to my machine" problem, worse when the answer requires trusting a binary you just downloaded.** It runs every detection step exactly as `setup` does, then prints the concrete actions — which service calls, which files, whether elevation is needed — **reusing `setup`'s own detection path, not a second parallel implementation.**
 
-**Not built, as of 2026-09-03.** `Command::Setup` carries `--host`, `--port`,
-`--uninstall` and `--dev-bench-repo` and no `--dry-run`; the only `--dry-run` in
-the binary is `deploy-core`'s (decision 32). **The reusable detection path this
-decision asks for does exist** — `setup`'s `make_plan` runs every detection step
-and returns a `Plan` before anything is acted on — so what is missing is the flag
-and an early return, not the design. [../spec.md](../spec.md) claimed the flag as
-shipped until the 2026-09-03 audit.
+**Built 2026-09-04, and it was not the one-flag-and-an-early-return it looked
+like.** `make_plan` did already run every detection step before anything acted —
+but two of the three side effects, decision 28's copy and `PATH` write,
+**post-date this decision's text and only ever printed *while* acting**, so an
+early return would have silently omitted them. So: every location a run may
+write to is resolved once into a `Locations` passed down rather than read at
+each write; `install.rs` gained a read-only `plan_install` built from the same
+constants and predicates the real `install_into` uses, so the two cannot drift;
+and one `apply_plan` walks both modes. A dry run names the canonical directory
+and each binary as copy / already-there / absent, the env file and rc file
+`PATH` would gain, the `embarch-core install --bind` line and its elevation, and
+the state file it would write — and calls a Core it would put there **"would be
+installed by this run"**, never "just installed here".
+
+**What establishes that it changes nothing is a test, not the early return:**
+`apply_plan` driven with every writable location pointed at a sandbox and
+`embarch-core` a script that would leave a sentinel if ever executed, then the
+sandbox asserted untouched. `--dry-run` conflicts with `--uninstall` rather than
+being quietly ignored by it.
 
 ### 25 — `embarch setup --uninstall` reverses a machine setup
 
