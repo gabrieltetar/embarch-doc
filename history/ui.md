@@ -4,5 +4,9 @@
 
 ## 2026-09
 
+### Added
+- The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions/trace-transfer.md).
+## 2026-09
+
 ### Changed
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
