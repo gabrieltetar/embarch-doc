@@ -1,9 +1,17 @@
 # 005 — `doctor --prune` was decided, and neither half of decision 26 was built
 
-**State:** open
+**State:** claimed by agent/umbrella/005-doctor-prune, 2026-09-05 12:08
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 26 read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** none
+
+**Doc-size reserve (supervisor, 2026-09-05):** both `umbrella` docs are in the last
+10% of their caps and **both are already filed against
+`tasks/umbrella/009-compact-docs.md`** — `spec.md` 97.6% (243 B left), `open.md`
+93.5% (335 B). `spec.md`'s `doctor` row is one of the things this task updates, so
+plan for ~243 B: replace text rather than append it. You owe **no new compaction
+task** — 009 covers both — but say so in your report if you spent enough of either
+reserve that 009 became urgent.
 
 ## What
 
