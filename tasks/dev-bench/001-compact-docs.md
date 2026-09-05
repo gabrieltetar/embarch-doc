@@ -1,6 +1,6 @@
 # 001 — embarch-dev-bench's spec.md and open.md are in reserve
 
-**State:** open
+**State:** claimed by agent/dev-bench/001-compact-docs, 2026-09-04 21:32
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** dev-bench
 **Hardware:** none
