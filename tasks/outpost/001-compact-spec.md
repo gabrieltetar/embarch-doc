@@ -1,6 +1,6 @@
 # 001 — embarch-outpost/spec.md is in reserve
 
-**State:** open
+**State:** claimed by agent/outpost/001-compact-spec, 2026-09-04 21:31
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** outpost
 **Hardware:** none
