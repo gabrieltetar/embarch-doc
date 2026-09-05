@@ -42,3 +42,9 @@ A dangling reference then lands on an explanation instead of a gap, which is wha
 Every load-bearing constant says which it is, inline: `460800 baud [measured 2026-08-30, DK VCOM1 over the bridge]`, `250 ms step timeout [assumed]`.
 
 The bracket earns its place on an **inventoried** constant — one in a table or declared list, where provenance would otherwise be vague. It does **not** earn its place where prose already derives a constant precisely ("244, one full 247-byte ATT MTU minus the 3-byte ATT header"): a bracket there is noise. A sweep found only **five** sites repo-wide, not the dozens the rule's wording implied. So: mark an inventory, leave good prose alone, and mark the rest as each doc reaches a compaction pass.
+
+## `open.md` needs no "Open questions" heading
+
+**In an `open.md`, every top-level bullet is an open question** — the filename says what the file is, and the four-file split ([DOC-COMPACTION.md](DOC-COMPACTION.md) §2) made the whole file the open-questions doc. `scripts/collect-open-questions.py` reads it that way. Sub-headings inside it are free: group bullets by kind (`## Known wrong, not fixed`, `## Structural limits`) or leave them ungrouped.
+
+This is written down because the shape was load-bearing while nothing said so. The collector used to require a heading whose text contained "open question"; the five files whose *title* happened to read `<name>: open questions` passed by accident, and `embarch-ui`, `embarch-topology` and `embarch-umbrella` — titled `<name>: open` — printed **zero bullets while 22 sat in them**, under a summary line that said "across 8 doc(s)" and so read as complete. Every refill sweep between the migration and 2026-09-05 swept an incomplete suite. The heading predicate now applies only to a legacy `design.md` that still carries its own section.

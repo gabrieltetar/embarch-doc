@@ -14,9 +14,23 @@ embarch-token.md. Until 2026-09-03 it read design.md ONLY, which after the
 migration meant it saw 10 questions across 3 docs while 88 sat unread in eight
 open.md files. Every refill sweep since the migration has been mostly blind, and
 a dream would have proposed from that same blind view. It walks
-a heading whose text contains "open question" (case-insensitive — headings
-vary: "Open questions / future work", "Open questions"), and prints every
-top-level bullet under it, grouped by doc.
+Two rules, by filename:
+
+  open.md   -- the whole file IS the open-questions doc under the four-file
+               split, so EVERY top-level bullet counts, whatever heading it
+               sits under. Requiring an "open question" heading here left
+               embarch-ui, embarch-topology and embarch-umbrella printing zero
+               bullets while 22 sat in them (fixed 2026-09-05, tasks/doc/003);
+               those three title their file "<name>: open", and the five that
+               printed did so only because their own title happened to contain
+               the word "questions". DOC-CONVENTIONS.md §2 records that open.md
+               needs no heading for this script.
+  design.md, embarch-token.md
+            -- a section doc, so only bullets under a heading whose text
+               contains "open question" (case-insensitive -- headings vary:
+               "Open questions / future work", "Open questions").
+
+Bullets are grouped by doc.
 
 This is a reporting tool, not a CI gate — unlike check-links.py/
 check-staleness.py, an "open question" existing isn't a failure, so this
@@ -51,16 +65,23 @@ def find_design_docs(root):
 
 
 def extract_open_questions(path):
-    """Return (heading_level, bullet_text) for every bullet under an 'open question(s)' heading."""
+    """Every top-level bullet that counts as an open question in this doc.
+
+    In an open.md the whole file qualifies; elsewhere only the bullets under an
+    'open question(s)' heading do. See the module docstring.
+    """
     with open(path, encoding='utf-8') as f:
         lines = f.readlines()
 
+    whole_file = os.path.basename(path) == 'open.md'
     bullets = []
-    in_section = False
+    in_section = whole_file
     section_level = None
     for line in lines:
         heading_match = HEADING_RE.match(line)
         if heading_match:
+            if whole_file:
+                continue
             level = len(heading_match.group(1))
             title = heading_match.group(2)
             if 'open question' in title.lower():
@@ -81,8 +102,9 @@ def main():
     docs = find_design_docs(REPO_ROOT)
     total = 0
     print("# Suite-wide open questions\n")
-    print("Collected from every design.md's own \"Open questions\" section — the section itself "
-          "remains the source of truth; this is a read-only index, not a copy to edit.\n")
+    print("Collected from every sub-project's open.md in full, plus the \"Open questions\" section "
+          "of any design.md that still carries one — those remain the source of truth; this is a "
+          "read-only index, not a copy to edit.\n")
 
     for path in docs:
         bullets = extract_open_questions(path)
