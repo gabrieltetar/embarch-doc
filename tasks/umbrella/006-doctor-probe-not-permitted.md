@@ -1,6 +1,6 @@
 # 006 — Check 5 still reports the Linux permission failure as the warn decision 18 calls misleading
 
-**State:** open
+**State:** claimed by agent/umbrella/006-doctor-probe-not-permitted, 2026-09-05 17:34
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 18 read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** verify-only — dispatchable; the drop wrote "none to build; one Linux machine with a probe to verify for real", which is `verify-only`, and it must leave a hardware-verification debt (supervisor, on the drain)
