@@ -30,6 +30,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 Re-read suite-wide; none acquired a new argument.
 
 - **PATH/toolchain preflight validation** — deliberately out of the build path: a build failure surfaces naturally, and preflighting every build costs the common case for an uncommon message. Expected as a `doctor` check.
+- **Two loose ends left by decisions 20/21 shipping** (found by review, 2026-09-04, neither a contradiction). The `none`-snippet collision error advises omitting `snippets` "to take the project's configured `default_snippets`" — **advice that cannot be followed**, since a `default_snippets` containing `"none"` is now a load error; only its other half (rename the snippet) works. And the load-time refusal is **asymmetric**: `default_target` fails at load for a `static` project while `default_snippets`, `default_extra_args` and `soc_chip_overrides` are equally unhonourable there and still load silently.
 - **Config fragments / `include`**, so `[core]` is not duplicated per repo. Tolerable for v1: `[core]` is three lines.
 - **Config hot-reload** — config loads once; picking up an edit means a reconnect.
 - **`serial_log` stays one-shot rather than streaming.** Core's endpoint is itself a bounded capture, so streaming needs Core to grow one first — **not this crate's to decide**.
