@@ -8,7 +8,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 15 catches a *cross-version* stale deploy and not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so it moves only when the crate version moves: a rebuild-and-failed-deploy at the same version reads as a match. Strictly better than nothing — `deploy-core` has reported `landed` with nothing installed, and its own check compares byte length — but **it is not a hash comparison and should not be read as one.** A content hash served on `/status` would close it and is `embarch-core`'s to decide, not this sub-project's.
 
-- **Six designed pieces are confirmed unbuilt; what is open is whether each is still wanted.** Decisions 18, 22(a-c), 23, 26, 27/29 and 17's amendment: **none is built** (21 shipped 2026-09-04). [spec.md](spec.md) and each entry say so, and the work is queued in `inbox/`. **Some may be worth retiring instead**: 26's pruning has drawn no pressure, and 18 is a Linux-first-run fix on a Windows-primary suite. Nobody has weighed that.
+- **Five designed pieces are confirmed unbuilt; what is open is whether each is still wanted.** Decisions 18, 22(a-c), 26, 27/29 and 17's amendment: **none is built** (21 and 23 shipped 2026-09-04). [spec.md](spec.md) and each entry say so, and the work is queued in `inbox/`. **Some may be worth retiring instead**: 26's pruning has drawn no pressure, and 18 is a Linux-first-run fix on a Windows-primary suite. Nobody has weighed that.
 
 - **Config fragments or includes**, so the Core section is not duplicated into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s config loader. **Deferred rather than rejected.**
 
@@ -20,6 +20,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **macOS is entirely unvalidated and has no machine to validate on.** Deliberately not blocking: ship it and have a Mac-only engineer walk the guide once the primary topology is proven. **Gatekeeper may also make the "just download and run" promise false there specifically**, since the aarch64 build is unsigned.
 
-- **MCP registration has never been verified for real.** Every walk of the onboarding guide ran from an environment with no agent CLI present, so check 10 could not be exercised. Needs one run from an environment that has it.
+- **Nothing here has ever seen `claude mcp get`'s output.** No walk of the guide has run with an agent CLI present, so check 10 has never been exercised — and it now parses that output for the command to spawn (decision 23), so that format is assumed rather than observed.
 
 - **Whether `init` should warn when a repo holds more than one recorded build** is undecided. It surfaced on a real repo: `init` read whichever recorded build it found first, **which was an ad hoc dev board's rather than the production board the prior config targeted**, and `init` has no way to know which of several past builds is the "real" one. The zephyr-west discovery of decision 17 is the structural answer for a repo shaped that way, but **a static-discovery repo with several recorded builds still silently gets one picked for it.**

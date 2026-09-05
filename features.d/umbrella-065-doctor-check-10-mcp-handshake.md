@@ -1,0 +1,1 @@
+| `doctor` check 10 — the MCP server is registered **and answers**: spawns the exact registered command, one `initialize` over its stdio, 10 s; answered, failed and timed out stay distinct in `--json`'s `code` | Shipped — **the parse of `claude mcp get`'s output is assumed, never once seen for real**, so an entry it cannot read is a warn rather than any verdict | unit | 23, 37 |

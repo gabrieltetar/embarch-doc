@@ -81,7 +81,7 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
-| 10 | The registration entry exists — one `claude mcp get`. **Spawning the registered command and completing a handshake is designed and unbuilt** (decision 23), so registered-but-broken still passes |
+| 10 | Registered **and answering**: it spawns the exact registered command and completes one JSON-RPC `initialize` over its stdio within 10 s. Answered, failed and timed out stay distinct in `--json` (decisions 23, 37); an entry whose command line it cannot read is a warn, never a pass |
 | 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
@@ -94,9 +94,9 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 
 Checks 12 and 15 never fail the run outright, and neither does check 5 — **every state check 5 can currently report is a pass or a warn**, because the branch that was to fail is one of the unbuilt ones. **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
+Numbers 1-15 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; check 10 only). 16-19 are designed and unbuilt, and their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 23, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 

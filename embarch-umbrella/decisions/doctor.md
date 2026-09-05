@@ -36,7 +36,11 @@ It compares the bench's reported firmware version, over a handshake-only endpoin
 
 **The failure mode the check exists to catch — registered but broken — is exactly the one it cannot detect:** adding a registration says nothing about whether the registered command actually starts and speaks the protocol. It would spawn the exact registered command with a short timeout and send a minimal initialize handshake, **reporting success, failure and timeout distinctly.** A hand-rolled one-shot JSON-RPC exchange is sufficient; a full client is not needed for one round trip.
 
-**Unbuilt:** check 10 runs `claude mcp get embarch` and passes on a zero exit — the registration-entry test this decision was written to replace.
+**Built 2026-09-04.** Check 10 reads the command line out of `claude mcp get embarch`, spawns it with piped stdio, writes one `initialize` request and waits 10 s for a matching JSON-RPC response — no session, no client, no second request. The three outcomes carry distinct `code` values into `--json` (decision 37).
+
+**Two states the decision did not name, and both are warns rather than either verdict.** No `claude` on `PATH` at all was already a warn and stays one. New is a registration whose output this cannot read a command out of: **`claude mcp get`'s human output is a format nothing in this suite has ever seen for real** ([../open.md](../open.md)), so the parse is an assumption, and an assumption that guessed wrong must not be able to invent a verdict about the server. It says it could not read the entry, and names that as the reason.
+
+**Timeout is Fail, not Warn, and stays its own code.** A server that takes longer than 10 s to say hello is a finding either way; the separate code is what makes a badly chosen budget visible as itself rather than as a mystery failure. The 10 s is assumed, not measured.
 
 ### 31 — Check 14: which program Core would flash each chip family with
 
@@ -47,3 +51,11 @@ Core refuses to flash an nRF54L part with probe-rs, because that family stores c
 **Failure signature it found immediately, and the best argument for the check existing.** Run through WSL2 interop, the Windows Core reported a tool at a **Linux path — an ELF a Windows process cannot execute** — because interop merges WSL's `PATH` into the Windows process and the existence test resolves it through the filesystem redirector. **The *service*, whose environment is the system `PATH`, resolves a different tool.** So the check was reporting a backend the thing it checks would never choose, **which is worse than no check.** Fixed in Core.
 
 **An older Core with no such subcommand is a Warn naming what it predates, not a Fail** — a real and recoverable state during a staged rollout, and the deployment procedure already assumes Core and the tooling around it move separately.
+
+### 37 — A check may carry a machine-readable `code`, because `status` cannot hold every state a check distinguishes
+
+Decision 23 asks check 10 to report success, failure and timeout **distinctly**, and decision 11 makes `--json` the contract a UI consumes. Those two together do not fit in three statuses: registered-but-broken and registered-but-hanging are both Fail, and the only thing separating them was an English sentence in `detail`.
+
+So `Check` grows an optional `code` — a short stable identifier, `null` for every check that has nothing to add. **Never derived from `detail`**, which is written for a human and is free to be rephrased; a consumer that had to match on it would break on a wording change. Check 10 is the only user today (`handshake-ok`, `handshake-failed`, `handshake-timeout`, `not-registered`, `no-cli`, `unreadable-entry`); checks 5 and 22 are the obvious next ones, since both exist to split states that share a status.
+
+**Additive on the wire**: the key is always present, so nothing has to tell "absent" apart from "no code", and every existing consumer of `--json` keeps working.
