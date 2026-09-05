@@ -1,6 +1,12 @@
 # 001 — The Trace view's remaining cost is a 13 MB JSON the browser waits for; bin it server-side
 
-**State:** open
+**State:** claimed by agent/ui/001-trace-view-server-side-binning, 2026-09-04 23:05
+
+**Doc-size reserve at dispatch (supervisor, leg 009):** **no `embarch-ui` file is in
+reserve** — the only file in reserve suite-wide is `embarch-umbrella/spec.md`, and it
+is filed. So you have normal headroom; if any `embarch-ui` file enters reserve on your
+commit, file `tasks/doc/<NNN>-compact-ui.md` in the same commit
+(`tasks/README.md` has the shape).
 **Source:** [embarch-ui/open.md](../../embarch-ui/open.md) — "The Trace view's cost at real volume is the transfer, not the cap."
 **Scope:** ui
 **Hardware:** none
