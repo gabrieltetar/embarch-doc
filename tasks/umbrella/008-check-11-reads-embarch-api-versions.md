@@ -1,9 +1,10 @@
 # 008 — Point `doctor` check 11 at `embarch-api versions`, not at `embarch`'s own constant
 
-**State:** open
+**State:** claimed by agent/umbrella/008-check-11-reads-embarch-api-versions, 2026-09-04 20:02
 **Source:** embarch-api/006 (decision 52) — the surface check 11 was missing now exists
 **Scope:** umbrella
 **Hardware:** none
+**In reserve for this sub-project (supervisor, leg 007):** `embarch-umbrella/open.md` 4795/5120 B — **325 B left**; `embarch-umbrella/spec.md` 9527/10240 B — **713 B left**. Both are already filed against `tasks/umbrella/009-compact-docs.md`, which is deliberately `blocked`. So plan your `open.md` edit inside ~325 bytes — closing the stand-in bullet should *free* bytes, not spend them. **You do not need to file a new compaction debt** unless your work pushes a third umbrella doc into reserve, or you leave one there that `tasks/umbrella/009` does not name; then file `tasks/doc/<NNN>-compact-umbrella.md` in the same commit, per `tasks/README.md` § "Compaction tasks". Do not unblock `umbrella/009`.
 
 ## What
 

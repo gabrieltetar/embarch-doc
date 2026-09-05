@@ -1,11 +1,12 @@
 # 003 — embarch-core's spec.md and open.md are in reserve
 
-**State:** open
+**State:** claimed by agent/core/003-compact-docs, 2026-09-04 20:02
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** core
 **Hardware:** none
 **Compacts:** embarch-core/spec.md, embarch-core/open.md
 **In flux:** no
+**In reserve for this sub-project (supervisor, leg 007):** `embarch-core/open.md` 4810/5120 B — **310 B left**; `embarch-core/spec.md` 9537/10240 B — **703 B left**. Both are filed against *this* task, so getting them out of reserve is the job, not a debt to record. If you leave either in reserve, rewrite this task's `## Done when` to say why rather than closing it.
 **Must not delete:** open.md's candidate fix for the 18 stale records (drop a leading run of discontinuous records at render time); decision 36's probe-rs counterfactual, which is **evidence and not proof** and reads as proof the moment it is shortened; the `validate_signal` has-no-caller-deliberately reasoning, which is a rejected alternative wearing a gap's clothes.
 
 ## What
