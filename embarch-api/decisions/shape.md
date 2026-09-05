@@ -23,8 +23,10 @@ Chosen over exposing this surface as its own HTTP service with an API key. **The
 ### 7 — Core's address is configurable, never hardcoded to loopback
 Core's own design already anticipates moving to a LAN-reachable machine, and this crate must not bake in an assumption that will break when it does.
 
-### 25 — Config resolution happens once, at process start
+### 25 — Config resolution happens once, at process start, after a cwd-upward search
 True already and probably right — an MCP client's spawn cwd *is* "which repo am I working in" for the session's lifetime — but the cwd-upward search never said so, leaving a reader to infer it. Stated as a property of the design rather than a gap: switching repos mid-session means reconnecting the client, same as any other config change.
+
+**Why the search walks up at all:** an engineer working across several firmware repos has no single `EMBARCH_API_CONFIG` value that is ever correct, and walking up for a conventional filename is the pattern `git` and `west` already use for their own roots. *Rejected: a separate MCP registration per repo* — that is not "no `--config` needed", it is "typed once instead of every call".
 
 ### 53 — A `static` project has exactly one target: itself, and `[[projects.targets]]` is retired
 Decision 12 left `static` projects an escape hatch — a hand-authored `[[projects.targets]]` menu of `{ name, build_command, chip, artifact_path }` rows that `list_targets` returned verbatim — and **nothing was ever wired to select a row.** A build ran the project-level `build_command` regardless, and decision 51 then made every selection param a `static` project accepts an outright refusal. The config advertised a menu whose every entry was rejected, which reads to a caller as a bug in its own call rather than as a missing feature.

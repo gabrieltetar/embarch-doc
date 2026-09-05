@@ -1,0 +1,1 @@
+| `target.json` beside each `zephyr-west` build directory — the resolved selection, so a listing stays attributable past its `-args<hash>` segment | Shipped — documented as truth since it was decided, **built 2026-09-05**; absent means unattributable, never orphaned | unit | 19 |

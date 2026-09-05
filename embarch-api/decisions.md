@@ -8,9 +8,9 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, where the tests can reach, and the one target a `static` project has | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 46, 53 | 7.7 KB |
+| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, where the tests can reach, and the one target a `static` project has | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 46, 53 | 8.1 KB |
 | [The tool and CLI surface](decisions/surface.md) — what is exposed, how failures are shaped, watching a study live, what this binary says about itself | 16, 23, 24, 29, 34, 35, 41, 47, 50, 52 | 10.7 KB |
-| [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 5.1 KB |
+| [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 7.2 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 13, 20, 21, 22, 51 | 7.3 KB |
 | [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the event stream, the stack | 11, 14, 15, 17, 26, 36, 37, 38, 43, 48, 49 | 10.6 KB |
 | [Submitting and orchestrating studies](decisions/studies.md) — seals, schemas, reflash | 27, 28, 30, 31, 33, 39, 40, 44 | 11.0 KB |

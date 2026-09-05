@@ -1,6 +1,6 @@
 # 013 — `target.json` is documented as beside every build directory and is never written
 
-**State:** claimed by agent/api/013-target-json-not-written, 2026-09-05 17:32
+**State:** done, 2026-09-05, on agent/api/013-target-json-not-written
 **Source:** embarch-umbrella/005 (doctor check 16, 2026-09-05) — found while looking for a build directory's provenance
 **Scope:** api
 **Hardware:** none
@@ -50,10 +50,53 @@ somebody else's decision.
 
 ## Done when
 
-- [ ] Either `target.json` is written beside each `zephyr-west` build directory
+- [x] Either `target.json` is written beside each `zephyr-west` build directory
       with the resolved board/variant/revision/app, snippets and extra_args, and
       a test asserts it round-trips — or decision 19's `target.json` half is
       retired with a tombstone.
-- [ ] `embarch-api/interfaces/config.md` no longer states as truth whatever is
+- [x] `embarch-api/interfaces/config.md` no longer states as truth whatever is
       not built.
-- [ ] `changelog.d/` fragment; gate green.
+- [x] `changelog.d/` fragment; gate green.
+
+## Shipped
+
+**Built, not retired** — `embarch-umbrella` decision 26 is already deferred
+partly on this, so the cheaper doc fix would have left the blocker standing.
+
+- `build::TargetManifest` + `write_target_manifest`, called from
+  `run_build_locked`; `resolve_zephyr` fills it with **the descriptor value
+  itself**, so a directory's provenance and the answer its caller got are one
+  object rather than two serializations. `None` for `static` (no selection
+  resolved) and dev-bench (west's default `build/`).
+- Written **after** the build command, **only into a directory that already
+  exists**, and never creating one — so it is evidence about a build directory
+  rather than manufactured evidence, and nothing this crate does has to be
+  correct for `west build -d` to own an empty directory. A **failed** build's
+  directory gets one too.
+- Through `json_out::pretty`, so it carries `schema_version` like every other
+  JSON object this crate emits — this one is read by another repo, which is the
+  case decision 50's promise exists for.
+- **Absence means "unattributable", never "orphaned"**, and the write is
+  best-effort. Stated in decision 19 and dropped in `inbox/` for
+  `embarch-umbrella`, whose decision 26 still says the file is not written and
+  whose `--prune` would be the consumer that could get this wrong.
+- Four tests: the round trip, the no-directory case, a real `run_build`
+  leaving one, and a failed build still leaving one. The first two are
+  cross-platform; the `run_build` pair is `#[cfg(unix)]` like the rest of that
+  file's end-to-end tests, which is this suite's known platform gap.
+
+**Ride-along compaction, in this commit:** `interfaces/config.md` **11,415 →
+10,944 B** (92.9% → 89.1%), out of reserve, with the corrected build-directory
+paragraph already in it. Nothing on the `Must not delete:` list lives in that
+file; what went was reasoning restated from decisions (the upward search's
+rationale and its rejected alternative **moved into decision 25**, not deleted;
+`base_address`'s "advice, not a check" and the dev-bench intro's rationale
+dropped in favour of the pointers already beside them). `tasks/api/012`'s item
+for this file was already ticked when it was narrowed, so nothing there needed
+closing.
+
+**No hardware debt.** Nothing here needs a board: the write is exercised through
+a real child process. One thing is *unverified rather than undone* — that a real
+`west build -d` is unaffected — and it is unverifiable here by construction,
+since the write happens after west has already run and creates no directory west
+could trip over. A first real Zephyr build will confirm the file appears.
