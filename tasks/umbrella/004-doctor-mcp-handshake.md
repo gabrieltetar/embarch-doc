@@ -1,9 +1,19 @@
 # 004 — Check 10 tests that a registration exists, which is the one thing decision 23 says is not enough
 
-**State:** open
+**State:** claimed by agent/umbrella/004-doctor-mcp-handshake, 2026-09-04 22:58
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 23 read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** none
+
+**Doc-size reserve at dispatch (supervisor, leg 009):** `embarch-umbrella/spec.md`
+is **in reserve — 9761/10240 B, 479 B of headroom**, already filed against
+`tasks/umbrella/009-compact-docs.md` (which is `blocked`, `In flux: yes`). Plan
+your `spec.md` edit against those 479 B: this task's `Done when` requires a check
+10 row update and a decision 23 implementation note, so prefer *replacing* text in
+the existing row over adding a paragraph. `embarch-umbrella/open.md` is out of
+reserve (88.5%). Because 009 already carries the debt for `spec.md`, you do **not**
+owe a new `tasks/doc/<NNN>-compact-umbrella.md` for it — but if any *other*
+`embarch-umbrella` file enters reserve on your commit, file one.
 
 ## What
 
