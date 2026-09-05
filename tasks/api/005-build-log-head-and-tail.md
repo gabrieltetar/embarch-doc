@@ -1,9 +1,10 @@
 # 005 — A truncated build log keeps the tail, and the first error is in the head
 
-**State:** open
+**State:** claimed by agent/api/005-build-log-head-and-tail, 2026-09-04 20:13
 **Source:** embarch-api/open.md — "**The build-log cap keeps the tail only**, while `spec.md` claimed 'head and tail' from the initial commit until 2026-09-03 — an intent nobody built."
 **Scope:** api
 **Hardware:** none
+**In reserve for this sub-project (supervisor, leg 007):** `embarch-api/open.md` 4821/5120 B — **299 B left**; `embarch-api/decisions/surface.md` 11305/12288 B — **983 B left**. `spec.md` is **not** in reserve any more (the 2026-09-04 compaction pass took it to 8,4xx of 10,240) — leg 006's handoff said it was at 10237/10240 and that is now stale, so you have real room there. Both reserve files are already filed against `tasks/api/007-compact-docs.md`, which is deliberately `blocked`; **do not unblock it**. Closing the `open.md` bullet should free bytes rather than spend them. File `tasks/doc/<NNN>-compact-api.md` in the same commit **only** if you push a third `api` doc into reserve, or leave one there that `api/007` does not name — shape in `tasks/README.md` § "Compaction tasks".
 
 ## What
 
