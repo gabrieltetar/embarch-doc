@@ -139,7 +139,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `doctor` check 15 — the running Core's `core_version` is the located build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
-| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | **Designed, unbuilt in every repo** — four have no such step, the other four no release workflow at all | n/a | 27, 29 |
+| Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | Shipped in all four repos that release; the other four still have no release workflow. Proven by running the step, not by a tag | n/a | 27, 29 |
 | `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped — **the verification compared a byte count and reported `landed` through a cancelled elevation** | hw | 32 |
 
 ## embarch-ui

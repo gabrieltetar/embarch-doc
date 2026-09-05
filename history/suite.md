@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- Every release workflow now fails before building when `Cargo.toml`'s version disagrees with the pushed tag ([decisions 27, 29](../embarch-umbrella/decisions/release.md)).
+## 2026-09
+
 ### Changed
 - suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
 ## 2026-09
