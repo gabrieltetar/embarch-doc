@@ -76,7 +76,7 @@ EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|^CLAUDE\.md$|^LIC
 
 
 # A sub-project whose decisions have been reduced to their hot half
-# (DOC-COMPACTION.md §10) is held at a tighter cap than one that has not, so a
+# (DOC-COMPACTION.md §9) is held at a tighter cap than one that has not, so a
 # finished migration cannot drift back. Default caps above apply to the rest;
 # add a sub-project here the moment its pass lands, never before.
 TIGHTENED = {
@@ -162,7 +162,7 @@ def main() -> int:
             print(f"  {pct:5.1f}%  {rel}  ({role}) {size}/{limit} B, "
                   f"{limit - size} B left")
         print("\nA task that must write one of these cannot be done without a\n"
-              "compaction pass first (DOC-COMPACTION.md §10). Say so in the task\n"
+              "compaction pass first (DOC-COMPACTION.md §9). Say so in the task\n"
               "file before dispatching it, and record §7's human question in the\n"
               "log -- 'can spec.md alone answer what someone needs to work on this\n"
               "component today' is not a thing a script can answer.")

@@ -3,7 +3,7 @@
 **Status:** active, 2026-09-04.
 
 The module map. Split out of [spec.md](../spec.md) §5 on 2026-09-04 under
-[DOC-COMPACTION.md](../../DOC-COMPACTION.md) §10 — a reference table is not cold,
+[DOC-COMPACTION.md](../../DOC-COMPACTION.md) §9 — a reference table is not cold,
 it is loaded deliberately. Read it when you need to know *where* something
 lives; `spec.md` alone still answers what is true.
 
