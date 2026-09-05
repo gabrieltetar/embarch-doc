@@ -5,6 +5,13 @@
 ## 2026-09
 
 ### Added
+- `doctor` check 5 fails on a Linux probe that is attached but not permitted, instead of calling it unplugged: [decision 18](../embarch-umbrella/decisions/doctor.md).
+
+### Fixed
+- First live `doctor` run on the real installed suite: check 16's data dir and check 11's api-versions read confirmed; checks 1, 10 and 16 filed as defects.
+## 2026-09
+
+### Added
 - `doctor` check 16 reports `study_results/` size and per-project build directories; `--prune` stays deferred ([decision 26](../embarch-umbrella/decisions/projects.md)).
 ## 2026-09
 

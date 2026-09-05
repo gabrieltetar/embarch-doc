@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Added
+- The Trace view drops a stale pre-reset leading prefix and keeps the DUT clock for the rest, in place of refusing that clock for the whole capture. embarch-ui decision 19.
+## 2026-09
+
+### Added
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions/trace-transfer.md).
 ## 2026-09
 

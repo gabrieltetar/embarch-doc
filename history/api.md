@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `decisions/zephyr.md` split by mission: `decisions/build.md` takes 5, 18, 19, 42; discovery and selection stay.
+## 2026-09
+
 ### Added
 - An oversized study is now refused naming every field over a bound and the bound itself, not `serde`'s raw error — [decision 27](../embarch-api/decisions/studies.md).
 ## 2026-09

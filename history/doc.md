@@ -5,6 +5,22 @@
 ## 2026-09
 
 ### Changed
+- A compaction debt is filed at tasks/<scope>/<NNN>-compact-<scope>.md — the scope of the doc, a path its worker owns — not tasks/doc/, which check-ownership.py refuses them.
+
+### Fixed
+- A code worktree links every sibling in the dependency closure, not the ones its own Cargo.toml names; embarch-ui needs embarch-topology transitively via embarch-core-client.
+- A spawned leg does get the Slack connector: it arrives deferred, so ToolSearch must pull it before any tool list shows it. ops.md §5.2a is a contingency, not the state legs 007-009 logged.
+- All eight sub-project CLAUDE.md files pointed at design.md, deleted by the four-file split; DOC-PROTOCOL.md §6 now carries the current template and says why check-links.py cannot guard it.
+- The PermissionRequest alert hook moved from the gitignored settings.local.json into .claude/settings.json, rendered by install.py and guarded by --check; it no longer fires for AskUserQuestion.
+- build_features.py --check validates fragments only; the suite/features.md equality assertion moved to --check-assembled, run on main. A worker shipping a feature can now pass every gate.
+- collect-open-questions.py reads a whole open.md, not just an "open question" heading: 100 questions across 11 docs, was 78 across 8. DOC-CONVENTIONS.md records the shape.
+
+### Decided
+- A blocked compaction task parks the pass, not the reserve: the compaction rides in the unit that next writes the file.
+- `tasks/doc/007` closed: the daily fold gets a script and a subagent, and the 25 KB roll line — which one folded day already exceeded — becomes 40 KB.
+## 2026-09
+
+### Changed
 - DOC-COMPACTION.md splits: §1–§5 stay as the budget, §6–§9 become DOC-COMPACTION-PASS.md, how to run a pass.
 - DOC-PROTOCOL.md §7 becomes DOC-CONVENTIONS.md: the shapes scripts parse, loaded when you need one.
 ## 2026-09
