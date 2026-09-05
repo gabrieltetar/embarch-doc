@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Core's spec.md and open.md compacted out of reserve (DOC-COMPACTION §9); no open question dropped.
+## 2026-09
+
+### Changed
 - embarch-core/open.md compacted off its cap; all 26 questions kept, none answered by the pass.
 ## 2026-09
 
