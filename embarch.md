@@ -84,7 +84,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | Sub-project | Interface reference |
 |---|---|
 | [embarch-core](embarch-core/spec.md) | [interfaces.md](embarch-core/interfaces.md) — the HTTP surface |
-| [embarch-api](embarch-api/spec.md) | [config.md](embarch-api/interfaces/config.md), [tools.md](embarch-api/interfaces/tools.md) — one table for both front ends |
+| [embarch-api](embarch-api/spec.md) | [config.md](embarch-api/interfaces/config.md), [tools.md](embarch-api/interfaces/tools.md), [studies.md](embarch-api/interfaces/studies.md) — one table for both front ends |
 | [embarch-study-designer](embarch-study-designer/spec.md) | [types.md](embarch-study-designer/interfaces/types.md), plus GATT types, taps, decoders and the protocol grammar |
 | [embarch-outpost](embarch-outpost/spec.md) | [wire.md](embarch-outpost/interfaces/wire.md) — the record and frame format; `integration.md` — the DUT-repo path |
 | [embarch-dev-bench](embarch-dev-bench/spec.md) | — |

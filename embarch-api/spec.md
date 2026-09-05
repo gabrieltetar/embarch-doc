@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-03.
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Config: [interfaces/config.md](interfaces/config.md). Tools and subcommands: [interfaces/tools.md](interfaces/tools.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Config: [interfaces/config.md](interfaces/config.md). Tools and subcommands: [interfaces/tools.md](interfaces/tools.md), [interfaces/studies.md](interfaces/studies.md).
 
 ## 1. What it is
 
