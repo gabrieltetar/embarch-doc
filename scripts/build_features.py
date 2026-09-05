@@ -23,10 +23,31 @@ dropped a ``status.d/`` fragment and the supervisor hand-folded it into the
 table. ``features.d/<its own scope>-*`` is the worker's to write, so the row
 lands with the work that earned it.
 
-    scripts/build_features.py            assemble
-    scripts/build_features.py --check    verify the file matches the fragments
-Exit status: 0 on success; 1 if --check finds a difference or a fragment is
-malformed.
+    scripts/build_features.py                   assemble
+    scripts/build_features.py --check           validate the fragments
+    scripts/build_features.py --check-assembled ... and that the file matches them
+
+**Which check goes where, and why they are two.** ``--check`` validates the
+fragments -- names, cell count, size, duplicate order numbers -- exactly as
+``build_changelog.py --check`` does, and is what ``check-docs.py`` runs, so it is
+the gate every worker and supervisor sees. ``--check-assembled`` adds the
+byte-equality assertion against ``suite/features.md``.
+
+That assertion used to be in ``--check``, and it made **every** branch that
+shipped a feature red (tasks/doc/002, hit independently by ``umbrella/004`` and
+``ui/001`` within one leg): a worker owns ``features.d/<its own scope>-*`` but
+``suite/features.md`` is refused to it by ``check-ownership.py``, so it could
+satisfy one gate or the other and never both. A red that every unit of a certain
+shape produces is a red that stops being read.
+
+The invariant is real, but it is a property of ``main`` rather than of a work
+branch -- only the actor allowed to write the assembled file can restore it. So
+it is asserted where that actor is: CI on a push to ``main``, and the
+supervisor's fold, which runs the assembler and commits the result with the unit
+(``embarch-fleet/protocol.md`` §10).
+
+Exit status: 0 on success; 1 if a fragment is malformed, or if
+``--check-assembled`` finds a difference.
 """
 from __future__ import annotations
 
@@ -129,7 +150,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--check", action="store_true",
-                    help="verify suite/features.md matches the fragments; write nothing")
+                    help="validate the fragments; write nothing")
+    ap.add_argument("--check-assembled", action="store_true",
+                    help="also verify suite/features.md matches them; write nothing")
     args = ap.parse_args()
 
     rows, problems = read_fragments()
@@ -144,15 +167,23 @@ def main() -> int:
     built = assemble(rows)
     total = sum(len(v) for v in rows.values())
 
-    if args.check:
+    if args.check and not args.check_assembled:
+        print(f"{total} fragment(s) valid.")
+        return 0
+
+    if args.check_assembled:
         current = TARGET.read_text(encoding="utf-8") if TARGET.exists() else ""
         if current == built:
             print(f"OK: suite/features.md matches its {total} fragment(s).")
             return 0
         print("suite/features.md does not match features.d/.\n\n"
               "It is assembled, not edited: change the fragment, or add one, and\n"
-              "run scripts/build_features.py. A hand-edit here is reverted by the\n"
-              "next assemble, silently, which is the failure this replaces.")
+              "run `python3 scripts/build_features.py`. A hand-edit here is reverted\n"
+              "by the next assemble, silently, which is the failure this replaces.\n\n"
+              "If you are a WORKER: this is not your gate and not your file --\n"
+              "check-docs.py runs --check, which does not assert this. Commit your\n"
+              "features.d/ fragment and nothing else; the supervisor's fold\n"
+              "assembles (embarch-fleet/protocol.md §10).")
         cur, new = current.split("\n"), built.split("\n")
         import difflib
         for line in list(difflib.unified_diff(cur, new, "on disk", "from fragments",

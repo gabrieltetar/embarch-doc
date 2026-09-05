@@ -9,13 +9,13 @@ owner happens to look. `embarch-fleet/ops.md` §3 has the shapes to
 avoid; this removes the most common of them by making the gate a single
 allowlistable invocation.
 
-It is a convenience wrapper, not a new gate: the six checks and what they mean
-are unchanged (`DOC-PROTOCOL.md` §5, `embarch-fleet/protocol.md` §10). Every
-check still runs even after one fails, because a supervisor wants the whole
-picture before deciding whether to block a task, not the first red.
+It is a convenience wrapper, not a new gate: the checks and what they mean are
+unchanged (`DOC-PROTOCOL.md` §5, `embarch-fleet/protocol.md` §10). Every check
+still runs even after one fails, because a supervisor wants the whole picture
+before deciding whether to block a task, not the first red.
 
 Usage:
-  scripts/check-docs.py            run all six, print one line each
+  scripts/check-docs.py            run them all, print one line each
   scripts/check-docs.py --quiet    print only failures
 Exit status: 0 if all pass, 1 otherwise.
 """
@@ -29,9 +29,14 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 # build_changelog and build_features are gates only with --check; they
-# assemble without it.
+# assemble without it. Both --check modes validate FRAGMENTS and nothing else.
+# build_features has a second, stricter `--check-assembled` that also asserts
+# suite/features.md matches them -- deliberately NOT here, because that file is
+# refused to every worker by check-ownership.py, so asserting it in the gate
+# everyone runs made every feature-shipping branch red (tasks/doc/002). It runs
+# in CI on a push to main, and the supervisor's fold assembles.
 #
-# install.py is the seventh and it checks a different kind of thing: this repo's
+# install.py is the last, and it checks a different kind of thing: this repo's
 # `.claude/`, its four protocol READMEs and the fleet shims in `scripts/` are
 # rendered from templates in the embarch-fleet repo, so a hand-edit here is a
 # change that the next install silently reverts. It lives in that repo, so it is

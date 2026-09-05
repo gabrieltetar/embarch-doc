@@ -38,6 +38,32 @@ It is a coincidence worth knowing about rather than a rule to rely on: a
 fragment directory at a different depth would need the links rewritten at
 assembly.
 
+## Who runs the assembler, and when
+
+**A worker does not.** It writes `features.d/<its own scope>-<NNN>-<slug>.md`,
+commits that, and leaves [suite/features.md](../suite/features.md) stale on its
+branch — `check-ownership.py` refuses that file to every worker scope, and the
+gate a worker runs does not ask for it.
+
+**The supervisor assembles in the fold**, in the same commit that lands the
+unit: `python3 scripts/build_features.py`, with `suite/features.md` in
+`fold-commit.py`'s `--path` list ([the protocol](../../embarch-fleet/protocol.md)
+§10). Note the file is mode 644, so it must be run as `python3 scripts/...`.
+
+Two check modes, because the two audiences are different:
+
+| | asserts | run by |
+|---|---|---|
+| `build_features.py --check` | the fragments are well-formed | `check-docs.py`, so everyone |
+| `build_features.py --check-assembled` | ...and `suite/features.md` matches them | CI on a push to `main` |
+
+The equality assertion used to be in `--check`, and so in everyone's gate. That
+made **every** branch that shipped a feature red — the worker could satisfy
+`check-docs.py` or `check-ownership.py` and never both — and two workers hit it
+independently in one leg before it was fixed (`tasks/doc/002`, 2026-09-05). The
+invariant is real; it is just a property of `main` rather than of a work branch,
+because only the actor allowed to write the assembled file can restore it.
+
 ## What goes in a cell
 
 The header of [suite/features.md](../suite/features.md) is the contract and it

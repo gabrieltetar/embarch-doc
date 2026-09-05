@@ -5,17 +5,16 @@
 **Doc-size reserve at dispatch (supervisor, leg 009):** **no `embarch-ui` file is in
 reserve** — the five files in reserve suite-wide are all `api` and `umbrella`, and all
 filed. Normal headroom. If any `embarch-ui` file enters reserve on your commit, file a
-compaction task in the same commit; note that `tasks/README.md` says
-`tasks/doc/<NNN>-compact-ui.md` but `check-ownership.py --scope ui` **refuses
-`tasks/doc/**`** — that contradiction is `tasks/doc/004`, and the precedent set by
-`api/009` is to file at `tasks/ui/<NNN>-compact-ui.md` instead, which
-`check-doc-size.py` still finds because it matches the `**Compacts:**` field.
+compaction task in the same commit, at `tasks/ui/<NNN>-compact-ui.md`, which is
+what `tasks/README.md` now says (it said `tasks/doc/` until 2026-09-05, a path
+`check-ownership.py --scope ui` refuses — `tasks/doc/004`, closed).
 
 **Two gate quirks already known, so you do not rediscover them:**
-1. If you add or edit a `features.d/` row, `build_features.py --check` goes red and
-   `check-ownership.py` refuses `suite/features.md`. **Do not commit that file** —
-   leave it stale, say so in your report, the supervisor assembles it in the fold
-   (`tasks/doc/002`).
+1. If you add or edit a `features.d/` row, **leave `suite/features.md` stale and do
+   not commit it** — `check-ownership.py` refuses it to you and the supervisor
+   assembles it in the fold. It no longer turns `build_features.py --check` red;
+   that assertion moved to `--check-assembled`, which runs on `main` only
+   (`tasks/doc/002`, closed 2026-09-05).
 2. `check-ownership.py --scope ui` run bare against `origin/main...HEAD` may name paths
    from this leg's other units that are in your base. Check your own diff instead:
    `git diff --name-only <your branch point>...HEAD | scripts/check-ownership.py --scope ui --stdin`.

@@ -47,3 +47,23 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate changelog.d/ fragments
         run: python3 scripts/build_changelog.py --check
+
+  check-feature-fragments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate features.d/ fragments
+        run: python3 scripts/build_features.py --check
+
+  # The byte-equality half, on main only. A work branch legitimately carries a
+  # features.d/ fragment whose row is not assembled yet -- suite/features.md is
+  # refused to a worker by check-ownership.py, so asserting it per branch made
+  # every feature-shipping unit red (tasks/doc/002). The supervisor's fold
+  # assembles; this is what catches a fold that forgot to.
+  check-features-assembled:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check suite/features.md is assembled from its fragments
+        run: python3 scripts/build_features.py --check-assembled

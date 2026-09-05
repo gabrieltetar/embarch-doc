@@ -335,7 +335,8 @@ def main() -> int:
                   f"{limit - size} B left")
         print("\nThe reserve is writable and this is not a wall -- it is the debt\n"
               "going unrecorded. File one task per sub-project as\n"
-              "tasks/doc/<NNN>-compact-<scope>.md, listing these paths on a\n"
+              "tasks/<scope>/<NNN>-compact-<scope>.md -- the scope of the DOC being\n"
+              "compacted, so it is a path you own -- listing these paths on a\n"
               "**Compacts:** line, in the same commit that spent the reserve. The\n"
               "task carries the judgements no script can make: **In flux:**\n"
               "(DOC-COMPACTION-PASS.md), its human question, and what the pass\n"

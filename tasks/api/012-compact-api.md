@@ -6,15 +6,11 @@
 **Hardware:** none
 **Owner:** no
 
-**Filed here, not as `tasks/doc/<NNN>-compact-api.md`, and that is a deviation
-worth knowing about.** `tasks/README.md` names `tasks/doc/` for a compaction
-debt, but `check-ownership.py --scope api` allows a worker only `tasks/api/**`,
-so the path the README names cannot be written by the worker the README tells to
-write it. `check-doc-size.py` matches on the `**Compacts:**` field and `rglob`s
-all of `tasks/`, so `tasks/api/` satisfies it and both gates stay green. The
-scope really is `api` — every file below is `embarch-api`'s. Reported to
-`inbox/` as `doc-compaction-debt-path-conflicts-with-ownership.md`; if the
-resolution is to widen `check-ownership.py`, move this file.
+This path is now the rule, not a deviation. `agent/api/009` filed here rather
+than at `tasks/doc/<NNN>-compact-api.md` because `check-ownership.py --scope api`
+refuses `tasks/doc/**`, reported it, and `tasks/doc/004` settled it on 2026-09-05
+in this file's favour: a compaction debt goes in the scope directory of the doc
+being compacted. `tasks/README.md` and `check-doc-size.py`'s message say so.
 
 **Compacts:** embarch-api/decisions/zephyr.md, embarch-api/spec.md, embarch-api/interfaces/config.md, embarch-api/open.md
 
