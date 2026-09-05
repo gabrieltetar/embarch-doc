@@ -5,12 +5,16 @@
 **Scope:** umbrella
 **Hardware:** none
 
-**Compacts:** embarch-umbrella/spec.md
+**Compacts:** ~~embarch-umbrella/spec.md~~ — **paid 2026-09-05 by `umbrella/006`**, which
+compacted it 10,089 → 9,131 B (89.2%) as its own ride-along. Nothing is owed here: **write
+your check-8 row and do not compact.** If your edit pushes `spec.md` back past 9,216 B you
+are the one spending the reserve again, and the rule below applies to you afresh. Refresh
+`009`'s counts either way if you change the table's shape.
 **In flux:** yes — by this task, which is the point: `tasks/umbrella/009-compact-docs.md` is `blocked` on exactly
 that, and a blocked compaction task parks the pass, not the reserve (`DOC-COMPACTION.md`
 §2). You are the unit that rewrites a row of `spec.md`'s doctor table, so **compact both as part of this
 commit**, honour `tasks/umbrella/009-compact-docs.md`'s `Must not delete:` list, and close only their item there.
-**Headroom: `spec.md` 151 B of 10,240**, and it cannot be split — 10 KB is a role cap on a
+**Headroom (stale, see above): `spec.md` 151 B of 10,240**, and it cannot be split — 10 KB is a role cap on a
 single file (`DOC-COMPACTION.md` §2–3), so shortening is the only move. `open.md` was on
 this line too and **is paid**: the owner's live-`doctor` pass took it 5,051 → 4,388 B while
 adding what the run measured, which is this rule's first real use. `Must not delete:`, from

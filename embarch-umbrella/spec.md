@@ -1,6 +1,6 @@
 # embarch-umbrella: spec
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md).
 
@@ -8,11 +8,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 The sub-project that gets a firmware engineer from *nothing installed* to *`embarch-api build_and_flash my-project` works, from a terminal or from an agent* — on whatever topology their machine happens to be. One binary, `embarch`, with three jobs: **set up**, **verify**, and **start Core when it isn't already running**.
 
-It is its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`, and it is the binary a person downloads when they have neither.** `embarch-api` cannot hold this: **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
+It is its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`**, and `embarch-api` cannot hold it: **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
 
 It is **not**:
 
-- **A process supervisor.** No restart loop, no health polling, no resident process. Core's own service install keeps Core running; `up` exists only for when that is not in place or has died.
+- **A process supervisor.** No restart loop, no health polling, no resident process. Core's own service install keeps it running.
 - **In the runtime data path.** Nothing routes through it after setup. **If umbrella is deleted from a working machine, the stack keeps working.**
 - **A hardware or build layer.** It never links `probe-rs` or `serialport` and never runs a build command. Every capability it appears to have is a shell-out to `embarch-core` or `embarch-api`, or an HTTP call to Core.
 - **Multi-machine orchestration.** A Core on a separate box is started by a human on that box.
@@ -33,10 +33,6 @@ It is **not**:
                     |             reads/writes its config
                     +-- writes <firmware-repo>/embarch/embarch.toml
                         and registers the MCP server (local scope)
-
-after setup, the runtime path has no umbrella in it:
-  agent --stdio--> embarch-api --HTTP+Bearer--> embarch-core --> hardware
-  human --CLI----> embarch-api ----------------^
 ```
 
 Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella's job is to make the human one ergonomic too**, not just to wire up the agent path.
@@ -51,7 +47,7 @@ Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella'
 | Windows, both native | `local` | Yes, elevation as above | Yes |
 | Core on a separate box | `remote` | **No** — a human starts it there | Yes, via multipart upload |
 
-The first two are mechanically simplest and expected to work first try; **the third is the one actually in daily use and therefore the only one validated for real**; the fourth is supported by construction but untested; the fifth is partial by design and says so.
+The first two are mechanically simplest; **only the third is validated for real**, being the one in daily use. The fourth is supported by construction but untested, and the fifth is partial by design and says so.
 
 ## Command surface
 
@@ -59,7 +55,7 @@ The first two are mechanically simplest and expected to work first try; **the th
 |---|---|---|
 | `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` runs every detection step and prints the plan — install, `PATH` write, service call, elevation — changing nothing** (decision 21); `--dev-bench-repo` records the checkout the staleness check compares against |
 | `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
-| `embarch doctor` | anytime | The full check chain. `--json`. Check 16 reports what grows; **`--prune` stays unbuilt** (decision 26) — nothing here deletes anything |
+| `embarch doctor` | anytime | The full check chain. `--json`. **Nothing in it deletes anything** — `--prune` is unbuilt (decision 26) |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
 | `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
@@ -76,7 +72,7 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 2 | Core service installed, and running |
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |
-| 5 | At least one probe visible — a count off `/status`, warn on zero. The Linux **"not permitted" versus "unplugged"** branch is **designed and unbuilt** (decision 18) |
+| 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID still present in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
@@ -91,18 +87,16 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 17 | Core's bind address matches what the detected topology needs — **design-only** |
 | 18 | Firewall state, best-effort, informational — **design-only** |
 | 19 | Free disk space behind the build and results directories — **design-only** |
-| 20 | Tail of Core's log file, informational — **design-only** (the file is [embarch-core](../embarch-core/decisions/logging.md)'s single daily-rolling log) |
+| 20 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
-Checks 12, 15 and 16 never fail the run outright, and neither does check 5 — **every state check 5 can currently report is a pass or a warn**, because the branch that was to fail is one of the unbuilt ones. **Check 11 does fail**, and that is the point of it: a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refuses at the handshake means no study can run either. A number it simply could not obtain is a warn naming which one, never a pass.
+Checks 12, 15 and 16 never fail the run outright. **Check 5 now can**, and only for the one state it can prove: a probe on this machine's USB bus that Core enumerated none of. **Check 11 fails too**, and that is the point of it — a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refusing at the handshake means no study can run either. A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; check 10 only). 17-20 are designed and unbuilt, and their numbers move if something is built before them.
+Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; checks 5 and 10). 17-20 are designed and unbuilt, and their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 22, 26's `--prune` half and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**: decision 22, 26's `--prune` half and 17's amendment each sit *inside* a command or a check that otherwise ships, and each is marked above where it lives. [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 
-Umbrella invents no token mechanism; [embarch-token.md](../embarch-token.md) is the source of truth. It makes the existing one happen at setup time: on a same-machine topology, ensure Core has started at least once so the machine-wide token file exists, then confirm `embarch-api` can discover it — **no token value is ever written into a config file.** On a separate machine there is no shared filesystem and this is an unsolved gap; **umbrella's contribution is not to solve it but to make it a ten-second manual step**, printing the exact export line for a value the human reads off the Core machine.
+Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of truth — and **writes no token value into any config file.** At setup time on a same-machine topology it ensures Core has started at least once, so the machine-wide token file exists, then confirms `embarch-api` can discover it. Across machines there is no shared filesystem and no solution: it prints the exact export line for a value the human reads off the Core machine.
 
-## Committing a repo integration
-
-`init` uses per-project, per-user local-scope MCP registration. If it is ever committed for a whole team, **the recommendation is a checked-in registration naming `embarch-api` on `PATH` with a repo-relative config path** — portable, and **`embarch setup` already puts the binary on `PATH`.** Every other shape loses: env expansion is two variables to get wrong with an opaque failure when unset, a wrapper script needs a Windows twin, absolute paths break for every other engineer, and umbrella-as-the-MCP-server is refused outright (decision 5).
+Committing a repo integration for a whole team is a follow-on step `init` does not take; its shape is [decision 12](decisions/projects.md).

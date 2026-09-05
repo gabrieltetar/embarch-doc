@@ -18,6 +18,8 @@ Three things follow from that shape:
 
 For a repo owned by someone else — a client's firmware repo — **`init` must not dirty tracked files.** So the folder is excluded via `.git/info/exclude`, **not** by editing the repo's committed ignore file, and the MCP server is registered at the agent's per-project, per-user scope rather than by writing a config at the repo root. **Both are reversible and invisible to anyone else cloning the repo.** Committing the integration later is a deliberate follow-on step, not the default.
 
+**And the shape it takes when a team does commit it: a checked-in registration naming `embarch-api` on `PATH`, with a repo-relative config path** — portable, and `embarch setup` already puts the binary on `PATH` (decision 28). Every other shape loses: env expansion is two variables to get wrong with an opaque failure when unset, a wrapper script needs a Windows twin, absolute paths break for every other engineer, and umbrella-as-the-MCP-server is refused outright (decision 5).
+
 ### 13 — `init` derives what it can *by looking rather than assuming*, and refuses to guess the rest
 
 For a Zephyr/west repo it reads the build system's own **recorded** command when one exists, because that is the only reliable answer to a working-directory-versus-positional-app-path question that **has already silently broken this suite once.**

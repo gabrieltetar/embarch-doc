@@ -14,7 +14,13 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 Reporting zero probes as "warn — a probe can legitimately be unplugged" is true but **actively misleading for the most common Linux first-run failure:** a probe that *is* physically attached but inaccessible because no udev rule grants the current user permission to open it, which probe enumeration can silently under-report. So on Linux only — **macOS and Windows do not have this permission model** — after zero probes are reported, `doctor` checks the USB device tree for a known debug-probe vendor ID the enumeration missed. **A hit means "attached but not permitted", reported as a distinct fail rather than a warn**, with the udev-rules fix line; a genuine miss on both stays the existing warn.
 
-**Unbuilt:** check 5 has no `Fail` branch at all, so the state this decision exists to separate is still reported as exactly the warn it calls misleading.
+**Built 2026-09-05.** The tree is `/sys/bus/usb/devices/*/idVendor`, read with `std::fs` and no new dependency — and **sysfs attributes are world-readable while `/dev/bus/usb/...` is the node the udev rule grants**, which is exactly why this can see a probe the enumeration could not open. The fail carries `code` `probe-not-permitted`; the two warns are `no-probe-found` (the bus was read and holds nothing) and `no-probe-unchecked` (nobody could look), because decision 37's rule applies here the moment a second state shares a status.
+
+**One condition the decision did not name, and it is not optional: Core must be enumerating on *this* machine.** Check 5 reads its probe count off Core's `/status`, so on `wsl-host` or `remote` the count is about one computer and this host's USB bus is about another. Scanning anyway is check 14's mistake with a different peripheral (decision 31): a confident verdict about the wrong machine. So the scan runs only on Linux **and** class `local`; every other case keeps the old warn and says which reason applies.
+
+**`0403` (FTDI) is deliberately not a probe vendor ID**, though several JTAG adapters use it. So does every third USB-serial cable on this bench — the outpost link and the dev-bench console among them — and a vendor ID that means "probe" only sometimes would fail this check on machines with no probe at all, which is worse than the warn it replaces. The list is SEGGER, CMSIS-DAP, ST-Link, LPC-Link2, EDBG, Raspberry Pi Debug Probe, Black Magic, XDS110, ULINK.
+
+**Never exercised against a real permission-denied probe** — that needs a Linux box with a probe attached and its udev rules removed. Until then the fail branch is unit-tested against a synthetic sysfs tree only ([../open.md](../open.md)).
 
 ### 19 — A stale-dev-bench-firmware check
 
