@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- embarch-core/open.md compacted off its cap; all 26 questions kept, none answered by the pass.
+## 2026-09
+
 ### Added
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 

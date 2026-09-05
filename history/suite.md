@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
+## 2026-09
+
 ### Added
 - `history/<scope>.md`, assembled per sub-project from `changelog.d/` fragments by `scripts/build_changelog.py`, capped at 20 KB with older windows rolled to `history/archive/`.
 

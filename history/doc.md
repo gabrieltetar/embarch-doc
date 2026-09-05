@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Both protocol docs off their caps; §2's budget table now lists the three roles the checker enforced and it never named.
+## 2026-09
+
+### Changed
 - Client-identifying names are gone from every repo: the extractor type, the `static_extractor` config value, board ids and prose all use generic names now.
 ## 2026-09
 

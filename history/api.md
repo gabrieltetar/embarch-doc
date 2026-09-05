@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Four api docs off their caps: study tools split to interfaces/studies.md, three decision groups cut to their hot half.
+## 2026-09
+
+### Changed
 - `embarch-api`'s spec and open questions had run out of headroom; the module map moved to `interfaces/modules.md` and the cold narrative is gone.
 ## 2026-09
 
