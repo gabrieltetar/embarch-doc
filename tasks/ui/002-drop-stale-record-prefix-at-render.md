@@ -1,6 +1,31 @@
 # 002 — A capture still opens with stale records; drop the discontinuous prefix at render time
 
-**State:** open
+**State:** claimed by agent/ui/002-drop-stale-record-prefix-at-render, 2026-09-05 00:32
+
+**Doc-size reserve at dispatch (supervisor, leg 009):** **no `embarch-ui` file is in
+reserve** — the five files in reserve suite-wide are all `api` and `umbrella`, and all
+filed. Normal headroom. If any `embarch-ui` file enters reserve on your commit, file a
+compaction task in the same commit; note that `tasks/README.md` says
+`tasks/doc/<NNN>-compact-ui.md` but `check-ownership.py --scope ui` **refuses
+`tasks/doc/**`** — that contradiction is `tasks/doc/004`, and the precedent set by
+`api/009` is to file at `tasks/ui/<NNN>-compact-ui.md` instead, which
+`check-doc-size.py` still finds because it matches the `**Compacts:**` field.
+
+**Two gate quirks already known, so you do not rediscover them:**
+1. If you add or edit a `features.d/` row, `build_features.py --check` goes red and
+   `check-ownership.py` refuses `suite/features.md`. **Do not commit that file** —
+   leave it stale, say so in your report, the supervisor assembles it in the fold
+   (`tasks/doc/002`).
+2. `check-ownership.py --scope ui` run bare against `origin/main...HEAD` may name paths
+   from this leg's other units that are in your base. Check your own diff instead:
+   `git diff --name-only <your branch point>...HEAD | scripts/check-ownership.py --scope ui --stdin`.
+
+**Context from `ui/001`, which landed an hour ago and touched the same view:** the Trace
+view no longer serializes `Lane.spans` at all — it fetches windowed, server-binned runs
+from `GET /api/trace/{study}/{tap}/bins?from&to&width`, and one decoded capture is
+cached server-side in `AppState.trace_cache`. **The prefix drop almost certainly belongs
+at decode time, before the cache and before binning**, not in `app.js`. Read
+`embarch-ui/decisions/trace-transfer.md` (decision 18) before you design it.
 **Source:** [embarch-core/open.md](../../embarch-core/open.md) — "Discarding a signal port's buffered input on open is not sufficient (decision 30) … **Candidate fix:** drop a leading run of records whose cycles are discontinuous with the bulk, at render time, where the whole file is in hand."
 **Scope:** ui
 **Hardware:** verify-only
