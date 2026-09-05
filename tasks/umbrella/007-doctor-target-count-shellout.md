@@ -5,18 +5,18 @@
 **Scope:** umbrella
 **Hardware:** none
 
-**Compacts:** embarch-umbrella/spec.md, embarch-umbrella/open.md
+**Compacts:** embarch-umbrella/spec.md
 **In flux:** yes — by this task, which is the point: `tasks/umbrella/009-compact-docs.md` is `blocked` on exactly
 that, and a blocked compaction task parks the pass, not the reserve (`DOC-COMPACTION.md`
 §2). You are the unit that rewrites a row of `spec.md`'s doctor table, so **compact both as part of this
 commit**, honour `tasks/umbrella/009-compact-docs.md`'s `Must not delete:` list, and close only their item there.
-**Headroom: `spec.md` 151 B of 10,240, `open.md` 69 B of 5,120.** Neither can absorb your
-edit, and neither can be split — 10 KB and 5 KB are role caps on single files
-(`DOC-COMPACTION.md` §2–3), so shortening is the only move here. `Must not delete:`, from
+**Headroom: `spec.md` 151 B of 10,240**, and it cannot be split — 10 KB is a role cap on a
+single file (`DOC-COMPACTION.md` §2–3), so shortening is the only move. `open.md` was on
+this line too and **is paid**: the owner's live-`doctor` pass took it 5,051 → 4,388 B while
+adding what the run measured, which is this rule's first real use. `Must not delete:`, from
 009: the doctor table's per-row **designed-and-unbuilt** distinction, which lives nowhere
-else, and `open.md`'s note that check 15 is not a hash comparison. Refresh 009's counts if
-you change the table's shape — a `Must not delete:` clause that protects a table *by a
-count* is worse than useless once the count is stale.
+else. Refresh 009's counts if you change the table's shape — a `Must not delete:` clause
+that protects a table *by a count* is worse than useless once the count is stale.
 
 ## What
 
