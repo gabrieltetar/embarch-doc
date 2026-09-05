@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- DOC-COMPACTION §9 pass on dev-bench: SRAM-percentage history and superseded bound sizes dropped from [spec.md](../embarch-dev-bench/spec.md); every open question kept.
+## 2026-09
+
+### Changed
 - dev-bench open.md and decisions/ble.md cut to their hot half; the 16-byte-boundary diagnosis is now a named rejection.
 - dev-bench/open.md trimmed again, to 4843 B, so it clears the pressure threshold rather than sitting on it.
 ## 2026-09
