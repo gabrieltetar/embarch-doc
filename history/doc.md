@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- Client-identifying names are gone from every repo: the extractor type, the `static_extractor` config value, board ids and prose all use generic names now.
+## 2026-09
+
+### Changed
 - The fleet's standing rules, log and scripts move to the embarch-fleet repo; `.claude/` and the protocol READMEs here are now generated from it.
 
 ### Fixed
