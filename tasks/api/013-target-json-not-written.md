@@ -1,6 +1,6 @@
 # 013 — `target.json` is documented as beside every build directory and is never written
 
-**State:** open
+**State:** claimed by agent/api/013-target-json-not-written, 2026-09-05 17:32
 **Source:** embarch-umbrella/005 (doctor check 16, 2026-09-05) — found while looking for a build directory's provenance
 **Scope:** api
 **Hardware:** none
