@@ -20,6 +20,18 @@ and should say in its report that it left it stale. Both umbrella/004 and the le
 supervisor did this and the fold was clean. Note `scripts/build_features.py` is mode
 **644**, so it must be invoked as `python3 scripts/build_features.py`.
 
+**A second, independent report of this same defect was filed and folded in here rather
+than given its own number**: `ui/001`'s worker dropped
+`inbox/doc-features-assembly-makes-every-worker-branch-red.md` two units later, having
+hit it without knowing umbrella/004 had. Its one addition is the sharpest statement of
+why this matters: *"a red that every unit of a certain shape produces is a red that
+stops being read."* Its other detail worth keeping: it **assembled `suite/features.md`,
+watched ownership reject it, and reverted** — so both workers independently reached the
+same conclusion about which of the two reds to accept.
+
+**Sibling: `tasks/doc/004`** — the same root cause with a different pair of scripts (the
+compaction debt's path). Three worker-visible instances in leg 009 alone.
+
 ## What
 
 `suite/features.md` is assembled from `features.d/`, and two gate checks now
