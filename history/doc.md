@@ -4,6 +4,11 @@
 
 ## 2026-09
 
+### Changed
+- DOC-COMPACTION.md splits: §1–§5 stay as the budget, §6–§9 become DOC-COMPACTION-PASS.md, how to run a pass.
+- DOC-PROTOCOL.md §7 becomes DOC-CONVENTIONS.md: the shapes scripts parse, loaded when you need one.
+## 2026-09
+
 ### Added
 - A doc's last 10% of cap is now a writable reserve whose debt must be filed as a task; check-duplication.py reports a claim held in two files.
 ## 2026-09
