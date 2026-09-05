@@ -8,7 +8,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 The sub-project that gets a firmware engineer from *nothing installed* to *`embarch-api build_and_flash my-project` works, from a terminal or from an agent* — on whatever topology their machine happens to be. One binary, `embarch`, with three jobs: **set up**, **verify**, and **start Core when it isn't already running**.
 
-It exists as its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`, and it is the binary a person downloads when they have neither.** `embarch-api` cannot hold this: it would have to install Core's OS service and register MCP servers, and **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
+It is its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`, and it is the binary a person downloads when they have neither.** `embarch-api` cannot hold this: **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
 
 It is **not**:
 
@@ -39,7 +39,7 @@ after setup, the runtime path has no umbrella in it:
   human --CLI----> embarch-api ----------------^
 ```
 
-Both of `embarch-api`'s front-ends stay first-class after setup — an MCP client over stdio **and** a human running it directly. **Umbrella's job is to make the second one ergonomic too**, not just to wire up the agent path.
+Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella's job is to make the human one ergonomic too**, not just to wire up the agent path.
 
 ## Topology matrix
 
@@ -51,7 +51,7 @@ Both of `embarch-api`'s front-ends stay first-class after setup — an MCP clien
 | Windows, both native | `local` | Yes, elevation as above | Yes |
 | Core on a separate box | `remote` | **No** — a human starts it there | Yes, via multipart upload |
 
-The first two are mechanically simplest and expected to work first try; **the third is the one actually in daily use and therefore the one that gets validated for real**; the fourth is supported by construction but untested; the fifth is partial by design and says so.
+The first two are mechanically simplest and expected to work first try; **the third is the one actually in daily use and therefore the only one validated for real**; the fourth is supported by construction but untested; the fifth is partial by design and says so.
 
 ## Command surface
 
@@ -79,7 +79,7 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 5 | At least one probe visible — a count off `/status`, warn on zero. The Linux **"not permitted" versus "unplugged"** branch is **designed and unbuilt** (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
-| 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) |
+| 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
 | 10 | The registration entry exists — one `claude mcp get`. **Spawning the registered command and completing a handshake is designed and unbuilt** (decision 23), so registered-but-broken still passes |
 | 11 | The study-designer schema versions: Core's served host version against this binary's compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports |
@@ -96,12 +96,12 @@ Checks 12 and 15 never fail the run outright, and neither does check 5 — **eve
 
 Numbers 1-15 are what the code emits and what `--json` carries; 16-19 are designed and unbuilt, and their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table.** Audited against the source on 2026-09-03: decisions 18 (check 5's not-permitted branch), 21 (`setup --dry-run`), 22 (checks 16-18), 23 (check 10's handshake) and 26 (`doctor --prune`) are all designed and unbuilt, and each of the first four sits *inside* a command or a check that otherwise ships — which is why the doc claimed them. Decision 17's amendment is a fifth: check 8 still counts zephyr-west targets with this crate's own scanner ([decisions/projects.md](decisions/projects.md)), not `embarch-api`'s listing.
+**Designed-and-unbuilt is not only a tail of the table**, and that is why this doc claimed otherwise for weeks: decisions 18, 21, 22, 23, 26 and 17's amendment each sit *inside* a command or a check that otherwise ships. Every one is marked above where it lives, and [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 
-Umbrella invents no token mechanism; [embarch-token.md](../embarch-token.md) is the source of truth. It makes the existing one happen at setup time: on a same-machine topology, ensure Core has started at least once so the machine-wide token file exists, then confirm `embarch-api` can discover it — **no token value is ever written into a config file.** On a separate machine there is no shared filesystem and this is an unsolved gap; **umbrella's contribution is not to solve it but to make it a ten-second manual step**, printing the exact export line with the value read from the Core machine by the human.
+Umbrella invents no token mechanism; [embarch-token.md](../embarch-token.md) is the source of truth. It makes the existing one happen at setup time: on a same-machine topology, ensure Core has started at least once so the machine-wide token file exists, then confirm `embarch-api` can discover it — **no token value is ever written into a config file.** On a separate machine there is no shared filesystem and this is an unsolved gap; **umbrella's contribution is not to solve it but to make it a ten-second manual step**, printing the exact export line for a value the human reads off the Core machine.
 
 ## Committing a repo integration
 
-`init` uses per-project, per-user local-scope MCP registration. If the integration is ever committed for a whole team, **the recommendation is a checked-in registration naming `embarch-api` on `PATH` with a repo-relative config path** — no absolute paths, portable, and **`embarch setup` is already the thing that puts the binary on `PATH`.** Every other shape loses: env expansion is two variables to get wrong with an opaque failure when unset, a wrapper script needs a Windows twin, absolute paths are broken for every other engineer, and umbrella-as-the-MCP-server is refused outright (decision 5).
+`init` uses per-project, per-user local-scope MCP registration. If it is ever committed for a whole team, **the recommendation is a checked-in registration naming `embarch-api` on `PATH` with a repo-relative config path** — portable, and **`embarch setup` already puts the binary on `PATH`.** Every other shape loses: env expansion is two variables to get wrong with an opaque failure when unset, a wrapper script needs a Windows twin, absolute paths break for every other engineer, and umbrella-as-the-MCP-server is refused outright (decision 5).
