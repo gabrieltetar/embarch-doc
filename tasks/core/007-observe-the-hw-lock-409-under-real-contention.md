@@ -1,6 +1,6 @@
 # Observe `hw_lock` contention live — a second request must `409` naming the holder
 
-**State:** open
+**State:** claimed by supervisor (bench, no branch), 2026-09-06 16:42
 **Source:** owner's bench session 2026-09-06 — `embarch-core/spec.md` §2 states the contention rule and nothing has ever observed it against real hardware
 **Scope:** core
 **Hardware:** bench
