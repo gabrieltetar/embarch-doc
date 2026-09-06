@@ -1,5 +1,0 @@
-**Target:** suite/user-guide.md §5.1 — the sample scaffolded config and the placeholder paragraph after it
-**Was:** "build_command = [\"west\", \"build\", \"-b\", \"my_board\", \"--build-dir\", \"embarch/build\", \"app/firmware\"]" with `chip = "CHANGE-ME"` as the only field marked `<- you have to fill this in`
-**Now:** the board in `build_command` is `CHANGE-ME` too, and the board `init` read out of `build_info.yml` is quoted in a comment above it with how old that build is; a repo holding several recorded builds gets every candidate named in the config and on stdout, and no build command derived at all.
-
-§5.1's opening sentence — "it derived what it safely could and left the rest as placeholders" — is still true and now covers two fields, not one. `chip`'s own paragraph ("EmbArch will not guess: a wrong guess would flash the wrong target instead of erroring") is the argument the board now shares; the board's version is that `build_info.yml` records the last build, not the board on the desk. [embarch-umbrella decision 41](../embarch-umbrella/decisions/projects.md).

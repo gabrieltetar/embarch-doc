@@ -6,14 +6,25 @@ files crossed their reserve lines inside that fold, one by a supervisor edit and
 assembler run.
 **Scope:** suite
 **Hardware:** none
-**Compacts:** embarch-decision-reversals.md, suite/features.md
-**In flux:** yes — see "Why blocked". The two files are in flux for **different reasons**,
+**Compacts:** embarch-decision-reversals.md, suite/features.md, suite/user-guide.md
+**In flux:** yes — see "Why blocked". The three files are in flux for **different reasons**,
 and only one of them is the ordinary kind.
 **Must not delete:** every reversal row's **shape number** and the citation that resolves it
 (the shape number is how a row is referred to from elsewhere, and rows are cited by number
 from `DOC-PROTOCOL.md` and from sub-project decisions); the "Review-driven reversals"
 section's distinction between a reversal *found by review* and one found by a failure; and,
 in `suite/features.md`, **nothing** — see below, because deleting from it is not the move.
+In `suite/user-guide.md`: §5.1's argument for why `chip` and now the board are placeholders —
+*a wrong guess flashes the wrong target instead of erroring*, and *`build_info.yml` records
+the last build, not the board on your desk*. Both are the reason the placeholder is not an
+annoyance, and both read as boilerplate once shortened to "fill these in".
+
+**`suite/user-guide.md` was added by leg 017** (2026-09-06), folding `umbrella/022`'s
+`status.d/` fragment: 22,813 → 23,246 B, over the 23,040 reserve line. **Third consecutive leg
+in which a `status.d/` fold pushed this file toward or past its line** — leg 016 shortened the
+check-17 row to stay under. That is the pattern worth naming: **a `status.d/` fragment is the
+one edit in a unit that no worker's reserve budget covers**, because the worker cannot write
+the file and the supervisor is not told its headroom before it starts folding.
 
 ## What
 

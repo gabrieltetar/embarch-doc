@@ -134,6 +134,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
+| `init` never writes an inferred board as fact | Shipped — the board from `build_info.yml` becomes `CHANGE-ME` and is quoted back in a comment with the build's age; a repo with several recorded builds has all of them named and none picked. **Unit tests only; no scaffolded config has been fed to a real `embarch-api` since the change** | unit | 41 |
 | `init`/`doctor` support for live target discovery | Shipped, **decision 17's amendment included 2026-09-05**: check 8 shells out to `embarch-api list-targets` and umbrella's approximating scanner is deleted. Unit-tested against injected output, **never run against a real `embarch-api`** | unit | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |

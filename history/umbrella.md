@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `init` writes an inferred board as CHANGE-ME with the value and build age in a comment, and names every candidate rather than picking one of several recorded builds: decision 41.
+## 2026-09
+
 ### Fixed
 - check 17's `bound-narrow` fix line now names the class a bare `embarch setup` really infers, and withdraws the offer where that is `remote`.
 ## 2026-09

@@ -117,14 +117,15 @@ base_url = "auto"          # don't replace this with an IP — see below
 [[projects]]
 name = "my-firmware"
 source_path = "/home/me/src/my-firmware"
-build_command = ["west", "build", "-b", "my_board", "--build-dir", "embarch/build", "app/firmware"]
+# build/build_info.yml records roadrunner@2/nrf54l15/cpuapp, built 3 days ago
+build_command = ["west", "build", "-b", "CHANGE-ME", "--build-dir", "embarch/build", "app/firmware"]
 artifact_path = "embarch/build/zephyr/zephyr.hex"
 chip = "CHANGE-ME"    # <- you have to fill this in
 flash_format = "hex"
 build_timeout_secs = 900
 ```
 
-**`chip` is a probe-rs target name, which is not your Zephyr board name** — `roadrunner@1/nrf54l15/cpuapp` is a board, `nRF54L15` is a chip. **There is no mechanical mapping between the two, so EmbArch will not guess: a wrong guess would flash the wrong target instead of erroring.** Find yours with `embarch-core chip-list nrf54`, which needs no extra tooling.
+**`chip` is a probe-rs target name, which is not your Zephyr board name** — `roadrunner@1/nrf54l15/cpuapp` is a board, `nRF54L15` is a chip. **There is no mechanical mapping between the two, so EmbArch will not guess: a wrong guess would flash the wrong target instead of erroring.** Find yours with `embarch-core chip-list nrf54`, which needs no extra tooling. **The board is a placeholder for the same reason** (2026-09-06): `build_info.yml` records the last build, not the board on your desk, so `init` quotes what it found and how old it is instead of writing it, and with several recorded builds it names each and derives no command at all — [umbrella decision 41](../embarch-umbrella/decisions/projects.md).
 
 **`base_url = "auto"` means "find Core wherever it is, every time". Leave it alone.** If you are on WSL2 and tempted to write in the gateway IP you found with `ip route`: **don't — that IP changes every time WSL2 restarts, and hardcoding it is a bug you will rediscover in two weeks.**
 
