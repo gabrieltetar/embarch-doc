@@ -7,8 +7,10 @@ findings** — and filed here by the supervisor, who merged `018` knowing about 
 verified against the shipped source rather than inferred; the line numbers below are the
 reviewer's own reads.
 **Scope:** umbrella
-**Hardware:** item 1 is code-only. Item 3 names a **hardware-owed** assumption and is a
-question to record, not to answer without a board.
+**Hardware:** none — **and the field was prose until leg 015 fixed it**, which made
+`queue-status.py` read the whole task as `hw-gated` and therefore undispatchable. Every item
+here is code or docs. Item 3 asks you to **record** a hardware-owed assumption in `open.md`,
+not to answer it; answering it needs a board and is not part of this task.
 **Owner:** no
 
 ## 1. `bound-narrow`'s `setup` fix line has the same hole `018` just closed in `bind-too-narrow`
