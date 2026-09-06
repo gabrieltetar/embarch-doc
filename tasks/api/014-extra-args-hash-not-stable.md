@@ -1,6 +1,6 @@
 # 014 — The `-args<hash>` build-directory segment uses `DefaultHasher`, which is not stable across Rust releases
 
-**State:** claimed by agent/api/014-extra-args-hash-not-stable, 2026-09-05 22:12
+**State:** done, 2026-09-05, on `agent/api/014-extra-args-hash-not-stable`.
 **Source:** embarch-umbrella/005 (doctor check 16, 2026-09-05) — found while counting per-target build directories
 **Scope:** api
 **Hardware:** none
@@ -38,15 +38,15 @@ actually uses `extra_args`, and nobody has reported a duplicated build directory
 
 ## Done when
 
-- [ ] `build_dir_name`'s `extra_args` segment is computed by a hash whose value
+- [x] `build_dir_name`'s `extra_args` segment is computed by a hash whose value
       is fixed by this crate rather than by the toolchain, or by a non-hash
       spelling.
-- [ ] A test asserts the hash of a known argument list equals a **hard-coded
+- [x] A test asserts the hash of a known argument list equals a **hard-coded
       literal**, so a future change to the hashing is a failing test rather than
       a silent rename.
-- [ ] Decision 19 records the change, and says what happens to directories
+- [x] Decision 19 records the change, and says what happens to directories
       already named by the old scheme.
-- [ ] `changelog.d/` fragment; gate green.
+- [x] `changelog.d/` fragment; gate green.
 
 **Reserve, measured by leg 012 at dispatch (2026-09-05 22:12):** **nothing in the suite is
 in reserve** — `api/012` landed an hour ago and took `embarch-api/spec.md` from 98.7% to
@@ -57,3 +57,33 @@ compaction is already carried by `tasks/api/013`, which is closed, so if you pus
 reserve you owe the ride-along in your own commit (`DOC-COMPACTION.md` §2): shorten it
 there and then, rather than filing a task. Measure with
 `python3 scripts/check-doc-size.py --pressure` before you report — do not assume.
+
+## What was done
+
+`zephyr::extra_args_hash` — FNV-1a (64-bit), written out in `src/zephyr.rs`, over
+a **length-prefixed** encoding of each argument (so `["-p", "always"]` and
+`["-p always"]` cannot collide). `DefaultHasher` is gone from the crate.
+
+FNV over a keyed SipHash because `extra_args` comes from this machine's own
+project config, never an untrusted caller — there is no hash-flooding threat a
+key would answer, only accidental collision over a few short flags — and a key
+is one more thing that has to stay in step with names already on disk. A
+sanitised non-hash spelling was rejected: an arbitrary flag has no length bound,
+its escaping is a second thing to hold stable, and `target.json` already answers
+"what produced this directory" better than a name can.
+
+`build_dir_name_args_hash_matches_a_hard_coded_literal` pins
+`ref_board-default-2-widget-args6222ab5e7fce6ae9` and three raw hash values; the
+pre-existing same-process test now carries a comment saying why it could not
+catch this. Decision 19 records the change **and** that every existing `-args*`
+directory is orphaned by it, deliberately and once, with the reason no migration
+is soundly buildable (recomputing an old name means reproducing the
+`DefaultHasher` output of whichever toolchain wrote it).
+
+`decisions/build.md` went to 10,934 / 12,288 B (89.0%) — under the reserve line,
+confirmed with `check-doc-size.py --pressure`: nothing in the suite is in
+reserve. `decisions.md`'s size column for that file was updated. `interfaces/
+config.md` was **not** touched: its `-args<hash>` description is still true.
+
+Not done: nothing hardware-side, and no directory cleanup — the orphaned
+directories are a human's to delete, and `doctor --prune` still must not.
