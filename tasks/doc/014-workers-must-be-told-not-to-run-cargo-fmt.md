@@ -12,7 +12,7 @@
 ## What was decided, and what is missing
 
 `tasks/suite/006` is closed: **the suite does not enforce `rustfmt`, and nobody runs
-`cargo fmt`.** Recorded in [embarch.md](../embarch.md) §5 with the measured cost and a reversal
+`cargo fmt`.** Recorded in [embarch.md](../../embarch.md) §5 with the measured cost and a reversal
 condition, and in `suite/roadmap.md`'s **Later**.
 
 **The load-bearing half of that decision is the worker instruction, and it is yours.** The
