@@ -1,6 +1,6 @@
 # 014 — Three lines in `decisions/doctor.md` went stale the moment check 5 landed
 
-**State:** open
+**State:** claimed by agent/umbrella/012-check-16-does-not-name-the-directory-it-resolved, 2026-09-05 21:27 — **riding along with `tasks/umbrella/012`**, as the "Why now" below asks. Closed by that unit's commit, not by a unit of its own.
 **Source:** the `embarch-reviewer` pass on `umbrella/006` (`embarch-umbrella` `66e4a78`, `embarch-doc` `de8a381`, 2026-09-05) — three sub-threshold notes it judged not worth reverting for, recorded here rather than lost
 **Scope:** umbrella
 **Hardware:** none
