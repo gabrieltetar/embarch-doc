@@ -1,6 +1,6 @@
 # 011 — `embarch-core/open.md` crossed into reserve
 
-**State:** claimed by agent/core/011-compact-core, 2026-09-06 16:06
+**State:** done, agent/core/011-compact-core, 2026-09-06
 **Source:** `core/005` spent the last of this file's headroom adding a structural-limits bullet; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none
@@ -64,11 +64,41 @@ commit that spends the reserve is the one that files it (`DOC-COMPACTION.md`
 
 ## Done when
 
-- [ ] `open.md` is clear of its reserve line (under 4,608 B).
-- [ ] Every `Must not delete:` item above is still readable.
-- [ ] No live measurement above is restated from memory rather than re-measured
+- [x] `open.md` is clear of its reserve line (under 4,608 B).
+- [x] Every `Must not delete:` item above is still readable.
+- [x] No live measurement above is restated from memory rather than re-measured
       or left alone.
-- [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
+- [x] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words: *what does someone starting on `embarch-core`
       tomorrow lose if this paragraph is gone?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+`open.md` **4,885 -> 4,488 B** (87.7% of the 5,120 cap, 120 B below the 4,608
+reserve line). Only the **Structural limits** section and one cross-reference
+were touched; `Never exercised`, `Unverified diagnoses` and `Moved elsewhere` —
+which hold all three live hardware measurements and three of the five
+`Must not delete:` items — are byte-for-byte unchanged, so **no measurement was
+re-measured and none was restated.**
+
+Two bullets deleted, both nameable as answered rather than dropped:
+
+- The `EMBARCH_TOKEN`/no-TLS bullet. `spec.md` §2's auth invariant already says
+  "No per-caller identity and no TLS" and points at `embarch-token.md`, whose §8
+  is the threat model. A claim held in two of the four files is the §3 error
+  `check-duplication.py` exists to find, not an open question.
+- `FlashedThisRun is unreachable from Core alone`. Decision 31 states it with
+  its reason ("that needs a build, which is `embarch-api`'s job"), and
+  `embarch-study-designer/interfaces/types.md` states it for the field itself.
+
+Two shortened, each keeping the clause its `Must not delete:` entry names: the
+route sweep keeps **rejection, not reach** and what that fails to catch; the SSE
+bullet keeps **why the missing `Last-Event-ID` is closed rather than owed** —
+both consumers fall back to polling instead of pretending to resume.
+
+`collect-open-questions.py`: 104 -> 102, exactly the two above.
+
+Nothing in `embarch-core` remains in reserve, so no follow-on compaction task is
+filed. No code change: this task is doc-only, and the code branch is unmodified.
+
