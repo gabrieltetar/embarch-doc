@@ -67,7 +67,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 
 | # | Check |
 |---|---|
-| 1 | Both binaries found; versions match the suite manifest. **A missing `embarch-core` is a warn where none belongs** (`wsl-host`, `remote`), and the Windows service's own registration is read to find one (decision 38) |
+| 1 | Both binaries found; versions match the suite manifest. **A missing `embarch-core` is a warn where none belongs** (`wsl-host`, `remote`). Each binary is found by a **reading** where one exists, never `PATH` alone (decisions 38, 42) |
 | 2 | Core service installed, and running |
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |

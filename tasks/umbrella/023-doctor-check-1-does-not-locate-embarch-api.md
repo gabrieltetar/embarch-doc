@@ -1,6 +1,6 @@
 # 023 — `doctor` check 1 does not locate the `embarch-api` binary, and three checks are degraded by it
 
-**State:** claimed by agent/umbrella/023-locate-embarch-api, 2026-09-06 04:25
+**State:** done, agent/umbrella/023-locate-embarch-api, 2026-09-06
 **Source:** `embarch-umbrella/open.md`, bullets 1 and 7 — "**check 1 does not locate that binary** here" and "Check 8's shell-out has never run against a real `embarch-api`. **Predicted here: a warn**, `embarch-api not located`."
 **Scope:** umbrella
 **Hardware:** verify-only — the locator and its behaviour are testable against a synthetic tree; confirming it finds the real binary on the primary topology is a debt for the owner's own session, not for you.
@@ -48,18 +48,33 @@ waiting on a narrow-bound Core, a permission-denied probe, a Mac, or a bench.
 
 ## Done when
 
-- [ ] Check 1's actual behaviour with respect to `embarch-api` is established and
-      stated — defect or by-design — with the evidence you used.
-- [ ] Whichever of the two shapes above follows is done, and a decision recorded
-      in `embarch-umbrella/decisions/` with the losing alternative argued.
-- [ ] Checks 8 and 11 either gain the located path or gain an accurate statement
-      of what they cannot do and why. **Do not fabricate a live result for
-      either** — no run against a real `embarch-api` or a live Core is available
-      to you; what you cannot observe stays an explicit debt.
-- [ ] `embarch-umbrella/open.md`'s bullets 1 and 7 reflect the outcome, and the
-      `embarch-api/open.md` half is **not yours to edit** — drop a note in
-      `inbox/` for it instead (`../../embarch-fleet/protocol.md` §3).
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] **Defect.** `setup` had installed `embarch-api` at decision 28's canonical
+      location beside `embarch` itself and written the sourcing line into
+      `~/.bashrc`; `locate_api` read `EMBARCH_API_BIN` and `PATH` and nothing
+      else, so `command -v embarch-api` succeeds in an interactive shell and
+      fails in `bash -c` **and** `bash -lc` (`.profile` is not a file `setup`
+      writes). Check 1's verdict on an installed suite therefore turned on
+      whether the shell that ran it was interactive, and with Core located and
+      the API not it hard-Failed `not-found`. Argued in
+      [decision 42](../../embarch-umbrella/decisions/doctor.md).
+- [x] Decision 42, in `decisions/doctor.md` — three sources added, the
+      contested rank (the agent CLI's registration ahead of `PATH`) argued with
+      its losing alternative, `init` deliberately excluded, and the
+      rc-file residual stated rather than fixed.
+- [x] Both gain the located path, and their shell-out contract was **observed
+      against a real `embarch-api`** rather than predicted — that binary needs
+      no Core and no bench, so running it is neither hardware nor a live Core:
+      `--json`/`--config` must precede the subcommand (clap exits 2 otherwise),
+      `versions` answers `host_type_schema_version` 17 from both copies on this
+      bench, `list-targets` answers `{success, targets}` on stdout at exit 0 and
+      `{success:false, error}` at exit 1. **Neither check has run inside a
+      `doctor`**, which needs a live Core — recorded in `open.md`, and below as
+      a hardware-verification debt.
+- [x] Bullet 1's settled clause is deleted outright and bullet 7 is replaced by
+      what is actually still unrun; `inbox/api-open-md-versions-is-read-now.md`
+      carries the `embarch-api` half.
+- [x] `changelog.d/umbrella-locate-api-reads-the-registration.fixed.md`; rows
+      `umbrella-061` and `umbrella-030` updated in `features.d/`. Gate green.
 
 ## Doc-size reserve for `umbrella` — read before you plan, this one is unusual
 
@@ -95,3 +110,26 @@ protected prose to hit a number.
 If you push any *other* file into reserve, file
 `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit —
 **`tasks/umbrella/`, never `tasks/doc/`**, which `check-ownership.py` refuses to you.
+
+## Hardware-verification debt
+
+**One `embarch doctor --json` on the primary topology, in the owner's own
+session.** Everything host-side is done and unit-tested, but no `doctor` run has
+used decision 42's locator, and this bench is its awkward case: two
+`embarch-api` binaries, different contents, identical `--version`, and the one
+the agent CLI is registered to run is a debug build. What to look for in the
+output: check 1 Passes rather than Failing `not-found`; its detail names the
+provenance and the mixed install; checks 8 and 11 answer instead of warning
+`embarch-api not located`; check 11 compares 17 against 17. Also worth one
+`bash -c 'embarch doctor'` — the non-interactive shell is the case that made
+this a defect at all.
+
+## Reserve accounting
+
+`open.md` 4,661 -> **4,527 B (88.4%)**, out of reserve; its item in
+`tasks/umbrella/009` is closed and nothing on that task's `Must not delete:`
+list was touched. It was paid by deleting what this task settled, not by
+squeezing. **`decisions/doctor.md` went the other way**, 6,188 -> **11,095 B
+(90.3%)**, and is filed back onto `009` in this same commit — the trade was
+deliberate, since `topology.md`, where decision 42's sibling decision 38 lives,
+would have gone over cap outright. `spec.md` 9,137 -> 9,154 B (89.4%), still out.

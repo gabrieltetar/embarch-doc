@@ -4,7 +4,7 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **One of check 11's four live unknowns survives**: **`/dev-bench/hello`'s `compatible` field**, which needs a bench ([decision 35](decisions/schema-skew.md)). **Discovery, not skew:** check 11 reads Core's v17 and cannot ask `embarch-api` for its own — **check 1 does not locate that binary** here.
+- **Check 11's last live unknown is `/dev-bench/hello`'s `compatible` field**, needing a bench ([decision 35](decisions/schema-skew.md)).
 
 - **Check 15 catches a *cross-version* stale deploy, not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so a rebuild and failed deploy at one version reads as a match. Better than nothing, but **it is not a hash comparison and must not be read as one.** A content hash on `/status` would close it, `embarch-core`'s call.
 
@@ -14,7 +14,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **`saved.host` is sticky, and `doctor` check 2 still reads it** — `setup` writes it for every class though `state.rs` calls it "only meaningful for `remote`", so an old `--host` makes check 2 infer `remote` on a `wsl-host` machine ([decision 22](decisions/bind.md)). Check 17's fix line was fixed off it, **check 2 was not**: the fallback's intent is undocumented, it does not preserve the `remote` class either, and clearing it changes check 2 on real machines on a guess.
 
-- **Check 8's shell-out has never run against a real `embarch-api`.** Injected exit codes and stdout only; the argument order and `{success, targets}` shape are read off `embarch-api`'s source, not observed. **Predicted here: a warn**, `embarch-api not located`. One `embarch doctor --json` settles it.
+- **No `doctor` run has used [decision 42](decisions/doctor.md)'s wider locator**, on a bench with two `embarch-api` files at one version. Checks 8 and 11's shell-out contract is now observed; one `embarch doctor --json` is what's left. **`setup` writes `PATH` only to `.bashrc`/`.zshrc`** — `install.rs`'s call, not the locator's.
 
 - **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then `no-probe-found` with them back. **Whether the nine vendor IDs are the right nine is also unmeasured.**
 
