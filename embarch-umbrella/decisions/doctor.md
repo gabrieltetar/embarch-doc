@@ -1,10 +1,10 @@
 # embarch-umbrella decisions: What `doctor` checks
 
-**Status:** active, 2026-09-05.
+**Status:** active, 2026-09-06.
 
 The checks, and why several of them distinguish states that look the same. Which are built and which are not is [../spec.md](../spec.md)'s table, not repeated per entry here. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Two checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), and check 10's MCP registration is [mcp.md](mcp.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Three checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), and check 17's bind address is [bind.md](bind.md).
 
 ### 18 — Check 5 distinguishes "no probe attached" from "a probe is attached but this user cannot open it"
 
@@ -25,24 +25,6 @@ Reporting zero probes as "warn — a probe can legitimately be unplugged" is tru
 It compares the bench's reported firmware version, over a handshake-only endpoint Core added for exactly this, against `git describe` in whichever local dev-bench checkout is configured — a machine-level state field, settable at setup or overridable per call. A mismatch fails with a fix line naming the reflash step, **whose exact command depends on which board, unlike this decision's original text assumed.**
 
 **The configured path must name a path native to wherever `doctor` itself runs**, not a cross-filesystem view of one: Windows against a WSL2 checkout over a UNC path **spuriously reports the checkout as always-dirty, because Windows' git cannot read that repo's symlinks over that path.**
-
-### 22 — Bind address versus topology, built 2026-09-05; firewall state and disk space, retired 2026-09-05
-
-**(a) Bind address versus topology — check 17, built 2026-09-05.** A Core that bound loopback under the new default **without `setup` having widened it** is exactly the "reachable from *this* interface but not the one WSL2 can actually use" failure **that default made possible for the first time.** `embarch-topology`'s `recommended_bind_address` is the yardstick — the function `setup` already calls and bakes into the `install` invocation — and what was missing was only the check that notices when it hadn't been.
-
-**The independent half is the class `setup` recorded**, not the class check 3 resolved. Check 3's class *is* derived from whichever candidate answered, so comparing the winner against it can only agree; with no recorded class the check warns `no-recorded-class` rather than passing vacuously.
-
-**Two Fails, and both rest on the service registration** — the same `sc.exe qc` line `locate_core` and `deploy-core` already parse, read wherever it can move the verdict and nowhere else. Nothing reachable and registered `--bind 127.0.0.1` is `bound-narrow`, which is what "failing when they disagree **rather than reporting bare unreachability**" buys: check 3 sends someone to restart a running service. Nothing reachable and registered wide is `bind-not-the-cause`, a useful negative rather than a duplicate red. Reached at loopback while the recorded class needs `0.0.0.0` is `bind-too-narrow` **only if the registration is narrow too** — wide passes `bind-matches-registered`, unreadable warns `bind-unproven`.
-
-**Bound *wider* than needed warns and does not fail**, and the losing case is real: "disagreement fails" reads more cleanly, and a laptop needing only loopback that listens on every interface is exposure. It loses because **that machine works**, and a red `doctor` where nothing is broken is the failure this chain exists to avoid.
-
-**Amended 2026-09-06: the loopback hit was never evidence.** `bind-too-narrow` first Failed on that hit alone — but `candidates()` pushes `Local @ 127.0.0.1` first and `resolve` stops at the first responder, so **a Core bound `0.0.0.0` wins there exactly as one bound `127.0.0.1` does**, and the detail's "only" claimed candidates never tried. The fix line was worse: it offered `embarch setup`, but the arm fires only when something answered — precisely `setup`'s `already_running`, which installs nothing and then writes the *winner's* class into state, after which check 17 passes `bind-matches` with the bind untouched and the independent evidence destroyed. **A fix that greens its own check is worse than none**, so this arm's fix now names the reinstall and says why `setup` is not an alternative here.
-
-**So (a)'s recorded losing argument — a reachable Core is by construction bound wide enough for the route that reached it — was right about this one arm**, and the answer was to give it evidence check 3 lacks, over two alternatives. *Demote it to a warn:* free and honest, but it surrenders the state the arm uniquely catches — a Core answering here whose registration says the guest cannot — wherever the `sc.exe qc` `bound-narrow` already spends would settle it. *Probe the remaining candidates:* closest to what the detail claimed, but it is `embarch-topology`'s resolve contract, **another sub-project**, and is the weaker evidence anyway — a failed gateway probe indicts firewall and bind indistinguishably, where the registration states the bind. `bind-unproven` keeps the warn for the case where it is the honest answer. **`bind-too-narrow` keeps its spelling for a strictly narrower state** (decision 37's deliberate-reuse record). **Still never met a real narrow-bound Core** — this bench registers `--bind 0.0.0.0`, so every branch is synthetic-evidence-tested only ([../open.md](../open.md)).
-
-**(b) Firewall state (retired unbuilt 2026-09-05, see (a)).** It would have named a likely-active profile when a connectivity probe fails. Retired for the reason its own text named: **firewall state cannot always be introspected without elevation**, so under decision 37 it would be a permanent warn, and a check that is always amber trains people to stop reading amber. It could produce no fix line either — naming a profile does not name a rule — and the real Windows first-day event is an interactive prompt at Core's first bind, answered before `doctor` runs. **(a) answers the same question with a cause rather than a suspicion.**
-
-**(c) Disk space (retired unbuilt 2026-09-05, see check 16).** It would have warned below a threshold behind the build and results directories, a full disk otherwise reading as a mystifying compiler error. Retired on cost against a check that already exists: **`std` has no free-space API**, so it needs a dependency or a per-platform shell-out (`df`, `GetDiskFreeSpaceExW`) in a crate explicit about what it refuses to link, for a guessed threshold. **Check 16 already measures what grows here** — `study_results/` at 809 MiB across 50 entries — making growth the signal and decision 26's `--prune` the fix. The losing argument: free space catches a disk filled by something that is not EmbArch, which 16 cannot see. Real, but that is machine health wearing an EmbArch badge, and 16's numbers land in the same report.
 
 ### 31 — Check 14: which program Core would flash each chip family with
 

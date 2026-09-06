@@ -1,6 +1,6 @@
 # embarch-umbrella decisions: What `doctor` reports
 
-**Status:** active, 2026-09-05.
+**Status:** active, 2026-09-06.
 
 **Split out of [doctor.md](doctor.md) on 2026-09-05, entries moved verbatim.** That file's mission is *what is checked*; these three are *what a consumer reads back*, which is a different reader and a different contract — a UI breaks on this group and a bench engineer on that one.
 
@@ -18,7 +18,7 @@ So `Check` grows an optional `code` — a short stable identifier, `null` for ev
 
 **Which checks carry one is [../spec.md](../spec.md)'s table's job, not this entry's.** The roster that used to sit here went stale within a day of check 5 landing, and correcting it only restarts that clock. The durable half is the *test* a check has to meet, which is why checks 5 and 22 were named the obvious next ones — both exist to split states that share a status. **More states than statuses earns a code**; everything else stays `null`.
 
-**A code's referent is as much of the contract as its spelling.** Renaming one breaks a consumer loudly. Keeping the name and moving what it means breaks the same consumer silently — the one that did exactly what this decision asked and matched on the code — and no check in the gate can see it. So a code kept for a state that *replaced* the old one is recorded as a deliberate reuse in the decision that moved it; check 10's `no-cli` is the case so far ([decision 40](mcp.md)).
+**A code's referent is as much of the contract as its spelling.** Renaming one breaks a consumer loudly. Keeping the name and moving what it means breaks the same consumer silently — the one that did exactly what this decision asked and matched on the code — and no check in the gate can see it. So a code kept for a state that *replaced* the old one is recorded as a deliberate reuse in the decision that moved it. **Two so far:** check 10's `no-cli` ([decision 40](mcp.md)), and check 17's `bind-too-narrow`, kept for the strictly narrower state left when the loopback hit stopped counting as evidence ([decision 22](bind.md)).
 
 **Check 10's seven**, the set that forced this: `handshake-ok`, `handshake-failed`, `handshake-timeout`, `no-handshake` (the handshake was never attempted — reported as itself rather than defaulting to a pass), `not-registered`, `unreadable-entry`, `no-cli`.
 

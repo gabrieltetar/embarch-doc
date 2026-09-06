@@ -1,6 +1,6 @@
 # 020 — check 17's remaining two holes, and decision 37's example list is stale
 
-**State:** claimed — leg 016, `agent/umbrella/020-check-17-holes`
+**State:** done — leg 016, `agent/umbrella/020-check-17-holes`, 2026-09-06
 **Source:** `umbrella/018`'s reviewer, 2026-09-06, reviewing merge `5f978e7` / `c793301`.
 All three reported as observations rather than contradictions — the reviewer returned **no
 findings** — and filed here by the supervisor, who merged `018` knowing about them. Each was
@@ -106,11 +106,53 @@ table; refresh that if you change it.
 
 ## Done when
 
-- [ ] Item 1 is fixed or argued closed, with the losing option argued against.
-- [ ] Item 2 is either guarded or recorded as a deliberate exposure citing decisions 31/38;
-      if the fix belongs in `embarch-topology`, say so and stop.
-- [ ] Item 3 is in `embarch-umbrella/open.md` as a named step of check 17's verification debt.
-- [ ] `decisions/reporting.md`'s decision-37 example counts both reuses.
-- [ ] `decisions/doctor.md` is out of reserve and `tasks/umbrella/009` is updated.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
+- [x] Item 1 is fixed or argued closed, with the losing option argued against. **Fixed.**
+      `BindEvidence` gains `setup_would_infer`, filled from `setup::infer_class` — the
+      function `setup` itself calls, shared for exactly this "never disagree" reason — and
+      `bound-narrow`'s fix offers `embarch setup` only where that would infer a class needing
+      the wide bind. Elsewhere it names the class this side infers, what bind that gets, and
+      that running it there passes `bind-matches` with the bind untouched. **The losing
+      option — delete the `setup` half outright, as `018` did — is argued in decision 22:**
+      `bind-too-narrow` fires only when something answered, so `setup` can never install and
+      the offer is unconditionally wrong there; `bound-narrow` fires when nothing answered, so
+      it does install, and from the guest side of the topology this check exists for it is the
+      shorter honest remedy. A wrong clause mechanically distinguishable from a right one
+      earns a guard, not a deletion.
+- [x] Item 2 is either guarded or recorded as a deliberate exposure citing decisions 31/38;
+      if the fix belongs in `embarch-topology`, say so and stop. **Guarded, and it does not
+      belong in `embarch-topology`.** `recommended_bind_address(Remote) == "0.0.0.0"` is the
+      right recommendation for whichever machine runs a remote Core; what was wrong is which
+      machine `doctor` read it against, and that is `embarch-umbrella`'s. So
+      `bind_registration_can_change_the_verdict` returns false for `remote` and
+      `judge_bind_address` answers a new `bind-elsewhere` Warn — **except** where a candidate
+      already answered on a route needing the same bind, which is evidence about the right
+      machine and still Passes `bind-matches`. Decision 22's second 2026-09-06 amendment,
+      citing 31 and 38.
+- [x] Item 3 is in `embarch-umbrella/open.md` as a named step of check 17's verification debt.
+      Third step of the same experiment, beside the two `018` wrote. **Recorded, not answered**
+      — it needs the Windows side and a real narrow-bound Core.
+- [x] `decisions/reporting.md`'s decision-37 example counts both reuses.
+- [x] `decisions/doctor.md` is out of reserve and `tasks/umbrella/009` is updated. **Split, not
+      squeezed**: decision 22 moved verbatim into `decisions/bind.md`, `doctor.md` 11,519 →
+      6,188 B (50.4%), `bind.md` 8,465 B (68.9%) with this unit's two amendments in it.
+      `decisions.md`'s index gains a row; no number renumbered. `open.md` went into reserve on
+      item 3 and was repaid in the same commit, 4,591 → 4,601 B (89.9%).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
       dropped.
+
+## Item 5, and why the answer is `hw`
+
+`features.d/umbrella-061`'s `Verified` is now **`hw`**, not `unit`. `HEADER.md` defines `hw`
+as "validated against an actual probe, board, **or a genuine OS service install**", and
+decision 38's closing measurement is check 1 locating the live Windows service's binary by
+`BINARY_PATH_NAME` on 2026-09-05 — a genuine OS service install, read live. `umbrella-090`
+already reads `hw` on that same run, and one measurement cannot support two different
+verification levels for the two checks it exercised.
+
+## What this unit did not fix
+
+**`suite/user-guide.md`'s check-17 row is now partly false** — it says "`bound-narrow`'s
+`setup` advice above stays correct, because nothing is running on that path", which item 1
+narrows, and it lists five codes where there are six. A worker may not edit that file;
+`status.d/umbrella-check-17-bound-narrow-setup-and-remote.md` carries the correction for the
+supervisor to fold.
