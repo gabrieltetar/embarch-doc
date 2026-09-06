@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- The fleet ran a study against the real bench and green 2/2; where the DUT half stops is [studies-guide.md](../suite/studies-guide.md) §3a.
+## 2026-09
+
 ### Fixed
 - Two reachable client-name leaks removed by history rewrite: embarch-api (reintroduced 2026-09-05) and embarch-study-designer (missed by the 2026-09-04 scrub). All ten repos verified clean.
 ## 2026-09

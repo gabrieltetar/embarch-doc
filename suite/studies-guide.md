@@ -61,6 +61,28 @@ A third, rarer one: **`EMBARCH_SIGNAL_BAUD`** sets the line rate when Core reads
 
 **On an installed Core these are not shell variables.** Core runs as a service, so it reads its environment from the service registration — on Windows, the service's own `Environment` value in the registry — **and the service must be restarted for a change to take.**
 
+## 3a. A study that actually ran, and where the DUT half stops
+
+**One study has been run end to end by the fleet against the real bench** [measured 2026-09-06, `dev-bench` probe `001057729826`, hardware ID `6fcddc36cb781b71`, both roles validated live first]. It is the two-step `BleAdvertise` self-test, submitted with `reflash` at its `none` default — **nothing was built and nothing was flashed** — and it passed 2 of 2 steps. Its provenance came back `dev_bench_source: ReportedByDevBench, dev_bench_version: 49958d34` against a `Declared` firmware version of `any`, which is §2's asymmetry showing up in a real result: the bench's version is a measurement and the DUT's is a claim.
+
+**Read that for exactly what it is: the bench half works and the DUT was never involved.** No step in it connects, so none of this bench's DUT-side lore was exercised — not `ble speed fast`, not `meas_sched stop` before `hrm_start`, not `CONFIG_LOG` off. A green study is **not** yet evidence that a study reaches a DUT here.
+
+**Reaching a DUT means a `BleConnect` step, and it needs to be told which peripheral.** Its own design (study-designer decision 43) records that connecting to "whichever DUT shows up first" is not usable on a real bench: consecutive runs of one study reached visibly different peripherals, none of them the DUT, and every study then failed with "service not found on DUT" — true, and completely misleading. So a real study sets `target_address` or `target_name`.
+
+**How to find out what to put there: run a `BleConnect` whose `target_name` no device could have.** A failed name match does not return a bare timeout — the bench reports what *was* on the air, in the step's own `fail_reason`. That is the scan, and it is why there is no separate scan action. A blank name means "no filter", so the nonsense name is the whole trick.
+
+**Run against this bench** [measured 2026-09-06, one 20 s step], the failing step came back:
+
+```
+no name match; on air: '<name>', '<name>', '<name>',
+```
+
+three named advertisers and **not one of them attributable to the DUT**. Two things that reads on, and they are different facts: the census works and is a measurement, and **nothing here links a BLE advertiser to an enrolled probe** — enrolment identifies a board by hardware ID and debug probe, the census identifies it by advertised name, and no part of EmbArch joins the two. Deciding which name on that list is your DUT is the operator's, not the bench's.
+
+**Do not take the name from `CONFIG_BT_DEVICE_NAME`.** Decision 43 records, as a measured finding rather than a caution, that **the DUT's real advertised name turned out not to be its configured one at all.** The census is the authority; the Kconfig is a guess that has already been wrong here once.
+
+**And read that `fail_reason` knowing it truncates.** It is capped at 64 bytes and the run above hit the cap exactly, ending mid-list on a trailing comma — **there is no marker saying so.** The `, ...` you may see appended is a different, rarer signal: it means the bench's own 256-entry census overflowed, not that the string was cut. **A trailing comma is the only tell, and a list that happens to end on a name boundary has none at all**, so treat a full-looking `fail_reason` as a lower bound on what was advertising. The complete per-advertiser record — address, connectable or not, name — goes to the bench's log sink, not into the study result.
+
 ## 4. Wiring a DUT signal in, and reading the trace afterwards
 
 A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it. Two things have to be true first, **both done in the UI** — there is deliberately no CLI for either.
