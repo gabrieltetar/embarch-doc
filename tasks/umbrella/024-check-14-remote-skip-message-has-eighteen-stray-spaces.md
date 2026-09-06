@@ -1,6 +1,6 @@
 # Fix check 14's `Remote` skip message — eighteen stray spaces from a wrapped literal
 
-**State:** open
+**State:** claimed by leg 020
 **Source:** owner's repo survey, 2026-09-06 — the sibling arm of a defect commit `81e20f4` already fixed once
 **Scope:** umbrella
 **Hardware:** none
