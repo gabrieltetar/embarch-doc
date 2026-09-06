@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- check 17's `bound-narrow` fix line now names the class a bare `embarch setup` really infers, and withdraws the offer where that is `remote`.
+## 2026-09
+
+### Fixed
 - `doctor` check 17 withdraws `embarch setup` where it would reinstall the narrow bind, and no longer judges a `remote` Core by this host: [decision 22](../embarch-umbrella/decisions/bind.md).
 ## 2026-09
 

@@ -9,6 +9,24 @@
 **In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md, and check 17's entry, now [`decisions/bind.md`](../../embarch-umbrella/decisions/bind.md), is owed a live narrow-bound Core **and an answer to whether `embarch-core install --bind 0.0.0.0` rewrites an existing narrow registration** (`020`), either of which rewrites it again. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
 **Must not delete:** spec.md's eighteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — decisions have described checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one; open.md's note that check 17's two Fail branches have never met a real narrow-bound Core, **and which half of that debt each arm settles** (`018`); in **`decisions/bind.md`** (decision 22 moved there 2026-09-06, `020`), 22(a)'s record that a loopback hit discriminates nothing and that a fix line could green its own check — **now twice over**, `bind-too-narrow`'s and `bound-narrow`'s, which are different arms with different conditions and neither collapses into the other; and, added by `umbrella/021`, **both losing arguments in `bind.md`'s last amendment** — *retract the "cannot disagree" claim instead of fixing the input* (it loses because the **fix line**, not the decision, is what a human reads while deciding what to type, so a doc that accurately describes a lie still ships the lie) and *leave the `remote` arm unguarded because the fixed input makes it unreachable* (it loses because that makes a printed remedy's correctness depend on an invariant held two hundred lines away in a struct field's initialiser). Both read as redundant once shortened and neither is; and `open.md`'s note that `saved.host` is sticky and `doctor` check 2 still reads it, **including why it was left unfixed** — that is a deliberate abstention, and without the reason it reads as an oversight somebody will "fix" on a guess.
 
+**Supervisor note, leg 016, 2026-09-06 — this task's own unpark condition has now fired, and it
+disagrees with its `In flux:` field.** "Why blocked" below says *unparks when the umbrella queue
+is down to one open task, whichever it is.* With `019`, `020` and `021` all closed this leg,
+**the umbrella queue is down to zero open tasks** — so the condition is met twice over, while
+`In flux:` still reads `yes` and `supervise.md` forbids dispatching a compaction task whose flux
+field says yes. **Do not resolve that by dispatching anyway, and do not resolve it by flipping
+the field to make the queue move.** The two facts are both true: nothing else is competing for
+this sub-project's docs *and* check 17's entry is still owed a live narrow-bound Core. The next
+leg should read the `In flux:` reason on its merits and either park it again with a sharper
+condition or run the pass knowing exactly which sentence it may be about to make stale.
+
+**And the reserve is not parked with it — `open.md` has 40 bytes.** `DOC-COMPACTION.md` §2's
+ride-along, which `018` and `020` both used, is what has kept this file writable for three
+units, and `021` reports it is spent: no cross-doc duplication remains, 5 KB is a role cap on a
+single file so nothing can split, and what is left is protected prose. **The next umbrella unit
+that writes `open.md` at all meets the cap mid-task** — the first time in this log that a
+reserve has actually become a wall rather than a debt notice.
+
 **Counts refreshed by `umbrella/017`, 2026-09-05.** The table is now **eighteen rows**, and **one** decision is designed-and-unbuilt: `umbrella/017` built 22(a) as check 17 and retired 22(b) and 22(c) unbuilt, which deleted two rows outright, leaving only 26's `--prune`. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **eighteen rows / one unbuilt decision**, not the earlier nineteen/five, twenty/four, twenty/three or twenty/two.
 
 **`open.md` is back in reserve, and `umbrella/017` is what put it there.** That unit resolved decision 22 — built (a) as check 17, retired (b) and (c) — which closed the "two designed pieces are confirmed unbuilt" bullet but opened a new one: check 17's two Fail branches have never met a real narrow-bound Core, and that debt has to be written down somewhere. `open.md` 4509 → **4840 B (94.5%)**; `spec.md` went the other way, 9014 → **8966 B (87.6%)**, because retiring 22(b-c) deleted two table rows. Filed here rather than as a second task, per `tasks/README.md`.
