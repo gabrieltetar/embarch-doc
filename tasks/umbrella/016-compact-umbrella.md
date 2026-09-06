@@ -1,11 +1,11 @@
 # 016 — `spec.md` is in reserve (`decisions/doctor.md`'s half is paid)
 
-**State:** blocked
+**State:** done, 2026-09-05 — both items paid as ride-alongs, `decisions/doctor.md` by `umbrella/015` and `spec.md` by `umbrella/007`.
 **Source:** scripts/check-doc-size.py --pressure, after `umbrella/011`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/spec.md
-**In flux:** yes — `tasks/umbrella/007` is open and rewrites a row of `spec.md`'s doctor table. (`012`, `013` and `015` have since landed; the filer also listed `012`, which had already landed as leg 012's second unit.)
+**In flux:** no longer — `tasks/umbrella/007` closed on 2026-09-05 and did the `spec.md` compaction in its own commit, which is what §2's ride-along is for. (`012`, `013` and `015` have since landed; the filer also listed `012`, which had already landed as leg 012's second unit.)
 **Must not delete:** decision 22's three unbuilt checks and the sentence saying they are unbuilt; decision 23's original claim *and* the amendment saying which half of it decision 40 replaced — a retired-or-amended entry that loses what it used to say stops being a tombstone; decision 31's note that check 14 runs under the WSL user's environment rather than the service account's, which is still open; `spec.md`'s twenty-row doctor table and which rows are designed-and-unbuilt.
 
 ## What
@@ -41,15 +41,18 @@ rewrites a row of — `007` is queued against exactly that. The next worker that
 widen a row is blocked by arithmetic rather than by design. (`decisions/doctor.md`
 was the acute half and is paid; that is what the ride-along is for.)
 
-## Why blocked
+## Why it was blocked
 
-`In flux: yes`, for the reason `009` gives and the same queue. **Unparks with
-`009`** — one pass over the sub-project, not two.
+`In flux: yes`, for the reason `009` gives and the same queue. It never
+unparked: `umbrella/007` was the unit making the flux, so it carried the
+`spec.md` clause and paid it in its own commit — which is the ride-along
+[DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 exists for, and the second
+time in two days it beat waiting for `009`.
 
 ## Done when
 
 - [x] `decisions/doctor.md` out of reserve — split by mission into `decisions/mcp.md`, 11,918 → 7,774 B (`umbrella/015`).
-- [ ] `spec.md` out of reserve.
-- [ ] Every `Must not delete:` item still findable, by search, in the compacted text.
-- [ ] [DOC-COMPACTION-PASS.md](../../DOC-COMPACTION-PASS.md)'s human question — *can `spec.md` alone answer what someone needs to work on this component today?* — answered in the commit message. (Filed as "`DOC-COMPACTION.md` §7"; that doc has five sections since the 2026-09-04 split moved §6–§9 out.)
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] `spec.md` out of reserve — 9,286 → 9,014 B (88.0%), ride-along in `umbrella/007`'s commit ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2). Real shortening, no split: 10 KB is a role cap on a single file, so there was nowhere to move bytes to.
+- [x] Every `Must not delete:` item still findable, by search, in the compacted text — the doctor table is still **twenty rows**, and the designed-and-unbuilt set is now **two** decisions (22(a-c), 26's `--prune`), 17's amendment having been *built* by `umbrella/007` rather than deleted from the sentence.
+- [x] [DOC-COMPACTION-PASS.md](../../DOC-COMPACTION-PASS.md)'s human question — *can `spec.md` alone answer what someone needs to work on this component today?* — answered in the commit message. (Filed as "`DOC-COMPACTION.md` §7"; that doc has five sections since the 2026-09-04 split moved §6–§9 out.)
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped (`umbrella/007`'s).

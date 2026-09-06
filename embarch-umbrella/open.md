@@ -4,11 +4,13 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **One of check 11's four live unknowns survives**: **`/dev-bench/hello`'s `compatible` field**, which needs a bench ([decision 35](decisions/schema-skew.md)). `core_version` closed on 2026-09-05 when the redeploy that had never landed did, taking [decision 38](decisions/topology.md)'s `wsl-host` arm with it. **Newly open, and it is discovery rather than skew:** check 11 reads Core's v17 and cannot ask `embarch-api` for its own, because **check 1 does not locate that binary** on this machine.
+- **One of check 11's four live unknowns survives**: **`/dev-bench/hello`'s `compatible` field**, which needs a bench ([decision 35](decisions/schema-skew.md)). **Newly open, and it is discovery rather than skew:** check 11 reads Core's v17 and cannot ask `embarch-api` for its own, because **check 1 does not locate that binary** on this machine.
 
 - **Check 15 catches a *cross-version* stale deploy, not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so a rebuild-and-failed-deploy at the same version reads as a match. Better than nothing — `deploy-core` has reported `landed` with nothing installed, its own check comparing byte length — but **it is not a hash comparison and must not be read as one.** A content hash on `/status` would close it, and that is `embarch-core`'s call.
 
-- **Three designed pieces are confirmed unbuilt; open is whether each is still wanted.** Decisions 22(a-c), 27/29 and 17's amendment (26's reporting half shipped as check 16, its `--prune` half deferred on 17's amendment — now two decisions' blocker). **Check 16's first live number argues for it:** `study_results/` is **809 MiB across 50 entries**, and the sweep bounds the count, not the size.
+- **Two designed pieces are confirmed unbuilt; open is whether each is still wanted.** Decisions 22(a-c) and 27/29. 17's amendment shipped 2026-09-05, so 26's `--prune` is deferred by choice; it still needs `build_dir_name` in `embarch-api`'s listing. **Check 16's first live number argues for it:** `study_results/` is **809 MiB across 50 entries**, and the sweep bounds the count, not the size.
+
+- **Check 8's shell-out has never run against a real `embarch-api`.** Unit-tested against injected exit codes and stdout only; the argument order and the `{success, targets}` shape are read off `embarch-api`'s source, not observed. **Predicted here: a warn**, `embarch-api not located`, since check 1 does not find it on this machine. One `embarch doctor --json` settles it.
 
 - **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Unit-tested against a synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it at all** — Core is on Windows here, so the scan is correctly skipped. Settling it needs a Linux box running Core natively, a probe attached and its udev rules removed: Fail `probe-not-permitted`, then warn `no-probe-found` with the rules back. **Whether the nine vendor IDs are the right nine is also unmeasured.**
 

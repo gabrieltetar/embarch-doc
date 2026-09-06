@@ -38,14 +38,23 @@ For a repo shaped like a Zephyr/west project, `init` now writes the minimal disc
 
 **Amended: the target count check now shells out to `embarch-api`'s own listing instead of maintaining a second scanner.** The trimmed copy this decision introduced was deliberately coarser than the real scan — it counted a hardware revision as backed if *any* revision-suffixed file named it, rather than checking the exact tuple. But **unlike topology detection or token parsing, there is no bootstrapping problem here**: by the time that check runs, `init` has already run and a real config exists, so nothing stops asking the real thing. The lightweight *shape detection* stays, because `init`'s own detection genuinely does run before a config exists.
 
-**The amendment is not built, as of 2026-09-03** — everything above it is.
-Check 8 still calls this crate's own `zephyr::count_valid_targets`, the trimmed
-scanner the amendment says was replaced, and its code comment still records the
-deliberate overcount it describes: a revision counts as backed if *any*
-revision-suffixed file in the board directory names it. Nothing in the crate
-shells out to `embarch-api list-targets` — the one mention of that command is a
-fix line telling a human to run it. The bootstrapping argument the amendment
-makes is untouched by this; it simply was never acted on.
+**Built 2026-09-05**, having been documented as truth since 2026-09-02 and
+found unbuilt by the 2026-09-03 audit. Check 8 runs `embarch-api --config
+<config> --json list-targets <project>` and passes on a non-empty `targets`
+array; `zephyr::count_valid_targets` and the revision, variant and soc
+modelling behind it are **deleted**, leaving only the shape detection `init`
+needs. Three outcomes, not two, because they are different facts: an empty
+list or `embarch-api`'s own error text is a **fail** about the repo, and
+*nobody to ask* — no located binary, no config, no JSON object — is a **warn
+naming which**, never a pass.
+
+**The deletion bought more than one less copy.** The trimmed scanner counted
+the declared *default* revision as backed unconditionally, so for any repo with
+a parseable `boards/` and an `app/` it could not return zero — the "every
+declared revision is missing its overlay" fail its own comment promised was
+**unreachable**, and check 8 was re-asserting `init`'s shape test under a
+stronger name. An approximation that errs only toward passing is not a
+conservative pass/fail signal; it is the absence of one.
 
 ### 26 — `study_results/` retention and per-target build-directory pruning get an explicit policy instead of "grows forever"
 
@@ -68,14 +77,11 @@ the other repos rather than this one:
   refused for the target scan. What survives is a real gap check 16 reports
   instead: the sweep bounds a **count**, so the bytes behind those 50 runs are
   still nobody's bound.
-- **Nothing in this crate can name a valid build directory, only count
-  directories.** `crate::zephyr` returns a count and deliberately overcounts
-  (decision 17); it does not model variant names or cpucluster, so it cannot
-  produce `embarch-api`'s `build_dir_name`. Naming them is
-  `embarch-api list-targets`'s job, and **wiring that shell-out is decision
-  17's amendment, which is itself unbuilt.** Deleting on an oracle this crate
-  does not have is precisely what "never a currently-valid target's directory"
-  exists to prevent.
+- **Nothing in this crate can name a valid build directory**, and decision
+  17's amendment (**built 2026-09-05**) deleted the overcounting scanner rather
+  than growing it: the tuple oracle is a process away and this crate models
+  less than before. Deleting on an oracle it does not have is what "never a
+  currently-valid target's directory" exists to prevent.
 - **The rule is under-specified against the build-dir name it would judge.**
   `embarch-api` decision 19 later folded snippets and an `extra_args` hash into
   that name, so a directory is not a target tuple and is not reliably parseable
@@ -90,13 +96,16 @@ the other repos rather than this one:
   "orphaned"** — every directory built before that date has none, the write is
   best-effort, and a `static` or dev-bench build never gets one, so a `--prune`
   reading a missing file as "no valid target claims this" deletes exactly the
-  directories it has no evidence about. That removes the second of this
-  bullet's two blockers and not the first: naming the currently-valid targets
-  still needs decision 17's unbuilt `embarch-api list-targets` shell-out.
+  directories it has no evidence about. **What is left is one ask.**
+  `list-targets`' JSON carries the tuple and not `build_dir_name`, which folds
+  snippets and an `extra_args` hash a listing never sees — so a `--prune`
+  needs `embarch-api` to publish that name, never a second attempt to derive
+  it here.
 
-So: **measure now, delete never, and no `--prune` until a valid-target oracle
-exists.** Nothing has reported disk pressure, which is the reason visibility is
-the proportionate step and not the reason to skip it — "grows forever" is still
+So: **measure now, delete never.** With 17's amendment built, `--prune` is
+deferred by choice rather than blocked: nothing has reported disk pressure,
+which is the reason visibility is the proportionate step and not the reason to
+skip it — "grows forever" is still
 literally true of build directories, and check 16 is what makes it visible.
 [../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit and now
 says what actually ships.

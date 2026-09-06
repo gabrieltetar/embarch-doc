@@ -52,7 +52,7 @@ Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella'
 
 | Command | Scope | Behaviour |
 |---|---|---|
-| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` runs every detection step and prints the plan — install, `PATH` write, service call, elevation — changing nothing** (decision 21); `--dev-bench-repo` records the checkout the staleness check compares against |
+| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` prints the whole plan and changes nothing** (decision 21); `--dev-bench-repo` records the checkout check 13 compares against |
 | `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
 | `embarch doctor` | anytime | The full check chain. `--json`. **Nothing in it deletes anything** — `--prune` is unbuilt (decision 26) |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
@@ -74,7 +74,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
-| 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
+| 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing, **warn naming why** where it cannot be asked (decision 17) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
 | 10 | Registered **and answering**: it reads the registration out of the agent CLI's own config, by the binary it names rather than only the key `embarch`, spawns it and completes one JSON-RPC `initialize` over its stdio within 10 s. Answered, failed and timed out stay distinct in `--json` (decisions 23, 37, 40); an entry with nothing to spawn is a warn, never a pass |
 | 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
@@ -88,14 +88,14 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 19 | Free disk space behind the build and results directories — **design-only** |
 | 20 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
-Checks 12, 15 and 16 never fail the run outright; **5 and 11 do**, each only for the one state its row names — and check 11's failing is the point of it, since a host-version disagreement means no study can be submitted, and a bench Core refusing at the handshake means none can run. A number a check simply could not obtain is a warn naming which one, never a pass.
+Checks 12, 15 and 16 never fail the run outright; **5 and 11 do**, each only for the one state its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.
 
 Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 17-20 are designed and unbuilt; their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**: decision 22, 26's `--prune` half and 17's amendment each sit *inside* a shipping command or check, marked above where it lives. [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**: decision 22 and 26's `--prune` half each sit *inside* a shipping command or check, marked above where it lives. [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 
-Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of truth — and **writes no token value into any config file.** At setup time on a same-machine topology it ensures Core has started at least once, so the machine-wide token file exists, then confirms `embarch-api` can discover it. Across machines there is no shared filesystem and no solution: it prints the exact export line for a value the human reads off the Core machine.
+Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of truth — and **writes no token value into any config file.** On a same-machine topology `setup` starts Core once so the machine-wide token file exists, then confirms `embarch-api` can discover it. Across machines there is no shared filesystem and no solution: it prints the export line for a value the human reads off the Core machine.
 
 Committing a repo integration for a whole team is a follow-on step `init` does not take; its shape is [decision 12](decisions/projects.md).

@@ -1,6 +1,6 @@
 # 007 — Decision 17's amendment says check 8 stopped maintaining a second scanner; it never did
 
-**State:** claimed by agent/umbrella/007-doctor-target-count-shellout, 2026-09-05 22:50
+**State:** done, 2026-09-05 — the shell-out was built, not the retirement.
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 17's amendment read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** none
@@ -86,9 +86,39 @@ genuinely still there, which is what makes the drift easy to miss.
 
 ## Done when
 
-- [ ] Check 8's zephyr-west branch either shells out to `embarch-api`'s listing,
-      or the amendment is retired per `DOC-CONVENTIONS.md` and the local scanner
-      is documented as the intended answer.
-- [ ] Decision 17's implementation note updated to match whichever was chosen.
-- [ ] `status.d/` fragment for `suite/features.md`'s live-target-discovery row.
-- [ ] Gate green; `changelog.d/` fragment dropped.
+- [x] Check 8's zephyr-west branch shells out — `embarch-api --config <config> --json list-targets <project>`, passing on a non-empty `targets` array. `zephyr::count_valid_targets` and the revision/variant/soc modelling behind it are deleted; only `init`'s shape detection remains.
+- [x] Decision 17's implementation note updated: the amendment is **built 2026-09-05**, with what the deletion bought. Decision 26's two "17's amendment is unbuilt" citations and its "no `--prune` until a valid-target oracle exists" conclusion were false the moment this landed, and are corrected in the same edit.
+- [x] Feature-inventory row written directly as `features.d/umbrella-030-*` — **not** a `status.d/` fragment, which is the pre-2026-09-04 route ([features.d/README.md](../../features.d/README.md)). A `status.d/` fragment went to `embarch-decision-reversals.md` instead, whose review-driven-reversals bullet claimed a shell-out that did not exist for three days.
+- [x] Gate green; `changelog.d/umbrella-check-8-shells-out-to-list-targets.changed.md` dropped.
+- [x] Ride-along compaction: `spec.md` 9,286 → 9,014 B, closing `tasks/umbrella/016`'s `spec.md` item. `009`'s counts refreshed to twenty rows / **two** unbuilt decisions.
+
+## What was decided, and the losing argument
+
+**Built rather than retired.** The task called it a genuine either/or and it
+was, right up to reading `count_for_variants`: the scanner counts the declared
+**default** revision as backed unconditionally, so for any repo with a
+parseable `boards/` and an `app/` it could not return zero. Its documented
+overcount was not a coarse-but-conservative reading of a pass/fail signal — it
+was one-sided toward passing, which made check 8's zephyr-west branch a
+restatement of `init`'s shape test wearing a stronger name. Retiring the
+amendment would have meant writing *that* down as the intended answer.
+
+**The losing argument is real and was nearly decisive.** Shelling out adds a
+fourth subprocess to `doctor` and a parse of another repo's JSON with no
+version handshake, for a check that needed neither; the amendment's own
+bootstrapping argument cuts both ways, since a check that can only answer when
+`embarch-api` is locatable answers less often than one that cannot fail to run.
+That is why the shell-out has **three** outcomes rather than two — an
+unanswerable warn is not a pass — and why it is worth saying plainly that on
+this machine the new check is **predicted to warn**, not pass, because check 1
+does not locate `embarch-api` here. A less-often-answered check that is right
+beats an always-answered one that cannot say no.
+
+## Debt
+
+**The shell-out has never run against a real `embarch-api`.** Unit-tested
+against injected exit codes and stdout only; the flag ordering
+(`--config`/`--json` before the subcommand) and the `{success, targets}` shape
+are read off `embarch-api`'s source, not observed. Not hardware — one
+`embarch doctor --json` in the owner's own session settles it. Carried in
+[../../embarch-umbrella/open.md](../../embarch-umbrella/open.md).

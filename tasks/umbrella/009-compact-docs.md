@@ -5,12 +5,12 @@
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** ~~embarch-umbrella/spec.md~~ (paid 2026-09-05, `umbrella/006`), ~~embarch-umbrella/open.md~~ (paid 2026-09-05)
-**In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md
+**In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
 **Must not delete:** spec.md's twenty-row `doctor` table, and in particular which rows are **designed and unbuilt** — four decisions describe checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one.
 
-**Counts refreshed by `umbrella/006`, 2026-09-05.** The table is still **twenty rows**, but **three** decisions are designed-and-unbuilt, not four: `umbrella/006` built decision 18, so check 5's row now describes a shipped Fail branch and the unbuilt set is 22(a-c), 27/29 and 17's amendment. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **twenty rows / three unbuilt decisions**, not the earlier nineteen/five or twenty/four.
+**Counts refreshed by `umbrella/007`, 2026-09-05.** The table is still **twenty rows**, and **two** decisions are designed-and-unbuilt: `umbrella/006` built decision 18 (check 5's Fail branch) and `umbrella/007` built decision 17's amendment (check 8's shell-out), leaving 22(a-c) and 26's `--prune`. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **twenty rows / two unbuilt decisions**, not the earlier nineteen/five, twenty/four or twenty/three.
 
-**Both files are out of reserve, so the urgency is gone and only the pass is left.** `open.md` 5051 → 4525 B (88.4%) across two units, `spec.md` 10089 → 9131 B (89.2%) in `umbrella/006`. This task stays `blocked` on `In flux: yes`, which is still true.
+**Both files are out of reserve, so the urgency is gone and only the pass is left.** `open.md` 5051 → 4509 B (88.1%) across three units, `spec.md` 10089 → 9014 B (88.0%) across `umbrella/006` and `umbrella/007`. This task stays `blocked` on `In flux: yes`, which is still true.
 
 ## What
 
