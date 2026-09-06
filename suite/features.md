@@ -101,6 +101,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Declared GATT table on a study, reconciled against live discovery | **Design-only, no code** | n/a | 45 |
 | Post-hoc validation | **Retired** — fully typed, wired into two repos, and it never once ran | n/a | 48 |
 | The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
+| Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break | Shipped — all fourteen steps run green locally before landing; `ffi` type-checks the `extern "C"` surface but no staticlib cross-link exists to assert | local | 64 |
 
 ## embarch-outpost
 

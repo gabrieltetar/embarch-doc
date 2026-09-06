@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/crate.md)).
+## 2026-09
+
 ### Fixed
 - `cargo test --features alloc` did not compile; two tests now use `String::from`, per crate convention.
 ## 2026-09
