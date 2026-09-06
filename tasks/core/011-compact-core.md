@@ -1,6 +1,6 @@
 # 011 — `embarch-core/open.md` crossed into reserve
 
-**State:** open
+**State:** claimed by agent/core/011-compact-core, 2026-09-06 16:06
 **Source:** `core/005` spent the last of this file's headroom adding a structural-limits bullet; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none
