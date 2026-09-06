@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- Decision 37 cites spec.md's table for which checks carry `code` instead of listing them; check 10's MCP entries split into [decisions/mcp.md](../embarch-umbrella/decisions/mcp.md).
+## 2026-09
+
 ### Fixed
 - Decision 26 stops saying `target.json` is unwritten: it exists now, and absence means "unattributable", never "orphaned" ([decisions/projects.md](../embarch-umbrella/decisions/projects.md)).
 ## 2026-09
