@@ -1,5 +1,0 @@
-**Target:** embarch-decision-reversals.md — "Review-driven reversals", the `doctor` target-count-check bullet
-**Was:** "**`doctor`'s target-count check stopped maintaining its own mirrored scanner one day after building it.** The liftable-copy pattern … was applied a third time to a check that **could have just shelled out to `embarch-api` like every other check already does.**" (the bullet ends with a `umb decision 17` citation)
-**Now:** the reversal was documented 2026-09-02 and executed 2026-09-05 — for three days the entry described a shell-out that did not exist, and the mirrored scanner it claimed to have dropped was still the only thing check 8 called. Shape 8's variant with the *decision* rather than a comment as the false witness.
-
-The scanner is now deleted, so the bullet's design claim is finally true of the binary. What is worth adding is the lag itself: an amendment that reads as shipped is indistinguishable from one that is, and only [embarch-umbrella](../embarch-umbrella/decisions/projects.md) decision 17's own "built 2026-09-05" line says which. Found by the 2026-09-03 design-only audit, closed by `umbrella/007`.

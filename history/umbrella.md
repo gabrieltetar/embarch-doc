@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `doctor` check 8 asks `embarch-api list-targets` instead of umbrella's own scanner, which is deleted: [decision 17](../embarch-umbrella/decisions/projects.md).
+## 2026-09
+
+### Changed
 - Decision 37 cites spec.md's table for which checks carry `code` instead of listing them; check 10's MCP entries split into [decisions/mcp.md](../embarch-umbrella/decisions/mcp.md).
 ## 2026-09
 

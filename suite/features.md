@@ -132,7 +132,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
-| `init`/`doctor` support for live target discovery | Shipped — **except decision 17's amendment**: check 8 still counts targets with umbrella's own approximating scanner, which is now what blocks decision 26's `--prune` as well | local | 17 |
+| `init`/`doctor` support for live target discovery | Shipped, **decision 17's amendment included as of 2026-09-05**: check 8 shells out to `embarch-api list-targets` and umbrella's own approximating scanner is deleted. The shell-out is unit-tested against injected output, **never yet run against a real `embarch-api`** — check 1 does not locate that binary on this machine | unit | 17 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
 | `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 17–20 and `--prune`, now deferred rather than pending (decision 26) | local | §5, 18, 22, 26 |
