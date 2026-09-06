@@ -46,6 +46,6 @@ No record for a context switch into or out of the drain thread, or for an ISR on
 
 *Rejected: also excluding the idle churn the drain thread causes.* With the drain thread gone, what remains is the idle thread switching out and back in. **Those records are caused by the instrument and are not the instrument: the idle thread really did run. Excluding them would be the trace lying about the CPU rather than declining to describe itself.**
 
-*Rejected: coalescing the drain thread's run into one "the instrument ran here" record.* One record instead of six, **and it would close the hole in the timeline honestly.** Declined because it is **a new record kind, three host decoders and a layout bump for something the header flag plus the unaccounted total already communicates.**
+*Rejected: coalescing the drain thread's run into one "the instrument ran here" record.* One record instead of six, **and it would close the hole in the timeline honestly.** Declined because it is **a new record kind and three host decoders for something the header flag plus the unaccounted total already communicates.** (The cost read "and a layout bump" until 2026-09-06; appending a kind never bumps it — [wire.md](../interfaces/wire.md).)
 
 **What it did not do, and this is the more useful half: removing half the records did not move the link's duty cycle at all.** See decision 20 — **the drain loop's shape, not its record count, sets the duty cycle, and cutting records made frames smaller rather than rarer.**

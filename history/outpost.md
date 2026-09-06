@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- wire.md now matches the firmware: `cycles_per_sec` in the header, kinds 9/10 and flag BIT(6); integration.md lists every Kconfig symbol.
+## 2026-09
+
 ### Added
 - The reference host decoder now has tests that always run — stdlib `unittest`, no west, no siblings; `run-all.sh` runs them before its west guard.
 ## 2026-09
