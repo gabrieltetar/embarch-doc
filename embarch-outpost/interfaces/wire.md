@@ -46,6 +46,34 @@ body  := frame_type: u8, seq: u8, payload
 
 **Reserved for a future RX direction:** nothing in v1 sends anything to the DUT, but `frame_type` is exactly the field a later command channel is added to.
 
+## The host decoder's rules are tested, and one of the two tests always runs
+
+`tests/decoder_unit.py` in the module repo is stdlib `unittest` over bytes it
+synthesises itself, and it is the only check here with **no** external
+requirement — no `west`, no `ZEPHYR_BASE`, no sibling repos, no fixtures.
+`tests/run-all.sh` runs it **before** the west guard for exactly that reason:
+the other three legs need a Zephyr toolchain and the cross-decoder leg needs two
+sibling checkouts, so until it existed the reference decoder for a wire with
+three implementations that must agree had **no test guaranteed to execute**.
+That is `cross_decoder.py`'s own argument — a check nobody is forced to run is
+not a check — applied to itself.
+
+It pins the rules that already carry scar tissue in comments, because those are
+the ones a rewrite silently undoes: COBS round-trip including the 0xFF run that
+carries no implicit zero; a bad CRC costing exactly one frame **while still
+consuming a `frame_index`**, since the receiver burned one stamping it; a
+truncated batch counting `bad_body` and yielding nothing; an unknown kind
+rendering as `unknown_N`; the wrap-vs-gap rule **in both directions**; and `us`
+as three fixed decimals rather than a rounded float. Both directions of the wrap
+rule matter and asserting one is worthless: the naive `cycles < last` passes a
+test that only checks a real wrap, and a decoder that never unwraps at all
+passes one that only checks the gap case.
+
+**What it deliberately does not do is round-trip through the decoder's own
+inverse.** Its COBS encoder and varint writer are written out separately, on the
+same reasoning `tests/unit`'s literal-byte assertions use: a format with three
+implementations is not served by a test that agrees with itself.
+
 ## Two independent decoders agree, and it is a test rather than a note
 
 Under layout 1 this was checked by hand once — byte-identical in every column of 848 rows bar how many decimals each printed for `us` — and then **went un-rerun across a rework that rewrote both decoders**, which is precisely when it was worth having. It compares decoder against decoder, which is the check actually available: the firmware encoder is the third implementation and is the one both decoders are fed *from*. It reads committed fixtures rather than a fresh capture, because a fresh run carries a different build ID on every dirty tree.

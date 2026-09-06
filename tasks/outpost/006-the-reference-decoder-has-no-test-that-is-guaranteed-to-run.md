@@ -1,6 +1,6 @@
 # Give the outpost decoder a test entry point that runs without west or a Zephyr checkout
 
-**State:** claimed by agent/outpost/006-decoder-unit-test, 2026-09-06 16:38
+**State:** done, agent/outpost/006-decoder-unit-test, 2026-09-06
 **Source:** owner's repo survey, 2026-09-06 — `tests/cross_decoder.py:10-18`'s own argument, applied to itself
 **Scope:** outpost
 **Hardware:** none
@@ -32,12 +32,36 @@ argument applies to a decoder whose only two tests need Zephyr or two sibling re
 
 ## Done when
 
-- [ ] `python3 tests/decoder_unit.py` passes from a bare checkout with no west, no `ZEPHYR_BASE`,
-      no siblings.
-- [ ] Reverting the wrap rule at `decode_outpost.py:224-230` to a naive `cycles < last` makes it
-      fail (checked, then restored).
-- [ ] Changing `f"{…:.3f}"` to `round(…, 3)` makes it fail (checked, then restored).
-- [ ] `run-all.sh` runs it before the `WEST` guard and still runs the other three legs unchanged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] `python3 tests/decoder_unit.py` passes from a bare checkout with no west, no `ZEPHYR_BASE`,
+      no siblings. 20 tests, run under `env -u WEST -u ZEPHYR_BASE`.
+- [x] Reverting the wrap rule at `decode_outpost.py:224-230` to a naive `cycles < last` makes it
+      fail (checked, then restored). Two failures, and both show the historical bug verbatim: a
+      10-cycle backwards step from a gap record rendered `4990` as `4294972286`, and every record
+      after it shifted by 2**32 as well. `test_a_real_wrap_does_unwrap` still passed under the
+      break, which is why the gap direction had to be asserted separately.
+- [x] Changing `f"{…:.3f}"` to `round(…, 3)` makes it fail (checked, then restored). Four tests,
+      seven failures counting subtests: `AssertionError: 1234.0 is not an instance of <class
+      'str'>` and `AssertionError: 333333.333 != '333333.333'` — a float against the string every
+      other implementation of this column emits.
+- [x] `run-all.sh` runs it before the `WEST` guard and still runs the other three legs unchanged.
+      Proven by running it with `WEST`/`ZEPHYR_BASE` unset: 20 tests pass, then the guard fires
+      (`line 18: WEST: set WEST to a west executable`, exit 1). The diff touches only the header
+      comment and the block inserted above the guard.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md` and `interfaces/wire.md` updated, `changelog.d/` and `features.d/` fragments
+      dropped. No `status.d/`: nothing suite-level became false — `embarch.md` §3's outpost row is
+      about real-silicon end-to-end and the roadmap's milestone text is unaffected.
+
+## What was and was not done
+
+**No `decisions.md` entry, and no numbered decision.** The rationale is
+argument, not a new invariant, and it now lives in `interfaces/wire.md`'s test
+section beside the cross-decoder argument it extends. A numbered decision would
+have needed a new mission file for one entry.
+
+**`open.md` untouched** — it named nothing about the decoder being untested, so
+nothing there closed.
+
+**The three west-gated legs of `run-all.sh` were not executed**: there is no
+`west` and no `ZEPHYR_BASE` on this machine. They were confirmed unchanged by
+reading the diff, not by running them.
