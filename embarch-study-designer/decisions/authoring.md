@@ -32,6 +32,8 @@ A value's bytes are **the engineer's own literal bytes, never a numeric type thi
 
 **Persisted in the firmware repo's own folder**, so **it travels with the firmware and is versioned in that repo's history** — not a catalog this tool owns separately, and not re-entered per study.
 
+**A hand-edited file's mistakes are named refusals, on read *and* on write.** Because the file lives in the firmware repo and is meant to be edited there, `validate` — called by both `load` and `save` — refuses a value whose bytes do not fill its declared field, and refuses **two actions sharing a name**: the builder resolves a row by the first name match, so the second is unreachable and the row silently carries a payload nobody chose. Decision 52's struct registry refuses its duplicate in the same shape and nearly the same words — **one hand-edit mistake, one refusal, whichever of the two registries it lands in**, rather than two registries in one module disagreeing about the same mistake. Refusing in `save` is the load-bearing half: **a file that can be written and not read back is worse than one rejected on the way in.**
+
 **The durable principle, stated plainly since it generalises past this crate:** *no EmbArch component should ever present an inference about what a specific piece of hardware or firmware does — derived from reading its source, its comments, or any heuristic — as established fact.* Where that knowledge is needed, **the answer is a pipeline for the engineer who actually knows to supply it explicitly, built once, generically.** Decisions 41, 45, 52, 56 and 58 are each that rule applied somewhere else.
 
 ### 37 — A free-text payload path alongside the registry: `RowAction::Raw`
