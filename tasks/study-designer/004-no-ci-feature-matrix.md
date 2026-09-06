@@ -1,6 +1,6 @@
 # 004 — this crate has no CI at all, so nothing ever builds its feature cells
 
-**State:** open
+**State:** claimed by agent/study-designer/004-no-ci-feature-matrix, 2026-09-05 23:35
 **Source:** `embarch-study-designer/open.md` — "Nothing builds or tests the `alloc`-only
 feature cell on a schedule … the hole that let it sit unnoticed is still open, since this
 crate owns no CI of its own to close it." Swept 2026-09-05 by leg 014 when the queue hit
