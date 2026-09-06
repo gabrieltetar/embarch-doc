@@ -94,7 +94,29 @@ Candidate fixes, in the order the drops argue for them, **none of them a leg's t
 ## Done when
 
 - [ ] The re-dispatch path names what evidence it requires before it may conclude a worker is
-      dead and hand its task to a second worker.
-- [ ] A dispatch cannot start a second worker into a worktree another worker holds.
+      dead and hand its task to a second worker. **Prose, owed at the deploy** — the script
+      below says it in its refusal message, but the rule belongs in `supervise.md` where a
+      supervisor reads it before it needs it.
+- [x] A dispatch cannot start a second worker into a worktree another worker holds.
+      **`embarch-fleet/scripts/check-dispatch.py`, 2026-09-06** — candidate fix 2. An
+      existing worktree is a claim: a fresh dispatch *creates* its worktrees, so finding
+      them is evidence, not a state to reuse. `--allow-existing` covers the recovery leg and
+      falls back to two dirty samples seconds apart, because one sample can land in a gap
+      between another agent's tool calls — which is what happened at 21:26. Tested against
+      fresh paths, a live worktree, and the recovery case.
 - [ ] The "commit and push incrementally" instruction is either qualified for the
-      already-dirty case or made unreachable by the guard that precedes it.
+      already-dirty case or made unreachable by the guard that precedes it. **Owed at the
+      deploy** — it lives in the worker dispatch prompt.
+
+**Why three boxes are still open with the mechanism built.** Every remaining item writes a
+file *into the instance* — `.claude/`, or `SHIMMED` in `install.py`. `install.py --check`
+compares the instance against the framework's **working tree**, so saving either turns a live
+leg's gate red on files nobody in that leg touched, and a red gate blocks a unit
+(`protocol.md` §6). Landing them needs a leg boundary. This is the same asymmetry
+`tasks/doc/013` records from the other side: a shimmed script goes live instantly while an
+instance-local one is frozen in the leg's worktree.
+
+**What is NOT fixed and is the root cause.** A supervisor may still conclude a worker died
+from repo state. `tasks/README.md` settles claim staleness by the **process tree**, and
+nothing consulted it. No script can check that from outside the session — `check-dispatch.py`
+catches the consequence and says so in its own header.

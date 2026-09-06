@@ -26,7 +26,7 @@ A file in reserve is still writable, and the gate still passes, but it must be
 named by an open item in ``tasks/`` or ``inbox/``. **The debt is filed by
 whoever spends the reserve**, in the same commit, because that actor is the only
 one who knows the thing no script can decide -- whether the subsystem is still
-in flux (DOC-COMPACTION.md §8), which is when compaction writes a clean
+in flux (DOC-COMPACTION-PASS.md, "Failure modes"), which is when compaction writes a clean
 statement of something about to be wrong. A parked item naming what unparks it
 is a legitimate resting state; an unfiled file in reserve is not.
 
@@ -97,7 +97,10 @@ CAPS = [
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),
     # Any DOC-*.md: the protocol layer. It splits the way anything else does
     # (DOC-COMPACTION-PASS.md came out of DOC-COMPACTION.md §6-§9), so this
-    # matches the family rather than naming its members.
+    # matches the family rather than naming its members. **Cite a moved section
+    # by NAME, not by number** -- this file knew about that split here and
+    # nowhere else, so three other comments went on pointing at §8 and §9 for
+    # two days after they stopped existing (tasks/doc/011).
     ("protocol",    12 * KB, re.compile(r"^DOC-[A-Z][A-Z-]*\.md$")),
     ("history",     20 * KB, re.compile(r"^history/[a-z-]+\.md$")),
     # The reversals page split the way any over-cap doc does: an index plus stable
@@ -116,7 +119,8 @@ EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|features\.d/"
 
 
 # A sub-project whose decisions have been reduced to their hot half
-# (DOC-COMPACTION.md §9) is held at a tighter cap than one that has not, so a
+# (DOC-COMPACTION-PASS.md, "The second pass") is held at a tighter cap than one
+# that has not, so a
 # finished migration cannot drift back. Default caps above apply to the rest;
 # add a sub-project here the moment its pass lands, never before.
 TIGHTENED = {
@@ -223,8 +227,8 @@ def main() -> int:
 
     if args.pressure:
         # This reports rather than files, and that is the whole point:
-        # DOC-COMPACTION.md §8 warns against compacting a subsystem still in
-        # flux and nothing here can tell, so the actor who spends the reserve
+        # DOC-COMPACTION-PASS.md's "Failure modes" warns against compacting a
+        # subsystem still in flux and nothing here can tell, so whoever spends it
         # writes the item and answers that question in it.
         in_reserve, filed_clear = reserve_state(base, args.reserve_pct)
         if not in_reserve and not filed_clear:
