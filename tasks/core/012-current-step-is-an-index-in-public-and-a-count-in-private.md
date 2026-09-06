@@ -1,10 +1,29 @@
 # 012 — `current_step` is a 0-based index on the API and a count internally, set two lines apart
 
-**State:** open
+**State:** claimed by leg 023, 2026-09-06 — `agent/core/012-current-step-semantics`
 **Source:** observed live by the supervisor running `tasks/api/029`'s study, 2026-09-06
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve for `core` (supervisor, leg 023)
+
+**No `embarch-core` doc is in reserve** — `spec.md`, `interfaces.md` and every
+`decisions/` file have room, and `core/011` paid `open.md` down last leg. Write
+where the content belongs.
+
+**One suite-level file is at a hard wall and it is not yours to fix:**
+`suite/features.md` is at **20,259 / 20,480 B — 221 bytes left**, and its
+compaction task `suite/004` is `blocked` on the owner (an assembled file no agent
+may write). **So do not write a `features.d/` fragment for this unit unless the
+change genuinely ships a new user-visible capability** — a documented meaning for
+an existing field is a `changelog.d/` entry, not a feature row. If you conclude a
+feature row is genuinely owed, say so in your report and let the supervisor
+assemble it; do not pad it.
+
+Standing rule either way: if your work pushes an `embarch-core` doc into its last
+10%, file `tasks/core/<NNN>-compact-core.md` in the same commit
+(`tasks/README.md` has the shape).
 
 ## What was observed
 
