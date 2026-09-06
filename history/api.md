@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- The `-args<hash>` build-dir segment is a crate-owned FNV-1a, so a Rust upgrade no longer renames and orphans build directories ([decision 19](../embarch-api/decisions/build.md)).
+## 2026-09
+
 ### Changed
 - `spec.md` is 12% smaller and out of reserve: selection semantics point at `interfaces/config.md`, and decision 30 moved to `decisions/shape.md` where the test tiers live.
 ## 2026-09
