@@ -8,7 +8,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Platform, process, and auth](decisions/platform.md) | 1, 2, 3, 4, 5, 6, 7, 11, 14, 15, 17 | 4.1 KB |
+| [Platform, process, and auth](decisions/platform.md) | 1, 2, 3, 4, 5, 6, 7, 11, 14, 15, 17, 42 | 5.8 KB |
 | [Probes, board identity, and chip mapping](decisions/probes.md) | 8, 9, 22, 23, 26, 34 | 4.0 KB |
 | [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 36 | 5.5 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 24, 31, 33, 35, 40, 41 | 8.8 KB |

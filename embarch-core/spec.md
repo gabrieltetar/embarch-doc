@@ -22,7 +22,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 
 ## 2. Invariants
 
-- **Every route requires `Authorization: Bearer <token>`**, no exceptions. One shared secret, exact-string compared in `auth_middleware`, resolved from `EMBARCH_TOKEN` and otherwise from the machine-wide file, generated and persisted on first startup. No per-caller identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md).
+- **Every route requires `Authorization: Bearer <token>`**, no exceptions — and "every" is asserted mechanically: the test sweep derives its route list from `build_router`'s own source, so a route added without an auth case fails the build rather than shipping open (decision 42). One shared secret, exact-string compared in `auth_middleware`, resolved from `EMBARCH_TOKEN` and otherwise from the machine-wide file, generated and persisted on first startup. No per-caller identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md).
 - **One `hw_lock` serialises all hardware access**, held for the whole handler body. Contention returns `503` naming the holder rather than queueing. A separate `study_lock` serialises studies; a signal tap's read-only port takes neither.
 - **Every blocking hardware call runs in `tokio::task::spawn_blocking`.** `probe-rs` and `serialport` are synchronous.
 - **Probe attach is per-call, never held open.** Open, attach, operate, drop.
