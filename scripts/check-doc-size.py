@@ -112,7 +112,16 @@ CAPS = [
     ("reversals",   10 * KB, re.compile(r"^embarch-decision-reversals\.md$")),
     # Anything else still under a sub-project or the root is legacy, and the
     # migration's job is to turn it into one of the roles above.
-    ("legacy",      25 * KB, re.compile(r"^(embarch-[a-z-]+/|embarch-|DOC-|README)")),
+    #
+    # `embarch[-.]`, not `embarch-`: the suite's own index, `embarch.md`, has no
+    # hyphen, so for as long as this pattern required one that file had NO role
+    # and NO cap -- 15 KB of index and status table, absent from `--report`
+    # entirely, while every sibling beside it was capped at 25 KB. It was
+    # classified for *ownership* (check-ownership.py --supervisor asserts every
+    # tracked top-level *.md is reserved or fleet-writable, and it passed), which
+    # is why nothing ever noticed: two lists over the same files, agreeing on
+    # membership and not on coverage. tasks/doc/014.
+    ("legacy",      25 * KB, re.compile(r"^(embarch-[a-z-]+/|embarch[-.]|DOC-|README)")),
 ]
 EXEMPT = re.compile(r"(^\.|/\.|^history/archive/|changelog\.d/|features\.d/"
                     r"|^CLAUDE\.md$|^LICENSE$)")

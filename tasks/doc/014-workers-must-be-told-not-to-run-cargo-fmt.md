@@ -68,4 +68,13 @@ into, and a doc with no cap is the one that grows.
 
 - [ ] A worker is told not to run `cargo fmt` by something it reads every time, not by a
       sentence a supervisor remembers to paste.
-- [ ] `embarch.md` either has a size role or is deliberately exempt, on the record.
+- [x] `embarch.md` either has a size role or is deliberately exempt, on the record.
+      **Given a role, 2026-09-06.** It had neither: `check-doc-size.py`'s legacy pattern was
+      `^embarch-`, requiring a hyphen, so `embarch.md` matched nothing — 15 KB of suite index
+      and status table with no cap and no row in `--report`, while every sibling beside it
+      (`embarch-token.md`, `embarch-zephyr.md`, `README.md`) was capped at 25 KB. The pattern
+      is now `^embarch[-.]` and it reports 14.9K/25K, legacy.
+      **Worth keeping:** it *was* classified for ownership — `check-ownership.py --supervisor`
+      asserts every tracked top-level `*.md` is reserved or fleet-writable and passed on it.
+      Two lists over the same files, agreeing on membership and not on coverage, which is why
+      nothing noticed.
