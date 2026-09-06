@@ -4,13 +4,13 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **Two of check 11's four live unknowns survive one real run** (2026-09-05, owner's machine); the other two agreed ([decision 35](decisions/schema-skew.md)). Open: **`core_version`**, which the running Core does not serve at all (it predates `embarch-core` decision 13; the redeploy that fixes it did not land), and **`/dev-bench/hello`'s `compatible` field**, which needs a bench.
+- **Two of check 11's four live unknowns survive one real run** (2026-09-05, owner's machine); the other two agreed ([decision 35](decisions/schema-skew.md)). Open: **`core_version`**, which the running Core does not serve at all (it predates `embarch-core` decision 13; the redeploy that fixes it did not land), and **`/dev-bench/hello`'s `compatible` field**, which needs a bench. **The same run settles [decision 38](decisions/topology.md)'s `wsl-host` arm**: whether `sc.exe qc` locates the live Core, and so whether check 14 answers at all here.
 
 - **Check 15 catches a *cross-version* stale deploy, not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so a rebuild-and-failed-deploy at the same version reads as a match. Better than nothing — `deploy-core` has reported `landed` with nothing installed, its own check comparing byte length — but **it is not a hash comparison and must not be read as one.** A content hash on `/status` would close it, and that is `embarch-core`'s call.
 
-- **Three designed pieces are confirmed unbuilt; open is whether each is still wanted.** Decisions 22(a-c), 27/29 and 17's amendment (21 and 23 shipped 2026-09-04, 18 on 2026-09-05; 26's reporting half shipped as check 16, its `--prune` half deferred on 17's amendment — now two decisions' blocker).
+- **Three designed pieces are confirmed unbuilt; open is whether each is still wanted.** Decisions 22(a-c), 27/29 and 17's amendment (26's reporting half shipped as check 16, its `--prune` half deferred on 17's amendment — now two decisions' blocker).
 
-- **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Unit-tested against a synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it at all** — Core is on Windows here, so the scan is correctly skipped. Settling it needs a Linux box running Core natively with a probe attached and its udev rules removed: Fail `probe-not-permitted` naming the probe, then warn `no-probe-found` with the rules back and the probe out. **Whether the nine vendor IDs are the right nine is also unmeasured.**
+- **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Unit-tested against a synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it at all** — Core is on Windows here, so the scan is correctly skipped. Settling it needs a Linux box running Core natively, a probe attached and its udev rules removed: Fail `probe-not-permitted`, then warn `no-probe-found` with the rules back. **Whether the nine vendor IDs are the right nine is also unmeasured.**
 
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 

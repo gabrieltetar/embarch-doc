@@ -10,7 +10,7 @@ The sub-project that gets a firmware engineer from *nothing installed* to *`emba
 
 It is its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`**, and `embarch-api` cannot hold it: **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
 
-It is **not**:
+Not:
 
 - **A process supervisor.** No restart loop, no health polling, no resident process. Core's own service install keeps it running.
 - **In the runtime data path.** Nothing routes through it after setup. **If umbrella is deleted from a working machine, the stack keeps working.**
@@ -47,7 +47,7 @@ Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella'
 | Windows, both native | `local` | Yes, elevation as above | Yes |
 | Core on a separate box | `remote` | **No** — a human starts it there | Yes, via multipart upload |
 
-The first two are mechanically simplest; **only the third is validated for real**, being the one in daily use. The fourth is supported by construction but untested, and the fifth is partial by design and says so.
+**Only the third is validated for real**, the one in daily use; the fourth is supported by construction but untested, and the fifth is partial by design and says so.
 
 ## Command surface
 
@@ -60,19 +60,19 @@ The first two are mechanically simplest; **only the third is validated for real*
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
 | `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
 
-Exit codes follow `embarch-api`'s convention: `0` on success, `1` on failure with the message on stderr (or folded into the JSON object when `--json` is set), `2` for a malformed invocation.
+Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the message on stderr (or folded into the JSON object under `--json`), `2` a malformed invocation.
 
 ## The `doctor` chain
 
-Ordered; each check emits pass/warn/fail plus a concrete fix line.
+Ordered; each emits pass/warn/fail plus a concrete fix line.
 
 | # | Check |
 |---|---|
-| 1 | Both binaries found; versions match the suite manifest |
+| 1 | Both binaries found; versions match the suite manifest. **A missing `embarch-core` is a warn where none belongs** (`wsl-host`, `remote`), and the Windows service's own registration is read to find one (decision 38) |
 | 2 | Core service installed, and running |
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |
-| 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID still present in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
+| 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
@@ -81,7 +81,7 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
-| 14 | Which program Core would flash each chip family with |
+| 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
 | 16 | `study_results/` entries and their bytes, and build directories per project — informational, never fails, **deletes nothing** (decision 26) |
 | 17 | Core's bind address matches what the detected topology needs — **design-only** |
@@ -89,11 +89,11 @@ Ordered; each check emits pass/warn/fail plus a concrete fix line.
 | 19 | Free disk space behind the build and results directories — **design-only** |
 | 20 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
-Checks 12, 15 and 16 never fail the run outright. **Check 5 now can**, and only for the one state it can prove: a probe on this machine's USB bus that Core enumerated none of. **Check 11 fails too**, and that is the point of it — a host-version disagreement means `embarch-api` will refuse to submit a study, and a bench Core refusing at the handshake means no study can run either. A number a check simply could not obtain is a warn naming which one, never a pass.
+Checks 12, 15 and 16 never fail the run outright; **5 and 11 do**, each only for the one state its row names — and check 11's failing is the point of it, since a host-version disagreement means no study can be submitted, and a bench Core refusing at the handshake means none can run. A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` saying *which* outcome, where a check has more states than statuses (decision 37; checks 5 and 10). 17-20 are designed and unbuilt, and their numbers move if something is built before them.
+Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` naming *which* outcome where a check has more states than statuses (decision 37; checks 1, 5, 10, 14). 17-20 are designed and unbuilt; their numbers move if something is built before them.
 
-**Designed-and-unbuilt is not only a tail of the table**: decision 22, 26's `--prune` half and 17's amendment each sit *inside* a command or a check that otherwise ships, and each is marked above where it lives. [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only a tail of the table**: decision 22, 26's `--prune` half and 17's amendment each sit *inside* a shipping command or check, marked above where it lives. [open.md](open.md) carries whether each is still wanted.
 
 ## Token handling
 
