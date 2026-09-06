@@ -1,6 +1,6 @@
 # Bring a study up green end to end, and record the sequence it actually took
 
-**State:** open
+**State:** claimed by the supervisor (bench, no branch), 2026-09-06 16:10
 **Source:** owner's bench session 2026-09-06 — three other `bench` tasks depend on a study that runs; nothing records the bring-up sequence
 **Scope:** api
 **Hardware:** bench
