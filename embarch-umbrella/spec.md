@@ -90,6 +90,8 @@ Checks 12, 15 and 16 never fail the run outright; **5, 11 and 17 do**, each only
 
 Numbers 1-17 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14, 17), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 18 is designed and unbuilt; its number moves if something is built before it.
 
+Every `detail` and `fix` is **one line with no run of two or more spaces** — what a `\`-continued literal renders, and what a long literal wrapped without that `\` silently breaks, Rust keeping the next line's indentation inside the sentence. Only check 6's `toml` parse error is exempt, rendered verbatim with its own caret diagram. A module-wide test holds every verdict the pure judges emit to it; a `contains` assertion reading one side of a wrap does not, which is how check 14 shipped this twice.
+
 **Designed-and-unbuilt is not only the tail of the table**: 26's `--prune` half sits *inside* a shipping command, marked above where it lives. [open.md](open.md) carries whether it is still wanted.
 
 ## Token handling

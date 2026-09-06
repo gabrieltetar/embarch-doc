@@ -18,6 +18,8 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then `no-probe-found` with them back. **Whether the nine vendor IDs are the right nine is also unmeasured.**
 
+- **The no-stray-spaces guard cannot reach checks 4 and 12.** Both are `async` and decide nothing without a live Core, so neither has a pure judge to hand the test a verdict, and their text is the only text in `doctor` nothing holds to the rule. Splitting a pure judge out of either is the fix.
+
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
 - **Nothing mechanical keeps the token and config mirrors in step with `embarch-api`'s originals** (decisions 16, 20). The guarding CI diff job **was never implemented**; decision 15's reversal removed only the third mirror. Extract them into a shared crate, or build it.
