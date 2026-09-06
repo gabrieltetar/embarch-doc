@@ -42,7 +42,8 @@ decision under two numbers because a past commit renumbered. Do not add to that.
 move can be the wrong one, because of who links it.** Before moving each of 30, 46 and 54, grep
 the whole `embarch-doc` tree and every code repo for inbound references. `check-decision-refs.py`
 resolves by number and `check-links.py` resolves paths, so a reference written as
-`[decisions](decisions/shape.md) 30` **breaks silently in the sense that matters** — the link
+a markdown link whose target is `decisions/shape.md` and whose number is `30`
+**breaks silently in the sense that matters** — the link
 still resolves to a file that no longer contains 30. Repoint every one you find. Any that lives
 outside `embarch-api/` is not yours to edit: **name it in your report and drop it in `inbox/`**,
 and say so rather than moving the decision anyway.
@@ -68,17 +69,17 @@ you are done, say so and file it — do not shave prose to get under the line.
 
 ## Done when
 
-- [ ] `embarch-api/decisions/tests.md` exists and holds decisions 30, 46 and 54, **byte-identical
+- [x] `embarch-api/decisions/tests.md` exists and holds decisions 30, 46 and 54, **byte-identical
       to their text in `shape.md` before the move** — demonstrate this in your report by
       extracting each from both and diffing.
-- [ ] `shape.md` holds 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 53 and nothing else; its `# ` title and
+- [x] `shape.md` holds 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 53 and nothing else; its `# ` title and
       `decisions.md`'s index row for it no longer claim the test-reach mission.
-- [ ] `decisions.md` gains an index row for `tests.md`, with its decision list and size.
-- [ ] No decision renumbered. `check-decision-refs.py` and `check-links.py` both green.
-- [ ] Every inbound reference to 30, 46 or 54 inside `embarch-api/` repointed; every one outside
+- [x] `decisions.md` gains an index row for `tests.md`, with its decision list and size.
+- [x] No decision renumbered. `check-decision-refs.py` and `check-links.py` both green.
+- [x] Every inbound reference to 30, 46 or 54 inside `embarch-api/` repointed; every one outside
       it named in the report and dropped in `inbox/`.
-- [ ] Both files' sizes reported, and neither in reserve — or the debt filed.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Both files' sizes reported, and neither in reserve — or the debt filed.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Leave these alone
 
@@ -86,3 +87,30 @@ you are done, say so and file it — do not shave prose to get under the line.
 both `blocked` and both are affected by what you do here. **Do not edit either.** The supervisor
 reconciles them in the fold — `021` may be wholly paid by this split, and `022` unparks — and
 that judgement needs the sizes you end up with.
+
+## Done, 2026-09-06 — agent/api/023-split-shape-by-mission
+
+`decisions/shape.md` **7,654 B** and the new `decisions/tests.md` **5,434 B**, both against the
+12,288 B cap; neither in reserve (line 11,059), so no compaction debt filed. Decisions 30, 46 and
+54 verified byte-identical between `shape.md` at 57ab4dc and `tests.md` — SHA-256 prefixes
+`d87f95f438dc303e` / `e65783b641a35e6d` / `7a064f7688aa7738` on both sides, per-entry `diff`
+empty. Nothing renumbered; the only text in `shape.md` that changed is its `# ` preamble.
+
+Repointed inside `embarch-api/`: `open.md` (30, 46, 54), `interfaces/modules.md` (46, twice),
+`decisions/core-link.md` (46), and `decisions.md`'s index, which gains a `tests.md` row. Every
+surviving `shape.md` reference elsewhere in `embarch-api/` cites 25 or 53, which stay.
+
+**Outside `embarch-api/`, two, neither repointed.** `history/api.md` line 28 records that
+"decision 30 moved to `decisions/shape.md`" and line 91 says "See embarch-api decision 46" —
+both dated history entries, true when written, and `history/` is not this scope's to rewrite.
+No inbound reference in the `embarch-api` code repo: its "decision 30/46/54" hits all name
+`embarch-study-designer` or `embarch-core` decisions, not this sub-project's.
+
+**One pre-existing gate red, fixed here, and a script gap dropped in `inbox/`.** This task file
+failed `check-links.py` at its own claim commit 57ab4dc: the seam-check paragraph above used to
+demonstrate the dangerous reference shape by writing a literal markdown link inside a code span,
+and `check-links.py` extracts every bracket-then-parenthesis link from raw file text with **no inline-code or
+fenced-block stripping**, so any doc that documents link syntax by example is flagged. The
+paragraph is reworded above so no example link remains. The script itself is owner-only; see
+`inbox/doc-check-links-ignores-code-spans.md` and
+`inbox/doc-history-api-line-28-points-at-the-wrong-file.md`.
