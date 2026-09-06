@@ -1,6 +1,6 @@
 # Confirm the nRF54L15 hardware-ID register address against real silicon
 
-**State:** open
+**State:** claimed by leg 023, 2026-09-06 — bench, supervisor's own hands
 **Source:** `embarch-core/open.md` — "The nRF54L15 hardware-ID register address, and the end-to-end validation of the moved identity gate… Relocating the code changed nothing about whether that address is confirmed against real silicon."
 **Scope:** topology
 **Hardware:** bench
