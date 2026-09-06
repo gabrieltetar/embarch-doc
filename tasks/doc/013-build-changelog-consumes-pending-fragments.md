@@ -74,6 +74,20 @@ disappear** — it returns whenever anyone leaves a fragment pending across a le
 
 ## Done when
 
-- [ ] A fold cannot consume a fragment the unit did not write, or is refused when it would.
-- [ ] The remedy is recorded where a supervisor reads it, not only in `scripts/`.
-- [ ] Gate green.
+- [x] A fold cannot consume a fragment the unit did not write, or is refused when it would.
+      **Remedies 1 and 2 both, 2026-09-06.** `build_changelog.py --only GLOB` (repeatable);
+      `fold-commit.py` refuses a fold that deleted a `changelog.d/` fragment outside its
+      `--path` list. Verified both directions. Remedy 3 deliberately not taken — the task
+      called it weakest, and leg 015 got it right by habit rather than by procedure.
+- [x] The remedy is recorded where a supervisor reads it, not only in `scripts/`.
+      `supervise.md` and `changelog.d/README.md`, in `embarch-fleet/templates/`.
+- [ ] **Deployed.** `deploy.py` correctly refuses while a leg is live, so the instance's
+      `supervise.md` still carries the old text. Run it at a leg boundary; that closes this.
+
+**One thing found while fixing it, worth keeping.** `fold-commit.py` is a *shim* that execs the
+framework copy at run time, while the assembler it names is instance-local and **frozen in a
+leg's worktree at that leg's start commit**. So a new refusal in the shimmed script went live
+for a leg holding an assembler too old to satisfy it — a refusal nobody could satisfy, which is
+the failure `fold-day.py`'s header already records twice. The refusal now asks `--help` and
+prints the park-and-restore dance where `--only` is absent. **Any future rule split across a
+shimmed script and an instance-local one has this same asymmetry.**

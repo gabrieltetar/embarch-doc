@@ -15,6 +15,22 @@ describes grows without anyone deciding to let it.
 
     scripts/build_changelog.py --window 2026-09      # assemble
     scripts/build_changelog.py --check               # validate only
+    scripts/build_changelog.py --only 'api-*'        # assemble just these
+
+**`--only` exists because assembling everything is wrong inside a fold.** A
+fold runs this script, and until 2026-09-06 it consumed every pending fragment
+rather than the folding unit's -- so a leg swept 15 fragments the owner had
+written and not yet folded into `history/` alongside its own one, in the same
+`## window` block, with no way to stage its entry without staging his. That is
+the legs 004/005 failure reached *without* `git add -A`: `fold-commit.py` stages
+by explicit path, the path list was right, and the file at that path had been
+rewritten underneath it by a script the fold is required to run. Nothing failed
+-- `--check` validates fragment shape, not whether `history/` agrees with what
+is pending, and the swept lines read exactly like the unit's own.
+
+So a fold passes `--only '<scope>-*'`, or better the exact fragment names it is
+staging, and everything else stays pending. Assembling the whole directory is
+still the right default for a human folding deliberately.
 
 Assembling groups each scope's fragments under a dated window heading in
 ``history/<scope>.md``, then deletes the consumed fragments. When a history file
@@ -27,6 +43,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import fnmatch
 import os
 import re
 import sys
@@ -87,16 +104,24 @@ def parse(path: Path, scopes: set[str]):
     return (scope, cat, raw), None
 
 
-def collect(scopes):
-    """Validate every fragment before consuming any of them."""
+def collect(scopes, only=None):
+    """Validate every fragment before consuming any of them.
+
+    `only` is a list of globs; a fragment matching none of them is left pending
+    and is not validated either -- a malformed fragment belonging to somebody
+    else must not fail this unit's fold, which is the same separation the glob
+    exists to create.
+    """
     good, bad = [], []
     for path in sorted(FRAGMENTS.glob("*.md")):
         if path.name == "README.md":
             continue
+        if only and not any(fnmatch.fnmatch(path.name, g) for g in only):
+            continue
         parsed, why = parse(path, scopes)
         (good.append((path, *parsed)) if parsed else bad.append((path, why)))
     for path in sorted(FRAGMENTS.rglob("*.md")):
-        if path.parent != FRAGMENTS:
+        if path.parent != FRAGMENTS and not only:
             bad.append((path, "in a subdirectory; fragments must sit directly in changelog.d/"))
     return good, bad
 
@@ -140,10 +165,13 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--window", help="window heading, e.g. 2026-09 (default: this month)")
     ap.add_argument("--check", action="store_true", help="validate fragments, assemble nothing")
+    ap.add_argument("--only", action="append", metavar="GLOB",
+                    help="consume only fragments whose filename matches (repeatable). "
+                         "A fold passes its own unit's; everything else stays pending.")
     args = ap.parse_args()
 
     scopes = known_scopes()
-    good, bad = collect(scopes)
+    good, bad = collect(scopes, args.only)
     if bad:
         print(f"{len(bad)} invalid fragment(s); nothing assembled:\n")
         for path, why in bad:
@@ -153,7 +181,8 @@ def main() -> int:
         print(f"{len(good)} fragment(s) valid.")
         return 0
     if not good:
-        print("No fragments to assemble.")
+        print("No fragments to assemble."
+              + (f" (--only matched none of {args.only})" if args.only else ""))
         return 0
 
     window = args.window or datetime.date.today().strftime("%Y-%m")
@@ -182,7 +211,9 @@ def main() -> int:
 
     for path, *_ in good:
         path.unlink()
-    print(f"\n{len(good)} fragment(s) consumed into window {window}.")
+    left = len([q for q in FRAGMENTS.glob("*.md") if q.name != "README.md"])
+    print(f"\n{len(good)} fragment(s) consumed into window {window}."
+          + (f" {left} left pending." if left else ""))
     return 0
 
 
