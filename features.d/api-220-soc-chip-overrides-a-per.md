@@ -1,0 +1,1 @@
+| `soc_chip_overrides` — a per-project SoC→chip escape hatch, consulted before Core's `/resolve-chip` | **Retired unbuilt 2026-09-05** — the short-circuit would skip the registry validation that is Core's whole claim to the table, and the fact is per-silicon, not per-project; a config declaring the key now fails at load naming the retirement | unit | 13 |

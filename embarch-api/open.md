@@ -28,7 +28,6 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 Re-read suite-wide; none acquired a new argument.
 
 - **PATH/toolchain preflight validation** — deliberately out of the build path: a build failure surfaces naturally, and preflighting every build costs the common case for an uncommon message. Expected as a `doctor` check.
-- **`soc_chip_overrides` is decided and unbuilt** (found 2026-09-05 while closing the two loose ends decisions 20/21 left; both are closed). Decision 13 and [interfaces/config.md](interfaces/config.md) describe the escape hatch for a SoC Core cannot map; nothing deserializes the key and `/resolve-chip` is called unconditionally, so it does nothing on **either** discovery kind — not, as this bullet previously had it, only on `static`. **Not closeable by deleting the doc text** — decision 13 owns the fork and states it. `tasks/api/017` carries it; what would sharpen the choice is a real unmapped SoC, and nothing has hit one in three months.
 - **Config fragments / `include`**, so `[core]` is not duplicated per repo. Tolerable for v1: `[core]` is three lines.
 - **Config hot-reload** — config loads once; picking up an edit means a reconnect.
 - **`serial_log` stays one-shot rather than streaming.** Core's endpoint is itself a bounded capture, so streaming needs Core to grow one first — **not this crate's to decide**.

@@ -1,6 +1,6 @@
 # 017 — `soc_chip_overrides` is decided and never built: build it or retire decision 13
 
-**State:** claimed by agent/api/017-soc-chip-overrides-decided-never-built, 2026-09-05 23:15
+**State:** done, 2026-09-05 — **decision 13 retired**, not built.
 **Source:** `embarch-api/open.md` — "`soc_chip_overrides` is decided and unbuilt", and
 `embarch-api/decisions/zephyr.md` 13's own amendment. Found 2026-09-05 by `api/016` while
 closing decisions 20/21's loose ends: `open.md` listed the field among those "equally
@@ -98,18 +98,67 @@ Run `scripts/check-duplication.py embarch-api` before shortening anything, and d
 collapse the deliberate three-depth statement of the five-field refusal (`spec.md` pointer,
 `interfaces/config.md` paragraph, decision 20) — that is the reference/reasoning split.
 
+## Outcome — retired, 2026-09-05
+
+**Decision 13 is a tombstone**, and the argument against building sits in it. Two reasons,
+one of which was not in the task's framing and is the stronger:
+
+- **The short-circuit was the whole design and the short-circuit is the defect.** Core
+  validates every SoC→chip mapping against probe-rs's own registry — at load *and* per
+  call, so even a stale entry in Core's own table fails like an unmapped SoC
+  (`embarch-core` decision 8). A per-project override consulted *before* the call skips
+  that check, so one typo reaches `/flash` as a plausible chip name and attaches the wrong
+  physical target — the exact failure decision 8 refused fuzzy matching to avoid. The
+  saving it bought was one local HTTP call this crate makes `/flash` right after anyway.
+- **It is per-project for a per-silicon fact**, and consulted first: restated per project
+  and per repo, and still winning after Core's table is corrected.
+
+***Rejected: build it.*** The dead end is real — a 404 naming the SoC and nowhere to put
+the answer — but bounded: one row in the repo that owns the table plus a redeploy this
+suite already runs, and nothing has hit an unmapped SoC in three months. **The reversal
+condition is written into the entry**: a Core the operator cannot rebuild. The hatch then
+belongs in Core's *own* config — machine-scoped, one copy, still registry-validated — not
+in a per-project `embarch-api` field. No `inbox/` drop filed for that: it is a deferred
+design with no demand, and the trigger is now recorded where the next reader will look.
+
+**Not closed by deleting doc text.** `soc_chip_overrides` is now **refused at config load
+naming the retirement, on both discovery kinds** — decision 53's posture, since nothing
+deserialized the key and an author could not see the silence. `ProjectConfig` keeps the
+key only so a config written from the old interface doc is told; the remedy names Core's
+table and `chip-list`. One test covers both kinds and asserts the remedy, not just the
+refusal.
+
+**`api/018` is closed and deleted** — `check-doc-size.py --pressure` reports both files
+PAID and nothing else in `api` in reserve. Its two flagged clauses:
+
+- The `soc_chip_overrides` "stated and never built on both kinds" clause is **discharged,
+  not preserved**: it stopped being true with this commit. It survives only as history, in
+  decision 13's tombstone.
+- The clause asserting decision 20's second remedy "stops a reader landing in the next
+  branch of the same check" **was an overclaim, and the remedy itself is now fixed**: it
+  said drop `build_command`/`chip`/`artifact_path` and stopped, so a `static` project
+  following it literally met `has no west_binary` and then `has no build_dir_root` in the
+  next arm of the same `validate()`. It now also says to add `west_binary`/`build_dir_root`,
+  and `static_project_setting_any_zephyr_only_field_fails_validation` asserts that half.
+
+`decisions/zephyr.md` was compacted alongside the two named files and comes out at
+10,962 / 12,288 B (89.2%) — the byte it went in on. Decision 13's full retirement argument
+therefore cost nothing net, but the file is still one edit from reserve.
+
 ## Done when
 
-- [ ] Decision 13 either loses its "**decided, never built**" amendment because it is now
-      built, or becomes a tombstone naming what replaced it. Amend in place; do not append
-      a correction under a body that then contradicts it.
-- [ ] `embarch-api/interfaces/config.md`'s `soc_chip_overrides` row states the built
-      behaviour, or is gone.
-- [ ] If built: a test that a configured override short-circuits `/resolve-chip` (no HTTP
-      call made), one that a miss still calls it, and one that a `static` project setting it
-      fails at load with the rest of the class (decision 20).
-- [ ] `embarch-api/open.md`'s bullet is deleted.
-- [ ] `embarch-api/interfaces/config.md` and `embarch-api/open.md` are **out of reserve**,
-      and `tasks/api/018-compact-api.md` is closed or updated to say what is left.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/api-*` fragment
-      dropped.
+- [x] Decision 13 is a tombstone, rewritten in place — heading, body and rejected
+      alternative are one entry, with no correction appended under a contradicted body.
+- [x] `embarch-api/interfaces/config.md`'s `soc_chip_overrides` row now reads as a retired
+      row beside `[[projects.targets]]`'s, naming the load-time refusal and the remedy.
+- [x] Not built, so no short-circuit test. Instead:
+      `a_retired_soc_chip_overrides_table_is_refused_on_both_discovery_kinds` — one config
+      per discovery kind, asserting the refusal names the key, the retirement *and* the
+      remedy (`chip-list`, Core's table), because a refusal whose remedy is a second dead
+      end is not a fix.
+- [x] `embarch-api/open.md`'s bullet is deleted; nothing replaces it.
+- [x] Both **out of reserve**: `interfaces/config.md` 10,923 / 12,288 B (88.9%),
+      `open.md` 3,957 / 5,120 B (77.3%). `tasks/api/018-compact-api.md` closed and `git rm`ed.
+- [x] Gate green; `changelog.d/api-soc-chip-overrides-retired.removed.md` and
+      `features.d/api-220-soc-chip-overrides-a-per.md` dropped. No `status.d/` fragment: no
+      suite-level doc named `soc_chip_overrides` or api decision 13.
