@@ -1,6 +1,6 @@
 # 019 — `a_real_spawn_separates_answering_broken_and_hanging` fails ~1 run in 20 with ETXTBSY
 
-**State:** claimed — leg 016, `agent/umbrella/019-etxtbsy-flake`
+**State:** done — `agent/umbrella/019-etxtbsy-flake`
 **Source:** `umbrella/018`'s worker, 2026-09-06, while running the gate. Reproduced 3 times in ~90 `cargo test` runs on `agent/umbrella/018-check-17-evidence`; predates that branch (the test came in with `4e48c77`, and nothing in `018` touches check 10).
 **Scope:** umbrella
 **Hardware:** none
@@ -61,6 +61,40 @@ the others narrow the window.
 
 ## Done when
 
-- [ ] 200 consecutive `cargo test` runs green, or the fix names why the race is closed
+- [x] 200 consecutive `cargo test` runs green, or the fix names why the race is closed
       rather than narrowed.
-- [ ] Gate green; `changelog.d/umbrella-*` fragment dropped.
+- [x] Gate green; `changelog.d/umbrella-*` fragment dropped.
+
+## What shipped
+
+**The flake is in *two* tests, not one.** Reproducing it took two `cargo test` runs on the
+unfixed branch, and the one that failed was check 8's
+`a_located_binary_is_actually_spawned_and_its_failures_are_reported` — same shape, same
+`ETXTBSY`, never reported. Both are fixed; a report of one flaky spawn test here should be
+read as a report of the class.
+
+**Fix: the bounded retry** (`src/doctor.rs`, test module only — no production path changed,
+because nothing about what `doctor` decides is wrong). `past_text_file_busy` re-runs a spawn
+while its verdict contains `Text file busy`, 50 attempts 20 ms apart, ~1 s ceiling. Both
+tests now spawn through a small local closure that wraps the real call
+(`api_host_schema_version` for check 8, `mcp_initialize` for check 10).
+
+**Why this closes the race rather than narrowing it.** The write descriptor is not ours by
+the time we `exec` — `std::fs::write` closed it. It belongs to a *copy* made by a `fork` in
+another test thread, which dies at that child's own `exec` microseconds later. Nothing on
+the writing side can shorten a window it does not hold, which is why `File` + `sync_all` +
+drop only narrows; retrying outlives the copy by construction.
+
+**What the bound costs, stated.** After 50 attempts the last verdict is returned unchanged,
+so a *genuine* `ETXTBSY` — a binary really held open for writing — still fails its assertion
+with the same message, up to a second later. It is never masked into a pass and never turned
+into a hang. That is asserted, not just described:
+`a_text_file_busy_spawn_is_retried_until_it_clears_and_no_further` pins all three arms
+(clears, never clears, a non-busy error is not retried at all).
+
+**Evidence:** 200 consecutive `cargo test` runs, 0 failures. Baseline for comparison: the
+unfixed tree failed on run 2 of a 60-run loop.
+
+**No `decisions/doctor.md` write, so no compaction owed.** This is a test-harness race; no
+decision changed, and `spec.md` / `open.md` say nothing this makes false. The mechanism is
+recorded where it is load-bearing — the doc comment on `past_text_file_busy`.
