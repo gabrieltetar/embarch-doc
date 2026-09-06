@@ -1,6 +1,6 @@
 # 022 — 9 of `CoreClient`'s 25 routes set the bearer token by hand, and a comment says none do
 
-**State:** open
+**State:** claimed by agent/api/022-bearer-auth-funnels, 2026-09-06 04:15
 **Source:** `api/020`'s reviewer, 2026-09-06, which found this while verifying decision 54 and
 explicitly left the filing to the supervisor.
 **Scope:** api
