@@ -1,0 +1,99 @@
+# 022 — `embarch init` writes a board it inferred from a build artifact, unconfirmed
+
+**State:** claimed by agent/umbrella/022-init-inferred-board, 2026-09-06 02:22
+**Source:** [embarch-umbrella/open.md](../../embarch-umbrella/open.md) — "Whether `init` should
+warn on a repo holding more than one recorded build is undecided … a static-discovery repo with
+several recorded builds still silently gets one picked for it" — and
+[embarch-api/open.md](../../embarch-api/open.md)'s first bullet, which names the *same* defect
+from the consumer side and names the cheap fix: "`init` refusing to **write** an inferred board
+unconfirmed — cheap, and enough."
+**Scope:** umbrella
+**Hardware:** none. `src/init.rs` reads a repo tree and writes a TOML file; the whole thing is
+exercisable against fixture directories, and `init.rs` already builds one
+(`BUILD_INFO`, `src/init.rs:581`).
+**Owner:** no
+
+## What
+
+**`embarch init`'s static-discovery path must stop asserting an inferred hardware fact as
+fact.** For a non-Zephyr repo `init` derives its `build_command` from
+`build/build_info.yml` (`src/init.rs:374-470`), and that string carries `-b <board>` — for the
+fixture, `-b roadrunner@2/nrf54l15/cpuapp`. `build_info.yml` records **whatever was last
+built**, which is not the board on the desk; `embarch-api/open.md` records a day of bring-up
+lost to exactly this, against a config whose board came from an ad hoc dev build rather than
+the production board the prior config targeted.
+
+Two things are to be true when this is done, and the second is the undecided half:
+
+1. **An inferred board or build command is never written as though it were confirmed.** Pick a
+   mechanism and say why in the decision: emit it commented-out, emit it with a
+   `# inferred from build/build_info.yml on <date> — confirm this is the board on your desk`
+   marker next to it, or refuse to write it and print the line for the user to paste. **Do not
+   add an interactive prompt** — `init` must stay runnable in a non-TTY (`decisions/install.md`
+   and decision 7's print-the-command posture are the precedent).
+2. **A repo holding more than one recorded build never gets one silently picked for it.** Today
+   the first `build_info.yml` found wins. Detect the several-builds case, say so, and name every
+   candidate it saw rather than choosing. `embarch-umbrella/open.md` records this as *undecided*
+   — **deciding it is part of this task**, so the decision entry must state the alternative you
+   rejected, not only the one you took.
+
+The Zephyr/west arm is **out of scope and must not change**: decision 17's live discovery
+already answers this structurally for that path (`src/init.rs:377-383` says so), and the
+comment there is the record of `init`'s old silent-pick behaviour. Keep it.
+
+## Why now
+
+`embarch-api/spec.md` §2's no-inference-as-fact invariant is the suite's strongest standing
+rule about DUT facts, and this is the one place a tool violates it on the most load-bearing
+fact it writes. The consumer repo has carried the bullet since before its `[[projects]]`
+discovery work and named this exact fix as *cheap, and enough*; nothing has built it because
+the code is in a different repo from the open question's loudest half.
+
+## Reserve, at dispatch — read this before you plan
+
+Your sub-project has **one file in reserve and it is at the wall.**
+
+- **`embarch-umbrella/open.md` — 5,080 / 5,120 B, 40 bytes left.** Filed against
+  `tasks/umbrella/009-compact-docs.md`, which is `blocked` on `In flux: yes`.
+  **You cannot add a line to this file.** You do not need to: closing item 1 above **deletes**
+  the "Whether `init` should warn…" bullet, which is the honest form of the compaction leg 016
+  said was all this file has left — *drop whole items and name each as answered*. Do that, and
+  carry `009`'s `Must not delete:` list while you are in the file.
+- `embarch-umbrella/decisions/projects.md` — **10,907 B, and the reserve line is 11,059**, so
+  you have **152 bytes** before it enters reserve. This is where an `init` decision belongs
+  (decisions 12 and 17 are there). A normal decision entry is 600–1,400 B, so **plan on it
+  entering reserve.** When it does: **extend `tasks/umbrella/009` rather than filing a second
+  compaction task** — `017`, `020` and `021` all set that precedent, and `009` is this
+  sub-project's standing debt. Add `projects.md` to its `Compacts:` field and add whatever
+  `Must not delete:` items your new decision creates.
+- `embarch-umbrella/decisions/bind.md` is at 11,409 / 12,288 (92.8%), in reserve, filed. **Do
+  not write to it** — nothing here belongs there.
+- Every other `embarch-umbrella/decisions/*.md` is under 9.5 K with room. `install.md` (10,807)
+  is the other tight one; nothing here belongs there either.
+
+## Not yours, and drop it rather than reaching for it
+
+**`embarch-api/open.md`'s first bullet is half-answered by this unit** — its `init` half closes,
+its `validate`/`status`-compare-against-hardware half does not — and that file belongs to
+another sub-project, which `../../embarch-fleet/protocol.md` §3 forbids you to touch. **Drop a
+note in `inbox/` naming the file, the bullet, exactly which clause is now built, and which
+clause survives.** Do not edit it, and do not leave the fact unrecorded.
+
+## Done when
+
+- [ ] `init` never writes an inferred board or build command as confirmed fact, by a mechanism
+      that works with no TTY.
+- [ ] A repo with several recorded builds is reported, with every candidate named, and none is
+      picked silently.
+- [ ] The Zephyr/west arm is byte-identical.
+- [ ] Tests cover: one recorded build (inferred, marked), several recorded builds (reported, not
+      picked), and none (unchanged behaviour).
+- [ ] A decision entry in `embarch-umbrella/decisions/projects.md` naming the mechanism, the
+      rejected alternative, and `embarch-api/spec.md` §2 as what it serves; `decisions.md`'s
+      index row added if the file is new.
+- [ ] `embarch-umbrella/open.md`'s "Whether `init` should warn…" bullet deleted as answered,
+      and the file still under its 5,120 B cap.
+- [ ] `tasks/umbrella/009` extended if this unit spends `projects.md`'s reserve.
+- [ ] An `inbox/` drop for `embarch-api/open.md`'s half-answered bullet.
+- [ ] `changelog.d/` fragment; `features.d/` row if this is user-visible behaviour.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
