@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- Decision 26 stops saying `target.json` is unwritten: it exists now, and absence means "unattributable", never "orphaned" ([decisions/projects.md](../embarch-umbrella/decisions/projects.md)).
+## 2026-09
+
+### Fixed
 - `doctor` check 10 reads the agent CLI's own config for the command to spawn: the `claude mcp get` format it parsed does not exist, so its handshake was unreachable code.
 ## 2026-09
 
