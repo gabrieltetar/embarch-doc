@@ -1,6 +1,6 @@
 # 021 — `bound-narrow`'s new `setup` clause reads a `host` that is not the one `setup` reads, and its `Remote` branch is unguarded
 
-**State:** open
+**State:** claimed — leg 016, `agent/umbrella/021-infer-class-inputs`
 **Source:** `umbrella/020`'s reviewer, 2026-09-06, reviewing merge `08ccd6f` / `0824325`.
 Both items below were reported as **observations, not contradictions** — the reviewer returned
 no findings and the supervisor merged knowing them. Each is a read of the shipped source with
