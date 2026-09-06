@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Removed
+- `soc_chip_overrides` is retired unbuilt and refused at load on both kinds — an unmapped SoC stops at Core's registry-validated table ([decision 13](../embarch-api/decisions/zephyr.md)).
+## 2026-09
+
 ### Changed
 - A static project is refused all five zephyr-west-only config fields at load, not just default_target; the `none`-snippet collision names a remedy that works.
 ## 2026-09
