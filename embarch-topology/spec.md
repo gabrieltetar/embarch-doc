@@ -11,7 +11,7 @@ The suite's one abstraction for **topology**, meaning two things that were previ
 - **Software topology** — where each process runs relative to the others: the API and Core on one machine, a WSL2-hosted API talking to a native-Windows Core, or Core moved to a headless box on the LAN.
 - **Hardware topology** — what is physically wired to what: which USB port carries a board's debug probe versus its serial link, which physical board plays which role, and what that role's board identity currently is.
 
-**The incident that motivated it:** dev-bench's runtime serial link moved to a dedicated UART port, the migration was implemented and validated once, **and the Windows Core service still had a stale port override in its own registry environment.** Nobody cleared it. A study failed with a 404 naming the excluded candidate, and **diagnosing it took manually enumerating serial ports, reading service source, and reasoning by hand about which of two recognized-vendor ports was correct.** This crate makes that class of problem diagnosable from one place — and, per decisions 2 and 3, **structurally impossible, since the stale-override mechanism that caused it was removed rather than merely detected.**
+**The class of problem it exists to make impossible:** a stale port override winning silently over reality. Per decisions 2 and 3 **the override mechanism was removed rather than merely detected**, so nothing is left that can win; retired decision 9 carries the incident that proved it.
 
 It is **not**:
 
@@ -80,7 +80,7 @@ Storage is one file under a machine-wide directory this crate owns. A store pred
 - **A role:** the enrolled probe is currently enumerated and its live identity still matches the recorded one. Runs on every flash, reset and handshake.
 - **A same-chip link:** the board answering on the runtime link is the same silicon the JTAG probe verified, by comparing the JTAG-read identity against the board's self-report. **Two chip families have a declared relation; every other chip returns *undeclared*, which is never treated as a pass — a comparison that could not be made is not a comparison that succeeded.**
 - **A direct signal route:** the declared serial is currently enumerable. It **cannot** confirm the wire from the DUT's TX pin actually lands on that bridge.
-- **A via-bench route:** validates on the strength of being declared. Its carrier is the bench's link, whose liveness is the role check's job; **re-checking it through a second, weaker path would assert more than is known.**
+- **A via-bench route:** validates on the strength of being declared; its carrier is the bench's link, whose liveness is the role check's job (decision 18 for why not both).
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
 
@@ -92,4 +92,4 @@ Storage is one file under a machine-wide directory this crate owns. A store pred
 
 ## Where it stands
 
-Both real boards are enrolled against the redeployed Core, and a real end-to-end flash plus study has completed clean. Two things stayed deliberately open rather than blocking: **a deliberate-mismatch alert check** — there is no legitimate way to inject a stale identity record on today's bench without either a second same-chip-family board or writing the live enrollment file directly — and the items in [open.md](open.md).
+Both real boards are enrolled and a real end-to-end flash plus study has completed clean. **The deliberate-mismatch alert path stays unexercised**: there is no legitimate way to inject a stale identity record on today's bench without either a second same-chip-family board or writing the live enrollment file directly. Everything else still open: [open.md](open.md).

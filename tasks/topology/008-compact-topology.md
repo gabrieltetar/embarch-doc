@@ -1,6 +1,6 @@
 # 008 — Compact `embarch-topology/open.md` and `spec.md`
 
-**State:** claimed by agent/topology/008-compact-topology, 2026-09-06 16:05
+**State:** done
 **Source:** `scripts/check-doc-size.py` — both files entered reserve on leg 020's bench unit
 (`tasks/topology/006`), which added one `open.md` bullet recording two measured reporting defects
 and three `spec.md` paragraphs recording the live link-port resolution.
@@ -60,10 +60,45 @@ a cap, and a 5 KB cap makes that 512 bytes, which is one paragraph.
 
 ## Done when
 
-- [ ] `open.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken).
-- [ ] Every item in `Must not delete:` survives, in words a reader can still check.
-- [ ] Anything moved out of `open.md` lands in `spec.md` or `decisions.md` rather than being
+- [x] `open.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken).
+      **5,015 → 2,865 B, 56.0%.** `spec.md` **9,489 → 8,956 B, 87.5%**, also out. Both PAID.
+- [x] Every item in `Must not delete:` survives, in words a reader can still check.
+- [x] Anything moved out of `open.md` lands in `spec.md` or `decisions.md` rather than being
       dropped, and the move is stated in the commit message.
-- [ ] Answered in the compaction commit message, in the compactor's own words:
+- [x] Answered in the compaction commit message, in the compactor's own words:
       *can `spec.md` alone answer what someone needs to work on this component today?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What shipped
+
+**Four bullets left `open.md`; two of them were moves, and the other two were duplicates whose
+words already stand elsewhere in this sub-project.**
+
+- **`validate_signal` has no caller** — deleted from `open.md`; `check-duplication.py` had it as a
+  22-word overlap with `decisions/links.md`, which already carries the reason verbatim ("resolving
+  at the point of use *is* the validation and returns the identical mismatch, so calling both would
+  check twice and report once"). What was *not* there — the `embarch-study-designer`
+  advertise-scoped-decode cross-reference, and the naming of the function — was added to decision
+  18 in the same paragraph. This was a posture chosen, not a question open.
+- **Centralizing a remote Core's declared host** — moved whole to `decisions/scope.md` as
+  **decision 22**, new number, index row updated. Both named conditions for revisiting and the
+  API-did-not-centralize-at-setup-time counter-argument survive; the counter-argument is now
+  labelled in the heading as what makes it a rejection rather than a deferral.
+- **The signal-alert bullet's two supporting facts** — `embarch-ui` needs no change; the mirrored
+  alert type in the shared Core client declares those fields non-optional and must move in lockstep
+  — moved into decision 18's durable-alert-trigger paragraph, where someone building it will be
+  reading. `open.md` keeps the question and points at the trigger.
+- **The Nordic-identity bullet** — the *mismatch*-rather-than-*undeclared* clause is kept in
+  `open.md` in checkable words; the surrounding derivation, a 15- and a 22-word overlap with
+  `decisions/enrollment.md` decision 21, is now a pointer to it.
+
+**`spec.md`, three cuts, none touching the 2026-09-06 bench measurements:** the incident narrative
+(out of role for `spec.md` per `DOC-COMPACTION.md` §3, and retired decision 9 carries it) reduced
+to the constraint it implies; the via-bench validation bullet's "why not both" pointed at decision
+18 instead of restated; the `Where it stands` validation record trimmed to the gap it names. The
+three SEGGER ports and their USB paths, the `COM5`-eliminated-by-*fallback* sentence with its
+"the declared-serial path still has no hardware evidence" conclusion, and the traced `select`
+counterfactual are all untouched, byte for byte.
+
+Topology's `check-duplication.py` overlaps: **11 → 7**. `collect-open-questions.py`: **9 → 7**
+bullets, the two removed being the two named above as settled rather than answered-away.
