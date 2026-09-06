@@ -5,7 +5,7 @@
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/decisions/doctor.md, embarch-umbrella/spec.md
-**In flux:** yes — `tasks/umbrella/007`, `012`, `013` and `015` are open and every one of them rewrites a row of `spec.md`'s doctor table or an entry in `decisions/doctor.md`
+**In flux:** yes — `tasks/umbrella/007`, `013` and `015` are open and every one of them rewrites a row of `spec.md`'s doctor table or an entry in `decisions/doctor.md`. (Corrected by leg 012 at fold: the filer also listed `012`, which had already landed as this leg's second unit.)
 **Must not delete:** decision 22's three unbuilt checks and the sentence saying they are unbuilt; decision 23's original claim *and* the amendment saying which half of it decision 40 replaced — a retired-or-amended entry that loses what it used to say stops being a tombstone; decision 31's note that check 14 runs under the WSL user's environment rather than the service account's, which is still open; `spec.md`'s twenty-row doctor table and which rows are designed-and-unbuilt.
 
 ## What

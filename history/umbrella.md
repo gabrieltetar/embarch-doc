@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `doctor` check 10 reads the agent CLI's own config for the command to spawn: the `claude mcp get` format it parsed does not exist, so its handshake was unreachable code.
+## 2026-09
+
 ### Changed
 - `doctor` check 16 names the `study_results/` directory it resolved, in its detail line and in `--json`'s new `path` field; `tasks/umbrella/014`'s three stale decision lines rode along.
 ## 2026-09
