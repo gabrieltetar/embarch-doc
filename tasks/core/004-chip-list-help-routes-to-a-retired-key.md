@@ -1,6 +1,6 @@
 # 004 — `chip-list --help` routes the operator into a key that now fails config load
 
-**State:** claimed by agent/core/004-chip-list-help-routes-to-a-retired-key, 2026-09-05 23:56
+**State:** done, 2026-09-05, on `agent/core/004-chip-list-help`
 **Source:** `api/017`'s reviewer, 2026-09-05, reviewing merge `4ef324f` / `495a7bf`. Not a
 contradiction — help text is not a decision — so it was reported rather than dropped in
 `inbox/`, and filed here by the supervisor.
@@ -49,12 +49,36 @@ three comments and a decision amendment.
 
 ## Done when
 
-- [ ] `chip-list --help` and the two `chip_resolve.rs` comments name where the value actually
-      goes, and say the table is compiled in.
-- [ ] `embarch-core` decisions 8 and 34 no longer ground `chip-list` in a retired
-      `embarch-api` field. Amend **in place**, in the heading as well as the body if the
-      heading carries the claim.
-- [ ] Nothing in `embarch-core` still says `soc_chip_overrides` — check with
-      `grep -rn soc_chip_overrides embarch-core/`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/core-*` fragment
-      dropped.
+- [x] `chip-list --help` and the two `chip_resolve.rs` comments name where the value actually
+      goes, and say the table is compiled in. **Two more sites were fixed than the three
+      named**, both the same defect: the `SOC_TO_CHIP` const doc (now states it is the only
+      place a mapping can live), and — the one an operator actually hits — `UnmappedSoc`'s
+      `Display`, the text of the `/resolve-chip` 404, which still said *"run `probe-rs chip
+      list` (or `embarch-core detect-dev-bench`'s sibling chip-list item, once it exists)
+      … and configure it manually"*. Stale twice over: `chip-list` exists, and "configure it
+      manually" is the config file that does not exist. It now names `chip-list`, the
+      `SOC_TO_CHIP` edit, and the rebuild.
+- [x] `embarch-core` decisions 8 and 34 amended in place. The heading gained "compiled in";
+      the body's *"configuring an override for an unmapped SoC"* became *"finding a probe-rs
+      target name for"*, and two paragraphs were added — one recording what the entry used to
+      say and where the string goes now, one rejecting a config path for the table and
+      pointing at `embarch-api` 13's tombstone for why the rebuild requirement is a recorded
+      choice. `embarch-core/interfaces.md`'s `/resolve-chip` row now names the remedy too.
+- [x] `grep -rn soc_chip_overrides` over the code worktree returns nothing.
+- [x] `changelog.d/core-chip-list-points-at-the-table.fixed.md` dropped. Gate: `cargo build`,
+      `cargo test` (171 pass), `cargo clippy --all-targets -- -D warnings`, `check-docs.py`
+      (9/9), `check-client-names.py` and `check-ownership.py` on both branches all green.
+      **`cargo build --target x86_64-pc-windows-msvc` is red and was red before this unit** —
+      see `## Note` below.
+
+## Note — the Windows-target gate item is not runnable here
+
+`cargo build --target x86_64-pc-windows-msvc` fails in `hidapi`'s build script, which
+compiles `etc/hidapi/windows/hid.c` with the host `cc`; WSL has no MSVC C compiler or
+Windows SDK. Confirmed pre-existing by stashing this unit's diff and re-running on the
+untouched base — identical failure. Nothing here is `#[cfg]`-gated: the diff is doc
+comments and one `write!` format string, all compiled on every target, and the Linux
+build, tests and clippy cover them.
+
+Dropped as `inbox/core-windows-target-build-unrunnable-in-wsl.md`, because the fix is
+either build tooling or a `protocol.md` §10 wording change and neither is a worker's.
