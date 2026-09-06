@@ -1,6 +1,6 @@
 # 018 — check 17's fix line can green its own check, and its `bind-too-narrow` evidence cannot discriminate
 
-**State:** claimed by agent/umbrella/018-check-17-evidence, 2026-09-06 00:22
+**State:** done, agent/umbrella/018-check-17-evidence, 2026-09-06
 **Source:** `umbrella/017`'s reviewer, 2026-09-06, reviewing merge `80f4cb8` / `cbe8a5d`.
 Reported as observations rather than contradictions — decision 22(a) was rewritten in the same
 diff — and filed here by the supervisor, who merged 017 knowing about both.
@@ -78,13 +78,36 @@ bring it below 90% in your own commit and tick `009`'s `open.md` item, carrying 
 
 ## Done when
 
-- [ ] `bind-too-narrow` either has evidence that discriminates, or is a warn that does not
+- [x] `bind-too-narrow` either has evidence that discriminates, or is a warn that does not
       claim more than it saw — with the two rejected shapes argued against in the decision
       entry, not merely listed.
-- [ ] Its fix line can no longer green the check without changing anything, and the detail
+- [x] Its fix line can no longer green the check without changing anything, and the detail
       string does not say "only" about candidates never tried.
-- [ ] `embarch-umbrella/open.md`'s check-17 verification plan describes an experiment that can
+- [x] `embarch-umbrella/open.md`'s check-17 verification plan describes an experiment that can
       fail, and says which half of the debt each arm settles.
-- [ ] `embarch-umbrella/open.md` is out of reserve and `tasks/umbrella/009` is updated.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
+- [x] `embarch-umbrella/open.md` is out of reserve and `tasks/umbrella/009` is updated.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
       dropped.
+
+## What was done
+
+**Shape chosen: give the arm evidence.** `bind-too-narrow` now Fails only when the
+service registration is *also* narrow; a wide registration Passes
+`bind-matches-registered`, an unreadable one warns `bind-unproven` saying it never
+asked the route that matters. The `sc.exe qc` is spent on this path by a new pure
+predicate, `bind_registration_can_change_the_verdict`, so it still runs only where it
+can move the verdict. Argued against in [decision 22(a)](../../embarch-umbrella/decisions/doctor.md):
+*demote to a warn* surrenders the state the arm uniquely catches wherever one `sc.exe qc`
+would settle it; *probe the other candidates* is `embarch-topology`'s resolve contract
+(another sub-project) **and** is the weaker evidence — a failed gateway probe indicts
+Windows Firewall and a narrow bind indistinguishably.
+
+**Hardware-verification debt, unchanged in kind and now sharper in shape.** No branch has
+met a real narrow-bound Core. What must be run, and on what, is in
+[open.md](../../embarch-umbrella/open.md): a Core installed `--bind 127.0.0.1` on a
+`wsl-host` machine, stopped for `bound-narrow` and running for `bind-too-narrow`, with the
+wide-registration run as the control that must *not* Fail. **A `doctor` run that only
+observes the loopback hit settles neither half** — that was the defect.
+
+**Not done, and not mine:** `suite/user-guide.md`'s check-17 row does not know about
+`bind-unproven`; a `status.d/` fragment asks for it.

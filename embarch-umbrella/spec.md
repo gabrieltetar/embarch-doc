@@ -83,7 +83,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
 | 16 | `study_results/` entries and their bytes **at the directory it names**, and build directories per project — informational (decisions 26, 39) |
-| 17 | Core's bind address matches what this topology needs — the class `setup` recorded against the address `/status` was reached at, and against the service's own registered `--bind` when nothing answered at all (decision 22) |
+| 17 | Core's bind address matches what this topology needs — the class `setup` recorded against the address `/status` was reached at, and against the service's own registered `--bind`, which is the only evidence that tells a narrow bind from a wide one (decision 22) |
 | 18 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
 Checks 12, 15 and 16 never fail the run outright; **5, 11 and 17 do**, each only for the states its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.

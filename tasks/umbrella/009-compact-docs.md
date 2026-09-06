@@ -4,10 +4,10 @@
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** umbrella
 **Hardware:** none
-**Compacts:** embarch-umbrella/open.md, ~~embarch-umbrella/spec.md~~
-**Reserve:** `spec.md`'s reserve item was paid 2026-09-05 (`umbrella/006`, ride-along under `016`) and it is out at 87.6%. `open.md`'s was paid the same day and **`umbrella/017` put it straight back in** at 94.5% — see below. The pass is owed on both regardless.
-**In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
-**Must not delete:** spec.md's eighteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — decisions have described checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one; open.md's note that check 17's two Fail branches have never met a real narrow-bound Core.
+**Compacts:** embarch-umbrella/decisions/doctor.md, ~~embarch-umbrella/open.md~~, ~~embarch-umbrella/spec.md~~
+**Reserve:** `spec.md`'s item was paid 2026-09-05 (`umbrella/006`, ride-along under `016`); it is out at 87.9%. `open.md`'s was paid the same day, **`umbrella/017` put it straight back in** at 94.5%, and **`umbrella/018` paid it again as a ride-along, 2026-09-06 — 4,840 → 4,591 B (89.7%)**. **`decisions/doctor.md` took its place**: 10,634 → 11,674 B (95.0%) in the same unit, because check 17's `bind-too-narrow` arm needed both its defect and the two rejected repairs argued in decision 22(a). `018` compacted the retired 22(b) and 22(c) entries and a dozen sentences elsewhere in that file and still landed at **11,519 B (93.7%)**, so it is filed here rather than paid. The pass is owed on all three regardless.
+**In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md, and `decisions/doctor.md`'s check-17 entry is owed a live narrow-bound Core that will rewrite it again. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
+**Must not delete:** spec.md's eighteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — decisions have described checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one; open.md's note that check 17's two Fail branches have never met a real narrow-bound Core, **and which half of that debt each arm settles** (`018`); in `decisions/doctor.md`, decision 22(a)'s record that a loopback hit discriminates nothing and that the arm's first fix line could green its own check.
 
 **Counts refreshed by `umbrella/017`, 2026-09-05.** The table is now **eighteen rows**, and **one** decision is designed-and-unbuilt: `umbrella/017` built 22(a) as check 17 and retired 22(b) and 22(c) unbuilt, which deleted two rows outright, leaving only 26's `--prune`. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **eighteen rows / one unbuilt decision**, not the earlier nineteen/five, twenty/four, twenty/three or twenty/two.
 
@@ -56,7 +56,7 @@ rewrites a row of the table this task would be compacting.
 
 ## Done when
 
-- [ ] Both files out of reserve. `spec.md` is (8966 B, 87.6%, `umbrella/006` then `umbrella/017`); **`open.md` is not** — paid 2026-09-05 and put back by `umbrella/017` at 4840 B (94.5%). **The pass itself is still owed** and the rest of these boxes are open.
+- [ ] All three files out of reserve. `spec.md` is (9006 B, 87.9%) and **`open.md` is** (4591 B, 89.7%, paid by `umbrella/018`); **`decisions/doctor.md` is not** — 11,519 B, 93.7%, spent by `018`. **The pass itself is still owed** and the rest of these boxes are open.
 - [ ] The unbuilt/built distinction survives, per row.
 - [ ] No question disappears from `collect-open-questions.py` unless you can
       name it as answered.
