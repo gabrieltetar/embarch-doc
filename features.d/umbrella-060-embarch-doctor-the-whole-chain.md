@@ -1,1 +1,1 @@
-| `embarch doctor` — the whole chain, `--json` | Shipped — **more of it is unbuilt than the tail of the table**: checks 17–20 and `--prune`, now deferred rather than pending (decision 26) | local | §5, 18, 22, 26 |
+| `embarch doctor` — the whole chain, `--json` | Shipped, seventeen checks. **What is still unbuilt no longer sits in the tail of the table**: 22(b) firewall and 22(c) disk space are retired unbuilt (2026-09-05), the log-tail row is design-only, and `--prune` sits inside a shipping command, deferred rather than pending (decision 26) | local | §5, 18, 22, 26 |

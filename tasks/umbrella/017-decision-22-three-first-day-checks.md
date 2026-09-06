@@ -1,6 +1,6 @@
 # 017 — decision 22(a-c): three first-day `doctor` checks, designed and never built
 
-**State:** claimed by agent/umbrella/017-decision-22-three-first-day-checks, 2026-09-05 23:26
+**State:** done, 2026-09-05 (agent/umbrella/017-decision-22-three-first-day-checks)
 **Source:** `embarch-umbrella/open.md` — "Two designed pieces are confirmed unbuilt; open is
 whether each is still wanted. Decisions 22(a-c) and 27/29." Swept 2026-09-05 by leg 014 when
 the queue hit zero.
@@ -85,16 +85,81 @@ the file back in.
 
 ## Done when
 
-- [ ] Each of 22(a), 22(b), 22(c) is either built or retired, and the amendment is made
+- [x] Each of 22(a), 22(b), 22(c) is either built or retired, and the amendment is made
       **in the decision's heading as well as its body** — a heading that still promises three
       unbuilt checks under a body that retired two is the defect `umbrella/015` fixed.
-- [ ] Anything built has unit tests, including the disagreement case for (a) — a bind address
+- [x] Anything built has unit tests, including the disagreement case for (a) — a bind address
       that does not match what the topology needs must **fail**, not warn, and a test has to
       pin that.
-- [ ] `spec.md`'s `doctor` table reflects the new state per row, with the built/unbuilt
+- [x] `spec.md`'s `doctor` table reflects the new state per row, with the built/unbuilt
       distinction intact.
-- [ ] `embarch-umbrella/open.md`'s "Two designed pieces are confirmed unbuilt" bullet is
+- [x] `embarch-umbrella/open.md`'s "Two designed pieces are confirmed unbuilt" bullet is
       rewritten or deleted, with the 27/29 half settled against the actual workflow files.
-- [ ] `tasks/umbrella/009-compact-docs.md`'s row/decision counts updated if you changed them.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
+- [x] `tasks/umbrella/009-compact-docs.md`'s row/decision counts updated if you changed them.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment
       dropped, and a `features.d/umbrella-*` row for any check that now exists.
+
+## What shipped
+
+**22(a) built as `doctor` check 17.** `judge_bind_address` in `src/doctor.rs`,
+pure and fully unit-tested, plus `parse_sc_qc_bind_address` in `src/locate.rs`
+reading `--bind` off the same `sc.exe qc` line `locate_core` and `deploy-core`
+already parse. Seven new check-17 tests and four parser tests; 174 pass.
+
+**The comparison is not the one the entry sketched, and the entry now says
+why.** "The address `/status` was reached at versus what the detected topology
+needs" is tautological as written: check 3's class *is* derived from whichever
+candidate answered, so the winner always agrees with itself. The independent
+half is **the class `setup` recorded in machine state**; with none recorded the
+check warns `no-recorded-class` rather than passing vacuously.
+
+**And the failure the decision names is mostly invisible from the reachable
+side**, which is why the check reads the service registration. A Core that
+answered has already proved its bind covers that route; the narrow-bind failure
+shows up as *nothing answering anywhere*, and the registration is what tells
+"Core is down" from "Core is up and bound where you cannot reach it". So there
+are two Fails on different evidence — `bind-too-narrow` (reached at loopback,
+recorded class needs `0.0.0.0`) and `bound-narrow` (nothing reachable,
+registered `--bind 127.0.0.1`) — and a `bind-not-the-cause` warn, which is the
+useful negative.
+
+**One carve-out, recorded with its losing argument:** bound *wider* than the
+recorded class needs warns, it does not fail. That machine works, and a red
+`doctor` where nothing is broken is the failure this chain exists to avoid.
+
+**22(b) and 22(c) retired unbuilt**, each with the argument against building it
+in the entry. (b): permanently amber on this topology by its own admission, no
+actionable fix line, and (a) now answers the same question with a cause instead
+of a suspicion. (c): `std` has no free-space API, so it costs a dependency or a
+per-platform shell-out in a crate explicit about what it refuses to link, and
+check 16 already measures what actually grows here.
+
+**27/29 was stale and is settled.** All four release workflows —
+`embarch-umbrella`, `embarch-core`, `embarch-api`, `embarch-topology` — carry a
+`verify-version` job that the `build` matrix `needs:`. Read from the files, not
+inferred. That half is deleted from the `open.md` bullet.
+
+## Hardware-verification debt
+
+**Check 17 has never met a real narrow-bound Core.** This bench's service is
+registered `--bind 0.0.0.0`, so the check passes here by agreement rather than
+by discriminating anything; both Fail branches and the `bind-wider-than-needed`
+warn are unit-tested against synthetic evidence only. Settling it needs a Core
+deliberately installed `--bind 127.0.0.1` on a `wsl-host` machine: `embarch
+doctor --json` should show check 17 `bound-narrow` with nothing reachable, then
+`bind-too-narrow` from a `doctor` run on the Windows side, which can still reach
+loopback. Filed as an `open.md` bullet, not only here.
+
+## Reserve
+
+`spec.md` **went down**, 9014 → 8966 B (87.6%), because retiring 22(b-c) deleted
+two table rows. `open.md` **went into reserve**, 4509 → 4840 B (94.5%): the
+27/29 half of the old bullet was deleted, but the check-17 verification debt
+above is a new open question that has to live somewhere. Per this task's
+instruction that is filed by updating `tasks/umbrella/009-compact-docs.md`
+rather than filing a second task — its `Compacts:` line now names `open.md` as
+an unpaid item (the strikethrough was what `check-doc-size.py` could not see),
+its counts are refreshed to **eighteen rows / one unbuilt decision**, and it
+says `umbrella/017` is what put the file back in. `decisions/doctor.md` ended at
+10,634 B (86.5%) after a deliberate second pass — the first draft of the
+amendment put it at 95.6%.

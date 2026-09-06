@@ -4,13 +4,16 @@
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** umbrella
 **Hardware:** none
-**Compacts:** ~~embarch-umbrella/spec.md~~ (paid 2026-09-05, `umbrella/006`), ~~embarch-umbrella/open.md~~ (paid 2026-09-05)
+**Compacts:** embarch-umbrella/open.md, ~~embarch-umbrella/spec.md~~
+**Reserve:** `spec.md`'s reserve item was paid 2026-09-05 (`umbrella/006`, ride-along under `016`) and it is out at 87.6%. `open.md`'s was paid the same day and **`umbrella/017` put it straight back in** at 94.5% — see below. The pass is owed on both regardless.
 **In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
-**Must not delete:** spec.md's twenty-row `doctor` table, and in particular which rows are **designed and unbuilt** — four decisions describe checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one.
+**Must not delete:** spec.md's eighteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — decisions have described checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one; open.md's note that check 17's two Fail branches have never met a real narrow-bound Core.
 
-**Counts refreshed by `umbrella/007`, 2026-09-05.** The table is still **twenty rows**, and **two** decisions are designed-and-unbuilt: `umbrella/006` built decision 18 (check 5's Fail branch) and `umbrella/007` built decision 17's amendment (check 8's shell-out), leaving 22(a-c) and 26's `--prune`. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **twenty rows / two unbuilt decisions**, not the earlier nineteen/five, twenty/four or twenty/three.
+**Counts refreshed by `umbrella/017`, 2026-09-05.** The table is now **eighteen rows**, and **one** decision is designed-and-unbuilt: `umbrella/017` built 22(a) as check 17 and retired 22(b) and 22(c) unbuilt, which deleted two rows outright, leaving only 26's `--prune`. A `Must not delete:` clause that preserves a table *by a count* is worse than useless once the count is stale, so whoever runs this task protects **eighteen rows / one unbuilt decision**, not the earlier nineteen/five, twenty/four, twenty/three or twenty/two.
 
-**Both files are out of reserve, so the urgency is gone and only the pass is left.** `open.md` 5051 → 4509 B (88.1%) across three units, `spec.md` 10089 → 9014 B (88.0%) across `umbrella/006` and `umbrella/007`. This task stays `blocked` on `In flux: yes`, which is still true.
+**`open.md` is back in reserve, and `umbrella/017` is what put it there.** That unit resolved decision 22 — built (a) as check 17, retired (b) and (c) — which closed the "two designed pieces are confirmed unbuilt" bullet but opened a new one: check 17's two Fail branches have never met a real narrow-bound Core, and that debt has to be written down somewhere. `open.md` 4509 → **4840 B (94.5%)**; `spec.md` went the other way, 9014 → **8966 B (87.6%)**, because retiring 22(b-c) deleted two table rows. Filed here rather than as a second task, per `tasks/README.md`.
+
+This task stays `blocked` on `In flux: yes`, which is still true.
 
 ## What
 
@@ -53,7 +56,7 @@ rewrites a row of the table this task would be compacting.
 
 ## Done when
 
-- [x] Both files out of reserve — `open.md` 2026-09-05 (owner), `spec.md` 2026-09-05 (`umbrella/006`). **This is the reserve item only; the pass itself is still owed** and the rest of these boxes are open.
+- [ ] Both files out of reserve. `spec.md` is (8966 B, 87.6%, `umbrella/006` then `umbrella/017`); **`open.md` is not** — paid 2026-09-05 and put back by `umbrella/017` at 4840 B (94.5%). **The pass itself is still owed** and the rest of these boxes are open.
 - [ ] The unbuilt/built distinction survives, per row.
 - [ ] No question disappears from `collect-open-questions.py` unless you can
       name it as answered.

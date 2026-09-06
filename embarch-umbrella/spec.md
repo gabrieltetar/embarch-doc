@@ -83,16 +83,14 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
 | 16 | `study_results/` entries and their bytes **at the directory it names**, and build directories per project — informational (decisions 26, 39) |
-| 17 | Core's bind address matches what the detected topology needs — **design-only** |
-| 18 | Firewall state, best-effort, informational — **design-only** |
-| 19 | Free disk space behind the build and results directories — **design-only** |
-| 20 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
+| 17 | Core's bind address matches what this topology needs — the class `setup` recorded against the address `/status` was reached at, and against the service's own registered `--bind` when nothing answered at all (decision 22) |
+| 18 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
-Checks 12, 15 and 16 never fail the run outright; **5 and 11 do**, each only for the one state its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.
+Checks 12, 15 and 16 never fail the run outright; **5, 11 and 17 do**, each only for the states its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 17-20 are designed and unbuilt; their numbers move if something is built before them.
+Numbers 1-17 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14, 17), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 18 is designed and unbuilt; its number moves if something is built before it.
 
-**Designed-and-unbuilt is not only a tail of the table**: decision 22 and 26's `--prune` half each sit *inside* a shipping command or check, marked above where it lives. [open.md](open.md) carries whether each is still wanted.
+**Designed-and-unbuilt is not only the tail of the table**: 26's `--prune` half sits *inside* a shipping command, marked above where it lives. [open.md](open.md) carries whether it is still wanted.
 
 ## Token handling
 

@@ -8,7 +8,9 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 15 catches a *cross-version* stale deploy, not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so a rebuild-and-failed-deploy at the same version reads as a match. Better than nothing — `deploy-core` has reported `landed` with nothing installed, its own check comparing byte length — but **it is not a hash comparison and must not be read as one.** A content hash on `/status` would close it, and that is `embarch-core`'s call.
 
-- **Two designed pieces are confirmed unbuilt; open is whether each is still wanted.** Decisions 22(a-c) and 27/29. 17's amendment shipped 2026-09-05, so 26's `--prune` is deferred by choice; it still needs `build_dir_name` in `embarch-api`'s listing. **Check 16's first live number argues for it:** `study_results/` is **809 MiB across 50 entries**, and the sweep bounds the count, not the size.
+- **Decision 26's `--prune` is the last designed-and-unbuilt piece here, and it is deferred by choice** — it still needs `build_dir_name` in `embarch-api`'s listing. **Check 16's first live number argues for it:** `study_results/` is **809 MiB across 50 entries**, and the sweep bounds the count, not the size.
+
+- **Check 17's two Fail branches have never met a real narrow-bound Core** ([decision 22](decisions/doctor.md)) — this bench registers `--bind 0.0.0.0`, so the check agrees rather than discriminates. Settling it needs a Core installed `--bind 127.0.0.1` on a `wsl-host` machine: `bound-narrow` with nothing reachable, then `bind-too-narrow` from a `doctor` run on the Windows side, which still reaches loopback.
 
 - **Check 8's shell-out has never run against a real `embarch-api`.** Unit-tested against injected exit codes and stdout only; the argument order and the `{success, targets}` shape are read off `embarch-api`'s source, not observed. **Predicted here: a warn**, `embarch-api not located`, since check 1 does not find it on this machine. One `embarch doctor --json` settles it.
 
