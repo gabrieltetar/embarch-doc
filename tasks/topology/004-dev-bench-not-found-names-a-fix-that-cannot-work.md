@@ -28,8 +28,29 @@ This is the exact failure decision 20 records — a stale declared link serial "
 to a port that cannot exist" — and the message currently routes that operator to a command that
 preserves the stale fact.
 
+## Measured on the bench, 2026-09-06 (leg 020, `tasks/topology/006`)
+
+There is a **fourth** case, and it is the one a fleet leg hits every time. Run from WSL with the
+board attached and working, `embarch-topology dev-bench` printed:
+
+    Error: no embarch-dev-bench serial port found (0 serial port(s) visible, 0 with a
+    recognized link VID ...) — check dev-bench's USB connection
+
+The USB connection was fine. The ports are on the **Windows host**, where the real Core runs;
+this process was on neither. **`0 serial port(s) visible` is the tell and the message does not
+use it** — zero ports on a developer machine means the enumerator is on the wrong host far more
+often than it means every cable fell out.
+
+**The same binary already knows this.** `embarch-topology status`, on that box, in the same
+second, resolved Core as `http://172.22.128.1:4884 (wsl-host)` and reported
+`Core { authorized: false }`. So the machine has established it is the remote half of a split
+setup at the moment its sibling command blames the cable. The `usbipd attach` parenthetical is
+in the message, but it trails a sentence that has already sent the reader to the hardware.
+
 ## Done when
 
+- [ ] The zero-ports-visible case names the split-host possibility **first**, not as a
+      parenthetical, and says what `status` would show — it is already computable.
 - [ ] `NotFound` gains a field naming the excluding rule, set at each narrowing site in `select`.
 - [ ] `Display` prints the matching remedy per rule; the existing wording stays for the
       role-fallback case.

@@ -58,7 +58,7 @@ Everything else is detected live. These four cannot be:
 |---|---|
 | **Which board is enrolled as which role** | No software can derive which physical board a probe is wired to — only a person physically isolating it and saying so |
 | **A link port's own USB serial** | The link can be a different physical USB device from the JTAG probe, and **no identity readback is possible over a plain UART** |
-| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
+| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** [confirmed live 2026-09-06 — see below] |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 
 Storage is one file under a machine-wide directory this crate owns. A store predating any of the later facts still loads.
@@ -68,6 +68,12 @@ Storage is one file under a machine-wide directory this crate owns. A store pred
 **A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**, so the caller can say out loud that one board replaced another. Two rows claiming one role would have left the by-role lookup answering with whichever came first in the file — **on this bench, the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist.**
 
 **A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — the guess is kept, because every bench with one VCOM needs to declare nothing, **but it is a guess that says so.**
+
+**The declared *interface* was exercised live on 2026-09-06, with two probes attached, and it was load-bearing.** The host had **three** SEGGER CDC UART ports visible [measured 2026-09-06, `Win32_PnPEntity` on the Core host]: `COM16` (`VID_1366&PID_1069&MI_00`) and `COM17` (`…&MI_02`) on **one** device instance, therefore one probe serial, plus `COM5` on the other J-Link. Resolution returned `COM17`, `interface` 2, **and no `guessed_among`**. `COM5` was eliminated by serial — but **by the decision 17 *fallback*, not by a declared one: this bench declares no `link_port_serial`**, so that narrowing ran on `probe_serial` with `serial_is_fallback` set. **The declared-serial path therefore still has no hardware evidence**, which is worth stating precisely because decision 17 exists to separate the two.
+
+**Only the declared interface separates `COM16` from `COM17`**, which differ in nothing else a detector can read. Traced against `select`: with the interface removed, `one_probe && interfaces_known` both still hold, so resolution does not bail — it warns, sorts by interface, takes `candidates[0]` = `COM16`, **and sets `guessed_among = Some(2)`**. That is the wrong port, reported as a guess, and it fails the way this crate exists to prevent: a bench that flashes, boots, runs and times out.
+
+**The corollary is the opposite of what a crowded bench suggests: adding probes cannot produce a guess while an interface is declared.** `guessed_among`'s trigger is an *under-declared* bench, not a busy one — so exercising the field takes a deliberate omission, not another board. Nothing here has yet observed it set.
 
 ## What validation asserts, and what it cannot
 
