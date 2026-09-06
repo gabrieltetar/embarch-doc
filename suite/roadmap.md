@@ -79,6 +79,7 @@ Three pieces landed alongside it, none optional: the **dev-bench bypass** became
 - **macOS validation.** Shipped reasoned-only, with no machine to test on; validating it means a Mac-only engineer walking the user guide.
 - **Power profiling** — milestone 4 above, deferred by explicit decision. **Resuming it is what unblocks four open questions.**
 - **`embarch-atlas`** — static analysis and graph visualization of a firmware codebase, for agents and engineers. Paused, no repo.
+- **Adopting `rustfmt`** — deferred by explicit decision 2026-09-06, **on sequencing**: the check that would keep it true lives in [the protocol](../../embarch-fleet/protocol.md) §10 and is the owner's, and formatting first decays immediately. Measured cost, and the reversal condition that fires the moment the check exists: [embarch.md](../embarch.md) §5.
 
 ## Release
 

@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Decided
+- rustfmt is not enforced and nobody runs cargo fmt: 81 files / 1,881 lines across six crates, and it decays without a check only protocol §10 can carry. embarch.md §5 has the reversal condition.
+## 2026-09
+
 ### Changed
 - Core's on-disk result layout moved from spec.md §5 to interfaces.md, beside the routes that serve it; study-designer's citation follows.
 ## 2026-09
