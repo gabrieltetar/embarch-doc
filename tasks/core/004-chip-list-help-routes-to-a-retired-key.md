@@ -1,6 +1,6 @@
 # 004 — `chip-list --help` routes the operator into a key that now fails config load
 
-**State:** open
+**State:** claimed by agent/core/004-chip-list-help-routes-to-a-retired-key, 2026-09-05 23:56
 **Source:** `api/017`'s reviewer, 2026-09-05, reviewing merge `4ef324f` / `495a7bf`. Not a
 contradiction — help text is not a decision — so it was reported rather than dropped in
 `inbox/`, and filed here by the supervisor.
