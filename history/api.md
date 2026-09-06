@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- open.md stops reading as unaddressed: `init`'s no-inference refusal shipped (`embarch-umbrella` 41) and check 11 reads `versions` now (33/36, 42).
+## 2026-09
+
 ### Changed
 - `crates/embarch-core-client` is a workspace member, so the root gate lints and runs its own 28 tests: [decision 56](../embarch-api/decisions/tests.md).
 ## 2026-09

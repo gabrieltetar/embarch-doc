@@ -60,4 +60,4 @@ This crate compiles in `embarch-study-designer`'s `HOST_TYPE_SCHEMA_VERSION` and
 
 **CLI-only, no MCP twin.** [spec.md](../spec.md) §1 guarantees CLI ⊇ MCP — a human can do anything an agent can — which a CLI-only diagnostic leaves intact. The consumer is a process shelling out, and an agent submitting a study already learns of a mismatch from the refusal, when it matters.
 
-*Not verified:* nothing reads this surface yet. Pointing check 11 at it is `embarch-umbrella`'s, and until that lands the check still compares its own constant.
+*Read since 2026-09-04:* `embarch-umbrella` check 11 shells out to it (its 33, 35, 36); that binary's own constant is now warn-only. No live `doctor` run yet — umbrella's debt.
