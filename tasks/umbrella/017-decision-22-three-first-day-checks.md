@@ -1,6 +1,6 @@
 # 017 — decision 22(a-c): three first-day `doctor` checks, designed and never built
 
-**State:** open
+**State:** claimed by agent/umbrella/017-decision-22-three-first-day-checks, 2026-09-05 23:26
 **Source:** `embarch-umbrella/open.md` — "Two designed pieces are confirmed unbuilt; open is
 whether each is still wanted. Decisions 22(a-c) and 27/29." Swept 2026-09-05 by leg 014 when
 the queue hit zero.
