@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `doctor` check 1 finds the Windows service's own Core on `wsl-host` instead of failing, so check 14 runs there: [decision 38](../embarch-umbrella/decisions/topology.md).
+## 2026-09
+
 ### Added
 - `doctor` check 5 fails on a Linux probe that is attached but not permitted, instead of calling it unplugged: [decision 18](../embarch-umbrella/decisions/doctor.md).
 
