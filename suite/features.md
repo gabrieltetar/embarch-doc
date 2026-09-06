@@ -19,7 +19,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `GET /dev-bench/port` — link auto-detection by vendor VID plus product/serial/interface, and its CLI | Shipped | hw | 21 |
 | `POST /resolve-chip` — Zephyr SoC name → probe-rs target, validated against probe-rs's own registry | Shipped | local | 8 |
 | `embarch-core chip-list` — enumerate the target database, no hardware needed | Shipped | local | 34 |
-| Bearer-token auth on every endpoint | Shipped | hw | §4 |
+| Bearer-token auth on every endpoint | Shipped — all 26 routes asserted `401` with no token and with a wrong one, from a route list derived from `build_router`'s own source (decision 42) | hw | §4 |
 | `hw_lock` — serializes all hardware access | Shipped | unit | 4 |
 | Cross-platform service install and control | Shipped — **all four need elevation on every OS, not just Windows** | hw | 3 |
 | `start`/`stop` CLI subcommands | Shipped — smoke-tested on Linux only | hw | 3 |
