@@ -1,6 +1,6 @@
 # Bring `interfaces/wire.md` up to what the firmware actually puts on the wire
 
-**State:** claimed by leg 023, 2026-09-06 — `agent/outpost/007-wire-md-behind-firmware`
+**State:** done, 2026-09-06 (leg 023) — `agent/outpost/007-wire-md-behind-firmware`
 **Source:** owner's repo survey, 2026-09-06 — `wire.md` calls itself the spec three implementations must agree on, and its header field order is wrong
 **Scope:** outpost
 **Hardware:** none
@@ -63,10 +63,44 @@ mis-decodes every stream.
 
 ## Done when
 
-- [ ] The header frame's field list in `wire.md` matches `src/outpost.c:241-266` field for field.
-- [ ] Kinds 9 and 10 and flag bit 6 appear in `wire.md`, with the exit-marker warning carried across.
-- [ ] `integration.md`'s table lists every `config EMBARCH_OUTPOST_*` symbol in `Kconfig`.
-- [ ] No decision number is renumbered, and `scripts/check-decision-refs.py` still resolves.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] The header frame's field list in `wire.md` matches `src/outpost.c:241-266` field for field.
+- [x] Kinds 9 and 10 and flag bit 6 appear in `wire.md`, with the exit-marker warning carried across.
+- [x] `integration.md`'s table lists every `config EMBARCH_OUTPOST_*` symbol in `Kconfig`.
+- [x] No decision number is renumbered, and `scripts/check-decision-refs.py` still resolves.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## What the worker found (2026-09-06)
+
+**Every citation above held.** `src/outpost.c:251` writes the `cycles_per_sec`
+varint between `flags` and `outpost_version`; `outpost_priv.h:141`/`:152` define
+kinds 9 and 10; `:170` defines `OUTPOST_FLAG_TRACE_GPIO = BIT(6)`; `Kconfig:134`
+and `:226` are `..._TRACE_GPIO` and `..._TX_TIMEOUT_MS`. `scripts/decode_outpost.py`
+(lines 139-151) reads the header in exactly that order and its 20 stdlib tests
+pass, so decoder and firmware agree and only the doc was behind.
+
+**Three unqualified statements in `wire.md` had a branch under them** and are now
+qualified: the header repeats every `..._HEADER_INTERVAL_MS` *except at `0`*,
+where it is emitted once at startup and never again; `cycles_per_sec` is read at
+runtime *because* the Kconfig is legitimately `0` on some targets, and a host
+receiving `0` must leave `us` empty rather than guess; and appending a record
+kind deliberately does **not** bump the layout version.
+
+**`integration.md` also named three symbols wrongly**, not just incompletely:
+`_STACK_SIZE`/`_WAIT_MS` and `_ISRS`/`_IDLE`/`_MARKERS` are abbreviations that do
+not expand to real symbols. All 21 `config EMBARCH_OUTPOST*` symbols now appear
+verbatim.
+
+**Correction for the next leg's reserve section:** `embarch-outpost`'s
+`decisions/<topic>.md` cap is **tightened to 8 KB**, not the default 12
+(`scripts/check-doc-size.py` `TIGHTENED`). `decisions/tracing.md` sits at
+**7299 / 8192 B — 89.1%, 893 B from its cap and one paragraph from reserve.**
+This unit drafted a decision 22 for the GPIO family, measured it at ~1.5 KB, and
+**dropped it** rather than push that file over; the reasoning went into
+`wire.md` and `integration.md`, which have room. **The GPIO family therefore
+still has no numbered decision** — a real gap in a shipped capability, and the
+next outpost decisions task should take it together with the compaction.
+
+No code change: the divergence was entirely doc-side, so
+`agent/outpost/007-wire-md-behind-firmware` in the code repo carries no commits.

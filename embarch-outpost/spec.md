@@ -19,7 +19,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **TX-only.** The DUT talks; nothing talks back. No host commands, no runtime enable, no acknowledgement of any kind. The frame type is the field a later command channel is added to, rather than a reshape.
 - **Study-scoped, rendered post-hoc.** No always-on mode and **no live feed** — settled against this work's own opening framing, which asked for realtime.
 - **Zephyr only.** No vendor-neutral porting layer is being designed up front.
-- **No power, no GPIO, no stimulus.** The outpost observes its own MCU. It does not sample, drive, or measure anything else.
+- **No power, no pin sampling, no stimulus.** The outpost observes its own MCU. A GPIO record names the *handler* that ran, never a pin's level.
 
 **It is not** a production feature, a logging library (a DUT console is a legitimate *second* signal under the same routing model, not this one), or a replacement for a debugger or an ETM probe. It is deliberately the wire-thin version: one UART pin, no probe bandwidth, no vendor tool.
 

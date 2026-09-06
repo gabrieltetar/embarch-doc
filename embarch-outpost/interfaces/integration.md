@@ -21,13 +21,15 @@ Kconfig in the consuming project, plus **one devicetree `chosen` node** naming t
 | `..._RING_BYTES` | `4096` | [measured 2026-08-27] **the burst knob.** 512 slots lost 6962 records across 48 gaps under a real study load; 2048 slots lost 8036 across 5 — the ring absorbed 43 of 48 overflow events. Divided by the 20-byte slot size |
 | `..._BATCH_BYTES` | `256` | [assumed] Bytes the drain thread accumulates before a transmit. **Bigger is strictly better on this wire** since layout 3 — frame size no longer affects resolution at all |
 | `..._FILL_WAIT_MS` | `10` | [measured 2026-08-27] **the latency knob.** Frames had settled at 3.3 records, making ~20% of the link framing overhead; after the wait, 20.2 records per frame and the duty cycle 94% → 37% |
-| `..._THREAD_PRIORITY` / `_STACK_SIZE` / `_WAIT_MS` | low / `1024` / `100` | [assumed] | The drain thread |
-| `..._TRACE_THREADS` / `_ISRS` / `_IDLE` / `_MARKERS` | `y` | [assumed] | Which hook families emit at all. Reported in the header `flags` |
+| `..._THREAD_PRIORITY` / `..._THREAD_STACK_SIZE` / `..._THREAD_WAIT_MS` | `10` (low, numerically high) / `1024` / `100` | [assumed] | The drain thread |
+| `..._TRACE_THREADS` / `..._TRACE_ISRS` / `..._TRACE_IDLE` / `..._TRACE_MARKERS` | `y` | [assumed] | Which hook families emit at all. Reported in the header `flags` |
+| `..._TRACE_GPIO` | `y` | [assumed] | Record which GPIO callback handler ran inside a GPIOTE interrupt and when it returned — the ISR records name the vector, these name the handler. **`n` removes no call from the image**: `gpio_fire_callbacks()` makes them whenever `CONFIG_TRACING` is on and without this they land in Zephyr's empty `__weak` definitions. What `n` saves is the records, which is the part that costs wire. Reported in the header `flags` |
 | `..._TRACE_SELF` | **`n`** | [measured 2026-08-27] **50.4% of the reference capture was the instrument describing its own transmission.** `y` is the honest-but-expensive setting, and exactly right when the thing being debugged *is* the outpost |
 | `..._ISR_IDENTIFY` | `y` on Cortex-M | n/a (capability) | Read the active vector number in the hook. `depends on` the absence of a custom interrupt controller, so such a build degrades rather than reporting a plausible wrong number |
 | `..._OVERFLOW_BLOCK` | `n` | n/a (policy) | Opt into blocking instead of dropping, for a deliberate high-fidelity run |
 | `..._HEADER_INTERVAL_MS` | `1000` | [assumed] | How often the header repeats, so a host attaching late can still decode |
 | `..._UART_ASYNC` | `y` where the driver supports it | n/a (capability) | `uart_tx()` versus a polling fallback. **The fallback exists so such a port still produces a stream, not because it is fine** |
+| `..._TX_TIMEOUT_MS` | `1000` | [assumed] | `depends on ..._UART_ASYNC`. **A stuck-transport backstop, not a pacing knob:** it must comfortably exceed one framed batch's wire time, ~275 ms for the 256-byte default at 9600 and proportionally less above it. On expiry the transfer aborts, that frame is dropped, and the drain thread carries on — the alternative is an unbounded wait, which on a build with no console fails as a trace that silently stops |
 | `..._MARKER_HEADER` | `""` | n/a (per-application) | The header declaring this application's marker list |
 | `..._BUILD_ID_MAX` | `64` | [assumed] | Longest build-ID string the header carries |
 
