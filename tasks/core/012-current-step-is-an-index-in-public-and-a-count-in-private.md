@@ -1,6 +1,6 @@
 # 012 — `current_step` is a 0-based index on the API and a count internally, set two lines apart
 
-**State:** claimed by leg 023, 2026-09-06 — `agent/core/012-current-step-semantics`
+**State:** done, agent/core/012-current-step-semantics, 2026-09-06
 **Source:** observed live by the supervisor running `tasks/api/029`'s study, 2026-09-06
 **Scope:** core
 **Hardware:** none
@@ -70,15 +70,61 @@ satisfy the documented contract and a client picks whichever it guesses.
 
 ## Done when
 
-- [ ] The public `current_step` has one stated meaning, written into
+- [x] The public `current_step` has one stated meaning, written into
       `embarch-core/interfaces.md`'s row rather than left to the reader.
-- [ ] Whichever convention is chosen, a completed study and a running one are
+- [x] Whichever convention is chosen, a completed study and a running one are
       both checked against it — the off-by-one is invisible mid-run and only
       shows at completion.
-- [ ] The internal capture counter is either renamed or commented so the next
+- [x] The internal capture counter is either renamed or commented so the next
       reader of that block does not have to re-derive which is which.
-- [ ] Decide explicitly whether changing the public field is a breaking change
+- [x] Decide explicitly whether changing the public field is a breaking change
       for `embarch-ui` and the shared Core client, and say so; if it is,
       **document the current meaning instead of changing it** — this is a
       progress indicator, not a correctness property.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+**The public field's meaning was documented, not changed** — Done-when item 4
+decided that way on evidence, not preference. Two live consumers read it:
+`embarch-ui/assets/app.js` renders `(current_step + 1) + "/" + total_steps` in
+the run badge, and `embarch-core-client`'s `study_events.rs` keys its poll
+de-duplication on `(status, current_step)`. Three more surfaces print it
+verbatim — the MCP `study_status` tool, `embarch study status`, and that CLI's
+table column. Renumbering it in Core alone is a cross-repo wire change to a
+progress indicator with no version to hang it on, so `interfaces.md` now states
+the meaning instead: **the 0-based index of the last step that *finished***,
+absent until one has, `total_steps - 1` on a completed run.
+
+Shipped:
+
+- `embarch-core/interfaces.md`'s `GET /study/{id}` row states the semantics the
+  row previously omitted entirely — which is why neither convention could be
+  contradicted by a test or a reader.
+- `decisions.md` decision 43 (in `decisions/studies.md`), with the two rejected
+  alternatives: renumbering the public field, and renaming it
+  `last_completed_step` when it is serialized straight to the wire.
+- `src/study.rs`: the private counter is **renamed** `Capture::open_step_index`
+  — value and behaviour untouched, as required — and its doc says it is one
+  *more* than the public field and why (a signal tap's `StreamScope` must name
+  the step being captured now).
+- The two adjacent lines became one function, `advance_step_counters`, whose doc
+  derives both conventions in one place; a test pins them **mid-run and at
+  completion**, including the serialized `StudyJobResponse`, because the
+  difference is invisible until the last step lands.
+
+**Found out of scope, dropped in `inbox/` rather than fixed:**
+`embarch-ui`'s badge `+1` was written for the count convention, so it is one
+short at every moment a step is in flight — nothing while step 1 runs, then
+`1/2` for the whole of step 2. `inbox/ui-study-progress-badge-is-one-step-short.md`.
+
+**Doc-size debt:** decision 43 pushed `decisions/studies.md` to 11,176 / 12,288 B
+(91.0%), into reserve. `tasks/core/014-compact-core.md` is filed in this commit,
+`In flux: no`, with decision 40's occurrence counts on the do-not-paraphrase
+list. No `features.d/` row: a documented meaning for an existing field is not a
+new capability, per this task's reserve section.
+
+**Gate:** `cargo build`, `cargo test` (162 passed), `cargo clippy --all-targets
+-- -D warnings`, `scripts/check-docs.py` (9/9), `check-client-names.py` against
+the code worktree, and `check-ownership.py` both sides — all green. No hardware
+touched; the live observation was taken as given and reasoned from source.

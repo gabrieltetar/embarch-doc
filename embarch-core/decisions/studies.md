@@ -32,6 +32,15 @@ The deadline ignored the field while dev-bench honours it by sleeping *before* t
 
 **`StudyDone { completed: false }` was reported as `"completed"`**, so a run that died at step 5 of 11 came back clean. A study that stops early now fails and names the step **in that step's own words**, because dev-bench sends the diagnosis exactly once. Two smaller findings: the shortfall arithmetic was out by one and **the wrong number had become the name of a bug** — corrected, the occurrences read 13/15/17/17/13/17, which is what a crash with variable timing produces and what a buffer boundary does not; and bytes that never formed a frame were invisible, which was exactly the evidence that mattered, since the bench's console *is* this UART and a timeout reported "no message received" while holding 699 bytes of boot banner.
 
+### 43 — `current_step` is documented, not renumbered: it is the last step that *finished*
+A completed two-step study reported `current_step: 1, total_steps: 2` with both steps `Pass` (observed live, study `3785bd198cc3a62d…`). A run kept **two step counters with the same name and opposite conventions, set on adjacent lines**: the capture's, a count of steps finished, which is what a signal tap's `StreamScope` needs; and the job's, the 0-based index of the last step that finished, which is the one that reaches `GET /study/{id}` and every client. Neither is wrong for its own job; sharing a name is.
+
+**The public one keeps its numbering.** `embarch-ui` already renders `current_step + 1` and the shared Core client keys its poll de-duplication on the value, so changing it is a cross-repo wire change to a *progress indicator* — not a correctness property, and not worth breaking a renderer that a one-line doc fixes instead. Its meaning is now stated in [interfaces.md](../interfaces.md) rather than left for a caller to guess, which is why nothing caught this: the row listed `current_step?` with no semantics, so both conventions satisfied the documented contract.
+
+*Consequences:* the private counter is renamed `open_step_index` and says in its own doc that it is one *more* than the public field; both are derived in one function, `advance_step_counters`, which a test pins **mid-run and at completion** — the difference is invisible until the last step lands, which is why the live report was the first sighting. **The `+1` in `embarch-ui`'s badge was written for the count convention and is therefore one short mid-run against the index convention** — a real defect, in a repo this decision does not own; filed for its owner rather than fixed here.
+
+*Declined:* renumbering the public field to match the capture (fixes `embarch-ui` for free, but silently changes a value three other surfaces already print — the MCP `study_status` tool, the `embarch study status` CLI and its table column — with no version to hang the change on); and renaming the job field to `last_completed_step`, which is the honest name but is serialized straight to the wire.
+
 ---
 
 
