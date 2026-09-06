@@ -1,6 +1,6 @@
 # 020 — check 17's remaining two holes, and decision 37's example list is stale
 
-**State:** open
+**State:** claimed — leg 016, `agent/umbrella/020-check-17-holes`
 **Source:** `umbrella/018`'s reviewer, 2026-09-06, reviewing merge `5f978e7` / `c793301`.
 All three reported as observations rather than contradictions — the reviewer returned **no
 findings** — and filed here by the supervisor, who merged `018` knowing about them. Each was
@@ -12,6 +12,15 @@ reviewer's own reads.
 here is code or docs. Item 3 asks you to **record** a hardware-owed assumption in `open.md`,
 not to answer it; answering it needs a board and is not part of this task.
 **Owner:** no
+
+**Do not run `cargo fmt`** (leg 016). No repo in this suite is `rustfmt`-clean and the gate has
+never asked; in `embarch-umbrella` it rewrites ~209 files outside your task, and
+`check-ownership.py` will not stop you because in a code repo you own the whole tree. The
+suite's posture is `tasks/suite/006`, announced and parked on a window this leg.
+
+**Note on the reserve section below:** it was written before `umbrella/019` landed. That unit
+was test-module-only and wrote **no** `decisions/doctor.md`, so the file is unchanged at
+**11,519 / 12,288 B (93.7%)** and the ride-along described there is still exactly yours.
 
 ## 1. `bound-narrow`'s `setup` fix line has the same hole `018` just closed in `bind-too-narrow`
 
