@@ -67,8 +67,27 @@ is a treadmill, which is the signal that the cap is being applied to the wrong a
 
 - [ ] `embarch-decision-reversals.md` is back under its 9,216 B reserve line, with every
       shape number and citation still findable by search.
-- [ ] `suite/features.md` has an answer that is not "compact it": either the cap moves, the
+- [x] `suite/features.md` has an answer that is not "compact it": either the cap moves, the
       inventory splits, or the fragments shrink. **Whichever it is, it is a decision, and
       recording it is the point** — otherwise this task is refiled every few folds forever.
+      **Answered by `tasks/suite/005` on 2026-09-06, and the answer is that the third move is
+      real but small.** The fragments shrank — twelve Status columns, 20,076 → 19,142 B — and
+      the decision is recorded in [features.d/README.md](../../features.d/README.md), "What
+      trimming the fragments actually buys". **The file is still in reserve at 93.5% and the
+      reserve line was not reachable this way**, which is the measured version of what that
+      README already claimed: the budget is spent on rows and no compaction pass can help.
+      **So this line stays ticked even though the file is still listed** — the task asked for
+      a decision, not a percentage, and refiling a fragment pass every few folds is the
+      treadmill this task exists to stop. **The cap-and-split half is now the only half of
+      `features.md` left, and it is the item directly below.**
+- [ ] **`suite/features.md` is out of reserve, or its cap has moved, or the inventory has
+      split.** *Added 2026-09-06, and the reason it had to be is worth keeping:* the item above
+      was ticked with the file still at 93.5%, and every other item here is about
+      `embarch-decision-reversals.md` or the gate — so **this task would have closed with
+      `features.md` in reserve and both real fixes undone**, at which point the reserve goes
+      *unfiled* and the next unit to write a `features.d/` fragment meets the cap mid-flight,
+      which is precisely what `DOC-COMPACTION.md` §2's reserve exists to prevent. Found by
+      `suite/005`'s reviewer, reviewing the supervisor's own diff. **This item is `scripts/`
+      and therefore the owner's**, and it is what keeps `004` open and the filing alive.
 - [ ] `DOC-COMPACTION-PASS.md`'s human question answered for whatever pass actually runs.
 - [ ] Gate green.

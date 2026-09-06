@@ -67,6 +67,20 @@ far (decision 40, in `decisions/mcp.md`)". **After `018` there are two deliberat
 honoured by `018`; only its example is out of date. Cheap, and it is the entry that exists to
 catch exactly this class of silent drift, so an example that undercounts it reads badly.
 
+## 5. `features.d/umbrella-061`'s `Verified` column may now understate check 1
+
+Added by leg 015 while running `suite/005`. That row asserted the `sc.exe qc` read "has never
+run inside `doctor` on the live machine" — **false since 2026-09-05**: decision 38's closing
+paragraph records check 1 locating the live service's binary by `BINARY_PATH_NAME` on the first
+run after the `deploy-core` that had never landed, in the same measurement that made check 14
+answer. The supervisor corrected the Status text in that pass.
+
+**What it did not touch is the `Verified` column, which still reads `unit`** — deliberately,
+because `suite/005`'s announced guardrails forbade changing a `Verified` value and because that
+column is the owning scope's claim to make, not the supervisor's. `umbrella-090` next to it
+reads `hw` on the strength of the same run. **Decide what check 1's row should say and set it**,
+or record why `unit` is right despite decision 38's measurement.
+
 ## Reserve
 
 `embarch-umbrella/decisions/doctor.md` is **in reserve at 11,519 / 12,288 B (93.7%)**, filed

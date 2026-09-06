@@ -1,1 +1,1 @@
-| `doctor` check 14 — flashing backend per chip family | Shipped — **reaches Core's binary on `wsl-host` at last** (decision 38), having skipped behind check 1 on the one live run; it invokes the exe under the WSL user's environment rather than the service account's, which is open | hw | 31, 38 |
+| `doctor` check 14 — flashing backend per chip family | Shipped — **reaches Core's binary on `wsl-host` at last** (decision 38); it invokes the exe under the WSL user's environment, not the service account's, which is open | hw | 31, 38 |

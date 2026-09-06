@@ -95,3 +95,39 @@ only its own.
 
 `HEADER.md` carries the title, the `**Status:**` line and the prose above the
 first section. It is the only fragment here that is not a row.
+
+## What trimming the fragments actually buys (2026-09-06)
+
+The section above predicted the wall and it arrived: `suite/features.md` reached
+**98.0% of its cap** with 404 B left, having grown in every fold of one leg. So
+`tasks/suite/005` did the one thing the fleet is permitted to do — **the
+supervisor trimmed the Status column of the twelve longest fragments**, on the
+argument that they were long because rows had stopped being pointers, not
+because the inventory grew. Enforcement of the rule above, not an exception to
+it.
+
+**It bought 934 B — 20,076 → 19,142 — and that is the whole yield.** The file
+stays in reserve at 93.5%, and the reserve line at 18,432 B **was not reachable
+and is not reachable this way.** What is left is the capability column, which is
+the row's identity rather than commentary, and the row count itself. So this is
+the measurement behind the claim above rather than a new finding: *the budget is
+spent on rows and no compaction pass can help.*
+
+Three consequences worth stating plainly, because a later leg will be tempted to
+run this pass again:
+
+- **The next fragment pass is worth roughly nothing.** Twelve rows carried
+  almost all of the recoverable prose. Repeating it is a treadmill, and
+  `DOC-COMPACTION.md` warns against exactly that shape.
+- **Going further means shortening capability text or deleting rows**, and both
+  change what the inventory *is*. Neither was in `suite/005`'s announced
+  guardrails, and widening them is a fresh
+  [ops](../../embarch-fleet/ops.md) §4 announcement rather than a judgement call
+  at the end of a leg.
+- **The two moves that actually resolve it are still the owner's**: raise the cap
+  for an assembled inventory, or split it by section. Both are `scripts/`.
+  `tasks/suite/004` holds that half.
+
+At this leg's observed rate (+228 B across four folds) the 1,338 B now free is
+about five legs. At the ~200 B/leg this section modelled, about six. That is the
+size of the reprieve, and it is a reprieve rather than a fix.
