@@ -1,6 +1,6 @@
 # Count the rows the trace decoder drops as unparseable, instead of showing "every row in the capture"
 
-**State:** open
+**State:** claimed by leg 020
 **Source:** owner's repo survey, 2026-09-06 — `embarch-ui/spec.md`'s "Unreadable is rendered as unreadable" has one hole
 **Scope:** ui
 **Hardware:** none
