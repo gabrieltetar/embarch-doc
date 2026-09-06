@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Decided
+- This crate does not release: no tags, no version-reading consumer, no artifact — decision 65, with the guard that binds the first `release.yml`.
+## 2026-09
+
 ### Added
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/crate.md)).
 ## 2026-09
