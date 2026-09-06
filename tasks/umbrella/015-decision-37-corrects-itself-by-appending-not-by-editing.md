@@ -1,6 +1,6 @@
 # 015 — Decision 37 corrects itself by appending, so a reader hits the stale sentence first
 
-**State:** claimed — leg 013, 2026-09-05, `agent/umbrella/015-decision-37-appends-instead-of-editing`
+**State:** claimed by agent/umbrella/015-decision-37-appends-instead-of-editing, 2026-09-05 22:31
 **Source:** leg 012's own read of `umbrella/012`'s merge result (`embarch-doc` `811380b`), and the worker that shipped it flagged the same thing unprompted
 **Scope:** umbrella
 **Hardware:** none
