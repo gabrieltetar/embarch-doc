@@ -76,7 +76,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one live target is file-backing-valid (zephyr-west) — counted by this crate's own approximating scanner, **not** `embarch-api`'s listing, which decision 17's amendment asked for and is unbuilt |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
-| 10 | Registered **and answering**: it spawns the exact registered command and completes one JSON-RPC `initialize` over its stdio within 10 s. Answered, failed and timed out stay distinct in `--json` (decisions 23, 37); an entry whose command line it cannot read is a warn, never a pass |
+| 10 | Registered **and answering**: it reads the registration out of the agent CLI's own config, by the binary it names rather than only the key `embarch`, spawns it and completes one JSON-RPC `initialize` over its stdio within 10 s. Answered, failed and timed out stay distinct in `--json` (decisions 23, 37, 40); an entry with nothing to spawn is a warn, never a pass |
 | 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
