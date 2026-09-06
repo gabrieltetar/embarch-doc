@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `crates/embarch-core-client` is a workspace member, so the root gate lints and runs its own 28 tests: [decision 56](../embarch-api/decisions/tests.md).
+## 2026-09
+
+### Changed
 - The bearer token is applied by one funnel in `embarch-core-client`, not at 9 hand-written sites: [decision 55](../embarch-api/decisions/core-link.md).
 ## 2026-09
 

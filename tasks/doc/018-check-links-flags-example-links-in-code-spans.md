@@ -1,10 +1,17 @@
-# 015 — `check-links.py` flags markdown links written as examples inside code spans
+# 018 — `check-links.py` flags markdown links written as examples inside code spans
 
 **State:** open
 **Source:** `inbox/doc-check-links-ignores-code-spans.md`, dropped by `agent/api/023-split-shape-by-mission` 2026-09-06. The task file `tasks/api/023-split-shape-md-by-mission.md` failed `check-links.py` at its own claim commit `57ab4dc`, before the worker changed anything.
 **Scope:** doc
 **Hardware:** none. One script in `scripts/`, plus whatever prose it unblocks.
 **Owner:** required — `scripts/` is owner-only (`../../embarch-fleet/protocol.md` §3).
+
+> **Renumbered 015 → 018 by leg 018, 2026-09-06.** I filed this as `tasks/doc/015`
+> at 03:34 and the owner independently filed a *different* `tasks/doc/015` at
+> 04:19; both reached `main` and the full gate passed on the result. `NNN` is
+> supposed to be monotonic per sub-project and never reused, and **nothing in
+> `scripts/` checks that** — see `tasks/doc/019`, filed for it. Mine is the one
+> that moved, because the owner's commit message cites his by number.
 
 ## What
 

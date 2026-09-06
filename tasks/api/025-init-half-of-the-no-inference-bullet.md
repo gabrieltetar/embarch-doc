@@ -1,4 +1,4 @@
-# 025 — `embarch-api/open.md`'s first bullet is half-answered: the `init` clause shipped, the compare-against-hardware clause did not
+# 025 — Two `embarch-api/open.md` bullets have been answered in another repo and neither says so
 
 **State:** open
 **Source:** `inbox/api-init-half-of-the-no-inference-bullet.md`, dropped by `tasks/umbrella/022` 2026-09-06, which built the `init` half in another sub-project and so could not edit this file (`../../embarch-fleet/protocol.md` §3).
@@ -29,9 +29,38 @@ half that shipped. **Do not delete the bring-up incident it records** — that i
 the evidence for the remaining half too, and it is the only place in the suite
 where a day lost to this is written down.
 
+## And a second bullet, folded in here 2026-09-06 rather than filed separately
+
+`inbox/api-open-md-versions-is-read-now.md`, dropped by `agent/umbrella/023-locate-embarch-api`,
+reports that **`open.md`'s "Nothing reads `versions` yet" bullet is false twice
+over.** It is a second bullet in the same file answered by the same other repo,
+so it belongs in this unit rather than in a fourth `api` task on `open.md`.
+
+The bullet reads: *"Nothing reads `versions` yet (decisions/surface.md 52):
+`doctor` check 11 compares `embarch`'s **own** host schema copy, so a mixed
+install stays invisible. Another repo's fix."* Both halves are closed:
+
+- **`doctor` check 11 has shelled out to `embarch-api --json versions` since
+  `embarch-umbrella` decisions 33/36.** It no longer compares `embarch`'s own
+  constant as the primary reading; that constant survives only as a mixed-install
+  warn.
+- **`embarch-umbrella` decision 42, 2026-09-06, made check 1 actually locate the
+  binary** — via the agent CLI's MCP registration and `setup`'s install directory
+  as well as `PATH` — which was the reason the shell-out had never had a target on
+  the reference machine.
+
+Measured on that machine 2026-09-06: both `embarch-api` binaries present answer
+`host_type_schema_version: 17`, matching the Core the same bench serves.
+
+**What may survive is narrower, and check before you write it:** check 11 has
+still never run end-to-end inside a `doctor` against a live Core. That debt is
+already recorded in `embarch-umbrella/open.md` and is **that** sub-project's, not
+this one's — so duplicating it here is the wrong answer. Deleting the bullet
+outright is likely right; argue it either way.
+
 ## Why now
 
-As written the bullet reads as entirely unaddressed, so the next sweep over
+As written the bullets read as entirely unaddressed, so the next sweep over
 `embarch-api/open.md` will re-file work that is done and under-weight the work
 that is not. It is also the source `tasks/umbrella/022` was written from, so
 leaving it unchanged means the same task can be generated twice.
@@ -46,6 +75,9 @@ leaving it unchanged means the same task can be generated twice.
       decisions 10 and 12 out of that file the same day.
 - [ ] The `validate`/`status`-compare-against-hardware half survives as the open
       question, with the bring-up incident kept as its evidence.
+- [ ] The "Nothing reads `versions` yet" bullet is rewritten or deleted per the
+      section above, and does **not** duplicate a debt `embarch-umbrella/open.md`
+      already owns.
 - [ ] `changelog.d/` fragment if the answer changes what the doc claims is
       unbuilt. Gate green (`../../embarch-fleet/protocol.md` §10).
 

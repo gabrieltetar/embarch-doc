@@ -1,7 +1,0 @@
-**Target:** embarch.md §5 — the `rustfmt` bullet's "**`-p` is not an escape hatch**" sentence
-**Was:** "**`-p` is not an escape hatch** — `cargo fmt -p embarch-api -p embarch-core-client --check` refuses, because a path-dep crate is not a workspace member — so the per-crate form is the only spelling that works today without a `Cargo.toml` change."
-**Now:** That `Cargo.toml` change landed in `embarch-api` on 2026-09-06 ([embarch-api decision 56](../embarch-api/decisions/tests.md)) for an unrelated reason — clippy never reached the sub-crate's tests. `crates/embarch-core-client` is a workspace member, so the `-p` form is **accepted** and covers exactly this repo's own 24 files and nothing outside it, which is the property the bullet says no single spelling has.
-
-Measured on the branch, `--check` only, nothing rewritten: `-p embarch-api -p embarch-core-client --check` → 24 files, all in `embarch-api`. `--all --check` → 57 files, of which 33 are in `embarch-study-designer` (24) and `embarch-topology` (9) — **unchanged** by workspace membership, so `--all` is still the wrong spelling and the rest of the bullet still holds. The 24 reconciles with the bullet's own "18 files bare" plus its "6 files" for the sub-crate.
-
-The correction is narrow: `-p` now works **for `embarch-api`**. Nothing was checked about the other repos, and the bullet's decision — that no formatting check is being added until §10 has one — is untouched.
