@@ -1,6 +1,6 @@
 # Print `guessed_among` in the topology CLI's `dev-bench` output
 
-**State:** open
+**State:** claimed by agent/topology/001-guessed-among, 2026-09-06 16:38
 **Source:** `embarch-topology/spec.md:70` — "a caller reports 'COM16, guessed among 2' rather than 'COM16'"
 **Scope:** topology
 **Hardware:** none
