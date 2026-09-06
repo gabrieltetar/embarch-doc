@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- Two registered actions sharing a name are now refused on load and on save, as duplicate struct layouts already were ([decision 35](../embarch-study-designer/decisions/authoring.md)).
+## 2026-09
+
 ### Decided
 - This crate does not release: no tags, no version-reading consumer, no artifact — decision 65, with the guard that binds the first `release.yml`.
 ## 2026-09
