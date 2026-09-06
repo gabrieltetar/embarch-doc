@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `embarch-core/open.md` is out of reserve: two bullets restating spec.md and decision 31 are gone, two shortened.
+## 2026-09
+
+### Changed
 - The bearer-token test sweep now derives its route list from `build_router`'s own source: all 26 routes, not 12 ([decision 42](../embarch-core/decisions/platform.md)).
 ## 2026-09
 
