@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Decided
+- A study's public `current_step` is the index of the last step that *finished* — stated in [interfaces.md](../embarch-core/interfaces.md), decision 43.
+## 2026-09
+
 ### Fixed
 - `hw_lock` contention queues silently — decision 14's `503` naming the holder was never built; three docs said it was. See [decisions/platform.md](../embarch-core/decisions/platform.md).
 ## 2026-09
