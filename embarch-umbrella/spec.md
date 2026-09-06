@@ -15,7 +15,6 @@ Not:
 - **A process supervisor.** No restart loop, no health polling, no resident process. Core's own service install keeps it running.
 - **In the runtime data path.** Nothing routes through it after setup. **If umbrella is deleted from a working machine, the stack keeps working.**
 - **A hardware or build layer.** It never links `probe-rs` or `serialport` and never runs a build command. Every capability it appears to have is a shell-out to `embarch-core` or `embarch-api`, or an HTTP call to Core.
-- **Multi-machine orchestration.** A Core on a separate box is started by a human on that box.
 - **A GUI.** That is [embarch-ui](../embarch-ui/spec.md). What umbrella owes it is a stable machine-readable status contract, which `--json` on `status` and `doctor` is.
 
 ## Shape
@@ -83,7 +82,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
-| 16 | `study_results/` entries and their bytes, and build directories per project — informational, never fails, **deletes nothing** (decision 26) |
+| 16 | `study_results/` entries and their bytes **at the directory it names**, and build directories per project — informational (decisions 26, 39) |
 | 17 | Core's bind address matches what the detected topology needs — **design-only** |
 | 18 | Firewall state, best-effort, informational — **design-only** |
 | 19 | Free disk space behind the build and results directories — **design-only** |
@@ -91,7 +90,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 
 Checks 12, 15 and 16 never fail the run outright; **5 and 11 do**, each only for the one state its row names — and check 11's failing is the point of it, since a host-version disagreement means no study can be submitted, and a bench Core refusing at the handshake means none can run. A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, plus a `code` naming *which* outcome where a check has more states than statuses (decision 37; checks 1, 5, 10, 14). 17-20 are designed and unbuilt; their numbers move if something is built before them.
+Numbers 1-16 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 17-20 are designed and unbuilt; their numbers move if something is built before them.
 
 **Designed-and-unbuilt is not only a tail of the table**: decision 22, 26's `--prune` half and 17's amendment each sit *inside* a shipping command or check, marked above where it lives. [open.md](open.md) carries whether each is still wanted.
 
