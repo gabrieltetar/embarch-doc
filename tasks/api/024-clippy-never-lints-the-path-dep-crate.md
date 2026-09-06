@@ -1,6 +1,6 @@
 # 024 — `cargo clippy --all-targets` at the api root never lints `crates/embarch-core-client`'s tests, and one is already red
 
-**State:** open
+**State:** claimed by agent/api/024-clippy-reaches-the-path-dep-crate, 2026-09-06 04:25
 **Source:** `inbox/api-clippy-skips-the-path-dep-crates-tests.md`, dropped by `agent/api/020-bearer-sweep-exhaustive` 2026-09-06 while running the §10 gate.
 **Scope:** api
 **Hardware:** none. One lint fix, one manifest-or-gate decision, no board and no live Core.
