@@ -1,7 +1,7 @@
 {
-  "framework_sha": "020b6c8f8755fea311465d4f29779a0bf6b0d396",
+  "framework_sha": "ea1e7efcc1968ef43455bd0611584ec45df95733",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-06T19:46:07Z",
+  "installed_at": "2026-09-06T21:47:28Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet"
 }
