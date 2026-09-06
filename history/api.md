@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `embarch-api`'s [spec.md](../embarch-api/spec.md) and [open.md](../embarch-api/open.md) are back out of doc-size reserve; closed test gaps and config detail already in `interfaces/config.md` went.
+## 2026-09
+
 ### Fixed
 - open.md stops reading as unaddressed: `init`'s no-inference refusal shipped (`embarch-umbrella` 41) and check 11 reads `versions` now (33/36, 42).
 ## 2026-09
