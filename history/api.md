@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- The bearer sweep's route set is derived from the client's source, so a new networked method fails a test instead of escaping it.
+## 2026-09
+
 ### Fixed
 - A static project setting `west_binary`/`build_dir_root` is no longer told to remove and re-add the same field.
 ## 2026-09
