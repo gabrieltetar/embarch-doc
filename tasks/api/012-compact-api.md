@@ -1,6 +1,6 @@
 # 012 — Compact `embarch-api`'s spec and its studies decisions
 
-**State:** open — **unparked by the owner, 2026-09-05, by narrowing it rather than by
+**State:** claimed by agent/api/012-compact-api, 2026-09-05 21:26 — **unparked by the owner, 2026-09-05, by narrowing it rather than by
 overriding `In flux:`.** Two of the four files left this task: `decisions/zephyr.md` was
 **split by mission** and is out of reserve, and `interfaces/config.md`'s compaction now
 rides in `tasks/api/013`, which is the unit that rewrites it (`DOC-COMPACTION.md` §2).
@@ -18,6 +18,16 @@ in this file's favour: a compaction debt goes in the scope directory of the doc
 being compacted. `tasks/README.md` and `check-doc-size.py`'s message say so.
 
 **Compacts:** embarch-api/spec.md, embarch-api/decisions/studies.md
+
+**Reserve, measured by leg 012 at dispatch (2026-09-05 21:26):** `embarch-api/spec.md`
+**10,104 / 10,240 B — 136 B left, 98.7%**, the tightest file in the suite;
+`embarch-api/decisions/studies.md` **11,249 / 12,288 B — 1,039 B left, 91.5%**. Those two
+are the whole reserve list for `api`, and `check-doc-size.py --pressure` names no other
+file in the suite. Nothing else in `api` is in reserve, so you have room to *move* text
+into `decisions/build.md` (7.2K/12K), `interfaces/*.md` or `open.md` (4.5K/5K — near its
+own line, do not use it as a sink). **A split is preferred over shortening wherever a file
+holds more than one mission** (`DOC-COMPACTION.md` §2–3) — but `spec.md`'s 10 KB is a role
+cap on a single file and cannot be split, so shortening or moving is the only move there.
 
 **`open.md`'s item is closed, 2026-09-05** — `api/011` answered and removed decision
 27's capacity bullet and the file fell to 89.2%, out of reserve. The two loose ends
