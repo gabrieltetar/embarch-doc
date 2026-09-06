@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `doctor` check 14's `remote` skip loses eighteen stray spaces, and every check's text is now guarded against a wrapped literal ([spec.md](../embarch-umbrella/spec.md)).
+## 2026-09
+
 ### Added
 - Check 16's first live reading: study_results/ is 809 MiB across 50 entries — the sweep bounds count, not size, which is the argument for decision 26's deferred --prune half.
 
