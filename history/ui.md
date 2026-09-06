@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- The Trace view counts the rows its decoder refused — truncated or malformed — instead of claiming "every row in the capture": embarch-ui/decisions/trace-view.md, decision 10.
+## 2026-09
+
 ### Added
 - The Trace view drops a stale pre-reset leading prefix and keeps the DUT clock for the rest, in place of refusing that clock for the whole capture. embarch-ui decision 19.
 ## 2026-09
