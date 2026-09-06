@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
+## 2026-09
+
 ### Changed
 - Compacted topology `open.md` and `spec.md`; two settled bullets moved into decisions 18 and new decision 22.
 ## 2026-09

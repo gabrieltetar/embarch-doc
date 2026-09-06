@@ -112,6 +112,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |
 | Batch-fill framing — took the link's duty cycle from 99% to 37% | Shipped | hw | 20 |
 | Every Kconfig wire constant | **Unmeasured defaults**, and the instrumentation's own overhead is deliberately uncharacterised | n/a | §5 |
+| `scripts/decode_outpost.py` — the reference host decoder: CSV/JSON, manifest name resolution, build-ID refusal | Shipped — COBS, the bad-CRC/`frame_index` accounting, wrap-vs-gap and the three-decimal `us` are now pinned by a host test needing **no west, no `ZEPHYR_BASE` and no siblings**; the decoder-against-decoder diff beside it still skips without both sibling repos | unit, local | 4, 9, 17 |
 
 ## embarch-topology
 
@@ -123,6 +124,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Early powered-target check instead of a raw access-port error chain | Shipped | hw | 16 |
 | Declared dev-bench link **serial**, distinct from its JTAG probe's | Shipped | hw | 17 |
 | Declared dev-bench link **interface** — closes the two-VCOM-on-one-probe gap the DK bench exposed | Shipped | hw | 20 |
+| A guessed dev-bench port **says so** — `dev-bench` prints "COM16, guessed among 2" | Shipped — **rendering is unit-tested only; no bench has yet produced a guess to see it on** | unit | 20 |
 | A `role` is unique — moving one onto different silicon displaces the old row and says so | Shipped | hw | 20 |
 | Nordic arm of the self-reported-identity comparison — **the gate had never once run against Nordic silicon** | Shipped | hw | 21 |
 | DUT signal links and the dev-bench-bypass route | Shipped — declared, stored and resolved; **validation has no caller and no wire has been read** | unit, hw | 18 |
