@@ -1,8 +1,11 @@
 # 006 — no Rust repo in this suite is `rustfmt`-clean, and nothing in the gate has ever looked
 
-**State:** open — **not announced, not started.** A leg that intends to *execute* this owes a
-fresh `../../embarch-fleet/ops.md` §4 announcement and a full 30-minute window; leg 015 filed
-it only, and filing is not the window.
+**State:** open — **announced and parked by leg 016**, `#embarch-fleet` `ts 1788678196.359869`
+(2026-09-06 01:03 MDT); window closes **01:33 MDT**. The announcement states the intended arm
+(decline, and record why) and names the repos. If this leg ends before the window closes, the
+next leg **completes this window rather than restarting it** — read that `ts` for a reply first.
+A reply saying go runs it immediately; cancel drops this back to plain `open` with the reply
+quoted here.
 **Source:** `api/019`'s worker, 2026-09-06. It ran `cargo fmt` reflexively, watched it rewrite
 **18 files / ~780 lines it had not touched**, reverted all of that and re-applied its own
 change by hand so the commit stayed one file. Then it reported the fact rather than quietly
