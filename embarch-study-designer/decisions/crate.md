@@ -60,6 +60,13 @@ Clippy `-D warnings` runs on `--all-features` (the widest set, and the only conf
 
 **Every step was run locally before the workflow was pushed, and all fourteen were green** — no cell was red on arrival.
 
-Not in scope, and still absent: a `release.yml` with the `verify-version` job `embarch-umbrella`'s decisions 27/29 put in four repos. That is a separate absence with a separate decision behind it.
+Not in scope here, and deliberately absent: a `release.yml` carrying `embarch-umbrella` decisions 27/29's `verify-version` job. Decision 65.
 
+### 65 — This crate does not release, and the first tag pushed is what reverses that
+
+`embarch-umbrella` decisions 27/29 gave `verify-version` to the four repos that publish a binary and named this one among the four with none — *"every repo" means every repo that releases*. [../open.md](../open.md) called that "unaddressed, not deferred" and pointed at a decision that did not exist. It is **no**. There are **no git tags at all** and `Cargo.toml` has read `0.1.0` since creation, so the assertion — a *pushed tag* agrees with the manifest — has nothing to assert. All five consumers spell it `{ path = "../embarch-study-designer", … }` with **no `version` key** (decision 8), so nothing reads that number. And there is **no artifact**: `extract-gatt-config` is authoring-time behind an off-by-default feature nothing outside this repo packages, and `study-designer-ui` was retired 2026-08-24. The drift 27/29 guards — a binary whose `--version` disagrees with its tag — has no binary here to happen to.
+
+**Against writing `release.yml` anyway**: `verify-version` fires `on: push: tags:`, so in a repo that pushes none it never executes once — the *step that cannot fail for the reason it was added* decision 64 rejects one entry up, and worse, because *does every repo check version against tag?* would read **yes** for a check that never ran. Nor is a guard needed before the workflow: a bare tag builds and uploads nothing, so **the only way an unverified artifact leaves is that someone writes a `release.yml` — the moment the obligation binds.**
+
+**Reversal, any one:** crates.io publication; a consumer depending by version or git ref instead of by path; or **a tag pushed for any reason**. Then copy `verify-version` from `embarch-umbrella`'s `release.yml` with its three deliberate choices intact: `awk` not `cargo metadata`, leading `v` stripped rather than required, `workflow_dispatch` exiting 0 with a printed reason. **`test.yml` enforces that rather than trusting a reader** — a step, verified locally against five shapes, that passes while no `release.yml` exists and fails if one appears without a `verify-version` job another job `needs:`.
 ---

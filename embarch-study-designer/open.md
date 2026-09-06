@@ -33,4 +33,3 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 ## Not exercised by any routine check
 
 - **Nothing proves the FFI staticlib actually cross-links.** CI covers six feature cells on every push (decision 64), and `--features ffi` type-checks the `extern "C"` surface on the host — but what dev-bench consumes is a `--crate-type staticlib` for a Cortex-M33 soft-float triple with a panic handler, and **that build root does not exist**, so no step can assert it. A cross-compile job added before the toolchain would be a step unable to fail for the reason it was added. **Closed by the dev-bench cross-build landing**, not by this repo alone.
-- **No `release.yml`**, so `embarch-umbrella` decisions 27/29's `verify-version` job does not run here. A separate absence from the test-matrix one decision 64 closed; unaddressed, not deferred.

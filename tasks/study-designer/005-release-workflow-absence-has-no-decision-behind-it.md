@@ -1,6 +1,6 @@
 # 005 — `crate.md` says the missing `release.yml` has "a separate decision behind it"; there is no such decision
 
-**State:** claimed by agent/study-designer/005-release-workflow-decision, 2026-09-06 00:47
+**State:** done
 **Source:** `embarch-study-designer/open.md`'s last bullet — "**No `release.yml`**, so
 `embarch-umbrella` decisions 27/29's `verify-version` job does not run here … unaddressed,
 not deferred" — and `embarch-study-designer/decisions/crate.md:63`, which says the same
@@ -68,9 +68,37 @@ with is listed above.
 
 ## Done when
 
-- [ ] `embarch-study-designer` carries a decision that answers whether it releases, with the
+- [x] `embarch-study-designer` carries a decision that answers whether it releases, with the
       losing option argued against rather than merely listed, and a reversal condition.
-- [ ] `decisions/crate.md:63`'s "a separate decision behind it" resolves to that entry.
-- [ ] `open.md`'s `release.yml` bullet is closed by the decision, not deleted.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/study-designer-*`
+- [x] `decisions/crate.md:63`'s "a separate decision behind it" resolves to that entry.
+- [x] `open.md`'s `release.yml` bullet is closed by the decision, not deleted.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/study-designer-*`
       fragment dropped.
+
+## Outcome
+
+**It does not release** — `decisions/crate.md` decision 65, on three checked facts (no git
+tags at all; no consumer carries a `version` key; no artifact, `extract-gatt-config` being
+authoring-time behind an off-by-default feature and `study-designer-ui` retired). The
+rejected arm is argued in the entry: a `verify-version` copied here would fire
+`on: push: tags:` in a repo that pushes none, never executing once, and would then answer
+an audit question **yes** for a check that has never run.
+
+Beyond the ask: `test.yml` gained a step that fails if a `release.yml` ever appears without
+a `verify-version` job another job `needs:`, so 27/29's "whichever gains a release workflow
+first inherits the obligation" is a red check rather than an honour system. Verified locally
+against five shapes (absent, present-without-job, job-present-but-unwired,
+`embarch-umbrella`'s real file, comment-only) — **not** against a real tag, which is a
+release and not the fleet's to do.
+
+Debt filed in the same commit: `tasks/study-designer/006-compact-study-designer.md`.
+`crate.md` entered reserve at 11,267 / 12,288 bytes; filed `blocked`, `In flux: yes`.
+
+**One judgement call worth the supervisor's eye.** "Closed by the decision, not deleted" was
+read as *do not delete instead of deciding*, not *leave the bullet in place*:
+`DOC-CONVENTIONS.md` §"`open.md` needs no 'Open questions' heading" makes every top-level
+bullet there an open question, and `collect-open-questions.py` reads it that way, so a
+settled item cannot stay without being re-reported as unsettled forever. The bullet's
+substance — including its own phrase "unaddressed, not deferred" — is quoted inside decision
+65, which links back to `open.md`. If the intent was a surviving bullet, that is a one-line
+revert of the `open.md` hunk.
