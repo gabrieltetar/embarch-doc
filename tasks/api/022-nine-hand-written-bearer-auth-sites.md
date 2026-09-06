@@ -1,6 +1,6 @@
 # 022 — 9 of `CoreClient`'s 25 routes set the bearer token by hand, and a comment says none do
 
-**State:** blocked
+**State:** open
 **Source:** `api/020`'s reviewer, 2026-09-06, which found this while verifying decision 54 and
 explicitly left the filing to the supervisor.
 **Scope:** api
@@ -27,17 +27,24 @@ so the token is applied by construction on every route. Then the comment becomes
 `json_out` as a single funnel, "unconditional by construction, not by convention", with a guard
 test that fires if a second serializer appears. Same shape, applied to auth.
 
-## Why blocked
+## Unparked 2026-09-06 by `api/023` — and where your decision goes
 
-**`embarch-api/decisions/shape.md` is at 12,281 / 12,288 B — 7 bytes.** This task ships a
-decision and there is nowhere in `embarch-api/decisions/` to put one:
-`zephyr.md` 11,056 (3 B from its reserve line), `interfaces/config.md` 11,008 (51 B),
-`build.md` 10,934 (125 B), `surface.md` 10,928 (131 B), `core-link.md` 10,879 (180 B).
+This was `blocked` because `decisions/shape.md` was 7 bytes under its cap and there was nowhere
+in `embarch-api/decisions/` to put a new entry. **`api/023` split it**: `shape.md` is now
+7,654 B and the new `decisions/tests.md` 5,434 B, both far clear.
 
-**Unparks when `tasks/api/021-compact-api.md` lands** — its mission split of `shape.md`
-(scope-and-boundaries vs test reach) is what buys the room. Do not dispatch this before then;
-a worker sent at it now meets the cap mid-flight, which is exactly how an `embarch-api` decision
-ended up in the wrong topic file on 2026-09-05.
+**Your decision goes in `decisions/core-link.md`** — the shared-client file, decisions 11, 14,
+15, 17, 26, 36, 37, 38, 43, 48, 49 — **and that file is at 10,879 B against a reserve line of
+11,059, so you have 180 bytes before you owe a compaction task.** Plan for owing one and file it
+at `tasks/api/<NNN>-compact-api.md`; **not** `tasks/doc/`, which `check-ownership.py` refuses to
+you. `decisions/tests.md` is the roomy file and it is the wrong home — this is a change to the
+client, not to how far the tests reach.
+
+The rest of `embarch-api`'s decision corpus is still narrow (`zephyr.md` 11,056 against 11,059;
+`interfaces/config.md` 11,008; `build.md` 10,934; `surface.md` 10,928) and is recorded as a
+standing hazard in [open.md](../../embarch-api/open.md). **Do not solve your own headroom by
+putting the entry in whichever file has room** — leg 015 did that with 96 bytes left and it is
+the reason that bullet exists.
 
 ## Not a security bug today, and say so wherever this is cited
 

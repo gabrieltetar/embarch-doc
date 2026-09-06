@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- embarch-api's test-reach decisions 30, 46 and 54 move verbatim out of `decisions/shape.md` (12,281/12,288 B) into a new `decisions/tests.md`; nothing reworded.
+## 2026-09
+
+### Changed
 - The bearer sweep's route set is derived from the client's source, so a new networked method fails a test instead of escaping it.
 ## 2026-09
 
