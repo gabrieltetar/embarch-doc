@@ -35,6 +35,39 @@ even if the C compile did not. The rustup target alone supplies neither.
 produce this target at all.** The gate item asks every Linux worker and every leg for
 something the repo has never been set up to do locally.
 
+## Measured 2026-09-06 (owner's session), and it narrows the claim
+
+**"There is no configured path for a Linux checkout to produce this target at all" is
+false, and the true statement is sharper.** Three results, all run on this machine:
+
+| what | result |
+|---|---|
+| Linux `cargo build --target x86_64-pc-windows-msvc` | **fails** in `hidapi`'s `build.rs`, as recorded above |
+| Windows `cargo.exe build --target x86_64-pc-windows-msvc --manifest-path <UNC to the **main checkout**>` | **works — 52 s, links, 37 MB `embarch-core.exe`** |
+| Windows following a **Linux symlink** over UNC | **False** |
+
+The second row uses the same `/mnt/c/Users/tmp12/.cargo/bin/cargo.exe` that `deploy-core`
+already depends on, over `\\wsl.localhost\...`. Windows reads the WSL manifest, runs every
+build script including `hidapi`'s, resolves both path-dep siblings and links. So the
+capability exists, is already installed, and takes under a minute.
+
+**The third row is why the gate item is still unsatisfiable for a leg, and it is a different
+reason than the one filed.** A worker's worktree does not contain its path-dep siblings — the
+supervisor **symlinks** them in (`supervise.md`'s closure table), and Windows cannot traverse
+a Linux symlink over UNC. So the native build succeeds from the main checkout and fails in
+every worker and leg worktree, at path-dep resolution rather than at `hidapi`.
+
+**What that changes about the remedy.** The requirement is not impossible and should not be
+dropped; it is **unsatisfiable in the place §10 asks for it and satisfiable in the place the
+owner works.** That makes it the same shape as a hardware-verification debt (§7): the worker
+ships the host-side half and records that the native Windows build is owed, and the owner
+runs it from the main checkout in one command. Dropping it outright would lose a real check —
+`embarch-core` is Windows-only in production, and CI only builds it on push to `main`.
+
+Whoever lands this should re-measure the second row rather than trusting this table; it was
+`cargo build` at debug, not `--release`, and the probe target directory (2.4 GB) was deleted
+afterwards.
+
 ## Why now
 
 The outcomes available today are all bad. A worker reports a red it did not cause and
