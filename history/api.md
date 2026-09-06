@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- A static project is refused all five zephyr-west-only config fields at load, not just default_target; the `none`-snippet collision names a remedy that works.
+## 2026-09
+
 ### Fixed
 - The `-args<hash>` build-dir segment is a crate-owned FNV-1a, so a Rust upgrade no longer renames and orphans build directories ([decision 19](../embarch-api/decisions/build.md)).
 ## 2026-09
