@@ -1,6 +1,6 @@
 # Refuse two registered actions sharing a name, as struct layouts already are
 
-**State:** open
+**State:** claimed by agent/study-designer/009-duplicate-action-names, 2026-09-06 17:05
 **Source:** owner's repo survey, 2026-09-06 — the sibling registry in the same file already implements this
 **Scope:** study-designer
 **Hardware:** none
