@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- A `zephyr-west` config declaring the retired `[[projects.targets]]` is now told to delete the rows, not to store the three fields decision 12 removed.
+## 2026-09
+
 ### Added
 - Every `zephyr-west` build directory now gets a `target.json` recording the resolved selection ([decisions](../embarch-api/decisions/build.md) 19).
 ## 2026-09
