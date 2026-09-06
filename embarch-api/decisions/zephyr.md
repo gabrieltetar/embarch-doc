@@ -43,4 +43,6 @@ Decision 12 never caches, reasoned as "already cheap enough", and **no bound was
 
 **Absent stays absent.** An omitted param and an explicitly empty list are indistinguishable through the plain slices `Selection` carries — and for a `zephyr-west` project empty already means "use the configured default" — so "given" is `Some(_)` or a non-empty slice, and a call passing nothing resolves byte-for-byte as before. That half is asserted over the whole `Resolved`, not just the error path.
 
+**The `[[projects.targets]]` menu is gone too** ([shape.md](shape.md) 53): a `static` project has exactly one target — itself — and a config still declaring the table fails at load. This entry is why there is nothing to lose by it. A menu only ever pays for itself if something narrows against it, and the arm that would have done the narrowing accepted the params and dropped them.
+
 The help text that already said these were Zephyr-only was documentation rather than a gate; this is that sentence made mechanical, and the tool descriptions, CLI help and `config.example.toml` now say *refused* rather than *ignored* — decision 44's own lesson that the surface text is what a caller reads.

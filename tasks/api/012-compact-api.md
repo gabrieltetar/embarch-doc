@@ -1,6 +1,6 @@
 # 012 — Compact `embarch-api`'s spec and its studies decisions
 
-**State:** claimed by agent/api/012-compact-api, 2026-09-05 21:26 — **unparked by the owner, 2026-09-05, by narrowing it rather than by
+**State:** done, agent/api/012-compact-api, 2026-09-05 — **unparked by the owner, 2026-09-05, by narrowing it rather than by
 overriding `In flux:`.** Two of the four files left this task: `decisions/zephyr.md` was
 **split by mission** and is out of reserve, and `interfaces/config.md`'s compaction now
 rides in `tasks/api/013`, which is the unit that rewrites it (`DOC-COMPACTION.md` §2).
@@ -111,9 +111,33 @@ is why `DOC-COMPACTION.md` §2 now says a parked task parks the pass and not the
 - [x] `tasks/api/010` is closed, and this task is moved to `open`.
 - [x] `decisions/zephyr.md` and `interfaces/config.md` are off this task — split, and
       handed to `api/013`.
-- [ ] `spec.md` and `decisions/studies.md` are compacted per `DOC-COMPACTION-PASS.md`,
+- [x] `spec.md` and `decisions/studies.md` are compacted per `DOC-COMPACTION-PASS.md`,
       one commit for the sub-project, with the `Must not delete:` list above honoured.
-- [ ] The human question answered in the compactor's own words in the commit
+      `spec.md` 10,104 → 8,968 B (87.6% of cap), `decisions/studies.md` 11,249 →
+      10,516 B (85.6%). Nothing in `api` is in reserve. Decision 51 now carries the
+      pointer saying the `[[projects.targets]]` menu is gone; it did not before.
+- [x] The human question answered in the compactor's own words in the commit
       message: can `embarch-api/spec.md` alone answer what someone needs to work
       on this component today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What was done
+
+**Moved, not shortened, wherever there was a home for it.** Decision 30 (the smoke-harness
+tier) left `decisions/studies.md` verbatim for `decisions/shape.md`, which already owns
+decision 46 and how far the tests reach — a mission move, so it restates nothing. The
+`build_cwd`/`west` trap left `spec.md` §3 for `decisions/build.md` 5, and
+`interfaces/config.md`'s `build_cwd` row now points there instead of back at `spec.md`.
+`spec.md` §3's selection rules — `default_target` narrowing, the `["none"]` sentinel,
+the config-load refusals — are `interfaces/config.md`'s surface and now live only there,
+with `spec.md` keeping the claims a reader must not get wrong: a `static` project
+*refuses* rather than drops, it has one target, and the `[[projects.targets]]` menu is
+retired. §5's module list was already duplicated whole in `interfaces/modules.md`.
+
+**Dropped as cold:** two "built as of <date>" stamps and the long form of the
+decisions-31/33 renumbering story, which `decisions.md` carries in full.
+
+**`Must not delete:` honoured.** Decision 21's first paragraph, decision 18's `[assumed]`
+1:3 split, decision 22's cost bound and decision 51's "verified before widening the fix"
+are all untouched — none of them is in either file this task compacted, and the two
+`spec.md` constants rows that carry decision 18's provenance are byte-identical.

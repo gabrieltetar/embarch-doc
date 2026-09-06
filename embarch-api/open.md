@@ -1,6 +1,6 @@
 # embarch-api: open questions
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
 Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
@@ -11,7 +11,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 ## Unfinished couplings
 
 - **The alert and enrolled-board response types are unpinned mirrors.** No crate compiles both sides, so nothing typechecks the coupling; the signal-route mirrors are pinned from each side against one JSON literal. These two are not.
-- **The smoke harness ([decisions](decisions/studies.md) 30) is named and unwritten.** The six mocked criteria beside it live in `tests/` ([decisions](decisions/shape.md) 46), with two gaps: the end-to-end half is `#[cfg(unix)]`, and a new endpoint escapes the bearer sweep unless its route list grows.
+- **The smoke harness ([decisions](decisions/shape.md) 30) is named and unwritten.** The six mocked criteria beside it live in `tests/` ([decisions](decisions/shape.md) 46), with two gaps: the end-to-end half is `#[cfg(unix)]`, and a new endpoint escapes the bearer sweep unless its route list grows.
 - **The study event stream has never met a real embarch-core.** `study-status --follow`/`study_watch` ([decisions](decisions/core-link.md) 48, 49) run only against a mock whose frames *copy* the wire format, so nothing tests the coupling. Debt: `tasks/api/001-sse-client.md`.
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50), so branching on a cause means matching prose. **The prerequisite is not in this repo**: Core serves plain text on every non-2xx and its `{code, message, cause}` body (`embarch-core` decision 12) is deferred. Ordered: Core emits codes, the shared client carries one typed, this crate passes it on. **Do not derive a kind from the HTTP status** — a coarser vocabulary, later mistaken for decision 12's.
 - **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads, from its lifted copy of the retired UNC helpers. A different repo's fix.

@@ -1,8 +1,8 @@
 # embarch-api decisions: Scope and boundaries
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-05.
 
-What this crate is, what it deliberately is not, and the two one-way relationships that keep it that way.
+What this crate is, what it deliberately is not, the two one-way relationships that keep it that way, and how far its tests reach.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -40,6 +40,9 @@ So the rows go, and **two things make the removal lossless rather than merely sm
 **Why the gate did not catch it**: the commit's own `zephyr-west` test asserted `contains("retired")` — that it refuses, never what it advises — [../../embarch-decision-reversals.md](../../embarch-decision-reversals.md)'s shape 8, a comment naming the right invariant while the text does not implement it. Both tests now pin their own remedy, and the `zephyr-west` one asserts the *absence* of the `static` one, so a future shared tail fails a test rather than shipping.
 
 Shapes: [../interfaces/config.md](../interfaces/config.md), [../interfaces/tools.md](../interfaces/tools.md).
+
+### 30 — A named smoke-harness tier, because the real methodology was unnamed
+**Every real bug found in this project to date came from a live run** against a real Core or a real repo, not from the still-unwritten unit-test suite. That is a real, working methodology, just an unnamed and unrepeatable one. So it gets a name and a script: a throwaway Core instance plus a synthetic fixture repo, re-running a fixed sequence of calls. Not a substitute for the mocked unit tests, which remain the acceptance criteria below the process boundary.
 
 ### 46 — A one-module `lib` target, so the mocked suite can reach anything at all
 `open.md` carried six recorded acceptance criteria as "specified and unwritten" for weeks. Three of them — the two-pipe drain invariant, truncation on a UTF-8 character boundary, an untouched artifact not counting as fresh — are properties of `build.rs`, and `build.rs` lived in a **binary** crate. Each file under `tests/` compiles as its own crate and can reach a package's `lib` and nothing else, so those three were not merely untested, they were **untestable from an integration test**. The suite was unwritten partly because writing it was blocked and nobody had said so.

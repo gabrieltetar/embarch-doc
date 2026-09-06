@@ -1,12 +1,12 @@
 # embarch-api: spec
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Config: [interfaces/config.md](interfaces/config.md). Tools and subcommands: [interfaces/tools.md](interfaces/tools.md), [interfaces/studies.md](interfaces/studies.md).
 
 ## 1. What it is
 
-Three responsibilities on top of `embarch-core`: **(a)** Core's capabilities as MCP tools, **(b)** the same as CLI subcommands — a **superset**, since `versions` reports this binary's own compiled versions and has no tool ([decisions](decisions/surface.md) 52) — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`.
+Three responsibilities on top of `embarch-core`: **(a)** Core's capabilities as MCP tools, **(b)** the same as CLI subcommands — a **superset**, `versions` having no tool — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`.
 
 **Subcommand presence is the mode switch.** No subcommand → an MCP stdio server. A subcommand → run that one operation and exit. Both front-ends call the same modules; neither is privileged.
 
@@ -19,7 +19,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **`build_command` is an argv array, never a shell string** — no quoting or shell-dialect ambiguity. A project needing shell features says so: `["bash", "-lc", "…"]`.
 - **`chip`, `flash_format` and `base_address` are opaque pass-through.** Not validated against probe-rs's target database; that belongs to Core, and duplicating it here is a maintenance trap.
 - **A fresh artifact is proven, never assumed.** The artifact path's existence and mtime are recorded *before* spawning; after a zero exit the file must exist and, if it existed before, be newer than the build start. Without this a build that failed partway could silently "succeed" against a stale binary — the worst failure for hardware bring-up.
-- **An expected failure comes back as tool content, not a protocol error**, so a calling agent sees the real compiler error and can reason about it. A protocol error is reserved for this crate's own config being unloadable at all — that and its one exception, with the CLI's shapes, in [tools.md](interfaces/tools.md).
+- **An expected failure comes back as tool content, not a protocol error**, so a calling agent sees the real compiler error and can reason about it. A protocol error is reserved for this crate's own config being unloadable at all; that one exception and the CLI's exit-code shapes are in [tools.md](interfaces/tools.md).
 - **This crate never runs `git checkout`.** "Reflash" means build and flash the tree **as it stands**, then verify — never "make my tree be that version". Enforced against the config file too, not just this code.
 - **No inference presented as fact.** Anything about a DUT this crate cannot observe is declared by the operator or reported unknown.
 - **Every JSON object either front-end emits carries `schema_version`**, stamped in one place rather than per emitter, and there is no `error_kind` ([decisions](decisions/surface.md) 24, 50).
@@ -27,12 +27,11 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 
 ## 3. Build orchestration
 
-- **A selection a `static` project cannot honour fails, naming the fields** ([decisions](decisions/zephyr.md) 51); none given resolves as before. A configured `default_target` is one of those, and fails at **config load** rather than at every use. **Such a project has exactly one target, itself** — what `list_targets` reports for it — and the `[[projects.targets]]` menu nothing ever selected from is retired, refused at load ([decisions](decisions/shape.md) 53).
-- **A `zephyr-west` project's `default_target` is the base a call narrows from, per field** ([decisions](decisions/zephyr.md) 20) — so a repo growing a second board does not start erroring calls nobody changed. A selection error names which axes came from it; `list_targets` reports it.
-- **Snippets have three states, not two** ([decisions](decisions/zephyr.md) 21): omitted takes `default_snippets`, an explicit list replaces it, and the reserved literal `["none"]` forces zero. Mixing that literal with real names, or using it where the app really declares a `none` snippet, is refused naming the ambiguity rather than resolved one way.
-- **Working directory** is `source_path` joined with `build_cwd` if set, validated before spawning. `artifact_path` resolves against **that** directory, not `source_path` alone: `west`'s default output is `<cwd>/build`, so an invocation from the repo root with the app path as an argument must leave `build_cwd` **unset**, or the artifact path points at a `build/` nothing writes to.
+**What a call may name, and what each project kind does with it, is [interfaces/config.md](interfaces/config.md)** — notably that a `static` project **refuses** a selection it cannot honour rather than accepting and dropping it ([decisions](decisions/zephyr.md) 51), that a `zephyr-west` project's `default_target` narrows **per field** ([decisions](decisions/zephyr.md) 20), and that `snippets` is three-state ([decisions](decisions/zephyr.md) 21). **A `static` project has exactly one target, itself** — what `list_targets` reports for it — and the `[[projects.targets]]` menu nothing ever selected from is retired, refused at load ([decisions](decisions/shape.md) 53).
+
+- **Working directory**, for a `static` project, is `source_path` joined with `build_cwd` if set, validated before spawning, and `artifact_path` resolves against **that** directory, not `source_path` alone; a `zephyr-west` project's build directory is per-target instead. Setting `build_cwd` is usually wrong, and the `west` invocation that makes it so is [decisions](decisions/build.md) 5.
 - **Capture** drains stdout and stderr in two concurrent tasks — draining one while the other fills its OS buffer is a classic way to hang a child.
-- **Truncation keeps the head *and* the tail** — the first 16 KB and the last 48 KB, the middle dropped behind a marker naming how many bytes went and how many were kept at each end ([decisions](decisions/build.md) 18). Both cuts land on a UTF-8 boundary — the head rounding down, the tail rounding up — since slicing inside a codepoint panics. **The cap bounds the retained bytes, not each half**: head plus tail is never more than 64 KB, so the split does not double it. Under the cap the text is untouched and unmarked.
+- **Truncation keeps the head *and* the tail** behind a marker naming how many bytes went and how many were kept at each end, **the cap bounding the retained total rather than each half** ([decisions](decisions/build.md) 18, which also has the UTF-8-boundary rule both cuts obey; numbers in §7). Under the cap the text is untouched and unmarked.
 - **Timeout kills the process group**, not just the immediate child — `west`/`cmake`/`make` fork subprocesses a plain kill would orphan. A killed or timed-out build is reported **distinctly** from a nonzero exit, so a hang is not misread as a code problem.
 - **One build in flight per project name**, via a per-project async lock. Separate from Core's hardware lock: it guards two calls stomping one output directory, not USB contention.
 
@@ -40,27 +39,15 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 
 Today `embarch-api` runs under WSL2 and Core native on Windows on the same physical machine, reached over the WSL2⟷Windows network boundary rather than loopback.
 
-**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or an explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. WSL2 needs it because `\\wsl.localhost\…` UNC shares come from a per-session network provider tied to an interactive logon, and a service runs in **Session 0**, which has none. **Failure signature:** the identical path resolves from an interactive shell and fails with "the network name cannot be found" from the service. It is not about the account. So `artifact_path_for_core` and its UNC computation are **fully retired**, not superseded: multipart works the same foreground or service, and covers a remote Core the same way.
+**Artifact transfer branches on topology class, and the reason is Session 0.** `Local` — same machine, or an explicit `base_url` — sends `firmware_path` as JSON. `WslHost` and `Remote` both **upload the artifact's bytes** as multipart. WSL2 needs it because `\\wsl.localhost\…` UNC shares come from a per-session network provider tied to an interactive logon, and a service runs in **Session 0**, which has none. **Failure signature:** the identical path resolves from an interactive shell and fails with "the network name cannot be found" from the service. It is not about the account. **No UNC path is computed anywhere any more** ([decisions](decisions/core-link.md) 15).
 
-**`base_url = "auto"`** resolves per-process on first use — a short-timeout `GET /status` race over an ordered candidate list (loopback, the WSL2 default-gateway IP, a configured host), first answer wins, and a `401` **counts as an answer**: Core is there and the token is wrong, which needs its own message. Cached for the process lifetime, never written back to config, so a WSL2 restart's new gateway IP is picked up next run. **Resolution must be lazy**: the startup check is MCP-mode-only and `list_projects` works with Core down; resolving at config-load time regresses both.
-
-**The startup connectivity check warns; it does not refuse** — every hardware-facing tool fails per-call instead, with that message plus the resolved-candidate list. Why refusing was worse: [decisions](decisions/core-link.md) 14.
+**`base_url = "auto"`** resolves per-process on first use — a short-timeout `GET /status` race over an ordered candidate list (loopback, the WSL2 default-gateway IP, a configured host), first answer wins, and a `401` **counts as an answer**: Core is there, the token is wrong. Cached for the process lifetime, never written back to config, so a WSL2 restart's new gateway IP is picked up next run. **Resolution must be lazy**: the startup check is MCP-mode-only and `list_projects` works with Core down; resolving at config-load time regresses both. **That check warns, it does not refuse** — every hardware-facing tool fails per-call instead, with its message plus the resolved-candidate list. Why refusing was worse: [decisions](decisions/core-link.md) 14.
 
 ## 5. Modules
 
-Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither
-privileged. `resolve.rs` is the single place anything branches on `discovery`;
-`json_out.rs` is the single place `schema_version` is stamped; `build.rs` is the
-only module behind the `lib` target, since a binary crate exposes nothing to
-`tests/` ([decisions](decisions/shape.md) 46). `crates/embarch-core-client/` is a
-path dependency rather than a workspace member, and `embarch-ui` path-depends on
-it too — **a change there reaches a repo this one does not own.**
+Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither privileged; the map is [interfaces/modules.md](interfaces/modules.md). `crates/embarch-core-client/` is a path dependency rather than a workspace member, and `embarch-ui` path-depends on it too — **a change there reaches a repo this one does not own.**
 
-The full map, module by module: [interfaces/modules.md](interfaces/modules.md).
-
-`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated
-thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size
-the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
+`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
 
 ## 6. Security
 

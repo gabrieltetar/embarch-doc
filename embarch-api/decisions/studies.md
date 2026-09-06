@@ -1,6 +1,6 @@
 # embarch-api decisions: Submitting and orchestrating studies
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
 Seals, the MCP schema that read as "anything", reflash sequencing, and three gaps in run_study's own contract.
 
@@ -9,15 +9,12 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 ### 27, 28 — Validate capacities and fill the seals before the HTTP call
 Capacity validation lived only in Core, but **this crate is the one holding the file** for a `--study-file` submission — so a JSON exceeding a bound failed with a raw deserialize error here, before Core's friendlier field-naming message ever ran. And the seals are computed and overwritten here, so a hand-authored study **no longer needs a human to compute a CRC by hand**, closing the gap between the integrity check and the suite's symmetric-human/agent principle. Recomputation is idempotent, so a caller that already computed a correct value is unaffected. Core's own checks are unchanged and stay the authoritative, un-bypassable gate for any other caller.
 
-**Both halves are built as of 2026-09-05.** A refusal names every bound it exceeds — field, count, limit — a string in **bytes**, since that is what `heapless::String<N>` bounds, and says these are dev-bench's compile-time buffer sizes, so nobody hunts a per-submission knob. The caller used to get `sequence exceeds its bound at line 1 column 8785`.
+A refusal names every bound it exceeds — field, count, limit — a string in **bytes**, since that is what `heapless::String<N>` bounds, and says these are dev-bench's compile-time buffer sizes, so nobody hunts a per-submission knob. The caller used to get `sequence exceeds its bound at line 1 column 8785`.
 
 **Diagnostic, not a second gate**, which is what makes the rest safe: it runs only *after* `serde` refused the value, so a bound stated wrongly there can worsen a message and never reject a study `serde` would accept. Hence a deliberately partial table — `name`, `requires`, the four lists and their entry names — over a second, drifting copy of every limit in `embarch-study-designer`; anything else falls back to `serde`'s error, which is what every case got before.
 
-### 30 — A named smoke-harness tier, because the real methodology was unnamed
-**Every real bug found in this project to date came from a live run** against a real Core or a real repo, not from the still-unwritten unit-test suite. That is a real, working methodology, just an unnamed and unrepeatable one. So it gets a name and a script: a throwaway Core instance plus a synthetic fixture repo, re-running a fixed sequence of calls. Not a substitute for the mocked unit tests, which remain the acceptance criteria below the process boundary.
-
 ### 31, 33 — `run_study`'s schema declares an object, and the handler tolerates a stringified one
-*(One decision under two numbers — both resolve here, neither is reused. What went wrong to make that so, and why numbers are permanent here now: [../decisions.md](../decisions.md).)*
+*(One decision under two numbers, both resolving here — [../decisions.md](../decisions.md) has what went wrong.)*
 
 `serde_json::Value`'s own generated JSON Schema is the literal `true` — "matches anything", with **no `type` key at all** for a client to key off. At least one real client, this suite's own daily driver, read that as "no declared shape" and sent the entire study **JSON-encoded as a string** rather than an inline object, failing deserialization with a confusing "expected struct, got a string".
 
@@ -38,7 +35,7 @@ Capacity validation lived only in Core, but **this crate is the one holding the 
 ### 40 — A reflash selector, and this crate will not move an engineer's tree
 `reflash` is `none` (default) / `dev-bench` / `dut` / `both`. Default `none` because flashing is the destructive-ish half and **a study that merely observes a board you just flashed by hand should not silently reflash it**.
 
-**This crate never runs `git checkout` to reach a required version, and that is the load-bearing constraint.** "Reflash" means build and flash the tree **as it stands**, then verify what that produced — and fail, naming both, when it does not match. It does not mean "make my tree be that version". Manipulating an engineer's working tree to satisfy a test harness is a genuinely destructive act on the thing they are actively editing. The failure message says which revision the study wants; moving the tree there stays the engineer's decision. **[../spec.md](../spec.md) §2 carries that first sentence too, and the restatement is deliberate** — an agent that loads only `spec.md` has to meet the rule there, and an entry that cannot state its own claim is not readable alone.
+**This crate never runs `git checkout` to reach a required version, and that is the load-bearing constraint.** "Reflash" means build and flash the tree **as it stands**, then verify what that produced — and fail, naming both, when it does not match. It does not mean "make my tree be that version". Manipulating an engineer's working tree to satisfy a test harness is a genuinely destructive act on the thing they are actively editing. The failure message says which revision the study wants; moving the tree there stays the engineer's decision. **[../spec.md](../spec.md) §2 carries that first sentence too; the restatement is deliberate** — an agent loading only `spec.md` has to meet the rule there.
 
 **The rule is enforced against the config file too, not just this code.** `version_command` is somewhere `["git", "checkout", "v1.2.3"]` could plausibly be typed as an attempt at exactly that, so a `git` argv naming a tree-mutating subcommand is refused — **matching any argument rather than the one in subcommand position**, because a `-C` flag puts a path where the subcommand looks like it should be. It over-rejects deliberately: a false positive costs renaming an argument, a false negative costs somebody's uncommitted work.
 

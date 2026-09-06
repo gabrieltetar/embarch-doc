@@ -1,6 +1,6 @@
 # embarch-api: configuration schema
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-05.
 
 Current truth: [../spec.md](../spec.md). Why the shape is this: [../decisions.md](../decisions.md). See `config.example.toml` in the repo for a runnable version with real values.
 
@@ -34,7 +34,7 @@ In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upw
 | `name` | string | yes | — | Unique; a duplicate fails config load |
 | `source_path` | path | yes | — | Must exist at config-load time |
 | `discovery` | `"static"` \| `"zephyr-west"` | no | `"static"` | `"zephyr-west"` replaces the stored `chip`/`artifact_path`/`build_command` with a live per-call scan |
-| `build_cwd` | path | no | none | Joined onto `source_path` to form the build directory — **and** the directory `artifact_path` resolves from. See [../spec.md](../spec.md) §3 for why this is usually wrong to set |
+| `build_cwd` | path | no | none | Joined onto `source_path` to form the build directory — **and** the directory `artifact_path` resolves from. Usually wrong to set — [../decisions](../decisions/build.md) 5 |
 | `build_command` | array of strings | yes (static) | — | argv, no shell interposed |
 | `artifact_path` | path | yes (static) | — | Relative to the build directory, not to `source_path` alone |
 | `chip` | string | yes (static) | — | Opaque probe-rs target name |
