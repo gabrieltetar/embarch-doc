@@ -1,6 +1,6 @@
 # Give the outpost decoder a test entry point that runs without west or a Zephyr checkout
 
-**State:** open
+**State:** claimed by agent/outpost/006-decoder-unit-test, 2026-09-06 16:38
 **Source:** owner's repo survey, 2026-09-06 — `tests/cross_decoder.py:10-18`'s own argument, applied to itself
 **Scope:** outpost
 **Hardware:** none
