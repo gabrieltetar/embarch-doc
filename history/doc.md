@@ -5,6 +5,14 @@
 ## 2026-09
 
 ### Changed
+- The doc gate's check list is no longer restated in protocol.md, supervise.md or DOC-COMPACTION-PASS.md; they had said six and eight while check-docs.py ran nine. Run the wrapper, read its output.
+
+### Fixed
+- build_changelog.py --only lets a fold consume just its unit's fragments, and fold-commit.py refuses one that swept another's — the legs 004/005 failure reached without `git add -A`.
+- check-dispatch.py refuses a second worker into a worktree another holds; check-doc-size.py stops citing DOC-COMPACTION.md §8/§9, which moved to DOC-COMPACTION-PASS.md two days ago.
+## 2026-09
+
+### Changed
 - A compaction debt is filed at tasks/<scope>/<NNN>-compact-<scope>.md — the scope of the doc, a path its worker owns — not tasks/doc/, which check-ownership.py refuses them.
 
 ### Fixed

@@ -4,6 +4,13 @@
 
 ## 2026-09
 
+### Added
+- Check 16's first live reading: study_results/ is 809 MiB across 50 entries — the sweep bounds count, not size, which is the argument for decision 26's deferred --prune half.
+
+### Changed
+- A live doctor run after the Core redeploy closes check 11's core_version unknown (Core answers 0.1.4) and decision 38's wsl-host arm: check 14 answers here, nRF54L15=jlink.
+## 2026-09
+
 ### Fixed
 - `doctor` check 1 finds `embarch-api` by the agent CLI's registration and `setup`'s install dir, not `PATH` alone (decision 42).
 ## 2026-09
