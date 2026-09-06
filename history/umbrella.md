@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- `doctor` check 17 tells a Core that is down from one bound where you cannot reach it; decision 22's firewall and disk-space checks are retired unbuilt.
+## 2026-09
+
+### Changed
 - `doctor` check 8 asks `embarch-api list-targets` instead of umbrella's own scanner, which is deleted: [decision 17](../embarch-umbrella/decisions/projects.md).
 ## 2026-09
 

@@ -1,5 +1,0 @@
-**Target:** suite/user-guide.md §8 — the "Core unreachable" row of the troubleshooting table
-**Was:** "Core is not running, or not reachable from here. Try `embarch up`. On Windows+WSL2, check Core is running on the *Windows* side — **WSL2 restarts do not restart it, but they do change the address, which is why `base_url` must stay `\"auto\"`**"
-**Now:** `doctor` check 17 now separates "not running" from "running and bound where you cannot reach it", so `embarch up` is no longer the only thing to try. Check 17 reads the Windows service's registered `--bind` when nothing answered: `bound-narrow` means Core is up on loopback and a WSL2 guest reaches its Windows host over the gateway, never loopback — the fix is `embarch-core install --bind 0.0.0.0` elevated, or re-running `embarch setup`. `bind-not-the-cause` means the bind is wide and the row's existing advice still applies.
-
-A second row is worth adding rather than lengthening this one, since the fix is different. Detail: [embarch-umbrella/decisions/doctor.md](../embarch-umbrella/decisions/doctor.md) decision 22.
