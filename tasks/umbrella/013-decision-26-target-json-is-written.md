@@ -1,9 +1,25 @@
 # 013 — `embarch-umbrella` decision 26 says `target.json` is not written; it is, as of 2026-09-05
 
-**State:** open
+**State:** claimed — leg 013, 2026-09-05 22:2x, `agent/umbrella/013-decision-26-target-json-is-written`
 **Source:** `agent/api/013-target-json-not-written` — the branch that built it
 **Scope:** umbrella
 **Hardware:** none
+
+**Reserve for `umbrella` at dispatch** (`scripts/check-doc-size.py --pressure`):
+`embarch-umbrella/decisions/doctor.md` **11,918 / 12,288 B — 370 B left**, and
+`embarch-umbrella/spec.md` **9,286 / 10,240 B — 954 B left**. Both are filed against
+`tasks/umbrella/016-compact-umbrella.md`, which is `blocked` on `In flux: yes`.
+**Your required work touches neither** — decision 26 lives in
+`embarch-umbrella/decisions/projects.md`, 9,752 / 12,288 B, no pressure at all.
+
+**So: do the required half and skip the optional check-16 half.** "Why now" floats
+the idea that check 16 could report how many build directories are *attributable*.
+That is a code change whose entry would land in `decisions/doctor.md` and whose row
+is in `spec.md` — the two files with 370 B and 954 B of headroom respectively — and
+under `DOC-COMPACTION.md` §2 taking it would oblige you to compact both inside this
+commit. It is not worth that here; both files are already being compacted as
+ride-alongs by the two other `umbrella` units this leg. **Say in your report that you
+declined it and why**, so the idea is not silently lost.
 
 ## What
 
