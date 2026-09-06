@@ -1,6 +1,6 @@
 # 028 — `embarch-api/open.md` and `spec.md` both crossed into reserve on the same commit
 
-**State:** open
+**State:** claimed by agent/api/028-compact-api, 2026-09-06 16:25
 **Source:** `api/024` spent the last 3 and 6 bytes of these two files' headroom writing decision 56; `DOC-COMPACTION.md` §2
 **Scope:** api
 **Hardware:** none
