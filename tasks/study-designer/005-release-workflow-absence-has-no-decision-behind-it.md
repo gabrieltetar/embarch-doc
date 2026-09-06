@@ -1,6 +1,6 @@
 # 005 — `crate.md` says the missing `release.yml` has "a separate decision behind it"; there is no such decision
 
-**State:** open
+**State:** claimed by agent/study-designer/005-release-workflow-decision, 2026-09-06 00:47
 **Source:** `embarch-study-designer/open.md`'s last bullet — "**No `release.yml`**, so
 `embarch-umbrella` decisions 27/29's `verify-version` job does not run here … unaddressed,
 not deferred" — and `embarch-study-designer/decisions/crate.md:63`, which says the same
