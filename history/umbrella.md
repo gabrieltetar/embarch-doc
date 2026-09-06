@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- `doctor` check 16 names the `study_results/` directory it resolved, in its detail line and in `--json`'s new `path` field; `tasks/umbrella/014`'s three stale decision lines rode along.
+## 2026-09
+
 ### Fixed
 - `doctor` check 1 finds the Windows service's own Core on `wsl-host` instead of failing, so check 14 runs there: [decision 38](../embarch-umbrella/decisions/topology.md).
 ## 2026-09
