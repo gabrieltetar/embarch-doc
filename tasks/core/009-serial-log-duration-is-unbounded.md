@@ -12,8 +12,10 @@
 straight through with no ceiling (`SerialLogQuery`, `api.rs:488-502`, default 2000). `src/serial.rs:17-28`
 then loops to that deadline appending into an unbounded `Vec`. The shared client's serial timeout
 defaults to 15 s (`embarch-api/crates/embarch-core-client/src/lib.rs:41-43`), so any
-`duration_ms > 15000` means the caller gives up while Core keeps the hardware locked and `503`s
-everything else for the full duration — then discards the result.
+`duration_ms >= 15000` means the caller gives up while Core keeps the hardware locked for the full
+duration — then discards the result. **Corrected 2026-09-06 by `core/007`: it does not `503`
+everything else, it *queues* everything else, silently and with no deadline** — measured, and the
+`>` was wrong too, since `duration_ms=15000` meets the client's 15 s deadline exactly and fails.
 
 `duration_ms` is validated against a named cap and rejected with `400` naming the cap and the value
 given. The capture buffer gets a byte cap in the spirit of `EMBARCH_STREAM_MAX_BYTES`. An `Ok(0)`
@@ -23,8 +25,10 @@ splitting the read loop over a `Read`, so it is exercisable **without opening a 
 ## Why now
 
 `embarch-doc/embarch-core/interfaces.md:21` calls this route "a bounded snapshot, not a stream", and
-it is bounded only by a number the caller chooses; `spec.md` §2's `hw_lock` contention rule
-(`503` naming the holder) becomes a self-inflicted outage that looks exactly like real contention.
+it is bounded only by a number the caller chooses. And because contention **queues rather than
+refusing** (`core/007`, 2026-09-06), one long `duration_ms` stalls every other hardware caller for
+its whole span with no message — a self-inflicted outage indistinguishable from Core being hung,
+which is the exact failure decision 14's unbuilt `503` was meant to make legible.
 
 ## Done when
 

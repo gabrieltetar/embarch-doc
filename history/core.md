@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `hw_lock` contention queues silently — decision 14's `503` naming the holder was never built; three docs said it was. See [decisions/platform.md](../embarch-core/decisions/platform.md).
+## 2026-09
+
 ### Changed
 - `embarch-core/open.md` is out of reserve: two bullets restating spec.md and decision 31 are gone, two shortened.
 ## 2026-09
