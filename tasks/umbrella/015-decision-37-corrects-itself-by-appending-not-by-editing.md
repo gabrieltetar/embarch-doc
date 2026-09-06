@@ -1,6 +1,6 @@
 # 015 — Decision 37 corrects itself by appending, so a reader hits the stale sentence first
 
-**State:** claimed by agent/umbrella/015-decision-37-appends-instead-of-editing, 2026-09-05 22:31
+**State:** done by agent/umbrella/015-decision-37-appends-instead-of-editing, 2026-09-05 22:45
 **Source:** leg 012's own read of `umbrella/012`'s merge result (`embarch-doc` `811380b`), and the worker that shipped it flagged the same thing unprompted
 **Scope:** umbrella
 **Hardware:** none
@@ -104,10 +104,27 @@ table has all seven.
 
 ## Done when
 
-- [ ] Decision 37's body no longer claims check 10 is the only user of `code`.
-- [ ] The `Users, 2026-09-05:` append is gone, its citation folded into the body.
-- [ ] The `Never derived from detail` rule and the "checks 5 and 22 are next" reasoning are
-      byte-identical or clearly preserved.
-- [ ] `no-cli`'s changed referent is either recorded as a deliberate reuse in decision 40, or
-      split into a new code that decision 37's list carries.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] Decision 37's body no longer claims check 10 is the only user of `code`. It names no
+      roster at all: which checks carry one is `spec.md`'s table's job, cited by link.
+- [x] The `Users, 2026-09-05:` append is gone, its citation folded into the body.
+- [x] The `Never derived from detail` rule is byte-identical; the "checks 5 and 22" clause is
+      preserved as the *test* it was evidence for — more states than statuses earns a code —
+      with both checks still named, since a bare rule loses why those two were the examples.
+- [x] `no-cli` is recorded as a **deliberate reuse** in decision 40: both states are "there is
+      no agent CLI here to consult" and take the same action, so a seventh code would split a
+      set nothing branches on. Decision 37 carries the general rule that a moved referent must
+      be written down, because nothing mechanical can see it.
+- [x] Item 3: decision 37's list now has all seven — `no-handshake` was missing since `4e48c77`.
+- [x] Ride-along compaction: `decisions/doctor.md` 11,918 → 7,774 B (63%), out of reserve, by a
+      **mission split** — decisions 23 and 40 moved verbatim into `decisions/mcp.md`. `016`'s
+      `decisions/doctor.md` item is closed; its `spec.md` item is untouched.
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped.
+
+## Notes
+
+- **No code change.** Items 1-3 are all text; `judge_mcp` already emits exactly the seven codes
+  decision 37 now lists, and the reuse decision confirms the arm it already has.
+- **`DOC-COMPACTION.md` §7 does not exist.** The human question this task's sibling `016` cites
+  moved to [DOC-COMPACTION-PASS.md](../../DOC-COMPACTION-PASS.md)'s "The gate" in the 2026-09-04
+  split; that doc has five sections. `016`'s citation is corrected; the same stale reference is
+  in this leg's dispatch and may be elsewhere.

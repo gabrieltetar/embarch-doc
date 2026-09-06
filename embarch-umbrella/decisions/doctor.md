@@ -4,7 +4,7 @@
 
 The checks, and why several of them distinguish states that look the same. Which are built and which are not is [../spec.md](../spec.md)'s table, not repeated per entry here. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). What checks 11 and 15 compare is its own group, [schema-skew.md](schema-skew.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Two checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), and check 10's MCP registration is [mcp.md](mcp.md).
 
 ### 18 — Check 5 distinguishes "no probe attached" from "a probe is attached but this user cannot open it"
 
@@ -36,16 +36,6 @@ It compares the bench's reported firmware version, over a handshake-only endpoin
 
 **All three unbuilt:** `doctor` assembles exactly checks 1-16, and *firewall* and *disk* appear nowhere in the crate.
 
-### 23 — Check 10 spawns `embarch-api` and confirms the MCP handshake completes, not just that a registration entry exists
-
-**The failure mode the check exists to catch — registered but broken — is exactly the one it cannot detect:** adding a registration says nothing about whether the registered command actually starts and speaks the protocol. It would spawn the exact registered command with a short timeout and send a minimal initialize handshake, **reporting success, failure and timeout distinctly.** A hand-rolled one-shot JSON-RPC exchange is sufficient; a full client is not needed for one round trip.
-
-**Built 2026-09-04; amended 2026-09-05 by decision 40.** Check 10 spawns the registered command with piped stdio, writes one `initialize` request and waits 10 s for a matching JSON-RPC response — no session, no client, no second request, and the three outcomes carry distinct `code` values into `--json` (decision 37). All of that stands. **Where it got the command line did not:** it read `claude mcp get embarch`'s human output, a format that turned out not to exist, so from 2026-09-05 it reads the agent CLI's own config instead.
-
-**Two states the decision did not name, and both are warns rather than either verdict.** No agent CLI here at all was already a warn and stays one — **though not for the reason given here**: decision 40 found `claude` is never on `PATH`, so that arm was the only one this check could reach from a terminal. The other is a registration with nothing to spawn, which keeps the warn for the reason that outlived the parse — an entry proves nothing, so a check that cannot start the server must not invent a verdict about it.
-
-**Timeout is Fail, not Warn, and stays its own code.** A server that takes longer than 10 s to say hello is a finding either way; the separate code is what makes a badly chosen budget visible as itself rather than as a mystery failure. The 10 s is assumed, not measured.
-
 ### 31 — Check 14: which program Core would flash each chip family with
 
 Core refuses to flash an nRF54L part with probe-rs, because that family stores code in RRAM and probe-rs does not model it. **The vendor tool that replaces it cannot be bundled — licensing, not effort — so it might simply be absent.** Discovering that at the moment someone flashes is the worst available time, **and discovering it in `doctor` is what `doctor` is for.**
@@ -57,13 +47,3 @@ Core refuses to flash an nRF54L part with probe-rs, because that family stores c
 **An older Core with no such subcommand is a Warn naming what it predates, not a Fail** — a real and recoverable state during a staged rollout, and the deployment procedure already assumes Core and the tooling around it move separately.
 
 **Amended by [decision 38](topology.md), which is what made this check run on `wsl-host` at all.** Its skip arm said `see check 1` and pointed at a check that was itself wrong there; each class now names what is missing. And the exe it invokes is the right file but runs under the WSL user's environment, not the service account's — a narrower form of the failure above, and open.
-
-### 40 — Check 10 reads the agent CLI's own config for the command to spawn, and knows our server by the binary it names rather than by the key it sits under
-
-**Decision 23's parse target does not exist.** Read for the first time on 2026-09-05 (Claude Code 2.1.261), `claude mcp get <name>` prints the name, `Scope:` and `Status:` — **no `Command:`, no `Args:`** — and there is no `--json` on `mcp get` or `mcp list`, so **check 10 could only reach `unreadable-entry` and its handshake was unreachable code.** Two more from that sitting: the working registration is keyed `embarch-api` while `MCP_SERVER_NAME` is `embarch`, so `doctor` said *not registered* beside a server the same session was using; and `claude` lives inside the VS Code extension, never on `PATH`, so from a terminal only the `no-cli` arm was reachable at all.
-
-**Read `~/.claude.json`, keep the spawn** — its `projects.<absolute cwd>.mcpServers` entries carry `command` and `args` already structured. Trusting `Status: ✔ Connected` instead **loses on the third finding rather than on taste**: reading it still means running `claude`, so that route reaches no verdict on the machine it was written for, and it hands the answer back to the CLI's own health check, which is what decision 23 built a spawn to reproduce independently.
-
-**Identity is the command, not the key**: `embarch`, else any entry whose `command` names an `embarch-api` binary (`file_stem`, so `.exe` counts), else the key `embarch-api` — and the verdict names which it found. Local scope for the working directory is searched before user scope, so *registered* stays a question about where `doctor` ran. `.mcp.json` is not searched: `init` never writes it (decision 12).
-
-**`env` closes; the environment does not.** The entry's `env` is applied on the spawn, but **the server still starts in `doctor`'s environment** rather than the CLI's — decision 23's gap shrunk, not closed. Codes are unchanged: a remote-transport entry is readable yet unspawnable, and shares `unreadable-entry` rather than taking a seventh code, since `init` writes only stdio and both are the same actionable thing. **Unverified live**; the lines a healthy and a degraded run should print are pinned in `tasks/umbrella/011`.

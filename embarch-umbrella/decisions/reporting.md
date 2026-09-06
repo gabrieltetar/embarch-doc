@@ -14,11 +14,15 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 Decision 23 asks check 10 to report success, failure and timeout **distinctly**, and decision 11 makes `--json` the contract a UI consumes. Those two together do not fit in three statuses: registered-but-broken and registered-but-hanging are both Fail, and the only thing separating them was an English sentence in `detail`.
 
-So `Check` grows an optional `code` — a short stable identifier, `null` for every check that has nothing to add. **Never derived from `detail`**, which is written for a human and is free to be rephrased; a consumer that had to match on it would break on a wording change. Check 10 is the only user today (`handshake-ok`, `handshake-failed`, `handshake-timeout`, `not-registered`, `no-cli`, `unreadable-entry`); checks 5 and 22 are the obvious next ones, since both exist to split states that share a status.
+So `Check` grows an optional `code` — a short stable identifier, `null` for every check that has nothing to add. **Never derived from `detail`**, which is written for a human and is free to be rephrased; a consumer that had to match on it would break on a wording change.
+
+**Which checks carry one is [../spec.md](../spec.md)'s table's job, not this entry's.** The roster that used to sit here went stale within a day of check 5 landing, and correcting it only restarts that clock. The durable half is the *test* a check has to meet, which is why checks 5 and 22 were named the obvious next ones — both exist to split states that share a status. **More states than statuses earns a code**; everything else stays `null`.
+
+**A code's referent is as much of the contract as its spelling.** Renaming one breaks a consumer loudly. Keeping the name and moving what it means breaks the same consumer silently — the one that did exactly what this decision asked and matched on the code — and no check in the gate can see it. So a code kept for a state that *replaced* the old one is recorded as a deliberate reuse in the decision that moved it; check 10's `no-cli` is the case so far ([decision 40](mcp.md)).
+
+**Check 10's seven**, the set that forced this: `handshake-ok`, `handshake-failed`, `handshake-timeout`, `no-handshake` (the handshake was never attempted — reported as itself rather than defaulting to a pass), `not-registered`, `unreadable-entry`, `no-cli`.
 
 **Additive on the wire**: the key is always present, so nothing has to tell "absent" apart from "no code", and every existing consumer of `--json` keeps working.
-
-**Users, 2026-09-05:** checks 1, 5, 10 and 14. Check 10 was the only one when this was written; that sentence was stale within a day of check 5 landing, which is the argument for citing [../spec.md](../spec.md)'s table rather than re-listing here.
 
 ### 39 — A check that resolves a directory prints which one, in `detail` and as a `path` field
 
