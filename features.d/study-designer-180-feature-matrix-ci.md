@@ -1,0 +1,1 @@
+| Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break | Shipped — all fourteen steps run green locally before landing; `ffi` type-checks the `extern "C"` surface but no staticlib cross-link exists to assert | local | 64 |

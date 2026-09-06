@@ -43,6 +43,8 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 | `eap-parse` | the `.eap` parser and a host-side **reference** interpreter | authoring, and pinning the semantics C must match |
 | `study-ui` | table-authoring types and the study builder | `embarch-ui` |
 
+**Every cell above is built on every push** by `.github/workflows/test.yml` — the two narrow cells with `cargo build`, not `cargo test`, which resolver v2 contaminates with the dev-dependency's `serde/std` ([decisions/crate.md](decisions/crate.md) decision 64).
+
 **The FFI boundary is panic-safe by construction:** `panic = "abort"` plus an explicit status code on every exported function, rather than `catch_unwind`, which needs `std`. Board→target-triple selection lives in dev-bench's CMake, and the soft-float variant is mandatory on Cortex-M33 here — a hard-float staticlib fails to link the moment any path touches an `f32`, which includes a field inside `Sample` and not just the exposed signatures.
 
 ## 4. What a study carries

@@ -36,4 +36,30 @@ The repo is [gabrieltetar/embarch-study-designer](https://github.com/gabrielteta
 
 A Rust panic unwinding across `extern "C"` into C firmware is undefined behavior, and decision 7 left it unaddressed. Resolved with `panic = "abort"` in `[profile.release]` — the natural fit for a `no_std` bare-metal target with no unwinding runtime (decision 5) — rather than wrapping every exported body in `std::panic::catch_unwind`, which needs `std` and is unavailable here. Every exported function returns an integer status (`0` = success, negative = a documented reason: buffer-too-small, capacity-exceeded, malformed input) plus out-parameters, so no Rust `Result` or panic ever reaches the C caller. Same philosophy as decision 18 applies at the HTTP boundary: name the specific failure, never let a raw internal error surface.
 
+### 64 — The feature matrix is six cells run by this crate's own CI, and the two narrow ones are `cargo build`, not `cargo test`
+
+Nothing built or tested a single feature cell of the most depended-on crate in the suite until 2026-09-05. That is what let decision 46's `alloc` cell ship broken: `alloc` did not imply `serde/alloc`, so `Backing<T, N>: Deserialize` did not exist, and **every real consumer also pulls something that turns on `serde/std`, so feature unification always supplied the missing half.** Only this crate's own single-feature build could ever see it, and no consumer's CI can — by construction, because a consumer is what hides it.
+
+`.github/workflows/test.yml` now runs, on push and pull_request, one named step per cell a real consumer actually uses — deliberately not a `2^7` powerset, which would be job count mistaken for coverage:
+
+| Cell | Why it is its own cell |
+|---|---|
+| default (no features) | dev-bench firmware's `no_std`, allocator-free shape (decisions 5, 15, 46). The one that must never break. |
+| `alloc` alone | The cell that was broken and unseen. Its own step with its own name, permanently. |
+| `std` | Implies `alloc`; what `embarch-core`/`embarch-api`/`embarch-ui` get. |
+| `gatt-extract`, `study-ui`, `eap-parse` | Each is `std`-only, off by default, and pulls its own dependencies (`regex`/`serde_json`/`ignore`, `toml`), so each rots independently. Run separately so one feature's compile error is not reported as another's. |
+| `ffi` | Below. |
+
+**The load-bearing half is that `default` and `alloc` are checked with `cargo build`, not `cargo test`.** This crate's only dev-dependency is `serde_json`, which pulls `serde` with `std`; edition 2021 means resolver v2, and resolver v2 unifies dev-dependency features into the library whenever it builds a target needing dev-deps — which `cargo test` always does. Measured with `cargo tree -f "{p} {f}"`: for the `default` cell `serde_core` is `result` with `-e normal` and `result,std` with `-e normal,dev`; for `std` both columns read `alloc,result,std`. So on the two narrow cells `cargo test` compiles a *different library than any consumer links*.
+
+**Verified rather than reasoned**: reintroducing the bug on a scratch copy, `cargo build --no-default-features --features alloc` fails with 16 errors while `cargo test --no-default-features --features alloc` passes 9/9. A matrix copied verbatim from `embarch-topology`'s all-`cargo test` shape would have been a step that cannot fail for the reason it was added — worse than an absent one, because it reads as coverage. The `std` and tool cells keep `cargo test` alone, since a `build` twin there is measurably the same build.
+
+**`ffi` is a `build` with a stated ceiling, and the workflow says so in its own comment.** A host `cargo build --features ffi` does type-check `src/ffi.rs`'s `extern "C"` surface (decisions 7, 23) against the rest of the crate in dev-bench's real `no_std`, no-alloc configuration, which is a real regression class. It does **not** prove what dev-bench needs: that the crate links as a `--crate-type staticlib` on a cross target with a panic handler and `panic = "abort"`. That build root does not exist yet, and adding a cross-compile step before the toolchain does would be the same fake-coverage mistake in a different place.
+
+Clippy `-D warnings` runs on `--all-features` (the widest set, and the only configuration asserting the tool features do not collide) and again on `default` and `alloc`, because a `no_std` build's lints are not a subset of a `std` build's. `--locked` throughout is honest here: `Cargo.lock` is committed, this crate being the FFI build root (decision 23).
+
+**Every step was run locally before the workflow was pushed, and all fourteen were green** — no cell was red on arrival.
+
+Not in scope, and still absent: a `release.yml` with the `verify-version` job `embarch-umbrella`'s decisions 27/29 put in four repos. That is a separate absence with a separate decision behind it.
+
 ---

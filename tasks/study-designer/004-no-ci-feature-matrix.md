@@ -1,6 +1,6 @@
 # 004 — this crate has no CI at all, so nothing ever builds its feature cells
 
-**State:** claimed by agent/study-designer/004-no-ci-feature-matrix, 2026-09-05 23:35
+**State:** done, 2026-09-05 — agent/study-designer/004-no-ci-feature-matrix
 **Source:** `embarch-study-designer/open.md` — "Nothing builds or tests the `alloc`-only
 feature cell on a schedule … the hole that let it sit unnoticed is still open, since this
 crate owns no CI of its own to close it." Swept 2026-09-05 by leg 014 when the queue hit
@@ -82,12 +82,52 @@ sixteen `decisions/` files are all under 80%. If your edit puts a file at or abo
 
 ## Done when
 
-- [ ] `embarch-study-designer/.github/workflows/test.yml` exists, with one clearly named step
-      per feature cell above and clippy `-D warnings` on the widest set.
-- [ ] Every step has been run locally and its result is stated — green, or red with the reason.
-- [ ] A decision entry records **which cells are covered and why those** (numbered per
-      `DOC-CONVENTIONS.md`; numbers are permanent), including the `ffi` judgment call.
-- [ ] `embarch-study-designer/open.md`'s `alloc` bullet is rewritten — the hole it describes is
-      closed by this, and the bullet must not keep claiming the crate owns no CI.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/study-designer-*`
-      fragment dropped.
+- [x] `embarch-study-designer/.github/workflows/test.yml` exists — 14 steps, one
+      named per feature cell, clippy `-D warnings` on `--all-features` plus the
+      two narrow cells.
+- [x] Every step run locally. **All fourteen green; no cell was red on arrival.**
+- [x] Decision 64 (`embarch-study-designer/decisions/crate.md`) records the cells,
+      why those, and the `ffi` judgment call.
+- [x] `open.md`'s `alloc` bullet rewritten — the section now names the two holes
+      that remain (no staticlib cross-link, no `release.yml`) and no longer claims
+      the crate owns no CI.
+- [x] Gate green; `changelog.d/study-designer-feature-matrix-ci.added.md` and
+      `features.d/study-designer-180-feature-matrix-ci.md` dropped.
+
+## What was found
+
+**The shape the task told me to copy would not have worked, and this was measured,
+not reasoned.** `embarch-topology`'s workflow is all `cargo test`. This crate's
+only dev-dependency is `serde_json`, which pulls `serde` with `std`; edition 2021
+means resolver v2, which unifies dev-dependency features into the library for any
+target needing dev-deps — and `cargo test` always does. `cargo tree -f "{p} {f}"`:
+
+| cell | `serde_core`, `-e normal` | `serde_core`, `-e normal,dev` |
+|---|---|---|
+| default | `result` | `result,std` |
+| `alloc` | `result` | `result,std` |
+| `std` | `alloc,result,std` | `alloc,result,std` |
+
+So on `default` and `alloc` a `cargo test` step compiles a different library than
+any consumer links. **Proved by reintroducing 003's bug** (`alloc = []`) on a
+scratch copy: `cargo build --no-default-features --features alloc` fails with 16
+errors, `cargo test --no-default-features --features alloc` passes 9/9. A
+`cargo test`-only matrix would have been exactly the fake-coverage step this task
+warned against. Those two cells therefore get `cargo build` steps; `std` and the
+three tool features keep `cargo test` alone, because the columns are identical
+there and a `build` twin would be duplicated work pretending to be coverage.
+
+`Cargo.lock` is committed, so `--locked` is honest. No `apt` step: unlike
+`embarch-topology` nothing here needs libudev, and every optional dependency is
+pure Rust. No `Cargo.toml` change was needed for any cell.
+
+**Local results, all green:** `build`/`test` default; `build`/`test` alloc;
+`build`/`test` std; `test` gatt-extract; `test` study-ui; `test` eap-parse;
+`build` ffi; clippy `--all-features`, default and alloc, each `--all-targets
+-- -D warnings`.
+
+**`ffi` is a `build` with a stated ceiling** written into the workflow's own
+comment: it type-checks the `extern "C"` surface on the host in dev-bench's real
+`no_std`/no-alloc shape, and does **not** prove the `--crate-type staticlib`
+cross-link, whose build root does not exist. That limit is now `open.md`'s first
+bullet rather than an invisible gap.
