@@ -14,7 +14,7 @@ Working tree clean and pushed first — **git is where everything you delete goe
 
 ## The gate
 
-**Mechanical, in CI**, all at once via `scripts/check-docs.py`: `check-doc-size.py` (caps and the ratchet), `check-decision-refs.py` (**every `decision N` still resolves — what makes merging and file-moving safe**), `check-links.py`, `check-staleness.py`, `check-doc-conventions.py`, `build_changelog.py --check`. Plus a diff of `collect-open-questions.py`: **a question may disappear only if you can name it as answered.**
+**Mechanical**, all at once via `scripts/check-docs.py` — which names its own checks, so this list does not. The two that matter most to a compaction pass: `check-doc-size.py` (caps and the ratchet) and `check-decision-refs.py` (**every `decision N` still resolves — what makes merging and file-moving safe**). Plus a diff of `collect-open-questions.py`: **a question may disappear only if you can name it as answered.**
 
 **Human, and not skippable — one question, asked honestly:**
 

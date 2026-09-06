@@ -37,6 +37,8 @@ Three practices:
 | Reversal range | **20 KB** | `reversals/rows-<a>-<b>.md` |
 | Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
+**This table is `embarch-doc`'s corpus only.** The `embarch-fleet` repo — the fleet's own rules, which a leg never checks out — was covered by nothing until 2026-09-05, and its two design docs drifted to 32 KB while `risks.md` cited this section as the cap that had split it out. It now has its own ratchet, `embarch-fleet/scripts/check-fleet-doc-size.py`, run by that repo's `deploy.py`: same caps-plus-baseline mechanism, no reserve band, because the reserve exists to keep a *worker* from meeting a wall mid-edit and no worker ever writes those files.
+
 **Nothing is over cap and the baseline holds no exceptions.** A file that is somehow pinned reaches its cap, retires its entry, and is capped from then on. `--report` shows the corpus, `--update` records progress and **refuses a regression**, `--pressure` lists what is near its limit **before** a task that must write there is dispatched. Per-sub-project overrides tighten a cap where [the second pass](DOC-COMPACTION-PASS.md) has landed.
 
 **An inventory of a suite still being built has no quiet state**, so the in-flux warning's wait never comes and no pass helps — every row must be there. `suite/features.md` is therefore **assembled**, one fragment per row, and the budget it answers to is the row's ([features.d/](features.d/README.md)).

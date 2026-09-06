@@ -33,7 +33,9 @@ The **queue** stays in this repo — `tasks/`, `inbox/`, `status.d/`, `changelog
 
 `supervisor-log.md` runs the other way: it is the fleet's own output, so it lives in the framework repo even though a leg writes it. That makes a unit's fold two commits in two repos, which reopens a window the protocol closed by making it one — so `scripts/fold-commit.py` commits both or neither.
 
-**This repo's `.claude/`, its four protocol READMEs and its `scripts/` fleet shims are generated**, rendered from `embarch-fleet/templates/` by `install.py`. Edit the template, never the copy; `install.py --check` is a check in [`scripts/check-docs.py`](../scripts/check-docs.py) and is what catches the difference.
+**This repo's `.claude/`, its four protocol READMEs and its `scripts/` fleet shims are generated**, rendered from `embarch-fleet/templates/` by `install.py`. Edit the template, never the copy; `install.py --check` is a check in [`scripts/check-docs.py`](../scripts/check-docs.py) and is what catches the difference. **Nothing wires that into CI and nothing should**: CI checks out one repo and has no framework beside it to diff against, so the local wrapper — which every worker and every fold runs — is the guard.
+
+**The denylist the fleet checks against lives outside every repo.** `check-client-names.py` (2026-09-05) refuses a client's name in a tracked file's contents or path or in a branch's commit messages, reading its names from the fleet's state directory, and it never prints what it matched. It is the ninth check in the wrapper for this repo, and the merge gate runs it again per code repo — the wrapper reaches 1.19 MB of the suite's 5.9 MB, and the 2026-09-04 leak it exists to prevent a repeat of was mostly on the other side.
 
 ## What it deliberately does not do
 

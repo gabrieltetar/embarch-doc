@@ -36,12 +36,22 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # everyone runs made every feature-shipping branch red (tasks/doc/002). It runs
 # in CI on a push to main, and the supervisor's fold assembles.
 #
-# install.py is the last, and it checks a different kind of thing: this repo's
+# The last two live in the embarch-fleet repo and are invoked by their framework
+# path rather than through their shim, so that both are SKIPPED rather than RED
+# when that checkout is absent -- an instance without the framework beside it is
+# a broken setup, not a doc defect.
+#
+# install.py --check asserts a different kind of thing from the rest: this repo's
 # `.claude/`, its four protocol READMEs and the fleet shims in `scripts/` are
-# rendered from templates in the embarch-fleet repo, so a hand-edit here is a
-# change that the next install silently reverts. It lives in that repo, so it is
-# skipped rather than failed when the checkout is absent -- an instance without
-# the framework beside it is a broken setup, but it is not a doc defect.
+# rendered from templates in the framework repo, so a hand-edit here is a change
+# that the next install silently reverts.
+#
+# check-client-names.py is the ninth, added 2026-09-05. It runs on ONE repo, this
+# one, and the supervisor runs it again per code repo in the merge gate
+# (`embarch-fleet/protocol.md` §10) -- 80% of the suite's bytes are in repos that
+# never run this wrapper, and the 2026-09-04 leak was mostly on that side. It
+# cannot be one pass over the sibling repos, because a worker and a leg run this
+# from a worktree where sibling resolution finds other worktrees.
 CHECKS = (
     ("check-links.py", []),
     ("check-staleness.py", []),
@@ -52,6 +62,8 @@ CHECKS = (
     ("build_features.py", ["--check"]),
     (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"),
      ["--check", "--repo", os.path.dirname(HERE)]),
+    (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "check-client-names.py"),
+     ["--repo", os.path.dirname(HERE)]),
 )
 
 
