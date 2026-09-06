@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `doctor` check 17's `bind-too-narrow` now needs the service registration, not a loopback hit, and its fix no longer offers the `setup` that would green it.
+## 2026-09
+
 ### Changed
 - `doctor` check 17 tells a Core that is down from one bound where you cannot reach it; decision 22's firewall and disk-space checks are retired unbuilt.
 ## 2026-09
