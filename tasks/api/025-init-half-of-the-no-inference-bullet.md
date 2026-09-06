@@ -1,6 +1,6 @@
 # 025 — Two `embarch-api/open.md` bullets have been answered in another repo and neither says so
 
-**State:** open
+**State:** claimed by agent/api/025-open-md-two-answered-bullets, 2026-09-06 04:35
 **Source:** `inbox/api-init-half-of-the-no-inference-bullet.md`, dropped by `tasks/umbrella/022` 2026-09-06, which built the `init` half in another sub-project and so could not edit this file (`../../embarch-fleet/protocol.md` §3).
 **Scope:** api
 **Hardware:** none for the doc edit. The surviving clause is itself hardware-gated; recording that it survives is not.

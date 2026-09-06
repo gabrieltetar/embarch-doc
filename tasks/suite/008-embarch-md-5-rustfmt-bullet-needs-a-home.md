@@ -1,6 +1,8 @@
 # 008 — `embarch.md` §5's rustfmt bullet is a decision record wearing a principle's clothes
 
-**State:** open — **announced and parked, `ts 1788689863.494449` (2026-09-06 04:57 MDT), window closes 05:27 MDT.** Leg 018 ended before the window closed. **The next leg completes this window; it does not restart it** (`../../embarch-fleet/ops.md` §4). Re-read the thread on that `ts`: a reply saying go runs it now, cancel drops it back to `open` with the reply quoted, silence past 05:27 means it may run.
+**State:** open — **announced and parked, `ts 1788689863.494449`, posted 2026-09-06 **04:17:43 MDT**, window closes **04:47:43 MDT**.** Leg 018 ended before the window closed. **The next leg completes this window; it does not restart it** (`../../embarch-fleet/ops.md` §4). Re-read the thread on that `ts` before acting: a reply saying go runs it now, cancel drops it back to `open` with the reply quoted, silence past 04:47:43 means it may run. **Leg 018 read that thread at 04:31 MDT and it had no replies.**
+
+> **Times corrected 2026-09-06 04:33.** I first wrote this line as "posted 04:57, closes 05:27" — an hour out, because I estimated the wall-clock from Slack `ts` values instead of asking the machine. The corrected times are derived from a message whose MDT rendering Slack gave me (`ts 1788687484` = 03:38:04 MDT) plus the 2,379-second offset, and cross-checked against `date`. **A parked window is a fact the next leg acts on without re-deriving**, so an hour of error here is an hour of a leg waiting for a window that had already closed.
 **Source:** leg 017's own `suite/007` log entry, which named this and asked that the next thing landing here force the question. `api/024` is that thing.
 **Scope:** suite — **never dispatched to a worker.** The supervisor executes it (`../../embarch-fleet/protocol.md` §8).
 **Hardware:** none
