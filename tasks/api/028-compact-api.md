@@ -1,6 +1,6 @@
 # 028 — `embarch-api/open.md` and `spec.md` both crossed into reserve on the same commit
 
-**State:** claimed by agent/api/028-compact-api, 2026-09-06 16:25
+**State:** done on agent/api/028-compact-api, 2026-09-06
 **Source:** `api/024` spent the last 3 and 6 bytes of these two files' headroom writing decision 56; `DOC-COMPACTION.md` §2
 **Scope:** api
 **Hardware:** none
@@ -48,9 +48,43 @@ the other half of the same squeeze and is deliberately a separate task because
 
 ## Done when
 
-- [ ] `open.md` and `spec.md` are both clear of their reserve lines.
-- [ ] Every `Must not delete:` item above is still readable.
-- [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
+- [x] `open.md` and `spec.md` are both clear of their reserve lines. `open.md`
+      4,711 -> **4,385 B** (85.6%), `spec.md` 9,333 -> **9,087 B** (88.7%);
+      `check-doc-size.py --pressure` reports both PAID.
+- [x] Every `Must not delete:` item above is still readable. The `board` bullet
+      keeps the derived-from-`build_info.yml` claim, the day of bring-up and the
+      unbuilt `validate`/`status` comparison; the `error_kind` bullet is
+      untouched, ordering and HTTP-status warning intact; `spec.md` §2's
+      no-inference-as-fact invariant and §6's trust-boundary sentence are
+      untouched.
+- [x] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words: *what does someone starting on `embarch-api`
       tomorrow lose if this paragraph is gone?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What went, and what did not
+
+**`open.md`.** The smoke-harness bullet's two *closed* halves — the shared
+client's own tests, and the bearer sweep — were history, and decisions 54, 55
+and 56 hold them; what survives is the live residual, that the gate reports no
+blind spot of its own. Two dates and one flourish went from the `board` bullet.
+The **Settled-deferred** bullets kept every "why not" clause and lost only
+wording.
+
+**The last bullet was left in place, as `In flux:` requires** — its numbers were
+re-measured rather than restated, and one had drifted: `surface.md` is 10,946 B,
+not the 10,928 written there. Only that figure changed (and the four files
+re-sorted descending to stay sorted). `core-link.md` at 12,266/12,288 is still
+true and still filed under `tasks/api/026`.
+
+**`spec.md`.** §3's opening paragraph restated `interfaces/config.md` rows 37,
+39, 50, 54, 56 and 60 nearly verbatim — a §3 duplication. It now points there
+for `default_target` narrowing, the `snippets` literal and build-dir naming, and
+keeps only the two rules an agent would otherwise invert (`static` **refuses**
+rather than accepts-and-drops; it has exactly one target, itself, the
+`[[projects.targets]]` menu retired). §7's capture-cap row keeps its
+`[assumed]` flag and points at decision 18, which says in its own text that the
+provenance is the load-bearing part and owns the reasoning. "neither
+privileged" went from §5, being already stated in §1.
+
+No fact moved to a doc outside `embarch-api/`.
