@@ -9,7 +9,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | Load this for | Decisions | Size |
 |---|---|---|
 | [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, and the one target a `static` project has | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 53 | 7.5 KB |
-| [How far the tests reach](decisions/tests.md) — the named smoke-harness tier, the one-module `lib` target, and where the bearer sweep's exhaustiveness comes from | 30, 46, 54 | 5.3 KB |
+| [How far the tests reach](decisions/tests.md) — the named smoke-harness tier, the one-module `lib` target, where the bearer sweep's exhaustiveness comes from, and how the gate came to reach the shared client's own tests | 30, 46, 54, 56 | 10.6 KB |
 | [The tool and CLI surface](decisions/surface.md) — what is exposed, how failures are shaped, watching a study live, what this binary says about itself | 16, 23, 24, 29, 34, 35, 41, 47, 50, 52 | 10.7 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 10.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 13, 20, 21, 22, 51 | 10.8 KB |

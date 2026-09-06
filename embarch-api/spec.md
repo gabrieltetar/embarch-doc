@@ -45,7 +45,7 @@ Today `embarch-api` runs under WSL2 and Core native on Windows on the same physi
 
 ## 5. Modules
 
-Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither privileged; the map is [interfaces/modules.md](interfaces/modules.md). `crates/embarch-core-client/` is a path dependency rather than a workspace member, and `embarch-ui` path-depends on it too — **a change there reaches a repo this one does not own.**
+Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither privileged; the map is [interfaces/modules.md](interfaces/modules.md). `crates/embarch-core-client/` is a **workspace member** ([decisions](decisions/tests.md) 56), so one `cargo test`/`cargo clippy --all-targets` at the repo root reaches its own tests; `embarch-ui` path-depends on it from outside that workspace — **a change there reaches a repo this one does not own.**
 
 `main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` does not size the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
 
