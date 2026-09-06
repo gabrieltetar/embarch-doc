@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Added
+- The reference host decoder now has tests that always run — stdlib `unittest`, no west, no siblings; `run-all.sh` runs them before its west guard.
+## 2026-09
+
 ### Changed
 - spec.md 9235 → 8317 B: purpose cut to its three sentences, and the tunables' measured provenance now lives only with the Kconfig symbols in interfaces/integration.md.
 ## 2026-09
