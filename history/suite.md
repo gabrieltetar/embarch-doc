@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- The rustfmt reversal condition in [embarch.md](../embarch.md) §5 now says why neither `cargo fmt --check` nor `--all --check` is right on its own.
+## 2026-09
+
 ### Decided
 - rustfmt is not enforced and nobody runs cargo fmt: 81 files / 1,881 lines across six crates, and it decays without a check only protocol §10 can carry. embarch.md §5 has the reversal condition.
 ## 2026-09
