@@ -53,7 +53,7 @@ Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules, neither privi
 
 **Inbound is "whoever can spawn the process"** — MCP and CLI alike. No API key, bearer token or session at this layer. A deliberate simplification; [open.md](open.md) carries what it costs.
 
-**Outbound** is `EMBARCH_TOKEN`: config `token`, then `token_env`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../embarch-token.md).
+**Outbound** is `EMBARCH_TOKEN`: config `token`, then `token_env`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../embarch-token.md). Whichever value resolves is attached by **one funnel** in `embarch-core-client`, the only place there that authenticates or sends one ([decisions](decisions/core-link.md) 55).
 
 ## 7. Constants
 

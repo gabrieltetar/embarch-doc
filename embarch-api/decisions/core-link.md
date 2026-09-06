@@ -1,6 +1,6 @@
 # embarch-api decisions: Reaching Core
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-06.
 
 Address resolution, artifact transfer, the shared client crate, and the stack that had to move.
 
@@ -59,3 +59,10 @@ Core's log endpoints assume a long-running service. This crate is the opposite: 
 **Per-user, not machine-wide.** The machine data dir works for Core, which runs as a service; it does not work here, because this runs as the engineer and `/var/lib` is root-owned. Both alternatives were worse: hard-failing makes logging depend on a one-time `sudo`, and "machine dir if writable, else per-user" is a runtime probe that can land the writer and the reader in **different places**. Nothing is lost, since single-engineer scope means there is no second user to be machine-wide for.
 
 **Both modes had to be given something to log:** a one-shot CLI run emitted nothing at all, since no subcommand calls the tracing macros on its own. Two lines now bracket every run. **The file gets two layers rather than one teed writer** — Core tees a single ANSI-coloured stream to both stderr and its logfile, so every line in its deployed log carries escape sequences a UI renders as garbage. The two-layer form has **no filter of its own**, so the first build wrote `hyper` and `reqwest` trace output into the file; it needs one stated explicitly.
+
+### 55 — One funnel applies the bearer token; nine routes were exempt from the rule that said so
+`send`/`send_no_content` consume the response, so the nine routes giving a status its own meaning (a `404` for "not enrolled", a `409` for a topology mismatch) and the SSE stream could not use them; each applied `.bearer_auth(…)` itself. All nine did send it; `client.rs`'s comment said none existed. **A convention nine of twenty-five sites are exempt from is not one** — and the comment was the worse half: a new route copies the hand-written form while the sentence a reader trusts says it cannot.
+
+So the funnel moves down. `dispatch` applies the token and the timeout and sends; `send`/`send_no_content` are thin readers over it; a route needing typed status handling hands it a `RequestBuilder` and reads the status itself. `bearer_token()` is **retired**. The guard is decision 50's shape applied to auth: one `.bearer_auth(…)` in the crate, no send site outside `dispatch`, both red by mutation.
+
+***Rejected: `default_headers` on the `ClientBuilder`.*** It attaches the token to every request the `reqwest::Client` makes, not to this client's *routes*, and `http()` hands that handle out. It also hides the credential from every call site, leaving the sweep ([decisions](tests.md) 54) nothing to assert. **Nothing was unauthenticated before this**; the wire is unchanged.

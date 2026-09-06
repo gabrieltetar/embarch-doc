@@ -1,6 +1,6 @@
 # 022 — 9 of `CoreClient`'s 25 routes set the bearer token by hand, and a comment says none do
 
-**State:** claimed by agent/api/022-bearer-auth-funnels, 2026-09-06 04:15
+**State:** done — agent/api/022-bearer-auth-funnels, 2026-09-06
 **Source:** `api/020`'s reviewer, 2026-09-06, which found this while verifying decision 54 and
 explicitly left the filing to the supervisor.
 **Scope:** api
@@ -61,12 +61,47 @@ somewhere it should not be, silently". The funnel keeps the token attached per-r
 
 ## Done when
 
-- [ ] No `.bearer_auth(…)` call site outside the funnels, or each survivor is named with why it
-      cannot be folded.
-- [ ] `client.rs:786`'s comment is true as written, or rewritten to be.
-- [ ] A guard test that fires if a new route builds a request outside the funnels — the
-      decision-24 shape, not a second hand list.
-- [ ] `api/020`'s `the_sweep_calls_every_networked_method` still passes, and the red
-      demonstration is re-run against the new structure.
-- [ ] A decision entry, and `embarch-api/open.md` updated if this changes what that file claims.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] No `.bearer_auth(…)` call site outside the funnels, or each survivor is named with why it
+      cannot be folded. **Zero survivors.** All eleven sites collapse to one, inside a new
+      `CoreClient::dispatch(request, timeout: Option<Duration>)` that applies the token, applies
+      the timeout and sends. `send`/`send_no_content` are now readers over it; the nine typed
+      routes and `open_study_events` pass it a `RequestBuilder` and read the status themselves.
+      `timeout: None` is the streaming case, which is what the SSE route actually needed.
+- [x] `client.rs:786`'s comment is true as written, or rewritten to be. **The method it sat on is
+      gone**: `bearer_token()` is retired, so nothing outside `dispatch` can reach the token at
+      all. `http()` survives — `study_events` still builds its own request — with its doc saying
+      it carries no credential.
+- [x] A guard test that fires if a new route builds a request outside the funnels — the
+      decision-24 shape, not a second hand list. `every_outbound_request_is_sent_through_the_one_funnel`
+      in `tests/core_client_http.rs`, over the same lexical scan `api/020` built: exactly one
+      `.bearer_auth(…)` in the crate, and no `.send()`/`.execute(` outside `dispatch`.
+- [x] `api/020`'s `the_sweep_calls_every_networked_method` still passes, and the red
+      demonstration is re-run against the new structure. It passes untouched — every route still
+      builds its own `self.client.<verb>(…)`, so the scan sees the same 25 methods. Three
+      mutations, each reverted: **drop `.bearer_auth` from `dispatch`** → the new guard red on
+      `found 0`, the sweep red on `GET /status went out without the bearer token`;
+      **add a route that sends its own request** → the new guard red naming
+      `client.rs:833 (in mutation_probe)`, the sweep's exhaustiveness test red naming
+      `mutation_probe`; **re-introduce a hand-written `.bearer_auth` on `remove_signal`** → the
+      new guard red naming that line. The second is the one that matters: the old sweep could
+      only say "you forgot to call it", the guard says which line is wrong.
+- [x] A decision entry, and `embarch-api/open.md` updated if this changes what that file claims.
+      Decision 55 in `decisions/core-link.md`, as directed. `open.md`'s bearer bullet and its
+      headroom bullet both moved; `spec.md` §6 gained the funnel; decision 54 in
+      `decisions/tests.md` gained an amendment saying the sweep now measures a mechanism.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What this cost, and what it did not
+
+**The entry took 1,387 B of `core-link.md`'s 1,409.** The file is now 12,266 B against a 12,288 B
+cap — in reserve, with `tasks/api/026-compact-api.md` filed in this commit. `In flux: yes` there,
+blocked on `api/001`: decisions 48/49's event stream has still never met a real Core, and
+shortening them now would state as settled the thing that run exists to test. The task names the
+verbatim split as the move that is *not* blocked.
+
+**Nothing outside this repo sees a change.** `dispatch`, `http()` and the retired `bearer_token()`
+are all `pub(crate)`; no `pub` signature moved, no wire byte moved, no error string a caller
+renders with `{}` moved. `embarch-ui`, which path-deps this crate, recompiles unchanged.
+
+**No hardware-verification debt.** The property under test is which header goes out, and
+`MockCore` observes that on a loopback socket.
