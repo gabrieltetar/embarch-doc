@@ -1,24 +1,10 @@
 # embarch-umbrella decisions: Integrating a firmware repo
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-06.
 
-What `embarch init` writes into somebody else's repo, and what it refuses to guess.
+What `embarch init` derives from a firmware repo, and what it refuses to guess. The footprint it leaves is [integration.md](integration.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
-
-### 10 — Per-repo project config lives in an `embarch/` subfolder of that repo, scaffolded by `embarch init`
-
-Three things follow from that shape:
-
-- **Scoped by construction.** An `embarch-api` started with this config sees only this repo's projects, so **`list_projects` in a firmware repo cannot offer up an unrelated board to flash.**
-- **A separate build directory is the default, not an option.** Sharing one build tree with the engineer's interactive builds means **EmbArch and the human clobber each other** — different board revisions, different pristine-vs-incremental state. `init` writes the separate directory into the scaffolded command and points the artifact path at it.
-- **It is a complete config, not a fragment.** The Core section gets duplicated into every repo, which is real duplication — **accepted because that section is three lines and an include mechanism is new code in `embarch-api`'s config loader.** Carried to [../open.md](../open.md).
-
-### 12 — Local-only integration touches nothing that is committed
-
-For a repo owned by someone else — a client's firmware repo — **`init` must not dirty tracked files.** So the folder is excluded via `.git/info/exclude`, **not** by editing the repo's committed ignore file, and the MCP server is registered at the agent's per-project, per-user scope rather than by writing a config at the repo root. **Both are reversible and invisible to anyone else cloning the repo.** Committing the integration later is a deliberate follow-on step, not the default.
-
-**And the shape it takes when a team does commit it: a checked-in registration naming `embarch-api` on `PATH`, with a repo-relative config path** — portable, and `embarch setup` already puts the binary on `PATH` (decision 28). Every other shape loses: env expansion is two variables to get wrong with an opaque failure when unset, a wrapper script needs a Windows twin, absolute paths break for every other engineer, and umbrella-as-the-MCP-server is refused outright (decision 5).
 
 ### 13 — `init` derives what it can *by looking rather than assuming*, and refuses to guess the rest
 
@@ -109,3 +95,11 @@ skip it — "grows forever" is still
 literally true of build directories, and check 16 is what makes it visible.
 [../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit and now
 says what actually ships.
+
+### 41 — `init` never writes an inferred board as fact, and picks none of several recorded builds
+
+Serving [`embarch-api/spec.md`](../../embarch-api/spec.md) §2 — **an inferred hardware fact is never recorded as fact** — whose last violation was `init`'s most load-bearing field: `build_command` came out of `build_info.yml` carrying its `-b <board>`, and that file records **whatever was last built**, not what is on the probe. A day of bring-up was lost to exactly that.
+
+**The mechanism is the placeholder `chip` has always used** (decision 13): the board becomes `CHANGE-ME`, and the displaced value is quoted back in a comment and on stdout with **how old that build is** — an age, not a date, since `init` runs today either way. Nothing else is redacted; the west binary and app path are this repo's own facts. **Rejected: a marker beside a working value**, which changes nothing when the comment is skipped — and skipped is the whole failure. Commenting `build_command` out loses too: it leaves a config `embarch status` cannot load.
+
+**Several recorded builds — [open.md](../open.md)'s undecided half — are all named and none picked.** `init` walks the repo for every `build_info.yml` rather than only `build/`, reports each with the board and age it recorded, and scaffolds the bare template. **Rejected: taking the newest** — the dev build behind the incident *was* the newest, so an ordered guess is the same defect with a rule attached. **The Zephyr/west arm is unchanged**; decision 17 settles it structurally there.

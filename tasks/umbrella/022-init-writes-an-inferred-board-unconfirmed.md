@@ -1,6 +1,6 @@
 # 022 — `embarch init` writes a board it inferred from a build artifact, unconfirmed
 
-**State:** claimed by agent/umbrella/022-init-inferred-board, 2026-09-06 02:22
+**State:** done, 2026-09-06 — agent/umbrella/022-init-inferred-board
 **Source:** [embarch-umbrella/open.md](../../embarch-umbrella/open.md) — "Whether `init` should
 warn on a repo holding more than one recorded build is undecided … a static-discovery repo with
 several recorded builds still silently gets one picked for it" — and
@@ -81,19 +81,56 @@ clause survives.** Do not edit it, and do not leave the fact unrecorded.
 
 ## Done when
 
-- [ ] `init` never writes an inferred board or build command as confirmed fact, by a mechanism
+- [x] `init` never writes an inferred board or build command as confirmed fact, by a mechanism
       that works with no TTY.
-- [ ] A repo with several recorded builds is reported, with every candidate named, and none is
+- [x] A repo with several recorded builds is reported, with every candidate named, and none is
       picked silently.
-- [ ] The Zephyr/west arm is byte-identical.
-- [ ] Tests cover: one recorded build (inferred, marked), several recorded builds (reported, not
+- [x] The Zephyr/west arm is byte-identical.
+- [x] Tests cover: one recorded build (inferred, marked), several recorded builds (reported, not
       picked), and none (unchanged behaviour).
-- [ ] A decision entry in `embarch-umbrella/decisions/projects.md` naming the mechanism, the
+- [x] A decision entry in `embarch-umbrella/decisions/projects.md` naming the mechanism, the
       rejected alternative, and `embarch-api/spec.md` §2 as what it serves; `decisions.md`'s
       index row added if the file is new.
-- [ ] `embarch-umbrella/open.md`'s "Whether `init` should warn…" bullet deleted as answered,
+- [x] `embarch-umbrella/open.md`'s "Whether `init` should warn…" bullet deleted as answered,
       and the file still under its 5,120 B cap.
-- [ ] `tasks/umbrella/009` extended if this unit spends `projects.md`'s reserve.
-- [ ] An `inbox/` drop for `embarch-api/open.md`'s half-answered bullet.
-- [ ] `changelog.d/` fragment; `features.d/` row if this is user-visible behaviour.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `tasks/umbrella/009` extended if this unit spends `projects.md`'s reserve.
+- [x] An `inbox/` drop for `embarch-api/open.md`'s half-answered bullet.
+- [x] `changelog.d/` fragment; `features.d/` row if this is user-visible behaviour.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What was decided
+
+Recorded as [decision 41](../../embarch-umbrella/decisions/projects.md).
+
+- **The mechanism is the `CHANGE-ME` sentinel `chip` has always used**, not a marker comment
+  beside a working value and not a commented-out or withheld `build_command`. A comment cannot
+  stop the failure it describes, and a config `embarch status` cannot load is a worse trade than
+  one field a human must confirm — which is the trade `chip` already made and proved.
+- **Several recorded builds: every candidate named, none picked.** Rejected taking the newest,
+  because the ad hoc dev build behind the original incident *was* the newest.
+- **An age, not a date**, on the inferred value — `init` runs today either way, so a date stamped
+  at scaffold time dates the scaffolding rather than the build the board came from.
+- **`decisions/projects.md` was split rather than compacted.** Decision 41 is 1,548 B against
+  1,381 B of headroom, so decisions 10 and 12 moved verbatim into a new
+  [`decisions/integration.md`](../../embarch-umbrella/decisions/integration.md), leaving
+  `projects.md` at 10,491 B (85.4%). See `009`'s **Reserve** field, including why decision 26 —
+  the obvious candidate — is the wrong one to move.
+
+## Hardware-verification debt
+
+**None of this has been run against a real firmware repo or a real `embarch-api`.** Unit tests
+cover the three cases against fixture data; `init` itself was deliberately not executed, because
+its non-scaffolding half shells out to `claude mcp add` and would mutate the owner's real agent
+config. What is owed, in an owner session: `embarch init` in a static-discovery repo that has a
+`build/build_info.yml`, confirming the written config loads in `embarch-api` with the board still
+`CHANGE-ME`, and the same in a repo with a second `build_info.yml` elsewhere in the tree.
+
+## Left for someone else
+
+`embarch-api/open.md`'s first bullet is half-answered and is another sub-project's file — dropped
+as `inbox/api-init-half-of-the-no-inference-bullet.md`.
+
+`find_artifact` still picks the shortest `zephyr.hex` under `build/` silently, and was left alone
+deliberately: it infers a *path shape* (sysbuild versus plain) rather than a hardware fact, so
+`embarch-api/spec.md` §2 does not reach it, and the not-found case already warns.
+

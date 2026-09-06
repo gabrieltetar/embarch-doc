@@ -1,0 +1,1 @@
+| `init` never writes an inferred board as fact | Shipped — the board from `build_info.yml` becomes `CHANGE-ME` and is quoted back in a comment with the build's age; a repo with several recorded builds has all of them named and none picked. **Unit tests only; no scaffolded config has been fed to a real `embarch-api` since the change** | unit | 41 |

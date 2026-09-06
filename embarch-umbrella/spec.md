@@ -53,7 +53,7 @@ Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella'
 | Command | Scope | Behaviour |
 |---|---|---|
 | `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` prints the whole plan and changes nothing** (decision 21); `--dev-bench-repo` records the checkout check 13 compares against |
-| `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. `--uninstall` reverses all of it |
+| `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. **An inferred board is never written as fact, and several recorded builds are all named rather than one picked** (decision 41). `--uninstall` reverses all of it |
 | `embarch doctor` | anytime | The full check chain. `--json`. **Nothing in it deletes anything** — `--prune` is unbuilt (decision 26) |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
@@ -96,4 +96,4 @@ Numbers 1-17 are what the code emits and what `--json` carries — `n`, `name`, 
 
 Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of truth — and **writes no token value into any config file.** On a same-machine topology `setup` starts Core once so the machine-wide token file exists, then confirms `embarch-api` can discover it. Across machines there is no shared filesystem and no solution: it prints the export line for a value the human reads off the Core machine.
 
-Committing a repo integration for a whole team is a follow-on step `init` does not take; its shape is [decision 12](decisions/projects.md).
+Committing a repo integration for a whole team is a follow-on step `init` does not take; its shape is [decision 12](decisions/integration.md).

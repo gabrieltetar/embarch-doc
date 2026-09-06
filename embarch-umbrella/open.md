@@ -1,6 +1,6 @@
 # embarch-umbrella: open
 
-**Status:** active, 2026-09-03.
+**Status:** active, 2026-09-06.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -29,5 +29,3 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **macOS is unvalidated and has no machine to validate on.** Not blocking: a Mac-only engineer walks the guide once the primary topology is proven. **Gatekeeper may make "just download and run" false there**, the aarch64 build unsigned.
 
 - **Check 10 still spawns the MCP server in `doctor`'s own environment, not the agent CLI's** ([decision 40](decisions/mcp.md)). The registered `env` is applied now the entry is read structurally, so a server needing one of *those* is covered; one needing something only the CLI supplies fails here and works there. **And the rebuilt check has never run live.**
-
-- **Whether `init` should warn on a repo holding more than one recorded build** is undecided. On a real repo it took whichever it found first — **an ad hoc dev board's, not the production board the prior config targeted** — and cannot know which is real. Decision 17's zephyr-west discovery answers that structurally; **a static-discovery repo with several recorded builds still silently gets one picked for it.**
