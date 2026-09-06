@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Changed
+- The bearer token is applied by one funnel in `embarch-core-client`, not at 9 hand-written sites: [decision 55](../embarch-api/decisions/core-link.md).
+## 2026-09
+
+### Changed
 - embarch-api's test-reach decisions 30, 46 and 54 move verbatim out of `decisions/shape.md` (12,281/12,288 B) into a new `decisions/tests.md`; nothing reworded.
 ## 2026-09
 
