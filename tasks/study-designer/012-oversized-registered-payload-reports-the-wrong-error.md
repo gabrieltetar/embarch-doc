@@ -1,10 +1,38 @@
 # Report an over-long registered-action payload as `PayloadTooLong`, not `TooManySteps`
 
-**State:** open
+**State:** claimed by leg 023, 2026-09-06 — `agent/study-designer/012-payload-too-long`
 **Source:** owner's repo survey, 2026-09-06 — `src/registry.rs:243-249`'s own stated posture, unimplemented on one path
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve for `study-designer` (supervisor, leg 023)
+
+Exact numbers, because a previous leg's reserve line in this fleet was wrong by
+generalising and the worker had to catch it. Caps here are 12 KB for a
+`decisions/<topic>.md`, 10 KB for `spec.md`, 5 KB for `open.md`:
+
+- `decisions/crate.md` — **11,267 / 12,288 B, 91.7%, in reserve.** Its compaction
+  task `study-designer/006` is **blocked** on `In flux: yes`, so the reserve is
+  parked and nothing will pay it down before you.
+- `decisions/limits.md` — 8,184 / 12,288 B (66.6%). Room.
+- `decisions/payload-meaning.md` — 5,295 B. Room.
+- `spec.md` — 9,080 / 10,240 B (88.7%). Close, not in reserve.
+- `open.md` — 4,331 / 5,120 B (84.6%). Room.
+
+**Choose the decisions file yourself, on the merits, and say in your report which
+one you chose and why.** I am deliberately not steering you to one: the last two
+legs of this fleet each had a supervisor pick a file to route around the blocked
+`crate.md` reserve and only afterwards find an argument for it, and that is a bad
+way to decide where a rule lives. If the right home genuinely is `crate.md`, use
+it — **and file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same
+commit**, per `tasks/README.md`. Same rule if you push `spec.md` over its line.
+
+**`suite/features.md` is at 20,259 / 20,480 — 221 bytes** — with its compaction
+blocked on the owner. This unit routes an existing error to the variant that was
+already written for it, so it almost certainly owes a `changelog.d/` entry and
+**no `features.d/` row**. Do not write one for completeness. If you believe a row
+is genuinely owed, say so in your report and leave it to me.
 
 ## What
 
