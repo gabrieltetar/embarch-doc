@@ -1,6 +1,6 @@
 # 008 — Compact `embarch-topology/open.md` and `spec.md`
 
-**State:** open
+**State:** claimed by agent/topology/008-compact-topology, 2026-09-06 16:05
 **Source:** `scripts/check-doc-size.py` — both files entered reserve on leg 020's bench unit
 (`tasks/topology/006`), which added one `open.md` bullet recording two measured reporting defects
 and three `spec.md` paragraphs recording the live link-port resolution.
