@@ -81,10 +81,18 @@ the other repos rather than this one:
   that name, so a directory is not a target tuple and is not reliably parseable
   back into one — every segment can contain `-`, as `…-ble-shell_wdt31` shows.
   The sound test is a prefix match against enumerated valid names, which is the
-  previous bullet's blocker. The per-directory `target.json` decision 19 says
-  would record the resolved selection **is not written by `embarch-api`** (no
-  occurrence in its source, 2026-09-05), so a build directory carries no
-  provenance to read either.
+  previous bullet's blocker. **Per-directory provenance does now exist**: as of
+  2026-09-05 `embarch-api` writes `<build_dir>/target.json` for a `zephyr-west`
+  build — the resolved `{project, board, soc, cpucluster, variant, revision,
+  app, snippets, extra_args}` plus `schema_version`, written after the build
+  command into a directory that already exists (its decision 19). The one rule
+  a consumer must not get wrong: **absence means "unattributable", never
+  "orphaned"** — every directory built before that date has none, the write is
+  best-effort, and a `static` or dev-bench build never gets one, so a `--prune`
+  reading a missing file as "no valid target claims this" deletes exactly the
+  directories it has no evidence about. That removes the second of this
+  bullet's two blockers and not the first: naming the currently-valid targets
+  still needs decision 17's unbuilt `embarch-api list-targets` shell-out.
 
 So: **measure now, delete never, and no `--prune` until a valid-target oracle
 exists.** Nothing has reported disk pressure, which is the reason visibility is

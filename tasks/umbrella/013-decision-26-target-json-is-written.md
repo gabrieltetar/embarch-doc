@@ -1,6 +1,6 @@
 # 013 — `embarch-umbrella` decision 26 says `target.json` is not written; it is, as of 2026-09-05
 
-**State:** claimed — leg 013, 2026-09-05 22:2x, `agent/umbrella/013-decision-26-target-json-is-written`
+**State:** done — leg 013, 2026-09-05 22:2x, `agent/umbrella/013-decision-26-target-json-is-written`
 **Source:** `agent/api/013-target-json-not-written` — the branch that built it
 **Scope:** umbrella
 **Hardware:** none
@@ -54,8 +54,22 @@ is a judgement call for whoever takes this, not a requirement.
 
 ## Done when
 
-- [ ] Decision 26's third bullet states what `embarch-api` writes today, and the
+- [x] Decision 26's third bullet states what `embarch-api` writes today, and the
       absence rule above.
-- [ ] Anything else in `embarch-umbrella` asserting no build-dir provenance
+- [x] Anything else in `embarch-umbrella` asserting no build-dir provenance
       exists is corrected in the same pass.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+Decision 26's third bullet now records that `embarch-api` writes
+`<build_dir>/target.json` for a `zephyr-west` build, and the absence rule.
+A repo-wide grep for `target.json`, `provenance`, `attributab` and `orphan`
+over `embarch-umbrella/` found no second place asserting the old claim, so the
+second box closed with no further edit. **The optional check-16 half was
+declined** for the reason the dispatch note gives: it is a code change whose
+entry lands in `decisions/doctor.md` (370 B of reserve) and whose row is in
+`spec.md` (954 B), and under `DOC-COMPACTION.md` §2 taking it here would oblige
+compacting both inside this commit. The idea — check 16 reporting how many
+build directories are *attributable* rather than a raw count — is now buildable
+and should be picked up once `tasks/umbrella/016-compact-umbrella.md` unblocks.
