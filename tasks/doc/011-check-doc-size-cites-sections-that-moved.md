@@ -4,6 +4,11 @@
 **Source:** `umbrella/015` (leg 013, 2026-09-05) — hit while answering the compaction pass's human question and finding it was not where the task said it was
 **Scope:** doc
 **Hardware:** none
+**Owner:** required — the whole fix is inside `scripts/check-doc-size.py`, and `scripts/`
+is `never` for a worker *and* for a supervisor (`../../embarch-fleet/protocol.md` §3).
+Added by leg 013 at drain: the drop stated this in prose under "Why it needs the owner"
+but carried no `**Owner:**` field, so `queue-status.py` listed it as **dispatchable** and
+the next leg would have sent a worker at a file it cannot write.
 
 ## What
 
