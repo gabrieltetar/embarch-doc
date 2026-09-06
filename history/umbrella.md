@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- doctor's two spawn tests retry past ETXTBSY: another test thread's fork inherits the just-written fake's write fd, so Linux refuses the exec. Both flaked ~1 run in 20 (task umbrella/019).
+## 2026-09
+
+### Fixed
 - `doctor` check 17's `bind-too-narrow` now needs the service registration, not a loopback hit, and its fix no longer offers the `setup` that would green it.
 ## 2026-09
 
