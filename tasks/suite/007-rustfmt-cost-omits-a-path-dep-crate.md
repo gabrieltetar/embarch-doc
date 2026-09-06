@@ -1,6 +1,6 @@
 # 007 — `embarch.md` §5's rustfmt cost was measured with a command that skips a whole crate
 
-**State:** open
+**State:** claimed by leg 017 (supervisor, §8), 2026-09-06 03:10
 **Source:** `suite/006`'s reviewer, 2026-09-06, re-measuring the numbers recorded by leg 016.
 Dropped in `inbox/` as `suite-rustfmt-cost-omits-a-path-dep-crate.md` and drained here by
 leg 017.
@@ -10,6 +10,11 @@ and no machine. Claim stands.
 **Owner:** no. `embarch.md` §5 and `suite/roadmap.md` are both `fleet_writable`. **`suite`
 scope, so the supervisor executes it under `../../embarch-fleet/protocol.md` §8** — never
 dispatched to a worker, and only after §4's 30-minute announcement window.
+
+**Announced:** `#embarch-fleet` `ts 1788682200.661269`, 2026-09-06 02:10 MDT by leg 017.
+Window closes **02:40 MDT**. If this leg ends before then, leave this task `open` with this
+`ts` — the next leg re-reads the thread and completes the window rather than restarting it
+(`../../embarch-fleet/ops.md` §4).
 
 ## What
 
