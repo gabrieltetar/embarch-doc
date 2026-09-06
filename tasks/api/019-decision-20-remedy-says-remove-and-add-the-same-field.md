@@ -1,6 +1,6 @@
 # 019 — decision 20's refusal says "remove `west_binary`" and "add `west_binary`" in one message
 
-**State:** claimed by agent/api/019-decision-20-remedy, 2026-09-06 00:19
+**State:** done, agent/api/019-decision-20-remedy, 2026-09-06
 **Source:** `api/017`'s reviewer, 2026-09-05, reviewing merge `4ef324f` / `495a7bf`. Reported
 as an observation rather than a contradiction — both halves are individually correct — and
 filed here by the supervisor.
@@ -54,9 +54,9 @@ paragraph is not.
 
 ## Done when
 
-- [ ] The refusal message is not self-contradictory for any of the five fields, and a test
+- [x] The refusal message is not self-contradictory for any of the five fields, and a test
       pins the `west_binary` / `build_dir_root` wording specifically rather than only the
       substring the current test checks.
-- [ ] Decision 20's body reflects the final wording; no fourth posture was introduced.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/api-*` fragment
+- [x] Decision 20's body reflects the final wording; no fourth posture was introduced.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/api-*` fragment
       dropped.
