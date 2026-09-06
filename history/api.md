@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- A static project setting `west_binary`/`build_dir_root` is no longer told to remove and re-add the same field.
+## 2026-09
+
 ### Removed
 - `soc_chip_overrides` is retired unbuilt and refused at load on both kinds — an unmapped SoC stops at Core's registry-validated table ([decision 13](../embarch-api/decisions/zephyr.md)).
 ## 2026-09
