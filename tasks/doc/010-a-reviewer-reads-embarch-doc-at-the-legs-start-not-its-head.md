@@ -1,6 +1,6 @@
 # 010 — A reviewer reads `embarch-doc`'s working tree at the leg's start, not at the unit it is reviewing
 
-**State:** open
+**State:** done
 **Source:** leg 012, 2026-09-05 — `umbrella/011`'s reviewer reported two facts as
 "pre-existing" that were in fact *created by the unit two units earlier in the same leg*
 **Scope:** doc
@@ -60,6 +60,25 @@ Candidate fixes:
 
 ## Done when
 
-- [ ] A reviewer's reads of the docs it checks a diff against resolve to the state at the
+- [x] A reviewer's reads of the docs it checks a diff against resolve to the state at the
       unit under review, not to the leg's starting state.
-- [ ] The `pre-existing` judgement is only reachable when it is actually true.
+- [x] The `pre-existing` judgement is only reachable when it is actually true.
+
+## Closed 2026-09-06, by the owner, taking both durable fixes rather than the workaround
+
+`templates/.claude/agents/embarch-reviewer.md` now requires the leg's worktree path and
+the code repo's as **given** inputs, states that a spawn without them is one it cannot do
+this job from, and makes the rule mechanical rather than a caution: *every path you read is
+either prefixed with the leg's worktree or fetched at a SHA*, and a bare relative `Read`,
+`Grep` or `Glob` is the mistake. It also names why the hazard is invisible from where the
+reviewer stands — the file is there, it parses, it is merely a version old, and nothing
+errors.
+
+`templates/.claude/commands/supervise.md` requires the supervisor to pass both paths, as
+absolute paths, in the spawn prompt, and carries the leg 012 / leg 013 evidence for why.
+`protocol.md` §10 states it as a rule and §6 step 0 links the two staleness facts together.
+
+The third candidate — passing the merge SHA as a named reading root — was **not** taken
+separately: `git show <sha>:<path>` already is that, and the reviewer template now prefers
+it for any file it can name, with the worktree reserved for what it needs to *search*.
+Landed as `embarch-fleet` `2113165`, deployed as `eb4e67e`.
