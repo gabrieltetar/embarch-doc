@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- `doctor` check 17 withdraws `embarch setup` where it would reinstall the narrow bind, and no longer judges a `remote` Core by this host: [decision 22](../embarch-umbrella/decisions/bind.md).
+## 2026-09
+
+### Fixed
 - doctor's two spawn tests retry past ETXTBSY: another test thread's fork inherits the just-written fake's write fd, so Linux refuses the exec. Both flaked ~1 run in 20 (task umbrella/019).
 ## 2026-09
 
