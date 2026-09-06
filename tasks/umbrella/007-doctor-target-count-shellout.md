@@ -1,6 +1,6 @@
 # 007 — Decision 17's amendment says check 8 stopped maintaining a second scanner; it never did
 
-**State:** open
+**State:** claimed by agent/umbrella/007-doctor-target-count-shellout, 2026-09-05 22:50
 **Source:** embarch-umbrella/002 (design-only decisions audit, 2026-09-03) — decision 17's amendment read against the source and found unbuilt
 **Scope:** umbrella
 **Hardware:** none
@@ -21,6 +21,41 @@ adding what the run measured, which is this rule's first real use. `Must not del
 009: the doctor table's per-row **designed-and-unbuilt** distinction, which lives nowhere
 else. Refresh 009's counts if you change the table's shape — a `Must not delete:` clause
 that protects a table *by a count* is worse than useless once the count is stale.
+
+---
+
+## Dispatch note, leg 013 — the two blocks above contradict each other; this one wins
+
+The `Compacts:` block says "nothing is owed here, do not compact" and the `In flux:`
+block immediately below says "compact both as part of this commit". Both were written
+against readings of `spec.md` that are now stale, in opposite directions. **Read neither
+for its byte counts. Read this:**
+
+`scripts/check-doc-size.py --pressure`, at dispatch:
+
+- **`embarch-umbrella/spec.md` — 9,286 / 10,240 B, 954 B left (90.7%). In reserve.**
+  It was paid on 2026-09-05 by `umbrella/006` and then `umbrella/011` put it straight
+  back over the line. Filed against `tasks/umbrella/016-compact-umbrella.md`, `blocked`.
+- **`embarch-umbrella/decisions/doctor.md` — no longer in reserve.** `umbrella/015`
+  landed a few minutes before you started and took it **11,918 → 7,774 B** by a mission
+  split: decisions 23 and 40 moved verbatim into a new `embarch-umbrella/decisions/mcp.md`.
+  It has room now, but it is still not where your work goes, and `016`'s
+  `decisions/doctor.md` item is **already closed** — do not re-close it.
+- `embarch-umbrella/decisions/projects.md`, where decision 17 lives, is 9,752 / 12,288 B
+  and under no pressure. That is where your decision-17 edit goes.
+
+**So you owe a ride-along compaction of `spec.md`, inside this commit** — a blocked
+compaction task parks the pass, not the reserve (`DOC-COMPACTION.md` §2). Get it back
+under its 9,216 B reserve line, honour the `Must not delete:` clause in the `In flux:`
+block *and* `tasks/umbrella/016`'s `spec.md` clause (the twenty-row doctor table and
+which rows are designed-and-unbuilt), and say in your commit message that you closed
+`016`'s `spec.md` item. `scripts/check-duplication.py embarch-umbrella` is **already
+clean**, so there are no free bytes there — the room has to come from real shortening.
+
+One more thing you should know before you choose: `spec.md`'s check-8 row currently
+states the local-scanner behaviour *and* that decision 17's amendment asked for a
+shell-out and it is unbuilt. **Whichever way you resolve this task, that row gets
+shorter**, because it stops having to describe two states of the world.
 
 ## What
 
