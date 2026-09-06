@@ -1,6 +1,6 @@
 # 019 — decision 20's refusal says "remove `west_binary`" and "add `west_binary`" in one message
 
-**State:** open
+**State:** claimed by agent/api/019-decision-20-remedy, 2026-09-06 00:19
 **Source:** `api/017`'s reviewer, 2026-09-05, reviewing merge `4ef324f` / `495a7bf`. Reported
 as an observation rather than a contradiction — both halves are individually correct — and
 filed here by the supervisor.
