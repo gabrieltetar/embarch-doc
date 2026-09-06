@@ -1,6 +1,6 @@
 # 018 — check 17's fix line can green its own check, and its `bind-too-narrow` evidence cannot discriminate
 
-**State:** open
+**State:** claimed by agent/umbrella/018-check-17-evidence, 2026-09-06 00:22
 **Source:** `umbrella/017`'s reviewer, 2026-09-06, reviewing merge `80f4cb8` / `cbe8a5d`.
 Reported as observations rather than contradictions — decision 22(a) was rewritten in the same
 diff — and filed here by the supervisor, who merged 017 knowing about both.
