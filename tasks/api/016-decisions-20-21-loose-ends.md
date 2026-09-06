@@ -1,6 +1,6 @@
 # 016 — Decisions 20/21 left two loose ends: advice that cannot be followed, and an asymmetric load-time refusal
 
-**State:** claimed by agent/api/016-decisions-20-21-loose-ends, 2026-09-05 23:05
+**State:** done — claimed by agent/api/016-decisions-20-21-loose-ends, 2026-09-05 23:05
 **Source:** `embarch-api/open.md`, the bullet beginning "Two loose ends left by decisions 20/21
 shipping (found by review, 2026-09-04, neither a contradiction)". Swept by leg 013 when the
 queue ran dry; still stated in that file today, so it reconciles.
@@ -65,16 +65,28 @@ a firmware version off a DUT), or another repo's fix.
 
 ## Done when
 
-- [ ] The `none`-snippet collision message no longer advises a remedy that is itself a load
-      error. Either it names only the workable remedy, or it names both and says what makes
-      the other one conditional.
-- [ ] Item 2 resolved one of the three ways above, with a test that pins the behaviour you
-      chose — including, if you extended the refusal, one per newly-refused field.
-- [ ] The relevant `embarch-api` decision entry records the choice and the argument against
-      the option you rejected. Amend in place per `DOC-CONVENTIONS.md`; do not append a
-      correction below a body that now contradicts it (that defect is `umbrella/015`, landed
-      an hour ago, and it is the second time in two days).
-- [ ] `embarch-api/open.md`'s "Two loose ends" bullet is corrected to whatever is left of it,
-      or deleted if nothing is.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/api-*` fragment dropped.
-      A `features.d/` row only if a capability actually changed, which it probably has not.
+- [x] The `none`-snippet collision message no longer advises a remedy that is itself a load
+      error. It **branches on the configured default**, which `resolve_snippets` already
+      holds: empty, both remedies work and both are offered; non-empty, renaming is named as
+      the only remedy and the other two paths are named as dead ends.
+- [x] Item 2 resolved by **extending the refusal**, to five fields rather than the three
+      named — `west_binary` and `build_dir_root` are in the same class and were left out of
+      the bullet, and `soc_chip_overrides` is out because it turns out not to exist. One
+      test per newly-refused field, plus one that several are named at once and one that a
+      static project setting none of them still loads.
+- [x] Decision 20 amended in place — heading, body and three new bullets carrying the
+      argument against narrowing, against warning, and the accepted breaking-config cost.
+      Decision 21 likewise for item 1; decision 13 for the unbuilt field. No appended
+      corrections.
+- [x] `embarch-api/open.md`'s bullet replaced: both halves closed, and what replaces it is
+      the third thing found underneath them.
+- [x] Gate green; `changelog.d/api-static-load-refusal-and-snippet-remedy.changed.md`
+      dropped. No `features.d/` row — no capability shipped, retired or changed maturity.
+
+## Filed out of this unit
+
+- `tasks/api/017-soc-chip-overrides-decided-never-built.md` — the field the bullet named
+  third is documented and unimplemented on **both** discovery kinds, not asymmetric. Build
+  it or retire decision 13; not decidable inside this unit's brief.
+- `tasks/api/018-compact-api.md` — this unit's own edits put `interfaces/config.md` (96.4%)
+  and `open.md` (90.6%) back into reserve. Blocked on `017`, which rewrites both.
