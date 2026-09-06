@@ -8,7 +8,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, how far the tests reach, and the one target a `static` project has | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 30, 46, 53 | 10.1 KB |
+| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, how far the tests reach, and the one target a `static` project has | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 30, 46, 53, 54 | 12.0 KB |
 | [The tool and CLI surface](decisions/surface.md) — what is exposed, how failures are shaped, watching a study live, what this binary says about itself | 16, 23, 24, 29, 34, 35, 41, 47, 50, 52 | 10.7 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 10.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 13, 20, 21, 22, 51 | 7.7 KB |

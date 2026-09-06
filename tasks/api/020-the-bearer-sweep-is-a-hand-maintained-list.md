@@ -1,6 +1,6 @@
 # 020 — A new `CoreClient` endpoint escapes the bearer sweep, because the sweep is a hand-written list
 
-**State:** claimed by agent/api/020-bearer-sweep-exhaustive, 2026-09-06 02:23
+**State:** done
 **Source:** [embarch-api/open.md](../../embarch-api/open.md) — "The smoke harness
 ([decisions](../../embarch-api/decisions/shape.md) 30) is named and unwritten. The six mocked
 criteria beside it live in `tests/` ([decisions](../../embarch-api/decisions/shape.md) 46), with
@@ -71,14 +71,55 @@ The reserve line for a `decisions/*.md` is **11,059 B** (90% of the 12,288 cap):
 
 ## Done when
 
-- [ ] Adding a networked `CoreClient` method that omits `.bearer_auth(…)` makes the test suite
+- [x] Adding a networked `CoreClient` method that omits `.bearer_auth(…)` makes the test suite
       fail and names it — **demonstrated by actually doing it and reverting**, and the report
       says what the red output looked like.
-- [ ] The existing 24-call sweep still passes and still asserts the token is not leaked into the
+- [x] The existing 24-call sweep still passes and still asserts the token is not leaked into the
       request target.
-- [ ] A decision entry in `embarch-api/decisions/shape.md` naming the mechanism, the rejected
+- [x] A decision entry in `embarch-api/decisions/shape.md` naming the mechanism, the rejected
       alternative, and what it still does not cover.
-- [ ] `embarch-api/open.md`'s bullet narrowed: the bearer-sweep clause closed, the
+- [x] `embarch-api/open.md`'s bullet narrowed: the bearer-sweep clause closed, the
       `#[cfg(unix)]` clause and the unwritten smoke harness left standing.
-- [ ] `changelog.d/` fragment.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What shipped
+
+**Structural, in the source-scanning form.** `tests/core_client_http.rs` grows
+`the_sweep_calls_every_networked_method`: it reads
+`crates/embarch-core-client/src/*.rs`, takes the method enclosing every
+`self.client.<verb>(…)` / `self.http().<verb>(…)` call site as the client's
+networked surface (expanding the private `get_study_csv` out to its four public
+callers), reads the sweep's own `client.<method>(…)` calls the same way, and
+requires the two sets to match. **No hand list survives** — the sweep's real
+calls are the declaration. Two lexical escapes are asserted shut rather than
+assumed: exactly one `reqwest::Client` exists in the crate, and `http()` is
+never bound to a local. Decision 54 records coverage-by-observation as the
+rejected alternative.
+
+**The list had already drifted, which is the finding.** `post_study` and
+`open_study_events` both reach the network and neither was swept — the second
+being the one route that bypasses `send` entirely. Both are now called. Doing
+so needed the mock to answer `GET /status` (a `Behavior::Router`), because
+`post_study` reads Core's schema version before it will submit and a 503 there
+stops it short of the request under test.
+
+**The sweep's `(METHOD, path)` list is now pinned in both directions** — a
+route observed that the list does not name fails too, so a call added without
+its route no longer passes quietly. It stays hand-written; decision 54 says so.
+
+Watched red three ways, each reverted: an unauthenticated networked method
+turns the new test red naming `dev_bench_reboot`; adding the sweep call it
+demands then turns `every_outbound_call_carries_the_bearer_token` red on the
+missing `Authorization` header; and dropping the route entry while keeping the
+call turns it red on the unlisted route.
+
+**Pre-existing red found, not fixed:** `cargo clippy --all-targets -- -D
+warnings` run *inside* `crates/embarch-core-client` fails on an unused
+`use super::*;` at `src/client.rs:1721`. It predates this branch (it reproduces
+on `embarch-api` `main`) and the repo-root gate does not reach it, because the
+crate is a path dep rather than a workspace member — the same gap decision 46
+already records for its tests. Dropped in `inbox/`.
+
+`tasks/api/021-compact-api.md` filed in the same commit: `decisions/shape.md`
+is now 12281/12288 B.
