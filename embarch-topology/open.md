@@ -14,7 +14,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **The Nordic identity relation is verified by construction, not by every path it covers.** The driver it derives from has fallbacks to other registers for parts where the device ID is inaccessible, **and those would come back *mismatch* rather than *undeclared* — the one way this arm can be wrong**, and the same exposure the first arm carries, accepted on the same terms.
 
-- **Call-site granularity is not fully specified.** Resolution and validation are fresh-every-call by construction, with no cache in the crate. The recommended-bind-address function has one real caller — umbrella's setup, which bakes the answer into every install it runs or prints — and **umbrella's own bind-versus-topology doctor check is a separate, still-unwired consumer of the same function.**
+- **Call-site granularity is not fully specified.** Resolution and validation are fresh-every-call by construction, with no cache in the crate. The recommended-bind-address function now has **two** real callers — umbrella's setup, which bakes the answer into every install it runs or prints, and umbrella's bind-versus-topology `doctor` check, **wired 2026-09-05 as check 17** (`embarch-umbrella` decision 22a).
 
 - **The token and config mirrors of `embarch-api`-internal logic are untouched by this crate's existence** and still raise the extract-or-CI-diff question independently. Extracting this crate removed the *topology* copy; **those two mirror internals, not a shared concern the way topology turned out to be.** Tracked in [embarch-umbrella/open.md](../embarch-umbrella/open.md).
 

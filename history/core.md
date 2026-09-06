@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Fixed
+- `chip-list --help` and the `/resolve-chip` 404 now say to edit Core's compiled-in `SOC_TO_CHIP`, not a retired `embarch-api` config key.
+## 2026-09
+
 ### Changed
 - Core's spec.md and open.md compacted out of reserve (DOC-COMPACTION §9); no open question dropped.
 ## 2026-09
