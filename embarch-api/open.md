@@ -6,7 +6,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Known wrong, not fixed
 
-- **A `[[projects]]` `board` is a hardware fact, and this config has been deriving it from build artifacts.** An entry derived from the repo's own `build_info.yml` records whatever was last built, not the board on the desk — a different revision entirely, and a day of bring-up lost to it. Violates [spec.md](spec.md) §2's no-inference-as-fact invariant on the most load-bearing DUT fact here. **Two fixes, neither built:** `init` refusing to *write* an inferred board unconfirmed — cheap, and enough — and `validate`/`status` comparing it against the hardware.
+- **A `[[projects]]` `board` is a hardware fact, and nothing compares one against the hardware.** Derived from `build_info.yml` it records the last build, not the board on the desk — a different revision, and a day of bring-up lost to it. Violates [spec.md](spec.md) §2's no-inference-as-fact invariant on the most load-bearing DUT fact here. `init` stopped *writing* one unconfirmed on 2026-09-06 (`embarch-umbrella` decision 41), but refusing to assert is not detecting, and every config scaffolded before then still asserts: **`validate`/`status` comparing it against the hardware is unbuilt.**
 
 ## Unfinished couplings
 
@@ -15,7 +15,6 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **The study event stream has never met a real embarch-core.** `study-status --follow`/`study_watch` ([decisions](decisions/core-link.md) 48, 49) run only against a mock whose frames *copy* the wire format, so nothing tests the coupling. Debt: `tasks/api/001-sse-client.md`.
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50), so branching on a cause means matching prose. **The prerequisite is not in this repo**: Core serves plain text on every non-2xx and its `{code, message, cause}` body (`embarch-core` decision 12) is deferred. Ordered: Core emits codes, the shared client carries one typed, this crate passes it on. **Do not derive a kind from the HTTP status** — a coarser vocabulary, later mistaken for decision 12's.
 - **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads, from its lifted copy of the retired UNC helpers. A different repo's fix.
-- **Nothing reads `versions` yet** ([decisions](decisions/surface.md) 52): `doctor` check 11 compares `embarch`'s *own* host schema copy, so a mixed install stays invisible. Another repo's fix.
 
 ## Structural limits
 

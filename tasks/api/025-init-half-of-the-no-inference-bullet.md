@@ -1,6 +1,6 @@
 # 025 — Two `embarch-api/open.md` bullets have been answered in another repo and neither says so
 
-**State:** claimed by agent/api/025-open-md-two-answered-bullets, 2026-09-06 04:35
+**State:** done, agent/api/025-open-md-two-answered-bullets, 2026-09-06
 **Source:** `inbox/api-init-half-of-the-no-inference-bullet.md`, dropped by `tasks/umbrella/022` 2026-09-06, which built the `init` half in another sub-project and so could not edit this file (`../../embarch-fleet/protocol.md` §3).
 **Scope:** api
 **Hardware:** none for the doc edit. The surviving clause is itself hardware-gated; recording that it survives is not.
@@ -67,18 +67,18 @@ leaving it unchanged means the same task can be generated twice.
 
 ## Done when
 
-- [ ] `embarch-api/open.md`'s first bullet states the `init` half as **built,
+- [x] `embarch-api/open.md`'s first bullet states the `init` half as **built,
       dated 2026-09-06, and pointing at `embarch-umbrella` decision 41** — by
       decision number, which is how `DOC-CONVENTIONS.md` says a cross-sub-project
       reference resolves. Verify the pointer resolves before you write it; the
       decision moved into `decisions/projects.md` and a sibling split moved
       decisions 10 and 12 out of that file the same day.
-- [ ] The `validate`/`status`-compare-against-hardware half survives as the open
+- [x] The `validate`/`status`-compare-against-hardware half survives as the open
       question, with the bring-up incident kept as its evidence.
-- [ ] The "Nothing reads `versions` yet" bullet is rewritten or deleted per the
+- [x] The "Nothing reads `versions` yet" bullet is rewritten or deleted per the
       section above, and does **not** duplicate a debt `embarch-umbrella/open.md`
       already owns.
-- [ ] `changelog.d/` fragment if the answer changes what the doc claims is
+- [x] `changelog.d/` fragment if the answer changes what the doc claims is
       unbuilt. Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Doc-size reserve for `api` at dispatch time
@@ -95,3 +95,33 @@ from it: `decisions/zephyr.md` 11,056 (3 B of headroom), `interfaces/config.md`
 11,008, `decisions/build.md` 10,934, `decisions/surface.md` 10,928,
 `decisions/core-link.md` 10,879, against a reserve line of 11,059. This unit
 should not need any of them.
+
+## Outcome, 2026-09-06
+
+**First bullet: rewritten, both halves named.** All four `embarch-umbrella`
+decision numbers were resolved in the tree before being written, not assumed —
+41 is in `decisions/projects.md`, 42 in `decisions/doctor.md`, 33 and 36 in
+`decisions/schema-skew.md`. `embarch-api` has its own decisions 36, 41 and 42 on
+unrelated subjects, which is exactly why the citation names the sub-project.
+
+**Second bullet: deleted, not rewritten.** Both halves are closed and the
+narrowest residual — check 11 has never run inside a `doctor` against a live
+Core — is `embarch-umbrella/open.md`'s ("No `doctor` run has used decision 42's
+wider locator"), and decision 42 itself says so in its own words. *The argument
+against:* `versions` is a surface this crate ships whose only consumer is in
+another repo, which is the shape of the unpinned-mirror bullet above it, so a
+one-line "pinned from one side only" note was defensible. It loses because
+decision 42 records the shape **measured** against both `embarch-api` binaries
+on 2026-09-06 — `--json` before the subcommand, `host_type_schema_version: 17`
+— so it is an observed contract, not a mirror. Nothing api-owned was left.
+
+**The reserve was not cleared, and could not have been by this task alone.**
+`open.md` went 4,873 B → 4,711 B against a 5,120 cap; the reserve line is 4,608.
+Deleting the `versions` bullet outright frees 251 B, so even a first bullet
+rewritten to **zero** net growth lands at 4,622 — 14 B inside reserve. The
+first bullet had to grow by 31 B to carry decision 41, the date and the
+still-asserting-configs caveat. `tasks/api/028` therefore keeps its `open.md`
+item; its **Must not delete** protection of this bullet ("until `api/025`
+lands") is now spent, and Settled-deferred is still the cut it names.
+This task's dispatch-time figure of 4,521 B predates `api/024`, which landed
+decision 56 into this file.
