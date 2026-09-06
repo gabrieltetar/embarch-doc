@@ -1,9 +1,42 @@
 # 015 — Decision 37 corrects itself by appending, so a reader hits the stale sentence first
 
-**State:** open
+**State:** claimed — leg 013, 2026-09-05, `agent/umbrella/015-decision-37-appends-instead-of-editing`
 **Source:** leg 012's own read of `umbrella/012`'s merge result (`embarch-doc` `811380b`), and the worker that shipped it flagged the same thing unprompted
 **Scope:** umbrella
 **Hardware:** none
+
+**Reserve for `umbrella` at dispatch** (`scripts/check-doc-size.py --pressure`):
+`embarch-umbrella/decisions/doctor.md` **11,918 / 12,288 B — 370 B left (97.0%)**, and
+`embarch-umbrella/spec.md` **9,286 / 10,240 B — 954 B left (90.7%)**. Your own main file,
+`decisions/reporting.md`, is 4,089 / 12,288 B and has no pressure whatever.
+
+**You owe a ride-along compaction of `decisions/doctor.md`, inside this commit.**
+Item 2 below edits decision 40, which lives there, and 370 B does not hold it.
+`tasks/umbrella/016-compact-umbrella.md` is the parked compaction task; it is `blocked`
+on `In flux: yes` and **a blocked compaction task parks the pass, not the reserve**
+(`DOC-COMPACTION.md` §2). So: carry `016`'s `Must not delete:` list *for this file*
+verbatim, get `decisions/doctor.md` back under its 11,059 B reserve line, and say in
+your commit message that you closed `016`'s `decisions/doctor.md` item. **Leave `016`'s
+`spec.md` item alone** — the next `umbrella` unit this leg carries that one, and two
+workers shortening one file is how a `Must not delete:` list gets half-honoured twice.
+
+Two things that will save you a wrong turn:
+
+- **`scripts/check-duplication.py embarch-umbrella` is already clean** — "no overlap of
+  12+ words". `016` tells you to run it first because the last pass's biggest win came
+  from there; that well is dry now, so the bytes have to come from real shortening or
+  from a **mission split**, which `DOC-COMPACTION.md` §2 names as the cheaper move and
+  which `umbrella/012` used on this exact file a few hours ago (it cut
+  `decisions/reporting.md` out of it). `doctor.md` now holds decisions 18, 19, 22, 23,
+  31 and 40 — ask whether they are still one mission before you squeeze them.
+- **`spec.md` already carries the roster you are moving.** Line 93 says `code` appears
+  where "a check has more states than statuses (checks 1, 5, 10, 14)". So decision 37's
+  body should *cite that sentence*, not re-add a list to the table — this fix costs
+  `spec.md` nothing, and it must not be allowed to cost it anything, because `spec.md`
+  has 954 B and another unit is compacting it. Item 3's "make sure the table has all
+  seven" means **decision 37's own list of check 10's codes** in `decisions/reporting.md`,
+  which has room; the roster that leaves is *which checks emit `code`*, not *which codes
+  check 10 emits*. Those are different lists and the task's wording blurs them.
 
 ## What
 
