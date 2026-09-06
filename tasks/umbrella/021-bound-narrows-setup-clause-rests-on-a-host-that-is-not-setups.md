@@ -1,6 +1,6 @@
 # 021 — `bound-narrow`'s new `setup` clause reads a `host` that is not the one `setup` reads, and its `Remote` branch is unguarded
 
-**State:** claimed — leg 016, `agent/umbrella/021-infer-class-inputs`
+**State:** done — `agent/umbrella/021-infer-class-inputs`, 2026-09-06
 **Source:** `umbrella/020`'s reviewer, 2026-09-06, reviewing merge `08ccd6f` / `0824325`.
 Both items below were reported as **observations, not contradictions** — the reviewer returned
 no findings and the supervisor merged knowing them. Each is a read of the shipped source with
@@ -72,8 +72,69 @@ entry there will re-enter reserve**; plan for it. `tasks/umbrella/009` remains `
 
 ## Done when
 
-- [ ] Item 1 is fixed, or decision 22's "can never disagree" sentence is corrected to what is
+- [x] Item 1 is fixed, or decision 22's "can never disagree" sentence is corrected to what is
       true, with the losing option argued against.
-- [ ] Item 2 has a guard or an argued-and-tested reason the `Remote` branch is right.
-- [ ] Item 3 has one reading of decision 37 recorded in `reporting.md`.
-- [ ] Gate green; `changelog.d/umbrella-*` fragment dropped.
+- [x] Item 2 has a guard or an argued-and-tested reason the `Remote` branch is right.
+- [x] Item 3 has one reading of decision 37 recorded in `reporting.md`.
+- [x] Gate green; `changelog.d/umbrella-*` fragment dropped.
+
+## What shipped
+
+**Every one of the reviewer's reads was re-derived and every one held.** `setup::setup` takes
+only the `--host` CLI flag (`main.rs`'s `Command::Setup { host, .. }`), passes it straight to
+`make_plan` → `infer_class`, with no fallback; `apply_plan` writes `host: plan.host` where
+`plan.host` is `host.map(…).or(saved.host)` **for every class**, so `saved.host` is sticky
+exactly as described; `doctor`'s `host` is `config.core.host` **or** `saved.host` and was
+being handed to `setup_would_infer`. And `recommended_bind_address(Remote)` is `0.0.0.0`, so
+the `Remote` branch was reachable and unguarded. Line numbers had shifted by a few but every
+claim was true as stated.
+
+**Item 1 — fixed the input, and argued the retraction down.** `setup_would_infer` is now
+`setup::infer_class(None, core.as_ref())`: the fix line predicts one exact invocation, bare
+`embarch setup`, so it is fed that invocation's own arguments. The losing option — retract
+decision 22's "can never disagree" sentence and leave the code — was cheaper and is argued
+against in [decision 22](../../embarch-umbrella/decisions/bind.md): nobody reads a decision at
+the moment of choosing, the **fix line** is what a human is printed while deciding what to
+type, and a doc that accurately describes a lie is not the honest ending. The claim was also
+corrected in place, since "shared function" alone never bought it — "shared inputs" is what
+does.
+
+**Item 2 — guarded and tested.** The gate on the `setup` offer was
+`recommended_bind_address(setup_would_infer) == needed`, which is a proxy for "would a run
+here install a wide-bound Core" and is not one. Replaced with an exhaustive `match` on the
+class: `WslHost` offers, `Local` withdraws with *installs the narrow bind again*, `Remote`
+withdraws with *installs nothing at all*. New test
+`check_17s_bound_narrow_fix_withdraws_setup_where_setup_would_infer_remote` pins it and
+asserts the `local` reason is **not** used for `remote`. A second test,
+`a_bare_setup_run_never_infers_remote_whatever_this_machine_has_saved`, records the
+consequence of item 1's fix: with the host at `None` the `Remote` arm is unreachable from the
+driver, so it is a guard against a future call site and the test says which rather than
+leaving the next reader to re-derive it.
+
+**Item 3 — settled in
+[decision 37](../../embarch-umbrella/decisions/reporting.md).** The reading recorded: a
+deliberate-reuse record is owed where a code keeps its spelling for a state that *replaced*
+the one its decision described, and is not owed where a fix stops it firing on states that
+decision never described. Mechanically — if closing the change means rewriting the entry's
+description of what the code names, it is a reuse; if the description already excluded what
+you removed, it is a bug fix. Under it `bind-too-narrow`'s narrowing was a reuse and the
+`remote` guard was not, so the count stays **two** and `bind.md`'s reading was the right one.
+A change to a check's `fix` text is never a reuse at all.
+
+**Found and not fixed:** `setup` writes `saved.host` for every class though `state.rs` calls
+it "only meaningful for `remote`", and `doctor` **check 2** still infers the class from
+`config.core.host` **or** `saved.host` — so a stale `--host` makes check 2 say `remote` on a
+`wsl-host` machine. Recorded in [open.md](../../embarch-umbrella/open.md) with the reason for
+abstaining: the `or(saved.host)` fallback's intent is undocumented and it does not preserve
+the `remote` class either (nothing feeds it back to `infer_class`), so clearing it on a
+non-remote class would change check 2's answer on real machines on a guess.
+
+**No hardware debt added.** The existing one is unchanged and grows no new arm: check 17's two
+Fail branches have still never met a real narrow-bound Core, and this unit changed a `fix`
+string and one struct-field initialiser, both fully covered by host tests.
+
+**Reserve spent, and filed.** `open.md` 4,601 → **5,080 B (99.2%)** and
+`decisions/bind.md` 8,465 → **11,409 B (92.8%)**; both named in
+[`tasks/umbrella/009`](009-compact-docs.md), which was reopened for them. `open.md` has 40
+bytes left and `check-duplication.py` reports no cross-doc overlap in this sub-project, so the
+next unit to write it cannot ride a compaction along — that is written into `009` explicitly.
