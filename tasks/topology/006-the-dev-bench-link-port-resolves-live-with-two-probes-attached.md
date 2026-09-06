@@ -1,6 +1,6 @@
 # Resolve the dev-bench link port live, with two probes attached and `guessed_among` visible
 
-**State:** open
+**State:** claimed by leg 020 (bench, supervisor's own hands)
 **Source:** owner's bench session 2026-09-06 — decision 20's `guessed_among` exists because "the guess used to be invisible", and two probes attached is the case that exercises it
 **Scope:** topology
 **Hardware:** bench
