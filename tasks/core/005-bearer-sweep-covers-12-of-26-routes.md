@@ -1,6 +1,6 @@
 # Make the bearer-token route sweep derive itself — 14 of 26 routes have no test
 
-**State:** open
+**State:** claimed by leg 020
 **Source:** owner's repo survey, 2026-09-06 — `embarch-core/spec.md:25`'s "no exceptions" is tested for less than half the surface
 **Scope:** core
 **Hardware:** none
