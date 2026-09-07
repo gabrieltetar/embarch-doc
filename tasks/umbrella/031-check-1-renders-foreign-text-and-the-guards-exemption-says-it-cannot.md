@@ -7,6 +7,27 @@ primary bench; `embarch-umbrella/decisions/reporting.md` decision 43
 **Hardware:** none
 **Owner:** no
 
+## `one_line()` now exists, and two things about it change this task — leg 026, from `umbrella/030`'s reviewer
+
+**`umbrella/030` landed a `one_line()` helper in `src/doctor.rs`** (`embarch-umbrella` `d329842`),
+collapsing every whitespace run to a single space and dropping control characters, applied at the
+one interpolation point that unit owned. So this task no longer has to write the function. **But do
+not simply call it and tick the box**, for two reasons the reviewer of that unit established:
+
+1. **It drops the ESC byte as a control character and leaves the CSI body as literal text** — so an
+   ANSI-coloured input becomes `[2m2026-09-07T00:24:33…[0m`, not clean text. That is harmless on the
+   `reqwest` error chains `030` applied it to, and it is **not** what decision 43 means by escapes
+   stripped. This task's whole premise is check 1 rendering raw ANSI, so **`one_line()` as it stands
+   does not close this task's own case.**
+2. **`030`'s doc comment names check 1 as the one remaining unnormalised site, and the honest list is
+   longer.** Four other `detail`s interpolate Core's raw HTTP body verbatim: `unexpected HTTP
+   {status}: {body}` (check 4), `dev-bench is busy: {body}` and `HTTP {status}: {body}` (checks 11
+   and 13), and `detected: {body}` / `HTTP {status}: {body}` (check 12). Decision 43 already records
+   the check-4-and-12 gap as separate and open and `open.md` carries it as its own bullet, so nothing
+   contradicts anything — but a fix here that trusts that comment will miss four sites. **Re-derive
+   the list from the source rather than from the comment**, and correct the comment while you are in
+   the file.
+
 ## What was observed
 
 `doctor --json`'s `checks[0].detail` — check 1, *binaries found* — came back containing **newlines,

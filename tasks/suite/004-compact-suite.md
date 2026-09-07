@@ -65,6 +65,30 @@ today**, and at 119 rows the growth is monotonic by design — the inventory rec
 suite has, and the suite gains capabilities. Filing a compaction task against it every time
 is a treadmill, which is the signal that the cap is being applied to the wrong artifact.
 
+## The prediction below fired, 2026-09-06, leg 026 — with numbers
+
+The last-but-two item's warning — *"the next unit to write a `features.d/` fragment meets the cap
+mid-flight"* — **happened, in `umbrella/030`'s fold.** It is recorded here rather than only in the
+supervisor log because this task is what the next leg reads.
+
+That unit rewrote two Status cells honestly (`doctor` checks 11 and 13, both of which turn out never
+to have been read on a bench) and the assembled file went **20,259 → 20,643 B against a 20,480 B
+cap: 163 B over, and the gate refused the fold.** The unit had 221 B of headroom and needed 384.
+
+**It was paid as a `DOC-COMPACTION.md` §2 ride-along, by the supervisor, in three passes** — 20,643
+→ 20,524 → 20,493 → **20,466 B, 14 bytes under the cap.** No fact was dropped: check 13's row now
+points at check 11's for the shared cause and fix instead of restating it. But **three successive
+shaves to clear a line by 14 bytes is exactly the move `tasks/umbrella/009`'s history names as the
+one not to take**, and the only reason it was taken is that the alternative — a `suite`-scope
+compaction — needs `ops.md` §4's 30-minute announcement window, which a leg landing a fold does not
+have.
+
+**So the state to hand on: `suite/features.md` has 14 bytes.** Not 221. The next `features.d/`
+fragment of any kind, in any sub-project, meets a wall rather than a reserve, and its worker will
+discover this when the supervisor's fold fails rather than when its own gate does — because the
+assembler is the supervisor's and the file is `never` for a worker. **The cap-and-split half of this
+task is no longer a debt; it is the next thing that breaks.**
+
 ## Why blocked
 
 - **`embarch-decision-reversals.md`** — genuinely in flux. It gains a row whenever any unit
