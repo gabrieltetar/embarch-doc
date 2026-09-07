@@ -126,27 +126,119 @@ def collect(scopes, only=None):
     return good, bad
 
 
-def render(entries, window: str) -> str:
+WINDOW_RE = re.compile(r"^## (\S+)\s*$")
+HEADING_TO_SLUG = {heading: slug for slug, heading in CATEGORIES}
+
+
+def render_entries(by_cat: dict, window: str) -> str:
+    """One window block, categories in CATEGORIES order, rows in the given order."""
     out = [f"## {window}", ""]
     for slug, heading in CATEGORIES:
-        rows = [t for c, t in entries if c == slug]
+        rows = by_cat.get(slug) or []
         if not rows:
             continue
         out.append(f"### {heading}")
-        out += [f"- {r}" for r in sorted(rows)]
+        out += [f"- {r}" for r in rows]
         out.append("")
     return "\n".join(out)
 
 
+def render(entries, window: str) -> str:
+    by_cat: dict[str, list] = {}
+    for cat, text in entries:
+        by_cat.setdefault(cat, []).append(text)
+    return render_entries({c: sorted(r) for c, r in by_cat.items()}, window)
+
+
+def split_file(text: str):
+    """(header, [(window|None, block_text), ...]) with blocks newest-first."""
+    parts = re.split(r"(?m)^(?=## )", text)
+    blocks = []
+    for block in parts[1:]:
+        first = block.splitlines()[0] if block.splitlines() else ""
+        m = WINDOW_RE.match(first)
+        blocks.append((m.group(1) if m else None, block))
+    return parts[0], blocks
+
+
+def parse_entries(block: str) -> dict:
+    """{category slug: [row, ...]} from a rendered window block, in file order."""
+    out: dict[str, list] = {}
+    cur = None
+    for line in block.splitlines():
+        m = re.match(r"^### (.+?)\s*$", line)
+        if m:
+            cur = HEADING_TO_SLUG.get(m.group(1).strip())
+            if cur:
+                out.setdefault(cur, [])
+            continue
+        if cur and line.startswith("- "):
+            out[cur].append(line[2:])
+    return out
+
+
+def merge_into(text: str, new_entries, window: str) -> str:
+    """Fold `new_entries` into this file's `window` block, collapsing duplicates.
+
+    Prepending a fresh block per run -- what this did until 2026-09-06 -- gave
+    `history/api.md` 27 `## 2026-09` headings for 30 sections, one per fold,
+    since the changelog split on 2026-09-02. No entry was lost or misfiled; what
+    was wrong was the structure the file's own header promises, and the roll is
+    sized in whole windows, so a per-fold window made the cap roll an arbitrary
+    slice of a month rather than a month (`tasks/doc/021`).
+
+    It also collapses same-window blocks it finds, so a file written by the old
+    assembler heals on the next fold that touches it rather than needing a
+    second repair pass. Order is preserved exactly: this run's entries first
+    (sorted among themselves, as before), then each existing block's rows in
+    file order, which is newest-first.
+    """
+    header, blocks = split_file(text)
+    by_cat: dict[str, list] = {}
+    fresh: dict[str, list] = {}
+    for cat, row in new_entries:
+        fresh.setdefault(cat, []).append(row)
+    for cat, rows in fresh.items():
+        by_cat.setdefault(cat, []).extend(sorted(rows))
+    kept = []
+    for win, block in blocks:
+        if win == window:
+            for cat, rows in parse_entries(block).items():
+                by_cat.setdefault(cat, []).extend(rows)
+        else:
+            kept.append(block)
+    return header.rstrip() + "\n\n" + render_entries(by_cat, window) + "".join(kept)
+
+
 def roll_if_over_cap(path: Path, scope: str) -> str | None:
-    """Move the oldest windows out until the file fits CAP_BYTES."""
+    """Move the oldest windows out until the file fits CAP_BYTES.
+
+    **Never the newest window, even if the file is still over cap after.** The
+    roll moves whole windows, so once windows are monthly rather than per-fold
+    (`tasks/doc/021`) a single over-cap month is the *only* block -- and rolling
+    it archives the entry the fold wrote seconds earlier and leaves the live
+    file with a header and nothing else. Reproduced 2026-09-06 at 23,949 B:
+    0 entries left. The old per-fold windows masked it, because there was always
+    an older block to take instead; `history/doc.md` was at 50% of the cap when
+    this was collapsed, so it was weeks away rather than hypothetical.
+
+    A file that cannot fit without moving its newest window says so and stays
+    over cap. That is a prompt to shorten entries or split the window, and it is
+    strictly better than silently emptying the file nobody re-reads.
+    """
     text = path.read_text(encoding="utf-8")
     if len(text.encode()) <= CAP_BYTES:
         return None
     head, *blocks = re.split(r"(?m)^(?=## )", text)
     moved = []
-    while blocks and len(("".join([head] + blocks)).encode()) > CAP_BYTES:
+    while len(blocks) > 1 and len(("".join([head] + blocks)).encode()) > CAP_BYTES:
         moved.append(blocks.pop())          # oldest sits last: newest-first file
+    if len(("".join([head] + blocks)).encode()) > CAP_BYTES:
+        win = re.match(r"## (\S+)", blocks[0]).group(1) if blocks else "?"
+        print(f"  history/{scope}.md is over the {CAP_BYTES // 1024} KB cap and its "
+              f"newest window ({win}) is the only one left --\n"
+              f"    not rolling it: that would archive what this fold just wrote. "
+              f"Shorten entries or split the window.")
     if not moved:
         return None
     ARCHIVE.mkdir(parents=True, exist_ok=True)
@@ -161,14 +253,89 @@ def roll_if_over_cap(path: Path, scope: str) -> str | None:
     return str(dest.relative_to(REPO))
 
 
+OLD_CAP_SENTENCE = (f"Capped at {CAP_BYTES // 1024} KB — older windows roll "
+                    f"into [archive/](archive/).")
+NEW_CAP_SENTENCE = (f"Capped at {CAP_BYTES // 1024} KB: over that, whole windows roll out of "
+                    f"the end, oldest first, until it fits — [archive/](archive/).")
+
+
+def entry_index(text: str) -> dict:
+    """{category: [row, ...]} over the WHOLE file, in file order.
+
+    The invariant a normalize pass must not break. Not global line order --
+    collapsing blocks necessarily regroups lines by category, which is the
+    point. What must not change is the count, and the order of rows *within* a
+    category, since that is the newest-first reading order the file promises.
+    """
+    out: dict[str, list] = {}
+    _, blocks = split_file(text)
+    for _, block in blocks:
+        for cat, rows in parse_entries(block).items():
+            out.setdefault(cat, []).extend(rows)
+    return out
+
+
+def normalize(apply: bool) -> int:
+    """Collapse duplicate window headings in every assembled history file.
+
+    One pass, after the assembler stopped creating them. Refuses to write a file
+    whose entries did not survive unchanged -- see `entry_index`.
+    """
+    files = sorted(HISTORY.glob("*.md"))
+    if not files:
+        print("no history files.")
+        return 0
+    changed, failed = 0, 0
+    for path in files:
+        text = path.read_text(encoding="utf-8")
+        header, blocks = split_file(text)
+        windows = [w for w, _ in blocks]
+        dupes = {w for w in windows if w and windows.count(w) > 1}
+        header_stale = OLD_CAP_SENTENCE in header
+        if not dupes and not header_stale:
+            continue
+        new = text
+        for win in sorted(dupes):
+            new = merge_into(new, [], win)
+        if header_stale:
+            head, rest = split_file(new)[0], "".join(b for _, b in split_file(new)[1])
+            new = head.replace(OLD_CAP_SENTENCE, NEW_CAP_SENTENCE) + rest
+        before, after = entry_index(text), entry_index(new)
+        if before != after:
+            lost = sum(len(v) for v in before.values()) - sum(len(v) for v in after.values())
+            print(f"  REFUSED  {path.name}: entries changed "
+                  f"({lost:+d} rows, or order moved within a category)")
+            failed += 1
+            continue
+        n = len(windows) - len({w for w in windows})
+        print(f"  {path.name}: {len(windows)} window heading(s) -> "
+              f"{len(set(windows))}, {sum(len(v) for v in after.values())} entries intact"
+              + ("" if apply else "   [dry run]"))
+        if apply:
+            path.write_text(new, encoding="utf-8")
+        changed += 1
+    if failed:
+        print(f"\n{failed} file(s) refused; nothing written for those.")
+        return 1
+    print(f"\n{changed} file(s) "
+          + ("normalized." if apply else "would change; pass --apply."))
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--window", help="window heading, e.g. 2026-09 (default: this month)")
     ap.add_argument("--check", action="store_true", help="validate fragments, assemble nothing")
+    ap.add_argument("--normalize", action="store_true",
+                    help="collapse duplicate window headings in history/ (one-off repair)")
+    ap.add_argument("--apply", action="store_true", help="with --normalize, write the files")
     ap.add_argument("--only", action="append", metavar="GLOB",
                     help="consume only fragments whose filename matches (repeatable). "
                          "A fold passes its own unit's; everything else stays pending.")
     args = ap.parse_args()
+
+    if args.normalize:
+        return normalize(args.apply)
 
     scopes = known_scopes()
     good, bad = collect(scopes, args.only)
@@ -193,18 +360,18 @@ def main() -> int:
 
     for scope, entries in sorted(by_scope.items()):
         path = HISTORY / f"{scope}.md"
-        block = render(entries, window)
         if path.exists():
-            text = path.read_text(encoding="utf-8")
-            head, sep, rest = text.partition("\n## ")
-            path.write_text(head.rstrip() + "\n\n" + block + (("## " + rest) if sep else ""),
-                            encoding="utf-8")
+            path.write_text(
+                merge_into(path.read_text(encoding="utf-8"), entries, window),
+                encoding="utf-8")
         else:
+            block = render(entries, window)
             path.write_text(
                 f"# {scope}: history\n\n**Status:** active, {datetime.date.today()}. "
                 f"Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; "
-                f"newest window first. Capped at {CAP_BYTES // 1024} KB — older windows roll "
-                f"into [archive/](archive/).\n\n" + block, encoding="utf-8")
+                f"newest window first. Capped at {CAP_BYTES // 1024} KB: over that, whole "
+                f"windows roll out of the end, oldest first, until it fits — "
+                f"[archive/](archive/).\n\n" + block, encoding="utf-8")
         rolled = roll_if_over_cap(path, scope)
         print(f"  history/{scope}.md  += {len(entries)} entr{'y' if len(entries)==1 else 'ies'}"
               + (f"  (rolled {rolled})" if rolled else ""))
