@@ -5,6 +5,10 @@
 ## 2026-09
 
 ### Fixed
+- An over-long registered-action payload says so instead of reporting a step count, and a field's byte range is bounded at registry-validate time (decisions/authoring.md 66).
+## 2026-09
+
+### Fixed
 - Two registered actions sharing a name are now refused on load and on save, as duplicate struct layouts already were ([decision 35](../embarch-study-designer/decisions/authoring.md)).
 ## 2026-09
 
