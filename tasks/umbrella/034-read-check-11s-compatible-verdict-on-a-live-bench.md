@@ -1,6 +1,6 @@
 # 034 — Read check 11's `compatible` verdict and check 13's comparison on a live bench
 
-**State:** open
+**State:** claimed by the supervisor's own hands (leg 030, bench unit), 2026-09-07 01:46
 **Source:** `umbrella/030`'s hardware-verification debt, leg 026, 2026-09-06 — the host-side half
 landed (`embarch-umbrella` `d329842`, doc `8037467`) and left exactly one box unticked
 **Scope:** umbrella
