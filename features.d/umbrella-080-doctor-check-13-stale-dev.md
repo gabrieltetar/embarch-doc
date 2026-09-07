@@ -1,1 +1,1 @@
-| `doctor` check 13 — stale dev-bench firmware | Shipped; first bench comparison [2026-09-07] is a **`FAIL`**, and it warns rather than compares by default (`tasks/umbrella/037`) | bench | 19, 44 |
+| `doctor` check 13 — stale dev-bench firmware | Shipped; `umbrella/034`'s bench findings fixed — unconfigured now fails with a fix instead of warning, and an id git can't resolve reports as that, not an ordinary mismatch. **Unverified against a live bench since** (`tasks/umbrella/037`) | bench | 19, 44, 47 |

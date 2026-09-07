@@ -4,7 +4,7 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **Check 13 is silent by default** [2026-09-07 bench runs, `tasks/umbrella/034` then `tasks/dev-bench/011`; the budget debt above is closed]. `dev_bench_repo_path` is unset in saved state and nothing in `setup` or `init` records it, so check 13 warns *"no embarch-dev-bench checkout configured"* with the checkout two directories away; only `EMBARCH_DEV_BENCH_REPO_PATH` produces a comparison. That is `tasks/umbrella/037`, and it is now the only half open: the comparison itself has been seen in **both** arms on real hardware, and reads `PASS` since `dev-bench/011` reflashed the bench. Nothing arms it.
+- **Check 13's two `umbrella/034` findings are fixed but unverified against a real bench** (decision 47): unconfigured now fails with a `setup --dev-bench-repo` fix instead of warning silently, and a `firmware_version` git can't find (this run's own `49958d34`) is its own `unresolvable` fail rather than an ordinary `stale` one. **Hardware debt:** one `doctor` run on the primary bench, checking all three codes (`not-configured`, `stale`, `unresolvable`) render as reasoned.
 
 - **Check 15 is not a hash comparison and must not be read as one.** It catches a *cross-version* stale deploy and is blind to a same-version one: `core_version` is `CARGO_PKG_VERSION`, so a rebuild and failed deploy at one version reads as a match ([decision 34](decisions/schema-skew.md)). A content hash on `/status` would close it, `embarch-core`'s call.
 

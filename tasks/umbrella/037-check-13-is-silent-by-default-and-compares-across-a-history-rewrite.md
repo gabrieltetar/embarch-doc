@@ -1,6 +1,6 @@
 # 037 — Check 13 is silent by default on the only bench the suite has, and its comparison cannot survive a history rewrite
 
-**State:** claimed by agent/umbrella/037-check-13-baseline, 2026-09-07 17:38
+**State:** closed by agent/umbrella/037-check-13-baseline, 2026-09-07
 **Source:** `tasks/umbrella/034`'s bench run, leg 030, 2026-09-07 — the run that closed decision 44's budget debt found two things the debt was hiding
 **Scope:** umbrella
 **Hardware:** none for the reasoning and the fix; a bench confirms it in one `doctor` run
@@ -94,9 +94,20 @@ two — but they are tight and this task's `Done when` asks you to write both. B
 
 ## Done when
 
-- [ ] Check 13 either compares on a default install or says, in a status an operator reads as
+- [x] Check 13 either compares on a default install or says, in a status an operator reads as
       actionable, that it has no baseline configured — with the choice argued in a decision.
-- [ ] A reported firmware id that resolves to no object in the checkout is reported as that, not as
-      an ordinary mismatch.
-- [ ] `spec.md`'s check table row and `open.md`'s bullet updated; `features.d/umbrella-080` too.
-- [ ] Gate green; `changelog.d/umbrella-*` fragment.
+      (Fail, not warn, once a bench answers `/dev-bench/hello` — decision 47.)
+- [x] A reported firmware id that resolves to no object in the checkout is reported as that, not as
+      an ordinary mismatch. (`code` `unresolvable`, distinct from `stale` — decision 47.)
+- [x] `spec.md`'s check table row and `open.md`'s bullet updated; `features.d/umbrella-080` too.
+- [x] Gate green; `changelog.d/umbrella-*` fragment.
+
+**Closed 2026-09-07, agent/umbrella/037-check-13-baseline.** Decision 19 (this check's own
+mission) split verbatim into `decisions/dev-bench-firmware.md` per the supervisor's note, carrying
+new decision 47 for both fixes — `decisions/doctor.md` needed no compaction, and its own reserve
+cleared (11,346 → 10,687 B) once 19 moved out. `spec.md` and `open.md` both written within their
+existing reserve, no new debt filed (per `tasks/umbrella/038`). **Hardware-verification debt**
+filed in `open.md`: the fix is unverified against the primary bench that found it — one `doctor`
+run there, checking all three codes (`not-configured`, `stale`, `unresolvable`) render as reasoned.
+`cargo build`/`test`/`clippy --all-targets -D warnings` clean (215 tests, 6 new); `check-docs.py`
+all 10 green; `check-ownership.py` clean in both worktrees; `check-client-names.py` clean.

@@ -4,7 +4,7 @@
 
 The checks, and why several of them distinguish states that look the same. Which are built and which are not is [../spec.md](../spec.md)'s table, not repeated per entry here. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Three checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), and check 17's bind address is [bind.md](bind.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Four checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), check 17's bind address is [bind.md](bind.md), and check 13's dev-bench-firmware comparison is [dev-bench-firmware.md](dev-bench-firmware.md).
 
 ### 18 — Check 5 distinguishes "no probe attached" from "a probe is attached but this user cannot open it"
 
@@ -19,12 +19,6 @@ Reporting zero probes as "warn — a probe can legitimately be unplugged" is tru
 **`0403` (FTDI) is deliberately not a probe vendor ID**, though several JTAG adapters use it — so does every third USB-serial cable here — the outpost link and dev-bench console among them — and an ID meaning "probe" only sometimes would fail this check on machines with no probe at all, which is worse than the warn it replaces. The list is SEGGER, CMSIS-DAP, ST-Link, LPC-Link2, EDBG, Raspberry Pi Debug Probe, Black Magic, XDS110, ULINK.
 
 **Never exercised against a real permission-denied probe** — that needs a Linux box with a probe attached and its udev rules removed. Until then the fail branch is unit-tested against a synthetic sysfs tree only ([../open.md](../open.md)).
-
-### 19 — A stale-dev-bench-firmware check
-
-It compares the bench's reported firmware version, over a handshake-only endpoint Core added for exactly this, against `git describe` in whichever local dev-bench checkout is configured — a machine-level state field, settable at setup or overridable per call. A mismatch fails with a fix line naming the reflash step, **whose exact command depends on which board, unlike this decision's original text assumed.**
-
-**The configured path must name a path native to wherever `doctor` itself runs**, not a cross-filesystem view of one: Windows against a WSL2 checkout over a UNC path **spuriously reports the checkout as always-dirty, because Windows' git cannot read that repo's symlinks over that path.**
 
 ### 31 — Check 14: which program Core would flash each chip family with
 
