@@ -7,6 +7,7 @@
 **Owner:** no
 
 **Compacts:** embarch-outpost/decisions/tracing.md
+**Size debt due:** 2026-10-02
 **In flux:** no
 **Must not delete:** Decision 19's rejected-alternative paragraph and its
 **corrected price** — a coalesced "the instrument ran here" record costs a new

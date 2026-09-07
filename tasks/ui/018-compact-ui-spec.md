@@ -6,6 +6,7 @@
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-ui/spec.md
+**Size debt due:** 2026-10-12
 
 ## What
 

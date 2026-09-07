@@ -11,6 +11,7 @@ the worker filed it `open` while declaring `In flux: yes`, and those two cannot 
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-umbrella/decisions/reporting.md
+**Size debt due:** 2026-09-28
 
 ## What
 

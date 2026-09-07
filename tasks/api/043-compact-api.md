@@ -8,6 +8,7 @@
 **Owner:** no
 
 **Compacts:** embarch-api/decisions/surface.md
+**Size debt due:** 2026-09-20
 **In flux:** yes — this file is the tool and CLI surface, the part of the crate that
 changes every time a tool gains a param or a description gets corrected (most
 recently decision 57 itself, this same unit). A shortening pass now would be

@@ -41,6 +41,7 @@ is filed against, 1 otherwise.
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import re
 import sys
@@ -55,6 +56,45 @@ KB = 1024
 # ~100 B each) would otherwise block a change that shrank the corpus by 190 KB.
 # A file that has reached its cap gets no allowance at all: it is capped for good.
 RENAME_ALLOWANCE = 1 * KB
+
+# THE RATCHET MOVES IN STEPS, not to the exact byte. A baseline pinned to a
+# file's exact size means "no correct edit may ever be made here without an
+# equal deletion in the same commit" -- a hard stop wearing a gradient's
+# clothes. Measured 2026-09-07: `ops.md` at 29,701/29,701 and `protocol.md` at
+# 32,466/32,466, both at ZERO headroom, which is how one new rule cost four
+# squeeze passes.
+#
+# So a shrink records the next step boundary ABOVE the new size, and the
+# baseline is still `min(old, that)` -- monotonically decreasing, never a raise.
+# A file that shrinks from 32,466 to 29,701 lands on 30,720 and has earned
+# 1,019 B of real room; it can never grow back toward 32 K. A file already
+# pinned tight from an older exact-pin update stays tight until someone shrinks
+# it, and then it gets a boundary. Shrinking always buys room at a boundary,
+# and never buys room you did not earn.
+RATCHET_STEP = 1 * KB
+
+# A file may exceed its limit by up to this much WITHOUT failing the gate, if
+# and only if the overrun is recorded as a debt carrying a due date that has
+# not passed (see `DUE`). One amendment's grace, on a clock, once.
+#
+# This is the ledger, and it exists because refusing a correct edit at the wall
+# is the expensive failure. Measured across 2026-09-06/07: three units spent
+# their reserve shaving Status-column rows to clear fourteen bytes; one
+# supervisor filed a decision in the WRONG FILE because the right one had 96
+# bytes left -- "a cap that misfiles is worse than a cap that refuses"; and a
+# task parked on `In flux: yes` sat at 22 bytes of headroom with the argument
+# that unparked it written inside it.
+#
+# The grace is bounded twice over so it cannot become a renewable licence: by
+# this many bytes, and by the due date. Past either, the gate fails.
+OVERRUN_ALLOWANCE = 2 * KB
+
+# How long a debt has. A leg is four units and ~40 minutes; a busy day is 15 to
+# 47 units. Seven days is long enough that nothing thrashes and short enough
+# that a park cannot outlive it -- which is the point, since `blocked` was an
+# absorbing state: 13 of 28 reserve debts were filed only against a blocked
+# task, invisible to every leg.
+DUE_DAYS = 7
 
 # A file at or above this fraction of its effective limit is *in reserve*: it
 # may still be written, and the gate still passes, but the debt must be filed.
@@ -93,6 +133,31 @@ BLOCKED_STATE = re.compile(r"^\*\*State:\*\*\s*blocked\b", re.M)
 # Matching on a mention made five of today's twelve read as filed by tasks that
 # merely cite the doc they are about to edit -- which is every task.
 COMPACTS = re.compile(r"^\*\*Compacts:\*\*[ \t]*(.+)$", re.M)
+# The due date that turns a recorded debt into a ledger entry. Absent means
+# "no clock", which is the parked state this exists to end -- so an over-cap
+# file whose debt carries no due date fails the same as an unrecorded one.
+# Set ONCE, from the day the debt is opened. Moving it forward is visible in
+# the diff of a reserved path and is an owner act; nothing here can tell, and
+# `DOC-BUDGET.md` says so rather than pretending otherwise.
+DUE = re.compile(r"^\*\*Size debt due:\*\*[ \t]*(\d{4}-\d{2}-\d{2})", re.M)
+
+# Per-decision cap. A file-level cap cannot tell "many decisions" from "one
+# sprawling decision", and the difference decides the remedy: a file of many
+# splits, a file of one does not. Measured over all 307 decisions in the
+# corpus on 2026-09-07 -- median 1,395 B, p75 2,435, p90 3,904, max 10,605 --
+# so 4 KB sits at about p90 and puts 26 decisions over, every one of them a
+# genuine sprawl rather than a well-argued entry.
+#
+# The worked example is `embarch-umbrella/decisions/bind.md`: 92.8% full, and
+# its decision 22 alone is 10,605 of those 11,409 bytes. The file-level view
+# says "split it"; the file has ONE decision in it, so a split cannot help.
+# Only the per-decision view gives the right instruction.
+#
+# Ratcheted like the file caps, and seeded with the 26 at their current sizes,
+# so introducing it reddens nothing on day one and each may only shrink.
+DECISION_CAP = 4 * KB
+DECISION_BASELINE = REPO / "scripts" / "decision-size-baseline.json"
+DECISION_HEAD = re.compile(r"(?m)^(### .*)$")
 
 # role -> (cap in bytes, matcher on the repo-relative path)
 CAPS = [
@@ -219,7 +284,87 @@ def open_debt_items():
                 paths.update(t.strip().strip("`,") for t in m.group(1).split(","))
             if paths:
                 blocked = bool(BLOCKED_STATE.search(text))
-                yield str(p.relative_to(REPO)), {q for q in paths if q}, blocked
+                m = DUE.search(text)
+                due = None
+                if m:
+                    try:
+                        due = datetime.date.fromisoformat(m.group(1))
+                    except ValueError:
+                        due = None
+                yield str(p.relative_to(REPO)), {q for q in paths if q}, blocked, due
+
+
+def decisions():
+    """Every numbered decision entry in the corpus, as (key, rel, heading, bytes).
+
+    A decision is a `### N -- title` block and everything under it up to the
+    next one, which is the shape all 80 decisions files use. The key is
+    `<file>#<numbers>` rather than the whole heading, because a title gets
+    edited and a number does not -- and the combined form (`### 37, 38 -- ...`)
+    keeps both numbers, so it stays stable too.
+    """
+    files = sorted(REPO.glob("embarch-*/decisions/*.md")) + \
+        sorted(REPO.glob("embarch-*/decisions.md"))
+    for f in files:
+        rel = str(f.relative_to(REPO))
+        parts = DECISION_HEAD.split(f.read_text(encoding="utf-8", errors="replace"))
+        for i in range(1, len(parts), 2):
+            head = parts[i]
+            size = len((head + parts[i + 1]).encode())
+            nums = head[4:].split("\u2014")[0].split("--")[0].strip().rstrip(":").strip()
+            yield f"{rel}#{nums}", rel, head[4:].strip(), size
+
+
+def decision_state():
+    """(fails, over_unpinned, rows) for the per-decision cap."""
+    base = json.loads(DECISION_BASELINE.read_text()) if DECISION_BASELINE.exists() else {}
+    fails, over_unpinned, rows = [], [], []
+    for key, rel, head, size in decisions():
+        # A pinned decision is over cap and allowed up to its baseline, which
+        # only moves down. `min(cap, baseline)` would hold it to a cap it has
+        # not reached -- a wall, not a ratchet. Same trap the file-level
+        # comment names.
+        limit = base[key] if key in base else DECISION_CAP
+        rows.append((key, rel, head, size, limit, base.get(key)))
+        if size > limit:
+            (fails if key in base else over_unpinned).append((key, head, size, limit))
+    return fails, over_unpinned, rows, base
+
+
+def ratchet_to(size: int, cap: int, old: int) -> int:
+    """Where a shrunk file's baseline lands. See RATCHET_STEP.
+
+    `min(old, next step above size)` -- monotone by construction, so this can
+    never raise a baseline, and a shrink that crosses a boundary earns real
+    working room instead of pinning the file at zero headroom.
+    """
+    step = min(cap, ((size // RATCHET_STEP) + 1) * RATCHET_STEP)
+    return min(old, max(step, size))
+
+
+def ledger_verdict(rel, size, limit, items, today):
+    """Why a file over its limit does or does not fail. See OVERRUN_ALLOWANCE.
+
+    Five outcomes, and only one of them passes:
+      UNRECORDED -- nothing names it. The debt is invisible; this is the
+                    failure the whole filing rule exists for.
+      TOO_FAR    -- past the allowance. A grace of one amendment is a grace,
+                    not a renewable licence.
+      NO_CLOCK   -- recorded, but with no due date, which is exactly the
+                    parked state that absorbed 13 of 28 debts.
+      OVERDUE    -- the clock ran out.
+      IN_DATE    -- recorded, bounded, and inside its window. Passes.
+    """
+    named = [(i, b, d) for i, paths, b, d in items if rel in paths]
+    if not named:
+        return "UNRECORDED", None
+    if size - limit > OVERRUN_ALLOWANCE:
+        return "TOO_FAR", size - limit
+    dues = [d for _, _, d in named if d]
+    if not dues:
+        return "NO_CLOCK", None
+    soonest = min(dues)
+    return ("OVERDUE" if soonest < today else "IN_DATE"), soonest
 
 
 def reserve_state(base, reserve_pct):
@@ -238,7 +383,7 @@ def reserve_state(base, reserve_pct):
         limit = min(cap, base[rel]) if rel in base else cap
         if size > limit:
             continue
-        filed = [(i, blocked) for i, paths, blocked in items if rel in paths]
+        filed = [(i, blocked) for i, paths, blocked, _ in items if rel in paths]
         headroom_line = limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
         if size >= headroom_line:
             in_reserve.append((rel, size, limit, filed))
@@ -263,12 +408,20 @@ def main() -> int:
     ap.add_argument("--report", action="store_true", help="print the whole corpus")
     ap.add_argument("--pressure", action="store_true",
                     help="list what is in reserve, filed and unfiled")
+    ap.add_argument("--due", action="store_true",
+                    help="print the debt ledger, soonest due first")
+    ap.add_argument("--decisions", action="store_true",
+                    help="per-decision sizes against DECISION_CAP")
+    ap.add_argument("--adopt-decisions", action="store_true", dest="adopt_decisions",
+                    help="pin every over-cap decision at its current size (bootstrap)")
     ap.add_argument("--reserve-pct", type=float, default=RESERVE_PCT,
                     help="what counts as reserve (default %(default)g%% of min(cap, baseline))")
     args = ap.parse_args()
 
     base = json.loads(BASELINE.read_text()) if BASELINE.exists() else {}
-    fails, shrunk, capped, total = [], [], [], 0
+    items = list(open_debt_items())
+    today = datetime.date.today()
+    fails, tolerated, shrunk, capped, total = [], [], [], [], 0
 
     for rel, size in docs():
         role, cap = role_and_cap(rel)
@@ -286,7 +439,77 @@ def main() -> int:
         else:
             limit = cap
         if size > limit:
-            fails.append((rel, role, size, limit, cap))
+            kind, detail = ledger_verdict(rel, size, limit, items, today)
+            if kind == "IN_DATE":
+                tolerated.append((rel, role, size, limit, cap, detail))
+            else:
+                fails.append((rel, role, size, limit, cap, kind, detail))
+
+    if args.due:
+        entries = []
+        for rel, paths, blocked, due in items:
+            for f in sorted(paths):
+                fp = REPO / f
+                if not fp.exists():
+                    continue
+                role, cap = role_and_cap(f)
+                if cap is None:
+                    continue
+                sz = fp.stat().st_size
+                limit = base[f] if f in base else cap
+                # Only live pressure belongs on a ledger. A filed path that is
+                # comfortably clear is a PAID item to close (--pressure says
+                # so), not a debt with a clock.
+                line = limit - max(RESERVE_FLOOR, limit * (100.0 - RESERVE_PCT) / 100.0)
+                if sz < line:
+                    continue
+                entries.append((due, rel, f, sz, limit, blocked))
+        if not entries:
+            print("the ledger is empty: nothing is filed against a size cap.")
+            return 0
+        undated = [e for e in entries if e[0] is None]
+        dated = sorted((e for e in entries if e[0]), key=lambda e: e[0])
+        print(f"{'due':12} {'left':>6}  {'file':52} {'size/limit':>14}  item")
+        for due, rel, f, sz, limit, blocked in dated:
+            left = (due - today).days
+            flag = "OVERDUE" if left < 0 else f"{left}d"
+            print(f"{due.isoformat():12} {flag:>6}  {f:52} {sz:6}/{limit:<7} "
+                  f"{rel}{'  [BLOCKED]' if blocked else ''}")
+        for due, rel, f, sz, limit, blocked in undated:
+            print(f"{'(no clock)':12} {'--':>6}  {f:52} {sz:6}/{limit:<7} "
+                  f"{rel}{'  [BLOCKED]' if blocked else ''}")
+        overdue = [e for e in dated if (e[0] - today).days < 0]
+        print(f"\n{len(dated)} dated, {len(undated)} with no clock, {len(overdue)} OVERDUE.")
+        if overdue:
+            print("\nA leg spends its FIRST unit on the oldest overdue entry "
+                  "(DOC-BUDGET.md).\nOldest: " + overdue[0][2] + " -> " + overdue[0][1])
+        return 1 if overdue else 0
+
+    if args.decisions or args.adopt_decisions:
+        dfails, dover, drows, dbase = decision_state()
+        if args.adopt_decisions:
+            for key, head, size, limit in dover:
+                dbase[key] = size
+                print(f"  adopt {key}: {size} B")
+            for key in sorted(set(dbase) - {r[0] for r in drows}):
+                dbase.pop(key)
+                print(f"  GONE, pinned decision pruned: {key}")
+            DECISION_BASELINE.write_text(json.dumps(dict(sorted(dbase.items())), indent=2) + "\n")
+            print(f"\nwrote {DECISION_BASELINE.relative_to(REPO)}: {len(dbase)} pinned")
+            return 0
+        print(f"{len(drows)} decisions; cap {DECISION_CAP} B, {len(dbase)} pinned over it\n")
+        for key, rel, head, size, limit, pin in sorted(drows, key=lambda r: -r[3])[:20]:
+            mark = "OVER" if size > limit else ("pin " if pin else "    ")
+            print(f"  {mark} {size:6} B  {key}")
+        biggest_share = max(
+            ((size, rel, key) for key, rel, head, size, limit, pin in drows), default=None)
+        if biggest_share:
+            size, rel, key = biggest_share
+            whole = (REPO / rel).stat().st_size
+            print(f"\nlargest single decision is {100 * size // whole}% of its own file "
+                  f"({key}).\nA file-level cap cannot see that, and it decides the remedy: "
+                  "a file of\nmany decisions splits, a file of one does not.")
+        return 1 if dfails else 0
 
     if args.pressure:
         # This reports rather than files, and that is the whole point:
@@ -337,8 +560,9 @@ def main() -> int:
 
     if args.update or args.adopt:
         raised, adopted_refused = [], []
-        for rel, _, size in shrunk:
-            base[rel] = size
+        for rel, was, size in shrunk:
+            cap = role_and_cap(rel)[1]
+            base[rel] = ratchet_to(size, cap, was)
         for rel in capped:
             base.pop(rel, None)
         # A baseline entry for a file that no longer exists is dead weight that
@@ -398,11 +622,22 @@ def main() -> int:
         return 0
 
     if fails:
-        print(f"{len(fails)} file(s) over their limit:\n")
-        for rel, role, size, limit, cap in fails:
+        print(f"{len(fails)} file(s) over their limit and not covered by the ledger:\n")
+        REASON = {
+            "UNRECORDED": "no open item names this file -- the debt is unrecorded",
+            "TOO_FAR": f"more than the {OVERRUN_ALLOWANCE} B grace over the limit",
+            "NO_CLOCK": "its item carries no **Size debt due:** date",
+            "OVERDUE": "its debt is past due",
+        }
+        for rel, role, size, limit, cap, kind, detail in fails:
             why = "cap" if limit == cap else "ratchet baseline"
             print(f"  {rel}  {size/KB:.1f}K > {limit/KB:.1f}K ({why}; {role} cap is {cap/KB:.0f}K)")
-        print("\nA file may shrink freely. To record progress: scripts/check-doc-size.py --update")
+            extra = f" ({detail})" if detail is not None else ""
+            print(f"      {kind}: {REASON.get(kind, kind)}{extra}")
+        print("\nAn overrun is allowed to LAND, once, on a clock: record it on an open\n"
+              "item's **Compacts:** line with a **Size debt due:** date within\n"
+              f"{DUE_DAYS} days. Past the date or past {OVERRUN_ALLOWANCE} B it fails here.\n"
+              "DOC-BUDGET.md has the reasoning; `--due` prints the ledger.")
         # Last line must read as a failure on its own. A neutral footer here was
         # misread as a pass three times in one session when only the tail was
         # checked -- and the commits went out over-cap.
@@ -427,9 +662,26 @@ def main() -> int:
         print(f"FAIL: {len(unfiled)} file(s) in reserve with no debt filed.")
         return 1
 
+    dfails, dover, drows, dbase = decision_state()
+    if dfails:
+        print(f"{len(dfails)} pinned decision(s) grew past their baseline:\n")
+        for key, head, size, limit in dfails:
+            print(f"  {key}  {size} B > {limit} B")
+        print("\nA pinned decision may only shrink. Compact the entry, or split it into\n"
+              "two numbered decisions if it is really two arguments (DOC-BUDGET.md).")
+        print(f"FAIL: {len(dfails)} decision(s) over their baseline.")
+        return 1
+
     print(f"All {sum(1 for _ in docs())} docs within their limit; "
           f"{len(in_reserve)} in reserve, all filed. "
           f"Corpus {total/KB:.0f} KB; {len(base)} still over cap.")
+    if tolerated:
+        print(f"{len(tolerated)} on the ledger, over the limit but in date:")
+        for rel, role, size, limit, cap, due in sorted(tolerated, key=lambda t: t[5]):
+            print(f"  due {due.isoformat()}  {rel}  {size - limit} B over")
+    if dover:
+        print(f"{len(dover)} decision(s) over the {DECISION_CAP} B cap and not yet pinned "
+              f"(--adopt-decisions to seed).")
     return 0
 
 

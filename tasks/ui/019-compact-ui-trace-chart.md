@@ -8,6 +8,7 @@ it was filed to fix, spending 663 B and pushing this file into reserve.
 **Owner:** no
 
 **Compacts:** embarch-ui/decisions/trace-chart.md
+**Size debt due:** 2026-09-24
 **In flux:** **no.** No open `ui` task touches this file. Decision 10 (the
 chart half — zoom/pan/aggregation/study-action row) and decision 23 (the
 outcome decoder, just amended by `ui/015`) are both settled: nothing queued

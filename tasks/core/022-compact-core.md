@@ -8,6 +8,7 @@
 **Owner:** no
 
 **Compacts:** embarch-core/interfaces.md, embarch-core/open.md
+**Size debt due:** 2026-09-26
 **In flux:** yes — two other queued units touch this exact file. `tasks/core/021`
 (retire `GET /logs/stream`, which has no consumer anywhere) would delete the row
 `core/018` just added, and `tasks/api/032` names `/probes/enrolled`'s row as

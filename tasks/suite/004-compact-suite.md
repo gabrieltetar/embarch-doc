@@ -7,6 +7,7 @@ assembler run.
 **Scope:** suite
 **Hardware:** none
 **Compacts:** embarch-decision-reversals.md, ~~suite/features.md~~, suite/user-guide.md
+**Size debt due:** 2026-10-10
 **In flux:** yes — see "Why blocked". The three files are in flux for **different reasons**,
 and only one of them is the ordinary kind.
 **Must not delete:** every reversal row's **shape number** and the citation that resolves it

@@ -8,6 +8,7 @@ amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION
 **Owner:** no
 
 **Compacts:** embarch-dev-bench/decisions/ble.md, embarch-dev-bench/spec.md, embarch-dev-bench/open.md
+**Size debt due:** 2026-09-22
 **In flux:** yes — this file has taken two live corrections recently: decision 31 (16-bit UUIDs
 reported two bytes out of place) and decision 23's amendment landed by this same commit. BLE is an
 active area of the dev-bench firmware; do not compact ahead of the next correction landing, and

@@ -8,6 +8,7 @@ added decision 65 (`agent/study-designer/005-release-workflow-decision`).
 **Owner:** no
 
 **Compacts:** ~~embarch-study-designer/decisions/crate.md~~, embarch-study-designer/spec.md, embarch-study-designer/open.md
+**Size debt due:** 2026-10-04
 **In flux:** yes
 **Must not delete:** decision 64's measured `cargo tree -f "{p} {f}"` two-column result and
 its counterfactual ("16 errors" against "passes 9/9") — that is the whole evidence the two

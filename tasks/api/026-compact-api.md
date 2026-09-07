@@ -7,6 +7,7 @@
 **Owner:** no
 
 **Compacts:** embarch-api/decisions/core-link.md, embarch-api/spec.md, embarch-api/open.md
+**Size debt due:** 2026-09-14
 **In flux:** yes — the event-stream half of this file (decisions 48, 49) has never
 met a real `embarch-core`. `tasks/api/001-sse-client.md` is that run. Until it
 happens, shortening 48/49 writes a clean statement of something a first live run

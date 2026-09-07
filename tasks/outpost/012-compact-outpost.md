@@ -11,6 +11,7 @@ the supervisor's amendment to `decisions/module.md` decision 22.
 ## What
 
 **Compacts:** `embarch-outpost/open.md`, `embarch-outpost/decisions/module.md`, embarch-outpost/spec.md, embarch-outpost/decisions/transport.md
+**Size debt due:** 2026-09-18
 
 `open.md` is 4,891 / 5,120 B, 229 B left (95.5%); `decisions/module.md` is 7,730 / 8,192 B, 462 B
 left (94.4%).

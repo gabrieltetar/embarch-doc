@@ -6,6 +6,7 @@
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-topology/open.md
+**Size debt due:** 2026-10-08
 
 ## What
 

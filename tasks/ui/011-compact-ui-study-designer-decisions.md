@@ -8,6 +8,7 @@ supervisor's correction at the fold spent the last of the headroom. `DOC-COMPACT
 **Owner:** no
 
 **Compacts:** embarch-ui/decisions/study-designer.md
+**Size debt due:** 2026-09-16
 **In flux:** **No.** Every decision in this file describes a shipped, rendered surface — the step
 editor, the run card, the saved library. Nothing here is a design mid-rewrite. This is **not** the
 file [`009`](009-compact-ui.md) is blocked on; that one is `decisions/trace-view.md` and it stays
