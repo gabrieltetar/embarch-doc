@@ -210,6 +210,24 @@ def merge_into(text: str, new_entries, window: str) -> str:
     return header.rstrip() + "\n\n" + render_entries(by_cat, window) + "".join(kept)
 
 
+def assembled_problems() -> list[str]:
+    """Window headings that appear twice in one assembled history file.
+
+    The gap `tasks/doc/021` names: until 2026-09-06 **no check read the
+    assembled file at all.** `--check` validated fragment shape, so the only
+    script positioned to notice 111 duplicate headings was the script producing
+    them, and it was looking the other way. A fold's own diff reads correctly in
+    isolation, which is why a day of folds went by.
+    """
+    out = []
+    for path in sorted(HISTORY.glob("*.md")):
+        _, blocks = split_file(path.read_text(encoding="utf-8"))
+        windows = [w for w, _ in blocks if w]
+        for win in sorted({w for w in windows if windows.count(w) > 1}):
+            out.append(f"history/{path.name}: {windows.count(win)} '## {win}' headings")
+    return out
+
+
 def roll_if_over_cap(path: Path, scope: str) -> str | None:
     """Move the oldest windows out until the file fits CAP_BYTES.
 
@@ -255,8 +273,9 @@ def roll_if_over_cap(path: Path, scope: str) -> str | None:
 
 OLD_CAP_SENTENCE = (f"Capped at {CAP_BYTES // 1024} KB — older windows roll "
                     f"into [archive/](archive/).")
-NEW_CAP_SENTENCE = (f"Capped at {CAP_BYTES // 1024} KB: over that, whole windows roll out of "
-                    f"the end, oldest first, until it fits — [archive/](archive/).")
+NEW_CAP_SENTENCE = (f"Capped at {CAP_BYTES // 1024} KB: over that, whole windows roll off the "
+                    f"end, oldest first — never the newest, so a single over-cap window stays "
+                    f"and says so — into [archive/](archive/).")
 
 
 def entry_index(text: str) -> dict:
@@ -345,7 +364,17 @@ def main() -> int:
             print(f"  {path.relative_to(REPO)} -- {why}")
         return 1
     if args.check:
-        print(f"{len(good)} fragment(s) valid.")
+        problems = assembled_problems()
+        if problems:
+            print(f"{len(problems)} window heading(s) duplicated in assembled history:\n")
+            for line in problems:
+                print(f"  {line}")
+            print("\nOne window, one heading. Run "
+                  "`scripts/build_changelog.py --normalize --apply`;\n"
+                  "it collapses them and refuses any file whose entries do not survive.")
+            return 1
+        n = len(list(HISTORY.glob("*.md"))) if HISTORY.is_dir() else 0
+        print(f"{len(good)} fragment(s) valid; {n} history file(s) well-formed.")
         return 0
     if not good:
         print("No fragments to assemble."
@@ -370,8 +399,9 @@ def main() -> int:
                 f"# {scope}: history\n\n**Status:** active, {datetime.date.today()}. "
                 f"Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; "
                 f"newest window first. Capped at {CAP_BYTES // 1024} KB: over that, whole "
-                f"windows roll out of the end, oldest first, until it fits — "
-                f"[archive/](archive/).\n\n" + block, encoding="utf-8")
+                f"windows roll off the end, oldest first — never the newest, so a single "
+                f"over-cap window stays and says so — into [archive/](archive/).\n\n"
+                + block, encoding="utf-8")
         rolled = roll_if_over_cap(path, scope)
         print(f"  history/{scope}.md  += {len(entries)} entr{'y' if len(entries)==1 else 'ies'}"
               + (f"  (rolled {rolled})" if rolled else ""))

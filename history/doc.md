@@ -1,111 +1,17 @@
 # doc: history
 
-**Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB — older windows roll into [archive/](archive/).
+**Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
-## 2026-09
-
-### Changed
-- The doc gate's check list is no longer restated in protocol.md, supervise.md or DOC-COMPACTION-PASS.md; they had said six and eight while check-docs.py ran nine. Run the wrapper, read its output.
-
-### Fixed
-- build_changelog.py --only lets a fold consume just its unit's fragments, and fold-commit.py refuses one that swept another's — the legs 004/005 failure reached without `git add -A`.
-- check-dispatch.py refuses a second worker into a worktree another holds; check-doc-size.py stops citing DOC-COMPACTION.md §8/§9, which moved to DOC-COMPACTION-PASS.md two days ago.
-## 2026-09
-
-### Changed
-- A compaction debt is filed at tasks/<scope>/<NNN>-compact-<scope>.md — the scope of the doc, a path its worker owns — not tasks/doc/, which check-ownership.py refuses them.
-
-### Fixed
-- A code worktree links every sibling in the dependency closure, not the ones its own Cargo.toml names; embarch-ui needs embarch-topology transitively via embarch-core-client.
-- A spawned leg does get the Slack connector: it arrives deferred, so ToolSearch must pull it before any tool list shows it. ops.md §5.2a is a contingency, not the state legs 007-009 logged.
-- All eight sub-project CLAUDE.md files pointed at design.md, deleted by the four-file split; DOC-PROTOCOL.md §6 now carries the current template and says why check-links.py cannot guard it.
-- The PermissionRequest alert hook moved from the gitignored settings.local.json into .claude/settings.json, rendered by install.py and guarded by --check; it no longer fires for AskUserQuestion.
-- build_features.py --check validates fragments only; the suite/features.md equality assertion moved to --check-assembled, run on main. A worker shipping a feature can now pass every gate.
-- collect-open-questions.py reads a whole open.md, not just an "open question" heading: 100 questions across 11 docs, was 78 across 8. DOC-CONVENTIONS.md records the shape.
-
-### Decided
-- A blocked compaction task parks the pass, not the reserve: the compaction rides in the unit that next writes the file.
-- `tasks/doc/007` closed: the daily fold gets a script and a subagent, and the 25 KB roll line — which one folded day already exceeded — becomes 40 KB.
-## 2026-09
-
-### Changed
-- DOC-COMPACTION.md splits: §1–§5 stay as the budget, §6–§9 become DOC-COMPACTION-PASS.md, how to run a pass.
-- DOC-PROTOCOL.md §7 becomes DOC-CONVENTIONS.md: the shapes scripts parse, loaded when you need one.
 ## 2026-09
 
 ### Added
 - A doc's last 10% of cap is now a writable reserve whose debt must be filed as a task; check-duplication.py reports a claim held in two files.
-## 2026-09
-
-### Changed
-- Both protocol docs off their caps; §2's budget table now lists the three roles the checker enforced and it never named.
-## 2026-09
-
-### Changed
-- Client-identifying names are gone from every repo: the extractor type, the `static_extractor` config value, board ids and prose all use generic names now.
-## 2026-09
-
-### Changed
-- The fleet's standing rules, log and scripts move to the embarch-fleet repo; `.claude/` and the protocol READMEs here are now generated from it.
-
-### Fixed
-- A leg no longer emits shell no permission rule can match (`for` loops, heredoc writes); a `PermissionRequest` hook alerts Slack if one blocks anyway.
-## 2026-09
-
-### Added
 - Blocking conditions alert via `scripts/fleet-alert.py` and a Slack webhook: a fleet `@` notifies nobody, since the connector posts as the owner.
-## 2026-09
-
-### Added
 - `check-ownership.py --supervisor` now fails on a top-level doc classified by neither list, so a compaction split cannot silently drop a file's protection again.
-
-### Fixed
-- A status line *is* configured; DEGRADED is a missing `rate_limits` payload, not a missing status line — and the two look identical on disk.
-- A unit's log entry goes in its fold commit, so landing unlogged is impossible; a dream post now carries `crystal_ball`, which the 6-hour gate can actually read.
-- An `inbox/` drop no longer starves itself: the leg drains `inbox/` every leg and counts with `--tasks-only`, so a drop cannot suppress the refill that files it.
-- Six rule-bearing files a leg could write are now owner-reserved, and §3's table no longer grants it `scripts/` when the check always refused.
-- The dispatchable count is `scripts/queue-status.py`, not four prose copies of "State is open"; a claim held by a dead worker now counts as recoverable.
-- The listener's cron fires only while it is idle, so a tick now makes one spawn attempt and ends; an in-turn retry suppressed its own recovery.
-## 2026-09
-
-### Changed
-- The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-fleet/protocol.md](../../embarch-fleet/protocol.md) §6.
-- The fleet's risk register moved out of embarch-fleet/protocol.md §12 into [embarch-fleet/risks.md](../../embarch-fleet/risks.md), which hit its size cap.
-- The four-surfaces comparison and the cloud-session rules moved out of the ops doc into [embarch-remote-surfaces.md](../embarch-remote-surfaces.md).
-
-### Fixed
-- check-ownership defaulted to origin/main, so an unpushed claim commit gave workers phantom violations.
-- collect-open-questions read design.md only and missed 88 questions in eight open.md files.
-## 2026-09
-
-### Fixed
-- The documented tick prompt had drifted from the live one and lost the dream step.
-## 2026-09
-
-### Added
 - An empty queue makes the supervisor propose three real options and stop, rather than inventing work.
 - An idle tick with an empty queue dreams too, rate-limited to once per 6 hours.
 - The batch boundary is the only safe clear point; the digest is the handoff and phase 0 now reads it.
 - inbox/ lets any thread or worker hand the fleet a task without touching git or the queue.
-
-### Changed
-- The supervisor is a disposable agent; check-ownership --supervisor rejects owner-reserved paths mechanically.
-- fleet start spawns a supervisor agent rather than running the batch in the listener session.
-
-### Fixed
-- Phase 0 refreshes from origin and re-reads docs; session memory is a cache with no invalidation.
-- The fleet marks its own Slack posts robot_face; without it a tick reads its own batch report as a command.
-- check-ownership --code-repo died in every code repo; recovery greps matched documentation.
-- embarch-core-client is a shared crate too: api owns it, ui path-depends on it.
-- inbox/ was missing from check-doc-conventions SKIP_DIRS, so a queue entry failed a doc rule.
-## 2026-09
-
-### Fixed
-- DOC-COMPACTION s10 projection corrected: deletable cold is ~18 percent corpus-wide, not 54.
-- The usage gate degrades to a capped wave when percentages are unavailable, and HOLDs on a real 429 instead.
-## 2026-09
-
-### Added
 - A decisions entry may own several numbers (`### 20, 21, 25, 27 — …`) so merging entries under a byte budget keeps all 2,354 prose `decision N` references resolvable.
 - A suite-scope task is announced by Slack DM and parked, not blocked; the owner can cancel it until the batch ends.
 - Background agent threads: one supervisor, 4-6 workers, one repo each, on branches. See embarch-fleet/protocol.md.
@@ -120,6 +26,18 @@
 - status.d/ fragments and a tasks/ queue: a worker never edits a shared suite-level doc or the queue it pulls from.
 
 ### Changed
+- The doc gate's check list is no longer restated in protocol.md, supervise.md or DOC-COMPACTION-PASS.md; they had said six and eight while check-docs.py ran nine. Run the wrapper, read its output.
+- A compaction debt is filed at tasks/<scope>/<NNN>-compact-<scope>.md — the scope of the doc, a path its worker owns — not tasks/doc/, which check-ownership.py refuses them.
+- DOC-COMPACTION.md splits: §1–§5 stay as the budget, §6–§9 become DOC-COMPACTION-PASS.md, how to run a pass.
+- DOC-PROTOCOL.md §7 becomes DOC-CONVENTIONS.md: the shapes scripts parse, loaded when you need one.
+- Both protocol docs off their caps; §2's budget table now lists the three roles the checker enforced and it never named.
+- Client-identifying names are gone from every repo: the extractor type, the `static_extractor` config value, board ids and prose all use generic names now.
+- The fleet's standing rules, log and scripts move to the embarch-fleet repo; `.claude/` and the protocol READMEs here are now generated from it.
+- The fleet is now a zero-context listener window, a `fleet start` pump latch, and a relay of four-unit supervisor legs — see [embarch-fleet/protocol.md](../../embarch-fleet/protocol.md) §6.
+- The fleet's risk register moved out of embarch-fleet/protocol.md §12 into [embarch-fleet/risks.md](../../embarch-fleet/risks.md), which hit its size cap.
+- The four-surfaces comparison and the cloud-session rules moved out of the ops doc into [embarch-remote-surfaces.md](../embarch-remote-surfaces.md).
+- The supervisor is a disposable agent; check-ownership --supervisor rejects owner-reserved paths mechanically.
+- fleet start spawns a supervisor agent rather than running the batch in the listener session.
 - Compaction is lossy by design: efficiency and modularity over losslessness. Every file capped by role, a sub-project is four small files, and git holds what is dropped.
 - Dev-workflow compacted, 27 KB to 18 KB; the manual deploy steps are a fallback now that a command does them.
 - Every doc is within its cap and the size baseline holds no exceptions.
@@ -133,6 +51,31 @@
 - embarch.md compacted, 20 KB to 11 KB; the index is grouped tables.
 
 ### Fixed
+- build_changelog.py --only lets a fold consume just its unit's fragments, and fold-commit.py refuses one that swept another's — the legs 004/005 failure reached without `git add -A`.
+- check-dispatch.py refuses a second worker into a worktree another holds; check-doc-size.py stops citing DOC-COMPACTION.md §8/§9, which moved to DOC-COMPACTION-PASS.md two days ago.
+- A code worktree links every sibling in the dependency closure, not the ones its own Cargo.toml names; embarch-ui needs embarch-topology transitively via embarch-core-client.
+- A spawned leg does get the Slack connector: it arrives deferred, so ToolSearch must pull it before any tool list shows it. ops.md §5.2a is a contingency, not the state legs 007-009 logged.
+- All eight sub-project CLAUDE.md files pointed at design.md, deleted by the four-file split; DOC-PROTOCOL.md §6 now carries the current template and says why check-links.py cannot guard it.
+- The PermissionRequest alert hook moved from the gitignored settings.local.json into .claude/settings.json, rendered by install.py and guarded by --check; it no longer fires for AskUserQuestion.
+- build_features.py --check validates fragments only; the suite/features.md equality assertion moved to --check-assembled, run on main. A worker shipping a feature can now pass every gate.
+- collect-open-questions.py reads a whole open.md, not just an "open question" heading: 100 questions across 11 docs, was 78 across 8. DOC-CONVENTIONS.md records the shape.
+- A leg no longer emits shell no permission rule can match (`for` loops, heredoc writes); a `PermissionRequest` hook alerts Slack if one blocks anyway.
+- A status line *is* configured; DEGRADED is a missing `rate_limits` payload, not a missing status line — and the two look identical on disk.
+- A unit's log entry goes in its fold commit, so landing unlogged is impossible; a dream post now carries `crystal_ball`, which the 6-hour gate can actually read.
+- An `inbox/` drop no longer starves itself: the leg drains `inbox/` every leg and counts with `--tasks-only`, so a drop cannot suppress the refill that files it.
+- Six rule-bearing files a leg could write are now owner-reserved, and §3's table no longer grants it `scripts/` when the check always refused.
+- The dispatchable count is `scripts/queue-status.py`, not four prose copies of "State is open"; a claim held by a dead worker now counts as recoverable.
+- The listener's cron fires only while it is idle, so a tick now makes one spawn attempt and ends; an in-turn retry suppressed its own recovery.
+- check-ownership defaulted to origin/main, so an unpushed claim commit gave workers phantom violations.
+- collect-open-questions read design.md only and missed 88 questions in eight open.md files.
+- The documented tick prompt had drifted from the live one and lost the dream step.
+- Phase 0 refreshes from origin and re-reads docs; session memory is a cache with no invalidation.
+- The fleet marks its own Slack posts robot_face; without it a tick reads its own batch report as a command.
+- check-ownership --code-repo died in every code repo; recovery greps matched documentation.
+- embarch-core-client is a shared crate too: api owns it, ui path-depends on it.
+- inbox/ was missing from check-doc-conventions SKIP_DIRS, so a queue entry failed a doc rule.
+- DOC-COMPACTION s10 projection corrected: deletable cold is ~18 percent corpus-wide, not 54.
+- The usage gate degrades to a capped wave when percentages are unavailable, and HOLDs on a real 429 instead.
 - A worker branches both its code repo and embarch-doc; the two land together, and worktrees live outside every repo tree.
 - Reversal rows 59-105 restored: the changelog-stripping pass deleted 47 rows appended below that heading.
 - Roadmap said Milestone 7 Phase E was not started; it closed on 2026-08-27.
@@ -146,3 +89,7 @@
 
 ### Removed
 - Every doc's `## Changelog` section, plus the `*.changelog-archive.md` files and `archive-changelog.py` — 643 KB, 25% of the corpus. History now lives in `changelog.d/` fragments.
+
+### Decided
+- A blocked compaction task parks the pass, not the reserve: the compaction rides in the unit that next writes the file.
+- `tasks/doc/007` closed: the daily fold gets a script and a subagent, and the 25 KB roll line — which one folded day already exceeded — becomes 40 KB.
