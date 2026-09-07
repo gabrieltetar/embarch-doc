@@ -1,6 +1,6 @@
 # 015 — Decision 24 sits in `enrollment.md`, away from the two decisions it is built on
 
-**State:** open
+**State:** claimed by agent/topology/015-decision-24-home, 2026-09-07 16:40
 **Source:** supervisor, leg 036, 2026-09-07 — landing `topology/003`, which authored decision 24
 **Scope:** topology
 **Hardware:** none
