@@ -29,6 +29,14 @@ So the probe-read ID has three spellings across the surface (`hardware_id`, `pro
 and `live_hardware_id`/`recorded_hardware_id` in the validation report) while the **self-reported**
 ID reuses the first. Both are documented as-is at `embarch-core/interfaces.md:31,36,45`.
 
+**Confirmed live in a single response body** [supervisor, leg 030, 2026-09-07, `tasks/umbrella/034`'s
+bench run]: one authenticated `GET /dev-bench/hello` returned
+`{"schema_version":15,"compatible":true,"firmware_version":"49958d34","hardware_id":"cb781b716fcddc36","link_identity":"match","probe_hardware_id":"6fcddc36cb781b71"}`,
+and `POST /validate` for the same role in the same sitting returned
+`"hardware_id":"6fcddc36cb781b71"`. So the two spellings sit **four fields apart in one JSON
+object**, differing only by a swap of their two 4-byte halves — which is what makes a caller's
+`==` look like a near-miss rather than a category error.
+
 Candidate direction: give the two sources two names on every route, so the JTAG-read ID has one
 spelling everywhere and the self-reported one is visibly not it.
 

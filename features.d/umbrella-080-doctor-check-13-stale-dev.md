@@ -1,1 +1,1 @@
-| `doctor` check 13 — stale dev-bench firmware | Shipped; **never completed on a bench** — check 11's cause and fix (decision 44), unverified | hw | 19, 44 |
+| `doctor` check 13 — stale dev-bench firmware | Shipped; first bench comparison [2026-09-07] is a **`FAIL`**, and it warns rather than compares by default (`tasks/umbrella/037`) | bench | 19, 44 |

@@ -21,13 +21,23 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **Two named constants, not one made bigger.** Widening the single one would buy the handshake its time by handing a device scan twenty times what it has ever needed, and `doctor`'s shortness on the cheap calls is [decision 11](reporting.md)'s split doing its job. Two names also make the ladder readable at the call site, where the defect actually was.
 
-**What is measured and what is not.** `/status` under 500 ms is **measured** — check 4 read a `200` on all three runs above. `/dev-bench/port` sitting on that same budget is an **argument from what Core does for it** (the same `spawn_blocking` enumeration, no link, no lock), not a measurement: its enumeration has never been timed. The 10 s is **assumed** — no run on this bench or any other has produced a handshake *duration*, so what it has to exceed is unknown. It is sized like `MCP_HANDSHAKE_TIMEOUT`, this module's other assumed budget for another process's handshake, and sits under `embarch-api`'s 15 s `serial_timeout_secs` for a call over the same link. **A budget is spent only by a call that does not answer**, so a generous one costs a healthy run nothing and a wrong one shows up as decision 45 below's named timeout rather than as a mystery.
+**Both budgets are now measured, and the ladder is the shape the measurement found** [measured 2026-09-07 ~01:52 MDT, primary `wsl-host` bench, both boards attached, enrolled and validated, three authenticated GETs per route one second apart]:
+
+| route | three runs | budget | headroom |
+|---|---|---|---|
+| `/dev-bench/port` | 5.8, 12.5, 5.0 ms | 500 ms | ~40–100× |
+| `/status` | 126.5, 99.6, 100.0 ms | 500 ms | ~4–5× |
+| `/dev-bench/hello` | **719.7, 730.1, 746.9 ms** | 10 s | ~13× |
+
+**The handshake costs about 0.73 s, so the 500 ms it used to inherit was short by roughly 230 ms — 1.4× under, not orders out.** That is the uncomfortable number in this table: a budget wrong by half a second is exactly the kind that reads as an intermittent bench rather than as a wrong constant, and it held checks 11 and 13 dark for weeks. Nothing about the fix depended on knowing it, and every one of the three runs above cleared 10 s by more than an order of magnitude, so the value stands unchanged — but it is now sized against something instead of against `MCP_HANDSHAKE_TIMEOUT`. `/dev-bench/port`'s place on the scan budget was an argument from what Core does for it and is now also a measurement; it is the cheapest call of the three.
+
+**A budget is spent only by a call that does not answer**, so a generous one costs a healthy run nothing and a wrong one shows up as decision 45 below's named timeout rather than as a mystery.
 
 **The budget is now a parameter of `authed_get`, not a constant read inside it.** The defect was inheritance: a third call site was added to a helper that had already chosen for it. A parameter makes the next one state which kind of call it is, and a caller that guesses wrong is at least visible in the diff.
 
 **The durable rule, which outlives these two numbers:** a check whose remote call makes another process do real device work is not on the same clock as one that reads state, and a shared timeout constant will silently put it there. Reading its name is no defence — the constant this one inherited described itself accurately as "an authenticated request to an already-resolved `base_url`", which `/dev-bench/hello` *is*, and which says nothing about what answering it costs.
 
-**Not verified on a bench.** Everything above the live-run evidence is host-side: the split, the message, and a test that an endpoint answering slower than its budget fails while the same one under a wider budget returns `200`. Whether 10 s is enough for a real handshake is the observation [../open.md](../open.md) carries as owed.
+**Verified on a bench** [2026-09-07, `tasks/umbrella/034`]. `embarch doctor` on the primary `wsl-host` bench now prints check 11 as **PASS**, and its `compatible` verdict — the field this whole chain exists to read, never once read before — is *"dev-bench wire: bench reports v15, and Core accepts it"*, `{"schema_version":15,"compatible":true}` off the raw body. **Check 13 got its first real comparison too, and it is a `FAIL` whose fix line cannot clear it** — [../open.md](../open.md) carries what that turned out to be. No decision is amended for it: the budget half of this debt is closed, and what replaced it is a question about check 13's *baseline*, not about a clock.
 
 ### 45 — A call that did not come back says whether the clock ran out or the connection never came up
 

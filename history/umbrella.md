@@ -39,3 +39,6 @@
 - `doctor` check 1 finds the Windows service's own Core on `wsl-host` instead of failing, so check 14 runs there: [decision 38](../embarch-umbrella/decisions/topology.md).
 - First live `doctor` run on the real installed suite: check 16's data dir and check 11's api-versions read confirmed; checks 1, 10 and 16 filed as defects.
 - Decisions 27 and 29 are one entry an insertion renumbered, not a deletion; same for api 31 and 33.
+
+### Decided
+- `doctor`'s two GET budgets are measured, not assumed: `/dev-bench/hello` takes 0.73 s against 10 s, `/dev-bench/port` 5–13 ms against 500 ms. Check 11 read `compatible: true` off a bench at last.
