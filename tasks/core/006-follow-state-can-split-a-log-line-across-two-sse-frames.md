@@ -1,6 +1,6 @@
 # `FollowState::poll_in` can split one log line across two SSE frames, and its doc comment says it cannot
 
-**State:** open
+**State:** claimed by agent/core/006-follow-partial-line, 2026-09-06 19:08
 **Source:** owner's repo survey, 2026-09-06 — a comment asserting an invariant the code does not hold
 **Scope:** core
 **Hardware:** none
