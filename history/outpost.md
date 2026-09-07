@@ -13,6 +13,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- `run-all.sh` runs `cross_decoder.py` above the `WEST` guard now; a skip is restated in the exit summary ([decisions/module.md](../embarch-outpost/decisions/module.md) decision 22).
 - wire.md now matches the firmware: `cycles_per_sec` in the header, kinds 9/10 and flag BIT(6); integration.md lists every Kconfig symbol.
 - embarch-outpost decision 16 still concluded Phase E needed a wire; it needed the right board target.
 - `embarch-outpost` §1/§2 still described record layout 2 ("frame resolution, not cycle resolution") after layout 3 restored the DUT clock; `spec.md` now reflects the current state.
