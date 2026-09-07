@@ -1,6 +1,6 @@
 # Run `embarch doctor` live with both boards attached, and settle the checks that have never run
 
-**State:** open
+**State:** claimed by the supervisor (bench, leg 024), 2026-09-06 18:26
 **Source:** `embarch-umbrella/open.md` — "the rebuilt check has never run live" (check 10); plus the standing `/dev-bench/hello` `compatible` debt, which needs a bench plugged in
 **Scope:** umbrella
 **Hardware:** bench
