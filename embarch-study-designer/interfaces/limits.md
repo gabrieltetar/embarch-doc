@@ -13,7 +13,7 @@ Every bound the crate declares, each marked `[measured <date>]` or `[assumed]`. 
 | `MAX_NAME_LEN` | 32 | `Step.name`, `StepResult.step_name` | [assumed] |
 | `MAX_SERVICE_UUIDS` | 4 | `BleAdvertise.service_uuids` | [assumed] |
 | `MAX_LOCAL_NAME_LEN` | 26 | `BleAdvertise.local_name` | fits a legacy 31-byte BLE advertising PDU alongside AD-structure/flags overhead — not a round number |
-| `MAX_PAYLOAD_LEN` | 512 | `GattOperation::Write.payload`, `StepResult.captured_data` | above BLE 5's practical extended-MTU ceiling (247-byte ATT_MTU / 251-byte L2CAP payload), not the legacy 23-byte default, so a single-PDU exchange never truncates |
+| `MAX_PAYLOAD_LEN` | 512 | `GattOperation::Write.payload`, `StepResult.captured_data`, and a registry field's `byte_offset + byte_len` (decision 66) | above BLE 5's practical extended-MTU ceiling (247-byte ATT_MTU / 251-byte L2CAP payload), not the legacy 23-byte default, so a single-PDU exchange never truncates |
 | `MAX_FAIL_REASON_LEN` | 64 | `Outcome::Fail.reason` | [assumed] |
 | `MAX_DISCOVERED_SERVICES` | 8 | `GattServiceInfo` per `StepResult.gatt_services` (§4.3a) | [measured 2026-08-26] the real DUT declares 3 services and a live `GattDiscover` over an L4 link reports 7 — see decision 57 |
 | `MAX_CHARS_PER_SERVICE` | 16 | `GattServiceInfo.characteristics` (§4.3a) | [measured 2026-08-20] that DUT's largest is the Device Management Service at 8 characteristics |

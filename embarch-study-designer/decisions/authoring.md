@@ -52,5 +52,15 @@ Until this, **a study authored in the UI existed only as long as the browser tab
 
 This is also what makes decision 39's `StreamSource::Signal` and decision 40's reflash-is-a-run-parameter rules load-bearing: a saved study has to survive a rewired bench and has to not reflash a board every time someone re-reads its results.
 
+### 66 — A registry field's byte range is bounded at `validate` time, and an over-long payload is named as a payload
+
+Decision 35's "a hand-edited file's mistakes are named refusals" had a hole in it: `validate` checked what a value *contained* and never where a field *sat*. `byte_offset` and `byte_len` are the two numbers in `study-actions.toml` that nothing bounded — **and the widest field is what sizes the buffer the builder allocates**, so a mistyped offset was a hand-edited file choosing how much memory this host reserves. `byte_offset + byte_len` was also plain addition on engineer-supplied numbers, against this crate's own stated invariant that **addition saturates rather than wrapping**: an offset near `usize::MAX` panicked a debug build and, in release, wrapped to a small length that passed every check.
+
+**The bound is `MAX_PAYLOAD_LEN`, checked in both places, deliberately.** `validate` refuses it on read and on write, so the file is caught where the mistake was made rather than later; the builder checks again **before the allocation**, because it takes a registry as an argument and an in-memory one has never been through `validate`. Same bound, one spelling, two call sites — not belt-and-braces but two genuinely different entry points.
+
+`FieldRangeTooLong` is its own error rather than reusing `FieldLengthMismatch`: a value that is the wrong length and a field that sits outside the payload are different edits to make and different edits to fix.
+
+**The other half is that the message has to name the right bound.** An over-long registered payload reported `TooManySteps`, which renders "study has 513 steps, but the limit is 512" — a true number attached to the wrong noun, sending whoever read it to a one-row table instead of to the field they had just mis-offset. `PayloadTooLong` already existed, already had the right wording, and was already used for the identical condition on the raw-payload path; the registered path had a comment arguing the two over-capacity conditions were the same kind of thing. **They are the same kind of thing to the type system and not to the reader, and the reader is who an error message is for.** The rendered string is asserted in a test, because the string was the defect.
+
 ---
 
