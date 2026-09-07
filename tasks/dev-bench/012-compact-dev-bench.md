@@ -13,7 +13,7 @@ reported two bytes out of place) and decision 23's amendment landed by this same
 active area of the dev-bench firmware; do not compact ahead of the next correction landing, and
 re-check this file's content against `git log` immediately before writing anything shorter.
 **Must not delete:** decision 23's amendment sentence naming that the crate-side statement was not
-yet true when the decision first claimed it, and what `embarch-study-designer` decision 14 actually
+yet true when the decision first claimed it, and what `embarch-study-designer` `79a4c00` actually
 put in `src/ids.rs` — dropping either turns the amendment back into an unfalsifiable claim, which
 is the exact defect this decision exists to correct. Decision 31's specific byte positions (which
 two bytes, which direction) — a vaguer "some bytes were wrong" restates the bug this doc exists to
