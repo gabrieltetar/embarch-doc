@@ -17,5 +17,6 @@
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
 ### Decided
+- Decision 24 moved into `decisions/links.md`, beside 17 and 18 it is built on.
 - topology's shared machine-wide storage directory, and why it matches embarch-core's, is now decision 23 instead of a code comment only.
 - The nRF54L device-ID address pair is confirmed against real silicon, and the identity gate's mismatch refusal is on record three times — [decision 21](../embarch-topology/decisions/validation.md).
