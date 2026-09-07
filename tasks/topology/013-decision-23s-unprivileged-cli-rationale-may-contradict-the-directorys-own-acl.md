@@ -1,6 +1,6 @@
 # 013 — Decision 23's "unprivileged CLI" rationale may contradict the directory's own documented ACL
 
-**State:** claimed — leg 035, 2026-09-07, branch `agent/topology/013-decision-23-acl-rationale`.
+**State:** done — leg 035, 2026-09-07, branch `agent/topology/013-decision-23-acl-rationale`.
 **Scope:** topology
 **Hardware:** none
 **Source:** `embarch-reviewer` on `topology/012`, leg 034, 2026-09-07 — raised explicitly as *not* a
@@ -67,8 +67,40 @@ measured.
 
 ## Done when
 
-- [ ] Which of decision 23's rationale and `embarch-token.md`'s ACL description is wrong is
+- [x] Which of decision 23's rationale and `embarch-token.md`'s ACL description is wrong is
       established, on evidence, and the wrong one is corrected.
-- [ ] If it cannot be settled without a Windows-side observation, that is recorded as the answer and
+- [x] If it cannot be settled without a Windows-side observation, that is recorded as the answer and
       this task stays `open` naming exactly what reading is needed.
-- [ ] Gate green.
+- [x] Gate green.
+
+## Resolution (leg 035, 2026-09-07)
+
+**Settled entirely from source, no Windows-side observation needed.** Read
+`embarch-core`'s `src/token_store.rs::restrict_token_file_permissions` and
+`embarch-topology`'s `src/hardware/paths.rs` directly.
+
+**Decision 23's rationale was the wrong one, and it was wrong in a specific way — not the
+one it looks like at first read.** `embarch-token.md`'s ACL description is *accurate* for
+what it describes (Core's token **file** is `icacls`-restricted to the creating account,
+`SYSTEM` and Administrators — confirmed byte-for-byte against `token_store.rs`'s actual
+`icacls` invocation). The error is that decision 23 borrowed that description and applied
+it to the shared **directory**, calling it "admin-owned." It is not: `restrict_token_file_permissions`'s
+`icacls` call names the token *file* path, never its parent, and both `token_store.rs::local_data_dir()`
+and topology's own `machine_data_dir()` create that parent directory with a plain
+`create_dir_all` — no ACL call touches it at all. The directory keeps Windows' own default
+`ProgramData` permissions, unrestricted by anything in either crate. **That default
+permissiveness — not an admin lockdown — is what actually lets a Windows service account
+and an unprivileged CLI both create and read files under it.** If the directory really were
+"admin-owned" the way the file is, an unprivileged CLI could not use it at all, which is the
+exact contradiction this task was filed to check.
+
+Corrected `embarch-topology/decisions/crate.md` decision 23 in place (not deleted — the
+underlying convention, sharing Core's directory rather than inventing a sibling one, is
+unaffected and still right). `spec.md` did not restate the rationale, so it needed no edit.
+
+**`embarch-token.md` itself carries a smaller, related imprecision** — "Core creates the
+directory and file with owner-restricted permissions" reads as if both were locked down,
+when only the file is — which is what this decision's original wording copied. That doc is
+`embarch-core`'s, not topology's: filed to
+`/home/gabriel/Github/embarch/embarch-doc/inbox/core-token-doc-conflates-directory-and-file-acl.md`
+rather than edited across the boundary.
