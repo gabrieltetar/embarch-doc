@@ -1,6 +1,6 @@
 # Observe bond clearing actually firing on real hardware
 
-**State:** claimed by supervisor (bench unit, leg 038), 2026-09-07 16:42
+**State:** claimed by supervisor (bench unit, leg 039), 2026-09-07 17:15 — leg 038 claimed this and died before running it
 **Source:** `embarch-study-designer/open.md` — "Bond clearing has never been observed firing on real hardware. Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean."
 **Scope:** study-designer
 **Hardware:** bench
