@@ -1,6 +1,6 @@
 # 012 — The shared machine-wide storage directory is a real convention with `embarch-core`, recorded nowhere but a code comment
 
-**State:** open
+**State:** claimed
 **Source:** `embarch-reviewer` on `tasks/topology/005`, leg 033, 2026-09-07 — found while checking a
 citation the supervisor had *already* corrected once, and correctly said the second citation was no
 better than the first
