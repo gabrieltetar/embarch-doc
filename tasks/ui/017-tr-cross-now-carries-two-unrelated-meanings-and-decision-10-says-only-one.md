@@ -1,6 +1,6 @@
 # 017 — `tr-cross` now carries two unrelated meanings and decision 10 states only one
 
-**State:** open
+**State:** claimed by agent/ui/017-tr-cross-two-meanings, 2026-09-07 16:40
 **Scope:** ui
 **Hardware:** none — two decision files and one JS file; confirming it needs reading, not a board.
 **Source:** `embarch-reviewer` on `ui/015` (code `7468a0e` in `embarch-ui`, doc `fb0a05c` in
