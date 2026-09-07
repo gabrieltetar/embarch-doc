@@ -57,6 +57,31 @@ the suite decides it belongs) in its own right, or `open.md` line 7's "and what
 has to move alongside it when it lands" clause is removed/rewritten to stop
 citing decision 18 for a fact decision 18 no longer contains.
 
+- [x] Done — verified in code 2026-09-07, still true, restored.
+
+## Resolution, leg 039
+
+Verified against the code, not carried forward on the task file's say-so:
+
+- `embarch-ui/assets/app.js`'s `alertsListHtml` renders only `a.reason`,
+  `a.role` and `a.occurred_at_utc_ms` (formatted as a timestamp) — no other
+  `AlertResponse` field is read anywhere in that file.
+- `AlertResponse` in `embarch-api/crates/embarch-core-client/src/client.rs`
+  declares `reason: String`, `role: String` and `occurred_at_utc_ms: u64` —
+  none `Option` — alongside `chip: String` and `recorded_hardware_id: String`,
+  also non-optional; only `live_hardware_id` is `Option<String>`.
+
+Both halves of the original claim still hold today, so the fact was restored
+into `embarch-topology/decisions/links.md` decision 18 (new paragraph right
+after the "one deliberate gap" paragraph it belongs beside), rather than
+deleting `open.md`'s pointer. `open.md` itself was not touched — decision 18
+once again states what has to move alongside the durable alert log landing,
+so `open.md` line 7's clause is true again as written; no reserve impact
+there. `links.md` had room (`topology/015` had just compacted it) and stayed
+well under its cap after the addition.
+
+No code change in `embarch-topology`; this unit is doc-only in `embarch-doc`.
+
 ## Supervisor's note, leg 039
 
 **Verify the fact before you restore it — do not copy it forward on the strength of
