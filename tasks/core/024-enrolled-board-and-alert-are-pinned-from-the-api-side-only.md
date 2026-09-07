@@ -1,6 +1,6 @@
 # Pin `EnrolledBoard`/`Alert` in `embarch-core` against `embarch-api`'s new mirror literals
 
-**State:** claimed by agent/core/024-pin-enrolled-board-alert, 2026-09-07 17:30
+**State:** done, agent/core/024-pin-enrolled-board-alert, 2026-09-07
 **Source:** `agent/api/032-enrolled-board-mirror`, leg 039, 2026-09-07 — split off `tasks/api/032-enrolled-board-mirror-drops-link-port-interface.md`, whose "Scope this to the `embarch-api` half only" says the Core half is a second task in a second repo.
 **Scope:** core
 **Hardware:** none
@@ -68,10 +68,17 @@ record the debt while you still hold the context of whether this subsystem is in
 
 ## Done when
 
-- [ ] A test in `embarch-topology` (or `embarch-core`) asserts `EnrolledBoard` and `Alert`
+- [x] A test in `embarch-topology` (or `embarch-core`) asserts `EnrolledBoard` and `Alert`
       serialize to / deserialize from the exact JSON literals `embarch-api`'s
       `ENROLLED_BOARD_RESPONSE_JSON` / `ALERT_RESPONSE_JSON` use (or documents why an equivalent
       shared literal differs), with a comment cross-referencing the client-side test by name.
-- [ ] `embarch-doc/embarch-core/interfaces/topology.md`'s `/probes/enrolled` row lists
+      Done in `embarch-core/src/api.rs`'s test module:
+      `enrolled_board_round_trips_against_the_client_s_pinned_shape` and
+      `alert_round_trips_against_the_client_s_pinned_shape`, using copies of the exact
+      `ENROLLED_BOARD_RESPONSE_JSON`/`ALERT_RESPONSE_JSON` literals from
+      `embarch-api/crates/embarch-core-client/src/client.rs`. `Alert` doesn't derive
+      `PartialEq` (unlike `EnrolledBoard`), so its round-trip compares re-serialized JSON
+      strings rather than structs — same assertion, different mechanism.
+- [x] `embarch-doc/embarch-core/interfaces/topology.md`'s `/probes/enrolled` row lists
       `link_port_interface`.
-- [ ] Gate green.
+- [x] Gate green.

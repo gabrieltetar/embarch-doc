@@ -9,7 +9,7 @@ Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../inte
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
 | `POST` | `/probes/enroll` | `{role, chip, probe_serial?}` | `{probe_serial, role, chip, hardware_id, confirmed_at_utc_ms}`. The **only** sanctioned way to write the enrollment table. Attaches, reads the live hardware ID, records it |
-| `GET` | `/probes/enrolled` | — | `[{probe_serial, role, chip, hardware_id, confirmed_at_utc_ms, link_port_serial}]` |
+| `GET` | `/probes/enrolled` | — | `[{probe_serial, role, chip, hardware_id, confirmed_at_utc_ms, link_port_serial, link_port_interface}]` |
 | `POST` | `/validate` | `{role}` | `200 {ok: true, …}` on a match; `409` with `{recorded_hardware_id, live_hardware_id, reason, fix_it_url}` on a real mismatch; `404` if nothing is enrolled under `role`. The explicit, non-destructive counterpart to the re-check `flash`/`reset`/`POST /study` already run mid-attach |
 | `GET` | `/alerts` | `?limit=20` | Recent topology-mismatch alerts from the durable log, oldest first within the window |
 | `POST` | `/dev-bench/link` | `{serial?, interface?}` — either alone; **neither is a `400`** | `204`. Declares dev-bench's runtime link. `interface` answers what a serial structurally cannot: one probe exposing two VCOMs gives both the same USB serial, and on the nRF54L15DK `zephyr,console` is VCOM1 at **interface 2** — the lowest-index fallback lands on a port that accepts bytes and never answers |
