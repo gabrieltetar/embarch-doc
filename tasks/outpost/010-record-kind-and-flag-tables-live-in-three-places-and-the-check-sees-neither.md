@@ -1,10 +1,37 @@
 # 010 — The outpost record-kind table lives in three languages and the header-flag table in three places, and the one cross-check that exists cannot see either
 
-**State:** open
+**State:** claimed — leg 035, 2026-09-07, branch `agent/outpost/010-one-record-vocabulary`.
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** outpost
 **Hardware:** none. `tests/run-all.sh` builds against an external `ZEPHYR_BASE`; verified 2026-09-06 that all four legs pass over a bare `git archive` copy with only `WEST` and `ZEPHYR_BASE` set (`tasks/README.md`).
 **Owner:** no
+
+**Scope boundary, and it is the reason this task looks bigger than it is (leg 035, at dispatch).**
+Three of the four copies named below are in `embarch-outpost` — `src/outpost_priv.h`,
+`scripts/decode_outpost.py`, `tests/native_sim_stream/assert_stream.py` — and the fourth,
+`embarch-study-designer/src/outpost.rs`, is **not yours to write.** A worker owns exactly one
+sub-project (`../../embarch-fleet/protocol.md` §3, §5). So:
+
+- You **may read** `embarch-study-designer/src/outpost.rs`, and a new check that lives in
+  `embarch-outpost/tests/` may read it as an input. Reading another repo is not writing it.
+- You **may not edit** it, add a test to it, or change its `RecordKind`/`HeaderFlags` tables.
+- Every `Done when` below is reachable without touching it: item 1 is satisfied by a check that
+  compares all three tables and fails when one drifts, and items 2 and 3 are both
+  `embarch-outpost` files.
+- If you conclude the *right* fix requires a change in `embarch-study-designer` — deriving its
+  tables from a generated file, say — that is a finding, not a change to make. Drop it in
+  `/home/gabriel/Github/embarch/embarch-doc/inbox/` (that absolute path, in the main checkout,
+  **not** in your worktree) and implement the version that stays inside your repo.
+
+**Doc-size reserve in `embarch-outpost` (leg 035, measured at dispatch).** Three files are in
+reserve, every one already filed: `open.md` **4,891 / 5,120 B (95.5%, 229 B left)** and
+`decisions/module.md` **7,730 / 8,192 B (94.4%, 462 B left)**, both against `tasks/outpost/012`
+(`open`); and `decisions/tracing.md` **7,408 / 8,192 B (90.4%, 784 B left)** against
+`tasks/outpost/008` (`open`). **`open.md` has 229 bytes — treat it as full.** A new numbered
+decision for this work is most naturally `decisions/wire.md` or a peer with headroom, not
+`module.md`. If your work spends the reserve — pushes a file into it, or leaves one there that
+nothing has filed — file `tasks/outpost/<NNN>-compact-outpost.md` in the same commit
+(`tasks/README.md` has the shape; the path is `tasks/outpost/`, never `tasks/doc/`).
 
 ## What
 
