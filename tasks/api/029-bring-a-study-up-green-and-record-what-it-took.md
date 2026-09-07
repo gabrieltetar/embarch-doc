@@ -193,9 +193,35 @@ counted only one of those two departures. The correct rule is decision 43's and 
 *rotating private* address cannot be authored ahead of time; a random address in general can be.
 `studies-guide.md` §3b now says that.
 
-## What is left, and it is one sentence from the owner
+## What is left — restated 2026-09-07, and it is no longer one sentence
 
-**Name the DUT.** Either its advertised local name — if it advertises one; the census says two
-devices on this bench do and neither is obviously it — or its BLE address. With either, `ui/007`,
-`outpost/002` and `study-designer/007` become ordinary bench units. Without it, every agent that
-picks this up re-runs the same census and reaches the same wall.
+**The DUT is not advertising connectably, so there is nothing on the air to
+name.** That is a different blocker from the one this section carried, and it was
+measured rather than reasoned — four studies against a validated bench, written
+up in full in the `dev-bench` census drop filed the same day. Briefly:
+
+- Nothing matching the DUT's expected name prefix was on the air. The census returned
+  `'pod-36e017c'` and `'pod-5678212'`, both public `70:B6:51:83:xx:xx`, neither
+  suffix a commit in the client firmware repo.
+- The only two static-random connectable candidates, `EC:FA:99:A8:6A:2E` and
+  `D9:61:3E:92:C5:36`, both timed out on connect at 15 s.
+- `C4:82:E1:42:B1:26`, which leg 025 reached, is definitively **not** the DUT:
+  its three services are `0x1800`, `0x1801` and `0x1910`, and study-designer's
+  decision 43 already records a `0x1910` table as one of the wrong devices the
+  name filter exists to exclude.
+
+**So the owner's step is a board, not a sentence:** get the client
+application running and advertising on the DUT — power it out of whatever state
+it is in, or flash a known-good build onto probe `000852006107` — and say which
+build it is. Both roles validate over the debug probe right now
+(`834f2559f10a6cdf` / `6fcddc36cb781b71`), so this is not an enrolment problem.
+
+**And the name will then be derivable rather than asked for.** The firmware
+advertises its configured device name followed by `%02X%02X` of
+`hwinfo_get_device_id()` bytes 6 and 7, and puts those same two bytes in a manufacturer-data element of the primary
+advert. For the enrolled hardware ID `834f2559f10a6cdf` that predicts
+the suffix **`6CDF`**, or **`2559`** if Core's byte order is the
+32-bit-word-swapped one dev-bench's self-report shows. `fleet-hardware.py` now
+carries both candidates, marked UNCONFIRMED. **They are read off client source,
+so they are predictions until a connect confirms one** — which is exactly the
+rule this task states at the top, applied to itself.

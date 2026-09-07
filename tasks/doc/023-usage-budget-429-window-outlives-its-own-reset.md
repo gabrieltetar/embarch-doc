@@ -1,6 +1,6 @@
 # 023 — A spent 429 holds the fleet, and `recent_429()` reads a UTC timestamp as local
 
-**State:** open
+**State:** done
 **Source:** leg 027 step 0 — `usage-budget.py --suggest` returned HOLD on a 429 whose own `resetsAt` had already passed
 **Scope:** doc
 **Hardware:** none
@@ -67,3 +67,35 @@ largest hole in the fleet's uptime.
       or the reason it should is written down.
 - [ ] The HOLD message reports a true age and, where known, the reset time.
 - [ ] `install.py --check` clean; the shim in `embarch-doc/scripts/` is untouched.
+
+## Closed 2026-09-07 — the owner's session, `embarch-fleet` `e7394f5`
+
+All four `Done when` boxes, plus one defect this task did not name.
+
+- `recent_429()` parses with `calendar.timegm`. The measured line's true epoch,
+  `1788751773`, is what it now returns; the buggy `1788773373` is what
+  `time.mktime` gave.
+- A 429 whose `quotaLimits.resetsAt` is in the past returns `None` rather than a
+  HOLD. A 429 with no `quotaLimits` keeps the old behaviour, as this task asked.
+- The HOLD message reports a true age and, when it knows one, the reset time
+  (`the window it names resets in 1h00m`). The no-reset arm says which it is and
+  that it is holding for the full window.
+- `install.py --check` is clean and the shim in `scripts/` was not touched — the
+  implementation is the only thing that changed.
+
+**The defect this task did not name, found while fixing it:** the verdict came
+from a substring match on the raw transcript line, so **any session that merely
+quoted the marker held the fleet for 90 minutes** — a session reading
+`usage-budget.py`, or discussing a rate limit, wrote the string into its own
+transcript and became indistinguishable from a live throttle. The decision is now
+made on the parsed top-level `error` and `apiErrorStatus` fields; the string test
+survives as a cheap pre-filter. Verified with a synthetic transcript whose only
+content is the quoted marker: ignored.
+
+**What this does not fix, and it is the bigger number.** The percentages are
+still structurally unavailable on this machine — `rate_limits` reaches only a
+status line, the VS Code extension runs none, and a search of every transcript
+confirms the field is recorded nowhere on disk. So the verdict stays DEGRADED and
+the wave stays at `degraded_workers`, which is **2 against a cap of 6**. That is
+the fleet's real pace limiter, and it is a separate question from this task.
+
