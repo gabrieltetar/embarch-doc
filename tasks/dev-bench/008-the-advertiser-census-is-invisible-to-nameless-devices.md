@@ -1,6 +1,6 @@
 # 008 — The advertiser census only ever lists devices that advertise a name, and the one complete record is gated on a name filter
 
-**State:** open
+**State:** blocked — on [`013`](013-the-census-logs-the-two-things-that-cannot-identify-a-dut-and-drops-the-one-that-can.md), which is in flight as leg 035's fourth unit and edits the same census. **A scheduling block, not a doubt about the task**: this file's own header already says to do it in one pass with `007`, and `013` is a third edit to the same two functions in `app/src/ble_bridge_real.c`. `013`'s worker is told to read this file and close it in the same commit if its pass covers it. **Unparks when `013` lands**: if `013`'s worker closed this, it is done; if it did not, set this back to `open` and say what it left.
 **Source:** supervisor bench unit, leg 025, 2026-09-06 — measured against the real bench, then confirmed in source
 **Scope:** dev-bench
 **Hardware:** none — the measurement is already taken and is written down below; a fix and its tests do not need a board

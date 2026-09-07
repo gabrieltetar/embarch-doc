@@ -1,6 +1,6 @@
 # 007 — The advertiser census truncates with no marker, and the truncation path leaves a partial fragment behind
 
-**State:** open
+**State:** blocked — on [`013`](013-the-census-logs-the-two-things-that-cannot-identify-a-dut-and-drops-the-one-that-can.md), which is in flight as leg 035's fourth unit and edits the same census. **This is a scheduling block, not a doubt about the task**: `007`, `008` and `013` all rewrite `report_scan_seen()` / `scan_seen_names_summary()` in `app/src/ble_bridge_real.c`, and dispatching them separately means workers conflicting on one function and rewriting one another's sentence. `013`'s worker is told to read this file and close it in the same commit if its pass covers it. **Unparks when `013` lands**: if `013`'s worker closed this, it is done; if it did not, set this back to `open` and say what it left.
 **Source:** observed live by the supervisor running `tasks/api/029` on the bench, 2026-09-06;
 narrowed from a withdrawn `study-designer` task after a reviewer showed the capability exists
 **Scope:** dev-bench

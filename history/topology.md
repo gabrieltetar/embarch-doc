@@ -11,6 +11,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- Decision 23's "unprivileged CLI reads Core's admin-owned file" rationale was wrong; corrected — the shared directory works because it is left unlocked, not locked.
 - embarch-topology: removed all 74 stale `design.md` references and two live-push claims decision 19 had retired.
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
