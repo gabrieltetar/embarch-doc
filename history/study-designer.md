@@ -14,6 +14,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `validate` now refuses two fields of one action sharing a `name` (decision 69).
 - `schema_version.rs`'s ten `design.md §3 decision N` citations now use `decision N`/`<repo> decision N`.
 - Five stale/broken rustdoc intra-doc links fixed; `cargo doc` stays out of the gate (decision 68).
 - Two registry fields covering the same payload byte are refused, and only a `Write` action may carry fields at all (decisions/registry.md 67).
