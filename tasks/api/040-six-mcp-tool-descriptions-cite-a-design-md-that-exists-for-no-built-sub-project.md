@@ -1,6 +1,6 @@
 # 040 — Six citations inside shipped MCP tool descriptions point at a `design.md` that exists for no built sub-project, and one names the wrong decision
 
-**State:** open
+**State:** claimed by agent/api/040-mcp-descriptions-cite-a-missing-design-md, 2026-09-07 01:43
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer — the agent one). Code-confirmed.
 **Scope:** api
 **Hardware:** none
@@ -51,3 +51,18 @@ of them is about strings that reach an agent.
       it, verified rather than assumed.
 - [ ] Every citation names the sub-project it belongs to.
 - [ ] Gate green; `changelog.d/api-*` fragment.
+
+## Reserve — read before you write a doc (supervisor, leg 030)
+
+One `embarch-api` file is in reserve: **`embarch-api/decisions/core-link.md`, 12,266 / 12,288 B,
+22 bytes left**. It is filed against `tasks/api/026-compact-api.md`, which is **`blocked` on
+`In flux: yes`** — decisions 48/49 have never met a real `embarch-core`.
+
+**Do not write into that file.** If this unit earns a numbered decision — and a citation-format
+rule plausibly does — its topic is the MCP surface, so it belongs in
+`embarch-api/decisions/surface.md`, which has room. If you find yourself reaching for
+`core-link.md`, stop and say so in your report rather than squeezing 22 bytes: an `embarch-api`
+decision went into the wrong topic file on 2026-09-05 for exactly this reason and nothing failed.
+
+If your work pushes any other file into its last 10%, file
+`tasks/api/<NNN>-compact-api.md` in the same commit (`tasks/README.md`, Compaction tasks).
