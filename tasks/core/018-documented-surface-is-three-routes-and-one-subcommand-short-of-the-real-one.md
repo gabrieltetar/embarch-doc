@@ -1,6 +1,6 @@
 # 018 — Core's documented surface is three routes and one subcommand short of its real one, while the auth sweep already holds the complete list
 
-**State:** open
+**State:** claimed by agent/core/018-documented-surface-short-of-real-one, 2026-09-07 09:30
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed.
 **Scope:** core
 **Hardware:** none
