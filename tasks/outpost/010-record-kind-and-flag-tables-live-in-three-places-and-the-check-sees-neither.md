@@ -1,6 +1,6 @@
 # 010 — The outpost record-kind table lives in three languages and the header-flag table in three places, and the one cross-check that exists cannot see either
 
-**State:** claimed — leg 035, 2026-09-07, branch `agent/outpost/010-one-record-vocabulary`.
+**State:** claimed — leg 035, 2026-09-07, **worker finished and pushed; the leg died before folding — see the recovery note at the bottom of this file**, branch `agent/outpost/010-one-record-vocabulary`.
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** outpost
 **Hardware:** none. `tests/run-all.sh` builds against an external `ZEPHYR_BASE`; verified 2026-09-06 that all four legs pass over a bare `git archive` copy with only `WEST` and `ZEPHYR_BASE` set (`tasks/README.md`).
@@ -88,3 +88,34 @@ names the firmware encoder as a mirror, unpinned, rather than as out of scope.
 **Adjacent, and worth doing in the same sitting:** the
 `outpost-the-cross-repo-check-sits-below-a-guard-it-does-not-need` drop in this batch makes this
 check actually run.
+
+## Recovery note — owner's session, 2026-09-07 12:1x
+
+**The worker finished, pushed both halves, and the supervisor never woke to land
+it.** Leg 035 dispatched this unit at 11:30, said "two workers in flight,
+holding", and stopped. This worker reported complete at 11:36, both branches
+pushed:
+
+- code `agent/outpost/010-one-record-vocabulary` (0517e59) on `embarch-outpost`'s origin
+- doc `agent/outpost/010-one-record-vocabulary-doc` (e80da7f) on `embarch-doc`'s origin
+
+The completion notification was delivered to the **listener session's** main
+loop instead of to the supervisor subagent that spawned this worker. The
+listener read it, correctly concluded "worker report to the running supervisor,
+not a leg completion — no listener action", and did nothing. The supervisor was
+never resumed, so nothing folded, `.fleet/tick` was last touched at 11:30:42,
+and the deadman pulled the pump latch at 12:09.
+
+**So phase-0 recovery must RE-LAND this, not block it.**
+[tasks/README.md](../README.md)'s rule — a worktree with commits ⇒ `blocked`
+naming the branch — is written for a worker that died mid-edit. This one did
+not: it ran to completion and its own report is in the leg's transcript. Leg
+033 took exactly this route this morning for `api/040` and `ui/003`, and its
+log entries say why: re-dispatching throws away finished green work to buy a
+self-report you already have a better substitute for.
+
+**Gate on the merge result, not the branch**, and note the branch predates four
+owner commits (through `54c6882`), so the doc half needs a rebase before it will
+fast-forward. **`check-doc-size.py` changed while this worker ran**: reserve is
+now `max(1.2 KB, 10%)`, so re-check whether this unit's own additions put a
+file into reserve that its author had no reason to file.

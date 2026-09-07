@@ -1,6 +1,6 @@
 # 013 — The scan census logs the two things that cannot identify a DUT and drops the one that can
 
-**State:** claimed — leg 035, 2026-09-07, branch `agent/dev-bench/013-census-manufacturer-data`.
+**State:** claimed — leg 035, 2026-09-07, **worker finished and pushed; the leg died before folding — see the recovery note at the bottom of this file**, branch `agent/dev-bench/013-census-manufacturer-data`.
 **Source:** the **owner's own bench session, 2026-09-07** — four studies run live against `dev-bench`
 `6fcddc36cb781b71` / `dut` `834f2559f10a6cdf`, both roles validated first. Dropped into `inbox/` by
 him and drained by leg 035. **This is direction from the owner, not a fleet-generated task**, which
@@ -122,3 +122,34 @@ than discovering it. A peer decisions file with headroom is a legitimate answer 
 is keeping the decision short. If your work spends the reserve — pushes a file into it, or leaves
 one there that nothing has filed — file `tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same
 commit (`tasks/README.md` has the shape; the path is `tasks/dev-bench/`, never `tasks/doc/`).
+
+## Recovery note — owner's session, 2026-09-07 12:1x
+
+**The worker finished, pushed both halves, and the supervisor never woke to land
+it.** Leg 035 dispatched this unit at 11:30, said "two workers in flight,
+holding", and stopped. This worker reported complete at 11:52, both branches
+pushed:
+
+- code `agent/dev-bench/013-census-manufacturer-data` (5540469) on `embarch-dev-bench`'s origin
+- doc `agent/dev-bench/013-census-manufacturer-data-doc` (fa3ef91) on `embarch-doc`'s origin
+
+The completion notification was delivered to the **listener session's** main
+loop instead of to the supervisor subagent that spawned this worker. The
+listener read it, correctly concluded "worker report to the running supervisor,
+not a leg completion — no listener action", and did nothing. The supervisor was
+never resumed, so nothing folded, `.fleet/tick` was last touched at 11:30:42,
+and the deadman pulled the pump latch at 12:09.
+
+**So phase-0 recovery must RE-LAND this, not block it.**
+[tasks/README.md](../README.md)'s rule — a worktree with commits ⇒ `blocked`
+naming the branch — is written for a worker that died mid-edit. This one did
+not: it ran to completion and its own report is in the leg's transcript. Leg
+033 took exactly this route this morning for `api/040` and `ui/003`, and its
+log entries say why: re-dispatching throws away finished green work to buy a
+self-report you already have a better substitute for.
+
+**Gate on the merge result, not the branch**, and note the branch predates four
+owner commits (through `54c6882`), so the doc half needs a rebase before it will
+fast-forward. **`check-doc-size.py` changed while this worker ran**: reserve is
+now `max(1.2 KB, 10%)`, so re-check whether this unit's own additions put a
+file into reserve that its author had no reason to file.
