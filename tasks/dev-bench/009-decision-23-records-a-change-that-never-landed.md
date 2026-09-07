@@ -1,6 +1,6 @@
 # 009 — Decision 23 says `BleAddress`'s byte order is stated in the crate that owns the type; it is not
 
-**State:** open — **unparked by the supervisor, leg 026, 2026-09-06.** `study-designer/014` landed
+**State:** claimed by agent/dev-bench/009-decision-23-records-a-change-that-never-landed, 2026-09-07 10:10 — **unparked by the supervisor, leg 026, 2026-09-06.** `study-designer/014` landed
 (`embarch-study-designer` `79a4c00`, doc `2378b58`), so decision 23's claim is now true *of the
 crate*; what is left is making the decision's own text honest about **when** it became true. Its
 task file is deleted, as a `done` task file is — the commit above is the record.
@@ -8,6 +8,18 @@ task file is deleted, as a `done` task file is — the commit above is the recor
 **Scope:** dev-bench
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve — supervisor, leg start 2026-09-07 09:44
+
+**No `embarch-dev-bench` doc is in reserve.** `check-doc-size.py --pressure` lists twelve files
+across the suite and none of yours, so you owe a compaction task only if your own edits push a
+`embarch-dev-bench/*` file into the last 10% of its cap — in which case file
+`tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same commit, per `tasks/README.md`.
+
+**One suite-wide hazard applies to you: `suite/features.md` has 60 bytes of headroom** (20,420 of
+20,480 B) and is *assembled* from `features.d/` fragments, so **a new `features.d/` fragment turns
+the fold red.** This unit corrects a decision's own record and should ship no feature row; if you
+think it warrants one, write the row's text into this task file instead and say so.
 
 ## What
 
