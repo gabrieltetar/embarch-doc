@@ -41,10 +41,20 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # when that checkout is absent -- an instance without the framework beside it is
 # a broken setup, not a doc defect.
 #
-# install.py --check asserts a different kind of thing from the rest: this repo's
+# install.py --verify asserts a different kind of thing from the rest: this repo's
 # `.claude/`, its four protocol READMEs and the fleet shims in `scripts/` are
 # rendered from templates in the framework repo, so a hand-edit here is a change
-# that the next install silently reverts.
+# that the next install silently reverts. It hashes them against the manifest
+# `deploy.py` records in `.fleet-version`.
+#
+# `--verify`, NOT `--check`. `--check` compares against the framework working
+# tree, so it also goes red when the instance is merely *behind* -- which is the
+# normal state between `deploy.py --queue` and the leg boundary that lands it.
+# That made a queued deploy turn this gate red for every worker and every merge
+# gate for its whole window, so the one mechanism built to deploy without
+# stopping the fleet blocked it instead (2026-09-06). Whether the instance is
+# behind is answered by the pending-deploy latch and `deploy.py --dry-run`;
+# neither is a gate, and it is not this file's question.
 #
 # check-client-names.py is the ninth, added 2026-09-05. It runs on ONE repo, this
 # one, and the supervisor runs it again per code repo in the merge gate
@@ -61,7 +71,7 @@ CHECKS = (
     ("build_changelog.py", ["--check"]),
     ("build_features.py", ["--check"]),
     (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"),
-     ["--check", "--repo", os.path.dirname(HERE)]),
+     ["--verify", "--repo", os.path.dirname(HERE)]),
     (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "check-client-names.py"),
      ["--repo", os.path.dirname(HERE)]),
 )
