@@ -1,6 +1,6 @@
 # 025 — Settle whether `flash_backend`'s nRF54L match stays its own classifier
 
-**State:** open
+**State:** claimed by agent/core/025-flash-backend-chip-classifier, 2026-09-07 17:54
 **Source:** `inbox/core-unify-nrf54l-name-classifier-with-topology.md`, filed by
 `topology/007`'s worker — fixing topology's own chip classifier surfaced that
 `embarch-core/src/flash_backend.rs` makes a related decision about the same
