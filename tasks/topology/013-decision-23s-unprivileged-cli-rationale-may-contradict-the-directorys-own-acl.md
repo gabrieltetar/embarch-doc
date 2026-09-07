@@ -1,11 +1,20 @@
 # 013 — Decision 23's "unprivileged CLI" rationale may contradict the directory's own documented ACL
 
-**State:** open
+**State:** claimed — leg 035, 2026-09-07, branch `agent/topology/013-decision-23-acl-rationale`.
 **Scope:** topology
 **Hardware:** none
 **Source:** `embarch-reviewer` on `topology/012`, leg 034, 2026-09-07 — raised explicitly as *not* a
 finding against that unit, because the unit's diff neither introduces nor contradicts it. Filed by
 the supervisor so it does not evaporate with the review.
+
+**Doc-size reserve in `embarch-topology` (leg 035, measured at dispatch): none.** No
+`embarch-topology` file is in reserve — `spec.md` is 8,993 / 10,240 B (87.8%), `open.md` 4,206 /
+5,120 B (82.1%), `decisions.md` 1,320 B. `spec.md` was at its **hard cap** two legs ago and
+`topology/010` took it off, so treat its 1,247 B of headroom as hard-won rather than spare: put a new
+or amended decision in `decisions.md`, which is nearly empty, and keep `spec.md` edits to the
+sentence that is actually wrong. **If your work pushes any file into reserve, or leaves one there
+that nothing has filed, file `tasks/topology/<NNN>-compact-topology.md` in the same commit**
+(`tasks/README.md` has the shape; the path is `tasks/topology/`, never `tasks/doc/`).
 
 ## What
 
