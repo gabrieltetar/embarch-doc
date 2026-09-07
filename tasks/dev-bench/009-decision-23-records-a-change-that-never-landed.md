@@ -1,6 +1,9 @@
 # 009 — Decision 23 says `BleAddress`'s byte order is stated in the crate that owns the type; it is not
 
-**State:** blocked — on [`tasks/study-designer/014`](../study-designer/014-bleaddress-byte-order-was-never-stated-in-the-crate.md), which makes the claim true. Unparks the moment that lands.
+**State:** open — **unparked by the supervisor, leg 026, 2026-09-06.** `study-designer/014` landed
+(`embarch-study-designer` `79a4c00`, doc `2378b58`), so decision 23's claim is now true *of the
+crate*; what is left is making the decision's own text honest about **when** it became true. Its
+task file is deleted, as a `done` task file is — the commit above is the record.
 **Source:** supervisor, leg 025, from a reviewer drop on the bench unit `api/029` — the drop's own `Done when` spanned two sub-projects, and `check-ownership.py` refuses `embarch-dev-bench/**` to a `study-designer` worker, so it is two tasks
 **Scope:** dev-bench
 **Hardware:** none
@@ -26,11 +29,20 @@ does `out->a.val[i] = params->target_address[5 - i]`, and leg 025 connected to
 When this is done, decision 23 is either true as written — because `study-designer/014` landed —
 or amended to say what actually happened and when.
 
-## Why blocked
+## Why it was blocked, and what landed
 
 **`study-designer/014` is the change decision 23 describes.** Amending the decision before that
-lands would be writing a clean statement of something about to change; running it after is one
-sentence. Nothing else parks it.
+landed would have been writing a clean statement of something about to change; running it after is
+one sentence. Nothing else parked it, and it is unparked.
+
+What `study-designer/014` actually put in the crate, so this task need not go and look: `src/ids.rs`
+now states the order on `BleAddress` itself — display order, most significant first, with
+`C4:82:E1:42:B1:26` as `[0xc4, 0x82, 0xe1, 0x42, 0xb1, 0x26]` as the worked example — plus that the
+order is the same for both `BleAddressKind`s, that the derived serde impls carry `bytes` in index
+order, and that nothing in that crate reverses it. `BleAddressKind` also gained a comment saying the
+kind does not change the layout. **It did not touch `embarch-dev-bench`**, deliberately, and its own
+report and the `status.d/` fragment it wrote both phrase the change as what it makes possible rather
+than as anything this repo now says.
 
 ## Why now
 

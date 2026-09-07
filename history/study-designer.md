@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `BleAddress`'s doc comment now states display order, most-significant first, for both kinds — [interfaces/types.md](../embarch-study-designer/interfaces/types.md).
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/crate.md)).
 
 ### Changed
