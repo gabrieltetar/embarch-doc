@@ -1,6 +1,6 @@
 # A successful request with an unreadable body is reported as `request-failed`
 
-**State:** open
+**State:** claimed
 **Scope:** umbrella
 **Hardware:** none
 **Source:** `inbox/umbrella-status-probe-report-malformed-body-collapses-to-zero.md` (embarch-reviewer, at `umbrella/028`'s fold), filed by the supervisor of leg 034.
