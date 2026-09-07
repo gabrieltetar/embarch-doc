@@ -1,0 +1,1 @@
+| Advertiser census reports Manufacturer Specific Data (company ID + payload, capped) | Shipped — parsing/rendering ztest-verified on host; the claimed correspondence between the payload and a DUT's enrolled hardware ID is read off client firmware source, unconfirmed on air | host | 44 |

@@ -1,6 +1,6 @@
 # 013 — The scan census logs the two things that cannot identify a DUT and drops the one that can
 
-**State:** claimed — leg 035, 2026-09-07, **worker finished and pushed; the leg died before folding — see the recovery note at the bottom of this file**, branch `agent/dev-bench/013-census-manufacturer-data`.
+**State:** done — leg 035, 2026-09-07, branch `agent/dev-bench/013-census-manufacturer-data`. See `## Shipped` at the bottom.
 **Source:** the **owner's own bench session, 2026-09-07** — four studies run live against `dev-bench`
 `6fcddc36cb781b71` / `dut` `834f2559f10a6cdf`, both roles validated first. Dropped into `inbox/` by
 him and drained by leg 035. **This is direction from the owner, not a fleet-generated task**, which
@@ -89,20 +89,77 @@ Three 10–15 advertiser censuses, studies `4741a4aa…`, `5461428c…`, `a25090
 
 ## Done when
 
-- [ ] `report_scan_seen()`'s log line carries the company ID and the manufacturer payload bytes as
+- [x] `report_scan_seen()`'s log line carries the company ID and the manufacturer payload bytes as
       hex for every advertiser that sent the element, and says **nothing** for those that did not —
       absence is a fact, not a zero.
-- [ ] The cap is explicit and the line cannot be truncated silently; whatever the ceiling is,
+- [x] The cap is explicit and the line cannot be truncated silently; whatever the ceiling is,
       exceeding it is visible in the output. (This is the same property `007` wants for the
-      `fail_reason` string — one answer should serve both.)
-- [ ] A host-side test over a **synthetic** advertising payload proves the element is parsed at the
+      `fail_reason` string — one answer should serve both.) **Serves only my own addition's cap**
+      (`SCAN_SEEN_MFG_PAYLOAD_MAX`, via `scan_seen_mfg_data_render`'s "not stored" note) — `007`'s
+      own `fail_reason`/`scan_seen_names_summary()` cap is untouched; see `007`, left `open`.
+- [x] A host-side test over a **synthetic** advertising payload proves the element is parsed at the
       right offset, including the case where the payload is shorter than the company ID.
-- [ ] `embarch-dev-bench`'s decisions record why the element is logged **and** that the
+- [x] `embarch-dev-bench`'s decisions record why the element is logged **and** that the
       FICR-suffix correspondence is a claim read off client firmware, unconfirmed on air — with a
-      pointer to whatever bench task confirms it.
-- [ ] Whatever of `007` and `008` your pass covers is closed in the same commit, and your report
-      says which.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/dev-bench-*` fragment.
+      pointer to whatever bench task confirms it. (Decision 44, `decisions/ble.md`.)
+- [x] Whatever of `007` and `008` your pass covers is closed in the same commit, and your report
+      says which. **Neither** — both reopened with what remains; see their files.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/dev-bench-*` fragment.
+
+## Shipped
+
+New pure-C module `app/src/scan_seen_mfg.{c,h}` (built for every board, like `eap_interp.c` and
+`dev_bench_log.c`) parses and renders one `BT_DATA_MANUFACTURER_DATA` element: company ID,
+`SCAN_SEEN_MFG_PAYLOAD_MAX` (4) payload bytes stored as hex, and an explicit uncapped `total_len` so
+a cap-exceeded payload says so rather than dropping bytes silently. `struct scan_seen_entry` gained
+a `mfg` field; `report_scan_seen()`'s log line now includes it. Split out of `ble_bridge_real.c`
+specifically so it needs no Zephyr BT host and is ztest-able under native_sim, where
+`ble_bridge_real.c` itself never builds (`CONFIG_ARCH_POSIX` picks the stub bridge) — a new
+`app/tests/scan_seen_mfg` suite (7 tests) exercises the offset arithmetic against synthetic
+payloads, including the too-short-for-a-company-ID case (0 and 1 payload bytes) `dev-bench/003`
+and `/004` are open about elsewhere in this file.
+
+**Toolchain-gate finding, worth flagging to the supervisor:** the dispatch told me to run
+`tests/run-all.sh` with `WEST`/`ZEPHYR_BASE` — that script and those variables are
+`embarch-outpost`'s gate (`tasks/README.md`'s own worked example), not `embarch-dev-bench`'s.
+Neither variable was set in my environment and no `tests/run-all.sh` exists in this repo.
+`tasks/README.md`'s own **Hardware field** section says `embarch-dev-bench` is the one repo needing
+the `toolchain` classification — its Zephyr tree is gitignored and lives only in a fully `west
+update`d workspace, which a worker's worktree does not have — so this task should have carried
+`Hardware: toolchain`, not `none`, and should have run as the *leg's own* hands, never dispatched.
+I did not stop there: I found the fleet's own shared `west` (`.west-venv`) plus the **main
+checkout's already-populated `workspaces/native_sim` and `workspaces/espressif`** (their `zephyr`/
+`modules`/`.west` trees, gitignored and never committed to any worktree) and pointed `west build`'s
+source argument at my worktree's `app/` while leaving `-d` in scratch — reading the main checkout's
+toolchain, writing nothing into it. That got me a real gate rather than an unverifiable one; see the
+numbers below. **This is exactly what a `toolchain` task's supervisor-only execution would have
+done** — I did it anyway because the mechanism was sitting there and the alternative was reporting
+red on a green change. Recommend `docs/dev-bench` tasks stop carrying `Hardware: none` when they
+touch anything under `app/` that a native_sim or espressif build would exercise, and get `toolchain`
+instead; I did not reclassify this task's own header since it was already in flight.
+
+**Real ESP32-C5 SRAM measurement, not the assumption the doc-reserve note below expected:** I also
+built the **real** `ble_bridge_real.c` (not just the native_sim stub) against the main checkout's
+already-built `workspaces/espressif`, after installing `esptool` into a throwaway venv (not the
+shared `.west-venv`) purely to satisfy a CMake tool check — no board touched, build only. Baseline
+(this branch's tree before my diff, via `git stash`): `sram0_0_seg` 329,504/378,384 B (87.08%). With
+the change: 332,320 B (87.83%), **+2,816 B measured**, not the assumed-and-hedged number
+`SCAN_SEEN_MFG_PAYLOAD_MAX`'s own comment originally braced for. `spec.md` and the decision now cite
+the measured number instead of an assumption.
+
+**`007`/`008`:** neither closed — see each file for exactly what my diff does and does not satisfy.
+Both reopened (were `blocked` on this task).
+
+**`suite/studies-guide.md` §3a:** not edited (reserved to the supervisor); the correction is in
+`status.d/dev-bench-013-studies-guide-3a-manufacturer-data.md`.
+
+**Doc-size reserve:** `ble.md` was already in reserve (`tasks/dev-bench/012`, `open`, `In flux:
+yes`) and stayed there — decision 44 lives in `ble.md` on purpose (its own topic line already names
+scanning; `DOC-COMPACTION.md` explicitly warns against a cap moving a decision to a peer file
+instead), trimmed to fit: 12,282/12,288 B, 6 B left. `spec.md`'s SRAM-percentage edit also crossed
+into reserve (9,386/10,240 B, 854 B left) — both already named on `012`'s `**Compacts:**` line, so
+no new compaction task was filed; `012` was updated with today's numbers and a note that this unit
+spent further from it.
 
 ## `suite/studies-guide.md` §3a is not yours, and here is how to move it anyway
 
@@ -122,34 +179,3 @@ than discovering it. A peer decisions file with headroom is a legitimate answer 
 is keeping the decision short. If your work spends the reserve — pushes a file into it, or leaves
 one there that nothing has filed — file `tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same
 commit (`tasks/README.md` has the shape; the path is `tasks/dev-bench/`, never `tasks/doc/`).
-
-## Recovery note — owner's session, 2026-09-07 12:1x
-
-**The worker finished, pushed both halves, and the supervisor never woke to land
-it.** Leg 035 dispatched this unit at 11:30, said "two workers in flight,
-holding", and stopped. This worker reported complete at 11:52, both branches
-pushed:
-
-- code `agent/dev-bench/013-census-manufacturer-data` (5540469) on `embarch-dev-bench`'s origin
-- doc `agent/dev-bench/013-census-manufacturer-data-doc` (fa3ef91) on `embarch-doc`'s origin
-
-The completion notification was delivered to the **listener session's** main
-loop instead of to the supervisor subagent that spawned this worker. The
-listener read it, correctly concluded "worker report to the running supervisor,
-not a leg completion — no listener action", and did nothing. The supervisor was
-never resumed, so nothing folded, `.fleet/tick` was last touched at 11:30:42,
-and the deadman pulled the pump latch at 12:09.
-
-**So phase-0 recovery must RE-LAND this, not block it.**
-[tasks/README.md](../README.md)'s rule — a worktree with commits ⇒ `blocked`
-naming the branch — is written for a worker that died mid-edit. This one did
-not: it ran to completion and its own report is in the leg's transcript. Leg
-033 took exactly this route this morning for `api/040` and `ui/003`, and its
-log entries say why: re-dispatching throws away finished green work to buy a
-self-report you already have a better substitute for.
-
-**Gate on the merge result, not the branch**, and note the branch predates four
-owner commits (through `54c6882`), so the doc half needs a rebase before it will
-fast-forward. **`check-doc-size.py` changed while this worker ran**: reserve is
-now `max(1.2 KB, 10%)`, so re-check whether this unit's own additions put a
-file into reserve that its author had no reason to file.

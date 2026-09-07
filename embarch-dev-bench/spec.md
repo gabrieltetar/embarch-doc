@@ -83,10 +83,11 @@ Three sinks, with deliberately different threading contracts:
 | `DBM_MAX_EVENT_ARMS_PER_STATE` | 2 | [measured] the crate allows 4; an arm is the heaviest thing a state holds and 4 costs ~9 KB more, and both worked protocols use one |
 | `DBM_MAX_PROTOCOLS_WIRE_LEN` | 3 KB | [measured] a byte cap over the whole span; the eleven count ceilings multiply to a bound nothing would send (decision 41) |
 | `SCAN_SEEN_MAX` | 256 | [measured] 12 advertisers seen in three minutes at the bench; costs ~9 KB of static RAM |
+| `SCAN_SEEN_MFG_PAYLOAD_MAX` | 4 B | [assumed] kept small on purpose — decision 44's one identified use is a 2-byte FICR suffix; costs 2,816 B [measured] of the ESP32-C5's SRAM across all 256 entries |
 | `BLE_MAX_MONITOR_SUBSCRIPTIONS` | 32 | [assumed] deliberately not the wire type's 128 worst case |
 | `CONFIG_MAIN_STACK_SIZE` | 8192 | [measured] a board fragment silently overrode `prj.conf` with 2048 — Zephyr merges the fragment last and the later value wins with no warning |
 | `CONFIG_BT_MAX_CONN` | 2 | on Nordic this is forced: the SoftDevice Controller gives central `BT_MAX_CONN − BT_CTLR_SDC_PERIPHERAL_COUNT` slots, so 1 leaves central **zero** and builds cleanly with a silently broken role |
 | `CONFIG_LOG_BUFFER_SIZE` | 1 KB | [measured] a `Debug` burst overruns it and says so (`N record(s) dropped`) |
 | disconnect wait | 2 s | [assumed] far longer than a local disconnect needs; timing out leaves the prior behaviour |
 
-**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **87.04%** [measured], and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](open.md)). The nRF54L15DK is far roomier: FLASH 18.97%, RAM 58.57% of 256 KB.
+**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **87.83%** [measured, dev-bench task 013 — 329,504 → 332,320 B of 378,384 B, +2,816 B for `SCAN_SEEN_MFG_PAYLOAD_MAX`, previously 87.04%], and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](open.md)). The nRF54L15DK is far roomier: FLASH 18.97%, RAM 58.57% of 256 KB.

@@ -61,3 +61,8 @@ Three things running it against the DUT changed:
 **Auth callbacks are registered before `bt_enable`:** Zephyr latches them the first time it needs a capability, so a peer that paired before registration ran would latch NULL — unauthenticated, with nothing in the failure pointing at registration order. The same class of failure as decision 34's own.
 
 **What is still not claimed:** validation against a DUT that presents no I/O capability at all — [../open.md](../open.md) carries what that would look like.
+
+### 44 — Manufacturer Specific Data joins the census, capped at 4 bytes
+`report_scan_seen()` logs `BT_DATA_MANUFACTURER_DATA`'s company ID and payload, parsed in `scan_seen_mfg.c` — no BT host, so a ztest pins it under native_sim, where `ble_bridge_real.c` never builds. Absence differs from a zero-length element; bytes past the cap say so. Costs 2,816 B [measured] SRAM (spec.md).
+
+**Client firmware reads the payload as `s_ficr_id[6..7]`, matching the name suffix — read off source, unconfirmed on air.** `tasks/api/029` tests this first.
