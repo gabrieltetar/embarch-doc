@@ -1,6 +1,6 @@
 # 014 — `Outcome` reaches `app.js` in two wire shapes from two routes of one service, and each of its two decoders is silent on the other's input
 
-**State:** claimed
+**State:** done
 **Source:** suite review pass 2026-09-06, dimension 5 (cross-surface consistency). Code-confirmed.
 **Scope:** ui
 **Hardware:** none
@@ -47,8 +47,33 @@ None of `tasks/ui/003` through `ui/013` touches outcome decoding.
 
 ## Done when
 
-- [ ] One decoder in `app.js` handles a step outcome, whichever shape it arrived in.
-- [ ] A `Fail` from either route renders as a failure, with its reason, in every place an outcome
+- [x] One decoder in `app.js` handles a step outcome, whichever shape it arrived in.
+- [x] A `Fail` from either route renders as a failure, with its reason, in every place an outcome
       is shown.
-- [ ] Neither decoder can silently render an unrecognised shape as a pass or a neutral.
-- [ ] Gate green; `changelog.d/ui-*` fragment.
+- [x] Neither decoder can silently render an unrecognised shape as a pass or a neutral.
+- [x] Gate green; `changelog.d/ui-*` fragment.
+
+## Resolution
+
+**Fork taken: one shared decoder in `app.js`, bounded to this repo.** `embarch-core`'s flattening
+(`GET /study/{id}/steps`) is sound on its own — a caller drawing a band should not re-implement
+the enum's wire shape — and the tagged form is what `embarch-study-designer`'s own `Outcome` *is*.
+Neither side should change; the duplication was purely a client-side gap. See `embarch-ui`
+decision 23 (`decisions/trace-chart.md`) for the full argument.
+
+`decodeOutcome(outcome, reason)` is now the only place either shape is read, returning
+`{kind, reason}` with `kind` one of `pass`/`fail`/`timedout`/`unknown`. Both `outcomeBadge` (step
+table) and `traceOutcomeColor` (trace chart's step row) call it instead of re-parsing `outcome`
+themselves.
+
+An unrecognised shape (`kind: "unknown"`) is drawn as visibly wrong, not neutral: the step table
+shows a red `badge-danger "?"` reading "unrecognised outcome" (previously a neutral `—` dash), and
+the trace band keeps the danger-red stroke but fills with the `tr-gap` hatch pattern already used
+for a dropped-record gap — a span this view cannot vouch for — instead of a solid fill or the old
+`var(--info)` blue.
+
+Gate: `cargo build`, `cargo test` (101 passed, 2 pre-existing ignored), and
+`cargo clippy --all-targets -- -D warnings` all clean in `embarch-ui`. No JS lint/test harness
+exists for `app.js` beyond `embarch-ui/src/trace.rs`'s `dump_a_view_for_the_browser_harness`,
+which is `#[ignore]`d and manual (no `node` on this machine; it drives headless Firefox by hand) —
+not run as part of this gate.

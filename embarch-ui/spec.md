@@ -72,6 +72,7 @@ Everything live reaches the browser as **SSE** served by this binary; there is n
 - **A row the trace decoder refused is counted, never merely skipped** — a line short of nine fields, or a `frame_index` that is not a number. The Records card states `rows_unparsed` when it is non-zero and says "every row in the capture" only when it and the cap count are both zero.
 - **The run badge's counter names the step *now running*, not the count finished** (decision 20). Core's `current_step` is the index of the last step that *finished*, so the badge adds two and clamps to `total_steps`; `null` reads as step 1, and a zero-step study gets no counter.
 - **A limit enforced server-side is *served*, never restated in `app.js`.**
+- **A step outcome is read by one decoder for both wire shapes** (decision 23); an unrecognised shape renders visibly wrong, never a pass or a dash.
 - **Unreadable is rendered as unreadable, not as a mismatch or an empty list.** A bench that is not plugged in has no version to disagree with; a Core that answered `404` to the signals route has not told you there are no signals.
 
 ## Design system
