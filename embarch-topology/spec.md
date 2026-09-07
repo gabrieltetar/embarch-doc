@@ -61,7 +61,7 @@ Everything else is detected live. These four cannot be:
 | **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** [confirmed live 2026-09-06] |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 
-Storage is one file under a machine-wide directory this crate owns. A store predating any of the later facts still loads.
+Storage is one file under a machine-wide directory this crate owns — the same one `embarch-core`'s token file uses, one level down (decision 23). A store predating any of the later facts still loads.
 
 ## Storage and roles
 

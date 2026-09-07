@@ -1,6 +1,6 @@
 # 012 — The shared machine-wide storage directory is a real convention with `embarch-core`, recorded nowhere but a code comment
 
-**State:** claimed
+**State:** done
 **Source:** `embarch-reviewer` on `tasks/topology/005`, leg 033, 2026-09-07 — found while checking a
 citation the supervisor had *already* corrected once, and correctly said the second citation was no
 better than the first
@@ -43,15 +43,32 @@ break without contradicting anything.
 
 ## Done when
 
-- [ ] The shared-directory convention is a numbered `embarch-topology` decision, or a named section
+- [x] The shared-directory convention is a numbered `embarch-topology` decision, or a named section
       of `spec.md` — **whichever the unit argues for**, and it says why in `decisions.md`.
-- [ ] It states the actual paths, that `embarch-core`'s token file uses the same location, and
+      Picked a numbered decision: **decision 23**, in `decisions/crate.md`. Argued in the decision
+      itself (last-but-one paragraph): the content here is *why this directory* and not one of the
+      crate's own — reasoning, not an added declared fact — and `spec.md`'s "The declared facts"
+      already carries the one-line fact and now just cites decision 23 instead of restating the
+      argument.
+- [x] It states the actual paths, that `embarch-core`'s token file uses the same location, and
       **why** (machine-wide and admin-owned, so a service and a CLI agree).
-- [ ] `src/hardware/paths.rs`'s comment cites it by bare decision number instead of being the
+      Verified by reading `embarch-core/src/token_store.rs` directly (not assumed): its
+      `local_data_dir()` computes the identical root (`/var/lib/embarch` /
+      `%ProgramData%\embarch`) by the identical OS split that this crate's `machine_data_dir()`
+      copies, and the token file lives directly under it.
+- [x] `src/hardware/paths.rs`'s comment cites it by bare decision number instead of being the
       record.
-- [ ] `README.md`'s "no decision or spec section records that convention" sentence is replaced by
+- [x] `README.md`'s "no decision or spec section records that convention" sentence is replaced by
       the citation it says does not exist.
-- [ ] Check whether `embarch-core`'s own docs state the other half; if they do not, that is
+- [x] Check whether `embarch-core`'s own docs state the other half; if they do not, that is
       **`embarch-core`'s task, not yours** — file it in `inbox/`, do not reach across.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment only if something
+      **They already do** — checked `embarch-doc/embarch-core/spec.md` line 85 and
+      `embarch-doc/embarch-token.md` (both outside this scope, read-only): the convention, the
+      why (a Windows service and the CLI reading its output run as different accounts), and even
+      this crate's own `enrollment.toml` sharing it, are all already stated there. No `inbox/`
+      drop needed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment only if something
       user-visible changed, and say which and why.
+      `changelog.d/topology-storage-directory-convention.decided.md` — the convention moved from
+      a code comment only to a cited decision, which is what a reader following a citation now
+      finds.
