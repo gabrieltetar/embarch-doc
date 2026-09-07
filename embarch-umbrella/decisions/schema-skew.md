@@ -23,7 +23,7 @@ The check returned a hardcoded warn — *"not available yet, `embarch-study-desi
 
 **A missing number is a skip that names it, never a pass.** Core unreachable, no token, no bench, a `409` mid-study, a Core predating the field: each is a distinct `Warn` carrying its own reason, and the numbers that *were* obtained are still printed. A `Fail` always outranks a skip, so an absent bench cannot mask a host disagreement.
 
-**`/dev-bench/hello` is fetched once for checks 11 and 13.** It is not a read — it opens the serial link long enough to handshake — so two checks asking separately would be two link opens for one answer. The visible consequence: the handshake now runs even when no dev-bench checkout is configured, where check 13 alone used to skip before calling it.
+**`/dev-bench/hello` is fetched once for checks 11 and 13.** It is not a read — it opens the serial link long enough to handshake — so two checks asking separately would be two link opens for one answer. The visible consequence: the handshake now runs even when no dev-bench checkout is configured, where check 13 alone used to skip before calling it. **And it is waited for on its own budget**, not the one the reads use ([decision 44](budgets.md)) — sharing theirs is why neither check could finish on a bench that was handshaking.
 
 **The comparison is a pure function over injected numbers**, which is what lets the whole matrix be tested with no Core, no bench, no network and no `embarch-api` on disk — the check that gates deploys being untestable without the hardware it gates was most of why it stayed a stub.
 

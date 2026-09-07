@@ -1,6 +1,6 @@
 # 030 — `doctor` gives `/dev-bench/hello` the same 500 ms as `GET /status`, so checks 11 and 13 can never finish
 
-**State:** claimed by agent/umbrella/030-hello-gets-a-handshake-budget, 2026-09-06 20:47
+**State:** done (host-side), 2026-09-06 — agent/umbrella/030-hello-gets-a-handshake-budget. **One hardware-verification debt below.**
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — three live `doctor` runs against the
 primary `wsl-host` bench with both boards attached
 **Scope:** umbrella
@@ -87,14 +87,47 @@ Check 13 (dev-bench firmware versus the local checkout) is dark for the same rea
 
 ## Done when
 
-- [ ] `/dev-bench/hello` gets a budget sized for a serial handshake, distinct from the
+- [x] `/dev-bench/hello` gets a budget sized for a serial handshake, distinct from the
       already-resolved-`base_url` GET budget, with the two constants separately named and each
-      one's doc-comment saying what it is sized for.
+      one's doc-comment saying what it is sized for. `DEVICE_SCAN_GET_TIMEOUT` (500 ms) and
+      `LINK_HANDSHAKE_GET_TIMEOUT` (10 s), and `authed_get` takes the budget as a **parameter**
+      so a new call site has to choose one (`embarch-umbrella` decision 44).
 - [ ] A `doctor` run on the primary bench reports check 11's **`compatible` verdict** and check 13's
       real comparison, and both are recorded — this closes `open.md`'s standing item and
-      `decisions/schema-skew.md` decision 35's live debt.
-- [ ] The error path distinguishes *timed out* from *could not connect* in what it prints. Today
-      both render as "request … failed", which is what let this sit unnoticed.
-- [ ] `decisions/reporting.md` or `decisions/schema-skew.md` records that a check whose remote call
-      does real hardware work needs its own budget — the general rule, not just this call.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      `decisions/schema-skew.md` decision 35's live debt. **Not done and not doable here** — see
+      the debt below.
+- [x] The error path distinguishes *timed out* from *could not connect* in what it prints. Today
+      both render as "request … failed", which is what let this sit unnoticed. Now
+      `request to <url> timed out after 10000 ms: …` or `… could not connect: … tcp connect
+      error: …`, carrying the source chain `reqwest`'s `Display` drops, flattened to one line
+      (decision 45).
+- [x] `decisions/reporting.md` or `decisions/schema-skew.md` records that a check whose remote call
+      does real hardware work needs its own budget — the general rule, not just this call. Written
+      as **`decisions/budgets.md` 44**, a mission split, for the reason the `## Reserve` section
+      above gives; `schema-skew.md` and `spec.md` point at it, and `decisions.md` indexes it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`, `cargo test` (203, up from
+      197), `cargo clippy --all-targets -- -D warnings`, `scripts/check-docs.py` (9/9),
+      `check-client-names.py`, `check-ownership.py` on both worktrees.
+
+## Hardware-verification debt
+
+**What needs running:** one `embarch doctor` (and one `--json`) on the primary `wsl-host` bench,
+both boards attached and enrolled, against a Core that is up — the same conditions the three runs
+in "What was measured" had.
+
+**What to record, either way:**
+
+- **If check 11 now carries a `compatible` verdict and check 13 a real comparison** — record both
+  values, and the run is also the first measurement of anything about handshake *duration*: the
+  10 s in `LINK_HANDSHAKE_GET_TIMEOUT` is **assumed**, and a run that succeeds bounds it from
+  above only by the budget. Timing one authenticated `curl` of `/dev-bench/hello` in the same
+  sitting is what turns the constant from assumed into sized.
+- **If it still fails**, the message now says which failure it was, and that is the point: a
+  `timed out after 10000 ms` means the handshake genuinely needs more than ten seconds (a
+  finding, and the budget moves on evidence for the first time); a `could not connect` means the
+  timeout was never the story and the original diagnosis — strong, but an **inference**, since
+  `reqwest`'s `Display` dropped the source on all three runs (decision 45) — was wrong.
+
+**Also unmeasured, and cheap to take in the same sitting:** `/dev-bench/port`'s enumeration is on
+the 500 ms budget by argument, not by measurement (decision 44). Check 12's verdict in that run
+is the evidence.

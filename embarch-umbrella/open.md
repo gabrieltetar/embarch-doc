@@ -4,7 +4,7 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **`/dev-bench/hello`'s `compatible` field is still unread, and a bench is not what it needs** ([decision 35](decisions/schema-skew.md)): `doctor` gives that call the same 500 ms budget as `GET /status`, and it opens a serial link. Three runs reported *unavailable* while Core's log recorded all three handshakes completing. **The budget is a compile-time constant, so it is not this machine's**; whether every machine's handshake exceeds it is not measured — no run has produced a handshake *duration* (`tasks/umbrella/030`).
+- **`/dev-bench/hello`'s `compatible` field has still never been read, and what is owed is a bench *run*, not a bench** ([decision 44](decisions/budgets.md)): the call now has its own 10 s handshake budget instead of `GET /status`'s 500 ms, **and that 10 s is assumed** — no run anywhere has produced a handshake *duration*. One `embarch doctor` on the primary bench, both boards attached, settles it either way: check 11's `compatible` verdict and check 13's real comparison, or a failure whose new verb (`timed out after 10000 ms` versus `could not connect`) is the first evidence able to tell those apart ([decision 45](decisions/budgets.md), `tasks/umbrella/030`).
 
 - **Check 15 is not a hash comparison and must not be read as one.** It catches a *cross-version* stale deploy and is blind to a same-version one: `core_version` is `CARGO_PKG_VERSION`, so a rebuild and failed deploy at one version reads as a match ([decision 34](decisions/schema-skew.md)). A content hash on `/status` would close it, `embarch-core`'s call.
 

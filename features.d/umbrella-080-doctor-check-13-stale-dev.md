@@ -1,1 +1,1 @@
-| `doctor` check 13 — stale dev-bench firmware | Shipped | hw | 19 |
+| `doctor` check 13 — stale dev-bench firmware | Shipped — **the comparison has never completed on a bench**: it reads `/dev-bench/hello`, which was on the budget sized for a read until 2026-09-06 (decision 44), and the wider one is unverified live | hw | 19, 44 |

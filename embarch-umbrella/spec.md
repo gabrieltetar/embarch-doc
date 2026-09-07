@@ -75,7 +75,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing (decision 17) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
 | 10 | Registered **and answering**: reads the registration out of the agent CLI's own config by the binary it names rather than only the key `embarch`, spawns it, and completes one JSON-RPC `initialize` over stdio within 10 s. An entry with nothing to spawn is a warn, never a pass (decisions 23, 37, 40) |
-| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the bench's wire version, plus this binary's own constant as a mixed-install warn |
+| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the bench's wire version, plus this binary's own constant as a mixed-install warn. The `/dev-bench/hello` fetch behind that verdict, and behind check 13, gets its own 10 s budget rather than the 500 ms the reads get (decision 44) |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
