@@ -28,6 +28,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- doctor check 13: no checkout configured now fails with a fix; an unresolvable firmware id reports as that, not stale (decision 47).
 - `status --json`'s `probes.state` gains `bad-response`: a 200 with no `probes` array no longer reads as `request-failed`.
 - `doctor` gives `/dev-bench/hello`'s serial handshake its own 10 s budget, not `GET /status`'s 500 ms, and a call that fails says whether it timed out or never connected (decision 44).
 - `doctor` check 14's `remote` skip loses eighteen stray spaces, and every check's text is now guarded against a wrapped literal ([spec.md](../embarch-umbrella/spec.md)).
