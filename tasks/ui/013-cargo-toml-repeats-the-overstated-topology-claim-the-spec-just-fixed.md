@@ -76,7 +76,37 @@ This unit should need none of them: a manifest comment plus, at most, a `changel
 
 ## Done when
 
-- [ ] `embarch-ui/Cargo.toml`'s comment states what is true and what decision 5 actually says.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment if anything user-visible changed — a manifest comment alone may not
+- [x] `embarch-ui/Cargo.toml`'s comment states what is true and what decision 5 actually says.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment if anything user-visible changed — a manifest comment alone may not
       warrant one; say which and why.
+
+## Closed
+
+Corrected `embarch-ui/Cargo.toml` lines 18-30 (the `embarch-core-client` dependency comment): it
+previously said `embarch-ui never depends on embarch-topology or its hardware feature at all` and
+cited decision 5 for the whole sentence. Decision 5 only makes the narrower claim (never the
+`hardware` feature); the crate is in the tree transitively via `embarch-core-client`, default
+`software` feature. New comment says both halves correctly and points at
+`embarch-ui/spec.md`'s Invariants section (the `probe-rs`/`serialport` count in `cargo tree -e
+normal`) as where the actual measurement lives, rather than restating it inline.
+
+Filed a `changelog.d/ui-manifest-topology-comment.fixed.md` fragment (152 B) — precedent is
+`ui/012`'s equivalent spec.md fix, which got one (`history/ui.md` line 19), and this is the same
+class of reader-facing correction one file over.
+
+**Other-manifest sweep (read-only, per the supervisor's note):** grepped all sub-project
+`Cargo.toml`s for the same overstated sentence and for other topology-related dependency
+comments. `embarch-api/Cargo.toml` (dropped `embarch-topology` as a *direct* dependency after the
+`CoreConfig` extraction) and `embarch-api/crates/embarch-core-client/Cargo.toml` both make
+accurate, narrower claims about their own direct dependencies — neither claims "never depends on
+embarch-topology at all" the way this file did. No other manifest carries the defect, so no
+`inbox/` drop was filed.
+
+No new decision was warranted; the fix is a comment correction, not a new architectural claim, so
+none of the three reserved `ui` files were touched.
+
+Gate: `cargo build`, `cargo test` (101 passed, 2 ignored), `cargo clippy --all-targets -- -D
+warnings` all clean in `embarch-ui`. `scripts/check-docs.py` (10/10 green),
+`check-client-names.py --repo <code worktree>` (clean against 7 denylist entries), and
+`check-ownership.py --scope ui` / `--code-repo` both green from this repo's worktrees.
