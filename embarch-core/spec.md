@@ -55,7 +55,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 | `flash_backend.rs` | per-chip-family backend choice and vendor-tool discovery (decision 36) |
 | `chip_resolve.rs` | Zephyr SoC → probe-rs chip target, validated against probe-rs's own registry |
 | `serial.rs` | fixed-duration UART capture (not a stream) |
-| `logs.rs` | `latest_log_file`/`tail_lines`/`FollowState`, one implementation behind the CLI and both HTTP routes |
+| `logs.rs` | `latest_log_file`/`tail_lines`/`FollowState`, one implementation behind the CLI and both HTTP routes. `FollowState` publishes whole lines only — its offset advances past a `\n` or not at all (decision 44) |
 | `dev_bench_log.rs` | the bench's own daily-rolling debug file, plus `classify()` and Core's boundary markers |
 | `service.rs` | registration via `service-manager`; a `windows` submodule for the real SCM dispatch |
 | `elevate.rs` | `is_elevated()`/`ensure_elevated_or_fallback()` |

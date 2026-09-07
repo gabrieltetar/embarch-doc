@@ -9,6 +9,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **`study_schema_mismatch` is reachable by nothing**: it names a member of the error `code` enum that does not exist. Deferred below.
 - **The signal-tap path has never run against real hardware.** Unit-tested at its scope boundaries and compiled into both a Linux and a native Windows Core, but **no real port has ever been resolved or read** — resolution matches on a USB serial, and this bench has no USB-UART bridge. `validate_signal` has **no caller anywhere**, deliberately: resolving a route at the moment of use *is* the validation and returns the same error, so calling both would check twice and report once.
 - **Decision 35's gate has never met ESP32-C5 silicon.** The Nordic arm is live and answers `match`; the Espressif relation is verified only by construction against the checked-out HAL headers and by unit test, that board being unplugged.
+- **`GET /logs/stream` has no consumer, and its torn-write path has never met a real tear.** `embarch-core-client` has no method for it; the UI's Debug tab uses `/logs/recent`. Decision 44's hold-the-partial rule is exercised only against a synthetic half-line.
 - **The Windows registry write for an *explicit* `EMBARCH_TOKEN` on an installed service has never executed on real hardware.** A real service install and start is verified, but that run set no explicit token, and only an explicit one reaches that path; the common case, an auto-generated token, never does.
 
 ## Unverified diagnoses
