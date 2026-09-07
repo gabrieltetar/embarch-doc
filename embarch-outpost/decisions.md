@@ -17,6 +17,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable | 9 |
 | [Capture and routing](decisions/capture.md) — study-scoped, post-hoc, carrier as a bench fact | 10, 11, 12, 13 |
 | [The bench](decisions/hardware.md) — the first consumer, and the wire that turned out not to exist | 15, 16 |
+| [One wire vocabulary](decisions/wire.md) — one definition, and a check over the other three copies | 23 |
 
 **Two lessons this sub-project produced that generalise past it**, both recorded in their own decisions and worth naming here:
 

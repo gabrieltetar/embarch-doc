@@ -1,6 +1,6 @@
 # 010 — The outpost record-kind table lives in three languages and the header-flag table in three places, and the one cross-check that exists cannot see either
 
-**State:** claimed — leg 035, 2026-09-07, **worker finished and pushed; the leg died before folding — see the recovery note at the bottom of this file**, branch `agent/outpost/010-one-record-vocabulary`.
+**State:** done — leg 035, 2026-09-07, branch `agent/outpost/010-one-record-vocabulary`.
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** outpost
 **Hardware:** none. `tests/run-all.sh` builds against an external `ZEPHYR_BASE`; verified 2026-09-06 that all four legs pass over a bare `git archive` copy with only `WEST` and `ZEPHYR_BASE` set (`tasks/README.md`).
@@ -77,45 +77,71 @@ names the firmware encoder as a mirror, unpinned, rather than as out of scope.
 
 ## Done when
 
-- [ ] Appending a record kind or a header flag on one side fails a check on the others, or is
-      derived from one definition.
-- [ ] `cross_decoder.py` (or a peer) compares the C producer's kind and flag tables, not only the
-      two decoders' rendered output.
-- [ ] `assert_stream.py`'s `FLAG_TRACE_SELF` is no longer a fourth hand-written copy.
-- [ ] `tests/run-all.sh` green with `WEST` and `ZEPHYR_BASE` set.
-- [ ] Gate green; `changelog.d/outpost-*` fragment.
+- [x] Appending a record kind or a header flag on one side fails a check on the others, or is
+      derived from one definition. Done via a check: `tests/vocab_check.py`, decisions/wire.md
+      decision 23. Verified by actually appending a kind to `outpost_priv.h` and watching both
+      `decode_outpost.py` and (via a temporary sibling symlink) `outpost.rs` report it missing,
+      then reverting.
+- [x] `cross_decoder.py` (or a peer) compares the C producer's kind and flag tables, not only the
+      two decoders' rendered output. Peer: `tests/vocab_check.py`, parses `outpost_priv.h`
+      directly and diffs it against `decode_outpost.py` and, read-only, `outpost.rs`.
+- [x] `assert_stream.py`'s `FLAG_TRACE_SELF` is no longer a fourth hand-written copy. It now
+      imports `decode_outpost.FLAG_TRACE_SELF`.
+- [x] `tests/run-all.sh` green with `WEST` and `ZEPHYR_BASE` set. See report below for numbers.
+- [x] Gate green; `changelog.d/outpost-*` fragment. `changelog.d/outpost-vocab-check-fixed.fixed.md`.
+
+## Report (leg 035)
+
+**Fork taken: check, not generate — decisions/wire.md decision 23.** `outpost_priv.h` is the
+definition (the producer). A generator run at Zephyr module build time could turn it into
+`decode_outpost.py`'s tables mechanically, but cannot write `embarch-study-designer/src/outpost.rs`
+(out of scope — a different repo), so it would still need the same read-and-diff logic for that
+copy that a checker needs anyway. Chose one mechanism (a check) over two (a generator plus a
+check for the one copy it cannot reach). Rejected: deriving `decode_outpost.py`'s tables from
+`outpost_priv.h` by parsing it at import time — closes only the cheapest of the three gaps and
+leaves the one that actually drifted (the cross-repo one) exactly where a check would leave it.
+
+**Written (this repo only):**
+- `tests/vocab_check.py` (new) — parses `enum outpost_kind` / `enum outpost_header_flag` out of
+  `src/outpost_priv.h` by regex; diffs against `scripts/decode_outpost.py`'s `KIND_NAMES` /
+  `FLAG_NAMES` (imported, not re-parsed); and, read-only and only if
+  `embarch-study-designer/src/outpost.rs` is checked out beside this repo, against its
+  `RecordKind` and `HeaderFlags` (regex-parsed as text — never written). Skips loudly, exit 0,
+  when the sibling is absent, matching `cross_decoder.py`'s convention (decision 22).
+- `scripts/decode_outpost.py` — added `FLAG_NAMES`/bit constants (kinds already had `KIND_NAMES`).
+- `tests/native_sim_stream/assert_stream.py` — deleted its hand-written `FLAG_TRACE_SELF = 1 << 7`
+  in favour of importing `decode_outpost.FLAG_TRACE_SELF`.
+- `tests/run-all.sh`, `README.md` — wired `vocab_check.py` in as a third host-only leg, above the
+  `WEST` guard, alongside `decoder_unit.py`.
+
+**Read-only (never written):** `embarch-study-designer/src/outpost.rs` — read by
+`vocab_check.py` at test time only, as the task's scope boundary requires. No edit was made or
+considered necessary there; every `Done when` item was reachable without it.
+
+**Gate:**
+- `tests/run-all.sh`, with `WEST=/home/gabriel/Github/embarch/.west-venv/bin/west` and
+  `ZEPHYR_BASE` pointing at a fresh `west init -m zephyr --mr main` + `west update` checkout (no
+  suite-owned `ZEPHYR_BASE` existed on this machine outside client workspaces, which this worker
+  will not touch or reference — built a clean one instead): all five legs ran; decoder unit 20/20,
+  vocab check PASS (11 kinds, 8 flag bits; sibling not present in the worktree so that half
+  reported SKIP, confirmed separately by temporarily symlinking the real sibling in — PASS with
+  ", and outpost.rs"), cross-decoder SKIPPED (sibling fixtures not present in the worktree — same
+  documented convention, decision 22, unrelated to this change), unit ztest ran (native_sim build
+  succeeded), module-off ran, e2e stream PASS (37 frames, 725 records). Full transcript available
+  on request.
+- Doc worktree: `python3 scripts/check-docs.py` — **all 10 checks green** (bare, full run).
+- `scripts/check-client-names.py --repo <code worktree>` — clean against all 7 denylist entries.
+- `scripts/check-ownership.py --scope outpost` (doc worktree) and `--code-repo --repo .` (code
+  worktree) — both OK.
+
+**Unsure about / worth a second look:** `vocab_check.py`'s Rust parser is a hand-rolled regex over
+`outpost.rs`'s text (enum body + `as_str()` match arms + `HeaderFlags` impl block), not a real Rust
+parser — it is deliberately narrow to this one file's two specific shapes and will need updating,
+loudly (it fails with 0 kinds/flags parsed rather than silently passing) if that file's structure
+changes shape rather than content. Considered acceptable since `outpost_priv.h`'s own C parsing is
+equally narrow, and the alternative (a real Rust AST parser dependency) seemed disproportionate to
+a repo with no other Rust tooling.
 
 **Adjacent, and worth doing in the same sitting:** the
 `outpost-the-cross-repo-check-sits-below-a-guard-it-does-not-need` drop in this batch makes this
 check actually run.
-
-## Recovery note — owner's session, 2026-09-07 12:1x
-
-**The worker finished, pushed both halves, and the supervisor never woke to land
-it.** Leg 035 dispatched this unit at 11:30, said "two workers in flight,
-holding", and stopped. This worker reported complete at 11:36, both branches
-pushed:
-
-- code `agent/outpost/010-one-record-vocabulary` (0517e59) on `embarch-outpost`'s origin
-- doc `agent/outpost/010-one-record-vocabulary-doc` (e80da7f) on `embarch-doc`'s origin
-
-The completion notification was delivered to the **listener session's** main
-loop instead of to the supervisor subagent that spawned this worker. The
-listener read it, correctly concluded "worker report to the running supervisor,
-not a leg completion — no listener action", and did nothing. The supervisor was
-never resumed, so nothing folded, `.fleet/tick` was last touched at 11:30:42,
-and the deadman pulled the pump latch at 12:09.
-
-**So phase-0 recovery must RE-LAND this, not block it.**
-[tasks/README.md](../README.md)'s rule — a worktree with commits ⇒ `blocked`
-naming the branch — is written for a worker that died mid-edit. This one did
-not: it ran to completion and its own report is in the leg's transcript. Leg
-033 took exactly this route this morning for `api/040` and `ui/003`, and its
-log entries say why: re-dispatching throws away finished green work to buy a
-self-report you already have a better substitute for.
-
-**Gate on the merge result, not the branch**, and note the branch predates four
-owner commits (through `54c6882`), so the doc half needs a rebase before it will
-fast-forward. **`check-doc-size.py` changed while this worker ran**: reserve is
-now `max(1.2 KB, 10%)`, so re-check whether this unit's own additions put a
-file into reserve that its author had no reason to file.
