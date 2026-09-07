@@ -1,8 +1,8 @@
 {
-  "framework_sha": "a3c62534f5e46c3256a478f4a34645ef056b1b25",
+  "framework_sha": "18032e48edf1cb1b23047fb55c68f38117ee53ea",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-07T07:23:00Z",
+  "installed_at": "2026-09-07T19:12:59Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "16c1e5616dc9fbe592581dc251303dfe10aba6a03a4d8b2527a6e8ea746dde0b",
@@ -12,16 +12,16 @@
     ".claude/agents/embarch-reviewer.md": "88935123417b90226f6eabadb5d0e774971c56ff3af44e53ed02984292715e57",
     ".claude/agents/embarch-supervisor.md": "29a3a8d84fe4fc898dbfc22ef517c84454e16e5a8a2639a9f303c964f1f7cb61",
     ".claude/agents/embarch-worker.md": "f34c0b93c587545d2780df54e8039bba2e8685101cda46e15d6f861395b54624",
-    ".claude/commands/fleet-watch.md": "b6dde2f9eab55ed49096337a0b6a868bd0d13234accc4aeb5a4ab6628447e2cf",
+    ".claude/commands/fleet-watch.md": "fdbcce615fab0b32e8e2262e3ed1cc942dcf702c328a52eb5240ce2d337538be",
     ".claude/commands/fleet.md": "0a1255001846bf22b679aeb06c25f243e3e43bcd655bcf6043ebd1f6f1f4e39f",
     ".claude/commands/suite-review.md": "e256dbca7ffa136b86084d0f3619cceb4582ac0c66250f9d06c96752e9b9f42d",
     ".claude/commands/supervise.md": "df06e82b973d5d8e4dd81b7b6e69f84d97f3aae38bea501fb78c42d2bfa292c0",
-    ".claude/leg.md": "bf8a52be65eb9d3cedccf3ef564eaae5d71e36e28c46b68d8c51b41fbf5bdfee",
+    ".claude/leg.md": "c20d2991799cd29bcde87fdf44129ac029b3bd11478cf438c265bbcb3d50a7fd",
     ".claude/settings.json": "275ede4c9f3654f136a8b3b33e3127e852cde8f78a061642bc9c062862d3877c",
     "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
     "inbox/README.md": "9f0d389f6bc2c8c00797b583621d9f4b40e733e80419a76691aa41853895c0d3",
     "status.d/README.md": "e4b55984fe66147934de476d73c613c68439de82f11678cc4938f1c44a46cc3f",
-    "tasks/README.md": "b78024acc25f889120965d184c1aa5a00816bd1772f0005c308873d5a6185177",
+    "tasks/README.md": "cd007024cbc2843ed9cef5ea6692edfe6f3ee8344d8024ff909b4392fbb11535",
     "scripts/check-ownership.py": "8cd3cae2d38119f103aab77d8694f04b72fdb5c7234a8baa60c23324f002ef9d",
     "scripts/queue-status.py": "42534c6b295eecbd580d37b75f7634068e11ba41a6a6ca5f22769bcb9ea234a8",
     "scripts/usage-budget.py": "6cb9786103b2d9a2efcbbcfe7abbe14077229401c3aabc460430c4cbfa5bd1e2",
@@ -31,6 +31,7 @@
     "scripts/fold-day.py": "bf6e8472252f119ec35b105b91bcec16a25820001f4683733a710a72dd7c3f36",
     "scripts/check-client-names.py": "d3d2c75c5868f3a4af442bb59ff01161fa7fcaf95ebf42c637650c1902d67f80",
     "scripts/check-dispatch.py": "8da05f963d2c54bbb1f01d9b5cbe592f16e063f1210eaa8dc68f3775731d4935",
-    "scripts/fleet-armed.py": "fbca2d31f26497e012002caef3c55eee9c44ae26fdf6c26dc1c947ccdd81f626"
+    "scripts/fleet-armed.py": "fbca2d31f26497e012002caef3c55eee9c44ae26fdf6c26dc1c947ccdd81f626",
+    "scripts/fleet-hardware.py": "1130107c3e652be5db385b196fb356e3ffac4117e2404379eaaebfd11d6fce1a"
   }
 }

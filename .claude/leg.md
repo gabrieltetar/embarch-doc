@@ -334,9 +334,22 @@ these. The ordering is not a preference: host-side work does not expire and a
 plugged-in board does. The owner unplugs the bench when he is done with it, and a
 bench unit that waits behind six doc tasks is one that runs against no hardware.
 
-**Validate before you start, every time.** The task names the roles it needs.
-Check each one live — `embarch-api`'s `validate` tool, or
-`embarch-topology validate <role>` — and only then begin.
+**The bench is already written down — read it before you plan, not after.**
+`scripts/fleet-hardware.py` prints one buffered view of the whole topology: each
+role's board, revision, probe serial, hardware ID, whether it is attached, the
+link port and console pins, and the DUT-side sequence facts a study has to obey.
+It is refreshed at step 0 (`--refresh`), so **selecting** bench work costs no
+hardware attach at all — which is the point, since `validate` takes Core's
+`hw_lock` and a leg used to spend four attaches asking a question whose answer
+changes when somebody unplugs a cable. Every field is tagged **measured** (Core
+read it over the debug probe) or **stated** (the owner said so); never promote
+the second to the first.
+
+**Validate before you start, every time — the buffer plans, `validate` commits.**
+The task names the roles it needs. Check each one live — `embarch-api`'s
+`validate` tool, or `embarch-topology validate <role>` — and only then begin. The
+buffer is minutes old, not seconds; it tells you what to attempt, and the live
+check is what you act on.
 
 - **A role that is not attached leaves the task `open`.** Not `blocked`. Say it
   once in the log entry and move to the next unit. A board coming back is
@@ -365,13 +378,34 @@ producing a new one is exactly where "exercising EmbArch" turns into
 "developing his firmware".
 
 **Never infer a DUT fact.** What board is on the bench, what its console is, what
-has to happen before a step will work — a bench task carries these, with their
-source, or it is under-specified. If you need one it does not carry, **say so and
-leave the task open**; do not guess, and do not derive it from firmware source.
-An inferred hardware fact asserted as measured is the failure this suite has
-already paid for.
+has to happen before a step will work — `fleet-hardware.py` carries these with
+their source, and a bench task carries anything narrower, or it is
+under-specified. If you need one neither has, **say so and leave the task open**;
+do not guess, and do not derive it from firmware source. An inferred hardware
+fact asserted as measured is the failure this suite has already paid for. The
+buffer's own `[UNCONFIRMED]` markers are that rule applied to itself: a BLE name
+candidate derived from an enrolled hardware ID is a prediction until something
+connects with it.
 
 **Then run units until the cap.** For each free slot, while the wave size allows:
+
+**First, check the size-debt ledger, and spend your FIRST unit on it if
+anything is overdue.** `scripts/check-doc-size.py --due` prints it, soonest
+first, and exits non-zero when an entry has passed its date. If one has, that
+entry's task is your first unit — **including when it is `blocked`**, because
+the clock is what makes a park non-absorbing. Read the park against
+`DOC-BUDGET.md`'s split-first rule before you assume it still applies: a
+verbatim split restates nothing, so `In flux: yes` cannot forbid one, and
+`--decisions` will tell you whether the file is many decisions (split it) or one
+sprawling decision (compact that entry). Nothing overdue means dispatch as
+normal — this is a scheduled share of throughput, not a standing tax.
+
+**Why the ledger gets a leg's first unit rather than its last.** A doc debt
+used to be paid by whichever unit happened to touch a full file, which is why
+three units in a row spent their reserve shaving bytes and one supervisor filed
+a decision in the wrong file because the right one had 96 bytes left. Paying
+the oldest debt on a schedule costs the same throughput and stops ambushing
+unrelated work.
 
 **Select and set up.** At most one task per sub-project, from `Hardware: none`
 and `verify-only` tasks only. Claim it — commit the state line before dispatch,
@@ -493,12 +527,35 @@ tree is clean for the entire *reading* half of its run**, so the reading was tru
 when taken and false ninety seconds later. `ops.md` §3 already reads the worktree
 rather than the branch because a commit count is a bad liveness probe; the
 worktree is a bad one too, for the same reason. `tasks/README.md` settles claim
-staleness by the **process tree**, and that is the rule here: **only the
-harness's own completion notification may retire a worker you dispatched** —
-never a reading of its tree. `ListAgents` is how the owner's session and the
-listener see agents; a leg does not have it, so waiting for the notification is
-not one option among several, it is the only one you have. Only then recover per
-§3 and re-run the guard with `--allow-existing`.
+staleness by the **process tree**, and that is the rule here: **nothing you can
+read about a worker's tree may retire it.** `ListAgents` is how the owner's
+session and the listener see agents; a leg does not have it.
+
+**One second signal is legal, and it is positive-only.** A worker's last act is
+pushing both branches, so **a branch present on its remote carrying commits
+means that worker finished** — you may gate and land it whether or not a
+notification arrived. That is not the reading leg 007 got wrong: it concluded
+*death* from an absence, and an absence is exactly what a mid-run worker looks
+like. A pushed branch is a *presence*, and it can only have been produced by a
+worker that reached its own bookkeeping. **The asymmetry is the rule: presence
+may retire a worker, absence never may.**
+
+**Why it exists — leg 035, 2026-09-07.** That leg dispatched two workers, wrote
+"two workers in flight, holding", and stopped. Both workers finished and pushed
+(11:36 and 11:52), and **both completion notifications were delivered to the
+listener session's main loop instead of to the supervisor.** The listener read
+them, correctly decided a worker report was not its business, and did nothing.
+Under the old wording the leg had no legal way to notice, so two finished units
+sat unmerged until the watchdog stopped the fleet 39 minutes later. **A single
+permitted wake-up signal is a single point of failure**, and this is the second
+time this log has recorded finished work stranded by one.
+
+**So bound the wait.** If nothing has reported for **~25 minutes** — longer than
+a worker's own twenty — run `git ls-remote --heads <remote> 'agent/*'` in both
+repos for each worker you dispatched, once, before doing anything else. A branch
+with commits is a finished worker: land it. No branch is a worker still running:
+`touch /home/gabriel/Github/embarch/.fleet/tick` so the watchdog knows the fleet is alive, and keep
+waiting. Only then recover per §3 and re-run the guard with `--allow-existing`.
 
 **Dispatch.** One background `embarch-worker` agent per task, launched without
 blocking on the previous one. Give each: its task file path, **both** worktree
