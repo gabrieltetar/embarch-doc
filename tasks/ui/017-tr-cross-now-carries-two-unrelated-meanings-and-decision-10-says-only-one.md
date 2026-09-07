@@ -63,7 +63,7 @@ worker, came to 63 lines with two new tests where a fold would have produced a s
 - **Different category** — the three original causes are all about the *capture*, and a client
   parse failure is about the *client*, so conflating them is what got us here twice. Then the
   parse-failure case needs its own token or label, and `trace-chart.md`'s byte cap is a cost to
-  pay rather than a reason to decide (`tasks/ui/016-compact-ui.md` is already open for that budget
+  pay rather than a reason to decide (`tasks/ui/019-compact-ui-trace-chart.md` is already open for that budget
   and may be where the room comes from).
 
 **Pick one and argue it.** Do not add a third amendment that widens a token in a file the token's
@@ -91,9 +91,12 @@ defining decision does not reference — that is precisely what rounds 2 and 3 e
 ## Doc-size
 
 `embarch-ui/decisions/trace-chart.md` went into reserve in `ui/015` — **11,698 / 12,288 B, 95.2%,
-590 B left** — and `tasks/ui/016-compact-ui.md` is the filed debt for it (`In flux: no`).
+590 B left** — and `tasks/ui/019-compact-ui-trace-chart.md` is the filed debt for it (`In flux:
+no`). **That task was filed as `016` by `ui/015`'s worker and renumbered by the owner in `161d7b0`**,
+because a second thread had issued `016` in the same hour; `018-compact-ui-spec.md` is the other
+half of that collision and is not this file's debt.
 `decisions/trace-view.md` is **10,989 / 12,288 B (89.4%)**, just under the line, and decision 10's
-view half lives there. **Both candidate homes for this fix are tight**, which is why `016` may need
+view half lives there. **Both candidate homes for this fix are tight**, which is why `019` may need
 to run first or in the same sitting. If your work pushes another file into reserve, file
 `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 
