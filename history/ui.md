@@ -13,6 +13,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- embarch-ui/Cargo.toml's comment overstated decision 5: it never links embarch-topology's `hardware` feature, but the crate is in the tree transitively.
 - An unrecognised trace-band outcome now fills with `tr-cross`, not `tr-gap` — it no longer claims the firmware lost records.
 - One outcome decoder in app.js handles both wire shapes; an unrecognised one now renders visibly wrong, not a pass or neutral.
 - `app.js` no longer restates the row cap or the stream-name cap; both are now served fields.
