@@ -10,7 +10,7 @@ the supervisor's amendment to `decisions/module.md` decision 22.
 
 ## What
 
-**Compacts:** `embarch-outpost/open.md`, `embarch-outpost/decisions/module.md`
+**Compacts:** `embarch-outpost/open.md`, `embarch-outpost/decisions/module.md`, embarch-outpost/spec.md, embarch-outpost/decisions/transport.md
 
 `open.md` is 4,891 / 5,120 B, 229 B left (95.5%); `decisions/module.md` is 7,730 / 8,192 B, 462 B
 left (94.4%).
@@ -51,3 +51,5 @@ the scope directory of the doc being compacted, filed by whoever spends it, in t
       and the CI gap just added under "Deferred with a named trigger" — all load-bearing, measured
       facts with no other home.
 - [ ] Gate green.
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

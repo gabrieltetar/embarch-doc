@@ -7,7 +7,7 @@
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-core/interfaces.md
+**Compacts:** embarch-core/interfaces.md, embarch-core/open.md
 **In flux:** yes — two other queued units touch this exact file. `tasks/core/021`
 (retire `GET /logs/stream`, which has no consumer anywhere) would delete the row
 `core/018` just added, and `tasks/api/032` names `/probes/enrolled`'s row as
@@ -50,3 +50,5 @@ already long-winded, not reversal of `core/018`.
 - [ ] Every `Must not delete:` item above is still readable, verbatim or
       faithfully restated.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

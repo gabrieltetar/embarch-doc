@@ -6,7 +6,7 @@
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-api/decisions/core-link.md
+**Compacts:** embarch-api/decisions/core-link.md, embarch-api/spec.md, embarch-api/open.md
 **In flux:** yes — the event-stream half of this file (decisions 48, 49) has never
 met a real `embarch-core`. `tasks/api/001-sse-client.md` is that run. Until it
 happens, shortening 48/49 writes a clean statement of something a first live run
@@ -65,3 +65,5 @@ entry went into whichever file had room rather than the file whose topic it was.
       compactor's own words: *can `spec.md` alone answer what someone needs to
       work on reaching Core today?*
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

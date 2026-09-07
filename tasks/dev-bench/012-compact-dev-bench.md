@@ -7,7 +7,7 @@ amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-dev-bench/decisions/ble.md
+**Compacts:** embarch-dev-bench/decisions/ble.md, embarch-dev-bench/spec.md, embarch-dev-bench/open.md
 **In flux:** yes — this file has taken two live corrections recently: decision 31 (16-bit UUIDs
 reported two bytes out of place) and decision 23's amendment landed by this same commit. BLE is an
 active area of the dev-bench firmware; do not compact ahead of the next correction landing, and
@@ -38,3 +38,5 @@ filing, dropped in the same commit that spent the reserve (decision 23's amendme
 - [ ] Every `Must not delete:` item above is still readable, verbatim or faithfully restated.
 - [ ] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

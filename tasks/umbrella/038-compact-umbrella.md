@@ -5,7 +5,7 @@
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
-**Compacts:** embarch-umbrella/spec.md
+**Compacts:** embarch-umbrella/spec.md, embarch-umbrella/open.md
 
 ## What
 
@@ -52,3 +52,5 @@ specifically those two tables, not the whole sub-project.
       answer what someone needs to work on this component today?
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/umbrella-*` fragment
       dropped.
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

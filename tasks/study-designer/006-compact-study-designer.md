@@ -7,7 +7,7 @@ added decision 65 (`agent/study-designer/005-release-workflow-decision`).
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-study-designer/decisions/crate.md
+**Compacts:** embarch-study-designer/decisions/crate.md, embarch-study-designer/spec.md, embarch-study-designer/open.md
 **In flux:** yes
 **Must not delete:** decision 64's measured `cargo tree -f "{p} {f}"` two-column result and
 its counterfactual ("16 errors" against "passes 9/9") — that is the whole evidence the two
@@ -72,3 +72,5 @@ kilobyte.
 unaffected by this split — it still names the dev-bench cross-build as the unparking condition,
 and still blocks a *shortening* pass on either resulting file. This task stays `blocked` rather
 than closing, since only the reserve item is done, not the file's underlying flux.
+
+**Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

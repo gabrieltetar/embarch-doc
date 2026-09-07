@@ -63,6 +63,25 @@ RENAME_ALLOWANCE = 1 * KB
 # recorded and judged, not a steady state; the corpus still grows.
 RESERVE_PCT = 90.0
 
+# ...but a percentage of a small cap is not runway. 90% of a 5 KB `open.md` is
+# 512 B and of a 12 KB decision group 1.2 KB, and the corpus reached states no
+# percentage would have called dangerous: `suite/features.md` with **36 bytes**
+# left, `embarch-api/decisions/core-link.md` with **22**. A worker dispatched at
+# either cannot write the sentence its task exists to add, and three legs in a
+# row spent a unit shaving bytes to clear fourteen.
+#
+# So reserve is `max(RESERVE_FLOOR, (100 - RESERVE_PCT)% of the limit)` from the
+# top. The floor is one decision amendment's worth of prose, measured against
+# what this suite's amendments actually cost: the 2026-09-06 fold records single
+# additions of 350 B, ~940 B and 1,548 B. 1.2 KB covers the middle of that and
+# is honest about not covering the top.
+#
+# **It files debts EARLIER, not later, and that is the point.** A file warned
+# 1.2 KB out can still be split; a file warned 22 bytes out can only be
+# squeezed, and squeezing is how live reasoning gets deleted to make room for
+# new reasoning. DOC-COMPACTION.md §2 carries the rule that follows from it.
+RESERVE_FLOOR = 1200
+
 # Where a filed debt lives. `tasks/doc/` for a doc the fleet may write,
 # `inbox/` for one reserved to the owner -- DOC-PROTOCOL.md and DOC-COMPACTION.md
 # are the case that forced this: no agent can compact them, so a wall there can
@@ -89,11 +108,20 @@ CAPS = [
     # A complete inventory table gets the interfaces cap, for the interfaces
     # reason: every row must be present, and the budget is spent on rows.
     ("suite-inventory", 15 * KB, re.compile(r"^suite/roadmap\.md$")),
-    # features.md is assembled from features.d/, so the budget that bites is the
-    # per-row one build_features.py enforces (600 B) -- the file's size is a
-    # function of how many capabilities the suite has, which is not anyone's
-    # discipline to exercise. This cap is a backstop, not the constraint.
-    ("suite-assembled", 20 * KB, re.compile(r"^suite/features\.md$")),
+    # features.md is ASSEMBLED from features.d/, and gets NO BYTE CAP. The cap
+    # was 20 KB and called "a backstop, not the constraint" -- but it became the
+    # constraint: the file sat at 20,444 of 20,480 B, so **every new
+    # `features.d/` fragment breached it**, and three separate units spent their
+    # reserve shaving Status-column rows to clear a few bytes. A cap that the
+    # file's own assembler breaches on every legitimate addition is not a
+    # discipline anyone can exercise; it is a wall in front of the generator.
+    #
+    # The budget that bites is the per-row one `build_features.py` enforces
+    # (600 B), which is the real constraint and the one an author can act on:
+    # the file's total size is a function of how many capabilities the suite
+    # has, which is not a discipline at all. `None` means no cap, no reserve
+    # and no ratchet -- every caller already skips a `None`.
+    ("suite-assembled", None, re.compile(r"^suite/features\.md$")),
     ("suite",       10 * KB, re.compile(r"^suite/[a-z-]+\.md$")),
     # Any DOC-*.md: the protocol layer. It splits the way anything else does
     # (DOC-COMPACTION-PASS.md came out of DOC-COMPACTION.md §6-§9), so this
@@ -198,7 +226,8 @@ def reserve_state(base, reserve_pct):
         if size > limit:
             continue
         filed = [i for i, paths in items if rel in paths]
-        if 100.0 * size / limit >= reserve_pct:
+        headroom_line = limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
+        if size >= headroom_line:
             in_reserve.append((rel, size, limit, filed))
         elif filed:
             filed_clear.append((rel, size, limit, filed))
