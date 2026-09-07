@@ -1,6 +1,6 @@
 # 010 — The study-designer progress badge is one step short for the whole run
 
-**State:** open
+**State:** claimed by agent/ui/010-progress-badge, 2026-09-06 18:50
 **Source:** found by `agent/core/012` while documenting Core's `current_step`; `embarch-core/decisions.md` decision 43
 **Scope:** ui
 **Hardware:** none
@@ -45,6 +45,25 @@ has one known consumer that disagrees with it. `embarch-core` may not write
 Worth deciding at the same time, in `embarch-ui`'s own words: whether the badge
 should show *the step now running* or *steps finished*. Both are defensible; the
 current code shows neither.
+
+## Reserve line (supervisor, leg 024, measured at dispatch)
+
+One file in `embarch-ui` is in reserve: **`embarch-ui/decisions/trace-view.md` — 11,080 / 12,288,
+1,208 bytes left**, filed against [`009-compact-ui.md`](009-compact-ui.md), which is **blocked** on
+`In flux: yes`. Nothing else in `embarch-ui` is in reserve, and this unit has no business in
+`trace-view.md` — the run badge is not the trace view. **If you find yourself writing there, stop
+and say why in your report**; you would then also owe that file's compaction as part of this unit,
+carrying `009`'s `Must not delete:` list, which is not what this task is for.
+
+If your work pushes any other `embarch-ui` doc into reserve, file
+`tasks/ui/<NNN>-compact-ui.md` in the **same commit** (`tasks/README.md` has the shape). The path is
+`tasks/ui/`, your own scope — not `tasks/doc/`, which `check-ownership.py` refuses to a worker.
+
+**Note on the source of truth for the number you are fixing:** `embarch-core/decisions.md`
+decision 43 was reorganised earlier in this same leg by `core/014` — a mission split — and the
+decision itself did not move; it is still in `embarch-core/decisions/studies.md`, and
+`embarch-core/interfaces.md`'s `GET /study/{id}` row is unchanged. Read those two at `origin/main`
+rather than from any earlier memory of them.
 
 ## Done when
 
