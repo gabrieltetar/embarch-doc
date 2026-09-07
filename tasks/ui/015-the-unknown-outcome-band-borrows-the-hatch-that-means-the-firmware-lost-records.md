@@ -1,10 +1,22 @@
 # 015 — The unknown-outcome band borrows the hatch that means "the firmware lost records"
 
-**State:** open
+**State:** claimed — leg 035, 2026-09-07, branch `agent/ui/015-unknown-outcome-hatch`.
 **Scope:** ui
 **Hardware:** none
 **Source:** `embarch-reviewer` on `tasks/ui/014`, leg 034, 2026-09-07. Filed by the supervisor
 rather than fixed in the fold, on purpose — see *Why this was not fixed at the fold* below.
+
+**Doc-size reserve in `embarch-ui` (leg 035, measured at dispatch).** One file is in reserve:
+`embarch-ui/decisions/study-designer.md` at **12,064 / 12,288 B — 224 B left (98.2%)**, debt already
+filed as `tasks/ui/011` (`open`, not blocked). Two more are just under the line and are the ones your
+work is most likely to touch: `decisions/trace-chart.md` at **11,035 / 12,288 B (89.8%, 1,253 B
+left)** and `decisions/trace-view.md` at **10,989 / 12,288 B (89.4%, 1,299 B left)** — decision 10,
+the hatch vocabulary this task is about, lives in the latter and decision 23 in the former. Neither is
+in reserve yet, so you have room, but a long new decision in either will push it in. **If your work
+spends the reserve — pushes a file into it, or leaves one there that nothing has filed — file
+`tasks/ui/<NNN>-compact-ui.md` in the same commit** (`tasks/README.md` has the shape; the path is
+`tasks/ui/`, never `tasks/doc/`). Prefer amending decision 10's existing text over adding a fourth
+hatch decision if the amendment says the same thing in fewer bytes.
 
 ## What
 
