@@ -1,6 +1,29 @@
 # 017 — `tr-cross` now carries two unrelated meanings and decision 10 states only one
 
-**State:** claimed by agent/ui/017-tr-cross-two-meanings, 2026-09-07 16:40
+**State:** done — leg 2026-09-07, branch `agent/ui/017-tr-cross-two-meanings` (both repos).
+
+**Resolution: same category.** Decision 10's chart half (`trace-chart.md`) now states `tr-cross`'s
+complete, exactly-two-cause scope in its own text: an aggregated run whose flags include a gap (the
+capture-side cause this half already existed to describe), and, per decision 23, a step outcome
+`app.js` could not parse (the client-side cause `ui/015` introduced). Argument for treating them as
+one category rather than forking a second token: both already carry the same reader-facing promise —
+*this is not vouched for as drawn* — and each already names its own specific reason in the hover
+text, so a reader is never actually confused about which of the two is in play; the ambiguity the
+prior two rounds kept tripping over was never in the rendering, only in decision 10's text not
+saying so. A second token would buy nothing a hover title doesn't already buy, at a real cost this
+sitting: `trace-chart.md` had 590 B of file-level reserve left and a new-token paragraph plus an
+`app.js` change would not have fit without also running `tasks/ui/019` in this same commit. The fix
+instead nets +135 B in the file — a new sentence in decision 10, offset by trimming decision 23's
+now-redundant restatement of the same claim down to a pointer at decision 10 — leaving
+`trace-chart.md` at 11,833/12,288 B (455 B left), still in reserve but not over cap.
+
+**Decision 10 also has its own, separate, per-decision pinned baseline (`scripts/decision-size-baseline.json`,
+8,192 B) that the file-level reserve number does not show.** The first draft of the new sentence was
+under the file's 590 B but pushed decision 10's own section to 8,336 B — `check-doc-size.py` caught it
+as a pinned decision growing past its baseline, which a merely-under-cap file total does not surface.
+Cut to fit the 173 B of headroom that baseline actually had (8,192 − 8,019); the section is now
+8,179 B. `tasks/ui/019` (already open, `In flux: no`) carries the updated byte counts and this
+reserve-spend note rather than a second filing.
 **Scope:** ui
 **Hardware:** none — two decision files and one JS file; confirming it needs reading, not a board.
 **Source:** `embarch-reviewer` on `ui/015` (code `7468a0e` in `embarch-ui`, doc `fb0a05c` in
@@ -71,22 +94,28 @@ defining decision does not reference — that is precisely what rounds 2 and 3 e
 
 ## Done when
 
-- [ ] **One place** states the complete list of what `tr-cross` covers, and whether a client-side
+- [x] **One place** states the complete list of what `tr-cross` covers, and whether a client-side
       "cannot parse this value" is the same category as "an aggregated run's continuity is
       uncertain (gap / below-resolution / open edge)". That place is decision 10 if the answer is
       "same category"; if the answer is "different", decision 10 still gains the sentence saying
-      what `tr-cross` does *not* cover and where the other case lives.
-- [ ] If the two meanings are judged the same category, **decision 10's own text** carries the
-      sentence — not decision 23 alone. A reader of decision 10 must not be missing the update.
+      what `tr-cross` does *not* cover and where the other case lives. — Decision 10 (`trace-chart.md`
+      §10) now states it directly: exactly two causes, gap-crossing and the decision-23 parse
+      failure; below-resolution and open-edge alone never trigger the hatch (checked against
+      `app.js` ~4274-4277, where `crosses` is set from `TRACE_F_GAP` alone).
+- [x] If the two meanings are judged the same category, **decision 10's own text** carries the
+      sentence — not decision 23 alone. A reader of decision 10 must not be missing the update. —
+      Done; decision 23's amendment is trimmed to a pointer at decision 10 rather than restating it.
 - [ ] If they are judged different, the parse-failure case has its own token or label, `app.js`
-      uses it, and both decisions name it.
-- [ ] The `tr-gap` → `tr-cross` swap itself is **not** reverted. Reverting `7468a0e` would restore
+      uses it, and both decisions name it. — N/A, same category was judged.
+- [x] The `tr-gap` → `tr-cross` swap itself is **not** reverted. Reverting `7468a0e` would restore
       the false hardware-fault claim `ui/015` was filed to remove; the remedy here is forward only.
-- [ ] The step table's `badge-danger "?"` for an unrecognised outcome is untouched. It was right in
-      `ui/014` and is right now.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment only if a
+      — `app.js` untouched entirely this task.
+- [x] The step table's `badge-danger "?"` for an unrecognised outcome is untouched. It was right in
+      `ui/014` and is right now. — `app.js` untouched entirely this task.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment only if a
       user-visible rendering actually changes — if the whole answer is "decision 10 gains a
-      sentence", say so and write no fragment.
+      sentence", say so and write no fragment. — No rendering changed (doc-only fix); no
+      `changelog.d/` fragment written. Gate results below.
 
 ## Doc-size
 

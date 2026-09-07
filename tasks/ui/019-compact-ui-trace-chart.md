@@ -2,7 +2,9 @@
 
 **State:** open
 **Source:** `ui/015` amended decision 23 to correct the `tr-gap`/`tr-cross` mixup
-it was filed to fix, spending 663 B and pushing this file into reserve.
+it was filed to fix, spending 663 B and pushing this file into reserve. `ui/017`
+spent a further net 135 B stating `tr-cross`'s complete two-cause scope in
+decision 10 rather than only in decision 23 — see its `Source:` line.
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
@@ -10,8 +12,9 @@ it was filed to fix, spending 663 B and pushing this file into reserve.
 **Compacts:** embarch-ui/decisions/trace-chart.md
 **Size debt due:** 2026-09-24
 **In flux:** **no.** No open `ui` task touches this file. Decision 10 (the
-chart half — zoom/pan/aggregation/study-action row) and decision 23 (the
-outcome decoder, just amended by `ui/015`) are both settled: nothing queued
+chart half — zoom/pan/aggregation/study-action row, amended by `ui/017` to
+state `tr-cross`'s two-cause scope) and decision 23 (the outcome decoder,
+amended by `ui/015` and trimmed by `ui/017`) are both settled: nothing queued
 rewrites either.
 **Must not delete:** decision 10's three findings-of-the-same-shape list (the
 overlapping-spans invariant, "a thread is never inside itself", and the
@@ -25,8 +28,13 @@ compaction in substance: that `tr-gap` was tried first and was wrong, and why.
 
 ## What
 
-`decisions/trace-chart.md` is **11,698 B against a 12,288 B cap** (95.2%,
-590 B left) after `ui/015`'s amendment. Nothing is blocked today; the next
+`decisions/trace-chart.md` is **11,833 B against a 12,288 B cap** (96.3%,
+455 B left) after `ui/017`'s decision-10/decision-23 edit (net +135 B: a new
+two-cause statement for `tr-cross` in decision 10, kept under decision 10's
+own 8,192 B pinned baseline — `check-doc-size.py` refused the first, larger
+draft at 8,336 B, so the sentence was cut to fit the 173 B of headroom that
+baseline still had — offset in the file total by trimming decision 23's now-
+redundant paraphrase of the same claim). Nothing is blocked today; the next
 edit to this file likely is.
 
 ## Why now
