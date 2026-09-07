@@ -1,6 +1,6 @@
 # Give a declared-serial port resolution an honest provenance instead of `vid-match`
 
-**State:** open
+**State:** claimed by agent/topology/003-declared-serial-provenance, 2026-09-07 15:21
 **Source:** owner's repo survey, 2026-09-06 — a comment that is provably stale, and a documented value set that is incomplete
 **Scope:** topology
 **Hardware:** none
@@ -56,3 +56,23 @@ reported with the provenance of the least-discriminating rule available.
       `cargo test --no-default-features --features hardware`.
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Doc-size reserve for `topology` — supervisor, leg 036, 2026-09-07
+
+**Nothing in `topology` is in reserve right now, which is unusual for this scope and is the state
+you are being handed rather than one you may spend.** The two files you are most likely to write:
+
+- `embarch-topology/open.md` — 4,206 / 5,120 B, **914 B left** (82%). Filed under
+  `tasks/topology/014-compact-topology.md`, which is `open`.
+- `embarch-topology/decisions/links.md` — 10,390 / 12,288 B, **1,898 B left**. This is the
+  decisions file a port-provenance decision most plausibly belongs in, and it is the largest one
+  in the scope. `enrollment.md` (7,868 B) and `validation.md` (4,368 B) have far more room; say
+  which you chose and why, rather than letting the byte count choose for you.
+
+`embarch-topology/spec.md` was at its **hard cap** two legs ago and was taken off it by
+`topology/010`; it is at 8,913 B against 10,240 now. Do not spend that recovery casually.
+
+**If your work pushes any `topology` file into reserve — `max(1.2 KB, 10%)` from the top — file
+`tasks/topology/<next NNN>-compact-topology.md` in the same commit** (`tasks/README.md` has the
+shape), or add the path to `topology/014`'s `**Compacts:**` line if that is the truer home. A file
+in reserve with nothing filed against it fails the gate.
