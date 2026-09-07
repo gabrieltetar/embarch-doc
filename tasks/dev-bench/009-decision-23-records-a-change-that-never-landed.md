@@ -75,6 +75,13 @@ reports a plain timeout with no census (`tasks/dev-bench/008`).
       land it. Amended decision 23 in `embarch-dev-bench/decisions/ble.md` with a dated note saying
       the crate-side statement was not yet true when the decision first claimed it, and naming what
       landed and citing `embarch-study-designer decision 14`.
+      **Supervisor correction at the fold, 2026-09-07:** that citation was wrong and I replaced it
+      before merging. `study-designer/014` is a **task** number, not a decision number —
+      `embarch-study-designer` decision 14 is *"Correlation by array position (`step_index: u32`),
+      not by `Step.name`"* and has nothing to do with `BleAddress`. **No numbered decision in that
+      crate covers the byte order at all**; the change is commit `79a4c00` and only that. The
+      amendment now names the commit and says outright that no decision covers it — which is also
+      the reason decision 23 could claim the statement prematurely and nothing caught it.
 - [x] Gate green (`../../embarch-fleet/protocol.md` §10). — see report.
 - [x] `changelog.d/` fragment dropped if anything user-visible changed; a decision correction
       alone may not warrant one — say which and why. — **No fragment.** Nothing user-visible
