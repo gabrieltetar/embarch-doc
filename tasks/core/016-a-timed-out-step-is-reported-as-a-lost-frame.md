@@ -1,10 +1,16 @@
 # 016 — A timed-out step is reported as a lost frame, and Core's own result file is the disproof
 
-**State:** open
+**State:** claimed by agent/core/016-timed-out-step-names-its-step, 2026-09-06 20:28
 **Source:** supervisor bench unit, leg 025, 2026-09-06 — measured against the real bench, then confirmed in source
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Reserve (supervisor, leg 026)
+
+`scripts/check-doc-size.py --pressure` at dispatch: **no `embarch-core` doc is in reserve.**
+Write freely, but if your work pushes one into the last 10% of its cap, file
+`tasks/core/<NNN>-compact-core.md` in the same commit per `tasks/README.md`.
 
 ## What
 
