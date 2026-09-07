@@ -1,6 +1,6 @@
 # A successful request with an unreadable body is reported as `request-failed`
 
-**State:** claimed
+**State:** done
 **Scope:** umbrella
 **Hardware:** none
 **Source:** `inbox/umbrella-status-probe-report-malformed-body-collapses-to-zero.md` (embarch-reviewer, at `umbrella/028`'s fold), filed by the supervisor of leg 034.
@@ -60,7 +60,24 @@ there that nothing has filed, file `tasks/umbrella/<NNN>-compact-umbrella.md` in
 
 ## Done when
 
-- [ ] A `200` with an unreadable body reports a state that does not read as a transport failure.
-- [ ] `state_str`, `probes_json`, decision 46's list and `spec.md` all agree on the set of states.
-- [ ] A test constructs that response and asserts the new state.
-- [ ] `cargo build`, `cargo test`, `clippy --all-targets -- -D warnings` clean.
+- [x] A `200` with an unreadable body reports a state that does not read as a transport failure.
+      `ProbeReport::BadResponse`, `state_str() == "bad-response"`.
+- [x] `state_str`, `probes_json`, decision 46's list and `spec.md` all agree on the set of states.
+      `spec.md`'s `status` row lists only three of the five prior states as illustrative examples
+      (never all five/six) and is unchanged — adding a sixth name there would not make it a
+      complete enumeration, since `request-failed` itself was never named in that row either.
+- [x] A test constructs that response and asserts the new state.
+      `interpret_probe_response(200, "{}")` (the response-handling logic split out of
+      `probe_report` so it's testable without a socket or a resolved token) asserts
+      `state_str() == "bad-response"`.
+- [x] `cargo build`, `cargo test`, `clippy --all-targets -- -D warnings` clean.
+
+## Notes
+
+Landed as an amendment to decision 46 (`embarch-umbrella/decisions/reporting.md`) rather than a
+new decision — the `--json` shape change (a new `state` value inside the existing
+`{state, count, reason}` envelope) does not need its own argument against decision 11; the envelope
+itself is unchanged, only one more value it can take.
+
+This amendment pushed `decisions/reporting.md` into reserve (94.3%, 699 B left); filed as
+`tasks/umbrella/040-compact-umbrella.md` in the same commit.
