@@ -1,6 +1,6 @@
 # 011 — The firmware on the bench was built from a checkout whose history is gone, so nothing can say how stale it is
 
-**State:** open
+**State:** claimed
 **Source:** `tasks/umbrella/034`'s bench run, leg 030, 2026-09-07 — `doctor` check 13's first real comparison
 **Scope:** dev-bench
 **Hardware:** bench — and the build half needs the `toolchain` hands (`tasks/README.md`): this repo's Zephyr tree is gitignored, so it builds in the **main checkout** and not in a worktree
