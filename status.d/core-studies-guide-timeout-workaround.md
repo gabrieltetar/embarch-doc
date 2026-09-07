@@ -1,5 +1,0 @@
-**Target:** suite/studies-guide.md §3b — the last paragraph, "**The StepResult arrived.** …"
-**Was:** "Until `tasks/core/016` lands, **read \"the StepResult did not arrive\" on a `BleConnect` study as \"a step timed out\"**, and confirm it against `events.json.partial` in that study's directory under `study_results/` rather than chasing a transport fault."
-**Now:** `tasks/core/016` has landed. A study stopped by a timed-out step now reports `dev-bench stopped the study early: step '<name>' timed out`; the "did not arrive" wording is reached only when no step outcome was recorded at all. The workaround paragraph is retired — the preceding paragraph's measurement of the stale address stands and should stay.
-
-Whole paragraph goes, from "**The StepResult arrived.**" through "rather than chasing a transport fault." The code block above it quotes the old wrong reason and should be replaced with the new one, or dropped with the paragraph. Account: `embarch-core/decisions/studies.md` decision 45.

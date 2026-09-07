@@ -101,13 +101,13 @@ three named advertisers and **not one of them attributable to the DUT**. Two thi
 
 **So the rule is decision 43's, and no broader than that**: an address remains the precise filter, and it is a *rotating private* address — not a random one — that cannot be authored ahead of time. A DUT that rotates inside a scan window is a measured fact about a particular DUT (`suite/roadmap.md`), not a property of the address type.
 
-**And when it goes stale, the failure lies to you.** Connecting to `74:92:DB:7F:0C:D8` between those two censuses timed out at its 15 s step budget, and the study's reason came back:
+**And when it goes stale, the study names the step that ran out of time.** Connecting to `74:92:DB:7F:0C:D8` between those two censuses timed out at its 15 s step budget [measured 2026-09-06, study `dd340b2a36a39aeba94f4f15b4da61f0`]. A run like it now reports:
 
 ```
-dev-bench stopped the study early, and the StepResult saying which step failed did not arrive
+dev-bench stopped the study early: step 'connect' timed out
 ```
 
-**The StepResult arrived.** Core's own `events.json.partial` for that study holds `{"step_name":"connect","outcome":"TimedOut", …}` — written by the code that then said it never came. The message describes a lost frame; nothing was lost. Until `tasks/core/016` lands, **read "the StepResult did not arrive" on a `BleConnect` study as "a step timed out"**, and confirm it against `events.json.partial` in that study's directory under `study_results/` rather than chasing a transport fault.
+**That is Core's format string as of [`embarch-core` decision 45](../embarch-core/decisions/studies.md), not a second measurement** — the study id above predates the fix, and against the Core that produced it the very same run said *"the StepResult saying which step failed did not arrive"*. **It had arrived**: `events.json.partial` for that study holds `{"step_name":"connect","outcome":"TimedOut", …}`, written by the code that then denied it, which pointed a reader at the serial link over a stale address. The "did not arrive" wording is now reached **only** when no step outcome was recorded at all — a frame that failed to decode never reaches the writer — so on a Core new enough to have decision 45 it means what it says. If you meet the old message on an older Core, read it as "a step timed out" and confirm against `events.json.partial` under that study's `study_results/` directory.
 
 ## 4. Wiring a DUT signal in, and reading the trace afterwards
 
