@@ -1,7 +1,9 @@
 # Bring a study up green end to end, and record the sequence it actually took
 
-**State:** open — half done and **not blocked**, see `## Progress 2026-09-06` at
-the bottom. What it needs next is a board and one attribution the operator makes.
+**State:** open — **the bench half is done and the remaining step is the owner's, not an
+agent's.** See `## Progress 2026-09-06 — leg 025` at the bottom: the attribution this task has
+been waiting on cannot be made by anything in the fleet, and leg 025 established *why* rather
+than failing at it again. Read that section before running this.
 **Source:** owner's bench session 2026-09-06 — three other `bench` tasks depend on a study that runs; nothing records the bring-up sequence
 **Scope:** api
 **Hardware:** bench
@@ -120,3 +122,80 @@ the `Action` enum and stopping there. Decision 43's own final paragraph closes
 that gap and `embarch-dev-bench` implements it. **The false sentence was the
 untagged one sitting directly under a `[measured …]` tag**, which is exactly
 where the provenance discipline has no grip.
+
+## Progress 2026-09-06 — supervisor, leg 025
+
+**Both roles validated live and matched exactly** before anything ran: `dut` `834f2559f10a6cdf`
+on probe `000852006107`, `dev-bench` `6fcddc36cb781b71` on `001057729826`. Nothing was flashed
+and nothing was built; every study below ran at `reflash`'s `none` default.
+
+**The census leg 021 asked for was re-run, twice, and it does not say what leg 021 read it as
+saying.** Studies `458c7df0dd599bce574d1d4264bee485` and `6d15c4896b733f7480ea579b64e7210d`, five
+minutes apart, both 20 s: **10 advertisers on the air, 2 of them named.** The `fail_reason` was
+`no name match; on air: 'GABRIEL', 'pod-36e017c'` — **47 of its 64 bytes**, so this time nothing
+was truncated, and eight advertisers were absent from it anyway, four of them connectable.
+`scan_seen_names_summary()` in `ble_bridge_real.c` `continue`s past every entry with an empty
+name. **So "not one of them attributable to the DUT" was drawn from a list that structurally
+cannot contain a nameless DUT**, and `target_name` cannot reach one either. Filed as
+`tasks/dev-bench/008`; `suite/studies-guide.md` §3a is corrected.
+
+**Connect-by-address works and reaches exactly what the census cannot.** `C4:82:E1:42:B1:26`
+(public, connectable, **no name advertised**) connected and its `GattDiscover` returned three
+services and eight characteristics — study `bd39085d9aa34162a1a555494642ae43`, both steps `Pass`,
+written up as `studies-guide.md` §3b along with the byte order, which is a stated contract on both
+sides rather than something to re-derive.
+
+**Why this still stops short of the attribution, and it is not a missing measurement.** Two
+routes could join an advertiser to the enrolled `dut`, and neither exists:
+
+- **By name** — ruled out above.
+- **By making the DUT change state and watching which advertiser changes with it.** `reset` (and
+  `run_study --reflash dut`) are aimed at a **project build target** and require
+  `board`/`variant`/`revision`/`app`. The enrolled `dut` role knows the board by probe serial and
+  hardware ID. **Nothing takes a role and resets it.** This task supplies `nff_dev` rev 6 and not
+  an app directory, so aiming that call would mean inferring a DUT fact — refused, per this task's
+  own rule and `protocol.md` §7.
+
+**That is the same missing join as the BLE one, in a second place.** But **do not read it as "only
+the owner can unblock this"** — a reviewer corrected me on exactly that framing. **`validate` *is*
+role-keyed and *does* reach the DUT**: `POST /validate` → `embarch_topology::hardware::validate_role`
+opens the enrolled probe, attaches the chip and reads FICR over SWD, under the same `hw_lock` as
+flash and reset. It neither halts nor resets, so it cannot make the DUT change BLE state and route
+two above stays closed — but it establishes that **a role-keyed probe-side read of the DUT already
+exists and is already wired to the enrolled `dut`.**
+
+**So the join may be a readback nobody has built rather than a capability EmbArch lacks.** Whether a
+BLE address can be read off this DUT that way is a *DUT fact this task does not carry* — do not
+assume it, and do not derive it from firmware source. **What is worth doing next is establishing
+that fact, not guessing it**: ask the owner whether his DUT's advertised address is derivable from
+a register the existing probe path can already read. If it is, the attribution becomes a feature an
+agent can build; if it is not, it stays a sentence only he can supply.
+
+**Two defects found and filed rather than fixed here**, both from this sitting:
+
+- `tasks/core/016` — a step that **times out** and stops a study is reported as
+  `"the StepResult saying which step failed did not arrive"`. It arrived: Core's own
+  `events.json.partial` for study `dd340b2a36a39aeba94f4f15b4da61f0` holds
+  `{"step_name":"connect","outcome":"TimedOut", …}`. `last_failed_step` records only
+  `Outcome::Fail`, so `TimedOut` takes the lost-frame arm. **A confident wrong diagnosis pointing
+  at the transport**, which is a shape this suite has already paid for.
+- `tasks/dev-bench/008` — the census blind spot above.
+
+**One incidental measurement worth keeping, and I got its rule wrong before a reviewer fixed it.**
+Across the two censuses all four **public** addresses were identical, and **four of the six random
+ones were too.** I wrote that a random address rotates and that `target_address` is therefore
+durable only when public. **False, and harmfully so**: the top two bits of a random address's
+leftmost byte say which sub-type it is, and `11` is *static random* — the address a Zephyr
+peripheral with privacy off advertises, which is `embarch-dev-bench` decision 17's own choice. The
+three `11` addresses here survived; the two that vanished were `74:92:…` (`01`, resolvable private
+— what my stale-address connect timed out on) and `34:BA:…` (`00`, non-resolvable), and I had
+counted only one of those two departures. The correct rule is decision 43's and no broader: a
+*rotating private* address cannot be authored ahead of time; a random address in general can be.
+`studies-guide.md` §3b now says that.
+
+## What is left, and it is one sentence from the owner
+
+**Name the DUT.** Either its advertised local name — if it advertises one; the census says two
+devices on this bench do and neither is obviously it — or its BLE address. With either, `ui/007`,
+`outpost/002` and `study-designer/007` become ordinary bench units. Without it, every agent that
+picks this up re-runs the same census and reaches the same wall.

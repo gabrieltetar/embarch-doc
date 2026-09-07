@@ -83,6 +83,32 @@ three named advertisers and **not one of them attributable to the DUT**. Two thi
 
 **And read that `fail_reason` knowing it truncates.** It is capped at 64 bytes and the run above hit the cap exactly, ending mid-list on a trailing comma — **there is no marker saying so.** The `, ...` you may see appended is a different, rarer signal: it means the bench's own 256-entry census overflowed, not that the string was cut. **A trailing comma is the only tell, and a list that happens to end on a name boundary has none at all**, so treat a full-looking `fail_reason` as a lower bound on what was advertising. The complete per-advertiser record — address, connectable or not, name — goes to the bench's log sink, not into the study result.
 
+**Read it knowing something larger than truncation, too: `fail_reason` lists only the advertisers that advertised a *name*.** `scan_seen_names_summary()` in `ble_bridge_real.c` skips every entry whose name is empty, so a device advertising no local name is absent from that list whether or not the 64 bytes ran out. **Measured against this bench** [measured 2026-09-06, two 20 s censuses five minutes apart, `dev-bench` `6fcddc36cb781b71`]: **10 advertisers on the air both times, 2 of them named.** The `fail_reason` said `no name match; on air: 'GABRIEL', 'pod-36e017c'` — well under 64 bytes, nothing truncated, and **eight advertisers missing from it anyway**, four of them connectable.
+
+**That changes what "not one of them attributable to the DUT" is allowed to mean.** A DUT that advertises without a local name cannot appear in `fail_reason`, and `target_name` cannot reach it either — the name filter has nothing to match. So a `fail_reason` census with no plausible DUT in it is **not** evidence that the DUT is off the air; it is equally consistent with a nameless DUT. **The bench's log sink is the census** — `report_scan_seen()` writes one line per advertiser, with address, connectability and whether a name was advertised at all — and it is the only complete one. Read `dev-bench.log` in Core's log directory, not the step's `fail_reason`.
+
+**One more gate on that log line: `report_scan_seen()` runs only on the name-filter path.** It sits inside the `if (scan_name[0] != '\0')` branch of the connect timeout, so a `BleConnect` filtered by **address alone** that finds nothing logs no census at all. If you want the census, ask for it with a nonsense *name*.
+
+## 3b. Connecting by address, and the two ways that goes wrong
+
+**`target_address` reaches an advertiser that `target_name` cannot**, and it has now been exercised: a `BleConnect` at `C4:82:E1:42:B1:26 (public)` — connectable, **no name advertised**, therefore invisible to every `fail_reason` census — connected and its `GattDiscover` returned three services and eight characteristics [measured 2026-09-06, study `bd39085d9aa34162a1a555494642ae43`, both steps `Pass`]. So a nameless DUT is reachable; you just cannot find it by name.
+
+**The bytes go in display order, most significant first.** `C4:82:E1:42:B1:26` is `[196, 130, 225, 66, 177, 38]` with `kind: "Public"`, exactly as `bt_addr_le_to_str` prints it in the census log — verified by connecting with it, above. **Where that is written down is a smaller set than you would expect**: `embarch-study-designer/interfaces/types.md` states it in prose, and `ble_bridge_real.c`'s `to_bt_addr` reverses it for Zephyr with a comment saying so. **`BleAddress`'s own doc comment in `src/ids.rs` does not**, though `Uuid`'s states its order right above — so an author who goes to the type for the answer finds nothing, and a wrong guess fails *silently*: the step simply never matches. `tasks/study-designer/014`.
+
+**Whether an address off a census is durable depends on which kind it is, and "random" does not mean "rotating".** A BLE random address is one of three sub-types, told apart by the **top two bits of its most significant (leftmost, as printed) byte** — a Bluetooth Core Spec fact (Vol 6 Part B §1.3.2), not an inference about any DUT: `11` **static random**, which does not rotate at all; `01` **resolvable private**, which does; `00` **non-resolvable private**, which also does. A Zephyr peripheral with privacy off advertises a *static* random address — `embarch-dev-bench` decision 17 chose exactly that, reproducibility over privacy realism — **so `target_address` is perfectly durable for the ordinary DUT, and it is the leftmost nibble that tells you.**
+
+**The two censuses above measure it** [measured 2026-09-06]. All four **public** addresses were identical across both. Of the six random ones in the first census, the three static (`C3:DD:…`, `E1:94:…`, `C1:93:…`, all `11`) were still there five minutes later; **the two that vanished were `74:92:DB:7F:0C:D8` (`01`, resolvable private) and `34:BA:69:68:4C:05` (`00`, non-resolvable)**, replaced by two new private ones. Four of six random addresses survived, three of them by construction.
+
+**So the rule is decision 43's, and no broader than that**: an address remains the precise filter, and it is a *rotating private* address — not a random one — that cannot be authored ahead of time. A DUT that rotates inside a scan window is a measured fact about a particular DUT (`suite/roadmap.md`), not a property of the address type.
+
+**And when it goes stale, the failure lies to you.** Connecting to `74:92:DB:7F:0C:D8` between those two censuses timed out at its 15 s step budget, and the study's reason came back:
+
+```
+dev-bench stopped the study early, and the StepResult saying which step failed did not arrive
+```
+
+**The StepResult arrived.** Core's own `events.json.partial` for that study holds `{"step_name":"connect","outcome":"TimedOut", …}` — written by the code that then said it never came. The message describes a lost frame; nothing was lost. Until `tasks/core/016` lands, **read "the StepResult did not arrive" on a `BleConnect` study as "a step timed out"**, and confirm it against `events.json.partial` in that study's directory under `study_results/` rather than chasing a transport fault.
+
 ## 4. Wiring a DUT signal in, and reading the trace afterwards
 
 A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it. Two things have to be true first, **both done in the UI** — there is deliberately no CLI for either.
