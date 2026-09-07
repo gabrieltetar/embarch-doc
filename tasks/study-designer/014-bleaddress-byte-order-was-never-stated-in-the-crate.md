@@ -81,8 +81,32 @@ claimed it: the next reader stops looking.
 
 ## Done when
 
-- [ ] `BleAddress`'s doc comment in `src/ids.rs` states display order, most-significant first,
+- [x] `BleAddress`'s doc comment in `src/ids.rs` states display order, most-significant first,
       the way `Uuid`'s comment already states big-endian.
 - [ ] `embarch-dev-bench` decision 23 is true as written, or amended to say when it became true.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+      **Not this worker's** — `check-ownership.py` refuses `embarch-dev-bench/**` to a
+      `study-designer` worker. This unit makes decision 23's claim *true of the crate*; saying so
+      in `decisions/ble.md` is `tasks/dev-bench/009`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Done (this worker)
+
+`src/ids.rs`: `BleAddress`'s doc comment states the order with a worked example
+(`C4:82:E1:42:B1:26` is `[0xc4, 0x82, 0xe1, 0x42, 0xb1, 0x26]`), so it needs no trip to
+`ble_bridge_real.c` to be believed; it also says the order is the same for both
+`BleAddressKind`s, that the derived serde impls carry `bytes` in index order, and that nothing in
+this crate reverses it. `BleAddressKind` gained a comment saying the kind does not change the
+layout — the same defect one layer down.
+
+**Checked and needing nothing:** the crate has **no** `Display`, `FromStr` or `parse` for
+`BleAddress` and no string form at all (only `impl Uuid` exists in `ids.rs`), so there is no
+parser to contradict the struct. `serde` is derived, not hand-written — a `[u8; 6]` is positional,
+so no order is restated there. `ffi.rs` mirrors only `BleAdvertise`; `BleConnect` dispatch is still
+`UnsupportedAction`, so no `#[repr(C)]` struct carries the address. `crc.rs` digests postcard bytes
+and never touches fields. `study.rs`'s `target_address` field doc links the type and is left alone
+rather than restating the order in a second place.
+
+No numbered decision written — per `## Reserve`, the fact was already recorded twice and a third
+entry is what spent `decisions/crate.md`'s runway. `decisions/crate.md` is unchanged and still at
+91.7%, still filed against `tasks/study-designer/006`.

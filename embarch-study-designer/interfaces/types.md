@@ -41,7 +41,7 @@ The study and result types. Field-level, concrete enough that a `serde`-derived 
 
 `StreamCapture` was a sixth `GattOperation` and is **removed outright** rather than left as a dead variant: an authorable action nothing dispatches is the silently-captures-nothing failure decision 36 was opened by.
 
-**`BleAddress`'s six raw bytes are display order, most-significant first**, matching this crate's big-endian UUID convention. Previously unstated — a real risk, since a wrong guess means an explicit `target_address` silently never matches.
+**`BleAddress`'s six raw bytes are display order, most-significant first**, matching this crate's big-endian UUID convention, for both `BleAddressKind`s alike. `src/ids.rs` states it on the type itself as of 2026-09-06, where an author looks first; before that this prose was the only statement of it in this sub-project. A wrong guess means an explicit `target_address` silently never matches, and reads as an absent DUT rather than as a byte-order bug.
 
 A step's `Outcome` is the only on-device signal: **did the action complete without a protocol-level error or timeout.** Whether the content it produced was *correct* is a separate question, and the answer is no longer post-hoc validation — see [../decisions/removed.md](../decisions/removed.md).
 
