@@ -7,7 +7,7 @@ added decision 65 (`agent/study-designer/005-release-workflow-decision`).
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-study-designer/decisions/crate.md, embarch-study-designer/spec.md, embarch-study-designer/open.md
+**Compacts:** ~~embarch-study-designer/decisions/crate.md~~, embarch-study-designer/spec.md, embarch-study-designer/open.md
 **In flux:** yes
 **Must not delete:** decision 64's measured `cargo tree -f "{p} {f}"` two-column result and
 its counterfactual ("16 errors" against "passes 9/9") — that is the whole evidence the two
@@ -74,3 +74,7 @@ and still blocks a *shortening* pass on either resulting file. This task stays `
 than closing, since only the reserve item is done, not the file's underlying flux.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
+
+**`crate.md`'s item is PAID and struck, 2026-09-07.** `check-doc-size.py --pressure` has been reporting it as `PAID  42.0% ... is out of reserve; close its item` — it was paid by `study-designer/016`'s mission split, which moved the CI content into its own file. Nobody closed it because **this task is `blocked`, and a blocked task is a state nothing revisits**: `queue-status.py` does not offer one to a leg, so the script's own PAID line had no reader.
+
+**What this task is still for** is the two items the reserve floor added the same day: `spec.md` (9,183/10,240 B) and `open.md` (4,331/5,120 B). Its `In flux: yes` block above is about `crate.md`'s FFI-shape content and does **not** cover either of them — so re-read the park before assuming it still applies, and prefer a split: §2's rule is that a verbatim move restates nothing, which is exactly why `In flux` cannot forbid one.

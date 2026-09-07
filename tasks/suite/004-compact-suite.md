@@ -6,7 +6,7 @@ files crossed their reserve lines inside that fold, one by a supervisor edit and
 assembler run.
 **Scope:** suite
 **Hardware:** none
-**Compacts:** embarch-decision-reversals.md, suite/features.md, suite/user-guide.md
+**Compacts:** embarch-decision-reversals.md, ~~suite/features.md~~, suite/user-guide.md
 **In flux:** yes — see "Why blocked". The three files are in flux for **different reasons**,
 and only one of them is the ordinary kind.
 **Must not delete:** every reversal row's **shape number** and the citation that resolves it
@@ -139,3 +139,5 @@ task is no longer a debt; it is the next thing that breaks.**
       and therefore the owner's**, and it is what keeps `004` open and the filing alive.
 - [ ] `DOC-COMPACTION-PASS.md`'s human question answered for whatever pass actually runs.
 - [ ] Gate green.
+
+**`suite/features.md`'s item is VOID, 2026-09-07 — not paid, withdrawn.** That file no longer has a byte cap at all ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2): the 20 KB was documented as a backstop and had become the constraint, with the file at 20,444 of 20,480 B so that **every legitimate `features.d/` fragment breached it**. Three units had spent their reserve shaving Status-column rows, the third to clear 14 bytes. The real budget is the per-row 600 B `build_features.py` enforces. **Nothing about this file is owed any more**, and the 36-byte figure this task carried is no longer a debt. The other two items stand.

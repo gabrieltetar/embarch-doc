@@ -88,6 +88,7 @@ RESERVE_FLOOR = 1200
 # only ever be taken down in the owner's own session, and nothing said so.
 DEBT_DIRS = ("tasks", "inbox")
 DONE_STATE = re.compile(r"^\*\*State:\*\*\s*done\b", re.M)
+BLOCKED_STATE = re.compile(r"^\*\*State:\*\*\s*blocked\b", re.M)
 # A debt is DECLARED, never inferred from a path appearing somewhere in an item.
 # Matching on a mention made five of today's twelve read as filed by tasks that
 # merely cite the doc they are about to edit -- which is every task.
@@ -191,6 +192,17 @@ def open_debt_items():
     A `done` item is about to be deleted by the fold, so it cannot carry a
     debt forward. Everything else counts, `blocked` and parked included --
     a parked compaction task is the mechanism working, not a gap in it.
+
+    **But it yields whether the item is BLOCKED, because `blocked` plus
+    "in reserve" is a state nothing revisits.** `queue-status.py` does not
+    count a blocked task as dispatchable, so no leg reads one; the unpark
+    condition is prose inside the file that only a person re-reading it can
+    evaluate. Measured 2026-09-07: seven compaction tasks parked that way, one
+    (`api/026`) already carrying the argument that unparks it -- a verbatim
+    split restates nothing, so `In flux: yes` cannot forbid it -- and one
+    (`study-designer/006`) whose file this script had been reporting as PAID
+    for days. A debt that is filed, at a wall, and invisible is worse than an
+    unfiled one, which at least fails the gate.
     """
     for d in DEBT_DIRS:
         root = REPO / d
@@ -206,7 +218,8 @@ def open_debt_items():
             for m in COMPACTS.finditer(text):
                 paths.update(t.strip().strip("`,") for t in m.group(1).split(","))
             if paths:
-                yield str(p.relative_to(REPO)), {q for q in paths if q}
+                blocked = bool(BLOCKED_STATE.search(text))
+                yield str(p.relative_to(REPO)), {q for q in paths if q}, blocked
 
 
 def reserve_state(base, reserve_pct):
@@ -225,7 +238,7 @@ def reserve_state(base, reserve_pct):
         limit = min(cap, base[rel]) if rel in base else cap
         if size > limit:
             continue
-        filed = [i for i, paths in items if rel in paths]
+        filed = [(i, blocked) for i, paths, blocked in items if rel in paths]
         headroom_line = limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
         if size >= headroom_line:
             in_reserve.append((rel, size, limit, filed))
@@ -288,22 +301,38 @@ def main() -> int:
         unfiled = [r for r in in_reserve if not r[3]]
         for rel, size, limit, filed in sorted(
                 in_reserve, key=lambda r: -r[1] / r[2]):
-            mark = "UNFILED" if not filed else "filed   "
+            if not filed:
+                mark = "UNFILED"
+            elif all(b for _, b in filed):
+                mark = "PARKED "
+            else:
+                mark = "filed  "
             print(f"  {mark} {100.0 * size / limit:5.1f}%  {rel}  "
                   f"{size}/{limit} B, {limit - size} B left")
-            for i in filed:
-                print(f"           -> {i}")
+            for i, b in filed:
+                print(f"           -> {i}{'   [BLOCKED]' if b else ''}")
         for rel, size, limit, filed in filed_clear:
             print(f"  PAID     {100.0 * size / limit:5.1f}%  {rel} is out of "
                   f"reserve; close its item")
-            for i in filed:
-                print(f"           -> {i}")
+            for i, b in filed:
+                print(f"           -> {i}{'   [BLOCKED]' if b else ''}")
         if unfiled:
             print(f"\n{len(unfiled)} file(s) in reserve with nothing filed. "
                   f"One item may name several\nfiles of one sub-project; a "
                   f"compaction pass is a sub-project act.")
             return 1
+        parked = [r for r in in_reserve if r[3] and all(b for _, b in r[3])]
         print(f"\n{len(in_reserve)} file(s) in reserve, every one filed against.")
+        if parked:
+            verb = "is" if len(parked) == 1 else "are"
+            print(f"\n{len(parked)} of them {verb} filed ONLY against a BLOCKED task, which is the\n"
+                  "state nothing revisits: `queue-status.py` does not offer a blocked task\n"
+                  "to a leg, so its unpark condition is prose only a person will read.\n"
+                  "Re-read each park against DOC-COMPACTION.md \u00a72's split-first rule --\n"
+                  "**a verbatim split restates nothing, so `In flux: yes` cannot forbid\n"
+                  "one** -- and either unpark it as a split or write down which seam it\n"
+                  "lacks. A scheduling block on another queued unit is a different thing\n"
+                  "and stays.")
         return 0
 
     if args.update or args.adopt:
