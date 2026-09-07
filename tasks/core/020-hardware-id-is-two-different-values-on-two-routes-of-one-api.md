@@ -1,6 +1,6 @@
 # 020 — `hardware_id` is two different values for one board on two routes of Core's HTTP surface
 
-**State:** open
+**State:** claimed by agent/core/020-hardware-id-two-spellings, 2026-09-07 15:20
 **Source:** suite review pass 2026-09-06, dimension 5 (cross-surface consistency). Code-confirmed.
 **Scope:** core
 **Hardware:** none. A field rename plus its interface row; both values are already recorded in the docs.
@@ -63,3 +63,30 @@ should not have to invent the rename. If both are worked, this lands first.
 - [ ] `status.d/core-*` fragment for `embarch-topology/decisions/validation.md`'s vocabulary if the
       rename reaches it.
 - [ ] Gate green; `changelog.d/core-*` fragment.
+
+## Doc-size reserve for `core` — supervisor, leg 036, 2026-09-07
+
+**Two `core` docs are in reserve and one of them is the file this task must edit.**
+
+- `embarch-core/interfaces.md` — **14,527 / 15,360 B, 833 B left.** In reserve.
+- `embarch-core/open.md` — **4,478 / 5,120 B, 642 B left.** In reserve.
+
+Both are filed under `tasks/core/022-compact-core.md`, which is **`blocked` with `In flux: yes`**
+(it waits on `core/021` and `api/032`). Per `.claude/leg.md`, a blocked compaction task parks the
+*pass*, not the *reserve* — so **compacting `interfaces.md` is part of this unit**, because you are
+the actor making the flux and you are the only one who can shorten what you are rewriting without
+writing a clean statement of something about to be wrong.
+
+What that means concretely:
+
+- Prefer a **split** over a squeeze — `core/022`'s own note says so, and `DOC-COMPACTION.md` §2
+  makes a split the default remedy, because a verbatim move restates nothing and costs no argument.
+- Carry `core/022`'s **`Must not delete:`** list verbatim or faithfully restated: the
+  `GET /serial-log` caller-side-ceiling paragraph (a cross-repo measurement, not a description);
+  the `404`-is-often-expected / `502`-vs-`503` vocabulary paragraph in Conventions; and
+  `GET /study/{id}`'s `current_step` "consequence, not an invariant" sentence.
+- **Do not close `tasks/core/022`.** Close only its `interfaces.md` item, by editing its
+  `**Compacts:**` line and saying in the task file what you did and what is left. `open.md` and its
+  `core/021`/`api/032` gate stay parked.
+- If your edit leaves any other `core` file in reserve with nothing filed against it, file
+  `tasks/core/<next NNN>-compact-core.md` in the same commit (`tasks/README.md` has the shape).
