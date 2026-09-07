@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- `spec.md` and `open.md` compacted out of reserve; each duplicated clause now sits only in the decision or task that owns it.
 - - `doctor`'s one-line message rule is now stated as a runtime property, with the live check-1 counter-example — [decision 43](../embarch-umbrella/decisions/reporting.md).
 - A live doctor run after the Core redeploy closes check 11's core_version unknown (Core answers 0.1.4) and decision 38's wsl-host arm: check 14 answers here, nRF54L15=jlink.
 - `init` writes an inferred board as CHANGE-ME with the value and build age in a comment, and names every candidate rather than picking one of several recorded builds: decision 41.
