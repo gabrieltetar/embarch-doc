@@ -12,6 +12,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- An unrecognised trace-band outcome now fills with `tr-cross`, not `tr-gap` — it no longer claims the firmware lost records.
 - One outcome decoder in app.js handles both wire shapes; an unrecognised one now renders visibly wrong, not a pass or neutral.
 - `app.js` no longer restates the row cap or the stream-name cap; both are now served fields.
 - embarch-ui/spec.md: the Debug tab polls Core's /logs/recent (it never subscribes to /logs/stream), and embarch-topology is linked transitively, software-only.
