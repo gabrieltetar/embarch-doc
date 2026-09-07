@@ -22,6 +22,7 @@ Every route requires `Authorization: Bearer <token>`. Semantics and rationale: [
 | `GET` | `/serial-log` | `?port=&baud=115200&duration_ms=2000` | `{ port, lines: [String] }` — a bounded snapshot, not a stream. **Meant for dev-bench's link, not a DUT's own console**: plenty of real DUTs have no wired console at all in the configs that matter |
 | `POST` | `/resolve-chip` | `{soc: "nrf54l15"}` | `{chip: "nRF54L15"}`, or `404` naming the SoC. Case-insensitive exact match, no fuzzy matching, and the result is checked against probe-rs's own registry so a stale table entry fails like an unmapped SoC. The 404 names the remedy: `chip-list` for the target name, then a `SOC_TO_CHIP` source edit and a rebuild — the table is compiled in, with no config path ([decisions/probes.md](decisions/probes.md) 8, 34) |
 | `GET` | `/serial-ports` | — | `[DetectedPort]` — every USB serial port this machine enumerates, unnarrowed. Ports reporting no USB serial are omitted, since a `Direct` route is declared *by* that serial. Empty list is a `200`. Deliberately **not** `/dev-bench/port` with the filter off: that applies a VID gate, and a signal wire's bridge can carry any VID |
+| `GET` | `/dev-bench/port` | — | `DetectedPort` (`DevBenchPort` is a type alias for it) — the one USB serial port matching dev-bench's SEGGER VID. Takes no `hw_lock`: descriptor enumeration only, same as `/serial-ports`. `404` when nothing matches (bench unplugged, an expected state); `500` on a genuinely ambiguous match or an unreadable USB bus |
 
 ## Topology
 
@@ -35,6 +36,15 @@ Every route requires `Authorization: Bearer <token>`. Semantics and rationale: [
 | `POST` | `/signals` | a `SignalLink`: `{name, origin_role, direction, route: {kind: "direct", port_serial} \| {kind: "via-dev-bench", rx_pin, tx_pin}}` | `204`; `400` for a blank name. Idempotent by name, and that overwrite **is** the migration path — moving the outpost onto dev-bench pins is one call. Core is deliberately the only writer: that crate's CLI hits the NTFS permission wall on the real deployment |
 | `GET` | `/signals` | — | `[SignalLink]` |
 | `DELETE` | `/signals/{name}` | — | `204`; `404` when nothing is declared under that name. The `404` is deliberate: a caller retracting a row it thought existed should learn it did not |
+
+## Logs
+
+Pure local reads of Core's own current daily log file (`logs.rs`) — no hardware touched, no `hw_lock`. The CLI's `logs` subcommand is one implementation behind both routes.
+
+| Method | Path | Body / Query | Response |
+|---|---|---|---|
+| `GET` | `/logs/recent` | `?tail=200` | `{lines: [String]}` — the tail of the current log file as it stands right now, not a stream |
+| `GET` | `/logs/stream` | — | SSE. `event: lines`, a JSON array of newly-appended lines batched per ~750ms poll tick — one whole line per element with one exception: the very first line a subscriber receives may be short, since the offset it starts from is the file's length at attach time, which is newline-aligned only if the writer was idle then (`logs::FollowState`, decision 44). No replay of anything before attach, same posture as `/study/{id}/events` |
 
 ## Studies
 

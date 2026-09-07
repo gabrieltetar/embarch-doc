@@ -18,7 +18,7 @@ embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> DUT hardware
                      embarch-core CLI (same machine)
 ```
 
-Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`install`/`uninstall`/`start`/`stop`/`update`/`detect-dev-bench`/`chip-list`/`logs`/`dev-bench-logs`). Both converge on the same modules and the same `hw_lock`; there is no separate "CLI mode" code path.
+Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`install`/`uninstall`/`start`/`stop`/`update`/`detect-dev-bench`/`chip-list`/`flash-backend`/`logs`/`dev-bench-logs`). Both converge on the same modules and the same `hw_lock`; there is no separate "CLI mode" code path.
 
 ## 2. Invariants
 

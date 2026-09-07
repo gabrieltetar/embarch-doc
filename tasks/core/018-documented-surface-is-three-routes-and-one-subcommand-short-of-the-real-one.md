@@ -1,6 +1,6 @@
 # 018 — Core's documented surface is three routes and one subcommand short of its real one, while the auth sweep already holds the complete list
 
-**State:** claimed by agent/core/018-documented-surface-short-of-real-one, 2026-09-07 09:30
+**State:** done
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed.
 **Scope:** core
 **Hardware:** none
@@ -37,11 +37,37 @@ nothing compares `interfaces.md`'s table to the router.
 
 ## Done when
 
-- [ ] `embarch-core/interfaces.md` has a row for every route `build_router` registers.
-- [ ] `embarch-core/spec.md` §1 lists every subcommand `main.rs` accepts.
-- [ ] Adding a route without a doc row fails something, or the reason it should not is written
-      down.
-- [ ] Gate green; `changelog.d/core-*` fragment.
+- [x] `embarch-core/interfaces.md` has a row for every route `build_router` registers. Added
+      `GET /dev-bench/port` (Hardware table), and a new `## Logs` section for `GET /logs/recent`
+      and `GET /logs/stream`.
+- [x] `embarch-core/spec.md` §1 lists every subcommand `main.rs` accepts. Added `flash-backend`
+      to the CLI list.
+- [x] Adding a route without a doc row fails something, or the reason it should not is written
+      down. `src/api.rs`'s test module now carries `DOCUMENTED_ROUTE_COUNT` (26, one behind
+      `AUTH_CASES.len()`'s 27 because `/signals` is one `.route()` call for two methods) and a
+      new test `every_registered_route_has_a_row_in_interfaces_md` asserting it against
+      `registered_route_paths().len()`. It is a pinned literal, not a cross-repo file read — decision
+      46 (`embarch-core/decisions/platform.md`) writes down why a relative path to `interfaces.md`
+      is not reliable under the fleet's one-branch-two-worktrees model, and what this convention
+      does and does not catch.
+- [x] Gate green; `changelog.d/core-*` fragment. `changelog.d/core-surface-doc-gap.fixed.md`.
+
+## Notes from this pass
+
+- Also fixed two now-stale "26 registered routes" references that predate this task
+  (`embarch-core/decisions/platform.md`'s decision 42 entry, `embarch-core/open.md`'s
+  "route sweep proves rejection, not reach" bullet) — both now say 27, the real current count.
+- `embarch-core/interfaces.md` landed in the doc-size reserve (94.6%, 833 B left) as a direct
+  result of the three added rows. Filed `tasks/core/022-compact-core.md` in the same commit,
+  blocked on `tasks/core/021` (retire `GET /logs/stream`) and `tasks/api/032` landing first, since
+  either would change the very rows a compaction pass would otherwise touch.
+- **Windows build debt, not attempted**: this unit changed `src/api.rs`/`main.rs`-adjacent test
+  code and docs only; `cargo build --target x86_64-pc-windows-msvc` was not run from this worktree
+  (WSL has no MSVC `cc` for `hidapi`'s `build.rs`, and Windows `cargo.exe` cannot follow this
+  worktree's Linux symlinks to `embarch-topology`/`embarch-study-designer`). Linux
+  build/test/clippy are green; per protocol this is a recorded debt, not a gate failure.
+- No `features.d/` fragment: this is a documentation-accuracy fix, not a new user-visible
+  capability, matching the supervisor's own read in the dispatch note.
 
 **Adjacent, not the same:** `tasks/api/032` notes that `embarch-core/interfaces.md:30`'s
 `/probes/enrolled` row omits a **field**. This is three absent **rows** plus a subcommand, and the

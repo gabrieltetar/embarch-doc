@@ -27,7 +27,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 - **A separate-machine deployment still has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design and unusable for flashing in practice.
 - **macOS is reasoned-only.** The elevation paths are written and unexercised; nothing in this suite has run on a Mac.
-- **The route sweep proves rejection, not reach.** Decision 42 asserts all 26 registered routes answer `401` without a token and with a wrong one; only `/status` asserts that a *correct* token reaches its handler. A route wired to the wrong handler is not what this catches — nothing has needed that, and per-route success cases would need per-route fixtures the auth sweep deliberately does without.
+- **The route sweep proves rejection, not reach.** Decision 42 asserts all 27 registered routes answer `401` without a token and with a wrong one; only `/status` asserts that a *correct* token reaches its handler. A route wired to the wrong handler is not what this catches — nothing has needed that, and per-route success cases would need per-route fixtures the auth sweep deliberately does without.
 - **`GET /study/{id}/events` offers no `Last-Event-ID` and no replay** (decision 41): a reconnect resumes at "now" with no way to ask for what it missed. **Closed rather than owed, and the reason is the consumers:** `embarch-api`'s `study-status --follow` and `study_watch` both fall back to polling `GET /study/{id}` on a drop rather than pretending to resume. A resumable subscriber would be new Core-side design.
 
 ## Moved elsewhere, not resolved
