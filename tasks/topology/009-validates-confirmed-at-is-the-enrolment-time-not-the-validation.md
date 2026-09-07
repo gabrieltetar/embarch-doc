@@ -1,6 +1,6 @@
 # 009 — `validate`'s `confirmed_at_utc_ms` is the enrolment time, and reads as the validation time
 
-**State:** open
+**State:** claimed by agent/topology/009-confirmed-at-is-enrolment-time, 2026-09-07 17:54
 **Source:** observed by the supervisor running `tasks/topology/002`, 2026-09-06
 **Scope:** topology
 **Hardware:** none
@@ -57,12 +57,47 @@ Adjacent, and the reason this is worth doing rather than noting: `tasks/api/032`
 already records that the enrolled-board mirror drops `link_port_interface`, so
 this response shape has one known fidelity bug already.
 
+## Supervisor direction, leg 038 — take the additive arm, not the rename
+
+The "Done when" below offers two arms and **only one of them is yours.**
+
+**Add the second timestamp. Do not rename `confirmed_at_utc_ms`.** A rename is a
+wire-schema change across four repos with hand-maintained mirrors, which is
+`suite`-scoped work the supervisor executes itself after a Slack announcement
+(`../../embarch-fleet/protocol.md` §8) — a `topology` worker cannot land it, and
+`check-ownership.py --scope topology` would refuse the other three halves on your
+branch anyway. Landing the topology half of a rename alone is the half-landed
+wire change this suite names as its worst failure mode.
+
+An additive field is safe by construction: every existing mirror keeps
+deserializing, and each consumer picks the new field up when someone gets to it.
+
+So: **enumerate the consumers as a read** — `embarch-api`'s
+`crates/embarch-core-client` mirror and its MCP `validate` tool,
+`embarch-umbrella`'s doctor, `embarch-ui`'s Topology tab — and for each one,
+**file an `inbox/` drop scoped to that repo** saying what it should now show and
+why. Do not edit them. If you find a consumer this list does not name, that is
+worth more than the field itself; say so.
+
+**If, having read the consumers, you conclude the additive arm is wrong** — that
+two timestamps side by side are more confusing than one badly-named one — stop
+and write that into this task file rather than renaming. That is a real finding
+and it is a `suite` decision, not yours or mine to make on a branch.
+
+## Doc-size reserve for `topology`
+
+`embarch-topology/open.md` — 4322/5120 B, **798 B left**, filed against
+`tasks/topology/014-compact-topology.md` (open, not blocked). If your work
+spends that reserve or leaves it spent with nothing filed, file
+`tasks/topology/<next NNN>-compact-topology.md` in the same commit per
+`tasks/README.md`. Nothing else in `topology` is in reserve.
+
 ## Done when
 
 - [ ] A validation response distinguishes *when the record was made* from *when
-      the live check ran* — either by adding the second, or by renaming the field
-      so it cannot be read as the second. Whichever is chosen, say why in a
-      decision: this is a wire-visible field with consumers.
+      the live check ran*, **by adding the second** — see the supervisor
+      direction above; the rename arm is out of scope for this unit. Say why in
+      a decision: this is a wire-visible field with consumers.
 - [ ] Every consumer of `confirmed_at_utc_ms` is enumerated before it changes
       shape — `embarch-api`'s mirror and MCP `validate` tool, `embarch-umbrella`'s
       doctor, `embarch-ui`'s Topology tab.
