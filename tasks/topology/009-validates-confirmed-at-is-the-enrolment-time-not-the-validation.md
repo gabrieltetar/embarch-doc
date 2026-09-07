@@ -27,6 +27,22 @@ other than the validation.** A caller reading `ok: true` next to
 time"; it means "matches the row recorded at this time". The live check that
 just succeeded — the thing the caller asked for — leaves no timestamp at all.
 
+## Reproduced again, leg 026, and the second role sharpens it
+
+Two `validate` calls seconds apart, 2026-09-06 20:33 local, both `ok: true`:
+
+| role | `confirmed_at_utc_ms` | that instant |
+|---|---|---|
+| `dut` | `1788723019911` | 2026-09-06 13:30 MDT — earlier the same day |
+| `dev-bench` | `1788195194573` | 2026-08-31 10:53 MDT — six days earlier |
+
+Same response shape, same successful live check, **timestamps six days apart.**
+So the field does not merely fail to advance — read as a freshness figure it
+**ranks two equally-fresh validations against each other**, and the one that
+looks stale is the board that has simply not been re-enrolled recently. An
+operator or a `doctor` check comparing roles gets a confident ordering that has
+nothing to do with when either board was last seen.
+
 ## Why it matters more than a naming nit
 
 This is the field an operator or a doctor check would reach for to answer *how
