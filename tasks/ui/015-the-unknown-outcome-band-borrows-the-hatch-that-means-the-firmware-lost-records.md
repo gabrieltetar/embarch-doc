@@ -1,6 +1,6 @@
 # 015 — The unknown-outcome band borrows the hatch that means "the firmware lost records"
 
-**State:** claimed — leg 035, 2026-09-07, branch `agent/ui/015-unknown-outcome-hatch`.
+**State:** done — leg 035, 2026-09-07, branch `agent/ui/015-unknown-outcome-hatch` / `agent/ui/015-unknown-outcome-hatch-doc`.
 **Scope:** ui
 **Hardware:** none
 **Source:** `embarch-reviewer` on `tasks/ui/014`, leg 034, 2026-09-07. Filed by the supervisor
@@ -79,6 +79,15 @@ sufficient and did not file it. If you touch decision 23 anyway, it is worth one
 which file is the right home on the merits, so the next reader is not left to wonder whether the
 cap decided it.
 
+**Answered:** touched decision 23 (amended it), so answering this. `trace-chart.md` is the right
+home on the merits, independent of either file's cap: decision 23 is about a **rendering** decision
+— which of two wire shapes a decoder reads, and how the *drawing* marks an unrecognised one — made
+entirely in `app.js`'s chart/step-row code, not about the study-designer's own result-schema
+concerns that `study-designer.md` otherwise holds. The change touching both the step table and the
+trace chart (the worker's free-standing reason) is what makes it belong to neither alone, but the
+decision's subject — a rendering idiom — sits with the other rendering decisions in `trace-chart.md`
+and `trace-view.md`, not with schema/data-shape material in `study-designer.md`.
+
 ## Doc-size reserve for this scope
 
 `embarch-ui/decisions/study-designer.md` is at **98.2%** (12,064/12,288 B, **224 B left**), filed
@@ -89,8 +98,26 @@ work pushes a file into reserve or leaves one there that nothing has filed, file
 
 ## Done when
 
-- [ ] An unrecognised outcome in the trace band no longer renders as `tr-gap`.
-- [ ] `tr-gap` still means only "the firmware reported lost records", and decision 10's two-hatch
-      vocabulary is intact — or is deliberately extended, with that argued.
-- [ ] The step table's `badge-danger "?"` is unchanged and still visible.
-- [ ] Gate green; `changelog.d/ui-*` fragment.
+- [x] An unrecognised outcome in the trace band no longer renders as `tr-gap`. `assets/app.js`'s
+      step-row fill now uses `tr-cross` for `decoded.kind === "unknown"`; the stroke stays
+      `traceOutcomeColor`'s danger-red so the band still reads as wrong, not calm. Chose reuse of
+      `tr-cross` over a third hatch: its existing meaning, "this view cannot vouch for this span",
+      is honestly what an unparsed value is, and both `trace-chart.md`'s decision 23 and this file
+      are near their byte cap, so a new decision would have cost more than a one-line swap said.
+      Verified by reading the diff and the surrounding code; **not observed rendering** — there is
+      no `node` on this machine and `src/trace.rs`'s browser harness is `#[ignore]`d, so nothing
+      about the pixels was actually seen, only reasoned about.
+- [x] `tr-gap` still means only "the firmware reported lost records", and decision 10's two-hatch
+      vocabulary is intact. Not extended: reused the existing `tr-cross` token rather than adding a
+      third, per the task's own preference and the reserve pressure on both `trace-view.md` (1,299 B
+      left before this task, decision 10's home) and `trace-chart.md` (was 1,253 B left, decision
+      23's home).
+- [x] The step table's `badge-danger "?"` is unchanged and still visible — untouched in this diff;
+      confirmed by reading `outcomeBadge` (unchanged) and the amended lines around it.
+- [x] Gate green; `changelog.d/ui-trace-band-unknown-outcome-hatch.fixed.md` filed. `cargo build`,
+      `cargo test` (101 passed, 2 pre-existing ignores), `cargo clippy --all-targets -- -D warnings`
+      all clean in the code worktree; `scripts/check-docs.py` reports "all 10 checks green" in the
+      doc worktree, including `check-doc-size.py` after filing `tasks/ui/016-compact-ui.md` for
+      `trace-chart.md`'s reserve crossing (95.2%, 590 B left, caused by amending decision 23).
+      `check-client-names.py --repo` clean; `check-ownership.py --scope ui` (doc, 3 paths) and
+      `--code-repo` (code, whole tree) both green.
