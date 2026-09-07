@@ -1,6 +1,6 @@
 # 014 — `embarch-core/decisions/studies.md` crossed into reserve
 
-**State:** open
+**State:** claimed by agent/core/014-compact-core, 2026-09-06 18:24
 **Source:** `core/012` spent this file's headroom adding decision 43; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none
@@ -53,6 +53,19 @@ can become a statement plus its evidence without losing either. A **mission
 split** is the other move `tasks/README.md` names and is probably better here:
 this file already holds three unrelated missions — the study loop, the version
 gate, and handshake identity — and the last two are one entry each.
+
+## Reserve line (supervisor, leg 024, measured at dispatch)
+
+`check-doc-size.py --pressure` right now, for `embarch-core` only:
+
+- `embarch-core/decisions/studies.md` — 11,176 / 12,288, **1,112 bytes left**, reserve line 11,059.
+  This task is its filing; clearing it is the unit.
+
+**Nothing else in `embarch-core` is in reserve** — `spec.md`, `open.md`, `interfaces.md` and the
+other `decisions/` files all have room. If your work pushes one of them into reserve, or leaves one
+there that nothing has filed, file `tasks/core/<NNN>-compact-core.md` in the **same commit**
+(`tasks/README.md` has the shape). The path is `tasks/core/`, your own scope — not `tasks/doc/`,
+which `check-ownership.py` refuses to a worker.
 
 ## Why now
 
