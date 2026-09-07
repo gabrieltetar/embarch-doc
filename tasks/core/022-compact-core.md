@@ -7,7 +7,7 @@
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-core/interfaces.md, embarch-core/open.md
+**Compacts:** embarch-core/open.md
 **Size debt due:** 2026-09-26
 **In flux:** yes — two other queued units touch this exact file. `tasks/core/021`
 (retire `GET /logs/stream`, which has no consumer anywhere) would delete the row
@@ -31,9 +31,22 @@ prevent.
 
 ## What
 
-`interfaces.md` is **14,527 B against a 15,360 B cap** — 833 bytes, inside the
+`interfaces.md` was **14,527 B against a 15,360 B cap** — 833 bytes, inside the
 last 10%. The next `core` unit that writes this file may find it capped
 before finishing.
+
+**`interfaces.md`'s item is closed, 2026-09-07, by `tasks/core/020`** — a worker
+in flux on this exact file (`020`'s `hardware_id` rename touches the
+`/dev-bench/hello` row) split it into `interfaces/hardware.md`,
+`interfaces/topology.md`, `interfaces/logs.md`, `interfaces/studies.md` and
+`interfaces/result-layout.md`, with `interfaces.md` reduced to Conventions plus
+an index (`DOC-COMPACTION.md` §3's sanctioned split, the same shape
+`decisions.md` uses). Every `Must not delete:` item below carried over verbatim.
+This was a **split**, not a squeeze — no row's prose was shortened — so the
+"in flux" warning above still holds for whatever `core/021`/`api/032` touch:
+they now land against `interfaces/logs.md` and `interfaces/topology.md`
+respectively, unaffected by the file move. **`open.md` is still parked**,
+waiting on `core/021` and `tasks/api/032` as below.
 
 ## Why now
 
