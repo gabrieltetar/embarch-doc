@@ -47,8 +47,28 @@ kilobyte.
 
 ## Done when
 
-- [ ] `crate.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken).
-- [ ] Every item in `Must not delete:` survives, in words a reader can still check.
-- [ ] Answered in the compaction commit message, in the compactor's own words:
-      *can `spec.md` alone answer what someone needs to work on this component today?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `crate.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken). Closed
+      2026-09-07 by `agent/study-designer/016-rustdoc-links-retired-module`, via `DOC-COMPACTION.md`
+      §3's mission split, not prose surgery: `decisions/crate.md` keeps only the shape/boundary
+      decisions (1, 2, 5, 7, 8, 23) verbatim; the CI mission (64, 65) moved verbatim into new
+      `decisions/ci.md`, which also gained decision 68 (`cargo doc` warnings stay out of the gate —
+      the finding this unit was filed to close). `decisions.md`'s index row was split to match; the
+      one stray cross-reference in `spec.md` was repointed at `decisions/ci.md`. Nothing was
+      shortened, so the `Must not delete:` list above is untouched — a split moves entries, it does
+      not restate them, so the in-flux objection recorded above (the dev-bench FFI staticlib
+      cross-build still doesn't exist) never applied to this move and stays live for whichever unit
+      next needs to *shorten* either file.
+- [x] Every item in `Must not delete:` survives, in words a reader can still check — verified by
+      diff: decision 64's `cargo tree` table and 16-errors/9-passes counterfactual, decision 65's
+      two ground facts and rejected arm, and decision 8's git-dependency escape hatch are all
+      present, verbatim, in `decisions/crate.md` or `decisions/ci.md`.
+- [ ] Not answered by this unit — a split, not a rewrite, so the question wasn't asked. Still open
+      for whichever unit next shortens `crate.md` or `ci.md`: *can `spec.md` alone answer what
+      someone needs to work on this component today?*
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — see
+      `tasks/study-designer/016-rustdoc-links-point-at-a-retired-module.md` for the run.
+
+**Reopened:** the "In flux: yes" block above is about `crate.md`'s FFI-shape content and is
+unaffected by this split — it still names the dev-bench cross-build as the unparking condition,
+and still blocks a *shortening* pass on either resulting file. This task stays `blocked` rather
+than closing, since only the reserve item is done, not the file's underlying flux.
