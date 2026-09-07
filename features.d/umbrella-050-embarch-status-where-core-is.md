@@ -1,1 +1,1 @@
-| `embarch status` — where Core is, `--json` | Partial — reachability, address and class; no probe count | local | 11 |
+| `embarch status` — where Core is, `--json` | Shipped — with a probe count; "could not look" is never `0`. Host-tested only | local | 11, 46 |

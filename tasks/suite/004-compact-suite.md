@@ -83,7 +83,20 @@ one not to take**, and the only reason it was taken is that the alternative — 
 compaction — needs `ops.md` §4's 30-minute announcement window, which a leg landing a fold does not
 have.
 
-**So the state to hand on: `suite/features.md` has 14 bytes.** Not 221. The next `features.d/`
+**Updated at `umbrella/028`'s fold, leg 033, 2026-09-07: `suite/features.md` has 36 bytes, and it
+got there by an *edit* rather than an addition.** That unit made `embarch status` report a probe
+count, so the file's existing `embarch status` row — *"Partial … no probe count"* — became **false**.
+I could not leave a false row, and a truthful one is longer than the false one it replaces, so the
+row grew 60 B → the file went 20,420 → 20,444 B. **The truthful row I first wrote landed the file at
+exactly 20,480 / 20,480 B — 100.0%, still green** — and I rewrote it shorter rather than hand the
+next leg a file that passes today and breaks on the next byte anyone writes. **That is the trap this
+file has now set three times**: the mechanism cannot tell "compacted" from "compacted to exactly the
+line", and it is the second thing here that is only visible by reading the number rather than the
+verdict. **A file at its cap does not only refuse new rows — it refuses corrections to the rows it
+already has**, and a correction is precisely what an inventory of shipped features generates. That
+is a stronger argument for moving the cap or splitting the file than "one more feature is coming".
+
+**The state to hand on before that: `suite/features.md` had 14 bytes.** Not 221. The next `features.d/`
 fragment of any kind, in any sub-project, meets a wall rather than a reserve, and its worker will
 discover this when the supervisor's fold fails rather than when its own gate does — because the
 assembler is the supervisor's and the file is `never` for a worker. **The cap-and-split half of this

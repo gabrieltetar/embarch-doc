@@ -84,10 +84,10 @@ For a quick "is the stack alive", use the cheap version:
 ```sh
 embarch status
 # Core: up at http://127.0.0.1:4884 (local)
-#   auth: not checked (this probe is unauthenticated)
+#   probes: 2
 ```
 
-**Probe count, model and bench connection are not `status`'s job** — those need an authenticated call, and only `doctor` makes one. Both accept `--json`.
+**`status` now makes one authenticated call, for the probe count only.** When it cannot — no token, a token Core rejects, or the call itself fails — it says which, as `probes: unknown — <why>`, and never as `probes: 0`. **Probe model and bench connection are still not `status`'s job**; only `doctor` goes that far. Both accept `--json`.
 
 ## 5. Add your firmware project
 
