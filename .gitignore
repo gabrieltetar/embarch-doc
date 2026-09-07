@@ -10,3 +10,10 @@ inbox/*.md
 # Owner-local permission config: never commit, and never let a leg sweep it up
 # with `git add -A` during a fold (embarch-fleet-risks.md).
 .claude/settings.local.json
+
+# Suite review pass reports, one per run (SUITE-REVIEW-PASS.md §6). Regenerable,
+# so durability buys nothing and a stale findings file reads as current truth to
+# whoever opens it next. Committed here rather than in `.git/info/exclude`, where
+# the 2026-08-15 report's rule still lives: that file is local-only and
+# unversioned, so a re-clone silently starts committing the reports instead.
+.claude/suite-review-*.md

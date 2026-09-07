@@ -102,6 +102,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-glossary.md](embarch-glossary.md) | DUT, study, target, project, board qualifier, topology class, and the other load-bearing terms |
 | [embarch-zephyr.md](embarch-zephyr.md) | Relationship to Zephyr: board-qualifier grammar, revisions, snippets, sysbuild |
 | [embarch-dev-workflow.md](embarch-dev-workflow.md) | Iterating locally without touching a real install; **§4a is the reverse trip** — how a Core change reaches the live Windows service |
+| [SUITE-REVIEW-PASS.md](SUITE-REVIEW-PASS.md) | **The one sweep that reads every sub-project at once**, hunting what is wrong across two modules and right within each — seven dimensions, run by hand as `/suite-review`, landing as `inbox/` drops. Every other check here is scoped to one repo, one diff or one file |
 | [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) | **Inbound half accepted and built**; the outbound half — an authored step that writes to a DUT and confirms the reply — is **still a proposal** |
 | [embarch-fleet/spec.md](embarch-fleet/spec.md) | **Start here for the fleet** — what it is, the three windows, what lives in which repo, and what it deliberately does not do |
 | [the protocol](../embarch-fleet/protocol.md) | How background agent threads work in parallel across the suite without colliding: the listener, the leg, the relay |

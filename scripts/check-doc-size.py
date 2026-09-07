@@ -102,6 +102,18 @@ CAPS = [
     # nowhere else, so three other comments went on pointing at §8 and §9 for
     # two days after they stopped existing (tasks/doc/011).
     ("protocol",    12 * KB, re.compile(r"^DOC-[A-Z][A-Z-]*\.md$")),
+    # A pass doc: the method for a sweep over the whole suite, run by hand and
+    # reserved to the owner. Must come AFTER `protocol` -- DOC-COMPACTION-PASS.md
+    # matches both and keeps the role it already had.
+    #
+    # 15 KB rather than `protocol`'s 12 because of what the role must carry, not
+    # because of what the first one weighed: SUITE-REVIEW-PASS.md defines seven
+    # hunting dimensions, and DOC-COMPACTION-PASS.md's own rule says a failure
+    # signature and a rejected alternative are hot and non-negotiable -- so the
+    # bytes that would be cut to reach 12 KB are exactly the ones that make the
+    # rules actionable. Same size as `interfaces`, for the same reason: every
+    # item must be present and the budget is spent on items.
+    ("pass",        15 * KB, re.compile(r"^[A-Z][A-Z-]*-PASS\.md$")),
     ("history",     20 * KB, re.compile(r"^history/[a-z-]+\.md$")),
     # The reversals page split the way any over-cap doc does: an index plus stable
     # numeric ranges (DOC-COMPACTION.md §3). A range never re-splits an existing row.
