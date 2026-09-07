@@ -1,8 +1,8 @@
 {
-  "framework_sha": "ef01ed680d7cac93c2c5971e965bdc96e08b7d37",
+  "framework_sha": "c7b2e8a59a3b34d83c7003455b1f28f1a309a057",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-07T05:20:20Z",
+  "installed_at": "2026-09-07T05:28:07Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "15ae3e185aa92b1a4ddf35a11812fb4d7989f38cd9a0a402ac51c5a7503a84be",
