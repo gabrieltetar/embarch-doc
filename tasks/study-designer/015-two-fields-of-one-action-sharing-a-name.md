@@ -1,6 +1,6 @@
 # 015 — Two fields of one action sharing a name cannot be chosen independently
 
-**State:** open
+**State:** claimed by agent/study-designer/015-duplicate-field-name, 2026-09-07 15:22
 **Source:** noticed while doing `study-designer/013` — `src/registry.rs`'s `ActionRegistry::validate`, `src/study_builder.rs`'s `resolve_write_payload`
 **Scope:** study-designer
 **Hardware:** none
@@ -47,3 +47,31 @@ family rather than three unrelated ones.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated where anything became false,
       `changelog.d/` fragment dropped.
+
+## Doc-size reserve for `study-designer` — supervisor, leg 036, 2026-09-07
+
+**Nothing in this scope is in reserve, and `decisions/registry.md` — the file this task names as
+the rule's likely home — has real room: 8,927 / 12,288 B, 3,361 B left.** Write the argument out
+properly; you are not short of space and should not write as though you were.
+
+Two files are close enough to name, both filed under `tasks/study-designer/006-compact-study-designer.md`,
+which is **`blocked`**:
+
+- `embarch-study-designer/spec.md` — 9,183 / 10,240 B, **1,057 B left**. Just outside the
+  `max(1.2 KB, 10%)` reserve floor, so an edit of ~150 bytes or more puts it in.
+- `embarch-study-designer/open.md` — 4,331 / 5,120 B, **789 B left**. Likewise close.
+
+**So the realistic risk here is `spec.md`, and the cheap answer is not to write to it.** This unit
+adds a validation rule to a function whose two neighbours are already recorded in
+`decisions/registry.md`; if `spec.md` does not currently say something this makes false, leave it
+alone and say so. If it does, and your edit crosses the floor, file
+`tasks/study-designer/<next NNN>-compact-study-designer.md` in the same commit
+(`tasks/README.md` has the shape) — or add the path to `006`'s `**Compacts:**` line and say why
+that is the truer home. Do not resolve `006`'s `In flux: yes` to make the queue move.
+
+**On the second half of the task's "worth deciding alongside it" question** — whether the three
+field rules want one `RegistryError` variant family rather than three unrelated ones — that is
+yours to decide inside this sub-project and it needs nobody's approval (`protocol.md` §5 rule 4).
+Decide it either way, in writing, with the argument. "Left for later" is a worse answer than
+either choice, because the next unit to open `validate` will face the same fork with one more rule
+in it.
