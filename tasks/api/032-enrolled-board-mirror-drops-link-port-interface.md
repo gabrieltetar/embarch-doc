@@ -33,16 +33,25 @@ enrolment through cannot see it.
 
 ## Done when
 
-- [ ] `EnrolledBoardResponse` deserialises a `GET /probes/enrolled` body carrying
+- [x] `EnrolledBoardResponse` deserialises a `GET /probes/enrolled` body carrying
       `link_port_interface` and preserves it.
-- [ ] One JSON literal per mirror with a round-trip test asserting both directions, and a comment
+- [x] One JSON literal per mirror with a round-trip test asserting both directions, and a comment
       naming the Core-side counterpart test that does not exist yet.
-- [ ] A body with the field absent still parses (an older Core), asserted.
-- [ ] `embarch-doc/embarch-api/open.md`'s bullet records that the drift happened and that the api
+- [x] A body with the field absent still parses (an older Core), asserted.
+- [x] `embarch-doc/embarch-api/open.md`'s bullet records that the drift happened and that the api
       half is now pinned.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+**Closing note:** No `spec.md`/`decisions.md` edit — per the supervisor's note above, pinning a
+mirror to a type that already exists is the absence of drift, not a new decision, and the
+`open.md` bullet plus a `changelog.d/` fragment is the whole doc footprint. No `status.d/`
+fragment: nothing suite-level (`embarch.md`, `suite/features.md`, `suite/roadmap.md`, the
+decision-reversals or glossary docs) became false — this is an internal client-mirror fix with no
+user-visible capability change. The Core-side half (matching test against the real types, plus the
+`interfaces/topology.md` doc row) is filed as `inbox/core-enrolled-board-link-port-interface-pin.md`,
+naming the corrected path per the supervisor's note (not the stale `interfaces.md:30` citation).
 
 ## Supervisor's note, leg 039
 
