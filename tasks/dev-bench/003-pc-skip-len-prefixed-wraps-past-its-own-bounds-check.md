@@ -3,7 +3,7 @@
 **State:** open
 **Source:** owner's repo survey, 2026-09-06 — the one bounds check in a file that states this exact property, written in wrapping arithmetic
 **Scope:** dev-bench
-**Hardware:** required
+**Hardware:** toolchain — host-side C plus `native_sim` ztests, no board. Reclassified from `required` 2026-09-06 (`tasks/doc/020`): the supervisor runs it in the **main checkout**, serialized like a `bench` task.
 **Owner:** no
 
 ## NOT DISPATCHABLE, and the reason is a toolchain, not a board
@@ -33,6 +33,25 @@ The length should be checked against the remaining input before any arithmetic t
 ## Why now
 
 Every `.eap` and `StreamTap` walk routes through this function — nine call sites, `:144`–`:1463`.
+
+## How to run it (`toolchain`, so these are the facts the task carries)
+
+`west` is not on bare `PATH` and no `workspaces/*` carries a `.venv`, so the
+fleet has its own, deliberately outside every repo and outside every client
+workspace:
+
+    W=/home/gabriel/Github/embarch/.west-venv/bin/west
+    cd /home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim
+    $W build -b native_sim -d <a scratch build dir> \
+        /home/gabriel/Github/embarch/embarch-dev-bench/app/tests/serial_protocol
+    <scratch>/zephyr/zephyr.exe        # 57 tests; exit 0 when green
+
+Verified 2026-09-06, 57 of 57. `zephyr.exe` exits non-zero on any failure, so
+its exit status is the gate — do not read the summary line and stop.
+
+**In the main checkout, not a worktree**, and that is the whole reason this is
+`toolchain`: `workspaces/*/{zephyr,modules,.west}` are gitignored, so a worktree
+has no Zephyr tree to build against and a `west` binary alone buys nothing.
 
 ## Done when
 
