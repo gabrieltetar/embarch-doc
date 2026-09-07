@@ -22,6 +22,8 @@ When the shared `validate()` catches a mismatch it **durably records it the inst
 
 **Retry is just calling the operation again — no queue, no auto-resume.** `flash`, `reset` and `run_study` are already safely re-invocable.
 
+**What the durability buys, stated because a reader otherwise takes it on trust:** `raise()` records the alert and constructs the caller's structured mismatch error — fix-it URL and all — **in one function**, and a failure to log is explicitly not allowed to mask the error. So **a row in the alert log is proof the caller received the refusal**; the log cannot hold a refusal that was not also returned. That is what makes the log usable as evidence the gate ran end to end, and it is how the three identity refusals on record ([spec.md](../spec.md)) count as three refusals rather than three log lines beside them.
+
 **Revised**: the alert log, event stream and structured-error shape were originally scoped as three new surfaces **Core would have to build itself.** Under decision 2 they are crate-internal facilities instead.
 
 ### 19 — The live-push marker-file mechanism is retired; the fix-it URL becomes a plain deterministic `embarch-ui` URL

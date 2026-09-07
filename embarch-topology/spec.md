@@ -92,4 +92,12 @@ Storage is one file under a machine-wide directory this crate owns. A store pred
 
 ## Where it stands
 
-Both real boards are enrolled and a real end-to-end flash plus study has completed clean. **The deliberate-mismatch alert path stays unexercised**: there is no legitimate way to inject a stale identity record on today's bench without either a second same-chip-family board or writing the live enrollment file directly. Everything else still open: [open.md](open.md).
+Both real boards are enrolled and a real end-to-end flash plus study has completed clean.
+
+**The mismatch path is exercised, and nothing had to inject anything** — this said the opposite until 2026-09-06, naming the precondition ("a second same-chip-family board") correctly and then reading it as hypothetical. The bench met it on its own: two physically different nRF54L15 DUTs have alternated on the one probe `000852006107`, and **three such swaps are on record, each tripping the gate** — three identity refusals naming the recorded ID and the live one, saying *"re-enroll if this is deliberate"*, the most recent 13:29:42 that day, one minute before the re-enrolment answering it [measured 2026-09-06, `GET /alerts`]. **The count is measured; the proportion is not** — a swap re-enrolled before any validate ran leaves no row. Of the log's six entries the other three are a *different* refusal, probe-not-attached, carrying no live ID.
+
+Each row is an end-to-end refusal, not a log line beside one — decision 12.
+
+**No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, which overwrites the record it would have to contradict; there is **no topology override on the store path**, its only variable being Windows' `ProgramData`, unsettable for an already-running service.
+
+The register pair those reads go through is confirmed against real silicon by an independent mechanism — decision 21. Everything else still open: [open.md](open.md).

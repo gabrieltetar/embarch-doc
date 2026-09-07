@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Decided
+- The nRF54L device-ID address pair is confirmed against real silicon, and the identity gate's mismatch refusal is on record three times — [decision 21](../embarch-topology/decisions/enrollment.md).
+## 2026-09
+
 ### Fixed
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 ## 2026-09

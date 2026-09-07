@@ -32,5 +32,3 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 ## Moved elsewhere, not resolved
 
 - **Discarding a signal port's buffered input on open is not sufficient, and the defence is now `embarch-ui`'s** (decision 30). A capture still began with **18 stale records** seconds from the rest with the purge reporting no error: those bytes are inside the USB-UART bridge, where an OS-level purge does not reach — **a limit of the purge, not a defect to fix here**, so the clear stays, being correct and free. This bullet's candidate fix is built as `embarch-ui` decision 19; what is still unresolved is that it has never met the real prefix ([embarch-ui/open.md](../embarch-ui/open.md)).
-
-- **The nRF54L15 hardware-ID register address**, and the end-to-end validation of the moved identity gate, are `embarch-topology`'s open questions since decision 22's move. Relocating the code changed nothing about whether that address is confirmed against real silicon.
