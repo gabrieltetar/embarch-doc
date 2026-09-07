@@ -4,7 +4,7 @@
 
 Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file — which is what let them move from `design.md` §3 to one `decisions.md` and then into these sixteen files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file — which is what let them move from `design.md` §3 to one `decisions.md` and then into these seventeen files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
 
 | Load this for | Decisions |
 |---|---|
@@ -22,7 +22,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [What a study declares](decisions/declares.md) — firmware versions and the GATT table | 40, 45 |
 | [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, and what it may report | 60, 62 |
-| [Authoring surfaces](decisions/authoring.md) — the UI, the registry, where knowledge enters | 6, 34, 35, 37, 38, 66 |
+| [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library | 6, 34, 37, 38 |
+| [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67 |
 | [Things this crate does not have](decisions/removed.md) — removals, and two tombstones | 19, 22, 28, 48, 54 |
 
 **The durable principle this crate keeps re-deriving**, stated once here because it generalises past it: *no EmbArch component should ever present an inference about what a specific piece of hardware or firmware does — derived from reading its source, its comments, or any heuristic — as established fact.* Where that knowledge is needed, the answer is a pipeline for the engineer who actually knows to supply it explicitly. Decisions 35, 41, 45, 52, 56 and 58 are each that rule applied somewhere else.

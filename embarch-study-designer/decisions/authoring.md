@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-The UI, the registry, and where engineer knowledge enters the system.
+The table, the rows it can hold, and where a study is saved. The registry those rows resolve against, and what a hand-edited one is refused for: [registry.md](registry.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -22,20 +22,6 @@ Motivated by a gap a milestone's own closing session hit directly: **a real moni
 
 **This crate's own UI binary is retired.** `embarch-ui`'s tab is the successor — same merged list, same table model, same registry, **but calling this crate in-process rather than running a second local web server**, and submitting over HTTP rather than shelling out to a CLI. **The library modules are entirely unaffected; only the binary that wrapped them in a server is gone.**
 
-### 35 — A user-authored custom-action registry: names and enumerated parameter choices only, never a semantic description
-
-The actual fix for what motivated decision 34. An attempt to figure out what a custom GATT write "does" **by reading the DUT firmware's own source and asserting a conclusion from it was flagged directly as destructive to the dev process** — **reading code and inferring behaviour from it is not the same as knowing it, and presenting that inference as fact is worse than not answering at all.** The fix is not a smarter inference; **it is removing inference from the loop entirely.**
-
-**What the engineer provides — mechanical, not documentary:** a freely-chosen name, which characteristic it targets, its operation, and — for a write — a payload described as named fields, **each with a small enumerated set of engineer-supplied label/value pairs.** Building a step means clicking a name and clicking a value; **nothing is typed as raw hex, and nothing describes *why* a value does what it does — there is deliberately no "what this does" field at all, since that would be this crate inventing a place to write down another guess.**
-
-A value's bytes are **the engineer's own literal bytes, never a numeric type this crate encodes itself** — **which would require assuming a width and endianness nobody here is in a position to know.**
-
-**Persisted in the firmware repo's own folder**, so **it travels with the firmware and is versioned in that repo's history** — not a catalog this tool owns separately, and not re-entered per study.
-
-**A hand-edited file's mistakes are named refusals, on read *and* on write.** Because the file lives in the firmware repo and is meant to be edited there, `validate` — called by both `load` and `save` — refuses a value whose bytes do not fill its declared field, and refuses **two actions sharing a name**: the builder resolves a row by the first name match, so the second is unreachable and the row silently carries a payload nobody chose. Decision 52's struct registry refuses its duplicate in the same shape and nearly the same words — **one hand-edit mistake, one refusal, whichever of the two registries it lands in**, rather than two registries in one module disagreeing about the same mistake. Refusing in `save` is the load-bearing half: **a file that can be written and not read back is worse than one rejected on the way in.**
-
-**The durable principle, stated plainly since it generalises past this crate:** *no EmbArch component should ever present an inference about what a specific piece of hardware or firmware does — derived from reading its source, its comments, or any heuristic — as established fact.* Where that knowledge is needed, **the answer is a pipeline for the engineer who actually knows to supply it explicitly, built once, generically.** Decisions 41, 45, 52, 56 and 58 are each that rule applied somewhere else.
-
 ### 37 — A free-text payload path alongside the registry: `RowAction::Raw`
 
 The registry is the right home for a *named, reusable* action, **but it was the only way to send a payload at all — so a one-off, a value being tried once to see what happens, required editing the registry first.** A raw row takes a UUID pair typed directly and a payload as literal bytes.
@@ -52,15 +38,4 @@ Until this, **a study authored in the UI existed only as long as the browser tab
 
 This is also what makes decision 39's `StreamSource::Signal` and decision 40's reflash-is-a-run-parameter rules load-bearing: a saved study has to survive a rewired bench and has to not reflash a board every time someone re-reads its results.
 
-### 66 — A registry field's byte range is bounded at `validate` time, and an over-long payload is named as a payload
-
-Decision 35's "a hand-edited file's mistakes are named refusals" had a hole in it: `validate` checked what a value *contained* and never where a field *sat*. `byte_offset` and `byte_len` are the two numbers in `study-actions.toml` that nothing bounded — **and the widest field is what sizes the buffer the builder allocates**, so a mistyped offset was a hand-edited file choosing how much memory this host reserves. `byte_offset + byte_len` was also plain addition on engineer-supplied numbers, against this crate's own stated invariant that **addition saturates rather than wrapping**: an offset near `usize::MAX` panicked a debug build and, in release (`panic = "abort"`, overflow checks off), wrapped to a length of **0** that passed every check. **It did not then write out of bounds** — the following slice index panicked, and slice bounds checks are never elided — so this was a crash on a hand edit, not a memory-safety hole, and it is worth being exact because the shape invites the stronger claim. **The un-overflowing case is the real hazard**: a 4 GB offset does not wrap, passes, and sizes a 4 GB allocation. That is what the bound-before-allocate refuses.
-
-**The bound is `MAX_PAYLOAD_LEN`, checked in both places, deliberately.** `validate` refuses it on read and on write, so the file is caught where the mistake was made rather than later; the builder checks again **before the allocation**, because it takes a registry as an argument and an in-memory one has never been through `validate`. Same bound, one spelling, two call sites — not belt-and-braces but two genuinely different entry points.
-
-`FieldRangeTooLong` is its own error rather than reusing `FieldLengthMismatch`: a value that is the wrong length and a field that sits outside the payload are different edits to make and different edits to fix.
-
-**The other half is that the message has to name the right bound.** An over-long registered payload reported `TooManySteps`, which renders "study has 513 steps, but the limit is 512" — a true number attached to the wrong noun, sending whoever read it to a one-row table instead of to the field they had just mis-offset. `PayloadTooLong` already existed, already had the right wording, and was already used for the identical condition on the raw-payload path; the registered path had a comment arguing the two over-capacity conditions were the same kind of thing. **They are the same kind of thing to the type system and not to the reader, and the reader is who an error message is for.** The rendered string is asserted in a test, because the string was the defect.
-
 ---
-
