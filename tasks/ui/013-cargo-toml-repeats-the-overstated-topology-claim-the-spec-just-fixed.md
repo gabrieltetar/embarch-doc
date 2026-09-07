@@ -1,6 +1,6 @@
 # 013 — `Cargo.toml` still says `embarch-ui` never depends on `embarch-topology` at all
 
-**State:** open
+**State:** claimed by agent/ui/013-manifest-topology-claim, 2026-09-07 17:32
 **Source:** reviewer of `ui/012`, leg 026, 2026-09-06 — found while verifying that unit's own
 correction, reproduced against `embarch-ui` at `fa3b7b6`
 **Scope:** ui
@@ -48,6 +48,31 @@ dependency does not exist and reasons from that.
   Whatever the comment ends up saying should point at that rather than restate it.
 - Check whether any *other* manifest in the suite carries the same sentence before concluding this
   is one line.
+
+## Supervisor's note, leg 040
+
+**"Check whether any *other* manifest carries the same sentence" is a read, not a reach.** You own
+`embarch-ui` and nothing else (`protocol.md` §5 rule 2, and `check-ownership.py` will refuse the
+alternative on your own branch). If another repo's manifest carries the same overstated claim,
+**write an `inbox/` drop naming the file and the line and scoping it to that repo** — do not edit
+it, and do not widen this unit.
+
+**Do not re-run the `cargo tree` measurements to "confirm" them and then report the confirmation as
+this unit's finding.** They are already measured twice and recorded above with their provenance;
+re-measuring is cheap and fine, but the unit's product is the corrected comment.
+
+### Doc-size reserve for `ui`
+
+Three `ui` files are in reserve, all filed against **open** (not blocked) compaction tasks, so do
+not file a second debt for any of them:
+
+- `embarch-ui/decisions/study-designer.md` — 12064/12288 B, **224 B left** → `tasks/ui/011`
+- `embarch-ui/decisions/trace-chart.md` — 11833/12288 B, **455 B left** → `tasks/ui/019`
+- `embarch-ui/spec.md` — 9461/10240 B, **779 B left** → `tasks/ui/018`
+
+This unit should need none of them: a manifest comment plus, at most, a `changelog.d/` fragment.
+**If you conclude a numbered decision is warranted, stop and say so in the task file instead** —
+`decisions/wiring.md` is the right home and 224 B is not where that call should be made blind.
 
 ## Done when
 
