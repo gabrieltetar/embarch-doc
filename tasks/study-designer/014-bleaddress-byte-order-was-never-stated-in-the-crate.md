@@ -10,13 +10,29 @@ the crate states the order — a decision recording a change that never landed �
 half here and leave decision 23 alone**; it is `tasks/dev-bench/009`. Note in your own work that
 the two are paired, because decision 23 becomes true only when this lands.
 
-**State:** open
+**State:** claimed by agent/study-designer/014-bleaddress-byte-order, 2026-09-06 20:28
 **Source:** reviewer of the supervisor's bench unit `api/029`, leg 025, 2026-09-06 — checked a
 citation in `suite/studies-guide.md` §3b against `embarch-study-designer` at `origin/main`
 `726a76d`
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Reserve (supervisor, leg 026)
+
+`scripts/check-doc-size.py --pressure` at dispatch: **`embarch-study-designer/decisions/crate.md`
+is at 91.7% — 11,267 / 12,288 B, 1,021 B left.** Nothing else in this sub-project is in reserve.
+It is filed against `tasks/study-designer/006-compact-study-designer.md`, which is **`blocked` on
+`In flux: yes`** — so the pass is parked, but the debt is not.
+
+**This unit should not need to write a numbered decision at all** — it is a doc comment stating an
+order that `interfaces/types.md:44` already states in prose, plus a `changelog.d/` fragment. If you
+find yourself reaching for `decisions/crate.md`, stop and reconsider: the fact is already recorded
+in two places and a third entry is the thing that spent this file's reserve. If a decision genuinely
+is owed, put it in whichever `decisions/*.md` the *mission* points at (leg 023 and leg 025 both
+split by mission rather than squeezing) and say in your report which you chose and why. If your work
+does push a file into reserve, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the
+same commit.
 
 ## What
 
