@@ -60,7 +60,7 @@ This crate compiles in `embarch-study-designer`'s `HOST_TYPE_SCHEMA_VERSION` and
 
 **CLI-only, no MCP twin.** [spec.md](../spec.md) §1 guarantees CLI ⊇ MCP — a human can do anything an agent can — which a CLI-only diagnostic leaves intact. The consumer is a process shelling out, and an agent submitting a study already learns of a mismatch from the refusal, when it matters.
 
-*Read since 2026-09-04:* `embarch-umbrella` check 11 shells out to it (its 33, 35, 36); that binary's own constant is now warn-only. No live `doctor` run yet — umbrella's debt.
+*Read since 2026-09-04:* `embarch-umbrella` check 11 shells out to it (its 33, 35, 36); that binary's own constant is now warn-only. **Read live 2026-09-07** — check 11 PASS, and `embarch-api --json versions` answered v17 against Core's v17 (`tasks/umbrella/034`).
 
 ### 57 — A tool description cites a decision by `<repo> decision N`, never `design.md`
 Six `#[tool(description = ...)]` strings in `tools.rs` still cited the retired `design.md` after the 2026-09-04 split — the one part of the suite a connecting agent reads with no cwd to disambiguate from. Four named no repo at all; `enroll_probe`'s named one but the wrong number either way (cited decision 22; the real entry is `embarch-topology` decision 14).

@@ -28,6 +28,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- Six MCP tool descriptions citing the retired `design.md` now cite `<repo> decision N`, verified; `enroll_probe`'s wrong decision number fixed.
 - open.md stops reading as unaddressed: `init`'s no-inference refusal shipped (`embarch-umbrella` 41) and check 11 reads `versions` now (33/36, 42).
 - A static project setting `west_binary`/`build_dir_root` is no longer told to remove and re-add the same field.
 - The `-args<hash>` build-dir segment is a crate-owned FNV-1a, so a Rust upgrade no longer renames and orphans build directories ([decision 19](../embarch-api/decisions/build.md)).
