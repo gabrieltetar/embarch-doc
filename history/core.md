@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `EnrolledBoard`/`Alert` now pin their JSON shape in `embarch-core` against `embarch-api`'s mirror literals, so field drift fails on both sides.
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
