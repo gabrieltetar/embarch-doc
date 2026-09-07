@@ -1,6 +1,6 @@
 # 014 — `Outcome` reaches `app.js` in two wire shapes from two routes of one service, and each of its two decoders is silent on the other's input
 
-**State:** open
+**State:** claimed
 **Source:** suite review pass 2026-09-06, dimension 5 (cross-surface consistency). Code-confirmed.
 **Scope:** ui
 **Hardware:** none
