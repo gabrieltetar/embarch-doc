@@ -1,6 +1,6 @@
 # `embarch-study-designer`'s doc comments link to a module that was retired
 
-**State:** open
+**State:** claimed by agent/study-designer/016-rustdoc-links-retired-module, 2026-09-07 09:30
 **Source:** worker on `tasks/study-designer/014`, leg 026, 2026-09-06 — noticed while running
 `cargo doc --no-deps --all-features` to confirm the new `BleAddress` intra-doc links resolved.
 **Scope:** study-designer
