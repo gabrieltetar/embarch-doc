@@ -1,6 +1,6 @@
 # `build_changelog.py` opens a new `## <window>` heading on every fold, and the gate is green on the result
 
-**State:** open
+**State:** done
 **Source:** leg 020, `tasks/topology/006` — noticed by reading the assembler's own diff before committing it
 **Scope:** doc
 **Hardware:** none
@@ -66,11 +66,34 @@ after the script is fixed, not eleven hand edits before.
 
 ## Done when
 
-- [ ] `build_changelog.py` merges into an existing window block for the same window, and into an
+- [x] `build_changelog.py` merges into an existing window block for the same window, and into an
       existing `### <category>` inside it, rather than prepending new headings.
-- [ ] Something fails when an assembled `history/*.md` carries two headings for one window —
+- [x] Something fails when an assembled `history/*.md` carries two headings for one window —
       whether that is `build_changelog.py --check` growing an assembled-file arm, or a new check.
       Today no check reads the assembled file at all, which is the actual gap.
-- [ ] The eleven existing files are merged in one pass, and the pass asserts entry count and order
+- [x] The eleven existing files are merged in one pass, and the pass asserts entry count and order
       are unchanged — no content moves, only headings collapse.
-- [ ] Whether the 20 KB roll is sized in windows or in bytes is restated to match what the code does.
+- [x] Whether the 20 KB roll is sized in windows or in bytes is restated to match what the code does.
+
+## What shipped
+
+- `merge_into()` folds a run's entries into the existing window block and collapses any
+  same-window blocks it finds, so a file written by the old assembler heals on the next fold
+  that touches it. `history/ui.md` and `history/umbrella.md` were already collapsed in
+  production before the repair pass ran, which is that working rather than being tested.
+- `--check` grew an assembled-file arm: a duplicate window heading is a red gate naming the
+  file and the count. This was the real gap — no check had ever read the assembled file.
+- `--normalize --apply` collapsed **111 `## 2026-09` headings to 11**, all **208** entries
+  intact, refusing to write any file whose entries did not survive: same count, same order
+  within each category. Global line order is deliberately not the invariant — collapsing
+  regroups rows by category across blocks, which is the point.
+- The roll sentence is restated in all eleven headers to match the code.
+
+**One defect found while fixing this, and it was the more dangerous half.**
+`roll_if_over_cap` moves whole windows. Per-fold windows always left an older block to take;
+a monthly window can be the *only* block, so the roll archived the current month wholesale —
+including the entry the fold had written seconds earlier — and left the live file with a
+header and nothing else. Reproduced at 23,949 B: 0 entries left. `history/doc.md` sits at
+50% of the cap with two weeks of September to go, so collapsing the windows would have made
+this reachable within weeks. The roll now never moves the newest window and says so when it
+cannot fit without it.

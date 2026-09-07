@@ -51,6 +51,7 @@
 - embarch.md compacted, 20 KB to 11 KB; the index is grouped tables.
 
 ### Fixed
+- The changelog assembler merges into the current window instead of opening one per fold; 111 duplicate headings collapsed to 11, all entries intact, and a duplicate now fails the gate.
 - build_changelog.py --only lets a fold consume just its unit's fragments, and fold-commit.py refuses one that swept another's — the legs 004/005 failure reached without `git add -A`.
 - check-dispatch.py refuses a second worker into a worktree another holds; check-doc-size.py stops citing DOC-COMPACTION.md §8/§9, which moved to DOC-COMPACTION-PASS.md two days ago.
 - A code worktree links every sibling in the dependency closure, not the ones its own Cargo.toml names; embarch-ui needs embarch-topology transitively via embarch-core-client.
