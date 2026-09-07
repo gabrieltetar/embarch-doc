@@ -1,11 +1,44 @@
 # 030 — `doctor` gives `/dev-bench/hello` the same 500 ms as `GET /status`, so checks 11 and 13 can never finish
 
-**State:** open
+**State:** claimed by agent/umbrella/030-hello-gets-a-handshake-budget, 2026-09-06 20:47
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — three live `doctor` runs against the
 primary `wsl-host` bench with both boards attached
 **Scope:** umbrella
 **Hardware:** none — the diagnosis is already measured; the fix and its test are host-side
 **Owner:** no
+
+## Reserve (supervisor, leg 026 — measured at dispatch, not quoted from a task body)
+
+Two `embarch-umbrella` files are in reserve, both filed against
+`tasks/umbrella/009-compact-docs.md`, which is **`blocked` on `In flux: yes`** — the pass is
+parked, the debt is not:
+
+| file | bytes | % of cap | headroom |
+|---|---|---|---|
+| `embarch-umbrella/decisions/bind.md` | 11,409 / 12,288 | 92.8% | 879 B |
+| `embarch-umbrella/decisions/doctor.md` | 11,346 / 12,288 | 92.3% | 942 B |
+
+Everything else has room — `spec.md` 8,956 / 10,240 (87.5%), `open.md` 4,323 / 5,120 (84.4%),
+`decisions/reporting.md` 9,254, `schema-skew.md` 7,241, `integration.md` 2,325,
+`projects.md` 10,491, `topology.md` 9,305, `install.md` 11,009.
+
+**`decisions/doctor.md` is the obvious home for what you are about to write and it is the wrong
+one.** Two named timeout constants with an argument for each is not going to fit in 942 B, and
+squeezing it in is how this sub-project's reserve keeps getting spent. **Prefer a mission split**
+— this sub-project has done it four times (`umbrella/020`, `022`, `023`, and `topology/010` in a
+neighbouring repo), and a split restates nothing, so `In flux: yes` does not object to it. *How
+long `doctor` is willing to wait for each kind of call* is its own mission and would sit happily
+in a new `decisions/budgets.md`, or in `decisions/reporting.md`, which has 3 KB of room and
+already owns how checks report.
+
+If you conclude the decision genuinely belongs in `doctor.md` and nowhere else, then **compact
+`doctor.md` as part of this unit** — carry `tasks/umbrella/009`'s `Must not delete:` list
+verbatim, close only `doctor.md`'s item there, and say in your report which of `009`'s protected
+clauses you verified against the pre-image. Do not shave 37 bytes to duck the line; that exact
+move is written into `009`'s own history as the thing not to do.
+
+**If your work pushes any file into reserve, file `tasks/umbrella/<NNN>-compact-umbrella.md` in
+the same commit** (`tasks/README.md` has the shape).
 
 ## What was measured
 
