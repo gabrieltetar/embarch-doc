@@ -1,6 +1,11 @@
 # 040 — `decisions/reporting.md` is in reserve
 
-**State:** open
+**State:** blocked — its own `## In flux: yes` below says decision 46 is still moving, and a
+compaction pass may not restate reasoning that is about to change. **Unparked by:** decision 46
+settling, which means `tasks/umbrella/039`'s `bad-response` state surviving one further unit
+without another amendment to 46. Corrected from `open` by the supervisor at `039`'s fold, leg 034:
+the worker filed it `open` while declaring `In flux: yes`, and those two cannot both be right —
+`queue-status.py` would have offered it for dispatch.
 **Source:** scripts/check-doc-size.py, hit landing `tasks/umbrella/039`
 **Scope:** umbrella
 **Hardware:** none
