@@ -1,6 +1,6 @@
 # 011 — The only check holding the outpost's three wire implementations in agreement cannot run in the configuration its own README claims, and no CI runs it anywhere
 
-**State:** open
+**State:** claimed by agent/outpost/011-toolchain-free-legs-above-the-west-guard, 2026-09-07 01:45
 **Source:** suite review pass 2026-09-06, dimension 1 (standalone-ness). Code-confirmed.
 **Scope:** outpost
 **Hardware:** none
@@ -49,3 +49,21 @@ two files in two languages.
 - [ ] A run in which the cross-decoder skipped for missing fixtures says so in its final summary,
       not only mid-stream.
 - [ ] Gate green; `changelog.d/outpost-*` fragment.
+
+## Reserve — read before you write a doc (supervisor, leg 030)
+
+One `embarch-outpost` file is in reserve: **`embarch-outpost/decisions/tracing.md`, 7,408 / 8,192 B,
+784 bytes left**, filed against `tasks/outpost/008` (`In flux: no`, `open`), so it is writable and
+the gate passes. A decision about the *test harness* is not a tracing decision, though —
+`decisions/module.md` is the better home and it has room. If your work leaves any file inside its
+last 10% that nothing has filed, file `tasks/outpost/<NNN>-compact-outpost.md` in the same commit.
+
+## Two boundaries this task must not cross (supervisor, leg 030)
+
+- **Do not add CI.** Whether `embarch-outpost` gets a workflow at all is `tasks/suite/021`, which is
+  suite scope and mine to run under an announcement window. Fix the ordering and the README claim;
+  say in `open.md` that the CI half is filed elsewhere.
+- **The two sibling-repo fixture paths are read-only to you.** `cross_decoder.py` reaches into
+  `embarch-core` and `embarch-ui` fixtures. You own `embarch-outpost` and its docs and nothing else
+  (`../../embarch-fleet/protocol.md` §3). If the right fix needs a fixture moved or regenerated in
+  another repo, that is an `inbox/` drop, not a change.
