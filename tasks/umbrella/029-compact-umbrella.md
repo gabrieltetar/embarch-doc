@@ -1,6 +1,29 @@
 # 029 — embarch-umbrella's spec.md and open.md are back in reserve
 
-**State:** open — **unblocked and mostly paid; it is a worker's now, not a bench unit's**
+**State:** claimed by agent/umbrella/029-compact-umbrella, 2026-09-06 19:06
+
+## Doc-size reserve for `embarch-umbrella` (supervisor, leg 025)
+
+Read this before you plan. `scripts/check-doc-size.py --pressure`, taken at dispatch:
+
+- `spec.md` **9,237 / 10,240 B (90.2%)** — 1,003 B left. Yours to pay.
+- `open.md` **4,653 / 5,120 B (90.9%)** — 467 B left. Yours to pay.
+- `decisions/bind.md` **11,409 / 12,288 B (92.8%)** and `decisions/doctor.md`
+  **11,346 / 12,288 B (92.3%)** — **not yours.** They sit behind
+  [`009`](009-compact-docs.md), which stays `blocked` on `In flux: yes`. Do not
+  compact them, and **do not use them as destinations** — moving prose into a file
+  already 92% full is not a payment.
+- Destinations with real room: `decisions/reporting.md` **8,920 / 12,288** and
+  `decisions/schema-skew.md` **7,241 / 12,288**, as this task's own body says.
+
+If your pass leaves any `embarch-umbrella` file in reserve that nothing has filed
+against, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit
+(`tasks/README.md` has the shape). Not `tasks/doc/` — `check-ownership.py` refuses
+that path to every worker.
+
+*Original state line follows.*
+
+**State (before this claim):** open — **unblocked and mostly paid; it is a worker's now, not a bench unit's**
 
 **No longer blocked.** The `In flux: yes` reason below was that `spec.md`'s `doctor` table was
 being rewritten row by row and `open.md` held five bullets a single bench session could close or
