@@ -1,6 +1,6 @@
 # Correct `DBM_MAX_INBOUND_FRAME_LEN` in the spec's constants table
 
-**State:** open
+**State:** claimed by agent/dev-bench/006-stale-inbound-frame-len, 2026-09-07 16:41
 **Source:** owner's repo survey, 2026-09-06 — one row of a table that was correct once and went stale at schema v15
 **Scope:** dev-bench
 **Hardware:** none
