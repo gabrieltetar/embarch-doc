@@ -8,7 +8,7 @@ How to iterate on `embarch-core`, `embarch-api` and `embarch-umbrella` locally *
 
 **Never develop against a release build, and you rarely need `--release` at all for iteration.** A debug build compiles faster and behaves identically for everything except raw speed. Reach for `--release` only when producing the thing you or CI will ship.
 
-The three code-bearing repos are **independent Cargo projects, not a workspace**. Build each on its own; nothing cross-repo is needed to compile.
+These three repos are **independent Cargo projects, not a workspace**. Build each on its own — but each `path`-depends on sibling repos, so **nothing cross-repo is needed beyond having those siblings on disk and current; stale ones compile fine and hand you a wrong binary** (§4a).
 
 ## 2. Wiring a dev Core and API together
 
