@@ -52,10 +52,16 @@ nothing in the channel can make that commit exist. You still do not run
 
 Four steps, in this order.
 
-1. **Clear the latch.** `rm -f /home/gabriel/Github/embarch/.fleet/pump`. Arming
-   always starts with the pump **off**. The latch is a file so it survives a leg
-   ending; it must not survive a kill, or closing VS Code would stop the fleet
-   and re-arming would silently restart it.
+1. **Clear the latch and the progress mark.** `rm -f /home/gabriel/Github/embarch/.fleet/pump
+   /home/gabriel/Github/embarch/.fleet/tick`. Arming always starts with the pump **off**. The latch is a
+   file so it survives a leg ending; it must not survive a kill, or closing VS Code
+   would stop the fleet and re-arming would silently restart it. **`tick` goes with
+   it because it is the last session's progress and not this one's** — left in
+   place it reads as hours of silence, and on 2026-09-07 the watchdog deleted the
+   pump 18 seconds after `fleet start` latched it, capping the relay at one leg.
+   Absent is the honest state and both watchers already read it that way:
+   `/fleet-watch` step 2 measures the pump latch's age instead, and
+   `scripts/fleet-deadman.py` alerts only on a `tick` that exists.
 2. **Create the heartbeat**, one recurring cron job on `3-59/10 * * * *` — an
    off-minute schedule, not `*/10`, so this fleet's wake-ups do not land on the
    same instant as every other cron in the world. Its prompt must be **exactly**
@@ -72,7 +78,13 @@ Four steps, in this order.
    listener is armed, at what cadence, and that nothing will run until he says
    `fleet start`. No `--action`: it is telling him a thing is ready, not asking
    for anything. Tell the owner in the terminal which window this is, and that
-   closing it stops everything.
+   closing it stops everything. **Also tell him when the first tick is due — the
+   next `:x3` minute — and that if his `fleet start` still carries no `eyes`
+   reaction by then, typing anything into this window wakes it.** On 2026-09-07
+   a freshly armed listener's `:13` slot did not fire, the tick ran only when a
+   cross-session message arrived at `:18`, and `fleet start` sat unread for
+   fifteen minutes. One keystroke is the whole workaround; it asks nothing of the
+   fleet, and `tick.log` is what will say whether it is still needed.
 
 > **Fleet tick.** Read `#embarch-fleet` (channel_id `C0BUKTL2FPC`), newest 20
 > messages, `response_format: detailed`.
@@ -109,6 +121,18 @@ Four steps, in this order.
 > if it says a re-arm is owed, say that too and mention `<@U0AGQGSHM2P>`: a
 > fleet still running the tick prompt it was armed with looks entirely healthy.
 >
+> **The one exception, and it is the difference between a ten-minute delay and a
+> dead fleet: if the deployer reports that it deferred because work is still in
+> flight — `deploy.py` exit 3, leftover worktrees or `agent/*` branches — do NOT
+> stop for this tick.** Carry straight on below and spawn a leg. Those leftovers
+> are what a leg's step 0 reclaims, so the deploy is waiting on a leg, and the
+> latch outranking a leg here means it waits forever: on 2026-09-07 a leg died
+> mid-fold, and every tick for the next twenty minutes spawned a deployer that
+> refused and paged the owner instead of spawning the leg that would have fixed
+> it. The pin survives untouched and the next boundary retries it. Post that one
+> as an ordinary FYI — **no `--action`, no mention** — because nothing is owed by
+> anyone.
+>
 > Otherwise run, in
 > `/home/gabriel/Github/embarch/embarch-doc`, exactly:
 > `scripts/queue-status.py --no-supervisor --count`. **Pass `--no-supervisor`
@@ -144,10 +168,12 @@ Four steps, in this order.
 > five hours on 2026-09-03.
 >
 > **STEP 3 — liveness.** Last thing in every tick, whatever happened above,
-> including when nothing qualified: `touch /home/gabriel/Github/embarch/.fleet/tick`. It is one file
-> operation and it is the evidence this window is still ticking. A wedged tick
-> never reaches it, which is the point — a watchdog cannot ask a hung process
-> whether it is hung, but it can read an mtime.
+> including when nothing qualified: `/home/gabriel/Github/embarch/embarch-fleet/scripts/fleet-tick.py
+> listener`. It is one command and it is the evidence this window is still
+> ticking — it touches the mtime the watchdog reads and appends one labelled
+> line to `/home/gabriel/Github/embarch/.fleet/tick.log`, the history an mtime cannot keep. A wedged
+> tick never reaches it, which is the point — a watchdog cannot ask a hung
+> process whether it is hung, but it can read an mtime.
 >
 > **You are not the only writer of that file, and you must not be.** A leg
 > touches it too, at every dispatch and every fold, because this window's cron
@@ -216,6 +242,15 @@ Two things follow, and neither is optional:
   `fleet status`, `fleet queue`, a one-off request: all of it sits unread for up
   to a full leg. That is acceptable for everything except a stop, which is why
   the stop has its own route.
+
+**`tick.log` is where that mtime's history goes**, one labelled line per touch,
+written by the same command. An mtime holds one moment and overwrites the rest,
+so until 2026-09-07 nothing on this machine could say whether a slot had fired
+on time — and that day a freshly armed listener's `:13` slot did not fire at
+all, the tick ran at `:18` when a cross-session message woke the session, and
+the only evidence was a person watching the channel with a clock. Read it with
+`scripts/fleet-tick.py --report`: `listener`-to-`listener` gaps are this
+window's own cadence, any-to-any is what the watchdog's threshold has to clear.
 
 **`fleet stop` reaches a live leg through the supervisor's own poll, not through
 this window.** `.claude/leg.md` requires the supervisor to read
