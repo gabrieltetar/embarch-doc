@@ -48,14 +48,70 @@ reported with the provenance of the least-discriminating rule available.
 
 ## Done when
 
-- [ ] A named constant for the declared-serial provenance exists beside `ENUMERATED`, and `select`
+- [x] A named constant for the declared-serial provenance exists beside `ENUMERATED`, and `select`
       sets it when `no_vid_gate` is on.
-- [ ] `DetectedPort::detected_by`'s doc lists every value the field can hold.
-- [ ] The existing declared-serial tests in `signal.rs` assert the provenance as well as the port name.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including
+- [x] `DetectedPort::detected_by`'s doc lists every value the field can hold.
+- [x] The existing declared-serial tests in `signal.rs` assert the provenance as well as the port name.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including
       `cargo test --no-default-features --features hardware`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Closed, 2026-09-07
+
+**`DECLARED_SERIAL` (`"declared-serial"`) added beside `ENUMERATED`** in `src/hardware/port.rs`.
+`select` now overwrites a candidate's `detected_by` with it whenever `Filter::no_vid_gate` is on,
+unconditionally — not derived from the candidate's actual VID, because under that regime the VID
+played no discriminating role regardless of what it happens to be. This fixes both the originally
+filed case (an unrecognized-VID bridge got the generic `"vid-match"` fallback string, naming a rule
+that never ran) and the bench-adjacent case where the declared-serial candidate happened to carry a
+known VID (`"segger-vid-match"`/`"silabs-vid-match"` credited for the same reason, equally wrong).
+
+**The stale `"unreachable given how candidates are filtered"` comment is gone.** `detected_by_for_vid`'s
+catch-all arm now says accurately why it is unreached today (every real caller either gates to one of
+the three named VIDs or overwrites the result outright) rather than a claim `Filter::no_vid_gate`
+already falsified.
+
+**`DetectedPort::detected_by`'s doc now enumerates all four values** and states the field's actual
+semantics: which of three *regimes* resolved a port (a VID rule ran and gated; a declared serial ran
+and the VID gate was off; nothing ran at all), not which individual comparison eliminated the last
+other candidate.
+
+**The measured bench scenario (three SEGGER candidates, VID rule narrowed nothing, declared serial +
+interface did) turned out to be a different, narrower path than the filed bug** — `GET /dev-bench/port`
+resolves through `Filter::resolve` (the VID gate genuinely on), not `Filter::for_declared_serial`. Filed
+in writing as **embarch-topology decision 24**: kept as one field, and this residual over-crediting case
+is accepted rather than chased, because the VID gate did exclude every other vendor there (under-informative,
+not false) — unlike the case just fixed, where the credited rule never ran at all. Pinned by a new unit
+test (`a_vid_rule_that_narrowed_nothing_is_still_credited_when_the_gate_ran`) so it reads as a decision,
+not a rediscovery.
+
+**Decision 24 filed in `embarch-topology/decisions/enrollment.md`**, not `decisions/links.md` (which holds
+decisions 17/18, the closer thematic fit) — `links.md` had only ~669 B of headroom before its reserve
+threshold and no room for a ~2.9 KB decision; `enrollment.md` had ~3.2 KB of headroom and decision 20's
+own precedent (making an invisible guess visible on the same `DetectedPort` struct) is the closer
+methodological fit anyway. `decisions.md`'s index line updated to list decision 24 under `enrollment.md`.
+
+**`open.md`'s existing bullet on this defect (already in reserve) was tightened rather than grown**: it
+now says task 003's half is closed and states decision 24's residual-acceptance call, while leaving
+`tasks/topology/004` (the unrelated WSL/USB-cable defect) exactly as it was. Net: 4,206 B -> 4,322 B,
+still inside the reserve already tracked by open task `tasks/topology/014`; no new compaction task filed.
+`spec.md` untouched deliberately — it was 47 B from its own reserve threshold and nothing it currently
+states became false.
+
+**Cross-repo check, per the task's own instruction:** grepped `embarch-core`, `embarch-api`,
+`embarch-ui`, `embarch-study-designer`, `embarch-outpost` for every `detected_by` string value
+(`vid-match`, `segger-vid-match`, `espressif-vid-match`, `silabs-vid-match`, `enumerated`). No string
+matching found — `embarch-core`'s `main.rs` only interpolates the field for display, and
+`embarch-api`'s `embarch-core-client` mirrors it as an opaque `String` with no branch on its value. So
+adding a fourth opaque string is safe; nothing outside this repo needed touching, and no `inbox/` drop
+was warranted.
+
+**Gate:** `cargo build`, `cargo test` (14 passed), `cargo test --no-default-features --features
+hardware` (42 passed, including the new/updated tests), `cargo clippy --all-targets -- -D warnings`
+(default features and `--no-default-features --features hardware`, both clean), `check-ownership.py
+--scope topology` (docs worktree) and `--code-repo --repo .` (code worktree), and `check-docs.py`
+(10/10 checks green) all pass.
 
 ## Doc-size reserve for `topology` — supervisor, leg 036, 2026-09-07
 
