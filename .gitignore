@@ -17,3 +17,7 @@ inbox/*.md
 # the 2026-08-15 report's rule still lives: that file is local-only and
 # unversioned, so a re-clone silently starts committing the reports instead.
 .claude/suite-review-*.md
+
+# Python bytecode from running the scripts in scripts/. Untracked and worthless,
+# and a leg's `git add -A` during a fold would otherwise sweep it into a commit.
+__pycache__/

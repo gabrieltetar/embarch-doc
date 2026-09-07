@@ -14,9 +14,16 @@ unchanged (`DOC-PROTOCOL.md` §5, `embarch-fleet/protocol.md` §10). Every check
 still runs even after one fails, because a supervisor wants the whole picture
 before deciding whether to block a task, not the first red.
 
+A check that passes prints nothing here -- with one exception. A line starting
+`NOTE:` in a PASSING check's output is surfaced along with its indented detail
+lines (2026-09-06, tasks/doc/015). That exists so a finding a check deliberately
+demoted from error to warning -- today, anything in a gitignored `inbox/` drop --
+is still *seen*, rather than swallowed by the wrapper on the strength of an rc 0.
+A warning nobody prints is a warning nobody has.
+
 Usage:
   scripts/check-docs.py            run them all, print one line each
-  scripts/check-docs.py --quiet    print only failures
+  scripts/check-docs.py --quiet    print only failures and NOTE lines
 Exit status: 0 if all pass, 1 otherwise.
 """
 from __future__ import annotations
@@ -77,10 +84,28 @@ CHECKS = (
 )
 
 
+def notes_in(out: str) -> list[str]:
+    """A passing check's `NOTE:` lines, each with its indented detail block.
+
+    A NOTE runs until the first line that is neither indented nor blank, so a
+    check can print a heading plus its findings without the wrapper guessing.
+    """
+    lines, keep, inside = out.splitlines(), [], False
+    for line in lines:
+        if line.startswith("NOTE:"):
+            inside = True
+        elif inside and not (line.startswith(" ") or not line.strip()):
+            inside = False
+        if inside and line.strip():
+            keep.append(line)
+    return keep
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--quiet", action="store_true", help="print only failures")
+    ap.add_argument("--quiet", action="store_true",
+                    help="print only failures and NOTE lines")
     args = ap.parse_args()
 
     failed = []
@@ -96,6 +121,8 @@ def main() -> int:
         if r.returncode == 0:
             if not args.quiet:
                 print(f"  PASS  {label}")
+            for line in notes_in(r.stdout):
+                print(f"        {line}")
         else:
             failed.append(label)
             print(f"  RED   {label}")

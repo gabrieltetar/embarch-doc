@@ -39,8 +39,16 @@ list elsewhere in that doc cannot invent an entry) and, where the extraction of
 DOC-PROTOCOL.md §3 has happened, from the whole of its `decisions.md` -- or,
 where those outgrew one file, from every `decisions/<topic>.md` under it.
 
+Findings in `inbox/*.md` are WARNINGS, never failures (2026-09-06,
+tasks/doc/015), for the same reason and on the same rule as check-links.py --
+read that file's header for the argument. The shape this script sees is the
+second and third of the three: a drop cites the decision number it is itself
+*proposing*, or one that exists on a commit the owner's checkout has not
+pulled. Both are correct-by-construction in a drop and both are errors the
+moment the drain makes it a committed `tasks/` file.
+
 Usage: scripts/check-decision-refs.py [--verbose] [--warnings]
-Exit status: 0 if no errors, 1 otherwise.
+Exit status: 0 if no errors outside inbox/, 1 otherwise.
 """
 import glob
 import os
@@ -66,6 +74,15 @@ DOC_PATH = re.compile(r'([a-z0-9-]+)/(?:design|decisions)\.md')
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
+# Gitignored staging directory. Scanned, but its findings warn rather than fail;
+# `inbox/README.md` is committed (.gitignore negates it) so it is NOT exempt.
+INBOX = 'inbox/'
+
+
+def is_drop(rel):
+    """True for a gitignored inbox drop; False for inbox/README.md and all else."""
+    rel = rel.replace(os.sep, '/')
+    return rel.startswith(INBOX) and os.path.basename(rel) != 'README.md'
 
 # A reversal row is cited as "reversals.md ... row 86" / "rows 83-85". The rows
 # live in reversals/rows-<a>-<b>.md and a row number is a permanent identity, so
@@ -240,6 +257,24 @@ def main():
         print()
 
     bad_rows, rows_checked, rows_defined = check_reversal_rows()
+
+    # inbox/ drops warn; everything else fails. Split BEFORE any exit decision.
+    drop_errors = [e for e in errors if is_drop(e[0])]
+    errors = [e for e in errors if not is_drop(e[0])]
+    drop_rows = [r for r in bad_rows if is_drop(r[0])]
+    bad_rows = [r for r in bad_rows if not is_drop(r[0])]
+
+    if drop_errors or drop_rows:
+        # NOTE: is the marker check-docs.py surfaces on an otherwise-green run.
+        print(f'NOTE: {len(drop_errors) + len(drop_rows)} unresolved citation(s) '
+              f'in gitignored inbox/ drops -- warnings, not failures; the drain '
+              f're-checks them as errors.')
+        for rel, lineno, target, num, excerpt, why in drop_errors:
+            print(f'  (inbox) {rel}:{lineno} decision {num} -- {why}')
+        for rel, lineno, num, excerpt in drop_rows:
+            print(f'  (inbox) {rel}:{lineno} reversals row {num} -- not defined')
+        print()
+
     if bad_rows:
         print(f'{len(bad_rows)} citation(s) of a reversal row no range file '
               f'defines (of {rows_defined} rows present):\n')
