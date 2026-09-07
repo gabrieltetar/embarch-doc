@@ -43,13 +43,26 @@ the shape; the path is `tasks/topology/`, never `tasks/doc/`) — recording the 
 
 ## Done when
 
-- [ ] A single `fn` classifies a chip name into a family, and `read` plus `is_nordic_deviceid_chip`
-      both call it.
-- [ ] Tests cover `nRF54L47`, a lowercase/suffixed nRF54L spelling, and `nRF52840`, asserting which
-      register pair each selects, and that an unknown chip is still the named error.
-- [ ] `unrecognized_chip_is_a_named_error_not_a_guess` (`:723-731`) asserts against the real
+- [x] A single `fn` classifies a chip name into a family, and `read` plus `is_nordic_deviceid_chip`
+      both call it. (`classify_chip` in `src/hardware/hardware_id.rs`.)
+- [x] Tests cover `nRF54L47`, a lowercase/suffixed nRF54L spelling, and `nRF52840`, asserting which
+      register pair each selects, and that an unknown chip is still the named error. (Also added
+      `nRF54LM10` and an `nRF54H20` case, since the task's own wording covers `nRF54H*` too.)
+- [x] `unrecognized_chip_is_a_named_error_not_a_guess` (`:723-731`) asserts against the real
       classifier instead of re-implementing the match inline.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including
       `cargo test --no-default-features --features hardware`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. (Decision 25 added to
+      `decisions/validation.md`; no `status.d/` fragment — nothing suite-level went false; `spec.md`
+      and `open.md` needed no change, since neither names the exact-match set this fixed. An
+      `inbox/` drop records the option to unify this crate's classifier with
+      `embarch-core/src/flash_backend.rs`'s own nRF54L matcher, which is `core`'s call, not
+      `topology`'s.)
+
+## Note
+
+`embarch-core/src/flash_backend.rs:103-109` accepts a broader, lowercase-normalized `nrf54l`
+spelling set (no `nrf54h` arm) for a related but separate decision (needs-vendor-tool). Not
+unified here — that would touch `embarch-core`, outside this task's scope — see the `inbox/` drop
+this task filed.
