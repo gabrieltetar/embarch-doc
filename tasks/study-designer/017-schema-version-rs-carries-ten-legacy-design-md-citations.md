@@ -1,6 +1,6 @@
 # 017 — `schema_version.rs` carries ten legacy `design.md §3 decision N` citations
 
-**State:** claimed by agent/study-designer/017-schema-version-rs-carries-ten-legacy-design-md-citations, 2026-09-07 09:44
+**State:** done
 **Source:** `embarch-reviewer` on `tasks/study-designer/016`, leg 031, 2026-09-07 — the reviewer
 found *two* such citations that unit had newly authored; the supervisor fixed those two in scope
 (`embarch-study-designer` **`f70e4ae`**) and found ten more while doing it. This task is the ten.
@@ -78,13 +78,63 @@ in new clothes, which is the trap `enroll_probe` fell into in `tasks/api/040`.
 
 ## Done when
 
-- [ ] All ten citations use a bare `decision N` (own) or `<repo> decision N` (another's), with no
+- [x] All ten citations use a bare `decision N` (own) or `<repo> decision N` (another's), with no
       `design.md` and no `§3` anywhere in `src/schema_version.rs`.
-- [ ] Every number verified to resolve against the named sub-project's current `decisions.md`
+- [x] Every number verified to resolve against the named sub-project's current `decisions.md`
       index — say in the task file which ones you checked and how.
-- [ ] A repo-wide `grep -rn 'design\.md' src/` reports what is left, if anything, and the task
+- [x] A repo-wide `grep -rn 'design\.md' src/` reports what is left, if anything, and the task
       says whether that is a further sweep or nothing.
-- [ ] `cargo doc --no-deps --all-features` still reports **0** warnings — and run it after a
+- [x] `cargo doc --no-deps --all-features` still reports **0** warnings — and run it after a
       `cargo clean -p embarch-study-designer`, because a cached green here is the worker's own
       previous run replayed, not a check.
-- [ ] Gate green; `changelog.d/study-designer-*` fragment.
+- [x] Gate green; `changelog.d/study-designer-*` fragment.
+
+## Closing notes — worker, 2026-09-07
+
+**Scope turned out to be larger than "ten" once "no `§3` anywhere" (Done-when bullet 1) was taken
+literally.** The ten table rows are the ten places `design.md` literally appears in
+`schema_version.rs`, but the file also carried **twenty more** bare `§3 decision N` / `§3 decisions
+N/M` citations with no `design.md` prefix (e.g. line 9 `(§3 decisions 17, 19)`) — same retired
+form, just missing the file name half. All of those are this crate's own decisions (none pointed at
+another sub-project), all verified to resolve (list below), and all fixed the same way: `§3
+decision(s)` → `decision(s)`. `grep -n '§3\|design\.md' src/schema_version.rs` now returns nothing.
+
+**One of the ten table rows didn't match the table's own description.** Row "239" was tabulated as
+`design.md §3 (decision 52 area)`, but the actual text at that location (confirmed unchanged since
+`f70e4ae` — no other commits landed on this file after the claim commit) is `(design.md §5.1)`: no
+`§3`, no decision number at all — a citation to a *spec section* of the retired file, not a
+decision. Since it doesn't resolve to any decision number under any spelling rule the task
+describes, I did not invent one; I dropped the stale file/section pointer entirely (the sentence
+reads fine without it — `GET /status` is already introduced as the connection-establishment check
+two sentences later). Flagging this explicitly per the "stop and report rather than guess" rule,
+even though the fix itself (delete a pointer to a gone file) needed no guess.
+
+**Decision numbers checked, against each sub-project's current top-level `decisions.md` index**
+(the `| Load this for | Decisions |` table, which is a set membership check — I did not open every
+target file, since the index itself already resolves the number to a mission file):
+
+- `embarch-study-designer` (own): 5 (versioning.md not needed, but table below), 7 — n/a;
+  actually checked: **12, 17, 19, 24, 25, 27, 31, 32, 36, 39, 40, 41, 42, 43, 44, 47, 50, 52, 53,
+  54, 58, 59, 60, 61, 62** — every one present in `embarch-study-designer/decisions.md`'s index
+  (spread across `versioning.md`, `wire.md`, `streams.md`, `gatt.md`, `study.md`, `ble.md`,
+  `declares.md`, `seals.md`, `removed.md`, `payload-meaning.md`, `protocols.md`,
+  `protocol-exec.md`, `limits.md`). None missing.
+- `embarch-dev-bench`: **7, 18** (`link.md`), **39** (`logging.md`), **41** (`protocols.md`) — all
+  present in `embarch-dev-bench/decisions.md`'s index.
+- `embarch-core`: **35** (`handshake.md`) — present in `embarch-core/decisions.md`'s index.
+- `embarch-outpost`: **9** (`manifest.md`) — present in `embarch-outpost/decisions.md`'s index.
+
+No number failed to resolve; nothing was guessed.
+
+**Repo-wide `grep -rn 'design\.md' src/` (from the code worktree) reports 290 occurrences across 23
+other files** (`study.rs`, `limits.rs`, `streams.rs`, `study_builder.rs`, `result.rs`,
+`protocol.rs`, `ffi.rs`, `lib.rs`, `gatt.rs`, `sample.rs`, `gatt_extract.rs`, `outpost.rs`,
+`merged_actions.rs`, `eap.rs`, `decoder.rs`, `crc.rs`, `registry.rs`, `bounded.rs`, `ids.rs`,
+`vendor.rs`, `gatt_names.rs`, `eap_parse.rs`, `eap_interp.rs`) — **`schema_version.rs` itself is
+now clean.** This is a further sweep, well beyond one unit: filed as
+`tasks/study-designer/018-design-md-citations-repo-wide-sweep.md`, with the full per-file count and
+a note that it likely splits into more than one unit.
+
+**`cargo doc --no-deps --all-features`, run after `cargo clean -p embarch-study-designer`: 0
+warnings.** `cargo build`, `cargo test` (108 + 9 tests, all pass), `cargo clippy --all-targets -- -D
+warnings`: all clean, no `Cargo.toml` below the crate root.
