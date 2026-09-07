@@ -20,7 +20,9 @@ embarch-ui (one Rust binary, axum, zero-build)
   |                                  — pure data, no I/O)
   +-- links embarch-core-client     (the one implementation of "reach Core over
   |                                  HTTP+Bearer", shared with embarch-api)
-  +-- does NOT link embarch-topology, at all, deliberately
+  +-- links embarch-topology only transitively, through embarch-core-client, and
+  |   only its `software` feature — never the `hardware` one, so neither
+  |   probe-rs nor serialport is in the tree (decisions/wiring.md)
   |
   +-- HTTP + Bearer --> embarch-core
         every hardware-adjacent call, read or write:
@@ -29,13 +31,20 @@ embarch-ui (one Rust binary, axum, zero-build)
           GET /dev-bench/port · GET /dev-bench/hello
           POST /study · GET /study/{id} · GET /study/{id}/steps
           GET /study/{id}/streams · GET /study/{id}/stream/{name}
-        GET /logs/stream (SSE live tail) · GET /logs/recent (backfill)
+          GET /study/{id}/gatt-data
+        GET /logs/recent, and nothing else under /logs. The Debug tab's
+        Core-side backlog is one call to it on open; its live tail is a
+        server-side re-poll of the same endpoint (500-line tail, every 2 s,
+        diffed so only genuinely new lines are published; a failed poll is
+        logged server-side and the next tick retries). embarch-ui does NOT
+        subscribe to Core's GET /logs/stream and holds no /logs/stream
+        client at all — embarch-core-client has no method for it.
 
 vscode-extension/ (thin, TypeScript)
   spawns/stops the binary, opens the system browser, renders nothing itself
 ```
 
-**It does not link `embarch-topology`, and the reason is load-bearing:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's.
+**It never links `embarch-topology`'s `hardware` feature, and the reason is load-bearing:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's. The crate itself is in the tree transitively (`embarch-core-client` depends on it, `software` feature only); what stays out is every hardware-touching path, which is what the `probe-rs`/`serialport` invariant below actually measures.
 
 ## The six tabs
 
@@ -48,9 +57,9 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 | **Study Designer** | Authoring a study: steps, the two `requires` fields, security levels, GATT capture taps, the declared-GATT picker, opening a firmware project |
 | **Enroll** | Submits to Core's enroll endpoint |
 | **Trace** | Renders a completed study's outpost capture: lanes, gap bands, a load repartition, a study-step row |
-| **Debug** | Live log tail, switchable between Core (over HTTP) and `embarch-api` (from its rolling file) |
+| **Debug** | Live log tail, switchable between Core (server-side poll of `GET /logs/recent`) and `embarch-api` (its rolling file); both reach the browser as this UI's own `lines` SSE event |
 
-Everything live is **SSE**; there is no client-side interval polling anywhere.
+Everything live reaches the browser as **SSE** served by this binary; there is no client-side interval polling anywhere (no `setInterval` in `app.js`). Where a source has no push surface this repo consumes, the polling is server-side and the browser never sees it — the Debug tab's two log feeds are both that shape.
 
 ## Invariants
 
