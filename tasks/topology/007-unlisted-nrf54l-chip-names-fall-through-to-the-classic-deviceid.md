@@ -1,6 +1,6 @@
 # Stop routing unlisted nRF54L chip names to the classic `FICR.DEVICEID` address
 
-**State:** open
+**State:** claimed by agent/topology/007-chip-family-classifier, 2026-09-07 17:31
 **Source:** owner's repo survey, 2026-09-06 — the crate's own "an unrecognized chip is a named error, never a guess" has a hole
 **Scope:** topology
 **Hardware:** none
@@ -27,6 +27,19 @@ a probe.
 `hardware_id.rs:372-373` states the rule — "an unrecognized chip is a named error, never a guess" —
 and topology decision 21 rests on the Nordic arm being derived for exactly the set `read` handles.
 Today a one-character-different chip name silently leaves that set.
+
+## Doc-size reserve for `topology` — supervisor, leg 040
+
+`scripts/check-doc-size.py --pressure` at this leg's start puts one `topology` file in reserve:
+
+- `embarch-topology/open.md` — **4322/5120 B, 798 B left** (84.4%), filed against
+  `tasks/topology/014-compact-topology.md`, which is **open** (not blocked), so the debt is
+  already scheduled and you should not file a second one for this file.
+
+`embarch-topology/decisions/*` and `spec.md` are **not** in reserve, so a numbered decision here
+has room. **If your work pushes a different file into reserve, or leaves one there that nothing has
+filed, file `tasks/topology/<NNN>-compact-topology.md` in the same commit** (`tasks/README.md` has
+the shape; the path is `tasks/topology/`, never `tasks/doc/`) — recording the debt, not paying it.
 
 ## Done when
 
