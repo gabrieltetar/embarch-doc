@@ -30,6 +30,32 @@ every finding here is an error again. That is not theoretical -- it is how
 `tasks/api/023` was caught (tasks/doc/018). So a malformed drop is still
 refused, one step later, by the actor who moved it.
 
+Link syntax inside fenced code blocks and inline code spans is IGNORED
+(2026-09-06, tasks/doc/018), the way a renderer ignores it. Before this, a doc
+that explained a convention by quoting an example reference was reported as a
+broken link, because the example resolved relative to the doc *explaining* it
+rather than the doc that would carry it. The cheapest response — delete the
+example — makes the doc worse, and `DOC-CONVENTIONS.md` and the `tasks/` and
+`inbox/` READMEs are exactly the docs that want one. It had already cost a leg
+directly: `tasks/api/023` failed this check at its own claim commit, before
+its worker changed anything.
+
+The coverage that trade costs was measured, not assumed: **zero.** Across the
+whole corpus at the time, no `[text](target)` sat inside a code span or a
+fence, so nothing stopped being checked. Re-measure before widening this.
+
+The same strip runs over the *anchor* side, and that direction makes the check
+STRICTER rather than looser: a `## heading` quoted inside a fenced example used
+to mint a real anchor, so a `doc.md#that-heading` link kept resolving against a
+heading no reader can see. Also measured at zero fragment links affected, so it
+cost nothing to close and a future one it reddens is a real defect.
+
+**Indented (four-space) code blocks are deliberately NOT stripped.** Telling
+one from a list item's continuation paragraph needs a real block parser, and
+guessing wrong here silently drops a real link from coverage — the failure
+this check exists to prevent. Nothing in the corpus needs it. If that changes,
+the fix is a parser, not a heuristic.
+
 Usage: scripts/check-links.py   (run from anywhere; paths are repo-relative)
 Exit status: 0 if every relative link outside inbox/ resolves, 1 otherwise.
 
@@ -58,8 +84,41 @@ def is_drop(rel):
 
 
 LINK_RE = re.compile(r'\[[^\]]*\]\(([^)]+)\)')
+# An opening or closing fence: three or more backticks or tildes, optionally
+# indented. The info string after an opener is ignored.
+FENCE_RE = re.compile(r'^\s*(`{3,}|~{3,})')
+# An inline code span: a run of N backticks closed by another run of exactly N.
+# Confined to one line on purpose -- CommonMark lets a span cross lines, but a
+# stray unpaired backtick then swallows everything after it, and losing links
+# to a typo is worse than the rare multi-line span this misses.
+CODE_SPAN_RE = re.compile(r'(?<!`)(`+)(?!`)(.+?)(?<!`)\1(?!`)')
 EXPLICIT_ID_RE = re.compile(r'<a\s+id="([^"]+)"', re.I)
 HEADING_RE = re.compile(r'^#{1,6}\s+(.*?)\s*$', re.M)
+
+
+def strip_code(content):
+    """`content` with fenced blocks and inline code spans blanked out.
+
+    Line count is preserved (a stripped line becomes empty) and a code span is
+    replaced by spaces of the same width, so anything reported against the
+    result still lines up with the file on disk.
+    """
+    out, fence = [], None
+    for line in content.split('\n'):
+        m = FENCE_RE.match(line)
+        if fence is None:
+            if m:
+                fence = m.group(1)
+                out.append('')
+                continue
+        else:
+            # Only a run of the SAME character, at least as long, closes it.
+            if m and m.group(1)[0] == fence[0] and len(m.group(1)) >= len(fence):
+                fence = None
+            out.append('')
+            continue
+        out.append(CODE_SPAN_RE.sub(lambda mm: ' ' * len(mm.group(0)), line))
+    return '\n'.join(out)
 
 
 def slug(text):
@@ -85,7 +144,9 @@ def anchors_of(path):
         _anchor_cache[path] = set()
         return _anchor_cache[path]
     found = set(EXPLICIT_ID_RE.findall(body))
-    found |= {slug(h) for h in HEADING_RE.findall(body)}
+    # Headings from the stripped body: one quoted inside a fenced example is not
+    # an anchor, and used to make a link to a nonexistent heading pass.
+    found |= {slug(h) for h in HEADING_RE.findall(strip_code(body))}
     _anchor_cache[path] = found
     return found
 
@@ -102,7 +163,7 @@ def main():
     missing = []
     for path in find_md_files(REPO_ROOT):
         with open(path, encoding='utf-8') as f:
-            content = f.read()
+            content = strip_code(f.read())
         for match in LINK_RE.finditer(content):
             target = match.group(1).strip()
             if target.startswith(('http://', 'https://', 'mailto:')):

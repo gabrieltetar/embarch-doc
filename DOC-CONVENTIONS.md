@@ -18,7 +18,7 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 
 ## Referring to a decision
 
-**A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39`. Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
+**A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39` — but **prefer the bare number.** A link names a *file*, and a mission split moves an entry between a sub-project's decision files without changing its number, so `` `[decision 30](decisions/shape.md)` `` written from inside `embarch-api/` went on resolving after decision 30 moved to `decisions/tests.md`, and neither gate can see it (`tasks/doc/022`). Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
 
 `check-links.py` structurally cannot see one of these — it validates paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves all 2,362 of them, and has found two real classes of breakage:
 
