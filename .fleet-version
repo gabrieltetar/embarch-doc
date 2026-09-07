@@ -1,8 +1,8 @@
 {
-  "framework_sha": "c2f95ca9ac6d10014da3a5eba3027506afaefd22",
+  "framework_sha": "a3c62534f5e46c3256a478f4a34645ef056b1b25",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-07T07:15:33Z",
+  "installed_at": "2026-09-07T07:23:00Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "16c1e5616dc9fbe592581dc251303dfe10aba6a03a4d8b2527a6e8ea746dde0b",
@@ -12,8 +12,8 @@
     ".claude/agents/embarch-reviewer.md": "88935123417b90226f6eabadb5d0e774971c56ff3af44e53ed02984292715e57",
     ".claude/agents/embarch-supervisor.md": "29a3a8d84fe4fc898dbfc22ef517c84454e16e5a8a2639a9f303c964f1f7cb61",
     ".claude/agents/embarch-worker.md": "f34c0b93c587545d2780df54e8039bba2e8685101cda46e15d6f861395b54624",
-    ".claude/commands/fleet-watch.md": "eec5df6adf724b88e30ed186a5c25e1d262244066e8c9145d85cf537bd8e4c27",
-    ".claude/commands/fleet.md": "4ea907f0fa5269a59a87103f0dd202291fb86bad1a9795e4196884eff5470fc8",
+    ".claude/commands/fleet-watch.md": "b6dde2f9eab55ed49096337a0b6a868bd0d13234accc4aeb5a4ab6628447e2cf",
+    ".claude/commands/fleet.md": "0a1255001846bf22b679aeb06c25f243e3e43bcd655bcf6043ebd1f6f1f4e39f",
     ".claude/commands/suite-review.md": "e256dbca7ffa136b86084d0f3619cceb4582ac0c66250f9d06c96752e9b9f42d",
     ".claude/commands/supervise.md": "df06e82b973d5d8e4dd81b7b6e69f84d97f3aae38bea501fb78c42d2bfa292c0",
     ".claude/leg.md": "bf8a52be65eb9d3cedccf3ef564eaae5d71e36e28c46b68d8c51b41fbf5bdfee",
@@ -30,6 +30,7 @@
     "scripts/fold-commit.py": "9eb4dc19f2d5addac67e8dd76de05aeb843cbbdc77c8d2d3ebc0cadbcd1e3fa4",
     "scripts/fold-day.py": "bf6e8472252f119ec35b105b91bcec16a25820001f4683733a710a72dd7c3f36",
     "scripts/check-client-names.py": "d3d2c75c5868f3a4af442bb59ff01161fa7fcaf95ebf42c637650c1902d67f80",
-    "scripts/check-dispatch.py": "8da05f963d2c54bbb1f01d9b5cbe592f16e063f1210eaa8dc68f3775731d4935"
+    "scripts/check-dispatch.py": "8da05f963d2c54bbb1f01d9b5cbe592f16e063f1210eaa8dc68f3775731d4935",
+    "scripts/fleet-armed.py": "fbca2d31f26497e012002caef3c55eee9c44ae26fdf6c26dc1c947ccdd81f626"
   }
 }
