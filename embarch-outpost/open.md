@@ -25,5 +25,6 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Deferred with a named trigger
 
+- **This repo has no CI at all** — `.github/workflows` is empty, so nothing runs `tests/run-all.sh` on push, and the toolchain-free legs' now-fixed ordering (decisions/module.md decision 22) is only ever exercised by a human remembering to. Whether `embarch-outpost` gets a workflow is a suite-scope call (`tasks/suite/021`), not this task's — filed there, not built here.
 - **A `doctor`-style staleness check for the DUT**, mirroring the one that already exists for dev-bench firmware: the running firmware reports its outpost version and build ID, and that could be compared against the module revision checked out. **Not built; named because the mechanism is now free.**
 - **A vendor-neutral portable core with a porting layer.** Genuinely wider reach, and genuinely more design for a reach nothing needs — both real DUT firmware repos in play are Zephyr. **Revisit when a non-Zephyr DUT is real, not before.**

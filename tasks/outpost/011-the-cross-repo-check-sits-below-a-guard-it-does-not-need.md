@@ -1,6 +1,6 @@
 # 011 — The only check holding the outpost's three wire implementations in agreement cannot run in the configuration its own README claims, and no CI runs it anywhere
 
-**State:** claimed by agent/outpost/011-toolchain-free-legs-above-the-west-guard, 2026-09-07 01:45
+**State:** done by agent/outpost/011-toolchain-free-legs-above-the-west-guard, 2026-09-07
 **Source:** suite review pass 2026-09-06, dimension 1 (standalone-ness). Code-confirmed.
 **Scope:** outpost
 **Hardware:** none
@@ -43,12 +43,42 @@ two files in two languages.
 
 ## Done when
 
-- [ ] A bare checkout with no `WEST` set still runs the cross-decoder and the other toolchain-free
+- [x] A bare checkout with no `WEST` set still runs the cross-decoder and the other toolchain-free
       leg.
-- [ ] `README.md:143`'s claim about which legs need a toolchain is true.
-- [ ] A run in which the cross-decoder skipped for missing fixtures says so in its final summary,
+- [x] `README.md:143`'s claim about which legs need a toolchain is true.
+- [x] A run in which the cross-decoder skipped for missing fixtures says so in its final summary,
       not only mid-stream.
-- [ ] Gate green; `changelog.d/outpost-*` fragment.
+- [x] Gate green; `changelog.d/outpost-*` fragment.
+
+## Closed
+
+Fixed by moving `tests/cross_decoder.py` above the `WEST` guard in
+`embarch-outpost/tests/run-all.sh`, alongside `decoder_unit.py`, and giving the
+script a final summary block that restates a skipped cross-decoder rather than
+leaving it only in the mid-stream `SKIP:` line. `README.md`'s Tests section is
+corrected to describe both toolchain-free legs. Recorded as
+`embarch-outpost/decisions/module.md` decision 22, which also argues in writing
+that a missing sibling-repo fixture should stay a skip rather than become a
+failure — decision 4 in `decisions/layout.md` is about a wire change inside
+this repo, not about what a solo clone of `embarch-outpost` is entitled to
+assume exists beside it.
+
+**Proved both ways**, with `WEST` and `ZEPHYR_BASE` unset:
+- Pre-fix (stashed the change and re-ran): aborts at line 18 —
+  `tests/run-all.sh: line 18: WEST: set WEST to a west executable` — after the
+  decoder-unit leg but *before* the cross-decoder ever runs.
+- Post-fix: the decoder-unit leg runs, then
+  `=== cross-decoder (this repo's decoder vs embarch-core's, same bytes) ===`
+  runs and prints its `SKIP:` lines (no sibling repos in this worktree), and
+  *then* the script aborts at the (now later) `WEST` guard line for the three
+  Zephyr legs — proving the toolchain-free legs now execute unconditionally.
+
+**CI is out of scope here** (`tasks/suite/021`, suite-scope, not run by this
+task) — noted in `open.md` under "Deferred with a named trigger". The three
+Zephyr legs (`unit`, `module_off`, `native_sim_stream`) did not run in this
+sandbox — no `ZEPHYR_BASE`/west toolchain checkout available here, and this
+task's fix does not touch their content or ordering relative to each other,
+only what runs ahead of the `WEST` guard.
 
 ## Reserve — read before you write a doc (supervisor, leg 030)
 

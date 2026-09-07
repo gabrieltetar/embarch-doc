@@ -8,7 +8,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 
 | Load this for | Decisions |
 |---|---|
-| [The module and its boundary](decisions/module.md) — a Zephyr module in someone else's firmware | 1, 14, 21 |
+| [The module and its boundary](decisions/module.md) — a Zephyr module in someone else's firmware | 1, 14, 21, 22 |
 | [What gets traced](decisions/tracing.md) — kernel hooks, markers, and keeping itself out of its own trace | 2, 6, 19 |
 | [Naming what the wire reports](decisions/naming.md) — a pointer and a vector number become names | 7, 8 |
 | [The transport](decisions/transport.md) — a lock-free ring, overflow, and the drain loop's fixed point | 3, 5, 20 |
