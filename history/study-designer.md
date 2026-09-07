@@ -6,7 +6,7 @@
 
 ### Added
 - `BleAddress`'s doc comment now states display order, most-significant first, for both kinds — [interfaces/types.md](../embarch-study-designer/interfaces/types.md).
-- First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/crate.md)).
+- First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
 
 ### Changed
 - embarch-study-designer decisions compacted, 175 KB to 154 KB across 24 files.
@@ -14,6 +14,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- Five stale/broken rustdoc intra-doc links fixed; `cargo doc` stays out of the gate (decision 68).
 - Two registry fields covering the same payload byte are refused, and only a `Write` action may carry fields at all (decisions/registry.md 67).
 - An over-long registered-action payload says so instead of reporting a step count, and a field's byte range is bounded at registry-validate time (decisions/registry.md 66).
 - Two registered actions sharing a name are now refused on load and on save, as duplicate struct layouts already were ([decision 35](../embarch-study-designer/decisions/registry.md)).
