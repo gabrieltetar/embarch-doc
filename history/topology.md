@@ -4,8 +4,12 @@
 
 ## 2026-09
 
+### Changed
+- Decision 21 moved verbatim to its own mission file, [decisions/validation.md](../embarch-topology/decisions/validation.md); spec.md compacted 10,239 -> 8,913 B.
+## 2026-09
+
 ### Decided
-- The nRF54L device-ID address pair is confirmed against real silicon, and the identity gate's mismatch refusal is on record three times — [decision 21](../embarch-topology/decisions/enrollment.md).
+- The nRF54L device-ID address pair is confirmed against real silicon, and the identity gate's mismatch refusal is on record three times — [decision 21](../embarch-topology/decisions/validation.md).
 ## 2026-09
 
 ### Fixed
