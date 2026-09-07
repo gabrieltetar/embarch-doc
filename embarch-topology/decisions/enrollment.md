@@ -1,8 +1,8 @@
-# embarch-topology decisions: Enrollment and board identity
+# embarch-topology decisions: Enrollment and what a bench declares
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-06.
 
-The one thing in the suite that structurally requires a human, and what the bench taught it.
+What enrolment *records*: the one thing in the suite that structurally requires a human, and the facts detection cannot produce. What live validation then *asserts* is [validation.md](validation.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -39,17 +39,3 @@ Two independent gaps, one event: **the day the dev bench went back to being an n
 So a detected port now carries **how many candidates it was guessed among**, set only when the lowest-interface rule actually chose, **so a caller reports "COM16, guessed among 2" instead of "COM16".** The guess itself is **kept, not replaced by an error** — every bench before this DK had one VCOM and needs to declare nothing — **but it is now a guess that says so.** The declaration is exposed three ways, with serial and interface **independently optional on all of them, since they answer different questions.**
 
 *Rejected: resolving it by handshake* — try each candidate and keep whichever answers. **Genuinely more automatic, and declined for the layering reason this module's own header states: nothing here opens a port.** It reads USB descriptors the OS already enumerated; opening the link and speaking the protocol is the consumer's job. **Moving protocol knowledge in here to save one declared fact would make the topology crate depend on the dev-bench wire schema, and the schema moves far more often than a bench's cabling does.**
-
-### 21 — The self-reported-ID comparison gains a Nordic arm; the gate had never once run against Nordic silicon
-
-Core's gate confirms the board answering on the runtime link is the same silicon its JTAG probe just verified. It shipped with **exactly one declared relation and a deliberate rule that every other chip returns undeclared** — *"not a pass: a comparison that could not be made is not a comparison that succeeded."* **That rule was right and it held. What it also meant is that the moment the bench stopped being that one chip, the gate stopped concluding anything**: it reported undeclared while showing two obviously-related IDs — **the same sixteen hex digits with their halves swapped.**
-
-**The arm is derived, not fitted to that observation** — the standard the module sets is *both implementations' actual register reads, in view at once.* Zephyr's Nordic driver reads the pair in index order **and then emits it reversed on purpose**; the byte-emission and hex-encoding orders match on both sides, so **each half encodes identically and only their order differs. The observed pair is a confirmation of the derivation, not its source.**
-
-One conditional branch in that driver covers both of Nordic's device-ID register layouts, **which is why a single relation serves the classic parts and the nRF54L series alike.** **The limit is written into the code rather than left implicit:** that file has fallbacks to other registers for parts where the device ID is inaccessible, **and those produce something this projection does not describe** — such a chip would come back *mismatch* rather than *undeclared*, **the one way this arm can be wrong**, and the same exposure the first arm already carries, accepted on the same terms.
-
-**Why this matters more here than it did on the first chip**, and why it is a decision rather than a bug fix: decision 10 flagged the risk of a dev-bench sharing a chip family with the DUT, **and that is now the bench** — two boards of the same chip, two probes of the same vendor, two VCOMs each. **The gate that distinguishes them is the only thing standing between "the probe verified board A" and "board B answered on the link", and until this arm existed it was returning undeclared for both of them.**
-
-**This arm turned out to confirm the register addresses it reads, which was not why it was built.** The nRF54L device-ID pair was the crate's one address taken partly on inference: the first word came from a real user's working read, and **the second was derived from the classic layout's two-word stride** and had never been checked against silicon. A match here settles it, because the two sides reach the registers by routes that share nothing. The JTAG side reads two hardcoded absolute addresses over the probe; the board's side goes through the vendor HAL's own device-ID accessor, which has never heard of those constants. On the dev bench they agree exactly, halves swapped as derived — **JTAG `6fcddc36cb781b71`, self-reported `cb781b716fcddc36`, relation *match*** [measured 2026-08-31, reproduced 2026-09-06 22:07:51Z and 22:15:45Z from Core's own handshake log]. The **second** word is the one that carries the weight: a wrong address there would still have produced a plausible 64-bit value and a distinct-looking ID, and could not have produced the HAL's `DEVICEID[1]`.
-
-**What it does not confirm, kept explicit because the temptation is to round it up.** This is one board. The DUT's readback rests on the same code arm and the same chip family, but nothing corroborates its 64 bits independently — its firmware speaks no handshake that self-reports, so the relation cannot run on that end at all. Three distinct nRF54L15s have now been read (`6fcddc36cb781b71`, `834f2559f10a6cdf`, `2f77b9c3f85b29e9`) and **all six words are distinct**, which rules out the second address landing on something family-constant, but that is corroboration and not the same proof. `nRF54L10`, `nRF54L05` and `nRF54LM20A` share the arm and no such silicon has been on this bench.

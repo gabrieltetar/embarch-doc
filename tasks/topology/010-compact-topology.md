@@ -1,6 +1,6 @@
 # 010 — Compact `embarch-topology/decisions/enrollment.md` and `spec.md`
 
-**State:** claimed by agent/topology/010-compact-topology, 2026-09-06 18:22
+**State:** done
 **Source:** `scripts/check-doc-size.py` — both entered reserve on leg 023's bench unit
 (`tasks/topology/002`), which added a confirmation paragraph and its limits to decision 21 and
 rewrote `spec.md`'s "Where it stands" from *unexercised* to *measured*
@@ -85,9 +85,62 @@ does. Consider that before prose surgery.
 
 ## Done when
 
-- [ ] Both files are out of reserve, or a split has moved the content somewhere with room.
-- [ ] Every item on the **Must not delete:** list survives, verified against the pre-image rather
+- [x] Both files are out of reserve, or a split has moved the content somewhere with room.
+- [x] Every item on the **Must not delete:** list survives, verified against the pre-image rather
       than from memory.
-- [ ] `scripts/check-decision-refs.py` still resolves and no decision is renumbered.
-- [ ] The human question is answered in the log entry.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `scripts/check-decision-refs.py` still resolves and no decision is renumbered.
+- [x] The human question is answered in the log entry.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+**Method: mission split first, prose surgery second.**
+
+`decisions/enrollment.md` split along the line §2 named. **Decision 21 moved
+byte-for-byte** into a new `decisions/validation.md` — *what live validation
+asserts* — leaving 14, 15, 16, 20 in `enrollment.md` as *what enrolment records*.
+Nothing was restated, so the in-flux objection does not apply to that half, and
+every **Must not delete:** item from decision 21 survives by construction:
+verified `pre21.strip() == new21.strip()` against `git show
+origin/main:embarch-topology/decisions/enrollment.md`, then re-verified needle by
+needle in the post-image (both hardcoded absolute addresses, the vendor HAL
+accessor that has never heard of them, the second word carrying the weight, the
+`6fcddc36cb781b71` / `cb781b716fcddc36` pair, the DUT's absent self-report path,
+the three unattached part numbers, and the fallback-registers-return-*mismatch*
+limit). Decision 15's "right chip, wrong physical board" paragraph was not
+touched at all.
+
+`spec.md` was compacted by **choosing whole topics, not by vaguing sentences**.
+Dropped: the `Win32_PnPEntity` two-probe measurement record, the `select`
+code-path trace, and the CLI's before/after history — all of it either already in
+decision 20 or cold under DOC-COMPACTION-PASS.md ("measurements · validation
+records · the investigation log"), and all of it one `git log -p` away. Kept as
+rules: role uniqueness, `guessed_among`'s meaning, that the declared *interface*
+is the only thing separating `COM16` from `COM17` with the console on the
+*higher* one, the failure signature (flashes, boots, runs, times out), and that
+`guessed_among`'s trigger is an under-declared bench rather than a crowded one.
+"What the consumers gave up" was rewritten as "What each consumer owns now" —
+same facts, stated as current truth rather than as a migration.
+
+**One §3 placement fix, not a byte shuffle:** "the declared *serial* path still
+has no hardware evidence" moved out of `spec.md` into decision 17 in
+`decisions/links.md`, where the declared-vs-fallback distinction is settled. A
+reader of decision 17 is the one who would otherwise read the fallback's success
+as the declared path's.
+
+**Byte counts:**
+
+| File | Before | After | % of cap |
+|---|---|---|---|
+| `embarch-topology/spec.md` | 10,239 | **8,913** | 87.0% |
+| `embarch-topology/decisions/enrollment.md` | 11,800 | **7,868** | 64.0% |
+| `embarch-topology/decisions/validation.md` | — (new) | 4,368 | 35.5% |
+| `embarch-topology/decisions/links.md` | 9,995 | 10,390 | 84.6% |
+| `embarch-topology/decisions.md` | 1,177 | 1,316 | 5.1% |
+
+`decisions/alerts.md` — **item closed, not acted on.** It was already PAID at
+49.4%; shortening it further would have been a compaction with no debt behind it.
+
+`history/topology.md`'s link to decision 21 was repointed to
+`decisions/validation.md` in the same commit, per the pass doc's rule that no
+inbound link is left broken.

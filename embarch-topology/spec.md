@@ -58,22 +58,20 @@ Everything else is detected live. These four cannot be:
 |---|---|
 | **Which board is enrolled as which role** | No software can derive which physical board a probe is wired to — only a person physically isolating it and saying so |
 | **A link port's own USB serial** | The link can be a different physical USB device from the JTAG probe, and **no identity readback is possible over a plain UART** |
-| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** [confirmed live 2026-09-06 — see below] |
+| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** [confirmed live 2026-09-06] |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 
 Storage is one file under a machine-wide directory this crate owns. A store predating any of the later facts still loads.
 
 ## Storage and roles
 
-**A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**, so the caller can say out loud that one board replaced another. Two rows claiming one role would have left the by-role lookup answering with whichever came first in the file — **on this bench, the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist.**
+**A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**, so the caller can say out loud that one board replaced another. Two rows claiming one role would leave the by-role lookup answering with whichever came first in the file — **the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist** (decision 20).
 
-**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — the guess is kept, because every bench with one VCOM needs to declare nothing, **but it is a guess that says so.** **This crate's own CLI became that caller on 2026-09-06** — until then `dev-bench` printed a guessed port in the exact shape it prints a determined one.
+**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — every bench with one VCOM declares nothing, **but a guess says so.** This crate's own CLI is one such caller.
 
-**The declared *interface* was exercised live on 2026-09-06, with two probes attached, and it was load-bearing.** The host had **three** SEGGER CDC UART ports visible [measured 2026-09-06, `Win32_PnPEntity` on the Core host]: `COM16` (`VID_1366&PID_1069&MI_00`) and `COM17` (`…&MI_02`) on **one** device instance, therefore one probe serial, plus `COM5` on the other J-Link. Resolution returned `COM17`, `interface` 2, **and no `guessed_among`**. `COM5` was eliminated by serial — but **by the decision 17 *fallback*, not by a declared one: this bench declares no `link_port_serial`**, so that narrowing ran on `probe_serial` with `serial_is_fallback` set. **The declared-serial path therefore still has no hardware evidence**, which is worth stating precisely because decision 17 exists to separate the two.
+**The declared *interface* is load-bearing, and is the only thing separating the two VCOMs a DK's onboard probe exposes under one serial:** `COM16` and `COM17` differ in nothing else a detector can read, and the console is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** The failure signature is a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).
 
-**Only the declared interface separates `COM16` from `COM17`**, which differ in nothing else a detector can read. Traced against `select`: with the interface removed, `one_probe && interfaces_known` both still hold, so resolution does not bail — it warns, sorts by interface, takes `candidates[0]` = `COM16`, **and sets `guessed_among = Some(2)`**. That is the wrong port, reported as a guess, and it fails the way this crate exists to prevent: a bench that flashes, boots, runs and times out.
-
-**The corollary is the opposite of what a crowded bench suggests: adding probes cannot produce a guess while an interface is declared.** `guessed_among`'s trigger is an *under-declared* bench, not a busy one — so exercising the field takes a deliberate omission, not another board. Nothing here has yet observed it set.
+**`guessed_among`'s trigger is an *under-declared* bench, not a crowded one.** Adding probes cannot produce a guess while an interface is declared, so exercising the field takes a deliberate omission. Nothing has yet observed it set.
 
 ## What validation asserts, and what it cannot
 
@@ -84,17 +82,17 @@ Storage is one file under a machine-wide directory this crate owns. A store pred
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
 
-## What the consumers gave up to use it
+## What each consumer owns now
 
-- **`embarch-core`** deleted its own copies of the identity-recheck logic, its board storage, its identity reads, and the dev-bench port heuristic. It keeps the hardware-I/O plumbing — actually opening a probe or port handle — and calls the crate for *which* port or probe, and whether it is still valid. **The behaviour change beyond the move: every dev-bench port override env var is gone, with no replacement.**
-- **`embarch-api`** deleted its own software-class detection for `base_url = "auto"`, and links the crate **without the hardware feature — confirmed by `cargo tree` that the probe and serial crates never appear.** Its declared-address fast path is unchanged; only the auto branch calls the crate.
-- **`embarch-umbrella`** deleted the same detection; its env module **shrank to just "am I under WSL2"**, still needed standalone by its own Windows-binary lookup.
+- **`embarch-core`** keeps the hardware-I/O plumbing — actually opening a probe or port handle — and calls the crate for *which* port or probe, and whether it is still valid. It holds no copy of the identity-recheck logic, the board storage, the identity reads or the port heuristic, and **there is no dev-bench port override env var, with no replacement.**
+- **`embarch-api`** links the crate **without the hardware feature — `cargo tree` confirms the probe and serial crates never appear.** Only its `base_url = "auto"` branch calls the crate; the declared-address fast path does not.
+- **`embarch-umbrella`** does the same; its own env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
 
 ## Where it stands
 
 Both real boards are enrolled and a real end-to-end flash plus study has completed clean.
 
-**The mismatch path is exercised, and nothing had to inject anything** — this said the opposite until 2026-09-06, naming the precondition ("a second same-chip-family board") correctly and then reading it as hypothetical. The bench met it on its own: two physically different nRF54L15 DUTs have alternated on the one probe `000852006107`, and **three such swaps are on record, each tripping the gate** — three identity refusals naming the recorded ID and the live one, saying *"re-enroll if this is deliberate"*, the most recent 13:29:42 that day, one minute before the re-enrolment answering it [measured 2026-09-06, `GET /alerts`]. **The count is measured; the proportion is not** — a swap re-enrolled before any validate ran leaves no row. Of the log's six entries the other three are a *different* refusal, probe-not-attached, carrying no live ID.
+**The mismatch path is exercised, and nothing had to inject anything.** The bench met the precondition — a second same-chip-family board — on its own: two physically different nRF54L15 DUTs have alternated on the one probe `000852006107`, and **three such swaps are on record, each tripping the gate** — three identity refusals naming the recorded ID and the live one, saying *"re-enroll if this is deliberate"*, the most recent answered a minute later by the re-enrolment it asked for [measured 2026-09-06, `GET /alerts`]. **The count is measured; the proportion is not** — a swap re-enrolled before any validate ran leaves no row. Of the log's six entries the other three are a *different* refusal, probe-not-attached, carrying no live ID.
 
 Each row is an end-to-end refusal, not a log line beside one — decision 12.
 

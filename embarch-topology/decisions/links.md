@@ -14,6 +14,8 @@ So an enrolled board gains the link port's *own* USB serial: **a directly declar
 
 **Exposed two ways, matching decision 8** — a CLI subcommand writing the crate's storage directly, and a Core endpoint going through the already-elevated service process. **The endpoint had to exist because a plain-user CLI run on the live Windows deployment hit exactly the NTFS permission wall that motivated Core, not a second process, owning system-file writes.** A unit test reproduces the exact real ambiguity, and it was verified against the real live deployment end to end.
 
+**Only the *fallback* has hardware evidence.** The one live two-probe resolution narrowed its candidates on `probe_serial` with `serial_is_fallback` set, because that bench declares no `link_port_serial` of its own [measured 2026-09-06] — so the **declared** path is exercised by unit test only, and this decision exists precisely to keep a reader from reading the fallback's success as its.
+
 ### 18 — A new entity: the DUT signal link, with a declared *route* that may deliberately bypass dev-bench
 
 Opened by [embarch-outpost](../../embarch-outpost/decisions.md), whose debug UART has to reach the host from inside the DUT's own firmware — and which surfaced that **this crate models boards and their probes, but nothing about a signal that leaves a board.** The old model could say "this hardware ID is enrolled as `dut`" and "dev-bench's link is this serial". **It could not say "the DUT has a UART, and here is where it currently goes" — so a signal that skips a node had no representation at all, and a topology diagram drawn from this data could not show one.**
