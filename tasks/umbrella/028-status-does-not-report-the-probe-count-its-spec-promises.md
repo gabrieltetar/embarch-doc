@@ -1,10 +1,30 @@
 # Make `embarch status` report the probe count its spec promises, or correct the spec
 
-**State:** open
+**State:** claimed by agent/umbrella/028-status-does-not-report-the-probe-count-its-spec-promises, 2026-09-07 10:25
 **Source:** owner's repo survey, 2026-09-06 — `embarch-umbrella/spec.md:58` advertises a field the binary never emits
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve — supervisor, leg start 2026-09-07 09:44
+
+**Two of your decision files are in reserve and both are filed against `tasks/umbrella/009`, which
+is `blocked` on `In flux: yes`:** `decisions/bind.md` at **879 B** left (92.8%) and
+`decisions/doctor.md` at **942 B** left (92.3%). `embarch-umbrella/open.md` has come in and out of
+reserve four times across the last several legs.
+
+**This unit should land in `decisions/reporting.md`, which is *not* in reserve** — decision 11 there
+is the `status --json` contract this task is about, so that is where the choice belongs on the
+argument rather than on the byte count. **If your work does push a file into the last 10% of its
+cap, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit** naming the file — it is
+not your job to run the compaction, it is your job to record the debt while you still hold the one
+piece of context nobody else will have.
+
+**One suite-wide hazard: `suite/features.md` has 60 bytes of headroom** (20,420 of 20,480 B) and is
+*assembled* from `features.d/` fragments, so **a new `features.d/` fragment turns the fold red.**
+If this unit makes `status` report the probe count, that is arguably a feature row — **write the
+row's text into this task file and do not create the fragment**, and say so in your report. I will
+carry it.
 
 ## What
 
