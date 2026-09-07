@@ -1,12 +1,27 @@
 # 017 — `schema_version.rs` carries ten legacy `design.md §3 decision N` citations
 
-**State:** open
+**State:** claimed by agent/study-designer/017-schema-version-rs-carries-ten-legacy-design-md-citations, 2026-09-07 09:44
 **Source:** `embarch-reviewer` on `tasks/study-designer/016`, leg 031, 2026-09-07 — the reviewer
 found *two* such citations that unit had newly authored; the supervisor fixed those two in scope
 (`embarch-study-designer` **`f70e4ae`**) and found ten more while doing it. This task is the ten.
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve — supervisor, leg start 2026-09-07 09:44
+
+**`embarch-study-designer/decisions/crate.md` came *out* of reserve last leg** — 5,159 B at 42.0%
+after unit 016's mission split, with the new `decisions/ci.md` at 7,462 B (91.1% of its own 8,192 B
+cap is *not* where it sits — it has room). **No `embarch-study-designer` doc is in reserve today.**
+`tasks/study-designer/006` stays `blocked` for a different reason (an in-flux FFI staticlib fact),
+and it is **not** your job to touch it. You owe a compaction task only if your own edits push one of
+your sub-project's docs into the last 10% of its cap.
+
+**One suite-wide hazard applies to you: `suite/features.md` has 60 bytes of headroom** (20,420 of
+20,480 B). It is *assembled* from `features.d/` fragments, so **a new `features.d/` fragment will
+push it over its cap and turn the fold red.** This unit is doc-comment corrections and should not
+ship a feature row — if you think it warrants one, put the row's text in this task file, do not
+create the fragment, and say so.
 
 ## What
 
