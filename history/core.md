@@ -4,6 +4,10 @@
 
 ## 2026-09
 
+### Changed
+- Core's study decisions split by mission: the version gate and handshake identity (31, 35) move verbatim to [decisions/handshake.md](../embarch-core/decisions/handshake.md).
+## 2026-09
+
 ### Decided
 - A study's public `current_step` is the index of the last step that *finished* — stated in [interfaces.md](../embarch-core/interfaces.md), decision 43.
 ## 2026-09
