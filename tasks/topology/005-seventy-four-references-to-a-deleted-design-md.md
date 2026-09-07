@@ -1,10 +1,24 @@
 # Remove every reference to `design.md`, and two comments asserting a retired live push
 
-**State:** open
+**State:** claimed by agent/topology/005-seventy-four-references-to-a-deleted-design-md, 2026-09-07 09:44
 **Source:** owner's repo survey, 2026-09-06 — commit `9a56959` fixed `CLAUDE.md` for this and stopped there
 **Scope:** topology
 **Hardware:** none
 **Owner:** no
+
+## Doc-size reserve — supervisor, leg start 2026-09-07 09:44
+
+**No `embarch-topology` doc is in reserve.** `check-doc-size.py --pressure` lists twelve files
+across the suite and none of yours; `spec.md` came off its hard cap two legs ago and has room.
+So you owe no compaction task **unless your own edits push a `embarch-topology/*` file into the
+last 10% of its cap** — in which case file `tasks/topology/<NNN>-compact-topology.md` in the same
+commit, per `tasks/README.md`.
+
+**One suite-wide hazard applies to you: `suite/features.md` has 60 bytes of headroom** (20,420 of
+20,480 B). It is *assembled* from `features.d/` fragments, so **a new `features.d/` fragment will
+push it over its cap and turn the fold red.** This unit is comment-and-doc corrections and should
+not be shipping a feature row at all — if you conclude it warrants one, **write the row's text into
+this task file and do not create the fragment**, and say so in your report.
 
 ## What
 
