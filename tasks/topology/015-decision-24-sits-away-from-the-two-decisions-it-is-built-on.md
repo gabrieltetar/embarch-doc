@@ -1,6 +1,6 @@
 # 015 — Decision 24 sits in `enrollment.md`, away from the two decisions it is built on
 
-**State:** claimed by agent/topology/015-decision-24-home, 2026-09-07 16:40
+**State:** done — branch `agent/topology/015-decision-24-home`, 2026-09-07.
 **Source:** supervisor, leg 036, 2026-09-07 — landing `topology/003`, which authored decision 24
 **Scope:** topology
 **Hardware:** none
@@ -41,14 +41,50 @@ tracing the 17 → 18 → 24 argument across two files.
 
 ## Done when
 
-- [ ] `decisions/links.md` has room for decision 24 — by compaction or by a split, whichever
+- [x] `decisions/links.md` has room for decision 24 — by compaction or by a split, whichever
       `DOC-COMPACTION.md` §3 makes the better call for a file that is one mission already.
       **A split is the default remedy**; say which you chose and why.
-- [ ] Decision 24 is moved verbatim into `links.md`, or the decision is taken **not** to move it
+
+      **Chose compaction, not a split.** `links.md` was already one mission ("Declared facts about
+      wires: a link's own port, and a signal that leaves a board"), and decision 24 is the tightest
+      possible fit for it — it names 17 and 18 by number in its own argument and reuses 18's
+      `Filter::for_declared_serial` directly. Splitting `links.md` into two files to make room would
+      have reproduced the exact defect this task exists to fix, one file over: the family that
+      belongs together, sitting apart, now for a size reason instead of a routing one.
+
+      `links.md` had never had a `DOC-COMPACTION-PASS.md` "second pass" (topology is not in
+      `check-doc-size.py`'s `TIGHTENED` table), so it still carried its full cold half: incident
+      narrative, superseded-status narrative in decision 18 (a "half fired, the other half has not"
+      paragraph tracking a since-closed gap), and repeated framing. Ran that pass on decisions 17 and
+      18 — kept the claim, the constraint, the rejected alternatives, the failure signature; cut
+      dates, task references, and the amendment-chain narrative ("what this does not do is reverse
+      the entity") — before moving 24 in, itself lightly trimmed the same way (dropped the specific
+      measurement date/task reference from its "over-crediting" paragraph, kept the finding).
+
+      Result: `links.md` 10,390 → 10,358 B (17 + 18, trimmed) + 24 (trimmed to ~2.3 KB, from 2.9 KB)
+      = **10,358 B total, 1,930 B of hard room, comfortably below the 11,059 B reserve line** — no
+      new reserve debt filed. `enrollment.md` correspondingly shrank (removed 24, added a one-line
+      pointer to its new home): 10,760 → 8,072 B.
+- [x] Decision 24 is moved verbatim into `links.md`, or the decision is taken **not** to move it
       with the argument written down — "it straddles 17/18 and 20, and 20's home is as defensible
       as 17's" is a legitimate answer, and better than a move made only because this task exists.
-- [ ] If moved: `decisions.md`'s index rows for both files updated, and
+
+      Moved (not verbatim — trimmed per the compaction pass above, meaning preserved). Not left in
+      place: unlike the 17/18 pair, decision 24 does not name 20 as machinery it reuses (it names 17
+      and 18, and cites 20 only once, in passing, for the over-crediting case) — its argument is
+      squarely built on `Filter::for_declared_serial` (18) and the declared-serial narrowing (17),
+      so "it straddles 20 too" does not hold up as a reason to leave it in `enrollment.md`.
+- [x] If moved: `decisions.md`'s index rows for both files updated, and
       `scripts/check-decision-refs.py` green — decision 24 is cited from `src/hardware/port.rs`
       (three places) and `src/hardware/signal.rs`, so a move must not break those citations.
       This is exactly the failure `tasks/doc/022` is about.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+      Index updated (`enrollment.md` row: 14, 15, 16, 20; `links.md` row: 17, 18, 24).
+      `check-decision-refs.py` green — the code repo's citations are all bare `decision 24`,
+      never a file path, so nothing there needed to change; confirmed with
+      `git status` in `embarch-topology` (clean, no code change required).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+      `scripts/check-docs.py`: all 10 checks green. `check-client-names.py --repo <code worktree>`:
+      clean against 7 denylist entries. `check-ownership.py --scope topology` (doc worktree) and
+      `--scope topology --code-repo --repo <code worktree>`: both OK.
