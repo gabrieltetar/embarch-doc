@@ -1,6 +1,6 @@
 # Pin `EnrolledBoard`/`Alert` in `embarch-core` against `embarch-api`'s new mirror literals
 
-**State:** open
+**State:** claimed by agent/core/024-pin-enrolled-board-alert, 2026-09-07 17:30
 **Source:** `agent/api/032-enrolled-board-mirror`, leg 039, 2026-09-07 — split off `tasks/api/032-enrolled-board-mirror-drops-link-port-interface.md`, whose "Scope this to the `embarch-api` half only" says the Core half is a second task in a second repo.
 **Scope:** core
 **Hardware:** none
@@ -51,6 +51,20 @@ types genuinely cannot be exercised from `embarch-core`, that is a finding for `
 
 **The doc half is yours too**: `embarch-doc/embarch-core/interfaces/topology.md` is in the `core`
 worker's ownership, and the drop already carries the corrected path.
+
+## Doc-size reserve for `core` — supervisor, leg 040
+
+`scripts/check-doc-size.py --pressure` at this leg's start puts one `core` file in reserve:
+
+- `embarch-core/open.md` — **4478/5120 B, 642 B left** (87.5%), filed against
+  `tasks/core/022-compact-core.md`, which is **blocked**.
+
+Plan around it: this unit's doc footprint is `embarch-core/interfaces/topology.md` (not in
+reserve) plus a `changelog.d/` fragment, so it should not need `open.md` at all. **If your work
+does push a file into reserve, or leaves one there that nothing has filed, file
+`tasks/core/<NNN>-compact-core.md` in the same commit** (`tasks/README.md` has the shape; the path
+is `tasks/core/`, never `tasks/doc/`). You are not being asked to *do* a compaction — only to
+record the debt while you still hold the context of whether this subsystem is in flux.
 
 ## Done when
 
