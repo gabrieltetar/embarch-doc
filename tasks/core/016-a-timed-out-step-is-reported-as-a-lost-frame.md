@@ -1,6 +1,6 @@
 # 016 — A timed-out step is reported as a lost frame, and Core's own result file is the disproof
 
-**State:** claimed by agent/core/016-timed-out-step-names-its-step, 2026-09-06 20:28
+**State:** done, 2026-09-06 — `agent/core/016-timed-out-step-names-its-step`, both repos. Claimed by agent/core/016-timed-out-step-names-its-step, 2026-09-06 20:28
 **Source:** supervisor bench unit, leg 025, 2026-09-06 — measured against the real bench, then confirmed in source
 **Scope:** core
 **Hardware:** none
@@ -79,10 +79,37 @@ deletable when this lands.
 
 ## Done when
 
-- [ ] A study stopped by a timed-out step reports which step timed out.
-- [ ] The "did not arrive" reason is produced only when no step result was recorded at all.
-- [ ] A test covers both, and the timed-out one fails against the pre-fix code.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, and a
+- [x] A study stopped by a timed-out step reports which step timed out.
+- [x] The "did not arrive" reason is produced only when no step result was recorded at all.
+- [x] A test covers both, and the timed-out one fails against the pre-fix code.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, and a
       `status.d/` fragment retiring `suite/studies-guide.md` §3b's last paragraph — it exists only
       as a workaround for this defect and is wrong once this lands.
+
+## What landed
+
+`EventsJsonWriter::early_stop_reason()` (`embarch-core/src/study.rs`) — one method, three
+branches, replacing the `match` expression that was inline in the run loop. `write_step`'s
+`if let Outcome::Fail` became an **exhaustive `match` with no wildcard arm**, so a fourth
+`Outcome` variant is a compile error there rather than another silent join with `Pass`;
+the recorded value is `Option<(String, StoppedBecause)>` with `StoppedBecause::{Failed(String),
+TimedOut}`, since a `TimedOut` outcome has no reason string to carry. `last_failed_step` is
+renamed `last_stopping_step` throughout.
+
+Test `a_timed_out_step_names_itself_in_the_early_stop_reason` pins all three branches without
+hardware. Against the pre-fix logic it fails with:
+
+```
+the reason must name the step that timed out; got: dev-bench stopped the study early,
+and the StepResult saying which step failed did not arrive
+```
+
+Docs: `embarch-core/decisions/studies.md` decision 45 (new) and decision 40's flat "in that
+step's own words" corrected — it was true only of `Outcome::Fail`, which is the defect;
+`embarch-core/interfaces.md`'s `GET /study/{id}` row now states the three `reason` shapes;
+`embarch-core/decisions.md` index row updated. `status.d/core-studies-guide-timeout-workaround.md`
+retires `suite/studies-guide.md` §3b's workaround paragraph.
+
+No hardware-verification debt: the defect and the fix are both entirely host-side, and the
+bench measurement that found it is already recorded above.
