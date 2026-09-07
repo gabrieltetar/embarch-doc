@@ -1,6 +1,6 @@
 # 010 — Compact `embarch-topology/decisions/enrollment.md` and `spec.md`
 
-**State:** open
+**State:** claimed by agent/topology/010-compact-topology, 2026-09-06 18:22
 **Source:** `scripts/check-doc-size.py` — both entered reserve on leg 023's bench unit
 (`tasks/topology/002`), which added a confirmation paragraph and its limits to decision 21 and
 rewrote `spec.md`'s "Where it stands" from *unexercised* to *measured*
@@ -54,6 +54,20 @@ The relocation is worth knowing about so nobody re-adds it: the paragraph
 explaining that `raise()` records the alert and builds the caller's error in one
 function — so an alert row proves the caller got the refusal — now lives in
 `decisions/alerts.md`, and `spec.md` cites decision 12 for it in one clause.
+
+## Reserve line (supervisor, leg 024, measured at dispatch)
+
+`check-doc-size.py --pressure` right now, for this sub-project only:
+
+- `embarch-topology/spec.md` — **10,239 / 10,240, 1 byte left.** At the wall, not in reserve.
+- `embarch-topology/decisions/enrollment.md` — 11,800 / 12,288, **488 bytes left.**
+- `embarch-topology/decisions/alerts.md` — **PAID, 49.4%.** It is out of reserve and this task's
+  `Compacts:` list still names it; **close that item and say so**, do not shorten the file further.
+
+Nothing else in `embarch-topology` is in reserve. If your work spends the reserve in a file this
+task does not already cover, file `tasks/topology/<NNN>-compact-topology.md` in the same commit
+(`tasks/README.md` has the shape). Note the path is `tasks/topology/`, your own scope — not
+`tasks/doc/`, which `check-ownership.py` refuses to a worker.
 
 ## The human question
 
