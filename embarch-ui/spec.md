@@ -86,7 +86,7 @@ It stays SVG. Sub-pixel spans aggregate into per-pixel occupancy runs per lane, 
 
 **That aggregation runs on the server, and the view asks for the window it is about to draw** (decision 18). `GET /api/trace/{study}/{tap}/bins?from&to&width` returns at most `width` runs per lane; the view's own payload carries no spans at all, only each lane's `span_count`. The spans were not part of the payload, they were the payload — 12.6 MB of a 12.6 MB JSON on a reference-shaped capture — so first paint is **12.7 KB + 30.5 KB** and a window costs **1–6 ms** end to end. The browser never draws from a window's bins that is not the window it is drawing.
 
-Two view caps: **250,000 rows per view**, reported rather than swallowed, and a name-length limit applied where a name is chosen rather than at submit.
+Two view caps, both served rather than restated (`decisions/trace-view.md` 21, `decisions/study-designer.md` 22): **250,000 rows per view** (`MAX_ROWS`, `TraceView::row_cap`), reported rather than swallowed, and a name-length limit (`MAX_STREAM_NAME_LEN`, `ActionsResponse::max_stream_name_len`) applied where a name is chosen rather than at submit.
 
 ## Verification technique
 

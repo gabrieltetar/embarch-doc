@@ -15,7 +15,15 @@ blocked.
 
 ## What
 
-**11,164 of 12,288 B; the reserve line is 11,059.** The history is worth two lines because it is the
+**Updated by `ui/003`, 2026-09-07: now 12,064 of 12,288 B.** That unit added decision 22 (the
+stream-name cap served on the actions response) — the judgement call in its own task file was that
+this file's mission fit that decision better than `trace-view.md`'s, and it was not blocked or
+parked the way `trace-view.md` was, so it added the decision without compacting to make room. 224 B
+of headroom remain against the hard cap; this task's own job has grown by the same amount decision
+22 cost. Its own **Must not delete:** list is unaffected — decision 22 touches nothing this task
+already named.
+
+**11,164 of 12,288 B before that; the reserve line is 11,059.** The history is worth two lines because it is the
 whole reason this task exists rather than being avoided:
 
 - `ui/010`'s first draft of decision 20 landed the file at **11,535** — inside reserve. The worker

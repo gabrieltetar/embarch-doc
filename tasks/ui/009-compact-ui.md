@@ -1,6 +1,6 @@
 # 009 — `embarch-ui/decisions/trace-view.md` crossed into reserve
 
-**State:** blocked
+**State:** done, closed as a ride-along by `ui/003` (`DOC-COMPACTION.md` §2), 2026-09-07
 **Source:** `ui/008` spent 461 B of this file's headroom recording that the decoder now counts the rows it refuses; `DOC-COMPACTION.md` §2
 **Scope:** ui
 **Hardware:** none
@@ -44,16 +44,30 @@ question a later compactor cannot answer.
 
 ## Blocked
 
-On **`ui/007`** (the stale-prefix drop has never met a real stale prefix): it
-rewrites decision 19's last two sentences, and compacting them first is work
-done twice. Reopen when `ui/007` lands, or when the owner decides the bench run
-is not coming and 19's caveat is permanent.
+Was blocked on **`ui/007`** (the stale-prefix drop has never met a real stale
+prefix), because rewriting decision 19's last two sentences and compacting them
+first would have been work done twice. **That risk did not apply to `ui/003`'s
+pass**: it added its own decision 21 and compacted only the settled repartition
+and three-tier-axis material this task already named as fair game — decision
+19 was not read for meaning, not trimmed, and not touched at all, so `ui/007`
+still has exactly the same two sentences to rewrite whenever it lands. Filing
+this done does not stand in for `ui/007`; that task is unaffected and still
+open.
 
 ## Done when
 
-- [ ] `decisions/trace-view.md` is clear of its 11,059 B reserve line.
-- [ ] Every `Must not delete:` item above is still readable.
-- [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
+- [x] `decisions/trace-view.md` is clear of its 11,059 B reserve line. 10,989 B
+      after `ui/003`'s pass (was 11,080; adding decision 21 and compacting the
+      repartition/three-tier-axis material netted -91 B).
+- [x] Every `Must not delete:` item above is still readable. Verified by grep
+      against the post-compaction file: the 46× figure, 78%/1.6%/4286-of-4955,
+      "Sign is not the signal" and its 38-second-read-as-563 consequence, and
+      the shares-do-not-total-100% statement with its idle/ISR reasoning are
+      all present, worded slightly tighter but unchanged in claim.
+- [x] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words: *what does someone starting on `embarch-ui`
-      tomorrow lose if this paragraph is gone?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      tomorrow lose if this paragraph is gone?* — nothing: the repartition and
+      axis paragraphs lost scene-setting and repeated phrasing, not a claim,
+      a number, or a caveat; every fact this task's `Must not delete:` list
+      names is still stated, just not stated twice.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — verified by `ui/003`.

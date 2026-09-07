@@ -48,6 +48,12 @@ The config field's original reasoning was right — **a *guess* at which firmwar
 
 **"Create study" writes a study that is valid the moment it exists**, through the same builder a save uses rather than a shape only this route can produce: `requires` written as an explicit any on both fields (mandatory with no serde default — it has to be *said*), both CRCs sealed, and both UI sidecars present so it is editable and loadable from creation rather than only after its first save. A name whose slug already exists is a `409`, never a silent overwrite. Its route is deliberately **not** `/studies/new`, because **`new` is a perfectly good slug** and that path would be ambiguous with a real study of that name on the sibling route.
 
+### 22 — The stream-name cap is served on the actions response, not restated in `app.js`
+
+`MAX_STREAM_NAME_LEN` (`embarch-study-designer::limits`) bounds a `StreamTap.name`, but the GATT-tap default name — a characteristic label truncated so it fits before `build_study` ever sees it — was sliced to a literal `32`, with its own comment naming the constant it was copying. `ActionsResponse` now carries `max_stream_name_len` beside `max_monitor_targets` (decision 17), and `app.js` slices to that field.
+
+**No fallback length when the field is missing** — unlike `sdMaxTargets`'s default-16, a wrong guessed cap here would let an over-long name through as confidently as a right one. `app.js` does not slice at all until it has seen a real value; a name too long for the true cap is refused by `build_study` at submit time, same as it always was before this default existed (task `ui/003`).
+
 ### 20 — The run badge counts the step *now running*, not the steps finished
 
 Core's `current_step` is **the 0-based index of the last step that finished**, absent until one has ([`embarch-core/interfaces.md`](../../embarch-core/interfaces.md), `GET /study/{id}`; embarch-core decision 43). This badge added one — arithmetic for a *count* convention Core does not send — so a two-step run showed nothing in step 1 and `running 1/2` for all of step 2: **one short whenever a step was in flight**.
