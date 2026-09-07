@@ -95,3 +95,4 @@ Two instruments this UI established, both because "tested in Rust, never looked 
 
 - **A headless-Firefox harness** that re-evaluates `app.js`'s IIFE body against a real DOM (there is no `node` on this bench) and renders against real serialized server responses. Strip the app's own `DOMContentLoaded` initializer before rendering — it fires *after* an inline harness script and re-renders every panel from fetches that fail under `file://`.
 - **Driving the deployed binary itself** with real clicks. The assets are `include_str!`-embedded, so **the deployed artifact is the only thing that can be checked** for anything that depends on them.
+- **A static id guard** (`tests/element_ids.rs`, decision 24) over the id surface only, catching the one shape of the above that a text scan over both assets can: no id declared twice, and no `getElementById`/`sdEl`/`trEl`/`sigEl` lookup dangling.

@@ -9,7 +9,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | Group | Decisions | What it settles |
 |---|---|---|
 | [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9 | One consolidated process, zero-build, the VS Code launcher, the repo |
-| [decisions/wiring.md](decisions/wiring.md) | 5, 6 | Every hardware-adjacent call over HTTP to Core; SSE everywhere |
+| [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard |
 | [decisions/shell.md](decisions/shell.md) | 4, 8 | The six-section shell, fragment navigation, the design system |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing) | Signal routing: the one human surface for declaring a wire |

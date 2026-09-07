@@ -1,6 +1,6 @@
 # Add a static guard that every `getElementById` target exists and no element id is defined twice
 
-**State:** claimed by agent/ui/005-element-id-guard, 2026-09-07 15:23
+**State:** done — branch `agent/ui/005-element-id-guard`, 2026-09-07.
 **Source:** `embarch-ui/decisions/trace-chart.md` decision 10 — the defect this would have caught, which shipped
 **Scope:** ui
 **Hardware:** none
@@ -26,12 +26,33 @@ one shape of that class a Rust test *can* catch.
 
 ## Done when
 
-- [ ] The test parses both assets and fails on a duplicate id and on a dangling lookup.
-- [ ] It is shown to fail when a duplicate id is introduced deliberately (revert, confirm, restore).
-- [ ] It passes on the tree as it stands.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] The test parses both assets and fails on a duplicate id and on a dangling lookup.
+- [x] It is shown to fail when a duplicate id is introduced deliberately (revert, confirm, restore).
+      Renamed `stat-enrolled-count`'s `id` to the already-used `stat-probes-count` in
+      `assets/index.html`; both new tests failed:
+      `no_element_id_is_declared_twice`: `` duplicate element id(s) across index.html and the
+      markup app.js emits:\n`stat-probes-count` declared 2 times ``.
+      `every_looked_up_element_id_is_declared_somewhere`: `` dangling element id lookup(s):\n
+      `stat-enrolled-count` looked up via getElementById("stat-enrolled-count") but declared
+      nowhere in index.html or app.js's own emitted markup ``.
+      Reverted; `git diff --stat assets/index.html` empty and both tests pass again.
+- [x] It passes on the tree as it stands.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build`, `cargo test` (103 passed,
+      2 ignored, pre-existing/unrelated), `cargo clippy --all-targets -- -D warnings`,
+      `check-ownership.py --scope ui` (both worktrees), `check-docs.py` (10/10) all green.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+      `spec.md`'s Verification technique section gained a third bullet naming the guard.
+      `decisions.md`'s index row for `decisions/wiring.md` now lists decision 24.
+      `decisions/wiring.md` gained decision 24 (the guard itself), citing
+      `decisions/trace-chart.md` decision 10 by link rather than editing that file (590 B
+      left, compaction filed under `tasks/ui/019-...`).
+      `open.md`: nothing there was about this; no change needed.
+      `changelog.d/ui-element-id-guard.added.md` dropped (138 B).
+      `status.d/`: nothing suite-level changed — this is a `ui`-internal test, so no fragment.
+      `features.d/`: not a user-facing capability row (a regression test, not a shipped tab/
+      feature), so none written — consistent with this scope's existing rows, which are all
+      user-facing.
 
 ## Doc-size reserve for `ui` — supervisor, leg 036, 2026-09-07
 

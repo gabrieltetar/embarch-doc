@@ -19,3 +19,11 @@ This still preserves the invariant `embarch-topology` decision 14 established wh
 ### 6 — SSE everywhere, not the mixed SSE/polling split the two source UIs have
 
 `embarch-topology`'s UI already pushed alerts live over a broadcast-backed SSE endpoint; `embarch-study-designer`'s polled a JSON status endpoint once a second. Every section here updates by push — the Dashboard's study and alert cards, Topology's board list, the run log, and the Debug tab's live tail — with **no client-side interval polling anywhere.**
+
+### 24 — A static id guard over `index.html` and `app.js`, not another rendered check
+
+`tests/element_ids.rs` parses `assets/index.html` and `assets/app.js` (both `include_str!`-embedded) as text and asserts two things: no element id is declared twice, and every id looked up via `getElementById`/`sdEl`/`trEl`/`sigEl` is declared somewhere. It is a regression guard, not a live-defect finder — `embarch-ui/decisions/trace-chart.md` decision 10 (the Load button and the load table body once sharing an id, so the table never rendered while every Rust test passed) is the defect shape it exists to catch on the next occurrence, without needing a rendered check to see it.
+
+**Id universe is the union of both assets, not `index.html` alone**: `app.js` builds three ids of its own (`tr-gap`, `tr-cross`, `tr-delay`, the trace chart's SVG pattern fills), and those count as declared for the duplicate check exactly like an `index.html` id would, so a collision between a dynamically-built id and a static one is still caught. They are never looked up via `getElementById`, so they cannot register as dangling.
+
+**The parser resolves only a literal string argument**, so `sdEl`/`trEl`/`sigEl` (three one-line `getElementById` wrappers; `sigEl` is the same shape as the task-named `sdEl`/`trEl` pair) are seen through wherever the id is written at the call site, but a handful of `sd-req-*` requirement-field lookups that pass a variable instead are not traced back to their literal source — a known, disclosed gap in the test's own module doc, not a silent one.
