@@ -1,7 +1,30 @@
 {
-  "framework_sha": "6b570a4e75794d1ebc54f4587406a23db5bb6c18",
+  "framework_sha": "9cd634e9e969af936f823cb7a5347b874dbe5e61",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-06T23:24:15Z",
-  "installed_from": "/home/gabriel/Github/embarch/embarch-fleet"
+  "installed_at": "2026-09-07T00:19:07Z",
+  "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
+  "files": {
+    ".claude/agents/embarch-deployer.md": "e8d08364dac24205e5f4bd957410d9636d33f43024605deaa52c68e8ed4e6673",
+    ".claude/agents/embarch-log-folder.md": "d5b637262049dfc310d282b3eedd7f34b06c0e028fd10eea198a40ea42fd3e55",
+    ".claude/agents/embarch-reviewer.md": "d181dd35731a90732de2802a6aa33a2b5c1b9bf9f9f7dac6eeaee14603877998",
+    ".claude/agents/embarch-supervisor.md": "4156951939ba1603461afdfa8cc730eae723e65116f9c237ab4a2aa61ae23b17",
+    ".claude/agents/embarch-worker.md": "b35458870da4eef46c3b9ac2c7a6d0aec79b376044cba345cb2c67e6156842d4",
+    ".claude/commands/fleet-watch.md": "dca088a6e65cbedafc95db9d7b787450c323cb7f79fdddfb8b67544490ddf2e2",
+    ".claude/commands/fleet.md": "f50c536ad45a335e3abdfee0b90827fb4dbcf4809cf93bf98fd217ae94152418",
+    ".claude/commands/supervise.md": "0d029d90455cd62e2c48ad5deb8446ebac433763d4ffea1f3f2bf68ac73eb785",
+    ".claude/settings.json": "275ede4c9f3654f136a8b3b33e3127e852cde8f78a061642bc9c062862d3877c",
+    "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
+    "inbox/README.md": "9f0d389f6bc2c8c00797b583621d9f4b40e733e80419a76691aa41853895c0d3",
+    "status.d/README.md": "e4b55984fe66147934de476d73c613c68439de82f11678cc4938f1c44a46cc3f",
+    "tasks/README.md": "60e4d7da3cd808536155afbfac6eb701c9122d0954997dfc0539a94efc7b579c",
+    "scripts/check-ownership.py": "8cd3cae2d38119f103aab77d8694f04b72fdb5c7234a8baa60c23324f002ef9d",
+    "scripts/queue-status.py": "42534c6b295eecbd580d37b75f7634068e11ba41a6a6ca5f22769bcb9ea234a8",
+    "scripts/usage-budget.py": "6cb9786103b2d9a2efcbbcfe7abbe14077229401c3aabc460430c4cbfa5bd1e2",
+    "scripts/fleet-alert.py": "65969e0ef9a148850282a7b065e170371b1bed19364c51e682a22f768ecb59eb",
+    "scripts/fold-commit.py": "9eb4dc19f2d5addac67e8dd76de05aeb843cbbdc77c8d2d3ebc0cadbcd1e3fa4",
+    "scripts/fold-day.py": "bf6e8472252f119ec35b105b91bcec16a25820001f4683733a710a72dd7c3f36",
+    "scripts/check-client-names.py": "d3d2c75c5868f3a4af442bb59ff01161fa7fcaf95ebf42c637650c1902d67f80",
+    "scripts/check-dispatch.py": "8da05f963d2c54bbb1f01d9b5cbe592f16e063f1210eaa8dc68f3775731d4935"
+  }
 }
