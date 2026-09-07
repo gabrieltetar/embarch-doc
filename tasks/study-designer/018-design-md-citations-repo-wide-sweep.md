@@ -61,6 +61,14 @@ since they share many of the same decision numbers) rather than one giant diff.
 - [ ] Every decision number verified to resolve against the named sub-project's current
       `decisions.md` index; the task says which ones were checked and how.
 - [ ] `grep -rn 'design\.md' src/` reports nothing left.
+- [ ] **The bare `§N.M` section references are swept too**, and `grep -rn '§' src/` says what is
+      left. Added by the supervisor at the fold of `study-designer/017`: that unit's Done-when named
+      only `§3`, so it left `§4.3a`, `§4.3b` and `§4.8` standing in `schema_version.rs` — three
+      section numbers of the *same* deleted `design.md`, now with no file name in front of them to
+      show that the file is gone. **A bare `§4.3a` is worse than `design.md §4.3a`, not better**: it
+      reads like a section of the file you are in. Whoever runs this sweep must decide, per
+      occurrence, which of `spec.md` / `decisions/<mission>.md` now holds that content and cite it —
+      or drop the pointer, as `017` did for the one `§5.1`. That is judgement, not a `sed`.
 - [ ] `cargo doc --no-deps --all-features` (after `cargo clean -p embarch-study-designer`) still 0
       warnings.
 - [ ] Gate green; `changelog.d/study-designer-*` fragment.
