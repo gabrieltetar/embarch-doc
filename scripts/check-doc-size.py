@@ -156,6 +156,15 @@ DUE = re.compile(r"^\*\*Size debt due:\*\*[ \t]*(\d{4}-\d{2}-\d{2})", re.M)
 # Ratcheted like the file caps, and seeded with the 26 at their current sizes,
 # so introducing it reddens nothing on day one and each may only shrink.
 DECISION_CAP = 4 * KB
+# And the decision ratchet steps too, for the reason the file ratchet does --
+# learned the same hour, from real work. Seeding pinned decisions at their exact
+# size refused a **one-byte** growth in `embarch-dev-bench/decisions/ble.md`'s
+# decision 34/37 (5,155 > 5,154) while landing a unit whose own gate was
+# otherwise green. That is precisely the "refusing a correct edit at the wall"
+# failure the ledger above exists to stop, reintroduced by a second mechanism
+# with no allowance. 256 B is proportionate to a decision the way 1 KB is to a
+# file: the median decision is 1,395 B, so a 1 KB step would be a 70% licence.
+DECISION_STEP = 256
 DECISION_BASELINE = REPO / "scripts" / "decision-size-baseline.json"
 DECISION_HEAD = re.compile(r"(?m)^(### .*)$")
 
@@ -489,8 +498,10 @@ def main() -> int:
         dfails, dover, drows, dbase = decision_state()
         if args.adopt_decisions:
             for key, head, size, limit in dover:
-                dbase[key] = size
-                print(f"  adopt {key}: {size} B")
+                step = ((size // DECISION_STEP) + 1) * DECISION_STEP
+                pinned = min(dbase.get(key, step), max(step, size))
+                dbase[key] = pinned
+                print(f"  adopt {key}: {size} B pinned at {pinned} B")
             for key in sorted(set(dbase) - {r[0] for r in drows}):
                 dbase.pop(key)
                 print(f"  GONE, pinned decision pruned: {key}")
