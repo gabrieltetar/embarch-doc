@@ -51,7 +51,7 @@ Not:
 | Command | Scope | Behaviour |
 |---|---|---|
 | `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, record the class and the Windows-side Core path, then run `doctor`. `--uninstall` reverses it; **`--dry-run` prints the whole plan and changes nothing** (decision 21); `--dev-bench-repo` records the checkout check 13 compares against |
-| `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. **An inferred board is never written as fact, and several recorded builds are all named rather than one picked** (decision 41). `--uninstall` reverses all of it |
+| `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, exclude it locally, register the MCP server, then run `doctor`. **An inferred board is never written as fact, and several recorded builds are all named rather than one picked** (decision 41). `--uninstall` reverses all of it; committing the integration for a team is a follow-on step it does not take (decision 12) |
 | `embarch doctor` | anytime | The full check chain. `--json`. **Nothing in it deletes anything** — `--prune` is unbuilt (decision 26) |
 | `embarch status` | anytime, cheap | One status call: is Core up, which class, how many probes. `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
@@ -74,24 +74,22 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing (decision 17) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
-| 10 | Registered **and answering**: reads the registration out of the agent CLI's own config by the binary it names rather than only the key `embarch`, spawns it, and completes one JSON-RPC `initialize` over stdio within 10 s. Answered, failed and timed out stay distinct in `--json`; an entry with nothing to spawn is a warn, never a pass (decisions 23, 37, 40) |
-| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, plus this binary's own constant as a mixed-install warn |
+| 10 | Registered **and answering**: reads the registration out of the agent CLI's own config by the binary it names rather than only the key `embarch`, spawns it, and completes one JSON-RPC `initialize` over stdio within 10 s. An entry with nothing to spawn is a warn, never a pass (decisions 23, 37, 40) |
+| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the bench's wire version, plus this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
 | 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
 | 16 | `study_results/` entries and their bytes **at the directory it names**, and build directories per project — informational (decisions 26, 39) |
-| 17 | Core's bind address matches what this topology needs — the class `setup` recorded against the address `/status` was reached at, and against the service's own registered `--bind`, which is the only evidence that tells a narrow bind from a wide one (decision 22) |
+| 17 | Core's bind address matches what this topology needs — the class `setup` recorded, against the address `/status` was reached at and against the service's own registered `--bind` (decision 22) |
 | 18 | Tail of Core's log file, informational — **design-only** ([embarch-core](../embarch-core/decisions/logging.md)'s daily-rolling log) |
 
 Checks 12, 15 and 16 never fail the run outright; **5, 11 and 17 do**, each only for the states its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-17 are what the code emits. `--json`'s per-check object — its fields, which are always present, and which carry a `code` (checks 1, 5, 10, 14, 17) or a `path` (check 16) — is [decisions/reporting.md](decisions/reporting.md)'s contract. 18 is designed and unbuilt, and **it is not the only such item**: 26's `--prune` half sits *inside* a shipping command, marked above where it lives, and [open.md](open.md) carries whether it is still wanted. 18's number moves if something is built before it.
+1-17 are what the code emits; **18 is designed and unbuilt, and it is not the only such item** — 26's `--prune` half sits *inside* a shipping command, marked above where it lives, and [open.md](open.md) carries whether it is still wanted. 18's number moves if something is built before it. `--json`'s per-check object — its fields, always present, and which carry a `code` (checks 1, 5, 10, 14, 17) or a `path` (check 16) — is [decisions/reporting.md](decisions/reporting.md)'s contract.
 
-Every `detail` and `fix` is **one line with no run of two or more spaces**, held by a module-wide test over the pure judges. **That test sees only text this module authors**: a check interpolating another program's output can break the rule at runtime with the guard green, and check 1 does today ([decision 43](decisions/reporting.md)).
+Every `detail` and `fix` is **one line with no run of two or more spaces**, held by a module-wide test over the pure judges — which sees only text this module authors, so the rule can still break at runtime with the guard green ([decision 43](decisions/reporting.md)).
 
 ## Token handling
 
 Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of truth — and **writes no token value into any config file.** On a same-machine topology `setup` starts Core once so the machine-wide token file exists, then confirms `embarch-api` can discover it. Across machines there is no shared filesystem and no solution: it prints the export line for a value the human reads off the Core machine.
-
-Committing a repo integration for a whole team is a follow-on step `init` does not take; its shape is [decision 12](decisions/integration.md).

@@ -1,6 +1,42 @@
 # 029 — embarch-umbrella's spec.md and open.md are back in reserve
 
-**State:** claimed by agent/umbrella/029-compact-umbrella, 2026-09-06 19:06
+**State:** done, 2026-09-06 — `spec.md` **9,237 -> 8,956 B (87.5%)** and `open.md`
+**4,653 -> 4,323 B (84.4%)**, both out of reserve with real headroom rather than by a byte.
+
+**How, so nobody hunts for deleted content.** Nothing moved between files and no numbered
+decision changed home; **every byte came out of a claim that was already written in full
+somewhere else, and the surviving copy is the file whose mission owns it.** From `spec.md`:
+the guard's runtime blind spot and the check-1 instance ([decision 43](../../embarch-umbrella/decisions/reporting.md)
+and `open.md` both carry it); check 17's "only evidence that tells a narrow bind from a wide
+one" ([decision 22](../../embarch-umbrella/decisions/bind.md) argues it — *"both Fails rest on
+the service registration"*); check 10's "answered, failed and timed out stay distinct"
+(decision 37's seven codes); and the trailing repo-integration paragraph, folded into the
+`embarch init` row it describes. From `open.md`: check 15's `CARGO_PKG_VERSION` mechanism
+(decision 34), check 17's three-step protocol (`033`), check 1's stdout interpolation
+(decision 43, `031`), decision 15's reversal detail (decision 20), the no-GUI/no-TTY
+fallback (**not an open question at all** — decision 7 states it as covered behaviour), and
+check 10's `env` sentence (decision 40). **No destination file was written to**, so
+`decisions/reporting.md` and `decisions/schema-skew.md` are untouched and their room is
+still there for the next unit.
+
+**Every `Must not delete:` item was checked against the pre-image, not from memory**, and
+all eight hold: the table is still eighteen rows with 18 marked design-only and 26's
+`--prune` marked in the `doctor` row; `open.md` still says check 15 is not a hash comparison
+and must not be read as one, still says check 17's two Fail arms have never met a real
+narrow-bound Core (which half each arm settles is in `033`, untouched), still carries
+`saved.host`'s stickiness **with the reason it was left unfixed**, and still names checks 4
+and 12 as outside the guard; `spec.md` still states the one-line/no-multi-space rule, with
+check 6's exemption where `024` left it, in decision 43; `decisions/bind.md` was not opened.
+`collect-open-questions.py` reports **13 umbrella bullets before and 13 after** — six shorter,
+none gone.
+
+**Left in reserve, filed and not touched:** `decisions/doctor.md` (92.3%) and
+`decisions/bind.md` (92.8%), both [`009`](009-compact-docs.md)'s and both still behind its
+`In flux: yes`. No new compaction task is owed.
+
+*Claim line follows.*
+
+**State (before completion):** claimed by agent/umbrella/029-compact-umbrella, 2026-09-06 19:06
 
 ## Doc-size reserve for `embarch-umbrella` (supervisor, leg 025)
 
@@ -152,9 +188,10 @@ this task does not restate it and does not narrow it. Added by `024`:
 
 ## Done when
 
-- [ ] `spec.md` and `open.md` both out of reserve.
-- [ ] The unbuilt/built distinction survives, per row (`009`).
-- [ ] No question disappears from `collect-open-questions.py` unless you can
-      name it as answered.
-- [ ] `DOC-COMPACTION.md` §7's question answered in the commit message.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] `spec.md` and `open.md` both out of reserve — 87.5% and 84.4%.
+- [x] The unbuilt/built distinction survives, per row (`009`) — eighteen rows, 18 design-only, 26's `--prune` marked where it lives.
+- [x] No question disappears from `collect-open-questions.py` — 13 before, 13 after.
+      One clause was dropped **as answered**: the no-GUI/no-TTY self-elevation fallback,
+      which decision 7 records as covered behaviour rather than an open question.
+- [x] The human gate question (now `DOC-COMPACTION-PASS.md`'s) answered in the commit message.
+- [x] Gate green, `changelog.d/umbrella-spec-open-compaction.changed.md` dropped.
