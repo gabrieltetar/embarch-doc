@@ -41,6 +41,19 @@ jobs:
       - name: Check per-file size caps (DOC-COMPACTION.md §2 ratchet)
         run: python3 scripts/check-doc-size.py
 
+  # fetch-depth: 0 on purpose. This is the one check that reads git history --
+  # it answers "was this number ever issued and then deleted", and a depth-1
+  # clone cannot. Left shallow it would skip that half and still pass, which is
+  # the quiet-green failure the check exists to remove.
+  check-task-numbers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Check no task number is shared or reissued
+        run: python3 scripts/check-task-numbers.py
+
   check-changelog-fragments:
     runs-on: ubuntu-latest
     steps:
