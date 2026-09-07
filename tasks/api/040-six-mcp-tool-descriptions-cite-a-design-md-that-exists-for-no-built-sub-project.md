@@ -1,6 +1,6 @@
 # 040 — Six citations inside shipped MCP tool descriptions point at a `design.md` that exists for no built sub-project, and one names the wrong decision
 
-**State:** claimed by agent/api/040-mcp-descriptions-cite-a-missing-design-md, 2026-09-07 01:43
+**State:** done by agent/api/040-mcp-descriptions-cite-a-missing-design-md, 2026-09-07
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer — the agent one). Code-confirmed.
 **Scope:** api
 **Hardware:** none
@@ -45,12 +45,73 @@ of them is about strings that reach an agent.
 
 ## Done when
 
-- [ ] No `#[tool(description = ...)]` string in `embarch-api` cites `design.md` or a
+- [x] No `#[tool(description = ...)]` string in `embarch-api` cites `design.md` or a
       `milestone-N.md`.
-- [ ] Every decision number cited in a tool description resolves to the file that currently holds
+- [x] Every decision number cited in a tool description resolves to the file that currently holds
       it, verified rather than assumed.
-- [ ] Every citation names the sub-project it belongs to.
-- [ ] Gate green; `changelog.d/api-*` fragment.
+- [x] Every citation names the sub-project it belongs to.
+- [x] Gate green; `changelog.d/api-*` fragment.
+
+## Done
+
+Fixed all six `#[tool(description = ...)]` citations in `embarch-api/src/tools.rs`
+(`reset` :792, `enroll_probe` :813, `validate` :830 ×2, `alerts` :861,
+`study_gatt_data` :1145), plus the `milestone-8.md` doc-comment cite at :232 found
+in the same file. Every decision number was verified by opening the target file
+and grepping the cited text, not assumed to have survived the 2026-09-04 split:
+
+- `reset` (792): `design.md §3 decision 12` → `embarch-api decision 12`
+  (`decisions/zephyr.md:9`, live target discovery — matches).
+- `enroll_probe` (813): `design.md decision 22` → `embarch-topology decision 14`
+  (`decisions/enrollment.md:9`) — the wrong-number citation the task flagged;
+  `embarch-api` 22 and `embarch-topology` 22 are both real and neither is it.
+- `validate` (830, first): `design.md §3 decision 28` → `embarch-core decision 28`
+  (`decisions/surfaces.md:37`, `POST /validate` and `GET /alerts` together —
+  number was already correct, just bare).
+- `validate` (830, second): `embarch-topology/design.md §3 decision 12` →
+  `embarch-topology decision 12` (`decisions/alerts.md:17` — number already
+  correct, just named `design.md` instead of the repo alone).
+- `alerts` (861): `design.md §3 decision 28` → `embarch-core decision 28` (same
+  entry as validate's first citation).
+- `study_gatt_data` (1145): `embarch-study-designer/design.md decision 54` →
+  `embarch-study-designer decision 54` (`decisions/removed.md:27` — number
+  already correct).
+- `:232` doc comment: `embarch-doc/embarch-api/milestone-8.md §3.8` → `embarch-api
+  decision 31, 33` (`decisions/studies.md:16` — the JSON-schema-as-string client
+  bug).
+
+Citation style follows `tasks/topology/005`'s own recipe (`<repo> decision N`,
+no file path — a repo's `decisions.md` is the index that resolves it) rather
+than naming a specific file, since decision numbers are what's declared
+permanent, not files.
+
+**Out of scope, left alone, and said so in decision 57 itself:** nine other
+`design.md` references in this same file are doc comments on parameter
+structs and inline code comments, not `#[tool(description = ...)]` strings —
+`tools.rs:101,104,303,389,405,411,422,568,956,1213`. Several of those (the
+struct-level ones on `TargetParams`, `EnrollProbeParams`, `ValidateParams`,
+`AlertsParams`, `StudyStreamParams`) plausibly also reach a connecting agent,
+via `schemars`-generated JSON Schema `description` fields on the tool's input
+schema — the same wire-exposure concern this task was filed over, just via a
+different mechanism than `#[tool(description = ...)]`. This task's own `Done
+when` list scopes only the six description strings, so I did not touch them;
+worth a follow-up `api` task if the owner wants the same treatment applied
+there.
+
+Filed `embarch-api` decision 57 in `decisions/surface.md` (citation-format
+rule; topic is the MCP surface, per this task's Reserve note — did not touch
+`core-link.md`). That pushed `surface.md` from 10,946 B to 11,785 B, past the
+11,059 B reserve line (still under the 12,288 B cap) — filed
+`tasks/api/043-compact-api.md` in the same commit, `In flux: yes` (this file
+is the active tool/CLI surface and keeps taking new entries, most recently
+this same decision).
+
+Gate: `cargo build`, `cargo test` (181 passed across 7 binaries), `cargo clippy
+--all-targets -- -D warnings` all green in the code worktree; `scripts/check-docs.py` (10/10),
+`scripts/check-client-names.py --repo <code worktree>`, and
+`scripts/check-ownership.py --scope api` (doc worktree) /
+`--code-repo` (code worktree) all green. Both worktrees committed and pushed
+on `agent/api/040-mcp-descriptions-cite-a-missing-design-md`.
 
 ## Reserve — read before you write a doc (supervisor, leg 030)
 
