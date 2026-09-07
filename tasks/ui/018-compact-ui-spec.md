@@ -1,4 +1,4 @@
-# 016 — `embarch-ui/spec.md` is in reserve
+# 018 — `embarch-ui/spec.md` is in reserve
 
 **State:** open
 **Source:** `scripts/check-doc-size.py`'s reserve floor, added 2026-09-07
@@ -31,10 +31,10 @@ a split or a squeeze.
 
 The debt is real once a file is within one amendment of its cap, and recording
 it is the whole mechanism: an unfiled file in reserve is what
-`check-doc-size.py` fails on, not the reserve itself. Two other `ui` size debts
-are already open (`011` on `decisions/study-designer.md` at 224 B left, and the
-`suite/features.md` row in `tasks/suite/004`), so a `ui` worker should read all
-three before choosing where to spend a unit.
+`check-doc-size.py` fails on, not the reserve itself. Two other `ui` size debts are
+already open — `011` on `decisions/study-designer.md` at 224 B left, and `016`
+on `decisions/trace-chart.md`, filed by a leg in the same hour as this one — so
+a `ui` worker should read all three before choosing where to spend a unit.
 
 ## In flux: no
 

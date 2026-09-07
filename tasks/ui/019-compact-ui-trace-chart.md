@@ -1,4 +1,4 @@
-# 016 — `embarch-ui/decisions/trace-chart.md` crossed into reserve
+# 019 — `embarch-ui/decisions/trace-chart.md` crossed into reserve
 
 **State:** open
 **Source:** `ui/015` amended decision 23 to correct the `tr-gap`/`tr-cross` mixup
@@ -42,3 +42,5 @@ is that commit here.
 - [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+**Renumbered from 016 by the owner's session, 2026-09-07.** A leg filed this as `016` in the same hour the owner's session filed `018` as `016`, both from `check-doc-size.py`'s reserve, and `check-task-numbers.py` caught the collision on `main`. History had already recorded `016` under the other slug, and `tasks/README.md` says a number is never reused, so this file moved rather than that one. Nothing about the debt changed.
