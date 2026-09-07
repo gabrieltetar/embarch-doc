@@ -4,21 +4,19 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **Check 11's last live unknown is `/dev-bench/hello`'s `compatible` field**, needing a bench ([decision 35](decisions/schema-skew.md)).
+- **`/dev-bench/hello`'s `compatible` field is still unread, and a bench is not what it needs** ([decision 35](decisions/schema-skew.md)): `doctor` gives that call the same 500 ms budget as `GET /status`, and it opens a serial link. Three runs reported *unavailable* while Core's log recorded all three handshakes completing. **The budget is a compile-time constant, so it is not this machine's**; whether every machine's handshake exceeds it is not measured — no run has produced a handshake *duration* (`tasks/umbrella/030`).
 
 - **Check 15 catches a *cross-version* stale deploy, not a same-version one.** `core_version` is `CARGO_PKG_VERSION`, so a rebuild and failed deploy at one version reads as a match. Better than nothing, but **it is not a hash comparison and must not be read as one.** A content hash on `/status` would close it, `embarch-core`'s call.
 
-- **Decision 26's `--prune` is the last designed-and-unbuilt piece here, deferred by choice** — it needs `build_dir_name` in `embarch-api`'s listing. **Check 16's first live number argues for it:** `study_results/` is **809 MiB across 50 entries**; the sweep bounds the count, not the size.
+- **Decision 26's `--prune` is the last designed-and-unbuilt piece here, deferred by choice** — it needs `build_dir_name` in `embarch-api`'s listing. **Check 16 argues for it:** `study_results/` is **803 MiB across 50 entries** [measured 2026-09-06]; the sweep bounds the count, not the size.
 
-- **Check 17's two Fail branches have never met a real narrow-bound Core** ([decision 22](decisions/bind.md)) — this bench registers `--bind 0.0.0.0`. One Core installed `--bind 127.0.0.1` on a `wsl-host` machine settles them, **each arm its own half**: stopped, `bound-narrow` must Fail where a wide registration does not; running, `bind-too-narrow` must Fail where a wide one Passes `bind-matches-registered`. **The loopback hit discriminates nothing**, so a run seeing only it settles neither. **Third step, same machine: does `embarch-core install --bind 0.0.0.0` rewrite an already-registered narrow service, or refuse it?** Never run against one, and it is the assumption under *both* fix lines — if it errors, the diagnosis is right and the whole remedy wrong.
+- **Check 17's two Fail branches have never met a real narrow-bound Core** ([decision 22](decisions/bind.md)) — this bench registers `--bind 0.0.0.0`, and **the loopback hit discriminates nothing**, so a run seeing only it settles neither arm. The three-step protocol that settles them — including whether `embarch-core install --bind 0.0.0.0` rewrites an already-registered narrow service or refuses it, the assumption under *both* fix lines — is `tasks/umbrella/033`.
 
 - **`saved.host` is sticky, and `doctor` check 2 still reads it** — `setup` writes it for every class though `state.rs` calls it "only meaningful for `remote`", so an old `--host` makes check 2 infer `remote` on a `wsl-host` machine ([decision 22](decisions/bind.md)). Check 17's fix line was fixed off it, **check 2 was not**: the fallback's intent is undocumented, it does not preserve the `remote` class either, and clearing it changes check 2 on real machines on a guess.
 
-- **No `doctor` run has used [decision 42](decisions/doctor.md)'s wider locator**, on a bench with two `embarch-api` files at one version. Checks 8 and 11's shell-out contract is now observed; one `embarch doctor --json` is what's left. **`setup` writes `PATH` only to `.bashrc`/`.zshrc`** — `install.rs`'s call, not the locator's.
-
 - **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then `no-probe-found` with them back. **Whether the nine vendor IDs are the right nine is also unmeasured.**
 
-- **The no-stray-spaces guard cannot reach checks 4 and 12.** Both are `async` and decide nothing without a live Core, so neither has a pure judge to hand the test a verdict, and their text is the only text in `doctor` nothing holds to the rule. Splitting a pure judge out of either is the fix.
+- **The no-stray-spaces guard cannot reach checks 4 and 12** (both `async`, no pure judge), **and it sees only text this module authors** — check 1 interpolates `embarch-core --version`'s stdout and broke the rule in the field with the guard green ([decision 43](decisions/reporting.md), `tasks/umbrella/031`).
 
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
@@ -30,4 +28,4 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **macOS is unvalidated and has no machine to validate on.** Not blocking: a Mac-only engineer walks the guide once the primary topology is proven. **Gatekeeper may make "just download and run" false there**, the aarch64 build unsigned.
 
-- **Check 10 still spawns the MCP server in `doctor`'s own environment, not the agent CLI's** ([decision 40](decisions/mcp.md)). The registered `env` is applied now the entry is read structurally, so a server needing one of *those* is covered; one needing something only the CLI supplies fails here and works there. **And the rebuilt check has never run live.**
+- **Check 10 still spawns the MCP server in `doctor`'s own environment, not the agent CLI's** ([decision 40](decisions/mcp.md)). The registered `env` is applied, so a server needing one of *those* is covered; one needing something only the CLI supplies fails here and works there. **That residual is what is unexercised** — a live run of both arms hit `not-registered` and `handshake-ok`, neither of them it.

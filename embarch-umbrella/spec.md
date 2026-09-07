@@ -6,7 +6,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## What it is
 
-The sub-project that gets a firmware engineer from *nothing installed* to *`embarch-api build_and_flash my-project` works, from a terminal or from an agent* — on whatever topology their machine happens to be. One binary, `embarch`, with three jobs: **set up**, **verify**, and **start Core when it isn't already running**.
+The sub-project that gets a firmware engineer from *nothing installed* to *`embarch-api build_and_flash my-project` works, from a terminal or from an agent* — on whatever topology their machine happens to be. One binary, `embarch`, with three jobs: **set up**, **verify**, and **start Core when it isn't already running**. Both of `embarch-api`'s front-ends stay first-class after setup, and **the human one is as much umbrella's job as the agent path**.
 
 It is its own sub-project because **it is the only component that knows about both `embarch-core` and `embarch-api`**, and `embarch-api` cannot hold it: **it cannot be the answer to "what do I download first" when it is one of the two things being set up.**
 
@@ -33,8 +33,6 @@ Not:
                     +-- writes <firmware-repo>/embarch/embarch.toml
                         and registers the MCP server (local scope)
 ```
-
-Both of `embarch-api`'s front-ends stay first-class after setup, and **umbrella's job is to make the human one ergonomic too**, not just to wire up the agent path.
 
 ## Topology matrix
 
@@ -74,10 +72,10 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
 | 6 | `embarch-api` config loads; every project's source path exists |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
-| 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing, **warn naming why** where it cannot be asked (decision 17) |
+| 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing (decision 17) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
-| 10 | Registered **and answering**: it reads the registration out of the agent CLI's own config, by the binary it names rather than only the key `embarch`, spawns it and completes one JSON-RPC `initialize` over its stdio within 10 s. Answered, failed and timed out stay distinct in `--json` (decisions 23, 37, 40); an entry with nothing to spawn is a warn, never a pass |
-| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one — shelled out for, and a warn naming why when it cannot be asked — plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, and this binary's own constant as a mixed-install warn |
+| 10 | Registered **and answering**: reads the registration out of the agent CLI's own config by the binary it names rather than only the key `embarch`, spawns it, and completes one JSON-RPC `initialize` over stdio within 10 s. Answered, failed and timed out stay distinct in `--json`; an entry with nothing to spawn is a warn, never a pass (decisions 23, 37, 40) |
+| 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the wire version the flashed bench reports, plus this binary's own constant as a mixed-install warn |
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` |
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe; unlocatable says what is missing (decision 38) |
@@ -88,11 +86,9 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 
 Checks 12, 15 and 16 never fail the run outright; **5, 11 and 17 do**, each only for the states its row names ([decisions/schema-skew.md](decisions/schema-skew.md) for why 11 is allowed to). A number a check simply could not obtain is a warn naming which one, never a pass.
 
-Numbers 1-17 are what the code emits and what `--json` carries — `n`, `name`, `status`, `detail`, `fix`, a `code` where a check has more states than statuses (checks 1, 5, 10, 14, 17), and a `path` where it resolved a directory (check 16) — both `null` elsewhere, never absent ([decisions/reporting.md](decisions/reporting.md)). 18 is designed and unbuilt; its number moves if something is built before it.
+Numbers 1-17 are what the code emits. `--json`'s per-check object — its fields, which are always present, and which carry a `code` (checks 1, 5, 10, 14, 17) or a `path` (check 16) — is [decisions/reporting.md](decisions/reporting.md)'s contract. 18 is designed and unbuilt, and **it is not the only such item**: 26's `--prune` half sits *inside* a shipping command, marked above where it lives, and [open.md](open.md) carries whether it is still wanted. 18's number moves if something is built before it.
 
-Every `detail` and `fix` is **one line with no run of two or more spaces** — what a `\`-continued literal renders, and what a long literal wrapped without that `\` silently breaks, Rust keeping the next line's indentation inside the sentence. Only check 6's `toml` parse error is exempt, rendered verbatim with its own caret diagram. A module-wide test holds every verdict the pure judges emit to it; a `contains` assertion reading one side of a wrap does not, which is how check 14 shipped this twice.
-
-**Designed-and-unbuilt is not only the tail of the table**: 26's `--prune` half sits *inside* a shipping command, marked above where it lives. [open.md](open.md) carries whether it is still wanted.
+Every `detail` and `fix` is **one line with no run of two or more spaces**, held by a module-wide test over the pure judges. **That test sees only text this module authors**: a check interpolating another program's output can break the rule at runtime with the guard green, and check 1 does today ([decision 43](decisions/reporting.md)).
 
 ## Token handling
 

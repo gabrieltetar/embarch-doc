@@ -1,6 +1,73 @@
 # 029 — embarch-umbrella's spec.md and open.md are back in reserve
 
-**State:** blocked
+**State:** open — **unblocked and mostly paid; it is a worker's now, not a bench unit's**
+
+**No longer blocked.** The `In flux: yes` reason below was that `spec.md`'s `doctor` table was
+being rewritten row by row and `open.md` held five bullets a single bench session could close or
+rewrite. **That bench session ran** (`umbrella/027`, 2026-09-06): every check has a live verdict,
+three of `open.md`'s bullets are settled or restated against measurement, and check 17's protocol has
+moved to [`033`](033-settle-check-17s-two-fail-arms-against-a-real-narrow-bound-core.md). What is
+left here is ordinary compaction. **`In flux:` is now `no`** for these two files;
+[`009`](009-compact-docs.md) still owns `decisions/doctor.md` and `decisions/bind.md` and **stays
+blocked** — do not read this as unparking it.
+
+**What was paid, and what came back.** `umbrella/027` took `spec.md` **9,660 → 9,128 B** and
+`open.md` **4,823 → 4,535 B**, both clear. **Its reviewer then found three clauses that outran what
+the run measured, and correcting them cost the headroom back**: `spec.md` **9,237 B (90.2%)**,
+`open.md` **4,653 B (90.9%)**. That is the honest trade and it is recorded rather than trimmed away
+— the corrections were an unmarked inference in the durable doc, a sentence contradicting decision
+33, and a restored scope statement the pass had dropped undisclosed. **~350 B of accuracy against
+~350 B of headroom**, and a compaction pass that shaved them back out would be undoing the review.
+
+**A worker running this needs ~600 B across the two files** and should look at
+`decisions/reporting.md` (8,920 / 12,288) and `decisions/schema-skew.md` (7,241 / 12,288) as
+destinations — both have room and both are the right mission for what is still in `spec.md`'s
+check-table prose.
+
+Paid inside the supervisor's bench unit `umbrella/027`,
+per `supervise.md`'s rule that where a file in reserve sits behind a compaction task
+blocked on `In flux: yes`, **the actor writing into it compacts it as part of its own
+unit** — it is the only one that can shorten what it is rewriting without writing a clean
+statement of something about to be wrong. That is exactly what happened: the live `doctor`
+run made three of `open.md`'s bullets false, so shortening them was not a density pass, it
+was reporting a measurement.
+
+**How, so nobody looks for deleted content.** `spec.md`: the `--json` per-check field
+enumeration and the message-shape rule's mechanism **moved** into
+`decisions/reporting.md` (decision 43), where the reporting contract already lives, leaving
+a rule and a citation; the "designed-and-unbuilt is not only the tail of the table"
+paragraph merged into the sentence above it; two check rows dropped a restatement of the
+general "a number it could not obtain is a warn" rule that the paragraph below the table
+already states once. `open.md`: the decision-42 locator bullet **closed** (that run used
+the wider locator and found a mixed install), the check-17 experiment protocol **moved** to
+`tasks/umbrella/033`, and three bullets rewritten to what is now measured.
+
+**Where `009`'s inherited clause went**, since this section exists so nobody hunts for deleted
+content: `009`'s protected note that check 17's two Fail branches have never met a real
+narrow-bound Core — **and which half of that debt each arm settles** — left `open.md` and now lives
+in [`033`](033-settle-check-17s-two-fail-arms-against-a-real-narrow-bound-core.md), intact. The
+debt dies when `033` runs. The `spec.md` scope sentence about `embarch-api`'s two front-ends was
+dropped by the pass **undisclosed**, caught by the reviewer, and is **restored** in shortened form
+in `spec.md`'s opening paragraph.
+
+**Both `Must not delete:` items below survive**: `spec.md` still states the one-line /
+no-multi-space rule and check 6's exemption is in decision 43 with the reason the exemption
+is exactly one check, and `open.md` still carries checks 4 and 12 as a stated coverage gap —
+now alongside the **larger** gap the live run exposed. [`009`](009-compact-docs.md) is
+untouched and still owns `decisions/doctor.md` and `decisions/bind.md`; **it does not unpark
+with this.**
+
+**One placement forced by the cap, recorded rather than buried.** A new observation — that
+check 14's `WslHost`/`Remote` arms cannot be reached on a set-up machine — went into
+`tasks/umbrella/032` and **not** into `open.md`, because `open.md` had no room for it. That
+is the reserve deciding placement, which this log has flagged for three legs. The task file
+is a defensible home; it was not the one chosen on the merits.
+
+---
+
+*Original filing follows.*
+
+**State (original):** blocked
 **Source:** scripts/check-doc-size.py, spent by `umbrella/024`
 **Scope:** umbrella
 **Hardware:** none
