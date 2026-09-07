@@ -1,6 +1,6 @@
 # 014 — `embarch-core/decisions/studies.md` crossed into reserve
 
-**State:** claimed by agent/core/014-compact-core, 2026-09-06 18:24
+**State:** done, 2026-09-06
 **Source:** `core/012` spent this file's headroom adding decision 43; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none
@@ -75,14 +75,58 @@ commit that spends the reserve is the one that files it (`DOC-COMPACTION.md`
 
 ## Done when
 
-- [ ] `decisions/studies.md` is clear of its reserve line (under 11,059 B), by
+- [x] `decisions/studies.md` is clear of its reserve line (under 11,059 B), by
       shortening or by a mission split.
-- [ ] If it splits, `decisions.md`'s index table gains the new row and every
+- [x] If it splits, `decisions.md`'s index table gains the new row and every
       number still resolves — `scripts/check-decision-refs.py` is the check.
-- [ ] Every `Must not delete:` item above is still readable.
-- [ ] Decision 40's occurrence counts are byte-for-byte unchanged or omitted
+- [x] Every `Must not delete:` item above is still readable.
+- [x] Decision 40's occurrence counts are byte-for-byte unchanged or omitted
       entirely, never paraphrased.
-- [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
+- [x] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words: *what does someone starting on `embarch-core`'s
       study path tomorrow lose if this paragraph is gone?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What shipped
+
+A **mission split**, not prose surgery. `decisions/studies.md` held three
+missions; the two that are one entry each — the version gate (31) and handshake
+identity (35) — moved **verbatim** into a new `embarch-core/decisions/handshake.md`,
+whose mission is what Core establishes about a bench *before* any step runs.
+`decisions.md` gained the row, and its stale size column was corrected on every
+row (`platform.md` was listed at 5.8 KB against a real 8.2 KB).
+
+- `decisions/studies.md` — 11,176 → **8,318 B** (cap 12,288, reserve line 11,059).
+- `decisions/handshake.md` — new, **3,730 B**.
+- `decisions.md` — 1,618 → 1,704 B.
+
+`check-doc-size.py --pressure` now reports `embarch-core/decisions/studies.md`
+**PAID at 67.7%**, and nothing in `embarch-core` is in reserve.
+
+**Nothing in a decision entry was deleted.** A diff of the pre-image against the
+two files concatenated shows exactly three changes: `studies.md`'s own summary
+line, the new file's header, and the dated bracket on decision 43 below. Decision
+40's occurrence counts are byte-for-byte untouched, as is the note that the wrong
+number had become the name of a bug; decision 33's `timeout_ms` sentence and its
+*Declined* case, decision 43's "neither is wrong for its own job" and its observed
+`current_step: 1, total_steps: 2`, and decision 31's verified-versus-`Declared`
+distinction are all where they were.
+
+Decision 43's cross-repo fact is **dated, not deleted**: `embarch-ui` renders
+`current_step + 1` is now marked `[embarch-ui, 2026-09-06; a badge fix is filed in
+that repo, and when it lands this sentence and the *Declined* clause's "for free"
+become historical — Core's numbering does not change]`.
+
+**Why no prose was cut.** The second-pass test is "would someone about to change
+this code make a wrong move without it". Every long paragraph left in `studies.md`
+answers yes: 40's silence-then-reset account is the only thing that stops the next
+reader re-diagnosing a truncation as a framing bug; 43's two-counters observation
+is the only thing that stops them renumbering the public field; 33's *Declined*
+case is the only thing that stops `delay_before_ms` being folded back out of the
+deadline. The one genuinely cold item — the study id `3785bd198cc3a62d…` — is
+30 bytes and, per decision 19/20 in this same file, unfollowable anyway once the
+service restarts. `DOC-COMPACTION-PASS.md` says not to run the density pass twice;
+this file had had one, and the remaining bytes are rules.
+
+No code change: this unit is docs only, so `agent/core/014-compact-core` in
+`embarch-core` ends with no commit.
