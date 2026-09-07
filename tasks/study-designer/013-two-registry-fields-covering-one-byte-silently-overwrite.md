@@ -1,6 +1,6 @@
 # 013 — Two registry fields covering the same payload byte silently overwrite each other
 
-**State:** open
+**State:** claimed by agent/study-designer/013-disjoint-field-ranges, 2026-09-06 19:40
 **Source:** noticed while doing `study-designer/012` — `src/registry.rs`'s `ActionRegistry::validate`, `src/study_builder.rs`'s `resolve_write_payload`
 **Scope:** study-designer
 **Hardware:** none
