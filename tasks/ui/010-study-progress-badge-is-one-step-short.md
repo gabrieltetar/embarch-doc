@@ -1,6 +1,6 @@
 # 010 — The study-designer progress badge is one step short for the whole run
 
-**State:** claimed by agent/ui/010-progress-badge, 2026-09-06 18:50
+**State:** done on agent/ui/010-progress-badge, 2026-09-06
 **Source:** found by `agent/core/012` while documenting Core's `current_step`; `embarch-core/decisions.md` decision 43
 **Scope:** ui
 **Hardware:** none
@@ -67,12 +67,34 @@ rather than from any earlier memory of them.
 
 ## Done when
 
-- [ ] The badge's arithmetic matches the meaning `embarch-core/interfaces.md`
+- [x] The badge's arithmetic matches the meaning `embarch-core/interfaces.md`
       states, with the intended reading (`step now running` vs `steps finished`)
       named in a comment beside it so the next reader does not re-derive it.
-- [ ] The `current_step == null` case shows something sensible for the first
+- [x] The `current_step == null` case shows something sensible for the first
       step rather than dropping the counter entirely.
-- [ ] `embarch-ui/src/study_designer.rs`'s `RunState::Running.current_step` says
+- [x] `embarch-ui/src/study_designer.rs`'s `RunState::Running.current_step` says
       in its own doc which meaning it is passing through — it is a straight copy
       of Core's field and nothing on that path currently says so.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What landed
+
+The reading chosen is **the step now running**, written up as `embarch-ui`
+decision 20 with the reasoning: during a run the badge is the *only* thing on
+the run card that says where the study is (per-step rows are not rendered until
+completion), so it answers "which step am I waiting on"; the count reading's
+first frame, `running 0/2`, reads as *nothing is happening* while step 1 runs.
+
+`assets/app.js`'s badge arithmetic moved into `sdRunningStepLabel(currentStep,
+totalSteps)`: `currentStep == null ? 1 : currentStep + 2`, clamped to
+`totalSteps`, and no counter at all when `totalSteps` is absent or `0`.
+`RunState::Running.current_step` now documents that it is Core's field verbatim.
+
+**Coverage debt, host-side:** `assets/app.js` is never evaluated by `cargo test`
+— no JS engine on this bench (`node`, `deno`: absent), which is why `trace.rs`'s
+browser harness dumps JSON for a manual headless-Firefox run. The new
+`run_badge_counter_names_the_step_now_running` test is a **text guard** over the
+`include_str!`ed source, not a behavioural one: it pins the helper's name, the
+`+ 2`, the clamp, and the absence of the old `+ 1`. The rendered badge itself is
+unverified against a browser; verifying it needs a live run of a multi-step
+study with the UI open.

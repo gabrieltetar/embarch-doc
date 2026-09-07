@@ -16,5 +16,5 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace), 19 | What a trace renders, on which clock, the load repartition, and dropping a stale pre-reset head |
 | [decisions/trace-chart.md](decisions/trace-chart.md) | 10 (chart) | Zoom, pan, exact aggregation, the study-step row |
 | [decisions/trace-transfer.md](decisions/trace-transfer.md) | 18 | Server-side binning: the view asks for the window it draws |
-| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14 | Version fields, security level, declared GATT, opening a project |
+| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20 | Version fields, security level, declared GATT, opening a project, the run badge's counter |
 | [decisions/gatt-capture.md](decisions/gatt-capture.md) | 15, 16, 17 | Per-characteristic taps, characteristic names, the target dialog |
