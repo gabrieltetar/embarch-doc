@@ -17,6 +17,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `interfaces.md`/`spec.md` now list all 27 routes and 11 CLI subcommands; a pinned count in `api.rs` catches future drift.
 - A study stopped by a timed-out step now names that step; "did not arrive" means no step outcome was recorded at all ([decision 45](../embarch-core/decisions/studies.md)).
 - `/logs/stream` no longer splits a log line across two SSE frames; its offset advances past a `\n` or not at all (embarch-core decision 44).
 - `hw_lock` contention queues silently — decision 14's `503` naming the holder was never built; three docs said it was. See [decisions/platform.md](../embarch-core/decisions/platform.md).
