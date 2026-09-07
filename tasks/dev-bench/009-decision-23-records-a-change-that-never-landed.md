@@ -1,6 +1,6 @@
 # 009 — Decision 23 says `BleAddress`'s byte order is stated in the crate that owns the type; it is not
 
-**State:** claimed by agent/dev-bench/009-decision-23-records-a-change-that-never-landed, 2026-09-07 10:10 — **unparked by the supervisor, leg 026, 2026-09-06.** `study-designer/014` landed
+**State:** done — **unparked by the supervisor, leg 026, 2026-09-06.** `study-designer/014` landed
 (`embarch-study-designer` `79a4c00`, doc `2378b58`), so decision 23's claim is now true *of the
 crate*; what is left is making the decision's own text honest about **when** it became true. Its
 task file is deleted, as a `done` task file is — the commit above is the record.
@@ -66,8 +66,25 @@ reports a plain timeout with no census (`tasks/dev-bench/008`).
 
 ## Done when
 
-- [ ] Decision 23 is true as written, or amended to record when the crate-side statement actually
-      landed rather than implying it landed with the decision.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped if anything user-visible changed; a decision correction
-      alone may not warrant one — say which and why.
+- [x] Decision 23 is true as written, or amended to record when the crate-side statement actually
+      landed rather than implying it landed with the decision. — Verified against
+      `embarch-study-designer/src/ids.rs` at `origin/main` before writing anything: the `BleAddress`
+      doc comment now states display order, most-significant first, the `C4:82:E1:42:B1:26` worked
+      example, that both `BleAddressKind`s share the order, that the derived serde carries `bytes`
+      in index order, and that nothing in that crate reverses it — `study-designer/014` really did
+      land it. Amended decision 23 in `embarch-dev-bench/decisions/ble.md` with a dated note saying
+      the crate-side statement was not yet true when the decision first claimed it, and naming what
+      landed and citing `embarch-study-designer decision 14`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). — see report.
+- [x] `changelog.d/` fragment dropped if anything user-visible changed; a decision correction
+      alone may not warrant one — say which and why. — **No fragment.** Nothing user-visible
+      changed: the crate's own behavior and its own changelog entry are unchanged by this unit;
+      this only corrects `embarch-dev-bench`'s decision record to say honestly when the crate-side
+      statement landed. A changelog fragment pointing at "a decision text was corrected" would be
+      noise a reader of `history/dev-bench.md` gets nothing from.
+- [x] `embarch-dev-bench/decisions/ble.md` crossed into doc-size reserve (94.2%, 710 B left) as a
+      side effect of the amendment; filed `tasks/dev-bench/012-compact-dev-bench.md` in this same
+      commit per `tasks/README.md`, marked `In flux: yes` since BLE decisions in this file have
+      changed twice recently (decision 31, and this one).
+
+**State:** done
