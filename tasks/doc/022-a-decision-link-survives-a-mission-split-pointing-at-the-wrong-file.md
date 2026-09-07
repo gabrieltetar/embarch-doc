@@ -87,3 +87,14 @@ to be rewritten into prose before `check-links.py` would pass, because it flags 
 link-shaped string **even inside a code span** — `tasks/doc/018`. A task about link checking
 was the fastest possible way to meet that defect, and it is worth fixing first: the check
 you are being asked to add will want to describe the very pattern it matches.
+
+> **`tasks/doc/018` landed 2026-09-06 (`934dfef`, owner's session).** `check-links.py` blanks
+> fenced blocks and inline code spans before extracting links, so you can write the shapes
+> out normally — start by restoring the three above. Two other things settled the same
+> sitting, both of which this file lists as open: **a hand edit to `history/*.md` survives
+> reassembly** (`build_changelog.py` inserts into the existing window; verified against a real
+> assemble), so §1's regeneration trap is closed and the fix belongs in the assembled file,
+> the fragment having been deleted at assembly. And `DOC-CONVENTIONS.md` now states the
+> convention your sweep should apply: link `<sub-project>/decisions.md`, the routing table
+> from number to topic file, not the topic file itself. **17 `history/` entries** currently
+> link a topic file — that is the sweep.

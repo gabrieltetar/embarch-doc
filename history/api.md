@@ -19,7 +19,7 @@
 - embarch-api's test-reach decisions 30, 46 and 54 move verbatim out of `decisions/shape.md` (12,281/12,288 B) into a new `decisions/tests.md`; nothing reworded.
 - The bearer sweep's route set is derived from the client's source, so a new networked method fails a test instead of escaping it.
 - A static project is refused all five zephyr-west-only config fields at load, not just default_target; the `none`-snippet collision names a remedy that works.
-- `spec.md` is 12% smaller and out of reserve: selection semantics point at `interfaces/config.md`, and decision 30 moved to `decisions/shape.md` where the test tiers live.
+- `spec.md` is 12% smaller and out of reserve: selection semantics point at `interfaces/config.md`, and decision 30 moved to the group holding the test tiers — `decisions/shape.md` then, `decisions/tests.md` since ([decisions.md](../embarch-api/decisions.md) routes a number to its file).
 - `decisions/zephyr.md` split by mission: `decisions/build.md` takes 5, 18, 19, 42; discovery and selection stay.
 - Sixteen claims that lived in two api docs each now live in one, with a pointer where each moved from; the reflash invariant stays in both, on purpose (decision 40).
 - A truncated build log now keeps its first 16 KB as well as its last 48 KB, so an early error is not scrolled off; total still capped at 64 KB (decision 18).

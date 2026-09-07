@@ -20,6 +20,12 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 
 **A decision number addresses a sub-project, not a file and not a section.** Within that sub-project's own docs: `decision 39`. Across: `embarch-study-designer decision 39`, or a link plus `decision 39` — but **prefer the bare number.** A link names a *file*, and a mission split moves an entry between a sub-project's decision files without changing its number, so `` `[decision 30](decisions/shape.md)` `` written from inside `embarch-api/` went on resolving after decision 30 moved to `decisions/tests.md`, and neither gate can see it (`tasks/doc/022`). Legacy `§3 decision 39` still parses, unmaintained — which is what let §3's decisions move to their own file untouched.
 
+**Where a link is wanted anyway — `history/` is the standing case — link the index, not the topic file.** `<sub-project>/decisions.md` is a routing table from number to `decisions/<topic>.md`, maintained by whoever splits one, so it survives a mission split; a link straight at a topic file does not, and neither gate can see the difference. The 17 `history/` entries still linking a topic file are `tasks/doc/022`'s sweep, not an exception to this.
+
+**A dated entry that *narrates* a move is the one case where the old filename is content rather than a pointer.** It was true on the day it was written, so neither silently amending it nor leaving a reader to follow it is right: keep the old name and say where the thing is now. `history/api.md`'s decision 30 line is the worked example.
+
+**`history/*.md` is hand-editable, and hand edits survive.** `build_changelog.py` inserts a new entry into the existing window and leaves the rest of the file alone — verified against a real assemble on 2026-09-06, after two tasks had assumed the opposite. There is no other durable copy to fix instead: the `changelog.d/` fragment that produced a line is deleted at assembly.
+
 `check-links.py` structurally cannot see one of these — it validates paths and skips anchors, and "decision 39" is not a link. `scripts/check-decision-refs.py` resolves all 2,362 of them, and has found two real classes of breakage:
 
 - **A number an insertion renumbered.** Two entries looked deleted while other docs cited them (`embarch-api` 31, `embarch-umbrella` 27). Neither was: **a commit inserted a decision in the middle and renumbered the entry below it**, so every reference to the old number silently pointed elsewhere. **This is why a number is permanent here** (DOC-COMPACTION.md §5); both entries own both numbers.
