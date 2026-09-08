@@ -1,6 +1,6 @@
 # 022 — `limits.md`'s `MAX_DISCOVERED_SERVICES` row reasserts the service count decision 57 exists to retire
 
-**State:** open
+**State:** claimed — leg 048
 **Source:** `embarch-reviewer` on `study-designer/011` (doc merge `f22a6b4`), filed
 as an `inbox/` drop 2026-09-07 and promoted here by leg 047. This is the first
 finding in this log that a reviewer caught and the supervisor did not — the
@@ -59,3 +59,37 @@ before `011`.
 
 A plain `git revert f22a6b4` would take the other 43 constants `011` correctly
 enumerated with it. Hand-edit the one row.
+
+## Dispatch note — leg 048
+
+**Do not go and re-derive the service count from `reference-dut-fw`.** That repo is
+not yours to read for a fact you then assert, and re-deriving it is how this defect
+was created in the first place: `011` transcribed a bounded read and stated it as
+current fact. **Decision 57 is the validated answer already on record** — three
+services declared where a bounded read found two, seven via live discovery once the
+link is encrypted — and it was written *after* the comment you are fixing. Restore
+the citation and the numbers from the decision; add nothing the decision does not
+already say.
+
+**Fix the upstream cause, not only the symptom.** `src/limits.rs:80-84`'s doc
+comment in `embarch-study-designer` is what a future doc pass will transcribe again.
+Make it cite decision 57 rather than restate a count, so the next transcription
+cannot go stale independently of the decision.
+
+**On the `[measured]` tag** — the third Done-when item is the one most likely to be
+skimmed. The date on those rows is when `git log -S` says the constant was written.
+That is provenance about the *constant*, not a measurement of the *DUT*. Whatever
+tag you land, a reader must not be able to read it as "someone put a board on a
+bench and counted." If `DOC-CONVENTIONS.md` gives you no tag that says "transcribed
+from a source read", say so in the task file rather than bending an existing one.
+
+**Doc-size reserve for `study-designer`, so you plan rather than discover.**
+`decisions/registry.md` is **11,827 / 12,288 B — 461 B left**, filed under
+`tasks/study-designer/019`. `open.md` (4,331 / 5,120) and `spec.md` (9,183 / 10,240)
+are parked under `tasks/study-designer/006` `[BLOCKED]`. `interfaces/limits.md` —
+the file you are editing — is not in reserve, and this change should be roughly
+byte-neutral anyway.
+
+**Reserve rule you owe:** if your work pushes any `study-designer` file into reserve,
+or leaves one there that nothing has filed, file
+`tasks/study-designer/<next free NNN>-compact-study-designer.md` in the same commit.
