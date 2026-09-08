@@ -1,6 +1,6 @@
 # 042 — `schema-skew.md` cites `embarch-api/decisions/surface.md` for a decision that has moved
 
-**State:** open
+**State:** claimed — leg 048
 **Source:** worker on `agent/api/036-dev-bench-hello-tool`, 2026-09-07, filed as an
 `inbox/` drop while splitting `embarch-api/decisions/surface.md`
 (`tasks/api/043`'s parked reserve, closed via `DOC-COMPACTION.md` §2's
@@ -47,3 +47,34 @@ who touches it has the pointer rather than rediscovering it.
 - [ ] No other file under `embarch-umbrella/` cites a decision at a path that
       the `surface.md` split moved — `grep -rn 'embarch-api/decisions/surface'
       embarch-umbrella/` comes back with nothing.
+
+## Dispatch note — leg 048
+
+**This task's premise is now doubly true, and one of its own notes is out of date.** It was held
+back by leg 045 on the grounds that the citation only goes stale once `api/036` lands. `api/036`
+landed 2026-09-07. **A second split has happened since**: `api/048` landed this leg
+(`embarch-doc` `13b5bf6`) and added `embarch-api` decision **61** to
+`embarch-api/decisions/shape.md`. So when you run the second Done-when grep, widen it: check every
+`embarch-api/decisions/` path this repo cites, not only `surface.md`, and confirm each cited
+decision number is actually in the file the path names. `check-decision-refs.py` will not catch a
+wrong-but-plausible path — it falls back to "defined somewhere in the sub-project" — which is
+precisely why this defect reached `main` with a green gate in the first place.
+
+**Do not fix `history/api.md`.** The task body names it as carrying the same stale path and
+correctly rules it out of scope: it is `api`'s file, not `umbrella`'s, and `check-ownership.py`
+will refuse it. Leave it, and leave the note that says so.
+
+**If the whole unit turns out to be one line, that is the correct result — say so and stop.** Do not
+find adjacent work to justify the run. A citation that points a reader at a file where the reasoning
+is not is worth a unit on its own, and `schema-skew.md`'s link is the only thing in that file
+explaining why check 11 shells out to a different binary.
+
+**Doc-size reserve for `umbrella`, so you plan rather than discover.** `spec.md` is
+9,784 / 10,240 B (456 B left) and `open.md` is 4,494 / 5,120 (626 B), both filed under
+`tasks/umbrella/038`. `decisions/bind.md` (11,409 / 12,288) is parked under `tasks/umbrella/009`,
+`In flux: yes` — **do not compact it and do not write into it**. `decisions/schema-skew.md`, the
+file you are editing, is not in reserve.
+
+**Reserve rule you owe:** if your work pushes any `umbrella` file into reserve, or leaves one there
+that nothing has filed, file `tasks/umbrella/<next free NNN>-compact-umbrella.md` in the same
+commit.
