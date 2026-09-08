@@ -1,6 +1,11 @@
 # `validate`'s response mirror and MCP tool should show `validated_at_utc_ms` when Core sends it
 
-**State:** blocked
+**State:** open — unblocked by leg 042 when `tasks/core/026` landed
+(`embarch-core` `b0bf60d`, decision 50). `POST /validate` now serves
+`validated_at_utc_ms`, so both mirrors in this repo have something real to
+carry. This is now the head of the chain: `tasks/umbrella/041` and
+`tasks/ui/020` are blocked on *this* task where they read Core through
+`embarch-api`'s mirror.
 **Source:** `tasks/topology/009` (embarch-doc), topology decision 26
 **Scope:** api
 **Hardware:** none

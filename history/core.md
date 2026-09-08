@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `POST /validate` now returns `validated_at_utc_ms` alongside `confirmed_at_utc_ms`, additive.
 - `EnrolledBoard`/`Alert` now pin their JSON shape in `embarch-core` against `embarch-api`'s mirror literals, so field drift fails on both sides.
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 

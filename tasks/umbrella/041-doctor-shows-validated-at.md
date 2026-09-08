@@ -4,9 +4,12 @@
 **Source:** `tasks/topology/009` (embarch-doc), topology decision 26
 **Scope:** umbrella
 **Hardware:** none
-**Blocked on:** `tasks/core/026-validate-handler-wires-validated-at.md`, and
-then `tasks/api/045` if `doctor` reads through `embarch-api`'s mirror. Until
-Core's handler sends the field there is nothing for the check to report.
+**Blocked on:** `tasks/api/045`. The Core half landed in leg 042
+(`tasks/core/026`, `embarch-core` `b0bf60d`, decision 50), so the field is on
+the wire; what is still missing is `embarch-api`'s mirror. **If whoever takes
+this finds `doctor` calls Core directly rather than through that mirror, this
+is unblocked now** — check the read path before assuming the dependency, and
+say which it was.
 
 ## What
 
