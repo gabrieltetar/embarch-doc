@@ -16,7 +16,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, and what sits outside them | 17, 18, 26 |
 | [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39 |
-| [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55 |
+| [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70 |
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53 |
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
