@@ -1,6 +1,10 @@
 # 036 — No MCP tool reaches `GET /dev-bench/hello`, the one endpoint that returns the identity cross-check
 
-**State:** claimed (leg 045)
+**State:** blocked — **the work is done and pushed; it was refused at the merge, by me, on a judgement the mechanical gate cannot make.** See "Why this was refused" below. **Unparked by:** the three new `HelloAckResponse` fields being made `Option<String>` with `#[serde(default)]`, and the MCP tool and its description saying in words that this Core did not report them, per `embarch-api` decision 58.
+**Branches, both pushed and both green on every mechanical check:**
+`agent/api/036-dev-bench-hello-tool` in `embarch-api` and `embarch-doc`. **Do not
+re-dispatch from scratch** — rebase these and amend them; the split of
+`decisions/surface.md` alone is most of the unit and it is correct.
 **Source:** hit by the supervisor running `tasks/topology/002`, 2026-09-06
 **Scope:** api
 **Hardware:** none
@@ -40,6 +44,72 @@ Three separate things point at this route and none can call it:
 
 It is a read-only route that takes a lock it already respects — it returns `409`
 rather than racing a study — so the tool is a thin wrapper, not new behaviour.
+
+## Why this was refused at the merge — leg 045
+
+**The unit contradicts `embarch-api` decision 58, which was written an hour
+earlier, in the same file, by the leg immediately before this one.**
+
+Decision 58 (`decisions/core-link.md`, from `tasks/api/046`) says: *every response
+field this crate deserializes that Core may not yet send is `Option<T>` with
+`#[serde(default)]`.* It was written **because `api/045` had just added
+`ValidateResponse::validated_at_utc_ms` as a bare required field**, and every
+`validate` call against a Core that predated it then failed at deserialization —
+looking like a broken client rather than a version skew.
+
+This unit adds three bare required `String` fields to `HelloAckResponse`:
+
+    self_reported_hardware_id · link_identity · probe_hardware_id
+
+**`self_reported_hardware_id` is the live problem.** `embarch-core` decision 47
+(`tasks/core/020`) renamed this field from `hardware_id` **today, at 15:34**
+(`embarch-core` `bd9adbc`). An `embarch-core` older than that commit serves
+`hardware_id` and does not serve `self_reported_hardware_id` at all — so against
+it, `serde` fails on a missing required field and **every call to the new tool
+returns a deserialization error rather than the identity cross-check.**
+
+**This is not hypothetical and it is not a future risk.** The live Core on this
+machine is a separately-built Windows service, and **the native Windows build for
+`core/020` has never been run** — it is an outstanding hardware debt in the
+supervisor log. So the deployed Core almost certainly still serves the old
+spelling, and this tool would have failed on its first real call, on the one
+route whose entire purpose is to answer *is the board on the link the board the
+probe verified?* Decision 58 names this exact configuration in its own reasoning:
+the deployed Core and this crate are known not to move together.
+
+**Nothing mechanical could have caught this.** `cargo test` passes because the
+round-trip test constructs the JSON it then parses. `check-docs.py` passes. Both
+ownership checks pass. `check-decision-refs.py` passes. The contradiction is
+between a new struct and a decision in a different file, and only reading the
+diff against the decisions finds it.
+
+**What the fix looks like, and why it is not a one-line change.** The three fields
+become `Option<String>` with `#[serde(default)]`. But `None` then has to be
+rendered, and **the whole point of this task is that an absent or unreported
+identity must not read as a pass** — so the MCP tool, its description and
+decision 59 all have to distinguish *"this Core did not report it"* from
+*"not-reported"* (a real bench answer) from *"undeclared"* (also a real bench
+answer, and today's answer for every chip). Three different absences that a
+careless rendering collapses into one. That is a design question, which is why
+this went back to the queue rather than being patched at the merge.
+
+**What is right about the unit and must not be thrown away.** The split of
+`decisions/surface.md` was verified verbatim and is exactly what
+`DOC-COMPACTION.md` §2's split-first rule asks for; the general decisions
+(16/24/50/57) stayed and the per-tool wrapping decisions (23/29/34/35/41/47/52)
+moved byte-for-byte into a new `decisions/tool-wrapping.md`. `link_identity` is
+correctly kept as its own string and never folded into `compatible`. The two
+downcastable error types for `409`/`502` are right. **Rebase and amend; do not
+start over.**
+
+**One deferred follow-up.** The worker filed an `inbox/` drop noting that
+`embarch-umbrella/decisions/schema-skew.md` cites decision 52 at its old
+`surface.md` path. **That drop is only true once this unit lands** — the split
+has not landed, so the citation is still correct today, and filing it now would
+create a task that is wrong until something else happens. It is left in the
+worker's worktree at
+`/home/gabriel/Github/embarch/.worktrees/embarch-doc/036-dev-bench-hello-tool/inbox/umbrella-schema-skew-cites-a-moved-api-decision-path.md`.
+**Whoever lands this unit files it in the same fold.**
 
 ## Supervisor direction (leg 045)
 
