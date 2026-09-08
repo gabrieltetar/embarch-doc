@@ -42,13 +42,37 @@ once the file is confirmed not to still be moving.
 commit that spends the reserve is the one that files it (`DOC-COMPACTION.md` §2).
 This task is that filing.
 
+## Note from `api/036`, 2026-09-07
+
+`api/036` needed to write into this file (adding a tool, exactly the flux this
+park names) and found `DOC-COMPACTION.md` §2's split-first rule applies: a
+verbatim split restates nothing, so `In flux: yes` does not forbid one. It split
+`surface.md` along a topic seam — general JSON/error shape and the
+tool-description citation convention (16, 24, 50, 57) stayed in `surface.md`;
+every per-tool wrapping decision (23, 29, 34, 35, 41, 47, 52) moved verbatim to
+the new `decisions/tool-wrapping.md`, where its own new decision 59
+(`dev_bench_hello`) landed. Every entry moved byte-for-byte; only the two
+files' headers are new prose. `decisions.md`'s index table now names both
+files, their decision numbers and sizes; `check-decision-refs.py` resolves
+every reference (some prose elsewhere pointed at `surface.md` by path for a
+decision that moved — fixed where in `api`'s own scope, filed to `inbox/` where
+not).
+
+**This does not resolve the park.** `tool-wrapping.md` is the file that will now
+take every future per-tool addition — the exact flux this task's `In flux: yes`
+describes — so the underlying question (is this subsystem still moving) is
+unchanged; only ticking the mechanical index-table item below reflects what
+this unit actually did. Left `blocked` for a future unit to say `In flux: no`
+against `tool-wrapping.md`, if that day ever comes.
+
 ## Done when
 
 - [ ] `decisions/surface.md` is clear of the 11,059 B reserve line, or a
       successor confirms `In flux: no` and re-blocks/re-files with a concrete
       compaction plan.
 - [ ] Every `Must not delete:` item above is still readable, wherever it ends up.
-- [ ] If split rather than shortened, `decisions.md`'s index table names the new
+- [x] If split rather than shortened, `decisions.md`'s index table names the new
       file, its decision numbers and both files' sizes, and
-      `check-decision-refs.py` resolves every number.
+      `check-decision-refs.py` resolves every number. — done by `api/036`:
+      `decisions/tool-wrapping.md` added, `decisions.md` updated, refs resolve.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).

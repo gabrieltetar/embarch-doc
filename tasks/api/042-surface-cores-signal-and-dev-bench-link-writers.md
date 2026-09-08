@@ -42,7 +42,7 @@ permission wall."* That does not transfer to `embarch-api`, which would `POST` t
 service exactly as `embarch-ui` does. Two later docs generalised it into "no CLI at all"
 (`embarch-ui/decisions/topology-tab.md` 10: *"there is deliberately no `embarch-topology` CLI
 mirror, so this tab is the only human surface there is"*; `suite/studies-guide.md:114`) without
-ever naming `embarch-api`. Meanwhile `embarch-api/decisions/surface.md` decision 34 states this
+ever naming `embarch-api`. Meanwhile `embarch-api/decisions/tool-wrapping.md` decision 34 states this
 repo's own rule and honoured it for the fourth writer: *"`enroll_probe`, wrapping Core's
 enrollment endpoint. **The two-layer wrapping every other Core capability gets.**"*
 

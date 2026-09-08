@@ -15,7 +15,7 @@
 | `list_projects` | — | Configured projects: name, chip, flash_format, source_path, whether serial defaults are set. `chip` is omitted for a `zephyr-west` project, resolved per call rather than stored. Pure config read — **works with Core down**, which matters when debugging config alone |
 | `list_targets` | `project` | For `zephyr-west`: every file-backing-validated tuple plus `snippets_by_app`, `default_snippets`, `default_extra_args`. For `static`: exactly one row — **the project itself**, with its configured `build_command`, `chip` and resolved `artifact_path` — because a static project has one target and refuses every selection param ([decisions](../decisions/shape.md) 53) |
 | `status` | — | Core `GET /status`; the probe list, or a clear "Core unreachable at `<base_url>`" |
-| `versions` **(CLI only)** | — | The versions compiled into **this binary**: `api_version` and `host_type_schema_version`, the study-designer host type schema it submits studies under and what `embarch doctor` compares against Core's served copy. Loads no config, contacts no Core, so it answers where either is what is broken ([decisions](../decisions/surface.md) 52) |
+| `versions` **(CLI only)** | — | The versions compiled into **this binary**: `api_version` and `host_type_schema_version`, the study-designer host type schema it submits studies under and what `embarch doctor` compares against Core's served copy. Loads no config, contacts no Core, so it answers where either is what is broken ([decisions](../decisions/tool-wrapping.md) 52) |
 
 ## Build and flash
 
@@ -27,7 +27,7 @@
 | `reset` | `project`, `P` | Core `POST /reset` with the resolved chip. Same selection as `flash`, same reason |
 | `serial_log` | `project`, `port?`, `baud?`, `duration_ms?` | Core `GET /serial-log`. Falls back to the project's port and baud, then 115200 / 2000 ms. `port` falls back further to Core's `GET /dev-bench/port` before erroring — **and this link is meant for the bench, not a DUT's own console** |
 
-**`erase` defaults to `false` and is never implicitly `true`.** The MCP description and the CLI help both spell out what it does to a board, at a length no other argument here gets — that wording is itself the design point, and [decisions](../decisions/surface.md) 41 is where it is argued and where a change to it belongs. Core performs the erase and decides whether a target supports one; a refusal comes back verbatim.
+**`erase` defaults to `false` and is never implicitly `true`.** The MCP description and the CLI help both spell out what it does to a board, at a length no other argument here gets — that wording is itself the design point, and [decisions](../decisions/tool-wrapping.md) 41 is where it is argued and where a change to it belongs. Core performs the erase and decides whether a target supports one; a refusal comes back verbatim.
 
 **Why `build` and `flash` stay separate as well as bundled:** the common agent workflow wants one call, and bundling prevents flashing a stale artifact after a build error — but iterating on compiler errors should not touch hardware every call, and a re-flash after a board reset should not need a rebuild.
 
@@ -42,6 +42,7 @@
 | `build_dev_bench` | — | `west build -b <board> app` in `[dev_bench] source_path`. No project or selection params: the bench is one board at a time, and *which* board is config, not a call-time choice |
 | `flash_dev_bench` | `firmware_path?`, `erase?` | Core `POST /flash` with `[dev_bench]`'s chip, format, offset and probe serial |
 | `build_and_flash_dev_bench` | — | Both, flashing only on a successful, fresh build |
+| `dev_bench_hello` **(MCP only)** | — | Core `GET /dev-bench/hello` — runs the Hello/HelloAck handshake alone, no `Study`, and closes the link again. Returns `schema_version`, `compatible`, `firmware_version`, and the identity cross-check: `self_reported_hardware_id` (what the bench itself claims), `probe_hardware_id` (JTAG-read by the enrolled probe), and `link_identity` — their comparison as `match`/`mismatch`/`not-reported`/`undeclared`. **Read `link_identity` itself; `not-reported`/`undeclared` is not a pass**, it means the comparison could not be made, not that identity was confirmed — `compatible` says nothing about it either way. `409` (a study already has the link; not a fault, retry after) and `502` (the handshake itself failed) come back as distinct error text ([decisions](../decisions/tool-wrapping.md) 59). No CLI subcommand: this is the one place `docs/tools.md` names an MCP tool with no CLI twin other than `versions`' own reverse case, since the route is a pure identity read no human workflow here otherwise calls for |
 
 ## Topology
 
