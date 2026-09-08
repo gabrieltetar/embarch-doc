@@ -1,7 +1,13 @@
 # Observe bond clearing actually firing on real hardware
 
-**State:** open — attempted on the bench by leg 039, 2026-09-07; stopped at the connect, one DUT fact
-short. Not `blocked`: nothing needs unblocking, the missing fact is a sentence someone can write.
+**State:** blocked — parked by the owner 2026-09-07: he is taking every bench and
+DUT-facing question himself once the fleet has run a while. **Unparked by him saying so**,
+and by nothing else — do not dispatch it, and do not read the queue's silence here as a
+reason to try the bench again.
+**On the substance, so the next reader is not misled**: the owner judged the unbond's
+chance of failing low and stood the attempt down. That is a risk accepted, **not an observation** —
+leg 039 stopped at step 1 and never connected, so nothing about bond clearing was measured. The
+`Done when` list below is unchanged and still unmet.
 **Source:** `embarch-study-designer/open.md` — "Bond clearing has never been observed firing on real hardware. Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean."
 **Scope:** study-designer
 **Hardware:** bench

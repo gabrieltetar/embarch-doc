@@ -1,6 +1,9 @@
 # Let the stale-prefix drop meet a real stale prefix
 
-**State:** open
+**State:** blocked — parked by the owner 2026-09-07: he is taking every bench and
+DUT-facing question himself once the fleet has run a while. **Unparked by him saying so**,
+and by nothing else — do not dispatch it, and do not read the queue's silence here as a
+reason to try the bench again.
 **Source:** `embarch-ui/open.md` — "**Hardware debt, the owner's own session:** run a study on the bench, open its Trace tab, and check the axis note reports a dropped prefix"
 **Scope:** ui
 **Hardware:** bench

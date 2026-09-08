@@ -14,7 +14,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 ## Never exercised
 
-- **Bond clearing has never been observed firing on real hardware.** Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean.
+- **Bond clearing has never been observed firing on real hardware.** Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean. Attempted 2026-09-07 (leg 039) and stopped at step 1, never connected — the owner then judged the failure risk low and parked the bench work, so this is **an accepted risk and still not an observation**.
 - **The fatal-error path is designed and untested.** No fault has been induced to watch a Zephyr fatal dump reach Core through the synchronous fatal-path sink (spec §4).
 - **Nothing has been validated against a DUT that presents no input/output capability.** Against such a peer Just Works is forced whatever this bench declares, L4 is unreachable and the security step should `Fail` reporting the level it did reach (decisions 34, 37) — correct behaviour, untested, because the DUT this bench has requires L4 and supplies the capability for it.
 

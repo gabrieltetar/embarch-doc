@@ -1,6 +1,9 @@
 # Compare a trace's placement against a second stream in the same study
 
-**State:** open
+**State:** blocked — parked by the owner 2026-09-07: he is taking every bench and
+DUT-facing question himself once the fleet has run a while. **Unparked by him saying so**,
+and by nothing else — do not dispatch it, and do not read the queue's silence here as a
+reason to try the bench again.
 **Source:** `embarch-outpost/open.md` — "Nothing has compared a trace's placement against a second stream in the same study… that is the check the dual-clock flag exists to enable, **and it has not been run.**"
 **Scope:** outpost
 **Hardware:** bench
