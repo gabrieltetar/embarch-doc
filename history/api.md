@@ -45,4 +45,5 @@
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions/shape.md)).
 
 ### Decided
+- `validated_at_utc_ms` is `Option<u64>`; an older Core parses, matching 13 other fields (decision 58).
 - `schema_version` is on every `--json` and MCP object, stamped by one serializer; `error_kind` retired unbuilt — Core serves no error codes. See embarch-api/decisions/surface.md 16, 24, 50.

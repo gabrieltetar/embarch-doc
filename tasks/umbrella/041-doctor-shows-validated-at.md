@@ -1,15 +1,26 @@
 # doctor's board-validation check should show `validated_at_utc_ms` when it's available
 
-**State:** blocked
+**State:** open
 **Source:** `tasks/topology/009` (embarch-doc), topology decision 26
 **Scope:** umbrella
 **Hardware:** none
-**Blocked on:** `tasks/api/045`. The Core half landed in leg 042
-(`tasks/core/026`, `embarch-core` `b0bf60d`, decision 50), so the field is on
-the wire; what is still missing is `embarch-api`'s mirror. **If whoever takes
-this finds `doctor` calls Core directly rather than through that mirror, this
-is unblocked now** — check the read path before assuming the dependency, and
-say which it was.
+**Was blocked on:** `tasks/api/045`, **which landed in leg 043**
+(`embarch-api` `c6a5a2d`, doc `782400d`) — unparked by leg 044. The whole chain
+below `doctor` is now in place: Core sends the field (`tasks/core/026`,
+`embarch-core` `b0bf60d`, decision 50) and `embarch-api`'s mirror carries it.
+You still owe the read-path check the original block asked for — say whether
+`doctor` reads Core directly or through the mirror, because it decides which
+shape you are handling.
+
+**Read the field's shape before you write against it.** `tasks/api/046` (leg
+044) changed `ValidateResponse::validated_at_utc_ms` from a required `u64` to
+`Option<u64>` with `#[serde(default)]`, so that an `embarch-api` built against
+an older Core still parses. **`None` means "this Core did not report it", not
+"never validated"** — and for a `doctor` check that distinction is the whole
+point, since a check that prints "never validated" for a version skew is
+exactly the misleading verdict `umbrella/032` was about. If you find the field
+is still a bare `u64`, `api/046` did not land as described — say so rather than
+working around it.
 
 ## What
 
