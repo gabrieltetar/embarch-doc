@@ -13,6 +13,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- `validate`'s response (client, MCP tool, CLI) now also surfaces `validated_at_utc_ms`, distinct from `confirmed_at_utc_ms`.
 - `embarch-api`'s [spec.md](../embarch-api/spec.md) and [open.md](../embarch-api/open.md) are back out of doc-size reserve; closed test gaps and config detail already in `interfaces/config.md` went.
 - `crates/embarch-core-client` is a workspace member, so the root gate lints and runs its own 28 tests: [decision 56](../embarch-api/decisions/tests.md).
 - The bearer token is applied by one funnel in `embarch-core-client`, not at 9 hand-written sites: [decision 55](../embarch-api/decisions/core-link.md).
