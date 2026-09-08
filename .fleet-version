@@ -1,8 +1,8 @@
 {
-  "framework_sha": "ccd8be1f35c6c4efbd4a10424443ecfedd9a93b3",
+  "framework_sha": "8a05eeda3b412d49433a156f4e7f9cbf6f27c77c",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-07T23:23:22Z",
+  "installed_at": "2026-09-08T19:15:15Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "16c1e5616dc9fbe592581dc251303dfe10aba6a03a4d8b2527a6e8ea746dde0b",
@@ -13,10 +13,10 @@
     ".claude/agents/embarch-supervisor.md": "29a3a8d84fe4fc898dbfc22ef517c84454e16e5a8a2639a9f303c964f1f7cb61",
     ".claude/agents/embarch-worker.md": "f34c0b93c587545d2780df54e8039bba2e8685101cda46e15d6f861395b54624",
     ".claude/commands/fleet-watch.md": "18bc8aa3cf738bd8fd62277bfaa5a295b3e94cbd64818941d4dd14e36379165d",
-    ".claude/commands/fleet.md": "a7b6cc6f70b5f440ab6ed951af346f4ed0db18eb5e89c3eeadbd4e3b1edc3d09",
+    ".claude/commands/fleet.md": "877b18e265701ed9e2f62d239ae38e06fc41d783eef3d603a969888a925fa615",
     ".claude/commands/suite-review.md": "e256dbca7ffa136b86084d0f3619cceb4582ac0c66250f9d06c96752e9b9f42d",
     ".claude/commands/supervise.md": "df06e82b973d5d8e4dd81b7b6e69f84d97f3aae38bea501fb78c42d2bfa292c0",
-    ".claude/leg.md": "1a5d3e3e472f319f876a5e4a00a1e103efec391fe6a77a9dcbffeb955b6db673",
+    ".claude/leg.md": "91a0f6cf4378df24f92f6b80a032ae50eee23b4d854bd19907597d5db4004b49",
     ".claude/settings.json": "275ede4c9f3654f136a8b3b33e3127e852cde8f78a061642bc9c062862d3877c",
     "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
     "inbox/README.md": "9f0d389f6bc2c8c00797b583621d9f4b40e733e80419a76691aa41853895c0d3",
@@ -33,6 +33,7 @@
     "scripts/check-dispatch.py": "8da05f963d2c54bbb1f01d9b5cbe592f16e063f1210eaa8dc68f3775731d4935",
     "scripts/fleet-armed.py": "fbca2d31f26497e012002caef3c55eee9c44ae26fdf6c26dc1c947ccdd81f626",
     "scripts/fleet-hardware.py": "1130107c3e652be5db385b196fb356e3ffac4117e2404379eaaebfd11d6fce1a",
-    "scripts/fleet-tick.py": "a20726d7574829a4cf2137574ac72817fd5a89a76c1c1bf537fe7c2ff7b1cd88"
+    "scripts/fleet-tick.py": "a20726d7574829a4cf2137574ac72817fd5a89a76c1c1bf537fe7c2ff7b1cd88",
+    "scripts/fleet-burndown.py": "fa19e69227e77631427ddf0248adb6d876207f040ec81757b61f9a20c861260e"
   }
 }
