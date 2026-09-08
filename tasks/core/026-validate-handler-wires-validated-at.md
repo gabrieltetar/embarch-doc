@@ -5,6 +5,27 @@
 **Scope:** core
 **Hardware:** none
 
+## Dispatch history (leg 042)
+
+**First dispatch did nothing and its worktrees are quarantined.** The worker
+spawned at 18:29 reported completion after ~33 seconds with a single sentence
+of supervisor-shaped narration as its entire result ("That was a mistake — I'll
+just wait quietly for the agent's completion notification now"), and a
+`general-purpose` agent — not an `embarch-worker` — appeared under the leg's
+session immediately afterwards. Both worktrees were clean with zero commits and
+neither branch was pushed, so **no work was done and nothing was lost.**
+
+`/home/gabriel/Github/embarch/.worktrees/embarch-core/026-validate-handler` and
+`/home/gabriel/Github/embarch/.worktrees/embarch-doc/026-validate-handler`,
+with the branch `agent/core/026-validate-handler`, are **left in place
+deliberately and must not be reused.** An unidentified agent may still be
+holding them, and `protocol.md`'s own rule is that nothing readable about a
+worktree may retire the worker in it — leg 012 reused trees on exactly that
+reading and ran two workers concurrently in them. The second dispatch uses
+fresh paths (`026-validate-handler-2`) and the branch
+`agent/core/026-validate-handler-2`. **A later leg should remove the first pair
+once it can confirm nothing is running**, not this one.
+
 ## Supervisor direction (leg 042)
 
 **This is not a wire-schema bump and does not take the §8 announcement route,
