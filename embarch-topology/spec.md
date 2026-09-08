@@ -67,6 +67,8 @@ Storage is one file under a machine-wide directory this crate owns — the same 
 
 **A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**, so the caller can say out loud that one board replaced another. Two rows claiming one role would leave the by-role lookup answering with whichever came first in the file — **the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist** (decision 20).
 
+**A declared link serial or interface can also be *unset* again** (`set-dev-bench-link --clear-serial`/`--clear-interface`) — the fix for exactly the stale-fact case above: `NotFound` now names which rule emptied the candidate list and routes to clearing it, rather than to re-enrolling by role, which carries the same stale fact right back (decision 27).
+
 **A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — every bench with one VCOM declares nothing, **but a guess says so.** This crate's own CLI is one such caller.
 
 **The declared *interface* is load-bearing, and is the only thing separating the two VCOMs a DK's onboard probe exposes under one serial:** `COM16` and `COM17` differ in nothing else a detector can read, and the console is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** The failure signature is a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).

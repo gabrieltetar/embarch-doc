@@ -1,6 +1,6 @@
 # Make the dev-bench "not found" error name the declared fact that excluded every candidate
 
-**State:** claimed (leg 045)
+**State:** done
 **Source:** owner's repo survey, 2026-09-06 — decision 20's own failure mode, with a remedy that preserves the cause
 **Scope:** topology
 **Hardware:** none
@@ -94,15 +94,58 @@ commit per `tasks/README.md`. Decision numbers are global across `decisions/*.md
 
 ## Done when
 
-- [ ] The zero-ports-visible case names the split-host possibility **first**, not as a
+- [x] The zero-ports-visible case names the split-host possibility **first**, not as a
       parenthetical, and says what `status` would show — it is already computable.
-- [ ] `NotFound` gains a field naming the excluding rule, set at each narrowing site in `select`.
-- [ ] `Display` prints the matching remedy per rule; the existing wording stays for the
+      **Landed narrower than asked, and here is why.** The literal ask — embed
+      `status`'s live, network-probed resolution (`wsl-host`, `authorized: false`) inside
+      `NotFound`'s own message — is not reachable at `NotFound`'s construction site for
+      every consumer. `select`/`detect` (where `NotFound` is built) live in the `hardware`
+      feature; the live probe needs `software`'s `reqwest`/`tokio`; and `embarch-core` —
+      the consumer whose build actually hit this failure — links only `hardware` and
+      deliberately never `software` (`src/lib.rs`'s own doc comment, avoiding `reqwest`'s
+      transitive `aws-lc-sys` on Windows). `NotFound::Display` is also a plain formatting
+      trait with no I/O of its own, so it could never make the live call itself regardless
+      of feature wiring. What **is** reachable everywhere, synchronously, with zero new
+      dependencies: whether this process is running inside a WSL2 guest at all (pulled out
+      of `software::detect_wsl2` into a new unconditionally-compiled `wsl2` module).
+      `NotFound` gains `likely_wsl2`, filled in only by `detect()` (the live wrapper,
+      never by pure `select()`), and `Display` leads with the split-host possibility and
+      names the command to run (`embarch-topology status`) rather than asserting a
+      resolution this call never made. `embarch-topology decision 27` has the full
+      argument; `open.md` records the remaining gap for `embarch-core` specifically.
+- [x] `NotFound` gains a field naming the excluding rule, set at each narrowing site in `select`.
+- [x] `Display` prints the matching remedy per rule; the existing wording stays for the
       role-fallback case.
-- [ ] Fixture tests cover: declared serial matches nothing, declared interface matches nothing, and
+- [x] Fixture tests cover: declared serial matches nothing, declared interface matches nothing, and
       no candidate VID at all — each asserting the message routes to a different fix.
-- [ ] A way to clear a declared link serial/interface exists on the crate API and the CLI, with a test.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including
+- [x] A way to clear a declared link serial/interface exists on the crate API and the CLI, with a test.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including
       `cargo test --no-default-features --features hardware`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+      (No suite-level doc was made false by this — nothing outside `topology` cites
+      `NotFound`'s wording or shape, so no `status.d/` fragment was needed.)
+
+## Line-number verification (leg 045)
+
+Every cited site still does what the task said, but every line number had drifted —
+`embarch-topology` landed `topology/003`, `007`, `009`, `015`, `016` since 2026-09-06, all
+of which touched these same files:
+
+- `port.rs:136-142`'s "re-enroll dev-bench ... with only its own probe attached" text was
+  (pre-this-task) at lines 167-173, inside `NotFound`'s `Display` impl (which starts at 160,
+  not 136 — line 136 is now inside `detected_by_for_vid`'s match arms).
+- The declared-serial hard-narrow the task calls out at `:316` was at lines 358-360
+  (`} else { candidates = narrowed; }`, the non-fallback branch of the serial filter).
+- The declared-interface hard-narrow at `:327-329` was at lines 370-372
+  (`if let Some(interface) = filter.interface { candidates.retain(...) }`).
+- `validate.rs:331-333`'s "carries both over on re-enrollment keyed by probe serial" was at
+  lines 364-373 (the `link_port_serial`/`link_port_interface` carry-over in `enroll`, with
+  the doc comment explaining why it's keyed on probe serial rather than role).
+- `enrollment.rs:205-216` is the one citation that still matched exactly:
+  `set_link_port_serial`/`set_link_port_interface` were still at those lines, and there was
+  still no `clear_*` counterpart before this task.
+
+None of the drift changed the substance of the claim — every site still did what the task
+said it does — so this is a finding about the task's own citations going stale under normal
+landed work, not a defect in the sites themselves.

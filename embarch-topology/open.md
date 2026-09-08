@@ -1,6 +1,6 @@
 # embarch-topology: open
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-07.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -8,7 +8,9 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **No signal tap has read a byte.** Resolution has touched physical hardware — a declared serial resolved to a real port and Core attempted a real open — but **that open failed by design, because the port was deliberately held busy to verify Core's effective baud.** None of this touches the signal entity, its route, or its storage.
 
-- **One reporting defect is measured and not fixed here: `embarch-topology dev-bench` run from WSL blames the USB cable for a board that is attached and working** (`tasks/topology/004`; the task file carries the measurement). Its sibling — `detected_by` crediting `segger-vid-match` for a choice a VID rule left three-way ambiguous — is closed: a declared-serial resolution now reports a distinct provenance rather than a VID rule's name (`tasks/topology/003`, decision 24). **One case stays as accepted rather than fixed, and decision 24 says why:** when the VID gate itself runs and happens to match every candidate without narrowing, the VID rule is still credited — under-informative, not false, unlike the case just closed.
+- **One `detected_by` case stays accepted rather than fixed, and decision 24 says why:** when the VID gate itself runs and matches every candidate without narrowing, the VID rule is still credited — under-informative, not false, unlike the declared-serial case decision 24 already closed.
+
+- **`NotFound`'s zero-ports lead-in is only as good as a synchronous, dependency-free WSL2 check can make it** (`tasks/topology/004`, decision 27): it names the split-host possibility and points at `embarch-topology status`, but can't embed that command's live, network-probed answer where `NotFound` is built — `embarch-core`, the consumer that actually hit this, links only `hardware`, never `software`'s `reqwest`/`tokio`. Closing that for real needs either giving `embarch-core` that dependency or a caller threading a pre-resolved answer through; nobody has asked for either yet.
 
 - **One narrow bench fact is genuinely unknown and is not inferred here:** whether the DUT board's USB exposes a **second** serial interface for the outpost's dedicated UART, or whether it contends with the DUT's console. The larger question this waited on is settled — **there is no separate bridge to buy**, since the DUT board's own USB carries the outpost's UART and *is* a direct route.
 
