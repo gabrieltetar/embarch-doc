@@ -62,6 +62,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |
 | `error_kind` — a machine-readable failure kind | **Retired** — never built; needs Core to serve error codes at all | n/a | 16, 50 |
 | `soc_chip_overrides` — a per-project SoC→chip escape hatch, consulted before Core's `/resolve-chip` | **Retired unbuilt 2026-09-05** — the short-circuit would skip the registry validation that is Core's whole claim to the table; a config declaring the key now fails at load naming the retirement | unit | 13 |
+| `dev_bench_hello` — the only tool serving the JTAG-vs-self-reported identity cross-check (`link_identity`, not a bool) | Shipped | local | 59 |
 
 ## embarch-dev-bench
 

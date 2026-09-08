@@ -30,6 +30,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `doctor` check 2's Fail now names the host input it inferred `remote`/`wsl-host`/`local` from, and is test-covered.
 - doctor normalises another program's raw text at every interpolation point, not just check 1 (decision 43).
 - doctor check 13: no checkout configured now fails with a fix; an unresolvable firmware id reports as that, not stale (decision 47).
 - `status --json`'s `probes.state` gains `bad-response`: a 200 with no `probes` array no longer reads as `request-failed`.
