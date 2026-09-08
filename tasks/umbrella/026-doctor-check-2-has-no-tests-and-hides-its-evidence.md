@@ -1,6 +1,6 @@
 # Give `doctor` check 2 tests, and make its Fail detail name the evidence it inferred the class from
 
-**State:** open
+**State:** claimed — leg 046
 **Source:** `embarch-umbrella/open.md` — "`saved.host` is sticky, and `doctor` check 2 still reads it … check 17's fix line was fixed off it, **check 2 was not**"
 **Scope:** umbrella
 **Hardware:** none
