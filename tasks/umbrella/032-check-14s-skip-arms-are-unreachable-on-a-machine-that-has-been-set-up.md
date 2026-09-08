@@ -1,6 +1,6 @@
 # 032 — Check 14's `WslHost` and `Remote` skip arms cannot be reached on a machine that has been set up
 
-**State:** open
+**State:** claimed by agent/umbrella/032-check-14-skip-arms, 2026-09-07 18:10
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor` on the primary
 `wsl-host` bench
 **Scope:** umbrella
@@ -46,3 +46,42 @@ worded one.
       check table tell an arm that has run from an arm that has only been written?** This is now
       the third example; it is a table-shape question, not a check-14 question.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Supervisor direction, leg 041
+
+**The third item is the one that will pull you out of scope, so read this before
+you start it.** "How does a reader tell an arm that has run from an arm that has
+only been written" is a real question and it is the reason this task is worth
+more than a wording tidy — but the durable answer belongs in
+`embarch-umbrella/spec.md`'s own check table first, as a convention *this*
+sub-project adopts. If you conclude it should be a suite-wide documentation
+convention, **that is `DOC-CONVENTIONS.md`, which no agent may write**: say so in
+an `inbox/` drop and leave the suite-wide half there. Landing the umbrella half
+is a complete unit; reaching for the other half is a refused branch.
+
+**On the first item, prefer the answer you can defend over the tidier one.**
+Collapsing three arms into one message is only right if nothing distinguishes
+them *to a reader*; if the class name genuinely tells an operator something the
+shared message would not, keep them and annotate. Do not collapse because three
+into one looks like a simplification.
+
+**`decisions/doctor.md` was split this morning** — `umbrella/037` moved check
+13's mission out to `decisions/dev-bench-firmware.md` verbatim and filed its new
+reasoning there. If you cite a doctor decision by number, resolve it against the
+files as they are now rather than from memory of where things used to live.
+
+## Doc-size reserve for `umbrella`
+
+You are editing `spec.md`, and it is in reserve.
+
+- `embarch-umbrella/spec.md` — 9430/10240 B, **810 B left**
+- `embarch-umbrella/open.md` — 4270/5120 B, **850 B left**
+
+Both are filed against `tasks/umbrella/038-compact-umbrella.md`, which is
+**open, not blocked** — so the debt is already recorded and you do not need to
+file another for these two. Plan your edit against that headroom rather than
+discovering it: `spec.md`'s check-14 row is a table row, and a paragraph of new
+prose beside it is what spends 810 bytes. Two other umbrella files
+(`decisions/reporting.md`, `decisions/bind.md`) are in reserve behind **blocked**
+compaction tasks; if your work lands in either of those, say so and apply
+`DOC-COMPACTION.md` §2's ride-along rather than squeezing.
