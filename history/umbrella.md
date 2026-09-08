@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- Check 14's per-class skip wording documented as one skip phrased three ways, not flashing verdicts.
 - `embarch status` now authenticates to report the probe count spec.md promised; no-token/unauthorized/unreachable are distinct states, never a probe count of `0` (decision 46).
 - `spec.md` and `open.md` compacted out of reserve; each duplicated clause now sits only in the decision or task that owns it.
 - - `doctor`'s one-line message rule is now stated as a runtime property, with the live check-1 counter-example — [decision 43](../embarch-umbrella/decisions/reporting.md).
