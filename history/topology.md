@@ -14,6 +14,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- `NotFound` names which rule emptied dev-bench's candidate list, leads with the split-host possibility on 0 visible ports, and a declared link serial/interface can be cleared.
 - hardware_id.rs: one `classify_chip` fn picks the register pair; unlisted nRF54L names no longer fall through to the classic address (decision 25).
 - Decision 18's embarch-ui/Core-client alert lockstep fact, lost in the 015 compaction pass, restored (still true, re-verified in code).
 - `detected_by` reports `DECLARED_SERIAL`, not a VID rule, when a direct signal route resolves with the VID gate off (decision 24).
