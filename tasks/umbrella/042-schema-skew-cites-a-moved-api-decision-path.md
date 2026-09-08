@@ -1,6 +1,6 @@
 # 042 — `schema-skew.md` cites `embarch-api/decisions/surface.md` for a decision that has moved
 
-**State:** claimed — leg 048
+**State:** closed (leg 048)
 **Source:** worker on `agent/api/036-dev-bench-hello-tool`, 2026-09-07, filed as an
 `inbox/` drop while splitting `embarch-api/decisions/surface.md`
 (`tasks/api/043`'s parked reserve, closed via `DOC-COMPACTION.md` §2's
@@ -42,11 +42,21 @@ who touches it has the pointer rather than rediscovering it.
 
 ## Done when
 
-- [ ] `embarch-umbrella/decisions/schema-skew.md` line 42's citation points at
+- [x] `embarch-umbrella/decisions/schema-skew.md` line 42's citation points at
       `embarch-api/decisions/tool-wrapping.md` (decision 52) instead.
-- [ ] No other file under `embarch-umbrella/` cites a decision at a path that
+- [x] No other file under `embarch-umbrella/` cites a decision at a path that
       the `surface.md` split moved — `grep -rn 'embarch-api/decisions/surface'
       embarch-umbrella/` comes back with nothing.
+
+## Closed
+
+Widened the second grep per the leg-048 dispatch note: `grep -rn 'embarch-api/decisions/'
+embarch-umbrella/` finds exactly one citation of an `embarch-api/decisions/` path anywhere in
+`embarch-umbrella/` — the line 42 one just fixed. No other file cites `shape.md` (decision 61,
+landed this leg per the note) or any other `embarch-api/decisions/*` path, so there was nothing
+else to widen the fix to. This was a one-line docs-only unit; no code change, no `embarch-umbrella`
+(code repo) commit. `history/api.md`'s matching stale path is left untouched, as the task and the
+leg-048 note both direct — it is `api`'s file.
 
 ## Dispatch note — leg 048
 
