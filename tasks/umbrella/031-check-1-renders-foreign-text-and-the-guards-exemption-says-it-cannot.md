@@ -1,6 +1,6 @@
 # 031 — Check 1 renders foreign text into `detail`, and the message-shape guard's pinned exemption says only check 6 can
 
-**State:** open
+**State:** claimed (leg 045)
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor --json` on the
 primary bench; `embarch-umbrella/decisions/reporting.md` decision 43
 **Scope:** umbrella
@@ -64,6 +64,57 @@ narrower than the real one.
 **The stdout half is `embarch-core`'s** and is filed separately as `tasks/core/015` — a `--version`
 that prints diagnostics on stdout is unparseable by anything. Fixing that would hide this defect
 without closing it: the next foreign string does the same thing.
+
+## Supervisor direction (leg 045)
+
+**The stdout half landed twenty minutes ago and it does not close this task.**
+`tasks/core/015` merged this leg (`embarch-core` `1c1224e`): `--version` now
+prints exactly one clean line, because `init_tracing()`'s fallback arm was
+calling bare `tracing_subscriber::fmt::init()`, whose default writer is stdout
+rather than stderr. **So the specific string quoted in "What was observed" can no
+longer be produced by that binary.** That is exactly the hazard this task's own
+line 64 names: the observed symptom is gone and the defect is not. Do not
+reproduce-then-declare-fixed. The defect is that `binary_version` interpolates
+another program's stdout verbatim, and the next foreign string does the same
+thing — you are fixing the interpolation, not the one program that happened to
+be caught doing it. Say so plainly in whatever you write, because a later reader
+who diffs the two units will otherwise think one of them was redundant.
+
+**Re-derive the offender list from the source, not from any comment — including
+this task file's.** The task names four other sites (checks 4, 11, 12, 13) from
+a reading taken on 2026-09-06, and `embarch-umbrella` has landed several units
+since. Grep the file yourself and report the list you actually find; if it
+differs from the four named above, your list is the one that is right and saying
+so is part of the unit.
+
+**`one_line()` does not strip ANSI and you must not pretend it does.** It drops
+the ESC byte as a control character and leaves the CSI body as literal text, so
+a coloured input becomes `[2m…[0m`. Decision 43's "escapes stripped" means the
+whole sequence. Either extend `one_line()` to consume the full CSI sequence or
+add a sibling that does — and if you extend it, check every existing caller
+still gets what it expects.
+
+**Reserve line for `umbrella`, and this one needs a decision from you before you
+start writing.** `embarch-umbrella/decisions/reporting.md` is **11,589 / 12,288 B,
+699 bytes of headroom**, and decision 43 — which this task requires you to amend
+— lives in it. Its compaction task `tasks/umbrella/040` is `blocked` on
+`In flux: yes`. **Read that park before you assume it binds you**: the flux it
+names is *decision 46* (the `ProbeReport` states, five to six), not decision 43.
+`DOC-COMPACTION.md` §2's split-first rule applies — **a verbatim split restates
+nothing, so `In flux: yes` cannot forbid one**, and §2 names a mission split as
+the cheaper move where one fits. If 699 bytes will not hold your amendment,
+split the file along a topic seam that leaves decision 46's prose untouched and
+byte-for-byte unchanged, carry `umbrella/040`'s `Must not delete:` list forward
+verbatim, and tick only the item for the file you actually split. Do not shorten
+decision 46. Do not squeeze to fit. Also in reserve for this sub-project:
+`spec.md` (413 B left), `open.md` (850 B), `decisions/bind.md` (879 B, parked).
+If your work spends a reserve nothing has filed against, file
+`tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
+
+**Decision numbers are global across `decisions/*.md`, not per file.**
+
+**Out of scope:** `embarch-core`. The stdout half is done and is not yours to
+revisit.
 
 ## Done when
 
