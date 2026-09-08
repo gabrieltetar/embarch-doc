@@ -56,6 +56,10 @@ wrong side compiles and passes its own tests while failing against a real Core.
 `embarch-core-client`'s `HelloAckResponse` gained `self_reported_hardware_id`,
 `link_identity` and `probe_hardware_id` alongside the three fields it already
 had; no route parsed those three before this, so nothing existing could regress.
+**All three are `Option<String>` with `#[serde(default)]`, per [core-link](core-link.md)
+58 — never a bare required field — for the reason decision 60 below writes out
+in full: `embarch-core` 47 renamed one of them, and an older Core serves none of
+them under these names.**
 
 **`link_identity` is reported as its own string field, never folded into
 `compatible` or any boolean.** Today's real value for every chip is
@@ -74,3 +78,46 @@ problem. Collapsing both into one generic failure message would send an agent
 to the wrong next action either way, so both the client (two downcastable error
 types) and the tool description (which states the call opens and closes the
 bench link, so a `409` mid-study is not read as a bug) say which is which.
+
+### 60 — `dev_bench_hello`'s three identity fields are optional, and absence renders as its own third state
+Decision 59's first draft made `self_reported_hardware_id`, `link_identity` and
+`probe_hardware_id` bare required `String`s, and it was refused at the merge:
+`embarch-core` decision 47 (`tasks/core/020`) renamed `hardware_id` to
+`self_reported_hardware_id` on the same day this route's mirror was written, and
+against a Core older than that rename `serde` fails the *whole* response on the
+missing key, so every call to this tool would have returned a deserialization
+error instead of the identity cross-check it exists to report — exactly the
+failure [core-link](core-link.md) decision 58 was written an hour earlier to end.
+The fields are now `Option<String>` with `#[serde(default)]`, per that decision.
+
+**The tool never computes a verdict of its own from the two hardware IDs.**
+Core already serves `link_identity` — its own answer to the cross-check —
+and re-deriving one client-side would be this crate asserting a semantic it
+did not measure, the exact failure `embarch-topology` decision 20 paid for.
+Core's answer is surfaced, never replaced.
+
+**`None` and the board's own `"not-reported"` are two different facts and
+must never collapse into one rendering.** `"not-reported"` is *the board*
+declining to state an identity — a real, declared bench answer. `None` is
+*this Core* not having the field at all — a fact about the deployed Core's
+age, not about the bench. Rendering an absent field as `"not-reported"` (or
+as an empty string, `null`, `-`, or `"unknown"`) would make an unreported
+Core version look like a bench that spoke and declined, which is the
+regression this decision exists to close off; a `None` renders as a full
+sentence saying this Core did not send it.
+
+**Two rendering states, and one must never be reachable from the other.**
+*Complete* — all three fields present — renders each verbatim under its own
+label, with a trailing note that `"not-reported"`/`"undeclared"` are the
+board's own answers, not confirmations. *Incomplete* — any of the three is
+`None` — leads with a line stating the cross-check is **unavailable** and
+naming which field(s) this Core did not send, citing `embarch-core` 47 as the
+known cause and `embarch-api` 58 as why the client tolerates it instead of
+failing; any still-present fields may render below that line, never above it
+and never in a shape that reads as a completed comparison.
+
+**Why "unavailable" and not a failure.** Decision 58 exists precisely so an
+older Core degrades instead of erroring — returning an error here would be
+the `api/045` behaviour that decision existed to end, and rendering a partial
+answer as a pass would be worse than either. Unavailable is the third, honest
+option.

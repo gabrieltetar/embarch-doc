@@ -1,6 +1,6 @@
 # 036 — No MCP tool reaches `GET /dev-bench/hello`, the one endpoint that returns the identity cross-check
 
-**State:** claimed — **unparked by leg 046, which made the rendering design call the previous leg deferred.** See "The rendering call, settled — leg 046" at the bottom; that section is the unpark condition, written out. The work is done and pushed and was refused at the merge on a judgement the mechanical gate cannot make; see "Why this was refused" below.
+**State:** done — reworked per "The rendering call, settled — leg 046"; see "Closed" at the bottom.
 **Branches, both pushed and both green on every mechanical check:**
 `agent/api/036-dev-bench-hello-tool` in `embarch-api` and `embarch-doc`. **Do not
 re-dispatch from scratch** — rebase these and amend them; the split of
@@ -228,23 +228,55 @@ do not write into `inbox/` for this, and do not touch `embarch-umbrella`.
 
 ## Done when
 
-- [ ] The three new `HelloAckResponse` fields are `Option<String>` with
+- [x] The three new `HelloAckResponse` fields are `Option<String>` with
       `#[serde(default)]`, and the tool renders them per "The rendering call,
       settled — leg 046" above — including the `None`-is-not-`not-reported`
-      rule, which is the whole reason this unit was refused.
-- [ ] A test exercises the **incomplete** response — a JSON body with
+      rule, which is the whole reason this unit was refused. — `client.rs`'s
+      `render_hello_ack` implements the two-state (complete/unavailable)
+      rendering; recorded as decision 60 in `decisions/tool-wrapping.md`.
+- [x] A test exercises the **incomplete** response — a JSON body with
       `self_reported_hardware_id` absent entirely — and asserts the tool
       deserializes it and renders the unavailable line. A round-trip test over a
-      body you construct with every field present does not exercise this.
-- [ ] An MCP tool serves `GET /dev-bench/hello`, returning `HelloAckInfo`
+      body you construct with every field present does not exercise this. —
+      `an_incomplete_response_renders_the_unavailable_line_first` (and
+      `an_older_core_missing_all_three_identity_fields_still_deserializes`).
+- [x] An MCP tool serves `GET /dev-bench/hello`, returning `HelloAckInfo`
       unflattened — `link_identity` in particular must survive, since a
       `not-reported`/`undeclared` is **not a pass** and a tool that collapses it
       to a boolean would make it look like one.
-- [ ] Its `409` (a study is in flight) and `502` (handshake failed) are distinct
+- [x] Its `409` (a study is in flight) and `502` (handshake failed) are distinct
       in the tool's error text, and the description says the call opens and
       closes the bench link.
-- [ ] `docs/tools.md` lists it. Note `tasks/api/034` is an open task about that
+- [x] `docs/tools.md` lists it. Note `tasks/api/034` is an open task about that
       file already omitting `reset_dev_bench`; do not fix that one here, but do
-      not re-introduce its shape.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      not re-introduce its shape. — `interfaces/tools.md`'s row updated for the
+      complete/unavailable rendering, `reset_dev_bench` left as `034` found it.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+      — `decisions.md`/`decisions/tool-wrapping.md` updated (decision 60);
+      `spec.md`/`open.md` deliberately left untouched, same as the original
+      unit, both separately parked on `tasks/api/026`'s unrelated SSE flux and
+      nothing either states became false here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed — `api/036` rework, 2026-09-07
+
+Rebased both branches onto `main` (taking `main`'s rewritten copy of this task
+file, per the dispatch). Fixed the refused defect: the three identity fields on
+`HelloAckResponse` are now `Option<String>` with `#[serde(default)]`
+(`embarch-api` decision 58), and `dev_bench_hello` renders the settled two-state
+design — complete (all three present, rendered verbatim with a
+not-a-confirmation note) vs. unavailable (any `None`, leading line naming which
+field(s) this Core did not send, citing `embarch-core` 47 and `embarch-api` 58,
+remaining fields rendered only below that line). Recorded as decision 60 in
+`decisions/tool-wrapping.md`. That file crossed its own 12,288 B cap's reserve
+line at 12,222 B in the same commit that added decision 60 — filed
+`tasks/api/047-compact-api.md` (`In flux: yes`, same reason `api/043` gave for
+this exact file) and ticked `api/043`'s own now-resolved item (`surface.md`
+itself is clear at 5.5 KB). Left everything the refusal called correct
+untouched: the verbatim `surface.md`→`tool-wrapping.md` split, `link_identity`
+as its own string, the two downcastable error types. Did not re-file the
+`embarch-umbrella/decisions/schema-skew.md` inbox note (leg 046 already rescued
+it) and did not touch `embarch-umbrella`. Gate green in both repos
+(`cargo build`/`test`/`clippy --all-targets -- -D warnings`,
+`check-docs.py`, `check-client-names.py`, `check-ownership.py` both repos,
+`check-decision-refs.py`).

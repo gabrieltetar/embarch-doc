@@ -67,9 +67,12 @@ against `tool-wrapping.md`, if that day ever comes.
 
 ## Done when
 
-- [ ] `decisions/surface.md` is clear of the 11,059 B reserve line, or a
+- [x] `decisions/surface.md` is clear of the 11,059 B reserve line, or a
       successor confirms `In flux: no` and re-blocks/re-files with a concrete
-      compaction plan.
+      compaction plan. — done by `api/036`'s split: `surface.md` is now 5.5 KB,
+      well clear of the line. `tool-wrapping.md` (the new file the per-tool
+      decisions moved into) is its own reserve item now — see `tasks/api/<NNN>`
+      filed in the same commit.
 - [ ] Every `Must not delete:` item above is still readable, wherever it ends up.
 - [x] If split rather than shortened, `decisions.md`'s index table names the new
       file, its decision numbers and both files' sizes, and
