@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- decision 43 split out of decisions/reporting.md into decisions/message-rendering.md (reserve).
 - Check 14's per-class skip wording documented as one skip phrased three ways, not flashing verdicts.
 - `embarch status` now authenticates to report the probe count spec.md promised; no-token/unauthorized/unreachable are distinct states, never a probe count of `0` (decision 46).
 - `spec.md` and `open.md` compacted out of reserve; each duplicated clause now sits only in the decision or task that owns it.
@@ -29,6 +30,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- doctor normalises another program's raw text at every interpolation point, not just check 1 (decision 43).
 - doctor check 13: no checkout configured now fails with a fix; an unresolvable firmware id reports as that, not stale (decision 47).
 - `status --json`'s `probes.state` gains `bad-response`: a 200 with no `probes` array no longer reads as `request-failed`.
 - `doctor` gives `/dev-bench/hello`'s serial handshake its own 10 s budget, not `GET /status`'s 500 ms, and a call that fails says whether it timed out or never connected (decision 44).
