@@ -20,13 +20,28 @@ had a debt filed before this edit — `tasks/topology/014` covers `open.md` only
 The debt is real once a file is within one amendment of its cap, and recording
 it is the whole mechanism (`tasks/topology/014`'s own wording, same rule).
 
-## In flux: yes
+## In flux: no
 
-`tasks/topology/013` is open against `decisions.md`'s own index and this
-sub-project's validation group specifically (decision 23's ACL question), and
-`009` just added decision 26 to the same `validation.md` file this task
-targets. Whoever compacts should read both before cutting, in case 013 lands
-first and adds more to the same file.
+**Corrected by the supervisor at `009`'s fold, leg 041, 2026-09-07.** The filer
+wrote `yes` on two grounds and both had already expired when it wrote them:
+
+- It said `tasks/topology/013` is *open* against `decisions.md`'s index and this
+  sub-project's validation group. **`013` is `done`** — it landed in leg 035
+  earlier today, on branch `agent/topology/013-decision-23-acl-rationale`. The
+  filer was reading a task file it had not opened.
+- It said `009` "just added decision 26 to the same `validation.md`". `009` is
+  the unit that filed this task, and it has now landed. Its own edit is not
+  future flux.
+
+Nothing else is queued against `embarch-topology/spec.md` or
+`decisions/validation.md`. Whoever compacts should still read decisions 20, 21,
+25 and 26 as a group — they are four passes over the same chip-identity and
+validate surface within two days, which is where a compaction most easily drops
+a fact — but that is care, not flux.
+
+**Left `open` rather than `blocked`** on purpose: a `blocked` compaction task is
+the state nothing revisits, and `check-doc-size.py --pressure` calls that out as
+its own problem. This one is dispatchable.
 
 ## Done when
 
