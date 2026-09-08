@@ -14,6 +14,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `interfaces/limits.md` now lists all 44 `src/limits.rs` constants and fixes two DUT sizing notes it had wrong (2 services, not 3; Sensor Data Service at 7, not Device Management at 8).
 - `validate` now refuses two fields of one action sharing a `name` (decision 69).
 - `schema_version.rs`'s ten `design.md §3 decision N` citations now use `decision N`/`<repo> decision N`.
 - Five stale/broken rustdoc intra-doc links fixed; `cargo doc` stays out of the gate (decision 68).
