@@ -1,6 +1,6 @@
 # Make `interfaces/limits.md` enumerate the constants it claims to, and fix two wrong sizing notes
 
-**State:** open
+**State:** claimed — leg 046
 **Source:** owner's repo survey, 2026-09-06 — `interfaces/limits.md:5` claims "Every bound the crate declares"
 **Scope:** study-designer
 **Hardware:** none
