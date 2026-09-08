@@ -1,6 +1,6 @@
 # `POST /validate`'s JSON body never picks up `validated_at_utc_ms`
 
-**State:** claimed
+**State:** done — leg 042, 2026-09-07, branch `agent/core/026-validate-handler-2`.
 **Source:** `tasks/topology/009` (embarch-doc), topology decision 26
 **Scope:** core
 **Hardware:** none
@@ -94,10 +94,48 @@ plausible, wrong answer, silently, in the safe-looking direction.
 
 ## Done when
 
-- [ ] `POST /validate`'s handler calls `validate_role_timed`/
+- [x] `POST /validate`'s handler calls `validate_role_timed`/
       `validate_serial_timed` and adds `validated_at_utc_ms` to the response
-      body, alongside the unchanged `confirmed_at_utc_ms`.
-- [ ] A decision records the wire-schema addition (this is `suite`-visible —
+      body, alongside the unchanged `confirmed_at_utc_ms`. (The handler only
+      ever called `validate_role` — `validate_serial` is used by
+      `hardware::flash`/`reset`'s own internal re-checks, not by this
+      endpoint, so only `validate_role_timed` needed switching here;
+      `validate_serial`/`validate_role` are both left callable, per the
+      supervisor direction above.)
+- [x] A decision records the wire-schema addition (this is `suite`-visible —
       four repos share this response shape by hand-maintained mirror), and
       `embarch-api`, `embarch-umbrella`, `embarch-ui` each pick it up in their
       own time since every existing mirror keeps deserializing regardless.
+      `embarch-core/decisions/surfaces.md` decision 50 (numbered 50, not 29 —
+      decision numbers are global across `decisions/*.md`, not per file; the
+      directory-wide max was 49 before this).
+
+## Verification (this dispatch)
+
+**Additive-only claim checked, not assumed** (per the supervisor direction
+above): grepped `deny_unknown_fields` across `embarch-core`, `embarch-api` and
+`embarch-ui` — the only hits are unrelated (`embarch-api/src/config.rs`'s
+config-file struct; a code comment in `embarch-ui/src/study_designer.rs`
+explicitly noting `Study`'s own deserializer has none). `embarch-api`'s wire
+mirror, `embarch-core-client::ValidateResponse`, derives plain `Deserialize`
+with no field-closing attribute. No schema-version constant exists for this
+endpoint to move. `embarch-core/interfaces/topology.md`'s `/validate` row
+already documents the response with a trailing `…`, i.e. open-ended. This is
+additive; the change is landed as a `core`-only unit, not escalated to
+`suite`.
+
+**Handler + response shape:** `src/api.rs`'s `validate_handler` now calls
+`embarch_topology::hardware::validate_role_timed`, and `ValidateOkResponse`
+gained `validated_at_utc_ms: u64` alongside the unchanged `confirmed_at_utc_ms`
+field, same names/types/meanings on every other field.
+
+**Gate:** `cargo build`, `cargo test` (169 passed, 0 failed, 2 ignored),
+`cargo clippy --all-targets -- -D warnings` all clean in the code worktree.
+`python3 scripts/check-docs.py` and `check-ownership.py --scope core` /
+`--code-repo` run clean in the doc worktree (see commit for exact output).
+
+**Left for later, not this unit:** `features.d/topology-105-validate-reports-
+when-the-live.md`'s `Status` caveat ("`embarch-core`'s `/validate` … have not
+switched over") is now half-stale — it's `topology` scope, so I dropped an
+`inbox/` request rather than edit it myself. `open.md`'s 642 bytes of headroom
+were not touched — nothing here needed it.
