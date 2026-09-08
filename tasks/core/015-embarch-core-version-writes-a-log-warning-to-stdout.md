@@ -1,6 +1,6 @@
 # 015 — `embarch-core --version` writes a multi-line log warning to **stdout**, so its output is unparseable
 
-**State:** open
+**State:** claimed (leg 045)
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor --json` against
 the installed Windows service exe
 **Scope:** core
@@ -47,6 +47,61 @@ this, it loses its log silently.
 `detail` that is contracted to be one line (`tasks/umbrella/031`). **Both need fixing.** Normalising
 in umbrella alone leaves `--version` unparseable for every other caller; fixing `--version` alone
 leaves umbrella one foreign string away from the same break.
+
+## Supervisor direction (leg 045)
+
+**I located what I believe is the whole defect before dispatching, and you are to
+verify it rather than inherit it.** `src/main.rs`'s `init_tracing()` has two arms.
+The success arm writes to `std::io::stderr.and(file_writer)` — explicitly stderr.
+The failure arm calls bare `tracing_subscriber::fmt::init()`, and **that default
+writer is stdout, not stderr.** So the message that says "continuing with stderr
+only" is emitted to stdout, which is exactly why check 1's `output.stdout` read
+picked it up. Confirm this against `tracing_subscriber`'s actual default in the
+pinned version before you write it down as the cause; if the default is stderr in
+this version, the cause is somewhere else and you should say so rather than
+patching what already works.
+
+**Do not reorder `init_tracing()` past `Cli::parse()` to special-case
+`--version`.** Its doc comment states a deliberate property — it runs
+unconditionally at the top of `main` so that both entry paths sharing
+`build_runtime()`, including `service::windows`'s SCM-dispatched callback, are
+covered *by construction* rather than by each remembering to call it. Moving it
+after the parse trades a real safety property for a cosmetic one. Fixing the
+writer fixes `--version` for free and every other subcommand with it. If you
+conclude the ordering genuinely must change, that is a design call worth a
+numbered decision and an explicit argument for why the by-construction claim
+survives — not a quiet edit.
+
+**ANSI: check, do not assume.** The captured escapes came through a pipe, on
+Windows, from the installed service exe. `tracing_subscriber::fmt` decides
+`with_ansi` from a tty probe on some configurations and from a feature flag on
+others. Establish which applies here before changing it, and if the escapes are
+a consequence of the stdout/stderr bug rather than an independent one, say so —
+two of the three Done-when items may close on one fix, and that is a better
+outcome than three separate changes.
+
+**The test should pin the writer choice, not require an unwritable directory.**
+The Done-when asks for a test pinning `--version`'s stdout to one line. A test
+that needs `C:\ProgramData` to be unwritable will not run anywhere. Prefer a
+host test that exercises the fallback arm's writer selection directly.
+
+**Decision numbers are global across `decisions/*.md`, not per file.** Take the
+next number from the whole directory's maximum, not from the file you are
+writing into.
+
+**Native Windows build is a debt, not a gate item** (`protocol.md` §10) — record
+it in the task file rather than attempting it from a worktree.
+
+**Reserve line for `core`:** `embarch-core/open.md` is 4478/5120 B, **642 bytes
+of headroom**, and its compaction task `tasks/core/022` is `blocked` on
+`In flux: yes`. Nothing else in this sub-project is in reserve. If your work
+spends that reserve — pushes a file into it or leaves one there — file
+`tasks/core/<NNN>-compact-core.md` in the same commit per `tasks/README.md`.
+
+**Out of scope:** `tasks/umbrella/031` is the receiving-side half of this defect
+(umbrella interpolating a multi-line foreign string into a one-line `detail`).
+Do not reach into `embarch-umbrella`; you own `embarch-core` and
+`embarch-doc/embarch-core/` only.
 
 ## Done when
 
