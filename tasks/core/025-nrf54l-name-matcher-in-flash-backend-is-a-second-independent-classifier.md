@@ -1,6 +1,6 @@
 # 025 — Settle whether `flash_backend`'s nRF54L match stays its own classifier
 
-**State:** claimed by agent/core/025-flash-backend-chip-classifier, 2026-09-07 17:54
+**State:** done
 **Source:** `inbox/core-unify-nrf54l-name-classifier-with-topology.md`, filed by
 `topology/007`'s worker — fixing topology's own chip classifier surfaced that
 `embarch-core/src/flash_backend.rs` makes a related decision about the same
@@ -63,16 +63,48 @@ which the suite has a standing rule against.
 
 ## Done when
 
-- [ ] `embarch-core/decisions/` carries a numbered decision that states which
+- [x] `embarch-core/decisions/` carries a numbered decision that states which
       way this went and the evidence behind it — including, if the answer is
       "keep them separate", what is and is not known about nRF54H's RRAM.
-- [ ] `flash_backend.rs`'s match arm and its tests agree with that decision,
+      Decision 49 (`decisions/flashing.md`): kept as two independent
+      matchers — a shared one needs `embarch-topology` to export a currently
+      private `classify_chip`, which is topology's call — and states plainly
+      that nobody here owns an nRF54H part and nothing establishes its
+      RRAM/erase-write story either way.
+- [x] `flash_backend.rs`'s match arm and its tests agree with that decision,
       including case handling, and a name that matches nothing still reaches the
-      named refusal rather than a silent default.
-- [ ] Any cross-repo half is an `inbox/` drop, not an edit.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including
+      named refusal rather than a silent default. `requires_vendor_tool` now
+      matches `nrf54h` (case-insensitive, any suffix) the same way it already
+      matched an unrecognized `nrf54l` name, so it reaches the named refusal in
+      `discover` instead of silently permitting probe-rs. New tests:
+      `an_nrf54h_name_is_refused_too_case_and_suffix_insensitive`,
+      `the_nrf54h_refusal_reason_makes_no_rram_claim`.
+- [x] Any cross-repo half is an `inbox/` drop, not an edit.
+      `inbox/suite-share-nordic-chip-family-classifier-between-core-and-topology.md`
+      (not committed — inbox is gitignored by design).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including
       `cargo clippy --all-targets -- -D warnings` and
-      `scripts/check-ownership.py --scope core`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated as they need it,
+      `scripts/check-ownership.py --scope core`. `cargo build`/`cargo test`
+      (169 passed)/`cargo clippy --all-targets -- -D warnings` all clean in
+      the code worktree; `check-docs.py` all 10 checks green in the doc
+      worktree; `check-ownership.py --scope core` (doc worktree) and
+      `--scope core --code-repo` (code worktree) both OK;
+      `check-client-names.py --repo <code worktree>` clean.
+- [x] `spec.md`/`decisions.md`/`open.md` updated as they need it,
       `changelog.d/` fragment dropped, `status.d/` fragment for anything
-      suite-level this made false.
+      suite-level this made false. `decisions.md` index and
+      `decisions/flashing.md` updated; `spec.md`'s existing
+      `flash_backend.rs` row (decision 36) still holds, no edit needed;
+      `open.md` deliberately left untouched — it is already in reserve
+      (642 B left, filed against blocked `022`) and nothing here left an
+      open question that wasn't already fully resolved by decision 49 itself,
+      so touching it would only have spent reserve for no new unresolved
+      fact. No suite-level doc's claims changed, so no `status.d/` fragment.
+
+## Blocked
+
+Not blocked — done. One residual gap, tracked, not fixed here: the header
+comment atop `flash_backend.rs` still says "design.md §3 decision 48", a
+stale pre-restructure reference (no decision 48 exists in `decisions.md`
+today, and grep finds it nowhere else). Pre-existing, unrelated to this
+task's scope, and untouched.
