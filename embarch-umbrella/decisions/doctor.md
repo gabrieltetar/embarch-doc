@@ -32,6 +32,8 @@ Core refuses to flash an nRF54L part with probe-rs, because that family stores c
 
 **Amended by [decision 38](topology.md), which is what made this check run on `wsl-host` at all.** Its skip arm said `see check 1` and pointed at a check that was itself wrong there; each class now names what is missing. And the exe it invokes is the right file but runs under the WSL user's environment, not the service account's — a narrower form of the failure above, and open.
 
+**The three arms are one skip worded per class, not flashing verdicts — reachable only before that class's own `setup` finishes (task 032).** A set-up `wsl-host` box hits `flash-backend` instead (decision 38). Kept distinct: each names its own next step. [spec.md](../spec.md) marks an arm `measured` only once a run has hit it.
+
 ### 42 — `locate_api` reads the agent CLI's own registration and `setup`'s install directory, not just `PATH`
 
 [`open.md`](../open.md) recorded "check 1 does not locate that binary **here**" from three directions and never as its own item, and the first question was whether it is a defect at all: a machine whose `embarch-api` is a debug build out of a checkout is not an installed suite, and reporting an absence there would be correct.

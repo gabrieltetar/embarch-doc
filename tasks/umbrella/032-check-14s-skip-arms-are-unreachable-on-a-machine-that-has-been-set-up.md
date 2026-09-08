@@ -1,6 +1,6 @@
 # 032 — Check 14's `WslHost` and `Remote` skip arms cannot be reached on a machine that has been set up
 
-**State:** claimed by agent/umbrella/032-check-14-skip-arms, 2026-09-07 18:10
+**State:** done, agent/umbrella/032-check-14-skip-arms, 2026-09-07
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor` on the primary
 `wsl-host` bench
 **Scope:** umbrella
@@ -37,15 +37,26 @@ worded one.
 
 ## Done when
 
-- [ ] Either the three skip arms collapse to one message plus the class name — they differ only in
+- [x] Either the three skip arms collapse to one message plus the class name — they differ only in
       prose and none has been observed — or each keeps its wording with a note saying which are
       unreachable on a set-up machine, so nobody reads them as distinguished states.
-- [ ] `spec.md`'s check-14 row stops implying the class arms are flashing verdicts. They are
+      Kept distinct (each names a genuinely different next step for an operator), not collapsed —
+      annotated in `src/doctor.rs` above the match and in `decisions/doctor.md` decision 31: all
+      three fire only before *that class's own* `setup` finishes, which decision 38's real
+      `wsl-host` run already demonstrates by hitting the real `flash-backend` arm instead.
+- [x] `spec.md`'s check-14 row stops implying the class arms are flashing verdicts. They are
       "could not ask Core" phrased three ways.
-- [ ] The general question gets an answer somewhere durable: **how does a reader of `spec.md`'s
+      Row now reads "measured" for the real run and calls the unlocatable case "one skip worded
+      per class, not a flashing verdict."
+- [x] The general question gets an answer somewhere durable: **how does a reader of `spec.md`'s
       check table tell an arm that has run from an arm that has only been written?** This is now
       the third example; it is a table-shape question, not a check-14 question.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      Answered as an `embarch-umbrella`-local convention in `spec.md` itself (a `measured` marker
+      cited to a decision recording a real run; unmarked prose is reasoned but not observed) —
+      per supervisor direction, the suite-wide half (whether `DOC-CONVENTIONS.md` should adopt
+      this) is left in `inbox/doc-check-table-exercised-vs-written-convention.md` rather than
+      written here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Supervisor direction, leg 041
 
