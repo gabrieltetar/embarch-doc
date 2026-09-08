@@ -1,6 +1,6 @@
 # `validate`'s response mirror and MCP tool should show `validated_at_utc_ms` when Core sends it
 
-**State:** claimed — leg 043, 2026-09-07
+**State:** done — leg 045, 2026-09-07
 **Source:** `tasks/topology/009` (embarch-doc), topology decision 26
 **Scope:** api
 **Hardware:** none
@@ -35,10 +35,61 @@ response shape before it changes.
 
 ## Done when
 
-- [ ] `crates/embarch-core-client`'s `validate` response type gains
+- [x] `crates/embarch-core-client`'s `validate` response type gains
       `validated_at_utc_ms` once Core's own response carries it.
-- [ ] The MCP `validate` tool surfaces it (both timestamps, distinctly
+- [x] The MCP `validate` tool surfaces it (both timestamps, distinctly
       labelled — not one replacing the other).
+
+## Closed — leg 045, 2026-09-07
+
+Read `embarch-core/src/api.rs`'s `ValidateOkResponse` (~line 864) directly,
+per direction #1 — flat, top-level, confirmed against the topology crate's
+nested `Validation` shape being the wrong thing to mirror.
+
+**`crates/embarch-core-client/src/client.rs`:** added `validated_at_utc_ms:
+u64` to `ValidateResponse` only (line ~221) — not `EnrollProbeResponse` or
+`EnrolledBoardResponse`, which echo other endpoints that don't carry this
+field (direction #2). Added a deserialize-only test,
+`a_validate_response_parses_both_distinct_timestamps`, pinning that both
+timestamps parse distinctly (no `Serialize`/`PartialEq` added to the type,
+so no round-trip test in the `AlertResponse`/`EnrolledBoardResponse` style —
+out of scope for this unit).
+
+**Both surfaces, both changed (direction #3):** `src/tools.rs`'s MCP
+`validate` tool now emits `validated_at_utc_ms` alongside
+`confirmed_at_utc_ms`, and its `#[tool(description = ...)]` spells out which
+one to read for freshness. `src/cli.rs`'s `validate` subcommand's JSON output
+gains the field, and its human-readable summary line now names both
+timestamps explicitly (direction #4 — a JSON key pair alone doesn't
+disambiguate for a human reader; the CLI's one-line summary is the
+"surrounding output style" here, so it now spells out
+`validated_at_utc_ms (...)`, `enrolled/confirmed_at_utc_ms (...)`). No
+reason found to leave the CLI unchanged.
+
+**No new decision written (direction #5):** the design was already decided
+twice upstream (`embarch-topology` decision 26, `embarch-core` decision 50);
+this unit is a faithful mirror of both, documented instead in
+`embarch-api/interfaces/tools.md`'s `validate` row. `decisions/core-link.md`
+(22 B headroom) and `decisions/surface.md` (415 B headroom) were not
+touched, so their existing parked compactions (`tasks/api/026`,
+`tasks/api/043`) are untouched too — nothing new to file.
+
+**Out of scope, left alone (direction #7):** `tasks/api/044`'s
+`hardware_id` spelling change — not touched here.
+
+**Found while closing:** `features.d/topology-105-validate-reports-when-
+the-live.md`'s Status cell still says "topology half only... have not
+switched over," which is now false on both counts (Core's `/validate`
+landed leg 042; this unit lands the `api` mirrors). That file is
+`topology`-scoped, not `api`'s to edit — dropped as
+`inbox/topology-features-105-status-stale.md`.
+
+Gate: `cargo build`, `cargo test` (all green, 32 tests in
+`embarch-core-client` including the new one), `cargo clippy --all-targets --
+-D warnings` (clean), `check-client-names.py` (clean against 7 denylist
+entries) all pass in the code worktree. `check-docs.py` and
+`check-ownership.py --scope api` / `--code-repo` pass in the doc worktree
+(see below — recorded honestly if either goes red).
 
 ## Supervisor direction (leg 043)
 
