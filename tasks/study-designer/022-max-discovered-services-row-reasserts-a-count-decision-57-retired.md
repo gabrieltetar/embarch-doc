@@ -1,6 +1,6 @@
 # 022 — `limits.md`'s `MAX_DISCOVERED_SERVICES` row reasserts the service count decision 57 exists to retire
 
-**State:** claimed — leg 048
+**State:** done
 **Source:** `embarch-reviewer` on `study-designer/011` (doc merge `f22a6b4`), filed
 as an `inbox/` drop 2026-09-07 and promoted here by leg 047. This is the first
 finding in this log that a reviewer caught and the supervisor did not — the
@@ -42,18 +42,32 @@ before `011`.
 
 ## Done when
 
-- [ ] `src/limits.rs:80-84`'s doc comment and `interfaces/limits.md`'s
+- [x] `src/limits.rs:80-84`'s doc comment and `interfaces/limits.md`'s
       `MAX_DISCOVERED_SERVICES` row agree with decision 57's validated
       3-services finding — **or**, if the two-file extractor's 2 is genuinely
       what the code bounds against today, the constant's rationale says so
       explicitly. Either way both cite decision 57.
-- [ ] `MAX_DISCOVERED_SERVICES` and `MAX_MONITOR_TARGETS` no longer read as
+- [x] `MAX_DISCOVERED_SERVICES` and `MAX_MONITOR_TARGETS` no longer read as
       contradicting each other unexplained (2 declared vs 7 total, same DUT).
-- [ ] The row carries an honest provenance tag: the `[measured <date>]` on
+- [x] The row carries an honest provenance tag: the `[measured <date>]` on
       these rows is the date `git log -S` says the *constant was written*, and
       the counts behind it are transcribed from the crate's own doc comments —
       a read of `reference-dut-fw` source, not a live measurement. Do not call
       that measured.
+
+**On the tag:** `DOC-CONVENTIONS.md`'s "Measured vs. assumed constants" section
+defines exactly two brackets — `[measured <date>]` and `[assumed]` — and neither
+fits a number that is a transcription of a source-level doc comment rather than
+either a live measurement or a placeholder guess. Per the dispatch note, I did
+not bend `[measured]` to cover this case. Instead the `MAX_DISCOVERED_SERVICES`
+row now carries no bracket tag at all: it names decision 57 as the source of the
+count, `src/limits.rs:80-84` as where it's transcribed, and the 2026-08-23 date
+as when *that comment* was written (confirmed via `git log -S
+MAX_DISCOVERED_SERVICES -- src/limits.rs`, which shows one hit: `c8bb166`). If
+this suite wants a third bracket for "transcribed from a source read, not a
+live measurement," that's a `DOC-CONVENTIONS.md` change outside this task's
+scope (that file is not `study-designer`'s to edit) — flagging it here rather
+than deciding it unilaterally.
 
 ## Do not revert
 
