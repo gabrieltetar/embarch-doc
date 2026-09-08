@@ -94,12 +94,37 @@ spends that reserve or leaves it spent with nothing filed, file
 
 ## Done when
 
-- [ ] A validation response distinguishes *when the record was made* from *when
+- [x] A validation response distinguishes *when the record was made* from *when
       the live check ran*, **by adding the second** — see the supervisor
       direction above; the rename arm is out of scope for this unit. Say why in
-      a decision: this is a wire-visible field with consumers.
-- [ ] Every consumer of `confirmed_at_utc_ms` is enumerated before it changes
+      a decision: this is a wire-visible field with consumers. Done: topology
+      decision 26, `validate_serial_timed`/`validate_role_timed` return the new
+      `Validation { board, validated_at_utc_ms }`; `validate_serial`/
+      `validate_role` keep their exact old signature and behaviour unchanged
+      (this crate is linked live, in-process — a signature change on the
+      existing pair would be a same-instant compile break for `embarch-core`'s
+      existing call sites, not a staged wire rollout). This crate's own CLI
+      (`embarch-topology validate`) switched over and prints both instants.
+- [x] Every consumer of `confirmed_at_utc_ms` is enumerated before it changes
       shape — `embarch-api`'s mirror and MCP `validate` tool, `embarch-umbrella`'s
-      doctor, `embarch-ui`'s Topology tab.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      doctor, `embarch-ui`'s Topology tab. Done, one `inbox/` drop each
+      (`api-validate-mirror-and-mcp-tool-add-validated-at.md`,
+      `umbrella-doctor-shows-validated-at.md`,
+      `ui-topology-tab-shows-validated-at.md`). **A fifth consumer the
+      enumeration above did not name: `embarch-core`'s own `POST /validate`
+      handler**, which is the in-process caller that actually assembles the
+      wire JSON from the `EnrolledBoard`/`Validation` these functions return
+      — none of the other three ever see the new field until it does. Its own
+      drop: `core-validate-handler-wires-validated-at.md`.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+      `open.md` untouched (nothing here left unresolved that belongs there);
+      `spec.md` and `decisions/validation.md` (decision 26) updated instead,
+      and both crossed into doc-size reserve as a result — filed
+      `tasks/topology/017-compact-topology.md` in this same commit, per
+      `tasks/README.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`,
+      `cargo test`, `cargo test --no-default-features --features hardware`,
+      `cargo clippy --all-targets --all-features -- -D warnings` all clean in
+      the code worktree; `check-docs.py` and both `check-ownership.py` /
+      `check-client-names.py` invocations clean in the doc worktree (see
+      report).

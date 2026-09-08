@@ -1,6 +1,6 @@
 # embarch-topology: spec
 
-**Status:** active, 2026-09-02. Repo: [gabrieltetar/embarch-topology](https://github.com/gabrieltetar/embarch-topology).
+**Status:** active, 2026-09-07. Repo: [gabrieltetar/embarch-topology](https://github.com/gabrieltetar/embarch-topology).
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md).
 
@@ -81,6 +81,8 @@ Storage is one file under a machine-wide directory this crate owns — the same 
 - **A via-bench route:** validates on the strength of being declared; its carrier is the bench's link, whose liveness is the role check's job (decision 18 for why not both).
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
+
+**A validate call's only timestamp used to be the enrolled record's own `confirmed_at_utc_ms` — enrolment time, not this check's** (decision 26). `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, read the instant the live hardware-ID compare just passed, alongside the unchanged `validate_serial`/`validate_role` — added rather than renamed, since this crate is linked live and a signature change on the existing pair would be a same-instant break for every in-process caller. `embarch-core`'s `POST /validate` still has to pick the new field up itself before it reaches the wire.
 
 ## What each consumer owns now
 

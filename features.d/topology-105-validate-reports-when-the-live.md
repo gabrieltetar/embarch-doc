@@ -1,0 +1,1 @@
+| `validate` reports when the live check ran, not just when the board was enrolled — **added as `validated_at_utc_ms`, `confirmed_at_utc_ms` unrenamed and unmoved** | Shipped — topology half only; `embarch-core`'s `/validate` and the other three wire mirrors have not switched over | hw | 26 |
