@@ -1,6 +1,6 @@
 # 036 — No MCP tool reaches `GET /dev-bench/hello`, the one endpoint that returns the identity cross-check
 
-**State:** blocked — **the work is done and pushed; it was refused at the merge, by me, on a judgement the mechanical gate cannot make.** See "Why this was refused" below. **Unparked by:** the three new `HelloAckResponse` fields being made `Option<String>` with `#[serde(default)]`, and the MCP tool and its description saying in words that this Core did not report them, per `embarch-api` decision 58.
+**State:** claimed — **unparked by leg 046, which made the rendering design call the previous leg deferred.** See "The rendering call, settled — leg 046" at the bottom; that section is the unpark condition, written out. The work is done and pushed and was refused at the merge on a judgement the mechanical gate cannot make; see "Why this was refused" below.
 **Branches, both pushed and both green on every mechanical check:**
 `agent/api/036-dev-bench-hello-tool` in `embarch-api` and `embarch-doc`. **Do not
 re-dispatch from scratch** — rebase these and amend them; the split of
@@ -169,8 +169,73 @@ being possible.
 hardware-verification debt that is gated on this task rather than on a board, so
 landing this is what makes that debt payable.
 
+## The rendering call, settled — leg 046
+
+**This is the design decision the previous leg deferred, and it is now made. It
+is not a suggestion; implement it as written, and record it as the decision this
+unit files.**
+
+**1. The three fields become `Option<String>` with `#[serde(default)]`**, per
+`embarch-api` decision 58. No other field of `HelloAckResponse` changes in this
+unit.
+
+**2. The tool never computes an identity verdict of its own.** Core already
+serves `link_identity` — its own answer to the cross-check. Re-deriving a verdict
+in the client from the two hardware ids would be this crate asserting a semantic
+it did not measure, which is the exact failure `embarch-topology` decision 20
+paid for. **Surface Core's answer; do not replace it.**
+
+**3. There are two rendering states and they must not be reachable from each
+other.**
+
+- **Complete response** — all three fields present. Render each under its own
+  label, **verbatim, as the bytes Core sent**. `not-reported` and `undeclared`
+  reach the reader unaltered and unmapped, because they are the board's own
+  answers and are real bench results. Add one sentence to the rendered output
+  saying that `not-reported` and `undeclared` are answers, not confirmations.
+- **Incomplete response** — *any* of the three is `None`. The output **leads**
+  with a line saying the identity cross-check is **unavailable**, and names which
+  field or fields were absent. It must say, in words, that this Core did not send
+  them — pointing at `embarch-core` decision 47's rename of
+  `hardware_id` → `self_reported_hardware_id` as the known cause, and at
+  `embarch-api` decision 58 as why the client tolerates it rather than failing.
+  **The remaining present fields may still be rendered, but never above that
+  line and never in a shape that reads as a cross-check.**
+
+**4. `None` has exactly one rendering and it is a sentence, not a token.** Never
+an empty string, never `null`, never `-`, never `unknown`, and — the one that
+matters — **never `not-reported`**, which is a different fact with a different
+cause: `not-reported` is *the board* declining to state an identity, `None` is
+*this Core* not having the field at all. Collapsing those two is precisely the
+defect this task was blocked for, one level up.
+
+**5. Why "unavailable" rather than a failure.** Decision 58 exists so an older
+Core degrades instead of erroring. A tool that returned an error here would be
+the `api/045` behaviour decision 58 was written to end; a tool that rendered a
+partial answer as a pass would be worse than either. Unavailable is the third
+thing, and it is the honest one.
+
+**Record this as a numbered decision** in the same file the tool's other
+wrapping decisions live in after your split, with the reasoning above in your own
+words, and cite `embarch-api` 58 and `embarch-core` 47 by number.
+
+**Also, in the same fold:** the `inbox/` drop your predecessor left about
+`embarch-umbrella/decisions/schema-skew.md` citing decision 52 at its old
+`surface.md` path has been rescued to
+`/home/gabriel/Github/embarch/embarch-doc/inbox/umbrella-schema-skew-cites-a-moved-api-decision-path.md`
+by leg 046 and is the supervisor's to file. **You do not need to re-file it** —
+do not write into `inbox/` for this, and do not touch `embarch-umbrella`.
+
 ## Done when
 
+- [ ] The three new `HelloAckResponse` fields are `Option<String>` with
+      `#[serde(default)]`, and the tool renders them per "The rendering call,
+      settled — leg 046" above — including the `None`-is-not-`not-reported`
+      rule, which is the whole reason this unit was refused.
+- [ ] A test exercises the **incomplete** response — a JSON body with
+      `self_reported_hardware_id` absent entirely — and asserts the tool
+      deserializes it and renders the unavailable line. A round-trip test over a
+      body you construct with every field present does not exercise this.
 - [ ] An MCP tool serves `GET /dev-bench/hello`, returning `HelloAckInfo`
       unflattened — `link_identity` in particular must survive, since a
       `not-reported`/`undeclared` is **not a pass** and a tool that collapses it
