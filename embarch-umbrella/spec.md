@@ -90,7 +90,7 @@ Checks 12, 15 and 16 never fail the run outright; **5, 11, 13 and 17 do**, each 
 
 1-17 are what the code emits; **18 is designed and unbuilt, and it is not the only such item** — 26's `--prune` half sits *inside* a shipping command, marked above where it lives, and [open.md](open.md) carries whether it is still wanted. 18's number moves if something is built before it. `--json`'s per-check object — its fields, always present, and which carry a `code` (checks 1, 5, 10, 13, 14, 17) or a `path` (check 16) — is [decisions/reporting.md](decisions/reporting.md)'s contract.
 
-Every `detail` and `fix` is **one line with no run of two or more spaces**, held by a module-wide test over the pure judges — which sees only text this module authors, so the rule can still break at runtime with the guard green ([decision 43](decisions/reporting.md)).
+Every `detail` and `fix` is **one line with no run of two or more spaces**; another program's raw output is normalised at the point it is interpolated, not exempted from the rule ([decision 43](decisions/message-rendering.md)).
 
 ## Token handling
 

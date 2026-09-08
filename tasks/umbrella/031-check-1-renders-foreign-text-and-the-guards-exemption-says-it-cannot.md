@@ -1,6 +1,6 @@
 # 031 — Check 1 renders foreign text into `detail`, and the message-shape guard's pinned exemption says only check 6 can
 
-**State:** claimed (leg 045)
+**State:** closed (leg 045)
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor --json` on the
 primary bench; `embarch-umbrella/decisions/reporting.md` decision 43
 **Scope:** umbrella
@@ -118,18 +118,60 @@ revisit.
 
 ## Done when
 
-- [ ] Text interpolated from another program is **normalised at the point of interpolation** —
+- [x] Text interpolated from another program is **normalised at the point of interpolation** —
       collapsed to one line, whitespace runs squeezed, ANSI escapes stripped — so it satisfies the
       rule rather than being exempted from it. `check_handshake`'s existing
       `stderr.replace('\n', " / ")` (`src/doctor.rs:1421`) is the pattern already in this file.
-- [ ] The guard's comment and its `assert_eq!(verbatim, vec![6])` say what they actually pin.
+      **`one_line()` extended** (`src/doctor.rs`) to consume a whole ANSI CSI sequence rather than
+      dropping only the `ESC` byte. **Re-derived offender list** (grepped fresh, not read off the
+      comment or this task file's own line 22-25 reading): check 1's `--version` output
+      (`check_binaries`, normalised once at the top of the function so both the plain display and
+      `manifest_mismatches`' echoed values get it), check 4's unexpected-status body, the two
+      `/dev-bench/hello` failure-body sites that feed checks 11 and 13
+      (`fetch_dev_bench_hello`), check 12's detected/HTTP-status bodies, **and one site the task's
+      own reading missed**: check 13's `unexpected /dev-bench/hello response: {ack.raw}` arm,
+      which echoes the whole raw body when a successful response is missing `firmware_version`.
+      Checks 4 and 12 are `async` with no pure judge, so this closes their *rendering*, not their
+      *test coverage* — that gap is still open, see `open.md`. `firmware_version`/`core_version`
+      (short structured JSON scalar fields already extracted by `serde`, not free-form dumps) were
+      deliberately left alone — a different, narrower category than the raw-body/stdout sites this
+      task closes; check 15's `version_from_output` already parses rather than echoing verbatim.
+- [x] The guard's comment and its `assert_eq!(verbatim, vec![6])` say what they actually pin.
       **Note the trigger is a `'\n'`, not "foreign text"** (`src/doctor.rs:5015`) — so the set is
       *checks whose fixtures contain a newline*, and **foreign text with a multi-space run and no
       newline is an offender today**, exempted by nothing and caught by nothing. Widening the
-      exemption is the wrong fix and the entry in `decisions/reporting.md` says why.
-- [ ] Something covers the runtime case — a test that hands check 1's judge a version string with
-      a newline and a multi-space run and asserts the rendered `detail` is still one line.
-- [ ] `--json` carries no ANSI escapes from any check, verified rather than argued.
-- [ ] `open.md`'s guard bullet and `decisions/reporting.md` decision 43 are updated to whatever the
-      fix makes true.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      exemption is the wrong fix and the entry in `decisions/message-rendering.md` says why.
+      Comment rewritten in place.
+- [x] Something covers the runtime case — `doctor::tests::check_1_normalises_a_foreign_version_string`
+      hands `check_binaries` (check 1's judge) a version string shaped like the exact stdout quoted
+      in "What was observed" — newline, multi-space run, ANSI colour codes — and asserts the
+      rendered `detail` is one line, has no `"  "` run and no `ESC` byte.
+- [x] `--json` carries no ANSI escapes from any check, verified rather than argued — a new
+      assertion inside `no_check_renders_a_run_of_two_or_more_spaces` scans every pure-judge
+      verdict's `detail`/`fix` for `'\u{1b}'`.
+- [x] `open.md`'s guard bullet and the decision 43 entry are updated to whatever the fix makes true.
+      **Decision 43 moved**: `decisions/reporting.md` was 11,589/12,288 B (699 B headroom) and
+      decision 43 needed real new prose (the runtime fix, the re-derived offender list, the
+      "does not close umbrella/031" note against `tasks/core/015`), too much for 699 B without
+      trimming decision 46's untouched prose. Per `DOC-COMPACTION.md` §2's split-first rule, split
+      decision 43 out **verbatim, then amended in its new home** —
+      `decisions/message-rendering.md` — leaving decisions 11, 37, 39 and 46 in `reporting.md`
+      byte-for-byte unchanged (`reporting.md` is now 9,064 B, 73.8% of cap, out of reserve).
+      `decisions.md`'s index row split accordingly. `tasks/umbrella/040` (blocked on decision 46's
+      own flux, untouched by this split) got one Done-when item ticked incidentally — see that
+      file for why the rest stays open. `decisions/budgets.md`'s decision 45 entry, which pointed
+      at decision 43 and asserted check 1 was still unnormalised, updated to match. `spec.md`'s
+      pointer updated **net negative** (270 B → 227 B) — it was itself 413 B from its own cap.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## What this does not close
+
+**`tasks/core/015` landed twenty minutes before this task started** and fixed `embarch-core`'s
+`--version` to stop writing its tracing fallback to stdout — so the exact byte string quoted in
+"What was observed" above can no longer be produced by that binary. **That is not why this task is
+closed.** This task closes because `binary_version`'s interpolation of *any* program's raw stdout,
+and the equivalent raw-HTTP-body sites, are now normalised at the point of interpolation — the next
+foreign string a check meets (a different binary's warning, a proxy's error page, anything) is
+caught the same way. A reader diffing `core/015` against this unit should not read either as having
+made the other redundant: `core/015` closed one symptom in one binary; this task closed the
+defect class in `doctor`.

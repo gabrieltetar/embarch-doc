@@ -17,7 +17,8 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/bind.md](decisions/bind.md) | 22 | Check 17: whether Core is listening where this topology can reach it |
 | [decisions/dev-bench-firmware.md](decisions/dev-bench-firmware.md) | 19, 47 | Check 13: the stale-dev-bench-firmware comparison, and the two states it must not conflate |
 | [decisions/mcp.md](decisions/mcp.md) | 23, 40 | Check 10: finding our MCP registration in the agent CLI's config, and making it answer |
-| [decisions/reporting.md](decisions/reporting.md) | 11, 37, 39, 43, 46 | What `doctor` and `status` hand back, and the fields a consumer reads |
+| [decisions/reporting.md](decisions/reporting.md) | 11, 37, 39, 46 | What `doctor` and `status` hand back, and the fields a consumer reads |
+| [decisions/message-rendering.md](decisions/message-rendering.md) | 43 | Rendering another program's text into a check's `detail`/`fix`, and where normalisation happens |
 | [decisions/budgets.md](decisions/budgets.md) | 44, 45 | How long each remote call is given, and how one that did not come back is named |
 | [decisions/schema-skew.md](decisions/schema-skew.md) | 24, 33, 34, 35, 36 | What checks 11 and 15 compare, where each number comes from, and why skew warns |
 | [decisions/mirrors.md](decisions/mirrors.md) | 15, 16, 20 | The liftable-copy pattern, and what survived `embarch-topology` |

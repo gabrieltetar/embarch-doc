@@ -36,18 +36,6 @@ The path goes **both** places, for two readers. `detail` reads `study_results/ a
 
 **Verified live** [measured 2026-09-06, `embarch doctor` and `embarch doctor --json` on the primary `wsl-host` bench]: `detail` read `study_results/ at /mnt/c/ProgramData/embarch/study_results: 50 entries, 802.9 MiB`, and `checks[15].path` carried that same path as its own field. Both **placements** hold on a real machine. The `%ProgramData%` caveat above was not exercised — the directory existed and held 50 runs.
 
-### 43 — The one-line message rule is a runtime property, and the guard only sees text this module authored
-
-Every `detail` and `fix` is **one line with no run of two or more spaces.** The rule exists because of what Rust does to a long string literal wrapped without a trailing `\`: the continuation's indentation stays *inside* the sentence, so the defect renders as a run of spaces mid-word and compiles, tests and ships. A `contains` assertion reading one side of the wrap does not catch it, which is how check 14 shipped it twice.
-
-`no_check_renders_a_run_of_two_or_more_spaces` holds every verdict the **pure judges** emit to a fixture corpus, and pins its exemption at exactly one check — check 6, whose `{e:#}` of a `toml` parse error is foreign text with a caret diagram whose layout is not ours to police.
-
-**The pinned exemption is a statement about the fixtures, not about the program**, and on 2026-09-06 a live run showed the difference. Check 1 renders foreign text too: `binary_version` interpolates `embarch-core --version`'s **stdout** into `detail` verbatim, and the deployed Core prints a multi-line `Caused by:` chain there when it cannot open its log directory. The rendered `detail` carried newlines, multi-space runs **and raw ANSI escape sequences**, in `--json`, while the guard was green — because the corpus hands check 1 a version string that is a version string.
-
-So the durable statement is not "check 6 is the only check that renders foreign text". It is: **any check that interpolates another program's output can break this rule at runtime with the guard green.** And the exemption is narrower than even that comment claims: the guard pushes to `verbatim` only when the text contains a **newline**, so what it actually exempts is *checks whose fixtures contain a newline* — **foreign text carrying a multi-space run and no newline is an offender today**, exempted by nothing and caught by nothing. Closing the gap is a normalisation at the point of interpolation — one line, escapes stripped — not a wider exemption; a wider exemption is how a green test comes to be believed to cover more than it does. Filed as `tasks/umbrella/031`; the stdout half is `embarch-core`'s and is `tasks/core/015`.
-
-**`open.md`'s previous statement of this gap named checks 4 and 12** — the two `async` checks with no pure judge — and that remains true and is a *different* gap: those checks' text is never tested at all, where check 1's is tested against text it does not carry in the field.
-
 ### 46 — `status` authenticates for the probe count spec.md promises; no-token is its own state
 
 `spec.md`'s `status` row always promised "how many probes," but the binary never asked: it made only `embarch-topology`'s unauthenticated `GET /status`, which classifies `200`/`401` and reads no body, and printed a static `auth: not checked` line citing a `milestone-6.md` that no longer exists. `--json` carried `reachable`/`base_url`/`topology`/`authorized`/`attempts` and nothing about probes.

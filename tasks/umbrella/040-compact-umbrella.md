@@ -49,8 +49,16 @@ umbrella task queue holds no open task naming decision 46, `probe_report`, or th
 
 ## Done when
 
-- [ ] `decisions/reporting.md` out of reserve (below 90% of its cap), by deletion or a split, not
+- [x] `decisions/reporting.md` out of reserve (below 90% of its cap), by deletion or a split, not
       by trimming wording alone (`009`'s finding: a few bytes of wording is not a real shave).
+      **Closed incidentally by `tasks/umbrella/031`**, not by this task: `031` needed to amend
+      decision 43 and had no room, so it split decision 43 out verbatim into
+      `decisions/message-rendering.md` (`DOC-COMPACTION.md` §2's split-first rule — a verbatim
+      split restates nothing) and amended it there. `reporting.md` is now 9,064 / 12,288 B
+      (73.8%), out of reserve. **Decision 46 was not touched** — its prose is byte-for-byte what
+      it was before `031` — so this task's own driver (decision 46 still in flux) is unaffected
+      and the task stays `blocked` on the condition below. Only this one item is ticked; the rest
+      are still this task's job whenever it unparks.
 - [ ] All six states and their reasons survive, per state, not by count.
 - [ ] No question disappears from `collect-open-questions.py` unless it can be named as answered.
 - [ ] `DOC-COMPACTION-PASS.md`'s question answered in the commit message: can `reporting.md` alone
