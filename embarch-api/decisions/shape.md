@@ -39,4 +39,11 @@ So the rows go, and **two things make the removal lossless rather than merely sm
 
 **Why the gate did not catch it**: the commit's own `zephyr-west` test asserted `contains("retired")` — that it refuses, never what it advises — [../../embarch-decision-reversals.md](../../embarch-decision-reversals.md)'s shape 8, a comment naming the right invariant while the text does not implement it. Both tests now pin their own remedy, and the `zephyr-west` one asserts the *absence* of the `static` one, so a future shared tail fails a test rather than shipping.
 
+### 61 — `dev_bench_hello` gets a CLI twin rather than an amendment to the superset guarantee
+`api/036` added `dev_bench_hello` as an MCP tool with **no CLI subcommand at all** — the first capability an agent could reach that a human at the CLI could not, breaking decision 3/10's "identical capabilities" and `spec.md` §1's CLI ⊇ MCP superset (naming `versions` as the sole, opposite-direction exception). `decisions/tool-wrapping.md` 52 leans on that superset explicitly to justify a CLI-only diagnostic; amending 3/10 to admit a second, agent-only exception would have knocked that ground out from under an otherwise-fine decision, for a gap this narrow.
+
+Closed the cheaper way: `dev-bench-hello` (`src/main.rs`, `src/cli.rs`) runs the same `CoreClient::dev_bench_hello()` call the MCP tool does, renders the same `render_hello_ack` text, and surfaces the same 409/502 distinction (`DevBenchBusyError`/`DevBenchHandshakeError`) as CLI exit-1 text instead of an MCP error payload. No new client-layer code — this is a second front-end over the call `api/036` already wrote, exactly the shape decision 3/10 describes for every other tool. `suite/features.md`'s `api-040 — CLI subcommands for every tool` row is true again rather than silently false. `interfaces/tools.md`'s `dev_bench_hello` row is updated to drop the "no CLI twin" line.
+
+3/10 and `spec.md` §1 are unchanged: no second exception was needed, so none was written.
+
 Shapes: [../interfaces/config.md](../interfaces/config.md), [../interfaces/tools.md](../interfaces/tools.md).

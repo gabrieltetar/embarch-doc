@@ -18,7 +18,7 @@ Core emits `event: lagged` *deliberately* when a subscriber falls behind its bro
 
 **Subscribe first, then poll once.** Core holds the stream open indefinitely, so a study that finished *before* the subscribe emits no `StatusChanged` and would hang a listener; the opening poll is what catches it. The order is load-bearing the other way too — polling first leaves a gap an event can fall into.
 
-**Two kinds of incompleteness, reported as two.** Core's `lagged` and this crate's own `max_events` cap ([decision 47](surface.md)) are different facts with different remedies, and a caller told only "some events are missing" cannot tell them apart.
+**Two kinds of incompleteness, reported as two.** Core's `lagged` and this crate's own `max_events` cap ([decision 47](tool-wrapping.md)) are different facts with different remedies, and a caller told only "some events are missing" cannot tell them apart.
 
 ### 49 — The event-stream client lives in `embarch-core-client`, and Core's `StudyEvent` is mirrored there
 Same argument as decisions 37/38: `embarch-ui` reaches Core the same way this crate does, and a second SSE implementation there would be the mirrored-copy risk that extraction exists to remove. It also buys testability without widening this package's own `lib` surface ([decisions](tests.md) 46) — the decoder and the follow loop are `pub` in a library crate `tests/` can already reach, so nothing had to move out of the binary.

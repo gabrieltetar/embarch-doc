@@ -1,6 +1,6 @@
 # api — `dev_bench_hello` is MCP-only, contradicting decision 3/10's "identical capabilities" and spec.md §1's CLI ⊇ MCP superset
 
-**State:** claimed — leg 048
+**State:** done — leg 048
 **Promoted** from `inbox/api-dev-bench-hello-mcp-only-breaks-cli-superset.md` by leg 048, unchanged
 apart from this line, the number, and the dispatch note at the bottom.
 **Source:** reviewer, api/036 (merge SHAs: embarch-api `95c1954e40d5fbadc79bf5ad2448dfcb69d2e36f`, embarch-doc `cf12cae`+`8005396`)
@@ -49,13 +49,52 @@ CLI-superset break rode through unnoticed on the second pass too.
 ## Done when
 
 Either:
-- a `dev-bench-hello` (or similarly named) CLI subcommand is added restoring
+- [x] a `dev-bench-hello` (or similarly named) CLI subcommand is added restoring
   CLI ⊇ MCP, and `interfaces/tools.md`'s "no CLI twin" line is retracted; or
-- a decision explicitly amends decision 3/10 and `spec.md` §1 to record a
+- [ ] a decision explicitly amends decision 3/10 and `spec.md` §1 to record a
   second, opposite-direction exception (an agent-only capability), with the
   "a human can do anything an agent can" language in decision 52 and spec.md
   either scoped down or reconciled — not left asserting a guarantee this tool
   already breaks.
+
+**Took the first arm**, per the dispatch note's direction, and it was not
+structurally blocked: `CoreClient::dev_bench_hello()` takes no dev-bench
+config/chip params at all, so the CLI subcommand is a thin second front-end
+over the exact call the MCP tool already makes — no new client-layer code.
+
+**Shipped** (`embarch-api`, branch `agent/api/048-cli-superset`):
+- `src/main.rs` — `Commands::DevBenchHello` (CLI: `dev-bench-hello`), doc
+  comment mirrors the MCP tool's description including the 409/502 split.
+- `src/cli.rs` — `dev_bench_hello()` calls `core.dev_bench_hello()`, renders
+  `render_hello_ack`, downcasts `DevBenchBusyError`/`DevBenchHandshakeError`
+  the same way `tools.rs`'s tool handler does.
+- `tests/json_surface.rs` — `dev-bench-hello` added to `EVERY_SUBCOMMAND`;
+  `src/cli.rs`'s `every_subcommand_is_covered_by_the_json_surface_test` count
+  bumped 23 → 24.
+
+**Doc** (`embarch-doc`, same branch):
+- `embarch-api/decisions/shape.md` decision 61 records the fix and why the
+  cheaper arm was taken over amending 3/10 — see dispatch note's own
+  reasoning, confirmed rather than second-guessed.
+- `embarch-api/decisions.md` index row for `shape.md` updated (adds 61, size).
+- `embarch-api/interfaces/tools.md`'s `dev_bench_hello` row: dropped
+  `**(MCP only)**` and the "no CLI twin" line, added the CLI-twin/decision-61
+  note.
+- `embarch-api/decisions/study-events.md` decision 48's dangling
+  `[decision 47](surface.md)` link fixed to `tool-wrapping.md` (also-noted
+  item from the task body).
+- `changelog.d/api-dev-bench-hello-cli-twin.fixed.md` dropped.
+
+**No file pushed into reserve** by this change: `decisions/shape.md` is now
+9,099/12,288 B (74%), `interfaces/tools.md` 9,893/12,288 (81%) — both below
+the 90% reserve line. `decisions/tool-wrapping.md` (66 B left, task `047`,
+`In flux: yes`) was not touched — the decision was written into `shape.md`
+per the dispatch note, not `tool-wrapping.md`, so no compaction was owed here.
+
+Gate run clean: `cargo build`/`test`/`clippy --all-targets -- -D warnings` in
+`embarch-api`; `check-docs.py`, `check-ownership.py --scope api` (doc worktree)
+and `check-ownership.py --code-repo --repo <code worktree>`, and
+`check-client-names.py --repo <code worktree>` all green.
 
 ## Revert notes
 
