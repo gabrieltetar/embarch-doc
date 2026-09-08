@@ -48,7 +48,7 @@
 | Tool / subcommand | Params | Behaviour |
 |---|---|---|
 | `enroll_probe` | `role`, `chip`, `probe_serial?` | Core `POST /probes/enroll`. No selection params — enrollment is not build-target selection. The guided flow is conversational: ensure only the intended board's probe is attached, *then* call. **Core's refusal on anything but exactly one attached probe enforces that**, nothing client-side |
-| `validate` | `role` | Core `POST /validate` — the live identity re-check flash and reset run mid-attach, callable without touching hardware otherwise. On a match, returns two distinct timestamps: `confirmed_at_utc_ms` (enrolment time, unmoved by a re-check) and `validated_at_utc_ms` (this call's own check, `embarch-topology` decision 26 / `embarch-core` decision 50) — read the latter for freshness. A mismatch names recorded vs. live hardware ID **and a `fix_it_url` as plain text, never auto-opened** |
+| `validate` | `role` | Core `POST /validate` — the live identity re-check flash and reset run mid-attach, callable without touching hardware otherwise. On a match, returns two distinct timestamps: `confirmed_at_utc_ms` (enrolment time, unmoved by a re-check) and `validated_at_utc_ms` (this call's own check, `embarch-topology` decision 26 / `embarch-core` decision 50) — read the latter for freshness when present; `null`/`None` against a Core older than `tasks/core/026` means it never reported one, not that the check happened at an unknown time (decision 58). A mismatch names recorded vs. live hardware ID **and a `fix_it_url` as plain text, never auto-opened** |
 | `alerts` | `limit?` | Core `GET /alerts`, most recent topology-mismatch alerts, default 20 |
 
 ## Error handling

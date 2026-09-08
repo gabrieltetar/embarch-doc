@@ -57,14 +57,32 @@ entry went into whichever file had room rather than the file whose topic it was.
 
 ## Done when
 
-- [ ] `decisions/core-link.md` is clear of the 11,059 B reserve line.
-- [ ] Whatever moved, moved **verbatim** unless `api/001` has landed; every
+- [x] `decisions/core-link.md` is clear of the 11,059 B reserve line. Done by
+      `agent/api/046-older-core-parse-rule`, 2026-09-07: 10,731 B after the
+      split (and decision 58's addition), well clear of the line.
+- [x] Whatever moved, moved **verbatim** unless `api/001` has landed; every
       `Must not delete:` item above is still readable at its new address.
-- [ ] `decisions.md`'s index table names the new file, its decision numbers and
+      Decisions 48 and 49 moved verbatim into the new
+      `decisions/study-events.md`; every item this task's `Must not delete:`
+      names lives in `core-link.md`, which was not touched except to add
+      decision 58 and retitle its own scope line — untouched otherwise.
+- [x] `decisions.md`'s index table names the new file, its decision numbers and
       both files' sizes, and `check-decision-refs.py` resolves every number.
-- [ ] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
+- [x] The commit message answers `DOC-COMPACTION-PASS.md`'s question in the
       compactor's own words: *can `spec.md` alone answer what someone needs to
-      work on reaching Core today?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      work on reaching Core today?* — yes: nothing in the split changed what
+      `spec.md` says, only where the decisions justifying it live.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — green for the
+      `core-link.md`/`study-events.md` split itself (`check-docs.py` all 10
+      green on `agent/api/046-older-core-parse-rule`); left unchecked because
+      `spec.md` and `open.md` — both still named under **Compacts:** above and
+      both still inside their own reserve lines — are untouched by this unit.
+
+**Closed by `agent/api/046-older-core-parse-rule` (task `api/046`), 2026-09-07:
+only the `core-link.md` split above**, which was blocking decision 58. This
+task stays `blocked` — `spec.md` and `open.md` are unaddressed, and
+`In flux: yes` above (the event-stream half, now in `study-events.md`) still
+applies to that file's *remaining* compaction, which still waits on
+`tasks/api/001`.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

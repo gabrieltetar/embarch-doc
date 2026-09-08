@@ -1,6 +1,6 @@
 # `ValidateResponse` now hard-requires a Core new enough to send `validated_at_utc_ms`
 
-**State:** claimed by agent/api/046-older-core-parse-rule, 2026-09-07 19:20
+**State:** done by agent/api/046-older-core-parse-rule, 2026-09-07
 **Source:** `tasks/api/045` (leg 043), raised by me at the merge diff and
 independently by that unit's reviewer, which found no decision either way and
 correctly declined to file it as a contradiction.
@@ -108,7 +108,7 @@ which is the only cheap moment to file it.
 
 ## Done when
 
-- [ ] An `embarch-api` decision states that `embarch-core-client` parses an
+- [x] An `embarch-api` decision states that `embarch-core-client` parses an
       older Core's responses field-by-field via `#[serde(default)]` on an
       `Option`, on the evidence above — the 14 existing fields, their uniform
       `Option` shape, and the test that already asserts it. Name
@@ -117,15 +117,34 @@ which is the only cheap moment to file it.
       **Decision numbers are global across `decisions/*.md`, not per file.**
       The directory maximum was **57** at `a687baf`, so yours is **58** — verify
       with `grep -rn '^### [0-9]' decisions/` before you use it.
-- [ ] `ValidateResponse::validated_at_utc_ms` is `Option<u64>` with
+
+      Verified: `grep -c 'serde(default)' client.rs` reported 14, but one of
+      those 14 is a doc-comment mention of the literal attribute text (line
+      ~1727, `an_older_core_body_missing_link_port_interface_still_parses`'s
+      own doc comment), not a 14th field. The actual attribute count is
+      **13**, each on an `Option<T>` field, plus the named test — still one
+      convention stated uniformly and one field (`validated_at_utc_ms`) that
+      missed it. Decision 58 is written in `decisions/core-link.md`,
+      naming both precedent fields and the test. Confirmed the directory
+      maximum was 57 before using 58.
+- [x] `ValidateResponse::validated_at_utc_ms` is `Option<u64>` with
       `#[serde(default)]`.
-- [ ] Neither the CLI nor the MCP tool prints a fabricated timestamp for a Core
+- [x] Neither the CLI nor the MCP tool prints a fabricated timestamp for a Core
       that never sent one, and the human-readable line says so in words.
-- [ ] A test pins the **absent** case, mirroring
+      `cli.rs`'s human line now reads "not reported by this Core" for `None`;
+      the JSON surfaces in both `cli.rs` and `tools.rs` serialize `None` to
+      `null`, which is honest — `null` means "this Core did not report it",
+      documented as such in the field's own doc comment and in `tools.rs`'s
+      tool description (amended: "read the latter for freshness... when
+      present").
+- [x] A test pins the **absent** case, mirroring
       `an_older_core_body_missing_link_port_interface_still_parses` — a
       `validate` body with no `validated_at_utc_ms` parses and yields `None`.
       The existing test at `client.rs:1709` pins the present case; leave it
       working (it will need `Some(...)`).
+      `an_older_core_validate_body_missing_validated_at_still_parses` added;
+      `a_validate_response_parses_both_distinct_timestamps` updated to assert
+      `Some(1726000000000)`.
 
 ## The reserve, and why the split is not blocked
 
@@ -155,3 +174,20 @@ in full. Close only `core-link.md`'s item in `api/026`; that task stays
 and `open.md` 4,734 / 5,120 are both filed under `api/026`. If your work pushes
 any file into reserve that nothing has filed, file
 `tasks/api/<NNN>-compact-api.md` in the same commit.
+
+## Done, 2026-09-07
+
+Split landed exactly as `api/026` prescribed: decisions 48 and 49 moved
+**verbatim** into new `embarch-api/decisions/study-events.md` (3,747 B);
+`core-link.md` (10,731 B after also gaining decision 58) and
+`decisions.md`'s index table updated to match. Neither `spec.md` nor
+`open.md` touched — both stay filed under `api/026`, which stays `blocked`.
+Ticked only `api/026`'s core-link.md-specific items; left its overall gate
+item unchecked with a note, since those two files remain outstanding. Did
+not touch `decisions/surface.md`, `api/044`'s `hardware_id` rename, or add a
+version-negotiation mechanism — all three named out of scope. Neither
+`embarch-core` file changed. Gate green in both worktrees: `cargo build`,
+`cargo test`, `cargo clippy --all-targets -- -D warnings` in
+`embarch-api`; `scripts/check-docs.py` (10/10), `check-client-names.py`, and
+`check-ownership.py` (both repos) in `embarch-doc`. No hardware-verification
+debt — nothing here touches a board.
