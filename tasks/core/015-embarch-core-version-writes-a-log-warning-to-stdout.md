@@ -1,6 +1,6 @@
 # 015 — `embarch-core --version` writes a multi-line log warning to **stdout**, so its output is unparseable
 
-**State:** claimed (leg 045)
+**State:** done (leg 045)
 **Source:** supervisor bench unit `umbrella/027`, 2026-09-06 — live `embarch doctor --json` against
 the installed Windows service exe
 **Scope:** core
@@ -105,12 +105,70 @@ Do not reach into `embarch-umbrella`; you own `embarch-core` and
 
 ## Done when
 
-- [ ] `embarch-core --version` prints exactly the version line on stdout, whatever the state of the
+- [x] `embarch-core --version` prints exactly the version line on stdout, whatever the state of the
       log directory. Whether it should initialise logging on that path at all is the design call.
-- [ ] Any diagnostic it does emit goes to stderr, and the "continuing with stderr only" message is
+- [x] Any diagnostic it does emit goes to stderr, and the "continuing with stderr only" message is
       true of where it lands.
-- [ ] ANSI colouring is off when stdout is not a terminal — the escapes above were captured by a
+- [x] ANSI colouring is off when stdout is not a terminal — the escapes above were captured by a
       pipe.
-- [ ] A test pins the stdout of `--version` to one line, since the failure needs an unwritable log
+- [x] A test pins the stdout of `--version` to one line, since the failure needs an unwritable log
       directory to reproduce and will not show up by accident.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Resolution (leg 045)
+
+**Supervisor's diagnosis confirmed, verbatim.** Read `tracing-subscriber` 0.3.23's own source
+(`~/.cargo/registry/.../tracing-subscriber-0.3.23/src/fmt/mod.rs`): `SubscriberBuilder`'s default
+writer type parameter is `W = fn() -> io::Stdout` (line 254), so bare
+`tracing_subscriber::fmt::init()` — what `init_tracing()`'s failure arm called — writes to stdout,
+not stderr, regardless of what the warning it then logs claims. This is the whole defect on Core's
+side; no second cause.
+
+**ANSI is not an independent bug.** Read `Layer::default()` in `fmt_layer.rs`: `is_ansi` is decided
+purely from `cfg!(feature = "ansi")` and whether `NO_COLOR` is set — there is no tty probe anywhere
+in this code path in this version. The escapes in the captured output were riding on the same
+misrouted text; once that text moves off stdout, stdout has no escapes to have. All three Done-when
+items closed on one fix, as the supervisor's direction hoped.
+
+**Fix:** `init_tracing()`'s failure arm now builds its subscriber via a new
+`build_fallback_subscriber<W>` seam with an explicit `std::io::stderr` writer, instead of the bare
+zero-config `fmt::init()` (which offers no writer seam at all — that is the point of a zero-config
+entry point, and exactly why it silently defaulted to stdout). `init_tracing()` itself is otherwise
+untouched: still called unconditionally at the top of `main`, before `Cli::parse()`, per the
+supervisor's explicit instruction not to reorder it.
+
+**Verified live against a real unwritable log directory** (not simulated): `/var/lib/embarch` is not
+writable to my own user on this machine. Pre-fix, `embarch-core --version`'s stdout was the warning
+block (ANSI-coloured) followed by the version line, exactly reproducing what umbrella's check 1 saw.
+Post-fix, stdout is exactly `embarch-core 0.1.4` and the full diagnostic (still ANSI-coloured on
+stderr, which the Done-when list never asked to change) is on stderr.
+
+**Tests added, per the "prefer a host test, not an unwritable directory" steer:**
+- `init_tracing_tests::fallback_subscriber_routes_through_its_injected_writer` (`src/main.rs`) pins
+  the fallback arm's writer choice directly, using an in-memory `MakeWriter` — no unwritable
+  directory needed, and no second global-subscriber install (which would panic).
+- `tests/version_stdout.rs` is a subprocess integration test asserting `--version`'s stdout is
+  exactly one line, `embarch-core <version>`, with no ANSI escapes — the common, always-writable-log
+  case every invocation takes.
+
+**Design call taken:** `--version` still runs `init_tracing()` unconditionally (not special-cased),
+per the supervisor's explicit direction not to reorder it past `Cli::parse()`. Fixing the writer
+fixes `--version` for free, as the task predicted, without touching that ordering.
+
+**Recorded as `embarch-core/decisions/logging.md` decision 51** (next number taken from the whole
+`decisions/*.md` directory's max, 50, per direction).
+
+**Debt recorded, not attempted:** the native Windows build was not attempted from this worktree —
+`protocol.md` §10/the worker contract calls it a debt, not a gate item, because Windows `cargo.exe`
+cannot resolve this worktree's symlinked path-dep siblings over UNC. Whoever verifies this on
+Windows next should also re-run `embarch-core.exe --version` piped through something that reads
+`stdout` only (mirroring umbrella's check 1) against a real installed-service log-directory
+permission state, to confirm the fix holds on the platform the original defect was observed on.
+
+**Gate, this leg:** `cargo build`, `cargo test` (172 tests, including the 2 new ones), and
+`cargo clippy --all-targets -- -D warnings` all clean in the code worktree;
+`scripts/check-docs.py` (10/10 checks), `scripts/check-ownership.py --scope core` (doc worktree) and
+`scripts/check-ownership.py --scope core --code-repo` (code worktree) all green.
+
+**Out of scope, confirmed untouched:** `embarch-umbrella` and `tasks/umbrella/031` were not read or
+edited.
