@@ -29,13 +29,57 @@ touching `study_designer`.
 
 ## Done when
 
-- [ ] `config.rs`'s `study_designer` doc comment states decision 14's behaviour; `main.rs`'s header
+- [x] `config.rs`'s `study_designer` doc comment states decision 14's behaviour; `main.rs`'s header
       names live docs; `logs.rs` says `GET`.
-- [ ] No `milestone-*.md` reference remains in `src/`.
-- [ ] Every decision number cited still resolves against `embarch-doc/embarch-ui/decisions/`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] No `milestone-*.md` reference remains in `src/`.
+- [x] Every decision number cited still resolves against `embarch-doc/embarch-ui/decisions/`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Verification against the code, 2026-09-07
+
+All three survey claims re-checked against the branch as it stands today, not
+against the 2026-09-06 survey text:
+
+- **`config.rs`'s `study_designer` comment**: still false, in the same way the
+  survey recorded. `AppState.study_designer` (a `StudyDesigner`, always
+  present) is unrelated to `Config.study_designer` (an `Option`, the field
+  this comment is on) — the tab has been unconditionally reachable since
+  decision 14 landed, and this config field is only the zero-click default
+  for a single-repo bench. Comment rewritten to say that, citing decision 14.
+- **`main.rs`'s header**: `milestone-1.md` and `design.md` are both still
+  absent from `embarch-doc/embarch-ui/`. Rewritten to point at `spec.md` and
+  `decisions/`.
+- **`logs.rs:39`'s `POST` vs `GET`**: checked against the wire per the
+  supervisor's direction, not against another comment.
+  `embarch_core_client::CoreClient::logs_recent`
+  (`embarch-api/crates/embarch-core-client/src/client.rs:1172`) issues
+  `self.client.get(url)` — a plain GET. **The code was already correct; only
+  the comment was wrong.** No behaviour change, no bug — this stayed a
+  comment fix.
+
+Additionally swept every other `milestone-1.md`/`milestone-11.md` reference
+left in `src/` (`logs.rs:1`, `study_designer.rs:1,13,58,284`, `main.rs:130,167`
+by pre-edit line numbers) per the "no milestone-*.md reference remains"
+checklist item, while leaving the separate legacy `design.md §3 decision N`
+citation form untouched everywhere it appears, per the task's explicit scope
+note and `../../DOC-CONVENTIONS.md`.
+
+No `decisions/study-designer.md` write: read decision 14, did not add to it,
+and this unit needed no new decision (the fix is entirely descriptive of
+already-decided behaviour). No `spec.md`/`decisions.md`/`open.md` edit either
+— nothing there was made false by a comment-accuracy fix with no design or
+behaviour change, so nothing suite-level went false and no `status.d/`
+fragment was warranted.
+
+Gate: `cargo build`, `cargo test` (103 passed, 0 failed), `cargo clippy
+--all-targets -- -D warnings` all clean in the code worktree (single-crate
+repo, no non-member `Cargo.toml`). `scripts/check-docs.py` all 10 checks
+green in the doc worktree. `scripts/check-ownership.py --scope ui` (doc
+branch) and `--code-repo --scope ui` (code branch) both green.
+`scripts/check-client-names.py --repo <code worktree>` clean against 7
+denylist entries. Both branches pushed.
 
 ## Supervisor direction, leg 041
 
