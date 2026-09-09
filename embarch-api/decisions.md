@@ -14,7 +14,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 34, 35, 41, 47, 52, 59, 60 | 11.9 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 10.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 13, 20, 21, 22, 51 | 10.8 KB |
-| [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the one auth-and-send funnel, the stack, older-Core parsing | 11, 14, 15, 17, 26, 36, 37, 38, 43, 55, 58 | 10.5 KB |
+| [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate | 11, 14, 15, 17, 26, 36, 37, 38, 43, 55, 58, 62 | 11.8 KB |
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
 | [Submitting and orchestrating studies](decisions/studies.md) — seals, schemas, reflash | 27, 28, 31, 33, 39, 40, 44 | 10.3 KB |
 | [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, and no longer constants | 32, 45 | 3.6 KB |

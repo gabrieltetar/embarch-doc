@@ -1,6 +1,6 @@
 # 038 — "Am I in WSL2" has three implementations and two incompatible rules, two of them inside one binary that already links the canonical predicate
 
-**State:** claimed by leg 049, 2026-09-08
+**State:** done, 2026-09-08
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** api
 **Hardware:** none
@@ -64,12 +64,27 @@ implementation is unit-tested against its own rule, so nothing compares them.
 
 ## Done when
 
-- [ ] `embarch-core-client` answers "am I in WSL2" through `embarch_topology::software::detect_wsl2`,
-      or the reason it must not is recorded next to the second implementation.
-- [ ] No two answers to that question can disagree inside one process.
-- [ ] `status.d/api-*` fragment for `embarch-topology/decisions/crate.md` decisions 4 and 8, which
-      are false as written.
-- [ ] Gate green; `changelog.d/api-*` fragment.
+- [x] `embarch-core-client` answers "am I in WSL2" through `embarch_topology::software::detect_wsl2`,
+      or the reason it must not is recorded next to the second implementation. **Delegated.**
+      `crates/embarch-core-client/src/token_discovery.rs`'s `is_wsl2` now reads
+      `/proc/version` and `$WSL_DISTRO_NAME` and calls
+      `embarch_topology::software::detect_wsl2(proc_version, wsl_distro_env)`, the same
+      pattern `embarch-umbrella/src/env.rs::under_wsl2` already uses. Its former third
+      signal (a bare `"wsl"` substring match on the kernel string, with no env-var
+      check) is dropped: the narrow rule's own stated reason — `$WSL_DISTRO_NAME` can be
+      scrubbed by an MCP launcher — argues for keeping *both* signals available, which
+      `detect_wsl2`'s union already is, not for a third, looser one. No real WSL2 kernel
+      is known to stamp "wsl" into `/proc/version` without also stamping "microsoft"
+      (checked against this process's own `/proc/version`, and against the reasoning in
+      `embarch-topology/src/wsl2.rs`'s own doc comment — "WSL2's kernel is Microsoft-built
+      and says so"), so the dropped branch covered no observed case.
+      `embarch-api/decisions/core-link.md` decision 62.
+- [x] No two answers to that question can disagree inside one process. Both call sites
+      now go through the same `detect_wsl2` union.
+- [x] `status.d/api-*` fragment for `embarch-topology/decisions/crate.md` decisions 4 and 8, which
+      are false as written. `status.d/api-038-topology-decisions-4-8-were-false.md`.
+- [x] Gate green; `changelog.d/api-*` fragment.
+      `changelog.d/api-wsl2-predicate-unified.fixed.md`.
 
 **Adjacent:** `embarch-umbrella`'s copy disappears with the
 `umbrella-three-mirrors-of-embarch-api…` drop in this batch if that one lands. Landing this first
@@ -131,3 +146,49 @@ it is owed **whichever way you resolve the predicate question** — if you leave
 with a recorded reason, those decisions are still false and still need correcting.
 
 **Do not touch hardware.** No live Core, no token read from a real install, no study.
+
+## Leg 049 findings
+
+**Line numbers had aged out, as warned.** Re-derived: `detect_wsl2` is at
+`embarch-topology/src/software.rs:195-197`, not `:195-201` — it is now a
+3-line delegation to `crate::wsl2::detect`, not the inline union logic quoted
+in the task body. `token_discovery::is_wsl2` was at `:80-88` (comment `:76-79`),
+not `:81-87`. **`embarch-topology` had already been refactored since the
+2026-09-06 survey** to carve the predicate into its own unconditionally-compiled
+`src/wsl2.rs` module (`detect`/`detect_here`, `embarch-topology` decision 27) so
+a `hardware`-only consumer (`embarch-core`) can compute it without linking
+`software`'s `reqwest`/`tokio` — `software::detect_wsl2` now just delegates.
+This did not change the fix here: the public `software::detect_wsl2(proc_version,
+wsl_distro_env)` signature this task names is unchanged and was already the
+right call for `embarch-api` to make.
+
+**Resolved by delegating, not by keeping the second implementation.** Checked
+the union-vs-narrow reasoning against the code rather than inheriting the
+task's framing: the narrow rule's only stated justification for a third,
+looser "wsl"-without-"microsoft" branch was that `$WSL_DISTRO_NAME` can be
+scrubbed — an argument for a union of two signals, which `detect_wsl2` already
+provides, not for a third. No real Microsoft-built WSL2 kernel is known to
+stamp "wsl" into `/proc/version` without also stamping "microsoft" (this
+process's own `/proc/version` confirms the pattern, and `embarch-topology`'s
+own `wsl2.rs` doc comment states it as the reason the kernel-string signal is
+trusted at all), so the dropped branch had no known real case behind it. This
+is recorded as measured-against-available-evidence, not proven for every WSL2
+build in existence — if a future WSL2 kernel build is found that breaks the
+pattern, that is new evidence against this decision, not a contradiction of it.
+
+**Did not touch `embarch-topology` or `embarch-umbrella/src/token.rs`.** No
+drop filed against `embarch-topology`'s `detect_wsl2` — its existing signature
+and union logic were exactly what this fix needed; nothing about it needed
+changing. `embarch-umbrella/src/token.rs`'s copy is untouched, per `umbrella/036`.
+
+**`decisions/core-link.md` sizing.** State the placement argument first: this
+is squarely "reaching Core" — token discovery decides where the token file is,
+which Core the process is really reaching — so `core-link.md` is the right
+home on the merits, not `tool-wrapping.md` (a different mission) and not a
+new file (one decision does not justify a split). Landing decision 62 there
+did cross the file into reserve (10,885 → 12,108 B against the 12,288 B cap,
+above the 11,059 B reserve line) — trimmed the entry twice to land under cap
+without needing a new debt. The file is already named under `tasks/api/026`'s
+`Compacts:` line with an unexpired `Size debt due: 2026-09-14`, which is what
+`check-doc-size.py` counts as filed; no new debt task opened. `open.md` and
+`spec.md` were not touched by this unit and are unaffected.
