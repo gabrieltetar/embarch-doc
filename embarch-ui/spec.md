@@ -81,7 +81,7 @@ Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Ple
 
 ## The trace chart
 
-It stays SVG with server-side aggregation, so **the element count is bounded by pixels × lanes, not by the dataset**, never bridged into a client-side redraw of the whole capture. Reference numbers, lane filtering's effect on the load repartition, the bin-fetch endpoint and the two served view caps: [interfaces.md](interfaces.md) — *The trace chart*.
+It stays SVG with server-side aggregation, so **the element count is bounded by pixels × lanes, not by the dataset**, never bridged into a client-side redraw of the whole capture. **Filtering changes the drawing and nothing else: the load repartition stays computed across every lane, and says so** — a denominator that quietly followed a view filter would be a measurement of nothing ([decisions/trace-chart.md](decisions/trace-chart.md)). Reference numbers, the bin-fetch endpoint and the two served view caps: [interfaces.md](interfaces.md) — *The trace chart*.
 
 ## Verification technique
 

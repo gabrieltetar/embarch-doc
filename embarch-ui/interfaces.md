@@ -4,7 +4,7 @@
 
 ## The trace chart
 
-The reference reference-dut capture is the working shape to design against: **147.5 s, 225,606 rows, 112,801 spans, 26 lanes.** Wheel zooms at the pointer, drag pans, the window is clamped to the capture. Lanes scroll vertically with the axis and step row pinned; they can be filtered, hidden and reordered, and **filtering changes the drawing and nothing else** — the load repartition stays computed across every lane and says so.
+The reference reference-dut capture is the working shape to design against: **147.5 s, 225,606 rows, 112,801 spans, 26 lanes.** Wheel zooms at the pointer, drag pans, the window is clamped to the capture. Lanes scroll vertically with the axis and step row pinned; they can be filtered, hidden and reordered. **What filtering may and may not touch is an invariant and it is stated in [spec.md](spec.md), not here** — a reference file is the wrong home for a fact someone has to hold in their head before they change lane filtering ([DOC-COMPACTION.md](../DOC-COMPACTION.md) §3's hot/cold split; the reasoning is `decisions/trace-chart.md`).
 
 It stays SVG. Sub-pixel spans aggregate into per-pixel occupancy runs per lane, so **the element count is bounded by pixels × lanes, not by the dataset**: ~2,500 rects worst case, 27 ms to redraw. Aggregation is exact — a run splits wherever a gap, a below-resolution flag or an open edge changes.
 
