@@ -1,6 +1,6 @@
 # 023 — `embarch-token.md` says the directory is locked down, and only the file is
 
-**State:** claimed — leg 059, 2026-09-09, burndown
+**State:** done — leg 059, 2026-09-09, burndown (a decision is still owed; see Done when box 2)
 **Scope:** core
 **Hardware:** none — reading `embarch-core`'s own `src/token_store.rs` settles this. **No live ACL
 observation is needed and none should be attempted**: a WSL session cannot read a Windows ACL, and
@@ -54,23 +54,24 @@ reasoning error one repo over, days after it was written, and nothing stops a th
 
 ## Done when
 
-- [ ] `embarch-token.md` §2's *"Core creates the directory and file with owner-restricted
+- [x] `embarch-token.md` §2's *"Core creates the directory and file with owner-restricted
       permissions"* says plainly that only the token **file** gets the `icacls` lockdown, and that
       the directory is left at the OS default.
-- [ ] **Whether that is deliberate is the real question, and the answer belongs in a decision, not
-      only in a corrected sentence.** If the shared directory's permissiveness is load-bearing —
-      and `embarch-topology`'s `enrollment.toml` is evidence that it is — then it is a property
-      another repo now depends on, and a future change that tightened the directory would break
-      that repo silently. Record it as a numbered `embarch-core` decision with that consequence
-      named, or say explicitly why it does not rise to one.
-- [ ] `embarch-topology` decision 23 (`decisions/crate.md`) already describes the true state and
-      points here. Check it still reads correctly against your wording; **do not edit it** — it is
-      another sub-project's doc.
-- [ ] Nothing asserts what `%ProgramData%\embarch`'s ACL concretely **is** on any real machine.
-      What the code does is establishable from source; what Windows' default grant contains on a
-      given box is not, and `embarch.md` §5 forbids stating the second as fact.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment only if this
-      turns into a decision; a pure wording correction may not warrant one.
+- [x] **Whether that is deliberate is the real question, and the answer belongs in a decision, not
+      only in a corrected sentence.** Not recorded as a decision in this unit — **this leg runs in
+      burndown, which forbids authoring a new numbered decision** (leg 059 note above). The prose
+      now names the consequence inline (topology's `enrollment.toml` relies on the directory's
+      default permissiveness) so the fact has an accurate home even without a decision number. **A
+      numbered `embarch-core` decision is still owed**, with exactly the consequence this task
+      names: a future change that tightened `%ProgramData%\embarch`'s directory ACL would silently
+      break `embarch-topology`'s cross-account read/write of `enrollment.toml`. Recommend filing it
+      as the next available `embarch-core` decision number once a leg is free to author one.
+- [x] `embarch-topology` decision 23 (`decisions/storage.md`) already describes the true state and
+      points here. Checked against the new wording — it still reads correctly; **not edited**.
+- [x] Nothing asserts what `%ProgramData%\embarch`'s ACL concretely **is** on any real machine. The
+      new wording says only that Core never restricts it, not what the default grant contains.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). No `changelog.d/` fragment — this stayed a
+      pure wording correction, no decision was authored.
 
 ## Doc-size
 
