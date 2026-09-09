@@ -1,6 +1,6 @@
 # Measure the 250,000-row view cap at the next number up, so raising it stops being an extrapolation
 
-**State:** claimed by agent/ui/004-measure-the-row-cap, 2026-09-09 00:18
+**State:** done, 2026-09-09
 **Source:** `embarch-ui/open.md` — "it should be made against a measurement at the new number rather than by extrapolating this one"
 **Scope:** ui
 **Hardware:** none
@@ -53,12 +53,28 @@ Nothing else about it is open.
 
 ## Done when
 
-- [ ] A synthesiser and an `#[ignore]`d measurement test exist and run from a documented one-line
-      invocation, needing no file on disk.
-- [ ] Decode time and both payload sizes are recorded at three row counts, marked
-      `[measured <date>, <build>]` per `../../DOC-CONVENTIONS.md`.
-- [ ] The cap is either changed or explicitly kept, with the number cited.
-- [ ] `open.md`'s bullet is rewritten to what is now unknown.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] A synthesiser and an `#[ignore]`d measurement test exist and run from a documented one-line
+      invocation, needing no file on disk. `src/trace.rs`'s `scratch_view::synth_capture` builds a
+      CSV of the committed fixture's kind proportions entirely in a `String`; `scratch_view::
+      measure_the_row_cap_at_scale` drives it at 250k/500k/1M rows, run with
+      `cargo test --release measure_the_row_cap_at_scale -- --ignored --nocapture`.
+- [x] Decode time and both payload sizes are recorded at three row counts, marked
+      `[measured <date>, <build>]` per `../../DOC-CONVENTIONS.md`. In `open.md`.
+- [x] The cap is either changed or explicitly kept, with the number cited. Kept at 250,000 —
+      decode time and resident view JSON both grow somewhat worse than linearly with row count
+      (257 ms/4.48 MB at 250k to 1.69 s/18.1 MB at 1M), which is the cost decision 18 said raising
+      the cap would come down to; the `/bins` payload itself stays small at all three points, so
+      the payload half of the original justification is confirmed still fixed. No new numbered
+      decision was authored (this leg runs in burndown mode, dispatch note); keeping the cap with
+      the measurement as the stated reason is the outcome the task names as complete.
+- [x] `open.md`'s bullet is rewritten to what is now unknown: whether the decode-time cost is
+      acceptable against the (currently unmeasured) `/study/{id}/streams` request-path budget.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy
+      --all-targets -- -D warnings` clean in `embarch-ui`; `check-docs.py` 10/10 green in
+      `embarch-doc`; `check-client-names.py` and `check-ownership.py` (both repos) clean.
+- [x] `spec.md`/`decisions.md`/`open.md` updated (only `open.md` needed a change; `spec.md`
+      already states 250,000 rows and is unaffected since the cap didn't move, and it is itself in
+      reserve per this leg's dispatch note, so no edit was made there), `changelog.d/` fragment
+      dropped (`changelog.d/ui-row-cap-measured.decided.md`). No suite-level fact was made false,
+      so no `status.d/` fragment. `open.md`'s edit pushed it into reserve (3,630 B → 4,191 B
+      against a 3,920 B reserve line), filed as `tasks/ui/021-compact-ui.md` in this commit.
