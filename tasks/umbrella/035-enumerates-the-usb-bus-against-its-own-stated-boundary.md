@@ -43,10 +43,24 @@ something false.
 
 ## Done when
 
-- [ ] `embarch-umbrella`'s manifest comment and `spec.md:17` are true, exception and reason
+- [x] `embarch-umbrella`'s manifest comment and `spec.md:17` are true, exception and reason
       included, or check 5 no longer enumerates hardware in umbrella's own process.
-- [ ] A probe vendor ID is named in one place in the suite, or the two places say why they differ.
-- [ ] Gate green; `changelog.d/umbrella-*` fragment.
+- [x] A probe vendor ID is named in one place in the suite, or the two places say why they differ.
+      (Named in two places, each now stating why it holds its own — umbrella's spec.md/open.md
+      say check 5 is a permission-detection exception; the routing question of whether it should
+      collapse to one place is filed to `inbox/`, `Scope: suite`.)
+- [x] Gate green; `changelog.d/umbrella-*` fragment.
+
+## Closed by leg 060 (burndown)
+
+Took the first honest end per the dispatch note: corrected `Cargo.toml` and `spec.md:17` to state
+check 5's sysfs USB read as the one named exception, with its reason (decision 18) and the
+unmeasured-vendor-IDs caveat carried into `open.md`. Did not touch check 5 itself, `embarch-topology`,
+or `embarch-core`. Filed the routing-to-Core question as `inbox/suite-route-probe-vendor-ids-to-core.md`
+(`Scope: suite`) — **a numbered `embarch-umbrella` decision on where the probe-vendor fact belongs is
+owed** and not authored here per the burndown constraint. `spec.md`'s correction fit in the 456 B
+of reserve left (used 278 B, file now 10062/10240 B); `open.md`'s fit in its 490 B (used 240 B, file
+now 4870/5120 B). Neither file needed the `038` compaction pass.
 
 **If the fix turns out to need `embarch-topology` or `embarch-core`,** that crosses a repo
 boundary and belongs back in `inbox/` as `Scope: suite` rather than being reached for.
