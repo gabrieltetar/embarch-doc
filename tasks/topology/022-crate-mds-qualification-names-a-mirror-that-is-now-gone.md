@@ -37,14 +37,19 @@ know whether the file moved, was renamed, or the claim was wrong.
 
 ## Done when
 
-- [ ] `embarch-topology/decisions/crate.md`'s qualification no longer describes
+- [x] `embarch-topology/decisions/crate.md`'s qualification no longer describes
       `embarch-umbrella/src/token.rs` as live; it names it as the second mirror **since closed**,
       with the date and the unit, and keeps the argument intact.
-- [ ] The qualification still makes its point without a live example — the claim is about what
+- [x] The qualification still makes its point without a live example — the claim is about what
       cannot be detected, not about a count of open mirrors.
-- [ ] `embarch-topology/open.md`'s detection bullet is re-read and either left alone or narrowed
-      to match; it is expected to be left alone.
-- [ ] Gate green; `changelog.d/` fragment only if a reader-visible fact changed.
+- [x] `embarch-topology/open.md`'s detection bullet is re-read and either left alone or narrowed
+      to match; it is expected to be left alone. (Confirmed: it already reads in past tense —
+      "were both found by reading a call site" — and needed no change. A different bullet, a few
+      lines down, still calls the token+config mirrors of `embarch-api`-internal logic
+      "untouched" as a pair; that pairing is explicitly out of this task's scope per the
+      "Do not... sweep for other mirrors" note, so it was left alone too — flagged in the report.)
+- [x] Gate green; `changelog.d/` fragment only if a reader-visible fact changed. (It did; fragment
+      added.)
 
 **Do not** re-open the question `topology/020` settled, and do not turn this into a sweep for
 other mirrors — `umbrella/036`'s own state note already names the config mirrors (`CoreConfig`,
