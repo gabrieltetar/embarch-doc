@@ -1,6 +1,6 @@
 # Give `.eap` source and session errors their own source line
 
-**State:** open
+**State:** claimed by agent/study-designer/010-eap-error-lines, 2026-09-08 22:07
 **Source:** owner's repo survey, 2026-09-06 — `interfaces/eap.md` states line-accurate errors as a property; it is untrue for a whole class
 **Scope:** study-designer
 **Hardware:** none
@@ -36,3 +36,38 @@ untrue for every error an author is most likely to hit.
       `cargo test --no-default-features --features eap-parse`.
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Supervisor's dispatch note, leg 053 (2026-09-08, burndown)
+
+**This leg runs in burndown mode, which adds one constraint to your unit: do not author a new
+numbered decision.** Implement, document and fix freely; if you conclude this change genuinely
+needs a new numbered decision in `embarch-study-designer/decisions/`, **stop and say so in your
+report** instead, and leave the task file with a state line explaining what the decision would say.
+Amending or correcting an *existing* decision is fine and is not this rule. Note that this task is
+squarely a *repair of a property decision 58 and `interfaces/eap.md` already claim*, so it should
+need no new decision at all — if it seems to, that is the signal to stop and report.
+
+**The third Done-when item is the one with a judgement in it.** `line0`'s remaining uses (the
+protocol name at `:1430` and `validate_protocol` at `:1439`) may legitimately be protocol-wide
+rather than a bug; if you conclude they are, say so in `interfaces/eap.md` in one sentence rather
+than inventing a line for them. What must not survive is a source or session-variable error still
+reported at the first state's line.
+
+**Doc-size reserve for `study-designer` — every one of these is inside the last 10% of its cap:**
+
+| file | size/cap | headroom | filed against |
+|---|---|---|---|
+| `embarch-study-designer/decisions/registry.md` | 11827/12288 | 461 B | `tasks/study-designer/019-compact-study-designer.md` (open) |
+| `embarch-study-designer/open.md` | 4662/5120 | 458 B | `tasks/study-designer/006-compact-study-designer.md` (blocked, `In flux: yes`) |
+| `embarch-study-designer/spec.md` | 9136/10240 | 1104 B | `tasks/study-designer/006-compact-study-designer.md` (blocked) |
+
+Plan around this rather than discovering it. Two rules follow:
+
+1. **If your work spends the reserve** — pushes a file into it, or leaves one there that nothing has
+   filed — file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit, per
+   `tasks/README.md`. Use `python3 scripts/check-task-numbers.py --next study-designer` for the
+   number; do not read the directory.
+2. **`study-designer/006` is blocked on `In flux: yes`, which parks the pass and not the reserve.**
+   If an edit of yours would push `open.md` or `spec.md` *past* its cap, you compact that file as
+   part of this unit — read that task's `Must not delete:` list first and carry it verbatim,
+   closing only that file's item. Otherwise aim net-neutral.
