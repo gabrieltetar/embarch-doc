@@ -21,6 +21,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- An unrecognised `EMBARCH_FLASH_BACKEND` now names the four valid backends instead of telling you to install a nonexistent tool.
 - `embarch-core --version` no longer prints a log warning ahead of the version line on stdout; the diagnostic now actually lands on stderr.
 - Core refuses probe-rs for an nRF54H chip name instead of silently permitting it (decision 49).
 - `interfaces.md`/`spec.md` now list all 27 routes and 11 CLI subcommands; a pinned count in `api.rs` catches future drift.
