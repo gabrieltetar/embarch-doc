@@ -1,6 +1,18 @@
 # 015 — Two override flags let an operator undo a refusal that a numbered decision states unconditionally, and neither override is recorded anywhere
 
-**State:** open
+**State:** claimed — leg 061, worker on `agent/outpost/015-override-flag-decision`
+
+**Dispatch note (supervisor, leg 061):** normal leg, not burndown — authoring the numbered
+decision is in scope and is the point. **Doc-size reserve for `outpost`:**
+`embarch-outpost/spec.md` 9,791/10,240 B (449 B left) filed against
+`tasks/outpost/014-compact-outpost.md`, and `embarch-outpost/decisions/tracing.md`
+7,408/8,192 B filed against `tasks/outpost/008`. Neither is blocked. `decisions/clocks.md` and
+`decisions/manifest.md` — the two files this task is actually about — are **not** in reserve, so
+write there. If you amend `spec.md:60`, keep it at or below its current length; if you spend
+reserve, file `tasks/outpost/<NNN>-compact-outpost.md` in the same commit.
+
+**Do not build or run the Zephyr `tests/unit` suite** and do not claim it green — no leg can, this
+environment has no `west` and no `ZEPHYR_BASE`. That is a standing debt, not your unit's failure.
 **Source:** `embarch-reviewer` on unit `outpost/005` (code `81cbba2`, doc `dab753a`), filed from `inbox/outpost-decision-18-escape-hatch-gap.md` by the supervisor, leg 058
 **Scope:** outpost
 **Hardware:** none
