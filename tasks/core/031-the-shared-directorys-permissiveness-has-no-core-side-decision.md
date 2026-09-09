@@ -1,6 +1,16 @@
 # The shared directory's permissiveness is load-bearing for embarch-topology and no embarch-core decision records it
 
-**State:** open
+**State:** claimed — leg 061, worker on `agent/core/031-shared-dir-decision`
+
+**Dispatch note (supervisor, leg 061):** this is a normal leg, not burndown, so authoring the
+numbered decision is in scope — that is the whole task. Write it in `embarch-core/decisions.md`
+(or the `decisions/` topic file whose subject it actually belongs to), which is **not** in reserve.
+**Doc-size reserve for `core`:** `embarch-core/open.md` 4,813/5,120 B (307 B left) filed against
+`tasks/core/022-compact-core.md`, and `embarch-core/spec.md` 9,148/10,240 B filed against
+`tasks/core/030-compact-core-spec.md` — both already filed, neither blocked. If your edit pushes a
+file further into reserve or leaves one there unfiled, file `tasks/core/<NNN>-compact-core.md` in
+the same commit. Prefer replacing `open.md` prose with a citation to the new decision over adding
+to it; that is a net saving and it is what the task asks for.
 **Source:** `embarch-fleet/supervisor-log.md`, unit `core/023` (doc `2d070a8`, fold `e5fa115`), leg 059 — an owed decision the burndown constraint forbade that unit from authoring
 **Scope:** core
 **Hardware:** none
