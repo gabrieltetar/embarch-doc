@@ -1,6 +1,6 @@
 # 041 — `serial_log` — the workflow the user guide sells as the payoff — cannot be completed from a freshly `init`ed project, and `interfaces/tools.md` documents a fallback that does not exist
 
-**State:** claimed — leg 060, 2026-09-09, `agent/api/041-serial-port-discovery`
+**State:** done — leg 060, 2026-09-09, `agent/api/041-serial-port-discovery`
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer). Code-confirmed.
 **Scope:** api
 **Hardware:** none. The `GET /serial-ports` route and the `list_serial_ports` client wrapper both already exist and are tested.
@@ -52,11 +52,51 @@ does the same job for a different endpoint and would not add this one.
 
 ## Done when
 
-- [ ] A caller with no `serial_port` configured can discover a valid value from a binary
+- [x] A caller with no `serial_port` configured can discover a valid value from a binary
       `embarch setup` installs, or gets an error that names where to look.
-- [ ] `embarch-api/interfaces/tools.md:28` describes real behaviour.
-- [ ] `serial_log`'s MCP description says whose machine the port name belongs to.
-- [ ] Gate green; `changelog.d/api-*` fragment.
+      Done narrowly per leg 060's dispatch note: `list_serial_ports`
+      (MCP)/`list-serial-ports` (CLI) surface `GET /serial-ports` on both
+      front ends. `embarch init` itself still writes no `serial_port` field —
+      that is `embarch-umbrella`, out of scope here, and recorded in `open.md`.
+- [x] `embarch-api/interfaces/tools.md:28` describes real behaviour.
+      Corrected: no `GET /dev-bench/port` fallback exists in this crate; the
+      row now says so and points at `list_serial_ports`.
+- [x] `serial_log`'s MCP description says whose machine the port name belongs to.
+- [x] Gate green; `changelog.d/api-*` fragment.
+
+## Done (leg 060)
+
+Surfaced `GET /serial-ports`/`list_serial_ports` as a new no-param
+`list_serial_ports` MCP tool and `list-serial-ports` CLI subcommand
+(`embarch-api/src/tools.rs`, `src/main.rs`, `src/cli.rs`), extended
+`tests/json_surface.rs`'s `EVERY_SUBCOMMAND` and the subcommand-count
+tripwire in `src/cli.rs`. Corrected `interfaces/tools.md`'s `serial_log` row
+(no `GET /dev-bench/port` fallback exists) and added a `list_serial_ports`
+row. Reworded `serial_log`'s own MCP/CLI descriptions to say the port is
+opened on **Core's own machine**, and to point at Core's own `/serial-log`
+docs for the `duration_ms` cap rather than naming a number (that number
+belongs to `tasks/core/009`, running concurrently, not to this unit).
+
+**Not done, and explicitly out of scope**: `embarch init` writing a
+`serial_port` field (`embarch-umbrella`). Core's error text and its
+`duration_ms` cap (`tasks/core/009`). Both are `embarch-doc/embarch-core/`'s
+or `embarch-umbrella`'s, not touched here.
+
+**No new numbered decision** (burndown constraint) — recorded as owed in
+`embarch-api/open.md` under "Owed decisions", with what it would say and
+where it belongs once `decisions/tool-wrapping.md` clears its reserve line
+(`tasks/api/047`, blocked). `interfaces/tools.md` itself crossed the reserve
+line as part of this edit; filed `tasks/api/053-compact-api.md` for it
+(`In flux: yes`).
+
+**Gate, run in the two worktrees**: `cargo build`, `cargo test`,
+`cargo clippy --all-targets -- -D warnings` all green in
+`embarch-api` (`/home/gabriel/Github/embarch/.worktrees/embarch-api/041-serial-port-discovery`).
+`scripts/check-docs.py` (10/10), `check-doc-size.py`, `build_features.py
+--check`, `check-ownership.py --scope api` (5 changed paths, all owned),
+`check-ownership.py --code-repo` (4 changed paths, whole tree owned), and
+`check-client-names.py --repo <code worktree>` all green in `embarch-doc`.
+No hardware touched.
 
 **Not in scope here:** `tasks/core/009` bounds `/serial-log`'s `duration_ms` and its `hw_lock`
 hold. That is a different defect on the same route.

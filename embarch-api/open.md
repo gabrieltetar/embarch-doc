@@ -16,6 +16,23 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's to fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred; Core emits codes, the shared client carries one typed, this crate passes it on. **Do not derive a kind from the HTTP status.**
 - **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads — a different repo's fix. **Deliberately no by-name load refusal for it** (unlike `[[projects.targets]]`/`soc_chip_overrides`): every umbrella-scaffolded config still carries it, so refusing it by name would break real machines this task never saw. It just loads, silently unread.
 
+## Owed decisions
+
+- **`list_serial_ports`/`list-serial-ports` (task `041`) shipped with no numbered
+  decision**, under the burndown rule of no new numbered decisions this leg.
+  What it would record if written: surfacing `GET /serial-ports` as a bare
+  no-param tool/subcommand pair mirroring `status`'s shape, why `serial_log`
+  gets no automatic fallback onto it (a caller must read the list and choose,
+  since a machine can enumerate several ports and only a human or the caller's
+  own knowledge says which one is the DUT's console), and the correction to
+  `interfaces/tools.md:28`'s claim of a `GET /dev-bench/port` fallback that
+  never existed in this crate. File as a `decisions/tool-wrapping.md` entry
+  once it is out of reserve (`tasks/api/047`) — or, if a split lands first, in
+  whichever successor file gets the tool-wrapping mission. Still open, also
+  not this crate's to fix: `embarch init` never writes `serial_port` at all
+  (`embarch-umbrella`), so the newcomer path this task partially closes still
+  starts from an unconfigured project either way.
+
 ## Structural limits
 
 - **Nothing can read a firmware version off a DUT** — a declared version describes the tree built, weaker than a measurement.
