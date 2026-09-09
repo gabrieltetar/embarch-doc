@@ -1,8 +1,8 @@
 {
-  "framework_sha": "3186a536e373ca6269191e008d4c7c3778a0b3be",
+  "framework_sha": "5c65d3ef9f166a54ec834d19227ee7e309112273",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-09T19:45:22Z",
+  "installed_at": "2026-09-09T20:19:31Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "16c1e5616dc9fbe592581dc251303dfe10aba6a03a4d8b2527a6e8ea746dde0b",
@@ -21,7 +21,7 @@
     "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
     "inbox/README.md": "b254cc8bce6c11ce38670d03fd69da6bcd08225d0311771eb1e20dbbf3d6553c",
     "status.d/README.md": "e4b55984fe66147934de476d73c613c68439de82f11678cc4938f1c44a46cc3f",
-    "tasks/README.md": "cd007024cbc2843ed9cef5ea6692edfe6f3ee8344d8024ff909b4392fbb11535",
+    "tasks/README.md": "5c99a4482ace86424a7066e691f3464ef6755404e9f118faaa4855163e94d298",
     "scripts/check-ownership.py": "8cd3cae2d38119f103aab77d8694f04b72fdb5c7234a8baa60c23324f002ef9d",
     "scripts/queue-status.py": "42534c6b295eecbd580d37b75f7634068e11ba41a6a6ca5f22769bcb9ea234a8",
     "scripts/usage-budget.py": "6cb9786103b2d9a2efcbbcfe7abbe14077229401c3aabc460430c4cbfa5bd1e2",
