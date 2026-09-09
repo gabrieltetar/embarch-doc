@@ -46,13 +46,19 @@ hand, and it does not implement it.
 
 ## Done when
 
-- [ ] A stream plus an arrival CSV whose `frame_bytes` disagrees at any index produces empty
+- [x] A stream plus an arrival CSV whose `frame_bytes` disagrees at any index produces empty
       `rx_utc_ms` throughout, and a stderr message naming the index.
-- [ ] A matching CSV stamps exactly as it does today; `tests/cross_decoder.py` still reports PASS on
-      the committed fixtures.
-- [ ] A missing or short `frame_bytes` column degrades to today's behaviour rather than refusing,
+- [x] A matching CSV stamps exactly as it does today; `tests/cross_decoder.py` still reports PASS on
+      the committed fixtures. (Verified manually against the sibling repos' committed fixtures,
+      which are not present in this worktree layout — see report; `tests/cross_decoder.py` itself
+      SKIPs loudly here, as designed, and its own logic is unchanged.)
+- [x] A missing or short `frame_bytes` column degrades to today's behaviour rather than refusing,
       and says so.
-- [ ] Host-side tests cover match, mismatch, and absent-column.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] Host-side tests cover match, mismatch, and absent-column.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. (No new numbered decision authored, per this
+      leg's burndown constraint; `decisions.md` itself needed no edit — decision 18 already covers
+      this design and is cited from `spec.md`. No suite-level doc was made false, so no `status.d/`
+      fragment. `embarch-outpost/spec.md` crossed into doc-size reserve from this edit; filed as
+      `tasks/outpost/014-compact-outpost.md`.)
