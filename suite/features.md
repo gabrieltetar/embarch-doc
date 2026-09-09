@@ -114,7 +114,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Manifest generation from the linked ELF — ISR and thread names, including a shared-trampoline handler and DWARF-typed kernel objects | Shipped — 20 of 20 threads and 13 real ISRs on a real image | local | 7, 8 |
 | Batch-fill framing — took the link's duty cycle from 99% to 37% | Shipped | hw | 20 |
 | Every Kconfig wire constant | **Unmeasured defaults**, and the instrumentation's own overhead is deliberately uncharacterised | n/a | §5 |
-| `scripts/decode_outpost.py` — the reference host decoder: CSV/JSON, manifest name resolution, build-ID refusal | Shipped — COBS, the bad-CRC/`frame_index` accounting, wrap-vs-gap and the three-decimal `us` are now pinned by a host test needing **no west, no `ZEPHYR_BASE` and no siblings**; the decoder-against-decoder diff beside it still skips without both sibling repos | unit, local | 4, 9, 17 |
+| `scripts/decode_outpost.py` — the reference host decoder: CSV/JSON, manifest name resolution, build-ID refusal, arrival-join verification | Shipped — COBS, bad-CRC/`frame_index` accounting, wrap-vs-gap and three-decimal `us` are pinned by a host test needing **no west, no `ZEPHYR_BASE`, no siblings**; `rx_utc_ms` now checks `frame_bytes` against each frame's actual length and empties on a divergence (`--allow-unverified-join` overrides); the cross-decoder diff still skips without both siblings | unit, local | 4, 9, 17, 18 |
 
 ## embarch-topology
 
