@@ -1,6 +1,14 @@
 # 021 — Two `decisions.md` files record a per-push CI that has never existed, in the two sub-projects the merge gate cannot reach either
 
-**State:** open
+**State:** open — **announced and parked, window running.**
+**Announced:** 2026-09-08, leg 051, `#embarch-fleet` ts `1788917508.792199`
+(posted 19:31 MDT). Per `embarch-fleet/ops.md` §4 this runs as a leg's **last**
+unit, and only if no objection has arrived and **30 minutes** have passed since
+that timestamp. **If leg 051 ends before the window closes, do not restart the
+clock** — poll `slack_read_thread` on that `ts` and execute against the original
+announcement. Intended direction as announced: retire both CI claims and state in
+one place what actually checks each sub-project; do **not** build the missing
+`native_sim` job.
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed by `find .github` and `git log --all` across all eight repos.
 **Scope:** suite
 **Hardware:** none
