@@ -1,6 +1,6 @@
 # 018 — `design.md §3 decision N` citations remain in 22 other `src/` files
 
-**State:** claimed by agent/study-designer/018-design-md-citations-sweep, 2026-09-09 00:15
+**State:** done, 2026-09-09
 **Source:** `tasks/study-designer/017`, while fixing `src/schema_version.rs` — that task's Done-when
 bullet 3 required a repo-wide `grep -rn 'design.md' src/` and reporting what is left.
 **Scope:** study-designer
@@ -73,13 +73,13 @@ since they share many of the same decision numbers) rather than one giant diff.
 
 ## Done when
 
-- [ ] Every `design.md` occurrence in `src/*.rs` (outside `schema_version.rs`, already done) is
+- [x] Every `design.md` occurrence in `src/*.rs` (outside `schema_version.rs`, already done) is
       either a bare `decision N` / `<repo> decision N` citation, or — where it names a section
       number with no decision attached — resolved without inventing a new unverifiable pointer.
-- [ ] Every decision number verified to resolve against the named sub-project's current
+- [x] Every decision number verified to resolve against the named sub-project's current
       `decisions.md` index; the task says which ones were checked and how.
-- [ ] `grep -rn 'design\.md' src/` reports nothing left.
-- [ ] **The bare `§N.M` section references are swept too**, and `grep -rn '§' src/` says what is
+- [x] `grep -rn 'design\.md' src/` reports nothing left.
+- [x] **The bare `§N.M` section references are swept too**, and `grep -rn '§' src/` says what is
       left. Added by the supervisor at the fold of `study-designer/017`: that unit's Done-when named
       only `§3`, so it left `§4.3a`, `§4.3b` and `§4.8` standing in `schema_version.rs` — three
       section numbers of the *same* deleted `design.md`, now with no file name in front of them to
@@ -87,6 +87,67 @@ since they share many of the same decision numbers) rather than one giant diff.
       reads like a section of the file you are in. Whoever runs this sweep must decide, per
       occurrence, which of `spec.md` / `decisions/<mission>.md` now holds that content and cite it —
       or drop the pointer, as `017` did for the one `§5.1`. That is judgement, not a `sed`.
-- [ ] `cargo doc --no-deps --all-features` (after `cargo clean -p embarch-study-designer`) still 0
+- [x] `cargo doc --no-deps --all-features` (after `cargo clean -p embarch-study-designer`) still 0
       warnings.
-- [ ] Gate green; `changelog.d/study-designer-*` fragment.
+- [x] Gate green; `changelog.d/study-designer-*` fragment.
+
+## Closed 2026-09-09
+
+Swept all 290 occurrences across the 23 files named at filing, plus `schema_version.rs`'s
+leftover `§4.3a`/`§4.3b`/`§4.8` (unit 017's own residue), plus the same defect found (while
+sweeping) in three more places not counted at filing: `Cargo.toml`'s doc comments (~15
+occurrences), `tests/eap_worked_protocols.rs`, `tests/firmware_test_vectors.rs`,
+`tests/fixtures/*.eap`, `tools/extract_gatt_config.rs`, this crate's own `README.md`, and one
+bare `§7` in `.github/workflows/test.yml`. `grep -rn 'design\.md\|§' .` (excluding `target/`)
+now reports nothing in this repo outside three lines that legitimately cite `spec.md`'s own
+live numbered sections (`§1`, `§3`, `§7` — used where old `design.md §4.x`/`§7` prose mapped
+cleanly onto that file's current `## N.` headings) and `CLAUDE.md`'s references into
+`embarch-doc`'s still-current `DOC-PROTOCOL.md`/`embarch-dev-workflow.md` sections, which were
+never stale.
+
+**Two sub-flavors handled, both file by file, no `sed` over judgement calls:**
+- `design.md §3 decision N` / `<repo>/design.md §3 decision N` → bare `decision N` (own repo) or
+  `<repo> decision N` (another's), per `DOC-CONVENTIONS.md`. Also handled a bare `§3 decision N`
+  form (no `design.md`/repo prefix at all) found alongside the counted occurrences, on the same
+  rule.
+- Bare `design.md §N.N` (a *section*, no decision attached) → resolved per occurrence against
+  what now holds that content: `interfaces/types.md` (Study/Step/Action), `interfaces/gatt-types.md`
+  (GATT discovery + transcript types, old §4.3a/§4.3b), `interfaces/taps.md` (stream taps, old
+  §4.8), `interfaces/decoders.md` (Sample + struct payload layouts, old §4.7/§4.8a/§5.2),
+  `interfaces/eap.md` (`.eap` protocol manifests, old §4.9), `spec.md §1`/`§3`/`§7` where the
+  prose matched that file's own current section, `open.md` where it named an actual open
+  question, or dropped outright (no replacement invented) where nothing current says the same
+  thing — e.g. `ffi.rs`'s stale "BleConnect/DataExchange dispatch deferred" pointer, and several
+  `milestone-9.md`/`milestone-11.md`/`embarch-ui/milestone-1.md` references (those files no
+  longer exist at all — same treatment as a dead `design.md` section).
+
+**Decision numbers verified by**: for each sub-project a referenced decision named
+(`embarch-study-designer`, `embarch-dev-bench`, `embarch-core`, `embarch-outpost`,
+`embarch-topology`, `embarch-api`, `embarch-ui`), built the full set of decision numbers that
+sub-project's `decisions.md` + `decisions/*.md` headings (`### N — ...`, including comma-joined
+headings like `### 4, 10 —`) actually declare, then checked every number cited from this crate
+against that set. All resolved — own-repo `embarch-study-designer` numbers used span 2-70,
+all present (contiguous 1-70 range); `embarch-dev-bench` 7/8/9/10/11/18/21/27/39 all present
+(range has gaps but every cited number is one of the present ones); `embarch-core` 30/31/35;
+`embarch-outpost` 4/9/10/11/12; `embarch-topology` 3/18; `embarch-api` 26/36/40; `embarch-ui`
+11/15 — all present. None needed reporting as unresolved.
+
+**No new decision authored** (this leg runs in burndown mode, per this task's dispatch note). None
+of the section-citation fixes needed one — `DOC-CONVENTIONS.md`'s decision-reference rule and
+unit 017's precedent covered every case.
+
+**Found but out of this task's scope, left as-is:** this crate's own `README.md` describes a
+`core-validation` feature and `signal`/`validation` modules that no longer exist in `Cargo.toml`
+or `src/` at all (removed by decision 48, and `gatt-extract`/`study-ui`/`eap-parse` never added
+to the README's Features list) — a real staleness problem, but a content rewrite, not a
+citation-format fix, and out of scope for this unit. Filed as
+`tasks/study-designer/024-readme-describes-a-feature-set-that-no-longer-exists.md`.
+
+**Gate:** `cargo build`/`cargo test --all-features`/`cargo clippy --all-targets --all-features -- -D warnings`
+all clean; `cargo build` also verified individually for `--no-default-features`, `--features
+gatt-extract`, `--features study-ui`, `--features eap-parse`, `--features ffi` (the CI feature
+matrix, decision 64). `cargo doc --no-deps --all-features` after `cargo clean -p
+embarch-study-designer`: 0 warnings. `embarch-doc`'s `scripts/check-docs.py`,
+`scripts/check-client-names.py --repo`, and `scripts/check-ownership.py` all green (see commit
+for exact output). `spec.md`/`decisions.md`/`open.md` untouched — this unit never made a
+statement in them false.
