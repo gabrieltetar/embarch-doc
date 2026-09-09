@@ -1,6 +1,6 @@
 # Stop labelling pre-header records with a manifest the decoder then refuses
 
-**State:** claimed — leg 060, 2026-09-09, `agent/outpost/003-two-pass-decode`
+**State:** done — leg 060, 2026-09-09, `agent/outpost/003-two-pass-decode`
 **Source:** owner's repo survey, 2026-09-06 — `embarch-outpost/spec.md:60`'s "a mismatched manifest refuses to render the names" leaks in the case the repeating header exists for
 **Scope:** outpost
 **Hardware:** none
@@ -29,15 +29,32 @@ case where this leaks.
 
 ## Done when
 
-- [ ] Decoding a stream whose first bytes are a records frame, against a mismatched manifest, yields
+- [x] Decoding a stream whose first bytes are a records frame, against a mismatched manifest, yields
       no non-empty `name` in any row.
-- [ ] `us` is populated for pre-header rows once a header is seen anywhere in the stream, or is
-      empty for the whole trace consistently — say which, in `decisions.md`.
-- [ ] A host-side test feeds a synthesized records-frame-then-header stream and asserts both.
-- [ ] `tests/native_sim_stream/assert_stream.py` still passes unchanged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] `us` is populated for pre-header rows once a header is seen anywhere in the stream, or is
+      empty for the whole trace consistently — say which, in `decisions.md`. **Answer: populated**,
+      recorded as prose in `spec.md` (not a new numbered decision — burndown; see report). Two-pass
+      decode gives pre-header rows the header's `cycles_per_sec` before any row renders.
+- [x] A host-side test feeds a synthesized records-frame-then-header stream and asserts both.
+      `TestPreHeaderRowsUnderARefusedManifest` in `tests/decoder_unit.py` — confirmed to actually run
+      (verified by name in `-v` output), not skip. Also added a matching-manifest control case.
+- [ ] `tests/native_sim_stream/assert_stream.py` still passes unchanged. **Not run**: needs
+      `west`/`ZEPHYR_BASE`, unbuildable in this worktree per the task's own note. `render()` itself
+      (which that test exercises) is untouched by this fix — only `main()`'s dispatch loop changed —
+      so the risk to that test is low, but this is not verified execution.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `tests/decoder_unit.py` (31/31 pass, incl.
+      the 2 new), `tests/vocab_check.py` (PASS, partial-skip is pre-existing/expected — sibling repo
+      not checked out), `tests/cross_decoder.py` (SKIP, silently, as this fleet's standing debt says
+      it always does here — sibling fixtures absent). `scripts/check-docs.py`: 10/10 green.
+      `check-ownership.py --scope outpost` and `--code-repo`: both OK. `check-client-names.py`: clean.
+      No cargo crate in this repo.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. `spec.md`'s manifest-refusal bullet extended
+      (within the 725 B headroom, not exceeded — 449 B left after). No `decisions.md`/`open.md` edit:
+      no new numbered decision per the burndown note, and `decisions/manifest.md` decision 9 is
+      **pinned** (`check-doc-size.py` rejects any growth on a pinned decision) so prose was kept out
+      of it after a first attempt tripped that check. Nothing suite-level went false; no `status.d/`
+      fragment.
 
 ## Supervisor's dispatch note, leg 060 (burndown)
 
