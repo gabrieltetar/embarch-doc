@@ -1,6 +1,6 @@
 # Close the shell-wrapper bypass in `reject_tree_mutating_command`
 
-**State:** claimed by agent/api/033-shell-wrapper-git-guard, 2026-09-09 00:17
+**State:** done by agent/api/033-shell-wrapper-git-guard, 2026-09-09
 **Source:** owner's repo survey, 2026-09-06 — `embarch-api/spec.md` §2 asserts coverage this guard does not have
 **Scope:** api
 **Hardware:** none
@@ -62,13 +62,43 @@ is what makes the exemption unsafe rather than academic.
 
 ## Done when
 
-- [ ] `reject_tree_mutating_command` refuses `["bash","-lc","git checkout main && git describe"]`,
+- [x] `reject_tree_mutating_command` refuses `["bash","-lc","git checkout main && git describe"]`,
       `["sh","-c","git reset --hard"]` and `["/usr/bin/env","git","stash"]`, each naming the
       offending subcommand.
-- [ ] `["bash","-lc","git describe --always --dirty"]` and `["cat","VERSION"]` still pass.
-- [ ] `a_non_git_program_is_not_second_guessed` is **rewritten, not deleted**, to state the
+- [x] `["bash","-lc","git describe --always --dirty"]` and `["cat","VERSION"]` still pass.
+- [x] `a_non_git_program_is_not_second_guessed` is **rewritten, not deleted**, to state the
       narrowed rule, and the module doc names what the guard still cannot see.
-- [ ] `src/reflash.rs`'s `the_reflash_path_never_moves_the_tree` covers at least one wrapper case.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `src/reflash.rs`'s `the_reflash_path_never_moves_the_tree` covers at least one wrapper case.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Closing note (leg 058)
+
+Fixed by adding `SHELL_OR_EXEC_WRAPPER_PROGRAMS` (`sh`, `bash`, `zsh`, `dash`, `env`, `cmd`,
+`powershell`, `pwsh`) to `reject_tree_mutating_command` in
+`crates/embarch-core-client/src/version.rs`: when the program is one of those, its remaining argv
+is flattened (splitting any argument that itself contains whitespace, so a `-c`/`-lc` script
+string is scanned word by word) and checked for a `git` token alongside a mutating subcommand
+token, refusing with the same message an operator already got for a bare `git` invocation. Module
+doc comment and one test rewritten to name the narrowed rule honestly (an opaque
+`./scripts/version.sh` is still out of reach — this rule reads argv, not a script's contents); two
+new tests added for the wrapper-refusal and wrapper-still-passes-on-a-read cases.
+`src/reflash.rs`'s `the_reflash_path_never_moves_the_tree` gained a `bash -lc` case.
+
+Docs: `spec.md` §2's over-claim replaced with the honest "never knowingly runs a tree-mutating
+`git` subcommand" wording (net +75 B, well inside its 890 B headroom). `decisions/studies.md`
+decision 40 — which explicitly mirrors that spec.md sentence and says so — updated the same way,
+plus a clause on the wrapper coverage and the opaque-script limit (it had ample headroom, not one
+of the five near-cap files, so no separate filing needed). Per the dispatch note, `open.md`,
+`decisions/tool-wrapping.md`, `decisions/core-link.md` and `decisions/build.md` were **not**
+touched — nothing in this unit made an `open.md` statement false. No new numbered decision was
+needed or written: this implements the coverage decision 40 / `spec.md` §2 already claimed.
+`changelog.d/api-shell-wrapper-git-guard.fixed.md` dropped. No suite-level (`status.d/`) fact was
+made false — the over-claim was scoped to this crate's own docs.
+
+Gate: `cargo build`, `cargo test` (all green, including the new tests) and
+`cargo clippy --all-targets -- -D warnings` (clean) in the code worktree; `scripts/check-docs.py`
+(10/10 green), `scripts/check-client-names.py --repo <code worktree>` (clean against 7 denylist
+entries) and `scripts/check-ownership.py --scope api` / `--code-repo` (both OK) in the doc
+worktree.
