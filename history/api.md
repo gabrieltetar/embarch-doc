@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `list_serial_ports`/`list-serial-ports` surface Core's `GET /serial-ports` so a caller can discover a `serial_log` port value.
 - `dev_bench_hello` MCP tool exposes `GET /dev-bench/hello`'s identity cross-check (`link_identity`) — see decisions/tool-wrapping.md 59.
 - Every `zephyr-west` build directory now gets a `target.json` recording the resolved selection ([decisions](../embarch-api/decisions/build.md) 19).
 - An oversized study is now refused naming every field over a bound and the bound itself, not `serde`'s raw error — [decision 27](../embarch-api/decisions/studies.md).
