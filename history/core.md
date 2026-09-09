@@ -36,5 +36,6 @@
 - `/study/{id}/events` docs now list `GattTranscript` and note it has no `Last-Event-ID`/replay.
 
 ### Decided
+- Decision 53: `%ProgramData%\embarch`'s default ACL stays untightened — deliberate, for `embarch-topology`.
 - A study's public `current_step` is the index of the last step that *finished* — stated in [interfaces.md](../embarch-core/interfaces.md), decision 43.
 - The `{code, message, cause}` error body is deferred as cross-repo work with a named trigger, not left as pending (decision 12).
