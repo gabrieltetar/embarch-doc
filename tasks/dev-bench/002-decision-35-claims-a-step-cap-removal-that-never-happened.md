@@ -1,9 +1,13 @@
 # Reconcile decision 35 with a step cap that was never removed
 
-**State:** open
+**State:** claimed by agent/dev-bench/002-decision-35-step-cap, 2026-09-08 22:34
 **Source:** owner's repo survey, 2026-09-06 — a decision asserting an SRAM refactor that is not in the tree
 **Scope:** dev-bench
 **Hardware:** none
+**Reserve (leg 055, 2026-09-08):** `embarch-dev-bench/open.md` 4782/5120 B (338 B
+left) and `spec.md` 9460/10240 (780 B) are both inside their reserve, with
+`tasks/dev-bench/012-compact-dev-bench.md` already filed against them — so record
+nothing new, plan to fit, and say so in the task file if you could not.
 **Owner:** no
 
 ## What
