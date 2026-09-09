@@ -30,6 +30,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- `tools.md`'s Dev bench table now lists `reset_dev_bench`; a new test derives tool/subcommand lists from source and checks they match.
 - Build log capture no longer stops silently at a non-UTF-8 byte; the rest of the log survives and a lossy line is marked.
 - `dev-bench-hello --json`'s `schema_version` key no longer collides with the envelope stamp; renamed `dev_bench_schema_version`.
 - `token_discovery`'s WSL2 check now delegates to `embarch_topology::detect_wsl2` instead of its own narrower rule ([decisions](../embarch-api/decisions/core-link.md) 62).

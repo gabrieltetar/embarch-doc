@@ -12,8 +12,22 @@ amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-dev-bench/decisions/ble.md, embarch-dev-bench/spec.md, embarch-dev-bench/open.md
+**Compacts:** embarch-dev-bench/spec.md, embarch-dev-bench/open.md
 **Size debt due:** 2026-09-22
+
+**`decisions/ble.md` was struck off this line by leg 057 on 2026-09-09, and it is paid.** It is
+**7,902 B against a 12,288 B cap (64.3%)**, well clear of reserve — the split leg 050 ran did the
+work. `check-doc-size.py --pressure` had been printing `PAID … close its item` for it and nothing
+was closing it. **It was removed from the `Compacts:` line rather than annotated in place**, because
+that line is parsed: leg 057's first attempt struck it through with `~~…~~` and prose, and
+`check-doc-size.py` then failed the whole gate reporting `spec.md` and `open.md` as *in reserve with
+no debt filed* — the parser had stopped recognising the line at all. The `Compacts:` line is data.
+
+**The two items that remain** are `spec.md` at 9,460/10,240 B (92.4%) and `open.md` at 4,782/5,120 B
+(93.4%). Both were added by the 2026-09-07 reserve-floor change, and **neither is covered by the
+`In flux: yes` block below, which describes `decisions/ble.md`** — the file that is now paid. Read
+that park against `DOC-BUDGET.md`'s split-first rule before assuming it blocks these two; a verbatim
+split restates nothing, so `In flux` cannot forbid one.
 **In flux:** yes — this file has taken two live corrections recently: decision 31 (16-bit UUIDs
 reported two bytes out of place) and decision 23's amendment landed by this same commit. BLE is an
 active area of the dev-bench firmware; do not compact ahead of the next correction landing, and
