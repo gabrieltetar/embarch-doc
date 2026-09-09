@@ -1,6 +1,7 @@
 # 036 — `embarch-umbrella` mirrors three things from `embarch-api`; the shared crate now holds two of them, the third has drifted three ways, and check 6 is named after a loader it does not call
 
-**State:** claimed
+**State:** partially done — mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 still open, see
+state note below
 **Narrowed 2026-09-08 (leg 051):** dispatched as **mirror 1 only** — the token
 chain — plus the two doc items that ride on it (`Done when` bullets 1, 3, 4, 5).
 Mirrors 2 and 3 (`CoreConfig`'s lost fields, `ProjectConfig`'s three-way drift,
@@ -77,15 +78,57 @@ a sentence that is no longer true. `embarch-umbrella/open.md` still frames the c
 
 ## Done when
 
-- [ ] There is one reader of the token fallback chain in the suite, not two — or the reason
+- [x] There is one reader of the token fallback chain in the suite, not two — or the reason
       umbrella must keep its own is written down against the crate that now exists.
 - [ ] `doctor` check 6's verdict comes from the loader its title names, or its title stops
       claiming that.
-- [ ] No mirror header in `embarch-umbrella/src/` cites a path that does not exist.
-- [ ] `decisions/mirrors.md` decision 20 and `open.md`'s bullet reflect that the shared crate now
+- [x] No mirror header in `embarch-umbrella/src/` cites a path that does not exist.
+- [x] `decisions/mirrors.md` decision 20 and `open.md`'s bullet reflect that the shared crate now
       exists.
-- [ ] Gate green; `changelog.d/umbrella-*` fragment.
+- [x] Gate green; `changelog.d/umbrella-*` fragment.
 
 **Adjacent, and worth landing after this:** the same `is_wsl2` copy is the subject of the
 `api-am-i-in-wsl2-has-three-implementations…` drop in this batch. If that lands first, umbrella's
 copy of it disappears here rather than being fixed twice.
+
+## State note (2026-09-08, leg 051 dispatch, mirror 1 only)
+
+**Closed this run:** `src/token.rs` is deleted. `embarch-umbrella/Cargo.toml` depends on
+`embarch-core-client = { path = "../embarch-api/crates/embarch-core-client" }`; the three
+`doctor.rs` call sites and the one in `main.rs` now call
+`embarch_core_client::token_discovery::resolve_token` directly, in-process. Confirmed
+byte-for-byte-equivalent behavior against `token_discovery.rs` (identical signature; test
+differences were only three env-var names and one temp-dir prefix — every umbrella-specific
+test case has a direct upstream counterpart, so none needed a local `tests/` file).
+`src/config.rs`'s `CoreConfig`-mirror header no longer cites the dead `embarch-api/src/config.rs`
+path — corrected to name `embarch-api/crates/embarch-core-client/src/lib.rs` as where
+`CoreConfig` actually lives now, while noting umbrella's `CoreConfig` is still its own hand-kept
+mirror (that mirror itself is untouched — see below). Every other in-repo comment that referred
+to the now-deleted `token.rs` as a sibling module was repointed at
+`embarch_core_client::token_discovery`. `decisions/mirrors.md` decision 20 got a 2026-09-08
+amendment paragraph recording the token half closed, the config half still open.
+`embarch-umbrella/open.md`'s bullet was rewritten to the same effect. `cargo tree` confirms
+`probe-rs`/`serialport` stay absent after picking up the shared crate's `reqwest`
+(`json`/`query`/`multipart`) and `tokio` (`sync`/`fs`/`process`) feature unification, as the task
+file's own reasoning predicted. Gate green: `cargo build`/`test`/`clippy --all-targets -D
+warnings` clean (216 tests pass) in the code worktree; `check-docs.py`, `check-ownership.py
+--scope umbrella` (both worktrees) and `check-client-names.py` all clean.
+
+**Left open, explicitly not touched by this dispatch (mirrors 2 and 3):**
+
+- **Done-when bullet 2** — `doctor` check 6 (`src/doctor.rs:859-899`, titled `"embarch-api config
+  loads"`) still answers from the hand-mirrored `ProjectConfig`, not the real loader. Untouched.
+- **`CoreConfig`'s missing `*_timeout_secs`** (`src/config.rs`'s `CoreConfig` struct vs.
+  `embarch-api/crates/embarch-core-client/src/lib.rs`'s). Untouched — the header now cites the
+  right file, but the field gap itself remains.
+- **`ProjectConfig`'s three-way drift**, all still present in `src/config.rs`:
+  - missing `flash_format` (required upstream, no `serde(default)`);
+  - missing `retired_targets`/`retired_soc_chip_overrides` refusal-by-name fields
+    (decisions 51/53 upstream);
+  - no call to `.validate()` on load (`src/config.rs:129-133` area) — token resolution,
+    `source_path` presence, duplicate-name and `flash_format` checks all skipped;
+  - the phantom `artifact_path_for_core: Option<String>` field, absent from upstream
+    `ProjectConfig` entirely, and **`src/init.rs:534` still writes it** into scaffolded configs.
+
+None of the above were touched, per this dispatch's explicit narrowing. This task stays open —
+**do not close it** — for whichever leg picks up mirrors 2 and 3.
