@@ -1,6 +1,6 @@
 # 041 — `serial_log` — the workflow the user guide sells as the payoff — cannot be completed from a freshly `init`ed project, and `interfaces/tools.md` documents a fallback that does not exist
 
-**State:** open
+**State:** claimed — leg 060, 2026-09-09, `agent/api/041-serial-port-discovery`
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer). Code-confirmed.
 **Scope:** api
 **Hardware:** none. The `GET /serial-ports` route and the `list_serial_ports` client wrapper both already exist and are tested.
@@ -60,3 +60,36 @@ does the same job for a different endpoint and would not add this one.
 
 **Not in scope here:** `tasks/core/009` bounds `/serial-log`'s `duration_ms` and its `hw_lock`
 hold. That is a different defect on the same route.
+
+## Supervisor's dispatch note, leg 060 (burndown)
+
+**`tasks/core/009` is running RIGHT NOW, in this same leg, in `embarch-core`.** It is bounding
+`duration_ms` with a named cap and a `400`. You own `embarch-api` only. **Do not describe Core's cap
+in your docs** — you cannot know the number it picks and it may not land — and do not edit anything
+under `embarch-doc/embarch-core/`. If your MCP-description work wants to mention a duration ceiling,
+say only that Core bounds it and point at Core's own `/serial-log` row.
+
+**Narrow the disposition to the two ends the task's own "Done when" requires**, and no further:
+surface the already-existing `GET /serial-ports` / `list_serial_ports` pair on **both** front ends
+(one MCP tool and one `embarch-api` subcommand), and correct
+`embarch-api/interfaces/tools.md:28`'s fallback claim to describe real behaviour. Make
+`serial_log`'s MCP description say whose machine the port namespace belongs to. **Do not** change
+`embarch init` (that is `embarch-umbrella`, not yours) and **do not** change Core's error text.
+
+**This leg runs under [burndown.md](../../../embarch-fleet/burndown.md): no new numbered decision.**
+Surfacing an existing route on the existing front ends is mechanical; if you conclude it needs a
+numbered `embarch-api` decision, record it as owed in `open.md` and say so in your report.
+
+**Doc reserve for `api`, read this before you plan an edit:**
+
+- `embarch-api/decisions/tool-wrapping.md` — **12222/12288 B, 66 bytes left.** This is the file a new
+  MCP tool would naturally want to amend, and there is no room. Its compaction task
+  `tasks/api/047-compact-api.md` is **blocked on `In flux: yes`**, so if your unit genuinely must
+  write this file, **compact it as part of this unit**, carrying `047`'s `Must not delete:` list
+  verbatim and closing only that file's item. Prefer a split ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2).
+- `embarch-api/decisions/core-link.md` 212 B left, `embarch-api/spec.md` 815 B left,
+  `embarch-api/decisions/build.md` 1154 B left — all in reserve and all parked. Plan your edits to
+  land in `interfaces/tools.md` (not in reserve) wherever the content honestly belongs there.
+- `embarch-api/open.md` was compacted to 3782 B (73.9%) last night and has real room. Use it.
+
+**No hardware.** No live Core, no board, no `serial_log` call against a real port.
