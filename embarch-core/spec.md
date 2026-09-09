@@ -78,7 +78,7 @@ Board identity, enrollment, hardware-ID readback and dev-bench port detection ar
 | `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] |
 | `MAX_UNDECODABLE_FRAMES` | 10 | [assumed] separates one lost frame from a noise stream |
 | log retention | 7 daily files | [assumed] |
-| `EMBARCH_FLASH_BACKEND` | — | forces a backend; forcing probe-rs onto a refused family logs a warning |
+| `EMBARCH_FLASH_BACKEND` | — | forces a backend (`probe-rs`, `jlink`, `nrfutil`, `nrfjprog`); an unrecognised value is refused by name before any tool lookup runs, and forcing probe-rs onto a refused family logs a warning |
 | `EMBARCH_JLINK_EXE` / `_NRFUTIL_EXE` / `_NRFJPROG_EXE` | — | vendor-tool overrides, searched after `PATH` and before default install dirs |
 | `EMBARCH_TOKEN` | — | explicit env var wins over the machine-wide file |
 

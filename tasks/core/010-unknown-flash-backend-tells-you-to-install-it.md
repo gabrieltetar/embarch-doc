@@ -1,6 +1,6 @@
 # An unrecognised `EMBARCH_FLASH_BACKEND` tells the operator to install a tool that does not exist
 
-**State:** claimed by leg 049, 2026-09-08
+**State:** done (leg 049)
 **Source:** owner's repo survey, 2026-09-06 — the useful message exists and is unreachable
 **Scope:** core
 **Hardware:** none
@@ -29,15 +29,43 @@ install software is the opposite of that.
 
 ## Done when
 
-- [ ] `EMBARCH_FLASH_BACKEND=openocd`, `=""` and `=jlnk` each fail with a message naming
+- [x] `EMBARCH_FLASH_BACKEND=openocd`, `=""` and `=jlnk` each fail with a message naming
       `probe-rs`, `jlink`, `nrfutil`, `nrfjprog`.
-- [ ] A known-but-missing backend still gets its install hint unchanged.
-- [ ] `EMBARCH_FLASH_BACKEND=probe-rs` still forces probe-rs and still warns on a refused family,
+- [x] A known-but-missing backend still gets its install hint unchanged.
+- [x] `EMBARCH_FLASH_BACKEND=probe-rs` still forces probe-rs and still warns on a refused family,
       asserted by test.
-- [ ] Tests are serialised or scoped so the env var does not leak between parallel test threads.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] Tests are serialised or scoped so the env var does not leak between parallel test threads.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Leg 049 — done
+
+**Line-number drift found, as flagged.** `locate()` is at `:270-274` (task said `:270-272`), and
+the unreachable `.is not a known backend` `with_context` arm is at `:308` (task said `:273-274`,
+which is now the `discover` doc comment). `FLASH_BACKEND_ENV`'s doc comment (`:63-67`) and the
+tests module boundary (roughly `:545-654` before this change) both matched as cited.
+
+**Unreachable-arm decision: removed, not made reachable.** `discover` now validates `forced`
+against `KNOWN_BACKEND_NAMES` (`probe-rs`, `jlink`, `nrfutil`, `nrfjprog`) before calling `locate`
+at all. That makes `build()` infallible for every value that survives the check — there is no
+longer a name reaching that point `build` does not recognise — so the old
+`.with_context("...is not a known backend")` arm would be dead code with a `Result` shape
+pretending it can still fail. Deleted it and replaced the call with
+`.expect("forced backend name was validated above")`. Recorded as `embarch-core` decision 52
+(`decisions/flashing.md`).
+
+**Env-var test isolation:** this crate had no `serial_test`-style mechanism anywhere in its tree
+(checked — no dependency, no existing pattern). Added a small in-module `ForcedBackendGuard`
+(a `Mutex<()>` guard whose `Drop` always clears `FLASH_BACKEND_ENV`, even on panic) and used it in
+every test that reads or sets that var, including the two pre-existing tests that relied on it
+being unset. New tests also assert the forced-`probe-rs` warning via a minimal hand-rolled
+`tracing::Subscriber` that captures event messages, since no test-capture crate was already a
+dependency either.
+
+No hardware touched. `cargo build`, `cargo test` (184 passed, 2 ignored — pre-existing, unrelated
+to this change), and `cargo clippy --all-targets -- -D warnings` all clean. `check-docs.py` all 10
+checks green; `check-client-names.py` and `check-ownership.py` (both worktrees) green.
 
 ## Supervisor notes — leg 049
 
