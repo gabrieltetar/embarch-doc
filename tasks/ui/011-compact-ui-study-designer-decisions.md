@@ -1,6 +1,6 @@
 # 011 — `embarch-ui/decisions/study-designer.md` crossed into reserve
 
-**State:** open
+**State:** claimed — leg 057, 2026-09-09, `agent/ui/011-compact-ui-study-designer-decisions`
 **Source:** `ui/010` added decision 20; its reviewer then found a wrong number inside it, and the
 supervisor's correction at the fold spent the last of the headroom. `DOC-COMPACTION.md` §2
 **Scope:** ui
@@ -50,6 +50,17 @@ than a wall.
   `renderRunState` at `fa3b7b6`. It is the entire argument for *step now running* over *steps
   finished*, and without it the entry reads as taste.
 - **The zero-step case** — `total_steps` of `0` gets no counter rather than `1/0`.
+
+## Doc-size reserve in `embarch-ui`, at dispatch (leg 057, 2026-09-09)
+
+`decisions/study-designer.md` **12,064 / 12,288 B — 224 B left**, the file this task pays.
+`spec.md` **9,461 / 10,240 B — 779 B left**, filed under `tasks/ui/018-compact-ui-spec.md` (open).
+Nothing else in `embarch-ui` is in reserve. If this unit's work pushes another file into reserve, or
+leaves one there with nothing filed, file `tasks/ui/<NNN>-compact-ui-<what>.md` in the same commit —
+your own scope's directory, never `tasks/doc/`.
+
+**This leg runs in burndown, which forbids authoring a new numbered decision.** A compaction pass
+should not need one; if this turns out to require one, stop and say so rather than writing it.
 
 ## Note on the likely shape
 
