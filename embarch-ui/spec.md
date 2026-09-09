@@ -77,7 +77,7 @@ Everything live reaches the browser as **SSE** served by this binary; there is n
 
 ## Design system
 
-Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Plex Mono for data and log lines. An oklch token system: one cyan accent, green/amber/red semantics, chroma and lightness held across hues. Hand-authored components — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console, and a `.dialog`/`.dialog-backdrop` modal used in five places. No bundler.
+Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Plex Mono for data and log lines. An oklch token system: one cyan accent, green/amber/red semantics, chroma and lightness held across hues. `--brand` holds the logo's red for the wordmark and header glyph only — it is the same colour as `--danger`, so it is never the accent (decision 25). Hand-authored components — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console, and a `.dialog`/`.dialog-backdrop` modal used in five places. No bundler.
 
 ## The trace chart
 

@@ -19,3 +19,11 @@ A persistent left sidebar plus a top status bar, with **six** sections behind it
 Dark-first developer-console aesthetic, togglable to light: IBM Plex Sans for UI text and Plex Mono for data, parameters and log lines; an oklch token system with one cyan accent and green/amber/red semantics holding chroma and lightness across hues; and a real component set — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console — **replacing the two source UIs' single inline `style=` attribute and bare `<style>` block respectively.** Hand-authored CSS throughout, no bundler (decision 2).
 
 **Both palettes are lifted verbatim from the mockups rather than re-derived.** The light half looked unexercised until the saved mockup files were read directly and found to author a complete light token set alongside the dark one.
+
+### 25 — The mark's red is a brand token, deliberately not the accent
+
+The project has a real logo now (`embarch-ui/assets/brand/`, a GIMP master exported to the extension icon and the favicon), and the obvious move — make the UI's accent match it — is the one thing that cannot be done. **The mark's red is `oklch(63% 0.194 29)` and `--danger` is `oklch(66% 0.19 25)`: measured in the browser they sit at 1.12:1 against each other, which is to say they are the same colour.** A red accent would make every primary button read as destructive and stop failures standing out, so the accent stays cyan — the only wide band of hue the semantic ramp (red danger, amber warning, green success, blue info) leaves free, which is why decision 8 landed there and not by taste.
+
+So identity and interaction get separate tokens. **`--brand` carries the mark's red and is worn by exactly two things** — the sidebar wordmark and the header glyph — while `--accent` keeps every interactive surface. One token, three call sites, no semantic collision.
+
+**It is themed, because the sidebar is not a dark rail.** `.sidebar` is `--bg-surface`, which the light palette takes to 99% lightness, so the wordmark sits on near-white there and on `#0F141A` in dark. The mark's own red is 3.7:1 on the light surface, under AA for 15px bold, so light darkens it to `oklch(56% 0.19 29)`. Verified in a real headless Firefox rather than computed on paper: **4.84:1 dark, 4.98:1 light.**
