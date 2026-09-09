@@ -1,6 +1,6 @@
 # outpost: README.md Status section contradicts spec.md §4 on measured overhead
 
-**State:** claimed by agent/outpost/013-readme-overhead-status, 2026-09-08 22:34
+**State:** closed
 **Promoted** from `inbox/outpost-readme-status-overhead-stale.md` by leg 048, unchanged apart from
 this line, the number, and the `Scope:` field taking the sub-project name. **I asked the reviewer
 to file this if it agreed it deserved a drop**, which means the finding may be mine as much as
@@ -49,3 +49,32 @@ own task rather than waiting for someone to notice by accident.
 uncharacterised"; it either states the measured numbers (1.6% DUT-clock,
 misread as 78.1% on host clock, per `spec.md` §4) or points to `spec.md` §4
 without asserting the opposite of what that section says.
+
+## Closed
+
+`embarch-outpost/README.md`'s Status paragraph now states the measured numbers
+directly — "The instrumentation overhead has been measured, though — 1.6% of
+the DUT's own CPU (misread as 78.1% on the host clock) — see `spec.md` §4" —
+replacing "the instrumentation overhead is deliberately uncharacterised". The
+`Kconfig`-defaults sentence just before it is untouched (that claim is still
+true and separate from this one). No other file needed a change: `spec.md` §4
+already carried the correct numbers, this task's own reserve list didn't
+include `README.md`, and neither `open.md` nor `decisions/module.md` needed a
+touch (already covered by `tasks/outpost/012-compact-outpost.md`).
+
+No new numbered decision — this is a prose correction, not a design call. No
+hardware involved; no new debt.
+
+Changelog fragment: `changelog.d/outpost-readme-status-overhead-measured.md`.
+No `status.d/` fragment — no suite-level fact changed (the sub-project doc
+`spec.md` already said the measured thing; only the README's Status echo was
+wrong). No `features.d/` fragment — no capability shipped, retired, or changed
+maturity.
+
+Gate: `tests/decoder_unit.py` in `embarch-outpost` — 20/20 pass (no Rust in
+this repo, no `cargo` gate applies; `tests/unit/` remains the standing
+Zephyr-`west` debt, unrelated to this change). `python3 scripts/check-docs.py`
+in `embarch-doc` — green. `scripts/check-client-names.py --repo
+<embarch-outpost worktree>` — clean. `scripts/check-ownership.py --scope
+outpost` in `embarch-doc`, and `--code-repo` in `embarch-outpost` — both
+clean, only `outpost`-owned paths touched.
