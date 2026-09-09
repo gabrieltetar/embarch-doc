@@ -1,6 +1,6 @@
 # Stop labelling pre-header records with a manifest the decoder then refuses
 
-**State:** open
+**State:** claimed — leg 060, 2026-09-09, `agent/outpost/003-two-pass-decode`
 **Source:** owner's repo survey, 2026-09-06 — `embarch-outpost/spec.md:60`'s "a mismatched manifest refuses to render the names" leaks in the case the repeating header exists for
 **Scope:** outpost
 **Hardware:** none
@@ -38,3 +38,27 @@ case where this leaks.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Supervisor's dispatch note, leg 060 (burndown)
+
+**No new numbered decision** ([burndown.md](../../../embarch-fleet/burndown.md)). The "Done when"
+bullet asking you to *"say which, in `decisions.md`"* about the `us` column is the one place this
+bites. **Do the two-pass decode**, populate `us` for pre-header rows once a header is seen anywhere
+in the stream (the task itself calls that the natural fix, and the whole stream is already read into
+memory at `:292`), and record that choice as **prose in `spec.md` / `open.md`**, not as a new
+numbered entry. If you judge it genuinely deserves a number, say so in your report and note it in
+`open.md` as owed.
+
+**Beware `tests/cross_decoder.py`.** A standing debt of this fleet is that it **skips silently in
+every fleet worktree** (`tasks/outpost/005`), so do not read a green run as coverage: check that
+your new test actually executed, by name, and say in your report whether it ran or skipped. Your new
+host-side test must be one that runs without west.
+
+**Doc reserve for `outpost`:** `embarch-outpost/spec.md` 9515/10240 B (**725 bytes left**) and
+`decisions/tracing.md` 7408/8192 B (**784 bytes left**). Both already have **open** (not blocked)
+compaction tasks filed — `tasks/outpost/014-compact-outpost.md` and `tasks/outpost/008`. An open
+compaction task is somebody else's future unit, **so do not compact them**; keep your edits inside
+that headroom, and if you spend it further, file `tasks/outpost/<next free NNN>-compact-outpost.md`
+in the same commit per `tasks/README.md`.
+
+**No hardware.** No board, no study, no live Core — this is pure host-side Python and its tests.
