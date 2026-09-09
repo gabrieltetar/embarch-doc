@@ -10,11 +10,12 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- Core's `decisions/platform.md` split by mission: process/install/locking stay, auth/binding/surface consistency move to [decisions/auth.md](../embarch-core/decisions/auth.md).
 - `GET /dev-bench/hello`'s self-reported ID is now `self_reported_hardware_id`, not `hardware_id` — decision 47.
 - `interfaces.md` split into `interfaces/<topic>.md`, index-only now, per DOC-COMPACTION.md §3.
 - Core's study decisions split by mission: the version gate and handshake identity (31, 35) move verbatim to [decisions/handshake.md](../embarch-core/decisions/handshake.md).
 - `embarch-core/open.md` is out of reserve: two bullets restating spec.md and decision 31 are gone, two shortened.
-- The bearer-token test sweep now derives its route list from `build_router`'s own source: all 26 routes, not 12 ([decision 42](../embarch-core/decisions/platform.md)).
+- The bearer-token test sweep now derives its route list from `build_router`'s own source: all 26 routes, not 12 ([decision 42](../embarch-core/decisions.md)).
 - Core's spec.md and open.md compacted out of reserve (DOC-COMPACTION §9); no open question dropped.
 - embarch-core/open.md compacted off its cap; all 26 questions kept, none answered by the pass.
 - `embarch-core`'s 233 KB `design.md` became spec.md (9K), decisions.md (30K), interfaces.md (9K) and open.md (5K) — 53 KB, all 40 decision numbers intact.
