@@ -27,6 +27,7 @@
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
 ### Decided
+- Decision 23 cites `embarch-core` decision 53 for the `%ProgramData%\embarch` ACL, replacing the stale deferral.
 - `crate.md` decisions 4/8: "sole implementation"/"can't disagree" bound to the crate's own boundary, not callers — a caller can still skip the call (`api/038` found one).
 - Decision 24 moved into `decisions/links.md`, beside 17 and 18 it is built on.
 - topology's shared machine-wide storage directory, and why it matches embarch-core's, is now decision 23 instead of a code comment only.
