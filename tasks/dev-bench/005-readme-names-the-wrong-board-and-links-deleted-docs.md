@@ -29,14 +29,43 @@ board that is *not* on the bench, over links that 404.
 
 ## Done when
 
-- [ ] No `design.md` reference remains in `README.md`.
-- [ ] The three workspace bullets agree with `spec.md` §1 and §2 on which board is current.
-- [ ] The nordic build/flash section is the primary one, and the `link_port_interface = 2` caveat
+- [x] No `design.md` reference remains in `README.md`.
+- [x] The three workspace bullets agree with `spec.md` §1 and §2 on which board is current.
+- [x] The nordic build/flash section is the primary one, and the `link_port_interface = 2` caveat
       appears with it.
-- [ ] Every markdown link in the file resolves against the current `embarch-doc` tree.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] Every markdown link in the file resolves against the current `embarch-doc` tree.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Closed — leg 049
+
+Doc side was a genuine no-op, as the supervisor notes predicted: `spec.md`/
+`decisions.md`/`open.md` needed no edits (nothing in them referenced the
+README, and none of them were made false by this fix). Dropped a
+`changelog.d/` fragment only; no `status.d/` fragment owed.
+
+`README.md` rewritten: workspace bullets now match `spec.md` (nordic current,
+citing decision 43; espressif superseded but working, same citation);
+`link_port_interface = 2` moved into the nordic build section with its
+rationale; all `design.md`/"design doc" references replaced with links to
+`spec.md`/`decisions.md` (this repo's and `embarch-core`'s); the espressif
+section's citation of "decision 13" (which no longer means what the README
+claimed — `embarch-core` decision 13 is now about `core_version`, unrelated)
+was dropped rather than left pointing at the wrong topic, keeping only
+decision 18 (which does match — `Format::Bin` at the merge address). Also
+found and removed a second stale claim in the same espressif section: an
+instruction to set `EMBARCH_DEV_BENCH_PORT`, which `embarch-core` decision 23
+says was removed with no replacement env knob (confirmed by a repo-wide grep
+for the name in `embarch-core`'s own `.rs` sources — zero hits). Did not
+invent a replacement instruction, since that would mean inferring an
+enrollment fact not actually stated anywhere; filed
+`inbox/core-readme-stale-dev-bench-env-overrides.md` instead, since
+`embarch-core`'s own README still documents all four removed env vars and
+that fix is outside this task's repo.
+
+Every link resolved by hand (existing files/anchors checked directly, not by
+filename pattern) — no `decisions/ble.md` edit was made or needed.
 
 ## Supervisor notes — leg 049
 
