@@ -1,6 +1,6 @@
 # 023 — `embarch-token.md` says the directory is locked down, and only the file is
 
-**State:** open
+**State:** claimed — leg 059, 2026-09-09, burndown
 **Scope:** core
 **Hardware:** none — reading `embarch-core`'s own `src/token_store.rs` settles this. **No live ACL
 observation is needed and none should be attempted**: a WSL session cannot read a Windows ACL, and
@@ -9,6 +9,19 @@ this question does not require one.
 whether `embarch-topology` decision 23's "unprivileged CLI" rationale was true. It was not, and
 this doc is where the wrong idea came from. Drained from `inbox/` by leg 035.
 **Owner:** no
+
+## Supervisor note — leg 059, doc-size reserve in `core`
+
+**`embarch-core/open.md` has 69 B left** (5051/5120) and its compaction task
+`tasks/core/022-compact-core.md` is **blocked**. Treat `open.md` as effectively full: if this
+unit needs to write there, compact that file as part of the unit, carrying `022`'s
+`Must not delete:` list and closing only `open.md`'s item — prefer a split or a duplicate
+deletion over a squeeze (`DOC-COMPACTION.md` §2). No other `core` doc is in reserve. If your
+work pushes a different file into reserve, file `tasks/core/<NNN>-compact-core.md` in the same
+commit.
+
+**This leg runs in burndown, which forbids authoring a new numbered decision.** Correct the
+prose, and if the finding looks like it deserves a decision, say so in your report instead.
 
 ## What
 
