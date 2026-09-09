@@ -13,7 +13,7 @@ Current truth: [spec.md](../spec.md). Why: [decisions.md](../decisions.md).
 |---|---|
 | `main.rs` | clap CLI, config resolution, logging init, dispatch to the MCP server or `cli.rs` — and `versions`, answered *before* config resolution so a broken config cannot hide it |
 | `config.rs` | TOML schema, load, validation — unique names, path existence, discovery-branched required fields |
-| `zephyr.rs` | the live `boards/`/`app/` scan, target cross-product, file-backing validation, build-dir and artifact-path assembly. **Pure filesystem and YAML reads — no `west`, no network** |
+| `zephyr.rs` | the live `boards/`/`app/`-or-`apps/` scan (decision 63), target cross-product, file-backing validation, build-dir and artifact-path assembly. **Pure filesystem and YAML reads — no `west`, no network** |
 | `resolve.rs` | the one place every front-end branches on `discovery`, turning a project plus a selection into a build plan and a chip |
 | `build.rs` | subprocess execution for a discovery-agnostic build plan. The one module behind this package's `lib` target ([decisions](../decisions/tests.md) 46) |
 | `reflash.rs` | the check → build → flash → submit sequence, and the no-`git checkout` refusal with its test |

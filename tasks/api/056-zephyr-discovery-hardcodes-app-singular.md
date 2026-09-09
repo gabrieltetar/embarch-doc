@@ -1,6 +1,13 @@
 # Teach zephyr-west discovery the `apps/` layout
 
-**State:** claimed — leg 062, 2026-09-09
+**State:** done — leg 062, 2026-09-09. Decision 63
+(`embarch-api/decisions/zephyr.md`) records the layout choice: both `app/` and
+`apps/` scanned unconditionally and merged, `apps/` wins a same-name
+collision, neither present is `ScanError::NoAppDir` distinct from one present
+but empty. `resolve.rs`'s `west build <app_path>` argument had the same
+`app/`-only hardcoding and is fixed alongside `zephyr.rs`. Filed
+`tasks/api/057-compact-api.md`: this fix pushed `decisions/zephyr.md` into its
+size reserve.
 **Source:** found wiring up a real repo (chargerito-fw) on 2026-09-09; `embarch-api/src/zephyr.rs::scan_apps`
 **Scope:** api
 **Hardware:** none
@@ -36,10 +43,13 @@ Note the same assumption is in the user-facing contract, not only the code:
 
 ## Done when
 
-- [ ] A repo laid out with `apps/` scans and returns its real targets.
-- [ ] `app/` keeps working unchanged; a fixture covers each layout.
-- [ ] The both-directories-present case has a defined, tested behaviour.
-- [ ] Neither present is distinguishable from "found no apps".
-- [ ] `tools.rs`'s `list_targets` description no longer says only `app/`.
-- [ ] Gate green; `spec.md`/`decisions.md`/`open.md` updated and a
-      `changelog.d/` fragment dropped.
+- [x] A repo laid out with `apps/` scans and returns its real targets.
+- [x] `app/` keeps working unchanged; a fixture covers each layout.
+- [x] The both-directories-present case has a defined, tested behaviour.
+- [x] Neither present is distinguishable from "found no apps".
+- [x] `tools.rs`'s `list_targets` description no longer says only `app/`.
+- [x] Gate green; `decisions.md` (new decision 63) and `interfaces/modules.md`
+      updated, a `changelog.d/` fragment dropped. `spec.md`/`open.md` left
+      unchanged — both are in the size reserve per leg 062's dispatch notes.
+      Filed `tasks/api/057-compact-api.md`: this fix put
+      `decisions/zephyr.md` itself into reserve.
