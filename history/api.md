@@ -30,6 +30,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- `dev-bench-hello` CLI subcommand added; restores CLI ⊇ MCP, decisions/shape.md 61.
 - `EnrolledBoardResponse` no longer drops `link_port_interface`; it and `AlertResponse` are now pinned against a JSON literal each.
 - Six MCP tool descriptions citing the retired `design.md` now cite `<repo> decision N`, verified; `enroll_probe`'s wrong decision number fixed.
 - open.md stops reading as unaddressed: `init`'s no-inference refusal shipped (`embarch-umbrella` 41) and check 11 reads `versions` now (33/36, 42).
