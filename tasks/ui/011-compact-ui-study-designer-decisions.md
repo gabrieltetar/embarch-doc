@@ -1,6 +1,6 @@
 # 011 — `embarch-ui/decisions/study-designer.md` crossed into reserve
 
-**State:** claimed — leg 057, 2026-09-09, `agent/ui/011-compact-ui-study-designer-decisions`
+**State:** done — leg 057, 2026-09-09, `agent/ui/011-compact-ui-study-designer-decisions`
 **Source:** `ui/010` added decision 20; its reviewer then found a wrong number inside it, and the
 supervisor's correction at the fold spent the last of the headroom. `DOC-COMPACTION.md` §2
 **Scope:** ui
@@ -77,12 +77,18 @@ same day by a split in `embarch-topology`.
 
 ## Done when
 
-- [ ] `decisions/study-designer.md` is clear of its reserve line (under 11,059 B), by shortening or
-      by a mission split.
-- [ ] Every `Must not delete:` item above survives, verified against the pre-image rather than from
-      memory.
-- [ ] If it splits, every inbound link to a moved decision is repointed **and checked by hand**.
-- [ ] `DOC-COMPACTION-PASS.md`'s question answered in the commit message, in the compactor's own
+- [x] `decisions/study-designer.md` is clear of its reserve line (under 11,059 B), by shortening or
+      by a mission split. **Done by shortening, no split**: 12,064 → 10,961 B. A mission split
+      (authoring vs. run surface) was considered per the note above but not needed — trimming cold
+      prose in decisions 11 and 14 recovered enough headroom (98 B margin) without the link-repoint
+      risk `tasks/doc/022` describes, and decision 20 (the run entry) was left completely untouched.
+- [x] Every `Must not delete:` item above survives, verified against the pre-image rather than from
+      memory. Decision 20's text (cost, ~1 s `POLL_INTERVAL`, premise, zero-step case) was not edited
+      at all in this pass — confirmed by diff, not by memory.
+- [x] If it splits, every inbound link to a moved decision is repointed **and checked by hand**. N/A —
+      no split.
+- [x] `DOC-COMPACTION-PASS.md`'s question answered in the commit message, in the compactor's own
       words: *what does someone about to change the study-designer tab lose if this paragraph is
       gone?*
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `check-docs.py` (10/10), `check-ownership.py`
+      (doc + code), `check-client-names.py` all pass.

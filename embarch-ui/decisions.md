@@ -17,5 +17,5 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/trace-chart.md](decisions/trace-chart.md) | 10 (chart) | Zoom, pan, exact aggregation, the study-step row |
 | [decisions/outcome-decode.md](decisions/outcome-decode.md) | 23 | One outcome decoder for both wire shapes |
 | [decisions/trace-transfer.md](decisions/trace-transfer.md) | 18 | Server-side binning: the view asks for the window it draws |
-| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20 | Version fields, security level, declared GATT, opening a project, the run badge's counter |
+| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20, 22 | Version fields, security level, declared GATT, opening a project, the run badge's counter, the stream-name cap |
 | [decisions/gatt-capture.md](decisions/gatt-capture.md) | 15, 16, 17 | Per-characteristic taps, characteristic names, the target dialog |
