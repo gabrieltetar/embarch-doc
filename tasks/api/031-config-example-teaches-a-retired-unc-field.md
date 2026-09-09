@@ -1,10 +1,27 @@
 # `config.example.toml` teaches a retired UNC field and omits five live ones
 
-**State:** open
+**State:** claimed — leg 059, 2026-09-09, burndown
 **Source:** owner's repo survey, 2026-09-06 — `embarch-api/spec.md:42` says the opposite of what the example teaches
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Supervisor note — leg 059, doc-size reserve in `api`
+
+**In reserve right now** (`check-doc-size.py --pressure`), headroom in bytes:
+`decisions/tool-wrapping.md` **66**, `decisions/core-link.md` **212**, `open.md` **318**,
+`spec.md` **815**, `decisions/build.md` **1154**. Plan your edits against those numbers rather
+than discovering a cap mid-write. If your work pushes a file into reserve or leaves one there
+that nothing has filed, file `tasks/api/<NNN>-compact-api.md` in the same commit
+(`tasks/README.md` has the shape) — recording the debt, not paying it.
+
+**One exception, and it is the file this task writes into.** `open.md` has 318 B left and its
+compaction task `tasks/api/026-compact-api.md` is **blocked on `In flux: yes`** — so nobody else
+can shorten it. Per `.claude/leg.md` and `DOC-COMPACTION.md` §2: **compact `open.md` as part of
+this unit**, carrying `026`'s `Must not delete:` list forward and closing only `open.md`'s item
+there (leave `spec.md` and `decisions/core-link.md` parked). Prefer a split or a genuine
+duplicate deletion over a squeeze; you are the actor making the flux, so you are the only one who
+can shorten it without writing a clean statement of something about to be wrong.
 
 ## What
 
