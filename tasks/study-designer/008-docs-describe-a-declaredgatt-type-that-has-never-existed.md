@@ -1,6 +1,6 @@
 # Withdraw the `Study.gatt` / `DeclaredGatt` field from the docs, or record it as unbuilt
 
-**State:** open
+**State:** claimed
 **Source:** owner's repo survey, 2026-09-06 — three documents describe a shipped feature no code in the suite implements
 **Scope:** study-designer
 **Hardware:** none
