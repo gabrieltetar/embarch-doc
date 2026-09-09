@@ -1,6 +1,18 @@
 # 052 — 320 citations point at a `design.md` this repo no longer has
 
-**State:** claimed — leg 061, worker on `agent/api/052-design-md-citations`
+**State:** done — leg 061, worker on `agent/api/052-design-md-citations`
+
+**Convention adopted:** a same-repo citation drops both `design.md` and the section number and
+reads bare `` decision M ``, resolved against this repo's own `decisions/` index. A cross-repo
+citation drops `design.md`/`§N` too and adds the repo name as a plain qualifier before `decision`,
+e.g. `` `embarch-core` decision 22 `` — no repo-local section number, since none survived the
+split. A citation that named only a section, not a decision (`design.md §5`, `design.md §9`), was
+resolved to either the specific decision that section turned out to describe, or — where no
+decision covers it — that repo's `spec.md` (optionally with a section number, since `spec.md`'s
+own numbering is current). Where `embarch-ui` decision 10 is reused across three different topics
+in its own index (routing/trace/chart), the citation keeps that disambiguator, e.g.
+`` `embarch-ui` decision 10, routing half ``.
+`tasks/umbrella/043` should adopt this convention rather than invent a second one.
 
 **Dispatch note (supervisor, leg 061):** `tasks/umbrella/043` is the same sweep for
 `embarch-umbrella` and is deliberately **not** dispatched alongside you — it is told to adopt
@@ -58,12 +70,23 @@ thing to hunt.
 
 ## Done when
 
-- [ ] No `design.md` reference remains anywhere in the `embarch-api` repo — verified by a
+- [x] No `design.md` reference remains anywhere in the `embarch-api` repo — verified by a
       repo-wide grep at the merge SHA, not a `src/`-scoped one.
-- [ ] Every citation touched was resolved against the current decisions index, and any that named
-      another repo's decision now says which repo.
-- [ ] The diff is comment-only where it touches `.rs` — the cheap structural proof is
+      `grep -rn "design\.md" --exclude-dir=target --exclude-dir=.git .` from the repo root
+      returns nothing.
+- [x] Every citation touched was resolved against the current decisions index, and any that named
+      another repo's decision now says which repo. Found and fixed 5 real miscitations along the
+      way (not just dead §N pointers): `config.rs`'s two `artifact_path_for_core` UNC-retrospective
+      comments and `config.example.toml`'s `base_address` comment cited `embarch-core`/were
+      mistagged when the decision is `embarch-api`'s own (15 and 42 respectively); `main.rs`'s
+      `EnrollProbe`/`Validate`/`Alerts` doc comments cited bare (repo-less) numbers that actually
+      belong to `embarch-core` (22, 28, 28); `cli.rs`/`tools.rs`'s reseal comment cited a bare
+      number that belongs to `embarch-study-designer` (26).
+- [x] The diff is comment-only where it touches `.rs` — the cheap structural proof is
       `git diff -U0 -- '*.rs' | grep` for changed non-comment lines returning nothing, which
       `study-designer/018` used and which this log recommends for any sweep this size.
+      Two lines flagged by the Python equivalent of that check are inside `format!`/error-message
+      *string literals* (a citation embedded in user-facing text, not code), not comment or logic
+      changes — see below.
 
 ## In flux: no
