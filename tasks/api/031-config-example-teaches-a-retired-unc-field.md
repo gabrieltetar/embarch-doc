@@ -1,6 +1,6 @@
 # `config.example.toml` teaches a retired UNC field and omits five live ones
 
-**State:** claimed — leg 059, 2026-09-09, burndown
+**State:** done — leg 059, 2026-09-09, burndown
 **Source:** owner's repo survey, 2026-09-06 — `embarch-api/spec.md:42` says the opposite of what the example teaches
 **Scope:** api
 **Hardware:** none
@@ -49,11 +49,24 @@ nobody's yet, and it is the file a new engineer copies.
 
 ## Done when
 
-- [ ] `grep -c artifact_path_for_core config.example.toml` is `0`.
-- [ ] `serial_port`, `serial_baud`, `probe_serial`, `version_command` and `[projects.env]` each
-      appear with a comment consistent with `interfaces/config.md`.
-- [ ] A test loads `config.example.toml` through the real `Config` loader and asserts it parses.
-- [ ] `embarch-doc/embarch-api/open.md` names the silently-dropped-key gap explicitly.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] `grep -c artifact_path_for_core config.example.toml` is `0`.
+- [x] `serial_port`, `serial_baud`, `probe_serial`, `version_command` and `[projects.env]` each
+      appear with a comment consistent with `interfaces/config.md`. (Written as `env = {...}`,
+      matching that doc's own field name.)
+- [x] A test loads `config.example.toml` through the real `Config` loader and asserts it parses
+      (`src/config.rs::tests::config_example_toml_loads_through_the_real_loader` — its three
+      `[[projects]]` placeholder `source_path`s are rewritten to a real tempdir before load,
+      since `validate()` requires each to exist).
+- [x] `embarch-doc/embarch-api/open.md` names the silently-dropped-key gap explicitly (the
+      `artifact_path_for_core` bullet under "Unfinished couplings" now also states there is
+      deliberately no by-name load refusal for it, and why).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy` clean in
+      `embarch-api`, `check-docs.py` all green in `embarch-doc`.
+- [x] `spec.md`/`decisions.md`/`open.md` updated (`spec.md` already said the correct thing —
+      the bug was only in the example file — so no change there; no new decision, per this leg's
+      burndown constraint; `open.md` updated and, per the supervisor note, compacted from
+      4,802 B to 3,782 B, clearing the reserve line), `changelog.d/` fragment dropped
+      (`api-config-example-drops-unc-field.fixed.md`). No suite-level fact changed, so no
+      `status.d/` fragment.
+- [x] `open.md`'s compaction recorded in `tasks/api/026-compact-api.md` (its own item closed;
+      `spec.md`/`decisions/core-link.md` left parked, per the supervisor note's scope).

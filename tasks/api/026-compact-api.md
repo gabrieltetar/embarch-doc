@@ -85,4 +85,17 @@ task stays `blocked` — `spec.md` and `open.md` are unaddressed, and
 applies to that file's *remaining* compaction, which still waits on
 `tasks/api/001`.
 
+**`open.md`'s item closed by `agent/api/031-config-example` (task `api/031`),
+2026-09-09**, per `.claude/leg.md`/`DOC-COMPACTION.md` §2's exception for a
+file whose own compaction is blocked `In flux: yes`: the actor making the flux
+is the only one who can shorten it without writing a clean statement of
+something about to be wrong, and `api/031` was writing into `open.md` anyway.
+`open.md` went from 4,802 B to 3,782 B (added the `artifact_path_for_core`
+load-refusal gap, cut resolved historical narrative — the itemised
+per-file compaction-debt ledger, now redundant with the filed
+`tasks/api/*-compact-api.md` themselves — and tightened several bullets).
+**This task stays `blocked`**: `spec.md` (still inside its own reserve line)
+and `decisions/core-link.md` (parked, `In flux: yes` above) are still
+unaddressed, and only `api/001` landing unparks the latter.
+
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
