@@ -95,12 +95,20 @@ survived one `build_changelog.py --only` run, which is evidence and not a proof.
 
 **1. The check.** Both candidate homes — `scripts/check-decision-refs.py` and
 `scripts/check-links.py` — are under `scripts/`, which `embarch-fleet/protocol.md` §3's
-ownership map does not grant to *any* worker (only supervisor and owner have write
-there), and my own dispatch explicitly lists `scripts/` as a reserved path with
-instructions to stop and say so rather than edit it. This is that stop.
+ownership map grants to **nobody but the owner** — `scripts/` and `.claude/` are the one
+row that reads **never / never / write**, so the supervisor is barred from it exactly as a
+worker is, and that is the property `check-ownership.py --supervisor` exists to enforce. My
+own dispatch explicitly lists `scripts/` as a reserved path with instructions to stop and say
+so rather than edit it. This is that stop.
 
-**What is needed, for whoever picks this up next (owner session, or a leg with `scripts/`
-write):** a rule that, for a link of the form `[decision N](...)`  or `([decisions](...) N)`
+**Corrected at the fold, leg 056**, by this unit's reviewer: the sentence above originally
+read "only supervisor and owner have write there". That is wrong about a locked ownership
+rule, and wrong in the direction that matters — a later reader could take it as licence for a
+supervisor to edit its own constraints. The blocked verdict is unchanged either way, since
+the fix was always the owner's. `tasks/doc/027` states it correctly.
+
+**What is needed, for whoever picks this up next (the owner's session — not a leg):** a rule
+that, for a link of the form `[decision N](...)`  or `([decisions](...) N)`
 whose href matches `<sub>/decisions/<topic>.md`, looks up N in that sub-project's per-file
 number index (`check-decision-refs.py` already builds this) and fails if the href's own
 topic file is not the one that defines N. The natural home is `check-decision-refs.py`:
