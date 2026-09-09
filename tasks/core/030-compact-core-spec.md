@@ -1,6 +1,6 @@
 # 030 — `embarch-core/spec.md` is 108 bytes into its reserve
 
-**State:** open
+**State:** claimed — leg 062, 2026-09-09
 **Source:** `tasks/core/009` added the `/serial-log` duration/byte-cap row to §5's
 constants table, pushing `spec.md` from 9,019 B to 9,148 B against a 10,240 B
 cap — 89.3%, into the `max(1,200 B, 10%)` reserve band (`DOC-BUDGET.md`).
