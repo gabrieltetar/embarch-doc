@@ -1,6 +1,6 @@
 # study-designer — `MAX_DISCOVERED_SERVICES` row attributes decision 44's finding to decision 57
 
-**State:** claimed — leg 050, 2026-09-08
+**State:** done — leg 050, 2026-09-08
 **Promoted** from `inbox/study-designer-022-decision-57-cited-for-a-number-it-does-not-state.md`
 by leg 048, unchanged apart from this line and the number. The supervisor read the same row at the
 merge, asked the reviewer four questions about it, and did **not** see this one — the reviewer did.
@@ -71,3 +71,23 @@ under one citation.
   this unit: `tasks/study-designer/018-design-md-citations-repo-wide-sweep.md`
   (state: open) explicitly lists `limits.rs` among the 23 files carrying this
   exact defect class (35 occurrences), filed before this unit landed.
+
+## Done
+
+Verified against the sources rather than trusting this file's own reading:
+decision 57 (`decisions/gatt-extract.md`) validates only "three services where
+a bounded read found two" — a static-extraction result, `std`-only, no live
+link involved. Decision 44 (`decisions/ble.md`, `Action::BleSecurity`)'s
+"[Validated on hardware 2026-08-26]" note is the one stating "discovery
+returned 7 services" behind an elevated (encrypted) link. The task file's
+reading was correct.
+
+`interfaces/limits.md`'s `MAX_DISCOVERED_SERVICES` row now credits "3
+declared" to decision 57 (transcribed from `src/limits.rs:80-84`) and "7 in
+total once an encrypted link reaches the rest" to decision 44's
+validated-on-hardware discovery, as two clauses under one row rather than one
+citation covering both. No other line touched. `check-docs.py`: all 10 checks
+green. `interfaces/limits.md` is 10,334 B, not in reserve, no size debt to
+file. No `changelog.d/` fragment filed — this is a citation-accuracy
+correction to an existing row's prose, not a capability change or anything a
+changelog reader would need to know about.
