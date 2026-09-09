@@ -14,7 +14,7 @@ Not:
 
 - **A process supervisor.** No restart loop, no health polling, no resident process. Core's own service install keeps it running.
 - **In the runtime data path.** Nothing routes through it after setup. **If umbrella is deleted from a working machine, the stack keeps working.**
-- **A hardware or build layer, with one exception.** It never links `probe-rs` or `serialport` and never runs a build command; every other capability it appears to have is a shell-out to `embarch-core` or `embarch-api`, or an HTTP call to Core. The exception: `doctor` check 5 reads world-readable `/sys/bus/usb/devices` sysfs attributes in-process (no `probe-rs`, no permission needed) to see a probe an unprivileged enumeration can't (decision 18); its nine vendor IDs are unmeasured (open.md).
+- **A hardware or build layer, with two named exceptions.** It never links `probe-rs` or `serialport`; every other capability it appears to have is a shell-out to `embarch-core` or `embarch-api`, or an HTTP call to Core. **(1)** `doctor` check 5 reads world-readable `/sys/bus/usb/devices` in-process, no elevation, to see a probe an unprivileged enumeration can't ([18](decisions/doctor.md)); its nine vendor IDs are unmeasured (open.md). **(2)** `deploy-core` runs `cargo build` over `embarch-core`'s source ([32](decisions/deploy.md)).
 - **A GUI.** That is [embarch-ui](../embarch-ui/spec.md). What umbrella owes it is a stable machine-readable status contract, which `--json` on `status` and `doctor` is.
 
 ## Shape
