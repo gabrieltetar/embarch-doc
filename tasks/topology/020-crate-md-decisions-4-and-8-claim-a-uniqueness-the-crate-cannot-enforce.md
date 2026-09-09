@@ -1,6 +1,6 @@
 # `crate.md` decisions 4 and 8 claim a uniqueness the crate cannot enforce
 
-**State:** open
+**State:** claimed — leg 050, 2026-09-08
 **Source:** `api/038`, leg 049, 2026-09-08 — filed as a `status.d/` fragment by that unit and
 converted to a task by the supervisor, because `status.d/` is only for the five shared suite-level
 docs and `embarch-topology/decisions/crate.md` is a sub-project doc this scope owns
