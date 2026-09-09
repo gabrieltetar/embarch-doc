@@ -10,6 +10,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions/trace-transfer.md).
 
 ### Changed
+- Decision 23 (outcome decoder) split verbatim from `decisions/trace-chart.md` into `decisions/outcome-decode.md`, clearing its reserve.
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
