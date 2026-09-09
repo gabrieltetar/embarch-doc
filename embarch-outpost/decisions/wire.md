@@ -35,7 +35,7 @@ generator only closes three of the four copies and the fourth still needs
 exactly the read-and-diff logic a checker would have needed anyway. Given that
 the cross-repo half is irreducibly a check, making the in-repo half a check
 too is one mechanism instead of two, and it is the one that already existed in
-shape (`cross_decoder.py`'s sibling-read-and-skip convention, decisions/module.md
+shape (`cross_decoder.py`'s sibling-read-and-skip convention, decisions/testing.md
 decision 22) rather than a new build-time code-generation step in a Zephyr
 module — where a generator bug fails as a build failure in someone else's
 firmware image, not as a test failure in this repo's own suite.

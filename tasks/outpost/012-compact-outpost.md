@@ -35,22 +35,42 @@ the scope directory of the doc being compacted, filed by whoever spends it, in t
 
 ## Done when
 
-- [ ] `open.md` is back under `check-doc-size.py`'s reserve threshold (below 90% of its cap), by
+- [x] `open.md` is back under `check-doc-size.py`'s reserve threshold (below 90% of its cap), by
       either compacting an existing section or splitting by mission.
-- [ ] `decisions/module.md` likewise back under 90%. **`In flux: no` for it too**, with one
+      **Done by squeeze, not split** (open.md has no split seam per the leg's instructions): the four
+      "Structural, and priced" / "Deferred with a named trigger" bullets that were verbatim-or-near
+      restatements of an already-settled decision paragraph were deleted and replaced with a one-line
+      citation to that paragraph — `decisions/manifest.md` decision 9 (the dirty-tree hole, and the
+      DUT staleness-check deferral), `decisions/tracing.md` decision 19 (self-exclusion's uncovered
+      interval and whole-vector ISR limit), `decisions/naming.md` decision 8 (the non-zero-offset
+      thread miss), and `decisions/module.md` decision 1 (the portable-core deferral). Now
+      3,606/5,120 B (70.4%).
+- [x] `decisions/module.md` likewise back under 90%. **`In flux: no` for it too**, with one
       exception a compactor must respect: decision 22's third paragraph now carries the two
       verification runs taken on 2026-09-07 (cross-decoder `PASS` on 831 rows of 41 frames with the
       siblings present; `SKIP:` plus the trap's note with them absent). Those are the only written
       evidence that the reordering and the trap actually work, and the file is the only place they
       exist.
-- [ ] **Must not delete:** in `decisions/module.md`, decision 22's *"Rejected: fail the leg when the
-      fixtures are missing"* paragraph and the reason — a repo cannot assert its own tests red over
-      a fact only a sibling checkout controls — because a later reader meeting a silent skip will
-      propose exactly that, and the two verification runs named above. In `open.md`: the "one
-      binding number" entry (the 40 KB ring ceiling and the
-      19.7%/36% burst-loss figures), the two clock-backwards facts under "Structural, and priced",
-      and the CI gap just added under "Deferred with a named trigger" — all load-bearing, measured
-      facts with no other home.
-- [ ] Gate green.
+      **Done by split**: decision 22 (test-harness leg ordering and the skip/fail split) is a
+      different mission from decisions 1/14/21 (the module's own shape and boundary), moved
+      verbatim to new `decisions/testing.md`, indexed in `decisions.md`. Every inbound reference to
+      "decisions/module.md decision 22" was repointed to `decisions/testing.md` — in
+      `decisions/wire.md`, `open.md`, and in the code repo: `README.md`, `tests/run-all.sh`,
+      `tests/vocab_check.py`. Now `module.md` 3,632/8,192 B (44.3%); `testing.md` 4,744/8,192 B
+      (57.9%, under its 12 KB decision-group cap too).
+- [x] **Must not delete:** in `decisions/module.md` (now `decisions/testing.md`), decision 22's
+      *"Rejected: fail the leg when the fixtures are missing"* paragraph and the reason — a repo
+      cannot assert its own tests red over a fact only a sibling checkout controls — because a later
+      reader meeting a silent skip will propose exactly that, and the two verification runs named
+      above: all present, verbatim, in `decisions/testing.md`. In `open.md`: the "one binding number"
+      entry (the 40 KB ring ceiling and the 19.7%/36% burst-loss figures), the two clock-backwards
+      facts under "Structural, and priced", and the CI gap just added under "Deferred with a named
+      trigger" — all present, unchanged.
+- [x] Gate green. `check-docs.py`: all 10 checks green. `check-client-names.py --repo <code
+      worktree>`: green (folded into check-docs.py's run above). `check-ownership.py --scope outpost`
+      on both worktrees: green (see report). `embarch-outpost` has no `Cargo.toml`; its
+      `tests/unit` is a Zephyr suite this environment cannot build (no `west`, no `ZEPHYR_BASE`) — not
+      claimed. The three host-Python legs that need neither (`decoder_unit.py`, `vocab_check.py`,
+      `cross_decoder.py`) were run directly and pass/SKIP correctly with the sibling repos absent.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
