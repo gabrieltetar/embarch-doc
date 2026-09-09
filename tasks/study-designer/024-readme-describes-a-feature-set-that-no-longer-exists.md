@@ -1,11 +1,23 @@
 # 024 — `README.md` describes a feature set that no longer exists
 
-**State:** open
+**State:** claimed — leg 059, 2026-09-09, burndown
 **Source:** `tasks/study-designer/018`, found while sweeping stale `design.md` citations —
 out of that unit's scope (citation format, not content).
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Supervisor note — leg 059, doc-size reserve in `study-designer`
+
+**In reserve:** `embarch-study-designer/spec.md` **640 B left**, `open.md` **458 B left**. Both are
+already filed under `tasks/study-designer/006-compact-study-designer.md`, which is **open, not
+blocked** — so you do **not** compact them; just plan your edits against those numbers. If your work
+pushes a different doc into reserve, file `tasks/study-designer/<NNN>-compact-study-designer.md`
+in the same commit.
+
+**This leg runs in burndown, which forbids authoring a new numbered decision.** This is a README
+correction; if you find something that looks like it needs a decision, report it rather than
+writing one.
 
 ## What
 
