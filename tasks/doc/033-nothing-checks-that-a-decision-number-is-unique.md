@@ -15,7 +15,7 @@ it is visible in the queue rather than nowhere. Set by the supervisor, leg 062,
 `embarch-outpost/decisions.md` opens with the rule, in bold, as its third line:
 
 > **Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused
-> ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). `scripts/check-decision-refs.py` resolves every one.
+> ([DOC-CONVENTIONS.md](../../DOC-CONVENTIONS.md)). `scripts/check-decision-refs.py` resolves every one.
 
 The second sentence is what makes the first sentence look enforced. It is not. `check-decision-refs.py`
 resolves a **citation** to a decision — it answers "does decision N exist in this sub-project" — and
