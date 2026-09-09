@@ -1,6 +1,6 @@
 # 043 — 68 citations in the `embarch-umbrella` crate point at a `design.md` this sub-project no longer has
 
-**State:** open
+**State:** claimed — leg 062, 2026-09-09
 **Source:** found by the supervisor while landing `umbrella/035`, leg 060, 2026-09-09. The one line
 `035` edited (`Cargo.toml`'s boundary comment) ended in `(design.md §1)`; fixing that one citation
 in the fold turned up 67 more.
