@@ -1,6 +1,6 @@
 # 029 — Compact `embarch-core/decisions/platform.md`
 
-**State:** open
+**State:** claimed
 **Source:** `scripts/check-doc-size.py` — entered reserve on the `suite/021` fold (leg 051,
 2026-09-08), which appended a **Corrected 2026-09-08** paragraph to decision 1/2/7/17 retiring its
 "CI everywhere" clause.
