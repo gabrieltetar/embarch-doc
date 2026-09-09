@@ -58,7 +58,65 @@ change what this file already says about it).
 
 ## Done when
 
-- [ ] `crate.md` is out of reserve, or the task says why it cannot be and
+- [x] `crate.md` is out of reserve, or the task says why it cannot be and
       what was deleted or split instead.
-- [ ] Whichever it was — split or delete — is stated, with the byte numbers
+- [x] Whichever it was — split or delete — is stated, with the byte numbers
       before and after.
+
+## Resolution (leg 057, 2026-09-09)
+
+**Split, not deletion.** Decision 23 (storage location) moved verbatim, byte for
+byte, out of `decisions/crate.md` into a new file `decisions/storage.md`. No
+decision was renumbered, retired, or authored — this leg runs in burndown,
+which forbids a new numbered decision, and none was needed: a split was
+sufficient.
+
+**Byte counts:** `decisions/crate.md` **11,474 -> 7,782 B** (63.3% of the 12,288
+cap; `check-doc-size.py --pressure` now reports it `PAID`). New file
+`decisions/storage.md`: **4,041 B**, well inside the same 12,288 B cap.
+
+**Inbound links checked and repointed:**
+- `scripts/check-duplication.py topology` — clean, no 12+-word overlap.
+- Grepped the whole tree for `crate.md#23`, `[decision 23]`, `[decisions/crate.md]`,
+  and every `decision 23` occurrence. The only *link* to the file was
+  `embarch-topology/decisions.md`'s routing table row; every other hit was a
+  bare `decision 23` citation (DOC-CONVENTIONS.md: a decision number addresses
+  the sub-project, not a file, so those needed no repointing) or another
+  sub-project's own, unrelated decision 23 (`embarch-umbrella/decisions/mcp.md`,
+  `embarch-ui`, `embarch-core`, `embarch-dev-bench`, `embarch-study-designer`
+  each number their own decisions independently).
+- `embarch-topology/decisions.md` updated: the `decisions/crate.md` row's
+  decision list dropped `23` (now `1, 2, 3, 4, 6, 8, 13`), and a new row for
+  `decisions/storage.md` (`23`) was added.
+- `embarch-topology/spec.md`'s citation of "(decision 23)" is a bare number,
+  not a file link, so it needed no change and still resolves correctly.
+
+**Deletions, enumerated (nothing summarised):**
+- The entire decision 23 entry — heading through its closing paragraph — was
+  cut from `decisions/crate.md` (5 paragraphs: the storage-path claim, the
+  "why the same directory" paragraph, the "settled from both crates' source"
+  paragraph, the "not a new fact for detection to derive" paragraph, and the
+  closing "embarch-core's own docs already state its half" paragraph).
+- Nothing else in `crate.md` was touched or reworded. No sentence was deleted
+  from decisions 1, 2, 3, 4, 6, 8, or 13.
+- The full decision-23 text was preserved verbatim in the new
+  `decisions/storage.md` — this is a move, not a compaction-by-content cut.
+
+**Human question (`DOC-COMPACTION-PASS.md`), answered honestly:** yes.
+`spec.md` already states the one-line declared fact ("Storage is one file
+under a machine-wide directory this crate owns... (decision 23)") and points
+at the decision for the reasoning; nothing in `spec.md` depended on decision 23
+sitting in `crate.md` specifically rather than its own file — the decisions
+layer's job is "why", reached by number, not by which of the topic files holds
+it. Anyone working on the crate today can still load `spec.md` for the current
+shape, and follow the decision number to `decisions/storage.md` (or any other
+topic file) for the reasoning behind a specific choice, exactly as before the
+split.
+
+**Gate:** `scripts/check-docs.py` — all 10 checks green. `check-ownership.py`
+— all changed paths owned by `topology` (3 in `embarch-doc`, 0 in the code
+repo — this is a pure doc split, no code change). `check-client-names.py` —
+clean against the denylist.
+
+No new decision was authored. No hardware change. No code-repo change: the
+`embarch-topology` code worktree has nothing to commit.
