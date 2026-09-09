@@ -15,6 +15,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- `outpost_priv.h`'s header comment no longer prices a new record kind as a layout-version bump; it agrees with `interfaces/wire.md` now.
 - outpost README Status no longer calls overhead "uncharacterised"; states the measured 1.6%/78.1% pair, spec.md §4.
 - Source-comment citations repointed from the deleted design.md to decisions.md, interfaces/wire.md, interfaces/integration.md, spec.md §4.
 - `tests/vocab_check.py` diffs record kinds and header flags against `src/outpost_priv.h`; see decisions/wire.md decision 23.
