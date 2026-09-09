@@ -1,6 +1,6 @@
 # `study-designer/007`'s Source cites the wrong `open.md`
 
-**State:** claimed by leg 049, 2026-09-08
+**State:** done — leg 049, 2026-09-08
 **Source:** owner's session 2026-09-07, found while parking the bench queue
 **Scope:** study-designer
 **Hardware:** none
@@ -31,11 +31,11 @@ check. It was found by reading, which is the only way it can be.
 
 ## Done when
 
-- [ ] 007's `**Source:**` names `embarch-dev-bench/open.md` and quotes that file verbatim as
+- [x] 007's `**Source:**` names `embarch-dev-bench/open.md` and quotes that file verbatim as
       it stands at the time of the fix.
-- [ ] `**State:** blocked` and its parking note are unchanged.
-- [ ] Nothing else in 007 is edited — its `Done when` list is deliberately unmet.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `**State:** blocked` and its parking note are unchanged.
+- [x] Nothing else in 007 is edited — its `Done when` list is deliberately unmet.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Supervisor notes — leg 049
 

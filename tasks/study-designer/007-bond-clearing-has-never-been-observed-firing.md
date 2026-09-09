@@ -8,7 +8,7 @@ reason to try the bench again.
 chance of failing low and stood the attempt down. That is a risk accepted, **not an observation** —
 leg 039 stopped at step 1 and never connected, so nothing about bond clearing was measured. The
 `Done when` list below is unchanged and still unmet.
-**Source:** `embarch-study-designer/open.md` — "Bond clearing has never been observed firing on real hardware. Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean."
+**Source:** `embarch-dev-bench/open.md` — "Bond clearing has never been observed firing on real hardware. Decision 11's clearing step has only been reasoned about; nothing has shown a study starts from a genuinely unbonded link rather than one that happened to be clean. Attempted 2026-09-07 (leg 039) and stopped at step 1, never connected — the owner then judged the failure risk low and parked the bench work, so this is an accepted risk and still not an observation."
 **Scope:** study-designer
 **Hardware:** bench
 **Owner:** no
