@@ -1,6 +1,6 @@
 # 038 — "Am I in WSL2" has three implementations and two incompatible rules, two of them inside one binary that already links the canonical predicate
 
-**State:** open
+**State:** claimed by leg 049, 2026-09-08
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** api
 **Hardware:** none
@@ -74,3 +74,60 @@ implementation is unit-tested against its own rule, so nothing compares them.
 **Adjacent:** `embarch-umbrella`'s copy disappears with the
 `umbrella-three-mirrors-of-embarch-api…` drop in this batch if that one lands. Landing this first
 means umbrella inherits the fix rather than porting it.
+
+## Supervisor notes — leg 049
+
+**You own `api` and only `api`.** `embarch-topology` is a shared crate you *depend on*, not one you
+may write. If the honest fix turns out to require changing `detect_wsl2` itself — the task's own
+"named mode" suggestion would — **do not make that change.** Write the `embarch-api` side against
+the predicate as it stands today, and file the topology-side change as a drop in
+`/home/gabriel/Github/embarch/embarch-doc/inbox/` (that absolute path, the main checkout — a drop
+written into your worktree is invisible at cleanup and has been lost twice this week). Likewise
+`embarch-umbrella/src/token.rs`: the third copy is named in this task for context only and is
+`umbrella/036`'s to remove. Touching it is out of scope.
+
+**Re-derive every cited line number before acting on it.** The task quotes
+`embarch-topology/src/software.rs:195-201`, `token_discovery.rs:81-87` and `:76-80`, and
+`embarch-umbrella/src/token.rs:97-104` from a 2026-09-06 survey. **Three consecutive legs have now
+found task-file line numbers that had aged out**, most recently `core/010` this same leg, where the
+cited span had become a doc comment. Find the construct, not the line, and write any drift into this
+task file.
+
+**The union-versus-narrow question is the substance, and the task has already reasoned it one way.**
+`token_discovery`'s stated reason for its narrower rule is that `$WSL_DISTRO_NAME` can be scrubbed by
+an MCP launcher — which argues for a *union* of signals, and `detect_wsl2` already is that union.
+**Check that reasoning against the code rather than inheriting it.** Note the two rules are not
+merely different, they disagree in a specific direction: `is_wsl2` accepts a `/proc/version`
+containing `wsl` but not `microsoft`, which `detect_wsl2` rejects. If delegating genuinely loses a
+case that matters, **say so and leave the second implementation in place with the reason recorded
+next to it** — the first Done-when box explicitly allows that outcome, and it is a real answer, not
+a failure.
+
+**Doc-size reserve for `api`, and two of these are parked behind blocked compaction tasks:**
+
+- `embarch-api/decisions/tool-wrapping.md` — 12222/12288 B, **66 bytes left**, parked by
+  `tasks/api/047` (`In flux: yes`)
+- `embarch-api/open.md` — 4734/5120 B, 386 bytes left, parked by `tasks/api/026` (`In flux: yes`)
+- `embarch-api/spec.md` — 9087/10240 B, 1153 bytes left, same parked task
+
+**Do not write into `decisions/tool-wrapping.md`.** Sixty-six bytes is not headroom and this is not
+a tool-wrapping decision. If this unit lands a numbered decision, `embarch-api/decisions/core-link.md`
+is the file whose subject this is (token discovery and which Core to talk to) and it is currently
+*out* of reserve at 88.6%. **State the placement argument before you look at the sizes, not after** —
+a supervisor pre-picking a decisions file to route around a blocked compaction task, then finding the
+argument afterwards, is a defect this log has recorded across three consecutive legs, and I am trying
+not to make it a fourth by naming a file here. If `core-link.md` is the wrong home on the merits, say
+so and put the decision where it belongs.
+
+**If your work pushes `embarch-api/open.md` into its last 10% — it has 386 bytes — compact that one
+file as part of this unit** rather than filing a new debt. Its compaction task `api/026` is blocked
+on `In flux: yes` for the *event-stream* half of a different file, which parks the pass but not the
+reserve; carry `api/026`'s `Must not delete:` list and close only `open.md`'s item.
+
+**The third Done-when box is the one people skip.** `embarch-topology/decisions/crate.md` decisions
+4 and 8 assert this consolidation is already done and that "there is no way for the two to disagree,
+since there is only one of them". Both are false as written. That is a `status.d/api-*` fragment, and
+it is owed **whichever way you resolve the predicate question** — if you leave two implementations
+with a recorded reason, those decisions are still false and still need correcting.
+
+**Do not touch hardware.** No live Core, no token read from a real install, no study.
