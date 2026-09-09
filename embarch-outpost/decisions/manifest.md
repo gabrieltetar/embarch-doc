@@ -29,9 +29,9 @@ The DUT build emits it — marker IDs to names, thread addresses to names, the l
 
 **The same header makes a DUT staleness check possible**, mirroring the one that already exists for bench firmware: the running firmware reports its outpost version, **and that can be compared against the module revision currently checked out.** Not built; **named because the mechanism is now free.**
 
-An operator may override this refusal, and the analogous one in [clocks.md](clocks.md) decision 18, at the command line: decision 23 below.
+An operator may override this refusal, and the analogous one in [clocks.md](clocks.md) decision 18, at the command line: decision 24 below.
 
-### 23 — An operator may override either post-hoc refusal explicitly, at the command line, once per invocation, and the override is never a config default
+### 24 — An operator may override either post-hoc refusal explicitly, at the command line, once per invocation, and the override is never a config default
 
 Decision 9's manifest mismatch and decision 18's unverified join are the suite's two post-hoc refusals: both protect a reader from a rendering that is plausible and wrong, and both are one flag away from an operator proceeding anyway — `--allow-build-id-mismatch` and `--allow-unverified-join` in `scripts/decode_outpost.py`.
 

@@ -25,3 +25,6 @@
 - wire.md now matches the firmware: `cycles_per_sec` in the header, kinds 9/10 and flag BIT(6); integration.md lists every Kconfig symbol.
 - embarch-outpost decision 16 still concluded Phase E needed a wire; it needed the right board target.
 - `embarch-outpost` §1/§2 still described record layout 2 ("frame resolution, not cycle resolution") after layout 3 restored the DUT clock; `spec.md` now reflects the current state.
+
+### Decided
+- outpost decision 24: both `--allow-*` override flags are one posture, opt-in per invocation, never a default.
