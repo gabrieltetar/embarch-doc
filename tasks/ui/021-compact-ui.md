@@ -17,6 +17,11 @@ whose reserve line is 3,920 B (`DOC-BUDGET.md`'s `RESERVE_FLOOR`); `DOC-COMPACTI
 **Owner:** no
 
 **Compacts:** embarch-ui/open.md
+**Size debt due:** 2026-09-23 — added 2026-09-09 by `tasks/doc/030`, which made a date
+mandatory on a debt whose only item is `blocked`: `queue-status.py` never offers a blocked
+task to a leg, so the date is the *only* thing that brings this one back. Set from the day
+the debt opened (2026-09-09) plus two weeks, which is shorter than the loosest entries in
+`--due` on purpose — a blocked debt has one drain and an open one has two.
 **In flux:** **yes, and unevenly across the file's five bullets.** The row-cap
 bullet `ui/004` just wrote is settled unless the cap is revisited (it says what
 would reopen it: the `/study/{id}/streams` request-path budget, unmeasured).

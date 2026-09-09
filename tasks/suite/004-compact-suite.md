@@ -6,7 +6,13 @@ files crossed their reserve lines inside that fold, one by a supervisor edit and
 assembler run.
 **Scope:** suite
 **Hardware:** none
-**Compacts:** embarch-decision-reversals.md, ~~suite/features.md~~, suite/user-guide.md
+**Compacts:** embarch-decision-reversals.md, suite/user-guide.md
+
+**`suite/features.md` was struck off this line on 2026-09-09**, having been paid on 2026-09-07 when
+an assembled file lost its byte cap outright (`DOC-BUDGET.md`) — see the `features.md` section
+below, which stands. It had been left on the line wrapped in `~~…~~`; **that line is data** and
+`check-task-state.py` now fails on a struck-through entry, because leg 057's richer strike-through
+of the same shape stopped `check-doc-size.py` recognising the line at all and failed the gate.
 **Size debt due:** 2026-10-10
 **In flux:** yes — see "Why blocked". The three files are in flux for **different reasons**,
 and only one of them is the ordinary kind.

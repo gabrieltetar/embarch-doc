@@ -83,6 +83,15 @@ diff and is an owner act. **A leg spends its first unit on the oldest overdue
 entry**, blocked or not (`leg.md`), so docs debt costs a scheduled share of
 throughput instead of ambushing whichever unit touched a full file.
 
+**So a `blocked` debt with no date fails the gate, in reserve as well as over
+the limit** (2026-09-09, `tasks/doc/030`; the over-limit rule already demanded
+one). That is the whole residue of the absorption: an *open* debt in reserve is
+offered to a leg on its own, so its clock is a backstop, while a blocked one is
+never offered and the clock is its only drain. With one, `blocked` is a resting
+state and `In flux: yes` may keep implying it; without one, it is the bucket.
+`In flux:` is also answered **per file** — `tasks/README.md` has that rule and
+why a per-task field kept outliving the file it was about.
+
 ## The ratchet moves in steps
 
 A baseline records where an over-cap file has got to and **never rises**. It

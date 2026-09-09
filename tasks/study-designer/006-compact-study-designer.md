@@ -1,6 +1,7 @@
 # 006 — Compact `embarch-study-designer/decisions/crate.md`
 
-**State:** open — **unparked by leg 056, 2026-09-08.** The `In flux: yes` below is about
+**State:** open — **unparked by leg 056, 2026-09-08; its reasoning half-corrected 2026-09-09, see
+`In flux:` below.** The `In flux: yes` below is about
 `crate.md`'s FFI-shape content, and `crate.md` is struck off the `Compacts:` line: it was paid.
 This task's own "What this task is still for" section says so explicitly, and the two items that
 remain — `spec.md` and `open.md` — were never covered by that park; they were added by the
@@ -16,9 +17,31 @@ added decision 65 (`agent/study-designer/005-release-workflow-decision`).
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** ~~embarch-study-designer/decisions/crate.md~~, embarch-study-designer/spec.md, embarch-study-designer/open.md
+**Compacts:** embarch-study-designer/spec.md, embarch-study-designer/open.md
+
+**`decisions/crate.md` was struck off this line on 2026-09-09** — it was paid on 2026-09-07 by the
+mission split into `decisions/ci.md` (see `## Done when`). It had been left on the line wrapped in
+`~~…~~`, which the line's parsers do not understand: `check-doc-size.py` yields it as a path
+matching no doc and says nothing, and leg 057's richer strike-through of the same shape stopped
+that parser recognising the line at all and failed the whole gate. **The line is data** —
+`check-task-state.py` now fails on a struck-through entry for that reason.
 **Size debt due:** 2026-10-04
-**In flux:** yes
+**In flux:** **per file, and the two remaining answers differ** — answered 2026-09-09 by
+`tasks/doc/030`, which made this field per-file rather than per-task.
+- `embarch-study-designer/spec.md` — **no.** It entered reserve on the 2026-09-07 reserve-floor
+  change, `study-designer/019` pushed it to 9,600 B by adding the registry paragraph, and the one
+  other open `study-designer` task (`025`, the README layout table) does not touch it. Compactable
+  now, and this is why the task stays `open`.
+- `embarch-study-designer/open.md` — **yes, still.** *This corrects leg 056's unpark note above,*
+  which said the two remaining items "were never covered by that park": the FFI park's own argument
+  in `## Why now` names **`open.md`'s "nothing proves the FFI staticlib actually cross-links"
+  bullet** alongside decision 64's `ffi` paragraph, so `open.md` was always inside it. **Unparked
+  by:** the dev-bench FFI staticlib cross-build landing, as below.
+
+**So the state is `open`, not `blocked`, and that is the rule rather than a concession**: a
+compaction task is `blocked` only when *every* file on its `Compacts:` line is in flux, because
+`blocked` has to keep meaning "nothing here can be done". Whoever dispatches this compacts
+`spec.md` and leaves `open.md` alone.
 **Must not delete:** decision 64's measured `cargo tree -f "{p} {f}"` two-column result and
 its counterfactual ("16 errors" against "passes 9/9") — that is the whole evidence the two
 narrow cells must be `cargo build`, and it reads as an assumption the moment it is shortened

@@ -34,25 +34,52 @@ for the same reason `tasks/doc/028` says not to: every one of those instances
 was resolved by a judgement about what actually occurred, and a script that
 guessed would turn a loud wrong field into a quiet one.
 
-Two rules, and only one of them fails the gate:
+Four rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
      exactly -- no trailing comma, no `partially`, no `closed`. Prose follows
-     after a dash, comma or parenthesis and is never inspected. **This fails.**
-     It is mechanical, it has no policy in it, and it had three live victims.
-  2. **`In flux: yes` implies `blocked`** (`.claude/leg.md`). **This warns.**
+     after a dash, comma or parenthesis and is never inspected. It is
+     mechanical, it has no policy in it, and it had three live victims.
+  2. **`In flux:` token zero is `yes`, `no` or `per`** -- the third being
+     `per file`, for a task naming several docs whose answers differ.
+  3. **`In flux: yes` implies `blocked`** (`.claude/leg.md`), *unless the task
+     is `Owner: required`*, which already makes it undispatchable.
+  4. **`In flux: per` names every path on the `Compacts:` line** inside the
+     `In flux:` block itself, so "per file" cannot be an answer that declines
+     to say which file.
 
-**Why (2) only warns, which is a judgement and should be read as one.** The rule
-is real and `.claude/leg.md` states it plainly. But four tasks on `main` violate
-it today and all four have a live, well-argued flux reason, so enforcing it
-would move four more size debts into `blocked` -- and `check-doc-size.py`'s own
-header calls `blocked` "the parked state that absorbed 13 of 28 debts" and
-treats that absorption as the problem it is trying to end. So a hard rule here
-would satisfy one rule by feeding the failure mode of another, on a corpus where
-the second one is already losing. Reconciling them is a decision nobody has
-made; making it silently, inside a checker, by picking whichever rule was easier
-to code, is precisely the move `tasks/doc/028` exists to stop. Warning keeps it
-visible until someone decides.
+**Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
+where that got decided.** The holding position was that `.claude/leg.md` and
+this repo's size ledger pointed opposite ways: enforcing would move four more
+debts into `blocked`, and `check-doc-size.py`'s header called `blocked` "the
+parked state that absorbed 13 of 28 debts". Both sides turned out to be right
+and **the field was wrong.**
+
+  * **`In flux:` is a per-FILE judgement that was being recorded in a per-TASK
+    field.** A task names several docs, one of them is paid and struck off the
+    `Compacts:` line, and the flux answer that belonged to *it* stays behind
+    reading as though it covered the rest. Three of the four live violations
+    were exactly that: `core/022`'s block argued about `interfaces.md` (closed
+    2026-09-07), `dev-bench/012`'s about `decisions/ble.md` (struck off by leg
+    057), and `study-designer/006` had it backwards -- its unpark note claimed
+    the remaining files were never parked, while the park's own argument names
+    `open.md`'s FFI bullet outright. Rule 4 is what stops the field drifting
+    from the line again.
+  * **`blocked` is no longer absorbing**, so rule 3 costs what it used to
+    cost. Every reserve debt carries a `**Size debt due:**` date and a leg
+    spends its first unit on the oldest overdue entry *blocked or not*
+    (`.claude/leg.md`); `check-doc-size.py` fails a blocked debt with no date
+    at all. The absorption that phrase describes was measured before the clock
+    existed.
+  * **`blocked` keeps meaning "nothing here can be done"**, so a task is
+    blocked only when *every* file on its line is in flux. A mixed task stays
+    `open` and its dispatch note says which file to leave alone -- which is
+    why `study-designer/006` is `open` and `dev-bench/012` is `blocked`.
+  * **`Owner: required` is the exemption**, and it is `tasks/doc/024`'s
+    argument generalised: ownership already keeps every agent off the task, so
+    `blocked` would protect nothing and would hide the debt from the one actor
+    who can pay it. `DOC-PROTOCOL.md` and `DOC-COMPACTION.md` are reserved
+    forever, so this case recurs by construction.
 
 Usage:
     scripts/check-task-state.py            check tasks/ and inbox/
@@ -79,6 +106,28 @@ DIRS = ("tasks", "inbox")
 
 STATE_RE = re.compile(r"^\*\*State:\*\*\s*(.+?)\s*$", re.M)
 IN_FLUX_RE = re.compile(r"^\*\*In flux:\*\*\s*(\S+)", re.M)
+COMPACTS_RE = re.compile(r"^\*\*Compacts:\*\*[ \t]*(.+)$", re.M)
+OWNER_RE = re.compile(r"^\*\*Owner:\*\*\s*(\S+)", re.M)
+# `In flux:` answers. `per` is `per file`/`per-file`: several docs on one
+# `Compacts:` line whose answers differ, which is the common case once a file
+# is paid and struck off. See the header.
+FLUX_LEGAL = ("yes", "no", "per")
+# Where the `In flux:` block ends: the next task field, or the first section.
+# The block matters because rule 4 is about what the block itself names -- a
+# path mentioned only on the `Compacts:` line is not the field saying which.
+NEXT_FIELD_RE = re.compile(
+    r"^(?:\*\*(?:State|Source|Scope|Hardware|Owner|Compacts|Size debt due|"
+    r"Must not delete|Depends on|Blocks):\*\*|## )", re.M)
+
+
+def flux_block(text: str) -> str:
+    """The `In flux:` field's own text, field label through to the next field."""
+    m = IN_FLUX_RE.search(text)
+    if not m:
+        return ""
+    rest = text[m.start():]
+    nxt = NEXT_FIELD_RE.search(rest, 1)
+    return rest[: nxt.start()] if nxt else rest
 
 
 def token(raw: str) -> str:
@@ -132,10 +181,57 @@ def main() -> int:
                 f"\n    every consumer reads `split()[0]`, so this file is "
                 f"whatever `{tok}` sorts into -- for `queue-status.py` that is "
                 f"`other`, i.e. not dispatchable")
+        # The `Compacts:` line is DATA, and a struck-off path must be removed
+        # rather than annotated in place. Leg 057 struck one through with
+        # `~~...~~` plus prose and `check-doc-size.py` stopped recognising the
+        # line at all, reporting two filed files as unfiled and failing the
+        # whole gate. A bare `~~path~~` does not break that parser today -- it
+        # yields a junk path that matches no doc -- which is worse, because it
+        # is silent. `study-designer/006` was carrying one on 2026-09-09.
+        for m in COMPACTS_RE.finditer(text):
+            if "~~" in m.group(1):
+                fails.append(
+                    f"{rel}\n    `Compacts:` carries a struck-through path: "
+                    f"{m.group(1).strip()[:80]}\n    that line is parsed. "
+                    f"Delete the paid path from it and say so in the body -- "
+                    f"leg 057\n    broke the size gate annotating one in place.")
+
         flux = IN_FLUX_RE.search(text)
-        if flux and flux.group(1).lower().strip("*_`.,") == "yes" and tok != "blocked":
-            warns.append(
-                f"{rel}: `In flux: yes` but state is {tok!r}")
+        if flux:
+            answer = flux.group(1).lower().strip("*_`.,:-")
+            owner = OWNER_RE.search(text)
+            owner_req = bool(owner) and owner.group(1).lower().strip(
+                "*_`.,") == "required"
+            if answer not in FLUX_LEGAL:
+                fails.append(
+                    f"{rel}\n    `In flux:` answer {answer!r} is not one of "
+                    f"{', '.join(FLUX_LEGAL)}\n    `per` is `per file`, for a "
+                    f"task whose docs do not share one answer -- see this "
+                    f"script's header")
+            elif answer == "yes" and tok != "blocked" and not owner_req:
+                fails.append(
+                    f"{rel}\n    `In flux: yes` but state is {tok!r}\n"
+                    f"    every file on the `Compacts:` line is in flux, so "
+                    f"nothing here is dispatchable: `.claude/leg.md`. Set "
+                    f"`blocked`\n    and name what unparks it -- with a "
+                    f"`**Size debt due:**` date, which is what keeps a park "
+                    f"from\n    absorbing. If the answer differs per file, say "
+                    f"`per file` and name each; if only SOME files\n    are in "
+                    f"flux the task stays `open` and its dispatch note says "
+                    f"which to leave alone.")
+            elif answer == "per":
+                block = flux_block(text)
+                named = []
+                for m in COMPACTS_RE.finditer(text):
+                    named += [t.strip().strip("`,~ ") for t in m.group(1).split(",")]
+                missing = [q for q in named if q and q not in block]
+                if missing:
+                    fails.append(
+                        f"{rel}\n    `In flux: per file` but the block names no "
+                        f"answer for: {', '.join(missing)}\n    a per-file "
+                        f"answer that does not say which file is the field "
+                        f"drifting from the\n    `Compacts:` line again, which "
+                        f"is what tasks/doc/030 found on three of four tasks.")
 
     if args.list:
         for k, v in sorted(seen.items(), key=lambda kv: -kv[1]):

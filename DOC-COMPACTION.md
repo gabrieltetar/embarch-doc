@@ -8,13 +8,17 @@
 
 **Git is not a fallback here, it is the design:** every deletion is one `git log -p` away, forever, and that is what makes these deletions safe rather than reckless.
 
+**Lossy licences dropping a whole topic; it never licences dropping a clause inside a topic you are keeping.** The reader of a dropped topic knows to go to git. The reader of a quietly shortened paragraph does not know anything was shortened, and on 2026-09-09 read a live API parameter out of `embarch-ui` decision 11 that way — so "only invariants matter, texture is allowed to go" is **rejected**, and [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md)'s *summarising instead of choosing* failure mode was already the same rule from the other end.
+
 Three practices:
 
 1. **Every file has a size cap by role**, enforced as a ratchet (§2).
 2. **A sub-project is four small files, not one big one** (§3).
 3. **History does not live in a doc at all** — `changelog.d/` fragments, assembled into `history/` (§4).
 
-**How a doc is made smaller is [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md)** — the procedure, the gate, the failure modes and the hot/cold test. This file is the budget every session writing a doc needs; that one is needed only while compacting.
+**Three files, and this is the first.** This one is the invariant and the shape of the corpus: why compaction happens at all, and what a compacted sub-project looks like when it is done. [DOC-BUDGET.md](DOC-BUDGET.md) is what a doc may *weigh* — the caps table, the ratchet, the reserve, the debt ledger, the per-decision cap. [DOC-COMPACTION-PASS.md](DOC-COMPACTION-PASS.md) is how a doc is actually made smaller — the procedure, the gate, the failure modes and the hot/cold test.
+
+**So this file alone cannot tell you whether a given doc should be compacted today, and since 2026-09-07 it is not meant to:** that answer is a byte count, and the byte counts left with §2. What it answers alone is the question that comes first and that a session gets wrong — what compaction is *for*, and therefore which of two files to write. Deciding needs this one and `DOC-BUDGET.md` together; compacting needs all three.
 
 ## 2. The budget
 

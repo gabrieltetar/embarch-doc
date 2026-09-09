@@ -1,11 +1,16 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** open — **partially closed**: leg 050, 2026-09-08, dispatched and closed as a **split only**.
+**State:** blocked — **corrected from `open` 2026-09-09 by `tasks/doc/030`.** `In flux:` below is
+`yes` for both remaining files and it is re-argued there on live grounds, so `blocked` is the state
+the vocabulary means and `check-task-state.py` now fails on the other spelling. It is not a park
+that absorbs: `**Size debt due:** 2026-09-22` is on this file, and a leg spends its first unit on
+the oldest overdue ledger entry whether or not the item is blocked (`.claude/leg.md`).
+**What unparks it** is on the `In flux:` line.
+**Partially closed**: leg 050, 2026-09-08, dispatched and closed as a **split only**.
 `decisions/ble.md` split verbatim into `decisions/ble.md` (pairing/security: 11, 15, 33, 34, 37;
 7.7 KB) and the new `decisions/scanning.md` (addressing/scan-time discovery: 17, 23, 31, 32, 44;
 4.8 KB), both out of reserve. `spec.md` and `open.md` are still in reserve and untouched — those
-are squeezes, blocked by the same `In flux: yes` this split was narrowed around. This task stays
-open for that remaining half.
+are squeezes. This task stays alive for that remaining half.
 **Source:** `check-doc-size.py --pressure`, run during `tasks/dev-bench/009` — decision 23's
 amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION.md` §2
 **Scope:** dev-bench
@@ -28,10 +33,23 @@ no debt filed* — the parser had stopped recognising the line at all. The `Comp
 `In flux: yes` block below, which describes `decisions/ble.md`** — the file that is now paid. Read
 that park against `DOC-BUDGET.md`'s split-first rule before assuming it blocks these two; a verbatim
 split restates nothing, so `In flux` cannot forbid one.
-**In flux:** yes — this file has taken two live corrections recently: decision 31 (16-bit UUIDs
-reported two bytes out of place) and decision 23's amendment landed by this same commit. BLE is an
-active area of the dev-bench firmware; do not compact ahead of the next correction landing, and
-re-check this file's content against `git log` immediately before writing anything shorter.
+**In flux:** **yes for both files still on the line — but re-argued, because the block that used to
+carry this answer was about a file that has left it.** Corrected 2026-09-09 by `tasks/doc/030`,
+which found `In flux:` is answered *per file* and that this field had been left behind by
+`decisions/ble.md` when leg 057 struck it off `Compacts:`. The paragraph directly above already
+said so. **The answer for `spec.md` and `open.md` is still yes, on the `## Blocked` section's own
+grounds and not on the quoted block's:** five `dev-bench` tasks are open, two of them
+(`007`, `008`) are advertiser-census work that amends exactly these files, and both remaining items
+are squeezes with no seam — so shortening either ahead of that lands a clean statement of something
+about to change. **What unparks it:** the next `dev-bench` unit to write `spec.md` or `open.md`
+compacts it in the same commit carrying the `Must not delete:` list below (`DOC-BUDGET.md`'s
+ride-along rule), or the 2026-09-22 clock, whichever comes first. Kept verbatim below because it is
+the live answer the moment `decisions/ble.md` re-enters reserve:
+
+> **Was `In flux: yes` for `decisions/ble.md`:** this file has taken two live corrections recently: decision 31 (16-bit UUIDs
+> reported two bytes out of place) and decision 23's amendment landed by this same commit. BLE is an
+> active area of the dev-bench firmware; do not compact ahead of the next correction landing, and
+> re-check this file's content against `git log` immediately before writing anything shorter.
 **Must not delete:** decision 23's amendment sentence naming that the crate-side statement was not
 yet true when the decision first claimed it, and what `embarch-study-designer` `79a4c00` actually
 put in `src/ids.rs` — dropping either turns the amendment back into an unfalsifiable claim, which

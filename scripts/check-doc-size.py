@@ -94,6 +94,16 @@ OVERRUN_ALLOWANCE = 2 * KB
 # that a park cannot outlive it -- which is the point, since `blocked` was an
 # absorbing state: 13 of 28 reserve debts were filed only against a blocked
 # task, invisible to every leg.
+#
+# **That sentence is a record of 2026-09-07 and not a live claim, as of
+# 2026-09-09 (tasks/doc/030).** This clock plus `.claude/leg.md`'s rule that a
+# leg spends its FIRST unit on the oldest overdue ledger entry, *including when
+# it is blocked*, is the drain that did not exist when the phrase was written.
+# So `blocked` no longer means parked, and `In flux: yes` may keep implying it:
+# a debt blocked on flux is revisited on a date, by construction. What still
+# absorbs is a block with **no** date, which is why `blocked_without_clock`
+# below fails the gate. A block on another queued *unit* is a scheduling block,
+# a different thing, and it is covered by the same rule for the same reason.
 DUE_DAYS = 7
 
 # A file at or above this fraction of its effective limit is *in reserve*: it
@@ -274,9 +284,9 @@ def open_debt_items():
     debt forward. Everything else counts, `blocked` and parked included --
     a parked compaction task is the mechanism working, not a gap in it.
 
-    **But it yields whether the item is BLOCKED, because `blocked` plus
-    "in reserve" is a state nothing revisits.** `queue-status.py` does not
-    count a blocked task as dispatchable, so no leg reads one; the unpark
+    **It yields whether the item is BLOCKED, because `blocked` plus "in
+    reserve" USED TO BE a state nothing revisits.** `queue-status.py` does not
+    count a blocked task as dispatchable, so no leg reads one, and the unpark
     condition is prose inside the file that only a person re-reading it can
     evaluate. Measured 2026-09-07: seven compaction tasks parked that way, one
     (`api/026`) already carrying the argument that unparks it -- a verbatim
@@ -284,6 +294,12 @@ def open_debt_items():
     (`study-designer/006`) whose file this script had been reporting as PAID
     for days. A debt that is filed, at a wall, and invisible is worse than an
     unfiled one, which at least fails the gate.
+
+    **What closed that is the due date, not the state** (see DUE_DAYS): a leg
+    spends its first unit on the oldest overdue entry whether or not the item
+    is blocked. So the flag is still yielded -- `--pressure` says which parks
+    exist, and a park is worth *reading* -- but it is no longer the finding it
+    was. The finding is a block with no clock.
     """
     for d in DEBT_DIRS:
         root = REPO / d
@@ -383,8 +399,34 @@ def ledger_verdict(rel, size, limit, items, today):
     return ("OVERDUE" if soonest < today else "IN_DATE"), soonest
 
 
+def blocked_without_clock(in_reserve):
+    """Files in reserve whose every filing item is blocked AND undated.
+
+    This is the residue of the absorption DUE_DAYS was added to end, and the
+    one shape `In flux: yes` => `blocked` could still hide (tasks/doc/030).
+    A park is legitimate: the flux is real and compacting through it writes a
+    clean statement of something about to be wrong. A park with **no date** is
+    not, because nothing brings it back -- `queue-status.py` does not offer a
+    blocked task to a leg, and `.claude/leg.md`'s oldest-overdue rule has
+    nothing to compare. The item is then invisible to every actor except a
+    person re-reading the file, which is what "absorbing" meant.
+
+    Deliberately narrower than the over-limit ledger, which demands a date of
+    every debt: an *open* debt in reserve is offered to a leg on its own, so
+    the clock is a backstop rather than the only drain. Blocked is where it
+    becomes the only drain.
+    """
+    out = []
+    for rel, size, limit, filed in in_reserve:
+        if filed and all(b for _, b, _ in filed) and not any(d for _, _, d in filed):
+            out.append((rel, size, limit, filed))
+    return out
+
+
 def reserve_state(base, reserve_pct):
     """(in_reserve, filed_but_clear) -- both as (rel, size, limit, [items]).
+
+    An item is `(path, blocked, due-or-None)`.
 
     A file over its limit is a hard failure elsewhere and is not reported here
     twice. `filed_but_clear` is a debt named by an item that a later pass has
@@ -399,7 +441,10 @@ def reserve_state(base, reserve_pct):
         limit = min(cap, base[rel]) if rel in base else cap
         if size > limit:
             continue
-        filed = [(i, blocked) for i, paths, blocked, _ in items if rel in paths]
+        # 3-tuples: the DUE DATE is carried, not dropped -- `blocked_without_clock`
+        # needs it, and it was the field that turned out to decide whether a park
+        # absorbs (tasks/doc/030).
+        filed = [(i, blocked, due) for i, paths, blocked, due in items if rel in paths]
         headroom_line = limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
         if size >= headroom_line:
             in_reserve.append((rel, size, limit, filed))
@@ -544,36 +589,40 @@ def main() -> int:
                 in_reserve, key=lambda r: -r[1] / r[2]):
             if not filed:
                 mark = "UNFILED"
-            elif all(b for _, b in filed):
+            elif all(b for _, b, _ in filed):
                 mark = "PARKED "
             else:
                 mark = "filed  "
             print(f"  {mark} {100.0 * size / limit:5.1f}%  {rel}  "
                   f"{size}/{limit} B, {limit - size} B left")
-            for i, b in filed:
-                print(f"           -> {i}{'   [BLOCKED]' if b else ''}")
+            for i, b, d in filed:
+                print(f"           -> {i}{'   [BLOCKED]' if b else ''}"
+                      f"{'   (no clock)' if b and not d else ''}")
         for rel, size, limit, filed in filed_clear:
             print(f"  PAID     {100.0 * size / limit:5.1f}%  {rel} is out of "
                   f"reserve; close its item")
-            for i, b in filed:
-                print(f"           -> {i}{'   [BLOCKED]' if b else ''}")
+            for i, b, d in filed:
+                print(f"           -> {i}{'   [BLOCKED]' if b else ''}"
+                      f"{'   (no clock)' if b and not d else ''}")
         if unfiled:
             print(f"\n{len(unfiled)} file(s) in reserve with nothing filed. "
                   f"One item may name several\nfiles of one sub-project; a "
                   f"compaction pass is a sub-project act.")
             return 1
-        parked = [r for r in in_reserve if r[3] and all(b for _, b in r[3])]
+        parked = [r for r in in_reserve if r[3] and all(b for _, b, _ in r[3])]
         print(f"\n{len(in_reserve)} file(s) in reserve, every one filed against.")
         if parked:
             verb = "is" if len(parked) == 1 else "are"
-            print(f"\n{len(parked)} of them {verb} filed ONLY against a BLOCKED task, which is the\n"
-                  "state nothing revisits: `queue-status.py` does not offer a blocked task\n"
-                  "to a leg, so its unpark condition is prose only a person will read.\n"
-                  "Re-read each park against DOC-COMPACTION.md \u00a72's split-first rule --\n"
-                  "**a verbatim split restates nothing, so `In flux: yes` cannot forbid\n"
-                  "one** -- and either unpark it as a split or write down which seam it\n"
-                  "lacks. A scheduling block on another queued unit is a different thing\n"
-                  "and stays.")
+            print(f"\n{len(parked)} of them {verb} filed ONLY against a BLOCKED task. That is a\n"
+                  "legitimate resting state and no longer an absorbing one: every such\n"
+                  "debt carries a **Size debt due:** date, and a leg spends its FIRST unit\n"
+                  "on the oldest overdue entry blocked or not (`.claude/leg.md`). A park\n"
+                  "with no date is the one that still absorbs and the gate fails it.\n"
+                  "Still worth re-reading each against DOC-COMPACTION.md \u00a72's split-first\n"
+                  "rule -- **a verbatim split restates nothing, so `In flux: yes` cannot\n"
+                  "forbid one** -- and note that `In flux:` is answered PER FILE: three of\n"
+                  "the four parks live on 2026-09-09 argued flux about a file already\n"
+                  "struck off their own `Compacts:` line (tasks/doc/030).")
         return 0
 
     if args.update or args.adopt:
@@ -678,6 +727,24 @@ def main() -> int:
               "(DOC-COMPACTION-PASS.md), its human question, and what the pass\n"
               "may not delete. tasks/README.md has the shape.")
         print(f"FAIL: {len(unfiled)} file(s) in reserve with no debt filed.")
+        return 1
+
+    dark = blocked_without_clock(in_reserve)
+    if dark:
+        print(f"{len(dark)} file(s) in reserve whose only debt is blocked and undated:\n")
+        for rel, size, limit, filed in sorted(dark, key=lambda r: -r[1] / r[2]):
+            print(f"  {100.0 * size / limit:5.1f}%  {rel}  {size}/{limit} B, "
+                  f"{limit - size} B left")
+            for i, _, _ in filed:
+                print(f"           -> {i}   [BLOCKED, no clock]")
+        print("\nA park is fine and the flux is usually real. A park with no date is not:\n"
+              "`queue-status.py` never offers a blocked task to a leg, so a date is the\n"
+              "only thing that brings this back -- a leg spends its first unit on the\n"
+              "oldest overdue entry, blocked or not (`.claude/leg.md`). Add\n"
+              "**Size debt due:** <yyyy-mm-dd> to the item, set once from the day the\n"
+              "debt opened. DOC-BUDGET.md's ledger section has the reasoning; this is\n"
+              "the residue tasks/doc/030 closed.")
+        print(f"FAIL: {len(dark)} blocked debt(s) with no clock.")
         return 1
 
     dfails, dover, drows, dbase = decision_state()

@@ -1,0 +1,1 @@
+- `In flux:` is answered per file, `blocked` needs a due date, and `Owner: required` is exempt — [tasks/README.md](../tasks/README.md). Both rules were right; the field was wrong.

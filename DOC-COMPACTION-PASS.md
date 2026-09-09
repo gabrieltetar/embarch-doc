@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-04. How a doc is made smaller: the procedure, the gate, the failure modes, and the hot/cold test. Split out of [DOC-COMPACTION.md](DOC-COMPACTION.md) §6–§9 on 2026-09-04 when that doc reached its size cap ([DOC-COMPACTION.md](DOC-COMPACTION.md) §3). **Bare `§N` references below are that doc's**; anything else names its doc.
 
-That file is the budget — what a doc may weigh, which of the four files it is, what an entry looks like — and every session writing a doc needs it. This one is needed only when actually compacting, which is why the two stopped sharing a file.
+That file is the invariant and the four-file shape — which of the four a doc is, what a decision entry looks like — and [DOC-BUDGET.md](DOC-BUDGET.md), split out of its §2 on 2026-09-07, is what a doc may weigh. Every session *writing* a doc needs those two. This one is needed only when actually compacting, which is why the three do not share a file.
 
 ## Procedure
 
@@ -23,6 +23,21 @@ Working tree clean and pushed first — **git is where everything you delete goe
 **If yes, the pass is done, whatever it deleted. If no, the pass moved bytes rather than choosing between them.**
 
 **Never replace a name with the kind of thing it is** — "provisioning is a separate step" instead of `build_and_flash`; drop the sentence instead. An identifier-set diff catches it, advisory only: under a lossy regime an identifier is *allowed* to go.
+
+## A squeeze quotes what it cut and never names a category
+
+**A squeeze's commit message lists every deleted hunk as the first dozen words of the deleted text itself, verbatim and file-qualified, one line per hunk; a category list may follow as a summary of those lines and may never stand in for them — because a squeeze cannot be trusted to classify its own cuts.** Three occurrences in three consecutive legs, every one caught by a reviewer the supervisor had asked in prose, per unit, to count the diff:
+
+- `topology/017` (`spec.md`) and `study-designer/019` (`decisions/registry.md`) each named four honest categories and each lost two further sentences plus a caveat that no category covered. Texture: no invariant, constraint or failure signature went with them, and neither was worth reverting.
+- `ui/011` (`decisions/study-designer.md`) described a cut as "a parenthetical", in the same wording it used for cuts that genuinely were cosmetic. The parenthetical was **`allow_version_mismatch`**, a live parameter of Core's study route that `embarch-api/interfaces/studies.md` documents — so decision 11 lost it here, kept it in `embarch-ui/open.md`, and **read two different ways depending on which file you landed on.**
+
+**Quoting is mechanical; describing is a judgement, and the judgement is the part that failed.** The `ui/011` worker's own honest reading was that the clause was texture, so no sharper set of categories would have caught it, and a rule that merely counted the cuts would not have put the words *"a mismatch override and"* in front of a reader. Twelve verbatim words do. They also make the residue countable **by someone who is not the cutter** — deleted hunks in the diff against lines in the message — which is the property all three occurrences were missing.
+
+**The count is checked by the reviewer** ([its charter](.claude/agents/embarch-reviewer.md) carries it, so it does not depend on a supervisor remembering), and a reviewer can be skipped under budget — which is exactly when a squeeze is most likely, since it is the faster of the two shapes. The quoted list is what leaves the audit possible afterwards. **Neither half is sufficient alone**, which is why both exist: the list without a second reader is a record nobody checks, and the reader without the list has to re-derive the pass's intent from the diff.
+
+*Rejected: let texture go and audit only invariants.* Two of the three occurrences would have been licensed correctly and the third would have been licensed wrongly, by a worker reasoning in good faith — and it is the same claim [DOC-COMPACTION.md](DOC-COMPACTION.md) §1 refuses, that lossy reaches inside a topic being kept.
+
+**A split needs none of this,** which is a third reason to prefer one ([DOC-BUDGET.md](DOC-BUDGET.md)): moving a section verbatim deletes nothing, so there is nothing to quote and nothing to misclassify.
 
 ## Failure modes
 

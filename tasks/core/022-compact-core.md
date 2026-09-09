@@ -19,15 +19,23 @@ is why `DOC-COMPACTION.md` §2's prefer-a-split guidance may not have anything l
 
 **Compacts:** embarch-core/open.md
 **Size debt due:** 2026-09-26
-**In flux:** yes — two other queued units touch this exact file. `tasks/core/021`
-(retire `GET /logs/stream`, which has no consumer anywhere) would delete the row
-`core/018` just added, and `tasks/api/032` names `/probes/enrolled`'s row as
-missing a field (`link_port_serial` is already listed, but that task should be
-checked against the current row before this compaction touches it). Shortening
-prose now, ahead of either landing, risks compacting a row that is about to be
-deleted or a row about to be corrected — the same trap `DOC-COMPACTION-PASS.md`
-warns against. Unparked by `core/021` and `tasks/api/032` landing (or being
-closed as not-applicable), whichever is later.
+**In flux:** **no, for the one file still on the `Compacts:` line.** Corrected 2026-09-09 by
+`tasks/doc/030`, which found that this field is answered *per file* and had been left behind by a
+file that is already paid. The block below is about **`interfaces.md`** — every example in it is a
+route row, and `interfaces.md`'s item closed on 2026-09-07 with the split. `open.md` is open
+questions, holds none of those rows, and this task's own `State:` line already says *"No longer in
+flux for this file — `009` acted as the flux-maker."* Kept verbatim below rather than deleted,
+because it is the live judgement the moment `interfaces.md` re-enters reserve:
+
+> **Was `In flux: yes` for `interfaces.md`:** two other queued units touch this exact file. `tasks/core/021`
+> (retire `GET /logs/stream`, which has no consumer anywhere) would delete the row
+> `core/018` just added, and `tasks/api/032` names `/probes/enrolled`'s row as
+> missing a field (`link_port_serial` is already listed, but that task should be
+> checked against the current row before this compaction touches it). Shortening
+> prose now, ahead of either landing, risks compacting a row that is about to be
+> deleted or a row about to be corrected — the same trap `DOC-COMPACTION-PASS.md`
+> warns against. Unparked by `core/021` and `tasks/api/032` landing (or being
+> closed as not-applicable), whichever is later.
 **Must not delete:** the `GET /serial-log` caller-side-ceiling paragraph
 (measured 2026-09-06, `duration_ms=15000` against the live Core) — it is a
 cross-repo measurement, not a general description, and reads as an inference
@@ -53,10 +61,13 @@ in flux on this exact file (`020`'s `hardware_id` rename touches the
 an index (`DOC-COMPACTION.md` §3's sanctioned split, the same shape
 `decisions.md` uses). Every `Must not delete:` item below carried over verbatim.
 This was a **split**, not a squeeze — no row's prose was shortened — so the
-"in flux" warning above still holds for whatever `core/021`/`api/032` touch:
+quoted "in flux" warning above still holds for whatever `core/021`/`api/032` touch:
 they now land against `interfaces/logs.md` and `interfaces/topology.md`
-respectively, unaffected by the file move. **`open.md` is still parked**,
-waiting on `core/021` and `tasks/api/032` as below.
+respectively, unaffected by the file move. **`open.md` was never parked on those
+two** and the sentence that said it was is corrected here, 2026-09-09
+(`tasks/doc/030`): they are `interfaces.md` rows, `open.md` holds no rows, and
+`tasks/core/009` compacted `open.md` on 2026-09-09 as the actor making its own
+flux. It is `open`, dispatchable, and needs a further ~750 B.
 
 ## Why now
 
