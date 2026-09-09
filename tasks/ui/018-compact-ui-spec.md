@@ -1,6 +1,6 @@
 # 018 — `embarch-ui/spec.md` is in reserve
 
-**State:** claimed — leg 059, 2026-09-09, burndown
+**State:** done — leg 059, 2026-09-09, burndown
 **Source:** `scripts/check-doc-size.py`'s reserve floor, added 2026-09-07
 **Scope:** ui
 **Hardware:** none
@@ -57,8 +57,45 @@ the trace view's rendering, not the spec.
 
 ## Done when
 
-- [ ] `spec.md` is out of reserve, or the task says why it cannot be and what
+- [x] `spec.md` is out of reserve, or the task says why it cannot be and what
       was done instead.
-- [ ] Whichever it was — split, delete a duplicate, or squeeze — is stated,
+- [x] Whichever it was — split, delete a duplicate, or squeeze — is stated,
       with the byte numbers before and after, and the seam's inbound links
       named if it was a split.
+
+## Resolution — 2026-09-09
+
+**Split, not squeeze or dedup.** `check-duplication.py embarch-ui` first: the 12
+overlaps it found were all the expected shape (a spec invariant a decision
+explains), not a genuine two-copies-of-one-claim error — nothing to delete.
+
+Moved the whole **"The trace chart"** section out of `spec.md` into a new
+`embarch-ui/interfaces.md` (`DOC-COMPACTION.md` §3: endpoints/constants
+reference that doesn't fit `spec.md`), leaving one paragraph behind stating
+the two load-bearing invariants (bounded element count; filtering doesn't
+touch the load repartition) and a pointer. Checked for inbound links to that
+section first (`grep` across the repo for `the-trace-chart` and for
+`embarch-ui/spec.md`) — none anchor into it, only whole-file references, so
+nothing else needed fixing.
+
+`spec.md`: **9,613 B → 8,354 B** (81.6%, was 93.9%/reserve). `interfaces.md`
+(new): **1,915 B**. One duplicate sentence the split itself introduced
+(the "filtering changes the drawing" clause landed in both files) was caught
+by a second `check-duplication.py` run and removed from `spec.md`'s pointer
+paragraph, keeping the full statement only in `interfaces.md`.
+
+`embarch-ui/open.md` (929 B left, filed under `021`, blocked) was not touched —
+this unit did not need to write there.
+
+**Human question (`DOC-COMPACTION-PASS.md`):** yes, `spec.md` alone answers
+what someone needs to work on this component today. What moved was reference
+detail — exact row/lane counts, the bin-fetch endpoint shape, the two cap
+constant names — that a reader needs only when touching the trace view
+specifically, not to orient on the six tabs, the shape, the invariants, or the
+design system, all of which stayed put untouched. `spec.md`'s own invariants
+paragraph for the trace chart (bounded element count, filtering vs. load
+repartition) survived the split intact, so a reader scanning `spec.md` top to
+bottom still gets the one fact that would cause a wrong move (redrawing the
+whole capture client-side) without following the pointer; the pointer exists
+for the exact numbers and wire shape, which nobody needs to *change* this
+component without first opening `interfaces.md` anyway.
