@@ -40,16 +40,37 @@ worse than a stale one in prose.
 
 ## Done when
 
-- [ ] `src/outpost_priv.h`'s comment states what does and does not bump
+- [x] `src/outpost_priv.h`'s comment states what does and does not bump
       `OUTPOST_RECORD_LAYOUT_VERSION`, agreeing with `interfaces/wire.md` — and
       cites the reason (unknown kinds render, they do not fail), not just the
       rule.
-- [ ] No other copy of the old price survives: grep the code tree for
+- [x] No other copy of the old price survives: grep the code tree for
       "layout" and "bump" before closing.
-- [ ] `python3 tests/decoder_unit.py` still green (no `cargo`, no `west` — this
+- [x] `python3 tests/decoder_unit.py` still green (no `cargo`, no `west` — this
       repo has neither).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Result
+
+Fixed the blanket rule in `src/outpost_priv.h`'s top `@file` comment (lines
+10-17), which said "Anything changed here ... OUTPOST_RECORD_LAYOUT_VERSION
+must be bumped" with no qualification. It now says only a shape change bumps
+the version, points at the existing correct block below (line 77 on, "Bump on
+ANY change to the record or frame layout above ... Adding an `enum
+outpost_kind` value is not one") for the full rule, and states the reason
+inline (unknown kinds render as `unknown_N`, they do not fail decoding). That
+lower block already had the accurate rule — only the top summary comment was
+stale. Grepped the whole tree for "must be bumped" / "must bump" / "new
+kind ... bump" / "adding a kind" / "new record kind": no other survivors.
+`tests/decoder_unit.py` (20 tests) still green. No decision needed — this was
+a comment-only correction bringing code in line with `interfaces/wire.md`,
+which already stated the rule; per burndown, none was authored.
+
+No doc-repo content changes were needed beyond the changelog fragment: the two
+doc copies (decisions/tracing.md decision 19, open.md) were already corrected
+in `outpost/007`'s fold. `decisions/tracing.md` was not touched, so its 784 B
+of reserve is untouched.
 
 ## Doc-size reserve in `embarch-outpost`, at dispatch (leg 057, 2026-09-09)
 
