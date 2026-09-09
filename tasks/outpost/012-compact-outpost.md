@@ -1,6 +1,6 @@
 # 012 — `embarch-outpost/open.md` and `decisions/module.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/outpost/012-compact-outpost, 2026-09-08 23:07
 **Source:** `scripts/check-doc-size.py`, spent by `tasks/outpost/011`'s commit adding the "no CI"
 note to `open.md`'s "Deferred with a named trigger" section — and, in the same unit's landing, by
 the supervisor's amendment to `decisions/module.md` decision 22.
