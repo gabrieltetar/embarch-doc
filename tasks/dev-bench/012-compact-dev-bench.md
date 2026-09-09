@@ -1,6 +1,11 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** claimed — leg 050, 2026-09-08, dispatched as a **split only**
+**State:** partially closed — leg 050, 2026-09-08, dispatched and closed as a **split only**.
+`decisions/ble.md` split verbatim into `decisions/ble.md` (pairing/security: 11, 15, 33, 34, 37;
+7.7 KB) and the new `decisions/scanning.md` (addressing/scan-time discovery: 17, 23, 31, 32, 44;
+4.8 KB), both out of reserve. `spec.md` and `open.md` are still in reserve and untouched — those
+are squeezes, blocked by the same `In flux: yes` this split was narrowed around. This task stays
+open for that remaining half.
 **Source:** `check-doc-size.py --pressure`, run during `tasks/dev-bench/009` — decision 23's
 amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION.md` §2
 **Scope:** dev-bench
@@ -35,10 +40,21 @@ filing, dropped in the same commit that spent the reserve (decision 23's amendme
 
 ## Done when
 
-- [ ] `embarch-dev-bench/decisions/ble.md` clear of the 90%-of-cap reserve line.
-- [ ] Every `Must not delete:` item above is still readable, verbatim or faithfully restated.
-- [ ] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `embarch-dev-bench/decisions/ble.md` clear of the 90%-of-cap reserve line. Closed by the
+      2026-09-08 split: `ble.md` 7.7 KB, new `scanning.md` 4.8 KB, both well clear.
+- [x] Every `Must not delete:` item above is still readable, verbatim or faithfully restated —
+      moved byte-for-byte, verified by diffing every decision body against the pre-split file.
+- [x] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) for the split. `spec.md` and `open.md`
+      remain in reserve, untouched, and still block the rest of this task — see `## Blocked` below.
+
+## Blocked
+
+`spec.md` (780 B left) and `open.md` (338 B left) are squeezes, not splits, and this task's
+`In flux: yes` still holds for both — BLE is still an active area of the dev-bench firmware, so a
+squeeze risks restating something about to change or silently dropping a qualification. Whoever
+picks this up next must re-check both files against `git log` immediately before shortening
+anything, per the standing `In flux` note above.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
 

@@ -1,8 +1,8 @@
-# embarch-dev-bench decisions: BLE behaviour
+# embarch-dev-bench decisions: BLE pairing and security
 
 **Status:** active, 2026-09-02.
 
-Pairing, addressing, scanning and security — including the header comment that was confidently wrong about all of it.
+Pairing, connection-count enforcement, hard-reset teardown, and security elevation — including the header comment that was confidently wrong about all of it. Addressing and scan-time discovery are a separate mission: [scanning.md](scanning.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -13,28 +13,6 @@ Some real DUTs require pairing before certain characteristics are accessible, so
 
 ### 15 — One DUT connection at a time, enforced in firmware
 Testing several DUTs in parallel means several independent Core+bench pairs, not one bench juggling links, and nothing in the type model addresses more than one concurrent DUT anyway. **The enforcement point is firmware** — the connect path refuses a second link while one is live — *not* the controller's link budget, which is a separate board-specific number ([../spec.md](../spec.md)).
-
-### 17 — A static random BLE address, fixed at build/boot time
-Reproducibility over privacy realism: the bench is a test fixture, and a stable address makes captures easier to correlate across runs. Plain Zephyr default behaviour, no custom addressing logic.
-
-### 23 — `BleAddress` byte order is stated in the crate that owns the type
-The bridge assumes display order and reverses into Zephyr's little-endian address struct — correct, but previously asserted only *here*. Now stated there, so the assumption is backed by the authoritative source instead of standing alone.
-
-**Amended 2026-09-07: this decision claimed the crate-side statement had already landed; it had not.** `src/ids.rs`'s `BleAddress` doc comment stated only the field layout, with no order, until `embarch-study-designer` landed it on 2026-09-06 (`79a4c00`) — **no numbered decision in that crate covers it**, which is part of why this one could claim it prematurely and nothing noticed. What landed: display order, most-significant first, `C4:82:E1:42:B1:26` as `[0xc4, 0x82, 0xe1, 0x42, 0xb1, 0x26]`, same order for both `BleAddressKind`s, derived serde carries `bytes` in index order, nothing in that crate reverses it. That is what closes this decision; it did not touch `embarch-dev-bench`.
-
-### 31 — 16-bit UUIDs were reported two bytes out of place
-The expansion wrote a 16-bit value into offsets 0..1, but a 16-bit UUID expands to `0000xxxx-…` — offsets **2 and 3**.
-
-**Not cosmetic, and the failure signature is misleading:** live discovery reported the Device Information Service as `180a0000-…`, while the crate's parser expands `"180a"` correctly — so a `DataExchange` authored against *any* 16-bit UUID could never match a characteristic **plainly visible in its own discovery output**. 128-bit UUIDs take the byte-reversing branch and were never affected, which is why every custom-service study worked.
-
-### 32 — `BleConnect.target_name`, an advertised-name scan filter
-The scan callback already received the advertising payload and discarded it; it now parses Local Name elements and connects only to a matching advertiser, ANDed with the pre-existing address filter. Matching is **exact** — a loose match would reintroduce the very failure this exists to remove, just less visibly.
-
-**Names and connectable packets arrive separately.** With active scanning a peripheral's name usually lives in its scan response, which is not itself connectable, so the name and the connectable advertisement are two different callbacks in an order this code does not control. ***Rejected: a single "last address whose name matched" slot, connecting on the next connectable advertisement from it.*** It fails outright — active scanning sets filter-duplicates, so each advertiser is reported at most once per scan and **there is no next advertisement**. Scanning now runs with duplicates unfiltered; the cost is more callbacks per second, bounded by the step's own timeout. Bookkeeping is **keyed by advertiser address**, which removes the ordering dependency entirely — whichever packet completes the pair triggers the connect.
-
-**Reporting what a failed scan saw, at two levels.** The 64-byte `fail_reason` gets a compact name list, and must not spend a third of it echoing the name that was *asked* for. Per-advertiser detail goes through a separate log hook, because a name-only report cannot distinguish **"the DUT is silent"** from **"the DUT is on the air but advertises no name"**, and the second is invisible to a name filter by construction.
-
-`SCAN_SEEN_MAX` is **256** at the repo owner's call: 12 distinct advertisers turned up in three minutes on a real bench, which puts a smaller cap one busy room away from truncating. **A cap that silently truncates defeats the diagnostic entirely** — "not in the list" has to mean "not on the air", not "the list was full". Affordable only because it is a flat table of small entries rather than anything frame-sized.
 
 ### 33 — `Hello`'s hard reset now waits for its own disconnect
 The reset called disconnect and returned. That only *requests* it: the connection stays populated until the callback runs on Zephyr's BT RX thread. So the next study's connect could execute while the previous connection was still tearing down and fail with **"already connected to a different peer" despite a `Hello` having just been processed**, whose whole documented contract is that it *is* a hard reset.
@@ -61,8 +39,3 @@ Three things running it against the DUT changed:
 **Auth callbacks are registered before `bt_enable`:** Zephyr latches them the first time it needs a capability, so a peer that paired before registration ran would latch NULL — unauthenticated, with nothing in the failure pointing at registration order. The same class of failure as decision 34's own.
 
 **What is still not claimed:** validation against a DUT that presents no I/O capability at all — [../open.md](../open.md) carries what that would look like.
-
-### 44 — Manufacturer Specific Data joins the census, capped at 4 bytes
-`report_scan_seen()` logs `BT_DATA_MANUFACTURER_DATA`'s company ID and payload, parsed in `scan_seen_mfg.c` — no BT host, so a ztest pins it under native_sim, where `ble_bridge_real.c` never builds. Absence differs from a zero-length element; bytes past the cap say so. Costs 2,816 B [measured] SRAM (spec.md).
-
-**Client firmware reads the payload as `s_ficr_id[6..7]`, matching the name suffix — read off source, unconfirmed on air.** `tasks/api/029` tests this first.
