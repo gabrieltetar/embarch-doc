@@ -22,4 +22,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Call-site granularity is not fully specified.** Resolution and validation are fresh-every-call by construction, with no cache in the crate; **nothing states what a caller may assume beyond that**, so a consumer wanting to hold an answer across calls has no rule to read.
 
+- **Nothing can cheaply detect a caller writing a second predicate beside a call it never makes to this crate.** `api/038`'s mirror and `embarch-umbrella/src/token.rs`'s were both found by reading a call site, not by a check; a general detector would have to recognize duplicated *logic*, not a duplicated *file*, and no cheap static check does that. (`tasks/topology/020`)
+
 - **The token and config mirrors of `embarch-api`-internal logic are untouched by this crate's existence** and still raise the extract-or-CI-diff question independently. Extracting this crate removed the *topology* copy; **those two mirror internals, not a shared concern the way topology turned out to be.** Tracked in [embarch-umbrella/open.md](../embarch-umbrella/open.md).

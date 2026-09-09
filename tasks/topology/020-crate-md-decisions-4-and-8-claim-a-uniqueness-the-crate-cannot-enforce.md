@@ -1,6 +1,6 @@
 # `crate.md` decisions 4 and 8 claim a uniqueness the crate cannot enforce
 
-**State:** claimed — leg 050, 2026-09-08
+**State:** done — leg 050, 2026-09-08
 **Source:** `api/038`, leg 049, 2026-09-08 — filed as a `status.d/` fragment by that unit and
 converted to a task by the supervisor, because `status.d/` is only for the five shared suite-level
 docs and `embarch-topology/decisions/crate.md` is a sub-project doc this scope owns
@@ -45,17 +45,26 @@ them is needed, and no such check exists.
 
 ## Done when
 
-- [ ] Decisions 4 and 8 are corrected in place, **without rewriting the history of what was decided**
+- [x] Decisions 4 and 8 are corrected in place, **without rewriting the history of what was decided**
       — the reversal convention, not a silent edit. What the crate guarantees (one implementation of
       the predicate, inside the crate) is separated from what it cannot (a caller declining to call
-      it).
-- [ ] The correction names `api/038`'s fix as the instance that disproved the general claim, and does
-      **not** assert that every mirror is gone — `embarch-umbrella/src/token.rs` still has one.
-- [ ] Whether anything should *detect* a second predicate beside a live call is answered one way or
-      the other. If the answer is "nothing can cheaply", that goes in `open.md` as an open question
-      rather than being left implied.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment if anything shipped; a doc-only correction likely owes none.
+      it). Done as a "Qualified 2026-09-08" paragraph appended after each decision's own text, the
+      same in-file convention already used for "Reversed" on decisions 2/3/6/8.
+- [x] The correction names `api/038`'s fix (`embarch-api` decision 62, `861f30f`) as the instance that
+      disproved the general claim, and does **not** assert that every mirror is gone —
+      `embarch-umbrella/src/token.rs` is named explicitly as still live and `umbrella/036`'s to close.
+- [x] Answered: nothing can cheaply detect a caller writing an unrelated second predicate beside a
+      call it never makes — both known instances (`api/038`'s and `embarch-umbrella/src/token.rs`)
+      were found by reading a call site, not by a check, and a general detector would have to
+      recognize duplicated *logic*, not a duplicated *file*. Recorded as a new bullet in `open.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `check-docs.py` and
+      `check-ownership.py --scope topology` both pass; see worker report.
+- [x] `changelog.d/` fragment dropped (`topology-crate-md-uniqueness-qualified.decided.md`) — this
+      changed what the suite believes about two live decisions, so it is not a no-op correction.
+
+**Also filed, not originally asked for:** `crate.md`'s two qualification paragraphs (~1,280 B) pushed
+it into doc-size reserve (91.9%, 998 B left) — `tasks/topology/021-compact-topology.md` files that
+debt with a candidate split (decision 23) named for the next worker to evaluate.
 
 ## Supervisor note — leg 049
 

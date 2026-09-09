@@ -28,6 +28,8 @@ Per request for anything that can change while a process runs (dev-bench's port,
 
 The board-identity gate, its storage, the dev-bench port heuristic, **and** the software-class detection then mirrored between `embarch-api` and `embarch-umbrella` all move here as the sole implementation. **The mirrored-copy CI diff job becomes obsolete: there is nothing left to mirror once everyone links the same crate.**
 
+**Qualified 2026-09-08** (`tasks/topology/020`, from `api/038`'s finding): "the sole implementation" and "nothing left to mirror" describe the crate's own boundary, not its callers. `embarch-api/crates/embarch-core-client` already linked this crate and still ran a second, narrower predicate (`token_discovery::is_wsl2`) beside the call it never made to `detect_wsl2` — closed by `api/038` (`embarch-api` decision 62, `861f30f`), which made it delegate. Linking the crate stops a mirrored *copy* of its own logic; it does not stop a caller writing an unrelated second predicate next to a call it never makes. A third copy, `embarch-umbrella/src/token.rs`, is still live and is `umbrella/036`'s to close, not this decision's to claim closed.
+
 ### 6 — `doctor`'s topology-relevant checks call the crate directly, in-process
 
 They become thin wrappers translating a crate call into pass/fail/warn.
@@ -39,6 +41,8 @@ They become thin wrappers translating a crate call into pass/fail/warn.
 A human running the CLI **sees precisely the validation Core enforces live, because it *is* that validation — there is no way for the two to disagree, since there is only one of them.** Concretely: whatever port or probe an operation is about to use, one shared `validate()` confirms the device is currently enumerated and still matches the identity recorded for its role, and **returns a specific error naming what is stale** if it does not.
 
 **Reversed** from an earlier framing that described an ahead-of-time check and Core's live re-check as **two independent, separately-reasoned mechanisms that happened to agree.** They are not independent once both are calls into the same crate.
+
+**Qualified 2026-09-08** (`tasks/topology/020`): "there is no way for the two to disagree, since there is only one of them" holds only inside the crate's own boundary — a statement about the crate, not about whether a caller actually calls it. `api/038` found `embarch-api`'s own client still ran a second, narrower WSL2 predicate beside a call it never made to this crate's `detect_wsl2`, and closed that instance by making it delegate. Whether anything should detect a caller declining to call the crate at all: see `open.md`.
 
 **A real gap this surfaced:** the live-identity recheck covered only JTAG-capable roles. **The dev-bench runtime *link* had no equivalent live check** — which is what absorbing that logic had to close here rather than leave behind in Core.
 
