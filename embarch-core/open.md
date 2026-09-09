@@ -28,9 +28,11 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **Espressif-family dev-bench port selection has no current story.** The four
   removed env overrides (decision 23) had no stated replacement for this case:
   `embarch-topology`'s `link_port_interface` answers an ambiguous-VCOM board,
-  but the ESP32-C5-WROOM-1 DK enumerates as a single USB-Serial/JTAG interface
-  with no VCOM to name. Nothing asserts what, if anything, replaces the
-  removed knob for that board family.
+  and the ESP32-C5-WROOM-1 DK is **[assumed]** to enumerate as a single
+  USB-Serial/JTAG interface with no VCOM to name — **unmeasured, and circular**:
+  `tasks/core/028` cites `dev-bench/005`, which declined to assert it.
+  Confirming it needs the board. Either way, nothing asserts what replaces the
+  removed knob for that family.
 - **A separate-machine deployment still has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design and unusable for flashing in practice.
 - **macOS is reasoned-only.** The elevation paths are written and unexercised; nothing in this suite has run on a Mac.
 - **The route sweep proves rejection, not reach.** Decision 42 asserts all 27 registered routes answer `401` without a token and with a wrong one; only `/status` asserts that a *correct* token reaches its handler. A route wired to the wrong handler is not what this catches — nothing has needed that, and per-route success cases would need per-route fixtures the auth sweep deliberately does without.
