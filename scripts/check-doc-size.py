@@ -127,6 +127,13 @@ RESERVE_FLOOR = 1200
 # are the case that forced this: no agent can compact them, so a wall there can
 # only ever be taken down in the owner's own session, and nothing said so.
 DEBT_DIRS = ("tasks", "inbox")
+# Matching `done` alone is sufficient ONLY because `check-task-state.py` (added
+# 2026-09-09) fails the gate on any state token outside the four in
+# tasks/README.md. Until then it was not: five tasks on `main` said `closed`,
+# which is not a state and never was, and each one satisfied the size ledger
+# exactly as well as an open task would have -- so a paid-looking debt could go
+# unowned with every check green. Do not "fix" that by adding synonyms here;
+# the vocabulary is the fix, and a second spelling would put the hole back.
 DONE_STATE = re.compile(r"^\*\*State:\*\*\s*done\b", re.M)
 BLOCKED_STATE = re.compile(r"^\*\*State:\*\*\s*blocked\b", re.M)
 # A debt is DECLARED, never inferred from a path appearing somewhere in an item.

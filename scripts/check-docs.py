@@ -76,6 +76,7 @@ CHECKS = (
     ("check-doc-conventions.py", []),
     ("check-doc-size.py", []),
     ("check-task-numbers.py", []),
+    ("check-task-state.py", []),
     ("build_changelog.py", ["--check"]),
     ("build_features.py", ["--check"]),
     (os.path.join(HERE, "..", "..", "embarch-fleet", "scripts", "install.py"),

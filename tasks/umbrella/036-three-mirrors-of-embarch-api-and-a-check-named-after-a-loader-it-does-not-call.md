@@ -1,7 +1,7 @@
 # 036 — `embarch-umbrella` mirrors three things from `embarch-api`; the shared crate now holds two of them, the third has drifted three ways, and check 6 is named after a loader it does not call
 
-**State:** partially done — mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 still open, see
-state note below
+**State:** open — **partially done**: mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 still
+open, see state note below
 **Narrowed 2026-09-08 (leg 051):** dispatched as **mirror 1 only** — the token
 chain — plus the two doc items that ride on it (`Done when` bullets 1, 3, 4, 5).
 Mirrors 2 and 3 (`CoreConfig`'s lost fields, `ProjectConfig`'s three-way drift,

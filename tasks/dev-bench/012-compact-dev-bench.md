@@ -1,6 +1,6 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** partially closed — leg 050, 2026-09-08, dispatched and closed as a **split only**.
+**State:** open — **partially closed**: leg 050, 2026-09-08, dispatched and closed as a **split only**.
 `decisions/ble.md` split verbatim into `decisions/ble.md` (pairing/security: 11, 15, 33, 34, 37;
 7.7 KB) and the new `decisions/scanning.md` (addressing/scan-time discovery: 17, 23, 31, 32, 44;
 4.8 KB), both out of reserve. `spec.md` and `open.md` are still in reserve and untouched — those
