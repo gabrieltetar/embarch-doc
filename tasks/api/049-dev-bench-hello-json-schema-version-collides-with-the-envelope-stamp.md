@@ -1,6 +1,6 @@
 # api: `dev-bench-hello --json`'s `schema_version` key collides with the envelope stamp and silently loses the real field
 
-**State:** open
+**State:** claimed — leg 050, 2026-09-08
 **Promoted** from `inbox/api-dev-bench-hello-json-schema-version-collision.md` by leg 048,
 unchanged apart from this line and the number. **The supervisor verified the mechanism
 independently before filing**, rather than taking the reviewer's word: `src/json_out.rs`'s
