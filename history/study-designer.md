@@ -26,5 +26,8 @@
 - `cargo test` no longer aborts: the crate sets a 64 MiB harness stack for the allocator-free shape it tests (decision 63).
 - A rustdoc link and two comments still named the retired `MAX_GATT_ACTIVITY_RECORDS`; all three now read as history, and the open question is closed.
 
+### Removed
+- `Study.gatt`/`DeclaredGatt` withdrawn from docs as current truth; decision 45 restated as designed-but-unbuilt.
+
 ### Decided
 - This crate does not release: no tags, no version-reading consumer, no artifact — decision 65, with the guard that binds the first `release.yml`.
