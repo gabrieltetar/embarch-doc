@@ -1,6 +1,22 @@
 # 052 — 320 citations point at a `design.md` this repo no longer has
 
-**State:** open
+**State:** claimed — leg 061, worker on `agent/api/052-design-md-citations`
+
+**Dispatch note (supervisor, leg 061):** `tasks/umbrella/043` is the same sweep for
+`embarch-umbrella` and is deliberately **not** dispatched alongside you — it is told to adopt
+whatever citation convention you settle on. So **state the convention you used explicitly in your
+`changelog.d/` fragment and in one line of the task file**: what a citation looks like after the
+rewrite, and how you qualified a cross-repo decision. That sentence is the deliverable the next
+sweep reads.
+
+**Doc-size reserve for `api` — this scope is the tightest in the suite and every compaction task in
+it is BLOCKED.** `decisions/tool-wrapping.md` 12,222/12,288 B (**66 B left**),
+`decisions/core-link.md` 188 B left, `open.md` 261 B left, `spec.md` 815 B left,
+`interfaces/tools.md` 1,008 B left, `decisions/build.md` 1,154 B left. This unit is a comment-only
+code sweep, so plan to touch **no** `embarch-doc/embarch-api/` file other than dropping a
+`changelog.d/api-*` fragment. If you find you need a doc edit, prefer the file with the most
+headroom, keep it to a citation rather than prose, and file
+`tasks/api/<NNN>-compact-api.md` in the same commit if you spend reserve.
 **Source:** supervisor, leg 059, 2026-09-09 — found while fixing the miscitation the `api/031`
 reviewer filed
 **Scope:** api
