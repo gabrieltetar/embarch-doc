@@ -1,6 +1,6 @@
 # 014 — `embarch-topology/open.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/topology/014-compact-topology, 2026-09-08 22:34
 **Source:** `scripts/check-doc-size.py`'s reserve floor, added 2026-09-07
 **Scope:** topology
 **Hardware:** none
