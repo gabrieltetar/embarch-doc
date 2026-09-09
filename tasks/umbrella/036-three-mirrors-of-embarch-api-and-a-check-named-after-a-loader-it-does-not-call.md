@@ -1,6 +1,11 @@
 # 036 — `embarch-umbrella` mirrors three things from `embarch-api`; the shared crate now holds two of them, the third has drifted three ways, and check 6 is named after a loader it does not call
 
-**State:** open
+**State:** claimed
+**Narrowed 2026-09-08 (leg 051):** dispatched as **mirror 1 only** — the token
+chain — plus the two doc items that ride on it (`Done when` bullets 1, 3, 4, 5).
+Mirrors 2 and 3 (`CoreConfig`'s lost fields, `ProjectConfig`'s three-way drift,
+and `doctor` check 6's title) are **explicitly out of this dispatch** and stay
+open; see the state note this unit leaves.
 **Source:** suite review pass 2026-09-06, dimensions 1, 2 and 4 (three hunters, one subsystem). Code-confirmed by diffing both files.
 **Scope:** umbrella
 **Hardware:** none
