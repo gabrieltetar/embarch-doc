@@ -1,6 +1,6 @@
 # Fix the dev-bench README: it names the wrong board and links a deleted doc
 
-**State:** open
+**State:** claimed by leg 049, 2026-09-08
 **Source:** owner's repo survey, 2026-09-06 — commit `a6d5355` fixed this breakage in `CLAUDE.md` and stopped there
 **Scope:** dev-bench
 **Hardware:** none
@@ -37,3 +37,37 @@ board that is *not* on the bench, over links that 404.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Supervisor notes — leg 049
+
+**A doc-side no-op is the correct result here, and you should expect it.** `spec.md` §1/§2 are
+already right — they are the *source* this README is being corrected against. So do not manufacture
+doc churn to satisfy the last Done-when box: drop a `changelog.d/` fragment, and touch
+`spec.md`/`decisions.md`/`open.md` only if you find something in them that this work actually made
+false. Say plainly in your report that the doc side was a no-op if it was. A `status.d/` fragment
+is very unlikely to be owed.
+
+**Doc-size reserve for `dev-bench`, and one of these is the tightest file in the suite:**
+
+- `embarch-dev-bench/decisions/ble.md` — 12282/12288 B, **6 bytes left**
+- `embarch-dev-bench/open.md` — 4782/5120 B, 338 bytes left
+- `embarch-dev-bench/spec.md` — 9460/10240 B, 780 bytes left
+
+All three are already filed against `tasks/dev-bench/012-compact-dev-bench.md`, which is `open` —
+so the debt is recorded and you do not need to file it again. **You almost certainly should not be
+writing into `decisions/ble.md` at all for a README fix.** If you find yourself about to, stop and
+report it instead: six bytes is not headroom, and a decision that does not fit is a decision that
+gets filed in the wrong file, which is a failure this suite has already paid for.
+
+**Verify every link by resolving it, not by pattern.** The task's acceptance is "every markdown
+link in the file resolves against the current `embarch-doc` tree". `design.md` is not the only
+casualty of the four-file split — check each link, including ones that look fine. Note that a
+decision number addresses the sub-project rather than a file, so `decisions.md` is the correct
+landing page for a decision citation; the previous leg landed two units on exactly this class of
+defect, where a citation *resolves* while pointing at the wrong file.
+
+**`link_port_interface = 2` is a stated fact, not a measured one.** It is the owner's; it is in
+`embarch-doc/embarch-dev-bench/spec.md` and in the fleet's hardware buffer. Reproduce it, do not
+re-derive it, and do not infer anything further about the bench from firmware source.
+
+**Do not touch hardware.** This is a documentation fix; there is nothing here to flash or probe.
