@@ -1,6 +1,6 @@
 # Teach zephyr-west discovery the `apps/` layout
 
-**State:** open
+**State:** claimed — leg 062, 2026-09-09
 **Source:** found wiring up a real repo (chargerito-fw) on 2026-09-09; `embarch-api/src/zephyr.rs::scan_apps`
 **Scope:** api
 **Hardware:** none
