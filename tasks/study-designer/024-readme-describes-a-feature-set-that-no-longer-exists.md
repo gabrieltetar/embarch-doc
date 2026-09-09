@@ -1,6 +1,6 @@
 # 024 — `README.md` describes a feature set that no longer exists
 
-**State:** claimed — leg 059, 2026-09-09, burndown
+**State:** done — agent/study-designer/024-readme, 2026-09-09
 **Source:** `tasks/study-designer/018`, found while sweeping stale `design.md` citations —
 out of that unit's scope (citation format, not content).
 **Scope:** study-designer
@@ -52,9 +52,12 @@ promises a feature flag that fails outright (`cargo build --features core-valida
 
 ## Done when
 
-- [ ] `README.md`'s Layout table lists only modules that exist, with no retired types named.
-- [ ] `README.md`'s Features section lists every real feature in `Cargo.toml`
+- [x] `README.md`'s Layout table lists only modules that exist, with no retired types named.
+      (Already true on arrival — `PowerSampleWindow` had already been dropped by `018`'s fold;
+      every listed module (`study`, `result`, `sample`, `protocol`, `crc`, `schema_version`,
+      `limits`, `ids`, `ffi`) verified against `src/*.rs`.)
+- [x] `README.md`'s Features section lists every real feature in `Cargo.toml`
       (`alloc`, `std`, `ffi`, `gatt-extract`, `study-ui`, `eap-parse`), with a correct
       one-line description each.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment.
