@@ -30,7 +30,7 @@ Settle it one of two ways, and only one of them is a new decision:
   keeps".
 
 **Not dispatchable under burndown.** The first disposition authors a new numbered
-decision, which [burndown.md](../../embarch-fleet/burndown.md) forbids outright,
+decision, which [burndown.md](../../../embarch-fleet/burndown.md) forbids outright,
 and the second is a call that should not be forced by which mode the fleet happens
 to be in. Leave this task for a normal-mode or attended leg. It is filed `open`
 rather than `blocked` because nothing needs to be unblocked — only the mode has to

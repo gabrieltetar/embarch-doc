@@ -13,6 +13,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- outpost README Status no longer calls overhead "uncharacterised"; states the measured 1.6%/78.1% pair, spec.md §4.
 - Source-comment citations repointed from the deleted design.md to decisions.md, interfaces/wire.md, interfaces/integration.md, spec.md §4.
 - `tests/vocab_check.py` diffs record kinds and header flags against `src/outpost_priv.h`; see decisions/wire.md decision 23.
 - `run-all.sh` runs `cross_decoder.py` above the `WEST` guard now; a skip is restated in the exit summary ([decisions/module.md](../embarch-outpost/decisions/module.md) decision 22).
