@@ -1,0 +1,1 @@
+- A task file can no longer grant a worker a path the ownership map reserves: its title is checked against `check-ownership.py` — [tasks/README.md](../tasks/README.md).

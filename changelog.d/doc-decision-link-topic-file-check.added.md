@@ -1,0 +1,1 @@
+- A `[decision N]` link is now checked against what the topic file it names defines, and `history/`'s 17 are repointed at their indexes — [DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md).

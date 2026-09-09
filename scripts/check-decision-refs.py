@@ -22,7 +22,18 @@ three sub-projects. So attribution looks backwards a short window (ATTRIB_WINDOW
 chars) from the reference for a `<sub-project>/design.md`-shaped path, in a link
 or in inline code, and otherwise falls back to the file's own sub-project.
 
-Three outcomes, and only two of them fail:
+Four outcomes, and three of them fail:
+  * ERROR   -- a `[decision N](<sub>/decisions/<topic>.md)` LINK whose target
+               file does not define N. The one reference shape that names a
+               file rather than a sub-project, and therefore the only one that
+               can go stale while still resolving: a mission split moves an
+               entry between topic files without renumbering it, so the old
+               path keeps working and names the wrong file. `check-links.py`
+               sees a path that exists; nothing saw what was in it, and
+               `topology/010` produced exactly this on 2026-09-06 (decision 21,
+               `enrollment.md` -> `validation.md`). DOC-CONVENTIONS.md's fix is
+               to link `<sub>/decisions.md`, the routing table a splitter
+               maintains. Added 2026-09-09, tasks/doc/027.
   * ERROR   -- attributed by an explicit nearby path, number not defined there.
   * ERROR   -- number defined by NO sub-project anywhere. This is the genuinely
                dangling reference a renumber or a deletion leaves behind, and
@@ -70,7 +81,27 @@ DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+(?:\s*,\s*\d+)*)\s+[-—]\s')
 # optionally prefixed by a section marker that this convention no longer needs.
 REF = re.compile(r'decisions?\s+((?:\d+)(?:\s*[/,]\s*\d+|\s*[-–—]\s*\d+|\s+and\s+\d+)*)', re.I)
 # A sub-project doc path, in a markdown link or in inline code -- both are used.
-DOC_PATH = re.compile(r'([a-z0-9-]+)/(?:design|decisions)\.md')
+# The topic-file arm was added 2026-09-09 (tasks/doc/027): a mission split moves
+# an entry between `decisions/<topic>.md` files, and until then a nearby
+# `embarch-topology/decisions/enrollment.md` attributed nothing, so the
+# reference fell back to the LINKING file's sub-project -- usually the wrong one.
+DOC_PATH = re.compile(r'([a-z0-9-]+)/(?:(?:design|decisions)\.md'
+                      r'|decisions/[a-z0-9-]+\.md)')
+
+# A LINK whose text cites a decision number and whose href is a topic file:
+# `[decision 21](../embarch-topology/decisions/enrollment.md)`. This is the one
+# reference shape whose target names a file rather than a sub-project, so it is
+# the only one that can go stale while still resolving -- which is exactly what
+# neither gate could see. `check-links.py` validates that the path exists;
+# nothing checked what the file at the end of it DEFINES.
+# The `(?:.../)?` prefix is OPTIONAL, and that is not cosmetic: the commonest
+# form of this link is written from inside the sub-project itself, as a bare
+# `decisions/<topic>.md`, and a pattern requiring a path segment in front of it
+# misses every one of them -- which is most of the corpus's instances and the
+# exact case DOC-CONVENTIONS.md's own worked example uses.
+TOPIC_LINK = re.compile(
+    r'\[([^\]]*?)\]\(((?:[^)\s]+/)?decisions/[a-z0-9-]+\.md)\)')
+TOPIC_REL = re.compile(r'([a-z0-9-]+)/decisions/([a-z0-9-]+)\.md$')
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
@@ -181,6 +212,74 @@ def build_index():
     return index
 
 
+def build_file_index():
+    """`<sub>/decisions/<topic>.md` -> the set of numbers THAT FILE defines.
+
+    `build_index()` answers "which sub-project defines N", which is what
+    DOC-CONVENTIONS.md says a number addresses. This answers "which file", and
+    it exists only to check the one shape that names a file: a `[decision N]`
+    link pointed straight at a topic file (tasks/doc/027).
+    """
+    index = {}
+    for path in md_files():
+        rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
+        parts = rel.split('/')
+        if len(parts) != 3 or parts[1] != 'decisions':
+            continue
+        nums = index.setdefault(rel, set())
+        with open(path, encoding='utf-8') as f:
+            for line in f:
+                m = DEF_LIST.match(line) or DEF_HEAD.match(line)
+                if m:
+                    nums.update(int(n) for n in re.findall(r'\d+', m.group(1)))
+    return index
+
+
+def check_topic_links(file_index):
+    """(rel, lineno, num, href, defining, excerpt) per stale topic-file link.
+
+    A mission split moves an entry between a sub-project's decision files
+    without renumbering it (DOC-CONVENTIONS.md), so the OLD path keeps
+    resolving while naming a file that no longer holds the number.
+    `topology/010` did exactly this on 2026-09-06: decision 21 moved
+    `enrollment.md` -> `validation.md` and a `history/topology.md` link went on
+    pointing at `enrollment.md`.
+
+    Only a link whose target is a topic file this repo actually indexes is
+    judged. A number the sub-project does not define at all is the existing
+    check's business, not this one -- reported there, once.
+    """
+    bad, checked = [], 0
+    for path in md_files():
+        rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
+        with open(path, encoding='utf-8') as fh:
+            lines = fh.read().splitlines()
+        for lineno, line in enumerate(lines, 1):
+            if 'decision' not in line.lower():
+                continue
+            for m in TOPIC_LINK.finditer(line):
+                text, href = m.group(1), m.group(2)
+                ref = REF.search(text)
+                if not ref:
+                    continue      # a link to a topic file, citing no number
+                target = os.path.normpath(
+                    os.path.join(os.path.dirname(rel), href)).replace(os.sep, '/')
+                if target not in file_index:
+                    continue      # not an indexed topic file; check-links owns it
+                hit = TOPIC_REL.search(target)
+                checked += 1
+                for num in expand(ref.group(1)):
+                    if num > MAX_DECISION or num in file_index[target]:
+                        continue
+                    # Where in that sub-project it actually lives, if anywhere.
+                    defining = sorted(
+                        f for f, nums in file_index.items()
+                        if num in nums and f.split('/')[0] == hit.group(1))
+                    bad.append((rel, lineno, num, target, defining,
+                                line.strip()[:110]))
+    return bad, checked
+
+
 def expand(numbers_text):
     """'31/32/33' -> [31,32,33]; '58-62' -> [58..62]; '39' -> [39]."""
     text = numbers_text.strip()
@@ -257,22 +356,46 @@ def main():
         print()
 
     bad_rows, rows_checked, rows_defined = check_reversal_rows()
+    file_index = build_file_index()
+    bad_links, links_checked = check_topic_links(file_index)
 
     # inbox/ drops warn; everything else fails. Split BEFORE any exit decision.
     drop_errors = [e for e in errors if is_drop(e[0])]
     errors = [e for e in errors if not is_drop(e[0])]
     drop_rows = [r for r in bad_rows if is_drop(r[0])]
     bad_rows = [r for r in bad_rows if not is_drop(r[0])]
+    drop_links = [b for b in bad_links if is_drop(b[0])]
+    bad_links = [b for b in bad_links if not is_drop(b[0])]
 
-    if drop_errors or drop_rows:
+    if drop_errors or drop_rows or drop_links:
         # NOTE: is the marker check-docs.py surfaces on an otherwise-green run.
-        print(f'NOTE: {len(drop_errors) + len(drop_rows)} unresolved citation(s) '
-              f'in gitignored inbox/ drops -- warnings, not failures; the drain '
-              f're-checks them as errors.')
+        print(f'NOTE: {len(drop_errors) + len(drop_rows) + len(drop_links)} '
+              f'unresolved citation(s) in gitignored inbox/ drops -- warnings, '
+              f'not failures; the drain re-checks them as errors.')
         for rel, lineno, target, num, excerpt, why in drop_errors:
             print(f'  (inbox) {rel}:{lineno} decision {num} -- {why}')
         for rel, lineno, num, excerpt in drop_rows:
             print(f'  (inbox) {rel}:{lineno} reversals row {num} -- not defined')
+        for rel, lineno, num, target, defining, excerpt in drop_links:
+            print(f'  (inbox) {rel}:{lineno} decision {num} -- {target} does '
+                  f'not define it')
+        print()
+
+    if bad_links:
+        print(f'{len(bad_links)} `[decision N]` link(s) pointing at a topic '
+              f'file that does not define N:\n')
+        for rel, lineno, num, target, defining, excerpt in bad_links:
+            where = ', '.join(defining) if defining else 'nowhere in that sub-project'
+            print(f'  {rel}:{lineno} decision {num} -> {target}')
+            print(f'      defined in: {where}')
+            print(f'      {excerpt}')
+        print('\nA mission split moves an entry between decision files without '
+              'renumbering it,\nso the old path keeps resolving while naming the '
+              'wrong file -- check-links.py sees\na path that exists and this '
+              'used to see a sub-project. DOC-CONVENTIONS.md: LINK THE\nINDEX, '
+              'not the topic file. `<sub>/decisions.md` is a routing table its '
+              'splitter\nmaintains, so it survives the move; repoint at that, '
+              'or drop the link and use the\nbare number.')
         print()
 
     if bad_rows:
@@ -292,11 +415,14 @@ def main():
               f'(--warnings to list).')
         return 1
 
-    if bad_rows:
+    if bad_rows or bad_links:
         return 1
 
     print(f'All {checked} decision references resolve. '
           f'{len(warnings)} ambiguous (--warnings to list), not an error.')
+    print(f'All {links_checked} `[decision N]` topic-file link(s) name the '
+          f'file that defines the number\n  (DOC-CONVENTIONS.md prefers the '
+          f'index: {len(file_index)} topic files indexed).')
     print(f'All {rows_checked} reversal-row citations resolve '
           f'({rows_defined} rows defined).')
     return 0

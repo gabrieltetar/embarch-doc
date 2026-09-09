@@ -29,7 +29,7 @@
 - `embarch-core --version` no longer prints a log warning ahead of the version line on stdout; the diagnostic now actually lands on stderr.
 - Core refuses probe-rs for an nRF54H chip name instead of silently permitting it (decision 49).
 - `interfaces.md`/`spec.md` now list all 27 routes and 11 CLI subcommands; a pinned count in `api.rs` catches future drift.
-- A study stopped by a timed-out step now names that step; "did not arrive" means no step outcome was recorded at all ([decision 45](../embarch-core/decisions/studies.md)).
+- A study stopped by a timed-out step now names that step; "did not arrive" means no step outcome was recorded at all ([decision 45](../embarch-core/decisions.md)).
 - `/logs/stream` no longer splits a log line across two SSE frames; its offset advances past a `\n` or not at all (embarch-core decision 44).
 - `hw_lock` contention queues silently — decision 14's `503` naming the holder was never built; three docs said it was. See [decisions/platform.md](../embarch-core/decisions/platform.md).
 - `chip-list --help` and the `/resolve-chip` 404 now say to edit Core's compiled-in `SOC_TO_CHIP`, not a retired `embarch-api` config key.

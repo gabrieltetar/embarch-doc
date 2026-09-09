@@ -44,7 +44,7 @@ its env var. If something does, the finding **inverts** into a doc gap and the b
 `suite/features.md` asserts, with `Verified: hw`, *"Erase on flash | Shipped — **the brick hazard
 is closed: no backend maps it to a chip erase**"* — a claim over four backends, one of which
 appears in no document and has no recorded run, so the claim is unfalsifiable from the docs alone.
-`embarch-core/decisions/flashing.md` (decisions 32, 36, 48) does not name `nrfjprog` at all, so
+`embarch-core/decisions/flashing.md` (decisions 32, 36, 49) does not name `nrfjprog` at all, so
 there is no recorded decision to add it and none to keep it. Either outcome makes the suite
 smaller or more honest; the current state is neither.
 

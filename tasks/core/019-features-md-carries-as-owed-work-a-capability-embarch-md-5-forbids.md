@@ -1,4 +1,11 @@
-# 019 — `suite/features.md` carries as owed work a capability `embarch.md` §5 forbids
+# 019 — the per-caller-identity feature row carries as owed work a capability the suite principle forbids
+
+**The filename still reads `features-md-...-embarch-md-5-forbids` and stays that way.** The title
+was rewritten 2026-09-09 because it named two paths a `core` worker may not write, which is
+`tasks/doc/029`'s defect; the filename could not follow, because a task number's identity is the
+number *and* its slug and `check-task-numbers.py` reads a rename as reissuing the number
+(`tasks/README.md`). `check-task-state.py`'s rule 6 reads the title, not the filename, for exactly
+this reason.
 
 **State:** open
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy).
@@ -39,10 +46,18 @@ nothing has yet picked it up as work to do.
 
 ## Done when
 
-- [ ] `suite/features.md`'s per-caller-identity row does not read as owed work, or `embarch.md` §5
-      no longer forbids it.
-- [ ] The assembled row is no larger than it is now (`suite/features.md` has ~14 bytes of
-      headroom, `tasks/suite/004`).
-- [ ] `features.d/README.md`'s status vocabulary can express "declined, with a trigger", or this
-      row expresses it in prose.
+- [ ] The per-caller-identity row does not read as owed work. **The edit is
+      `features.d/core-200-per-caller-identity-beyond-one.md` and nothing else** — the assembled
+      file and the principle it contradicts are both outside a `core` worker's row
+      (`../../embarch-fleet/protocol.md` §3), so *"or the principle no longer forbids it"* is
+      **not** an arm of this task: if that is the answer, drop a `status.d/core-*` fragment saying
+      so and leave the row alone. Rewritten 2026-09-09 (`tasks/doc/029`) — the earlier wording
+      offered a `core` worker an out it may not take, which is the defect that task exists to stop.
+- [ ] The assembled row stays within the **per-row 600 B cap** (`build_features.py`), which is the
+      only cap that applies: the assembled file lost its byte cap outright on 2026-09-07, so the
+      *"~14 bytes of headroom"* this box used to cite no longer exists.
+- [ ] Whether the `Status` vocabulary should gain a "declined, with a trigger" value is
+      **`features.d/README.md`'s question and not this worker's** — that file is outside every
+      worker's row too. Express the refusal in this row's own prose, and if the vocabulary really
+      needs a third value, say so in the `status.d/core-*` fragment.
 - [ ] Gate green; `changelog.d/core-*` fragment.

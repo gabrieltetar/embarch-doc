@@ -34,7 +34,7 @@ for the same reason `tasks/doc/028` says not to: every one of those instances
 was resolved by a judgement about what actually occurred, and a script that
 guessed would turn a loud wrong field into a quiet one.
 
-Four rules, and all of them fail the gate:
+Six rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
      exactly -- no trailing comma, no `partially`, no `closed`. Prose follows
@@ -47,6 +47,11 @@ Four rules, and all of them fail the gate:
   4. **`In flux: per` names every path on the `Compacts:` line** inside the
      `In flux:` block itself, so "per file" cannot be an answer that declines
      to say which file.
+  5. **No `~~struck-through~~` path on a `Compacts:` line.** That line is
+     parsed, so a paid file is deleted from it and accounted for in the body.
+  6. **A task's TITLE names no path its `Scope:` may not write**, checked
+     against `check-ownership.py` itself -- `tasks/doc/029`. See the block
+     above `check_scope_claims` for why the title and not the body.
 
 **Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
 where that got decided.** The holding position was that `.claude/leg.md` and
@@ -90,6 +95,7 @@ from __future__ import annotations
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -140,6 +146,120 @@ def token(raw: str) -> str:
     """
     parts = raw.split()
     return parts[0].strip("*_`") if parts else ""
+
+
+# --- Rule 6: a task file's SCOPE claim, checked against the ownership map ----
+#
+# `tasks/doc/029`: a task file is prose, and a worker treats it as authority.
+# `tasks/core/023` named the suite-level doc `embarch-token.md` as in scope for
+# a `core` worker; `../embarch-fleet/protocol.md` §3 reserves every shared
+# suite-level doc to the supervisor, whose route from a worker is a
+# `status.d/<scope>-*` fragment. The worker read the task, made the edit, and
+# pre-flagged the failing check as "an expected, task-authorized exception".
+# **It was not the worker's error.** `check-ownership.py` fired correctly and
+# after the fact, on a branch already written and pushed.
+#
+# **The title, and ONLY the title.** Scanning the body was measured and is
+# useless: 76 of 87 task files name a path their scope cannot write, because
+# every task cites the docs and rules it is about. That is the same trap
+# `check-doc-size.py`'s `Compacts:` parser is built to avoid -- a claim is
+# DECLARED, never inferred from a mention. A title is short, deliberate, and
+# names the subject: the same measurement flags **one** file, `tasks/core/019`,
+# which is a real third instance of this class that nobody had found, and the
+# rule catches `tasks/core/023`'s own title too.
+#
+# `Owner: required` is exempt, as it is for `In flux:`: the task says outright
+# that no agent takes it, so a reserved path in its title is the point of the
+# task rather than a grant. `suite` and `fleet` are skipped because
+# `check-ownership.py` refuses them as worker scopes outright, so no worker is
+# ever dispatched with one.
+#
+# The verdict comes from `check-ownership.py` itself, by subprocess, never from
+# a second copy of `allowed()` here: there must be exactly one implementation
+# of the ownership map, and two that a checker holds equal is still two.
+SKIP_SCOPES = ("suite", "fleet")
+OWNERSHIP = REPO / "scripts" / "check-ownership.py"
+
+
+def scope_of(text: str) -> str | None:
+    m = re.search(r"^\*\*Scope:\*\*\s*(\S+)", text, re.M)
+    return m.group(1).strip("*_`.,") if m else None
+
+
+def title_of(text: str) -> str:
+    for line in text.split("\n"):
+        if line.startswith("# "):
+            return line
+    return ""
+
+
+def tracked_paths() -> list[str]:
+    """Every tracked doc, script and config, longest first.
+
+    Longest first so `embarch-core/decisions/studies.md` is reported rather
+    than a shorter path that happens to be a substring of it.
+    """
+    out = subprocess.run(["git", "-C", str(REPO), "ls-files"],
+                         capture_output=True, text=True).stdout.split()
+    return sorted((f for f in out if f.endswith((".md", ".py", ".toml"))),
+                  key=len, reverse=True)
+
+
+def unowned(scope: str, paths: list[str]) -> tuple[list[str], str | None]:
+    """(paths this scope may not write, or a refusal message from the checker)."""
+    r = subprocess.run(
+        [sys.executable, str(OWNERSHIP), "--scope", scope, "--stdin"],
+        input="\n".join(paths), capture_output=True, text=True)
+    if r.returncode == 0:
+        return [], None
+    if "unknown scope" in r.stdout:
+        return [], r.stdout.strip().split("\n")[0]
+    # The checker prints one indented line per unowned path. Intersecting its
+    # output with what we sent is exact, and does not depend on the hint text.
+    hit = [p for p in paths if any(
+        line.strip().startswith(p) for line in r.stdout.split("\n"))]
+    return hit, None
+
+
+def check_scope_claims(files: list[Path]) -> list[str]:
+    cands = tracked_paths()
+    by_scope: dict[str, dict[str, list[Path]]] = {}
+    for p in files:
+        text = p.read_text(encoding="utf-8", errors="replace")
+        scope = scope_of(text)
+        if not scope or scope in SKIP_SCOPES:
+            continue
+        owner = OWNER_RE.search(text)
+        if owner and owner.group(1).lower().strip("*_`.,") == "required":
+            continue
+        title = title_of(text)
+        named, seen = [], ""
+        for q in cands:
+            if q in title and q not in seen:
+                named.append(q)
+                seen += q
+        for q in named:
+            by_scope.setdefault(scope, {}).setdefault(q, []).append(p)
+
+    out = []
+    for scope, paths in sorted(by_scope.items()):
+        bad, refusal = unowned(scope, sorted(paths))
+        if refusal:
+            for p in sorted({x for v in paths.values() for x in v}):
+                out.append(f"{p.relative_to(REPO)}\n    `Scope: {scope}` -- "
+                           f"{refusal}\n    no worker can be dispatched with it")
+            continue
+        for q in bad:
+            for p in paths[q]:
+                out.append(
+                    f"{p.relative_to(REPO)}\n    title names `{q}`, which a "
+                    f"'{scope}' worker may not write\n    protocol.md §3 "
+                    f"reserves it; a worker's route is a `status.d/{scope}-*` "
+                    f"fragment for the\n    supervisor to apply. Say that in "
+                    f"the task, or file it under a scope that owns\n    the "
+                    f"path. A task file is authority to the worker reading it "
+                    f"(tasks/doc/029).")
+    return out
 
 
 def task_files() -> list[Path]:
@@ -233,6 +353,8 @@ def main() -> int:
                         f"drifting from the\n    `Compacts:` line again, which "
                         f"is what tasks/doc/030 found on three of four tasks.")
 
+    fails += check_scope_claims(task_files())
+
     if args.list:
         for k, v in sorted(seen.items(), key=lambda kv: -kv[1]):
             mark = " " if k in LEGAL else "  <-- not a state"
@@ -252,12 +374,14 @@ def main() -> int:
         print(f"{len(fails)} task file(s) with an unreadable state field:\n")
         for f in fails:
             print(f"  {f}\n")
-        print("tasks/README.md '## States' has the four; prose goes after "
-              "token zero, never in it.")
+        print("tasks/README.md '## States' has the four states, the `In flux:`\n"
+              "answers, and which paths a scope may name; prose goes after token\n"
+              "zero, never in it.")
         return 1
     n = len(task_files())
     print(f"OK: all {n} task file(s) carry one of {', '.join(LEGAL)} at "
-          f"token zero.")
+          f"token zero,\n    a legal `In flux:` answer, and a title naming no "
+          f"path their scope cannot write.")
     return 0
 
 
