@@ -1,6 +1,6 @@
 # embarch-core README documents four dev-bench env overrides that decision 23 removed
 
-**State:** open
+**State:** claimed
 **Source:** found while fixing dev-bench/005 (README board-and-links); promoted from
 `inbox/core-readme-stale-dev-bench-env-overrides.md` by leg 049, unchanged apart from this line
 and the note at the end
