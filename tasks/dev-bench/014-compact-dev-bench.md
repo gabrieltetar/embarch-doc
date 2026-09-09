@@ -1,6 +1,12 @@
 # 014 — `embarch-dev-bench/decisions/link.md` is in reserve after decision 35's amendment
 
-**State:** open
+**State:** blocked — **state corrected by leg 057, 2026-09-09.** `In flux:` below says **yes** and
+names its own unparking condition (whichever of the flash-route migration or the step-cap
+divergence is next quiet), so this was never dispatchable: `.claude/leg.md` forbids sending a worker
+to a compaction task whose `In flux:` says yes, and an `open` state on one is the filer having got
+the state wrong rather than the flux having ended. Nothing about the file changed; only the state
+line did. Note the mirror of this correction on `tasks/umbrella/038` in the same commit — two
+`In flux: yes` compaction tasks sitting `open` in one queue is a pattern, not a slip.
 **Source:** `check-doc-size.py`, run during `tasks/dev-bench/002` — decision 35's amendment (the
 step-cap removal it claimed was never implemented) pushed the file to 91.5% of its cap
 (11,241/12,288 B, 1,047 B left)

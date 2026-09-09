@@ -1,6 +1,12 @@
 # 038 — embarch-umbrella's spec.md is in reserve again
 
-**State:** open
+**State:** blocked — **state corrected by leg 057, 2026-09-09.** This task's own `## In flux: yes`
+section below names its unparking condition ("the umbrella task queue holds no open task naming a
+`doctor`-chain or `status` row change") and that condition is **not met**:
+`tasks/umbrella/033-settle-check-17s-two-fail-arms-against-a-real-narrow-bound-core.md` is open and
+is exactly a check-17 doctor-chain row change. A compaction task whose `In flux:` says yes must not
+be dispatched (`.claude/leg.md`), so the state line was wrong rather than the flux. **Unparks when
+`033` lands** — or when whatever open umbrella task names a `doctor`/`status` row change is gone.
 **Source:** scripts/check-doc-size.py, hit landing `tasks/umbrella/028`
 **Scope:** umbrella
 **Hardware:** none
