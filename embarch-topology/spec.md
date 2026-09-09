@@ -11,7 +11,7 @@ The suite's one abstraction for **topology**, meaning two things that were previ
 - **Software topology** — where each process runs relative to the others: the API and Core on one machine, a WSL2-hosted API talking to a native-Windows Core, or Core moved to a headless box on the LAN.
 - **Hardware topology** — what is physically wired to what: which USB port carries a board's debug probe versus its serial link, which physical board plays which role, and what that role's board identity currently is.
 
-**The class of problem it exists to make impossible:** a stale port override winning silently over reality. Per decisions 2 and 3 **the override mechanism was removed rather than merely detected**, so nothing is left that can win; retired decision 9 carries the incident that proved it.
+**The class of problem it exists to make impossible:** a stale port override winning silently over reality. Per decisions 2 and 3 **the override mechanism was removed rather than merely detected**, so nothing is left that can win (decision 9, retired).
 
 It is **not**:
 
@@ -58,7 +58,7 @@ Everything else is detected live. These four cannot be:
 |---|---|
 | **Which board is enrolled as which role** | No software can derive which physical board a probe is wired to — only a person physically isolating it and saying so |
 | **A link port's own USB serial** | The link can be a different physical USB device from the JTAG probe, and **no identity readback is possible over a plain UART** |
-| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** [confirmed live 2026-09-06] |
+| **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 
 Storage is one file under a machine-wide directory this crate owns — the same one `embarch-core`'s token file uses, one level down (decision 23). A store predating any of the later facts still loads.
@@ -69,11 +69,11 @@ Storage is one file under a machine-wide directory this crate owns — the same 
 
 **A declared link serial or interface can also be *unset* again** (`set-dev-bench-link --clear-serial`/`--clear-interface`) — the fix for exactly the stale-fact case above: `NotFound` now names which rule emptied the candidate list and routes to clearing it, rather than to re-enrolling by role, which carries the same stale fact right back (decision 27).
 
-**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — every bench with one VCOM declares nothing, **but a guess says so.** This crate's own CLI is one such caller.
+**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — every bench with one VCOM declares nothing, **but a guess says so.**
 
 **The declared *interface* is load-bearing, and is the only thing separating the two VCOMs a DK's onboard probe exposes under one serial:** `COM16` and `COM17` differ in nothing else a detector can read, and the console is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** The failure signature is a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).
 
-**`guessed_among`'s trigger is an *under-declared* bench, not a crowded one.** Adding probes cannot produce a guess while an interface is declared, so exercising the field takes a deliberate omission. Nothing has yet observed it set.
+**`guessed_among`'s trigger is an *under-declared* bench, not a crowded one.** Adding probes cannot produce a guess while an interface is declared, so exercising the field takes a deliberate omission.
 
 ## What validation asserts, and what it cannot
 
@@ -84,21 +84,19 @@ Storage is one file under a machine-wide directory this crate owns — the same 
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
 
-**A validate call's only timestamp used to be the enrolled record's own `confirmed_at_utc_ms` — enrolment time, not this check's** (decision 26). `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, read the instant the live hardware-ID compare just passed, alongside the unchanged `validate_serial`/`validate_role` — added rather than renamed, since this crate is linked live and a signature change on the existing pair would be a same-instant break for every in-process caller. `embarch-core`'s `POST /validate` still has to pick the new field up itself before it reaches the wire.
+A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, the instant this call's hardware-ID compare passed, alongside the unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` does not yet expose it.
 
 ## What each consumer owns now
 
 - **`embarch-core`** keeps the hardware-I/O plumbing — actually opening a probe or port handle — and calls the crate for *which* port or probe, and whether it is still valid. It holds no copy of the identity-recheck logic, the board storage, the identity reads or the port heuristic, and **there is no dev-bench port override env var, with no replacement.**
-- **`embarch-api`** links the crate **without the hardware feature — `cargo tree` confirms the probe and serial crates never appear.** Only its `base_url = "auto"` branch calls the crate; the declared-address fast path does not.
+- **`embarch-api`** links the crate **without the hardware feature** — the probe and serial crates never appear. Only its `base_url = "auto"` branch calls the crate; the declared-address fast path does not.
 - **`embarch-umbrella`** does the same; its own env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
 
 ## Where it stands
 
 Both real boards are enrolled and a real end-to-end flash plus study has completed clean.
 
-**The mismatch path is exercised, and nothing had to inject anything.** The bench met the precondition — a second same-chip-family board — on its own: two physically different nRF54L15 DUTs have alternated on the one probe `000852006107`, and **three such swaps are on record, each tripping the gate** — three identity refusals naming the recorded ID and the live one, saying *"re-enroll if this is deliberate"*, the most recent answered a minute later by the re-enrolment it asked for [measured 2026-09-06, `GET /alerts`]. **The count is measured; the proportion is not** — a swap re-enrolled before any validate ran leaves no row. Of the log's six entries the other three are a *different* refusal, probe-not-attached, carrying no live ID.
-
-Each row is an end-to-end refusal, not a log line beside one — decision 12.
+**The mismatch path is exercised, not just designed:** two physically different nRF54L15 DUTs have alternated on one probe, and three such swaps are on record, each tripping the gate — an end-to-end refusal, not a log line beside one (decision 12).
 
 **No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, which overwrites the record it would have to contradict; there is **no topology override on the store path**, its only variable being Windows' `ProgramData`, unsettable for an already-running service.
 
