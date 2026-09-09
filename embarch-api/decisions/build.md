@@ -21,6 +21,8 @@ For a Zephyr build the **first** compiler error is usually the actionable one an
 
 **Both cuts must land on a UTF-8 boundary now, not one.** Slicing a `str` inside a codepoint panics, so a boundary walk is what stops a build log from taking the MCP server down rather than returning a truncated one — the head rounds **down** and the tail rounds **up**, which also makes "within the cap" hold by construction, since an adjustment can only ever drop bytes. The two constants are congruent differently (16384 ≡ 1 and 49152 ≡ 0, mod 3), so **a fixture of pure 3-byte characters exercises the head cut and not the tail one** — `tests/build_capture.rs` appends one ASCII byte specifically to shift the tail offset off a boundary. A both-ends test that does not actually straddle a character at both ends proves half of what it claims.
 
+**Amended 2026-09-08:** the drain fed this used `next_line()`, erroring on a non-UTF-8 byte; that was read as EOF, silently dropping the rest. Now reads raw bytes, decoding lossily per line, marked.
+
 ### 19 — A readable build-dir prefix, a `target.json` beside the output, and a hash this crate owns
 `extra_args` folds into the directory name via a hash, since an arbitrary flag can contain directory-unsafe characters — but **a bare hash makes a directory listing undebuggable to a human staring at it**. Two additions without touching the hash: every other axis spelled out ahead of it, and a `target.json` recording the full resolved selection, so `cat target.json` recovers exactly what produced that directory.
 
