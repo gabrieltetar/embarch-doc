@@ -1,6 +1,6 @@
 # A `decision N` link survives a mission split still pointing at the file that no longer holds it
 
-**State:** open
+**State:** claimed by agent/doc/022-decision-link-mission-split, 2026-09-08 23:08
 **Source:** reviewer of `topology/010` (doc merge `3079d6c`), 2026-09-06. That unit moved
 `embarch-topology` decision 21 out of `decisions/enrollment.md` into a new
 `decisions/validation.md`. `history/topology.md` line 8 still reads
