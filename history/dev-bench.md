@@ -20,3 +20,6 @@
 
 ### Removed
 - Seven resolved open questions in `embarch-dev-bench` §4 — struck-through tombstones for questions closed weeks earlier. A resolved question is history, not an open question.
+
+### Decided
+- decisions/ble.md split verbatim by mission: pairing/security stays, addressing/scanning moves to decisions/scanning.md.
