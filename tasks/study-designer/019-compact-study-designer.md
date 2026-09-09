@@ -1,6 +1,6 @@
 # 019 — Compact `embarch-study-designer/decisions/registry.md`
 
-**State:** open
+**State:** claimed by agent/study-designer/019-compact-study-designer, 2026-09-08 23:08
 **Source:** `scripts/check-doc-size.py` — `registry.md` entered reserve on the commit that
 added decision 69 (`agent/study-designer/015-duplicate-field-name`).
 **Scope:** study-designer
