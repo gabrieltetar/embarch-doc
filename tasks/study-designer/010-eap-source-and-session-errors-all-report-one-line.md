@@ -26,16 +26,35 @@ untrue for every error an author is most likely to hit.
 
 ## Done when
 
-- [ ] Sources and session variables carry a line through the AST, and no resolve-time error for
+- [x] Sources and session variables carry a line through the AST, and no resolve-time error for
       either uses `line0`.
-- [ ] Tests assert the reported line for a duplicate source, an over-long source name and a
+- [x] Tests assert the reported line for a duplicate source, an over-long source name and a
       duplicate session variable, in a manifest where the first `state` is many lines away.
-- [ ] The remaining uses of `line0` (protocol name, `validate_protocol`) are either given a real
+- [x] The remaining uses of `line0` (protocol name, `validate_protocol`) are either given a real
       line or documented as protocol-wide.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including
       `cargo test --no-default-features --features eap-parse`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Resolution (2026-09-08, agent/study-designer/010-eap-error-lines)
+
+`AstProtocol::sources`/`session` each now carry the line they were declared at (captured in the
+parser), and `resolve` reports duplicate/over-long-name errors against that line rather than
+`line0`. `line0` itself is gone: the protocol-name error and `validate_protocol`'s error now use a
+new `AstProtocol::line` (the `protocol <name> {` line) — a real line, not the first state's, chosen
+because `validate_protocol` runs over the resolved, index-only `ProtocolDef` and its checks can
+span several states/frames/sources at once, so no single declaration line is "the" line for one of
+its failures; the protocol's own opening line is the smallest scope that legitimately covers all of
+them. No new numbered decision: this is a repair of the line-accuracy property decision 58 and
+`interfaces/eap.md` already claim, not a new one. `spec.md`, `decisions.md` and `open.md` did not
+need edits — none of them state the bug's wrong behavior as fact, so nothing there was false.
+`changelog.d/study-designer-eap-source-session-error-lines.fixed.md` dropped; no `status.d/`
+fragment, since nothing suite-level changed (this is an internal parser-only fix, no capability
+shipped/retired/changed maturity). Gate green: `cargo build`, `cargo test`,
+`cargo test --no-default-features --features eap-parse`, and
+`cargo clippy --all-targets -- -D warnings` all pass in the code worktree; `check-docs.py`,
+`check-client-names.py --repo <code worktree>` and `check-ownership.py` (both repos) all pass.
 
 ## Supervisor's dispatch note, leg 053 (2026-09-08, burndown)
 
