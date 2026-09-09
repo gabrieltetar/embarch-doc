@@ -1,6 +1,6 @@
 # 025 — the README's Layout table omits about a dozen `src/` modules
 
-**State:** claimed — leg 061, worker on `agent/study-designer/025-readme-layout-table`
+**State:** done — leg 061, worker on `agent/study-designer/025-readme-layout-table`
 
 **Dispatch note (supervisor, leg 061):** enumerate `src/` from the tree, not from the task's or
 `024`'s description of it, and check both directions — the defect this fixes is exactly a converse
@@ -41,12 +41,25 @@ converse false in one pass. That is worth remembering when a unit reports a tabl
 
 ## Done when
 
-- [ ] Every module in `embarch-study-designer/src/` appears in the README's Layout table, or the
+- [x] Every module in `embarch-study-designer/src/` appears in the README's Layout table, or the
       table states its own scope explicitly (e.g. "public surface only") so the omissions are
       deliberate rather than stale.
-- [ ] No module is listed that does not exist, and no retired type is named.
-- [ ] The modules backing `gatt-extract`, `study-ui` and `eap-parse` are locatable from the README
+- [x] No module is listed that does not exist, and no retired type is named.
+- [x] The modules backing `gatt-extract`, `study-ui` and `eap-parse` are locatable from the README
       alone.
+
+## Resolution
+
+Enumerated `src/` from the tree (25 files, `lib.rs` excluded) and diffed both directions against
+the README's Layout table — before this unit the table had 9 rows and 16 modules present in
+`src/` were missing from it (0 rows named a module absent from `src/`, so only one direction of
+the defect existed in practice). Added the 16 missing rows, each with a one-line description drawn
+from the module's own `//!` doc comment, and marked each with its actual `#[cfg(feature = ...)]`
+gate from `lib.rs` (not assumed from the Features section prose — `gatt_names` is gated on `std`,
+not `study-ui`, which the Features section text alone would have suggested). Table and `src/` now
+match exactly in both directions (`diff` of sorted module-name lists is empty). No numbered
+decision was written — this is an accuracy fix to an existing, ungoverned table, per the task's
+scope note.
 
 ## In flux: no
 
