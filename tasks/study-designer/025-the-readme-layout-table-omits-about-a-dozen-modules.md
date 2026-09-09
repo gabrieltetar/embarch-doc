@@ -1,6 +1,15 @@
 # 025 — the README's Layout table omits about a dozen `src/` modules
 
-**State:** open
+**State:** claimed — leg 061, worker on `agent/study-designer/025-readme-layout-table`
+
+**Dispatch note (supervisor, leg 061):** enumerate `src/` from the tree, not from the task's or
+`024`'s description of it, and check both directions — the defect this fixes is exactly a converse
+that nobody checked. **Doc-size reserve for `study-designer`:**
+`embarch-study-designer/spec.md` 9,600/10,240 B (640 B left) and
+`embarch-study-designer/open.md` 4,662/5,120 B (458 B left), both filed against
+`tasks/study-designer/006-compact-study-designer.md` (open, not blocked). The README is in the code
+repo and uncapped, so this unit should not need either — if it does, and it spends reserve, file
+`tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit.
 **Source:** `embarch-reviewer` on `tasks/study-designer/024`, 2026-09-09, leg 059 — found while
 checking that unit's claim that the Layout table needed no edit
 **Scope:** study-designer
