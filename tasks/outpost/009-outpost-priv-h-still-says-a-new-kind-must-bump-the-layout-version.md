@@ -1,6 +1,6 @@
 # 009 — `outpost_priv.h`'s header comment still says a new record kind must bump the layout version
 
-**State:** open
+**State:** claimed — leg 057, 2026-09-09, `agent/outpost/009-outpost-priv-layout-version-comment`
 **Source:** `outpost/007`'s reviewer, 2026-09-06 — it found three copies of a wrong price; the supervisor fixed the two doc copies in that fold and this is the third
 **Scope:** outpost
 **Hardware:** none
@@ -50,6 +50,21 @@ worse than a stale one in prose.
       repo has neither).
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/` fragment dropped.
+
+## Doc-size reserve in `embarch-outpost`, at dispatch (leg 057, 2026-09-09)
+
+`decisions/tracing.md` **7,408 / 8,192 B — 784 B left** (90.4%), the only file in reserve, already
+filed under `tasks/outpost/008` (open). `spec.md` and `decisions/transport.md` were both squeezed
+out of reserve by `outpost/012` late on 2026-09-08 and are clear. Do not push `tracing.md` further;
+if you must add to it, pay it down in the same commit. If this unit leaves any other file in
+reserve with nothing filed, file `tasks/outpost/<NNN>-compact-outpost.md` in the same commit — your
+own scope's directory, never `tasks/doc/`.
+
+**This leg runs in burndown, which forbids authoring a new numbered decision.** This task is a
+comment correction that brings code into line with `interfaces/wire.md`, which already states the
+real rule — it should need **no** new decision, and `tasks/outpost/008` exists precisely because the
+GPIO family's missing decision is a separate, filed piece of work. If you conclude a decision is
+needed, stop and say so in your report instead of writing one.
 
 ## Note for whoever dispatches this
 
