@@ -11,12 +11,13 @@ The study and result types. Field-level, concrete enough that a `serde`-derived 
 | `name` | Human-readable, **not required to be unique** — uniqueness, if ever needed, is a caller's concern |
 | `requires: Requirements { dev_bench_version, firmware_version }` | The builds this study is meant to run against. Both mandatory, `any` a legal explicit value. **No serde default, deliberately:** an omitted `requires` fails to deserialize rather than defaulting to `any`, which is what makes "it has to be *said*" true rather than aspirational |
 | `streams: Vec<StreamTap>` | Declared capture channels. `#[serde(default)]`, unlike `requires`: a study authored before taps existed captured nothing, and still does |
-| `gatt: Option<DeclaredGatt>` | The table this study was authored against and where it came from (`Vendor` / `Extracted { repo, revision }` / `Authored`). Host-side only; reconciled against a live discovery, **with the live table winning and the difference reported** |
 | `steps: Vec<Step>` | Run in order. Entirely static once submitted — no generator construct, because fuzzing treats a `Study` as its *output* |
 | `decoders: Vec<StructLayout>` | Host-only payload layouts; a tap carries only an index. See [decoders.md](decoders.md) |
 | `protocols: Vec<ProtocolDef>` | Resolved from `.eap` at build time. See [eap.md](eap.md) |
 | `dev_bench_log_level` | How loud the bench should be for this run. `#[serde(default)]` to `Warn`, which is what earlier studies effectively ran at — so **the default is the *right* value, not merely a permissive one** |
 | `steps_crc` / `streams_crc` / `protocols_crc` | Three sibling seals, each over the one span it names. Recomputed and overwritten by whoever submits, so no stored value is ever trusted. `streams_crc` is `#[serde(default)]` where `steps_crc` is not: `0` is the genuine CRC of zero bytes rather than a sentinel |
+
+**No `gatt` field exists on `Study`, and no `DeclaredGatt` type exists anywhere in `src/`.** Decision 45 designed one — a study declaring the GATT table it was authored against, reconciled against live discovery — but it was never implemented. Designed-but-unbuilt, not shipped: [../decisions/declares.md](../decisions/declares.md) 45, [../open.md](../open.md).
 
 ## `Step`
 

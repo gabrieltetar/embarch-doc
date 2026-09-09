@@ -55,7 +55,6 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 | `streams` (declared taps) | yes | `streams_crc` |
 | `protocols` (`.eap` manifests) | yes — dev-bench *executes* them | `protocols_crc` |
 | `requires` (firmware versions) | **no** | — |
-| `gatt` (the declared table) | **no** | — |
 | `decoders` (payload layouts) | **no** — only an index rides on a tap | — |
 | `dev_bench_log_level` | yes | **deliberately neither** |
 
