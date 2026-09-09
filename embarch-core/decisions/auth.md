@@ -30,6 +30,13 @@ So `api.rs`'s test module carries `DOCUMENTED_ROUTE_COUNT: usize`, a literal han
 
 *Rejected:* a relative `include_str!("../../embarch-doc/embarch-core/interfaces.md")` or an equivalent runtime read — works from a normal checkout, breaks silently-until-CI under a worker's worktree pair, and this suite has already paid once for a doc mechanism that only worked in one layout (decision 42's own history, for the router side).
 
+### 53 — `%ProgramData%\embarch` stays at its default ACL; only the token file is locked down
+`token_store.rs`'s `icacls` call ([embarch-token.md](../../embarch-token.md)) names the token file path only, never the directory. **This is deliberate, not an unhardened corner**: `embarch-topology` decision 23 puts its own `enrollment.toml` one level down in that same directory, and relies on the directory's untouched default ACL to let both the Core service account and an unprivileged interactive CLI create and read files there. Locking the directory down to the creating account, `SYSTEM` and Administrators — the same treatment the token file gets — would close exactly the access `embarch-topology` needs from the unprivileged side, and nothing in Core's own build would catch that: `token_store.rs` has no test touching the parent directory's ACL, only the file's.
+
+**A future author tightening this must not do it by narrowing the directory.** The token file already carries the real secret and already gets owner-restricted permissions; the directory holds no secret of its own; only a sibling file inside it does. If the directory's permissiveness is ever judged to be a problem, the fix belongs to whatever new file is added under it needing protection — a lockdown of its own, the way the token file has one — not to the directory as a whole, since `embarch-topology` and anything else sharing `%ProgramData%\embarch` has no way to ask Core for an exception once the directory itself is locked.
+
+**What this decision does not claim**: it does not assert what the default ACL concretely grants on any given Windows machine — `embarch-token.md` already flags that as unmeasured — only that Core deliberately never restricts it, and why.
+
 ### 11 — An optional `core.toml`, narrowed to `bind`/`port`, still design-only
 Every knob is env-var-only, and passing environment to an installed service is the bug class decision 3 already paid for. **Never written.** Narrowed when `embarch-topology` abandoned the four `dev_bench_*` knobs outright: a config value left stale wins over reality exactly as capably as an env var left stale, and enrollment is the fix either way.
 

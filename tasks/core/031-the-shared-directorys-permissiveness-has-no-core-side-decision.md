@@ -1,6 +1,6 @@
 # The shared directory's permissiveness is load-bearing for embarch-topology and no embarch-core decision records it
 
-**State:** claimed — leg 061, worker on `agent/core/031-shared-dir-decision`
+**State:** done — leg 061, worker on `agent/core/031-shared-dir-decision`
 
 **Dispatch note (supervisor, leg 061):** this is a normal leg, not burndown, so authoring the
 numbered decision is in scope — that is the whole task. Write it in `embarch-core/decisions.md`
@@ -46,18 +46,34 @@ the default.**
 
 ## Done when
 
-- [ ] A numbered `embarch-core` decision states that the shared directory's permissiveness is
+- [x] A numbered `embarch-core` decision states that the shared directory's permissiveness is
       deliberate, what depends on it, and what a future author must do instead of tightening it.
-- [ ] It names the topology-side dependency explicitly, so the invariant is discoverable from
+      Decision 53, `embarch-core/decisions/auth.md`.
+- [x] It names the topology-side dependency explicitly, so the invariant is discoverable from
       core's decisions alone — that is the whole point, and a decision that only says "keep it
       permissive" without saying who breaks does not close this.
-- [ ] `embarch-topology`'s side is consistent with it afterwards: still correct, and citing the new
-      decision rather than asserting the core-side behaviour on its own authority.
-- [ ] **No code change.** The ACL behaviour as shipped is correct and `embarch-token.md` already
+- [x] `embarch-topology`'s side is consistent with it afterwards: still correct, and citing the new
+      decision rather than asserting the core-side behaviour on its own authority. Its own
+      `decisions/storage.md` decision 23 still says the `embarch-token.md` phrasing is "flagged to
+      its owner rather than edited across the boundary" — stale now that decision 53 exists, but
+      `embarch-topology` is a different sub-project's scope, so this is filed as an inbox drop
+      (`inbox/topology-cite-core-decision-53-on-shared-dir-acl.md`) rather than edited here.
+- [x] **No code change.** The ACL behaviour as shipped is correct and `embarch-token.md` already
       describes it accurately since `2d070a8`. This is a decision-record gap only.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Notes on scope boundaries hit while closing this
+
+`embarch-token.md` is suite-level (`DOC-PROTOCOL.md` §5) and outside `core`'s ownership row
+(`check-ownership.py --scope core` refuses a write there), even though it is the doc whose sentence
+motivated this task and now wants to cite decision 53. Filed as an inbox drop instead:
+`inbox/suite-cite-core-decision-53-in-embarch-token.md`. No `open.md` edit was needed — it never
+carried prose about this gap (the dispatch note's "prefer replacing `open.md` prose" applied
+conditionally, and the condition didn't hold), so `open.md`'s 307 B of headroom is untouched and no
+`tasks/core/<NNN>-compact-core.md` is newly required beyond the two already filed
+(`tasks/core/022`, `tasks/core/030`).
 
 ## Doc-size note for whoever takes this
 
