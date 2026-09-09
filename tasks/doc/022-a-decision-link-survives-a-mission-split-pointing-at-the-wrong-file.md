@@ -1,6 +1,8 @@
 # A `decision N` link survives a mission split still pointing at the file that no longer holds it
 
-**State:** claimed by agent/doc/022-decision-link-mission-split, 2026-09-08 23:08
+**State:** blocked by agent/doc/022-decision-link-mission-split, 2026-09-08 — manual corpus
+sweep done; the check itself needs `scripts/` write, which no worker has (see `## Blocked`
+below and `inbox/022-b-decision-ref-check-needs-scripts-access.md`)
 **Source:** reviewer of `topology/010` (doc merge `3079d6c`), 2026-09-06. That unit moved
 `embarch-topology` decision 21 out of `decisions/enrollment.md` into a new
 `decisions/validation.md`. `history/topology.md` line 8 still reads
@@ -76,11 +78,70 @@ survived one `build_changelog.py --only` run, which is evidence and not a proof.
       target file does not define N — either as a new rule in `check-decision-refs.py`
       (it already builds the per-file number index it would need) or in `check-links.py`.
       A link is the unambiguous case: unlike bare prose, it names one file.
-- [ ] The rest of the corpus is swept once with that check; earlier splits
-      (`embarch-api/decisions/`, `embarch-study-designer/decisions/`, the topology split
-      itself) are the places to expect hits.
+      **Blocked for a `doc`-scope worker — see below.**
+- [ ] The rest of the corpus is swept once with that check. **Also blocked for this
+      worker, for a second, independent reason:** `history/*.md` is not writable by *any*
+      scope's worker (`check-ownership.py`'s allow-list has no `history/` entry for any
+      scope, and this file's own "Already done by the supervisor" section already says so
+      — history is fold-time-only, like the `topology/010` fix that motivated this task).
+      I found and hand-verified the candidates before realising this (see below) and then
+      reverted the edit rather than land it from the wrong row.
 - [x] `topology/010`'s Outcome paragraph is corrected — done in that unit's fold, and the
       task file is deleted at the fold, so the durable record is its supervisor-log entry.
+
+## Blocked
+
+**Two independent blockers, both outside a `doc`-scope worker's write set.**
+
+**1. The check.** Both candidate homes — `scripts/check-decision-refs.py` and
+`scripts/check-links.py` — are under `scripts/`, which `embarch-fleet/protocol.md` §3's
+ownership map does not grant to *any* worker (only supervisor and owner have write
+there), and my own dispatch explicitly lists `scripts/` as a reserved path with
+instructions to stop and say so rather than edit it. This is that stop.
+
+**What is needed, for whoever picks this up next (owner session, or a leg with `scripts/`
+write):** a rule that, for a link of the form `[decision N](...)`  or `([decisions](...) N)`
+whose href matches `<sub>/decisions/<topic>.md`, looks up N in that sub-project's per-file
+number index (`check-decision-refs.py` already builds this) and fails if the href's own
+topic file is not the one that defines N. The natural home is `check-decision-refs.py`:
+it already parses `DOC_PATH` against `<sub>/design.md`/`<sub>/decisions.md`; this needs a
+sibling regex for `<sub>/decisions/<topic>.md` hrefs specifically (not bare prose paths),
+and a lookup against the already-built number→file map instead of the current
+number→sub-project set. `check-links.py` only validates that a path resolves, not what it
+defines, so extending it would duplicate the number index this script already has.
+
+**2. The sweep.** Even once the check exists, running it and landing the fixes touches
+`history/*.md` across seven sub-projects (`api`, `core`, `outpost`, `study-designer`,
+`suite`, `topology`, `ui`, `umbrella` all have at least one hit) — no scope's worker can
+write `history/` (`check-ownership.py`'s allow-list has no `history/` entry for any
+scope), so this is fold-time or owner-session work like the `topology/010` fix itself.
+
+**What I found by hand, ahead of the check, so it is not re-derived from scratch:** every
+markdown link of the `[decision N](<sub>/decisions/<topic>.md)` shape currently in
+`history/*.md`, and for each, whether the linked topic file still defines N (checked
+against each sub-project's `decisions.md` routing table). All of them currently *do*
+resolve correctly today — this task's own bug (`history/topology.md`'s stale decision-21
+link) was the only live instance, and it was fixed at `topology/010`'s fold. 26 links
+match the shape; 4 are dated entries that *narrate* a split as it happened
+(`history/topology.md:13`, `history/core.md:13`, `history/core.md:16`,
+`history/umbrella.md:24`) and are exempt from the "link the index" convention by
+`DOC-CONVENTIONS.md`'s own worked example (`history/api.md`'s decision-30 line); the other
+22, in `history/{api,core,outpost,study-designer,suite,topology,ui,umbrella}.md`, are
+ordinary citations that should be repointed at `<sub>/decisions.md` per
+`DOC-CONVENTIONS.md`'s "link the index, not the topic file" rule, once someone with
+`history/` write lands it. I drafted and verified those 22 edits, then reverted them
+without committing — landing them from this row would have been the same ownership
+violation as the check itself, just on data instead of code. The verified edit list is not
+preserved anywhere durable beyond this note; whoever lands it should re-derive it (it is
+mechanical: grep `history/` for the link shape, cross-check each href's topic file against
+its sub-project's `decisions.md` table) or ask, since re-deriving is cheap and I did not
+want a stale diff sitting in the inbox drop.
+
+Nothing stops the next mission split from producing a fresh instance of the underlying
+bug — that risk is exactly what the check would remove, and it remains open until someone
+with both `scripts/` and `history/` access builds and runs it. An `inbox/` drop with this
+content was filed at `embarch-doc/inbox/doc-decision-ref-check-topic-file-mismatch.md` so
+it is not only in a task file, which is deleted at fold.
 
 **Note for whoever writes the check.** Three of this file's own illustrative link shapes had
 to be rewritten into prose before `check-links.py` would pass, because it flags a
