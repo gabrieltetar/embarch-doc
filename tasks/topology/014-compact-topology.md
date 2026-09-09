@@ -43,3 +43,16 @@ open against `decisions.md`, not this file.
       was deleted instead.
 - [ ] Whichever it was — split or delete — is stated, with the byte numbers
       before and after.
+
+## Spend recorded against this task
+
+**2026-09-08, leg 054, folding `topology/022` (doc `e420bf5`): `open.md` 4,841 → 5,016 B, +175,
+leaving 104 B of headroom against the 5,120 cap.** `topology/022` amended `decisions/crate.md`
+decision 4 to say the `embarch-umbrella/src/token.rs` mirror is closed, and its reviewer found that
+the mirrors bullet here still counted that mirror among two that "still raise the
+extract-or-CI-diff question" — a line the unit's own landing made wrong. I corrected it in the fold
+rather than filing it, and the correction costs bytes because the honest version has to say *how*
+the mirror closed (a direct call, which is a third answer neither of this bullet's two had) rather
+than just dropping it. Recorded here rather than filed as a new task, per `tasks/topology/022`'s own
+reserve note. **104 B is the tightest this file has been**; the next edit to it very likely cannot
+be paid this way and this pass should run first.
