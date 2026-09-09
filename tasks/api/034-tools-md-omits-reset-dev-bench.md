@@ -63,11 +63,34 @@ interface reference does not list.
 
 ## Done when
 
-- [ ] `interfaces/tools.md`'s Dev bench table lists `reset_dev_bench`.
-- [ ] One test fails if a new `#[tool]` gains no matching `Commands::` variant, or vice versa,
+- [x] `interfaces/tools.md`'s Dev bench table lists `reset_dev_bench`.
+- [x] One test fails if a new `#[tool]` gains no matching `Commands::` variant, or vice versa,
       outside the two named exceptions.
-- [ ] The exception list is a named constant with a comment, not an inline skip.
-- [ ] `tools.md` stays inside its size cap.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] The exception list is a named constant with a comment, not an inline skip.
+- [x] `tools.md` stays inside its size cap.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. (Neither `spec.md`, `decisions.md` nor
+      `open.md` had anything this change made false — this closes a doc/test gap over already-true
+      behaviour, so none were touched, per the task's own doc-size-reserve guidance above. No
+      suite-level fact changed, so no `status.d/` fragment. A `changelog.d/` fragment was dropped:
+      `changelog.d/api-reset-dev-bench-doc-parity-test.fixed.md`.)
+
+## Result
+
+Added the `reset_dev_bench` row to `interfaces/tools.md`'s Dev bench table
+(`embarch-doc/embarch-api/interfaces/tools.md`), and added
+`tests/tool_subcommand_parity.rs` in the `embarch-api` worktree: it derives the
+MCP tool list from `src/tools.rs`'s `#[tool(description = ...)]` +
+`async fn` adjacency and the CLI subcommand list from `src/main.rs`'s
+`Commands` enum, converts both to kebab-case, and asserts they match one for
+one outside a named `DOCUMENTED_ASYMMETRIES` constant (`versions` CLI-only,
+`study_watch` reached as `study-status --follow`), citing `spec.md` §1 in its
+doc comment. Verified the test actually catches drift by temporarily breaking
+one exception and confirming a failure with a clear message, then reverted.
+`cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` all
+green in `embarch-api`. `embarch-doc`'s `check-docs.py` (10/10),
+`check-client-names.py --repo <api worktree>`, and
+`check-ownership.py --scope api` (in doc worktree) / `--code-repo` (in api
+worktree) all green. No new decision authored (burndown rule) — this cites
+existing decided behaviour (`spec.md` §1), it does not decide anything new.
