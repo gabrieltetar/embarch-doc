@@ -1,6 +1,6 @@
 # embarch-core README documents four dev-bench env overrides that decision 23 removed
 
-**State:** claimed
+**State:** done (box 2 deliberately left open) — 2026-09-08
 **Source:** found while fixing dev-bench/005 (README board-and-links); promoted from
 `inbox/core-readme-stale-dev-bench-env-overrides.md` by leg 049, unchanged apart from this line
 and the note at the end
@@ -33,11 +33,19 @@ to notice it's stale).
 
 ## Done when
 
-- [ ] `embarch-core/README.md`'s env-override table is corrected or removed to
+- [x] `embarch-core/README.md`'s env-override table is corrected or removed to
       match decisions/probes.md decision 23.
 - [ ] If espressif-family port selection has a real current story (e.g. an
       enrollment fact for boards with no VCOM interface), it's stated somewhere
       readable — decisions/probes.md decision 22, or a new one.
+
+**Box 2 left open, deliberately.** No current story exists: `embarch-topology`'s
+`link_port_interface` answers the ambiguous-VCOM case (two VCOMs, one serial),
+but the ESP32-C5-WROOM-1 DK has no VCOM at all — a plain USB-Serial/JTAG
+device — so there is no enrollment fact to name, and inventing one would be
+exactly the hardware-fact-by-inference this leg was told not to do. Recorded
+as an open question in `embarch-core/open.md` under "Structural limits"
+instead of answered here.
 
 ## Supervisor note — leg 049
 
