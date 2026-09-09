@@ -35,7 +35,7 @@ clause     = "on_enter" ":" write
 operand    = int | "session" "." ident | ident "." ident | "len" "(" ident "." ident ")" ;
 ```
 
-Whitespace and `#` comments are insignificant; a 16- or 32-bit UUID shorthand expands through the Bluetooth Base UUID, **so a manifest names a characteristic the way its firmware's own header does**. Offsets accumulate in declaration order with no padding when omitted — and **a field following a variable-length one must state its offset** rather than have one guessed on its behalf. Every error carries its source line.
+Whitespace and `#` comments are insignificant; a 16- or 32-bit UUID shorthand expands through the Bluetooth Base UUID, **so a manifest names a characteristic the way its firmware's own header does**. Offsets accumulate in declaration order with no padding when omitted — and **a field following a variable-length one must state its offset** rather than have one guessed on its behalf. Every error carries its source line, and **the line is the declaration the error is about** — a duplicate `source` on line 4 is reported at line 4, not at wherever the first `state` happens to sit. The two errors that are about the protocol as a whole, its name and `validate_protocol`'s cross-cutting checks, report the `protocol` line instead, because no single declaration is theirs to blame.
 
 ## The worked protocols are tests, not illustrations
 
