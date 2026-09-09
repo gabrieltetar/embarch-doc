@@ -10,6 +10,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `GET /serial-log` caps `duration_ms` (400 over it) and captured bytes, reporting `truncated`.
 - Core's `decisions/platform.md` split by mission: process/install/locking stay, auth/binding/surface consistency move to [decisions/auth.md](../embarch-core/decisions/auth.md).
 - `GET /dev-bench/hello`'s self-reported ID is now `self_reported_hardware_id`, not `hardware_id` — decision 47.
 - `interfaces.md` split into `interfaces/<topic>.md`, index-only now, per DOC-COMPACTION.md §3.

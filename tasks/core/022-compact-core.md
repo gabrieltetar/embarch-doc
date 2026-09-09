@@ -1,6 +1,16 @@
 # 022 — `embarch-core/interfaces.md` is 833 bytes from its cap
 
-**State:** closed, 2026-09-09 — `open.md`'s item done by `tasks/core/009`, see note below
+**State:** open — **reopened by the supervisor in `core/009`'s fold, leg 060, 2026-09-09.** `009`
+closed it on the grounds that `open.md`'s item was done, and its pass was real (5,051 B → 4,669 B,
+one answered bullet deleted and three squeezed). But **`open.md` is still in reserve**: the floor is
+`max(1200 B, 10%)` from the top, i.e. 3,920 B for this file's 5,120 B cap, so 4,669 B is 91.2% and
+still inside it. `check-doc-size.py` reports a reserved file as "filed" whenever a task *file* names
+it, **regardless of that task's state** — so closing this left the ledger pointing at a closed task
+and the debt would have gone unowned with nothing failing. That is the `tasks/doc/028` class again:
+a hand-written `State:` field nothing verifies. `interfaces.md`'s item stays closed (2026-09-07,
+by the split); **only `open.md`'s remains, and it needs a further ~750 B.** No longer in flux for
+this file — `009` acted as the flux-maker and the compaction is a squeeze on a small file now, which
+is why `DOC-COMPACTION.md` §2's prefer-a-split guidance may not have anything left to cut here.
 **Source:** `core/018` spent the reserve adding the three missing routes
 (`GET /dev-bench/port`, `GET /logs/recent`, `GET /logs/stream`); `DOC-COMPACTION.md` §2
 **Scope:** core
