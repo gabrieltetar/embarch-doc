@@ -1,6 +1,6 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** open
+**State:** claimed — leg 050, 2026-09-08, dispatched as a **split only**
 **Source:** `check-doc-size.py --pressure`, run during `tasks/dev-bench/009` — decision 23's
 amendment pushed the file to 94.2% of its cap (11,578/12,288 B); `DOC-COMPACTION.md` §2
 **Scope:** dev-bench
