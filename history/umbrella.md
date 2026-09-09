@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- `embarch-umbrella` drops its own token mirror; depends on `embarch-core-client` for `resolve_token`.
 - decision 43 split out of decisions/reporting.md into decisions/message-rendering.md (reserve).
 - Check 14's per-class skip wording documented as one skip phrased three ways, not flashing verdicts.
 - `embarch status` now authenticates to report the probe count spec.md promised; no-token/unauthorized/unreachable are distinct states, never a probe count of `0` (decision 46).
