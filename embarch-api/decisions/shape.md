@@ -46,4 +46,6 @@ Closed the cheaper way: `dev-bench-hello` (`src/main.rs`, `src/cli.rs`) runs the
 
 3/10 and `spec.md` §1 are unchanged: no second exception was needed, so none was written.
 
+**Amendment, `tasks/api/049`:** the CLI twin's `--json` success object first named this handshake's `schema_version` under the literal key `schema_version`, which `json_out::stamped()` unconditionally overwrites with the envelope's own constant (decision 24/50) — the exact collision decision 52 named and avoided for `versions`. Renamed to `dev_bench_schema_version`; see [../interfaces/tools.md](../interfaces/tools.md)'s `dev_bench_hello` row.
+
 Shapes: [../interfaces/config.md](../interfaces/config.md), [../interfaces/tools.md](../interfaces/tools.md).

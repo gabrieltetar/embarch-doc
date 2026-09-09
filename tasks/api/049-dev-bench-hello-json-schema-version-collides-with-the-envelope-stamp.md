@@ -1,6 +1,6 @@
 # api: `dev-bench-hello --json`'s `schema_version` key collides with the envelope stamp and silently loses the real field
 
-**State:** claimed — leg 050, 2026-09-08
+**State:** done — leg 050, 2026-09-08/09
 **Promoted** from `inbox/api-dev-bench-hello-json-schema-version-collision.md` by leg 048,
 unchanged apart from this line and the number. **The supervisor verified the mechanism
 independently before filing**, rather than taking the reviewer's word: `src/json_out.rs`'s
@@ -85,16 +85,50 @@ prevent for the other three identity fields; it just landed on the fourth.
 
 ## Done when
 
-- The literal key in `src/cli.rs`'s `dev_bench_hello()` success object is
+- [x] The literal key in `src/cli.rs`'s `dev_bench_hello()` success object is
   renamed to something that cannot collide with the envelope's
   `schema_version` stamp (e.g. `dev_bench_schema_version`, mirroring decision
   52's `host_type_schema_version` precedent), and `interfaces/tools.md`'s
   `dev_bench_hello` row / decision 61 note the field name if they come to
   describe the `--json` shape.
-- `tests/json_surface.rs` (or a new client/cli-level test) actually exercises
+- [x] `tests/json_surface.rs` (or a new client/cli-level test) actually exercises
   the **success** path for `dev-bench-hello --json` against a mock Core and
   asserts the renamed field carries `info.schema_version`'s real value, not the
   envelope's `1` — closing the gap that let this ship unexercised.
+
+## Resolution (leg 050, 2026-09-08/09)
+
+Renamed the key to `dev_bench_schema_version` (`src/cli.rs`, `dev_bench_hello()`),
+mirroring decision 52's `host_type_schema_version` precedent exactly — same
+collision, same fix shape, so no new naming convention was invented.
+
+Added `tests/dev_bench_hello_success.rs`: a new subprocess test (alongside
+`tests/json_surface.rs`'s pattern) that starts `tests/support::MockCore`,
+answers `GET /dev-bench/hello` with a `200` whose `schema_version` is `7` —
+deliberately different from the envelope's `1` so a reintroduced collision
+would be visible as "printed `1` instead of `7`" rather than by luck — and
+asserts the subprocess's `--json` output carries `dev_bench_schema_version:
+7` and the envelope's `schema_version: 1` as two distinct fields. Verified
+the test actually catches the original bug by reverting the rename locally,
+re-running the new test (it failed, `left: Null, right: Number(7)`), then
+restoring the fix (test passes again).
+
+One test-writing gotcha worth recording: the test's own async task calls
+`std::process::Command::output()`, which blocks synchronously until the
+subprocess exits. On the default current-thread `#[tokio::test]` runtime that
+starves `MockCore`'s accept-loop task of any chance to run, and the
+subprocess's request times out. Fixed with
+`#[tokio::test(flavor = "multi_thread")]`.
+
+Doc updates in `embarch-doc/embarch-api/decisions/shape.md` (decision 61,
+amendment) and `interfaces/tools.md` (`dev_bench_hello` row) — both files had
+comfortable headroom, so nothing was written to `decisions/tool-wrapping.md`
+and it was not touched. `decisions.md`'s size figure for `shape.md` updated
+(8.9 KB → 9.3 KB).
+
+`cargo build`, `cargo test` (all suites green) and
+`cargo clippy --all-targets -- -D warnings` (clean) from the code worktree;
+`python3 scripts/check-docs.py` (10/10 green) from the doc worktree.
 
 ## Revert info
 
