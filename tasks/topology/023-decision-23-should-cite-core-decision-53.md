@@ -1,6 +1,6 @@
 # `embarch-topology` decision 23 should cite `embarch-core` decision 53 rather than flag the phrasing to its owner
 
-**State:** claimed — leg 062, 2026-09-09
+**State:** closed — leg 062, 2026-09-09
 **Source:** `tasks/core/031`, worker on `agent/core/031-shared-dir-decision` — that unit authored `embarch-core` decision 53, closing the gap `embarch-topology/decisions/storage.md` decision 23 pointed at
 **Scope:** topology
 **Hardware:** none
@@ -21,8 +21,8 @@ from both sides, not just core's.
 
 ## Done when
 
-- [ ] `embarch-topology/decisions/storage.md` decision 23 cites `embarch-core` decision 53 (e.g.
+- [x] `embarch-topology/decisions/storage.md` decision 23 cites `embarch-core` decision 53 (e.g.
       "now stated as `embarch-core` decision 53") in place of, or alongside, "flagged to its owner
       rather than edited across the boundary."
-- [ ] No behavioural claim in decision 23 changes — this is a citation update, not new reasoning.
-- [ ] Gate green.
+- [x] No behavioural claim in decision 23 changes — this is a citation update, not new reasoning.
+- [x] Gate green.
