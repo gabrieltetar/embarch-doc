@@ -8,6 +8,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- Decision 23 split from `decisions/crate.md` into `decisions/storage.md`; crate.md 11,474 -> 7,782 B.
 - `spec.md` compacted out of reserve; `decisions/validation.md` split verbatim, decision 26 moving to `decisions/validate-timing.md`.
 - `embarch-topology/open.md` compacted 5016->3669 B, dropping three items already answered elsewhere.
 - crate.md's qualification now says embarch-umbrella/src/token.rs was closed by umbrella/036, not live.
