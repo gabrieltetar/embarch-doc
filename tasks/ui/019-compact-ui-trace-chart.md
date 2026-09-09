@@ -1,6 +1,6 @@
 # 019 — `embarch-ui/decisions/trace-chart.md` crossed into reserve
 
-**State:** open
+**State:** claimed by agent/ui/019-compact-ui-trace-chart, 2026-09-08 22:34
 **Source:** `ui/015` amended decision 23 to correct the `tr-gap`/`tr-cross` mixup
 it was filed to fix, spending 663 B and pushing this file into reserve. `ui/017`
 spent a further net 135 B stating `tr-cross`'s complete two-cause scope in
