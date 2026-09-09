@@ -1,6 +1,6 @@
 # study-designer — `MAX_DISCOVERED_SERVICES` row attributes decision 44's finding to decision 57
 
-**State:** open
+**State:** claimed — leg 050, 2026-09-08
 **Promoted** from `inbox/study-designer-022-decision-57-cited-for-a-number-it-does-not-state.md`
 by leg 048, unchanged apart from this line and the number. The supervisor read the same row at the
 merge, asked the reviewer four questions about it, and did **not** see this one — the reviewer did.
