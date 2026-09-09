@@ -8,6 +8,7 @@
 - The reference host decoder now has tests that always run — stdlib `unittest`, no west, no siblings; `run-all.sh` runs them before its west guard.
 
 ### Changed
+- open.md's duplicated limits and decisions/module.md's decision 22 each moved to their settled/split home; both files out of reserve.
 - spec.md 9235 → 8317 B: purpose cut to its three sentences, and the tunables' measured provenance now lives only with the Kconfig symbols in interfaces/integration.md.
 - embarch-outpost reduced to its hot half, 69 KB to 46 KB of decisions; cap tightened to 8 KB.
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.

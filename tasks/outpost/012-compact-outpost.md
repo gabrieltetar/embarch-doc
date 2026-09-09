@@ -1,6 +1,12 @@
 # 012 — `embarch-outpost/open.md` and `decisions/module.md` are in reserve
 
-**State:** claimed by agent/outpost/012-compact-outpost, 2026-09-08 23:07
+**State:** open — **two of four items paid**, `agent/outpost/012-compact-outpost`, 2026-09-08.
+`open.md` (95.5% → 70.4%, by squeeze) and `decisions/module.md` (94.4% → 44.3%, by splitting
+decision 22 out to `decisions/testing.md`) are both out of reserve and their items are closed
+below. **`spec.md` and `decisions/transport.md` are still in reserve and this task still owns
+them** — 9,187/10,240 B (1,053 B left) and 7,114/8,192 B (1,078 B left), both inside the
+`max(1200 B, 10%)` floor they crossed on the 2026-09-07 rule change rather than on an edit.
+Neither was touched by this unit. The task stays open for those two.
 **Source:** `scripts/check-doc-size.py`, spent by `tasks/outpost/011`'s commit adding the "no CI"
 note to `open.md`'s "Deferred with a named trigger" section — and, in the same unit's landing, by
 the supervisor's amendment to `decisions/module.md` decision 22.
