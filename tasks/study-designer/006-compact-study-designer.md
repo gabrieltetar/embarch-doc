@@ -1,6 +1,15 @@
 # 006 — Compact `embarch-study-designer/decisions/crate.md`
 
-**State:** blocked
+**State:** open — **unparked by leg 056, 2026-09-08.** The `In flux: yes` below is about
+`crate.md`'s FFI-shape content, and `crate.md` is struck off the `Compacts:` line: it was paid.
+This task's own "What this task is still for" section says so explicitly, and the two items that
+remain — `spec.md` and `open.md` — were never covered by that park; they were added by the
+2026-09-07 reserve-floor change, not by an edit anyone is still making. A `blocked` state that
+outlives the thing it was blocked on is a park that absorbs work, so this is a state correction,
+not a judgement that the flux ended. **`study-designer/019` pushed `spec.md` from 9,136 to
+9,600 B (93.8%) on 2026-09-08** by adding the registry paragraph its compaction pass needed —
+that unit could not have compacted a task it found parked, which is exactly the shape
+`.claude/leg.md` warns about, so unparking it is the fix rather than a favour.
 **Source:** `scripts/check-doc-size.py` — `crate.md` entered reserve on the commit that
 added decision 65 (`agent/study-designer/005-release-workflow-decision`).
 **Scope:** study-designer
