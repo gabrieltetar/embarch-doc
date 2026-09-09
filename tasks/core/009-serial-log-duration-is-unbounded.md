@@ -1,6 +1,6 @@
 # Bound `GET /serial-log`'s `duration_ms`, which holds `hw_lock` past every client's timeout
 
-**State:** open
+**State:** claimed — leg 060, 2026-09-09, `agent/core/009-serial-log-bound`
 **Source:** owner's repo survey, 2026-09-06 — `embarch-core/interfaces.md:21` calls this route bounded; only the caller bounds it
 **Scope:** core
 **Hardware:** none
@@ -42,3 +42,28 @@ which is the exact failure decision 14's unbuilt `503` was meant to make legible
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Supervisor's dispatch note, leg 060 (burndown)
+
+**This leg runs under [burndown.md](../../../embarch-fleet/burndown.md), so you may NOT author a new
+numbered decision.** Implement the cap and the byte bound, and if the choice of cap value or the
+byte-bound-reporting shape deserves a numbered `embarch-core` decision, **say so in your report and
+record it in `open.md` as owed** rather than writing it. Amending prose in an existing decision to
+match what shipped is fine; adding a new numbered entry is not.
+
+**Doc reserve for `core`, read this before you plan an edit:**
+
+- `embarch-core/open.md` — **5051/5120 B, 69 bytes left.** Its compaction task
+  `tasks/core/022-compact-core.md` is **blocked on `In flux: yes`**, so nobody else can touch it and
+  you are the actor making the flux. If your unit writes `open.md` at all — and recording the owed
+  decision above means it will — **compact `open.md` as part of this unit**, carrying `core/022`'s
+  `Must not delete:` list verbatim (read it; one of its three items is the `GET /serial-log`
+  caller-side-ceiling paragraph your own change makes newly relevant, so do not summarise it away)
+  and closing **only** `open.md`'s item on that task. Prefer a split over a squeeze
+  ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2).
+- `embarch-core/spec.md` and `embarch-core/interfaces/*` are **not** in reserve; the `/serial-log`
+  row now lives in `embarch-core/interfaces/hardware.md` or `interfaces/logs.md` (`interfaces.md`
+  was split on 2026-09-07 — check the index rather than trusting the line numbers above).
+
+**No hardware.** Do not open a port, do not touch a live Core. The whole point of the `Read`-split
+is that the tests run with no port; if you find yourself wanting a board, the test design is wrong.
