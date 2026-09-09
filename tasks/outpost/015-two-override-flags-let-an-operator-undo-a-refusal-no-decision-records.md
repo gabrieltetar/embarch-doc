@@ -1,6 +1,6 @@
 # 015 — Two override flags let an operator undo a refusal that a numbered decision states unconditionally, and neither override is recorded anywhere
 
-**State:** claimed — leg 061, worker on `agent/outpost/015-override-flag-decision`
+**State:** done — leg 061, worker on `agent/outpost/015-override-flag-decision`
 
 **Dispatch note (supervisor, leg 061):** normal leg, not burndown — authoring the numbered
 decision is in scope and is the point. **Doc-size reserve for `outpost`:**
@@ -72,20 +72,41 @@ needs correcting; something needs adding.** Do not "fix" `spec.md:61` by deletin
 
 ## Done when
 
-- [ ] The choice to let an operator override each refusal is recorded as a numbered decision — one
+- [x] The choice to let an operator override each refusal is recorded as a numbered decision — one
       covering both flags if they are one posture, and if they are not, the reason they are not is
       the part that gets written down.
-- [ ] Whatever `spec.md:60` and `:61` cite is accurate afterwards: a reader who follows the citation
+
+      **Decision 23**, in `decisions/manifest.md` (both flags live in `scripts/decode_outpost.py`
+      and manifest.md already hosted decision 9, the analogous refusal for one of them): one posture
+      — explicit, command-line, once per invocation, never a config default — covering both
+      `--allow-build-id-mismatch` and `--allow-unverified-join`. `decisions/clocks.md` decision 18
+      and the `decisions.md` index both cross-reference it.
+- [x] Whatever `spec.md:60` and `:61` cite is accurate afterwards: a reader who follows the citation
       lands on text that mentions the flag.
-- [ ] `decisions/clocks.md` 18 and `decisions/manifest.md` 9 are consistent with the new decision —
+
+      Line 60 (manifest mismatch) now names `--allow-build-id-mismatch` and cites decision 23 — it
+      previously named neither. Line 61 (unverified join) already named both flags; added the
+      decision 23 citation.
+- [x] `decisions/clocks.md` 18 and `decisions/manifest.md` 9 are consistent with the new decision —
       amended to name the carve-out, or left alone with the new decision naming them, but **not
       left stating an unconditional refusal that the tool does not implement.**
-- [ ] **No code change.** Both flags work as documented and the reviewer confirmed the refusal and
-      degrade paths are test-covered; this is a decision-record gap only. If the answer turns out to
-      be that one of these flags should not exist, that is a different task and it should say so.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+
+      Left decision 9 and decision 18's own text alone (they still state the refusal correctly for
+      the no-flag case) and added one cross-reference sentence to each pointing at decision 23,
+      which is where the carve-out is actually named.
+- [x] **No code change.** Confirmed — `git diff --stat` against the code worktree shows nothing under
+      `scripts/decode_outpost.py` or `src/`; this unit touched `embarch-doc` only.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). See report: `cargo build/test/clippy` clean
+      in the code repo (no Zephyr `tests/unit`, standing debt); `check-docs.py`,
+      `check-client-names.py`, `check-ownership.py` clean in the doc repo.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+      `spec.md` and `decisions.md` updated (above). `open.md` needed no change — nothing there
+      described either flag or referenced decision 9/18 as unconditional. No `status.d/` fragment:
+      this is an outpost-internal record gap with no suite-level fact made false — nothing outside
+      `embarch-outpost` cites decision 9 or 18's refusal as unconditional (checked via grep across
+      the doc tree).
 
 ## Doc-size note for whoever takes this
 

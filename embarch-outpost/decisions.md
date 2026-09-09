@@ -15,7 +15,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The transport](decisions/transport.md) — a lock-free ring, overflow, and the drain loop's fixed point | 3, 5, 20 |
 | [The record layout](decisions/layout.md) — three layouts in three days, and what each traded | 4 |
 | [Two clocks](decisions/clocks.md) — which measures, which places, and a join that refuses | 17, 18 |
-| [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable | 9 |
+| [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable, and an operator's override for both post-hoc refusals | 9, 23 |
 | [Capture and routing](decisions/capture.md) — study-scoped, post-hoc, carrier as a bench fact | 10, 11, 12, 13 |
 | [The bench](decisions/hardware.md) — the first consumer, and the wire that turned out not to exist | 15, 16 |
 | [One wire vocabulary](decisions/wire.md) — one definition, and a check over the other three copies | 23 |
