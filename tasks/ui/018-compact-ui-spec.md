@@ -1,12 +1,25 @@
 # 018 — `embarch-ui/spec.md` is in reserve
 
-**State:** open
+**State:** claimed — leg 059, 2026-09-09, burndown
 **Source:** `scripts/check-doc-size.py`'s reserve floor, added 2026-09-07
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-ui/spec.md
 **Size debt due:** 2026-10-12
+
+## Supervisor note — leg 059, doc-size reserve in `ui`
+
+**Current numbers, which are worse than the body below records:** `spec.md` is
+**9613/10240 B, 627 B left** (the body says 1,027 B — that reading is two days old).
+`embarch-ui/open.md` is also in reserve at **4191/5120, 929 B left**, filed under
+`tasks/ui/021-compact-ui.md`, which is **blocked** — leave `open.md` alone unless this unit has to
+write there, in which case compact it too, carrying `021`'s `Must not delete:` list.
+
+**Answer the human question in your report, in your own words** —
+`DOC-COMPACTION-PASS.md`: *can `spec.md` alone answer what someone needs to work on this
+component today?* No script answers it and the gate does not either. **This leg runs in burndown,
+which forbids authoring a new numbered decision**; a compaction pass should not need one.
 
 ## What
 
