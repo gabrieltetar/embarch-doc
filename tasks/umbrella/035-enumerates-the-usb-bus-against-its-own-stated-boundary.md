@@ -1,6 +1,6 @@
 # 035 — `embarch-umbrella` walks `/sys/bus/usb/devices` with its own nine-entry probe-vendor table, in the component whose spec and manifest both say it holds no hardware knowledge
 
-**State:** open
+**State:** claimed — leg 060, 2026-09-09, `agent/umbrella/035-usb-boundary`
 **Source:** suite review pass 2026-09-06, dimension 4 (layering and dependency direction). Code-confirmed.
 **Scope:** umbrella
 **Hardware:** none
@@ -50,3 +50,36 @@ something false.
 
 **If the fix turns out to need `embarch-topology` or `embarch-core`,** that crosses a repo
 boundary and belongs back in `inbox/` as `Scope: suite` rather than being reached for.
+
+## Supervisor's dispatch note, leg 060 (burndown)
+
+**Take the first of the two honest ends, not the second.** Correct the two boundary claims —
+`embarch-umbrella/Cargo.toml`'s comment and `embarch-umbrella/spec.md:17` — to state their one
+exception with its reason, and leave check 5 where it is. Routing the probe-vendor question to Core
+is the better long-term shape and it is **explicitly out of scope tonight**: it needs a numbered
+decision, which [burndown.md](../../../embarch-fleet/burndown.md) forbids this leg, and it reaches
+`embarch-core`, which you do not own. **File the routing question as an `inbox/` drop with
+`Scope: suite`** — the task's own last paragraph tells you to — and say in your report that a
+numbered `embarch-umbrella` decision on where a probe-vendor fact lives is owed.
+
+**Do not claim the nine vendor IDs are right.** `open.md` already concedes they are unmeasured;
+carry that caveat into whatever you write, and do not promote it to a measured fact. Second
+holder of the same fact is `embarch-topology/src/hardware/port.rs` (three link VIDs, **measured**) —
+you may *name* that divergence in the corrected text; you may not edit that repo.
+
+**Doc reserve for `umbrella`, and it constrains you directly:**
+
+- `embarch-umbrella/spec.md` — **9784/10240 B, 456 bytes left**, and `spec.md:17` is precisely the
+  line you have to rewrite. Its compaction task
+  `tasks/umbrella/038-compact-umbrella.md` is **blocked on `In flux: yes`** (it unparks when
+  `tasks/umbrella/033` lands), so nobody else can touch it. **If your correction does not fit in 456
+  bytes, compact `spec.md` as part of this unit**, carrying `038`'s `Must not delete:` list verbatim
+  — the `doctor` chain table's designed-vs-built distinction **per row**, the `status` row's
+  five-state list and its "never a probe count of `0`" clause, and whatever `009`'s list still names
+  unanswered — and closing **only** `spec.md`'s item on `038`. **Prefer a split over a squeeze**
+  ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2); `038` says a 37 B wording shave is not a real
+  shave, and this repo has four recorded instances of a squeeze cutting something load-bearing.
+- `embarch-umbrella/open.md` — 4630/5120 B, **490 bytes left**, same parked task. Same rule.
+- `embarch-umbrella/decisions/bind.md` — 879 bytes left, parked under `tasks/umbrella/009`. Avoid.
+
+**No hardware.** Do not run `doctor`, do not enumerate the real USB bus, do not touch a live Core.
