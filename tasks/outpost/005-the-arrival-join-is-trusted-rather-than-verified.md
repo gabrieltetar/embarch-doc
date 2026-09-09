@@ -1,10 +1,28 @@
 # Verify the arrival join against `frame_bytes` instead of trusting the row
 
-**State:** open
+**State:** claimed by agent/outpost/005-verify-the-arrival-join, 2026-09-09 00:16
 **Source:** `embarch-outpost/spec.md:61` — "A join that cannot be verified stamps nothing", which the reference decoder does not implement
 **Scope:** outpost
 **Hardware:** none
 **Owner:** no
+
+## Supervisor's dispatch note, leg 058 (2026-09-09, burndown)
+
+**Doc-size reserve in `embarch-outpost`** — one file is inside the last 10% of its cap. It is still
+writable and the gate still passes:
+
+- `embarch-outpost/decisions/tracing.md` — 7,408/8,192 B, **784 B left**
+
+It is already filed against `tasks/outpost/008-the-gpio-family-ships-with-no-numbered-decision.md`
+(state `open`, not blocked), so you owe no new compaction task unless your work pushes a *different*
+file into reserve. **This unit should not need `decisions/tracing.md` at all** — see the next
+paragraph.
+
+**This leg runs in burndown mode: do not author a new numbered decision.** The `--allow-unverified-join`
+escape hatch is described in the task as mirroring the existing `--allow-build-id-mismatch` posture,
+so record it in `spec.md`/`open.md` and the `changelog.d/` fragment as an implementation of the
+`spec.md:61` invariant that already exists, **not** as a new numbered decision. If you conclude the
+flag genuinely needs its own decision, stop and say so in your report rather than writing one.
 
 ## What
 
