@@ -31,6 +31,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `doctor`/`init`/`setup` no longer print `design.md`/`milestone-*.md`; `ensure_not_sourced` keeps the legacy marker.
 - `schema-skew.md`'s decision 52 citation points at `embarch-api/decisions/tool-wrapping.md`, not the split-away `surface.md`.
 - `doctor` check 2's Fail now names the host input it inferred `remote`/`wsl-host`/`local` from, and is test-covered.
 - doctor normalises another program's raw text at every interpolation point, not just check 1 (decision 43).
