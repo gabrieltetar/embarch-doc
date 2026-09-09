@@ -31,6 +31,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- api's ~160 `design.md §N decision M` code comments now read `decision M` (own) or `` `<repo>` decision M`` (cross-repo); 5 real miscitations fixed en route.
 - `config.example.toml` drops retired `artifact_path_for_core`; now documents `serial_port`/`serial_baud`/`probe_serial`/`version_command`/`env`.
 - `reject_tree_mutating_command` now also refuses `git ...` hidden behind `bash -lc`/`sh -c`/`env` and friends.
 - `tools.md`'s Dev bench table now lists `reset_dev_bench`; a new test derives tool/subcommand lists from source and checks they match.
