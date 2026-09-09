@@ -1,0 +1,1 @@
+- The fleet repo's risk register split by mission into [risks-authority.md](../../embarch-fleet/risks-authority.md), its stepped ratchet ported, and every remaining seam stated in advance.
