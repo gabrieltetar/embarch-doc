@@ -23,3 +23,6 @@
 - embarch-ui/spec.md: the Debug tab polls Core's /logs/recent (it never subscribes to /logs/stream), and embarch-topology is linked transitively, software-only.
 - The study run badge names the step now running, not the count finished — Core's `current_step` is the index of the last step that finished (ui decision 20).
 - The Trace view counts the rows its decoder refused — truncated or malformed — instead of claiming "every row in the capture": embarch-ui/decisions/trace-view.md, decision 10.
+
+### Decided
+- 250,000-row view cap kept, measured at 250k/500k/1M in-memory: `open.md`.

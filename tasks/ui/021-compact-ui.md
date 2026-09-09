@@ -1,6 +1,14 @@
 # 021 — `embarch-ui/open.md` crossed into reserve
 
-**State:** open
+**State:** blocked — corrected from `open` by the supervisor at `ui/004`'s fold. `.claude/leg.md` is
+explicit that a compaction task whose `In flux:` says yes must be `blocked` and must name what
+unparks it, and that an `open` one means the filer got it wrong; the filer's own `In flux:` block
+below argues at length that this file is in flux, so `open` was the wrong state rather than a
+different judgement. **What unparks it:** `tasks/ui/007` landing (the stale-prefix bullet, which
+the block below calls *explicitly* in flux and which `ui/009` already waited on once), **or** a
+later reading that finds the remaining bullets settled — the block itself says the reflash-selector
+and dual-clock-placement bullets are open design questions with nothing claimed against them, so
+whoever unparks this checks `tasks/ui/` first and says in this line what they found.
 **Source:** `ui/004`'s row-cap measurement rewrote the 250,000-row bullet with the
 measured numbers, taking the file from 3,630 B to 4,191 B against a 5,120 B cap
 whose reserve line is 3,920 B (`DOC-BUDGET.md`'s `RESERVE_FLOOR`); `DOC-COMPACTION.md` §2
