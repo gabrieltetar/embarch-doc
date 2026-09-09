@@ -1,6 +1,6 @@
 # 019 — Compact `embarch-study-designer/decisions/registry.md`
 
-**State:** claimed by agent/study-designer/019-compact-study-designer, 2026-09-08 23:08
+**State:** done, agent/study-designer/019-compact-study-designer, 2026-09-08
 **Source:** `scripts/check-doc-size.py` — `registry.md` entered reserve on the commit that
 added decision 69 (`agent/study-designer/015-duplicate-field-name`).
 **Scope:** study-designer
@@ -43,9 +43,36 @@ unit that opens this file to rediscover.
 
 ## Done when
 
-- [ ] `registry.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken).
-- [ ] Every item in `Must not delete:` survives, in words a reader can still check.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered honestly: can `spec.md` alone answer
-      what someone needs to work on this component today? (`spec.md` does not currently mention
-      the registry at all — worth resolving explicitly rather than leaving implicit.)
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `registry.md` is out of reserve (`scripts/check-doc-size.py` clean, no allowance taken).
+      11,827 B → 10,074 B (12,288 B cap; reserve starts at 11,059 B) — a hot/cold squeeze, no
+      split: this file is already one mission (decisions 35, 66, 67, 69 on the same
+      `study-actions.toml`/`validate` surface), so `DOC-COMPACTION.md` §3's split-first move had
+      no seam to cut, matching the task's own read. Cut: meta-commentary ("worth being exact
+      because the shape invites the stronger claim", "Pinned by a builder test rather than
+      asserted"), restated framing sentences, and one redundant cross-reference sentence in
+      decision 35. Kept, verbatim or with only connective tissue trimmed: every constraint, every
+      rejected alternative and its reason, every failure signature, and everything named below.
+- [x] Every item in `Must not delete:` survives, in words a reader can still check:
+      decision 35's durable-principle paragraph is verbatim; decision 66's panic-in-debug /
+      wrap-in-release distinction and the 4 GB un-overflowing case are intact; decision 67's
+      splice example (`[0xA1, 0xA2]`/`[0xB1, 0xB2]` → `[0x00, 0xA1, 0xB1, 0xB2]`) and its
+      declaration-order (not offset-order) correction are verbatim; decision 69's two-outcome
+      mechanism (silent double-write vs. misleading `UnknownFieldChoice`) and its
+      standalone-vs-amendment argument citing 66/67 both survive.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered: **no, not alone** — before this pass
+      `spec.md` never mentioned the registry at all, so a reader working on this crate today
+      would not learn `study-actions.toml`/`ActionRegistry`/`StructRegistry` exist without
+      opening `decisions/registry.md` or the source. Resolved by adding two sentences to
+      `spec.md` (the `study-ui` feature-table cell now names the custom-action registry, and one
+      new paragraph under §3 states what it is, where it lives, and points at
+      `decisions/registry.md` for the why). With that, yes: `spec.md` alone now tells a reader
+      the registry exists, what it's for, its persistence path, and where the reasoning is.
+      `spec.md` was already in reserve (parked by `tasks/study-designer/006`, tracking `crate.md`'s
+      old FFI in-flux note as unrelated to this file) — this pushed it from 9,136 to 9,600 of
+      10,240 B, still short of the 12 KB cap and still covered by that existing filed item, so no
+      new task was opened for it; a dated note was added to `006` instead.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy --all-targets
+      --all-features -- -D warnings` clean in the code repo (no crate source touched, doc-only
+      change); `check-docs.py` all 10 checks green; `check-client-names.py --repo` clean on both
+      worktrees; `check-ownership.py --scope study-designer` clean on the doc branch and
+      `--code-repo` clean on the code branch (0 paths changed there).

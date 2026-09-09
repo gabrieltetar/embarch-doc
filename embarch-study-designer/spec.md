@@ -41,9 +41,11 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 | `std` / `alloc` | heap-backed `steps` and result containers | the two host crates |
 | `gatt-extract` | the repo-walking GATT extractor (needs `regex`, `ignore`) | an authoring-time binary |
 | `eap-parse` | the `.eap` parser and a host-side **reference** interpreter | authoring, and pinning the semantics C must match |
-| `study-ui` | table-authoring types and the study builder | `embarch-ui` |
+| `study-ui` | table-authoring types, the study builder, and the custom-action registry | `embarch-ui` |
 
 **Every cell above is built on every push** by `.github/workflows/test.yml` — the two narrow cells with `cargo build`, not `cargo test`, which resolver v2 contaminates with the dev-dependency's `serde/std` ([decisions/ci.md](decisions/ci.md) decision 64).
+
+**The custom-action registry** (`ActionRegistry`/`StructRegistry`, `std`-only, behind `study-ui`) reads and writes `<firmware_repo_root>/embarch/study-actions.toml` — engineer-authored names and literal byte choices for a DUT's custom GATT actions, never linked into dev-bench or the plain Cargo-dependency use of `embarch-core`/`embarch-api`. Format, `validate`'s refusals, and why: [decisions/registry.md](decisions/registry.md).
 
 **The FFI boundary is panic-safe by construction:** `panic = "abort"` plus an explicit status code on every exported function, rather than `catch_unwind`, which needs `std`. Board→target-triple selection lives in dev-bench's CMake, and the soft-float variant is mandatory on Cortex-M33 here — a hard-float staticlib fails to link the moment any path touches an `f32`, which includes a field inside `Sample` and not just the exposed signatures.
 
