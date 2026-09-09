@@ -1,6 +1,6 @@
 # 017 — `spec.md` and `decisions/validation.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/topology/017-compact-topology, 2026-09-08 23:07
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/009`'s edits, 2026-09-07
 **Scope:** topology
 **Hardware:** none
