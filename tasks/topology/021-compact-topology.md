@@ -1,6 +1,6 @@
 # 021 — `embarch-topology/decisions/crate.md` is in reserve
 
-**State:** open
+**State:** claimed — leg 057, 2026-09-09, `agent/topology/021-compact-topology`
 **Source:** `scripts/check-doc-size.py`'s reserve floor, surfaced by `tasks/topology/020`
 **Scope:** topology
 **Hardware:** none
@@ -29,6 +29,24 @@ or similar anchors) before moving it anywhere.
 The debt is real once a file is within one amendment of its cap, and
 recording it is the whole mechanism: an unfiled file in reserve is what
 `check-doc-size.py` fails on, not the reserve itself.
+
+## Doc-size reserve in `embarch-topology`, at dispatch (leg 057, 2026-09-09)
+
+The numbers above are stale — re-measured at dispatch, `decisions/crate.md` is **11,474 / 12,288 B,
+814 B left** (93.4%), not 11,290. `decisions/enrollment.md` is **11,346 / 12,288 B, 942 B left**
+(92.3%), filed under `tasks/topology/019-compact-topology.md` (open) — do not pay it here, but do
+not push it further either. Nothing else in `embarch-topology` is in reserve. If this unit leaves a
+file in reserve with nothing filed, file `tasks/topology/<NNN>-compact-topology.md` in the same
+commit — your own scope's directory, never `tasks/doc/`.
+
+**This leg runs in burndown, which forbids authoring a new numbered decision.** A split renumbers
+nothing and is fine; writing a *new* decision is not. If the pass turns out to need one, stop and
+say so.
+
+**If you split, repoint every inbound link by hand and verify it.** `check-links.py` passes a
+`decision N` link whose target file no longer defines N, and `check-decision-refs.py` resolves
+numbers against the sub-project rather than the file, so a split strands links silently. That gap is
+`tasks/doc/022` / `tasks/doc/027`, and `topology/017` hit it one leg ago on this same repo.
 
 ## In flux: no
 
