@@ -64,5 +64,44 @@ is why this is filed rather than fixed:
       rule, in one sentence, with the reason.
 - [ ] If it is (2), the reviewer template in `embarch-fleet/scripts/install.py` carries it,
       so it does not depend on a supervisor remembering to ask.
-- [ ] This task names both occurrences with their units, so a third one is recognisable as a
-      third rather than as a first.
+- [ ] This task names all three occurrences with their units, so a fourth one is recognisable
+      as a fourth rather than as a first.
+
+## Third occurrence, and it is the one that settles option (3): `ui/011`, 2026-09-09, leg 057
+
+**The previous two lost texture. This one lost an invariant, and option (3) above — "texture is
+allowed to go and only invariants matter" — cannot absorb it.**
+
+`ui/011` squeezed `embarch-ui/decisions/study-designer.md` 12,064 → 10,961 B. Its commit message
+described the reflash-selector hunk as cutting a parenthetical and "replaced with the shorter …
+which is what shipped" — the same wording it used for cuts that genuinely were cosmetic. What the
+hunk actually did was turn
+
+> Core's study route accepts only **a mismatch override and** a *report* of what the caller already
+> flashed
+
+into
+
+> Core's study route accepts only a *report* of what was already flashed
+
+**which is a false statement about the API contract.** `allow_version_mismatch` is a real, live
+parameter — `embarch-api/interfaces/studies.md` documents it, and `embarch-ui/open.md`'s own
+carry-forward of this same decision 11 says "The mismatch override and the before-the-run mismatch
+display are built and unaffected." A second cut in the same commit removed ", next to the override"
+from the neighbouring paragraph, so after both cuts decision 11 did not mention the override
+anywhere, and **the same decision read two different ways depending on which file you landed on.**
+
+Everything else in that squeeze checked clean, decision 20 was genuinely untouched, and the reviewer
+that found this did so **only because the supervisor asked, per unit, in prose** — the third time in
+three legs that the catch has depended on a supervisor remembering. Fixed narrowly in the fold
+(both clauses restored; the rest of the squeeze stands), which left the file at 11,007 B against an
+11,059 B reserve line — **53 bytes of clearance**, so the next amendment re-files it. That is the
+second time this exact file has landed with under 60 B of clearance; the first is described in
+`tasks/ui/011`'s own history.
+
+**What this occurrence adds to the argument.** Two data points made this a pattern; the third makes
+it a pattern with a cost. It also rules out one of the three shapes: an enumeration rule (1) or a
+reviewer-charter line (2) would both have caught this, and (3) would have licensed it — because the
+worker's own honest reading was that the parenthetical was texture. **A squeeze cannot be trusted to
+classify its own cuts**, which is the real finding, and it is why (2) is stronger than (1): (1)
+still asks the actor doing the cutting to be the one who notices.
