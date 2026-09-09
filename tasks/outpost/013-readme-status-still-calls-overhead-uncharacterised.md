@@ -1,12 +1,18 @@
 # outpost: README.md Status section contradicts spec.md §4 on measured overhead
 
-**State:** open
+**State:** claimed by agent/outpost/013-readme-overhead-status, 2026-09-08 22:34
 **Promoted** from `inbox/outpost-readme-status-overhead-stale.md` by leg 048, unchanged apart from
 this line, the number, and the `Scope:` field taking the sub-project name. **I asked the reviewer
 to file this if it agreed it deserved a drop**, which means the finding may be mine as much as
 its — recorded so nobody reads it as an independent catch.
 **Source:** embarch-reviewer, review of outpost/004 (merge SHAs embarch-outpost `9621112`, embarch-doc `a06da6f`)
 **Scope:** outpost
+**Reserve (leg 055, 2026-09-08):** `embarch-outpost/open.md` 4891/5120 B (229 B
+left), `decisions/module.md` 7730/8192 (462 B), `decisions/transport.md`
+7114/8192 (1078 B), `spec.md` 9187/10240 (1053 B). The first two are already in
+reserve and `tasks/outpost/012-compact-outpost.md` is filed and open against
+them, so you do not file another — plan your edits to fit, and say in the task
+file if you could not.
 **Hardware:** none — prose-only fix
 
 ## What
