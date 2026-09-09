@@ -1,11 +1,29 @@
 # 018 — `design.md §3 decision N` citations remain in 22 other `src/` files
 
-**State:** open
+**State:** claimed by agent/study-designer/018-design-md-citations-sweep, 2026-09-09 00:15
 **Source:** `tasks/study-designer/017`, while fixing `src/schema_version.rs` — that task's Done-when
 bullet 3 required a repo-wide `grep -rn 'design.md' src/` and reporting what is left.
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Supervisor's dispatch note, leg 058 (2026-09-09, burndown)
+
+**Doc-size reserve in `embarch-study-designer`** — two files are inside the last 10% of their cap.
+Both are still writable and the gate still passes; plan around them rather than discovering them:
+
+- `embarch-study-designer/spec.md` — 9,600/10,240 B, **640 B left**
+- `embarch-study-designer/open.md` — 4,662/5,120 B, **458 B left**
+
+Both are already filed against `tasks/study-designer/006-compact-study-designer.md` (state `open`,
+not blocked), so you owe no new compaction task unless your work pushes a *different* file into
+reserve. **This unit should not need either file**: it is a `src/` doc-comment sweep, and the
+"update spec.md/decisions.md/open.md" line in the Done-when below is boilerplate, not a checklist.
+Touch them only if this sweep genuinely made a statement in one of them false.
+
+**This leg runs in burndown mode: do not author a new numbered decision.** If the sweep turns out
+to need one, stop and say so in your report instead. Nothing here should — the correct spelling is
+already fixed by `DOC-CONVENTIONS.md` and by unit 017's precedent.
 
 ## What
 
