@@ -1,6 +1,6 @@
 # Bound `GET /serial-log`'s `duration_ms`, which holds `hw_lock` past every client's timeout
 
-**State:** claimed — leg 060, 2026-09-09, `agent/core/009-serial-log-bound`
+**State:** done, 2026-09-09, `agent/core/009-serial-log-bound`
 **Source:** owner's repo survey, 2026-09-06 — `embarch-core/interfaces.md:21` calls this route bounded; only the caller bounds it
 **Scope:** core
 **Hardware:** none
@@ -32,16 +32,27 @@ which is the exact failure decision 14's unbuilt `503` was meant to make legible
 
 ## Done when
 
-- [ ] A `duration_ms` over the cap returns `400` naming the cap and the value; at or under it is
-      unchanged.
-- [ ] The capture is byte-bounded, and hitting that bound is reported rather than silent.
-- [ ] `serial.rs` has tests covering the deadline, the byte cap and the `Ok(0)` path, with no port
-      opened.
-- [ ] The cap appears in `embarch-doc/embarch-core/spec.md` §5's constants table and
-      `interfaces.md`'s `/serial-log` row.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] A `duration_ms` over the cap returns `400` naming the cap and the value; at or under it is
+      unchanged. — `serial::MAX_DURATION_MS` (10,000 ms), checked in `serial_log_handler` before
+      `hw_lock` is taken; unit tests `serial_log_over_the_duration_cap_is_a_bad_request_naming_both_numbers`
+      and `serial_log_at_the_duration_cap_is_unchanged` (`src/api.rs`).
+- [x] The capture is byte-bounded, and hitting that bound is reported rather than silent. —
+      `serial::serial_log_max_bytes()` (`EMBARCH_SERIAL_LOG_MAX_BYTES`, default 1 MiB), and
+      `SerialLogResponse.truncated: bool`.
+- [x] `serial.rs` has tests covering the deadline, the byte cap and the `Ok(0)` path, with no port
+      opened. — `capture()` is split out of `read_log()` over a generic `Read`; 4 tests in
+      `serial::tests` against a `FakeReader`, none opening a port.
+- [x] The cap appears in `embarch-doc/embarch-core/spec.md` §5's constants table and
+      `interfaces.md`'s `/serial-log` row. — `interfaces/hardware.md`'s row (the split moved it out
+      of `interfaces.md`, per the dispatch note); `interfaces.md`'s Conventions paragraph amended
+      rather than deleted, keeping the measured client-side fact.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). — see report.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. — `spec.md`/`interfaces.md`/`open.md`
+      updated (`decisions.md` untouched: nothing here needed amending, and burndown forbids a new
+      numbered entry — owed decision recorded in `open.md` instead); `changelog.d/core-serial-log-bound.changed.md`
+      dropped; no `status.d/` fragment — `suite/features.md`'s `/serial-log` row becomes more true,
+      not false.
 
 ## Supervisor's dispatch note, leg 060 (burndown)
 

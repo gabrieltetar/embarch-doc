@@ -75,6 +75,7 @@ Board identity, enrollment, hardware-ID readback and dev-bench port detection ar
 | dev-bench link baud | 1 Mbaud | [assumed] |
 | `EMBARCH_SIGNAL_BAUD` | 1 Mbaud | [assumed] a `SignalLink` records where a signal goes, not how fast it talks |
 | `EMBARCH_STREAM_MAX_BYTES` | 32 MiB, 2 segments | [assumed] |
+| `/serial-log` duration/byte caps | 10,000 ms / 1 MiB | [assumed] `400` over the ms cap, under the client's 15,000 ms timeout |
 | `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] |
 | `MAX_UNDECODABLE_FRAMES` | 10 | [assumed] separates one lost frame from a noise stream |
 | log retention | 7 daily files | [assumed] |

@@ -1,6 +1,6 @@
 # 022 — `embarch-core/interfaces.md` is 833 bytes from its cap
 
-**State:** blocked
+**State:** closed, 2026-09-09 — `open.md`'s item done by `tasks/core/009`, see note below
 **Source:** `core/018` spent the reserve adding the three missing routes
 (`GET /dev-bench/port`, `GET /logs/recent`, `GET /logs/stream`); `DOC-COMPACTION.md` §2
 **Scope:** core
@@ -58,11 +58,32 @@ already long-winded, not reversal of `core/018`.
 
 ## Done when
 
-- [ ] `core/021` and `tasks/api/032` have landed or been closed, and this
-      task is re-read against the resulting file before any edit.
-- [ ] `interfaces.md` is clear of the 90%-of-cap reserve line.
-- [ ] Every `Must not delete:` item above is still readable, verbatim or
-      faithfully restated.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `core/021` and `tasks/api/032` have landed or been closed, and this
+      task is re-read against the resulting file before any edit. —
+      superseded: `open.md` was the last remaining item on this task
+      (`interfaces.md` closed 2026-09-07, above), and `tasks/core/009`'s
+      dispatch note authorised compacting `open.md` now, as the actor
+      making its flux, rather than waiting further.
+- [x] `interfaces.md` is clear of the 90%-of-cap reserve line. — done
+      2026-09-07 by the split.
+- [x] Every `Must not delete:` item above is still readable, verbatim or
+      faithfully restated. — re-checked 2026-09-09: all three still stand,
+      untouched by this task's own edit to `open.md`. The `GET /serial-log`
+      caller-side-ceiling paragraph was separately amended (not deleted) by
+      `tasks/core/009` itself, which shipped Core's own side of that cap.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+**Closed 2026-09-09 by `tasks/core/009`.** `open.md` compacted from 5,051 B
+to 4,669 B (5,120 B cap): one bullet deleted as answered (`GET
+/study/{id}/events`'s no-replay note explicitly declared itself "closed
+rather than owed" — `DOC-COMPACTION-PASS.md`'s "a question may disappear
+only if you can name it as answered"), three live bullets squeezed, and one
+new bullet added recording `core/009`'s owed decision (its cap values and
+`truncated` shape, withheld from `decisions.md` under that leg's burndown
+constraint). Still short of clearing the reserve band outright (91.1% of
+cap) — `open.md`'s remaining bullets are all live, unanswered questions with
+no further seam to cut without losing a fact — so the next unit to write
+here should expect the reserve warning again and file fresh debt rather than
+assume this task still covers it.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
