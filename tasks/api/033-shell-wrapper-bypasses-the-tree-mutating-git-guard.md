@@ -1,10 +1,42 @@
 # Close the shell-wrapper bypass in `reject_tree_mutating_command`
 
-**State:** open
+**State:** claimed by agent/api/033-shell-wrapper-git-guard, 2026-09-09 00:17
 **Source:** owner's repo survey, 2026-09-06 — `embarch-api/spec.md` §2 asserts coverage this guard does not have
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Supervisor's dispatch note, leg 058 (2026-09-09, burndown)
+
+**`embarch-api` is the tightest sub-project in the suite for doc size. Read this before you plan
+your doc edits.** Five files are inside the last 10% of their cap. All are still writable and the
+gate still passes — but every one of them is filed against a **blocked** compaction task, so a
+worker may not compact them and you must not spend their headroom:
+
+| file | size/cap | headroom | filed against |
+|---|---|---|---|
+| `embarch-api/decisions/tool-wrapping.md` | 12,222/12,288 B | **66 B** | `tasks/api/047` [BLOCKED] |
+| `embarch-api/decisions/core-link.md` | 12,076/12,288 B | **212 B** | `tasks/api/026` [BLOCKED] |
+| `embarch-api/open.md` | 4,802/5,120 B | **318 B** | `tasks/api/026` [BLOCKED] |
+| `embarch-api/spec.md` | 9,350/10,240 B | **890 B** | `tasks/api/026` [BLOCKED] |
+| `embarch-api/decisions/build.md` | 11,134/12,288 B | 1,154 B | `tasks/api/050` [BLOCKED] |
+
+**`spec.md` is the one you legitimately need**, because its §2 over-claim ("This crate never runs
+`git checkout` … Enforced against the config file too") is exactly what this unit corrects. Make
+that a **replacement** rather than an addition: the honest wording is not longer than the
+over-claim, and 890 B is ample for a net-neutral edit. **Do not touch the other four.** In
+particular the "update spec.md/decisions.md/open.md" line in the Done-when below is boilerplate,
+not a checklist — leave `open.md` alone unless this unit made a statement in it false, and if it
+did, say so in your report rather than squeezing 318 B.
+
+If your work does push a file into reserve or leaves one there unfiled, file
+`tasks/api/<next free NNN>-compact-api.md` in the same commit (`tasks/README.md` has the shape, and
+the path is `tasks/api/`, never `tasks/doc/`).
+
+**This leg runs in burndown mode: do not author a new numbered decision.** Extending the guard is
+an implementation of the coverage `spec.md` §2 already claims, not a new position — record it in the
+`changelog.d/` fragment and the corrected `spec.md` §2 prose. If you conclude it genuinely needs its
+own numbered decision, stop and say so in your report rather than writing one.
 
 ## What
 
