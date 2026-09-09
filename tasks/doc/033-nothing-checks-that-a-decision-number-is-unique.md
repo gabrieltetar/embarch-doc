@@ -4,7 +4,11 @@
 **Source:** supervisor, leg 061, 2026-09-09 — caught by hand while reading `outpost/015`'s diff before merging it
 **Scope:** doc
 **Hardware:** none
-**Owner:** no
+**Owner:** required — the fix is a new or extended check under `scripts/`, which
+`protocol.md` §3 reserves to the owner; no agent can write it, and dispatching
+this would produce a red `check-ownership.py` for whoever took it. Filed here so
+it is visible in the queue rather than nowhere. Set by the supervisor, leg 062,
+2026-09-09, at the moment of filing the drop.
 
 ## What
 

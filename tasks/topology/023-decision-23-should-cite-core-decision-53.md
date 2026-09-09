@@ -1,6 +1,6 @@
 # `embarch-topology` decision 23 should cite `embarch-core` decision 53 rather than flag the phrasing to its owner
 
-**State:** open
+**State:** claimed — leg 062, 2026-09-09
 **Source:** `tasks/core/031`, worker on `agent/core/031-shared-dir-decision` — that unit authored `embarch-core` decision 53, closing the gap `embarch-topology/decisions/storage.md` decision 23 pointed at
 **Scope:** topology
 **Hardware:** none
