@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Wire: [interfaces/wire.md](interfaces/wire.md). Integration: [interfaces/integration.md](interfaces/integration.md).
 
-**Working end to end on real hardware since 2026-08-27, at record layout 3:** a study captures a real nRF54L15's thread, ISR and marker timeline and the UI renders it named and timed.
+**Working end to end on real hardware, at record layout 3:** a study captures a real nRF54L15's thread, ISR and marker timeline and the UI renders it named and timed.
 
 ## 1. What it is
 
@@ -65,7 +65,7 @@ Three properties carry the design:
 
 ## 4. The instrument's measured cost
 
-All on a quiet `dut_dev@7` nRF54L15 at 460800 baud, and the numbers are why several decisions read the way they do.
+All on a quiet `dut_dev@7` nRF54L15 at 460800 baud.
 
 | | Value |
 |---|---|
@@ -73,10 +73,10 @@ All on a quiet `dut_dev@7` nRF54L15 at 460800 baud, and the numbers are why seve
 | resolution, DUT clock | **1 µs** — 0 of 4955 spans below it |
 | resolution, host clock | 4.0 ms — 4286 of 4955 spans below it |
 | the outpost's own CPU share | **1.6%** on the DUT clock (66.3 ms over 778 drain runs, 85 µs each) |
-| the same, misread on the host clock | **78.1%** — the drain thread switches in on one frame and out on the next, so it is charged the whole frame interval, 46× over |
+| the same, misread on the host clock | **78.1%**, 46× over — a stale host reading frame arrival as the clock (decisions/layout.md, reversals row 86) |
 | burst loss under a real study load | **19.7% across 3 gaps** while the link averaged 36% busy |
 
-**Average capacity was never the constraint.** The ring is the burst knob, the fill wait is the latency knob, and the record's size is the throughput knob — and only the third is still unturned ([open.md](open.md)).
+The ring is the burst knob, the fill wait is the latency knob, and the record's size is the throughput knob (decisions/transport.md decision 20) — only the third is still unturned ([open.md](open.md)).
 
 Every Kconfig symbol, its default, and the measurement that set it — the ring's, the fill wait's and self-exclusion's included: [interfaces/integration.md](interfaces/integration.md).
 
@@ -90,6 +90,6 @@ Three files under the study's `streams/`:
 
 Consecutive rows repeating one `rx_utc_ms` is normal, not a defect: it is a *frame's* stamp. Both `frame_index` and `frame_seq` appear because they answer different questions — the index is this capture's own monotonic ordinal and is what an arrival stamp is keyed by; the seq is the firmware's own wrapping byte.
 
-**`us` carries exactly three decimals whenever it carries a value at all** — `1234.500`, never `1234.5`, and the empty string when `cycles_per_sec` is 0, which both decoders agree on rather than guessing a rate. That is a contract between the decoders and not a rendering preference: rounding instead of formatting disagrees on every value whose fraction is shorter than three digits, and it is the only difference the decoder-against-decoder check has ever caught, twice. **`cycles` is the DUT's counter unwrapped host-side, and a *small* backwards step is not a wrap** — a gap record is stamped when its losses started, so it legitimately goes backwards a little, and treating that as a wrap threw every later timestamp forward by 2**32. Both rules are pinned by a host test that needs no toolchain ([interfaces/wire.md](interfaces/wire.md)).
+**`us` carries exactly three decimals whenever it carries a value at all** — `1234.500`, never `1234.5`, and the empty string when `cycles_per_sec` is 0, which both decoders agree on rather than guessing a rate. That is a contract between the decoders and not a rendering preference: rounding instead of formatting disagrees on every value whose fraction is shorter than three digits. **`cycles` is the DUT's counter unwrapped host-side, and a *small* backwards step is not a wrap** — a gap record is stamped when its losses started, so it legitimately goes backwards a little, and treating that as a wrap threw every later timestamp forward by 2**32. Both rules are pinned by a host test that needs no toolchain ([interfaces/wire.md](interfaces/wire.md)).
 
 `streams/index.json` carries **three independent booleans** for the three ways a trace can be incomplete: `named`, `timed`, and `self_excluded` — the last being the only one the *firmware* decides.

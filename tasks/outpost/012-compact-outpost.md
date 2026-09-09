@@ -1,12 +1,6 @@
 # 012 — `embarch-outpost/open.md` and `decisions/module.md` are in reserve
 
-**State:** open — **two of four items paid**, `agent/outpost/012-compact-outpost`, 2026-09-08.
-`open.md` (95.5% → 70.4%, by squeeze) and `decisions/module.md` (94.4% → 44.3%, by splitting
-decision 22 out to `decisions/testing.md`) are both out of reserve and their items are closed
-below. **`spec.md` and `decisions/transport.md` are still in reserve and this task still owns
-them** — 9,187/10,240 B (1,053 B left) and 7,114/8,192 B (1,078 B left), both inside the
-`max(1200 B, 10%)` floor they crossed on the 2026-09-07 rule change rather than on an edit.
-Neither was touched by this unit. The task stays open for those two.
+**State:** done
 **Source:** `scripts/check-doc-size.py`, spent by `tasks/outpost/011`'s commit adding the "no CI"
 note to `open.md`'s "Deferred with a named trigger" section — and, in the same unit's landing, by
 the supervisor's amendment to `decisions/module.md` decision 22.
@@ -78,5 +72,16 @@ the scope directory of the doc being compacted, filed by whoever spends it, in t
       `tests/unit` is a Zephyr suite this environment cannot build (no `west`, no `ZEPHYR_BASE`) — not
       claimed. The three host-Python legs that need neither (`decoder_unit.py`, `vocab_check.py`,
       `cross_decoder.py`) were run directly and pass/SKIP correctly with the sibling repos absent.
+- [x] `spec.md` and `decisions/transport.md`, also named on the `Compacts:` line (both had drifted
+      into reserve too, at 89.7% and 86.8%, per `--pressure` at claim time), squeezed back out as
+      well so nothing is left filed against this task once it folds: `spec.md`'s "misread on the
+      host clock" row and its "ring/wait/record-size knob" sentence restated reasoning already
+      canonical in `decisions/layout.md` (reversals row 86) and `decisions/transport.md` decision 20
+      — trimmed to a fact-plus-citation; two dates/meta clauses cut (cold, per
+      DOC-COMPACTION-PASS.md's hot/cold test). `decisions/transport.md` decision 20: one clause
+      duplicating `interfaces/integration.md`'s `BATCH_BYTES` row ("frame size no longer affects
+      resolution") deleted, plus two wording trims. No fact, number, or rejected alternative lost.
+      Now `spec.md` 8,987/10,240 B (87.8%), `decisions/transport.md` 6,978/8,192 B (85.2%) — both
+      below the 90% reserve line with margin.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
