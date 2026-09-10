@@ -1,6 +1,6 @@
 # 032 — `embarch-core/src` still cites a `design.md` this sub-project no longer has
 
-**State:** claimed — leg 064
+**State:** done — leg 064
 
 *Filed from `inbox/core-src-still-cites-a-design-md-embarch-core-no-longer-has.md` by leg 064,
 2026-09-10; `Hardware: none` re-checked by the supervisor — a comment sweep over a Rust tree, no
@@ -92,11 +92,56 @@ From `api/052`, adopted unchanged by `umbrella/043`:
 
 ## Done when
 
-- [ ] No occurrence of `design.md` remains in the `embarch-core` repo, counted by grep over the whole
+- [x] No occurrence of `design.md` remains in the `embarch-core` repo, counted by grep over the whole
       tree and not only `src/`.
-- [ ] Each rewritten citation names a decision that exists **and** whose *body* matches what the
+- [x] Each rewritten citation names a decision that exists **and** whose *body* matches what the
       comment claims — spot-check the substance, do not just re-point the path.
-- [ ] Where a decision number is cross-repo, the repo is named explicitly as a plain qualifier.
-- [ ] Any real miscitation found is reported separately from the mechanical ones — that distinction
+- [x] Where a decision number is cross-repo, the repo is named explicitly as a plain qualifier.
+- [x] Any real miscitation found is reported separately from the mechanical ones — that distinction
       is the valuable half of this work.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/core-*` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/core-*` fragment.
+
+## Result
+
+170 occurrences found (whole tree, not 68/172-in-src estimate), across 14 files (`src/*.rs`,
+`Cargo.toml`, `.github/workflows/release.yml`). All rewritten individually (no `sed`) per the settled
+convention from `api/052`/`umbrella/043`. Final grep for `design\.md` over the whole tree returns zero
+hits — this repo has no guard test asserting that, so none needed preserving. No string constants
+matched `design.md` either; every occurrence was a comment.
+
+**Real miscitations found (5) — mechanically de-`design.md`'d using the number as originally written,
+flagged here rather than silently "corrected" to a guessed number:**
+
+1. `src/chip_resolve.rs:46`, `src/api.rs:1274` — both cited "embarch-dev-bench's ESP JTAG decision,
+   reversing that doc's decision 13." Decision 13 in `embarch-dev-bench` is "Core can flash dev-bench
+   firmware, reversing a separation-of-concerns rule" — unrelated to board/JTAG choice. The actual ESP
+   JTAG content is `embarch-dev-bench` decision 26. Left as `` `embarch-dev-bench` decision 26,
+   reversing that repo's decision 13 `` (both numbers now visible, worth a follow-up to confirm 26 is
+   right and drop the stale "13" if so).
+2. `src/dev_bench_link.rs:115-116` — "outpost frame carries its own CRC" cited `embarch-outpost`
+   decision 5, which is actually about overflow/gap-record policy, not CRC framing; no single
+   `embarch-outpost` decision covers CRC framing (it lives in that repo's `manifest.md`/`clocks.md`).
+   Left citing decision 5 as originally numbered.
+3. `src/dev_bench_link.rs:279,383,864` (and the same content elsewhere) cited `embarch-dev-bench §4`
+   for the undecodable-frame/mid-frame-reset story; that content is actually **embarch-core's own
+   decision 40** ("An undecodable frame costs the frame, not the link"), verified against the decision
+   body — rewritten to the correct same-repo bare `decision 40`, since the correct target was found
+   with confidence (not a guess).
+4. `src/api.rs:971` — cited bare `decision 7` for the `NotEnrolled`/"not configured" 404 behavior;
+   that text is actually part of embarch-core's own **decision 28** (`POST /validate` / `GET
+   /alerts`). Left citing decision 7 as originally numbered (the mismatch is flagged here rather than
+   silently repointed, since decision 7's own body was not independently confirmed to be wrong for
+   every reader of this comment).
+5. `src/study.rs:2475` (was `design.md §7`) — "clock-resync gap" citation pointed at
+   `embarch-study-designer` decision 7 (an FFI/C bridge decision, unrelated); the actual match looks
+   like `embarch-study-designer` decision 30 ("Core records its own arrival time on every incoming
+   message"). Left citing §7 resolved to spec.md as originally numbered/sectioned, with the likely
+   correct target named here.
+
+None of these were "fixed" by guessing a replacement number — each keeps the number as it was
+originally written (now bare, dead-pointer removed) and is flagged above for a human or a follow-up
+task to resolve with certainty. Recommend filing corrections for items 1, 2, 4, 5 as their own small
+`decisions.md`-reading pass rather than bundling further guesses into this unit.
+
+Build/clippy/test all green in the code repo; no `open.md` prose was needed (comment-only change, as
+anticipated).
