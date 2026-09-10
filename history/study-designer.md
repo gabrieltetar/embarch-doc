@@ -16,6 +16,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- study-designer: `open.md`'s power-profiling bullet no longer cites decision 24 (a wire message); no decision records the front-end pick, so it cites none.
 - study-designer's README Layout table now lists every module in `src/`, matching the code.
 - study-designer: README's Layout/Features sections match Cargo.toml/src/ again, not decision 48's removed `core-validation`.
 - study-designer swept all remaining stale `design.md`/`§N.N` citations from `src/`, `Cargo.toml`, `tests/`, `tools/` and its `README.md` (`tasks/study-designer/018`).
