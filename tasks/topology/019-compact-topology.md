@@ -1,6 +1,15 @@
 # 019 — `decisions/enrollment.md` is in reserve
 
-**State:** open
+**State:** claimed — leg 064
+
+*Dispatch note, leg 064: `In flux: no` for the single file on the `Compacts:` line, so this is an
+ordinary compaction unit. **Read `DOC-BUDGET.md`'s split-first rule before compacting anything** —
+a verbatim split restates nothing and is the cheaper move where the file turns out to be many
+decisions rather than one sprawling one (`check-doc-size.py --decisions` answers which). Answer
+`DOC-COMPACTION-PASS.md`'s human question in your report, in your own words: can
+`embarch-topology/spec.md` alone answer what someone needs to work on enrollment today? Other
+`topology` reserve: nothing else is filed against this scope beyond `tasks/topology/014`/`017`
+(`open.md`, `spec.md`, `decisions/validation.md`) — leave those files alone.*
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/004`'s decision 27, 2026-09-07
 **Scope:** topology
 **Hardware:** none
