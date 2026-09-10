@@ -24,6 +24,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- core: spec.md §4 gains `outpost_manifest.rs`'s row; two `decision 48` and four dead `milestone-N.md` source citations corrected.
 - `embarch-core` decision 1/2/7/17's "CI everywhere" clause corrected: no test workflow has ever run in this repo.
 - Core's README no longer documents the four removed dev-bench env overrides (decision 23); it points at `embarch-topology` enrollment instead.
 - An unrecognised `EMBARCH_FLASH_BACKEND` now names the four valid backends instead of telling you to install a nonexistent tool.
