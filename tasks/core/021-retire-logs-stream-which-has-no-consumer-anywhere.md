@@ -1,6 +1,46 @@
 # 021 — `GET /logs/stream` has no consumer anywhere, and the UI decision that was going to be its consumer decided against it
 
-**State:** open
+**State:** claimed — leg 068, `agent/core/021-retire-logs-stream`
+
+**Dispatch note, leg 068 — retire it. The direction is decided; do not re-open it.**
+
+The task left two ends open ("retire, or give the Debug tab a reason to subscribe"). I am closing it
+as **retire**, on the argument already written in the task and not on my own new reasoning:
+`embarch-ui` decision 13 structurally excludes an SSE source by sharing one poll/diff loop across
+both log sources, nothing has replaced it, the whole-suite grep found no caller in any of the nine
+repos, `embarch-core-client` has no method for it, and `embarch-topology` decision 19 already set
+the precedent of retiring live push in favour of a poll. `/logs/recent`'s 2 s poll is the live path
+and nobody has asked for it faster.
+
+**What to remove**, per the task's own count of seven moving parts: the `GET /logs/stream` route
+registration (`src/api.rs:87`), `logs_stream_handler` and its SSE plumbing (`:1317`), `logs.rs`'s
+poll-follow `FollowState`/`poll_in` machinery, the route auth sweep's row for it, and `open.md`'s
+bullet. **Keep `read_recent`/`tail_lines`** — `/logs/recent` uses them and stays.
+
+**Decision 44 gets a tombstone, not a deletion.** Its subject is the hold-past-`\n` rule and the
+first-tick/rotation anchor exception on this surface. With the surface gone the rule governs
+nothing, so retire it to `embarch-core/decisions/removed.md` (this repo's convention for a retired
+decision) carrying its own reasoning verbatim plus one sentence saying which unit retired it and
+why. Do not renumber anything. If `decisions/removed.md` does not exist in this sub-project, say so
+in your report and put the tombstone at the end of `decisions/logging.md` marked retired rather than
+inventing a file layout.
+
+**Read decision 44 before you delete anything.** It opens by explicitly declining to reason from
+consumer absence — *"what a consumer could hold rather than ... who is watching"* — so it is not
+itself an argument to keep the route, but that distinction belongs in the tombstone.
+
+**Two things I know and you should not have to rediscover.** First, `embarch-core` is the one repo
+whose native Windows build this environment cannot run; `tasks/core/015` is that debt and it is the
+owner's. Run `cargo build`, `cargo test` and `clippy --all-targets -- -D warnings` on Linux and say
+plainly in your report that the Windows build was not attempted. Second, the third `Done when` box
+asks that the route auth sweep's row count match the router's — check that number after your
+deletion rather than assuming the sweep is generated.
+
+**Doc-size reserve in your scope:** `embarch-core/open.md` is 4,813/5,120 B (**307 B left**, filed
+against `tasks/core/022-compact-core.md`, which is `open`, not blocked). You are *removing* a bullet
+from that file, so you should be paying this debt down rather than spending it — if you leave it in
+reserve anyway, note that in your report; if you push any other file into reserve, file
+`tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** suite review pass 2026-09-06, dimension 6 (deletion candidates). Code-confirmed, with a whole-suite caller grep.
 **Scope:** core
 **Hardware:** none
