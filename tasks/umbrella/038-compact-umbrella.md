@@ -12,7 +12,45 @@ be dispatched (`.claude/leg.md`), so the state line was wrong rather than the fl
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-umbrella/spec.md, embarch-umbrella/open.md
-**Size debt due:** 2026-09-30
+**Size debt due:** 2026-09-12
+
+## Clock brought forward by leg 066, 2026-09-10 — from 2026-09-30, and here is why
+
+`umbrella/036` landed today and **spent the reserve rather than paying it**, on both of this
+task's files:
+
+| file | before `036` | after `036` | left |
+|---|---|---|---|
+| `spec.md` | 10,104 B (98.7%) | **10,144 B (99.1%)** | **96 B** |
+| `open.md` | 4,870 B (95.1%) | **4,996 B (97.6%)** | **124 B** |
+
+Nothing was done wrong. My dispatch note offered `036`'s worker two paths — make the `spec.md`
+edit net-zero-or-negative, or compact `spec.md` as part of the unit carrying this task's
+`Must not delete:` list — and it took the first, honestly, within the 136 B it was told it had.
+Its closing note describes this as "no new debt was created and none was paid down", which is
+true of *this ledger's* bookkeeping and misleading about the file: **96 bytes is not headroom, it
+is a wall one row-edit away.**
+
+**So the date moves, because the date is the only thing that makes a park non-absorbing.** The
+`In flux: yes` argument below is unchanged and still correct — `tasks/umbrella/033` is open and is
+exactly a check-17 `doctor`-chain row change — so this task is **still `blocked` and still must
+not be dispatched as a compaction unit while that holds.** What the earlier date buys is that a
+leg's first-unit ledger check surfaces it in two days rather than twenty, at which point whoever
+looks has three options and should pick deliberately:
+
+1. **Land `tasks/umbrella/033`**, which unparks this task properly and is the intended path.
+2. **Split `spec.md`** — `DOC-COMPACTION.md` §2's mission split, which a verbatim move makes safe
+   even under `In flux: yes`, exactly as `outpost/008` did to `decisions/tracing.md` this same
+   leg. The eighteen-row `doctor` chain table is the obvious candidate to move out, and it is also
+   the volatile part this task's flux argument is about — moving it verbatim into its own file
+   would leave `spec.md` stable *and* give the volatile table room to change.
+3. **Accept that the next `umbrella` unit touching `spec.md` must compact it in-flight**, which is
+   what `DOC-COMPACTION.md` §2 already says for a file whose compaction task is parked.
+
+**Option 2 is the one nobody has considered for this file** and it is the reason I am recording
+this rather than only moving a date: this task's flux argument has parked `spec.md` since
+2026-09-09 on the grounds that its `doctor` table may be rewritten, while the split that would
+make that rewrite cheap is available and unblocked by the same argument.
 
 ## What
 
