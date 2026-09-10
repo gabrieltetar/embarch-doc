@@ -1,6 +1,6 @@
 # 027 — `validated_at_utc_ms` exists only on the one response no reader calls
 
-**State:** open
+**State:** claimed by agent/core/027-validated-at-reaches-no-reader, 2026-09-10 15:35
 **Source:** leg 045's reconciliation of `tasks/umbrella/041` and `tasks/ui/020`,
 both of which were closed as unsatisfiable. Upstream: `tasks/topology/009`'s
 consumer enumeration, `embarch-topology` decision 26, `embarch-core` decision 50.
@@ -72,3 +72,47 @@ lost when the two unsatisfiable tasks were closed.
 - [ ] If the answer is "label, do not add", the follow-up tasks for
       `embarch-umbrella` and `embarch-ui` are filed rather than assumed.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Dispatch note (leg 066, 2026-09-10 15:35)
+
+**This is a design task and the decision is yours to make.** Protocol §5.4: a numbered decision
+scoped to one sub-project needs nobody's approval. Both arms above close this task, and I am not
+pre-picking between them — but I am naming what would make each one wrong, because the failure
+this task exists to prevent is "a third consumer filed against a field it cannot reach".
+
+**If you choose to persist and serve it**, the store change and the migration are the whole cost,
+and the decision body must state what a reader sees for a board enrolled *before* the field
+existed. A `None` that renders as "never validated" would be a lie about every board on the
+bench today. That is the sentence I would look for first in review.
+
+**If you choose to label rather than add** — which the task itself flags as possibly the honest
+answer — then the decision has to say what the passive readers should render *instead*, in words
+a `doctor` line and a UI cell can both use, and **bullet 2 above becomes binding**: file the
+follow-up tasks for `embarch-umbrella` and `embarch-ui` rather than assuming someone will notice.
+Those two are `tasks/umbrella/<NNN>` and `tasks/ui/<NNN>`, which is a **cross-scope write and is
+NOT yours** — `check-ownership.py --scope core` will refuse both. Write each one as a full task
+file into **`/home/gabriel/Github/embarch/embarch-doc/inbox/`** instead, by that absolute path,
+per `inbox/README.md`; I file them into the queue in the fold. Do not write them relatively, and
+do not put them under `tasks/`.
+
+**Do not change `embarch-api` or `embarch-ui` code either way.** `embarch-core-client`'s response
+structs live in `embarch-api`, and one of them (`EnrolledBoardResponse`) is exactly what the
+persist arm would need to grow. That makes the *rollout* cross-repo, which §8 reserves to the
+supervisor. Land Core's half — the store, the response Core serves, the decision — and file the
+client half into `inbox/` as above. `tasks/api/044` is already the standing example of this shape
+being mis-filed as a single-worker task; do not repeat it in the other direction.
+
+**Doc-size reserve for this sub-project.** `embarch-core/open.md` is at **4,813 / 5,120 B
+(94.0%), 307 B left**, filed against `tasks/core/022-compact-core.md` — which is `open`, not
+blocked, so the debt is live and payable and is **not** your unit. Every `decisions/` file has
+room (largest `studies.md` at 10,762 / 12,288); `handshake.md` is 5,553 B and is where decision 47
+lives, so it is the natural home if your decision belongs beside that one. `spec.md` is
+8,212 / 10,240. **Keep `open.md` net-zero or net-negative**: if your answer closes an open
+question, strike it and you have paid down 307 B of nothing; if it opens one, you have spent a
+reserve that is already 94% gone, and the standing rule then makes you record the debt — amend
+`tasks/core/022` rather than filing a duplicate compaction task.
+
+**Read `embarch-topology` decision 26 and `embarch-core` decision 50 before deciding.** The
+task's upstream chain rests on both, and decision 26 is the one that says what
+`validated_at_utc_ms` is *for*. Read the bodies, not the headings — three legs running have found
+a citation that looked wrong because only the body says what a decision covers.
