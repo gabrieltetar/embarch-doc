@@ -1,6 +1,6 @@
 # 021 — `GET /logs/stream` has no consumer anywhere, and the UI decision that was going to be its consumer decided against it
 
-**State:** claimed — leg 068, `agent/core/021-retire-logs-stream`
+**State:** done — leg 068, `agent/core/021-retire-logs-stream`
 
 **Dispatch note, leg 068 — retire it. The direction is decided; do not re-open it.**
 
@@ -94,11 +94,26 @@ reads shapes, and the one review that surveyed the consumers was scoped by its s
 
 ## Done when
 
-- [ ] `GET /logs/stream` is gone, or `embarch-core/decisions/logging.md` records what will consume
-      it and by when.
-- [ ] Decision 44 either goes with it or states which surface its rule now governs.
-- [ ] The route auth sweep's row count matches the router's, and `embarch-core/interfaces.md`
-      matches both.
-- [ ] `embarch-core/open.md`'s bullet is closed.
-- [ ] `status.d/core-*` fragment for `embarch-ui/decisions/debug-tab.md` decision 7's mention.
-- [ ] Gate green; `changelog.d/core-*` fragment.
+- [x] `GET /logs/stream` is gone, or `embarch-core/decisions/logging.md` records what will consume
+      it and by when. — retired: route registration, `logs_stream_handler`, and `logs.rs`'s
+      `FollowState`/`poll_in` all removed; `read_recent`/`tail_lines` unaffected.
+- [x] Decision 44 either goes with it or states which surface its rule now governs. — no
+      `decisions/removed.md` exists in this sub-project (checked; reported below), so tombstoned in
+      place at the end of `embarch-core/decisions/logging.md`, marked `*(retired)*` in its heading
+      with a closing paragraph naming this unit, per the task's own fallback instruction.
+- [x] The route auth sweep's row count matches the router's, and `embarch-core/interfaces.md`
+      matches both. — `AUTH_CASES` row removed, `DOCUMENTED_ROUTE_COUNT` 26→25, both checked against
+      the router's 25 remaining `.route(` lines (26 before removal, minus 1); `interfaces.md` and
+      `interfaces/logs.md` updated; decision 42's "All 27 registrations... today" corrected to 26 as
+      the current-count claim it is (the historical `tasks/core/018`/decision 18 numbers are left
+      untouched as history).
+- [x] `embarch-core/open.md`'s bullet is closed. — removed; file drops from 4,813 B (94.0%, in
+      reserve) to 4,551 B (88.9%, out of reserve) — debt paid down rather than spent, as directed.
+- [x] `status.d/core-*` fragment for `embarch-ui/decisions/debug-tab.md` decision 7's mention. —
+      `status.d/core-logs-stream-retired.md` (target is a sub-project doc, not one of the five
+      `status.d/README.md` enumerates, but this worker's scope is `core` only and cannot edit
+      `embarch-ui`'s own decisions — filed per this task's explicit direction rather than left only
+      in this worker's report).
+- [x] Gate green; `changelog.d/core-*` fragment. — `cargo build`/`cargo test`/`clippy --all-targets
+      -D warnings` all green on Linux (188 tests passed). **The native Windows build was not
+      attempted** (`tasks/core/015` is that debt, owner's). `changelog.d/core-retire-logs-stream.removed.md`.
