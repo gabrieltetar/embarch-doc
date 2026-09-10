@@ -34,8 +34,10 @@ one codebase, two things built from it:
          cannot determine, so this is the one thing genuinely persisted
        - live validation, the durable alert log, and the structured
          mismatch error with its fix-it URL
-  2. a thin CLI over the same crate, for a human to inspect or fix
-     directly. Its local web UI half is retired (decision 5).
+  2. a thin CLI over the same crate, for a human to inspect always and to
+     mutate (enroll/validate/set-dev-bench-link) only when no Core answers
+     on this machine — otherwise it refuses and names Core's route
+     (decision 28). Its local web UI half is retired (decision 5).
 
 embarch-core, embarch-api and embarch-umbrella all depend on the crate
 and call it live, in-process, at their own moment of need — no shell-out,
