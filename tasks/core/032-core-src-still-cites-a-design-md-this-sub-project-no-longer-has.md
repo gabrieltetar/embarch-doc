@@ -5,6 +5,12 @@
 *Filed from `inbox/core-src-still-cites-a-design-md-embarch-core-no-longer-has.md` by leg 064,
 2026-09-10; `Hardware: none` re-checked by the supervisor — a comment sweep over a Rust tree, no
 board, no flash.*
+
+*Doc reserve for `core`: `embarch-core/open.md` is 4,813/5,120 B (**307 B left**) and already filed
+as `tasks/core/022-compact-core.md` (`open`, not blocked) — so plan around it and **do not file a
+second `compact-core` task**. `embarch-core/spec.md` and `decisions/` are not in reserve. This unit
+should be comment-only in the code repo plus a `changelog.d/core-*` fragment; if you find yourself
+needing to add prose to `open.md`, say why in your report instead.*
 **Source:** found by the supervisor in `core/008`'s fold, leg 063, 2026-09-10, while applying the
 reviewer's citation finding — the very lines being repaired sat next to untouched `design.md`
 citations
