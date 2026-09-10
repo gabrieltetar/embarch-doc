@@ -63,6 +63,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep. Holds no column knowledge |
+| `outpost_manifest.rs` | `ManifestSlot`: binds a flash's `outpost-manifest.json` to the DUT it flashed, checks the running firmware's build ID against it before rendering a trace, and refuses to render (never to warn) on a mismatch |
 
 Board identity, enrollment, hardware-ID readback and dev-bench port detection are **not here**: they live in `embarch-topology`, which Core calls as `embarch_topology::hardware`.
 
