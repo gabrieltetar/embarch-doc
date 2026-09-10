@@ -13,7 +13,7 @@ Not CTF, not SystemView, not a statistical sampler. **Zephyr already calls a fix
 **Three properties of that hook layer shape everything below, and none is obvious:**
 
 - **The user-tracing option does not select the tracing core.** Zephyr's ring buffer, format layer, drain thread, backends and drop counter are **all compiled out. The outpost owns the entire emit path** — which is why decisions 3, 4 and 5 exist at all, and why they are not "replace Zephyr's backend."
-- **Zephyr's own manual-marker API is an empty macro here**, so **markers have to come from us** (decision 6).
+- **Zephyr's own manual-marker API is an empty macro here**, so **markers have to come from us** (decision 6, [markers.md](markers.md)).
 - **The ISR-enter and thread-switch-in hooks take no arguments.** Which ISR, and which thread, **must be recovered inside the hook** — decisions 7 and 8.
 
 *Rejected: CTF.* The standard, decodable-by-existing-tools choice, and **the leading option until the wire cost was checked: every CTF thread event carries an inline bounded string, so a thread switch is roughly 29 bytes rather than roughly 8.** On a UART, at the switch rates that make a load trace interesting, **that is the difference between a stream that fits and one that spends its life dropping.** It also carries a timestamp hazard: its event stamp is **truncated to 32-bit nanoseconds, which wraps every ~4.29 seconds regardless of clock rate.** Rejecting it costs tool compatibility and buys **a wire the DUT can actually sustain.**
@@ -21,14 +21,6 @@ Not CTF, not SystemView, not a statistical sampler. **Zephyr already calls a fix
 *Rejected: SEGGER SystemView.* Needs RTT over the debug probe — **a second carrier this suite would then have to model** — and is a vendor tool with its own host application, **the opposite of "one UART pin, rendered in our own UI."**
 
 *Rejected: a periodic statistical sampler, or polled runtime stats.* Both are cheaper and **both answer a smaller question: a sampler cannot see a short ISR, and runtime stats give a per-window percentage with no timeline at all.** The hooks give an exact timeline **for less firmware than a sampler needs.**
-
-### 6 — Manual markers with build-registered IDs, and the same registration generates the manifest
-
-The engineer declares their markers in one place, and **that declaration is simultaneously what makes a marker call compile and what puts its name in the manifest. An unregistered ID is a build error, not a mystery integer on the host.** No strings cross the wire.
-
-**Keeping that table in the image is a real problem, not a formality.** *Nothing in the firmware reads it* — the generator reads it out of the ELF — **so section garbage collection deletes it and the build still succeeds**, producing a manifest with zero markers and a trace whose markers are bare integers, **with no error anywhere to say why.** Two mechanisms fail: **the iterable-section API looks exactly right and has no effect on the template linker-script path both real targets use**, and a keep directive **survives the Zephyr link and is collected out again by the host link on a native build.** What holds everywhere is **a volatile pointer to the table, read once at init** — a relocation from a section the compiler may not elide.
-
-*Rejected: also overriding Zephyr's stock marker API for compatibility with DUT code already using it.* That API takes a **runtime string pointer**, which means either interning strings on the DUT or putting them on the wire — **both re-introducing exactly the cost CTF was rejected over.** A DUT wanting outpost markers writes outpost markers.
 
 ### 19 — The outpost keeps itself out of its own trace by default, and says so on the wire
 
@@ -49,3 +41,14 @@ No record for a context switch into or out of the drain thread, or for an ISR on
 *Rejected: coalescing the drain thread's run into one "the instrument ran here" record.* One record instead of six, **and it would close the hole in the timeline honestly.** Declined because it is **a new record kind and three host decoders for something the header flag plus the unaccounted total already communicates.** (The cost read "and a layout bump" until 2026-09-06; appending a kind never bumps it — [wire.md](../interfaces/wire.md).)
 
 **What it did not do, and this is the more useful half: removing half the records did not move the link's duty cycle at all.** See decision 20 — **the drain loop's shape, not its record count, sets the duty cycle, and cutting records made frames smaller rather than rarer.**
+
+### 25 — GPIO dispatch traced as a handler timeline, not pin sampling
+
+`gpio_fire_callbacks()` is a fourth hook family, alongside thread switch and ISR entry/exit (decision 2): `GpioDispatch` (9) when a port starts walking its callback list, `GpioCallbackDone` (10) when a handler returns. It answers "which handler, for how long," not "what is this pin's state" — the hook is a callback-list boundary, not a level sample.
+
+**Two traps:**
+
+- `GpioCallbackDone` is an *exit* marker, placed after `cb->handler()` returns. Read as entry, it attributes each handler's span to the wrong handler while staying readable.
+- `GpioDispatch`'s `b` is `0`, not a pin mask: the hook's mask parameter is 8 bits while `gpio_fire_callbacks()` passes 32, so pins above 7 are already gone. Which pins a dispatch covered comes from `pin_mask` on the `GpioCallbackDone` records that follow.
+
+Gated by `BIT(6)` in `flags` (decision 19's pattern). Layout: [wire.md](../interfaces/wire.md).
