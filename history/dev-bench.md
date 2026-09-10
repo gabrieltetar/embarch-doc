@@ -14,6 +14,7 @@
 - `embarch-dev-bench`'s 180 KB `design.md` became spec.md, open.md and eight `decisions/<mission>.md` files — 81 KB, all 43 decision numbers intact, no file over 11.8 KB.
 
 ### Fixed
+- dev-bench: `fail_reason`'s name-list cut is now marked, and bounded before writing (decisions/scanning.md #45).
 - Decision 35 amended: the step-cap removal it claimed never landed; the 16-step ceiling is still live (`decisions/link.md`).
 - `embarch-dev-bench` decision 9's `native_sim` CI job is marked never built; this repo has never had a `.github` directory.
 - dev-bench README now names the nRF54L15DK as the bench (decision 43), carries `link_port_interface = 2` in the nordic build section, and no longer links `design.md`, deleted by the four-file split.
