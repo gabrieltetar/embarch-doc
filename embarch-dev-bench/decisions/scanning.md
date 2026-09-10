@@ -32,3 +32,8 @@ The scan callback already received the advertising payload and discarded it; it 
 `report_scan_seen()` logs `BT_DATA_MANUFACTURER_DATA`'s company ID and payload, parsed in `scan_seen_mfg.c` — no BT host, so a ztest pins it under native_sim, where `ble_bridge_real.c` never builds. Absence differs from a zero-length element; bytes past the cap say so. Costs 2,816 B [measured] SRAM (spec.md).
 
 **Client firmware reads the payload as `s_ficr_id[6..7]`, matching the name suffix — read off source, unconfirmed on air.** `tasks/api/029` tests this first.
+
+### 45 — Two markers for two truncations, and the name list is bounded before it is written
+`dev-bench/007`: the 64-byte `fail_reason`'s name list was cut silently by `snprintk`'s own return-length check, which fires *after* `snprintk` has already deposited whatever fit — a partial name, or a bare trailing separator, stayed in the buffer. `scan_seen_names_append()` (`scan_seen_names.c`, no BT host, ztest-pinned under native_sim) formats each entry into scratch first and copies it in only whole, so a rejected entry changes nothing.
+
+Two distinct overflow conditions now get two distinct markers: `(truncated)` means the name list itself hit the 64-byte cap (three or four names, the common case); `(census full)` means `SCAN_SEEN_MAX` (256, decision 32) was exceeded — unrelated, and needs 256 advertisers to ever fire. **Rejected: one combined marker.** It would say something was cut without saying which — a `BUILD_ASSERT` in `ble_bridge_real.c` holds room for whichever applies before the name list is even formatted, so the final `outcome_fail` write never truncates the marker away either.
