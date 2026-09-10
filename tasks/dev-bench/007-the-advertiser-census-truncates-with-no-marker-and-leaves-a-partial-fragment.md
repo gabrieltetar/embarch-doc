@@ -1,6 +1,12 @@
 # 007 — The advertiser census truncates with no marker, and the truncation path leaves a partial fragment behind
 
-**State:** claimed — leg 067. Unparked by `013` landing. **`013`'s pass did not cover this.** It widened `struct scan_seen_entry` and `report_scan_seen()` (the per-advertiser log record) to add Manufacturer Specific Data, in a new pure-C `scan_seen_mfg.c`/`.h` pair; it never touched `scan_seen_names_summary()` or the `", ..."` marker this task is about. Both defects described below — the silent 64-byte cut and the partial-fragment write — are exactly as they were. `013`'s own report explains the scoping choice: the two remaining fixes (an unambiguous truncation marker, and bounding the write instead of truncating after it) are a separate, self-contained change to a different function, and `013` was already carrying a RAM-budget measurement, a doc-reserve placement and a toolchain-gate finding worth keeping as one reviewable unit.
+**State:** done — worker unit `007-census-truncation-marker`. Both defects fixed: `scan_seen_names_append()` (new `app/src/scan_seen_names.c`/`.h`, no BT host, ztest-pinned under native_sim) formats each name-list entry into scratch first and copies it into the buffer only whole, so a rejected entry leaves no partial fragment; `connect_as_central()` now appends one of two distinct markers -- `(truncated)` for the 64-byte name-list cap, `(census full)` for the unrelated 256-entry `SCAN_SEEN_MAX` overflow -- budgeted before the name list is formatted so the final `outcome_fail` write can't truncate the marker away either. `embarch-dev-bench/decisions/scanning.md` decision 45.
+
+**Left for the supervisor / an attended session:**
+- The one 20-second on-bench re-observation this task's `Hardware:` line calls for -- no hardware was touched from this worker.
+- `suite/studies-guide.md` §3a's paragraph on reading a truncated `fail_reason` -- explicitly not this worker's file to edit; needs updating to describe the new two-marker behaviour once landed.
+
+**Verified without hardware:** `west build -b native_sim` for the new `app/tests/scan_seen_names` ztest suite (5/5 pass, including the no-partial-fragment case) and for the existing `scan_seen_mfg`/`serial_protocol`/`dev_bench_log` suites and the full `app` native_sim target; `west build -b nrf54l15dk/nrf54l15/cpuapp app` (the real board target that actually compiles `ble_bridge_real.c`, native_sim links the stub instead) -- clean, 59.64% RAM. `west`/`ZEPHYR_BASE` were available in this environment (main checkout's `workspaces/{native_sim,nordic}`, `EMBARCH_STUDY_DESIGNER_PATH` set to the sibling repo for the study-designer staticlib path dependency); no new toolchain-gap debt to report.
 **Source:** observed live by the supervisor running `tasks/api/029` on the bench, 2026-09-06;
 narrowed from a withdrawn `study-designer` task after a reviewer showed the capability exists
 **Scope:** dev-bench
@@ -56,19 +62,20 @@ never read as a complete one (`suite/studies-guide.md` §1 on `truncated`).
 
 ## Done when
 
-- [ ] A cut census is distinguishable from a complete one **from the
+- [x] A cut census is distinguishable from a complete one **from the
       `fail_reason` alone** — an unambiguous marker that fires on the string cap,
       not only on the 256-entry overflow.
-- [ ] The truncating write leaves no partial fragment: bound the write before it
+- [x] The truncating write leaves no partial fragment: bound the write before it
       happens, or truncate back to the last complete name.
-- [ ] The two overflow conditions are distinguishable from each other, or the
+- [x] The two overflow conditions are distinguishable from each other, or the
       decision to conflate them is written down with its reason.
 - [ ] Re-observed on the bench with the same one-step study, and the observed
-      string recorded — this is cheap and it is how it was found.
+      string recorded — this is cheap and it is how it was found. **Left as a
+      hardware debt: no board from this worker.**
 - [ ] `suite/studies-guide.md` §3a's paragraph on reading a truncated
       `fail_reason` is updated to match whatever ships. **Not the worker's file:
       hand it back to the supervisor.**
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## What this is *not*
 
