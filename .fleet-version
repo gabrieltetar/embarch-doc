@@ -1,8 +1,8 @@
 {
-  "framework_sha": "02e365435a3dff31447df32e8ecb1cd1c25ba277",
+  "framework_sha": "0dcaabca5dd4782ec9b21f7f5f8c9f7a7eccd3d0",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-09-10T19:47:40Z",
+  "installed_at": "2026-09-10T19:48:51Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "16c1e5616dc9fbe592581dc251303dfe10aba6a03a4d8b2527a6e8ea746dde0b",
@@ -34,6 +34,9 @@
     "scripts/fleet-armed.py": "fbca2d31f26497e012002caef3c55eee9c44ae26fdf6c26dc1c947ccdd81f626",
     "scripts/fleet-hardware.py": "1130107c3e652be5db385b196fb356e3ffac4117e2404379eaaebfd11d6fce1a",
     "scripts/fleet-tick.py": "a20726d7574829a4cf2137574ac72817fd5a89a76c1c1bf537fe7c2ff7b1cd88",
-    "scripts/fleet-burndown.py": "fa19e69227e77631427ddf0248adb6d876207f040ec81757b61f9a20c861260e"
+    "scripts/fleet-burndown.py": "fa19e69227e77631427ddf0248adb6d876207f040ec81757b61f9a20c861260e",
+    "scripts/fleet-read.py": "b89d624a3ef5b22d20874ff917fb33bb7bde53e1731c8701eaa3f21125aa862f",
+    "scripts/fleet-react.py": "327a95f6ef97688c24e81a7b9f37548bae495e9bcb2895582600715bba51bd88",
+    "scripts/fleet-slack-doctor.py": "325a2a5a6ecd64806981cb87643232964b1d11443ed9ee15b8e48b8a9cc788e0"
   }
 }
