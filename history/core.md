@@ -40,6 +40,7 @@
 - `/study/{id}/events` docs now list `GattTranscript` and note it has no `Last-Event-ID`/replay.
 
 ### Decided
+- Decision 50's closing paragraph now names each consumer's real end state and points to decision 54.
 - Core keeps `confirmed_at_utc_ms` alone on `EnrolledBoardResponse`; decision 54 says label it "Enrolled", never "Validated".
 - Decision 53: `%ProgramData%\embarch`'s default ACL stays untightened — deliberate, for `embarch-topology`.
 - A study's public `current_step` is the index of the last step that *finished* — stated in [interfaces.md](../embarch-core/interfaces.md), decision 43.
