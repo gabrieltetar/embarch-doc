@@ -6,6 +6,8 @@ Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../inte
 
 **`hardware_id` below is the probe/JTAG-read ID, and it is not yet the one spelling this route group uses** — decision 47 (`../decisions/handshake.md`) has why the rename that would give it one is deferred rather than done silently.
 
+**`confirmed_at_utc_ms` on `/probes/enroll` and `/probes/enrolled` is enrolment time, not freshness** — the instant the record was last written, unmoving until someone re-enrolls. A live re-check's own instant is `POST /validate`'s `validated_at_utc_ms` (decision 50) and reaches neither of these two routes: decision 54 has why, and what a renderer should say instead of implying either route's timestamp answers "how stale is this identity check?".
+
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
 | `POST` | `/probes/enroll` | `{role, chip, probe_serial?}` | `{probe_serial, role, chip, hardware_id, confirmed_at_utc_ms}`. The **only** sanctioned way to write the enrollment table. Attaches, reads the live hardware ID, records it |

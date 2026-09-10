@@ -1,6 +1,6 @@
 # 027 — `validated_at_utc_ms` exists only on the one response no reader calls
 
-**State:** claimed by agent/core/027-validated-at-reaches-no-reader, 2026-09-10 15:35
+**State:** done
 **Source:** leg 045's reconciliation of `tasks/umbrella/041` and `tasks/ui/020`,
 both of which were closed as unsatisfiable. Upstream: `tasks/topology/009`'s
 consumer enumeration, `embarch-topology` decision 26, `embarch-core` decision 50.
@@ -63,15 +63,30 @@ being filed against a field it cannot reach.
 Not urgent. Filed so the residue of a four-task chain is visible rather than
 lost when the two unsatisfiable tasks were closed.
 
+## Resolution
+
+**Chose "label, do not add."** `embarch-core` decision 54 (`decisions/surfaces.md`)
+records why: a persisted last-validation instant needs a store change in
+`embarch-topology`'s enrollment file, not this crate's, so it is a cross-repo
+half-change the "for" arm can't actually complete from a `core`-scoped unit —
+and even done right, every board enrolled before the field existed would have
+no honest value to backfill, which is the exact trap the dispatch note named.
+Decision 54 says what passive readers render instead: **"Enrolled"**, never
+"Validated"/"Last validated", with a cross-reference added to
+`interfaces/topology.md` next to `confirmed_at_utc_ms`. No `embarch-api` or
+`embarch-ui` code changed.
+
 ## Done when
 
-- [ ] Either `EnrolledBoardResponse` carries a last-validation timestamp (with
+- [x] Either `EnrolledBoardResponse` carries a last-validation timestamp (with
       the store change and the migration behind it, and a decision recording
       why), or a numbered decision records that it deliberately does not and
-      says what the passive readers should render instead.
-- [ ] If the answer is "label, do not add", the follow-up tasks for
-      `embarch-umbrella` and `embarch-ui` are filed rather than assumed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      says what the passive readers should render instead. — decision 54.
+- [x] If the answer is "label, do not add", the follow-up tasks for
+      `embarch-umbrella` and `embarch-ui` are filed rather than assumed. —
+      dropped to `embarch-doc/inbox/umbrella-relabel-confirmed-at-if-doctor-ever-shows-it.md`
+      and `embarch-doc/inbox/ui-relabel-confirmed-at-cell-away-from-freshness-wording.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Dispatch note (leg 066, 2026-09-10 15:35)
 
