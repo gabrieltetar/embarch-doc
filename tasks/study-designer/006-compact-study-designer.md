@@ -1,6 +1,16 @@
 # 006 — Compact `embarch-study-designer/decisions/crate.md`
 
-**State:** open — **unparked by leg 056, 2026-09-08; its reasoning half-corrected 2026-09-09, see
+**State:** claimed — leg 064
+
+*Dispatch note, leg 064, 2026-09-10: `In flux:` is **per file** here, and the two files still on the
+`Compacts:` line — `spec.md` (9,600/10,240 B, 640 B left) and `open.md` (4,662/5,120 B, 458 B left) —
+are the settled ones. **`decisions/crate.md` is struck off and is not yours: leave it alone.** Prefer
+a verbatim split per `DOC-BUDGET.md`'s split-first rule; a verbatim move restates nothing, so no
+`In flux` answer can forbid one. Answer `DOC-COMPACTION-PASS.md`'s human question in your report, in
+your own words: can `embarch-study-designer/spec.md` alone answer what someone needs to work on this
+component today?*
+
+**Previously:** open — **unparked by leg 056, 2026-09-08; its reasoning half-corrected 2026-09-09, see
 `In flux:` below.** The `In flux: yes` below is about
 `crate.md`'s FFI-shape content, and `crate.md` is struck off the `Compacts:` line: it was paid.
 This task's own "What this task is still for" section says so explicitly, and the two items that
