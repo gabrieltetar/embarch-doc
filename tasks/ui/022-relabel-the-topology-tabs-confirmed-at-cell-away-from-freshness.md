@@ -1,6 +1,6 @@
 # 022 — Relabel the Topology tab's `confirmed_at_utc_ms` cell away from any freshness wording
 
-**State:** claimed — leg 067
+**State:** done — leg 067, 2026-09-10, branch `agent/ui/022-confirmed-at-label`.
 **Filed from `inbox/` by leg 066, 2026-09-10**, in the same fold as `umbrella/036`, and for the
 same reason as its sibling `tasks/umbrella/045`: `core/027` decided that the fix for "enrolment
 time misread as freshness" is a **label**, and these two tasks are the only things that carry that
@@ -54,10 +54,20 @@ requires this follow-up be filed rather than assumed.
 
 ## Done when
 
-- [ ] Whatever the Topology tab currently renders next to
+- [x] Whatever the Topology tab currently renders next to
       `confirmed_at_utc_ms` (if anything) is checked against this wording, and
       relabeled if it currently implies freshness.
-- [ ] If it renders nothing today, fold this reasoning into `snapshot.rs`'s
+      Found it rendered — not in `src/`, but in `assets/app.js` /
+      `assets/index.html`: the Dashboard's and Topology/Enroll tab's shared
+      "Enrolled boards" table has a `<th>Confirmed</th>` column header over
+      `formatTimestamp(b.confirmed_at_utc_ms)`. Relabeled to `Enrolled` in
+      both `assets/index.html` table headers (the Dashboard copy and the
+      Topology/Enroll copy).
+- [x] If it renders nothing today, fold this reasoning into `snapshot.rs`'s
       own doc comments or `embarch-ui`'s spec, so the first person who adds
       such a display finds decision 54's wording rather than guessing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      Not applicable (it does render) — added the guard anyway as a doc
+      comment on `Snapshot::enrolled` in `src/snapshot.rs`, and a matching
+      comment above `enrolledTableRows` in `assets/app.js`, citing
+      `embarch-core` decision 54.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
