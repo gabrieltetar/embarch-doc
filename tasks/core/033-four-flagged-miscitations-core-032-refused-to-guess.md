@@ -1,6 +1,27 @@
 # 033 — The four citations `core/032` flagged rather than guessed, and one citation form it invented
 
-**State:** open
+**State:** claimed — leg 065, 2026-09-10
+
+## Dispatch note, leg 065
+
+**Doc reserve in your scope:** `embarch-core/open.md` is 4,813 / 5,120 B — **307 B left**, inside
+the reserve floor, and its compaction task `tasks/core/022-compact-core.md` is already filed and
+`open` (not blocked), so you do **not** owe a new compaction task for that file. Nothing else in
+`embarch-core/` is in reserve. Plan for 307 B if you write to `open.md`; prefer editing an existing
+question to appending one.
+
+**The four citations are the expensive half; the citation-form item is the cheap half — do both,
+and do the cheap one mechanically.** Leg 064 landed ~50 citations written as `` `decision N` ``
+(number inside the code markup) against a convention that puts the number in plain prose. Normalise
+them with a script *and read the resulting diff* before committing; that read is the part that
+cannot be skipped.
+
+**On the four numbers: a guess here wastes the previous worker's refusal.** For each, open the
+target repo's `decisions/` file and read the decision **body**, never its heading or its
+parentheticals — two legs running have found a citation that looked wrong because only the body
+says what it covers. If a number still cannot be settled from a body, leave it carrying its
+original number, say so in this file, and do not substitute your candidate.
+
 **Source:** `tasks/core/032`'s own Result section, leg 064, 2026-09-10 — the worker de-`design.md`'d
 170 citations, found five whose *number* looked wrong, resolved exactly one with confidence, and
 **deliberately left the other four carrying their original numbers** rather than guessing. That was
