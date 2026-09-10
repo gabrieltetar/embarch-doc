@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- The `doctor` chain table moved verbatim out of spec.md into interfaces/doctor-chain.md.
 - `doctor` check 6 verdicts from the located `embarch-api` itself, not the permissive config mirror; `CoreConfig`/`ProjectConfig` mirrors closed their known field gaps (task 036).
 - - `embarch-umbrella`: 75 `design.md` citations rewritten to bare/cross-repo `decision N` form; 5 real miscitations fixed along the way.
 - spec.md/Cargo.toml now name doctor check 5's sysfs USB read as umbrella's one hardware exception.
