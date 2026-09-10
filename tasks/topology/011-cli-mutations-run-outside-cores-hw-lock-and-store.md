@@ -1,6 +1,29 @@
 # 011 — The `embarch-topology` CLI performs four hardware and store mutations that two recorded decisions place inside Core
 
-**State:** open
+**State:** claimed — leg 065, 2026-09-10
+
+## Dispatch note, leg 065
+
+**Doc reserve in your scope: none.** No file under `embarch-topology/` is inside its reserve floor,
+so you have room to write the decision this task needs. If your work pushes one into reserve, file
+`tasks/topology/<NNN>-compact-topology.md` in the same commit.
+
+**Bound the change: the refusal is the deliverable, not a Core client.** `embarch-topology` is a
+**shared crate** — `embarch-api`, `embarch-core`, `embarch-ui` and `embarch-umbrella` all
+path-depend on it — so a new runtime dependency or a new hard error path in it is a suite-wide
+cost, and I will read your diff before merging. Prefer, in this order: (1) a mutation subcommand
+that **detects the wsl-host / reachable-Core case and refuses with the reason and the Core command
+to run instead**, (2) the same plus a documented local-bootstrap escape when no Core is reachable.
+**Do not add an HTTP client to this crate** to reach Core's three endpoints in this unit — if you
+conclude that is the right end state, write it as a numbered decision plus an `open.md` question
+and leave the code at the refusal. That keeps the fix inside one repo, which is the only way a
+worker may land it at all (`protocol.md` §5 rule 2, §8).
+
+**You own `embarch-topology` only.** `embarch-core`'s and `embarch-api`'s files are `never` for
+you even where this task quotes them; cite them, do not edit them. The `decisions/enrollment.md`
+decision 15 item is in scope and is the half most likely to be forgotten — the rule currently reads
+as fully applied and it is not.
+
 **Source:** suite review pass 2026-09-06, dimension 4 (layering and dependency direction). Code-confirmed.
 **Scope:** topology
 **Hardware:** none. The change is a routing decision in the CLI; confirming the wsl-host store divergence on the real machine needs the owner's session, but the flaw was found by reading two `#[cfg]` arms and needs no board to fix.
