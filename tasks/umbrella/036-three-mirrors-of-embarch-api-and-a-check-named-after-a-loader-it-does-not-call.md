@@ -1,7 +1,8 @@
 # 036 — `embarch-umbrella` mirrors three things from `embarch-api`; the shared crate now holds two of them, the third has drifted three ways, and check 6 is named after a loader it does not call
 
-**State:** open — **partially done**: mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 still
-open, see state note below
+**State:** claimed by agent/umbrella/036-mirrors-two-and-three, 2026-09-10 15:36 — **partially
+done**: mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 are what this dispatch takes, see the
+leg 066 dispatch note at the end
 **Narrowed 2026-09-08 (leg 051):** dispatched as **mirror 1 only** — the token
 chain — plus the two doc items that ride on it (`Done when` bullets 1, 3, 4, 5).
 Mirrors 2 and 3 (`CoreConfig`'s lost fields, `ProjectConfig`'s three-way drift,
@@ -132,3 +133,75 @@ warnings` clean (216 tests pass) in the code worktree; `check-docs.py`, `check-o
 
 None of the above were touched, per this dispatch's explicit narrowing. This task stays open —
 **do not close it** — for whichever leg picks up mirrors 2 and 3.
+
+## Dispatch note (leg 066, 2026-09-10 15:36) — mirrors 2 and 3, and this closes the task
+
+**You are taking everything leg 051 left**, so if you finish it, this task closes: `Done when`
+bullet 2, `CoreConfig`'s missing `*_timeout_secs`, and all four strands of `ProjectConfig`'s
+drift. Bullets 1, 3, 4 and 5 are already ticked and are not yours to revisit.
+
+**Bullet 2 is the one with a real choice in it, and the task's own candidate direction is the one
+I would take**: source check 6's *verdict* from the loader its title names, using the shell-out
+that check 8 already performs one function away (`src/doctor.rs:1055-1078` — read it; it is the
+worked precedent in this same file, landed 2026-09-05 for exactly this reason). Decision 16's
+permissive reader stays for reporting **which** field is wrong, which is its actual requirement.
+**If you conclude instead that the title should stop claiming the loader, that is a legitimate
+answer** — but then say what check 6 *is* answering, because "parses under a permissive mirror"
+is a fact about umbrella, not about whether `embarch-api` would start.
+
+**The four `ProjectConfig` strands are each independently checkable, and none needs a design
+call**: `flash_format` required upstream with no `serde(default)`; the `retired_targets` /
+`retired_soc_chip_overrides` refuse-by-name fields (upstream decisions 51/53); the missing
+`.validate()` call on load; and the phantom `artifact_path_for_core`, which `src/init.rs:534`
+**still writes into scaffolded configs** — so removing the field without removing that write
+leaves `init` producing a config its own loader drops silently. Do those two together or neither.
+
+**Verify every claim above against the code as it stands before you act on it.** This task's body
+was written 2026-09-06 and cites line numbers on both sides; leg 051 landed in between and moved
+things. `embarch-api/crates/embarch-core-client/src/lib.rs` is where `CoreConfig` lives now, not
+`embarch-api/src/config.rs`. **Read `embarch-api`, do not write it** — it is another
+sub-project's repo and `check-ownership.py --scope umbrella` will refuse any edit to it. If the
+right fix turns out to need an `embarch-api` change, stop and write that half into
+`/home/gabriel/Github/embarch/embarch-doc/inbox/` by that absolute path, per `inbox/README.md`.
+
+**Doc-size reserve, and this is the constraint most likely to bite you.**
+
+- `embarch-umbrella/spec.md` — **10,104 / 10,240 B (98.7%), 136 bytes left.**
+- `embarch-umbrella/open.md` — **4,870 / 5,120 B (95.1%), 250 bytes left.**
+- `embarch-umbrella/decisions/bind.md` — 11,409 / 12,288 B, 879 B left.
+- `decisions/mirrors.md` — **6,267 / 12,288 B, ~6 KB free.** This is where your decision or
+  amendment goes. `decisions/doctor.md` is 11,019 / 12,288 (1,269 B left) — usable but tight.
+
+`spec.md` holds the eighteen-row `doctor` chain table, and check 6's row is in it. **136 bytes
+will not cover a row rewrite.** Its compaction task `tasks/umbrella/038` is `blocked` on
+`In flux: yes` — legitimately, because `tasks/umbrella/033` is an open check-17 row change — and
+under `DOC-COMPACTION.md` §2 **a blocked compaction task parks the pass, not the reserve**: since
+you are the actor making the flux in this table, you are the only one who can shorten what you
+are rewriting. So:
+
+1. **First try to make your `spec.md` edit net-zero or net-negative.** A row whose status changes
+   from "designed" to "sourced from the real loader" may well be shorter. That is the cheap out
+   and you should take it if it is available.
+2. **If it is not, compact `spec.md` as part of this unit**, carrying `tasks/umbrella/038`'s
+   `Must not delete:` list — go read it, it is specific and two of its items are there because a
+   previous pass got them wrong. Close **only** the `spec.md` item on `038`; leave its `open.md`
+   item and its `blocked` state alone, and say in `038`'s body what you paid and what you left.
+   `038`'s own note says to run `scripts/check-duplication.py embarch-umbrella` first — do that;
+   `decisions/doctor.md` re-arguing what `spec.md`'s table already owns is the suspected
+   duplication and would be the cheapest real shave.
+3. **Do not trim wording alone.** `038` records the measured finding that 37 bytes of reworded
+   prose is not a real shave.
+4. Keep `open.md` net-zero or net-negative. If your work answers the `open.md` bullet about
+   check 6, strike it — that is a genuine paydown and worth more than the bytes.
+
+**Answer `DOC-COMPACTION-PASS.md`'s question in your closing note if and only if you ran a
+compaction pass**: can `spec.md` alone answer what someone needs to work on `embarch-umbrella`
+today?
+
+**Gate reminders specific to this unit.** `cargo build` / `test` / `clippy --all-targets --
+-D warnings` must be clean in the code worktree — leg 051's run of this task passed 216 tests, so
+a drop in that count is a signal, not noise. `embarch-umbrella` path-depends on
+`embarch-topology`, `embarch-study-designer` and `embarch-api`; I have symlinked all three into
+your worktree's parent, so if a build fails on a path under `.worktrees/`, tell me rather than
+making a link yourself. Run `scripts/check-client-names.py --repo <your code worktree>` too —
+`check-docs.py` does not reach the code repo.
