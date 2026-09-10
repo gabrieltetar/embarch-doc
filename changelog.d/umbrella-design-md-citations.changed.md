@@ -1,0 +1,1 @@
+- `embarch-umbrella`: 75 `design.md` citations rewritten to bare/cross-repo `decision N` form; 5 real miscitations fixed along the way.

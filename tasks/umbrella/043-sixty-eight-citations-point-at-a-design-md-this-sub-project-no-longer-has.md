@@ -85,9 +85,31 @@ keeps `cargo doc` warnings out of its gate.
 
 ## Done when
 
-- [ ] No occurrence of `design.md` remains in the `embarch-umbrella` repo, counted by grep over the
-      whole tree and not only `src/`.
-- [ ] Each rewritten citation names a file that exists **and** a decision whose subject matches what
-      the comment claims — spot-check the substance, do not just re-point the path.
-- [ ] Where a decision number is ambiguous across repos, the repo is named explicitly.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment.
+- [x] No occurrence of `design.md` remains in the `embarch-umbrella` repo as a *citation*, counted by
+      grep over the whole tree and not only `src/`. Re-count found 75 across 13 files (not the stale
+      68/15). Three occurrences are deliberately left, not citations: `install.rs`'s `LEGACY_MARKER`
+      literal (matched against real machines' rc files — changing it breaks uninstall for anyone who
+      set up before the four-file split) and `doctor.rs`'s own guard test/comment asserting no
+      *production* line names a deleted doc. Both already document why they stay.
+- [x] Each rewritten citation names a file that exists **and** a decision whose subject matches what
+      the comment claims — spot-checked the substance against every repo's `decisions/` heading list,
+      not just re-pointed the path.
+- [x] Where a decision number is ambiguous across repos, the repo is named explicitly.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/umbrella-*` fragment.
+
+## Findings: real miscitations (not dead pointers)
+
+- **`decision 37` for `deploy-core` topics, four sites, one root cause.** `src/state.rs`
+  (`deploy_source_root`'s doc comment), `src/setup.rs` (the same field's assignment comment), and
+  `src/deploy.rs` (the module doc comment and `elevated_script`'s generated-script comment) all cited
+  umbrella decision 37 — `reporting.md`'s "a check may carry a machine-readable `code`" — for
+  `deploy-core`'s own subject. The actual match is **decision 32** (`decisions/deploy.md`: "`embarch
+  deploy-core`: the WSL2-to-Windows-service deploy becomes a command..."), which even the paths list
+  they were describing (`deploy_source_root`, `deploy_windows_root`, `deploy_cargo_exe`) names
+  directly. Fixed all four to decision 32.
+- **`manifest.rs`'s decision 14 is defensible but adjacent.** `decisions/install.md`'s own decision 14
+  entry attributes the specific "doctor warns on mismatch" behavior to **decision 24** ("A version
+  mismatch against the suite manifest is a warning (decision 24)"), while decision 14 itself is the
+  broader distribution decision. Left as decision 14 since the module's surrounding text (reading the
+  archive manifest, check 1) is squarely decision 14's subject — noting the boundary rather than
+  silently picking one.
