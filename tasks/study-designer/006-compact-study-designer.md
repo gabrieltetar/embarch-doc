@@ -1,6 +1,7 @@
 # 006 — Compact `embarch-study-designer/decisions/crate.md`
 
-**State:** claimed — leg 064
+**State:** blocked — leg 064's worker closed `spec.md`'s item 2026-09-10; `open.md` is
+the only file left on the `Compacts:` line and it is still in flux (see below).
 
 *Dispatch note, leg 064, 2026-09-10: `In flux:` is **per file** here, and the two files still on the
 `Compacts:` line — `spec.md` (9,600/10,240 B, 640 B left) and `open.md` (4,662/5,120 B, 458 B left) —
@@ -125,3 +126,31 @@ than closing, since only the reserve item is done, not the file's underlying flu
 **2026-09-08, `study-designer/008`:** `spec.md` moved to 9,136/10,240 B (net deletion — the phantom `Study.gatt`/`DeclaredGatt` row came out of two tables). `open.md` moved to 4,662/5,120 B (458 B left in reserve, down from 789) — it gained one bullet tombstoning decision 45 as designed-but-unbuilt, under the existing "Missing authoring paths" heading. Neither file's `Must not delete:` item was touched. `open.md` is now closer to its cap; whoever next adds to it should check `check-doc-size.py --pressure` before assuming there's room.
 
 **2026-09-08, `study-designer/019`:** `spec.md` moved to 9,600/10,240 B (640 B left, still in reserve, still parked here — this task's item, not reopened). `019` was a `registry.md` compaction pass, not this task's; it added two sentences to `spec.md` — the `study-ui` feature-table cell now names the custom-action registry, and one new paragraph under §3 points at `decisions/registry.md` — because `registry.md`'s own gate question ("can `spec.md` alone answer what someone needs to work on this component today?") came back no: `spec.md` didn't mention the registry at all. No deletion accompanied it, since `019`'s budget was `registry.md`'s, not this file's; whoever next compacts `spec.md` inherits those two sentences as content to keep or fold in, not to be surprised by.
+
+**2026-09-10, leg 064 (this unit):** `spec.md`'s item closed — a repoint, not a move.
+§7's closing paragraph (`Study` host-shape 1,080 B vs. `no_std` 83,512 B, `DevBenchMessage`
+75,288 B, and why `RUST_MIN_STACK` is raised) restated numbers that already live verbatim,
+with the same measurement date, in `decisions/limits.md` decision 63's table — so the fix
+was to cut the restatement and point at decision 63 by number, rather than split the prose
+into a new file. `spec.md` is 8,941/10,240 B (out of reserve). No file crosses into reserve
+as a result — an earlier attempt at this unit, appending the paragraph verbatim to
+`interfaces/limits.md`, was reverted because it pushed that file from 10,334 to 11,205 B,
+past its own 12,288 B cap's reserve floor (11,059 B); decision 63 already held the same
+facts, so the append was pure duplication, not a genuine split. `open.md` untouched, per
+this task's own rule above — it is the one file still in flux. **Task stays `blocked`**:
+every file remaining on the `Compacts:` line (just `open.md` now) is in flux, so `blocked`
+is the correct state rather than a park absorbing further work. Gate green: `check-docs.py`
+(11/11), `check-ownership.py --scope study-designer` (doc repo) and `--code-repo` (code
+repo, no changes — docs-only unit), `check-client-names.py` against both worktrees.
+
+**Human question, answered for this unit:** can `embarch-study-designer/spec.md` alone
+answer what someone needs to work on this component today? **Yes, for its own job.**
+`spec.md` states what the crate is, its seven invariants, the feature/target split, what a
+`Study` carries and how it's sealed, result-file shapes, the three consumers, and where
+constants/decisions/interfaces live — everything to *start* work without reading anything
+else. It is deliberately not self-contained for *why* (that's `decisions.md` and its
+per-mission splits) or for exact values (`interfaces/limits.md`, `decisions/limits.md`) —
+by `DOC-COMPACTION.md` §3 those are separate files by design, reachable from `spec.md`'s own
+pointers in one hop. The one number this unit repointed (decision 63's host/no_std sizes)
+was already reachable that way before the edit; the edit just stopped restating it in a
+second place.
