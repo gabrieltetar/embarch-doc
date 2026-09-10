@@ -1,6 +1,21 @@
 # 026 — Compact `embarch-study-designer/open.md`
 
-**State:** open
+**State:** claimed — leg 065, 2026-09-10
+
+## Dispatch note, leg 065
+
+**Doc reserve in your scope:** the file this task compacts — `embarch-study-designer/open.md`,
+4,662 / 5,120 B, **458 B left** — is the only one in reserve. Nothing else in
+`embarch-study-designer/` is. Paying this debt *is* the unit, so you owe no new compaction task
+unless you push some *other* file into reserve.
+
+**`In flux: no` was asserted by leg 064's supervisor against its own worker's read, and the
+argument is in this file below. Do not re-litigate it; do the work.** The compaction move for an
+`open.md` is **striking questions that have since been answered** — verify each against the source
+before striking it, and never delete an open question merely because it is old. `DOC-COMPACTION.md`
+governs; answer its human question in your Result section in your own words: *can `spec.md` alone
+answer what someone needs to work on this component today?*
+
 **Source:** the surviving half of `tasks/study-designer/006-compact-study-designer.md`, closed
 `done` by leg 064 on 2026-09-10 once its `spec.md` item was paid. Filed as a fresh task rather
 than left on 006's `Compacts:` line, because `fold-commit.py` (correctly) refuses to fold a unit
