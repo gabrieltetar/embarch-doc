@@ -1,8 +1,7 @@
 # 044 — `manifest.rs` cites decision 14 for a claim decision 14 itself assigns to decision 24
 
-**State:** claimed — leg 065, 2026-09-10 — **read the leg-063 supervisor's note below before you
-change anything, because the fix this drop proposes would make the citation worse rather than
-better.**
+**State:** done — worker umbrella/044, 2026-09-10 (`d06bb64`) — cited both 14 and 24, per the
+leg-063 supervisor's note, not the title's proposed revert. See "Resolution" below.
 
 ## Dispatch note, leg 065
 
@@ -101,13 +100,43 @@ correctly).
 
 ## Done when
 
-- [ ] `src/manifest.rs`'s doc comment either cites decision 24 for the
+- [x] `src/manifest.rs`'s doc comment either cites decision 24 for the
       quoted warn-behavior clause, or cites both (14 for "the manifest is
       read at all," 24 for "and a mismatch warns").
-- [ ] No other production comment in this sweep repeats the same pattern
+- [x] No other production comment in this sweep repeats the same pattern
       (a decision-14 citation paired with 24's specific claim) — not
       independently re-audited by this reviewer, worth a second pass by
       whoever picks this up.
+
+## Resolution, worker (umbrella/044), 2026-09-10
+
+Agreed with the leg-063 supervisor's note, not the task title. Re-read both
+decision bodies before touching anything:
+
+- `decisions/install.md` #14's own text: *"A version mismatch against the
+  suite manifest is a warning (decision 24)."* — 14 is also the only place
+  that says `doctor` reads the manifest at all.
+- `decisions/schema-skew.md` #24: *"Version skew between Core and the API
+  stays a warning, not a refusal"* — Core/API skew, not the suite manifest.
+  Nothing in 24's body mentions the suite manifest.
+
+Re-pointing `manifest.rs` at 24 alone would send a reader about the suite
+manifest to a decision about a different pair of binaries — the *real but
+wrong decision* failure mode `api/031` already paid for. Took the cheap
+improvement instead: `src/manifest.rs`'s doc comment now cites **both** —
+14 for the manifest being read at all, 24 for why a mismatch warns rather
+than refuses. Commit `d06bb64`, branch `agent/umbrella/044-manifest-decision-14`.
+
+**Done-when item 2, full audit, not partial:** `grep -rn "decision 14" src/`
+across the whole `embarch-umbrella` tree returns exactly one hit — the
+`manifest.rs` line just fixed. `decision 24` appears twice elsewhere
+(`src/doctor.rs:2348`, `src/doctor.rs:4634`), both citing 24 alone for the
+warn-never-fail posture, correctly, with no 14 alongside. No other
+production comment in the `umbrella/043` sweep pairs a 14 citation with 24's
+claim.
+
+Doc reserve: wrote no prose into `spec.md` or `open.md` (both parked, both
+below reserve). Only new file is `changelog.d/umbrella-manifest-decision-14-and-24.fixed.md`.
 
 ## Contradiction
 
