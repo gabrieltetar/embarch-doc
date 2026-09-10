@@ -24,6 +24,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `embarch-core`: repointed 3 of the 4 flagged miscitations `core/032` left, and normalised the stray `` `decision N` `` form suite-wide.
 - core: 170 dead `design.md` comment citations repointed to decisions/spec.md; 5 real miscitations found and flagged in tasks/core/032.
 - core: spec.md §4 gains `outpost_manifest.rs`'s row; two `decision 48` and four dead `milestone-N.md` source citations corrected.
 - `embarch-core` decision 1/2/7/17's "CI everywhere" clause corrected: no test workflow has ever run in this repo.
