@@ -4,7 +4,7 @@
 
 **Split out of [doctor.md](doctor.md) on 2026-09-06, decision 22 moved verbatim and then amended here.** That file's other three entries are about probes, firmware versions and flashing tools; this one is about whether Core is listening where this topology can reach it, and it had grown to 46% of the file on its own — three amendments in two days, with a live narrow-bound Core still owed. A split restates nothing, which is why it beat a second squeeze on a file already trimmed once ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md)'s check table. What check 17 hands back — `code`, `fix` — is [reporting.md](reporting.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-chain.md](../interfaces/doctor-chain.md)'s check table. What check 17 hands back — `code`, `fix` — is [reporting.md](reporting.md).
 
 ### 22 — Bind address versus topology, built 2026-09-05; firewall state and disk space, retired 2026-09-05
 

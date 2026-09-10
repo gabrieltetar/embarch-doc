@@ -4,7 +4,7 @@
 
 Split out of [doctor.md](doctor.md) 2026-09-07 (`tasks/umbrella/037`) as this file's own mission, the way [bind.md](bind.md) and [integration.md](integration.md) were split before it — decision 19 moved verbatim, restating nothing.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md)'s check 13 row.
+Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-chain.md](../interfaces/doctor-chain.md)'s check 13 row.
 
 ### 19 — A stale-dev-bench-firmware check
 

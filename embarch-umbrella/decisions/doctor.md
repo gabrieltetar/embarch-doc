@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-06.
 
-The checks, and why several of them distinguish states that look the same. Which are built and which are not is [../spec.md](../spec.md)'s table, not repeated per entry here. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
+The checks, and why several of them distinguish states that look the same. Which are built and which are not is [the table](../interfaces/doctor-chain.md)'s job. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Four checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), check 17's bind address is [bind.md](bind.md), and check 13's dev-bench-firmware comparison is [dev-bench-firmware.md](dev-bench-firmware.md).
 
@@ -32,7 +32,7 @@ Core refuses to flash an nRF54L part with probe-rs, because that family stores c
 
 **Amended by [decision 38](topology.md), which is what made this check run on `wsl-host` at all.** Its skip arm said `see check 1` and pointed at a check that was itself wrong there; each class now names what is missing. And the exe it invokes is the right file but runs under the WSL user's environment, not the service account's — a narrower form of the failure above, and open.
 
-**The three arms are one skip worded per class, not flashing verdicts — reachable only before that class's own `setup` finishes (task 032).** A set-up `wsl-host` box hits `flash-backend` instead (decision 38). Kept distinct: each names its own next step. [spec.md](../spec.md) marks an arm `measured` only once a run has hit it.
+**The three arms are one skip worded per class, not flashing verdicts — reachable only before that class's own `setup` finishes (task 032).** A set-up `wsl-host` box hits `flash-backend` instead (decision 38). Kept distinct: each names its own next step. [interfaces/doctor-chain.md](../interfaces/doctor-chain.md) marks an arm `measured` only once a run has hit it.
 
 ### 42 — `locate_api` reads the agent CLI's own registration and `setup`'s install directory, not just `PATH`
 

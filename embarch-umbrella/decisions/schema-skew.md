@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-04.
 
-What checks 11 and 15 compare, where each number comes from, and why a mismatch between two halves of an install warns rather than refuses. Which checks are built and which are not is [../spec.md](../spec.md)'s table, not repeated per entry here.
+What checks 11 and 15 compare, where each number comes from, and why a mismatch between two halves of an install warns rather than refuses. Which checks are built and which are not is [../interfaces/doctor-chain.md](../interfaces/doctor-chain.md)'s table, not repeated per entry here.
 
 Index: [../decisions.md](../decisions.md). The rest of the chain: [doctor.md](doctor.md).
 
