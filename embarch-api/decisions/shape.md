@@ -48,4 +48,13 @@ Closed the cheaper way: `dev-bench-hello` (`src/main.rs`, `src/cli.rs`) runs the
 
 **Amendment, `tasks/api/049`:** the CLI twin's `--json` success object first named this handshake's `schema_version` under the literal key `schema_version`, which `json_out::stamped()` unconditionally overwrites with the envelope's own constant (decision 24/50) — the exact collision decision 52 named and avoided for `versions`. Renamed to `dev_bench_schema_version`; see [../interfaces/tools.md](../interfaces/tools.md)'s `dev_bench_hello` row.
 
+### 64 — Retired config keys are refused by name, except one still scaffolded in the field
+`[[projects.targets]]` (decision 53) and `soc_chip_overrides` (decision 13) are refused by name at config load. `artifact_path_for_core` — retired separately, decision 15 — is not: with no `deny_unknown_fields` on `ProjectConfig`, it loads, silently unread.
+
+Deliberate, not a gap: `embarch-umbrella` still scaffolds `artifact_path_for_core` into every config it writes, so refusing it by name would break every umbrella-scaffolded config already in the field. The other two carry no installed base — never scaffolded, and on record as unbuilt/never-wired rather than shipped-then-removed — so refusing them breaks nothing real.
+
+**Default for the next retired key: refuse by name.** Toleration is earned only by an in-the-field installed base a scaffolding tool this crate does not control is still writing — the test `artifact_path_for_core` meets and the other two don't.
+
+**Ends when:** `embarch-umbrella` stops scaffolding `artifact_path_for_core` and no config in the field still carries it — then refuse it too, as a separate load-behaviour task this decision does not authorize.
+
 Shapes: [../interfaces/config.md](../interfaces/config.md), [../interfaces/tools.md](../interfaces/tools.md).

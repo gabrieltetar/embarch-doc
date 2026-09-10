@@ -1,6 +1,6 @@
 # Two retired config keys are refused by name and a third is deliberately tolerated, and only the tolerance is unrecorded
 
-**State:** claimed — leg 064
+**State:** done by agent/api/055-retired-config-keys, 2026-09-10
 
 ## Supervisor dispatch note, leg 064, 2026-09-10 — where the decision goes, decided before dispatch
 
@@ -75,14 +75,40 @@ target file has room.
 
 ## Done when
 
-- [ ] The decision to refuse two retired keys by name and tolerate `artifact_path_for_core` is
+- [x] The decision to refuse two retired keys by name and tolerate `artifact_path_for_core` is
       recorded as a numbered decision, stating the field-compatibility reason for the exception and
-      what would end it.
-- [ ] It says what a future retired key should do by default, so the next one is not a coin flip.
-- [ ] `open.md`'s prose about the gap is replaced by a citation, not left duplicating the decision.
-- [ ] **No code change.** The load behaviour as shipped is what the decision should record;
-      if the conclusion turns out to be that `artifact_path_for_core` *should* be refused, that is a
-      different task and it must say so rather than being folded in here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+      what would end it. — `embarch-api/decisions/shape.md` decision 64.
+- [x] It says what a future retired key should do by default, so the next one is not a coin flip.
+      — decision 64: refuse by name unless a scaffolding tool this crate does not control has an
+      installed base already writing the key.
+- [x] `open.md`'s prose about the gap is replaced by a citation, not left duplicating the decision.
+- [x] **No code change.** Verified against `src/config.rs` (no `deny_unknown_fields` on
+      `ProjectConfig`, `artifact_path_for_core` no longer a struct field at all — the retired UNC
+      mechanism, decision 15) before writing the decision; nothing in `src/` touched.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`test`/`clippy
+      --all-targets -- -D warnings` clean in `embarch-api` (no diff there); `check-docs.py` 11/11
+      green; `check-client-names.py` and `check-ownership.py` (both repos) clean.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. — `spec.md` untouched (nothing there named
+      the gap); no suite-level fact changed, so no `status.d/` fragment. `decisions.md`'s index row
+      for `decisions/shape.md` updated (decision list + size). `open.md`'s edit nets *shorter*
+      (4,859 B → 4,763 B), consistent with the dispatch note's expectation.
+
+## Report
+
+Decision 64 lives in `embarch-api/decisions/shape.md`, per the dispatch note (not `zephyr.md`,
+which stays over cap). Cites decision 13 and decision 53 by number; neither moved. `api/041`'s owed
+decision was left alone, still in `open.md`'s "Owed decisions" section.
+
+**Reserve near-miss, handled without a seventh `compact-api` task.** The first draft of decision 64
+pushed `decisions/shape.md` to 11,455/12,288 B (93.2%, into reserve) and an interfaces/config.md row
+I'd added for completeness pushed that file to 11,333/12,288 B (92.2%, also into reserve) — neither
+file was on the dispatch note's reserve list, so no existing task covers either. Rather than filing
+a sixth/seventh compaction task the note explicitly said not to add, I tightened the decision's prose
+(three paragraphs down to two, no content dropped) and dropped the optional `config.md` row entirely
+— it wasn't required by this task's Done-when. Final sizes: `decisions/shape.md` 10,742 B (87.4%,
+outside reserve), `interfaces/config.md` unchanged at its original 11,008 B. `check-doc-size.py`
+is green with no new debt to file.
+
+No hardware, no code, no other sub-project touched. Findings outside scope: none — the reviewer's
+note said only that the asymmetry deserved a decision, and it now has one.
