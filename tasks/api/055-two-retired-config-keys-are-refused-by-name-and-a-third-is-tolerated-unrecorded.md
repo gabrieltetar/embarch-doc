@@ -1,6 +1,34 @@
 # Two retired config keys are refused by name and a third is deliberately tolerated, and only the tolerance is unrecorded
 
-**State:** open
+**State:** claimed — leg 064
+
+## Supervisor dispatch note, leg 064, 2026-09-10 — where the decision goes, decided before dispatch
+
+**Author the new decision in `embarch-api/decisions/shape.md`, not in `decisions/zephyr.md`.** The
+argument, so the worker does not have to re-make it:
+
+- `decisions/zephyr.md` is **14,238 B against a 12,288 B cap** — already over, not merely in reserve
+  — and its compaction task `tasks/api/057-compact-api.md` is `blocked` on `In flux: yes`. This task's
+  own "Why now" is right that the target must not be treated as having room; what it did not know is
+  that a different file is the better topical home anyway.
+- The subject is a **config-load policy that spans both project kinds** — refuse a retired key by
+  name, except where scaffolded configs in the field still carry it — not a Zephyr-discovery choice.
+  `decisions/zephyr.md` holds decision 13 (`soc_chip_overrides`) because that key was Zephyr-shaped;
+  the *policy over retired keys as a class* is not.
+- `decisions/shape.md` is 9,549 B against 12,288 B, with ~2.7 KB of headroom. Leg 063's `api/048`
+  made the same pre-pick for the same reason and it landed clean.
+
+So: cite decision 13 and the `[[projects.targets]]` refusal **by number, across files**, and do not
+move either of them. **The shared-compaction sequencing this task proposes is no longer a
+prerequisite** — it was a consequence of the old target file. `api/041`'s owed decision stays a
+separate task; do not fold it in.
+
+**Doc reserve for `api` you must plan around** — `decisions/tool-wrapping.md` 66 B left,
+`decisions/core-link.md` 188 B left, `open.md` 261 B left, `spec.md` 815 B left, `decisions/build.md`
+1,154 B left, `decisions/zephyr.md` over cap. Every one of those is filed already, and all are
+`blocked` on `In flux: yes` — so **do not file a new `compact-api` task**; there are six. Your
+`open.md` edit replaces prose with a citation and should make that file *shorter*; if it does not,
+say so in your report.
 **Source:** `embarch-reviewer` on unit `api/031` (code `96f0684` + `61e2b42`, doc `b8be146`, fold `9b366a1`), leg 059 — an owed decision the burndown constraint forbade that unit from authoring
 **Scope:** api
 **Hardware:** none
