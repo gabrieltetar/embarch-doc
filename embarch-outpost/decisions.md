@@ -10,7 +10,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 |---|---|
 | [The module and its boundary](decisions/module.md) — a Zephyr module in someone else's firmware | 1, 14, 21 |
 | [The test harness](decisions/testing.md) — toolchain-free legs, and a loud skip over a sibling repo's absent fixture | 22 |
-| [What gets traced](decisions/tracing.md) — kernel hooks, markers, and keeping itself out of its own trace | 2, 6, 19 |
+| [What gets traced](decisions/tracing.md) — kernel hooks, GPIO dispatch, and keeping itself out of its own trace | 2, 19, 25 |
+| [Manual markers](decisions/markers.md) — build-registered IDs, and the manifest table that keeps getting deleted | 6 |
 | [Naming what the wire reports](decisions/naming.md) — a pointer and a vector number become names | 7, 8 |
 | [The transport](decisions/transport.md) — a lock-free ring, overflow, and the drain loop's fixed point | 3, 5, 20 |
 | [The record layout](decisions/layout.md) — three layouts in three days, and what each traded | 4 |

@@ -1,6 +1,6 @@
 # 008 — The GPIO-trace family ships with no numbered decision, because the file it belongs in has no room
 
-**State:** claimed by agent/outpost/008-gpio-family-decision, 2026-09-10 15:34
+**State:** done by agent/outpost/008-gpio-family-decision, 2026-09-10
 **Source:** `tasks/outpost/007`'s worker, 2026-09-06 — it drafted the decision, the size gate refused it, and it dropped the draft rather than push a file into reserve
 **Scope:** outpost
 **Hardware:** none
@@ -51,18 +51,61 @@ the one on `007`'s own task file, which told the worker the `decisions/` files
 
 ## Done when
 
-- [ ] `decisions/tracing.md` has room for the GPIO decision — by compaction, or
+- [x] `decisions/tracing.md` has room for the GPIO decision — by compaction, or
       by the **mission split** `DOC-COMPACTION.md` §2 names as the cheaper move
       where one fits. A GPIO/pin-adjacent topic file may well be that split.
-- [ ] A numbered decision records the GPIO-dispatch family: why a *handler*
+- [x] A numbered decision records the GPIO-dispatch family: why a *handler*
       timeline rather than pin sampling, and the two traps `007` had to write
       into `wire.md` instead — `GpioCallbackDone` is an **exit marker** (misread,
       it attributes each handler's time to the wrong handler while the trace
       still looks readable), and `GpioDispatch`'s `b` is `0`, **not** a pin mask.
-- [ ] `decisions.md`'s index row added, and `scripts/check-decision-refs.py`
+- [x] `decisions.md`'s index row added, and `scripts/check-decision-refs.py`
       still resolves.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Closing note (agent/outpost/008-gpio-family-decision, 2026-09-10)
+
+Took the mission split, not a compaction. `decision 6` (manual markers) moved
+out to a new `decisions/markers.md` — a verbatim move, no rewrite, so the
+`Must not delete:` content in decision 19 (the corrected rejected-alternative
+price, and the measured duty-cycle result) is untouched, still in
+`decisions/tracing.md`, word for word.
+
+That freed enough room for **decision 25** — GPIO dispatch as a handler
+timeline, not pin sampling — added to `decisions/tracing.md`, with both traps
+`007` had to write into `wire.md` instead: `GpioCallbackDone` as an exit
+marker, and `GpioDispatch`'s `b` being `0` rather than a pin mask. It cites
+`wire.md` for the exact field layout instead of repeating it, to keep the size
+down.
+
+`decisions/tracing.md` is now 6,940 / 8,192 B — clear of the reserve line
+(this sub-project's reserve is a 1,200 B floor, not a flat 90%, so the room
+needed was tighter than the percentage alone suggested), `check-doc-size.py`
+no longer lists it. `decisions.md`'s index
+row updated (tracing.md's row now reads 2, 19, 25; a new markers.md row reads
+6). `check-decision-refs.py` re-run after the split: all references resolve,
+including the 18 topic-file links.
+
+**Human question from `DOC-COMPACTION-PASS.md`: can `decisions/tracing.md`
+alone (plus `markers.md`) answer what someone needs to know to work on
+outpost tracing today?** Yes for the hook-family choice, the self-exclusion
+behaviour and now the GPIO trap pair — all three are the entries a session
+changing tracing would actually load. `markers.md` is one decision and reads
+fine standing alone; nothing in the split changed what either file says, only
+where it lives, and `decisions.md`'s index keeps both one hop away.
+
+**`embarch-outpost`'s `tests/unit` ztest suite was not run** — no `west`, no
+`ZEPHYR_BASE` in this environment, a standing debt for several days now, not a
+result of this unit. This unit changed no C or Kconfig; it is
+documentation-only as instructed.
+
+`embarch-outpost` code repo: no changes needed, nothing there references
+decision numbers or file layout — branch pushed as-is (no diff from main).
+
+Gate: `check-docs.py` — all 11 checks green. `check-ownership.py --scope
+outpost` green on both worktrees. `check-client-names.py` green on both.
+`check-decision-refs.py` green, explicitly re-run after the split.
 
 ## Note for whoever dispatches this
 
