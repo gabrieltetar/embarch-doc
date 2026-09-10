@@ -1,6 +1,6 @@
 # 014 — Compact embarch-outpost/spec.md
 
-**State:** claimed by agent/outpost/014-compact-outpost, 2026-09-10 14:12
+**State:** done — 2026-09-10
 **Source:** `scripts/check-doc-size.py`, run from `agent/outpost/005-verify-the-arrival-join`
 **Scope:** outpost
 **Hardware:** none
@@ -60,10 +60,58 @@ unit touches no C, it does not deepen it. Say so rather than claiming the suite 
 
 ## Done when
 
-- [ ] `embarch-outpost/spec.md` reduced below its reserve threshold without
+- [x] `embarch-outpost/spec.md` reduced below its reserve threshold without
       losing any fact the `Must not delete:` list names — a paragraph
       tightened or a repeated fact folded into a cross-reference, not a
       judgement removed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `check-doc-size.py`
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `check-doc-size.py`
       no longer names this file.
-- [ ] `changelog.d/` fragment dropped for the compaction itself.
+- [x] `changelog.d/` fragment dropped for the compaction itself.
+
+## Resolution
+
+Split, not squeeze. §5 "Host-side outputs" (the three `streams/` files, their
+columns, and the `us`/`cycles` formatting and wrap rules) was a verbatim move
+out of `spec.md` into `interfaces/integration.md` — a new `## Host-side
+outputs` section there, with `spec.md` left holding a pointer paragraph naming
+what moved and a one-line summary of the three files. The two internal
+cross-references that pointed at `spec.md §5` (`interfaces/wire.md`'s
+`cycles_per_sec` note and `interfaces/integration.md`'s own "Reading the
+trace" line) were repointed at the new location. Nothing was reworded or cut.
+
+First attempt moved the section into `interfaces/wire.md` instead, which
+cleared `spec.md`'s reserve but pushed `wire.md` itself to 94.8%/12,288 B —
+into its own reserve, so the gate still failed (just relocated the debt).
+Retargeted the move to `interfaces/integration.md` (6,096 B before, 7,953 B
+after, cap 12,288 B) instead, which has headroom. Re-measured:
+`embarch-outpost/spec.md` 9,775 B → **8,316 B** (reserve threshold is
+10,240 − 1,024 = 9,216 B), `check-doc-size.py` no longer names it.
+
+Both `Must not delete:` items were re-read after the edit and neither moved:
+the `--allow-unverified-join`/`--allow-build-id-mismatch` pairing is still in
+§3's invariant-61 paragraph verbatim, and the missing/short `frame_bytes`
+degrade-not-refuse sentence is still there too, byte-for-byte, in
+`spec.md` §3 (not the section that moved).
+
+**Can `spec.md` alone still answer what someone needs to work on this
+component today?** Mostly yes, with one narrower exception than before: the
+architecture, invariants, the measured-cost table, and the manifest/join
+refusal rules are all still in `spec.md` untouched. What it no longer answers
+standalone is the *exact byte layout* of the three `streams/` output files —
+for that it now points to `interfaces/integration.md` § Host-side outputs,
+one hop away, right next to the Kconfig table that already governs the same
+integration surface. That's a legitimate split, not a loss: the outputs
+section was reference material (column names, formatting contracts) that
+belongs beside the other "how this DUT-facing surface behaves in detail"
+material, not narrative "what is true now" prose — spec.md keeps the latter
+and points at the former.
+
+Gate run from the doc worktree: `python3 scripts/check-docs.py` — all 11
+checks green. `python3 scripts/check-doc-size.py` — clean, `spec.md` no
+longer named (21 files in reserve suite-wide, all filed elsewhere).
+`check-ownership.py --scope outpost` — OK, all 3 changed paths owned by
+`outpost`. Code worktree (`embarch-outpost`) has a zero diff, as the
+dispatch note predicted — no C touched, so this does not deepen the
+already-recorded debt that this environment cannot run `tests/unit`'s Zephyr
+ztest suite (no `west`, no `ZEPHYR_BASE`); that suite was not run and is not
+claimed green.
