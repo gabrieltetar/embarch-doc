@@ -1,6 +1,10 @@
 # `embarch-token.md` should cite `embarch-core` decision 53 for the directory-vs-file ACL split
 
-**State:** open
+**State:** open — **announced, window running.** Leg 068 posted the `ops.md` §4 announcement to
+#embarch-fleet at ts `1789083897.811379` (2026-09-10, ~18:24 local). It is a supervisor-executed
+suite task; it runs as leg 068's last unit if no objection arrives and 30 minutes have passed. **If
+leg 068 ends before the window closes, the next leg completes this window rather than restarting
+it** — read the thread at that `ts`, and if it is quiet and 30 minutes have elapsed, execute.
 **Source:** `tasks/core/031`, worker on `agent/core/031-shared-dir-decision` — that unit authored
 `embarch-core` decision 53, stating that `%ProgramData%\embarch` keeping its default ACL (only the
 token *file* is locked down) is deliberate
