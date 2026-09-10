@@ -1,6 +1,6 @@
 # 050 — `embarch-api/decisions/build.md` is in reserve after amending decision 18
 
-**State:** blocked
+**State:** done
 **Source:** `api/030`'s fix (the drain treating a UTF-8 decode error as EOF)
 amended decision 18 and crossed the 11,059 B reserve line the same commit;
 `DOC-COMPACTION.md` §2
@@ -8,17 +8,8 @@ amended decision 18 and crossed the 11,059 B reserve line the same commit;
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-api/decisions/build.md
+**Compacts:**
 **Size debt due:** 2026-09-22
-**In flux:** yes — this file has taken a live edit in each of the last two
-units to touch it (`api/030` just amended decision 18; open.md already flagged
-it as a paragraph short of the line before that). Build orchestration is an
-active surface — the capture path alone has now been revisited twice for
-correctness bugs — so a shortening pass now risks compacting reasoning a third
-visit will need verbatim. Unparked once a unit lands here without adding to
-decision 18/19/42's argument, or once a mission split (this file already mixes
-the generic-command call, log capture/truncation, `target.json` provenance,
-and `base_address` — four missions in one file) is judged safe to do verbatim.
 **Must not delete:** decision 18's provenance note that the 1:3 head/tail split
 is `[assumed]` and the exact condition that would move it (a real over-cap
 Zephyr failure showing its first error past 16 KB) — that sentence is the only
@@ -46,10 +37,20 @@ by mission could separate without shortening any of them.
 it, and the commit that spends the reserve is the one that files it
 (`DOC-COMPACTION.md` §2). This task is that filing.
 
+**Paid by `api/051`:** `decisions/build.md`'s four missions (decision 5's
+generic-command call, decision 18's log capture/truncation/drain, decision 19's
+`target.json` provenance, decision 42's `base_address`) were split verbatim
+into `decisions/build.md` (5), `decisions/log-capture.md` (18, plus the new
+decision 65 for the drain-decoding policy the amendment left unnumbered),
+`decisions/target-json.md` (19) and `decisions/flash-address.md` (42). Every
+`Must not delete:` item above is carried through intact into whichever file it
+now lives in. `decisions/build.md` is struck off `Compacts:` above because the
+split cleared its reserve; nothing else in this task is unblocked by it.
+
 ## Done when
 
-- [ ] `decisions/build.md` is clear of the 11,059 B reserve line, or a
+- [x] `decisions/build.md` is clear of the 11,059 B reserve line, or a
       successor confirms `In flux: no` and re-blocks/re-files with a concrete
       compaction plan — most likely the four-way mission split named above.
-- [ ] Every `Must not delete:` item above is still readable, wherever it ends up.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Every `Must not delete:` item above is still readable, wherever it ends up.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

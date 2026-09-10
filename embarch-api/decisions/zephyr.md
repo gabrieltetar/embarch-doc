@@ -4,7 +4,7 @@
 
 The one scoped exception where this crate had to learn Zephyr: what a call may name, what that resolves to against the repo as it stands, and what is refused rather than ignored.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). How a build then runs and what it produces: [build.md](build.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). How a build then runs and what it produces: [../decisions.md](../decisions.md).
 
 ### 12 — Live target discovery for Zephyr projects; every other build system keeps the static schema
 A Zephyr board's buildable surface is a property of the **current** state of `boards/*/board.yml` and `app/*/`, not something safe to snapshot into config once — and not every combination `board.yml` *declares* is real. So a `zephyr-west` project stores only what cannot be derived from the repo, and board, variant, revision, app, chip, build directory and artifact path all resolve live per call, **never cached**: caching would reintroduce the exact staleness this exists to eliminate.

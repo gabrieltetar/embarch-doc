@@ -12,7 +12,10 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [How far the tests reach](decisions/tests.md) — the named smoke-harness tier, the one-module `lib` target, where the bearer sweep's exhaustiveness comes from, and how the gate came to reach the shared client's own tests | 30, 46, 54, 56 | 10.6 KB |
 | [The tool and CLI surface — shape and errors](decisions/surface.md) — JSON/error shape, watching a study live, what this binary says about itself, how a tool description cites its own decision | 16, 24, 50, 57 | 5.5 KB |
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 34, 35, 41, 47, 52, 59, 60 | 11.9 KB |
-| [Running a build](decisions/build.md) — the generic per-project command, what a truncated log keeps, where the output lands, and the one address a `bin` needs | 5, 18, 19, 42 | 10.7 KB |
+| [Running a build](decisions/build.md) — the generic per-project command | 5 | 1.7 KB |
+| [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |
+| [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, and the crate-owned hash | 19 | 5.7 KB |
+| [The flash offset a `bin` needs](decisions/flash-address.md) — `base_address` as config, not a per-call parameter | 42 | 1.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, what a `static` project refuses rather than ignores, and the `app/`/`apps/` scan | 12, 13, 20, 21, 22, 51, 63 | 13.9 KB |
 | [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate | 11, 14, 15, 17, 26, 36, 37, 38, 43, 55, 58, 62 | 11.8 KB |
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
