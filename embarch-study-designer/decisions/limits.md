@@ -38,6 +38,15 @@ Decision 46 fixed `Study.steps` and stopped, on the reasoning that it was the fi
 
 The newtype leaves decision 46's call sites unchanged. The captured-data field is **deliberately left alone**: at 528 bytes it is 0.5% of the old size and would touch dozens of byte-level sites for no gain — **the cut is where the inline arrays are big, not everywhere they exist.**
 
+**The host-shape baseline, recorded here 2026-09-10 because `spec.md` was the only place it lived.**
+`Study` itself was **77,368 bytes** on the host before any of this and is **1,080** after all of it
+(decision 63's table). Three passes got it there: decision 46's heap container for `steps`, this
+decision's `Bounded<T, N>` over the result types, and decision 48's outright removal of post-hoc
+validation — which was 97% of what remained after the first, a 2× reduction then a further 35×
+([removed.md](removed.md) decision 48's own figures, and 77,368 ÷ 2 ÷ 35 is where the 1,080 comes
+from). `tasks/study-designer/006` cut the restatement of the *end* numbers from `spec.md` correctly;
+the starting number was the one fact that had no other home.
+
 Still no schema bump, **now asserted for more than one element type.** One round-trip test **encodes from the newtype and decodes into the plain fixed-capacity shape — the host-encodes/bench-decodes case in miniature, and the first test here to *prove* the two agree rather than assert it in prose.** And the opposite direction is asserted too: a test **requires the `no_std` result type to stay large**, so **"make it smaller" can never be applied to the one build with no allocator to make it smaller with.**
 
 ### 63 — `cargo test` runs the allocator-free shape, so the crate ships a 64 MiB harness stack rather than shrinking a type that must stay big
