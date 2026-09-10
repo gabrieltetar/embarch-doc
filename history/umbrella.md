@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- - `embarch-umbrella`: 75 `design.md` citations rewritten to bare/cross-repo `decision N` form; 5 real miscitations fixed along the way.
 - spec.md/Cargo.toml now name doctor check 5's sysfs USB read as umbrella's one hardware exception.
 - `embarch-umbrella` drops its own token mirror; depends on `embarch-core-client` for `resolve_token`.
 - decision 43 split out of decisions/reporting.md into decisions/message-rendering.md (reserve).
