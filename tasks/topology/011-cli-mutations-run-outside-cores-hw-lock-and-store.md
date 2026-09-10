@@ -1,6 +1,6 @@
 # 011 — The `embarch-topology` CLI performs four hardware and store mutations that two recorded decisions place inside Core
 
-**State:** claimed — leg 065, 2026-09-10
+**State:** done — leg 065, 2026-09-10
 
 ## Dispatch note, leg 065
 
@@ -74,9 +74,30 @@ true and says nothing about which process or which machine runs it.
 
 ## Done when
 
-- [ ] No `embarch-topology` CLI subcommand opens a probe or writes the enrollment store in its own
+- [x] No `embarch-topology` CLI subcommand opens a probe or writes the enrollment store in its own
       process while a Core owns them, or the case where it must is named with its reason.
-- [ ] Running `enroll` / `validate` / `set-dev-bench-link` from WSL on a `wsl-host` machine
+      `bin/main.rs`'s `Enroll`/`Validate`/`SetDevBenchLink` all call `refuse_if_core_reachable`
+      first; it only proceeds in-process on the named local-bootstrap case (no Core answers at all).
+- [x] Running `enroll` / `validate` / `set-dev-bench-link` from WSL on a `wsl-host` machine
       affects the store Core reads, or says why it cannot.
-- [ ] `decisions/enrollment.md` decision 15 no longer reads as though the rule were fully applied.
-- [ ] Gate green; `changelog.d/topology-*` fragment.
+      It now refuses on a `wsl-host` machine with a reachable Core, naming Core's base URL and
+      route — it never reaches the write. Not re-verified on the real bench this leg (no hardware
+      touched, per the dispatch note); the owner's next session against the real bench is the
+      hardware-verification debt.
+- [x] `decisions/enrollment.md` decision 15 no longer reads as though the rule were fully applied.
+      New decision 28 in the same file names the gap directly (decision 14 read as fully applied to
+      the UI only) and records the fix and the local-bootstrap exception.
+- [x] Gate green; `changelog.d/topology-*` fragment.
+      `changelog.d/topology-cli-mutation-refusal.changed.md`. `embarch-topology/spec.md` crossed
+      into doc-size reserve from the decision-28 sentence added to it;
+      `tasks/topology/024-compact-topology.md` files the debt, `blocked` (in flux — `topology/004`
+      and `020` are still moving in that file) with a `Size debt due: 2026-09-24`.
+
+## Hardware-verification debt
+
+Confirming the `wsl-host` refusal against the real deployed Windows-service Core, from the real
+WSL host, was not run this unit (no hardware touched, per protocol). What to run: from the WSL
+host with the Windows Core running, `embarch-topology enroll --role <role> --chip <chip>` (and
+`validate`/`set-dev-bench-link`) should now print the refusal naming Core's base URL rather than
+writing `/var/lib/embarch/topology/enrollment.toml`; the local-bootstrap path (no Core reachable)
+should still write locally.
