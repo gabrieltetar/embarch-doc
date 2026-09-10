@@ -8,6 +8,7 @@
 - The reference host decoder now has tests that always run — stdlib `unittest`, no west, no siblings; `run-all.sh` runs them before its west guard.
 
 ### Changed
+- `embarch-outpost/spec.md`'s host-side-outputs section moved verbatim into `interfaces/integration.md` to clear its reserve; nothing was cut.
 - spec.md and decisions/transport.md squeezed out of reserve, finishing tasks/outpost/012: reasoning already canonical in decisions/layout.md and decision 20 cut to a fact plus a citation.
 - open.md's duplicated limits and decisions/module.md's decision 22 each moved to their settled/split home; both files out of reserve.
 - spec.md 9235 → 8317 B: purpose cut to its three sentences, and the tunables' measured provenance now lives only with the Kconfig symbols in interfaces/integration.md.
