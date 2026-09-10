@@ -1,6 +1,11 @@
 # 043 — 68 citations in the `embarch-umbrella` crate point at a `design.md` this sub-project no longer has
 
-**State:** claimed — leg 062, 2026-09-09
+**State:** claimed by agent/umbrella/043-design-md-citations, 2026-09-10 14:08
+
+**Reclaimed after leg 062 was stopped mid-run.** That leg's worker was killed with the whole sweep
+uncommitted in its worktree — 14 files, 60 insertions, never a commit and never pushed — so the
+worktree was deleted per `ops.md` §3 and the work is being redone from scratch. Nothing of it
+survives to build on; the convention section above is the only thing leg 062 left, and it is enough.
 **Source:** found by the supervisor while landing `umbrella/035`, leg 060, 2026-09-09. The one line
 `035` edited (`Cargo.toml`'s boundary comment) ended in `(design.md §1)`; fixing that one citation
 in the fold turned up 67 more.
