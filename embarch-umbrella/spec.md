@@ -70,7 +70,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |
 | 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |
-| 6 | `embarch-api` config loads; every project's source path exists |
+| 6 | `embarch-api` itself accepts the config, via shell-out (decision 16); else a permissive warn-only read |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing (decision 17) |
 | 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
