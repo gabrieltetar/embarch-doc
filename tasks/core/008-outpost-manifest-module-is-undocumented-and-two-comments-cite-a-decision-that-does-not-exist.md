@@ -1,6 +1,6 @@
 # `outpost_manifest.rs` is undocumented, and two source comments cite a Core decision that does not exist
 
-**State:** open
+**State:** claimed by agent/core/008-outpost-manifest-module, 2026-09-10 14:09
 **Source:** owner's repo survey, 2026-09-06 — `spec.md` §4's module table lists 14 of 15 modules
 **Scope:** core
 **Hardware:** none
@@ -20,6 +20,27 @@ name docs that were deleted (`embarch.md:114`).
 `spec.md` §4 gains a row for `outpost_manifest` saying what it owns, in the one-line style of its
 neighbours, so `spec.md` §2's "a manifest that does not verify costs the *names* in a trace"
 invariant points at the module that implements it.
+
+## Dispatch note from the supervisor, leg 063
+
+**Doc-size reserve in your scope.** `embarch-core/open.md` is at **94.0%** — 4,813 of 5,120 B,
+**307 B of headroom** — and its compaction is already filed as `tasks/core/022-compact-core.md`
+(`open`, due 2026-09-26), so you do **not** file a second one for that file. Write your `open.md`
+entry tersely or, better, *close* an entry this unit answers rather than adding one. If you push any
+other `embarch-core` doc into its last 10%, file `tasks/core/<next NNN>-compact-core.md` in the same
+commit.
+
+`embarch-core/spec.md` has room: `core/030` (2026-09-09) lifted §5's constants table out verbatim
+into the new `embarch-core/interfaces/constants.md`, taking `spec.md` from 9,148 B to **7,977 B**.
+So §4's new module row is affordable — but note that the split means **`interfaces.md`'s table now
+has rows for `interfaces/` files**, and a module row belongs in `spec.md` §4, not there.
+
+**Two cautions on the citation half.** The task says the decision meant is 36; verify that against
+`embarch-doc/embarch-core/decisions/flashing.md` yourself before rewriting either comment — a
+citation asserted confidently and wrongly is the defect this unit exists to remove, and `api/052`
+found six of exactly that shape by trusting a filed number. Use the citation convention `api/052`
+settled: a same-repo citation reads bare `decision 36` with no `design.md` and no section number; a
+cross-repo one names the repo as a plain qualifier, `` `embarch-topology` decision 23 ``.
 
 ## Why now
 
