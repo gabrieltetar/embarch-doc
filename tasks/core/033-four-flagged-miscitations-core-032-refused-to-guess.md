@@ -1,6 +1,6 @@
 # 033 — The four citations `core/032` flagged rather than guessed, and one citation form it invented
 
-**State:** claimed — leg 065, 2026-09-10
+**State:** done — leg 065, 2026-09-10
 
 ## Dispatch note, leg 065
 
@@ -79,11 +79,51 @@ wrong decision is worse than the dead `design.md` pointer it replaced, because i
 — `check-decision-refs.py` resolves a number and falls back to "defined somewhere in this
 sub-project", so nothing will catch these.
 
+## Result
+
+Read each target decision's **body** (never heading/parenthetical) before touching anything, per
+the dispatch note.
+
+1. **`chip_resolve.rs:46` / `api.rs:1273`** — `embarch-dev-bench` decision 26's body
+   (`decisions/boards.md`) is the ESP32-C5 board substitution and matches both comments. Decision
+   13's body (`decisions/link.md`) is *"Core can flash dev-bench firmware, reversing a
+   separation-of-concerns rule"* — unrelated. **Dropped the stale "reversing that repo's decision
+   13" clause at both sites**, kept decision 26.
+2. **`dev_bench_link.rs:115`** — confirmed leg 064's supervisor read: `embarch-outpost` decision 5
+   is the overflow/gap-record policy, nothing to do with frame CRC, and no outpost decision covers
+   per-frame CRC — it lives in `interfaces/wire.md` (`frame := COBS(body || crc32_ieee(body) ...)`,
+   "The CRC covers the body only, sealed before COBS"). **Repointed to
+   `` `embarch-outpost` interfaces/wire.md `` **, no decision number.
+3. **`api.rs:970`** — `embarch-core` decision 7's body (`decisions/platform.md`) is the
+   Rust/probe-rs/Axum/`spawn_blocking`/CI platform choice, no overlap with `NotEnrolled`/404 at
+   all — not a partial match, a straight wrong number. Decision 28's body (`decisions/surfaces.md`)
+   is exactly this: `POST /validate`/`GET /alerts` needed "a typed `NotEnrolled` in the topology
+   crate ... enough to tell 'not configured yet' from 'a real I/O error'". **Repointed decision 7 →
+   decision 28** (single number, not both — 7 covers none of it).
+4. **`study.rs:2471`** (line shifted from the task's 2475 by unrelated prior edits) — already reads
+   `` `embarch-study-designer` decision 30 ``, not the `spec.md §7` pointer the task description
+   named. Decision 30's body (`decisions/versioning.md`) is exactly "Core records its own arrival
+   time on every incoming message" to give post-hoc analysis what a resync-on-handshake-only design
+   can't — matches "the clock-resync gap ... closes" verbatim. **No change needed; confirmed
+   correct as it stands**, so leg 064 (or an earlier hand) had already landed the worker's own
+   candidate here.
+
+Mechanical pass: normalised all ~47 remaining `` `decision N` `` (backtick-enclosed number)
+citations across `embarch-core/src` to the suite's plain-prose-number convention with a scripted
+`perl -pi` substitution restricted to the backtick-wrapped pattern, then read the full diff by hand.
+No shipped string literal was touched — the one shipped string carrying a decision citation
+(`api.rs`'s `contract_version` message, `decision 13, amended ...`) was already in prose form, not
+backtick form, so the substitution's pattern never matched it.
+
+**Debt, unrelated to this task's scope:** `embarch-core`'s native Windows build was not attempted,
+per protocol §5 — path-dep resolution over a worktree's symlinks is a known-broken combination
+(see the leg's own dispatch context), unchanged by this citation-only diff.
+
 ## Done when
 
-- [ ] Each of the four is either repointed to a decision whose **body** matches the comment, or left
+- [x] Each of the four is either repointed to a decision whose **body** matches the comment, or left
       in place with one sentence saying why the original is right after all.
-- [ ] Any citation that turns out to be cross-repo names the repo as a plain qualifier.
-- [ ] The `` `decision N` `` form is normalised to the suite's convention across `embarch-core`, and
+- [x] Any citation that turns out to be cross-repo names the repo as a plain qualifier.
+- [x] The `` `decision N` `` form is normalised to the suite's convention across `embarch-core`, and
       the diff is checked for any change to a string literal rather than a comment.
-- [ ] Gate green ([protocol](../../../embarch-fleet/protocol.md) §10); `changelog.d/core-*` fragment.
+- [x] Gate green ([protocol](../../../embarch-fleet/protocol.md) §10); `changelog.d/core-*` fragment.
