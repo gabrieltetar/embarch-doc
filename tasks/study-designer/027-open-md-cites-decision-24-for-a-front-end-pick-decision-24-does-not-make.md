@@ -49,13 +49,52 @@ this the cheapest thing that could unpark that debt.
 
 ## Done when
 
-- [ ] `open.md`'s power-profiling deferral either cites a decision whose body states the front-end
+- [x] `open.md`'s power-profiling deferral either cites a decision whose body states the front-end
       pick, cites none, or the citation is confirmed correct — with the reasoning recorded.
-- [ ] `tasks/study-designer/026`'s Result section no longer rests on a citation this task found to
+- [x] `tasks/study-designer/026`'s Result section no longer rests on a citation this task found to
       be wrong (amend it in place; do not rewrite its verdict unless the verdict actually changes).
-- [ ] No other line in `open.md` cites a decision number for a subject that decision's body does
+- [x] No other line in `open.md` cites a decision number for a subject that decision's body does
       not cover — one pass, and say how far it got.
-- [ ] Gate green; `changelog.d/study-designer-*` fragment.
+- [x] Gate green; `changelog.d/study-designer-*` fragment.
+
+## Result
+
+**The reviewer was right, and the fix is a straight citation drop.** `decisions.md`'s decision 24
+lives in `decisions/wire.md` §24, and its whole body — title, both paragraphs, the append-only
+history at the end — is about the `StudyStart`/`StudyDone` wire messages (whole-vector transfer,
+`steps_crc` atomicity, per-step `StepResult` streaming). Nothing in it mentions power profiling,
+an analog front end, a BLE radio, or bench hardware. The citation in `open.md` was simply wrong.
+
+**No decision anywhere in this sub-project records the power-profiling front-end hardware pick.**
+Searched `decisions.md`'s index, `decisions/streams.md` (11, 20, 21, 27, 39 — the stream/chunking
+decisions closest in subject) and every other file for "power", "front end", "BLE radio",
+"connector", "form factor": the only hits are `PowerFrontEnd` as a `StreamSource` *type variant*
+(`interfaces/taps.md`, `decisions/streams.md`) and decision 20's throughput reasoning for why
+per-sample framing doesn't scale — neither is a hardware pick. So per the dispatch note's
+instruction, `open.md` now cites nothing and says so directly: "No decision records this pick;
+none is cited." (45 bytes, replacing a 58-byte sentence — net **-13 bytes** on `open.md`, now
+4,649 / 5,120 B, unchanged reserve status but not pushed further in).
+
+**`tasks/study-designer/026`'s Result section amended in place**, not rewritten: the bullet still
+says the power-profiling deferrals are open with no trigger fired (true, unchanged verdict), with
+an added note that the "decision 24" citation it rested on was wrong and has been corrected, and
+that this changes nothing about the bullet being open — it was never actually "strikeable" on the
+strength of that citation.
+
+**One pass over the other decision citations in `open.md`** — decision 45 (`declares.md`), 48
+(`removed.md`), 57 (`gatt-extract.md`), 64 (`ci.md`) — checked each body against what `open.md`
+claims it says. All four check out: 45's body is literally "designed, never built" for the
+declared-GATT table, 48 is the post-hoc-validation removal `open.md` cites it for, 57 is the
+extractor-scans-the-repo decision, 64 is the six-feature-cell CI matrix. No other bad citation
+found; this was the full set of decision references in the file, so the pass is complete, not
+partial.
+
+Gate green in both worktrees: `cargo build`/`test`/`clippy --all-targets -- -D warnings` (code
+repo, 9 tests pass, clippy clean), `python3 scripts/check-docs.py` (11/11 green), `check-ownership.py
+--scope study-designer` (doc, OK) and `--code-repo` (code, OK — 0 paths changed, this task touched
+no code), `check-client-names.py --repo` on the code worktree (clean). Changelog fragment:
+`changelog.d/study-designer-open-md-decision-24-fixed.fixed.md`. No suite-level fact changed, so no
+`status.d/` fragment filed.
 
 ## Dispatch note (leg 066, 2026-09-10 15:33)
 

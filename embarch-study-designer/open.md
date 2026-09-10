@@ -8,7 +8,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 Power profiling as a whole moved out of the near sequence, and no front-end hardware gets ordered. These are **deferrals with a named trigger — power profiling resuming — rather than questions waiting on someone to answer them.**
 
-- **The physical bench design** — what BLE radio, what power-sampling hardware, connector and form factor. Decision 24's front-end pick is provisional and unordered.
+- **The physical bench design** — what BLE radio, what power-sampling hardware, connector and form factor. No decision records this pick; none is cited.
 - **Whether one `Sample` per capture instant is the right grain**, or a genuinely multi-lead sensor needs several. The CSV row *shape* is locked and unaffected; the open half was always downstream of what the hardware turns out to be. **Answering it speculatively would be designing against imagined data.**
 
 ## Unvalidated against real hardware
