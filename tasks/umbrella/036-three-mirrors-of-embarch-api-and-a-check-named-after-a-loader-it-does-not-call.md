@@ -1,8 +1,8 @@
 # 036 — `embarch-umbrella` mirrors three things from `embarch-api`; the shared crate now holds two of them, the third has drifted three ways, and check 6 is named after a loader it does not call
 
-**State:** claimed by agent/umbrella/036-mirrors-two-and-three, 2026-09-10 15:36 — **partially
-done**: mirror 1 (token) closed 2026-09-08; mirrors 2 and 3 are what this dispatch takes, see the
-leg 066 dispatch note at the end
+**State:** done — closed 2026-09-10 by agent/umbrella/036-mirrors-two-and-three (leg 066). Mirror 1
+(token) closed 2026-09-08; mirrors 2 and 3 (check 6's loader verdict, `CoreConfig`'s
+`*_timeout_secs`, `ProjectConfig`'s drift) closed this run — see the closing note at the end.
 **Narrowed 2026-09-08 (leg 051):** dispatched as **mirror 1 only** — the token
 chain — plus the two doc items that ride on it (`Done when` bullets 1, 3, 4, 5).
 Mirrors 2 and 3 (`CoreConfig`'s lost fields, `ProjectConfig`'s three-way drift,
@@ -81,7 +81,7 @@ a sentence that is no longer true. `embarch-umbrella/open.md` still frames the c
 
 - [x] There is one reader of the token fallback chain in the suite, not two — or the reason
       umbrella must keep its own is written down against the crate that now exists.
-- [ ] `doctor` check 6's verdict comes from the loader its title names, or its title stops
+- [x] `doctor` check 6's verdict comes from the loader its title names, or its title stops
       claiming that.
 - [x] No mirror header in `embarch-umbrella/src/` cites a path that does not exist.
 - [x] `decisions/mirrors.md` decision 20 and `open.md`'s bullet reflect that the shared crate now
@@ -205,3 +205,65 @@ a drop in that count is a signal, not noise. `embarch-umbrella` path-depends on
 your worktree's parent, so if a build fails on a path under `.worktrees/`, tell me rather than
 making a link yourself. Run `scripts/check-client-names.py --repo <your code worktree>` too —
 `check-docs.py` does not reach the code repo.
+
+## Closed 2026-09-10, leg 066 — mirrors 2 and 3
+
+**Bullet 2, done via the shell-out direction, not a title change.** `check_config` (check 6,
+`src/doctor.rs`) now asks the **located** `embarch-api` for its real verdict
+(`--config <path> --json list-projects`, the same pattern check 8 already uses for
+`list-targets`), via new `LoaderVerdict`/`api_config_verdict[_from_output]`. `Ok` -> Pass;
+`Rejected(why)` -> Fail carrying `embarch-api`'s own reason; `Unanswerable(why)` (api not
+located, or a run/parse failure) falls back to this crate's permissive local mirror as a
+**Warn**, never a Pass or Fail — the mirror is no longer trusted to issue a verdict on its own.
+Decision 16's permissive reader stays for exactly the job the dispatch note named: explaining
+*which* field looks wrong when the real loader refuses, and still producing project data for
+checks 7-9 on a config the real loader rejects for a reason none of them read.
+
+**`CoreConfig`:** picked up all five `*_timeout_secs` fields
+(`status`/`reset`/`flash`/`serial`/`study`) from `embarch-core-client`'s `CoreConfig`, `#[allow(dead_code)]`
+per this repo's existing convention (`zephyr.rs::BoardYml::board`) since nothing here reads them
+yet — shape-fidelity only.
+
+**`ProjectConfig`'s four strands, verified against the code as it stands (not the 2026-09-06
+line numbers) and resolved three ways, not four:**
+- `flash_format`: added, required, no `serde(default)` — matches upstream exactly (confirmed
+  required for **both** discovery kinds, including zephyr-west, via `config.example.toml`'s own
+  multi-board-project entry).
+- `retired_targets` / `retired_soc_chip_overrides`: added, with a new `Config::validate()` that
+  refuses either by name at load — the two *structural, binary* refusals worth reproducing even
+  though this mirror still doesn't fail-fast on `source_path`/token/anything per-project (that
+  stays check 6's/check 4's own report, matching `doctor`'s stated "report everything wrong"
+  posture).
+- `.validate()` on load: added, scoped to exactly those two refusals plus duplicate-project-name
+  — not a full port of upstream's `validate()` (dev-bench fields, per-discovery-kind field
+  refusals, etc. don't exist in this mirror's shape at all).
+- **`artifact_path_for_core`: verified NOT to be drift, left untouched.** The task's framing
+  (written 2026-09-06) called it phantom; `embarch-api/decisions/shape.md` decision 64 — dated
+  **2026-09-10, today** — explicitly documents and tolerates it by name specifically *because*
+  `embarch-umbrella` still scaffolds it (`init.rs`) and reads it (`doctor` check 9, this repo's
+  own decision 16). Removing it needs `init.rs`'s write removed **and** `embarch-api` decision
+  64's toleration retired in the same change; the second half is another sub-project's repo and
+  out of scope here. Recorded as an amendment to decision 16 in `decisions/mirrors.md` rather than
+  treated as a fourth fix.
+
+**Doc-size:** `spec.md`'s check-6 row shortened enough to land within the stated 136 B headroom
+(10,104 -> 10,144 B, 96 B left — cheap-out path from the dispatch note's step 1 taken, not a full
+compaction pass; `check-doc-size.py` stays green and task `038` (still `blocked`, `In flux: yes`,
+unparks on `033`) is untouched — no new debt was created and none was paid down). `open.md`'s
+bullet rewritten, +126 B, well inside its 250 B headroom, striking the "config mirrors... both
+have drifted" framing since check 6 no longer depends on the mirror for its verdict.
+`decisions/mirrors.md` decision 16 got a 2026-09-10 amendment paragraph (file now 7,980 / 12,288
+B). `scripts/check-duplication.py embarch-umbrella` was run per the dispatch note's step 2 branch
+— but step 1 (net-non-negative-enough within budget) succeeded, so no compaction pass was run and
+`DOC-COMPACTION-PASS.md`'s question is not answered here (only applies when a pass runs).
+
+**Gate:** `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean, **225 tests pass** (up
+from leg 051's 216 — 9 new: `LoaderVerdict`/`api_config_verdict_from_output` decoding tests plus
+two `check_config` integration tests, mirroring check 8's existing test shape).
+`scripts/check-docs.py` (doc worktree): all 11 checks green. `scripts/check-ownership.py --scope
+umbrella` clean on both worktrees. `scripts/check-client-names.py --repo <code worktree>` clean.
+No `embarch-api` file touched or needed touching — the loader-verdict direction is entirely a
+`doctor`-side change against the CLI surface `embarch-api` already ships (`--config`/`--json
+list-projects`), same as check 8's precedent.
+
+This closes task 036 — all `Done when` bullets ticked.

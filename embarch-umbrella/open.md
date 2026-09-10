@@ -24,7 +24,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
-- **The token mirror is closed:** `embarch-umbrella` now depends on `embarch-core-client` directly for `resolve_token` ([decision 20](decisions/mirrors.md) amendment). The config mirrors (`CoreConfig`, `ProjectConfig`) are not — no CI diff job exists, and both have drifted (task 036 state note). Depend on `embarch-core-client` for `CoreConfig` too, or build the diff job.
+- **Both mirrors closed, `CoreConfig` still hand-kept:** the token mirror depends on `embarch-core-client` directly ([decision 20](decisions/mirrors.md) amendment); the config mirror's known drift is fixed (task 036: check 6 sources its verdict from the located `embarch-api` itself, decision 16 amendment) but `CoreConfig`/`ProjectConfig` still hand-mirror rather than depend on the shared crate, and no CI diff job exists. Depend on `embarch-core-client` for `CoreConfig` too, or build the diff job.
 
 - **A user-level service needs no elevation on Linux or macOS** (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not weighed.
 
