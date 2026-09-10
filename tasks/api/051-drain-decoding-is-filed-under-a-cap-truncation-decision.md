@@ -1,6 +1,6 @@
 # 051 — The drain's stream-decoding policy is filed inside decision 18, which is about the truncation cap
 
-**State:** claimed — leg 068, `agent/api/051-drain-decoding-decision`
+**State:** done — leg 068, `agent/api/051-drain-decoding-decision`
 
 **Dispatch note, leg 068 — the disposition is decided, and so is how you pay for it.**
 
@@ -90,9 +90,17 @@ records this as the thing it was least sure about leaving in `inbox/`.
 
 ## Done when
 
-- [ ] One of the two dispositions above is applied to `decisions/build.md`.
-- [ ] No code change to `a0950ec` — this is an attribution question, and the
+- [x] One of the two dispositions above is applied to `decisions/build.md`.
+      Took the first arm per leg 068's dispatch note: the drain-decoding policy
+      is now decision 65 in the new `decisions/log-capture.md`, decision 18 is
+      back to being only about the cap, and `decisions/build.md`'s other two
+      missions moved to `decisions/target-json.md` (19) and
+      `decisions/flash-address.md` (42) — `build.md` itself now holds only
+      decision 5. `decisions.md`'s index and every cross-reference in
+      `spec.md`/`interfaces/config.md`/`decisions/zephyr.md` were repointed.
+      `tasks/api/050` is paid and marked done.
+- [x] No code change to `a0950ec` — this is an attribution question, and the
       reviewer verified the code and decision 18's boundary arithmetic are both
-      correct as they stand.
-- [ ] `changelog.d/` fragment dropped; no `status.d/` fragment is expected.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      correct as they stand. `src/` untouched.
+- [x] `changelog.d/` fragment dropped; no `status.d/` fragment is expected.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
