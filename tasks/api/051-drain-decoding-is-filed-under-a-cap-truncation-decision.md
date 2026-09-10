@@ -1,6 +1,45 @@
 # 051 — The drain's stream-decoding policy is filed inside decision 18, which is about the truncation cap
 
-**State:** open
+**State:** claimed — leg 068, `agent/api/051-drain-decoding-decision`
+
+**Dispatch note, leg 068 — the disposition is decided, and so is how you pay for it.**
+
+**Take the first arm: the drain-decoding policy gets its own numbered decision in
+`embarch-api/decisions/build.md`'s successor file, and decision 18 goes back to being about the
+cap.** The task offered two arms; I am closing that as the supervisor. Widening decision 18 would
+make one decision cover two axes that fire at different times — the drain reads every line, the cap
+fires only past `OUTPUT_CAP_BYTES` — and this suite's `embarch-decision-reversals.md` names a
+decisions file that describes the wrong thing as the worse variant of its commonest failure. Move
+the substance of `api/030`'s amendment out of decision 18 into the new decision, and record the two
+rejected alternatives the task names: decode the whole buffer lossily, and fail the build on bad
+bytes.
+
+**Do the split FIRST, and do it verbatim.** `decisions/build.md` is 11,134/12,288 B — 1,154 B left,
+inside its reserve — and its compaction task `tasks/api/050` is blocked on `In flux: yes`. That park
+does not forbid you here: `tasks/api/050` names the unpark itself as *"a mission split ... judged
+safe to do verbatim"*, and a verbatim split restates nothing, so `In flux: yes` cannot forbid one
+(`DOC-COMPACTION.md` §2, split-first). The four missions `api/050` identifies are decision 5's
+generic-command call, decision 18's log capture/truncation/drain, decision 19's `target.json`
+provenance, and decision 42's `base_address`. Split by mission, **moving text byte-for-byte** — no
+shortening, no rewording, no "while I am here" edits — then author the new decision in the
+log-capture file, where there is now room.
+
+**Carry `tasks/api/050`'s `Must not delete:` list through the split intact**: decision 18's
+`[assumed]` provenance note on the 1:3 head/tail split and the exact condition that would move it;
+the amendment's point that a drain reading a decode error as EOF is a defect closed rather than a
+polish; decision 19's full three-call `target.json` reasoning; decision 42's rejected per-call
+`base_address` override. Every one must still be readable in whichever file it lands in. When you
+are done, update `tasks/api/050` — strike `embarch-api/decisions/build.md` off its `Compacts:` line
+by **deleting** it (never `~~struck~~` in place; that breaks the size gate's parse) and say in the
+body that the split paid it.
+
+**No code change.** The reviewer verified `a0950ec` and decision 18's boundary arithmetic are both
+correct; this is an attribution question only. Do not touch `src/`.
+
+**Other doc-size reserve in your scope:** `decisions/core-link.md` 188 B left, `open.md` 357 B left,
+`spec.md` 815 B left, `interfaces/tools.md` 1,008 B left, `decisions/tool-wrapping.md` **66 B left**
+— all filed against blocked tasks. Stay out of all of them; if you must write to one, file the
+compaction task in the same commit.
 **Source:** `inbox/api-030-review-finding.md` — `embarch-reviewer` on unit `api/030`
 (code merge `a0950ec` in `embarch-api`, doc merge `d2ab624` in `embarch-doc`),
 filed into the queue by leg 055 on 2026-09-08.
