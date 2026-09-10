@@ -1,6 +1,6 @@
 # `outpost_manifest.rs` is undocumented, and two source comments cite a Core decision that does not exist
 
-**State:** claimed by agent/core/008-outpost-manifest-module, 2026-09-10 14:09
+**State:** done (agent/core/008-outpost-manifest-module, 2026-09-10)
 **Source:** owner's repo survey, 2026-09-06 — `spec.md` §4's module table lists 14 of 15 modules
 **Scope:** core
 **Hardware:** none
@@ -50,11 +50,29 @@ from the module map, plus two references resolving to nothing, is the exact drif
 
 ## Done when
 
-- [ ] `spec.md` §4's table has one row per `mod` declared in `main.rs`, verified against that file.
-- [ ] No `decision 48` remains in `embarch-core/src`; `flashing.md` 36 is what the two comments name.
-- [ ] Every `milestone-N.md` citation in `embarch-core/src` either resolves or is replaced by the
-      doc that absorbed it.
-- [ ] `spec.md` stays inside its size cap.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] `spec.md` §4's table has one row per `mod` declared in `main.rs`, verified against that file.
+      14 `mod` declarations enumerated from `main.rs`; `outpost_manifest` was the only one missing,
+      confirmed by diff against the table. New row added.
+- [x] No `decision 48` remains in `embarch-core/src`; `flashing.md` 36 is what the two comments name.
+      Verified against `decisions/flashing.md:25` (the task's number was right); both comments now
+      cite bare `decision 36`, the api/052 same-repo convention.
+- [x] Every `milestone-N.md` citation in `embarch-core/src` either resolves or is replaced by the
+      doc that absorbed it. Five citations found (not two): four to the deleted
+      `embarch-ui/milestone-1.md` (`logs.rs` x2, `api.rs` x2), one to the deleted
+      `embarch-umbrella/milestone-6.md` (`service.rs`). Neither file exists any more — both were
+      folded and deleted in `6f22dd6`/`b74d29f`. The `embarch-ui` ones now name the milestone
+      (`embarch-ui milestone 1`), the suite's own established convention for the 122 references the
+      original fold commit converted the same way (`embarch.md`'s "deleted, not indexed" note). The
+      `embarch-umbrella` one cited content that the fold commit's own message says moved verbatim
+      into `embarch-core/decisions.md` decision 3 (verified: `decisions/platform.md` §3) — cited as
+      bare `decision 3`.
+- [x] `spec.md` stays inside its size cap. 8,212 of 10,240 B.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`test`/`clippy --all-targets
+      -- -D warnings` clean in the code worktree; `scripts/check-docs.py` all 11 checks green in the
+      doc worktree; both `check-ownership.py` invocations OK. Native Windows build not attempted —
+      standing debt, needs the owner's machine (protocol.md's own note on this).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. `spec.md` updated; `decisions.md`/`open.md`
+      untouched — nothing here answers or invalidates an existing entry in either, and `open.md` is
+      at 94.0% per leg 063's dispatch note, so nothing was added to it. `changelog.d/` fragment
+      dropped. No `status.d/` fragment: no suite-level doc's facts changed.
