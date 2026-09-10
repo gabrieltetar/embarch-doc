@@ -4,7 +4,7 @@
 
 **Split out of [doctor.md](doctor.md) on 2026-09-05, entries moved verbatim** — save decision 40's codes paragraph, rewritten here to record `no-cli`'s reuse. That file's mission is what `doctor` checks about *this machine* — probes, benches, flash tools; these two are one check against a different system, the agent CLI's own config and a JSON-RPC handshake with a server spawned out of it.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md)'s check 10 row. What a check hands back — `code`, `path`, `--json` — is [reporting.md](reporting.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-chain.md](../interfaces/doctor-chain.md)'s check 10 row. What a check hands back — `code`, `path`, `--json` — is [reporting.md](reporting.md).
 
 ### 23 — Check 10 spawns `embarch-api` and confirms the MCP handshake completes, not just that a registration entry exists
 

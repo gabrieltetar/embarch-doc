@@ -1,6 +1,6 @@
 # 046 — Move the `doctor` chain table verbatim out of `spec.md` into its own file
 
-**State:** claimed — leg 067
+**State:** done — leg 067
 **Source:** leg 067, taking option 2 of the three leg 066 wrote into `tasks/umbrella/038`
 **Scope:** umbrella
 **Hardware:** none
@@ -68,10 +68,35 @@ already authorises. Record it in a `changelog.d/umbrella-*` fragment and in the 
 
 ## Done when
 
-- [ ] `embarch-umbrella/spec.md` is **below 90%** of its cap (`python3 scripts/check-doc-size.py`).
-- [ ] The eighteen rows exist exactly once in the suite, verbatim, in the new file — verify with a
-      `git show HEAD:embarch-umbrella/spec.md` diff against the new file's table body.
-- [ ] `spec.md` still tells a reader the `doctor` chain exists and where to read it.
-- [ ] `open.md` is not larger than it was.
-- [ ] `python3 scripts/check-docs.py` green.
-- [ ] `changelog.d/umbrella-*` fragment dropped.
+- [x] `embarch-umbrella/spec.md` is **below 90%** of its cap (`python3 scripts/check-doc-size.py`) —
+      5,867/10,240 B (57.3%).
+- [x] The eighteen rows exist exactly once in the suite, verbatim, in the new file
+      `embarch-umbrella/interfaces/doctor-chain.md` — moved character-for-character, diffed
+      against the old section before it was removed.
+- [x] `spec.md` still tells a reader the `doctor` chain exists and where to read it — a
+      three-sentence pointer section replaces the table.
+- [x] `open.md` is not larger than it was — untouched, still 4,996 B.
+- [x] `python3 scripts/check-docs.py` green (11/11 checks), plus `check-client-names.py` and
+      `check-ownership.py` (both repos) clean.
+- [x] `changelog.d/umbrella-doctor-chain-split.changed.md` dropped.
+
+## Notes
+
+- New file path: `embarch-umbrella/interfaces/doctor-chain.md`, matching the sibling convention
+  (`embarch-core/interfaces/*.md`, `embarch-api/interfaces/*.md`, `embarch-study-designer/interfaces/*.md`)
+  rather than the task's suggested flat `interfaces/doctor-chain.md` name collision concern — this
+  *is* that suggested path, confirmed against siblings before creating it.
+- Inbound references repointed: six `embarch-umbrella/decisions/*.md` files (`bind.md`,
+  `reporting.md` x2, `mcp.md`, `doctor.md` x2, `schema-skew.md`, `dev-bench-firmware.md`) that
+  named "spec.md's check table / check N row" now point at `interfaces/doctor-chain.md`. No
+  `#anchor`-style links into the doctor section were found anywhere in `embarch-doc` or the
+  `embarch-umbrella` code repo — only prose mentions, which are the ones repointed above.
+  `history/umbrella.md`'s generic `[spec.md](../embarch-umbrella/spec.md)` citations were left
+  alone: they reference spec.md broadly, not the table specifically, and spec.md remains "current
+  truth" for the sub-project as a whole.
+- `embarch-umbrella/decisions/doctor.md` was at 89.67% before this unit (not flagged in the task's
+  reserve list) and my first repoint pushed it to 91%; trimmed the added link text back down to
+  89.9% (11,044/12,288 B) rather than leaving it newly in reserve unfiled.
+- No error found in the table's content during the move; nothing dropped to `inbox/`.
+- Code repo (`embarch-umbrella`): zero-commit branch, pushed anyway per dispatch note. No code,
+  including doc-referencing comments, pointed at the moved section.
