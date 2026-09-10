@@ -1,6 +1,6 @@
 # 034 — decision 50's closing paragraph names three consumers that no longer describe reality after decision 54
 
-**State:** open
+**State:** claimed — leg 067
 **Source:** reviewer, `core/027` (merge `56cb0b1`, `embarch-doc`; no `embarch-core` merge — code branch had zero commits). Filed from `inbox/` by leg 066.
 **Scope:** core
 **Hardware:** none
