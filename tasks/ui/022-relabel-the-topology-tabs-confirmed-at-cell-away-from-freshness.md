@@ -1,6 +1,6 @@
 # 022 — Relabel the Topology tab's `confirmed_at_utc_ms` cell away from any freshness wording
 
-**State:** open
+**State:** claimed — leg 067
 **Filed from `inbox/` by leg 066, 2026-09-10**, in the same fold as `umbrella/036`, and for the
 same reason as its sibling `tasks/umbrella/045`: `core/027` decided that the fix for "enrolment
 time misread as freshness" is a **label**, and these two tasks are the only things that carry that
