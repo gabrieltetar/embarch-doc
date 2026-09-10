@@ -9,4 +9,5 @@ Pure local reads of Core's own current daily log file (`logs.rs`) — no hardwar
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
 | `GET` | `/logs/recent` | `?tail=200` | `{lines: [String]}` — the tail of the current log file as it stands right now, not a stream |
-| `GET` | `/logs/stream` | — | SSE. `event: lines`, a JSON array of newly-appended lines batched per ~750ms poll tick — one whole line per element with one exception: the very first line a subscriber receives may be short, since the offset it starts from is the file's length at attach time, which is newline-aligned only if the writer was idle then (`logs::FollowState`, decision 44). No replay of anything before attach, same posture as `/study/{id}/events` |
+
+`GET /logs/stream`, a live-tail SSE counterpart, was retired (`tasks/core/021`): no caller anywhere in the suite ever used it, and `embarch-ui` decision 13 structurally excludes an SSE source for this data. `decisions/logging.md` decision 44, the hold-past-`\n` rule that surface needed, is retired alongside it.
