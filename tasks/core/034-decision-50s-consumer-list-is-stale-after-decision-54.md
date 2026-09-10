@@ -53,11 +53,11 @@ names: "a decision left claiming filed consumers that no longer exist."
 
 ## Done when
 
-- [ ] Decision 50's closing paragraph in `embarch-core/decisions/surfaces.md`
+- [x] Decision 50's closing paragraph in `embarch-core/decisions/surfaces.md`
       is amended to say `tasks/api/045` landed, `tasks/umbrella/041` and
       `tasks/ui/020` closed unsatisfiable, and to point forward to decision 54
       for what replaced the latter two's intent.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Reviewer notes (not part of the task)
 
