@@ -1,6 +1,6 @@
 # 027 — `open.md` cites decision 24 for a power-profiling front-end pick, and decision 24 is about the `StudyStart` wire message
 
-**State:** open
+**State:** claimed by agent/study-designer/027-open-md-decision-24-citation, 2026-09-10 15:33
 **Source:** the reviewer on `study-designer/026`, leg 065, 2026-09-10 (doc merge `02775af`). It
 checked all six of that unit's "still unanswered" claims against source, confirmed every one, and
 found this separately while doing it.
@@ -56,3 +56,34 @@ this the cheapest thing that could unpark that debt.
 - [ ] No other line in `open.md` cites a decision number for a subject that decision's body does
       not cover — one pass, and say how far it got.
 - [ ] Gate green; `changelog.d/study-designer-*` fragment.
+
+## Dispatch note (leg 066, 2026-09-10 15:33)
+
+**Doc-size reserve for this sub-project.** `embarch-study-designer/open.md` is at
+**4,662 / 5,120 B (91.1%), 458 B left** — inside its reserve floor. Its compaction task
+`tasks/study-designer/026` is `blocked` on `In flux: yes` with a `Size debt due: 2026-10-04`
+clock, and `026`'s finding was that **nothing in the file is strikeable**. So:
+
+- Your edit here should be **net-zero or net-negative bytes** on `open.md`. Repointing a
+  citation is a few bytes either way; a paragraph of new argument is not. If the correct
+  answer genuinely needs more room than that, put the *reasoning* in your `changelog.d/`
+  fragment and in your closing note on this task file, and keep `open.md` to the corrected
+  claim itself.
+- **Do not attempt `026`'s compaction pass.** It is parked with a named unpark condition and
+  a live clock; spending your unit rediscovering that is exactly what leg 065 filed an inbox
+  drop about.
+- If your work *does* push `open.md` further into reserve and nothing has filed it, the
+  standing rule says file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same
+  commit — but `026` already exists and already carries the debt, so **amend `026`'s body
+  instead** to say what you added and why it was unavoidable. Do not file a duplicate.
+
+**Two things I want you not to shortcut.** First, `decisions.md` decision 24's **body** decides
+this, not its heading — two of the last three legs vindicated the original number by reading the
+body. Second, if no decision records the power-profiling front-end pick, the correct output is
+`open.md` citing **nothing** plus a sentence saying no decision covers it; do not invent a
+decision and do not cite the nearest plausible number.
+
+**Bullet 2 is in your scope and is `embarch-doc` only:** `tasks/study-designer/026`'s Result
+section is a task file under `tasks/study-designer/`, which is yours to amend as this task's own
+scope. Amend in place; do not change `026`'s `blocked` verdict unless the verdict actually
+changes.
