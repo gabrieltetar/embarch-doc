@@ -91,7 +91,11 @@ carried-over debt would be a park with extra steps.
 current `spec.md`/`decisions.md` and struck none, because none has actually been answered:
 
 - The two power-profiling deferrals (bench design, `Sample` grain) are still deferred with no
-  trigger fired — decision 24's front-end pick is still provisional per `decisions.md`.
+  trigger fired. **Amended by `study-designer/027`:** the "decision 24" citation this line
+  originally rested on was wrong — decision 24's body (`decisions/wire.md`) is about the
+  `StudyStart` wire message, not a power-profiling front end, and no decision records that
+  hardware pick at all. `open.md` now cites none. The verdict here is unchanged: the bullet was
+  and remains open with no trigger fired, so nothing was strikeable either way.
 - The bench UTC clock-resync accuracy is still unmeasured — nothing in `spec.md`/`decisions.md`
   claims real-hardware validation of it.
 - `repeat`/`bitpack`/`crc32`/`fixed` still have no render consumer — `interfaces/decoders.md`'s
