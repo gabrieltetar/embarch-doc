@@ -56,7 +56,7 @@ outpost_version:       postcard string (varint len, then bytes)
 build_id:              postcard string
 ```
 
-**`cycles_per_sec` is read at runtime** — `sys_clock_hw_cycles_per_sec()`, never `CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC`, which legitimately defaults to `0` on targets whose timer reads its own frequency at runtime, so a build-time rate would be silently zero on exactly those. **A host that receives `0` anyway has no rate and must say so rather than guess one:** both decoders leave `us` empty there ([../spec.md](../spec.md) §5).
+**`cycles_per_sec` is read at runtime** — `sys_clock_hw_cycles_per_sec()`, never `CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC`, which legitimately defaults to `0` on targets whose timer reads its own frequency at runtime, so a build-time rate would be silently zero on exactly those. **A host that receives `0` anyway has no rate and must say so rather than guess one:** both decoders leave `us` empty there ([integration.md](integration.md) § Host-side outputs).
 
 **Header frames share the records frames' `seq` counter and advance it**, so a host counting lost frames by a gap in `seq` counts both kinds together.
 

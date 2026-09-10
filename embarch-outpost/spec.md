@@ -82,14 +82,9 @@ Every Kconfig symbol, its default, and the measurement that set it — the ring'
 
 ## 5. Host-side outputs
 
-Three files under the study's `streams/`:
-
-- **`<tap>.bin`** — the raw framed stream, verbatim, **written before any decoding and always**, even when the build ID does not match, so a mismatch is recoverable rather than a lost run.
-- **`<tap>.arrival.csv`** — `frame_index, rx_utc_ms, frame_bytes`, one row per frame, written incrementally. Unrotated on purpose, and `frame_bytes` is what lets the post-hoc join be **verified** rather than assumed.
-- **`<tap>.trace.csv`** — decoded records, one per row: `frame_index, frame_seq, rx_utc_ms, cycles, us, kind, a, b, name`. **Written even when no manifest applies** (empty `name`) and **even when no arrival stamps apply** (empty `rx_utc_ms`).
-
-Consecutive rows repeating one `rx_utc_ms` is normal, not a defect: it is a *frame's* stamp. Both `frame_index` and `frame_seq` appear because they answer different questions — the index is this capture's own monotonic ordinal and is what an arrival stamp is keyed by; the seq is the firmware's own wrapping byte.
-
-**`us` carries exactly three decimals whenever it carries a value at all** — `1234.500`, never `1234.5`, and the empty string when `cycles_per_sec` is 0, which both decoders agree on rather than guessing a rate. That is a contract between the decoders and not a rendering preference: rounding instead of formatting disagrees on every value whose fraction is shorter than three digits. **`cycles` is the DUT's counter unwrapped host-side, and a *small* backwards step is not a wrap** — a gap record is stamped when its losses started, so it legitimately goes backwards a little, and treating that as a wrap threw every later timestamp forward by 2**32. Both rules are pinned by a host test that needs no toolchain ([interfaces/wire.md](interfaces/wire.md)).
+Three files under the study's `streams/`, their exact columns and the
+formatting/wrap rules that bind both decoders: [interfaces/integration.md](interfaces/integration.md)
+§ Host-side outputs. In short: `<tap>.bin` (raw, verbatim, always written),
+`<tap>.arrival.csv` (the join), `<tap>.trace.csv` (decoded records).
 
 `streams/index.json` carries **three independent booleans** for the three ways a trace can be incomplete: `named`, `timed`, and `self_excluded` — the last being the only one the *firmware* decides.
