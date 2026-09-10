@@ -1,6 +1,8 @@
 # umbrella — decisions/doctor.md's "Current truth" line still points at spec.md after the split
 
-**State:** claimed — leg 068, `agent/umbrella/047-doctor-current-truth`
+**State:** done — leg 068, `agent/umbrella/047-doctor-current-truth`. Filed
+`tasks/umbrella/048-compact-umbrella.md` in the same commit: the fix's net growth
+pushed `decisions/doctor.md` into the doc-size reserve (90.2%, 1,206 B left).
 
 **Dispatch note, leg 068.** This is deliberately a one-line unit and it should stay one. Repoint
 `decisions/doctor.md` line 7's `Current truth:` at `../interfaces/doctor-chain.md`, matching the
@@ -49,6 +51,6 @@ the six touched files got which line) is fresh.
 
 ## Done when
 
-- [ ] `embarch-umbrella/decisions/doctor.md` line 7's "Current truth" pointer is repointed from
+- [x] `embarch-umbrella/decisions/doctor.md` line 7's "Current truth" pointer is repointed from
       `spec.md` at `interfaces/doctor-chain.md` (as a relative link from `decisions/`),
       matching the other five files that same commit updated.

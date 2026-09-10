@@ -4,7 +4,7 @@
 
 The checks, and why several of them distinguish states that look the same. Which are built and which are not is [the table](../interfaces/doctor-chain.md)'s job. What a check *reports* — the `--json` contract, `code`, `path` — is [reporting.md](reporting.md).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Four checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), check 17's bind address is [bind.md](bind.md), and check 13's dev-bench-firmware comparison is [dev-bench-firmware.md](dev-bench-firmware.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-chain.md](../interfaces/doctor-chain.md). Four checks are their own groups: what 11 and 15 compare is [schema-skew.md](schema-skew.md), check 10's MCP registration is [mcp.md](mcp.md), check 17's bind address is [bind.md](bind.md), and check 13's dev-bench-firmware comparison is [dev-bench-firmware.md](dev-bench-firmware.md).
 
 ### 18 — Check 5 distinguishes "no probe attached" from "a probe is attached but this user cannot open it"
 
