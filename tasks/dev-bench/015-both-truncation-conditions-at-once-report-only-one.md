@@ -1,6 +1,29 @@
 # dev-bench/007 review finding: combined truncation+overflow silently drops the census-full signal
 
-**State:** open
+**State:** claimed — leg 070, `agent/dev-bench/015-combined-truncation-markers`
+
+**Supervisor's pre-dispatch direction (leg 070, 2026-09-10).** Take the fix the task calls
+right-sized: make the combined case say **both** things. Do not add a third combined marker that
+names neither condition — decision 45 already rejected that shape in writing, and re-adding it
+would be contradicting the decision a second time rather than repairing it. Budget the 64-byte
+`fail_reason` so that when both conditions hold, both markers survive; if the budget genuinely
+cannot hold both plus any name, shorten the *name list*, not the markers — a marker is the
+diagnostic and a name is the payload. Then amend decision 45 in `decisions/scanning.md` to state
+the combined case explicitly, and fix `app/src/scan_seen_names.h`'s header, which cites a
+`decisions/ble.md` decision 43 that does not exist (the real ones are 32 and 45 in
+`decisions/scanning.md`) — that citation fix is part of this task, not a follow-up.
+
+**Build honesty.** If this environment has no `west`/`ZEPHYR_BASE` and the firmware cannot be
+built or its tests run from here, say so plainly in your report and in the task file and leave the
+change reasoned-but-unbuilt — do **not** claim a gate you did not run. That debt is already
+recorded for `embarch-outpost` and would be the same class here.
+
+**Doc-size reserve in this sub-project is tight:** `embarch-dev-bench/open.md` is 4782/5120 B
+(338 B left), `spec.md` 9460/10240 B (780 B left) — both filed as `tasks/dev-bench/012`
+(`blocked`) — and `decisions/link.md` 11241/12288 B (1047 B left), filed as `tasks/dev-bench/014`
+(`blocked`). `decisions/scanning.md`, the file you are editing, is not in reserve. If your work
+pushes any `embarch-dev-bench` doc into the last 10% of its cap unfiled, file
+`tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same commit.
 **Source:** reviewer (dev-bench/007)
 **Filed from `inbox/` by leg 067, 2026-09-10**, in the same fold as `dev-bench/007`, the unit whose review produced it. **Owner: no.** The secondary note at the bottom — `scan_seen_names.h`'s header cites a decision 43 in `ble.md` that does not exist — is part of this task, not a separate one: fix the citation to decisions 32 and 45 in `decisions/scanning.md` in the same change.
 **Scope:** dev-bench
