@@ -1,6 +1,12 @@
 # 050 — Write down what `doctor` check 2 is entitled to infer from a sticky `saved.host`
 
-**State:** open
+**State:** claimed — leg 078, 2026-09-10
+**Reserve for this scope:** `decisions/bind.md` 11,447/12,288 B (841 B left) and `open.md`
+4,493/5,120 B (627 B left) are both in reserve, with `umbrella/009` and `umbrella/038` parked on
+them. Put the new decision in a sibling topic file rather than squeezing `bind.md` — that is what
+`umbrella/020` and `umbrella/022` did on this same file and it is the preferred move
+(`DOC-COMPACTION.md` §2). `open.md` is being *narrowed* by this unit, so it should end smaller; if
+it does not, file the debt.
 **Source:** `embarch-umbrella/open.md:15`, against decision 22 in
 [embarch-umbrella/decisions/bind.md](../../embarch-umbrella/decisions/bind.md). `umbrella/026`
 already fixed the `Fail` detail half; the bullet itself says the **intent** half is "undocumented
