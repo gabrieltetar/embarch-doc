@@ -7,7 +7,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 ## Known wrong / unfinished
 
 - **A `[[projects]]` `board` is a hardware fact nothing compares against the hardware.** Derived from `build_info.yml`, it names the last build, not the board on the desk — a mismatched revision costs a day of bring-up, violating [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` stopped writing one unconfirmed (`embarch-umbrella` decision 41); older configs assert one, comparing to hardware is unbuilt.
-- **The alert/enrolled-board response types were unpinned mirrors, and it fired**: `link_port_interface` (`embarch-topology` decision 20) reached Core's wire body and the client mirror silently dropped it. `api`'s half is pinned against a JSON literal now (task `032`); **Core's is not** — filed to `embarch-core`'s inbox.
+- **The alert/enrolled-board response types were unpinned mirrors**: `link_port_interface` (`embarch-topology` decision 20) reached Core's wire body and the client mirror silently dropped it. `api`'s half is pinned against a JSON literal now (task `032`); **Core's is not** — filed to `embarch-core`'s inbox.
 - **The smoke harness ([decisions](decisions/tests.md) 30) is named, unwritten.** Six mocked criteria live in `tests/` ([decisions](decisions/tests.md) 46); end-to-end is `#[cfg(unix)]`, Windows gets direct tests.
 - **`study_watch` has met a real embarch-core; the rest has not.** Bench, leg 021: pushed live frames and `transport: polled` fallback both seen ([decisions](decisions/study-events.md) 48, 49). `study-status --follow`, drop path, `lagged`, reconnect: unexercised. Debt: `tasks/api/059-sse-client-remaining-observations.md`.
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
@@ -20,12 +20,10 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 ## Structural limits
 
 - **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
-- **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively; revisit otherwise.
+- **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively.
 - **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/studies.md) 39): a remote Core can't see local paths.
 
 ## Settled-deferred
-
-Re-read suite-wide; none acquired a new argument.
 
 - **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
 - **Config fragments/`include`** (`[core]` is 3 lines) **and hot-reload** (loads once; an edit needs a reconnect).
