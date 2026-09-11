@@ -1,7 +1,22 @@
 # 036 — `embarch-core/open.md` is 102 bytes inside its reserve floor
 
-**State:** open (attempted, no safe cut found; debt stays dated and unpaid) — leg 074,
-`agent/core/036-compact-core`
+**State:** blocked — attempted on leg 074 (`agent/core/036-compact-core`), landed by leg 075. No
+safe cut or split found; `embarch-core/open.md` is unchanged at 4,022 B and the debt stays dated
+2026-09-26, unpaid. See `## Blocked` below.
+
+## Blocked
+
+**Why:** the pass ran in full and its answer was "nothing here is filler". Every remaining sentence
+carries a checkable claim; the only connective text in the file is worth ~17 B against a 102 B
+target, and a verbatim split of the six sections relocates the open-questions surface without
+shrinking it. Cutting further means trimming real claims, which is exactly what `core/022` did and
+what this task exists to not repeat.
+
+**Unparks when either:** (a) `DOC-BUDGET.md`'s cap for an `open.md` is revisited — the owner's
+call, and `tasks/api/060` reached the same conclusion about `embarch-api/open.md` independently in
+the same leg, so two sub-projects now argue the cap is the thing that should move; or (b) something
+retires a live question in `embarch-core/open.md`, at which point the bullet leaves on its own and
+this file drops out of reserve without any compaction at all.
 
 **Supervisor's dispatch note, leg 074, 2026-09-10.** Dispatched as an ordinary unit: `In flux: no`
 for the one file on the `Compacts:` line, nothing overdue on the size ledger, and the task's own
