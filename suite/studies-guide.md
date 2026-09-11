@@ -113,7 +113,9 @@ dev-bench stopped the study early: step 'connect' timed out
 
 ## 4. Wiring a DUT signal in, and reading the trace afterwards
 
-A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it. Two things have to be true first, **both done in the UI** — there is deliberately no CLI for either.
+A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it. Two things have to be true first, **in the UI or, since
+[`embarch-api` decision 67](../embarch-api/decisions/surface.md), from a terminal**:
+`declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`, each also an MCP tool.
 
 **1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software — nothing can detect it — so it can only be stated.** In the **Topology** tab, declare a signal: give it a name (that is what a study taps it by) and pick a route.
 
