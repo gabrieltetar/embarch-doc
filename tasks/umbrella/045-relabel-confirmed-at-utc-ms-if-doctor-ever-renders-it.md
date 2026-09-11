@@ -1,6 +1,20 @@
 # 045 — Relabel `confirmed_at_utc_ms` if `doctor` ever renders it, so it doesn't read as freshness
 
-**State:** open
+**State:** claimed — leg 069, `agent/umbrella/045-confirmed-at-label`
+
+**Supervisor's pre-dispatch note (leg 069, 2026-09-10).** Read the task's own warning before you
+plan: `doctor` renders nothing here today, so **"write the constraint down where the next person to
+add such a line will see it" is a legitimate and possibly complete outcome.** Do not manufacture a
+rendering in order to have something to relabel. If the honest answer is that the only change is a
+recorded constraint plus closing the task, make that change and say so plainly.
+
+**Doc-size reserve in this sub-project is tight:** `embarch-umbrella/open.md` is 4996/5120 B —
+**124 bytes left**, filed as `tasks/umbrella/038-compact-umbrella.md` (`blocked`), and it is the
+soonest-due entry in the whole size ledger (2026-09-12). Treat it as full: do not add an `open.md`
+bullet for this. `embarch-umbrella/decisions/doctor.md` is 11082/12288 (1206 B left, filed as
+`tasks/umbrella/048`) and `decisions/bind.md` is 11447/12288 (841 B left, filed as
+`tasks/umbrella/009`). If your work pushes any other `embarch-umbrella` doc into the last 10% of
+its cap unfiled, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
 **Filed from `inbox/` by leg 066, 2026-09-10**, in the same fold as `umbrella/036`. It parses, its
 `Hardware: none` is correct, and its scope is right. Filed immediately rather than left for the
 next leg's drain because `core/027`'s entry in `supervisor-log.md` names these two drops as the
