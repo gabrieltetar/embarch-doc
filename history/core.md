@@ -46,6 +46,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- `study_schema_mismatch` retired: no `code` enum exists in Core to hold it (decisions/surfaces.md 55).
 - core/036: no safe 102 B cut found in open.md after core/022; debt stays dated, unpaid.
 - core: `hw_lock` contention now refuses `503` naming the holder after 500ms, per decision 14.
 - Decision 50's closing paragraph now names each consumer's real end state and points to decision 54.
