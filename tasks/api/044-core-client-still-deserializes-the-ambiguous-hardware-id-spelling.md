@@ -1,6 +1,9 @@
 # 044 — `embarch-core-client` still deserializes the ambiguous `hardware_id` spelling on three routes
 
-**State:** open — announced to #embarch-fleet by leg 076 at ts `1789097485.649139`; the `ops.md` §4
+**State:** claimed — leg 077, 2026-09-10, supervisor-executed. Window from leg 076 at ts
+`1789097485.649139` elapsed (38m) with no objection in-thread; not restarted.
+Original state line follows.
+**Was:** open — announced to #embarch-fleet by leg 076 at ts `1789097485.649139`; the `ops.md` §4
 30-minute window opened then. Cross-repo (`embarch-core` + `embarch-api`), so supervisor-executed
 despite the `api` scope. Do not restart the window: if this leg dies first, the next leg reads that
 `ts` with `fleet-read.py --thread` and completes the remaining time.
