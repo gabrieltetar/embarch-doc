@@ -1,6 +1,20 @@
 # Build decision 14's `503` on `hw_lock` contention, or retire the decision
 
-**State:** open
+**State:** claimed — leg 069, `agent/core/013-hw-lock-503`
+
+**Supervisor's pre-dispatch direction (leg 069, 2026-09-10): take the BUILD arm, not the retire
+arm.** The task offers both and says do not leave it as it is; the choice is mine, not the
+worker's. Decision 14's stated reason — a second caller blocking silently on the mutex is
+"indistinguishable from Core being unresponsive" — is *more* true now than when it was written,
+because the fleet's agents are exactly the callers that cannot tell a queue from a hang, and
+`core/009`'s unbounded `duration_ms` makes the stall arbitrarily long. Retiring the decision would
+be recording a defect as a design. So: build it, holder string included — a `503` without a holder
+is not decision 14 and must not be shipped as if it were.
+
+**Doc-size reserve in this sub-project** (leg 069): `embarch-core/open.md` is 4551/5120 B (568 B
+left, filed as `tasks/core/022-compact-core.md`, `open`). Nothing else in `core` is in reserve.
+If your work pushes any `embarch-core` doc into the last 10% of its cap, or leaves one there that
+nothing has filed, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** `core/007` bench measurement, 2026-09-06 — three concurrent `/serial-log` calls all returned `200`, serialised, with no refusal and no holder named
 **Scope:** core
 **Hardware:** none
