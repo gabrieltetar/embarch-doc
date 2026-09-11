@@ -8,6 +8,7 @@
 - The advertiser census now logs Manufacturer Specific Data (company ID + up to 4 payload bytes, capped visibly) alongside name and address (decision 44).
 
 ### Changed
+- A failed `BleConnect` census now counts what it is leaving out (`no name match; 2/10 named: …`), and writes its full per-advertiser log on an address-filtered connect too — decision 46.
 - DOC-COMPACTION §9 pass on dev-bench: SRAM-percentage history and superseded bound sizes dropped from [spec.md](../embarch-dev-bench/spec.md); every open question kept.
 - dev-bench open.md and decisions/ble.md cut to their hot half; the 16-byte-boundary diagnosis is now a named rejection.
 - dev-bench/open.md trimmed again, to 4843 B, so it clears the pressure threshold rather than sitting on it.
