@@ -1,6 +1,24 @@
 # 039 — `embarch-core-client` is the one shared crate in the suite with no recorded home, and its module-map row is wrong about its own dependency shape
 
-**State:** open
+**State:** claimed — leg 073, 2026-09-10.
+
+**Supervisor's dispatch note, leg 073.** Two things settled before dispatch so the worker does not
+have to guess them:
+
+- **The reserve objection in the fourth `Done when` box is discharged.** It says the decision must
+  not land in `decisions/core-link.md` unless that file's reserve has been spent first, and names
+  `tasks/api/026` as the thing that would spend it. `api/026` landed earlier in this leg: it took
+  `open.md` and `spec.md` clear, and `core-link.md` itself came out of reserve back on 2026-09-07
+  when `api/046` split `decisions/study-events.md` out of it. **`core-link.md` is 9,955 B against a
+  12,288 B cap today — out of reserve, 2.3 KB of headroom.** So that box is satisfiable either way
+  and is no longer a constraint on where the decision goes.
+- **Where it should go is still the worker's call, and both candidates are healthy.**
+  `decisions/core-link.md` 9,955 B and `decisions/shape.md` 10,969 B; `decisions/zephyr.md` is
+  **1,981 B over cap** and filed against the blocked `tasks/api/057`, so nothing new goes there.
+  Argue the choice in the commit message rather than defaulting.
+
+This is documentation-only: everything it touches is in `embarch-doc`, and `embarch-api` has no
+diff. Do not create a code worktree.
 **Source:** suite review pass 2026-09-06, dimensions 1 and 4 (two hunters, one finding). Code-confirmed.
 **Scope:** api
 **Hardware:** none
