@@ -1,6 +1,15 @@
 # 064 — `surface.md` decision 67 cites `release.md` for decision 14, which lives in `install.md`
 
-**State:** open
+**State:** claimed — leg 083, 2026-09-11
+
+**Doc-size reserve in your scope (`embarch-api`), read this before you plan.** Two decision files
+are already **over** their 12,288 B cap and are parked against blocked compaction tasks:
+`decisions/core-link.md` 13,164 B (`tasks/api/061`) and `decisions/zephyr.md` 14,269 B
+(`tasks/api/057`). **Do not add a byte to either.** `decisions/surface.md` — the file this task
+actually touches — is not in reserve, and this unit should *shrink or hold* it: you are correcting a
+path inside an existing citation, not adding text. If your work pushes any `embarch-api` file into
+the last 10% of its cap, file `tasks/api/<NNN>-compact-api.md` in the same commit
+(`tasks/README.md` has the shape; it goes under `tasks/api/`, never `tasks/doc/`).
 **Source:** `embarch-reviewer`, during leg 082's `tasks/suite/019` review, 2026-09-11. Filed to
 `inbox/` by the reviewer and numbered into the queue by that leg. **The reviewer's own header said
 it was spawned by an owner-session review pass; it was not — it was spawned by the supervisor
