@@ -1,6 +1,6 @@
 # 049 — `CoreConfig`/`ProjectConfig` still hand-mirror `embarch-api`, with no check that would notice drift
 
-**State:** open
+**State:** claimed — leg 071
 **Source:** `embarch-umbrella/open.md` — "Both mirrors closed, `CoreConfig` still hand-kept … no CI diff job exists. Depend on `embarch-core-client` for `CoreConfig` too, or build the diff job."
 **Scope:** umbrella
 **Hardware:** none — a type/dependency change and a test, entirely host-side.
