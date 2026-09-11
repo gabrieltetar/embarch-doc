@@ -44,3 +44,9 @@ A write's payload is assembled from decision 59's primitives, each field taking 
 
 It **replaces literal-only writes only inside a `RunProtocol` block.** Decision 35's registered actions are enumerated-values-only by design, precisely so nobody uses a value whose meaning nothing recorded, and they are untouched.
 
+### 71 — A host-side primitive still parsed but not rendered refuses loudly, by name
+
+Decision 59's split staged four primitives — `repeat` with `count_from`, `bitpack`, `crc32`, and `fixed` — as parsed and pinned but with no render consumer yet. Until task 028, asking for one of them either silently produced no `StructLayout` (indistinguishable, to a caller, from a frame that legitimately has no flat rendering) or, for `fixed`, silently produced one — a bare integer with the scale dropped, the same plausible-wrong-number failure decision 52 already refuses one layer up for a payload that doesn't fit its layout.
+
+`ResolvedProtocol::render_layout(frame)` is now the loud accessor: `Ok(Some(layout))` for a frame that renders, `Ok(None)` for a frame with no layout for an unrelated shape reason (a `span`, a second repeating group, an empty frame — unchanged), and `Err(RenderUnimplemented { frame, primitive })` naming exactly which of the four staged primitives is missing its render half. `struct_layouts()` — which nothing in this crate or its two current consumers calls yet — is unchanged, so this is additive. Implementing the bit-unpacker, the counted walker or the CRC check itself stays out of scope for the reason decision 48 gives: building it against no real capture is testing against synthetic bytes.
+
