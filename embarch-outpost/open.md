@@ -23,6 +23,6 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Deferred with a named trigger
 
-- **This repo has no CI at all** — `.github/workflows` is empty, so nothing runs `tests/run-all.sh` on push, and the toolchain-free legs' now-fixed ordering (decisions/testing.md decision 22) is only ever exercised by a human remembering to. Whether `embarch-outpost` gets a workflow is a suite-scope call (`tasks/suite/021`), not this task's — filed there, not built here.
+- **This repo has no CI at all, and never has had** — `.github/workflows` is empty, `git log --all -- '.github/**'` finds nothing at any commit, and so nothing runs `tests/run-all.sh` on push; the toolchain-free legs' now-fixed ordering (decisions/testing.md decision 22) is only ever exercised by a human remembering to. This is now the recorded fact rather than an open question — [embarch.md](../embarch.md) §5's table states it alongside every other sub-project's. Whether `embarch-outpost` should get a workflow remains undecided and unfiled: it is a suite-scope call (`../../embarch-fleet/protocol.md` §8), not this sub-project's to file.
 
   Two more deferrals are already recorded, with their own trigger, at their decision rather than here: a DUT staleness check mirroring dev-bench's (`decisions/manifest.md` decision 9, last paragraph) and a vendor-neutral porting layer (`decisions/module.md` decision 1, its rejected alternative).
