@@ -1,6 +1,8 @@
 # 022 — `embarch-core/interfaces.md` is 833 bytes from its cap
 
-**State:** open — **reopened by the supervisor in `core/009`'s fold, leg 060, 2026-09-09.** `009`
+**State:** claimed — leg 073, 2026-09-10. One file left on the `Compacts:` line
+(`embarch-core/open.md`, 4551/5120, due 2026-09-26), `In flux: no` for it.
+Previously: open — **reopened by the supervisor in `core/009`'s fold, leg 060, 2026-09-09.** `009`
 closed it on the grounds that `open.md`'s item was done, and its pass was real (5,051 B → 4,669 B,
 one answered bullet deleted and three squeezed). But **`open.md` is still in reserve**: the floor is
 `max(1200 B, 10%)` from the top, i.e. 3,920 B for this file's 5,120 B cap, so 4,669 B is 91.2% and
