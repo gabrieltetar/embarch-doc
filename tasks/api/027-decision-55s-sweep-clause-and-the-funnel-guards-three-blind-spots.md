@@ -1,6 +1,21 @@
 # 027 — Decision 55 rejects `default_headers` on a reason that does not hold, and the funnel guard has three blind spots
 
-**State:** open
+**State:** claimed — leg 069, `agent/api/027-decision-55-sweep-clause`
+
+**Supervisor's pre-dispatch note (leg 069, 2026-09-10) — the byte budget, and why this unit is
+allowed into a parked file.** `embarch-api/decisions/core-link.md` is 12100/12288 B: **188 bytes
+left**, and its compaction task `tasks/api/026` is `blocked` on `In flux: yes`. A blocked
+compaction task parks the *pass*, not the reserve. This unit is dispatched into that file anyway
+because its first finding is a **deletion** — decision 55's second rejection reason is false and
+comes out — so the edit should be net-negative on bytes. **That is the constraint, not a
+prediction: if your change leaves `core-link.md` larger than you found it, stop and say so in your
+report rather than squeezing wording to fit.** Do not attempt the `api/026` compaction pass; it
+is blocked and is not this unit's work.
+
+Also in reserve for `api`: `open.md` 4763/5120 (357 B left), `spec.md` 9443/10240 (797 B left),
+`interfaces/tools.md` 11280/12288, `decisions/tool-wrapping.md` 12222/12288 (66 B left — treat as
+full). All already filed. If your work pushes any other `embarch-api` doc into the last 10% of its
+cap unfiled, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** `api/022`'s reviewer, 2026-09-06, verifying decision 55 from source. It found all of this and left the filing to me; I filed rather than fixed because `decisions/core-link.md` has 22 bytes.
 **Scope:** api
 **Hardware:** none. Two sentences of decision text, one test file, no board and no live Core.
