@@ -1,6 +1,8 @@
 # 016 — `rx_utc_ms` is dev-bench uptime, not UTC, and three contracts assert a resync that does not exist
 
-**State:** open — announced to #embarch-fleet by leg 076 at ts `1789097474.082349`; the `ops.md` §4
+**State:** claimed — leg 077, 2026-09-10, supervisor-executed. Window from leg 076 at ts
+`1789097474.082349` elapsed (39m) with no objection in-thread; not restarted.
+**Was:** open — announced to #embarch-fleet by leg 076 at ts `1789097474.082349`; the `ops.md` §4
 30-minute window opened then. Do not restart the window: if this leg dies first, the next leg reads
 that `ts` with `fleet-read.py --thread` and completes the remaining time.
 **Source:** suite review pass 2026-09-06, dimension 5 (cross-surface consistency). Code-confirmed.
