@@ -1,6 +1,10 @@
 # 060 — `embarch-api/open.md` is 221 bytes inside its reserve floor
 
-**State:** claimed — leg 074, `agent/api/060-compact-api`
+**State:** blocked — leg 074, `agent/api/060-compact-api`. `open.md` cut 4,208 → 4,124 B (84 B of
+connective filler); still 204 B inside reserve. Debt dated 2026-09-24, left unpaid — no safe
+further cut or split found without risking a repeat of `api/026`'s lost fact; see finding below.
+Unparks when either: `DOC-BUDGET.md`'s cap is revisited (the owner's call, argued for below) or a
+future pass finds a genuine cut this one did not.
 
 **Supervisor's dispatch note, leg 074, 2026-09-10.** Dispatched as an ordinary unit: `In flux: no`,
 nothing overdue on the ledger, and `api/042` landed earlier in this leg without touching `open.md`.
@@ -70,14 +74,64 @@ that the cap is wrong, say so here and file it for the owner.
 
 ## Done when
 
-- [ ] `embarch-api/open.md` is clear of its reserve floor (≤ 3,920 B), **or** this task closes with
+- [x] `embarch-api/open.md` is clear of its reserve floor (≤ 3,920 B), **or** this task closes with
       a written argument that no safe cut or split remains, naming what was considered and whether
-      the cap is the thing that should move.
-- [ ] The restored `serial_port` sentence and every other `Must not delete:` item is still readable
-      in full.
-- [ ] The commit message quotes the **first dozen words of every deleted hunk verbatim**
-      (`DOC-COMPACTION-PASS.md`). `api/026` paraphrased its one real cut instead of quoting it,
-      which is why the loss was only findable by a reviewer reading the whole diff.
-- [ ] The commit message answers the human question in the compactor's own words: can
+      the cap is the thing that should move. — **Neither cleanly.** See finding below: 4,208 → 4,124 B
+      (84 B of genuine connective filler cut), still 204 B inside reserve. No further cut was made.
+- [x] The restored `serial_port` sentence and every other `Must not delete:` item is still readable
+      in full. Verified by re-reading the file after edit: the `serial_port` sentence, decision 15's
+      failure signature, decision 36's `Builder::thread_stack_size` rejection, decision 26's
+      correction and decision 55's `default_headers` rejection are all untouched (the latter four
+      live in `decisions/core-link.md`, which this task did not open).
+- [x] The commit message quotes the **first dozen words of every deleted hunk verbatim**
+      (`DOC-COMPACTION-PASS.md`). See commit message.
+- [x] The commit message answers the human question in the compactor's own words: can
       `embarch-api/spec.md` alone answer what someone needs to work on `embarch-api` today?
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Finding: 84 B cut, no more available without risking a repeat of `api/026`
+
+Three genuinely connective, fact-free phrases were cut, verbatim:
+- `, and it fired` — dropped from the alert/enrolled-board bullet; the sentence still states the
+  same failure (`link_port_interface` reached Core's wire body and was silently dropped) without
+  the added drama.
+- `; revisit otherwise` — dropped from the inbound-trust bullet; it was a bare directive to
+  reconsider later, not a recorded fact.
+- `Re-read suite-wide; none acquired a new argument.\n\n` — the standalone sentence under
+  `## Settled-deferred`, describing the review process rather than any of the five settled items
+  it introduces.
+
+That is 84 B, `4,208 → 4,124 B`. The reserve floor is 3,920 B — **204 B still inside reserve.**
+
+No further cut was attempted. Every remaining sentence in this file, checked clause by clause,
+either names a fact not recorded elsewhere (task numbers, decision numbers, byte counts, dates,
+the specific rejected APIs) or is the rationale a future reader needs to tell "settled" from
+"still open" — the same shape of clause that `api/026` cut once already, calling it filler, and
+that turned out to be the one sentence recorded nowhere else in the suite. Two independent passes
+in three days (`api/031`, `api/026`) each read this file, each concluded a further cut was safe,
+and each lost a real fact that a reviewer had to restore by hand. A third pass reaching the same
+conclusion under the same time pressure is not more trustworthy than the first two; it is the same
+process producing the same failure mode again.
+
+A split was considered and not attempted. The file has four section headers (`## Known wrong /
+unfinished`, `## Owed decisions`, `## Structural limits`, `## Settled-deferred`), not six as this
+task's dispatch note counted — `## Owed decisions` and `## Structural limits` are each a single
+paragraph, too short to be a standalone file without themselves needing a new cross-reference back
+into `open.md`, which would cost bytes rather than save them net. `## Settled-deferred` (5 bullets,
+~950 B) is the one section large enough that splitting it would matter, but `open.md`'s role per
+`DOC-PROTOCOL.md` is to be the single place a reader checks for "is this still true" — splitting
+settled-vs-open questions across two files works against that role for every future reader, for a
+one-time gain that does not reduce how much text exists, only where it lives. This task did not
+attempt it.
+
+**This is the same finding `tasks/core/036` reached about `embarch-core/open.md`, independently,
+in the same leg: the floor is being reached by real content, not filler, and the cap
+(`DOC-BUDGET.md`) is the thing that should move, not this file.** Changing it is out of this
+task's scope. The debt is dated 2026-09-24 and left unpaid at 4,124 B, 204 B inside reserve.
+
+**Human question, answered:** can `embarch-api/spec.md` alone answer what someone needs to work on
+`embarch-api` today? No. `spec.md` states what the crate does and its invariants; `open.md` is
+where the gaps between that and reality live — the unconfirmed `board` field, the unpinned mirror
+that already broke once, `study_watch`'s untested reconnect path, the missing `error_kind`, and
+`init`'s silent omission of `serial_port`. Someone working the crate needs both files; `spec.md`
+alone would let them re-introduce a bug this file already records as known-broken.
