@@ -4,6 +4,8 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
+- **Whether `embarch-ui` belongs in the suite release archive is undecided, and is not this repo's call.** `assemble-suite.yml` ships three binaries and not this one, so a newcomer with only what `embarch setup` installed cannot author a trace tap or read a trace back. **The documentation half is closed** (`tasks/suite/019`): [user-guide](../suite/user-guide.md) §3 and [studies-guide](../suite/studies-guide.md) §4 now say it is a separate build and where to get it. Making it a fourth archive member is a release-surface call, [`embarch-umbrella`](../embarch-umbrella/decisions/install.md) decision 14's and the suite's. **Trigger:** the first engineer who is not the repo owner walks the studies guide end to end.
+
 - **Where the reflash selector should live is genuinely undecided.** `run_study --reflash` is `embarch-api` orchestration; `embarch-ui` posts studies straight to Core and builds nothing. Three shapes: duplicate the orchestration here, depend on `embarch-api` (a direction the suite has nowhere), or leave reflash terminal-only. Settled as the third for now, and the run dialog says so — but "the UI cannot reflash" is a limitation, not a design goal. Decision 11.
 
 - **Nothing has compared a trace's placement against a second stream in the same study.** The DUT clock measures; the host's *places*, at an observed **4.0 ms** median placement resolution on the reference capture. Whether the two line up against, say, a power capture is what the dual-clock flag exists to check, and it has not been run. Every outpost wire constant is still an unmeasured default with the instrumentation's own overhead deliberately uncharacterised.

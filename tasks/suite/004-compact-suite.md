@@ -6,7 +6,7 @@ files crossed their reserve lines inside that fold, one by a supervisor edit and
 assembler run.
 **Scope:** suite
 **Hardware:** none
-**Compacts:** embarch-decision-reversals.md, suite/user-guide.md
+**Compacts:** embarch-decision-reversals.md, suite/user-guide.md, suite/studies-guide.md
 
 **`suite/features.md` was struck off this line on 2026-09-09**, having been paid on 2026-09-07 when
 an assembled file lost its byte cap outright (`DOC-BUDGET.md`) — see the `features.md` section
@@ -25,6 +25,18 @@ In `suite/user-guide.md`: §5.1's argument for why `chip` and now the board are 
 *a wrong guess flashes the wrong target instead of erroring*, and *`build_info.yml` records
 the last build, not the board on your desk*. Both are the reason the placeholder is not an
 annoyance, and both read as boilerplate once shortened to "fill these in".
+
+**`suite/studies-guide.md` was added by leg 082** (2026-09-11) running `tasks/suite/019`:
+22,909 → 23,213 B, past the 23,040 reserve line, for **three sentences saying `embarch-ui` is not
+in the release archive and where to get it**. I shortened the addition once rather than file a
+larger debt, and paying it is deferred here rather than done, for the same reason the other two
+entries are: this file is the how-to for the capability milestone 7's "Next" item is about to
+exercise for the first time, so compacting it now would shorten prose that is about to be rewritten
+by a real run. **In flux for that reason — not the same reason as either sibling on the line.**
+**Must not delete** from it: §4's distinction between what has a CLI (declaring a signal, since
+`embarch-api` decision 67) and what does not (the trace tap and reading the trace back) — that
+distinction is the whole reason this guide has to mention the UI at all, and it reads as a
+throwaway clause once shortened.
 
 **`suite/user-guide.md` was added by leg 017** (2026-09-06), folding `umbrella/022`'s
 `status.d/` fragment: 22,813 → 23,246 B, over the 23,040 reserve line. **Third consecutive leg

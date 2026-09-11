@@ -113,7 +113,11 @@ dev-bench stopped the study early: step 'connect' timed out
 
 ## 4. Wiring a DUT signal in, and reading the trace afterwards
 
-A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it. Two things have to be true first, **in the UI or, since
+A study can record more than pass/fail: **if your DUT's firmware has the [embarch-outpost](../embarch-outpost/decisions.md) Zephyr module compiled in, it emits a thread/ISR/marker timeline out a TX-only UART**, and a study can capture it.
+
+**This section needs `embarch-ui`, which is not in the release archive** — build it from [its own repo](https://github.com/gabrieltetar/embarch-ui), per [the user guide](user-guide.md) §3. Declaring a signal has a CLI; **adding a trace tap and reading the trace back do not.**
+
+Two things have to be true first, **in the UI or, since
 [`embarch-api` decision 67](../embarch-api/decisions/surface.md), from a terminal**:
 `declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`, each also an MCP tool.
 
