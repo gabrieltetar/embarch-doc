@@ -16,6 +16,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- outpost's open.md and decisions/testing.md no longer cite closed task `tasks/suite/021`; both state the no-CI fact in their own words, citing embarch.md §5.
 - decode_outpost.py decodes in two passes now; a records frame before the first header no longer picks up names from a manifest the stream goes on to refuse.
 - decode_outpost.py now checks frame_bytes against actual chunk length; a divergence empties rx_utc_ms, not stamps a wrong join.
 - `outpost_priv.h`'s header comment no longer prices a new record kind as a layout-version bump; it agrees with `interfaces/wire.md` now.
