@@ -46,6 +46,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- core/036: no safe 102 B cut found in open.md after core/022; debt stays dated, unpaid.
 - core: `hw_lock` contention now refuses `503` naming the holder after 500ms, per decision 14.
 - Decision 50's closing paragraph now names each consumer's real end state and points to decision 54.
 - Core keeps `confirmed_at_utc_ms` alone on `EnrolledBoardResponse`; decision 54 says label it "Enrolled", never "Validated".
