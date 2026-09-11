@@ -65,6 +65,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `soc_chip_overrides` — a per-project SoC→chip escape hatch, consulted before Core's `/resolve-chip` | **Retired unbuilt 2026-09-05** — the short-circuit would skip the registry validation that is Core's whole claim to the table; a config declaring the key now fails at load naming the retirement | unit | 13 |
 | `dev_bench_hello` — the only tool serving the JTAG-vs-self-reported identity cross-check (`link_identity`, not a bool) | Shipped | local | 59 |
 | `list_serial_ports`/`list-serial-ports` — discovers a `serial_log` port value from Core's own machine | Shipped | unit | open.md "Owed decisions" |
+| Declare/list/remove a DUT signal link and dev-bench's own link, from an agent or a terminal (`declare_signal`, `list_signals`, `remove_signal`, `dev_bench_link`, and their CLI twins) | Shipped — wraps Core's existing `/signals`/`/dev-bench/link` routes, no new Core behaviour | no (client wrappers were already round-trip tested; parity test covers the CLI/MCP pairing) | 67 |
 
 ## embarch-dev-bench
 

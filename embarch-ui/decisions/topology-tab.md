@@ -12,7 +12,16 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 *Rejected: the Enroll tab* — it answers "which physical board is which", a question about identity, where routing answers "what is wired to what", a question about the bench, and the Topology tab is already where the second one is *shown*. *Rejected outright: the Study Designer* — a study names a signal, never a carrier, so putting routing there would **bind bench wiring into saved studies and re-author every one of them the day a cable moves.**
 
-**There is deliberately no `embarch-topology` CLI mirror, so this tab is the only human surface there is.** Two consequences. A signal that is declared but wrong **shows up here or nowhere**, since a mismatch is not written to the alert log this tab renders. And `DELETE /signals/{name}` had to exist: "only human surface" plus an idempotent declare meant **the one place that can state a wire could not retract one.**
+**There is deliberately no `embarch-topology` CLI mirror.** **This tab was the only human surface
+there was until 2026-09-10**, when [`embarch-api` decision 67](../../embarch-api/decisions/surface.md)
+wrapped `POST/GET/DELETE /signals` and `POST /dev-bench/link` as a CLI subcommand and an MCP tool
+each. **The rejection this generalised from was narrower than the generalisation**:
+[`embarch-topology` decision 18](../../embarch-topology/decisions/links.md) refused a
+signal-declaring CLI *inside the topology crate*, on grounds specific to that binary — a direct
+enrollment-file write, into a real deployment's permission wall — and it never named
+`embarch-api`, which reaches the same Core route over HTTP exactly as this tab does. Decision 18
+still stands for `embarch-topology`'s own CLI. Two consequences, both of which were written when
+this tab was the sole surface and are stated here as they were reasoned then. A signal that is declared but wrong **shows up here or nowhere**, since a mismatch is not written to the alert log this tab renders. And `DELETE /signals/{name}` had to exist: "only human surface" plus an idempotent declare meant **the one place that can state a wire could not retract one.**
 
 **`GET /signals` had to exist too**, because this tab must list declared signals before it can offer to change one and nothing had ever called the list function over HTTP; so did `GET /serial-ports`, because "a pick from Core's own enumeration" had no enumeration to pick from — the dev-bench port route answers a different question and VID-gates to do it, **which would hide exactly the bridge a direct route names.** The shared Core client had no wrapper for any of them, so building this tab touched `embarch-api`'s workspace as well.
 
