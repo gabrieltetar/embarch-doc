@@ -31,7 +31,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Unframed-byte reporting — a reset banner on a shared console UART no longer reads as silence | Shipped | hw | 40 |
 | Multi-probe selection beyond "first found" | Todo — design resolved (a serial selector), unbuilt | n/a | 9 |
 | ESP-IDF bootloader flashing fallback | Todo — explicitly out of v1 scope | n/a | 18 |
-| Per-caller identity beyond one shared token | Todo | n/a | §6 |
+| Per-caller identity beyond one shared token | Declined — single-engineer scope forbids a permission model; revisit only if Core ever needs to tell *which* caller, not just authorized or not | n/a | `embarch-token.md` §5 |
 | `503` naming the holder on `hw_lock` contention (500 ms wait, then refuse) | Shipped | unit | 14 |
 
 ## embarch-api
