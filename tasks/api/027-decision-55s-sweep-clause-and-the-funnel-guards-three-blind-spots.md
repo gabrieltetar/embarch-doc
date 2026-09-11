@@ -1,6 +1,6 @@
 # 027 — Decision 55 rejects `default_headers` on a reason that does not hold, and the funnel guard has three blind spots
 
-**State:** claimed — leg 069, `agent/api/027-decision-55-sweep-clause`
+**State:** done — leg 069, `agent/api/027-decision-55-sweep-clause`
 
 **Supervisor's pre-dispatch note (leg 069, 2026-09-10) — the byte budget, and why this unit is
 allowed into a parked file.** `embarch-api/decisions/core-link.md` is 12100/12288 B: **188 bytes
@@ -92,17 +92,31 @@ compactor obeys, and it currently instructs one to preserve a sentence known to 
 
 ## Done when
 
-- [ ] Decision 55's `default_headers` rejection states only reasons that hold, and says which of
+- [x] Decision 55's `default_headers` rejection states only reasons that hold, and says which of
       them is prospective rather than current. Net bytes matter — see the reserve note below.
-- [ ] `tasks/api/026`'s `Must not delete:` entry for that rejection is updated in the same commit,
+      `core-link.md` went 12,100 → 12,082 B (−18 B), still 206 B clear of the 12,288 B cap.
+- [x] `tasks/api/026`'s `Must not delete:` entry for that rejection is updated in the same commit,
       so a verbatim split cannot carry the old text.
-- [ ] The funnel guard matches the funnel by file and function rather than by name alone, and its
-      "What this does not cover" paragraph names the `reqwest::get` and subdirectory shapes
-      explicitly — **or** the scan is widened to catch them and the paragraph shortened. Argue the
-      choice; widening a lexical scan has its own cost.
-- [ ] A test asserting `open_study_events` survives past any timeout a mutation would introduce,
-      or a written statement of why that cannot be tested without a real Core.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] The funnel guard matches the funnel by file and function rather than by name alone
+      (`tests/core_client_http.rs`, `AUTH_FUNNEL_FILE`), and its "What this does not cover"
+      paragraph names the `reqwest::get` and subdirectory shapes explicitly. Chose naming over
+      widening: catching a bare `reqwest::get` or a nested-`src/` route would mean walking the
+      tree recursively and adding a second lexical needle, for two shapes the review found no
+      instance of — cheaper to say what the scan cannot see than to grow the scan against a
+      hypothetical.
+- [x] `tests/study_events_sse.rs` gained
+      `open_study_events_survives_a_gap_longer_than_a_typical_short_timeout`, which holds a mock
+      stream open across a 700 ms gap with `dispatch(_, None)` and asserts both frames still
+      arrive. Verified it actually catches the regression: temporarily changing that call site to
+      `Some(Duration::from_millis(500))` fails this test with "error decoding response body"
+      (reqwest's own timeout firing), confirming decisions 48/49 are covered for the cheap,
+      accidental-copy mutation shape. Documented in the test's own doc comment that a 30 s
+      mutation is out of reach without either a real Core or a 30-second test, and left that as
+      `tasks/api/001-sse-client.md`'s debt rather than paying it here.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10):
+      `cargo build`, `cargo test` (all crates), `cargo clippy --all-targets -- -D warnings` clean
+      in the code worktree; `check-docs.py` all 11 green, `check-client-names.py` and
+      `check-ownership.py` (both repos) clean in the doc worktree.
 
 ## Doc-size reserve for `api` — read this before you plan
 

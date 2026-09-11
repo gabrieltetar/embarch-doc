@@ -22,8 +22,10 @@ and the 64 MiB-insufficient/512 MiB-needed pair: both are empirical, and a
 shortened form that keeps only "512 MiB" makes the number look chosen.
 Decision 26's *correction* — that DUT-UART capture was never an intended use — is
 the whole entry; the fallback chain it describes is the disposable half.
-Decision 55's `default_headers` rejection, which is the second time that shortcut
-has been proposed and rejected.
+Decision 55's `default_headers` rejection — corrected by `api/027`, 2026-09-10, to
+drop the false "leaves the sweep nothing to assert" clause and mark the
+handle-hands-out-`http()` reason as prospective, not current. Preserve the
+corrected form, not the original.
 
 ## What
 

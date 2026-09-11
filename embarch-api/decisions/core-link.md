@@ -49,7 +49,7 @@ Core's log endpoints assume a long-running service. This crate is the opposite: 
 
 So the funnel moves down. `dispatch` applies the token and the timeout and sends; `send`/`send_no_content` are thin readers over it; a route needing typed status handling hands it a `RequestBuilder` and reads the status itself. `bearer_token()` is **retired**. The guard is decision 50's shape applied to auth: one `.bearer_auth(…)` in the crate, no send site outside `dispatch`, both red by mutation.
 
-***Rejected: `default_headers` on the `ClientBuilder`.*** It attaches the token to every request the `reqwest::Client` makes, not to this client's *routes*, and `http()` hands that handle out. It also hides the credential from every call site, leaving the sweep ([decisions](tests.md) 54) nothing to assert. **Nothing was unauthenticated before this**; the wire is unchanged.
+***Rejected: `default_headers` on the `ClientBuilder`.*** It attaches the token to every request the `reqwest::Client` makes, not this client's *routes* — prospectively true: `http()` hands that handle out, but has one call site today, through `dispatch`, so the two sets still coincide. **Nothing was unauthenticated before this**; the wire is unchanged.
 
 ### 62 — `token_discovery`'s WSL2 check delegates to `embarch_topology::software::detect_wsl2`, dropping its own third signal
 This crate's private `is_wsl2` ran its own rule — `/proc/version` containing "microsoft" *or* "wsl", ignoring `$WSL_DISTRO_NAME` — while `resolve_software_topology`, linked into the same binary, used `detect_wsl2`'s union of kernel-string-or-env-var. The two could disagree: token discovery decides *where the token file is*, topology resolution decides *which Core to talk to*.
