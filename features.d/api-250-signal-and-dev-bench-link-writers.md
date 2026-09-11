@@ -1,0 +1,1 @@
+| Declare/list/remove a DUT signal link and dev-bench's own link, from an agent or a terminal (`declare_signal`, `list_signals`, `remove_signal`, `dev_bench_link`, and their CLI twins) | Shipped — wraps Core's existing `/signals`/`/dev-bench/link` routes, no new Core behaviour | no (client wrappers were already round-trip tested; parity test covers the CLI/MCP pairing) | 67 |

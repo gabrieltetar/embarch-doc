@@ -1,6 +1,6 @@
 # 042 — Two of the suite's declared facts are settable only from a binary the suite does not ship
 
-**State:** claimed — leg 074, `agent/api/042-signal-and-link-writers`
+**State:** done — leg 074, `agent/api/042-signal-and-link-writers`, 2026-09-10
 
 **Supervisor's dispatch note, leg 074, 2026-09-10.**
 **Reserve in `api` for this dispatch, and one of these is load-bearing for your unit:**
@@ -92,14 +92,51 @@ surface.
 
 ## Done when
 
-- [ ] `POST /signals`, `GET /signals`, `DELETE /signals/{name}` and `POST /dev-bench/link` are each
+- [x] `POST /signals`, `GET /signals`, `DELETE /signals/{name}` and `POST /dev-bench/link` are each
       reachable from both `embarch-api` front ends, or the reason one is not is written in
       `embarch-api`'s own decisions naming this repo.
-- [ ] `embarch-api/interfaces/tools.md` lists whatever was added.
-- [ ] `status.d/api-*` fragment for the three docs whose "only human surface" premise this makes
+- [x] `embarch-api/interfaces/tools.md` lists whatever was added.
+- [x] `status.d/api-*` fragment for the three docs whose "only human surface" premise this makes
       false (`embarch-ui/decisions/topology-tab.md`, `embarch-topology/decisions/links.md`,
       `suite/studies-guide.md:114`).
-- [ ] Gate green; `changelog.d/api-*` fragment.
+- [x] Gate green; `changelog.d/api-*` fragment.
+
+## Closed by `agent/api/042-signal-and-link-writers`, 2026-09-10
+
+**Surfaced on both front ends**, mirroring `enroll_probe`'s own two-layer wrapping (decision 34):
+`declare_signal`/`declare-signal`, `list_signals`/`list-signals`, `remove_signal`/`remove-signal`
+(all three already had round-trip-tested `embarch-core-client` wrappers — this unit's own new
+client-layer work is one addition, `set_dev_bench_link`, added the same way `declare_signal` was),
+and `dev_bench_link`/`dev-bench-link` for `POST /dev-bench/link`. `tests/tool_subcommand_parity.rs`
+passes with no new `DOCUMENTED_ASYMMETRIES` entry — full parity, not a documented exception.
+
+`declare_signal`'s params are plain strings (`direction`, `route_kind`, `port_serial`/`rx_pin`/
+`tx_pin`) rather than the client's own `SignalDirection`/`SignalRoute` enums, parsed and validated
+by a shared `parse_signal_link` helper (`src/tools.rs`) used by both the CLI and MCP paths — those
+enums derive `Serialize`/`Deserialize` but not `schemars::JsonSchema`, since this crate deliberately
+never links `probe-rs`/`serialport` (decisions 37/38), the same reason `embarch-core-client` mirrors
+rather than re-exports Core's own topology types in the first place.
+
+**Decision:** `embarch-api` decision 67, in `decisions/surface.md` (not `decisions/tool-wrapping.md`,
+which had 66 B of headroom — decision 67's own text says why that file's usual "per-tool" mission
+wasn't the right fit anyway: the load-bearing claim is that this crate's own parity rule, decisions
+3/10, extends to a class of Core routes it had silently exempted, a shape/policy point matching
+`surface.md`'s mission rather than one tool's own params).
+
+**`interfaces/tools.md`'s reserve:** paid, not just avoided. The four new rows would have blown
+the file's 1,008 B of headroom regardless, so this unit did the verbatim-by-section split
+`tasks/api/053` named as its own unpark clause, before adding the new rows to the resulting
+`interfaces/tools-topology.md`/`tools-dev-bench.md`. `tasks/api/053` is now closed; every
+`Must not delete:` item it named survived the move (see its own closing note).
+
+**Out of scope, left for the supervisor's fold:** the third `Done when` box names three docs this
+repo may not edit (`embarch-ui/decisions/topology-tab.md`, `embarch-topology/decisions/links.md`,
+`suite/studies-guide.md`) — satisfied by `status.d/api-signal-and-link-writers.md` instead, per the
+dispatch note.
+
+**Gate:** `cargo build`/`cargo test`/`cargo clippy --all-targets -- -D warnings` all green in the
+code worktree (workspace default-members include `crates/embarch-core-client`, so this covers the
+shared client crate too). `python3 scripts/check-docs.py` all 11 checks green in the doc worktree.
 
 **Adjacent, not the same:** `tasks/api/036` surfaces one read-only route (`GET /dev-bench/hello`).
 This is the *write* surface for a class Core's own docs name as a class. If both are worked, they
