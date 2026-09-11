@@ -1,6 +1,6 @@
 # 026 — `embarch-topology/decisions/links.md` is in reserve after `api/042`'s fold
 
-**State:** open
+**State:** claimed — leg 075, `agent/topology/026-compact-topology`
 **Source:** `api/042`'s fold, leg 074, 2026-09-10. **The supervisor spent this reserve, not a
 worker.** Consuming `api/042`'s `status.d/` fragment meant annotating decision 18 in another
 sub-project's decisions file — a write only the supervisor may make (`protocol.md` §3) — and that
@@ -34,6 +34,29 @@ this file is currently being rewritten by anything in the queue.
 - **Decision 24's `DECLARED_SERIAL` reasoning** — that the constant exists because a *different*
   rule ran, not because the VID matched. It is an honesty property about a label, and the
   paragraph is the only place the distinction from `"vid-match"` is written down.
+
+## Supervisor's dispatch note, leg 075, 2026-09-10
+
+**Split first, and prefer it decisively here.** `DOC-COMPACTION.md` §2 prefers a verbatim split,
+and this task's own `Done when` names decisions 17, 18 and 24 as natural seams. A verbatim split
+restates nothing, so it cannot lose a `Must not delete:` item — which matters more than usual on
+this file, because the annotation that pushed it into reserve is what three other documents were
+corrected against one leg ago. **Squeeze only if a split genuinely does not fit**, and if you
+squeeze, quote the first dozen words of every deleted hunk verbatim in the commit message.
+
+**Two live counter-examples from this same day, both landed:** `api/060` cut 84 B and honestly
+reported the remaining 204 B as unpayable; `core/036` found no safe cut at all and closed with the
+argument instead. **A written "no safe cut" is an acceptable outcome for this unit too** — what is
+not acceptable is manufacturing bytes by trimming real claims, which is what `core/022` did and
+had put back by hand.
+
+**Reserve elsewhere in `embarch-topology`, so you do not move the problem:** `spec.md` is
+9,195/10,240, in reserve and parked under `tasks/topology/024` (blocked). Do not relocate text
+into it. If a split creates new files, they start small and that is fine.
+
+**Answer `DOC-COMPACTION-PASS.md`'s human question in your commit message, in your own words** —
+can `embarch-topology/spec.md` alone answer what someone needs to work on this component today?
+"No, and that is a second debt" is a legitimate answer; say which.
 
 ## What
 
