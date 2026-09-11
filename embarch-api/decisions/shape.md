@@ -46,7 +46,7 @@ Closed the cheaper way: `dev-bench-hello` (`src/main.rs`, `src/cli.rs`) runs the
 
 3/10 and `spec.md` §1 are unchanged: no second exception was needed, so none was written.
 
-**Amendment, `tasks/api/049`:** the CLI twin's `--json` success object first named this handshake's `schema_version` under the literal key `schema_version`, which `json_out::stamped()` unconditionally overwrites with the envelope's own constant (decision 24/50) — the exact collision decision 52 named and avoided for `versions`. Renamed to `dev_bench_schema_version`; see [../interfaces/tools.md](../interfaces/tools.md)'s `dev_bench_hello` row.
+**Amendment, `tasks/api/049`:** the CLI twin's `--json` success object first named this handshake's `schema_version` under the literal key `schema_version`, which `json_out::stamped()` unconditionally overwrites with the envelope's own constant (decision 24/50) — the exact collision decision 52 named and avoided for `versions`. Renamed to `dev_bench_schema_version`; see [../interfaces/tools-dev-bench.md](../interfaces/tools-dev-bench.md)'s `dev_bench_hello` row.
 
 ### 64 — Retired config keys are refused by name, except one still scaffolded in the field
 `[[projects.targets]]` (decision 53) and `soc_chip_overrides` (decision 13) are refused by name at config load. `artifact_path_for_core` — retired separately, decision 15 — is not: with no `deny_unknown_fields` on `ProjectConfig`, it loads, silently unread.
