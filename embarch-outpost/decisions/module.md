@@ -28,4 +28,4 @@ The header was already written for this — **its markers-compiled-out path no-o
 
 **A compile-only test pins it**: an application that includes the header and calls the macro with the module disabled, in the same test runner as the rest.
 
-**Decisions 22 and 23 — the test harness's toolchain-free legs and the skip/fail split** moved to their own file, split by mission: [decisions/testing.md](testing.md).
+**Decisions 22 and 26 — the test harness's toolchain-free legs and the skip/fail split** moved to their own file, split by mission: [decisions/testing.md](testing.md).
