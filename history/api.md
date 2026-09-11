@@ -31,6 +31,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- Decision 55's false sweep-assertion clause is gone; the funnel guard matches file+function and the SSE sweep gets an untimed-stream test.
 - Zephyr-west discovery now scans `apps/` as well as `app/`; decision 63.
 - api's ~160 `design.md §N decision M` code comments now read `decision M` (own) or `` `<repo>` decision M`` (cross-repo); 5 real miscitations fixed en route.
 - `config.example.toml` drops retired `artifact_path_for_core`; now documents `serial_port`/`serial_baud`/`probe_serial`/`version_command`/`env`.
