@@ -1,6 +1,9 @@
 # 044 — `embarch-core-client` still deserializes the ambiguous `hardware_id` spelling on three routes
 
-**State:** open
+**State:** open — announced to #embarch-fleet by leg 076 at ts `1789097485.649139`; the `ops.md` §4
+30-minute window opened then. Cross-repo (`embarch-core` + `embarch-api`), so supervisor-executed
+despite the `api` scope. Do not restart the window: if this leg dies first, the next leg reads that
+`ts` with `fleet-read.py --thread` and completes the remaining time.
 **Source:** worker on `agent/core/020-hardware-id-two-spellings`, 2026-09-07, closing `tasks/core/020`; filed from `inbox/` by the supervisor, leg 037
 **Scope:** api
 **Hardware:** none

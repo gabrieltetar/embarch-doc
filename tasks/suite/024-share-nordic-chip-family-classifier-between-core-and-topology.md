@@ -1,6 +1,8 @@
 # Give `embarch-core` a way to reuse `embarch-topology`'s Nordic chip-family classifier
 
-**State:** open
+**State:** open — announced to #embarch-fleet by leg 076 at ts `1789097484.647639`; the `ops.md` §4
+30-minute window opened then. Do not restart the window: if this leg dies first, the next leg reads
+that `ts` with `fleet-read.py --thread` and completes the remaining time.
 **Source:** `tasks/core/025-nrf54l-name-matcher-in-flash-backend-is-a-second-independent-classifier.md`
 — closing that task's decision (`embarch-core` decision 49) found the seam
 this task is filed against.
