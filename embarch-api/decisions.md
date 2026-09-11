@@ -17,8 +17,9 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, and the crate-owned hash | 19 | 5.7 KB |
 | [The flash offset a `bin` needs](decisions/flash-address.md) — `base_address` as config, not a per-call parameter | 42 | 1.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, what a `static` project refuses rather than ignores, and the `app/`/`apps/` scan | 12, 13, 20, 21, 22, 51, 63 | 13.9 KB |
-| [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate | 11, 14, 15, 17, 26, 36, 37, 38, 43, 55, 58, 62 | 11.8 KB |
+| [Reaching Core](decisions/core-link.md) — addressing, artifact transfer, the shared client, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate | 11, 14, 15, 17, 26, 36, 37, 38, 55, 58, 62 | 10.5 KB |
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
+| [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 1.6 KB |
 | [Submitting and orchestrating studies](decisions/studies.md) — seals, schemas, reflash | 27, 28, 31, 33, 39, 40, 44 | 10.3 KB |
 | [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, and no longer constants | 32, 45 | 3.6 KB |
 
