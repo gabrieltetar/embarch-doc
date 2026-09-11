@@ -1,6 +1,6 @@
 # 037 — `study_schema_mismatch` names an error `code` enum member that does not exist
 
-**State:** open
+**State:** claimed — leg 077, 2026-09-10, `agent/core/037-study-schema-mismatch-code`
 **Source:** `embarch-core/open.md:9` — the bullet says the value is "reachable by nothing: it names
 a member of the error `code` enum that does not exist". Surfaced by leg 076's refill sweep; the
 claim is doc-sourced and the code has **not** been read.
