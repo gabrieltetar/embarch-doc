@@ -1,6 +1,6 @@
 # 025 — nothing states what a caller may assume about a resolution or validation answer across calls
 
-**State:** open
+**State:** claimed by agent/topology/025-caller-granularity-contract, 2026-09-10 18:52
 **Source:** `embarch-topology/open.md` — "Call-site granularity is not fully specified. Resolution
 and validation are fresh-every-call by construction, with no cache in the crate; **nothing states
 what a caller may assume beyond that**, so a consumer wanting to hold an answer across calls has no
