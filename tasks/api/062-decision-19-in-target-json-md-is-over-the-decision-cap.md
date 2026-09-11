@@ -1,6 +1,6 @@
 # 062 — `decisions/target-json.md` decision 19 is over the per-decision cap and nothing has filed it
 
-**State:** open
+**State:** claimed — leg 076, worker on `agent/api/062-compact-target-json`
 **Source:** `scripts/check-doc-size.py --decisions`, run during leg 076's refill sweep —
 `OVER 5510 B embarch-api/decisions/target-json.md#19` against the 4,096 B per-decision cap. It is
 **not** on the size ledger (`--due` lists only `core-link.md` and `zephyr.md` for this scope), so
