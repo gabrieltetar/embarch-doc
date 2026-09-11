@@ -60,6 +60,7 @@
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions.md)).
 
 ### Decided
+- api: decision 66 records why `embarch-core-client` stays in this repo, not a tenth; `modules.md` row corrected post-decision-56. `decisions/core-link.md`
 - - `embarch-api` decision 26 retitled about intent; the false dev-bench-port fallback claim is gone, per [decisions/core-link.md](../embarch-api/decisions/core-link.md).
 - The drain's decoding policy is its own decision (65), split out of decision 18 into `decisions/log-capture.md`.
 - Refusing retired config keys by name is now the default; `artifact_path_for_core`'s tolerance is the recorded exception (decisions/shape.md 64).
