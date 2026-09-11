@@ -6,18 +6,18 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## What it is
 
-The suite's one abstraction for **topology**, previously handled ad hoc across env vars, config files and doctor checks in three different repos:
+The suite's one abstraction for **topology**, previously ad hoc across env vars, config files and doctor checks in three repos:
 
-- **Software topology** — where each process runs relative to the others: the API and Core on one machine, a WSL2-hosted API talking to a native-Windows Core, or Core moved to a headless box on the LAN.
-- **Hardware topology** — what is physically wired to what: which USB port carries a board's debug probe versus its serial link, which physical board plays which role, and what that role's board identity currently is.
+- **Software topology** — where each process runs relative to the others: API and Core on one machine, a WSL2-hosted API talking to native-Windows Core, or Core on a headless LAN box.
+- **Hardware topology** — what is physically wired to what: which USB port carries a board's debug probe versus its serial link, which physical board plays which role, and that role's current identity.
 
 **The class of problem it exists to make impossible:** a stale port override winning silently over reality. Per decisions 2 and 3 **the override mechanism was removed rather than merely detected** (decision 9, retired).
 
 It is **not**:
 
-- **A network service.** It's a library compiled in and called in-process — **nothing about it can be "down" the way a service call can fail.**
+- **A network service.** A library compiled in and called in-process — **nothing about it can be "down" the way a service call can fail.**
 - **A daemon or watcher.** Nothing stays running; **calling linked code directly *is* the live mechanism.**
-- **A second implementation beside Core's own enforcement.** Core's gate logic **moved into** this crate.
+- **A second implementation beside Core's enforcement.** Core's gate logic **moved into** this crate.
 - **Scoped to multi-board or Pi-as-first-class yet.** Both deferred until either is real.
 
 ## Shape
@@ -50,7 +50,7 @@ no hand-off file, no env var:
   umbrella's doctor:                resolve_*() / validate() -> pass/fail/warn
 ```
 
-**The only state that persists anywhere is a human's declared intent, and it lives inside the crate.** Consumers call functions; **they never parse a topology-owned file directly.**
+**The only state that persists anywhere is a human's declared intent, inside the crate.** Consumers call functions and **never parse a topology-owned file directly.**
 
 ## The declared facts
 
@@ -58,8 +58,8 @@ Everything else is detected live. These four cannot be:
 
 | Fact | Why detection cannot produce it |
 |---|---|
-| **Which board is enrolled as which role** | No software can derive which physical board a probe is wired to — only a person physically isolating it and saying so |
-| **A link port's own USB serial** | The link can be a different physical USB device from the JTAG probe, and **no identity readback is possible over a plain UART** |
+| **Which board is enrolled as which role** | No software can derive which physical board a probe is wired to — only a person isolating it and saying so |
+| **A link port's own USB serial** | The link can be a different USB device from the JTAG probe, and **no identity readback is possible over a plain UART** |
 | **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 
@@ -67,30 +67,30 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 
 ## Storage and roles
 
-**A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**, so the caller can say out loud that one board replaced another. Two rows claiming one role would leave the by-role lookup answering with whichever came first in the file — **the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist** (decision 20).
+**A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned rather than dropped silently**. Two rows claiming one role would leave the by-role lookup returning whichever came first — **the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist** (decision 20).
 
-**A declared link serial or interface can also be *unset* again** (`set-dev-bench-link --clear-serial`/`--clear-interface`) — the fix for exactly the stale-fact case above: `NotFound` now names which rule emptied the candidate list and routes to clearing it, rather than to re-enrolling by role, which carries the same stale fact right back (decision 27).
+**A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`) — the fix for that stale-fact case: `NotFound` names which rule emptied the candidate list and routes to clearing it, rather than re-enrolling by role, which carries the same fact right back (decision 27).
 
-**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16"** — every bench with one VCOM declares nothing, **but a guess says so.**
+**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many it was guessed among, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
 
-**The declared *interface* is load-bearing, and is the only thing separating the two VCOMs a DK's onboard probe exposes under one serial:** `COM16` and `COM17` differ in nothing else a detector can read, and the console is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** The failure signature is a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).
+**The declared *interface* decides which of the two VCOMs is the console** — `COM16` and `COM17` differ in nothing else a detector can read, and it is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** The failure signature is a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).
 
 **`guessed_among`'s trigger is an *under-declared* bench, not a crowded one.** Adding probes cannot produce a guess while an interface is declared.
 
 ## What validation asserts, and what it cannot
 
-- **A role:** the enrolled probe is currently enumerated and its live identity still matches the recorded one. Runs on every flash, reset and handshake.
-- **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, by comparing JTAG-read identity against the board's self-report. **Two chip families have a declared relation; every other chip returns *undeclared*, never treated as a pass.**
-- **A direct signal route:** the declared serial is currently enumerable. It **cannot** confirm the wire from the DUT's TX pin actually lands on that bridge.
+- **A role:** the enrolled probe is enumerated and its live identity still matches the recorded one. Runs on every flash, reset and handshake.
+- **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, by comparing its JTAG-read identity against its self-report. **Two chip families have a declared relation; every other chip returns *undeclared*, never treated as a pass.**
+- **A direct signal route:** the declared serial is enumerable. It **cannot** confirm the wire from the DUT's TX pin lands on that bridge.
 - **A via-bench route:** validates on the strength of being declared; its carrier is the bench's link, whose liveness is the role check's job (decision 18).
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
 
-A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, this call's own pass instant, alongside the unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` does not yet expose it.
+A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, its own pass instant, alongside unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` does not yet expose it.
 
 ## What each consumer owns now
 
-- **`embarch-core`** keeps the hardware-I/O plumbing and calls the crate for *which* port or probe, and whether it's still valid. No copy of the identity-recheck logic, board storage, identity reads or port heuristic, and **no dev-bench port override env var, with no replacement.**
+- **`embarch-core`** keeps the hardware-I/O plumbing and calls the crate for which port or probe, and whether it's valid. No copy of the identity-recheck logic, board storage, identity reads or port heuristic, and **no dev-bench port override env var.**
 - **`embarch-api`** links the crate **without the hardware feature** — only its `base_url = "auto"` branch calls the crate; the declared-address fast path does not.
 - **`embarch-umbrella`** does the same; its own env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
 
@@ -107,10 +107,10 @@ every real caller already re-resolves per operation).
 
 ## Where it stands
 
-Both real boards are enrolled and a real end-to-end flash plus study has completed clean.
+Both real boards are enrolled; a real flash-plus-study has run clean end to end.
 
-**The mismatch path is exercised, not just designed:** two physically different nRF54L15 DUTs have alternated on one probe, three such swaps are on record, each tripping the gate — an end-to-end refusal, not a log line beside one (decision 12).
+**The mismatch path is exercised, not just designed:** two physically different nRF54L15 DUTs have alternated on one probe three times, each tripping the gate — an end-to-end refusal, not a log line beside one (decision 12).
 
-**No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, which overwrites the record it would contradict; **no topology override on the store path**, its only variable being Windows' `ProgramData`, unsettable for an already-running service.
+**No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, overwriting the contradicting record; **no topology override on the store path** — its only variable is Windows' `ProgramData`, unsettable once the service is running.
 
 The register pair those reads go through is confirmed against real silicon by an independent mechanism (decision 21). Everything else open: [open.md](open.md).

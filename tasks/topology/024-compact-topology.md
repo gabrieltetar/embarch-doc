@@ -1,6 +1,6 @@
 # 024 — Compact embarch-topology/spec.md
 
-**State:** claimed by leg 081
+**State:** done — leg 081, 2026-09-11
 **Size debt due:** 2026-09-24
 **Source:** `scripts/check-doc-size.py` — 89.4% of cap after `tasks/topology/011`'s edit
 **Scope:** topology
@@ -47,6 +47,31 @@ it unfiled.
 
 ## Done when
 
-- [ ] `embarch-topology/spec.md` is below 90% of its cap.
-- [ ] Nothing on the **Must not delete** list is gone or now reads as false.
-- [ ] Gate green.
+- [x] `embarch-topology/spec.md` is below 90% of its cap. 9195 B -> 8726 B
+      (85.2%, 1,514 B of headroom) — a prose-only pass, no section added or
+      removed, per `DOC-COMPACTION-PASS.md`.
+- [x] Nothing on the **Must not delete** list is gone or now reads as false.
+      The decision-28 sentence, the `Core, mid-flash/reset/run_study: ...`
+      call-site block, and the whole "What a caller may assume across calls"
+      section (with its decision-29 pointer) sit inside two fenced/protected
+      spans that were not touched — verified by re-reading the diff. The one
+      section-name reference from outside the file
+      (`decisions/scope.md:37` → `spec.md, "What a caller may assume across
+      calls"`) still resolves; that header text is unchanged.
+- [x] Gate green — `check-docs.py` (11/11), `check-ownership.py --scope
+      topology` and `--code-repo`, `check-client-names.py --repo` (both
+      worktrees), and in `embarch-topology`: `cargo build`/`test`/`clippy
+      --all-targets -- -D warnings`, all clean; the code worktree carries no
+      diff.
+
+## Still in reserve
+
+Compacting this pass did not clear the cap's reserve band by much margin —
+8726/10240 B is 85.2%, comfortably under the 90% floor with ~1.5 KB of
+headroom, but this is the file's *first* compaction pass and it stayed a
+straight prose tightening (no hot/cold split, no content moved out) per the
+task's own scope. Any future growth of comparable size to `topology/011`'s
+or `topology/025`'s additions will use a meaningful fraction of that headroom
+again. Not filing a further debt task now — `check-doc-size.py` passes and
+nothing is in reserve — but a reviewer of the next `spec.md`-touching task
+should re-check the percentage before assuming slack.
