@@ -9,6 +9,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- embarch-topology/spec.md compacted 9195B -> 8726B (85.2% of cap), no facts lost, task/topology/024.
 - Topology decision 25 and `classify_chip`'s doc comment no longer claim `embarch-core` stops at nRF54L; core decision 49 matches `nrf54h` too. The two matchers stay separate on purpose.
 - embarch-topology's CLI enroll/validate/set-dev-bench-link now refuse when a Core answers (decision 28); local-bootstrap unchanged.
 - Decision 23 split from `decisions/crate.md` into `decisions/storage.md`; crate.md 11,474 -> 7,782 B.
