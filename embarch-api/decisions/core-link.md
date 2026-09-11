@@ -18,8 +18,8 @@ Originally scoped to trigger only for a genuinely remote Core, on the theory tha
 ### 17 — Checking Core's contract version where the schema version is already checked
 The status call now also compares a compiled-in expected contract version, **warning rather than refusing** — matching the suite's existing posture on version skew — in the same log line the schema check already produces.
 
-### 26 — `serial_log`'s port never fell back to Core's dev-bench port, and the stated intent was corrected
-**No such fallback was ever built** — verified by `api/041`, 2026-09-09. **The correction matters more than the mechanism:** this decision originally justified it by calling a DUT's own serial console "a different, project-specific port that config already covers" — treating DUT-UART capture as a real intended use on par with the bench's. That premise was **never true**: Core's serial link was only ever meant to reach the bench. A project's `serial_port` field existing does not mean pointing it at a DUT was ever a supported goal, just that nothing in code stops it.
+### 26 — `serial_log`'s `serial_port` field was never meant to reach a DUT
+**Corrected 2026-09-09** (`api/041`): originally justified by calling a DUT's serial console "a different, project-specific port that config already covers" — treating DUT-UART capture as intended, on par with the bench's. Never true: Core's serial link was only ever meant to reach the bench; the field existing doesn't mean pointing it at a DUT was supported, only that nothing stops it. **No such fallback mechanism was ever built** — see `interfaces/tools.md`'s `serial_log` row.
 
 ### 36 — The whole runtime moves onto a dedicated 512 MiB-stack thread
 A real GATT-sized status call reproduced a known deserialization stack overflow **in production**, crashing the live MCP server repeatedly — each crash silently respawning a fresh process, so the client saw only a closed connection.

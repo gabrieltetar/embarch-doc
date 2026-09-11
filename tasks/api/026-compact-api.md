@@ -6,7 +6,7 @@
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-api/decisions/core-link.md, embarch-api/spec.md, embarch-api/open.md
+**Compacts:** embarch-api/spec.md, embarch-api/open.md
 **Size debt due:** 2026-09-14
 **In flux:** yes — the event-stream half of this file (decisions 48, 49) has never
 met a real `embarch-core`. `tasks/api/001-sse-client.md` is that run. Until it
@@ -99,5 +99,15 @@ per-file compaction-debt ledger, now redundant with the filed
 **This task stays `blocked`**: `spec.md` (still inside its own reserve line)
 and `decisions/core-link.md` (parked, `In flux: yes` above) are still
 unaddressed, and only `api/001` landing unparks the latter.
+
+**`decisions/core-link.md`'s item closed by `agent/api/054-decision-26-retire-or-retitle` (task
+`api/054`), 2026-09-10**, per the same `In flux: yes` exception used for `open.md` above: leg 070
+cleared the file's own 206-byte reserve as part of paying it forward, so this unit paid the
+compaction rather than parking it further. Decision 26 was retitled about intent rather than
+tombstoned — its correction (a DUT console was never a supported `serial_log` target) is true and
+current, so it stays `active`, not `retired`; only the disposable fallback-mechanism prose (per this
+task's own `Must not delete:` note) was cut. `core-link.md` went from 12,082 B to 11,962 B. This
+task stays `blocked`: `spec.md` and `open.md` remain, both still inside their own reserve lines, and
+neither is addressed by this unit.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.

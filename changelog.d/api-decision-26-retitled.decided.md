@@ -1,0 +1,1 @@
+- `embarch-api` decision 26 retitled about intent; the false dev-bench-port fallback claim is gone, per [decisions/core-link.md](../embarch-api/decisions/core-link.md).

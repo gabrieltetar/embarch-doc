@@ -1,6 +1,6 @@
 # 054 — decision 26 announced a `serial_log` fallback that was never built
 
-**State:** claimed by agent/api/054-decision-26-retire-or-retitle, 2026-09-10 18:45
+**State:** done — closed by agent/api/054-decision-26-retire-or-retitle, 2026-09-10
 
 ## Supervisor's dispatch note, leg 070, 2026-09-10
 
@@ -97,3 +97,24 @@ the fallback mechanism itself never shipped, only the config-fallback-to-
 `serial_port` step did, or a retitling that stops asserting the dev-bench-port
 reach as fact. No code SHA needs reverting; the fix is doc-only, in
 `embarch-doc/embarch-api/decisions/core-link.md`.
+
+## Closed
+
+**Retitled, not tombstoned.** Decision 26's surviving content — the intent
+correction, that a DUT's own serial console was never a supported `serial_log`
+target — is true and current, not something that "stops describing anything
+true" (`DOC-CONVENTIONS.md`'s bar for `retired`). Only the false mechanism
+claim was ever wrong, and it was already disposable per `tasks/api/026`'s own
+`Must not delete:` note ("the fallback chain it describes is the disposable
+half"). So the heading now names the intent directly (`serial_log`'s
+`serial_port` field was never meant to reach a DUT) and the body states the
+correction first, the historical justification second, and points at
+`interfaces/tools.md`'s `serial_log` row for the actual mechanism instead of
+restating it — no more "fell back to Core's dev-bench port" anywhere in the
+entry.
+
+This also paid `tasks/api/026`'s reserve debt on `decisions/core-link.md`
+(206 B left, blocked `In flux: yes` on the event-stream half, per the leg 070
+dispatch note above): the file went from 12,082 B to 11,962 B. `026`'s
+`Compacts:` line no longer names `core-link.md`; `spec.md` and `open.md` are
+still on it, so `026` stays `blocked`.
