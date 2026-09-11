@@ -1,6 +1,6 @@
 # 017 — A fourth flashing backend, for a vendor-deprecated tool at third preference, that no document in the suite mentions
 
-**State:** open
+**State:** claimed — leg 071
 **Source:** suite review pass 2026-09-06, dimension 6 (deletion candidates). Code-confirmed, with a whole-corpus grep.
 **Scope:** core
 **Hardware:** none. Either a deletion or a doc row; both are host-side. No claim is made here about what this tool does to any part — that is engineer-declared.
