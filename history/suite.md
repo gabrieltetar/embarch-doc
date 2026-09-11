@@ -10,6 +10,7 @@
 - `history/<scope>.md`, assembled per sub-project from `changelog.d/` fragments by `scripts/build_changelog.py`, capped at 20 KB with older windows rolled to `history/archive/`.
 
 ### Changed
+- Suite-wide decisions have a home, `suite/decisions.md`. `embarch.md` §5's rustfmt bullet moved into it verbatim, and §5 reads as five one-line principles again.
 - The rustfmt reversal condition in [embarch.md](../embarch.md) §5 now says why neither `cargo fmt --check` nor `--all --check` is right on its own.
 - Core's on-disk result layout moved from spec.md §5 to interfaces.md, beside the routes that serve it; study-designer's citation follows.
 - suite/features.md is assembled from features.d/ row fragments, and a worker now writes its own inventory row.
