@@ -1,6 +1,6 @@
 # 017 — A fourth flashing backend, for a vendor-deprecated tool at third preference, that no document in the suite mentions
 
-**State:** claimed — leg 071
+**State:** done
 **Source:** suite review pass 2026-09-06, dimension 6 (deletion candidates). Code-confirmed, with a whole-corpus grep.
 **Scope:** core
 **Hardware:** none. Either a deletion or a doc row; both are host-side. No claim is made here about what this tool does to any part — that is engineer-declared.
@@ -50,12 +50,19 @@ smaller or more honest; the current state is neither.
 
 ## Done when
 
-- [ ] `Backend::NrfJprog` is gone, or `embarch-core/decisions/flashing.md` records why it exists
-      and `suite/features.md` covers it.
-- [ ] `EMBARCH_FLASH_BACKEND`'s accepted values are the same in the code, the spec and the error
-      message.
-- [ ] The erase-on-flash claim is true of every backend that still exists.
-- [ ] Gate green; `changelog.d/core-*` fragment.
+- [x] `Backend::NrfJprog` is gone. Deleted (no bench in this suite ever recorded selecting it):
+      the variant, `name()` arm, `preferred_for` slot, `extra_candidates` arm, `NRFJPROG_EXE_ENV`
+      + `env_for` arm, `exe_names` arm, `build` arm, `install_hint` arm, its line in the refusal
+      message, and its `run()` `Command` arm. Recorded as `embarch-core` decision 54.
+- [x] `EMBARCH_FLASH_BACKEND`'s accepted values are the same in the code (`KNOWN_BACKEND_NAMES`,
+      now 3), `interfaces/constants.md`, and the error message.
+- [x] The erase-on-flash claim (`features.d/core-150-erase-on-flash.md`) is true of every backend
+      that still exists (`probe-rs`, `jlink`, `nrfutil`).
+- [x] Gate green; `changelog.d/core-nrfjprog-backend.removed.md` filed.
+
+`embarch-core/decisions/flashing.md` crossed into doc-size reserve as a result
+(93.5%); filed `tasks/core/035-compact-core.md`, `blocked` on `In flux: yes`
+with a size-debt-due date, per protocol.
 
 **Adjacent, not the same:** `tasks/core/010` fixes the *message* an unrecognised backend name
 prints. It does not touch which backends exist.
