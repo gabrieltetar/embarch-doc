@@ -1,6 +1,6 @@
 # 028 — The four unrendered protocol primitives produce a wrong layout instead of a named refusal
 
-**State:** open
+**State:** claimed — leg 076, worker on `agent/study-designer/028-primitives-fail-loudly`
 **Source:** `embarch-study-designer/open.md:20` — parse is pinned per primitive, but "the
 bit-unpacker, the counted walker and the CRC check are the render half, and are not written".
 Surfaced by leg 076's refill sweep. **The claim is doc-sourced; the renderer was not read.**
