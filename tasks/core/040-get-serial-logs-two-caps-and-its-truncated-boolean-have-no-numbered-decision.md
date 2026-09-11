@@ -1,6 +1,6 @@
 # 040 — `GET /serial-log`'s two caps and its `truncated` boolean have no numbered decision
 
-**State:** claimed (leg 082)
+**State:** done (leg 082)
 **Source:** `embarch-core/open.md` — *"`GET /serial-log`'s caps have no numbered decision"*
 **Scope:** core
 **Hardware:** none
@@ -47,12 +47,64 @@ out when the decision lands.
 
 ## Done when
 
-- [ ] A numbered `embarch-core` decision records both numbers' rationale and the boolean-vs-count
+- [x] A numbered `embarch-core` decision records both numbers' rationale and the boolean-vs-count
       choice, in a topic file that is not pushed into reserve by it.
-- [ ] `embarch-core/open.md`'s `GET /serial-log` bullet is replaced by a pointer to that decision,
+- [x] `embarch-core/open.md`'s `GET /serial-log` bullet is replaced by a pointer to that decision,
       or deleted if nothing is left open.
-- [ ] Any residual open question (e.g. a byte count) is stated with its trigger, not left implied.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build` / `cargo test` /
+- [x] Any residual open question (e.g. a byte count) is stated with its trigger, not left implied.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build` / `cargo test` /
       `cargo clippy --all-targets -- -D warnings` in `embarch-core`, `python3 scripts/check-docs.py`
       in `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped.
+- [x] `changelog.d/` fragment dropped.
+
+## Outcome — leg 082
+
+**Numbered decision 58, filed in `embarch-core/decisions/logging.md`** — not `surfaces.md`
+(no room: it was at 12,019/12,288 B, parked on `tasks/core/038`) and not a new topic file. Logging
+is the closer topical fit anyway: `GET /serial-log` is "Meant for dev-bench's link" per
+`interfaces/hardware.md`, sibling to decision 37's `dev-bench.log`, and `logging.md` had 3,232 B
+of headroom before its own reserve line (9,056/12,288 B). The entry added 1,949 B, landing
+`logging.md` at 11,005/12,288 B — 54 B clear of its 11,059 B reserve threshold, checked by hand
+against `check-doc-size.py --pressure` (green, `logging.md` not listed) rather than assumed.
+No new topic file was needed; the split-first precedent (`probe-vendors.md`/`bind.md`,
+`decisions/testing.md`) applies when the natural home is full, not when a better-fitting home with
+room exists.
+
+**Both numbers' rationale**, pulled from `serial.rs`'s own doc comments and made checkable: 10,000
+ms sits under `embarch-core-client`'s 15,000 ms default timeout rather than matching it; 1 MiB is
+"in the spirit of" `stream_store::EMBARCH_STREAM_MAX_BYTES` (decision 30) but two orders smaller
+because this is a snapshot, not a bulk tap. Neither number changed.
+
+**The boolean-vs-count half, the longer paragraph:** read `serial::capture()` rather than guessing
+— its read loop `break`s the instant the byte cap is hit and never drains further, so the crate
+cannot know a true loss total even in principle, only the last chunk's overflow. `stream_store`'s
+own `truncated: bool` (decision 30) is the in-crate precedent: both byte-capped surfaces here
+answer *whether*, never *how much*. **Rejected, not deferred** — a caller acts on `truncated: true`
+with a shorter `duration_ms` or a larger `EMBARCH_SERIAL_LOG_MAX_BYTES`, neither of which needs a
+count. **Trigger recorded** (decision 58 and `open.md`, both): a caller that must act differently
+on 1 byte lost versus 900 KB.
+
+**`open.md`:** the "Owed decisions" section (one bullet, now closed) is removed entirely; a new
+one-line trigger bullet for the residual byte-count question sits under "Designed, not built",
+mirroring decision 12's own entry there. Net effect shrank the file from 3,887 B to 3,735 B —
+185 B clear of its 3,920 B reserve threshold (was already PAID before this task, per
+`--pressure`, from decision 55's unrelated bullet closing on leg 075).
+
+**`tasks/core/036` closed** (`embarch-core/open.md`'s parked reserve debt): the file stays paid
+after this edit, so per this task's own instruction the debt is closed rather than left open with
+no one paying it. Its `Must not delete:` list was checked — none of its four protected claims live
+in the section this task touched.
+
+**`decisions.md` index and `interfaces/constants.md`** updated: Logging's row now lists decision
+58 (and 51, missing from the row before this task — a pre-existing gap, corrected in passing) and
+its size; the `/serial-log` caps row in `constants.md` now cites decision 58.
+
+**No code changed** — this is a doc-only unit; `serial::MAX_DURATION_MS`, the byte cap, and the
+response shape are untouched, per this task's own instruction.
+
+**Gate:** `cargo build`, `cargo test` (191 passed, 2 ignored), `cargo clippy --all-targets -- -D
+warnings` all green in `embarch-core` (no diff, so unchanged). `check-docs.py` (all 11 checks),
+`check-doc-size.py`, `check-decision-refs.py` all green in `embarch-doc`. `check-ownership.py
+--scope core` (doc worktree) and `--code-repo --scope core` (code worktree, 0 paths changed) both
+green. `check-client-names.py --repo <code worktree>` clean. Windows-native build not attempted —
+not code-touching, no debt.
