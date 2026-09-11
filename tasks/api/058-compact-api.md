@@ -1,6 +1,6 @@
 # 058 — `embarch-api/decisions/core-link.md` is back in reserve
 
-**State:** open
+**State:** claimed — leg 071
 **Source:** `agent/api/054-decision-26-retire-or-retitle` shrank decision 26 by
 120 B while paying `tasks/api/026`'s reserve debt on this file, but the file
 is still inside the reserve line; `DOC-COMPACTION.md` §2
