@@ -59,18 +59,26 @@ nothing has yet picked it up as work to do.
 
 ## Done when
 
-- [ ] The per-caller-identity row does not read as owed work. **The edit is
+- [x] The per-caller-identity row does not read as owed work. **The edit is
       `features.d/core-200-per-caller-identity-beyond-one.md` and nothing else** — the assembled
       file and the principle it contradicts are both outside a `core` worker's row
       (`../../embarch-fleet/protocol.md` §3), so *"or the principle no longer forbids it"* is
       **not** an arm of this task: if that is the answer, drop a `status.d/core-*` fragment saying
       so and leave the row alone. Rewritten 2026-09-09 (`tasks/doc/029`) — the earlier wording
       offered a `core` worker an out it may not take, which is the defect that task exists to stop.
-- [ ] The assembled row stays within the **per-row 600 B cap** (`build_features.py`), which is the
+      Done: the row now reads `Declined — single-engineer scope forbids a permission model;
+      revisit only if Core ever needs to tell *which* caller, not just authorized or not`, citing
+      `embarch-token.md` §5 in the Decision column in place of a bare `n/a`/`—`.
+- [x] The assembled row stays within the **per-row 600 B cap** (`build_features.py`), which is the
       only cap that applies: the assembled file lost its byte cap outright on 2026-09-07, so the
       *"~14 bytes of headroom"* this box used to cite no longer exists.
-- [ ] Whether the `Status` vocabulary should gain a "declined, with a trigger" value is
+      The fragment is 227 B; `build_features.py --check` passes (130 fragments valid).
+- [x] Whether the `Status` vocabulary should gain a "declined, with a trigger" value is
       **`features.d/README.md`'s question and not this worker's** — that file is outside every
       worker's row too. Express the refusal in this row's own prose, and if the vocabulary really
       needs a third value, say so in the `status.d/core-*` fragment.
-- [ ] Gate green; `changelog.d/core-*` fragment.
+      Done in prose only (the `Status` cell now starts `Declined —` rather than adding a new
+      vocabulary value); no `status.d/core-*` fragment filed because `build_features.py --check`
+      does not constrain the `Status` cell's leading word today, so no suite-level fact went false.
+- [x] Gate green; `changelog.d/core-*` fragment.
+      `changelog.d/core-per-caller-identity-row.changed.md` added.

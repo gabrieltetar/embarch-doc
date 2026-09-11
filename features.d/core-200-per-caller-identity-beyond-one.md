@@ -1,1 +1,1 @@
-| Per-caller identity beyond one shared token | Todo | n/a | §6 |
+| Per-caller identity beyond one shared token | Declined — single-engineer scope forbids a permission model; revisit only if Core ever needs to tell *which* caller, not just authorized or not | n/a | `embarch-token.md` §5 |
