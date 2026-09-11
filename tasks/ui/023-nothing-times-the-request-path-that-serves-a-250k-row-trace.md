@@ -1,6 +1,6 @@
 # 023 — Nothing times the request path that serves a 250k-row trace; only `parse` itself is measured
 
-**State:** open
+**State:** claimed — leg 072
 **Source:** `embarch-ui/open.md` — the 250,000-row cap bullet: "whether 1.69 s of server-side decode is acceptable against whatever answers `/study/{id}/streams` (unmeasured — nothing here times the request path, only `parse` itself)"
 **Scope:** ui
 **Hardware:** none — the existing `trace::scratch_view::synth_capture` builds the capture in
