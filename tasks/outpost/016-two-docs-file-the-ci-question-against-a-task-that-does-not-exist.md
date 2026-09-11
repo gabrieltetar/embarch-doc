@@ -1,6 +1,13 @@
 # 016 — Two `embarch-outpost` docs file the CI question against `tasks/suite/021`, which has never existed
 
-**State:** claimed — leg 076, worker on `agent/outpost/016-ci-citation`
+**State:** done — leg 076, worker on `agent/outpost/016-ci-citation`. Confirmed via
+`git log --all -- tasks/suite/021*`: `suite/021` was filed, decided, and folded on 2026-09-08
+(commit `ac20966`) — it corrected `embarch-core` and `embarch-dev-bench`'s decision records and
+added the CI-coverage table now at `embarch.md` §5. It never covered `embarch-outpost` specifically
+and building a workflow was explicitly declined as out of scope for that task. Both citations here
+rewritten to state the no-CI fact in their own words, citing `embarch.md` §5, with whether to build
+a workflow left open and named as a suite-scope call this repo cannot file. No new suite task filed
+and no inbox drop made — the question is already recorded, not newly discovered.
 **Source:** leg 076's refill sweep. `embarch-outpost/open.md:26` and
 `embarch-outpost/decisions/testing.md:21` both hand the "outpost has no CI" question to
 `tasks/suite/021`. `tasks/suite/` numbering runs 020 → 022; no 021 is on disk and none was ever
@@ -38,8 +45,12 @@ no check anywhere.
 
 ## Done when
 
-- [ ] Neither `embarch-outpost/open.md` nor `embarch-outpost/decisions/testing.md` cites
+- [x] Neither `embarch-outpost/open.md` nor `embarch-outpost/decisions/testing.md` cites
       `tasks/suite/021`, and each states the CI question in terms a reader can act on.
-- [ ] `grep -rn 'tasks/suite/021'` across the corpus is empty.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+- [x] `grep -rn 'tasks/suite/021'` across the corpus is empty (outside this task file's own
+      historical account of what happened).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `scripts/check-docs.py` all 11 checks
+      pass; `scripts/check-ownership.py --scope outpost` OK.
+- [x] `changelog.d/` fragment added. No `status.d/` fragment: nothing suite-level changed — the
+      fact `suite/021` already recorded (`embarch.md` §5) is unchanged, only these two citations of
+      a closed task are corrected.
