@@ -16,6 +16,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/doctor.md](decisions/doctor.md) | 18, 31, 42 | The check chain, the states it refuses to conflate, and which `embarch-api` it is about |
 | [decisions/bind.md](decisions/bind.md) | 22 | Check 17: whether Core is listening where this topology can reach it |
 | [decisions/sticky-host.md](decisions/sticky-host.md) | 48 | What a saved `--host` attests to once a later `setup` run has passed it by |
+| [decisions/probe-vendors.md](decisions/probe-vendors.md) | 49 | Why check 5's vendor-ID list stays here rather than routing to `embarch-core` |
 | [decisions/dev-bench-firmware.md](decisions/dev-bench-firmware.md) | 19, 47 | Check 13: the stale-dev-bench-firmware comparison, and the two states it must not conflate |
 | [decisions/mcp.md](decisions/mcp.md) | 23, 40 | Check 10: finding our MCP registration in the agent CLI's config, and making it answer |
 | [decisions/reporting.md](decisions/reporting.md) | 11, 37, 39, 46 | What `doctor` and `status` hand back, and the fields a consumer reads |
