@@ -1,6 +1,12 @@
 # 026 — `embarch-ui/open.md` is in reserve against its own baseline
 
-**State:** open
+**State:** claimed — leg 083, 2026-09-11
+
+**Doc-size reserve in your scope (`embarch-ui`).** Exactly one file is in reserve and it is the one
+this task pays: `embarch-ui/open.md` 4,295/5,120 B (83.9%), filed against this task. Nothing else in
+`embarch-ui` is in reserve. **Note the ratchet that caught leg 082 twice:** `check-doc-size.py`
+measures `open.md` against its own **baseline**, not only against the 5,120 B cap, so a shorter file
+can still go RED. Get it out of reserve in one pass rather than shaving.
 **Source:** `scripts/check-doc-size.py` went RED during leg 082's `tasks/suite/019` unit, which
 added one bullet to `embarch-ui/open.md`.
 **Scope:** ui
