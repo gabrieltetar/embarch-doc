@@ -1,6 +1,6 @@
 # 035 — The study event stream has now met a real `embarch-core`, and three things still say it has not
 
-**State:** claimed — leg 072
+**State:** done — leg 072
 **Source:** observed by the supervisor on leg 021 while running `tasks/api/029` on the bench, 2026-09-06
 **Scope:** api
 **Hardware:** none to write this up; **one live study to re-observe**, and the boards were attached when it happened
@@ -62,11 +62,15 @@ file that is not there.
 
 ## Done when
 
-- [ ] `open.md`'s bullet says what was observed and what was not, with provenance.
-- [ ] `026`'s `In flux:` is re-judged against the live run and its unpark
-      condition names something that exists.
-- [ ] If `026` stays blocked, **say what would unpark it in terms of a task that
-      is actually in the queue.**
-- [ ] Do **not** compact `core-link.md` as part of this task — that is `026`'s
-      job and this one only decides whether `026` may run.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `open.md`'s bullet says what was observed and what was not, with provenance.
+- [x] `026`'s `In flux:` is re-judged against the live run and its unpark
+      condition names something that exists — `tasks/api/059-sse-client-remaining-observations.md`,
+      filed by this task, replaces the never-filed `tasks/api/001-sse-client.md`.
+- [x] `026` stays `blocked`, now for the honest reason: `spec.md`/`open.md` are
+      still both inside their own reserve lines and neither has been compacted
+      by this unit — unrelated to the event stream, which is resolved for
+      `core-link.md`/`study-events.md` as far as `study_watch` goes.
+- [x] `core-link.md` was not compacted by this task.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — 11/11 doc checks,
+      `cargo build`/`test`/`clippy --all-targets -D warnings` clean in
+      `embarch-api` (no code changed by this unit).
