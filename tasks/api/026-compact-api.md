@@ -1,6 +1,8 @@
 # 026 — `embarch-api/decisions/core-link.md` is 22 bytes from its cap
 
-**State:** claimed — leg 073, 2026-09-10. Dispatched as this leg's first unit: it is the nearest
+**State:** done — leg 073, 2026-09-10, `agent/api/026-compact-api`. `spec.md` and `open.md`
+squeezed clear of reserve; all Done-when boxes now checked. Was dispatched as this leg's first
+unit: it is the nearest
 non-blocked entry on the size ledger (due 2026-09-14, `open.md` 5068/5120 and `spec.md` 9441/10240)
 and `In flux:` is `no` for both files on the `Compacts:` line.
 Previously: open — corrected from `blocked` by the supervisor at `api/035`'s fold, leg 072, on its
@@ -98,11 +100,24 @@ entry went into whichever file had room rather than the file whose topic it was.
       compactor's own words: *can `spec.md` alone answer what someone needs to
       work on reaching Core today?* — yes: nothing in the split changed what
       `spec.md` says, only where the decisions justifying it live.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — green for the
-      `core-link.md`/`study-events.md` split itself (`check-docs.py` all 10
-      green on `agent/api/046-older-core-parse-rule`); left unchecked because
-      `spec.md` and `open.md` — both still named under **Compacts:** above and
-      both still inside their own reserve lines — are untouched by this unit.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `check-docs.py` all
+      11 green, `check-doc-size.py` clear on both `spec.md` (9038 B, actual
+      floor 9040 per `check-doc-size.py`'s `RESERVE_FLOOR`/`RESERVE_PCT`
+      arithmetic — the task's own 9216 figure was wrong) and `open.md`
+      (3914 B, floor 3920), `check-ownership.py --scope api` OK on all
+      3 changed paths.
+
+**`spec.md`/`open.md` squeezed by `agent/api/026-compact-api` (this task),
+2026-09-10**: `open.md` went from 5068 B to 3914 B and `spec.md` from 9441 B to
+9038 B, both by tightening prose in place — no split, per the task's own
+steer that a split is unlikely to be the right move here. Every `Must not
+delete:` item above is untouched, and its citations (decisions 15, 26, 36, 55)
+still resolve — none of them live in `spec.md`/`open.md` to begin with, they
+live in `decisions/core-link.md`, which this unit did not touch. One fact was
+cut rather than merely reworded: `open.md`'s "Owed decisions" bullet dropped
+the aside that `embarch init` never writes `serial_port`, a real but tangential
+gap already independently true and not part of the owed decision itself. This
+task is now fully closed.
 
 **Closed by `agent/api/046-older-core-parse-rule` (task `api/046`), 2026-09-07:
 only the `core-link.md` split above**, which was blocking decision 58. This
