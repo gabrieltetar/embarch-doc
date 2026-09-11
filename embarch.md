@@ -34,16 +34,22 @@ Each has four capped docs: `spec.md` for what is true now, `decisions.md` for wh
 ## 4. Architecture sketch
 
 ```
-Claude Code (using embarch-promptu skills)     human, direct: `embarch-api <subcommand> ...`
-      |                                                              |
-      | MCP (stdio)                                                  |
-      v                                                              v
-                     embarch-api --HTTP+Bearer--> embarch-core --probe-rs/serialport--> hardware
-                                                         |
-                                                         | serial (COBS-framed postcard)
-                                                         v
-                                                embarch-dev-bench firmware
-                                             (BLE central/peripheral + power sampling)
+Claude Code                    human, direct:                  human, in a browser:
+(embarch-promptu skills)       `embarch-api <subcommand> ...`  http://127.0.0.1:4890
+      |                                   |                             |
+      | MCP (stdio)                       |                             |
+      v                                   v                             v
+                  embarch-api                                    embarch-ui
+                        \                                           /
+                         \___ embarch-core-client (HTTP+Bearer) ___/
+                                          |
+                                          v
+                              embarch-core --probe-rs/serialport--> hardware
+                                          |
+                                          | serial (COBS-framed postcard)
+                                          v
+                                 embarch-dev-bench firmware
+                              (BLE central/peripheral + power sampling)
 
                                          the one signal that skips the bench:
    DUT firmware (embarch-outpost compiled in) --UART, TX-only--> USB bridge --> embarch-core
@@ -56,9 +62,15 @@ setup and verification, off to the side and out of the runtime path entirely:
                                                        server, diagnoses the whole chain
 ```
 
-**Umbrella is not a runtime hop, and that is a design constraint rather than an accident of scope**: it sets the stack up and diagnoses it, then gets out of the way — **a working machine keeps working if the `embarch` binary is deleted.** It is specifically *not* the process an MCP client spawns.
+**`embarch-api` and `embarch-ui` are peers, not layers**, and that is the correction this sketch carries: the UI is Core's second HTTP+Bearer client, not a front end on the API. It enrols probes, declares and deletes signals, and posts studies directly — **16 hardware-adjacent Core endpoints, plus `GET /logs/recent` for the Debug tab** ([embarch-ui/spec.md](embarch-ui/spec.md)) — with no `embarch-api` in the path and, deliberately, no `probe-rs` or `serialport` in its tree either. What both reach Core through is one crate, **`embarch-core-client`**, which is why "reach Core over HTTP+Bearer" has a single implementation rather than two that drift. That crate lives *inside* the `embarch-api` repo, which is a packaging fact and not a dependency on the API binary.
 
-**`embarch-promptu` is not a separate hop either** — skills and prompt patterns an agent loads directly. **Everything hardware-facing still funnels through the API to Core to the probe**, with the bench as the physical fixture at that boundary.
+**Umbrella is not a runtime hop, and that is a design constraint rather than an accident of scope**: it sets the stack up and diagnoses it, then gets out of the way — **a working machine keeps working if the `embarch` binary is deleted.** It is specifically *not* the process an MCP client spawns. It does link `embarch-core-client` and `doctor` does call Core, but only to *diagnose* one; nothing hardware-facing runs through it, which is what "out of the runtime path" means here.
+
+**`embarch-promptu` is not a separate hop either** — skills and prompt patterns an agent loads directly.
+
+**Everything hardware-facing goes through one *implementation*, and that is the invariant — not one process, and not the API.** [`embarch-topology`](embarch-topology/spec.md)'s `hardware` feature is the only code in the suite that touches `probe-rs` or a serial port. `embarch-core` links it for every runtime path; **the crate's own `embarch-topology` CLI binary links it too, standalone, with no HTTP hop through Core** — deliberately, so a human sees exactly the validation Core enforces rather than a second opinion ([decisions](embarch-topology/decisions.md) 5 and 8). Umbrella's `doctor` also reads `/sys/bus/usb/devices` for probe vendor IDs, which is read-only enumeration and opens nothing. The bench is the physical fixture at that boundary.
+
+**The sentence this replaced said everything funnels through *the API*, which the UI has always falsified; the obvious repair — "through Core" — is false too**, because the topology CLI is Core's sibling rather than its client. Naming the crate is what is actually true, and it is a stronger property: two owners of a probe would be a bug, two callers of one owner is the design.
 
 ## 5. Principles carried across the suite
 
