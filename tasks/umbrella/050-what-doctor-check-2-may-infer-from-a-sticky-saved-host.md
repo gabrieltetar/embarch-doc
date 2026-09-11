@@ -1,6 +1,6 @@
 # 050 — Write down what `doctor` check 2 is entitled to infer from a sticky `saved.host`
 
-**State:** claimed — leg 078, 2026-09-10
+**State:** done — leg 078, 2026-09-10
 **Reserve for this scope:** `decisions/bind.md` 11,447/12,288 B (841 B left) and `open.md`
 4,493/5,120 B (627 B left) are both in reserve, with `umbrella/009` and `umbrella/038` parked on
 them. Put the new decision in a sibling topic file rather than squeezing `bind.md` — that is what
@@ -37,15 +37,23 @@ is silent on the question.
 
 ## Done when
 
-- [ ] One numbered `embarch-umbrella` decision states what `saved.host` means per class, that
+- [x] One numbered `embarch-umbrella` decision states what `saved.host` means per class, that
       `setup` writes it for all of them, and what check 2 may and may not infer from finding one.
-- [ ] `state.rs`'s "only meaningful for `remote`" comment either agrees with that decision or is
-      corrected to.
-- [ ] `embarch-umbrella/open.md:15` narrows to the unmade clearing-behaviour change, which still
-      needs a bench.
-- [ ] `decisions/bind.md` is at 11,447/12,288 B — **in reserve, 841 B left.** If this decision does
-      not fit, put it in a sibling topic file rather than squeezing; see
-      [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2, and note `tasks/umbrella/009-compact-docs.md`
-      already parks that file's compaction.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+      Decision 48, `embarch-umbrella/decisions/sticky-host.md`.
+- [x] `state.rs`'s "only meaningful for `remote`" comment either agrees with that decision or is
+      corrected to. Corrected.
+- [x] `embarch-umbrella/open.md:15` narrows to the unmade clearing-behaviour change, which still
+      needs a bench. Bullet shrank 4493 B → 4313 B.
+- [x] `decisions/bind.md` is at 11,447/12,288 B — **in reserve, 841 B left.** Untouched; decision 48
+      went into the new sibling file `decisions/sticky-host.md` instead, per
+      [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 and the `umbrella/020`/`022` precedent.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy -D warnings`
+      in `embarch-umbrella`, `check-docs.py`, `check-client-names.py`, and `check-ownership.py
+      --scope umbrella` (both branches) all pass.
+- [x] `changelog.d/` fragment (`umbrella-sticky-saved-host.decided.md`). No suite-level fact was
+      made false — this is a scoped documentation decision — so no `status.d/` fragment.
+
+## Not done here
+
+Clearing `saved.host` on a non-`remote` `setup` conclusion is a real behaviour change on real
+machines and needs the bench to confirm; `open.md` keeps it open as hardware debt.
