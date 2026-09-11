@@ -1,6 +1,11 @@
 # 048 — embarch-umbrella/decisions/doctor.md is in reserve
 
-**State:** open
+**State:** blocked — corrected from `open` by the supervisor, leg 070, 2026-09-10. `In flux:` below
+says `yes` for the only file on the `Compacts:` line, and `tasks/README.md` is explicit that an
+all-yes flux answer means `**State:** blocked` naming what unparks it. Filed `open`, it was
+dispatchable, and `.claude/leg.md` forbids dispatching a compaction task whose flux answer is yes —
+so the queue was offering a task no leg was allowed to take. The unpark condition is unchanged and
+stated below; the `**Size debt due:** 2026-09-20` date is what keeps this park from absorbing.
 **Source:** scripts/check-doc-size.py, hit landing `tasks/umbrella/047`
 **Scope:** umbrella
 **Hardware:** none
