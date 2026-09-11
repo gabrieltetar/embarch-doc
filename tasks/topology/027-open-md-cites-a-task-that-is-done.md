@@ -1,6 +1,9 @@
 # 027 — `embarch-topology/open.md` files a live question against `tasks/topology/020`, which is done
 
-**State:** open
+**State:** claimed — leg 078, 2026-09-10
+**Reserve for this scope:** `embarch-topology/spec.md` is 9,195/10,240 B (1,045 B left, 89.8%) and
+its compaction task `topology/024` is `blocked`. `open.md` — the file this unit writes — is not in
+reserve. Stay out of `spec.md` unless the task needs it.
 **Source:** leg 076's refill sweep. `embarch-topology/open.md:17` ends its bullet with
 `` (`tasks/topology/020`) ``; `tasks/topology/020-crate-md-decisions-4-and-8-claim-a-uniqueness-the-crate-cannot-enforce.md`
 reads `**State:** done — leg 050, 2026-09-08`.
