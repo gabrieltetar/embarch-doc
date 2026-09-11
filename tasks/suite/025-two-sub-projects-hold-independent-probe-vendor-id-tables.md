@@ -1,6 +1,9 @@
 # 025 — Route the probe-vendor-ID fact to `embarch-core`, or record why umbrella keeps its own copy
 
-**State:** open
+**State:** open — announced and parked by leg 081, 2026-09-11: `ops.md` §4 window opened at
+01:23:21 MDT, `ts 1789111401.646499`, closes **01:53:21 MDT**. Silence is consent. If leg 081 dies
+before the window closes, the next leg reads this line and completes the window rather than
+restarting it.
 **Source:** worker leg 060, task `tasks/umbrella/035` (2026-09-09); drained from `inbox/` and
 numbered by the supervisor, leg 060
 **Scope:** suite
