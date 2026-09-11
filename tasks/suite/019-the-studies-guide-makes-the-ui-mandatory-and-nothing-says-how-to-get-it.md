@@ -1,12 +1,34 @@
 # 019 — The studies guide makes the UI a mandatory step, and nothing in the suite says how to obtain it, start it, or reach it
 
-**State:** open — announced in #embarch-fleet by leg 082, `ts 1789114940.893289`, 2026-09-11, for the
-**cheap half only** (README, guide paragraph, the five `EMBARCH_UI_*` variables written down), with
-shipping the UI in the release archive recorded as a decision with a trigger rather than done. The
-30-minute window under `../../embarch-fleet/ops.md` §4 runs from that message. **If leg 082 ends
-before it closes, the next leg completes this window rather than restarting it** — read the thread
-with `scripts/fleet-read.py --thread 1789114940.893289` and, if nothing objected and 30 minutes have
-passed, run it. A reply saying "ship it" widens the unit to the expensive half.
+**State:** claimed (leg 082) — announced in #embarch-fleet at 02:22:20 MDT, `ts 1789114940.893289`,
+for the **cheap half only**; **window closed 02:52:20 with no objection**, so it runs.
+
+## Reconciliation, 2026-09-11 — three of this task's premises are stale and one is newly false
+
+Read this before the "What" section below, which was written on 2026-09-06 and has been overtaken:
+
+- **`embarch-ui/README.md` exists** (6,917 B) and already covers how to build it
+  (`cargo run --release`), the URL, the six tabs, the config file, and the VS Code launcher. The
+  task says it does not exist. **That half is done and is not this unit's work.**
+- **The signal CLI exists.** `studies-guide.md` §4 no longer says *"both done in the UI — there is
+  deliberately no CLI for either"*; since `embarch-api` decision 67 it says "in the UI **or** from a
+  terminal" and names `declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`. The
+  quoted premise is gone from the source doc.
+- **Port 4890 is no longer absent from the corpus** — `tasks/suite/009`, this leg's third unit, put
+  it in `embarch.md` §4.
+- **"Five `EMBARCH_UI_*` variables" is wrong in both directions.** There are **four** in the source
+  (`HOST`, `PORT`, `CONFIG`, `STATE`), and the README's table documents **three** while asserting
+  *"the whole surface is three environment variables"* — so the README is not merely incomplete, it
+  makes a false completeness claim. `EMBARCH_UI_STATE` overrides the recent-projects path
+  (`<per-user data dir>/embarch/ui/recent-projects.json`).
+
+**What actually survived, and what this unit did:** the newcomer gap is real but narrower than
+filed. `suite/user-guide.md` mentions the UI **zero times** and its §3 says the archive contains
+*"all three binaries"*, while `suite/studies-guide.md` §4 still requires the **Topology**, **Study
+Designer** and **Trace** tabs — and the release archive genuinely does not contain `embarch-ui`
+(`assemble-suite.yml` pulls `embarch-core`, `embarch-api`, `embarch-umbrella` and nothing else).
+So a reader who has only what `embarch setup` installed cannot reach the suite's flagship
+capability and is told nothing about why.
 **Source:** suite review pass 2026-09-06, dimensions 7 and 1. Code-confirmed.
 **Scope:** suite
 **Hardware:** none
