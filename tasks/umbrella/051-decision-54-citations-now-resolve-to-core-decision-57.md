@@ -1,6 +1,6 @@
 # 051 — `embarch-umbrella`'s "decision 54" citations now resolve to the wrong `embarch-core` decision
 
-**State:** open
+**State:** claimed by leg 081
 **Source:** `inbox/umbrella-ui-decision-54-renumbered-to-57.md`, dropped by the worker on
 `core/039` and filed by leg 079. Split from that drop, which spanned two scopes; the `ui` half is
 `tasks/ui/025`.
