@@ -35,6 +35,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `decisions/doctor.md`'s "Current truth" pointer now points at `interfaces/doctor-chain.md`, not `spec.md`.
 - `manifest.rs`'s doc comment cites both decision 14 and 24 for the warn-on-mismatch clause, not 14 alone.
 - `doctor`/`init`/`setup` no longer print `design.md`/`milestone-*.md`; `ensure_not_sourced` keeps the legacy marker.
 - `schema-skew.md`'s decision 52 citation points at `embarch-api/decisions/tool-wrapping.md`, not the split-away `surface.md`.

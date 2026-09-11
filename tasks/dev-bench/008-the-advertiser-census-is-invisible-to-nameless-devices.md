@@ -6,12 +6,19 @@
 **Hardware:** none — the measurement is already taken and is written down below; a fix and its tests do not need a board
 **Owner:** no
 
-**Read [`007`](007-the-advertiser-census-truncates-with-no-marker-and-leaves-a-partial-fragment.md)
-first, and consider doing both in one pass.** `007` is the *truncation* half — the 64-byte cap cuts
-the list silently and the only marker means something else. This is a different and larger hole in
-the same string: **even an untruncated `fail_reason` omits every nameless advertiser.** Both land in
-`scan_seen_names_summary()` and both want the same sentence rewritten, so paying them separately
-means writing that sentence twice. Neither blocks the other.
+**`007` has landed, so the one-pass advice below is spent — read what it left instead.** `007` was
+the *truncation* half (the 64-byte cap cutting the list silently, with the only marker meaning
+something else); it landed on 2026-09-10 as `embarch-dev-bench` **decision 45** in
+`decisions/scanning.md`, which introduced `scan_seen_names_append()` in `app/src/scan_seen_names.c`
+and a `(census full)` marker distinct from `(truncated)`. Its task file is gone from the queue with
+it. Its own follow-up, `tasks/dev-bench/015`, is still open. This task is the different and larger
+hole in the same string: **even an untruncated `fail_reason` omits every nameless advertiser.** It
+still lands in `scan_seen_names_summary()`, which `007` did not change, and it is independent of
+`015`.
+
+*(Link repointed by leg 068: this file referenced `007`'s task file by relative path, and `007`'s
+fold removed that file from the queue, leaving `check-links.py` red on `main`. See the leg 068 log
+entry — the fold that removed it reported the gate green.)*
 
 ## What
 
