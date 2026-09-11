@@ -1,6 +1,12 @@
 # 045 — Relabel `confirmed_at_utc_ms` if `doctor` ever renders it, so it doesn't read as freshness
 
-**State:** claimed — leg 069, `agent/umbrella/045-confirmed-at-label`
+**State:** done — leg 069, `agent/umbrella/045-confirmed-at-label`. Confirmed
+`doctor` renders neither `confirmed_at_utc_ms` nor `validated_at_utc_ms`
+today; no display to relabel. Folded the constraint into `doctor.rs`'s
+module doc comment (`embarch-umbrella/src/doctor.rs`) so the first check
+that adds such a display cites decision 54 and uses "Enrolled". No
+`open.md` bullet added — that file is treated as full per this task's own
+pre-dispatch note.
 
 **Supervisor's pre-dispatch note (leg 069, 2026-09-10).** Read the task's own warning before you
 plan: `doctor` renders nothing here today, so **"write the constraint down where the next person to
@@ -65,12 +71,13 @@ assumed.
 
 ## Done when
 
-- [ ] No code change is required today — `doctor` shows neither timestamp.
+- [x] No code change is required today — `doctor` shows neither timestamp.
       This task exists so that the first PR that *does* add a
       `confirmed_at_utc_ms`-derived display to `doctor` cites this file and
       decision 54, and labels it "Enrolled", not "Validated".
-- [ ] If `doctor` grows such a display in this task's own scope, it uses that
+- [x] If `doctor` grows such a display in this task's own scope, it uses that
       wording and the task closes `done`; otherwise it can close `done` once
       this reasoning is folded into `doctor`'s own doc comments or spec, so a
-      future editor doesn't have to rediscover it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      future editor doesn't have to rediscover it. Done via a module doc
+      comment in `embarch-umbrella/src/doctor.rs`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
