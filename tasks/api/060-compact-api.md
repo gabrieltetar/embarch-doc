@@ -1,6 +1,24 @@
 # 060 — `embarch-api/open.md` is 221 bytes inside its reserve floor
 
-**State:** open
+**State:** claimed — leg 074, `agent/api/060-compact-api`
+
+**Supervisor's dispatch note, leg 074, 2026-09-10.** Dispatched as an ordinary unit: `In flux: no`,
+nothing overdue on the ledger, and `api/042` landed earlier in this leg without touching `open.md`.
+**Three outcomes are acceptable and the third is not a failure**: cut ~221 B of genuine filler;
+split the file verbatim if a seam exists; or **conclude there is no safe cut left and say so in
+this file**, leaving the debt dated and unpaid. This file has been squeezed once already
+(`api/026`) and that pass **deleted a fact recorded nowhere else in the suite** — the reviewer
+found it by sweeping nine documents. Read the `Must not delete:` block as binding, in particular
+the restored sentence it names.
+**Raising the cap is explicitly NOT in scope.** This task's own body argues `open.md`'s 5 KB cap
+may be too tight, and `tasks/core/036` makes the same argument independently. That is
+`DOC-BUDGET.md`'s call and `DOC-BUDGET.md` is owner-reserved — no worker and no supervisor may
+change it. If you conclude the cap is the real problem, **say so in this task file as a finding**
+and leave it; do not edit `DOC-BUDGET.md`, and do not treat the cap as negotiable while cutting.
+**Reserve in `api` after `api/042` landed** (re-measure before you rely on these): `open.md`
+4,141/5,120 B is the subject; `decisions/tool-wrapping.md` has ~66 B left and `decisions/zephyr.md`
+and `decisions/core-link.md` are both **over** cap — do not add to any of the three.
+`interfaces/tools.md` was split and paid earlier in this leg.
 **Source:** `api/026`'s fold, leg 073, 2026-09-10. `api/026` squeezed this file to 3,914 B — six
 bytes under a 3,920 B floor — and its reviewer then found that the squeeze had **deleted a fact
 recorded nowhere else in the suite** (`inbox/api-026-squeeze-quoting-and-lost-fact.md`, resolved at
