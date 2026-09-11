@@ -1,6 +1,9 @@
 # 013 — Power sampling is asserted present in four places on the newcomer's path, has no hardware, and has no row in the doc that exists to say how far things are verified
 
-**State:** open
+**State:** open — **announced and parked**, leg 083, `ts` **`1789117538.021209`** (posted
+2026-09-11 03:05 MDT; the 30-minute window closes **03:35:38 MDT**). Per `ops.md` §4 this runs as a
+leg's last unit if no objection arrives; if leg 083 ends first, the next leg **completes** this
+window from that `ts` rather than restarting the clock.
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer). Code-confirmed.
 **Scope:** suite
 **Hardware:** none. Doc tense corrections plus a features row plus, optionally, refusing a tap that cannot produce anything.
