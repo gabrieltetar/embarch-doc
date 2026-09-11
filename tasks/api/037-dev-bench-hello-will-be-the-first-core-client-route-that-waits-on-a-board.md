@@ -1,6 +1,6 @@
 # `dev_bench_hello` will be the first `embarch-core-client` route whose call waits on a board, and the timeout it inherits by inertia is `status_timeout`
 
-**State:** open
+**State:** claimed — leg 075, `agent/api/037-dev-bench-hello-timeout`
 **Source:** `umbrella/030` (2026-09-06) — noticed while splitting `doctor`'s own budgets after
 the same miscategorisation cost `embarch-umbrella` weeks of dark checks
 **Scope:** api
@@ -22,7 +22,28 @@ anything to answer with. `status_timeout` is 10 s and would probably work; `seri
 15 s and is the budget on the only other route over the same physical link. The ask is that the
 choice is **made and stated**, not inherited.
 
-## Why now
+## Supervisor's dispatch note, leg 075, 2026-09-10
+
+**The route exists now** — `tasks/api/036` landed, and `dev_bench_hello` is at
+`crates/embarch-core-client/src/client.rs:1810`. So this is no longer "before the route exists":
+read what budget it currently uses and either justify it in a doc comment or change it. The
+"stated, not inherited" half of the ask is the whole unit.
+
+**Do not measure the handshake.** The two carried-over notes above mention a timed `curl` on the
+bench — that is hardware, and this is a host-side unit. **You never touch hardware.** If you
+choose a value, it is stated as **assumed** with the reasoning, never as measured. Leaving the
+measurement owed is the correct outcome; say so in the task's own words and in your
+`changelog.d/` fragment.
+
+**Doc reserve in `embarch-api`, so you plan rather than discover:**
+`decisions/tool-wrapping.md` has **66 B left** (12,222/12,288) and its compaction task
+`api/047` is **blocked** — do not file a decision there. `open.md` is 4,124/5,120 and **204 B
+inside its reserve floor**, with `tasks/api/060` just landed against it and blocked: if you must
+add an `open.md` line, keep it to one clause. Prefer `decisions/core-link.md`'s topic area for a
+timeout decision — but note that file is 13,164/12,288, **over cap**, with `api/061` blocked, so
+if a new decision is warranted pick a topic file with headroom and argue the placement in the
+decision itself, exactly as `api/042`'s worker did. If your work spends reserve anywhere, file
+`tasks/api/<next free NNN>-compact-api.md` in the same commit.
 
 Before the route exists, because after it exists the reuse comment is already written. The
 `embarch-umbrella` version of this shipped and sat: `authed_get` set one 500 ms budget for every
