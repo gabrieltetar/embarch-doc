@@ -1,6 +1,6 @@
 # 035 — The study event stream has now met a real `embarch-core`, and three things still say it has not
 
-**State:** open
+**State:** claimed — leg 072
 **Source:** observed by the supervisor on leg 021 while running `tasks/api/029` on the bench, 2026-09-06
 **Scope:** api
 **Hardware:** none to write this up; **one live study to re-observe**, and the boards were attached when it happened
