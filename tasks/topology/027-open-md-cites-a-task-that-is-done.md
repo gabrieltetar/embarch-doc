@@ -1,6 +1,6 @@
 # 027 — `embarch-topology/open.md` files a live question against `tasks/topology/020`, which is done
 
-**State:** claimed — leg 078, 2026-09-10
+**State:** done — leg 078, 2026-09-10
 **Reserve for this scope:** `embarch-topology/spec.md` is 9,195/10,240 B (1,045 B left, 89.8%) and
 its compaction task `topology/024` is `blocked`. `open.md` — the file this unit writes — is not in
 reserve. Stay out of `spec.md` unless the task needs it.
@@ -32,8 +32,18 @@ also has zero open tasks right now, so a worker dispatched to this scope has not
 
 ## Done when
 
-- [ ] `embarch-topology/open.md:17`'s bullet either states what remains open in its own words with
+- [x] `embarch-topology/open.md:17`'s bullet either states what remains open in its own words with
       no task pointer, or is deleted with the `changelog.d` fragment saying 020 closed it.
-- [ ] `grep -rn 'tasks/topology/020' ` across the corpus returns no citation that reads as live debt.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+- [x] `grep -rn 'tasks/topology/020' ` across the corpus returns no citation that reads as live debt.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+
+## Resolution
+
+The bullet's content (no cheap detector for a caller-side second predicate) is itself what
+`020` produced as its answer — it is a standing, permanent limitation, not a pointer to future
+work. Removed the `(tasks/topology/020)` citation and replaced it with a plain statement that
+both known instances (`api/038`, `umbrella/036`) are already closed and nothing further is
+pending. The remaining corpus citations of `tasks/topology/020` (`crate.md`, `embarch-api`'s
+`core-link.md`, task `024`) are provenance for a decision already made, not live-debt pointers,
+so they were left alone. Nothing suite-level changed — no `status.d/` fragment filed.
