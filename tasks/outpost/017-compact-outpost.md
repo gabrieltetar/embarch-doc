@@ -1,6 +1,6 @@
 # 017 — Compact or split `embarch-outpost/decisions/testing.md` decision 22
 
-**State:** claimed — leg 078, 2026-09-10
+**State:** done — leg 078, 2026-09-10, `agent/outpost/017-compact-outpost`
 **Reserve for this scope:** nothing in `embarch-outpost` is in file-level reserve; the debt here is
 the per-decision cap named below.
 **Source:** filed by leg 076's supervisor against its own unit. `outpost/016` edited decision 22 and
@@ -44,9 +44,35 @@ to notice.
 
 ## Done when
 
-- [ ] `python3 scripts/check-doc-size.py --decisions` no longer reports
+- [x] `python3 scripts/check-doc-size.py --decisions` no longer reports
       `embarch-outpost/decisions/testing.md#22` as OVER, or the task closes with a written argument.
-- [ ] Every citation of outpost decision 22 still resolves; `scripts/check-decision-refs.py` green.
+- [x] Every citation of outpost decision 22 still resolves; `scripts/check-decision-refs.py` green.
       If a split moves it to a new file, the half with out-of-scope citers keeps the filename.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+
+## Resolution
+
+Decision 22's title already carried two judgments — the `WEST`-guard ordering fix, and the
+skip-not-fail/loud-restatement behavior of `cross_decoder.py` — bundled under one number because
+they landed in the same edit, not because they are one decision. Split verbatim, in the same file
+(`decisions/testing.md`), no prose squeezed:
+
+- **22** — both toolchain-free legs run above the `WEST` guard (unchanged prose, retitled to its
+  own half).
+- **23** (new) — a missing sibling-repo fixture is a skip, not a failure, and that skip survives to
+  the exit summary via the `EXIT` trap (unchanged prose, retitled to its own half).
+
+Neither half needed a cut to fit the 4,096 B cap once separated — `#22` and `#23` both land well
+under it. Updated: `decisions.md` index row (`22, 23`), `decisions/module.md`'s historical note
+about the move, and `decisions/wire.md`'s citation of the skip-and-check convention (was pointing
+at 22, correctly retargeted to 23 since that is the half it actually describes). `open.md`'s
+citation of the ordering fix already pointed at 22 and needed no change. All three `Must not
+delete` items — the skip-not-fail DECIDES clause, the "no CI, never has been" fact, and the unfiled
+suite-scope CI-workflow question — are intact, now in decision 23's text.
+
+`check-doc-size.py --decisions` no longer lists `testing.md#22` (or `#23`) as OVER.
+`check-decision-refs.py` and the full `check-docs.py` gate are green.
+`check-ownership.py --scope outpost` (doc worktree) and `--code-repo` (code worktree) both green.
+`check-client-names.py --repo` against the code worktree: clean. The code worktree has no changes
+— this task was doc-only.
