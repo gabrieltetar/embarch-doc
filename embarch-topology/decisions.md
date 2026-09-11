@@ -15,7 +15,8 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/link-declares.md](decisions/link-declares.md) | 20, 27 | A role's declared link facts, and what `NotFound` reports when they exclude everything |
 | [decisions/validation.md](decisions/validation.md) | 21, 25 | What the live identity gate asserts about the silicon on a link, and what it cannot |
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26 | The `validate` call's own freshness timestamp, distinct from the enrolled record's |
-| [decisions/links.md](decisions/links.md) | 17, 18, 24 | Declared facts about wires: a link's own port, and a DUT signal's route |
+| [decisions/links.md](decisions/links.md) | 18 | The DUT signal link's declared route |
+| [decisions/links-port.md](decisions/links-port.md) | 17, 24 | A link's own declared port, distinct from its probe's, and detection's fourth answer |
 | [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19 | How a mismatch reaches a human, and the live-push mechanism that was retired |
 
 Decision 9 is **retired** — explicit-override detection, superseded by decisions 2 and 3 removing the override mechanism outright.
