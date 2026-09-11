@@ -24,8 +24,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
-- **Both mirrors closed, `CoreConfig` still hand-kept:** the token mirror depends on `embarch-core-client` directly ([decision 20](decisions/mirrors.md) amendment); the config mirror's known drift is fixed (task 036: check 6 sources its verdict from the located `embarch-api` itself, decision 16 amendment) but `CoreConfig`/`ProjectConfig` still hand-mirror rather than depend on the shared crate, and no CI diff job exists. Depend on `embarch-core-client` for `CoreConfig` too, or build the diff job.
-
 - **A user-level service needs no elevation on Linux or macOS** (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not weighed.
 
 - **Mirrored-mode WSL2 networking has defined behaviour and no evidence.** Only NAT has run here, and that is all that got live-validated. Decision 30's ambiguity is real either way.

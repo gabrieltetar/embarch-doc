@@ -1,6 +1,6 @@
 # 049 — `CoreConfig`/`ProjectConfig` still hand-mirror `embarch-api`, with no check that would notice drift
 
-**State:** claimed — leg 071
+**State:** done — leg 071
 **Source:** `embarch-umbrella/open.md` — "Both mirrors closed, `CoreConfig` still hand-kept … no CI diff job exists. Depend on `embarch-core-client` for `CoreConfig` too, or build the diff job."
 **Scope:** umbrella
 **Hardware:** none — a type/dependency change and a test, entirely host-side.
@@ -35,9 +35,17 @@ last one standing, and it is the one a config-format change would hit first — 
 
 ## Done when
 
-- [ ] Either `CoreConfig`/`ProjectConfig` come from the shared crate, or a numbered decision
-      records why they cannot and a fixture-parse test covers the drift instead.
-- [ ] `embarch-umbrella/open.md`'s "Both mirrors closed, `CoreConfig` still hand-kept" bullet is
-      updated to say what is now true; if a third answer was found, name it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for anything suite-level made false.
+- [x] Either `CoreConfig`/`ProjectConfig` come from the shared crate, or a numbered decision
+      records why they cannot and a fixture-parse test covers the drift instead. `CoreConfig` now
+      comes from `embarch-core-client` (identical shape, `pub use`); `ProjectConfig` cannot follow
+      (lives inside `embarch-api`'s own binary) — decision 20's third amendment
+      (`decisions/mirrors.md`) records why, and `src/config.rs`'s test module gained a
+      `deny_unknown_fields` fixture-parse test against `embarch-api/config.example.toml`.
+- [x] `embarch-umbrella/open.md`'s "Both mirrors closed, `CoreConfig` still hand-kept" bullet is
+      updated to say what is now true; if a third answer was found, name it. Both strands closed —
+      bullet removed (decision 20's third amendment carries the record).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`test`/`clippy --all-targets
+      -- -D warnings` all clean; `check-docs.py` 11/11; `check-client-names.py` clean;
+      `check-ownership.py` clean in both worktrees.
+- [x] `changelog.d/` fragment dropped; `status.d/` fragment for anything suite-level made false.
+      No suite-level doc referenced this internal mirror, so no `status.d/` fragment was needed.
