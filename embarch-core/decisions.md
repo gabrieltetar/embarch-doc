@@ -13,7 +13,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Probes, board identity, and chip mapping](decisions/probes.md) | 8, 9, 22, 23, 26, 34 | 5.6 KB |
 | [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 36, 49, 52, 54 | 9.9 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 24, 33, 40, 41, 43, 45 | 10.5 KB |
-| [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47 | 5.4 KB |
+| [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56 | 8.2 KB |
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 4.8 KB |
 | [Logging](decisions/logging.md) | 16, 29, 37, 44 | 5.6 KB |
 | [Error and human surfaces](decisions/surfaces.md) | 12, 13, 25, 27, 28, 50, 55 | 7.5 KB |
