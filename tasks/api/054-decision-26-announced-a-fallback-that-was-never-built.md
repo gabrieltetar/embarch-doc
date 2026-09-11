@@ -1,6 +1,31 @@
 # 054 — decision 26 announced a `serial_log` fallback that was never built
 
-**State:** open — **the false claim itself is already gone.** I corrected decision 26's title and
+**State:** claimed by agent/api/054-decision-26-retire-or-retitle, 2026-09-10 18:45
+
+## Supervisor's dispatch note, leg 070, 2026-09-10
+
+**You are cleared to spend the reserve in `decisions/core-link.md`, because you are also required
+to pay it.** That file is 12,082 / 12,288 B — 206 bytes left — and its compaction task
+`tasks/api/026` is `blocked` on `In flux: yes`. `DOC-COMPACTION.md` §2 and `.claude/leg.md` both
+say a blocked compaction task parks the *pass*, not the *reserve*: the unit that next writes the
+file compacts it in the same commit. That is this unit. So: **compact `decisions/core-link.md` as
+part of your own commit**, carrying `tasks/api/026`'s `Must not delete:` list unchanged, and close
+only that one file's item on `026` — delete it from `026`'s `**Compacts:**` line (delete, never
+`~~strikethrough~~`; the line is data a script reads) and say in `026`'s body that this unit paid
+it. Leave every other file on that line alone. If `026` ends up with an empty `Compacts:` line,
+mark it `done` rather than editing the line to nothing.
+
+**Do not squeeze the decision work to fit.** The previous leg deliberately stopped at a 22-byte
+edit because 188 bytes was all there was; the point of paying the reserve first is that you do not
+have to. Retire, retitle, or tombstone decision 26 on the merits — a mission split of
+`core-link.md` is an explicitly cheaper move than shaving prose if the file holds more than one
+concern, and `DOC-COMPACTION.md` names it as such.
+
+**One judgement is yours and is not pre-made**: whether decision 26 becomes a retitled decision
+about intent or a tombstone in `decisions/removed.md`. Both are legitimate. Say which you chose and
+why in the commit message and in the decision itself.
+
+**Standing note from leg 060 — the false claim itself is already gone.** I corrected decision 26's title and
 first sentence in `api/041`'s fold, leg 060, 2026-09-09: the heading now reads *"never fell back
 to"* and the body says *"No such fallback was ever built — verified by `api/041`, 2026-09-09."*
 That was a **22-byte** edit, which is all `decisions/core-link.md` could take — it has 188 bytes
