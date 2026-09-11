@@ -16,6 +16,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56 | 8.2 KB |
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 4.8 KB |
 | [Logging](decisions/logging.md) | 16, 29, 37, 44 | 5.6 KB |
-| [Error and human surfaces](decisions/surfaces.md) | 12, 13, 25, 27, 28, 50, 55 | 7.5 KB |
+| [Error and human surfaces](decisions/surfaces.md) | 12, 13, 25, 27, 28, 50, 54 (moved to 57), 55, 57 | 7.5 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.
