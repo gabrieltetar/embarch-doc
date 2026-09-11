@@ -21,7 +21,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
 | [What a study declares](decisions/declares.md) — firmware versions and the GATT table | 40, 45 |
-| [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61 |
+| [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 71 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, and what it may report | 60, 62 |
 | [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library | 6, 34, 37, 38 |
 | [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67, 69 |

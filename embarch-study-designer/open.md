@@ -17,7 +17,7 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 
 ## Parsed and pinned, with no consumer
 
-- **`repeat`, `bitpack`, `crc32` and `fixed`.** They lower into a frame rendering that today only produces a layout for the flat cases; the bit-unpacker, the counted walker and the CRC check are **the render half, and are not written.** Deliberately so — **a rendering written before any real capture exists would be tested against synthetic bytes, which is exactly what decision 48 removed post-hoc validation for.** The tests pin that each primitive *parses into the right shape*, so the gap is a missing consumer rather than a silent misparse waiting to surface.
+- **`repeat` (`count_from`), `bitpack`, `crc32` and `fixed`.** The bit-unpacker, the counted walker and the CRC check are **the render half, and are not written** — deliberately: a rendering built before any real capture exists would be tested against synthetic bytes, which is exactly what decision 48 removed post-hoc validation for. `render_layout` now refuses each by name (task 028) rather than a caller getting a silent gap or, for `fixed`, a flat integer with the scale dropped.
 
 ## Missing authoring paths
 
