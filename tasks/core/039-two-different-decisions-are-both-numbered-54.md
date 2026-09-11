@@ -1,6 +1,11 @@
 # 039 — Two different `embarch-core` decisions are both numbered 54
 
-**State:** open
+**State:** claimed — leg 078, 2026-09-10
+**Reserve for this scope:** `embarch-core/decisions/flashing.md` 11,487/12,288 B (801 B left) and
+`decisions/surfaces.md` 11,937/12,288 B (351 B left) are both in reserve, and both their compaction
+tasks (`core/035`, `core/038`) are `blocked` on `In flux: yes`. Keep the "this decision moved" note
+to one short line. If your edit will not fit, compact *that file* as part of this unit, carrying the
+parked task's `Must not delete:` list, and close only that file's item there.
 **Source:** leg 077, 2026-09-10, found while picking the next free decision number for `api/044`.
 A live instance of the gap `tasks/doc/033` describes — nothing checks that a decision number is
 unique — so this is the defect, not the missing check.
