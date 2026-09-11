@@ -1,9 +1,31 @@
 # 008 — The advertiser census only ever lists devices that advertise a name, and the one complete record is gated on a name filter
 
-**State:** open — unparked by `013` landing. **`013`'s pass did not cover this.** It added Manufacturer Specific Data to `report_scan_seen()`'s per-advertiser record for every entry already in `scan_seen[]`, named or not — so a nameless advertiser that *is* recorded now shows more about itself than before. But `013` left both of this task's actual gates untouched: `scan_seen_names_summary()` still `continue`s past every entry with an empty name, and `report_scan_seen()` is still called only inside `connect_as_central()`'s `if (scan_name[0] != '\0')` arm, so an address-filtered `BleConnect` that times out still logs no census at all. Both fixes belong to the gating logic in `connect_as_central()`, not to the per-entry struct `013` widened, and were left for their own pass rather than folded in.
+**State:** claimed by the supervisor itself, leg 070, 2026-09-10 19:05 — **as a `toolchain` unit, not
+a worker dispatch.** The `Hardware:` field below is corrected in the same commit, with the
+measurement that corrects it. **Standing note from the previous pass:** unparked by `013` landing. **`013`'s pass did not cover this.** It added Manufacturer Specific Data to `report_scan_seen()`'s per-advertiser record for every entry already in `scan_seen[]`, named or not — so a nameless advertiser that *is* recorded now shows more about itself than before. But `013` left both of this task's actual gates untouched: `scan_seen_names_summary()` still `continue`s past every entry with an empty name, and `report_scan_seen()` is still called only inside `connect_as_central()`'s `if (scan_name[0] != '\0')` arm, so an address-filtered `BleConnect` that times out still logs no census at all. Both fixes belong to the gating logic in `connect_as_central()`, not to the per-entry struct `013` widened, and were left for their own pass rather than folded in.
 **Source:** supervisor bench unit, leg 025, 2026-09-06 — measured against the real bench, then confirmed in source
 **Scope:** dev-bench
-**Hardware:** none — the measurement is already taken and is written down below; a fix and its tests do not need a board
+**Hardware:** toolchain — **corrected from `none` by the supervisor, leg 070, 2026-09-10, and
+measured rather than assumed.** No board is needed, which is what `none` was reaching for and is
+still true. But the change is C in `app/src/ble_bridge_real.c`, and a worker's worktree contains
+`app/` and a `west.yml` and no Zephyr at all — the workspaces are gitignored and live only in the
+main checkout (`tasks/README.md`'s `toolchain` paragraph). Filed `none`, this task sent a worker at
+code it could not compile.
+
+**What was measured, so nobody re-derives it or records a false debt again** [2026-09-10]:
+
+    cd /home/gabriel/Github/embarch/embarch-dev-bench
+    ZEPHYR_BASE=/home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim/zephyr \
+      /home/gabriel/Github/embarch/.west-venv/bin/west build -p -b native_sim \
+      -d <builddir> app/tests/serial_protocol
+    <builddir>/zephyr/zephyr.exe
+
+Built clean and the suite ran **PROJECT EXECUTION SUCCESSFUL** from the main checkout. **The fleet's
+`west` and the Zephyr workspaces both exist and both work.** Three supervisor log entries before
+this one recorded "this environment has no `west` and no `ZEPHYR_BASE`" as a hardware debt; that was
+true of the *worktree* the worker was standing in and false of the machine, and it had begun to
+propagate as a standing fact about the suite. The `toolchain` classification is exactly the
+distinction — undispatchable, not unrunnable.
 **Owner:** no
 
 **`007` has landed, so the one-pass advice below is spent — read what it left instead.** `007` was
