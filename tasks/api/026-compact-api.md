@@ -1,6 +1,12 @@
 # 026 — `embarch-api/decisions/core-link.md` is 22 bytes from its cap
 
-**State:** blocked
+**State:** open — corrected from `blocked` by the supervisor at `api/035`'s fold, leg 072, on its
+own reviewer's finding (`inbox/api-026-blocked-on-nothing.md`, resolved here rather than filed as a
+task). `api/035` re-judged the park correctly and then left the state behind: the unpark condition
+it wrote — *"actually compacting `spec.md` and `open.md`, which is this task's own remaining job"* —
+is a description of dispatching the task, not an external precondition, and `blocked` has to keep
+meaning "nothing here can be done" (`tasks/doc/030`). Nothing external blocks it now, so it is
+dispatchable and `queue-status.py` should say so.
 **Source:** `api/022` spent the reserve writing decision 55; `DOC-COMPACTION.md` §2
 **Scope:** api
 **Hardware:** none
@@ -8,7 +14,11 @@
 
 **Compacts:** embarch-api/spec.md, embarch-api/open.md
 **Size debt due:** 2026-09-14
-**In flux:** yes — re-judged by `api/035` (2026-09-10) against `embarch-api/spec.md`
+**In flux:** no — corrected from `yes` by the supervisor at `api/035`'s fold, for the same reason
+the state was: the argument written below concludes that neither file on the `Compacts:` line is in
+flux any more, and `yes` is the answer that forces `blocked`. What follows is `api/035`'s own
+re-judgement, unchanged, and it is the evidence for `no`. Re-judged by `api/035` (2026-09-10)
+against `embarch-api/spec.md`
 and `embarch-api/open.md`, the two paths actually left on the `Compacts:` line
 above. The premise this field used to state — "the event-stream half of this
 file has never met a real `embarch-core`" — no longer applies to either of

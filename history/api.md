@@ -15,6 +15,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- api: open.md's SSE bullet now says study_watch met a real Core; 026 re-judged, its 001 reference replaced by 059.
 - `decisions/core-link.md`'s per-machine logfile entry (43) split out to `decisions/logging.md`, clearing the file's size reserve.
 - `validate`'s response (client, MCP tool, CLI) now also surfaces `validated_at_utc_ms`, distinct from `confirmed_at_utc_ms`.
 - `embarch-api`'s [spec.md](../embarch-api/spec.md) and [open.md](../embarch-api/open.md) are back out of doc-size reserve; closed test gaps and config detail already in `interfaces/config.md` went.
