@@ -1,6 +1,6 @@
 # 026 — `embarch-ui/open.md` is in reserve against its own baseline
 
-**State:** claimed — leg 083, 2026-09-11
+**State:** done — leg 083, 2026-09-11
 
 **Doc-size reserve in your scope (`embarch-ui`).** Exactly one file is in reserve and it is the one
 this task pays: `embarch-ui/open.md` 4,295/5,120 B (83.9%), filed against this task. Nothing else in
@@ -55,8 +55,17 @@ is a reshaping, not a deletion, so the `Must not delete:` list above stays satis
 
 ## Done when
 
-- [ ] `embarch-ui/open.md` is out of reserve against its baseline, with every item above intact.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question is answered in the fold's log entry, in the
+- [x] `embarch-ui/open.md` is out of reserve against its baseline, with every item above intact.
+      3,875/5,120 B (75.7%), reshaped the 250,000-row bullet into an intro sentence plus a
+      measurement table and tightened three unprotected bullets; `check-doc-size.py --pressure`
+      now reports it `PAID`.
+- [x] `DOC-COMPACTION-PASS.md`'s human question is answered in the fold's log entry, in the
       compactor's own words: can `spec.md` alone answer what someone needs to work on this
-      component today?
-- [ ] Gate green; `changelog.d/` fragment dropped.
+      component today? **Yes.** `spec.md` carries what it is, the six tabs, every Core call it
+      makes, the invariants, the design system and the verification technique — everything an
+      engineer needs to start working on the component today. `open.md` is deliberately not part
+      of that answer: it holds what is still unresolved (two hardware-gated, one a release-surface
+      call outside this repo, one a location call already settled), which `decisions.md` explains
+      the why of. The three-file split is doing its job here; this pass reshaped `open.md`, it
+      did not need to touch `spec.md` at all.
+- [x] Gate green; `changelog.d/` fragment dropped.
