@@ -1,6 +1,6 @@
 # 024 — Compact embarch-topology/spec.md
 
-**State:** blocked — in flux, `tasks/topology/004` and `020` still moving in this file
+**State:** open — unparked by leg 080, 2026-09-11: every task this park named is `done`
 **Size debt due:** 2026-09-24
 **Source:** `scripts/check-doc-size.py` — 89.4% of cap after `tasks/topology/011`'s edit
 **Scope:** topology
@@ -20,13 +20,16 @@ not a new section — down to comfortably below the 90% floor.
 
 **Compacts:** `embarch-topology/spec.md`
 
-**In flux:** yes. `tasks/topology/011` just added a sentence describing the
-CLI's mutation-refusal behavior (decision 28), and `tasks/topology/004` and
-`tasks/topology/020` are open against the same file's surface. A compaction
-pass must not delete or blur the decision-28 sentence, the "Storage and
-roles" section, or the process/call-site table just above it — check
-`open.md` and `decisions.md` for anything else still moving in this crate
-before cutting.
+**In flux:** no, as of 2026-09-11 — one file (`embarch-topology/spec.md`), and the flux is
+spent. This field read `yes` on the grounds that `tasks/topology/011` had just added the
+decision-28 sentence and that `tasks/topology/004` and `tasks/topology/020` were "open against
+the same file's surface". **All four of those are now `done`** — `011`, `004` and `025` landed
+2026-09-08 through 2026-09-10, `020` at leg 050 — and `topology/024` is the only task left in
+this scope, so nothing is moving in `spec.md` for a compaction pass to race. Unparked by leg 080
+after `topology/027`'s reviewer found this `State:` line still asserting `020` as live work three
+days after it closed; the park's reason was stale, not wrong when written. The **Must not
+delete** list below is unchanged and still binds — it is what a settled file still owes a
+compactor.
 
 **Must not delete:**
 - The decision-28 sentence added to the "two things built from it" list
