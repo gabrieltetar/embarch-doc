@@ -36,9 +36,10 @@ embarch-ui (one Rust binary, axum, zero-build)
         Core-side backlog is one call to it on open; its live tail is a
         server-side re-poll of the same endpoint (500-line tail, every 2 s,
         diffed so only genuinely new lines are published; a failed poll is
-        logged server-side and the next tick retries). embarch-ui does NOT
-        subscribe to Core's GET /logs/stream and holds no /logs/stream
-        client at all — embarch-core-client has no method for it.
+        logged server-side and the next tick retries). There is no SSE
+        alternative: Core's GET /logs/stream was retired in 2026-09
+        (tasks/core/021) having never acquired a caller — /logs/recent is
+        the only log route Core serves.
 
 vscode-extension/ (thin, TypeScript)
   spawns/stops the binary, opens the system browser, renders nothing itself
