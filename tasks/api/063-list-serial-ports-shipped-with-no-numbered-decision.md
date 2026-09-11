@@ -1,6 +1,6 @@
 # 063 — `list_serial_ports` shipped with no numbered decision, and the file it belongs in is 66 B from its cap
 
-**State:** claimed (leg 082)
+**State:** done
 **Source:** `embarch-api/open.md` — *"`list_serial_ports`/`list-serial-ports` (task `041`) shipped
 with no numbered decision, under that leg's burndown rule against new numbers"*
 **Scope:** api
@@ -65,11 +65,31 @@ convenience.
 
 ## Done when
 
-- [ ] A numbered `embarch-api` decision covers all three owed points, in a file that is not over
-      cap after it lands.
-- [ ] `embarch-api/open.md`'s `list_serial_ports` bullet is replaced by a pointer to it, keeping
-      the `embarch init` / `serial_port` half open and still attributed to `embarch-umbrella`.
-- [ ] `interfaces/tools-build-flash.md`'s `GET /dev-bench/port` claim is checked and corrected if
-      still stale — or the task says plainly that `053` already fixed it.
-- [ ] If you split or compacted `decisions/tool-wrapping.md`, `tasks/api/047` reflects it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) and a `changelog.d/` fragment dropped.
+- [x] A numbered `embarch-api` decision covers all three owed points, in a file that is not over
+      cap after it lands. — Decision 70, `decisions/hardware-selection.md` (9.0/12.3 KB).
+- [x] `embarch-api/open.md`'s `list_serial_ports` bullet is replaced by a pointer to it, keeping
+      the `embarch init` / `serial_port` half open and still attributed to `embarch-umbrella`. —
+      that half moved to "Known wrong / unfinished" rather than "Owed decisions", since it is a
+      real open fact about another repo, not a decision `embarch-api` owes.
+- [x] `interfaces/tools-build-flash.md`'s `GET /dev-bench/port` claim is checked and corrected if
+      still stale — or the task says plainly that `053` already fixed it. — **Already correct.**
+      `053` (folded into `api/042`, 2026-09-10) split `tools.md` and its `serial_log` row already
+      states "no further fallback exists ... not a reach for `GET /dev-bench/port`". No edit needed.
+- [x] If you split or compacted `decisions/tool-wrapping.md`, `tasks/api/047` reflects it. —
+      **Split**, not compacted: `DOC-BUDGET.md`'s split-first rule applies since a verbatim split
+      restates nothing, so `047`'s `In flux: yes` (a reason to defer squeezing, not a reason to
+      refuse a split) did not forbid it. Decisions 34, 35, 59, 60 moved verbatim to the new
+      `decisions/hardware-selection.md`; 23, 29, 41, 47, 52 stayed in `tool-wrapping.md`. `047`
+      closed as `done`, `In flux: no`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) and a `changelog.d/` fragment dropped.
+
+## Also here
+
+- Two pre-existing stale topic-file pointers in `interfaces/tools-dev-bench.md`, found while
+  updating decision 59's link: decision 59 repointed from `tool-wrapping.md` (moved) to
+  `hardware-selection.md`; a second, unrelated bug — decision "62" for `dev_bench_link`'s
+  CLI/MCP-parity claim — never matched any decision actually about `dev_bench_link` (62 is
+  `core-link.md`'s WSL2-detection entry). The claim it was citing is decision 67 in `surface.md`
+  ("The parity rule extends to the enrollment-file writers"); repointed there.
+- `features.d/api-240-list-serial-ports-discovers-a-serial-log-port.md`'s Decision cell named
+  `open.md "Owed decisions"`, now stale since that section is empty; repointed to `70`.

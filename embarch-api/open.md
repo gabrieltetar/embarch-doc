@@ -12,10 +12,11 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **`study_watch` has met a real embarch-core; the rest has not.** Bench, leg 021: pushed live frames and `transport: polled` fallback both seen ([decisions](decisions/study-events.md) 48, 49). `study-status --follow`, drop path, `lagged`, reconnect: unexercised. Debt: `tasks/api/059-sse-client-remaining-observations.md`.
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads — a different repo's fix. Why no by-name load refusal, unlike `[[projects.targets]]`/`soc_chip_overrides`: [decisions](decisions/shape.md) 64
+- **`embarch init` never writes `serial_port` at all** — `embarch-umbrella` decision 17's minimal discovery schema does not include it, so every config reaches [`list_serial_ports`/`serial_log`](decisions/hardware-selection.md) 70 without one configured. **Not this crate's to fix.**
 
 ## Owed decisions
 
-- **`list_serial_ports`/`list-serial-ports` (task `041`) shipped with no numbered decision**, under that leg's burndown rule against new numbers. Owed: the no-param `GET /serial-ports` pair, why `serial_log` has no automatic fallback onto it (several ports can enumerate; only a human or the caller knows the DUT's console), and the correction to `interfaces/tools-build-flash.md`'s stale `GET /dev-bench/port` claim (moved there from `tools.md` 2026-09-10, `tasks/api/053`). File in `decisions/tool-wrapping.md` once out of reserve (`tasks/api/047`), or its successor. **Still open, and not this crate's to fix: `embarch init` never writes `serial_port` at all** — `embarch-umbrella` decision 17's minimal discovery schema does not include it, so every config reaches this surface without one.
+None currently — the one open here (`list_serial_ports`, task `041`) is now [decisions/hardware-selection.md](decisions/hardware-selection.md) 70 (`tasks/api/063`).
 
 ## Structural limits
 
