@@ -1,6 +1,6 @@
 # dev-bench/007 review finding: combined truncation+overflow silently drops the census-full signal
 
-**State:** claimed — leg 070, `agent/dev-bench/015-combined-truncation-markers`
+**State:** done — leg 070, `agent/dev-bench/015-combined-truncation-markers`
 
 **Supervisor's pre-dispatch direction (leg 070, 2026-09-10).** Take the fix the task calls
 right-sized: make the combined case say **both** things. Do not add a third combined marker that
@@ -53,3 +53,40 @@ Merge SHA `79d474345fa9753f93abdc9e92f891f08539391a` in `embarch-dev-bench`. A r
 ## Secondary note (not filed as a separate finding)
 
 `app/src/scan_seen_names.h`'s file header cites this work as "decisions/ble.md decision 43" — there is no decision 43 in `ble.md`; the actual decision is #32 (`SCAN_SEEN_MAX`/name filter) and #45 (this unit) in `decisions/scanning.md`. Miscited, not contradicted — flagging in case it is worth a follow-up comment fix.
+
+## Resolution (leg 070)
+
+`app/src/ble_bridge_real.c` (`connect_as_central`): the marker selection is no
+longer an `if/else if` priority chain. `name_budget` now reserves room for
+**both** markers concatenated, unconditionally — `scan_seen_overflowed` is
+already known at that point, and `names_truncated` is decided only after
+`scan_seen_names_summary` returns, so the budget assumes the worst case
+(both fire) rather than reacting after the fact. The final `outcome_fail`
+format string appends `SCAN_SEEN_TRUNCATED_MARKER` and
+`SCAN_SEEN_OVERFLOW_MARKER` independently — each present exactly when its own
+condition holds — so the combined case now reads `(truncated) (census
+full)` instead of dropping the second marker. The `BUILD_ASSERT` sizing the
+budget was widened to match (both markers' full length, not `MAX` of the
+two). No third combined-marker string was added, per pre-dispatch direction;
+the shortening this took was headroom in `name_budget`, not either marker.
+
+`decisions/scanning.md` #45 amended in place to describe the combined case
+and reference this finding (`dev-bench/015`). `app/src/scan_seen_names.h`'s
+header citation fixed from the nonexistent "decisions/ble.md decision 43" to
+"decisions/scanning.md decisions 32 and 45".
+
+**Build honesty:** this environment has no `west`/`ZEPHYR_BASE` (`west` is not
+on `PATH`, `ZEPHYR_BASE` is unset). The firmware was not built and its ztests
+(`app/tests/scan_seen_names`, `app/tests/scan_seen_mfg`, `app/tests/serial_protocol`)
+were not run from here — none of them exercise `connect_as_central`'s marker
+priority anyway (`ble_bridge_real.c` never builds under `native_sim`; only the
+stub does, per decision 16), so this specific change has no ztest coverage
+either way. This is reasoned-but-unbuilt, the same debt class already recorded
+for `embarch-outpost`.
+
+No `embarch-dev-bench` doc crossed into its last-10%-of-cap reserve from this
+change: `decisions/scanning.md` is 6911/12288 B after the edit, well outside
+reserve. `open.md`, `spec.md` and `decisions/link.md` were not touched and
+their existing reserve filings (`tasks/dev-bench/012`, `014`) are unaffected.
+No feature-inventory row filed: this is a bugfix to existing behavior, not a
+shipped/retired/matured capability.
