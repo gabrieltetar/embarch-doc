@@ -7,7 +7,20 @@ number *and* its slug and `check-task-numbers.py` reads a rename as reissuing th
 (`tasks/README.md`). `check-task-state.py`'s rule 6 reads the title, not the filename, for exactly
 this reason.
 
-**State:** open
+**State:** claimed by agent/core/019-per-caller-identity-row, 2026-09-10 18:50
+
+## Supervisor's dispatch note, leg 070, 2026-09-10
+
+**This task is narrower than it reads and the narrowing is the point.** Your entire edit is
+`features.d/core-200-per-caller-identity-beyond-one.md`. Do not touch `suite/features.md` (it is
+assembled, and `never` for you), `embarch.md` (the supervisor's), or `features.d/README.md`. The
+`Done when` boxes already say so; this note is here so you do not rediscover it at the ownership
+check.
+
+**Do not run `build_features.py` and commit the assembled file.** `build_features.py --check`
+validates your fragment's shape and is part of your gate; the assembly is the supervisor's, at the
+fold. A stale `suite/features.md` on your branch is correct, not an omission.
+
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy).
 **Scope:** core
 **Hardware:** none
