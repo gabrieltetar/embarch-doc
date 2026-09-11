@@ -1,6 +1,6 @@
 # 040 — `GET /serial-log`'s two caps and its `truncated` boolean have no numbered decision
 
-**State:** open
+**State:** claimed (leg 082)
 **Source:** `embarch-core/open.md` — *"`GET /serial-log`'s caps have no numbered decision"*
 **Scope:** core
 **Hardware:** none
