@@ -1,6 +1,6 @@
 # 023 — Nothing times the request path that serves a 250k-row trace; only `parse` itself is measured
 
-**State:** claimed — leg 072
+**State:** done — leg 072, 2026-09-10
 **Source:** `embarch-ui/open.md` — the 250,000-row cap bullet: "whether 1.69 s of server-side decode is acceptable against whatever answers `/study/{id}/streams` (unmeasured — nothing here times the request path, only `parse` itself)"
 **Scope:** ui
 **Hardware:** none — the existing `trace::scratch_view::synth_capture` builds the capture in
@@ -33,9 +33,16 @@ committed. The remaining work is instrumenting a path that already runs.
 
 ## Done when
 
-- [ ] The request path is timed at 250k / 500k / 1M rows, or the bullet says why it cannot be.
-- [ ] `embarch-ui/open.md`'s row-cap bullet carries the new figures, tagged measured, dated, with
+- [x] The request path is timed at 250k / 500k / 1M rows, or the bullet says why it cannot be.
+      Done partially, and the bullet says so: `measure_the_request_path_at_scale` (sibling to
+      `measure_the_row_cap_at_scale`, `src/trace.rs`) times decode + the handler's `Json` response
+      encoding — the in-process portion of `api_trace_view` — at all three scales. The three
+      awaited Core calls `decode_trace` makes before `parse` runs (`study_streams`,
+      `get_study_stream`, `study_steps`) cannot be exercised without a live Core, so the bullet
+      says plainly that the true end-to-end request cost is still unmeasured, rather than stating
+      an approximation as if it were the number.
+- [x] `embarch-ui/open.md`'s row-cap bullet carries the new figures, tagged measured, dated, with
       the build profile.
-- [ ] The cap itself is unchanged, and nothing in this task's diff argues for changing it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] The cap itself is unchanged, and nothing in this task's diff argues for changing it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
