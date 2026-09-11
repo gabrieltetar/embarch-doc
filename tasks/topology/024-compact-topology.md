@@ -1,6 +1,6 @@
 # 024 — Compact embarch-topology/spec.md
 
-**State:** open — unparked by leg 080, 2026-09-11: every task this park named is `done`
+**State:** claimed by leg 081
 **Size debt due:** 2026-09-24
 **Source:** `scripts/check-doc-size.py` — 89.4% of cap after `tasks/topology/011`'s edit
 **Scope:** topology
