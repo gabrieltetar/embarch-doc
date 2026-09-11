@@ -46,6 +46,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- `decisions/surfaces.md`'s decision 54 renumbered to 57 — collided with `decisions/flashing.md` 54.
 - Unprefixed `hardware_id` is the probe-read ID suite-wide; decision 47's deferred rename is cancelled, not scheduled. See [embarch-core/decisions/handshake.md](../embarch-core/decisions/handshake.md).
 - `study_schema_mismatch` retired: no `code` enum exists in Core to hold it (decisions/surfaces.md 55).
 - core/036: no safe 102 B cut found in open.md after core/022; debt stays dated, unpaid.
