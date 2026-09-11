@@ -1,6 +1,12 @@
 # 019 — The studies guide makes the UI a mandatory step, and nothing in the suite says how to obtain it, start it, or reach it
 
-**State:** open
+**State:** open — announced in #embarch-fleet by leg 082, `ts 1789114940.893289`, 2026-09-11, for the
+**cheap half only** (README, guide paragraph, the five `EMBARCH_UI_*` variables written down), with
+shipping the UI in the release archive recorded as a decision with a trigger rather than done. The
+30-minute window under `../../embarch-fleet/ops.md` §4 runs from that message. **If leg 082 ends
+before it closes, the next leg completes this window rather than restarting it** — read the thread
+with `scripts/fleet-read.py --thread 1789114940.893289` and, if nothing objected and 30 minutes have
+passed, run it. A reply saying "ship it" widens the unit to the expensive half.
 **Source:** suite review pass 2026-09-06, dimensions 7 and 1. Code-confirmed.
 **Scope:** suite
 **Hardware:** none
