@@ -4,7 +4,7 @@
 `doctor` renders neither `confirmed_at_utc_ms` nor `validated_at_utc_ms`
 today; no display to relabel. Folded the constraint into `doctor.rs`'s
 module doc comment (`embarch-umbrella/src/doctor.rs`) so the first check
-that adds such a display cites decision 54 and uses "Enrolled". No
+that adds such a display cites decision 57 and uses "Enrolled". No
 `open.md` bullet added — that file is treated as full per this task's own
 pre-dispatch note.
 
@@ -24,14 +24,14 @@ its cap unfiled, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same com
 **Filed from `inbox/` by leg 066, 2026-09-10**, in the same fold as `umbrella/036`. It parses, its
 `Hardware: none` is correct, and its scope is right. Filed immediately rather than left for the
 next leg's drain because `core/027`'s entry in `supervisor-log.md` names these two drops as the
-**only** thing carrying the user-visible half of decision 54 — a decision whose whole content is
+**only** thing carrying the user-visible half of decision 57 — a decision whose whole content is
 that two screens should say "Enrolled" instead of "Validated", on two screens neither of which has
 been changed. A drop in `inbox/` is not in the queue and nothing dispatches from it.
 
 **Read its `## What` honestly before claiming it: `doctor` renders nothing here today**, so this
 task may be a no-op that closes by writing the constraint down where the next person to add such a
 line will see it. That is a legitimate outcome and is what the "if ever" in the title means.
-**Source:** `tasks/core/027`, `embarch-core` decision 54 (`decisions/surfaces.md`)
+**Source:** `tasks/core/027`, `embarch-core` decision 57 (`decisions/surfaces.md`)
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
@@ -74,7 +74,7 @@ assumed.
 - [x] No code change is required today — `doctor` shows neither timestamp.
       This task exists so that the first PR that *does* add a
       `confirmed_at_utc_ms`-derived display to `doctor` cites this file and
-      decision 54, and labels it "Enrolled", not "Validated".
+      decision 57, and labels it "Enrolled", not "Validated".
 - [x] If `doctor` grows such a display in this task's own scope, it uses that
       wording and the task closes `done`; otherwise it can close `done` once
       this reasoning is folded into `doctor`'s own doc comments or spec, so a

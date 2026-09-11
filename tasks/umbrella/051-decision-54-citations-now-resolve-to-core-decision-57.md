@@ -1,6 +1,14 @@
 # 051 — `embarch-umbrella`'s "decision 54" citations now resolve to the wrong `embarch-core` decision
 
-**State:** claimed by leg 081
+**State:** done — leg 081. Grepped `embarch-umbrella` (code) and
+`embarch-doc/embarch-umbrella/` + `embarch-doc/tasks/umbrella/` for "decision 54"; found exactly
+the two known sites plus no others. Both `tasks/umbrella/045-...md` (4 occurrences: the state
+note, a `Source:` line, and two `Done when` lines) and `src/doctor.rs`'s module doc comment cite
+`embarch-core` decision 54 to mean the `EnrolledBoardResponse` label decision
+(`decisions/surfaces.md`) — the "Enrolled" vs "Validated" rule — so all five were relabelled to
+57. No hit in either repo means `flashing.md`'s decision 54 (`Backend::NrfJprog` retired); this
+sub-project has no reason to cite that one. Byte-neutral (54→57, same digit count), so none of the
+three reserved files were touched.
 **Source:** `inbox/umbrella-ui-decision-54-renumbered-to-57.md`, dropped by the worker on
 `core/039` and filed by leg 079. Split from that drop, which spanned two scopes; the `ui` half is
 `tasks/ui/025`.
@@ -37,7 +45,7 @@ own docs, left open one repo over.
 
 ## Done when
 
-- [ ] `tasks/umbrella/045-...md`'s citations say "decision 57".
-- [ ] `embarch-umbrella/src/doctor.rs`'s doc comment checked, and corrected if it cited 54.
-- [ ] Any other `umbrella`-scoped "decision 54" citation triaged, with the judgement recorded.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green in `embarch-umbrella`.
+- [x] `tasks/umbrella/045-...md`'s citations say "decision 57".
+- [x] `embarch-umbrella/src/doctor.rs`'s doc comment checked, and corrected if it cited 54.
+- [x] Any other `umbrella`-scoped "decision 54" citation triaged, with the judgement recorded.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green in `embarch-umbrella`.
