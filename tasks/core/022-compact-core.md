@@ -96,6 +96,26 @@ already long-winded, not reversal of `core/018`.
       `tasks/core/009` itself, which shipped Core's own side of that cap.
 - [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
+**Reopened and closed again, leg 073, 2026-09-10.** `open.md` was still
+91.2% of its 5,120 B cap (4,551 B) after `009`'s pass. Checked every bullet
+against the current corpus for an answer that would let a question be
+deleted outright (`decisions/streams.md`, `decisions/surfaces.md`,
+`decisions/logging.md`, `decisions/probes.md`, `decisions/auth.md`,
+`decisions/flashing.md`, `spec.md`): none of the nine bullets has actually
+been answered — decision 44 (`/logs/stream` no-consumer) was already the
+one bullet `009` deleted, and every remaining item's cited decision (11,
+12, 30, 36, 37, 42) still opens exactly the gap `open.md` names, unbuilt or
+unmeasured. So this pass is a squeeze, not a deletion: every bullet's claim,
+number, decision reference, and hedge (`[assumed]`, "evidence, not proof",
+"reasoned not measured") is unchanged; only connective prose was cut — filler
+clauses that restated the bullet's own headline ("so calling both would
+check twice and report once", "the open question here, not the enumeration
+fact", "the strongest available evidence —", "withheld under that leg's
+burndown constraint", "purge reporting no error"). 4,551 B → 3,911 B (76.4%
+of cap), clear of the 3,920 B floor.
+- [x] `open.md` is clear of the 90%-of-cap (floor `max(1200, 10%)` = 3,920 B)
+      reserve line. — 3,911 B, verified by `check-doc-size.py`.
+
 **Closed 2026-09-09 by `tasks/core/009`.** `open.md` compacted from 5,051 B
 to 4,669 B (5,120 B cap): one bullet deleted as answered (`GET
 /study/{id}/events`'s no-replay note explicitly declared itself "closed
