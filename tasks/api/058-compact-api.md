@@ -1,6 +1,6 @@
 # 058 — `embarch-api/decisions/core-link.md` is back in reserve
 
-**State:** claimed — leg 071
+**State:** done — leg 071
 **Source:** `agent/api/054-decision-26-retire-or-retitle` shrank decision 26 by
 120 B while paying `tasks/api/026`'s reserve debt on this file, but the file
 is still inside the reserve line; `DOC-COMPACTION.md` §2
@@ -44,11 +44,35 @@ line itself.
 
 ## Done when
 
-- [ ] `decisions/core-link.md` is clear of the 11,059 B reserve line, by split
-      or by squeeze.
-- [ ] Whatever moved, moved verbatim; every `Must not delete:` item above is
-      still readable at its new address.
-- [ ] `decisions.md`'s index table (if a split) names any new file, its
-      decision numbers and both files' sizes, and `check-decision-refs.py`
-      resolves every number.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `decisions/core-link.md` is clear of the 11,059 B reserve line, by split
+      or by squeeze. Now 9,955 B (was 11,962 B). Decision 43 (the per-machine
+      logfile) moved verbatim to the new `decisions/logging.md`.
+- [x] Whatever moved, moved verbatim; every `Must not delete:` item above is
+      still readable at its new address. Decision 15's failure signature,
+      decision 36's rejected-alternative pair, and decision 55's corrected
+      `default_headers` rejection all still live in `core-link.md`, unmoved.
+- [x] `decisions.md`'s index table names the new file, its decision number
+      (43) and both files' sizes (`core-link.md` now 10.5 KB, `logging.md`
+      1.6 KB), and `check-decision-refs.py` resolves every number.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `check-docs.py`:
+      all 11 checks green.
+
+## Report
+
+`decisions/core-link.md`'s decision 43 (the per-machine logfile: why it's
+per-user, the two-layer tracing subscriber, the rejected log-sink-to-Core
+alternative) split out verbatim to a new `decisions/logging.md`, matching the
+shape of the earlier `study-events.md` split. `spec.md`'s one citation of
+decision 43 was repointed to the new file. No other file needed a reserve
+task filed against it in this same commit — `check-doc-size.py` reports
+"17 in reserve, all filed" with no new unfiled entries.
+
+**Human question (DOC-COMPACTION-PASS.md):** yes — `spec.md` alone still
+answers what someone needs to work on this component today. It carries the
+mechanism for every decision this task touched (address resolution, artifact
+transfer, the auth funnel, the logfile's per-user placement) with a
+`[decisions](...)` pointer back to the *why*, and none of that pointer text
+changed meaning — only the logfile pointer's target file changed, from
+`core-link.md` to `logging.md`, and it was updated in this commit. Nothing in
+`spec.md` depended on `core-link.md`'s byte layout, only on the decision
+numbers still resolving, which `check-decision-refs.py` confirms.

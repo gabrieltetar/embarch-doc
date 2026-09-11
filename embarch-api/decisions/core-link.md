@@ -2,9 +2,9 @@
 
 **Status:** active, 2026-09-06.
 
-Address resolution, artifact transfer, the shared client crate, and the stack that had to move. The event stream split out to [study-events.md](study-events.md) on 2026-09-07.
+Address resolution, artifact transfer, the shared client crate, and the stack that had to move. The event stream split out to [study-events.md](study-events.md) on 2026-09-07. The per-machine logfile split out to [logging.md](logging.md) on 2026-09-10.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The event stream: [study-events.md](study-events.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The event stream: [study-events.md](study-events.md). The logfile: [logging.md](logging.md).
 
 ### 11 — `base_url = "auto"`, resolved per-process at first use
 The WSL2⟷Windows split reaches Core at a host-gateway IP that **changes across WSL2 restarts**, so a literal address in config is guaranteed to go stale — and did. Resolution belongs here rather than in a setup step precisely because the value has to be right **at the moment a build is flashed**, not at the moment setup last ran, and this is the process present then. It does not weaken decision 7: `auto` makes localhost merely one candidate, and an explicit URL still wins outright. Mechanism: [../spec.md](../spec.md) §4.
@@ -34,15 +34,6 @@ So `main` spawns the runtime on a thread it sizes itself. **64 MiB was empirical
 Two Core endpoints then turned out to have **no client wrapper anywhere**, because this crate never needed either: enrolled-board listing and dev-bench port. The gap surfaced the moment `embarch-ui` routed *every* hardware-adjacent read through Core rather than only mutations. The port wrapper treats Core's 404 as `Ok(None)` rather than an error, so a caller rendering "not connected" does not have to match an error string to do it.
 
 Later additions followed the same rule and exposed its cost: the signal-route wrappers are **mirrors** of the topology crate's types rather than those types, because the real ones sit behind the feature that links `probe-rs`, and this crate never links hardware. That leaves a coupling **no crate in the suite can typecheck**, so it is pinned from each side against the same JSON literal, each test naming the other. The alert and enrolled-board mirrors still have that coupling unpinned.
-
-### 43 — One rolling per-machine logfile, because there is no process to ask
-Core's log endpoints assume a long-running service. This crate is the opposite: spawned per session as an MCP server, or run once as a CLI and gone. **By the time anyone wants to look at a one-shot's output the process has exited.** Every invocation appends to one rolling file, each line tagged with pid and mode so interleaved sessions stay separable. This works for the one-shot case specifically because **the record outlives the process**, which is the property no endpoint-based design can have here.
-
-*Rejected: shipping lines to Core over a log-sink endpoint.* It would reuse mediation Core already has, and it breaks the invariant that Core has no idea this crate exists — load-bearing well beyond logging. *Also rejected: doing nothing*, on the grounds that an MCP client surfaces its server's stderr and a CLI prints to the terminal. Both true, and neither survives the case that matters: wanting to know what an agent's run did twenty minutes ago, in a session that is closed.
-
-**Per-user, not machine-wide.** The machine data dir works for Core, which runs as a service; it does not work here, because this runs as the engineer and `/var/lib` is root-owned. Both alternatives were worse: hard-failing makes logging depend on a one-time `sudo`, and "machine dir if writable, else per-user" is a runtime probe that can land the writer and the reader in **different places**. Nothing is lost, since single-engineer scope means there is no second user to be machine-wide for.
-
-**Both modes had to be given something to log:** a one-shot CLI run emitted nothing at all, since no subcommand calls the tracing macros on its own. Two lines now bracket every run. **The file gets two layers rather than one teed writer** — Core tees a single ANSI-coloured stream to both stderr and its logfile, so every line in its deployed log carries escape sequences a UI renders as garbage. The two-layer form has **no filter of its own**, so the first build wrote `hyper` and `reqwest` trace output into the file; it needs one stated explicitly.
 
 ### 55 — One funnel applies the bearer token; nine routes were exempt from the rule that said so
 `send`/`send_no_content` consume the response, so the nine routes giving a status its own meaning (a `404` for "not enrolled", a `409` for a topology mismatch) and the SSE stream could not use them; each applied `.bearer_auth(…)` itself. All nine did send it; `client.rs`'s comment said none existed. **A convention nine of twenty-five sites are exempt from is not one** — and the comment was the worse half: a new route copies the hand-written form while the sentence a reader trusts says it cannot.

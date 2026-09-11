@@ -66,4 +66,4 @@ Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [i
 | default Core port | 4884 | — |
 | log retention | 7 daily files, `api.log.<date>` | deliberately Core's scheme, so one reader covers both |
 
-The logfile is **per-user**, not machine-wide — `/var/lib` is root-owned and this runs as the engineer ([decisions](decisions/core-link.md) 43).
+The logfile is **per-user**, not machine-wide — `/var/lib` is root-owned and this runs as the engineer ([decisions](decisions/logging.md) 43).
