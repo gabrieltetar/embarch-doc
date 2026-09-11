@@ -27,13 +27,27 @@ Three things implementation settled:
 - **A Core that serves no version is a mismatch, not a pass.** The field is optional purely so such a response still parses and the drift can be named. **The operational consequence was real and not hidden:** the then-live Core served no such field, **so the API refused to submit until it was redeployed. That is the detector working — but it makes Core-first the deployment order for such a pass.**
 - **The FFI exposes the wire constant only**; dev-bench is not a party to the host hop. Separately the by-hand C mirror the simulator uses **was found stale at four bumps behind, because nothing compares it against the crate by construction.** Corrected, and **the gap in what a simulator run can prove is unchanged by fixing the number.**
 
-**The handshake also does two other jobs.** It is a **hard reset**: receiving one unconditionally tells the bench to abort any in-progress study and clear its execution state before replying, **which is what lets Core recover a usable connection after its own crash with no separate abort message and no waiting out step timeouts.** And it **carries host wall-clock time**, because **the bench has no other clock source at all** — this is its only way to learn it, seeding its offset on every connection. **That is what makes a sample's timestamp a real UTC one rather than uptime-relative.** Best-effort resync, not disciplined: acceptable drift between resyncs is open.
+**The handshake also does two other jobs.** It is a **hard reset**: receiving one unconditionally tells the bench to abort any in-progress study and clear its execution state before replying, **which is what lets Core recover a usable connection after its own crash with no separate abort message and no waiting out step timeouts.** And it **carries host wall-clock time**, because **the bench has no other clock source at all** — this is its only way to learn it, seeding its offset on every connection. Best-effort resync, not disciplined: acceptable drift between resyncs is open.
+
+**The seeding half was designed and never built** — a sentence claiming it made the timestamp real UTC is struck here, 2026-09-10. Decision 72.
 
 ### 30 — Core records its own arrival time on every incoming message
 
 A sample's timestamp comes from the bench's free-running clock, corrected only at a handshake — **so for a long study with no reconnect that clock free-runs with no way to correct for it after the fact.** Resolved **without adding a second resync trigger**: Core stamps its own receipt of every timing-relevant message and records it alongside as an additive column, **changing the wire shape not at all.**
 
 **This does not correct drift in real time; it gives post-hoc analysis the raw material to detect and account for it**, which a resync-on-handshake-only design otherwise cannot surface.
+
+### 72 — `Sample::rx_utc_ms` carries bench uptime, and the name's promise is corrected rather than kept
+
+**Three contracts asserted a clock resync that no firmware performs**, and they said it in stronger words the closer they got to a reader: this crate's `interfaces/decoders.md` ("seeded and resynced from the host on every handshake"), decision 12's paragraph above ("that is what makes a sample's timestamp a real UTC one rather than uptime-relative"), and `src/protocol.rs`'s own doc comment on `Hello.host_utc_ms` ("which is what makes `Sample::rx_utc_ms` meaningful"). The firmware decodes `host_utc_ms`, stores it, and reads it from nothing but a round-trip test; `ble_bridge_real.c` stamps `k_uptime_get()` and no offset arithmetic exists anywhere in the build. `embarch-dev-bench/open.md` has said so plainly the whole time — **the only place in the suite that contradicted the three was another repo's list of unresolved questions**, which is precisely where nobody reading a CSV column would look.
+
+**So the field is documented as what it is: milliseconds since the bench booted.** Corrected at all three sites, and `tasks/suite/016`'s first acceptance condition takes its own second arm — *"or the exception is named at the point a consumer reads it"* — because every consumer of this column now meets the exception where the column is described.
+
+**The rename is not made here, deliberately.** `rx_utc_ms` names a column in Core's study CSV header, the transcript, `embarch-study-designer`'s `Sample`, and dev-bench's wire struct, and the same name in an **outpost** trace file carries Core's real epoch clock. Renaming it is a coordinated change across four repos and every already-written capture file, and doing it in the same pass as establishing what the field means would leave nobody able to say which half broke a reader. `tasks/suite/027` carries the rename with that argument attached.
+
+**What would make decision 12's removed sentence true again:** dev-bench applying the offset it already receives — one subtraction at the stamp site — after which `rx_utc_ms` becomes what its name says and `embarch-dev-bench/open.md`'s standing bullet closes with it. Until then, **`core_rx_utc_ms` is the column to plot against anything else in this suite**, and `rx_utc_ms` answers intervals within one capture and nothing wider.
+
+*Rejected:* fixing the firmware in this pass. It is a real change to a real board's timestamps, it invalidates the comparability of every capture taken before it against every capture taken after, and it needs the bench — which this leg does not touch.
 
 ### 47 — The handshake carries dev-bench's own hardware ID
 
