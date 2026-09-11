@@ -1,6 +1,34 @@
 # 042 — Two of the suite's declared facts are settable only from a binary the suite does not ship
 
-**State:** open
+**State:** claimed — leg 074, `agent/api/042-signal-and-link-writers`
+
+**Supervisor's dispatch note, leg 074, 2026-09-10.**
+**Reserve in `api` for this dispatch, and one of these is load-bearing for your unit:**
+`decisions/tool-wrapping.md` 12,222/12,288 B (**66 B left**, filed against the blocked
+`tasks/api/047`) — do not put a new decision there, it cannot hold one;
+`interfaces/tools.md` 11,280/12,288 B (1,008 B left, filed against the blocked `tasks/api/053`) —
+**this is the file your second `Done when` box sends you into**; `open.md` 4,141/5,120 B (979 B
+left, filed, `tasks/api/060`); `decisions/core-link.md` 13,164/12,288 B and `decisions/zephyr.md`
+14,269/12,288 B are both already **over** cap — do not add to either.
+**`interfaces/tools.md` is in reserve and its compaction task is blocked on `In flux: yes`, so
+compacting it is part of your unit** (`../../embarch-fleet/leg` rule; `DOC-COMPACTION.md` §2). You
+are the actor making the flux — you are adding rows to it — so you are the only one who can
+shorten it without writing a clean statement of something about to be wrong. `tasks/api/053` names
+its own preferred move and its own unpark clause: **a verbatim mission split by section**
+(Config/discovery, Build/flash, Dev bench, Topology, Studies-pointer — already natural seams). A
+verbatim split restates nothing, so `In flux: yes` does not forbid it. **Carry `api/053`'s
+`Must not delete:` list intact** — the `erase` defaults-false callout and its decision-41 pointer,
+the `dev_bench_schema_version`-vs-envelope-`schema_version` collision note under `dev_bench_hello`,
+and the one-table premise sentence in the header. If you pay the file, delete it from `api/053`'s
+`Compacts:` line (delete, never `~~strike~~` in place — the size gate parses that line) and say so
+in the body. If you decide a split is not safe, say why in `tasks/api/053` and leave the debt.
+**A new decision goes in a file that can hold it.** Pick the topic file by argument and write the
+argument down; `tool-wrapping.md` is the topically obvious home and it has 66 bytes.
+**Scope discipline:** you own `embarch-api` and `embarch-doc/embarch-api/` only. The third
+`Done when` box names three docs in *other* sub-projects — `embarch-ui/decisions/topology-tab.md`,
+`embarch-topology/decisions/links.md`, `suite/studies-guide.md` — and you may not edit any of
+them. That box is satisfied by a `status.d/api-*` fragment naming them and what is now false; the
+supervisor consumes it at the fold.
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed across 41 subcommands and 23 tools.
 **Scope:** api
 **Hardware:** none. The client wrappers already exist and are round-trip tested; this is surfacing, not new behaviour.
