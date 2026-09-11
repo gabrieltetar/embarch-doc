@@ -1,6 +1,9 @@
 # 026 — `embarch-api/decisions/core-link.md` is 22 bytes from its cap
 
-**State:** open — corrected from `blocked` by the supervisor at `api/035`'s fold, leg 072, on its
+**State:** claimed — leg 073, 2026-09-10. Dispatched as this leg's first unit: it is the nearest
+non-blocked entry on the size ledger (due 2026-09-14, `open.md` 5068/5120 and `spec.md` 9441/10240)
+and `In flux:` is `no` for both files on the `Compacts:` line.
+Previously: open — corrected from `blocked` by the supervisor at `api/035`'s fold, leg 072, on its
 own reviewer's finding (`inbox/api-026-blocked-on-nothing.md`, resolved here rather than filed as a
 task). `api/035` re-judged the park correctly and then left the state behind: the unpark condition
 it wrote — *"actually compacting `spec.md` and `open.md`, which is this task's own remaining job"* —
