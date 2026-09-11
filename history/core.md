@@ -43,6 +43,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- core: `hw_lock` contention now refuses `503` naming the holder after 500ms, per decision 14.
 - Decision 50's closing paragraph now names each consumer's real end state and points to decision 54.
 - Core keeps `confirmed_at_utc_ms` alone on `EnrolledBoardResponse`; decision 54 says label it "Enrolled", never "Validated".
 - Decision 53: `%ProgramData%\embarch`'s default ACL stays untightened — deliberate, for `embarch-topology`.
