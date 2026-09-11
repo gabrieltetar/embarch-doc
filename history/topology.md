@@ -9,6 +9,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- Topology decision 25 and `classify_chip`'s doc comment no longer claim `embarch-core` stops at nRF54L; core decision 49 matches `nrf54h` too. The two matchers stay separate on purpose.
 - embarch-topology's CLI enroll/validate/set-dev-bench-link now refuse when a Core answers (decision 28); local-bootstrap unchanged.
 - Decision 23 split from `decisions/crate.md` into `decisions/storage.md`; crate.md 11,474 -> 7,782 B.
 - `spec.md` compacted out of reserve; `decisions/validation.md` split verbatim, decision 26 moving to `decisions/validate-timing.md`.
