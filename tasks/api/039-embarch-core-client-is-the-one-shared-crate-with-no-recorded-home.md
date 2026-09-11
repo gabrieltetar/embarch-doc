@@ -24,7 +24,7 @@ workspace"*) and never the *location*.
 
 **The consequences are documented and unmitigated.** `embarch-api/spec.md:48` — *"`embarch-ui`
 path-depends on it from outside that workspace — **a change there reaches a repo this one does not
-own**."* `embarch.md` §5 spends a paragraph on the gate spellings this nesting creates (`--all`
+own**."* `suite/decisions.md` 1 spends a paragraph on the gate spellings this nesting creates (`--all`
 reaching 33 files outside the repo, `embarch-topology` reached *transitively* through it).
 `check-ownership.py` treats `embarch-api` as one worker's whole tree, so nothing refuses the move
 that would break `embarch-ui`.
