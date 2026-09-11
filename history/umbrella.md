@@ -58,5 +58,6 @@
 - Decisions 27 and 29 are one entry an insertion renumbered, not a deletion; same for api 31 and 33.
 
 ### Decided
+- Decision 48: `saved.host` attests only to a past `--host`, not the machine's current class.
 - umbrella: `doctor.rs` records that `confirmed_at_utc_ms` must read "Enrolled", not "Validated" — `tasks/umbrella/045`.
 - `doctor`'s two GET budgets are measured, not assumed: `/dev-bench/hello` takes 0.73 s against 10 s, `/dev-bench/port` 5–13 ms against 500 ms. Check 11 read `compatible: true` off a bench at last.
