@@ -16,6 +16,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- - api: `target.json` provenance decision split into 19 (hash) and 69 (file), under the per-decision cap.
 - `open.md` trimmed 84 B of connective filler; still 204 B inside reserve, debt filed and unpaid.
 - `embarch-api/open.md` and `spec.md` squeezed clear of their size reserve; see [spec.md](../embarch-api/spec.md).
 - api: open.md's SSE bullet now says study_watch met a real Core; 026 re-judged, its 001 reference replaced by 059.
