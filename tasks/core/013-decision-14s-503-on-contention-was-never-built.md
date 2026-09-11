@@ -1,6 +1,6 @@
 # Build decision 14's `503` on `hw_lock` contention, or retire the decision
 
-**State:** claimed — leg 069, `agent/core/013-hw-lock-503`
+**State:** done — leg 069, `agent/core/013-hw-lock-503`, pushed both repos
 
 **Supervisor's pre-dispatch direction (leg 069, 2026-09-10): take the BUILD arm, not the retire
 arm.** The task offers both and says do not leave it as it is; the choice is mine, not the
@@ -57,12 +57,23 @@ change" instruction is about the **`study_lock`**, which Core genuinely does emi
 
 ## Done when
 
-- [ ] Either the `503`-naming-the-holder path exists with a test that observes it under real
-      contention, or decision 14 is retired with a tombstone naming what replaced it.
-- [ ] `spec.md` §2, `interfaces.md`'s status-code conventions and `decisions/platform.md` all say
+- [x] Either the `503`-naming-the-holder path exists with a test that observes it under real
+      contention, or decision 14 is retired with a tombstone naming what replaced it. — Built:
+      `AppState::hw_holder` + `acquire_hw_lock` in `src/api.rs`, used by all 8 `hw_lock` sites.
+      `api::tests::a_second_caller_is_refused_503_naming_the_holder_under_real_contention` holds the
+      lock across the 500 ms wait window and observes the `503`/holder-name under genuine contention
+      (host-side, no hardware).
+- [x] `spec.md` §2, `interfaces.md`'s status-code conventions and `decisions/platform.md` all say
       the same thing, and it is the thing the code does.
-- [ ] If it is built: a caller that waits and a caller that is refused are distinguishable in
-      `core.log`, so a stall can be diagnosed after the fact.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
-      fragment for anything suite-level it made false.
+- [x] If it is built: a caller that waits and a caller that is refused are distinguishable in
+      `core.log`, so a stall can be diagnosed after the fact. — `tracing::info!` on acquire,
+      `tracing::warn!` on refusal.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). — `cargo build`/`test`/`clippy -D
+      warnings` clean in the code worktree; `check-docs.py` (11/11), `check-client-names.py`,
+      `check-ownership.py` (both repos) clean in the doc worktree.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+      fragment for anything suite-level it made false. — `spec.md`, `interfaces.md`,
+      `decisions/platform.md`, `decisions.md` (size column) updated; `open.md` had no mention to
+      close; no suite-level doc's claim changed (glossary/`suite/features.md` cite decision 4, not
+      14), so no `status.d/` fragment; `changelog.d/core-hw-lock-503.decided.md` and
+      `features.d/core-210-503-naming-the-holder-on-hw-lock-contention.md` added.
