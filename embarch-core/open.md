@@ -6,7 +6,6 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 ## Never exercised
 
-- **`study_schema_mismatch` is reachable by nothing**: it names a member of the error `code` enum that does not exist. Deferred below.
 - **The signal-tap path has never run against real hardware.** Unit-tested on Linux and native Windows; no real port has been resolved or read — this bench has no USB-UART bridge. `validate_signal` has no caller by design: resolving a route at use *is* the validation.
 - **Decision 35's gate has never met ESP32-C5 silicon.** The Nordic arm is live and answers `match`; the Espressif relation is verified only by construction against the checked-out HAL headers and by unit test, that board being unplugged.
 - **The Windows registry write for an *explicit* `EMBARCH_TOKEN` has never executed on real hardware.** A real install/start is verified with no explicit token; only an explicit one reaches that path, and the common case — auto-generated — never does.
