@@ -1,6 +1,12 @@
 # doc — a suite-wide convention for "has this check arm actually run"
 
-**State:** open
+**State:** open — **announced and parked, `ts 1789093650.796139`, posted 2026-09-10 20:27:31 MDT,
+window closes 20:57:31 MDT.** Leg 073 announced it and deliberately did not run it: that leg ended
+at its 4-unit cap before the window closed. **The next leg completes this window; it does not
+restart it** (`../../embarch-fleet/ops.md` §4). Re-read the thread on that `ts` before acting — a
+reply saying go runs it now, cancel drops it back to `open` with the reply quoted, silence past
+20:57:31 means it may run. Times taken from `date` on the machine at the moment of posting, not
+derived from the Slack `ts`.
 **Source:** tasks/umbrella/032 (check 14's `WslHost`/`Remote` skip arms are unreachable on a
 set-up machine) — the umbrella half landed in `embarch-umbrella/spec.md` (a `measured` marker
 on a check-table row, cited to a decision that records a real run) and
