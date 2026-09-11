@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-10.
 
-Decisions that span more than one sub-project and therefore belong to none of them. Every sub-project already has its own `decisions.md`; this is the same record at suite level, and it exists because there was previously nowhere for a suite-wide call to go — so one kept accumulating inside a principle bullet in [embarch.md](../embarch.md) §5 ([tasks/suite/008](../tasks/suite/008-embarch-md-5-rustfmt-bullet-needs-a-home.md), announced and parked 2026-09-06, window closed unanswered).
+Decisions that span more than one sub-project and therefore belong to none of them. Every sub-project already has its own `decisions.md`; this is the same record at suite level, and it exists because there was previously nowhere for a suite-wide call to go — so one kept accumulating inside a principle bullet in [embarch.md](../embarch.md) §5 (`tasks/suite/008`, announced and parked 2026-09-06, window closed unanswered; the task file was consumed by its own fold, so this is a citation and not a link).
 
 **What belongs here:** a call that binds more than one sub-project and is not a rule of the development process itself. **What does not:** anything in [embarch-dev-workflow.md](../embarch-dev-workflow.md), [DOC-PROTOCOL.md](../DOC-PROTOCOL.md), [DOC-COMPACTION.md](../DOC-COMPACTION.md) or [the protocol](../../embarch-fleet/protocol.md) — those are the reserved rule set, and a decision that needs one of them amended is the repo owner's, not this file's.
 
