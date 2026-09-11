@@ -10,6 +10,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `embarch-core/open.md` squeezed 4551→3911 B, clear of the 90%-reserve floor.
 - Feature inventory: per-caller-identity row now reads Declined (with trigger), not Todo — see `embarch-token.md` §5.
 - `spec.md` §5's constants table moved verbatim to `interfaces/constants.md`, clearing the size reserve.
 - `GET /serial-log` caps `duration_ms` (400 over it) and captured bytes, reporting `truncated`.
