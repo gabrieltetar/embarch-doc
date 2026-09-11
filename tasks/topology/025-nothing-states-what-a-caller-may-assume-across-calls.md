@@ -41,11 +41,27 @@ consumer has assumed something different. Nothing here needs a board, so it is o
 
 ## Done when
 
-- [ ] `embarch-topology/interfaces/` (or `spec.md`, wherever the crate's contract already lives)
-      states what a caller may assume about a resolution or validation answer across calls, what
-      invalidates one, and what is never cacheable.
-- [ ] The `open.md` bullet is rewritten to whatever is genuinely still open after that, or removed
-      if nothing is.
-- [ ] A numbered decision if and only if a choice was made rather than a description written.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/topology-*` fragment dropped,
-      and a `status.d/topology-*` fragment for any suite-level fact this made false.
+- [x] `embarch-topology/spec.md` states what a caller may assume about a resolution or validation
+      answer across calls, what invalidates one, and what is never cacheable — new section "What a
+      caller may assume across calls".
+- [x] The `open.md` bullet is rewritten to whatever is genuinely still open after that, or removed
+      if nothing is — removed; nothing about it stayed open.
+- [x] A numbered decision if and only if a choice was made rather than a description written —
+      decision 29 (`decisions/scope.md`), recording that an explicit invalidation signal was
+      considered and rejected.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/topology-*` fragment dropped,
+      and a `status.d/topology-*` fragment for any suite-level fact this made false — none; no
+      suite-level fact changed.
+
+## Note
+
+Adding the new section pushed `embarch-topology/spec.md` past 90% of its cap
+(10001/10240 B). Per the dispatch note, paid the compaction debt in the same
+commit: trimmed non-protected prose (the "It is not" bullets, the declared-
+facts paragraph, the validation-assertion bullets, the consumer-ownership
+bullets, "Where it stands") down to 9195/10240 B (89.8%), without touching
+`tasks/topology/024`'s **Must not delete** list — the decision-28 sentence,
+the process/call-site code block, and the "Storage and roles" section are
+all untouched, verbatim. `024` stays blocked/open (still `In flux: yes` per
+`004`/`020`) and its **Must not delete** list now also names this task's new
+section.

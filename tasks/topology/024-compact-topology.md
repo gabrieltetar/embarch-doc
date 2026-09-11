@@ -9,9 +9,14 @@
 
 ## What
 
-`embarch-topology/spec.md` is at 9151/10240 B (1089 B left, inside reserve).
-Compact it per `DOC-COMPACTION.md` §3/§7 — a pass over its own prose, not a
-new section — down to comfortably below the 90% floor.
+`embarch-topology/spec.md` was at 9151/10240 B when this task was filed.
+`tasks/topology/025` added a new section (caller granularity contract,
+decision 29) and paid its own compaction debt in the same commit per
+`DOC-COMPACTION.md` §2 — the file is now 9195/10240 B (89.8%, just under the
+90% floor) — but it is still inside reserve and this task stays open: any
+further growth from `004`/`020` lands back over the floor with no slack
+left. Compact it per `DOC-COMPACTION.md` §3/§7 — a pass over its own prose,
+not a new section — down to comfortably below the 90% floor.
 
 **Compacts:** `embarch-topology/spec.md`
 
@@ -27,6 +32,8 @@ before cutting.
 - The decision-28 sentence added to the "two things built from it" list
   (CLI mutation refusal / local-bootstrap).
 - The process/call-site code block (`Core, mid-flash/reset/run_study: ...`).
+- The "What a caller may assume across calls" section and its decision-29
+  pointer (added by `tasks/topology/025`).
 - Anything `open.md` currently points at by section name.
 
 ## Why now
