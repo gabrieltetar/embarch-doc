@@ -1,6 +1,6 @@
 # 025 — `embarch-ui`'s "decision 54" citations now resolve to the wrong `embarch-core` decision
 
-**State:** claimed by leg 081
+**State:** done
 **Source:** `inbox/umbrella-ui-decision-54-renumbered-to-57.md`, dropped by the worker on
 `core/039` and filed by leg 079. Split from that drop, which spanned two scopes; the `umbrella`
 half is `tasks/umbrella/051`.
@@ -34,6 +34,22 @@ code is actually implementing.
 
 ## Done when
 
-- [ ] `src/snapshot.rs` and `assets/app.js` citations say "decision 57" where they mean the label.
-- [ ] Any other `ui`-scoped "decision 54" citation triaged, with the judgement recorded.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
+- [x] `src/snapshot.rs` and `assets/app.js` citations say "decision 57" where they mean the label.
+- [x] Any other `ui`-scoped "decision 54" citation triaged, with the judgement recorded.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
+
+## Resolution
+
+Grepped the whole code worktree and `embarch-doc/embarch-ui/` for "decision 54" (and the looser
+`decision.{0,3}54` pattern, to catch near-spellings). Three hits total, not the two the drop
+named — `embarch-doc/embarch-ui/` itself had none:
+
+- `src/snapshot.rs:25` — `` `embarch-core` decision 54 (`decisions/surfaces.md`) `` — the
+  `EnrolledBoardResponse` label decision. Fixed to 57.
+- `assets/app.js:163`, above `enrolledTableRows` — same citation, same fix, to 57.
+- `src/study_designer.rs:627` — `` `embarch-study-designer/design.md` §3 decision 54 `` — this is
+  `embarch-study-designer`'s own independent decision numbering (the `GattTranscript`-retirement
+  decision), not an `embarch-core` citation at all — neither `surfaces.md`'s renumbered decision
+  nor `flashing.md`'s unrelated decision 54. Left alone.
+
+No `embarch-ui` file is in doc-size reserve as a result of this change (two one-line edits).
