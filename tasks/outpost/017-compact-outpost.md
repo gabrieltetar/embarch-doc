@@ -1,6 +1,8 @@
 # 017 — Compact or split `embarch-outpost/decisions/testing.md` decision 22
 
-**State:** open
+**State:** claimed — leg 078, 2026-09-10
+**Reserve for this scope:** nothing in `embarch-outpost` is in file-level reserve; the debt here is
+the per-decision cap named below.
 **Source:** filed by leg 076's supervisor against its own unit. `outpost/016` edited decision 22 and
 grew it 4,258 B → 4,442 B against the 4,096 B per-decision cap. **It was already over before that
 edit** — this is not a debt `outpost/016` created, but it is one `outpost/016` made worse and that
