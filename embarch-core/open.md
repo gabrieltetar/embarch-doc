@@ -19,7 +19,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **`core.toml`** (decision 11), narrowed to `bind`/`port`.
 - **A `{code, message, cause}` JSON error body** — deferred with a trigger, not pending: the `code` enum is a wire contract three consumers branch on, so it is cross-repo work, not Core's alone. Cost and trigger: decision 12.
-- **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not needed: nothing can raise one until a direct route is possible.
+- **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not-needed-*yet*, with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
 
 ## Structural limits
@@ -29,7 +29,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
   answers an ambiguous-VCOM board, and the ESP32-C5-WROOM-1 DK is **[assumed]**,
   unmeasured, to enumerate as a single USB-Serial/JTAG interface with no VCOM to
   name — `tasks/core/028` cites `dev-bench/005`, which declined to assert it.
-  Confirming it needs the board.
+  Confirming the enumeration needs the board; the missing replacement knob
+  outlives that confirmation.
 - **A separate-machine deployment has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design, unusable for flashing.
 - **macOS is reasoned-only.** The elevation paths are written, unexercised; nothing here has run on a Mac.
 - **The route sweep proves rejection, not reach.** Decision 42 asserts all 27 registered routes answer `401` without a token and with a wrong one; only `/status` asserts a *correct* token reaches its handler. A route wired to the wrong handler is not caught — per-route success cases would need per-route fixtures the auth sweep deliberately does without.
