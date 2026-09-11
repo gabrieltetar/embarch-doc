@@ -41,6 +41,7 @@
 - `/study/{id}/events` docs now list `GattTranscript` and note it has no `Last-Event-ID`/replay.
 
 ### Removed
+- `Backend::NrfJprog` retired — never recorded on any bench. See `decisions/flashing.md` 54.
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
