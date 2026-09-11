@@ -39,6 +39,9 @@
 - `chip-list --help` and the `/resolve-chip` 404 now say to edit Core's compiled-in `SOC_TO_CHIP`, not a retired `embarch-api` config key.
 - `/study/{id}/events` docs now list `GattTranscript` and note it has no `Last-Event-ID`/replay.
 
+### Removed
+- `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
+
 ### Decided
 - Decision 50's closing paragraph now names each consumer's real end state and points to decision 54.
 - Core keeps `confirmed_at_utc_ms` alone on `EnrolledBoardResponse`; decision 54 says label it "Enrolled", never "Validated".
