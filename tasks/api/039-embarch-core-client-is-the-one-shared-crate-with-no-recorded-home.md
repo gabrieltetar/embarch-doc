@@ -1,6 +1,6 @@
 # 039 — `embarch-core-client` is the one shared crate in the suite with no recorded home, and its module-map row is wrong about its own dependency shape
 
-**State:** claimed — leg 073, 2026-09-10.
+**State:** done — leg 073, 2026-09-10.
 
 **Supervisor's dispatch note, leg 073.** Two things settled before dispatch so the worker does not
 have to guess them:
@@ -72,13 +72,16 @@ crate's consumers are across one.
 
 ## Done when
 
-- [ ] `embarch-api/interfaces/modules.md`'s core-client row states its actual dependency shape
+- [x] `embarch-api/interfaces/modules.md`'s core-client row states its actual dependency shape
       post-decision-56.
-- [ ] There is one place that records why the shared Core client lives inside a consumer's repo,
-      what that costs, and what would reverse it.
-- [ ] A future task about this crate has an unambiguous scope.
-- [ ] The decision does not land in `decisions/core-link.md` unless its reserve has been spent
-      first (`DOC-COMPACTION.md` §2, `tasks/api/026`).
-- [ ] Gate green; `changelog.d/api-*` fragment.
+- [x] There is one place that records why the shared Core client lives inside a consumer's repo,
+      what that costs, and what would reverse it. Decision 66, `decisions/core-link.md`.
+- [x] A future task about this crate has an unambiguous scope: `embarch-api` owns the crate and its
+      decision; `tasks/ui/013` is the adjacent, separate stale-claim fix in `embarch-ui`.
+- [x] The decision does not land in `decisions/core-link.md` unless its reserve has been spent
+      first (`DOC-COMPACTION.md` §2, `tasks/api/026`) — discharged per this leg's dispatch note;
+      landing decision 66 there pushed the file 5 B under cap and into its own reserve, filed as
+      `tasks/api/061-compact-api.md` (blocked, in flux).
+- [x] Gate green; `changelog.d/api-core-client-home.decided.md`.
 
 **Adjacent, not the same:** `tasks/ui/013` fixes a stale topology claim in `embarch-ui/Cargo.toml`.
