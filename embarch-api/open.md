@@ -2,50 +2,33 @@
 
 **Status:** active, 2026-09-09.
 
-Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
+Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
-## Known wrong, not fixed
+## Known wrong / unfinished
 
-- **A `[[projects]]` `board` is a hardware fact nothing compares against the hardware.** Derived from `build_info.yml`, it names the last build, not the board on the desk — a mismatched revision costs a day of bring-up. Violates [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` stopped writing one unconfirmed (`embarch-umbrella` decision 41), but every older config still asserts one, and comparing it to real hardware is unbuilt.
-
-## Unfinished couplings
-
-- **The alert/enrolled-board response types were unpinned mirrors, and it fired**: `link_port_interface` (`embarch-topology` decision 20) reached Core's wire body and the client mirror silently dropped it. `api`'s half is now pinned against a JSON literal (task `032`). **Core's half is not** — filed to `embarch-core`'s inbox.
-- **The smoke harness ([decisions](decisions/tests.md) 30) is named and unwritten.** Its six mocked criteria live in `tests/` ([decisions](decisions/tests.md) 46); end-to-end is `#[cfg(unix)]`, so Windows runs direct tests only.
-- **`study_watch` has met a real embarch-core; the rest has not.** Bench, leg 021, 2026-09-06: `study_watch` against a real, installed `embarch-core` received pushed live frames (`transport: live`, `StepCompleted`/`StatusChanged`), and `transport: polled` fallback was also seen, from the outside, same session. `study-status --follow` — a different call site — was not exercised, nor was the drop path, `lagged`, or a reconnect ([decisions](decisions/study-events.md) 48, 49). Debt: `tasks/api/059-sse-client-remaining-observations.md`.
-- **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's to fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred; Core emits codes, the shared client carries one typed, this crate passes it on. **Do not derive a kind from the HTTP status.**
-- **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads — a different repo's fix. Why it gets no by-name load refusal, unlike `[[projects.targets]]`/`soc_chip_overrides`, and what would end the tolerance: [decisions](decisions/shape.md) 64.
+- **A `[[projects]]` `board` is a hardware fact nothing compares against the hardware.** Derived from `build_info.yml`, it names the last build, not the board on the desk — a mismatched revision costs a day of bring-up, violating [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` stopped writing one unconfirmed (`embarch-umbrella` decision 41); older configs assert one, comparing to hardware is unbuilt.
+- **The alert/enrolled-board response types were unpinned mirrors, and it fired**: `link_port_interface` (`embarch-topology` decision 20) reached Core's wire body and the client mirror silently dropped it. `api`'s half is pinned against a JSON literal now (task `032`); **Core's is not** — filed to `embarch-core`'s inbox.
+- **The smoke harness ([decisions](decisions/tests.md) 30) is named, unwritten.** Six mocked criteria live in `tests/` ([decisions](decisions/tests.md) 46); end-to-end is `#[cfg(unix)]`, Windows gets direct tests.
+- **`study_watch` has met a real embarch-core; the rest has not.** Bench, leg 021: pushed live frames and `transport: polled` fallback both seen ([decisions](decisions/study-events.md) 48, 49). `study-status --follow`, drop path, `lagged`, reconnect: unexercised. Debt: `tasks/api/059-sse-client-remaining-observations.md`.
+- **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
+- **`embarch-umbrella` still scaffolds `artifact_path_for_core`**, a field this crate no longer reads — a different repo's fix. Why no by-name load refusal, unlike `[[projects.targets]]`/`soc_chip_overrides`: [decisions](decisions/shape.md) 64
 
 ## Owed decisions
 
-- **`list_serial_ports`/`list-serial-ports` (task `041`) shipped with no numbered
-  decision**, under the burndown rule of no new numbered decisions this leg.
-  What it would record if written: surfacing `GET /serial-ports` as a bare
-  no-param tool/subcommand pair mirroring `status`'s shape, why `serial_log`
-  gets no automatic fallback onto it (a caller must read the list and choose,
-  since a machine can enumerate several ports and only a human or the caller's
-  own knowledge says which one is the DUT's console), and the correction to
-  `interfaces/tools.md:28`'s claim of a `GET /dev-bench/port` fallback that
-  never existed in this crate. File as a `decisions/tool-wrapping.md` entry
-  once it is out of reserve (`tasks/api/047`) — or, if a split lands first, in
-  whichever successor file gets the tool-wrapping mission. Still open, also
-  not this crate's to fix: `embarch init` never writes `serial_port` at all
-  (`embarch-umbrella`), so the newcomer path this task partially closes still
-  starts from an unconfigured project either way.
+- **`list_serial_ports`/`list-serial-ports` (task `041`) shipped with no numbered decision**, under that leg's burndown rule against new numbers. Owed: the no-param `GET /serial-ports` pair, why `serial_log` has no automatic fallback onto it (several ports can enumerate; only a human or the caller knows the DUT's console), and the correction to `interfaces/tools.md:28`'s stale `GET /dev-bench/port` claim. File in `decisions/tool-wrapping.md` once out of reserve (`tasks/api/047`), or its successor.
 
 ## Structural limits
 
-- **Nothing can read a firmware version off a DUT** — a declared version describes the tree built, weaker than a measurement.
-- **The inbound trust boundary is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while an interactive client spawns it; revisit if one does not.
-- **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/studies.md) 39): a remote Core cannot see a local path.
+- **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
+- **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively; revisit otherwise.
+- **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/studies.md) 39): a remote Core can't see local paths.
 
 ## Settled-deferred
 
 Re-read suite-wide; none acquired a new argument.
 
 - **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
-- **Config fragments / `include`**, so `[core]` is not duplicated per repo. Tolerable: `[core]` is three lines.
-- **Config hot-reload** — config loads once; picking up an edit means a reconnect.
-- **`serial_log` stays one-shot** — Core's endpoint is itself a bounded capture; streaming needs Core to grow one first, **not this crate's to decide**.
-- **Adding projects stays manual TOML editing** — no mutation tool; the list barely churns. `zephyr-west` needs no edit to add a board, variant, revision or app.
-- **The decision corpus runs narrow across `api`.** Several `decisions/*.md` sit within a paragraph of the reserve line, invisible to `check-doc-size.py` until they cross — the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which have crossed.
+- **Config fragments/`include`** (`[core]` is 3 lines) **and hot-reload** (loads once; an edit needs a reconnect).
+- **`serial_log` stays one-shot** — Core's endpoint is bounded; streaming needs Core to grow one, **not this crate's call**.
+- **Adding projects stays manual TOML editing** — no mutation tool, the list barely churns; `zephyr-west` needs none for board, variant, revision, app.
+- **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit a paragraph from the reserve line, invisible to `check-doc-size.py` until crossed; the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which crossed.
