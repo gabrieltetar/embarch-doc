@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- Measured the trace handler's in-process request cost (decode + JSON encode) at 250k/500k/1M rows; Core-fetch portion still unmeasured — `embarch-ui/open.md`.
 - `tests/element_ids.rs` fails on a duplicate or dangling element id in index.html/app.js — `embarch-ui/decisions/wiring.md` decision 24.
 - The Trace view drops a stale pre-reset leading prefix and keeps the DUT clock for the rest, in place of refusing that clock for the whole capture. embarch-ui decision 19.
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
