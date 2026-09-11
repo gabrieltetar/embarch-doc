@@ -1,6 +1,6 @@
 # `dev_bench_hello` will be the first `embarch-core-client` route whose call waits on a board, and the timeout it inherits by inertia is `status_timeout`
 
-**State:** claimed — leg 075, `agent/api/037-dev-bench-hello-timeout`
+**State:** done — leg 075, `agent/api/037-dev-bench-hello-timeout`. Handshake-duration measurement stays owed (host-side unit; never touched hardware).
 **Source:** `umbrella/030` (2026-09-06) — noticed while splitting `doctor`'s own budgets after
 the same miscategorisation cost `embarch-umbrella` weeks of dark checks
 **Scope:** api
@@ -64,9 +64,28 @@ Two things from that unit are worth carrying over and cost nothing here:
 
 ## Done when
 
-- [ ] The `dev_bench_hello` route (whenever `tasks/api/036` lands it) names a budget with a doc
+- [x] The `dev_bench_hello` route (whenever `tasks/api/036` lands it) names a budget with a doc
       comment that says what Core does before it can answer — link-open and handshake, not a read
-- [ ] Whether that is `serial_timeout`, a new named constant, or a justified `status_timeout` is
+- [x] Whether that is `serial_timeout`, a new named constant, or a justified `status_timeout` is
       the author's call; what is not open is inheriting one silently
 - [ ] If a handshake duration gets measured on the bench, the chosen value is stated as measured
       rather than assumed
+
+## Resolution, leg 075, 2026-09-10
+
+`dev_bench_hello` (`crates/embarch-core-client/src/client.rs:1810`) now reuses `serial_timeout`
+(15 s), not `status_timeout`. Its doc comment states what Core does before answering — link-open,
+`Hello`/`HelloAck` handshake, the post-ack boot-log read (`embarch-core` decision 37), link close —
+and why that disqualifies `status_timeout`'s "no hardware" justification. `serial_timeout` was
+picked over a new constant because it is the budget the only other route on the same physical
+link (`serial_log`) already carries, and reusing it costs nothing new.
+
+**Not measured, and left owed on purpose** — this is a host-side unit, no hardware touched. 15 s
+is stated as **assumed**, carried over from `serial_log` rather than sized for this route. One
+timed authenticated `curl` of `/dev-bench/hello` on the primary bench would size both budgets at
+once; still nobody's done it.
+
+Filed as `embarch-api` decision 68 in `decisions/dev-bench.md` (not `core-link.md`, over cap and
+blocked by `api/061`; not `tool-wrapping.md`, 66 B left and blocked by `api/047`) — argued in the
+decision itself, same placement move `api/042`'s worker made. Reserve check: `dev-bench.md` is
+5.0 KB against its cap, no compaction task needed.
