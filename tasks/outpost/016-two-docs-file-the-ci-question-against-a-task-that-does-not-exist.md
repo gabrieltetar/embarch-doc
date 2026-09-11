@@ -1,6 +1,6 @@
 # 016 — Two `embarch-outpost` docs file the CI question against `tasks/suite/021`, which has never existed
 
-**State:** open
+**State:** claimed — leg 076, worker on `agent/outpost/016-ci-citation`
 **Source:** leg 076's refill sweep. `embarch-outpost/open.md:26` and
 `embarch-outpost/decisions/testing.md:21` both hand the "outpost has no CI" question to
 `tasks/suite/021`. `tasks/suite/` numbering runs 020 → 022; no 021 is on disk and none was ever
