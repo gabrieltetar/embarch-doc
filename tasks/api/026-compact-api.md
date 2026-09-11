@@ -8,12 +8,23 @@
 
 **Compacts:** embarch-api/spec.md, embarch-api/open.md
 **Size debt due:** 2026-09-14
-**In flux:** yes — the event-stream half of this file (decisions 48, 49) has never
-met a real `embarch-core`. `tasks/api/001-sse-client.md` is that run. Until it
-happens, shortening 48/49 writes a clean statement of something a first live run
-is expected to contradict, and throws away the fallback reasoning that run will
-need to read. Unparked by `api/001` landing, either confirming those decisions or
-replacing them.
+**In flux:** yes — re-judged by `api/035` (2026-09-10) against `embarch-api/spec.md`
+and `embarch-api/open.md`, the two paths actually left on the `Compacts:` line
+above. The premise this field used to state — "the event-stream half of this
+file has never met a real `embarch-core`" — no longer applies to either of
+them: that half of `core-link.md` split out into `decisions/study-events.md` on
+2026-09-07 and was closed separately (see below), and `api/035` confirmed on
+the bench that `study_watch` has since met a real, installed `embarch-core` and
+received pushed live frames plus an observed polling fallback — decisions 48/49
+are, so far, confirmed rather than contradicted. What has not run is
+`study-status --follow`, the drop path, `lagged`, and a reconnect —
+`tasks/api/059-sse-client-remaining-observations.md` (`api/001`, the task this
+line and `open.md` used to name for that debt, was never filed and cannot
+unpark anything). None of that touches `spec.md`/`open.md`, which stay blocked
+on their own terms: both are still inside their own reserve lines (see the
+`api/054` closing note below) and neither has been compacted by this unit.
+Unparked by actually compacting `spec.md` and `open.md`, which is this task's
+own remaining job — no other landing is a precondition for that half.
 **Must not delete:** decision 15's *failure signature* — the identical path
 resolving from an interactive shell and failing with "the network name cannot be
 found" from the service. It is a measurement, and it reads as an inference once
