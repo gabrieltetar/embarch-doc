@@ -1,6 +1,19 @@
 # 036 — `embarch-core/open.md` is 102 bytes inside its reserve floor
 
-**State:** open
+**State:** claimed — leg 074, `agent/core/036-compact-core`
+
+**Supervisor's dispatch note, leg 074, 2026-09-10.** Dispatched as an ordinary unit: `In flux: no`
+for the one file on the `Compacts:` line, nothing overdue on the size ledger, and the task's own
+framing already licenses the honest outcome. **The acceptable answers are three, not one** — cut
+~102 B of genuine filler; or split the file verbatim if a seam exists; or **conclude there is no
+safe 102 B left and say so in the task file**, leaving the debt dated and unpaid. Do not
+manufacture the third pass's worth of cuts: the last two passes have already taken 640 B out of a
+4 KB file and the second overshot into two real claims that only a reviewer's arithmetic caught.
+**Reserve in `core` for this dispatch:** `embarch-core/open.md` 4,022/5,120 B (1,098 B left, in
+reserve — it is the subject); `embarch-core/decisions/flashing.md` 11,487/12,288 B (801 B left, in
+reserve, filed against the blocked `tasks/core/035` — leave it alone, this unit has no business
+there). If your work spends reserve in any other `core` file, file
+`tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** `core/022`'s fold, leg 073, 2026-09-10 — the 111 B the supervisor restored on the
 reviewer's finding (`inbox/core-open-md-compaction-residue.md`) put the file back inside reserve
 after `core/022`'s squeeze had cleared it. Filed as a fresh debt rather than reopening `core/022`,
