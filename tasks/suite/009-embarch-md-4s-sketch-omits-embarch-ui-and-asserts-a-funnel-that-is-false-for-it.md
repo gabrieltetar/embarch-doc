@@ -1,10 +1,7 @@
 # 009 — `embarch.md` §4 — the suite's only layering picture — has no node for `embarch-ui` or `embarch-core-client`, and its stated invariant is false for the UI
 
-**State:** open — announced in #embarch-fleet by leg 082, `ts 1789113920.427309`, 2026-09-11.
-The 30-minute window under `../../embarch-fleet/ops.md` §4 runs from that message. **If leg 082
-ends before it closes, the next leg completes this window rather than restarting it** — read the
-thread with `scripts/fleet-read.py --thread 1789113920.427309` and, if nothing objected and 30
-minutes have passed, run it.
+**State:** claimed (leg 082) — announced in #embarch-fleet at 02:05:20 MDT, `ts 1789113920.427309`;
+**window closed 02:35:20 with no objection in the thread and none in the channel**, so it runs.
 **Source:** suite review pass 2026-09-06, dimensions 4 and 3 (two hunters, one finding). Doc claim design-only; the code half code-confirmed.
 **Scope:** suite
 **Hardware:** none
