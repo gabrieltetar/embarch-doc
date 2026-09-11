@@ -11,6 +11,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- `open.md` reshaped: the 250,000-row bullet is now a measurement table, out of size reserve.
 - `topology-tab.md` decision 10 compacted 4430→4034 B, cutting cold provenance/investigation prose; under the 4,096 B cap.
 - Enrolled-boards tables label `confirmed_at_utc_ms` "Enrolled", never "Confirmed"/"Validated" — that field can't answer freshness.
 - ui: spec.md split its trace-chart reference into interfaces.md, out of reserve.
