@@ -1,4 +1,4 @@
-# 062 — `list_serial_ports` shipped with no numbered decision, and the file it belongs in is 66 B from its cap
+# 063 — `list_serial_ports` shipped with no numbered decision, and the file it belongs in is 66 B from its cap
 
 **State:** open
 **Source:** `embarch-api/open.md` — *"`list_serial_ports`/`list-serial-ports` (task `041`) shipped
