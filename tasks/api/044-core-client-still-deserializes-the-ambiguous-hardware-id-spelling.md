@@ -1,6 +1,6 @@
 # 044 — `embarch-core-client` still deserializes the ambiguous `hardware_id` spelling on three routes
 
-**State:** claimed — leg 077, 2026-09-10, supervisor-executed. Window from leg 076 at ts
+**State:** done — leg 077, 2026-09-10, supervisor-executed. Window from leg 076 at ts
 `1789097485.649139` elapsed (38m) with no objection in-thread; not restarted.
 Original state line follows.
 **Was:** open — announced to #embarch-fleet by leg 076 at ts `1789097485.649139`; the `ops.md` §4
@@ -57,11 +57,35 @@ cross-repo call this worker's single-repo scope could not make on its own
 
 ## Done when
 
-- [ ] Someone with authority over both `embarch-core` and `embarch-api` (or two
+- [x] Someone with authority over both `embarch-core` and `embarch-api` (or two
       coordinated units) decides the rollout shape (compat window vs. one
-      coordinated commit) and files it.
-- [ ] `embarch-core-client`'s `hardware_id` fields on `EnrollProbeResponse`,
+      coordinated commit) and files it. — **Neither: the rename is cancelled.**
+      `embarch-core` decision 55, `decisions/handshake.md`.
+- [x] `embarch-core-client`'s `hardware_id` fields on `EnrollProbeResponse`,
       `ValidateResponse`, `EnrolledBoardResponse` are updated to match whatever
-      Core ends up serving.
-- [ ] `embarch-core/interfaces/topology.md`'s note pointing at decision 47 is
-      either resolved or superseded by the new decision.
+      Core ends up serving. — They already matched; what they lacked was saying
+      *which* ID they carry. Each now has a doc comment naming the concept and
+      citing decision 55. No wire change in either repo.
+- [x] `embarch-core/interfaces/topology.md`'s note pointing at decision 47 is
+      either resolved or superseded by the new decision. — Rewritten to point at
+      55 and state the default rather than the deferral.
+
+## Resolution — leg 077, 2026-09-10
+
+**The collision this task inherited was already gone, and that is what settled it.**
+`tasks/core/020` fixed the dangerous half: `hardware_id` used to mean the self-reported
+ID on `GET /dev-bench/hello` and the probe-read one on the three probe routes — one
+spelling, two concepts, four fields apart in one body. Renaming the hello field to
+`self_reported_hardware_id` ended that. What survived is one *concept* under two
+spellings, which no single response can make a reader get wrong.
+
+Weighed against that: renaming `hardware_id` on `/probes/enroll`, `/probes/enrolled`
+and `POST /validate` is not a compile error anywhere — `embarch-core-client`'s structs
+are freestanding — so it fails at runtime, on the first call, in the CLI, every MCP
+tool and `embarch-ui` at once. A compatibility window buys that back only by serving
+two live names for one field. Both prices are higher than the inconsistency they buy.
+
+**Least certain:** that `probe_hardware_id` on one route and `hardware_id` on three
+will not re-confuse someone reading the two routes side by side. The decision's answer
+is that a prefix earns its keep only where it disambiguates against a neighbour; that
+is a judgement, not a proof, and it is written down so it can be reversed with one.

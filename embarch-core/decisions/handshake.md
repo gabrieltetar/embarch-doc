@@ -37,4 +37,17 @@ The runtime serial link is a *physically separate USB device* from the JTAG conn
 
 *Rejected:* renaming all four routes in one pass — the candidate direction named in `tasks/core/020` — because it trades a same-spelling-different-meaning bug (confusing, but visible the moment two values are compared) for a silent runtime deserialization failure in a different repo (worse: invisible until something calls it).
 
+### 56 — `hardware_id` is the probe-read ID everywhere, and the deferred rename is cancelled rather than scheduled
+Decision 47 left the rollout shape open — compatibility window, or one coordinated commit across `embarch-core` and `embarch-api`. **Neither. The rename does not happen, and this is the settlement rather than a further deferral** (`tasks/api/044`).
+
+**The defect decision 47 was protecting against is already gone.** It was one *spelling* carrying two *concepts*: `hardware_id` meant the JTAG-read ID on `/probes/enroll`, `/probes/enrolled` and `POST /validate`, and the bench's self-reported ID on `GET /dev-bench/hello`. Renaming the `/dev-bench/hello` field to `self_reported_hardware_id` removed the collision outright. What survives is the much weaker shape of one *concept* under two spellings — `hardware_id` on the three probe routes, `probe_hardware_id` on `/dev-bench/hello` — and no reader of a single response can now get the wrong fact from either.
+
+**So `hardware_id`, unprefixed, is this suite's name for the probe/JTAG-read identity**, and that is a rule about the default rather than an exception to one. `probe_hardware_id` exists on exactly one route, `GET /dev-bench/hello`, because there it sits four fields from `self_reported_hardware_id` and a row of two hardware IDs is unreadable unless both say which they are. A prefix that disambiguates against a neighbour is worth its inconsistency; the same prefix on a route with no neighbour to disambiguate against is cost with no reader.
+
+**The cost side is what settles it.** `embarch-core-client` deserializes the three probe routes with `hardware_id: String` — required, no `#[serde(default)]`, and freestanding structs rather than types shared with Core, so a wire rename is not a compile error anywhere. It fails at runtime, on the first call, in another repo, and reaches the CLI, every MCP tool and `embarch-ui` at once. A compatibility window buys that back only by making Core serve both spellings for a release — two names for one field, live, which is the state this whole thread exists to end.
+
+**What this decision owes in exchange for not renaming: the concept has to be legible at the struct, not only on the wire.** `EnrollProbeResponse`, `ValidateResponse` and `EnrolledBoardResponse` each carry a doc comment saying their `hardware_id` is the probe-read value and pointing here, so the next reader settles it without re-deriving it from two repos. That is the whole remaining work, and `embarch-core`'s wire surface does not change.
+
+*Rejected:* leaving it open a third time. `tasks/core/020` deferred it, decision 47 recorded the deferral, and `tasks/api/044` inherited it — a question re-filed rather than answered accumulates the cost of being re-read without ever paying it down.
+
 ---

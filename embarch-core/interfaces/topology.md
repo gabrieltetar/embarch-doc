@@ -4,7 +4,7 @@
 
 Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../interfaces.md](../interfaces.md), [../decisions.md](../decisions.md).
 
-**`hardware_id` below is the probe/JTAG-read ID, and it is not yet the one spelling this route group uses** — decision 47 (`../decisions/handshake.md`) has why the rename that would give it one is deferred rather than done silently.
+**`hardware_id` below is the probe/JTAG-read ID, and that is the suite's default, unprefixed name for it** — decision 56 (`../decisions/handshake.md`) settles it and cancels the rename decision 47 deferred. The only prefixed spelling is `probe_hardware_id` on `GET /dev-bench/hello`, where it has `self_reported_hardware_id` four fields away and needs to say which it is.
 
 **`confirmed_at_utc_ms` on `/probes/enroll` and `/probes/enrolled` is enrolment time, not freshness** — the instant the record was last written, unmoving until someone re-enrolls. A live re-check's own instant is `POST /validate`'s `validated_at_utc_ms` (decision 50) and reaches neither of these two routes: decision 54 has why, and what a renderer should say instead of implying either route's timestamp answers "how stale is this identity check?".
 
