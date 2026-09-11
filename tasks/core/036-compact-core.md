@@ -1,8 +1,14 @@
 # 036 — `embarch-core/open.md` is 102 bytes inside its reserve floor
 
-**State:** blocked — attempted on leg 074 (`agent/core/036-compact-core`), landed by leg 075. No
-safe cut or split found; `embarch-core/open.md` is unchanged at 4,022 B and the debt stays dated
-2026-09-26, unpaid. See `## Blocked` below.
+**State:** done — leg 082, `tasks/core/040`. `embarch-core/open.md` is now 3,735 B against the
+3,920 B reserve threshold (185 B clear), paid down by removing the "Owed decisions" section (its
+one bullet, `GET /serial-log`'s caps, closed by landing decision 58) and adding one short trigger
+bullet under "Designed, not built" in its place — a net cut, not the 102 B squeeze this task
+originally asked for, but the file is out of reserve and `check-doc-size.py --pressure` already
+read it as PAID before this task touched it (the shrink that did it: decision 55's `open.md`
+bullet closing, `core/037`/leg 075). Closing per `tasks/core/040`'s instruction: "if your change
+leaves it paid, close that item rather than leaving a debt nobody is closing." See `## Blocked`
+below for the original (superseded) leg-074 finding.
 
 ## Blocked
 

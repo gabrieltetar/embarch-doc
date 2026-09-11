@@ -20,6 +20,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **A `{code, message, cause}` JSON error body** — deferred with a trigger, not pending: the `code` enum is a wire contract three consumers branch on, so it is cross-repo work, not Core's alone. Cost and trigger: decision 12.
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not-needed-*yet*, with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
+- **A byte count alongside `GET /serial-log`'s `truncated: bool`** — rejected, not deferred (decision 58). Trigger: a caller that must act differently on 1 byte lost versus 900 KB.
 
 ## Structural limits
 
@@ -33,10 +34,6 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **A separate-machine deployment has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design, unusable for flashing.
 - **macOS is reasoned-only.** The elevation paths are written, unexercised; nothing here has run on a Mac.
 - **The route sweep proves rejection, not reach.** Decision 42 asserts all 27 registered routes answer `401` without a token and with a wrong one; only `/status` asserts a *correct* token reaches its handler. A route wired to the wrong handler is not caught — per-route success cases would need per-route fixtures the auth sweep deliberately does without.
-
-## Owed decisions
-
-- **`GET /serial-log`'s caps have no numbered decision** — `tasks/core/009` shipped `serial::MAX_DURATION_MS` (10,000 ms) and a byte cap (`EMBARCH_SERIAL_LOG_MAX_BYTES`, 1 MiB default) with a `truncated: bool` shape, all reasoned not measured. Owed: why those numbers, and why a boolean rather than a byte count.
 
 ## Moved elsewhere, not resolved
 
