@@ -26,6 +26,7 @@
 - status.d/ fragments and a tasks/ queue: a worker never edits a shared suite-level doc or the queue it pulls from.
 
 ### Changed
+- - `embarch.md` §4 draws `embarch-ui` as Core's peer over the shared `embarch-core-client`, and the funnel invariant now names `embarch-topology`'s `hardware` feature, not a process.
 - The doc gate's check list is no longer restated in protocol.md, supervise.md or DOC-COMPACTION-PASS.md; they had said six and eight while check-docs.py ran nine. Run the wrapper, read its output.
 - A compaction debt is filed at tasks/<scope>/<NNN>-compact-<scope>.md — the scope of the doc, a path its worker owns — not tasks/doc/, which check-ownership.py refuses them.
 - DOC-COMPACTION.md splits: §1–§5 stay as the budget, §6–§9 become DOC-COMPACTION-PASS.md, how to run a pass.
