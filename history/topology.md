@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- spec.md states what a caller may hold across calls (per-operation only, no cache) — decision 29.
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
