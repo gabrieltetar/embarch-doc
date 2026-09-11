@@ -1,6 +1,6 @@
 # 024 — `decisions/topology-tab.md` decision 10 is over the per-decision cap and nothing has filed it
 
-**State:** open
+**State:** claimed — leg 077, 2026-09-10, `agent/ui/024-decision-10-over-cap`
 **Source:** `scripts/check-doc-size.py --decisions`, run during leg 076's refill sweep —
 `OVER 4430 B embarch-ui/decisions/topology-tab.md#10` against the 4,096 B per-decision cap. Not on
 the size ledger, because the ledger clocks files and this is a decision.
