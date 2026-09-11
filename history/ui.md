@@ -19,6 +19,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- `snapshot.rs`/`app.js`'s "decision 54" cites now say 57, matching `core/039`'s renumbering; `study_designer.rs`'s own decision 54 is unrelated and untouched.
 - Fixed stale `embarch-ui` src comments: `study_designer` config doc names decision 14's real behaviour, `logs.rs` says `GET`, dead `milestone-*.md` pointers replaced with live docs.
 - embarch-ui/Cargo.toml's comment overstated decision 5: it never links embarch-topology's `hardware` feature, but the crate is in the tree transitively.
 - An unrecognised trace-band outcome now fills with `tr-cross`, not `tr-gap` — it no longer claims the firmware lost records.
