@@ -1,6 +1,6 @@
 # 064 — `surface.md` decision 67 cites `release.md` for decision 14, which lives in `install.md`
 
-**State:** claimed — leg 083, 2026-09-11
+**State:** done — leg 083, 2026-09-11
 
 **Doc-size reserve in your scope (`embarch-api`), read this before you plan.** Two decision files
 are already **over** their 12,288 B cap and are parked against blocked compaction tasks:
@@ -40,7 +40,23 @@ release archive" via decision 67's own wording is likely to copy the same wrong 
 
 ## Done when
 
-- [ ] `embarch-api/decisions/surface.md` decision 67's `(embarch-umbrella/decisions/release.md)`
+- [x] `embarch-api/decisions/surface.md` decision 67's `(embarch-umbrella/decisions/release.md)`
       parenthetical points at `embarch-umbrella/decisions/install.md` instead.
-- [ ] A quick grep for `embarch-umbrella/decisions/release.md` elsewhere in the suite for the
+- [x] A quick grep for `embarch-umbrella/decisions/release.md` elsewhere in the suite for the
       same mis-citation (decision 14 specifically) turns up nothing else.
+
+## Closing note
+
+Premise verified before acting: `embarch-umbrella/decisions.md`'s own index row for
+`decisions/install.md` lists `3, 4, 5, 14, 21, 25, 28`; `release.md`'s row lists only `1, 2, 27,
+29`. `install.md` §14 ("Distribution: one suite release archive...") is the real target; `release.md`
+holds no decision 14. Task's premise was correct as filed.
+
+Grep for `embarch-umbrella/decisions/release.md` across the whole `embarch-doc` worktree (all
+sub-projects, not just `embarch-api`) found exactly one hit outside this task file: the one fixed
+here. Nothing to drop in `inbox/`. The code repo (`embarch-api`) has no citation of its own —
+diff is docs-only, code tree byte-identical to `main`, so the cargo gate was skipped per the
+supervisor's note.
+
+`decisions/surface.md` size: 8,746 B before and after (path substitution, same length) — well
+under its 12,288 B cap, not in reserve, no compaction task needed.
