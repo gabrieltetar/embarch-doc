@@ -25,7 +25,7 @@ So a detected port now carries **how many candidates it was guessed among**, set
 
 *Rejected: resolving it by handshake* — try each candidate and keep whichever answers. **Genuinely more automatic, and declined for the layering reason this module's own header states: nothing here opens a port.** It reads USB descriptors the OS already enumerated; opening the link and speaking the protocol is the consumer's job. **Moving protocol knowledge in here to save one declared fact would make the topology crate depend on the dev-bench wire schema, and the schema moves far more often than a bench's cabling does.**
 
-Decision 24, on `detected_by` for a declared serial with the VID gate off, moved to [links.md](links.md) — its subject is what detection reports for a link's port, that file's mission, not this one's.
+Decision 24, on `detected_by` for a declared serial with the VID gate off, moved to [links-port.md](links-port.md) — its subject is what detection reports for a link's port, that file's mission, not this one's.
 
 ### 27 — `NotFound` names the rule that emptied the candidate list, and a declared link serial/interface can be unset again
 

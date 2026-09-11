@@ -1,6 +1,20 @@
 # 026 — `embarch-topology/decisions/links.md` is in reserve after `api/042`'s fold
 
-**State:** claimed — leg 075, `agent/topology/026-compact-topology`
+**State:** done — leg 075, `agent/topology/026-compact-topology`. Verbatim split, not a squeeze:
+`decisions/links.md` kept decision 18 (7,360 B) since other sub-projects already cite that path by
+name for it; decisions 17 and 24 moved to the new `decisions/links-port.md` (5,155 B). Both files
+are out of reserve on their own. Cross-repo citations of `embarch-topology/decisions/links.md`
+decision 18 (`embarch-ui/decisions/topology-tab.md`, `embarch-glossary.md`, `embarch-outpost/decisions/capture.md`,
+`embarch-api/decisions/surface.md`) needed no change because of that filename choice — editing
+those files would have reached outside this task's ownership row, so the split was shaped to avoid
+needing to. `python3 scripts/check-docs.py` green (11/11).
+
+Answering `DOC-COMPACTION-PASS.md`'s human question in my own words: no, `embarch-topology/spec.md`
+alone cannot answer what someone needs to work on this component today — it does not carry why the
+DUT signal link's route is modelled as a first-class field, why the CLI mirror was refused, or the
+`detected_by` honesty distinction, all of which live only in `decisions.md`'s two link files. That
+gap is not new here and is already the second debt the dispatch note named: `spec.md` is itself in
+reserve, parked under `tasks/topology/024` (blocked), so closing it is out of this unit's scope.
 **Source:** `api/042`'s fold, leg 074, 2026-09-10. **The supervisor spent this reserve, not a
 worker.** Consuming `api/042`'s `status.d/` fragment meant annotating decision 18 in another
 sub-project's decisions file — a write only the supervisor may make (`protocol.md` §3) — and that
@@ -77,12 +91,15 @@ on.
 
 ## Done when
 
-- [ ] `embarch-topology/decisions/links.md` is out of reserve (below 11,059 B), or a verbatim
+- [x] `embarch-topology/decisions/links.md` is out of reserve (below 11,059 B), or a verbatim
       mission split by decision has been done — 17, 18 and 24 are natural seams and a split
       restates nothing, so `DOC-COMPACTION.md` §2's split-first preference applies here before a
-      squeeze does.
-- [ ] Every `Must not delete:` item above still present and still saying what it said.
-- [ ] Whoever runs this answers `DOC-COMPACTION-PASS.md`'s question in the log entry, in their own
+      squeeze does. Done: verbatim split into `links.md` (18, 7,360 B) and `links-port.md` (17, 24,
+      5,155 B).
+- [x] Every `Must not delete:` item above still present and still saying what it said — verbatim,
+      unchanged text, just relocated.
+- [x] Whoever runs this answers `DOC-COMPACTION-PASS.md`'s question in the log entry, in their own
       words: can `embarch-topology/spec.md` alone answer what someone needs to work on this
       component today? Note that `spec.md` is itself in reserve and parked under
-      `tasks/topology/024`, so the honest answer may well be "no, and that is a second debt."
+      `tasks/topology/024`, so the honest answer may well be "no, and that is a second debt." See
+      the **State** line above: no, and that debt is already filed under `tasks/topology/024`.
