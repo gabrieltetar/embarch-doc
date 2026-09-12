@@ -50,7 +50,7 @@ Three properties carry the design:
 
 1. **The route is a bench fact, not a study fact.** A study names the *signal*; topology resolves which carrier currently delivers it, so the same saved study runs unchanged before and after pass-through hardware exists.
 2. **Nothing between the DUT and Core interprets a byte.** Core decodes, against a manifest the DUT's own build produced. Whichever carrier is in use moves bytes and stamps nothing but arrival.
-3. **Both clocks are on the wire and neither substitutes for the other.** The DUT's cycle count **measures** — a span's duration is the difference between its ends. The host's receipt time **places** — it is the same wall clock every other stream in the study carries, so laying a trace beside a power capture is an alignment rather than a guess.
+3. **Both clocks are on the wire and neither substitutes for the other.** The DUT's cycle count **measures** — a span's duration is the difference between its ends. The host's receipt time **places** — it is Core's real epoch clock, so laying a trace beside a power capture is an alignment rather than a guess. (**Not every stream in a study carries that clock**: a study's own `rx_utc_ms` column is dev-bench uptime under the same field name — [suite decision 3](../suite/decisions.md), and §5.)
 
 ## 3. Invariants
 
