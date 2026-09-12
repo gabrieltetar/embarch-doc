@@ -1,6 +1,10 @@
 # 011 — Four repos cannot be built from a fresh clone of themselves, and no README says so
 
-**State:** open
+**State:** open — **announced and parked awaiting its window, leg 096, 2026-09-12.**
+Announced to `#embarch-fleet` at `ts 1789200593.666659`; the 30-minute silence-as-consent window
+(`embarch-fleet/ops.md` §4) closes at **02:39 local**. Execute it as a supervisor unit, not a
+worker's, only if no objection has arrived by then. **If a leg ends before the window closes, leave
+this line intact and complete the window rather than restarting it** — the `ts` above is the clock.
 **Source:** suite review pass 2026-09-06, dimension 1 (standalone-ness). Manifests code-confirmed.
 **Scope:** suite
 **Hardware:** none
