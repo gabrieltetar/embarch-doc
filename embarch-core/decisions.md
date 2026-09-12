@@ -11,7 +11,8 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Platform, process, and locking](decisions/platform.md) | 1, 2, 3, 4, 7, 14, 15, 17 | 5.9 KB |
 | [Auth, binding, and surface consistency](decisions/auth.md) | 5, 6, 11, 42, 46, 53, 60 | 11.1 KB |
 | [Probes, board identity, and chip mapping](decisions/probes.md) | 8, 9, 22, 23, 26, 34 | 5.6 KB |
-| [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 36, 49, 52, 54 | 9.9 KB |
+| [Flashing](decisions/flashing.md) | 10, 18, 21, 32 | 3.6 KB |
+| [Flashing backend selection and vendor-tool discovery](decisions/flash-backend.md) | 36, 49, 52, 54 | 8.4 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 24, 33, 40, 41, 43, 45 | 10.5 KB |
 | [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56 | 8.2 KB |
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 4.8 KB |

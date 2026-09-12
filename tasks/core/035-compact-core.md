@@ -1,6 +1,11 @@
 # 035 — Compact embarch-core/decisions/flashing.md
 
-**State:** claimed — leg 099, 2026-09-12 (unparked as a verbatim split; see below).
+**State:** done — leg 099, 2026-09-12. Split verbatim per the dispatch note below:
+`decisions/flash-backend.md` created (decisions 36, 49, 52, 54, byte-for-byte),
+`decisions/flashing.md` kept 10/18, 21, 32. Index and both files' headers
+updated; no inbound citation named the file path for the moved decisions (bare
+`decision N` mentions elsewhere are stable across the move by
+`DOC-CONVENTIONS.md`), so none needed repointing beyond the index row split.
 **Size debt due:** 2026-09-24 (two weeks out; re-check `flash_backend.rs`'s
 churn rate then and either compact or extend).
 **Source:** `scripts/check-doc-size.py`, run by task `core/017` (2026-09-10):
@@ -39,11 +44,16 @@ Shorten `decisions/flashing.md` (`DOC-COMPACTION.md`/`DOC-COMPACTION-PASS.md`)
 without deleting a decision number or a distinct finding. The file grew past
 90% of its reserve when decision 54 (retiring `Backend::NrfJprog`) landed.
 
-**In flux:** yes. `flash_backend.rs` has had three decisions land in as many
-weeks (49, 52, 54) and the vendor-tool discovery path is still where real
-hardware surprises keep showing up (WSL PATH bleed, extensionless artifacts,
-now a whole unused backend). Whoever compacts this should expect it to still
-be moving and should not assume the current set of decisions is final.
+**In flux:** per file, now that the split is done.
+`embarch-core/decisions/flashing.md` (10/18, 21, 32, the flashing operation
+itself) is not in flux — untouched content, well under reserve at 3.6/12288 B.
+The churn moved with the decisions it belongs to: `flash-backend.md` (36, 49,
+52, 54, new sibling, not itself named on the `Compacts:` line) stays in flux —
+`flash_backend.rs` has had three decisions land in as many weeks and the
+vendor-tool discovery path is still where real hardware surprises keep showing
+up (WSL PATH bleed, extensionless artifacts, now a whole unused backend); it
+carries its own headroom (8.4/12288 B) rather than sharing flashing.md's, so
+the next decision there does not reopen this task.
 
 **Must not delete:** decision 32's causal-evidence framing (bricked board,
 four-for-four correlation, no invented mechanism); decision 36's
@@ -58,7 +68,7 @@ that failure must be filed rather than left silent.
 
 ## Done when
 
-- [ ] `embarch-core/decisions/flashing.md` back under reserve (under 90% of
+- [x] `embarch-core/decisions/flashing.md` back under reserve (under 90% of
       12288 B), same decision numbers still resolving.
-- [ ] `scripts/check-doc-size.py` clean.
-- [ ] Gate green.
+- [x] `scripts/check-doc-size.py` clean.
+- [x] Gate green.
