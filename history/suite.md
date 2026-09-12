@@ -26,6 +26,7 @@
 - Two reachable client-name leaks removed by history rewrite: embarch-api (reintroduced 2026-09-05) and embarch-study-designer (missed by the 2026-09-04 scrub). All ten repos verified clean.
 
 ### Removed
+- The three fixed-channel study-data aliases are retired; `study_stream_data` is the read path, and only it reports truncation ([embarch-api decision 39](../embarch-api/decisions/studies.md)).
 - 22 shipped milestone docs and implementation guides, 334 KB. Two open items they alone recorded moved to their design docs' open questions first; 122 dangling file references became milestone names.
 
 ### Decided

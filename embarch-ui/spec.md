@@ -31,7 +31,6 @@ embarch-ui (one Rust binary, axum, zero-build)
           GET /dev-bench/port · GET /dev-bench/hello
           POST /study · GET /study/{id} · GET /study/{id}/steps
           GET /study/{id}/streams · GET /study/{id}/stream/{name}
-          GET /study/{id}/gatt-data
         GET /logs/recent, and nothing else under /logs. The Debug tab's
         Core-side backlog is one call to it on open; its live tail is a
         server-side re-poll of the same endpoint (500-line tail, every 2 s,

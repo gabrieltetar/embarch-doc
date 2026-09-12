@@ -21,6 +21,6 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Hardware](interfaces/hardware.md) — flash, reset, chip resolution, serial-port enumeration | `/status`, `/flash`, `/reset`, `/serial-log`, `/resolve-chip`, `/serial-ports`, `/dev-bench/port` |
 | [Topology](interfaces/topology.md) — probe enrollment, live validation, signals | `/probes/enroll`, `/probes/enrolled`, `/validate`, `/alerts`, `/dev-bench/link`, `/signals`, `/signals/{name}` |
 | [Logs](interfaces/logs.md) | `/logs/recent` |
-| [Studies](interfaces/studies.md) — the dev-bench handshake and the async study job | `/dev-bench/hello`, `/study`, `/study/{id}`, `/study/{id}/events`, `/study/{id}/steps`, `/study/{id}/streams`, `/study/{id}/stream/{name}`, `/study/{id}/power-data` · `/waveform-data` · `/gatt-data` |
+| [Studies](interfaces/studies.md) — the dev-bench handshake and the async study job | `/dev-bench/hello`, `/study`, `/study/{id}`, `/study/{id}/events`, `/study/{id}/steps`, `/study/{id}/streams`, `/study/{id}/stream/{name}` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |
