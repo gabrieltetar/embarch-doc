@@ -1,6 +1,6 @@
 # 019 — the EAP trio cites an `embarch-study-designer/design.md §3` that does not exist
 
-**State:** open
+**State:** claimed
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** dev-bench
 **Hardware:** none
