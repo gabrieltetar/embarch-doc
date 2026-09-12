@@ -1,6 +1,6 @@
 # 028 — `embarch-outpost` has no CI at all, and whether it should is a suite-scope call nobody has made
 
-**State:** open — announced under `ops.md` §4 by leg 084, 2026-09-11, `ts 1789182061.785499`. The
+**State:** claimed — leg 087, 2026-09-11. Announced under `ops.md` §4 by leg 084, `ts 1789182061.785499`. The
 30-minute window opened at that message. If this leg ends before it closes, **do not restart the
 clock**: re-poll that thread and, with no objection and 30 minutes elapsed, execute.
 **Source:** `embarch-outpost/open.md`, last bullet — *"Whether `embarch-outpost` should get a
