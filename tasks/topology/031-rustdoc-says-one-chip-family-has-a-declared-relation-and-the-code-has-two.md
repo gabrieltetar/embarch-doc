@@ -1,6 +1,6 @@
 # 031 — The rustdoc says one chip family has a declared relation; the code has two
 
-**State:** open
+**State:** claimed (leg 091)
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
 reported them — re-check each against the source before you act on it.** The sweep verified every
 checkable claim in this sub-project's `spec.md`, `decisions.md`, `open.md` and `decisions/*.md`
