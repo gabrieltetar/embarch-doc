@@ -1,6 +1,25 @@
 # 034 — Two `embarch-ui` comments cite a "Core unreachable is expected" decision that does not exist
 
-**State:** open
+**State:** claimed — leg 096, 2026-09-12, `agent/ui/034-core-unreachable-decision`
+
+## Dispatch note (supervisor, leg 096)
+
+**Pick between the two answers on the evidence, and picking is the task — do not do both and do not
+punt.** Read what `src/logs.rs` and `src/snapshot.rs` actually do before you decide: if a down Core
+is handled deliberately as a rendered state in either place, answer 1 (write the decision) is the
+one the code is already asking for. If it turns out to be incidental error handling that happens to
+render, answer 2 is right and cheaper. Say in the decision or in the commit message which evidence
+decided it.
+
+**If you write a decision**, it is a new numbered `embarch-ui` decision: allocate the next free
+number, put it in the right `decisions/*.md` topic file, and repoint both comments at it by bare
+number (same-repo form). `ui/033`'s precedent stands: read decision **bodies**, not headings.
+
+**No `embarch-ui` doc is in the size reserve**, so you have room. If your work puts one there, file
+`tasks/ui/<NNN>-compact-ui.md` in the same commit (`scripts/check-task-numbers.py --next ui`).
+
+**Set `State:` to `done` yourself before you finish.** Two `ui` workers in a row left it at
+`claimed` and the supervisor had to correct it at fold time.
 **Source:** `ui/033`, 2026-09-12, and its reviewer independently. That unit repointed every
 `design.md` source-comment citation in `embarch-ui`; these two could not be repointed, because the
 thing they cite was never written.
