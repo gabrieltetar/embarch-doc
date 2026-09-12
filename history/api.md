@@ -37,6 +37,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- api: open.md no longer claims Core's enrolled-board/alert mirror is unpinned; core/024 pinned it.
 - `surface.md` decision 67 cites `embarch-umbrella/decisions/install.md` for the release archive, not `release.md`.
 - Decision 55's false sweep-assertion clause is gone; the funnel guard matches file+function and the SSE sweep gets an untimed-stream test.
 - Zephyr-west discovery now scans `apps/` as well as `app/`; decision 63.
