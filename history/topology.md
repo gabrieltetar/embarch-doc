@@ -23,6 +23,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- topology's port.rs rustdoc named `espressif-vid-match` as a reachable `detected_by` value and "three recognized" gate VIDs; the gate admits only two.
 - fixed: `hardware_id.rs` rustdoc now names both declared self-report arms (esp32c5, Nordic), not just the first.
 - `spec.md`/`decisions/validate-timing.md`: `validated_at_utc_ms` is on Core's `/validate` wire now.
 - `open.md`'s bullet on caller-side mirrors no longer cites `tasks/topology/020`, which is done.
