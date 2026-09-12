@@ -21,6 +21,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Run dialog and trace-tab notes now cite `decisions.md`, not the pre-split `design.md` that never existed here.
 - Decision 25's E vertex count was 16 (a non-union trace); corrected to 22, and a dead `.sd-param-value` opt-out removed.
 - Fixed: decision 25's `--brand` count (two declarations, two call sites, not three); see `decisions/shell.md`.
 - The Enroll tab's assign modal now uses `.dialog`/`.dialog-backdrop` like the other four, not an inline reimplementation.
