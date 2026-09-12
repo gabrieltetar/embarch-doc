@@ -1,6 +1,6 @@
 # 057 — `embarch-api/decisions/zephyr.md` is in reserve after decision 63
 
-**State:** claimed — leg 099, 2026-09-12. **Unparked as a verbatim split, not a shortening pass.**
+**State:** done — leg 099, 2026-09-12. **Unparked as a verbatim split, not a shortening pass.**
 `.claude/leg.md` is explicit that a verbatim split restates nothing, so `In flux: yes` cannot forbid
 one — and this task's own `In flux:` paragraph already names the seam ("what a call may name and how
 it resolves" = decisions 12, 20, 21, 51, vs "what `board.yml`/app scanning trusts and how it's kept
@@ -27,16 +27,15 @@ same commit that had already put this file 1,232 B into its reserve band;
 
 **Compacts:** embarch-api/decisions/zephyr.md
 **Size debt due:** 2026-10-09
-**In flux:** yes — this is the file every Zephyr-discovery-shaped change lands
-a decision in (decisions 12, 13, 20, 21, 22, 51, and now 63, all here), and
-`api/056`'s dispatch notes independently flagged it as "just outside the 10%
-reserve band" before this unit even landed. A shortening pass now risks
-compacting prose a near-term Zephyr-discovery unit will need to revise or add
-to again. Unparked once a unit lands here without adding a new decision or
-materially editing an existing one, or once a mission split is judged safe to
-do verbatim — the file's own natural seam is "what a call may name and how it
-resolves" (12, 20, 21, 51) vs "what board.yml/app scanning trusts and how it's
-kept honest" (13, 22, 63).
+**In flux:** no, for this task — leg 099 unparked it as a verbatim mission
+split, per its dispatch note above: `.claude/leg.md` holds that a split
+restates nothing, so ongoing Zephyr-discovery flux is not an argument against
+moving 13, 22 and 63 unchanged into `decisions/zephyr-scan.md`. Both files are
+now well clear of the reserve line (`zephyr.md` 9,334 B, `zephyr-scan.md`
+5,869 B, cap 12,288 B each). The underlying flux this paragraph originally
+named — this remains the file every Zephyr-discovery-shaped change lands a
+decision in — is unchanged and still real for whichever file a future
+decision lands in; it just no longer blocks *this* task, which is closed.
 **Must not delete:** decision 12's "never cached" framing and its scoped
 exception to decision 5's "no toolchain-specific logic" — every later entry in
 this file leans on both. Decision 51's "reject, not splice" distinction for a
@@ -62,8 +61,11 @@ it, and the commit that spends the reserve is the one that files it
 
 ## Done when
 
-- [ ] `decisions/zephyr.md` is clear of the 11,059 B reserve line, or a
+- [x] `decisions/zephyr.md` is clear of the 11,059 B reserve line, or a
       successor confirms `In flux: no` and re-blocks/re-files with a concrete
       compaction plan — most likely the two-seam split named above.
-- [ ] Every `Must not delete:` item above is still readable, wherever it ends up.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      Done: split verbatim into `decisions/zephyr-scan.md` (13, 22, 63);
+      `zephyr.md` now 9,334 B, `zephyr-scan.md` 5,869 B, both under the
+      12,288 B cap with no new reserve entry.
+- [x] Every `Must not delete:` item above is still readable, wherever it ends up.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

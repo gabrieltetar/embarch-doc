@@ -2,9 +2,9 @@
 
 **Status:** active, 2026-09-05.
 
-The one scoped exception where this crate had to learn Zephyr: what a call may name, what that resolves to against the repo as it stands, and what is refused rather than ignored.
+The one scoped exception where this crate had to learn Zephyr: what a call may name, what that resolves to against the repo as it stands, and what is refused rather than ignored. **What `board.yml`/app scanning trusts and how it's kept honest split out to [zephyr-scan.md](zephyr-scan.md) on 2026-09-12** — decisions 13, 22 and 63, verbatim — because this file was 1,950 B past its cap.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). How a build then runs: [build.md](build.md); what it produces: [target-json.md](target-json.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). How a build then runs: [build.md](build.md); what it produces: [target-json.md](target-json.md). What board.yml/app scanning trusts: [zephyr-scan.md](zephyr-scan.md).
 
 ### 12 — Live target discovery for Zephyr projects; every other build system keeps the static schema
 A Zephyr board's buildable surface is a property of the **current** state of `boards/*/board.yml` and `app/*/`, not something safe to snapshot into config once — and not every combination `board.yml` *declares* is real. So a `zephyr-west` project stores only what cannot be derived from the repo, and board, variant, revision, app, chip, build directory and artifact path all resolve live per call, **never cached**: caching would reintroduce the exact staleness this exists to eliminate.
@@ -12,15 +12,6 @@ A Zephyr board's buildable surface is a property of the **current** state of `bo
 **The one existing principle this scopes an exception into**, stated rather than glossed: decision 5's "no toolchain-specific logic" stays true for *how* a command runs and for every non-Zephyr project unconditionally — but this crate now has to understand Zephyr's board-qualifier grammar and file conventions well enough to assemble an argv. A deliberate, scoped cost, not a reversal.
 
 Shapes, semantics and the narrowing rules: [../interfaces/config.md](../interfaces/config.md).
-
-### 13 — `soc_chip_overrides`, an escape hatch for a SoC Core cannot map (retired unbuilt 2026-09-05, no replacement)
-A per-project `{soc, chip}` list consulted *before* `POST /resolve-chip`: a hand-resolved SoC had somewhere to live, and a hit skipped the call. **Never implemented**: no field, an unconditional call, no `deny_unknown_fields`, so the key was silently dropped on *both* discovery kinds — decision 20's shape 1 again, found by `api/016`.
-
-**Retired because the short-circuit was the design and is the defect.** Core validates every mapping against probe-rs's registry (`embarch-core` decision 8), so a hit here skips that check: one typo reaches `/flash` as a plausible chip name and attaches the wrong physical target, which is what decision 8 refused fuzzy matching to avoid. And it is per-project for a per-silicon fact, consulted *first* — restated per project and per repo, and still winning after Core's table is fixed.
-
-***Rejected: build it anyway.*** The dead end is real — a 404 naming the SoC, nowhere to put the answer — but bounded: one row in the repo that owns the table plus a redeploy this suite already runs, and no unmapped SoC in three months. **What reverses this:** a Core the operator cannot rebuild; the hatch then belongs in Core's own config, machine-scoped and still registry-validated, not in a per-project field here.
-
-Declaring the key is now **refused at load naming the retirement**, on both kinds, pointing at Core's table and `chip-list` — decision 53's posture.
 
 ### 20 — `default_target`, the narrowing caveat stated, and what a `static` project is refused at load
 Decision 12's narrowing means **a call that works today can start erroring the moment a second board lands in the repo** — silently, as the repo grows. Fixed by a per-project base selection applied before a call's own params narrow further. It was config [open.md](../open.md) stated as truth and nothing implemented ([../../embarch-decision-reversals.md](../../embarch-decision-reversals.md) shape 1); **built, not retired**, because the failure it prevents is silent and arrives in somebody else's commit. Three calls:
@@ -42,9 +33,6 @@ There was no third state between "use the default" and "use this explicit list".
 
 **The collision message's remedy is conditional, and now says which case it is in.** It offered "rename that snippet, or omit `snippets` to take the configured `default_snippets`" unconditionally — but omitting yields the empty set the caller asked for only when that default is *empty*, and the config edit it invites next, the literal in `default_snippets`, is the load error the bullet above added. **Half the advice routed the reader into a second refusal.** `resolve_snippets` holds the default, so it branches: none configured, both remedies; one configured, renaming named as the only one and the other two paths named as the dead ends they are. Decision 51's surface-text rule — naming an unreachable remedy is worse than naming one reachable one.
 
-### 22 — The uncached scan's cost bound is written down
-Decision 12 never caches, reasoned as "already cheap enough", and **no bound was ever stated for what that assumes**. Stated: single-digit boards, low tens of variant/revision/app combinations, low hundreds of files, comfortably sub-100 ms on ordinary local storage. A repo an order of magnitude larger has not been measured — if the scan ever becomes perceptibly slow, *that* is the signal to revisit caching, not a reason to add it pre-emptively.
-
 ### 51 — A static project rejects a selection it cannot honour, rather than ignoring it
 `resolve` branches on `discovery`, and the `static` arm took the `ProjectConfig` alone: **every one of `board`, `variant`, `revision`, `app`, `snippets` and `extra_args` was accepted and dropped**, and the build reported success. Decision 44c recorded the observed cost for `snippets` — a build with two of them returned success having produced an image whose config said the option was unset — and left the fork open. **Verified before widening the fix**: nothing upstream honoured the other five either — all four param structs (`TargetSelection`, `TargetParams`, `FlashParams`, `RunStudyParams`) do nothing with them but hand them to `resolve` — so all six were one defect and all six are refused together.
 
@@ -56,13 +44,3 @@ Decision 12 never caches, reasoned as "already cheap enough", and **no bound was
 
 The help text already said these were Zephyr-only; this is that sentence made mechanical, and the tool descriptions, CLI help and `config.example.toml` now say *refused* rather than *ignored* — decision 44's lesson that surface text is what a caller reads.
 
-### 63 — `apps/` scans exactly like `app/`, and their overlap has a defined outcome
-`scan_apps` read `<source_path>/app/<name>/CMakeLists.txt` — `app`, singular, hardcoded — so a repo using the equally-conventional plural `apps/` scanned zero apps, and `push_targets_for_soc`'s `for app in apps` loop then emitted **zero targets**: `list_targets` returned an empty list with nothing saying why, indistinguishable from "this repo genuinely has no buildable app yet". Real, not hypothetical: `chargerito-fw` uses `apps/{chargerito,driver_test,mlp_test}` and had to be hand-configured as three `discovery = "static"` projects instead of the live discovery decision 12 exists to remove that maintenance burden for (`chargerito-fw`'s `embarch/embarch.toml` header comment records this).
-
-**Both `app/` and `apps/` are scanned, unconditionally, and merged.** Not a per-project `app_dir` config field: that would restate, per repo, a fact the filesystem already states, and reintroduces exactly the kind of hand-maintained fact decision 12 exists to stop needing. Not a single ordered "first hit wins" choice between the two either — a repo can plausibly hold both mid-migration, and a project author who only remembers to add one directory to config would silently lose every app under the other. Scanning both, always, means a repo using either name — or, transiently, both — gets its full real app list back with nothing to configure.
-
-**A same-name collision (`app/<name>` and `apps/<name>` both real) resolves to `apps/`, deterministically** — the newer, plural spelling, picked once in `app_dir` and used everywhere a name is later turned back into a path (`scan_snippets`, and `resolve.rs`'s `west build <app_path>` argument, which had the same `app/`-only hardcoding and is fixed alongside this). This is the pathological case of one repo keeping two identically-named app directories at once; the ordinary case (a repo uses exactly one of the two names) never reaches it. *Rejected: refuse the whole scan on a collision* — one misplaced leftover directory during a migration would then break every target in the repo, a worse failure than picking a name deterministically and moving on.
-
-**Neither directory present is now its own error, kept apart from "found no apps".** `scan_apps` returns `Result<Vec<String>, ScanError>`: `Err(ScanError::NoAppDir)` when neither `app/` nor `apps/` exists at all, `Ok(vec![])` when one exists but holds no real (`CMakeLists.txt`-backed) app subdirectory. `scan`'s prior single-purpose `NotZephyrWest` unit struct became `ScanError`'s `NoBoardYml` variant to carry both cases through one type without a second error path threaded separately. Before this, both states produced the same empty `Vec<Target>` from `list_targets` — a caller had no way to tell "this doesn't look like a Zephyr/west project" from "it does, and it currently builds nothing".
-
-Surface text carried the same hardcoded assumption: `tools.rs`'s `list_targets` description said it "live-scans boards/ and app/", now "boards/ and app/ or apps/" — decision 44's lesson that a tool description is itself a claim a caller reads and trusts, not decoration.
