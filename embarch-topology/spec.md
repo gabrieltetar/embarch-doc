@@ -94,6 +94,8 @@ A validate call previously carried only the enrolled record's `confirmed_at_utc_
 - **`embarch-api`** links the crate **without the hardware feature** — only its `base_url = "auto"` branch calls the crate; the declared-address fast path does not.
 - **`embarch-umbrella`** does the same; its own env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
 
+**Three features, and the middle one is new** (decision 31). `software` (default) is topology-class detection and Core-reachability probing, needing `reqwest`/`tokio`. `wire` is `serde` and nothing else: the hardware module's plain data types — `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route`, `SignalDirection` — with every function that reads a probe, enumerates a port or writes `enrollment.toml` compiled out. `hardware` is those functions, implies `wire`, and needs `probe-rs`/`serialport`; `embarch-core` is its only consumer. **The point of `wire` is that "do not link `probe-rs` outside Core" no longer costs a consumer a hand-written copy of the data Core serves.**
+
 ## What a caller may assume across calls
 
 **An answer is good only at the instant it was taken.** No cache, no watcher,
