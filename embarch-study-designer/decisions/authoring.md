@@ -38,4 +38,16 @@ Until this, **a study authored in the UI existed only as long as the browser tab
 
 This is also what makes decision 39's `StreamSource::Signal` and decision 40's reflash-is-a-run-parameter rules load-bearing: a saved study has to survive a rewired bench and has to not reflash a board every time someone re-reads its results.
 
+### 73 — One built-in action vocabulary, and the picker renders what it is served
+
+The question *which built-in actions can a row pick* was answered in **three** places: `BuiltInAction` in `merged_actions.rs` (**seven**), `BuiltInActionKind` in `study_builder.rs` (**nine**), and a hand-written `SD_BUILT_INS` array of nine `{value, label}` pairs in `embarch-ui/assets/app.js`, whose label prose existed only there. The submit side was authoritative and right; the browser's copy was right by hand; **the crate's own served answer had been wrong since decision 53 added two variants, and nobody noticed — because the only consumer discarded it.** `merge_actions` built the built-ins, `embarch-ui` served the merged list, and `app.js` filtered it for `Registered`/`Unregistered` and rendered its own array instead. A list that is computed and thrown away cannot be wrong in a way anyone sees.
+
+So: `BuiltInActionKind` is now the **only** definition, on both sides, and it carries `ALL` and a `label()`. `MergedAction::BuiltIn` changed from a bare string to `{which, label}` and the browser renders the served entries. Adding a built-in is one edit, and the compiler demands the variant, the `ALL` entry, the label and the `to_action` arm together.
+
+**The labels moved to the server for the reason `embarch-ui` decision 17 already gave about `MAX_MONITOR_TARGETS`** — *a browser-side copy of a limit is a number that drifts silently the day the limit moves* — which is as true of a name as of a number, and `embarch-ui/spec.md`'s Invariants state it outright. This was the same shape one file over, and it had already drifted.
+
+**A wire change with no stale consumer to break**, which is exactly why it was safe: the previously served built-ins reached the browser and were filtered out, so nothing rendered them before and nothing depended on their old shape. **Until the first actions response lands the picker's Built-in group is empty**, rather than falling back to a guess — the same posture the `max_stream_name_len` field takes, and for the same reason a wrong guess there would re-commit the defect being removed.
+
+What replaced the old count-pinned test is `every_submittable_built_in_is_offered_with_a_label`: it asserts that every variant a row can submit is one a row can be offered, with a non-empty label. That is the property that was actually violated. A count could not have caught it, because both counts were internally consistent.
+
 ---
