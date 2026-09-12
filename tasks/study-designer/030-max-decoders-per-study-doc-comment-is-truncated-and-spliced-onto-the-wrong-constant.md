@@ -1,6 +1,12 @@
 # 030 — `MAX_DECODERS_PER_STUDY`'s doc comment is truncated mid-sentence and spliced onto a different constant
 
-**State:** open
+**State:** claimed — leg 089, 2026-09-11.
+
+**Doc-size reserve for `study-designer`:** `embarch-study-designer/open.md` is at 89.2%
+(4,569/5,120 B, 551 B left) and its compaction task `tasks/study-designer/026-compact-study-designer.md`
+is blocked. Nothing else in this sub-project is in reserve, and this task should not need to touch
+`open.md` at all. If your work does push a file into its last 10%, file
+`tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit.
 **Source:** found by the `study-designer/029` worker as out-of-scope and correctly left alone;
 verified against `src/limits.rs` by the supervisor before filing, leg 088, 2026-09-11.
 **Scope:** study-designer
