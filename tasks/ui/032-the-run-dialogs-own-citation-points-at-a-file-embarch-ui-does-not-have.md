@@ -1,6 +1,6 @@
 # 032 — The run dialog cites `embarch-ui/design.md`, and `embarch-ui` has no `design.md`
 
-**State:** open
+**State:** claimed by agent/ui/032-run-dialog-citation, 2026-09-12 01:32
 **Source:** `ui/031`'s reviewer, 2026-09-12, which verified the dialog string for that unit and
 found the citation inside it wrong. Out of scope there — that unit changed no code and the reviewer
 reads diffs for decision contradictions — so it was reported rather than fixed.
