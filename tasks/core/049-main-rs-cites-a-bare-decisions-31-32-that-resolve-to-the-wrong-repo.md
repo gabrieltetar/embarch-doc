@@ -1,6 +1,6 @@
 # 049 — `main.rs` cites a bare `decisions 31/32` for the GATT result fields; those numbers are another repo's
 
-**State:** claimed
+**State:** done — `agent/core/049-bare-decisions-31-32`, 2026-09-12
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by reading all four decision bodies.
 **Scope:** core
 **Hardware:** none
@@ -42,9 +42,9 @@ the comment is stale rather than misrouted.
 
 ## Done when
 
-- [ ] `main.rs:163` reads `` `embarch-study-designer` decisions 31/32's ``, matching the form used
+- [x] `main.rs:163` reads `` `embarch-study-designer` decisions 31/32's ``, matching the form used
       six lines below it.
-- [ ] **Sweep the rest of the repo, because one line is not the defect — the class is.** Every bare
+- [x] **Sweep the rest of the repo, because one line is not the defect — the class is.** Every bare
       `decision N` in `embarch-core`'s `src/` and `bin/` either resolves to a real `embarch-core`
       decision of that number *whose body is about the thing the comment claims*, or gets qualified.
       Reading the number is not enough; `core/008` and `topology/034` both found citations that
@@ -52,8 +52,23 @@ the comment is stale rather than misrouted.
       `grep -rn "decision" embarch-core/src embarch-core/bin | grep -vE '\`embarch-[a-z-]+\` decisions?'`
       Report the count you checked and the count you changed — they will differ, and the difference
       is the useful number.
-- [ ] `embarch-core` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+
+      **Result:** checked every bare `decision N` in `src/` and `bin/` (~150+ citation sites, one
+      file at a time, cross-referenced against the actual decision body in `decisions/*.md` across
+      `embarch-core`, `embarch-outpost`, `embarch-study-designer`, `embarch-ui`, `embarch-topology`).
+      Changed 13 (12 beyond the seed line): `api.rs` (5 sites), `study.rs` (5 sites),
+      `elevate.rs`, `stream_store.rs`, plus the seed in `main.rs`. Full list and reasoning in the
+      commit message on `agent/core/049-bare-decisions-31-32`. Two distinct wrong-repo cases beyond
+      the seed (`api.rs:916`'s "decision 5" was `embarch-ui`'s, not core's own bearer-token
+      decision; `stream_store.rs:445`'s "decision 18" was `embarch-outpost`'s, not core's own
+      flashing decision), one wrong file path (`api.rs:1488` pointed at `platform.md`, decision 42
+      lives in `auth.md`), and several wrong-number-same-repo cases where a nearby number was reused
+      for an unrelated topic (`elevate.rs:90` decision 7->3, `api.rs:2032` decision 20->22,
+      `study.rs:268` decision 18->39, `study.rs:1518` decision 36->40, `study.rs:2307`/`3464` decision
+      36 -> `embarch-study-designer` decision 14, `study.rs:3571` decision 58 ->
+      `embarch-study-designer` decision 58).
+- [x] `embarch-core` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
 
 **Native Windows build:** `embarch-core` normally also needs one. This is expected to be a
 comment-only change, which cannot reach the running service — **`core/015`'s native Windows build is
