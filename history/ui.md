@@ -21,6 +21,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Fixed: `embarch-ui` comments citing the nonexistent `milestone-1.md` repointed at real decisions or dropped.
 - `embarch-ui` source comments repointed off a pre-split `design.md` to `decisions.md`/topic files.
 - Run dialog and trace-tab notes now cite `decisions.md`, not the pre-split `design.md` that never existed here.
 - Decision 25's E vertex count was 16 (a non-union trace); corrected to 22, and a dead `.sd-param-value` opt-out removed.
