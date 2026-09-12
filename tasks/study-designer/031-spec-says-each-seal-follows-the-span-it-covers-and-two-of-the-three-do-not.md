@@ -1,6 +1,6 @@
 # 031 — `spec.md` says each seal is carried immediately after the span it covers, and two of the three are not
 
-**State:** claimed (leg 090, 2026-09-11)
+**State:** done
 **Source:** refill sweep for scope spread, leg 090, 2026-09-11. The line numbers below are as the
 sweep reported them — **re-verify every one against the source before you act on it.**
 **Scope:** study-designer
@@ -61,9 +61,31 @@ meaning. If the two sources disagree, report it here and leave the tables alone.
 
 ## Done when
 
-- [ ] `spec.md:63` states the real seal placement, derived from `src/study.rs`'s declaration order.
-- [ ] The three-sibling-seals argument and the "which third" property are still stated.
-- [ ] No code change, no field reordering, no wire or schema change, no new numbered decision.
-- [ ] `record_checks` is either added to both field tables with a sourced meaning, or the reason it
+- [x] `spec.md:63` states the real seal placement, derived from `src/study.rs`'s declaration order.
+- [x] The three-sibling-seals argument and the "which third" property are still stated.
+- [x] No code change, no field reordering, no wire or schema change, no new numbered decision.
+- [x] `record_checks` is either added to both field tables with a sourced meaning, or the reason it
       was left out is written here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Done
+
+Confirmed `src/study.rs`'s declaration order is `steps, streams, steps_crc, streams_crc,
+protocols, protocols_crc` — all six fields are `#[serde(default)]` (or, for `steps`/`streams`,
+plain positional), none carry a serde `rename`/`flatten`/`skip`, so declaration order is the
+encoded order. Rewrote `spec.md`'s "Three sibling seals" paragraph to state that the two
+step/stream seals are carried *together* after both spans, with `protocols_crc` alone
+immediately after its own — keeping the "one run of bytes per seal, mismatch names which
+third" argument intact (it holds regardless of whether the two leading seals are adjacent to
+each other or each to its own span).
+
+`record_checks` (`src/study.rs:240`, `MAX_STREAMS_PER_STUDY`-bounded `Vec<RecordCheck>`):
+added to both `spec.md` §4's table and `interfaces/types.md`'s `Study` field table. Meaning
+sourced from `decisions/payload-meaning.md`'s decision 70 (host-only, names a tap by `id`,
+records begin with a magic and end with a CRC-32/ISO-HDLC over the preceding bytes, checked
+by Core after the run, sealed by neither CRC, never transmitted) and cross-checked against
+the field's own doc comment in `src/study.rs` — the two agree.
+
+`spec.md` crossed into its last-10% size reserve (91.3%) from this edit; filed
+`tasks/study-designer/032-compact-study-designer.md` (blocked, §4 still in flux) in the same
+commit, per `DOC-COMPACTION.md` §2.

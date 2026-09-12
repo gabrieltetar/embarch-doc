@@ -16,6 +16,7 @@ The study and result types. Field-level, concrete enough that a `serde`-derived 
 | `protocols: Vec<ProtocolDef>` | Resolved from `.eap` at build time. See [eap.md](eap.md) |
 | `dev_bench_log_level` | How loud the bench should be for this run. `#[serde(default)]` to `Warn`, which is what earlier studies effectively ran at — so **the default is the *right* value, not merely a permissive one** |
 | `steps_crc` / `streams_crc` / `protocols_crc` | Three sibling seals, each over the one span it names. Recomputed and overwritten by whoever submits, so no stored value is ever trusted. `streams_crc` is `#[serde(default)]` where `steps_crc` is not: `0` is the genuine CRC of zero bytes rather than a sentinel |
+| `record_checks: Vec<RecordCheck>` | Host-only, per-tap record framing (decision 70, [../decisions/payload-meaning.md](../decisions/payload-meaning.md)): names a tap by `id` and says its records begin with a magic and end with a little-endian CRC-32/ISO-HDLC over the preceding bytes, so Core can check a capture against it after the run. Sealed by neither CRC and never transmitted to dev-bench — a check on rendering changes neither what dev-bench executes nor what it captures |
 
 **No `gatt` field exists on `Study`, and no `DeclaredGatt` type exists anywhere in `src/`.** Decision 45 designed one — a study declaring the GATT table it was authored against, reconciled against live discovery — but it was never implemented. Designed-but-unbuilt, not shipped: [../decisions/declares.md](../decisions/declares.md) 45, [../open.md](../open.md).
 
