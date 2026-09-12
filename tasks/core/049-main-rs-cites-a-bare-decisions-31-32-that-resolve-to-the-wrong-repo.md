@@ -1,6 +1,6 @@
 # 049 — `main.rs` cites a bare `decisions 31/32` for the GATT result fields; those numbers are another repo's
 
-**State:** open
+**State:** claimed
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by reading all four decision bodies.
 **Scope:** core
 **Hardware:** none
