@@ -1,6 +1,14 @@
 # 034 — Two `embarch-ui` comments cite a "Core unreachable is expected" decision that does not exist
 
-**State:** claimed — leg 096, 2026-09-12, `agent/ui/034-core-unreachable-decision`
+**State:** done — leg 096, 2026-09-12, `agent/ui/034-core-unreachable-decision`
+
+**Resolution:** answer 1 — wrote decision 26 (`decisions/wiring.md`). Evidence: `snapshot.rs::poll`
+runs its six Core calls independently via `tokio::join!` specifically so one Core-down moment
+doesn't blank fields that would otherwise resolve, `Snapshot::pending()`/`core_reachable` exist to
+name that same shape before the first poll, and `logs.rs::poll_loop` deliberately withholds a
+second, redundant error surface in favor of that one flag. Three separate deliberate constructions
+of "Core down is data, not an exception" — not incidental `Result::Err` handling. Both comments now
+cite decision 26 by bare number.
 
 ## Dispatch note (supervisor, leg 096)
 
