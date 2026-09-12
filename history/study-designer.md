@@ -16,6 +16,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `interfaces/limits.md` was missing `MAX_BUILD_ID_LEN` (128, `OutpostHeader`'s two build-ID fields); row added.
 - `spec.md` §4 now states the real seal order (steps/streams grouped, then protocols); `record_checks` added to both field tables.
 - `limits.rs`: `MAX_RECORD_MAGIC_LEN`/`MAX_DECODERS_PER_STUDY` doc comments were spliced together; restored to their own constants.
 - `interfaces/limits.md` now lists `MAX_RECORD_MAGIC_LEN`/`MAX_BAD_RECORDS_REPORTED`; a full pass found no further gap.
