@@ -1,6 +1,12 @@
 # 078 — eight `embarch-api` source comments cite a `milestone-*.md` that does not exist
 
-**State:** open
+**State:** claimed — leg 100, 2026-09-12, branch `agent/api/078-milestone-md-citations`.
+
+**Doc-size reserve for `api`** (check before you write): `decisions/client-crate.md` 649 B left,
+`interfaces/config.md` 1090 B left, `decisions/surface.md` 1030 B left — all three already filed
+against a blocked compaction task. If your work pushes another `api` doc into reserve, file
+`tasks/api/<NNN>-compact-api.md` in the same commit. This unit should be comment-only in source;
+if it needs a doc edit at all, prefer a file not on that list.
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** api
 **Hardware:** none
