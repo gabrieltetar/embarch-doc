@@ -1,6 +1,11 @@
 # 040 — twenty-two source comments cite other repos' decision numbers as if they were `embarch-ui`'s
 
-**State:** open
+**State:** claimed — leg 102, 2026-09-12, branch `agent/ui/040-foreign-decision-citations`.
+
+**Doc-size reserve for `embarch-ui`:** nothing in reserve — no file of this sub-project is
+inside the last 10% of its cap. If your work pushes one in, file
+`tasks/ui/<NNN>-compact-ui.md` in the same commit.
+
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by reading both sides and enumerating the
 full set.
 **Scope:** ui
