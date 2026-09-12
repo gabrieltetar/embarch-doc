@@ -1,6 +1,6 @@
 # 043 — The stream index's documented shape is three fields short, and `self_excluded` is the one missing
 
-**State:** claimed (leg 090, 2026-09-11)
+**State:** done (leg 090, 2026-09-11)
 **Source:** refill sweep for scope spread, leg 089, 2026-09-11. Filed rather than dispatched because
 leg 089 reached its four-unit cap; not yet re-verified by a supervisor, so **check every line number
 below against the source before you act on it** — they are as the sweep reported them.
@@ -68,10 +68,29 @@ is a reason to stop, not to proceed.
 
 ## Done when
 
-- [ ] `interfaces/studies.md`'s response shape lists every field `StreamIndexEntryResponse`
+- [x] `interfaces/studies.md`'s response shape lists every field `StreamIndexEntryResponse`
       serializes, verified by reading the struct.
-- [ ] `interfaces/result-layout.md` says three booleans, names `self_excluded`, and gives its meaning.
-- [ ] The meaning is sourced from the code or `embarch-outpost/spec.md`, not composed.
-- [ ] A pass over both files' other field lists is reported here.
-- [ ] No code changes and no wire change.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] `interfaces/result-layout.md` says three booleans, names `self_excluded`, and gives its meaning.
+- [x] The meaning is sourced from the code or `embarch-outpost/spec.md`, not composed.
+- [x] A pass over both files' other field lists is reported here.
+- [x] No code changes and no wire change.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Report (leg, 2026-09-11)
+
+Verified against `embarch-core/src/study.rs:2848-2876` (`StreamIndexEntryResponse`) and
+`embarch-core/src/stream_store.rs` (`StreamIndexEntry`): both carry `named`, `timed`,
+`self_excluded` alongside the previously-documented fields. `embarch-outpost/spec.md:90`'s
+"three independent booleans" wording agrees with both structs' own doc comments — no
+disagreement to flag, so no decision needed.
+
+- `interfaces/studies.md`'s `/study/{id}/streams` row now lists `named?, timed?, self_excluded?`
+  in the response shape, with a one-clause pointer to `result-layout.md`.
+- `interfaces/result-layout.md`'s `index.json` file-tree line now lists `named, timed,
+  self_excluded`; its prose sentence now says three booleans and gives `self_excluded`'s meaning
+  (firmware-decided self-exclusion of the outpost's own drain thread/UART interrupt), sourced from
+  `stream_store.rs`'s own comment and `embarch-outpost` decision 19/spec.md:90.
+- Pass over the rest of both files' field lists: checked `/study/{id}`, `/study/{id}/steps`
+  (`StudyStepsResponse`/`StudyStepEntryResponse`) and `/study` responses against `src/study.rs` —
+  all match what's documented. No further discrepancies found.
+- No code changes, no wire change (fields were already serialized).
