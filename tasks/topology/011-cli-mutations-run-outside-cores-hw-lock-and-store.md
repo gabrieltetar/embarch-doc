@@ -42,7 +42,7 @@ The rule is written down, and was enforced against every *other* surface.
 `embarch-topology/decisions/enrollment.md:15`: *"real hardware I/O and the system-file write it
 produces should be done by Core, **which already does exactly that under its own hardware lock.**
 A second process calling the identical function **does not share that lock**… This crate's UI
-reverted to fully read-only."* `embarch-core/decisions/surfaces.md:30` repeats it verbatim for
+reverted to fully read-only."* `embarch-core` decision 25 (`decisions/enrollment.md`) repeats it verbatim for
 Core's retired enroll page. `embarch-core/interfaces.md:12` confirms `/probes/enroll`,
 `/validate` and `/dev-bench/link` all take `hw_lock`, and
 `embarch-core/decisions/platform.md:46` confirms the lock is `Arc<Mutex<()>>` — in-process only,
