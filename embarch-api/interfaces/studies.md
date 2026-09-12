@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-04.
 
-Submitting a study, reading its result, and watching it live. The rest of the surface: [tools.md](tools.md). Why: [../decisions/studies.md](../decisions/studies.md), [../decisions/surface.md](../decisions/surface.md). Current truth: [../spec.md](../spec.md).
+Submitting a study, reading its result, and watching it live. The rest of the surface: [tools.md](tools.md). Why: [../decisions/study-reads.md](../decisions/study-reads.md), [../decisions/study-reflash.md](../decisions/study-reflash.md), [../decisions/surface.md](../decisions/surface.md). Current truth: [../spec.md](../spec.md).
 
 MCP tools are `snake_case`, CLI subcommands `kebab-case`, over one implementation ([tools.md](tools.md)). `P` is the project-selection set defined there.
 
@@ -14,7 +14,7 @@ MCP tools are `snake_case`, CLI subcommands `kebab-case`, over one implementatio
 | `study_stream_data` | `study_id`, `name`, `raw?` | One declared tap's capture, by the name the study gave it. Rendered file where the encoding has one; `raw` serves the bytes. **Nothing here inspects content to decide** — an encoding is declared, never sniffed. A non-UTF-8 capture returns a clear error saying that is *expected* for a raw tap, pointing at `--out`, not a decode failure reading like the capture broke |
 | `list_study_streams` | `study_id` | Per declared tap: `name`, `bytes_written`, and **`truncated`** — the reason this exists, since the three retired fixed-channel aliases structurally could not report it. `bytes_written: 0` means a tap was declared and captured nothing, a different fact from one never declared |
 
-**A submission over a capacity bound is refused here, before the HTTP call, naming every field it overflowed and that field's limit** ([decisions](../decisions/studies.md) 27) — counts for the four lists, **bytes** for a name, and one closing line saying the bounds are dev-bench's compile-time buffer sizes and cannot be raised for one submission. Same message on both front-ends. A failure that was *not* a capacity overflow still reports `serde`'s own schema error, which for that case is the better one.
+**A submission over a capacity bound is refused here, before the HTTP call, naming every field it overflowed and that field's limit** ([decisions](../decisions/study-reads.md) 27) — counts for the four lists, **bytes** for a name, and one closing line saying the bounds are dev-bench's compile-time buffer sizes and cannot be raised for one submission. Same message on both front-ends. A failure that was *not* a capacity overflow still reports `serde`'s own schema error, which for that case is the better one.
 
 CLI data subcommands take `[--out <path>]`. **`--out` is how a binary capture gets out intact** — a raw tap's bytes are not text, and the no-`--out` path writes them to stdout untouched. `list-study-streams` marks a short capture on its own row, not a column an eye slides past.
 

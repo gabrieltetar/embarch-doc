@@ -21,7 +21,7 @@ None currently — the one open here (`list_serial_ports`, task `041`) is now [d
 
 - **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
 - **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively.
-- **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/studies.md) 39): a remote Core can't see local paths.
+- **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/study-reads.md) 39): a remote Core can't see local paths.
 
 ## Settled-deferred
 
