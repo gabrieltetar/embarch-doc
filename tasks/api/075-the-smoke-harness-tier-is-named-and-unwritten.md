@@ -1,6 +1,6 @@
 # 075 — Decision 30's smoke-harness tier is named and still unwritten
 
-**State:** claimed by agent/api/075-smoke-harness-tier, 2026-09-12 01:32
+**State:** done
 **Source:** `embarch-api/open.md` — "**The smoke harness (decisions/tests.md 30) is
 named, unwritten.** Six mocked criteria live in `tests/` (decisions/tests.md 46);
 end-to-end is `#[cfg(unix)]`, Windows gets direct tests."
@@ -28,14 +28,30 @@ methodology that only a human remembers to run is the same failure `suite/decisi
 
 ## Done when
 
-- [ ] A named smoke tier exists under `embarch-api/tests/`, runnable with `cargo test` and needing
-      no hardware, no probe and no live Core.
-- [ ] It is **not** a rename of decision 46's mocked criteria — the two tiers stay distinguishable,
-      and the task's own report says what each covers.
-- [ ] What stays `#[cfg(unix)]`-only is stated where a Windows reader of a green run meets it.
-- [ ] `embarch-api/open.md`'s bullet is struck or narrowed to what remains.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
-      `changelog.d/` fragment.
+- [x] A named smoke tier exists under `embarch-api/tests/`, runnable with `cargo test` and needing
+      no hardware, no probe and no live Core. — `tests/smoke_harness.rs`.
+- [x] It is **not** a rename of decision 46's mocked criteria — the two tiers stay distinguishable,
+      and the task's own report says what each covers. — Decision 46's tier pins `embarch_api::build`
+      and `CoreClient` HTTP behaviour directly, one invariant at a time; this tier spawns the
+      *compiled binary* as a subprocess against a throwaway `MockCore` (decision 46's mock, started
+      fresh and torn down per test) and a synthetic fixture repo, running the fixed sequence
+      `list-projects` → `list-targets` → `status` → `build` → `build` again, plus one Core-error
+      unhappy path. Nothing in decision 46's tier ever exercises `main.rs`'s startup path or
+      `cli::run`'s dispatch.
+- [x] What stays `#[cfg(unix)]`-only is stated where a Windows reader of a green run meets it. —
+      `embarch-api/open.md`'s bullet, and the module doc comment atop `tests/smoke_harness.rs`.
+- [x] `embarch-api/open.md`'s bullet is struck or narrowed to what remains. — narrowed to the
+      Windows gap alone.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
+      `changelog.d/` fragment. — all green; `changelog.d/api-smoke-harness-tier.added.md`.
+
+## Report
+
+Pushed `agent/api/075-smoke-harness-tier` to both `embarch-api` and `embarch-doc`. Reserve note: this
+work's decision-30 write-up pushed `embarch-api/decisions/tests.md` to 95.2% (590 B left) — filed
+`tasks/api/077-compact-api.md` (blocked, size debt due 2026-09-26) in the same commit, per the
+reserve note above. No hardware, no probe, no live Core touched — the "throwaway Core" is a loopback
+mock HTTP server the test starts and tears down itself.
 
 **Reserve note:** `embarch-api` is the most compaction-indebted sub-project in the suite — three
 files in reserve behind blocked tasks (`decisions/client-crate.md` 94.7%, `decisions/surface.md`
