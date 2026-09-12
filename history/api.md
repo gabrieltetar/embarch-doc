@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- Added `ble_connect_worked_example.json`: the first authored `target_address`/`target_name` `BleConnect` fixture.
 - `embarch-api` decision 30's smoke-harness tier is written: `tests/smoke_harness.rs`, throwaway Core + fixture repo.
 - CLI + MCP now reach Core's signal declare/list/remove and dev-bench-link routes; no GUI required.
 - `list_serial_ports`/`list-serial-ports` surface Core's `GET /serial-ports` so a caller can discover a `serial_log` port value.
@@ -17,6 +18,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- Compacted `embarch-api/decisions/tests.md` out of size reserve (`tasks/api/077`), same facts intact.
 - `decisions/studies.md` split into `study-reads.md` and `study-reflash.md`, out of size reserve.
 - - api: `target.json` provenance decision split into 19 (hash) and 69 (file), under the per-decision cap.
 - `open.md` trimmed 84 B of connective filler; still 204 B inside reserve, debt filed and unpaid.
