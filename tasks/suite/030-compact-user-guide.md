@@ -1,6 +1,8 @@
 # 030 — `suite/user-guide.md` is 556 bytes from its cap, and the thing that filled it is the part that has to keep growing
 
-**State:** open
+**State:** open — announced 2026-09-11 by leg 091, `ts` `1789187481.992469`, 30-minute window per
+`embarch-fleet/ops.md` §4. If this leg ends before the window closes, **read the thread and complete
+the window rather than restarting it.**
 **Source:** `tasks/suite/022`'s own fold, leg 085, 2026-09-11. Split out of `tasks/suite/004`,
 which carried this file alongside two others on one `Compacts:` line and one shared date;
 `user-guide.md` is now urgent and the other two are not, so it gets its own clock.
