@@ -1,6 +1,11 @@
 # 057 — the deleted-doc guard test reads one file and skips every comment, so it cannot catch the defect it names
 
-**State:** open
+**State:** claimed — leg 100, 2026-09-12, branch `agent/umbrella/057-deleted-doc-guard`.
+
+**Doc-size reserve for `umbrella`** (check before you write): `decisions/bind.md` 841 B left,
+`decisions/doctor.md` 1206 B left — both already filed against blocked compaction tasks. If your
+work pushes another `umbrella` doc into reserve, file `tasks/umbrella/<NNN>-compact-umbrella.md`
+in the same commit.
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading the test and the file it misses.
 **Scope:** umbrella
 **Hardware:** none
