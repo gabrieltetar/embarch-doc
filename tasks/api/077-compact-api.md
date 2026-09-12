@@ -1,6 +1,6 @@
 # 077 — Compact embarch-api/decisions/tests.md out of size reserve
 
-**State:** blocked
+**State:** done
 **Source:** `scripts/check-doc-size.py`, spent by `tasks/api/075` — decision
 30's write-up pushed `embarch-api/decisions/tests.md` to 95.2% (590 B left).
 **Scope:** api
@@ -11,8 +11,6 @@
 
 `embarch-api/decisions/tests.md` is inside its size reserve. Compact it per
 `DOC-COMPACTION.md`, honoring the `Must not delete:` list below.
-
-**Compacts:** `embarch-api/decisions/tests.md`
 
 ## Why now
 
@@ -42,7 +40,15 @@ task's own account of what is settled.
 
 ## Done when
 
-- [ ] `embarch-api/decisions/tests.md` back under its size cap with room to
+- [x] `embarch-api/decisions/tests.md` back under its size cap with room to
       spare, same facts intact per the list above.
-- [ ] `scripts/check-doc-size.py` green for this file.
-- [ ] `changelog.d/` fragment.
+- [x] `scripts/check-doc-size.py` green for this file.
+- [x] `changelog.d/` fragment.
+
+## Closed
+
+Compacted as part of `tasks/api/076` (its dispatch note named this file's
+headroom and folded the compaction into that unit). Trimmed prose across
+decisions 30/46/54/56 without touching any fact in the `Must not delete` list
+above; `embarch-api/decisions/tests.md` is now 11046/12288 B (89.9%),
+`check-doc-size.py --pressure` reports it `PAID`.

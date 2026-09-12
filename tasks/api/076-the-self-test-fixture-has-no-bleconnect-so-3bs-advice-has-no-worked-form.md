@@ -1,6 +1,6 @@
 # 076 — The self-test fixture has no `BleConnect`, so the guide's `target_address` advice has no worked form
 
-**State:** claimed — leg 096, 2026-09-12, `agent/api/076-bleconnect-fixture`
+**State:** done
 
 ## Dispatch note (supervisor, leg 096)
 
@@ -53,11 +53,22 @@ is the first step of any study that does anything. A second fixture costs one fi
 
 ## Done when
 
-- [ ] A second fixture exists showing a `BleConnect` with an explicit `target_address` (and a
+- [x] A second fixture exists showing a `BleConnect` with an explicit `target_address` (and a
       commented or documented `target_name` alternative), with a test that deserializes it into
       `Study`, so it cannot drift from the type.
-- [ ] `self_test_study.json` is **unchanged**.
-- [ ] `suite/studies-guide.md` §3b names the new file where it gives the advice — **that file is at
-      94.2% of its cap behind a blocked compaction task**, so this is one sentence, not a section.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
+- [x] `self_test_study.json` is **unchanged**.
+- [ ] `suite/studies-guide.md` §3b names the new file where it gives the advice — **not done from
+      here**: `suite/` is outside the `api` ownership row (`check-ownership.py --scope api` refuses
+      a write there), so an initial direct edit was reverted and the one-sentence addition is filed
+      instead as `inbox/suite-studies-guide-name-ble-connect-fixture.md` for a `suite`-scoped task.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
       `changelog.d/` fragment.
+
+## Also done this unit
+
+`tasks/api/077` (the blocked compaction of `embarch-api/decisions/tests.md`) closed as part of this
+unit per the dispatch note: trimmed prose across decisions 30/46/54/56, no fact on its `Must not
+delete` list touched, file now 11046/12288 B (89.9%, `check-doc-size.py --pressure` reports `PAID`).
+
+**New files:** `embarch-api/tests/fixtures/ble_connect_worked_example.json`,
+`embarch-api/tests/ble_connect_fixture.rs`.
