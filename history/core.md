@@ -27,6 +27,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `interfaces/studies.md` and `interfaces/result-layout.md` now document `named`, `timed` and `self_excluded` on the stream index — was two of three.
 - `open.md`'s auth sweep count fixed from 27 to 26, agreeing with `decisions/auth.md`.
 - `POST /validate` (and `flash`/`reset`/`run_study`'s own mid-attach check) now name a detached probe `not_attached`, never `mismatch` (decision 59).
 - `embarch-core`: repointed 3 of the 4 flagged miscitations `core/032` left, and normalised the stray `` `decision N` `` form suite-wide.
