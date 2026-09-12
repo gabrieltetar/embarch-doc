@@ -1,12 +1,18 @@
 # 028 — `decisions/validation.md` is in reserve
 
-**State:** open
+**State:** claimed — leg 084, 2026-09-11
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by the STM32G0 amendment to decision 25, 2026-09-11
 **Scope:** topology
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-topology/decisions/validation.md
 **Size debt due:** 2026-09-18
+
+**Reserve in `embarch-topology` at dispatch (leg 084):** `decisions/validation.md` 12,278/12,288 B
+(10 B left) — the file this task pays. Nothing else in the sub-project is in reserve, so a split
+that moves text into a *new* topic file has the whole cap to land in. If your work leaves any
+`embarch-topology` file in reserve that nothing has filed, file
+`tasks/topology/<NNN>-compact-topology.md` in the same commit.
 
 ## What
 
