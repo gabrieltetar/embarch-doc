@@ -1,6 +1,6 @@
 # 079 — `interfaces/modules.md`'s module map has no row for `dev_bench.rs`
 
-**State:** open
+**State:** claimed
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** api
 **Hardware:** none
