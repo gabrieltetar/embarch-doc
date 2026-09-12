@@ -1,6 +1,6 @@
 # 043 — The stream index's documented shape is three fields short, and `self_excluded` is the one missing
 
-**State:** open
+**State:** claimed (leg 090, 2026-09-11)
 **Source:** refill sweep for scope spread, leg 089, 2026-09-11. Filed rather than dispatched because
 leg 089 reached its four-unit cap; not yet re-verified by a supervisor, so **check every line number
 below against the source before you act on it** — they are as the sweep reported them.
