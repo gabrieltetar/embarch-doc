@@ -28,6 +28,21 @@ The study and result types. Field-level, concrete enough that a `serde`-derived 
 
 ## `Action`
 
+**`Action` is externally tagged, and that is the one thing about this type model a `serde`-derived translation does *not* make obvious.** A step's `action` is an object with **exactly one key, the variant name**, whose value is that variant's fields — `{"BleAdvertise": {"local_name": "…", "service_uuids": [], "adv_interval_ms": 100}}`, never `{"kind": "BleAdvertise", …}` and never a bare string. A fieldless variant still takes an object: `{"GattDiscover": {}}`. Said here because a study is the suite's only hand-authored input, and `run_study`'s MCP parameter advertises nothing but `"type": "object"`.
+
+**The complete worked example is `embarch-api/tests/fixtures/self_test_study.json`** — the two-step `BleAdvertise` self-test that ran green against the real bench ([suite/studies-guide.md](../../suite/studies-guide.md) §3a). **It is canonical because a test deserializes it into `Study` on every run** (`embarch-api/src/study.rs`, `tests/core_client_http.rs`), so it cannot drift from this table. One step of it, as an excerpt rather than a second canonical copy:
+
+```json
+{
+  "name": "advertise-short",
+  "action": { "BleAdvertise": { "local_name": "embarch-selftest", "service_uuids": [], "adv_interval_ms": 100 } },
+  "timeout_ms": 3000,
+  "continue_on_fail": false
+}
+```
+
+**`Study` does not `deny_unknown_fields`**, so a key this table does not list is accepted and silently dropped — which is how that fixture carried a `validations` array for twelve days after the field was retired at schema v11 ([../decisions/removed.md](../decisions/removed.md) decision 48). Check a hand-authored study against this table; nothing else will.
+
 | Variant | What it does |
 |---|---|
 | `BleAdvertise { local_name?, service_uuids, adv_interval_ms }` | Advertise as a peripheral for the DUT to discover |

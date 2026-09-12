@@ -10,6 +10,8 @@
 
 The unit of work is a **study**: an ordered list of steps, each a BLE action, with pass/fail checks. A **step is never a power-sampling window**: that step kind was retired at wire schema v9 (`embarch-study-designer` decision 39), and a capture of any kind is authored as a declared **tap**, never as a step.
 
+**Start from the worked example, not from the type tables.** `embarch-api/tests/fixtures/self_test_study.json` is a complete, currently-valid study — the §3a self-test — and a test deserializes it on every run, so it cannot go stale. The one shape a `serde` reading will not predict is that **`action` is externally tagged**: one key, the variant name, its value the fields (`{"BleAdvertise": {…}}`). Field by field: [embarch-study-designer/interfaces/types.md](../embarch-study-designer/interfaces/types.md).
+
 ```sh
 embarch-api run-study --study-file my-study.json     # returns a study_id
 embarch-api study-status <study_id>                  # pending | running | completed | failed
@@ -63,7 +65,7 @@ A third, rarer one: **`EMBARCH_SIGNAL_BAUD`** sets the line rate when Core reads
 
 ## 3a. A study that actually ran, and where the DUT half stops
 
-**One study has been run end to end by the fleet against the real bench** [measured 2026-09-06, `dev-bench` probe `001057729826`, hardware ID `6fcddc36cb781b71`, both roles validated live first]. It is the two-step `BleAdvertise` self-test, submitted with `reflash` at its `none` default — **nothing was built and nothing was flashed** — and it passed 2 of 2 steps. Its provenance came back `dev_bench_source: ReportedByDevBench, dev_bench_version: 49958d34` against a `Declared` firmware version of `any`, which is §2's asymmetry showing up in a real result: the bench's version is a measurement and the DUT's is a claim.
+**One study has been run end to end by the fleet against the real bench** [measured 2026-09-06, `dev-bench` probe `001057729826`, hardware ID `6fcddc36cb781b71`, both roles validated live first]. It is the two-step `BleAdvertise` self-test — **`embarch-api/tests/fixtures/self_test_study.json`**, the file §1 points at — submitted with `reflash` at its `none` default — **nothing was built and nothing was flashed** — and it passed 2 of 2 steps. Its provenance came back `dev_bench_source: ReportedByDevBench, dev_bench_version: 49958d34` against a `Declared` firmware version of `any`, which is §2's asymmetry showing up in a real result: the bench's version is a measurement and the DUT's is a claim.
 
 **Read that for exactly what it is: the bench half works and the DUT was never involved.** No step in it connects, so none of this bench's DUT-side lore was exercised — not `ble speed fast`, not `meas_sched stop` before `hrm_start`, not `CONFIG_LOG` off. A green study is **not** yet evidence that a study reaches a DUT here.
 

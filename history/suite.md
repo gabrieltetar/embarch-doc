@@ -22,6 +22,7 @@
 - suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
 
 ### Fixed
+- A hand-author gets a named worked study file and the externally-tagged `action` shape; the fixture no longer carries `validations`, retired at schema v11.
 - Decision 7 no longer claims `cbindgen` prevents C-side drift or that C does not re-implement the wire format; both were false ([crate.md](../embarch-study-designer/decisions/crate.md)).
 - - `suite/user-guide.md` §6 no longer denies the cwd-upward config search, and §7.1's permission split now names all 29 MCP tools rather than 7 of 23 with every hardware-touching one omitted.
 - Power sampling no longer reads as built in the glossary, [embarch.md](../embarch.md) or the [studies guide](../suite/studies-guide.md); a step was never a power-sampling window after wire v9.
