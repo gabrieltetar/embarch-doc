@@ -37,6 +37,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- spec.md's outbound token precedence corrected: `token_env` wins, then `token`, matching `resolve_token`.
 - `[dev_bench]`'s `env` row now says additive, matching code and the `[[projects]]` row (was "replaces").
 - `validate`'s CLI and MCP tool now branch on `kind`, not `reason`'s wording; an unplugged probe no longer says "topology mismatch".
 - api: open.md no longer claims Core's enrolled-board/alert mirror is unpinned; core/024 pinned it.
