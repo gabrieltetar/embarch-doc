@@ -88,9 +88,10 @@ setup and verification, off to the side and out of the runtime path entirely:
   | `embarch-doc` | **yes** — `docs-ci.yml`, push to `main` + PR | yes (`check-docs.py`) |
   | `embarch-api`, `embarch-core`, `embarch-umbrella` | no — `release.yml` only, tag-triggered; `embarch-umbrella` also has a manual `assemble-suite.yml` | yes |
   | `embarch-ui` | no — no `.github` directory | yes |
-  | `embarch-dev-bench`, `embarch-outpost` | **no, and never has been** — `git log --all` finds no `.github` at any commit | **no — neither repo has a `Cargo.toml`, so the gate's `cargo` half selects nothing** |
+  | `embarch-outpost` | **partly** — `host-tests.yml`, push to `main` + PR, **host legs only** ([suite/decisions.md](suite/decisions.md) 2) | **no — no `Cargo.toml`, so the gate's `cargo` half selects nothing** |
+  | `embarch-dev-bench` | **no, and never has been** — `git log --all` finds no `.github` at any commit | **no — no `Cargo.toml`, so the gate's `cargo` half selects nothing** |
 
-  **The last row is the one that matters**: the two C sub-projects are checked by neither mechanism, so a change there is reviewed by a human or an agent reading it and by nothing else. That is a statement of where the suite stands, not an argument for leaving it — `embarch-dev-bench/decisions/platform.md` 9 still holds that a `native_sim` job is worth building.
+  **The last two rows are the ones that matter**: the two C sub-projects are the ones the fleet's merge gate cannot reach at all, so a change there is reviewed by a human or an agent reading it and, since 2026-09-11, by `embarch-outpost`'s host-only workflow — which covers its Python decoder and record vocabulary and **no part of the module as Zephyr builds it**. That is a statement of where the suite stands, not an argument for leaving it — `embarch-dev-bench/decisions/platform.md` 9 still holds that a `native_sim` job is worth building, and suite/decisions.md 2 carries the condition that would bring `embarch-outpost`'s three Zephyr legs into CI.
 - **`rustfmt` is not enforced, and nobody runs `cargo fmt`** — a sequencing decision, not a verdict on formatting, with a live reversal condition and a command-spelling trap that fails silently: [suite/decisions.md](suite/decisions.md) 1.
 
 ## 6. Index
