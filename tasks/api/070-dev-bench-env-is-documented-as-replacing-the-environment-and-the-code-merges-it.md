@@ -1,6 +1,6 @@
 # 070 — `[dev_bench] env` is documented as *replacing* the inherited environment, and the code merges it
 
-**State:** open
+**State:** claimed (leg 090, 2026-09-11)
 **Source:** refill sweep for scope spread, leg 090, 2026-09-11. The line numbers below are as the
 sweep reported them — **re-verify every one against the source before you act on it.**
 **Scope:** api
