@@ -1,6 +1,6 @@
 # 034 — `hardware_id.rs:429` cites a bare `decision 35`; `embarch-topology` has no decision 35
 
-**State:** claimed
+**State:** done
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** topology
 **Hardware:** none
@@ -37,10 +37,12 @@ rather than cross-repo.
 
 ## Done when
 
-- [ ] `hardware_id.rs:429` reads `` `embarch-core` decision 35 ``.
-- [ ] `grep -rnE "decisions? (3[1-9]|[0-9]{2,})" ` over `embarch-topology`'s `src/`, `bin/` and
+- [x] `hardware_id.rs:429` reads `` `embarch-core` decision 35 ``.
+- [x] `grep -rnE "decisions? (3[1-9]|[0-9]{2,})" ` over `embarch-topology`'s `src/`, `bin/` and
       `Cargo.toml` shows only repo-qualified hits — any bare number above 30 is the same defect.
-- [ ] `cargo test -p embarch-topology` green.
+      Verified: every hit above 30 already carries `embarch-core`/`embarch-ui`/`embarch-outpost`/
+      `embarch-study-designer` qualification; all bare hits are topology's own (≤31).
+- [x] `cargo test -p embarch-topology` green.
 
 **Doc-size note (leg 101):** `embarch-topology/decisions/crate.md` (97.1%, 362 B left) and
 `embarch-topology/spec.md` (93.5%, 670 B left) are both in reserve, filed against the **open**
