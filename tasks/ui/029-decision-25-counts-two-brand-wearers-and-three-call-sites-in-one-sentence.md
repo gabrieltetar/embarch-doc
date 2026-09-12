@@ -1,4 +1,4 @@
-# 028 — Decision 25 counts two `--brand` wearers and three call sites in the same sentence
+# 029 — Decision 25 counts two `--brand` wearers and three call sites in the same sentence
 
 **State:** open
 **Source:** refill sweep, leg 088, 2026-09-11. `embarch-ui/decisions/shell.md` decision 25 against
