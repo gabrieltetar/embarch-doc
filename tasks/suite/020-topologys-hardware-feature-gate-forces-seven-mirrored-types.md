@@ -1,9 +1,42 @@
 # 020 — `embarch-topology`'s `hardware` gate is drawn around the module rather than the machinery, so its one linked consumer hand-mirrors seven plain data types
 
 **State:** open — announced 2026-09-12 10:23 by leg 099, `ops.md` §4 window `ts` `1789230186.693679`.
-No objection as of that leg's last poll. **The next leg completes this window rather than restarting
-it**: if 30 minutes have passed since that `ts` and `fleet-read.py --thread 1789230186.693679` shows
-no objection, run it.
+No objection as of that leg's last poll (~17 min in). **The next leg completes this window rather
+than restarting it**: if 30 minutes have passed since that `ts` and
+`fleet-read.py --thread 1789230186.693679` shows no objection, run it. Leg 099 ran out of leg before
+the window closed — the park is the mechanism working, not a failure.
+
+## Scoping done by leg 099 before it parked this — read it before starting
+
+**This is bigger than one unit and should be split into two, and the first half is separable,
+low-risk and useful on its own.** What I read:
+
+- **The seven types sit at the TOP of files whose lower halves need `probe-rs`/`serialport`** —
+  `EnrolledBoard` at `enrollment.rs:23` above 9 storage functions, `DetectedPort` at `port.rs:77`
+  above `select`/`detect`/`enumerate`, `SignalLink`/`SignalDirection`/`Route` at `signal.rs:43,62,71`
+  above `resolve_port` (which is the first thing in that file to touch `serialport`, at `:226`),
+  `Alert` at `alert.rs:44`. That layout is good news: the seam is clean and near the top of each
+  file.
+- **`hardware/mod.rs` already `pub use`s all seven**, so a move behind it is invisible to
+  `embarch-core`, the one consumer that enables `hardware`.
+- **The cost is the doc comments, not the types.** Every one of these carries heavy rustdoc with
+  `super::`-relative intra-doc links (`[`SignalLink`](super::signal::SignalLink)`,
+  `[`super::validate`]`, `[`DevBenchPort`]`, …). Moving the types to a top-level `wire` module means
+  rewriting those paths, which turns a mechanical move into a large non-verbatim diff in a crate
+  four other repos build against. **Budget for that, or keep the types in place and change only the
+  gating.**
+- **The `embarch-api` half is the risky half and is a unit of its own.** The mirrors are not plain
+  duplicates: they are `*Response` types with their own contracts, and `client.rs:1875-2126` is a
+  block of deliberate **mirror-pinning tests** (`api/032`'s work) that exist to catch exactly the
+  drift this task wants to remove structurally. Deleting mirrors means deleting those tests, and
+  `embarch-core-client` is a shipped crate, so this changes a public API. `client.rs` is 2,357 lines.
+
+**Suggested split.** (a) `topology`: add a types-only feature (serde, no `probe-rs`/`serialport`)
+that `hardware` implies, give `DetectedPort` a `Deserialize`, and stop `serde` being
+`hardware`-optional — verifiable on its own by `cargo tree -e normal` showing no new `probe-rs`
+anywhere. (b) `api`: switch `embarch-core-client` onto those types and retire the mirrors and their
+pinning tests. (a) is pure enablement and unblocks the `suite-one-machine-data-root` drop as well;
+(b) is where the judgement is. If the window is honoured and only one unit is available, **do (a)**.
 **Source:** suite review pass 2026-09-06, dimensions 4 and 1 (two hunters, one finding). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
