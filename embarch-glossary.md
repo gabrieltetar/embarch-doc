@@ -10,7 +10,7 @@ The load-bearing terms used across every doc in this repo. **This doc restates n
 |---|---|---|
 | **DUT** | Device Under Test — the physical firmware and hardware being flashed, reset or bench-tested. **Distinct from dev-bench, which tests it** | [core](embarch-core/spec.md) |
 | **Core** | `embarch-core`, the OS-level service owning the debug probe and serial console — **the lowest layer, and the only one that touches hardware** | [core](embarch-core/spec.md) |
-| **dev-bench** | `embarch-dev-bench`, the physical rig **playing the DUT's BLE counterpart** and sampling power during a study | [dev-bench](embarch-dev-bench/spec.md) |
+| **dev-bench** | `embarch-dev-bench`, the physical rig **playing the DUT's BLE counterpart**. It **will** also sample power; that front end is deferred, not built ([roadmap](suite/roadmap.md) 4) | [dev-bench](embarch-dev-bench/spec.md) |
 | **suite** | The whole `embarch-*` set of sub-projects together | [embarch.md](embarch.md) |
 | **project** | A named, configured build target in the API's config — **one repo's buildable thing, with how to build it** | [api config](embarch-api/interfaces/config.md) |
 | **target** | One concrete buildable (board, soc, cpucluster, variant, revision, app) combination within a discovery project, **validated against the files a build actually needs rather than what a board file declares** | [api](embarch-api/decisions.md) decision 12 |

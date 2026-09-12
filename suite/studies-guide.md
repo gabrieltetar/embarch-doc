@@ -8,13 +8,13 @@
 
 `embarch-dev-bench` is a second board — **a test fixture, not your DUT** — that plays your device's BLE counterpart on demand. **Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.**
 
-The unit of work is a **study**: an ordered list of steps, each a BLE action or a power-sampling window, with pass/fail checks.
+The unit of work is a **study**: an ordered list of steps, each a BLE action, with pass/fail checks. A **step is never a power-sampling window**: that step kind was retired at wire schema v9 (`embarch-study-designer` decision 39), and a capture of any kind is authored as a declared **tap**, never as a step.
 
 ```sh
 embarch-api run-study --study-file my-study.json     # returns a study_id
 embarch-api study-status <study_id>                  # pending | running | completed | failed
 embarch-api list-study-streams <study_id>            # what it captured, and whether anything was lost
-embarch-api study-stream-data <study_id> --name power --out power.csv
+embarch-api study-stream-data <study_id> --name <tap> --out capture.csv
 ```
 
 **Read `list-study-streams` before you read a capture.** It lists every capture the study declared, how many bytes each wrote, and — **the column that matters** — whether it was **truncated**. A truncated capture is a short one: either retention rotation deleted an older segment, or the bench reported dropping records. **Nothing else in the suite will tell you, and a short capture read as a complete one is the failure this whole area is built to prevent.** A capture listed with 0 bytes was declared and produced nothing, **which is a different problem from one that was never declared.**

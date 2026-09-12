@@ -83,6 +83,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | End-of-study tap closing — **a whole-study tap's truncated flag was unfalsifiable** | Shipped | hw | 42 |
 | `DataExchange` read-result observability | **Open question, not a diagnosed gap** | hw | §4 |
 | Stimulus and sensing hardware-in-the-loop rig | Proposed | n/a | — |
+| Power sampling during a study | **Deferred, not cancelled** — no front end; a declared `PowerFrontEnd` tap is accepted, crosses the wire, is parsed and captures nothing (`bytes_written: 0`) | n/a | 24 |
 | Advertiser census reports Manufacturer Specific Data (company ID + payload, capped) | Shipped — parsing/rendering ztest-verified on host; the claimed correspondence between the payload and a DUT's enrolled hardware ID is read off client firmware source, unconfirmed on air | host | 44 |
 
 ## embarch-study-designer

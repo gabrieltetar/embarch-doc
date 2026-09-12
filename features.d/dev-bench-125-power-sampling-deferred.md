@@ -1,0 +1,1 @@
+| Power sampling during a study | **Deferred, not cancelled** — no front end; a declared `PowerFrontEnd` tap is accepted, crosses the wire, is parsed and captures nothing (`bytes_written: 0`) | n/a | 24 |
