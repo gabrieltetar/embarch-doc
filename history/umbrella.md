@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- Checks 4 and 12 now split into `judge_token`/`judge_dev_bench`, so the stray-space guard covers them.
 - `doctor.rs` and `tasks/umbrella/045` now cite `embarch-core` decision 57, not 54, for the enrolled-label rule.
 - `CoreConfig` now comes from `embarch-core-client`; `ProjectConfig` keeps a fixture-parse drift test (decisions/mirrors.md 20).
 - The `doctor` chain table moved verbatim out of spec.md into interfaces/doctor-chain.md.
