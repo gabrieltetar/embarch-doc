@@ -56,7 +56,7 @@ Decision 59's first draft made `self_reported_hardware_id`, `link_identity` and
 against a Core older than that rename `serde` fails the *whole* response on the
 missing key, so every call to this tool would have returned a deserialization
 error instead of the identity cross-check it exists to report — exactly the
-failure [core-link](core-link.md) decision 58 was written an hour earlier to end.
+failure [client-crate](client-crate.md) decision 58 was written an hour earlier to end.
 The fields are now `Option<String>` with `#[serde(default)]`, per that decision.
 
 **The tool never computes a verdict of its own from the two hardware IDs.**
