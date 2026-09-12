@@ -61,9 +61,10 @@ Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the 
 
 ## The `doctor` chain
 
-An ordered chain of eighteen checks; each emits pass/warn/fail plus a concrete fix line. The
-full table — what each check does, which decision governs it, and which never fail the run
-outright — is [interfaces/doctor-chain.md](interfaces/doctor-chain.md).
+An ordered chain of seventeen checks; each emits pass/warn/fail plus a concrete fix line. An
+eighteenth is designed and unbuilt — [interfaces/doctor-chain.md](interfaces/doctor-chain.md)
+says so outright. That file also holds the full table: what each check does, which decision
+governs it, and which never fail the run outright.
 
 ## Token handling
 

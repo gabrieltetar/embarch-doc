@@ -46,10 +46,19 @@ retirement that should have updated it.
 
 ## Done when
 
-- [ ] `spec.md`'s check count matches what `src/doctor.rs`'s driver actually builds, verified by
+- [x] `spec.md`'s check count matches what `src/doctor.rs`'s driver actually builds, verified by
       reading the vector.
-- [ ] The unbuilt eighteenth is named as unbuilt, with the pointer to `interfaces/doctor-chain.md`.
-- [ ] Any further drift found in the same paragraph is fixed or named here.
-- [ ] No code changes — this is a documentation correction. If the code turns out to disagree with
+- [x] The unbuilt eighteenth is named as unbuilt, with the pointer to `interfaces/doctor-chain.md`.
+- [x] Any further drift found in the same paragraph is fixed or named here.
+- [x] No code changes — this is a documentation correction. If the code turns out to disagree with
       `interfaces/doctor-chain.md` too, stop and say so here rather than widening the unit.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Result
+
+Read `src/doctor.rs`'s driver directly: `let checks = vec![check1, check2, ..., check17];` — 17
+entries, no `check18` anywhere in the file. `interfaces/doctor-chain.md` was already correct.
+Fixed `spec.md`'s "eighteen" → "seventeen" and folded in the "eighteenth is designed and unbuilt"
+clause, pointing at `interfaces/doctor-chain.md` instead of restating its table. No other drift
+found in the rest of that paragraph (the two sentences following the count were accurate). No
+code changes made.
