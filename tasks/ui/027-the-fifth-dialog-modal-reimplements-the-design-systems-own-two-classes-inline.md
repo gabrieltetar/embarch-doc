@@ -1,6 +1,6 @@
 # 027 — `spec.md` says the `.dialog` modal is used in five places; the fifth re-implements both classes inline
 
-**State:** claimed — leg 087, 2026-09-11.
+**State:** done — leg 087, 2026-09-11, branch `agent/ui/027-assign-dialog-classes`.
 **Source:** refill sweep, leg 087, 2026-09-11. `embarch-ui/spec.md`'s "Design system" paragraph,
 checked against `assets/index.html`, `assets/style.css` and `assets/app.js`.
 **Scope:** ui
@@ -34,13 +34,19 @@ rule: a change to `.dialog` reaches four modals and silently skips the fifth.
 
 ## Done when
 
-- [ ] The assign modal uses `.dialog-backdrop` and `.dialog` (plus `card`), with only genuinely
+- [x] The assign modal uses `.dialog-backdrop` and `.dialog` (plus `card`), with only genuinely
       modal-specific properties left inline and each of those justified in the diff.
-- [ ] Show/hide still works from `assets/app.js` unchanged, or the change to it is part of this
-      unit and explained.
-- [ ] `spec.md`'s sentence is true as written — or corrected, if the fifth modal turns out to be
-      deliberately different.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+      `#assign-dialog-backdrop` is now `class="dialog-backdrop"` with only `display:none` inline.
+      `#assign-dialog` is now `class="dialog card"` with `display:none; top:30%; width:340px`
+      inline — `width:340px` because this is a short chip-enrollment form deliberately narrower
+      than the shared `min(720px, 92vw)`, and `top:30%` because the shared `.dialog`'s `top:8%` is
+      sized for the taller, scrollable modals and would sit this short one awkwardly high.
+- [x] Show/hide still works from `assets/app.js` unchanged, or the change to it is part of this
+      unit and explained. `assets/app.js` only ever toggles `style.display`; untouched.
+- [x] `spec.md`'s sentence is true as written — or corrected, if the fifth modal turns out to be
+      deliberately different. True as written: five uses of `.dialog`/`.dialog-backdrop`, no
+      correction needed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
 
 ## Doc-size reserve in your sub-project (supervisor's dispatch note, leg 087)
 
