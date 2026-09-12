@@ -1,6 +1,10 @@
 # 027 — `rx_utc_ms` names two different clocks in two different files, and one of them is not UTC
 
-**State:** open
+**State:** open — announced 2026-09-11 23:26 by leg 093, `ts` `1789190763.632399`, 30-minute window per
+`embarch-fleet/ops.md` §4 (closes 23:56:03 local). **The announcement takes the doc-and-naming arm
+only and explicitly disclaims the firmware arm**, which needs the board and breaks capture
+comparability — that half stays the owner's. If this leg ends before the window closes, **read the
+thread and complete the window rather than restarting it.**
 **Source:** split out of `tasks/suite/016` by leg 077, 2026-09-10, which fixed the *false claims*
 and deliberately did not make the *rename*. `embarch-study-designer` decision 72 carries the
 argument for the split.
