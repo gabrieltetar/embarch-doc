@@ -169,10 +169,10 @@ embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --r
 
 ## 6. Using it yourself, from a terminal
 
-**Every invocation needs to know which config to use — there is no auto-discovery the way `doctor` and `init` have.** Point at it once per shell, or pass `--config` every time:
+**Which config to use resolves in three steps**: `--config`, then `EMBARCH_API_CONFIG`, then **a search upward from your current directory for `embarch/embarch.toml`**. §5 left you inside your firmware repo, so the third already answers and you need neither of the first two:
 
 ```sh
-export EMBARCH_API_CONFIG=~/src/my-firmware/embarch/embarch.toml
+cd ~/src/my-firmware                         # the upward search finds embarch/embarch.toml
 
 embarch-api list-projects                    # what's configured
 embarch-api status                           # is Core up, what probes does it see
@@ -183,7 +183,7 @@ embarch-api reset my-firmware
 embarch-api serial-log my-firmware --duration-ms 5000
 ```
 
-Without either, **every one of these — including `list-projects` — exits immediately** with `no config path given`.
+Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **none** of the three these exit immediately with `no config path given`. **Prefer the upward search to exporting the variable** — an export makes the search unreachable, and no single `EMBARCH_API_CONFIG` value is ever right once you own a second firmware repo (`embarch-api` decision 25).
 
 **Note the naming split**: CLI subcommands are kebab-case, the MCP tools in §7 are snake_case. Each front end follows its own convention; `--help` is authoritative. Add `--json` to any of them for machine-readable output.
 
@@ -203,7 +203,12 @@ Without either, **every one of these — including `list-projects` — exits imm
 
 ### 7.1 Which operations should need your approval
 
-**Reading and building are safe and frequent; anything that touches the board should be a decision you make.** A reasonable split in `.claude/settings.local.json`: allow `list_projects`, `status`, `build` and `serial_log`; ask for `flash`, `build_and_flash` and `reset`.
+**Reading and building are safe and frequent; anything that reaches a board — or rewrites what EmbArch remembers about one — should be a decision you make.** That is the whole surface, all 29 tools, split for `.claude/settings.local.json`:
+
+- **allow** — reads, and host-side builds that touch no hardware: `alerts`, `build`, `build_dev_bench`, `dev_bench_hello`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `serial_log`, `status`, `study_gatt_data`, `study_power_data`, `study_status`, `study_stream_data`, `study_watch`, `study_waveform_data`
+- **ask** — reaches a board, or writes what EmbArch has recorded about one: `build_and_flash`, `build_and_flash_dev_bench`, `declare_signal`, `dev_bench_link`, `enroll_probe`, `flash`, `flash_dev_bench`, `remove_signal`, `reset`, `reset_dev_bench`, `run_study`, `validate`
+
+**`run_study` is the one to be deliberate about**: with `reflash` it builds and flashes from your working tree *as it currently stands*, on both boards. `validate` only re-checks an enrolled board's identity, but it does attach to the probe, so it sits with the rest.
 
 If your `CLAUDE.md` tells the agent never to build firmware on its own — **a sensible rule when a stray `west build` can blow away a build tree** — note the exemption explicitly, or the agent will keep asking:
 
