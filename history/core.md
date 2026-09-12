@@ -52,6 +52,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- Every route's wiring is checked against the handler's own `// route:` comment; decision 60.
 - Core decision 58: `/serial-log`'s duration/byte caps and `truncated: bool` (not a count) get a numbered rationale; `open.md`'s owed-decision bullet is closed.
 - `decisions/surfaces.md`'s decision 54 renumbered to 57 — collided with `decisions/flashing.md` 54.
 - Unprefixed `hardware_id` is the probe-read ID suite-wide; decision 47's deferred rename is cancelled, not scheduled. See [embarch-core/decisions/handshake.md](../embarch-core/decisions/handshake.md).
