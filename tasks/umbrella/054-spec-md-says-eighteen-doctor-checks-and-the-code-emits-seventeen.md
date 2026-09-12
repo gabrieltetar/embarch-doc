@@ -1,4 +1,4 @@
-# 050 — `spec.md` says eighteen `doctor` checks; the code emits seventeen
+# 054 — `spec.md` says eighteen `doctor` checks; the code emits seventeen
 
 **State:** open
 **Source:** refill sweep, leg 088, 2026-09-11. `embarch-umbrella/spec.md` against

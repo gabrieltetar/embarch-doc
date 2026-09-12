@@ -1,4 +1,4 @@
-# 049 — `deploy-core` still reports "landed" through both defects its own decision amendment named
+# 053 — `deploy-core` still reports "landed" through both defects its own decision amendment named
 
 **State:** claimed — leg 088, 2026-09-11.
 **Doc-size reserve for this sub-project:** `embarch-umbrella/decisions/doctor.md` is at 90.2%
