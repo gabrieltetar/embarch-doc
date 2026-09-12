@@ -1,6 +1,9 @@
 # 012 — There is no worked study JSON anywhere in 3 MB of docs, `run_study` advertises an untyped object, and the one example in the tree teaches a field removed at schema v11
 
-**State:** open
+**State:** open — announced 2026-09-12 00:39 by leg 094, `ts` `1789195164.178069`, 30-minute window
+per `embarch-fleet/ops.md` §4 (closes 01:09:24 local). **The announcement takes the worked-example
+arm only and explicitly disclaims any schema or reader change.** If this leg ends before the window
+closes, **read the thread and complete the window rather than restarting it.**
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
