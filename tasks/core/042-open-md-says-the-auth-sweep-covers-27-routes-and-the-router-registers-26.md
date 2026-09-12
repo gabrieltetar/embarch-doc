@@ -35,12 +35,15 @@ that no longer exists, which would hide the retirement of a route that *should* 
 
 ## Done when
 
-- [ ] `embarch-core/open.md`'s route-sweep bullet says 26, agreeing with `decisions/auth.md`.
-- [ ] `DOCUMENTED_ROUTE_COUNT` and `AUTH_CASES`' row count each say, in a comment or in the
+- [x] `embarch-core/open.md`'s route-sweep bullet says 26, agreeing with `decisions/auth.md`.
+- [x] `DOCUMENTED_ROUTE_COUNT` and `AUTH_CASES`' row count each say, in a comment or in the
       decision, what they are a count *of* — or the wrong one is corrected, whichever reading the
-      code actually supports.
-- [ ] No route behaviour changes and no auth case is added or removed by this task.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+      code actually supports. (Already correct: `src/api.rs` lines 1537-1541 already document that
+      `DOCUMENTED_ROUTE_COUNT = 25` counts `.route(` lines while `AUTH_CASES` = 26 counts auth
+      cases, one ahead because `/signals` chains `.post().get()` on one `.route()` line. No code
+      change needed.)
+- [x] No route behaviour changes and no auth case is added or removed by this task.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
 
 ## Doc-size reserve in your sub-project (supervisor's dispatch note, leg 087)
 
