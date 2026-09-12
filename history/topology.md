@@ -23,6 +23,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- `spec.md`/`decisions/validate-timing.md`: `validated_at_utc_ms` is on Core's `/validate` wire now.
 - `open.md`'s bullet on caller-side mirrors no longer cites `tasks/topology/020`, which is done.
 - `NotFound` names which rule emptied dev-bench's candidate list, leads with the split-host possibility on 0 visible ports, and a declared link serial/interface can be cleared.
 - hardware_id.rs: one `classify_chip` fn picks the register pair; unlisted nRF54L names no longer fall through to the classic address (decision 25).
