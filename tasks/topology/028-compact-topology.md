@@ -1,6 +1,6 @@
 # 028 — `decisions/validation.md` is in reserve
 
-**State:** claimed — leg 084, 2026-09-11
+**State:** done — leg 084, 2026-09-11
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by the STM32G0 amendment to decision 25, 2026-09-11
 **Scope:** topology
 **Hardware:** none
@@ -38,15 +38,35 @@ Decisions 21 and 25 are both closed units. Nothing queued against
 
 ## Done when
 
-- [ ] `decisions/validation.md` is out of reserve, or the task says why it
+- [x] `decisions/validation.md` is out of reserve, or the task says why it
       cannot be and what was deleted instead.
-- [ ] Prefer a split per [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 before
+- [x] Prefer a split per [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 before
       deleting live reasoning. A seam is already visible: 21 is *the
       self-report comparison* (what a board says about itself vs. JTAG), 25 is
       *the classifier* (which register pair holds the ID at all) — two
       questions that now have three vendors' worth of argument between them.
-- [ ] Whichever it was — split or delete — is stated, with byte numbers before
+- [x] Whichever it was — split or delete — is stated, with byte numbers before
       and after.
+
+**SPLIT, verbatim, along exactly the seam named above.** Decision 21 stayed in
+`decisions/validation.md`; decision 25 moved unchanged to a new
+`decisions/validation-classifier.md`. `decisions.md`'s index table row was split
+into two rows. No prose was reworded or shortened — the split only added one
+cross-reference sentence to each file's own intro pointing at the other.
+
+Byte counts: `decisions/validation.md` 12,278 B → 4,898 B. New
+`decisions/validation-classifier.md`: 8,402 B (cap 12 KB, fresh baseline). Both
+comfortably clear of reserve; the 10-byte-left state is resolved, not deferred.
+
+**Human question:** no, `embarch-topology/spec.md` alone cannot answer what
+someone needs to add the next chip family — it names only that a register pair
+is confirmed against silicon "by an independent mechanism (decision 21)" and
+points out. The classifier's actual shape (`classify_chip`, one function shared
+by `read` and `is_nordic_deviceid_chip`, the family-vs-vendor prefix rule, the
+`None`-vs-`Undeclared`-vs-refusal distinctions) lives in decisions by design —
+that is exactly the "why, and what not to do" reasoning `decisions.md`'s
+description in `DOC-COMPACTION.md` §3 assigns to that file, not to `spec.md`.
+`decisions/validation-classifier.md` is where that answer now lives on its own.
 
 ## What the pass may not delete
 
