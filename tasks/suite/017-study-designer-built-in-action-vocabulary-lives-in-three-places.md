@@ -1,6 +1,8 @@
 # 017 — The Study Designer's built-in action vocabulary lives in three places, two already disagree, and the crate's served copy is read by nobody
 
-**State:** open
+**State:** open — announced under `ops.md` §4 by leg 084, 2026-09-11, `ts 1789182068.428919`. The
+30-minute window opened at that message. If this leg ends before it closes, **do not restart the
+clock**: re-poll that thread and, with no objection and 30 minutes elapsed, execute.
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
