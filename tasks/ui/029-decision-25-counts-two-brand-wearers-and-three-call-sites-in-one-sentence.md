@@ -1,6 +1,9 @@
 # 029 — Decision 25 counts two `--brand` wearers and three call sites in the same sentence
 
-**State:** open
+**State:** claimed — leg 089, 2026-09-11.
+
+**Doc-size reserve for `ui`:** nothing in this sub-project is in reserve. If your work pushes a file
+into its last 10%, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 **Source:** refill sweep, leg 088, 2026-09-11. `embarch-ui/decisions/shell.md` decision 25 against
 `embarch-ui/assets/style.css` and `assets/index.html`.
 **Scope:** ui
