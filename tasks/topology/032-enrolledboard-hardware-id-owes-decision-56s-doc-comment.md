@@ -25,7 +25,7 @@ belongs here.
 
 ## Done when
 
-- [ ] `EnrolledBoard::hardware_id` carries a doc comment saying it is the probe-read (JTAG) value,
+- [x] `EnrolledBoard::hardware_id` carries a doc comment saying it is the probe-read (JTAG) value,
       not the bench's self-reported one, citing `embarch-core` decision 56.
-- [ ] Gate green.
-- [ ] `changelog.d/` fragment.
+- [x] Gate green.
+- [x] `changelog.d/` fragment.
