@@ -1,6 +1,6 @@
 # 044 — Decision 56 calls three doc comments "the whole remaining work", and none of them exists
 
-**State:** claimed (leg 091)
+**State:** done
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
 reported them — re-check each against the source before you act on it.**
 **Scope:** core
@@ -46,11 +46,19 @@ No new numbered decision: this is decision 56's own unpaid half.
 
 ## Done when
 
-- [ ] Every type decision 56 names either exists and carries the comment, or the decision names the
-      type that really exists instead.
-- [ ] The `EnrolledBoardResponse` claim is resolved one way or the other, in writing.
-- [ ] No wire-surface change (decision 56 says there is none; keep that true).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Every type decision 56 names either exists and carries the comment, or the decision names the
+      type that really exists instead. `EnrollProbeResponse` and `ValidateOkResponse` (not
+      `ValidateResponse`) now carry the comment; decision 56's own sentence renamed them.
+- [x] The `EnrolledBoardResponse` claim is resolved one way or the other, in writing. It does not
+      exist in this crate; `GET /probes/enrolled` serves `embarch_topology::hardware::EnrolledBoard`
+      directly, so the owed comment is filed to `embarch-topology`
+      (`embarch-doc/inbox/032-decision-56-owes-a-doc-comment-on-enrolledboard-hardware-id.md`).
+- [x] No wire-surface change (decision 56 says there is none; keep that true). Only doc comments and
+      decision prose changed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+Second, separable item done too: `src/flash_backend.rs`'s `nrfjprog` retirement comment now cites
+decision 54 (`decisions/flashing.md:99`, review date 2026-09-06), not decision 50/2026-09-10.
 
 ## A second, separable thing in the same sub-project
 
