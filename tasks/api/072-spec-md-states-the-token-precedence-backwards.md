@@ -1,6 +1,6 @@
 # 072 — `spec.md` states the outbound token precedence backwards
 
-**State:** claimed (leg 091)
+**State:** done
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
 reported them — re-check each against the source before you act on it.**
 **Scope:** api
@@ -50,11 +50,23 @@ outright** — it is the only thing in that decision a reader can run.
 
 ## Done when
 
-- [ ] `spec.md:56`'s precedence matches `resolve_token`, verified by reading it.
-- [ ] Decision 58's count is either correct today or replaced by something that stays correct, with
-      the reasoning written in the decision body.
-- [ ] No behaviour change in token resolution and no new numbered decision.
-- [ ] Watch the doc-size reserve: `embarch-api` has six open or blocked compaction tasks and
+- [x] `spec.md:56`'s precedence matches `resolve_token`, verified by reading it. Confirmed against
+      `token_discovery.rs:12-30`: `token_env` first, then `token`, then the token file. `spec.md:56`
+      corrected to say so.
+- [x] Decision 58's count is either correct today or replaced by something that stays correct, with
+      the reasoning written in the decision body. Re-counted: `grep -c 'serde(default)'` on
+      `client.rs` is now 21 (18 attribute lines + 3 doc-comment mentions), not 13/14. Replaced the
+      frozen numbers with an attribute-anchored check (`grep -c '^\s*#\[serde(default)\]' ...`) that
+      does not pick up doc-comment mentions, plus the reasoning, written into decision 58's body.
+- [x] No behaviour change in token resolution and no new numbered decision.
+- [x] Watch the doc-size reserve: `embarch-api` has six open or blocked compaction tasks and
       `interfaces/config.md` is at 91.1% of cap. If your edit spends reserve in a file, file
-      `tasks/api/<NNN>-compact-api.md` in the same commit.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+      `tasks/api/<NNN>-compact-api.md` in the same commit. The decision-58 correction pushed
+      `decisions/client-crate.md` to 11639/12288 B (94.7%), into reserve — filed
+      `tasks/api/073-compact-api.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Note on line numbers
+
+The task's citations to `token_discovery.rs:12-30` and `lib.rs:94` verified correct against the
+source. `spec.md:56` also verified correct (single-line file, the sentence in question).
