@@ -1,9 +1,36 @@
 # 037 — `embarch-ui` source comments cite a `milestone-1.md` that does not exist
 
-**State:** claimed — leg 097, 2026-09-12.
+**State:** done — leg 096, 2026-09-12, `agent/ui/037-milestone-1-comments`
 
-**Doc-size reserve for `ui` (supervisor, leg 097):** no `embarch-ui/` file is in reserve. Nothing to
-file. If your work pushes one in, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
+**Resolution:** re-grepped `embarch-ui` for `milestone-[0-9]` and found nine hits (the two known
+plus seven not previously listed): `Cargo.toml:20`, `assets/style.css:7-8,10,413,469,539`,
+`assets/index.html:644`, `assets/app.js:428,610,831`. Repointed at a standing decision body where
+one exists and says the same thing:
+
+- `Cargo.toml:20` — decision 5 was already cited alongside the milestone reference; dropped the
+  dead `milestone-1.md §4.1` clause, kept `decision 5`.
+- `assets/style.css:7-8` — decision 8 was already cited alongside `§4.3`; dropped the milestone
+  clause, kept `decision 8`. The `§4.4 onward` sentence about per-tab classes arriving as each tab
+  ships states no decision's content (it's a build-order note); dropped the citation, kept the
+  prose.
+- `assets/style.css:469` and `assets/app.js:610` (Debug tab) — decision 7 (`decisions/debug-tab.md`)
+  is exactly "the Debug tab is a new suite-wide capability"; cited it in place of the milestone
+  reference.
+- `assets/style.css:413`/`assets/app.js:428` (Enroll tab drag-and-drop) and `assets/style.css:539`/
+  `assets/app.js:831` (Study Designer tab CSS/JS section banners) and `assets/index.html:644`
+  ("stop server", not wired yet) — no standing decision states what any of these three comments
+  claimed (checked `decisions.md`'s index and every topic file it points at: `shell.md`,
+  `debug-tab.md`, `study-designer.md`, `wiring.md`, and `decisions.md` itself have no entry for an
+  Enroll-tab decision or a "not wired yet" footer button). Per the method note, did not invent a
+  number — dropped the `milestone-1.md` citation and left a plain in-place label instead.
+
+No comment was left citing `milestone-1.md`; a second full re-grep after editing confirms zero
+hits for `milestone-[0-9]` anywhere in the `embarch-ui` tree.
+
+**Also found, out of scope, dropped to inbox:** `Cargo.toml:6,14,19` still cite a `design.md` that
+also does not exist (`ui/033`'s target file) — `ui/033` was scoped to `design.md` and appears to
+have missed `Cargo.toml`'s own comments. Not touched here since this task's scope is `milestone-1.md`
+specifically; see `inbox/ui-cargo-toml-design-md-citations.md`.
 **Source:** `inbox/ui-milestone-1-md-comment-citations.md`, written by `ui/033`'s worker while working
 `tasks/ui/033` (2026-09-12), which was itself scoped to `design.md` citations only.
 **Scope:** ui
