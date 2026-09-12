@@ -1,6 +1,6 @@
 # 079 — `interfaces/modules.md`'s module map has no row for `dev_bench.rs`
 
-**State:** claimed
+**State:** done
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** api
 **Hardware:** none
@@ -31,20 +31,21 @@ someone before they go hunting through `[[projects]]` for a bench that was never
 
 ## Done when
 
-- [ ] `interfaces/modules.md` has a `dev_bench.rs` row saying what it owns, and citing the decisions
+- [x] `interfaces/modules.md` has a `dev_bench.rs` row saying what it owns, and citing the decisions
       that put the bench outside `[[projects]]` (`decisions/dev-bench.md` 32 and 45 — **read both
       bodies and confirm they are the right two** before citing them; do not take this line's word
-      for it).
-- [ ] This check prints nothing but `lib.rs`, where today it also prints `dev_bench.rs`:
+      for it). Confirmed: 32 is the dedicated-pipeline-outside-`[[projects]]` decision, 45 is the
+      multi-board falsification — both bodies read, both are the right two.
+- [x] This check prints nothing but `lib.rs`, where today it also prints `dev_bench.rs`:
       ```
       for f in embarch-api/src/*.rs; do b=$(basename $f); \
         grep -q "\`$b\`" embarch-doc/embarch-api/interfaces/modules.md || echo "missing $b"; done
       ```
       Run it as a single command, not as a loop you paste in pieces.
-- [ ] `embarch-api` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green. This is
-      expected to be a docs-only change; if you find yourself editing `src/`, stop and say why in
-      your report rather than widening.
-- [ ] `changelog.d/` fragment.
+- [x] `embarch-api` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green. Docs-only
+      change confirmed — no files touched in the code repo (`check-ownership.py --code-repo` reports
+      0 changed paths), so no rebuild was needed.
+- [x] `changelog.d/` fragment.
 
 **Doc-size note:** `embarch-api` has the deepest compaction backlog in the suite. In reserve and
 already filed: `interfaces/config.md` (91.1%, `tasks/api/071`, blocked), `decisions/client-crate.md`
