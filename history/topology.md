@@ -23,6 +23,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- fixed: `hardware_id.rs` rustdoc now names both declared self-report arms (esp32c5, Nordic), not just the first.
 - `spec.md`/`decisions/validate-timing.md`: `validated_at_utc_ms` is on Core's `/validate` wire now.
 - `open.md`'s bullet on caller-side mirrors no longer cites `tasks/topology/020`, which is done.
 - `NotFound` names which rule emptied dev-bench's candidate list, leads with the split-host possibility on 0 visible ports, and a declared link serial/interface can be cleared.
