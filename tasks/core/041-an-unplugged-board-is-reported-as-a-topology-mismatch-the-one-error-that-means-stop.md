@@ -1,6 +1,6 @@
 # 041 — An unplugged board is reported as a `topology mismatch`, the one error whose whole meaning is "stop and get a human"
 
-**State:** claimed — leg 085, 2026-09-11, `agent/core/041-not-attached-is-not-a-mismatch`
+**State:** done — leg 085, 2026-09-11, `agent/core/041-not-attached-is-not-a-mismatch`
 **Source:** leg 085, 2026-09-11. Hit live while selecting the bench unit `tasks/api/059`, with both
 boards unplugged and `GET /status` reporting `"probes": []`.
 **Scope:** core
@@ -68,8 +68,70 @@ this is a per-route *success/failure-shape* fact that no per-route fixture asser
 
 ## Done when
 
-- [ ] A detached enrolled probe and an attached-but-wrong-ID probe produce errors distinguishable
-      by their lead clause, not only by reading to the end.
-- [ ] A numbered decision records which is which and why, and whether `fix_it_url` belongs on both.
-- [ ] Both arms have a test that would fail if they were conflated again.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] A detached enrolled probe and an attached-but-wrong-ID probe produce errors distinguishable
+      by their lead clause, not only by reading to the end. — `/validate`'s JSON gets a `kind`
+      field (`"not_attached"` vs `"mismatch"`) and a different status (503 vs 409); `flash`/`reset`/
+      `run_study`'s plain-text paths get a differently-led sentence ("probe not attached for role
+      ..." vs "topology mismatch for role ...").
+- [x] A numbered decision records which is which and why, and whether `fix_it_url` belongs on both.
+      — `embarch-core` decision 59 (`decisions/surfaces.md`): `fix_it_url` is `None`/omitted on the
+      not-attached arm (a USB cable, not the Topology tab, is the fix).
+- [x] Both arms have a test that would fail if they were conflated again. — `api::tests::
+      a_detached_probe_is_not_attached_not_a_mismatch`, `a_wrong_live_id_is_a_mismatch`,
+      `flash_reset_path_leads_differ_between_not_attached_and_mismatch`, and `study::tests::
+      dev_bench_gate_not_attached_lead_differs_from_mismatch`.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Resolution
+
+`embarch_topology::hardware::TopologyMismatch` already carried `live_hardware_id: Option<String>`
+— `None` exactly when nothing was compared (the probe couldn't be opened). Core was the one
+collapsing both conditions under one lead; `embarch-topology` needed no change at all.
+
+**`POST /validate`** (`src/api.rs`): `ValidateMismatchResponse` gains `kind: &'static str`
+(`"not_attached"` | `"mismatch"`), `fix_it_url` becomes `Option<String>` (`None` on the
+not-attached arm), and status is `503` for not-attached, `409` (unchanged) for a real mismatch.
+Classification lives in `classify_topology_mismatch`, a pure function, tested directly.
+
+**`flash`/`reset`** (`src/api.rs`, called via `hardware::flash`/`reset`): both used to fold every
+failure — including a genuine mismatch and a merely-unplugged probe alike — into one `500` via
+`internal_err`'s `{e:?}`. Now go through `describe_topology_error`, which renders a distinguishing
+lead ("probe not attached for role ..." vs "topology mismatch for role ...") and a different status
+(503 vs 409) for a `TopologyMismatch`, falling back to the unchanged `internal_err` shape for
+anything else.
+
+**`run_study`'s dev-bench handshake gate** (`src/study.rs`'s `enforce_dev_bench_gate`): same
+conflation, found on inspection per the task's "check the other call sites" instruction — it
+folded both conditions into `{e:?}` before this, then handed the resulting string to two callers
+that both wrap it as one `BAD_GATEWAY` regardless of kind. Fixed with a text-only
+`describe_gate_error` (no status split available at this call site, since both callers already
+discard it) that gives the same two distinguishable leads.
+
+**Not changed:** `embarch-api`'s MCP `validate` wrapper — the text the source incident actually
+showed (`"topology mismatch for role 'dev-bench' (probe ..., chip ...): ... — fix it at ..."`)
+further re-wraps `/validate`'s JSON with its own lead, in a different repo this task cannot write.
+That wrapper now receives a `kind` field it did not have before and can branch on it instead of
+`reason`'s wording — filed to `embarch-doc/inbox/` as a finding for `embarch-api` to pick up.
+
+**Reserve:** `embarch-core/decisions/surfaces.md` was 12,019/12,288 B (269 B left), parked by
+`tasks/core/038` on `In flux: yes`. Decision 59 belongs there topically, so per `DOC-COMPACTION.md`
+§2 this unit compacted it — as a **split**, not a squeeze: `## The human enrollment surface`
+(decisions 25, 27, 28, 50, 54, 57) moved verbatim to a new `decisions/enrollment.md`, a real
+topical seam that was already a section boundary in the file. Nothing was deleted, so there is no
+hunk to quote the first dozen words of. `surfaces.md` dropped to 7,025 B before decision 59 was
+even added (7,969 B in flat text, landing at that size after formatting); `enrollment.md` is
+8,239 B. `tasks/core/038` is closed (its own unpark condition named exactly this: "a compaction
+pass finds a genuine verbatim split/squeeze that does not touch either decision's checkable
+claims" — decisions 12 and 55 are unmoved). `decisions.md`'s index table updated for both files.
+
+**Hardware-verification debt:** none of this needed hardware — both arms are pure functions of
+`TopologyMismatch`'s own fields, exercised by unit test. Confirming the rendered text against a
+real detached probe (as the task's own `Hardware:` line says) is free the next time either board
+is unplugged and a caller runs `/validate` against it.
+
+**Native Windows build:** not attempted here, per protocol §10 — this change joins the existing
+outstanding `embarch-core` Windows-build queue (no `cargo build --target
+x86_64-pc-windows-msvc`/no worktree-side Windows build was run).
+
+**Gate:** `cargo build`, `cargo test` (197 passed, 2 ignored, 0 failed — includes the four new
+tests above), `cargo clippy --all-targets -- -D warnings` all green in the code worktree.

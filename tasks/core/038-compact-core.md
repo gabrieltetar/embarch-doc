@@ -1,6 +1,13 @@
 # 038 — `embarch-core/decisions/surfaces.md` is inside its reserve floor
 
-**State:** blocked — filed by `core/037`, parked on `In flux: yes` below.
+**State:** done — leg 085, `core/041`, 2026-09-11. Unparked without touching decision 12 or
+55's claims: `core/041` needed to add a new decision to this file (decision 59, `POST /validate`'s
+`not_attached`-versus-`mismatch` split) and found the genuine verbatim split this task's own
+unpark condition names — `## The human enrollment surface` (decisions 25, 27, 28, 50, 54, 57) was
+never about errors or version handshakes, and split out to `decisions/enrollment.md` untouched,
+word for word, along that pre-existing section boundary. `surfaces.md` went from 12,019 B to
+7,025 B before decision 59 was even added, clearing the floor with room to spare. Decisions 12 and
+55 are unmoved, still readable in full, still where they were.
 **Source:** `core/037`'s decision 55 (`study_schema_mismatch` retired as a name) pushed
 `decisions/surfaces.md` from 10,978 B to 11,937 B against a 12,288 B cap — 351 B left against a
 1,229 B reserve floor (10%). `check-doc-size.py` names it in reserve with no debt filed; this task
@@ -9,21 +16,9 @@ is that debt.
 **Hardware:** none
 **Owner:** no
 
-## Blocked
-
-**Why:** decision 12 (the deferred `{code, message, cause}` error body) and decision 55 (this
-file's newest entry, filed by `core/037`) are both still moving — decision 12 is an explicitly
-open, unbuilt design and decision 55 amends it. Compacting either now risks cutting a claim before
-it has finished changing.
-
 **Compacts:** embarch-core/decisions/surfaces.md
-**Size debt due:** 2026-09-24
-**In flux:** yes — `core/037` just added decision 55 to this file, and decision 12 (the deferred
-`{code, message, cause}` body) that 55 amends is itself an open, unbuilt design; either could
-still move before this file is a safe compaction target. Unparks when whichever of these
-stabilizes: decision 12 either gets built or is explicitly closed as "will not build", or a
-compaction pass finds a genuine verbatim split/squeeze that does not touch either decision's
-checkable claims.
+**Size debt due:** 2026-09-24 (cleared 2026-09-11)
+**In flux:** no — resolved by a split, not by decision 12 or 55 settling; see `**State:**` above.
 
 ## What
 
@@ -42,11 +37,11 @@ still an open, undecided design would risk cutting a claim that has not finished
 
 ## Done when
 
-- [ ] `embarch-core/decisions/surfaces.md` is clear of its reserve floor (≤ 11,059 B), **or** this
+- [x] `embarch-core/decisions/surfaces.md` is clear of its reserve floor (≤ 11,059 B), **or** this
       task closes with a written argument that no safe cut or split remains, naming what was
-      considered.
-- [ ] Decision 12 and decision 55's checkable claims are still readable, in full, wherever they
-      end up.
-- [ ] The commit message quotes the first dozen words of every deleted hunk verbatim
-      (`DOC-COMPACTION-PASS.md`).
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+      considered. — 7,025 B, split not squeeze; nothing deleted.
+- [x] Decision 12 and decision 55's checkable claims are still readable, in full, wherever they
+      end up. — unmoved, in `surfaces.md`, byte-for-byte.
+- [x] The commit message quotes the first dozen words of every deleted hunk verbatim
+      (`DOC-COMPACTION-PASS.md`). — N/A: nothing was deleted, only moved to `enrollment.md`.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
