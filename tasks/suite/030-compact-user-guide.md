@@ -1,8 +1,10 @@
 # 030 — `suite/user-guide.md` is 556 bytes from its cap, and the thing that filled it is the part that has to keep growing
 
-**State:** open — announced 2026-09-11 by leg 091, `ts` `1789187481.992469`, 30-minute window per
-`embarch-fleet/ops.md` §4. If this leg ends before the window closes, **read the thread and complete
-the window rather than restarting it.**
+**State:** blocked — on `DOC-PROTOCOL.md`, which is owner-reserved. Leg 092 ran the window
+(`ts` `1789187481.992469`, announced by leg 091, no objection) and **attempted the squeeze fork; it
+does not reach the floor.** See "What leg 092 found" below. Unparks when the owner either extends
+`DOC-PROTOCOL.md`'s link-don't-restate exception to a second suite guide (`tasks/doc/045`), or says
+to squeeze against the `Must not delete:` list anyway and accept the loss.
 **Source:** `tasks/suite/022`'s own fold, leg 085, 2026-09-11. Split out of `tasks/suite/004`,
 which carried this file alongside two others on one `Compacts:` line and one shared date;
 `user-guide.md` is now urgent and the other two are not, so it gets its own clock.
@@ -74,6 +76,46 @@ entry and this becomes an ordinary verbatim split, or this task falls back to a 
 - **`suite/studies-guide.md` is 23,396 B and also inside reserve**, still on `tasks/suite/004`'s
   line. If the split argument above is accepted for this file, ask whether the same seam exists
   there before running two unrelated passes.
+
+## What leg 092 found, 2026-09-11
+
+Three things, and the first two mean **the fork this task recorded named the wrong blocker.**
+
+**1. `DOC-BUDGET.md` does not block the split.** This task says a new `suite/*.md` "needs a cap entry
+in `DOC-BUDGET.md`, which is owner-reserved". It does not: `DOC-BUDGET.md:26` already carries a glob
+rule — *"Suite-level doc | **10 KB** | `suite/*.md`"* — and line 29's 25 KB entry is the *exception*
+for the two narrative guides, not the mechanism by which a suite doc gets a cap at all. Verified
+rather than read off: a placeholder `suite/agent-guide.md` was created and `check-doc-size.py` run,
+which counted **290 docs** (up from 289) and raised nothing about it. §7 plus §7.1 is roughly
+2.5 KB, comfortably inside 10 KB.
+
+**2. What actually blocks it is `DOC-PROTOCOL.md`, which is also owner-reserved.** Its §43 and §61
+both name `suite/user-guide.md` **by name** as the one doc where *"§5's link-don't-restate rule does
+not apply"* / *"a getting-started guide that only links is useless"*. A new `suite/agent-guide.md`
+whose entire content is a restated enumeration of another sub-project's tool surface would sit under
+that rule **without** the exception — which is precisely the thing §7.1 is and the reason it is
+allowed to exist where it currently lives. Extending a two-item list to three is one line and it is
+the owner's; filed as `tasks/doc/045`.
+
+**3. Two live citations of `§7.1` by number would break silently, and neither is where this task
+looked.** It asked to check `embarch.md` §6 and `suite/studies-guide.md`. Neither cites §7 at all.
+**`embarch-promptu/design.md` cites it twice** — line 7 (*"[suite/user-guide.md] §7.1 writes it out
+in prose"*) and line 13 (*"§7.1's `.claude/settings.local.json` split ... enumerated there over the
+whole tool surface and deliberately not restated here"*). Both must be repointed in the same commit
+as any split. Line 13 is the load-bearing one: it is an explicit promise *not* to restate the lists
+because the cited file holds them.
+
+**4. The squeeze fork was attempted and it does not reach the floor.** Four sections were tightened
+for real — §3's `Topology: local` trap and `PATH` caveat, §6's naming-split and error-chain
+paragraphs, §9's token paragraphs, §10's cross-repo pointer, §5's `init` bullet, and §5.2's three
+selection-flag bullets. **Total saved: 317 B of the 2,004 B needed.** Every one of those was a
+sentence merge, not a deletion, because **there is nothing in this file that is merely long.** Each
+paragraph carries a distinct operational fact, which is what a guide for a reader outside the
+project is. Reaching 23,040 B from here means deleting facts, and the `Must not delete:` list plus
+`api/026` and `api/031` — both of which cut to single digits of the floor and each lost a claim
+recorded nowhere else — is the reason that is not a supervisor's call to make unattended.
+
+The 317 B landed anyway (file 25,044 → 24,727 B). It is still in reserve; the debt is **not** paid.
 
 ## Done when
 
