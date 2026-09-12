@@ -9,7 +9,7 @@ narrower and is genuinely the owner's: two enumerations inside a reserved file a
 **incomplete**, not wrong.
 **Scope:** doc
 **Hardware:** none
-**Owner:** **required** — `DOC-PROTOCOL.md` is owner-reserved (`check-ownership.py --supervisor`),
+**Owner:** required — `DOC-PROTOCOL.md` is owner-reserved (`check-ownership.py --supervisor`),
 so no agent may make this edit. Filed here rather than left in a log entry so it is visible in
 `queue-status.py` instead of riding a file that folds daily and rolls into `log-archive/`.
 
