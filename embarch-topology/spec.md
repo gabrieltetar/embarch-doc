@@ -86,7 +86,7 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 
 **A signal mismatch is deliberately not written to the durable alert log** — an alert's shape is board-specific and a wire has none of those fields.
 
-A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, its own pass instant, alongside unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` does not yet expose it.
+A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, its own pass instant, alongside unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` now exposes it: its handler calls `validate_role_timed` and populates `ValidateOkResponse.validated_at_utc_ms` from the returned `Validation` (`embarch-core` decision 50).
 
 ## What each consumer owns now
 

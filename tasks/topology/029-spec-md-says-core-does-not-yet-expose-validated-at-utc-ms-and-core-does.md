@@ -33,10 +33,15 @@ so no single-repo check can see it.
 
 ## Done when
 
-- [ ] `spec.md`'s "does not yet expose it" sentence is gone, replaced by what is true now with a
+- [x] `spec.md`'s "does not yet expose it" sentence is gone, replaced by what is true now with a
       citation to `embarch-core` decision 50.
-- [ ] `decisions/validate-timing.md`'s forward-looking clause reads as a fired condition, not as a
+- [x] `decisions/validate-timing.md`'s forward-looking clause reads as a fired condition, not as a
       pending one, and does not claim more than Core's handler actually does.
-- [ ] Nothing in this crate's code changes — this is a documentation correction; if you find the
-      code *also* disagrees, stop and say so in the task file rather than widening the unit.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Nothing in this crate's code changes — this is a documentation correction; confirmed by
+      reading `embarch-core/src/api.rs` (read-only) and diffing this worker's `embarch-topology`
+      code worktree: zero changes there.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment:
+      `changelog.d/topology-validated-at-docs-caught-up.fixed.md`.
+
+**Closed.** `check-docs.py` (11/11), `check-ownership.py --scope topology` (doc) and
+`--code-repo` (code, 0 paths changed) and `check-client-names.py` all green.
