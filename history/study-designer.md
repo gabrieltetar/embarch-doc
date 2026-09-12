@@ -16,6 +16,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `interfaces/limits.md` now lists `MAX_RECORD_MAGIC_LEN`/`MAX_BAD_RECORDS_REPORTED`; a full pass found no further gap.
 - `Sample::rx_utc_ms` is bench uptime, not UTC; three contracts claiming a resync no firmware performs are corrected. [Decision 72](../embarch-study-designer/decisions/versioning.md).
 - `render_layout` now refuses `repeat` (count_from), `bitpack`, `crc32` and `fixed` by name instead of a silent gap or, for `fixed`, a flat integer.
 - study-designer: `open.md`'s power-profiling bullet no longer cites decision 24 (a wire message); no decision records the front-end pick, so it cites none.
