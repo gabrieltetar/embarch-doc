@@ -1,10 +1,10 @@
 # 020 — `embarch-topology`'s `hardware` gate is drawn around the module rather than the machinery, so its one linked consumer hand-mirrors seven plain data types
 
-**State:** open — announced 2026-09-12 10:23 by leg 099, `ops.md` §4 window `ts` `1789230186.693679`.
-No objection as of that leg's last poll (~17 min in). **The next leg completes this window rather
-than restarting it**: if 30 minutes have passed since that `ts` and
-`fleet-read.py --thread 1789230186.693679` shows no objection, run it. Leg 099 ran out of leg before
-the window closed — the park is the mechanism working, not a failure.
+**State:** done (half (a)) — leg 100, 2026-09-12. Leg 099's `ops.md` §4 window (`ts`
+`1789230186.693679`, opened 10:23) was **completed, not restarted**: re-polled at 10:49 and again
+after it closed at 10:53, no objection and no human message in `#embarch-fleet` at all. Half (a) —
+the `wire` feature — ran as leg 100's fourth unit. **Half (b), retiring `embarch-core-client`'s
+mirrors, is `tasks/suite/035`** and carries its own announcement window when it runs.
 
 ## Scoping done by leg 099 before it parked this — read it before starting
 
