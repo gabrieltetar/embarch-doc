@@ -1,6 +1,14 @@
 # 059 — `study-status --follow`, the drop path, `lagged`, and a reconnect have still never met a real Core
 
-**State:** open
+**State:** open — **attempted and not startable, leg 085, 2026-09-11.** Core was reachable
+(`api_version 0.1.0`, `host_type_schema_version 17`) and reported `"probes": []`; `validate
+dev-bench` answered `recorded hardware_id 6fcddc36cb781b71, live None`. **Both boards are
+unplugged**, so there is nothing to run a study against. Left `open` rather than `blocked` per
+`.claude/leg.md` — a board coming back is normal and needs no human to un-block anything. Note
+that `scripts/fleet-hardware.py`'s buffer said `attached: yes` for both roles; it was 5,902
+minutes stale and `--refresh` is broken (`tasks/doc/041`), so **the buffer's attach state is not
+usable for selection right now and the live check is the only answer.** The conflated error text
+that check returns is filed as `tasks/core/041`.
 **Source:** `tasks/api/035`, replacing the debt `open.md` and `tasks/api/026`
 named as `tasks/api/001-sse-client.md` — a file that was never filed
 **Scope:** api
