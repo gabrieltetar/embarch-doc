@@ -70,6 +70,7 @@
 - `embarch-api` decisions 31 and 33 were byte-identical — the duplicate created in the very commit that deleted 31, which is why the deletion went unnoticed. One entry now owns both numbers.
 
 ### Removed
+- `embarch-core-client` names `embarch-topology`'s wire types instead of hand-mirroring seven of them; old spellings kept as aliases. [decision 72](../embarch-api/decisions/client-crate.md)
 - `soc_chip_overrides` is retired unbuilt and refused at load on both kinds — an unmapped SoC stops at Core's registry-validated table ([decision 13](../embarch-api/decisions.md)).
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions.md)).
 
