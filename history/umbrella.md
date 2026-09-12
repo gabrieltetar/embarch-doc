@@ -38,6 +38,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `spec.md` now says seventeen `doctor` checks, matching the code; eighteenth named as designed and unbuilt.
 - `deploy-core` compares content digests, not byte counts, and fails on a missing elevated transcript instead of reporting "landed".
 - `decisions/doctor.md`'s "Current truth" pointer now points at `interfaces/doctor-chain.md`, not `spec.md`.
 - `manifest.rs`'s doc comment cites both decision 14 and 24 for the warn-on-mismatch clause, not 14 alone.
