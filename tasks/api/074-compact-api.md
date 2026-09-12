@@ -1,6 +1,6 @@
 # 074 — `embarch-api/decisions/studies.md` is in reserve after `suite/015`'s retirement tombstone
 
-**State:** open
+**State:** claimed — leg 093
 **Source:** `suite/015` (leg 093, 2026-09-11) retired the three fixed-channel study-data aliases and
 recorded the retirement inside decision 39, where the "kept for one release" grant was written.
 That tombstone put the file at 11,784/12,288 B — 95.9%, 504 B left. `DOC-COMPACTION.md` §2.
@@ -39,6 +39,22 @@ The file's natural seam is **decision 39 (what a study reads back) vs decision 4
 flashes first)**. A verbatim split into `decisions/study-reads.md` and `decisions/study-reflash.md`
 restates nothing and would take both halves well clear of the cap — prefer that to a shortening
 pass, per `DOC-BUDGET.md`'s split-first rule.
+
+## Doc-size reserve in your sub-project, at dispatch
+
+`embarch-api` has **four** files in reserve. Only the first is yours to spend against here; the other
+three are parked behind their own blocked tasks and **you must not push any of them deeper**:
+
+- `embarch-api/decisions/studies.md` — 11,784/12,288 B, **504 B left** (this task's target)
+- `embarch-api/decisions/client-crate.md` — 11,639/12,288 B, 649 B left (`tasks/api/073`, blocked)
+- `embarch-api/decisions/surface.md` — 11,258/12,288 B, 1,030 B left (`tasks/api/069`, blocked)
+- `embarch-api/interfaces/config.md` — 11,193/12,288 B, 1,095 B left (`tasks/api/071`, blocked)
+
+**This is a docs-only unit. Do not move text into another file in that list** — a compaction that
+clears one file's reserve by pushing another into its own is not a compaction, and two legs this week
+caught themselves doing exactly that. The split named above lands both halves in *new* files, which
+is why it is the recommended shape. If your work spends reserve anywhere else in `embarch-api`, file
+`tasks/api/<next NNN>-compact-api.md` in the same commit.
 
 ## Done when
 
