@@ -1,6 +1,6 @@
 # 078 — eight `embarch-api` source comments cite a `milestone-*.md` that does not exist
 
-**State:** claimed — leg 100, 2026-09-12, branch `agent/api/078-milestone-md-citations`.
+**State:** done — leg 100, 2026-09-12, branch `agent/api/078-milestone-md-citations`.
 
 **Doc-size reserve for `api`** (check before you write): `decisions/client-crate.md` 649 B left,
 `interfaces/config.md` 1090 B left, `decisions/surface.md` 1030 B left — all three already filed
@@ -45,11 +45,34 @@ is invisible to every gate. `ui/039` landed this morning for exactly the `Cargo.
 
 ## Done when
 
-- [ ] `grep -rn "milestone-" /home/gabriel/Github/embarch/embarch-api` returns zero.
-- [ ] Each of the eight sites either cites a resolvable target or has had the dead clause dropped —
+- [x] `grep -rn "milestone-" /home/gabriel/Github/embarch/embarch-api` returns zero.
+- [x] Each of the eight sites either cites a resolvable target or has had the dead clause dropped —
       no invented decision numbers, and `embarch-ui` decision 5 / `embarch-token.md` still cited
       wherever they were before.
-- [ ] Cross-repo citations use the settled form: bare `decision M` same-repo,
+- [x] Cross-repo citations use the settled form: bare `decision M` same-repo,
       `` `<repo>` decision M `` cross-repo (`api/052`, adopted by `umbrella/043` and `core/008`).
-- [ ] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green — this is comment- and
+- [x] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green — this is comment- and
       crate-metadata-only, so a behaviour change means something went wrong.
+
+## Closed
+
+All eight sites fixed: `Cargo.toml:27-29`, `src/config.rs:9`, `crates/embarch-core-client/Cargo.toml:9`,
+`crates/embarch-core-client/src/lib.rs:7`, `crates/embarch-core-client/src/client.rs:51,206,212`, and
+`crates/embarch-core-client/src/token_discovery.rs:18` — each had its dead `milestone-*.md §…` clause
+dropped, keeping the live co-citation (`embarch-ui` decision 5, or `embarch-token.md §2`) standing.
+
+Two more dead citations turned up outside the original list of eight, in the same repo, caught by the
+Done-when's whole-repo grep: `.github/workflows/release.yml`'s header comment and its
+`aarch64-apple-darwin` matrix comment both cited `embarch-umbrella/milestone-6.md`. Read
+`embarch-umbrella/decisions/install.md` decision 14's body — it covers exactly this content (native
+macOS build because the runner is itself Apple Silicon, unsigned/Gatekeeper, Linux aarch64 needing
+only a cross-linker) — and repointed both at `` `embarch-umbrella` decision 14 `` rather than dropping
+them, since a live target existed.
+
+`tests/fixtures/milestone9_gatt_scan_study.json`'s `"milestone-9-dut-gatt-scan"` string is a study
+name, not a doc citation — left alone.
+
+`cargo build`/`test`/`cargo clippy --all-targets -- -D warnings` all green in the workspace
+(`embarch-core-client` confirmed as a workspace member per decision 56, so its tests and lints are
+actually exercised, not silently skipped). No doc edit needed — comment-only change, nothing in
+`spec.md`/`decisions.md`/`open.md` became stale.
