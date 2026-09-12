@@ -1,6 +1,10 @@
 # 034 — Name the new `BleConnect` worked-example fixture in `suite/studies-guide.md` §3b
 
-**State:** open
+**State:** open — **announced and parked awaiting its window, leg 097, 2026-09-12.**
+Announced to `#embarch-fleet` at `ts 1789201472.118549`; the 30-minute silence-as-consent window
+(`embarch-fleet/ops.md` §4) closes at **02:54 local**. Execute it as a supervisor unit, not a
+worker's, only if no objection has arrived by then. **If a leg ends before the window closes, leave
+this line intact and complete the window rather than restarting it** — the `ts` above is the clock.
 **Source:** `inbox/suite-studies-guide-name-ble-connect-fixture.md`, split out of `tasks/api/076` by
 its own worker: that task's `Done when` asked for `suite/studies-guide.md` §3b to name the new
 fixture, but `suite/` is outside the `api` ownership row
