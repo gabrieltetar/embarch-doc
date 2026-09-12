@@ -1,6 +1,9 @@
 # 037 — `embarch-ui` source comments cite a `milestone-1.md` that does not exist
 
-**State:** open
+**State:** claimed — leg 097, 2026-09-12.
+
+**Doc-size reserve for `ui` (supervisor, leg 097):** no `embarch-ui/` file is in reserve. Nothing to
+file. If your work pushes one in, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 **Source:** `inbox/ui-milestone-1-md-comment-citations.md`, written by `ui/033`'s worker while working
 `tasks/ui/033` (2026-09-12), which was itself scoped to `design.md` citations only.
 **Scope:** ui
