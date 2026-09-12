@@ -58,6 +58,32 @@ is why it is the recommended shape. If your work spends reserve anywhere else in
 
 ## Done when
 
-- [ ] `embarch-api/decisions/studies.md` is out of its reserve band.
-- [ ] Every "Must not delete" item above is still findable, by a reader who does not know it moved.
-- [ ] Decision numbers are unchanged; `check-decision-refs.py` and the full doc gate are green.
+- [x] `embarch-api/decisions/studies.md` is out of its reserve band.
+- [x] Every "Must not delete" item above is still findable, by a reader who does not know it moved.
+- [x] Decision numbers are unchanged; `check-decision-refs.py` and the full doc gate are green.
+
+## Closed 2026-09-11 (leg, this task)
+
+Split verbatim along the recommended seam: `decisions/study-reads.md` (27, 28, 31, 33, 39 — 6.3 KB)
+and `decisions/study-reflash.md` (40, 44 — 5.9 KB). Both new files are well clear of the cap.
+
+`decisions/studies.md` itself was kept as a 1.1 KB redirect stub — a per-decision-number pointer to
+whichever new file now holds it — rather than deleted, because `history/suite.md` links straight at
+it for decision 39 and a compaction may not edit `history/` (assembled, not a worker's file). The
+stub carries `### N — moved to …` headings so `check-decision-refs.py` still resolves the old path;
+`DOC-CONVENTIONS.md`'s own preference (link the index, not the topic file) is unreachable here since
+the linking file is out of scope for this unit.
+
+Updated in the same commit: `decisions.md`'s index table (two rows replacing one, the decision
+31/33 footnote's link), `interfaces/studies.md`'s two cross-references, `open.md`'s decision-39
+cross-reference. `embarch-api/decisions/client-crate.md`, `decisions/surface.md` and
+`interfaces/config.md` were not touched — their own reserve is untouched.
+
+Code repo (`embarch-api`): zero-line diff, as expected for a docs-only compaction. `cargo build`
+clean.
+
+**Human question (`DOC-COMPACTION-PASS.md`):** yes — `embarch-api/spec.md` alone still answers what
+someone needs to work on this component today. It was not touched by this split (the split moved
+only decision *rationale*, which `spec.md` already pointed at via the sub-project's `decisions.md`
+index, not at the old filename), and its own cross-references route through that index rather than
+a topic file.
