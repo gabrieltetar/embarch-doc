@@ -1,10 +1,20 @@
 # 067 — `decisions/core-link.md` decision 37/38 still says the two mirrors are unpinned
 
-**State:** claimed — leg 085, 2026-09-11, `agent/api/067-core-link-37-38-pinned`. Unparked
+**State:** done — leg 085, 2026-09-11, `agent/api/067-core-link-37-38-pinned`. Unparked
 deliberately: this task's own block said it "unparks the moment someone is willing to do that — it
 is not waiting on an event", and `.claude/leg.md`'s rule is that the actor making a file's flux is
-the one who can shorten it. The worker pays `decisions/core-link.md`'s compaction as part of this
-unit, carrying `tasks/api/061`'s `Must not delete:` list and closing only that file's item.
+the one who can shorten it. The worker paid `decisions/core-link.md`'s compaction as part of this
+unit, carrying `tasks/api/061`'s `Must not delete:` list and closing that task in full (it had one
+file on its `Compacts:` line).
+
+**Fix landed:** decision 37/38's closing sentence in `decisions/client-crate.md` (formerly
+`core-link.md`) now reads "**Both mirrors are now pinned**" and names `api/066`'s two tests
+(`alert_round_trips_against_the_client_s_pinned_shape`,
+`enrolled_board_round_trips_against_the_client_s_pinned_shape`) plus `tasks/core/024`, in place of
+the stale "still have that coupling unpinned." **Compaction landed:** `core-link.md` split by
+topic — address resolution/artifact transfer (11, 14, 15, 17, 26) stayed; the client crate's own
+lifecycle (36, 37/38, 55, 58, 62, 66) moved to new `decisions/client-crate.md`. Nothing deleted;
+`decisions.md`'s index and two `spec.md` decision-pointers were retargeted; `tasks/api/061` closed.
 
 **Previous state:** blocked — the one-clause fix lands in `embarch-api/decisions/core-link.md`, which is
 **13,164 / 12,288 B, already over cap**, parked by `tasks/api/061` on `In flux: yes`. Whoever takes
