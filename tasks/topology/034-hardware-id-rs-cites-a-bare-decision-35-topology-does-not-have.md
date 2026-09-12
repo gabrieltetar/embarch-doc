@@ -1,6 +1,6 @@
 # 034 — `hardware_id.rs:429` cites a bare `decision 35`; `embarch-topology` has no decision 35
 
-**State:** open
+**State:** claimed
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** topology
 **Hardware:** none
@@ -41,3 +41,11 @@ rather than cross-repo.
 - [ ] `grep -rnE "decisions? (3[1-9]|[0-9]{2,})" ` over `embarch-topology`'s `src/`, `bin/` and
       `Cargo.toml` shows only repo-qualified hits — any bare number above 30 is the same defect.
 - [ ] `cargo test -p embarch-topology` green.
+
+**Doc-size note (leg 101):** `embarch-topology/decisions/crate.md` (97.1%, 362 B left) and
+`embarch-topology/spec.md` (93.5%, 670 B left) are both in reserve, filed against the **open**
+`tasks/topology/035-compact-topology.md`. This unit is a source-comment repoint and should not need
+either file; if it does, plan the edit rather than discovering the cap. If your work pushes any
+`embarch-topology` doc further into reserve or leaves one there unfiled, file
+`tasks/topology/NNN-compact-topology.md` in the same commit — your own scope only, never
+`tasks/doc/`.
