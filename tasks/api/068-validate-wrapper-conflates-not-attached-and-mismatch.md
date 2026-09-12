@@ -1,6 +1,6 @@
 # 068 — `embarch-api`'s `validate` MCP tool and CLI both re-wrap `/validate`'s JSON under one `topology mismatch` lead, for both conditions
 
-**State:** claimed
+**State:** done
 **Source:** `core/041`, 2026-09-11. Found while fixing the `embarch-core` half of the same defect
 (`embarch-core` decision 59, `embarch-core/decisions/surfaces.md`).
 **Scope:** api
@@ -43,10 +43,30 @@ whether the wrapper's own status-code handling assumes `409` is the only non-`20
 
 ## Done when
 
-- [ ] The wrapper's formatted string leads with a phrase distinguishable between `kind:
+- [x] The wrapper's formatted string leads with a phrase distinguishable between `kind:
       "not_attached"` and `kind: "mismatch"`, branching on `kind`, not on `reason`'s wording.
-- [ ] The wrapper does not offer `fix_it_url` (the Topology tab) for the `not_attached` case.
-- [ ] The wrapper handles `503` the same way it already handles `409` (both are "the caller can act
+- [x] The wrapper does not offer `fix_it_url` (the Topology tab) for the `not_attached` case.
+- [x] The wrapper handles `503` the same way it already handles `409` (both are "the caller can act
       on this, not a Core failure").
-- [ ] A test constructing both response shapes and asserting the two leads differ.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] A test constructing both response shapes and asserting the two leads differ.
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed
+
+Fixed at the wire layer, not just the two call sites: `embarch-core-client`'s
+`TopologyMismatchBody`/`TopologyMismatchError` gained `kind: String` (default
+`"mismatch"` for an older Core) and `fix_it_url` became `Option<String>` (`None` on
+`"not_attached"`). `validate()` now dispatches `503` through the same parse as `409`.
+Both `src/tools.rs` and `src/cli.rs` match `Some(mismatch) if mismatch.is_not_attached()`
+before the general mismatch arm — kept textually parallel across both call sites.
+Recorded as `embarch-api` decision 71 (`decisions/surface.md`, per this task's
+instruction not to use `decisions/zephyr.md`, already over its reserve). That push put
+`surface.md` itself into reserve (91.6%); filed `tasks/api/069-compact-api.md`,
+`blocked`/`in flux: yes`, same as `057` for `zephyr.md`.
+
+Gate green: `cargo build`, `cargo test` (43 passed, including two new unit tests
+constructing both response shapes and asserting distinct `Display` leads, plus two
+parsing tests for the `kind`-default and `not_attached`'s null `fix_it_url`), `cargo
+clippy --all-targets -- -D warnings` all clean in the code worktree;
+`scripts/check-docs.py` (11/11), `check-client-names.py`, `check-ownership.py`
+(`--scope api` and `--code-repo`) all green in the doc worktree.
