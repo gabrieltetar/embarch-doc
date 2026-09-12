@@ -1,6 +1,6 @@
 # 044 — Decision 56 calls three doc comments "the whole remaining work", and none of them exists
 
-**State:** open
+**State:** claimed (leg 091)
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
 reported them — re-check each against the source before you act on it.**
 **Scope:** core
