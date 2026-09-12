@@ -38,6 +38,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- - fixed: `umbrella`'s deleted-doc guard test now scans every `src/*.rs`, comments included, not just `doctor.rs` with comments skipped ([decision 52](../embarch-umbrella/decisions/reporting.md)).
 - `apply_plan` now clears `saved.host` on a non-`remote` `setup` conclusion (decision 51, sticky-host.md).
 - umbrella spec.md: `setup`/`init` end with next-step pointers, not `doctor` — [spec.md](../embarch-umbrella/spec.md)
 - `spec.md` now says seventeen `doctor` checks, matching the code; eighteenth named as designed and unbuilt.
