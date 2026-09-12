@@ -1,6 +1,6 @@
 # 031 — The rustdoc says one chip family has a declared relation; the code has two
 
-**State:** claimed (leg 091)
+**State:** done
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
 reported them — re-check each against the source before you act on it.** The sweep verified every
 checkable claim in this sub-project's `spec.md`, `decisions.md`, `open.md` and `decisions/*.md`
@@ -44,9 +44,11 @@ honest about which two the gate admits and what the third is for.
 
 ## Done when
 
-- [ ] `hardware_id.rs`'s doc names both declared families and still states the standard for adding
-      an arm.
-- [ ] `port.rs`'s `detected_by` list and its `NoRecognizedVid` sentence describe values that are
+- [x] `hardware_id.rs`'s doc names both declared families and still states the standard for adding
+      an arm. Already correct as of `cc8bab9` (topology/030) by the time this task ran — re-checked
+      against the current source, and finding 1's quoted text ("`esp32c5` has a declared relation;
+      nothing else does.") is no longer present. No edit made here.
+- [x] `port.rs`'s `detected_by` list and its `NoRecognizedVid` sentence describe values that are
       actually reachable, with the Espressif exclusion explained rather than silently dropped.
-- [ ] No behaviour change, no new numbered decision.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] No behaviour change, no new numbered decision.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
