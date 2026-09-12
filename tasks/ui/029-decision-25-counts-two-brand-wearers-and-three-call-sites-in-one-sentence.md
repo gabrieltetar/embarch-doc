@@ -1,6 +1,6 @@
 # 029 — Decision 25 counts two `--brand` wearers and three call sites in the same sentence
 
-**State:** claimed — leg 089, 2026-09-11.
+**State:** done — leg 089, 2026-09-11.
 
 **Doc-size reserve for `ui`:** nothing in this sub-project is in reserve. If your work pushes a file
 into its last 10%, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
