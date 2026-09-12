@@ -1,6 +1,6 @@
 # 056 — `saved.host` outlives the run that gave it, and whether `apply_plan` should drop it is unsettled
 
-**State:** claimed by agent/umbrella/056-saved-host-clearing, 2026-09-12 01:21
+**State:** done by agent/umbrella/056-saved-host-clearing, 2026-09-12
 **Source:** `embarch-umbrella/open.md` — "**`saved.host` is still never cleared on a non-`remote`
 `setup` conclusion** (decision 48 in `decisions/sticky-host.md`): an old `--host` can outlive the run
 that gave it. … whether `apply_plan` should drop it on a `local`/`wsl-host` conclusion is not
@@ -31,13 +31,25 @@ files on the topic already, so there is a home for the record.
 
 ## Done when
 
-- [ ] `apply_plan` either clears `saved.host` on a `local`/`wsl-host` conclusion or explicitly
+- [x] `apply_plan` either clears `saved.host` on a `local`/`wsl-host` conclusion or explicitly
       keeps it, and **which, and why, is a numbered decision** in `decisions/sticky-host.md`.
-- [ ] A unit test covers the state transition in both directions — a `remote` run that saves, and a
+      (Decision 51: clears it — sticky only for `remote`.)
+- [x] A unit test covers the state transition in both directions — a `remote` run that saves, and a
       subsequent non-`remote` run — so the chosen behaviour cannot regress silently.
-- [ ] `embarch-umbrella/open.md`'s bullet is struck.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
+      (`setup::tests::a_remote_conclusion_saves_the_host`,
+      `setup::tests::a_local_conclusion_clears_a_previously_saved_host`.)
+- [x] `embarch-umbrella/open.md`'s bullet is struck (rewritten to record the decision and the
+      remaining hardware debt, since the end-to-end bench verification is out of scope here).
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
       `changelog.d/` fragment.
+
+## Result
+
+Settled: **clear**. `apply_plan` now writes `state.host` as `plan.host` only when the run concludes
+`Remote`; every other class writes `None`. Decision 51 in `decisions/sticky-host.md` records the
+choice and why (keeping it would only ever help one narrow case, and that case still requires
+retyping `EMBARCH_TOKEN` regardless, so the saving was partial). Hardware verification of the
+real-machine behaviour remains recorded as owed in `open.md`, per this task's scope.
 
 **Reserve note:** `embarch-umbrella/decisions/bind.md` is at 93.2% behind a blocked compaction task
 (`tasks/umbrella/009`). Do not relocate text into it; if this work spends a reserve, file
