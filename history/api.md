@@ -72,6 +72,7 @@
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions.md)).
 
 ### Decided
+- api: decisions 13, 22, 63 split verbatim into decisions/zephyr-scan.md; zephyr.md out of reserve
 - Decision 37/38 now says both signal-route mirrors are pinned; the crate's own lifecycle decisions moved to decisions/client-crate.md.
 - `list_serial_ports`/`serial_log`'s no-auto-fallback posture is now decision 70, in a new `decisions/hardware-selection.md` split off `tool-wrapping.md`.
 - `dev_bench_hello` now states and reuses `serial_timeout`, not inherited `status_timeout` (api decision 68); duration stays unmeasured/assumed.
