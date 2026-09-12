@@ -1,6 +1,6 @@
 # 045 — The route sweep proves rejection, not reach: a route wired to the wrong handler passes it
 
-**State:** open
+**State:** claimed by agent/core/045-route-sweep-reach, 2026-09-12 01:20
 **Source:** `embarch-core/open.md` — "**The route sweep proves rejection, not reach.** Decision 42
 asserts all 26 registered routes answer `401` without a token and with a wrong one; only `/status`
 asserts a *correct* token reaches its handler. A route wired to the wrong handler is not caught".
