@@ -1,6 +1,6 @@
 # 052 — Checks 4 and 12 have no pure judge, so the guard that exists because a check shipped eighteen stray spaces cannot see them
 
-**State:** claimed — leg 084, 2026-09-11
+**State:** claimed by agent/umbrella/052-pure-judges, 2026-09-11 20:12 (leg 084)
 **Source:** leg 084's refill sweep off [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md),
 2026-09-11. Source-confirmed against `embarch-umbrella/src/doctor.rs`'s `pure_verdicts()` header
 before filing.

@@ -1,6 +1,6 @@
 # 066 — `open.md` still asserts Core's wire mirror is unpinned; `core/024` pinned it
 
-**State:** claimed — leg 084, 2026-09-11
+**State:** claimed by agent/api/066-open-md-mirror, 2026-09-11 20:12 (leg 084)
 **Source:** leg 084's refill sweep off `embarch-api/open.md`, 2026-09-11. Code-confirmed before
 filing — this is a reconciliation, not a suspicion.
 **Scope:** api

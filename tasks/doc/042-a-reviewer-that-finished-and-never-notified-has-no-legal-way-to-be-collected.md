@@ -4,7 +4,7 @@
 **Source:** leg 083's supervisor, 2026-09-11, during `ui/026`. Observed, not reasoned about.
 **Scope:** doc
 **Hardware:** none
-**Owner:** **required** — the fix is in `.claude/leg.md`'s template, which lives in
+**Owner:** required — the fix is in `.claude/leg.md`'s template, which lives in
 `embarch-fleet/scripts/install.py` and is owner-reserved. A supervisor that could amend the rule it
 runs under has none, so this is filed rather than fixed.
 

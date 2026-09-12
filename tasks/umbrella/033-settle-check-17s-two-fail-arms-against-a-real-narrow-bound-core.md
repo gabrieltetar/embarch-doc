@@ -7,7 +7,7 @@
 **Scope:** umbrella
 **Hardware:** **bench** — supervisor's own hands, and it needs a service reinstall, so read
 "Before you start" first
-**Owner:** **required** — see below. Do not dispatch, and do not run it as an ordinary bench unit.
+**Owner:** required — see below. Do not dispatch, and do not run it as an ordinary bench unit.
 
 ## The question
 
