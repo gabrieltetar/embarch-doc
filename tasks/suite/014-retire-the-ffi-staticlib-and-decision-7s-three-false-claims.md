@@ -1,6 +1,8 @@
 # 014 — The FFI staticlib is cross-compiled on every board build to deliver one `u32`, and decision 7 is false in three ways
 
-**State:** open
+**State:** open — announced 2026-09-11 23:25 by leg 093, `ts` `1789190751.574569`, 30-minute window per
+`embarch-fleet/ops.md` §4 (closes 23:55:51 local). If this leg ends before the window closes, **read the
+thread and complete the window rather than restarting it.**
 **Source:** suite review pass 2026-09-06, dimensions 6 and 1 (one finding from two sides). Code-confirmed, with a whole-suite caller grep.
 **Scope:** suite
 **Hardware:** none for the doc half. The CMake half cannot be built in a worker's worktree — see `Hardware` note below.
