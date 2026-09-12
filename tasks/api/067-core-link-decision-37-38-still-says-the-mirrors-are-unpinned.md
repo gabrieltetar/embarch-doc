@@ -1,6 +1,12 @@
 # 067 — `decisions/core-link.md` decision 37/38 still says the two mirrors are unpinned
 
-**State:** blocked — the one-clause fix lands in `embarch-api/decisions/core-link.md`, which is
+**State:** claimed — leg 085, 2026-09-11, `agent/api/067-core-link-37-38-pinned`. Unparked
+deliberately: this task's own block said it "unparks the moment someone is willing to do that — it
+is not waiting on an event", and `.claude/leg.md`'s rule is that the actor making a file's flux is
+the one who can shorten it. The worker pays `decisions/core-link.md`'s compaction as part of this
+unit, carrying `tasks/api/061`'s `Must not delete:` list and closing only that file's item.
+
+**Previous state:** blocked — the one-clause fix lands in `embarch-api/decisions/core-link.md`, which is
 **13,164 / 12,288 B, already over cap**, parked by `tasks/api/061` on `In flux: yes`. Whoever takes
 this **pays that file's compaction as part of this unit** (`DOC-COMPACTION.md` §2, and `.claude/leg.md`'s
 rule that the actor making a file's flux is the one who can shorten it): carry `tasks/api/061`'s
