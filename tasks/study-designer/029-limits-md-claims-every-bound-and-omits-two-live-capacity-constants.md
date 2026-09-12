@@ -1,6 +1,10 @@
 # 029 — `interfaces/limits.md` claims "every bound the crate declares" and omits two live ones
 
-**State:** open
+**State:** claimed — leg 088, 2026-09-11.
+**Doc-size reserve for this sub-project:** `embarch-study-designer/open.md` is at 89.2%
+(4,569/5,120 B, 551 B left), filed against blocked `tasks/study-designer/026-compact-study-designer.md`.
+Plan around it: if your work pushes another file into its last 10%, file
+`tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit.
 **Source:** refill sweep, leg 087, 2026-09-11. `embarch-study-designer/interfaces/limits.md` against
 `src/limits.rs` and `src/records.rs`.
 **Scope:** study-designer
