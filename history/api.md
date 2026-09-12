@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `embarch-api` decision 30's smoke-harness tier is written: `tests/smoke_harness.rs`, throwaway Core + fixture repo.
 - CLI + MCP now reach Core's signal declare/list/remove and dev-bench-link routes; no GUI required.
 - `list_serial_ports`/`list-serial-ports` surface Core's `GET /serial-ports` so a caller can discover a `serial_log` port value.
 - `dev_bench_hello` MCP tool exposes `GET /dev-bench/hello`'s identity cross-check (`link_identity`) — see decisions/tool-wrapping.md 59.
