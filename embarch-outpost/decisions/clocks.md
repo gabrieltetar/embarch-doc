@@ -9,7 +9,9 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 ### 17 — Two clocks, each with exactly one job: the DUT's `cycles` measures, the host's `rx_utc_ms` places
 
 - **`cycles`, read per record, is what measures.** A span's duration is the difference between its two ends' own stamps; microsecond-exact on this target.
-- **`rx_utc_ms`, stamped per frame by [embarch-core](../../embarch-core/decisions.md) decision 30, is what places.** It is the same wall clock every other stream in a study carries, so laying a trace beside a power capture is an alignment rather than a guess. **The DUT's counter cannot do this at all — there is no sync point between them.**
+- **`rx_utc_ms`, stamped per frame by [embarch-core](../../embarch-core/decisions.md) decision 30, is what places.** It is Core's real epoch clock, so laying a trace beside a power capture is an alignment rather than a guess. **The DUT's counter cannot do this at all — there is no sync point between them.**
+
+> **It used to say "the same wall clock every other stream in a study carries", and that is the one clause in this entry that is false** (corrected 2026-09-12, `tasks/suite/027`). **A study's own `rx_utc_ms` column is dev-bench uptime, not UTC** — milliseconds since that board booted, no epoch, no offset applied ([`embarch-study-designer` decision 72](../../embarch-study-designer/decisions/versioning.md)). One name, two clocks, in two files an analyst opens side by side. **A trace's `rx_utc_ms` is comparable with `core_rx_utc_ms` and every other `*_utc_ms` field in the suite; a study's is comparable with nothing outside its own capture.** The name is kept rather than renamed, and why is [suite decision 3](../../suite/decisions.md).
 
 **Neither substitutes for the other**, and the rules a host applies, in order:
 

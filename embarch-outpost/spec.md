@@ -87,4 +87,6 @@ formatting/wrap rules that bind both decoders: [interfaces/integration.md](inter
 § Host-side outputs. In short: `<tap>.bin` (raw, verbatim, always written),
 `<tap>.arrival.csv` (the join), `<tap>.trace.csv` (decoded records).
 
+**A trace's `rx_utc_ms` is Core's real epoch clock. A *study's* column of the same name is not** — it is dev-bench uptime ([suite decision 3](../suite/decisions.md)).
+
 `streams/index.json` carries **three independent booleans** for the three ways a trace can be incomplete: `named`, `timed`, and `self_excluded` — the last being the only one the *firmware* decides.

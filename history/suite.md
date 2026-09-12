@@ -31,4 +31,5 @@
 - 22 shipped milestone docs and implementation guides, 334 KB. Two open items they alone recorded moved to their design docs' open questions first; 122 dangling file references became milestone names.
 
 ### Decided
+- `rx_utc_ms` keeps its name in both homes and each now says which clock it is — a trace's is Core's epoch, a study's is bench uptime ([suite decision 3](../suite/decisions.md)).
 - rustfmt is not enforced and nobody runs cargo fmt: 81 files / 1,881 lines across six crates, and it decays without a check only protocol §10 can carry. embarch.md §5 has the reversal condition.
