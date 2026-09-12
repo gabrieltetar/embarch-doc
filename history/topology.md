@@ -9,6 +9,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- `EnrolledBoard::hardware_id` now carries the probe-read doc comment `embarch-core` decision 56 owed on this route.
 - `decisions/validation.md` split: decision 25 (the chip classifier) moved verbatim into new `decisions/validation-classifier.md`, out of reserve.
 - embarch-topology/spec.md compacted 9195B -> 8726B (85.2% of cap), no facts lost, task/topology/024.
 - Topology decision 25 and `classify_chip`'s doc comment no longer claim `embarch-core` stops at nRF54L; core decision 49 matches `nrf54h` too. The two matchers stay separate on purpose.
