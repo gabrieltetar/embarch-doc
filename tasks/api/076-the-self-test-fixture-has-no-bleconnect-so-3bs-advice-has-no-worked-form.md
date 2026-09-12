@@ -1,6 +1,26 @@
 # 076 — The self-test fixture has no `BleConnect`, so the guide's `target_address` advice has no worked form
 
-**State:** open
+**State:** claimed — leg 096, 2026-09-12, `agent/api/076-bleconnect-fixture`
+
+## Dispatch note (supervisor, leg 096)
+
+**Doc-size reserve for `api`, plan around it:** `decisions/tests.md` 590 B left (95.2%),
+`decisions/client-crate.md` 649 B, `decisions/surface.md` 1,030 B, `interfaces/config.md` 1,095 B.
+
+**`decisions/tests.md` is the one you will want, and its compaction task `tasks/api/077` is
+`blocked` on `In flux: yes` — so compacting it is part of *your* unit** (`.claude/leg.md`,
+`DOC-COMPACTION.md` §2). You are the actor making the flux, so you are the only one who can shorten
+it without writing a clean statement of something about to be wrong. Carry `tasks/api/077`'s
+`Must not delete:` list verbatim, close only `decisions/tests.md`'s item on it, and delete that file
+from `api/077`'s `Compacts:` line (**delete it — never `~~strike~~` in place**, that breaks the size
+gate's parse). If `api/077` then has nothing left on its `Compacts:` line, mark it `done`.
+
+If your work leaves any other `api` file in reserve that nothing has filed, file
+`tasks/api/<NNN>-compact-api.md` in the same commit (`tasks/README.md` has the shape; use
+`scripts/check-task-numbers.py --next api`, do not read the directory).
+
+**Set `State:` to `done` yourself before you finish.** Two workers in a row left it at `claimed` and
+the supervisor corrected it at fold time, which is what broke `umbrella/043`'s fold.
 **Source:** split out of `tasks/suite/012` by leg 094, 2026-09-12, which took the worked-example arm
 and left this one. `suite/studies-guide.md` §3b: "a real study sets `target_address` or
 `target_name`" — and no file in the tree shows one.
