@@ -65,10 +65,33 @@ Fix them only if each is a plain factual correction; report either one you leave
 
 ## Done when
 
-- [ ] `spec.md`'s `setup` and `init` rows describe what those commands actually do at their end,
+- [x] `spec.md`'s `setup` and `init` rows describe what those commands actually do at their end,
       verified against every `doctor::doctor` call site.
-- [ ] No behaviour change and no new numbered decision.
-- [ ] `src/doctor.rs:67`'s comment and `Cargo.toml:31`'s citation are each checked, and fixed or
+- [x] No behaviour change and no new numbered decision.
+- [x] `src/doctor.rs:67`'s comment and `Cargo.toml:31`'s citation are each checked, and fixed or
       reported here.
-- [ ] A pass over the rest of `spec.md`'s command table is reported here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] A pass over the rest of `spec.md`'s command table is reported here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Report
+
+`doctor::doctor`'s only call site is `Command::Doctor` in `src/main.rs:184` — confirmed, still true.
+`setup.rs:377` and `init.rs:854` were re-verified at the same lines the sweep gave. Rewrote both
+`spec.md` command-table rows to say each ends by pointing at `embarch status` / `embarch init` (or
+the first `embarch-api build`) rather than running `doctor` — no chaining added to the code, no new
+decision.
+
+`src/doctor.rs:67`: fixed. The comment said checks 1, 5, 10 and 14 carry the machine-readable
+outcome; `interfaces/doctor-chain.md:111` already had 13 and 17 too, so the comment was the stale
+side here (opposite direction from the spec.md defect above) — now reads 1, 5, 10, 13, 14, 17.
+
+`Cargo.toml:31`: fixed. Was citing `decisions/doctor.md 33`; decision 33 lives in
+`decisions/schema-skew.md`. Rewrote to the settled same-repo bare form, `# decision 33: ...`, per
+the class `umbrella/043`/`core/008` already found (also normalized away the stale
+`../embarch-doc/embarch-umbrella/decisions/...` path prefix, which the settled convention drops for
+same-repo citations).
+
+Pass over the rest of the command table (`doctor`, `status`, `up`/`down`, `deploy-core` rows):
+checked against `src/main.rs` (`status`, `status_json`), `src/setup.rs` (`up`, `down`,
+`--foreground` handling), and `src/doctor.rs` (`--prune` unbuilt per decision 26). All four rows
+matched the code as written — no further discrepancy found in this pass.
