@@ -75,7 +75,7 @@ The `embarch-dev-bench` build target *this machine's bench* is wired to — EmbA
 | `artifact_path` | path | yes | Relative to `source_path`. Declared rather than derived — no rule over the other fields predicts it ([decisions](../decisions/dev-bench.md) 45) |
 | `base_address` | integer (TOML hex literal) | conditional | **Required when `flash_format = "bin"` and rejected when `hex`** — a raw binary carries no load address, a hex carries its own. Both are config-load errors |
 | `build_timeout_secs` | integer | no | 300 |
-| `env` | table string→string | no | **Replaces** the inherited environment rather than extending it. `cargo` must be on `PATH` for every board (CMake cross-compiles the shared crate to a staticlib); the ESP32-C5 also needs `esptool` on bare `PATH`. The Arm and RISC-V compilers do **not** — Zephyr finds its SDK through the CMake package registry |
+| `env` | table string→string | no | **Additive** over the inherited environment, not a replacement — same as `[[projects]]`'s `env`. `cargo` must be on `PATH` for every board (CMake cross-compiles the shared crate to a staticlib); the ESP32-C5 also needs `esptool` on bare `PATH`. The Arm and RISC-V compilers do **not** — Zephyr finds its SDK through the CMake package registry |
 | `probe_serial` | string | no | Disambiguates the bench's probe from a DUT's when both are attached — **more load-bearing with an nRF54L15DK bench**, where both probes are SEGGER |
 
-Absent `[dev_bench]` is a clear "not configured" error from the three dev-bench tools, never a silent no-op or a guessed path.
+Absent `[dev_bench]` is a clear "not configured" error from the four dev-bench tools that need it (`build_dev_bench`, `flash_dev_bench`, `build_and_flash_dev_bench`, `reset_dev_bench` — `src/tools.rs:767, 796, 824, 884`), never a silent no-op or a guessed path.

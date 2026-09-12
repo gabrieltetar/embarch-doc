@@ -67,9 +67,28 @@ flagged, neither of which you must fix here:
 
 ## Done when
 
-- [ ] `interfaces/config.md`'s `[dev_bench]` `env` row states additive semantics, verified by
+- [x] `interfaces/config.md`'s `[dev_bench]` `env` row states additive semantics, verified by
       reading `BuildPlan.env`'s producers and its single consumer.
-- [ ] No code change and no new numbered decision.
-- [ ] The `:81` count and the `tools-dev-bench.md` parameter lists are each checked and the result
+- [x] No code change and no new numbered decision.
+- [x] The `:81` count and the `tools-dev-bench.md` parameter lists are each checked and the result
       reported in this file, fixed only where the fix is a plain factual correction.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Findings
+
+**`env` row (:78):** confirmed additive. `src/resolve.rs:162,456` and `src/dev_bench.rs:57` both
+just clone `config.env` into `BuildPlan.env` (`src/build.rs:49`); the one consumer,
+`src/build.rs:277`, is `.envs(&plan.env)` with no `.env_clear()` anywhere in the crate
+(`grep -rn env_clear src/` empty). Fixed the `[dev_bench]` row to say **Additive**, matching the
+`[[projects]]` row, keeping the toolchain rationale.
+
+**`:81` count:** the sweep's "three" was a plain miscount, not a hello/link judgement call — neither
+`dev_bench_hello` nor `dev_bench_link` calls `dev_bench_config()` at all, so they were never
+candidates for that sentence either way. The four real call sites (`src/tools.rs:767, 796, 824,
+884`) belong to `build_dev_bench`, `flash_dev_bench`, `build_and_flash_dev_bench`, `reset_dev_bench`
+— all four require `[dev_bench]`. Fixed :81 to name all four tools and their line numbers.
+
+**`tools-dev-bench.md` parameter lists:** checked all four tool signatures against the doc.
+`build_dev_bench`, `build_and_flash_dev_bench`, `reset_dev_bench` take no `Parameters<..>` (doc says
+`—`, matches). `flash_dev_bench` takes `Parameters<FlashDevBenchParams { firmware_path, erase }>`
+(doc says `firmware_path?`, `erase?`, matches). No discrepancy found; no change needed.
