@@ -1,6 +1,6 @@
 # 030 — Decision 25's vertex count for the E is from a trace that does not ship
 
-**State:** open
+**State:** claimed (leg 091)
 **Source:** refill sweep for scope spread, leg 090, 2026-09-11. Filed rather than dispatched because
 leg 090 reached its four-unit cap; not yet re-verified by a supervisor, so **check every line number
 below against the source before you act on it** — they are as the sweep reported them.
