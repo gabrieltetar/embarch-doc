@@ -42,5 +42,6 @@
 - `Study.gatt`/`DeclaredGatt` withdrawn from docs as current truth; decision 45 restated as designed-but-unbuilt.
 
 ### Decided
+- Decision 45's GATT table stays designed-but-unbuilt, now on a named trigger; open.md's duplicate bullet struck.
 - Every question in `open.md` re-checked against `spec.md`/`decisions.md`: none answered, none struck; the 91.1% size debt stays parked at 2026-10-04.
 - This crate does not release: no tags, no version-reading consumer, no artifact — decision 65, with the guard that binds the first `release.yml`.
