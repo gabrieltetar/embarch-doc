@@ -31,9 +31,33 @@ these are C comments.
 
 ## Done when
 
-- [ ] `grep -n "design\.md\|milestone-" app/src/serial_protocol.h` returns zero.
-- [ ] Each becomes `` `embarch-study-designer` decision N `` — the cross-repo form settled in
+- [x] `grep -n "design\.md\|milestone-" app/src/serial_protocol.h` returns zero.
+- [x] Each becomes `` `embarch-study-designer` decision N `` — the cross-repo form settled in
       `api/052` — with N **unchanged** and confirmed resolvable in that repo's `decisions.md`.
-- [ ] Host-side checks green; say plainly what could and could not be run (the Zephyr
+- [x] Host-side checks green; say plainly what could and could not be run (the Zephyr
       `tests/unit` ztest suite cannot be built from a worker's worktree — standing debt, not
       introduced here).
+
+## Closed
+
+Of the 48 citations, 45 were embarch-study-designer's (some written bare, without the repo
+prefix, once an earlier sentence in the same comment block had already named it — each such
+bare cite was matched to that paragraph's subject before rewriting, not decoded by number
+alone, since embarch-study-designer's and embarch-dev-bench's own decision ranges overlap).
+2 were this repo's own (decisions 7/10/12/20/21 — boards/link/dispatch topics) and now read
+as plain `` decision N ``, no repo prefix, matching how this repo's own `decisions.md`
+already addresses itself. 1 was embarch-core's (decision 35, the handshake), now
+`` `embarch-core` decision 35 ``.
+
+All 48 numbers were checked against their cited repo's `decisions.md` index before rewriting.
+**None were unresolvable** — every one still resolves, several across a repo's index having
+moved file since the original `design.md` citation was written (e.g. into `removed.md`
+tombstones), which the index's own numbering-is-permanent guarantee covers.
+
+Comment-only change; no firmware behaviour altered. `gcc -fsyntax-only` on the header is
+clean. Host-side checks that could run: none needed beyond that syntax check, since no code
+changed, only comments. What could not run, as flagged going in: the Zephyr `tests/unit`
+ztest suite (`app/tests/serial_protocol`) cannot be built from a worker's worktree — standing
+debt, not introduced or touched by this unit.
+
+Code: `embarch-dev-bench` branch `agent/dev-bench/020-serial-protocol-h-citations`, pushed.
