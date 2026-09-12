@@ -1,6 +1,6 @@
 # 045 — The route sweep proves rejection, not reach: a route wired to the wrong handler passes it
 
-**State:** claimed by agent/core/045-route-sweep-reach, 2026-09-12 01:20
+**State:** done
 **Source:** `embarch-core/open.md` — "**The route sweep proves rejection, not reach.** Decision 42
 asserts all 26 registered routes answer `401` without a token and with a wrong one; only `/status`
 asserts a *correct* token reaches its handler. A route wired to the wrong handler is not caught".
@@ -30,11 +30,25 @@ visible entirely on the host.
 
 ## Done when
 
-- [ ] Each of the 26 registered routes has an assertion that an authorized request reaches the
+- [x] Each of the 26 registered routes has an assertion that an authorized request reaches the
       handler that route is meant to reach, and the route set is **derived from the router's own
       registration**, not re-typed.
-- [ ] Mutation-verified to decision 46's standard: swapping two routes' handlers turns the new
+      Done as a wiring cross-check rather than 26 live calls: `registered_route_bindings()`
+      derives `(method, path, handler)` from `build_router`'s own `.route(...)` lines (23
+      bindings, `/signals` chaining two verbs), and `handler_declared_route()` derives
+      `(method, path)` from a `// route: METHOD path` comment each handler now carries directly
+      above its own definition — a second source of truth authored at the handler, not a
+      re-typed list. `every_registered_route_reaches_its_intended_handler` requires the two to
+      agree for all 23. `embarch-core` decision 60.
+- [x] Mutation-verified to decision 46's standard: swapping two routes' handlers turns the new
       check red and names them.
-- [ ] `embarch-core/open.md`'s bullet is struck, or narrowed to whatever genuinely remains.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
+      Verified live: swapped `resolve_chip_handler`/`enroll_probe_handler` in `build_router`,
+      the new test failed naming both the handler and the two disagreeing routes, then reverted.
+- [x] `embarch-core/open.md`'s bullet is struck, or narrowed to whatever genuinely remains.
+      Struck.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
       `changelog.d/` fragment.
+      All green. `changelog.d/core-route-sweep-reach.decided.md` added.
+
+**Also filed:** `tasks/core/046-compact-core.md` (blocked, `In flux: yes`) — decision 60 pushed
+`embarch-core/decisions/auth.md` to 92.4% of its size reserve.
