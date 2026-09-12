@@ -1,6 +1,6 @@
 # 039 — `embarch-ui/Cargo.toml` still cites a `design.md` that does not exist
 
-**State:** claimed — leg 098, 2026-09-12.
+**State:** done — leg 098, 2026-09-12.
 **Doc-size reserve for `ui`:** nothing in reserve; no compaction debt expected from this unit.
 **Source:** `ui/037`'s worker, found while re-grepping `embarch-ui` for stale-doc source-comment
 citations (2026-09-12).
@@ -32,14 +32,21 @@ citation living in a `Cargo.toml` comment (not a doc file) is invisible to any g
 
 ## Done when
 
-- [ ] `Cargo.toml:6`'s description no longer claims a nonexistent `design.md` is "the source of
+- [x] `Cargo.toml:6`'s description no longer claims a nonexistent `design.md` is "the source of
       truth" — either repoint at `spec.md`/`decisions.md` (whichever is accurate today) or drop the
-      clause.
-- [ ] `Cargo.toml:14` and `Cargo.toml:19-20` cite the real decision (`decision 5`, per `ui/033`'s
+      clause. Repointed at `spec.md` (current truth) and `decisions.md` (why).
+- [x] `Cargo.toml:14` and `Cargo.toml:19-20` cite the real decision (`decision 5`, per `ui/033`'s
       resolution for identical comments elsewhere) without the dead `design.md §3` prefix.
-- [ ] `Cargo.toml:27`'s `embarch-api/design.md §11` checked against `embarch-api`'s own repo — fixed
+- [x] `Cargo.toml:27`'s `embarch-api/design.md §11` checked against `embarch-api`'s own repo — fixed
       here only if it's confirmed `ui`'s file to touch (it's a comment in `embarch-ui`'s own
       `Cargo.toml`, but the citation crosses repos so read `embarch-api/design.md` or whatever
-      replaced it before repointing).
-- [ ] `grep -rn "design.md" embarch-ui/` (all file types, not just `*.md`) comes back with only
-      legitimate hits, if any remain.
+      replaced it before repointing). `embarch-api/design.md` does not exist either (`embarch-api`
+      also uses `decisions.md`/`decisions/`, no per-repo compaction into one file). Its "decision 11"
+      turned out to be the wrong number too — `embarch-api/decisions/core-link.md`'s decision 11 is
+      `base_url = "auto"` resolution, unrelated. The rule this comment actually describes ("this
+      crate never links hardware", mirrored client wrappers instead of the real probe-rs-gated
+      types) is `embarch-api/decisions/client-crate.md`'s decisions 37/38. Repointed the comment at
+      `` `embarch-api` decisions 37/38 `` (bare, no file path — matches this repo's own convention,
+      e.g. `src/main.rs`'s `` `embarch-topology` decision 5 ``).
+- [x] `grep -rn "design.md" embarch-ui/` (all file types, not just `*.md`) comes back with only
+      legitimate hits, if any remain. Zero hits after this unit.
