@@ -1,6 +1,13 @@
 # 034 — `interfaces/limits.md` claims "every bound the crate declares" and omits `MAX_BUILD_ID_LEN`
 
-**State:** open
+**State:** claimed — leg 102, 2026-09-12, branch `agent/study-designer/034-limits-max-build-id-len`.
+
+**Doc-size reserve for `embarch-study-designer`:** `spec.md` 9350/10240 B (890 B left) and
+`open.md` 4659/5120 B (461 B left) are both in reserve, filed against blocked compaction
+tasks. `interfaces/limits.md` is **not** in reserve — put the new row there and keep
+`spec.md`/`open.md` edits to nothing, or file `tasks/study-designer/<NNN>-compact-study-designer.md`
+in the same commit if you spend more of that reserve.
+
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by diffing all 47 `pub const MAX_*` in
 `src/` against both tables.
 **Scope:** study-designer
