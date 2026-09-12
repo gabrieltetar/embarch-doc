@@ -1,6 +1,6 @@
 # 048 — `embarch-core/Cross.toml` cites a `milestone-6.md` that does not exist
 
-**State:** claimed — leg 100, 2026-09-12, branch `agent/core/048-cross-toml-citation`.
+**State:** done — leg 100, 2026-09-12, branch `agent/core/048-cross-toml-citation`.
 
 **Doc-size reserve for `core`** (check before you write): `decisions/auth.md` 932 B left, filed
 against a blocked compaction task. If your work pushes another `core` doc into reserve, file
@@ -36,11 +36,34 @@ in this repo where its task predicted two.
 
 ## Done when
 
-- [ ] `grep -rn "milestone-\|design\.md" /home/gabriel/Github/embarch/embarch-core --include='*.rs'
+- [x] `grep -rn "milestone-\|design\.md" /home/gabriel/Github/embarch/embarch-core --include='*.rs'
       --include='*.toml' --include='*.yml' --include='*.py' --include='*.sh'` returns zero.
-- [ ] The comment cites a file that was **actually opened and confirmed**, or states the target list
+- [x] The comment cites a file that was **actually opened and confirmed**, or states the target list
       with no citation.
-- [ ] The release workflow's real matrix is checked, so the comment's "three native + one cross"
+- [x] The release workflow's real matrix is checked, so the comment's "three native + one cross"
       claim is confirmed true today rather than only correctly cited.
-- [ ] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green. Note `Cross.toml` is
+- [x] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green. Note `Cross.toml` is
       configuration, not source — a native Windows build is **not** owed by this unit.
+
+## Resolution
+
+Two stale citations found, not one — `release.yml` had its own `milestone-6.md` reference
+(`.github/workflows/release.yml`, header comment and the macOS matrix-entry comment), on top of
+`Cross.toml`'s. Both fixed in one commit:
+
+- `Cross.toml`: the "three native builds, one cross" claim is backed by `embarch-umbrella` decision
+  14 (read the body: distribution as one release archive, four targets, three native runners GitHub
+  already hosts, one `cross`-built aarch64-linux) — confirmed against `.github/workflows/release.yml`'s
+  actual matrix (`windows-latest`, `ubuntu-latest` for x86_64, `macos-14` native Apple Silicon, plus
+  `ubuntu-latest` + `cross: true` for aarch64-unknown-linux-gnu). True today.
+- `release.yml` header's own dead citation: dropped — the next line already states "embarch-umbrella
+  decision 14" plainly, so the parenthetical was redundant as well as stale.
+- `release.yml`'s macOS-unsigned aside ("§5 open questions"): repointed at `embarch-umbrella/open.md`,
+  which is where the Gatekeeper/unsigned-aarch64-darwin fact actually lives today (confirmed by
+  reading it) — no decision number exists for it, so cited as the file, not a fabricated number.
+
+No other non-markdown file in `embarch-core` carries a `milestone-*`/`design.md` reference.
+
+Code: `embarch-core` branch `agent/core/048-cross-toml-citation`, commit 1e7a6bd, pushed.
+Doc: `embarch-doc` branch `agent/core/048-cross-toml-citation-doc`, this commit.
+`cargo build`/`test`/`clippy --all-targets -- -D warnings` all green (196 tests passed).
