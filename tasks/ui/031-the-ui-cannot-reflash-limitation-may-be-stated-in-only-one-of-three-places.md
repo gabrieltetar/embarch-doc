@@ -1,6 +1,6 @@
 # 031 — "The UI cannot reflash" is a limitation, and `open.md` asserts the run dialog says so — check that it does
 
-**State:** open
+**State:** claimed by agent/ui/031-reflash-limitation-stated, 2026-09-12 01:21
 **Source:** `embarch-ui/open.md` — "**Where the reflash selector should live is genuinely
 undecided.** … Settled as the third for now (the run dialog says so) — 'the UI cannot reflash' is a
 limitation, not a design goal. Decision 11."
