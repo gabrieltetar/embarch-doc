@@ -1,6 +1,9 @@
 # 020 — `embarch-topology`'s `hardware` gate is drawn around the module rather than the machinery, so its one linked consumer hand-mirrors seven plain data types
 
-**State:** open
+**State:** open — announced 2026-09-12 10:23 by leg 099, `ops.md` §4 window `ts` `1789230186.693679`.
+No objection as of that leg's last poll. **The next leg completes this window rather than restarting
+it**: if 30 minutes have passed since that `ts` and `fleet-read.py --thread 1789230186.693679` shows
+no objection, run it.
 **Source:** suite review pass 2026-09-06, dimensions 4 and 1 (two hunters, one finding). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
