@@ -1,6 +1,6 @@
 # 032 — `embarch-topology`'s `EnrolledBoard::hardware_id` owes `embarch-core` decision 56's promised doc comment
 
-**State:** open
+**State:** claimed — leg 092, 2026-09-11
 **Source:** `embarch-core/tasks/core/044`, found while paying decision 56's own debt.
 **Scope:** topology
 **Hardware:** none
