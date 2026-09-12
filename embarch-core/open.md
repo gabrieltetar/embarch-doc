@@ -33,7 +33,6 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
   outlives that confirmation.
 - **A separate-machine deployment has no artifact transfer.** Multipart (decision 10) closed the WSL2 case; a LAN Pi remains reachable by design, unusable for flashing.
 - **macOS is reasoned-only.** The elevation paths are written, unexercised; nothing here has run on a Mac.
-- **The route sweep proves rejection, not reach.** Decision 42 asserts all 26 registered routes answer `401` without a token and with a wrong one; only `/status` asserts a *correct* token reaches its handler. A route wired to the wrong handler is not caught — per-route success cases would need per-route fixtures the auth sweep deliberately does without.
 
 ## Moved elsewhere, not resolved
 
