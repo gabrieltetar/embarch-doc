@@ -1,6 +1,10 @@
 # 048 — `embarch-core/Cross.toml` cites a `milestone-6.md` that does not exist
 
-**State:** open
+**State:** claimed — leg 100, 2026-09-12, branch `agent/core/048-cross-toml-citation`.
+
+**Doc-size reserve for `core`** (check before you write): `decisions/auth.md` 932 B left, filed
+against a blocked compaction task. If your work pushes another `core` doc into reserve, file
+`tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** core
 **Hardware:** none
