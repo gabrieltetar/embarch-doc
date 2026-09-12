@@ -27,3 +27,34 @@ This still preserves the invariant `embarch-topology` decision 14 established wh
 **Id universe is the union of both assets, not `index.html` alone**: `app.js` builds three ids of its own (`tr-gap`, `tr-cross`, `tr-delay`, the trace chart's SVG pattern fills), and those count as declared for the duplicate check exactly like an `index.html` id would, so a collision between a dynamically-built id and a static one is still caught. They are never looked up via `getElementById`, so they cannot register as dangling.
 
 **The parser resolves only a literal string argument**, so `sdEl`/`trEl`/`sigEl` (three one-line `getElementById` wrappers; `sigEl` is the same shape as the task-named `sdEl`/`trEl` pair) are seen through wherever the id is written at the call site, but a handful of `sd-req-*` requirement-field lookups that pass a variable instead are not traced back to their literal source — a known, disclosed gap in the test's own module doc, not a silent one.
+
+### 26 — Core being unreachable is an expected, renderable state, not an error to surface as a crash
+
+Every call decision 5 routes over HTTP+Bearer can fail because Core is not running, not reachable
+from this machine, or not yet answering — and that failure is treated as ordinary, not exceptional.
+`snapshot.rs::poll` runs its six Core calls independently (`tokio::join!`, no short-circuiting) and
+folds a failed `status()` into `Snapshot::core_reachable = false` plus a human-readable `error`
+string, the same shape `Snapshot::pending()` uses before the first poll ever completes. Nothing
+downstream treats that as a panic, a 5xx, or a hidden log line: `core_reachable` is the one flag the
+Dashboard tab reads to decide whether to render "Core unreachable" instead of live data, and it is
+the only place that state is shown to a human at all.
+
+`logs.rs::poll_loop` follows the same rule for a different call: a failed `logs_recent` poll is
+logged once at `debug` level and the loop keeps ticking — it does **not** push an error onto the
+client-visible SSE stream, and does **not** duplicate the Dashboard's own reachability signal. The
+Debug tab simply keeps showing whatever it last had; `core_reachable` stays the single place this
+information surfaces.
+
+**What renders, and what does not:** a down Core renders as `core_reachable: false` plus one
+human-readable cause on the Dashboard, and causes no other tab to show an error of its own — logs,
+snapshot fields other than the ones above, and the trace/study views all either hold their last
+good value or render their own independent empty/pending state. It never renders as a crash, a panic
+screen, or a raw exception string outside that one field.
+
+**Why this is a decision and not incidental error handling:** the `tokio::join!` shape in
+`snapshot.rs` deliberately fails each call independently so one Core-down moment does not blank
+fields that would otherwise still resolve; `Snapshot::pending()` exists specifically to give the same
+shape a name before the first poll; and `logs.rs` explicitly withholds a second, redundant error
+surface in favor of the one flag. Three separate places construct the same "down Core is data, not
+an exception" shape on purpose — that is a standing design position, not a comment that happens to
+describe what an unhandled `Result::Err` did.
