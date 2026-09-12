@@ -6,7 +6,17 @@ files crossed their reserve lines inside that fold, one by a supervisor edit and
 assembler run.
 **Scope:** suite
 **Hardware:** none
-**Compacts:** embarch-decision-reversals.md, suite/user-guide.md, suite/studies-guide.md
+**Compacts:** embarch-decision-reversals.md, suite/studies-guide.md
+
+**`suite/user-guide.md` was struck off this line on 2026-09-11 by leg 085** and moved to its own
+task, **`tasks/suite/030`**, which carries this task's `Must not delete:` item for it verbatim
+(§5.1's placeholder argument). Deleted from the line rather than struck through in place, because
+**that line is data** — leg 057 annotated one and `check-doc-size.py` stopped recognising it.
+Why split rather than left here: `suite/022` grew that file to **97.8% of its cap** and its debt is
+now dated **2026-09-18**, three weeks ahead of this task's 2026-10-10, and its `In flux:` answer is
+**no** where the two files still on this line are **yes**. One shared date and one shared flux
+answer could not describe both any more — which is exactly the per-file failure `tasks/doc/030`
+named.
 
 **`suite/features.md` was struck off this line on 2026-09-09**, having been paid on 2026-09-07 when
 an assembled file lost its byte cap outright (`DOC-BUDGET.md`) — see the `features.md` section

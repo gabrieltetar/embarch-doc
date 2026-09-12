@@ -17,6 +17,7 @@
 - suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
 
 ### Fixed
+- - `suite/user-guide.md` §6 no longer denies the cwd-upward config search, and §7.1's permission split now names all 29 MCP tools rather than 7 of 23 with every hardware-touching one omitted.
 - Power sampling no longer reads as built in the glossary, [embarch.md](../embarch.md) or the [studies guide](../suite/studies-guide.md); a step was never a power-sampling window after wire v9.
 - Two reachable client-name leaks removed by history rewrite: embarch-api (reintroduced 2026-09-05) and embarch-study-designer (missed by the 2026-09-04 scrub). All ten repos verified clean.
 
