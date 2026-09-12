@@ -1,6 +1,6 @@
 # 052 — Checks 4 and 12 have no pure judge, so the guard that exists because a check shipped eighteen stray spaces cannot see them
 
-**State:** claimed by agent/umbrella/052-pure-judges, 2026-09-11 20:12 (leg 084)
+**State:** done — leg 084, 2026-09-11
 **Source:** leg 084's refill sweep off [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md),
 2026-09-11. Source-confirmed against `embarch-umbrella/src/doctor.rs`'s `pure_verdicts()` header
 before filing.
@@ -53,21 +53,40 @@ this repo.
 
 ## Done when
 
-- [ ] Checks 4 and 12 each have a **pure judge** — a synchronous function taking the facts the
+- [x] Checks 4 and 12 each have a **pure judge** — a synchronous function taking the facts the
       `async` half gathers and returning the `Check`, with the `async` half reduced to gathering
       and calling it. Follow `judge_growth`/`check_growth` rather than inventing a second shape.
-- [ ] **Both checks' verdict text is in `pure_verdicts()`**, every arm of it, so the stray-space
-      guard covers them. If an arm genuinely cannot be constructed without a live Core, say which
-      arm and why in the task file — do not fabricate a fact to reach it.
-- [ ] The `pure_verdicts()` header's *"The two checks it cannot reach"* paragraph is **rewritten to
+      Done as `judge_token(TokenAttempt)` and `judge_dev_bench(DevBenchAttempt)`: each attempt enum
+      has one variant per outcome the `async` half can gather (a missing winner, a token-resolution
+      error, one `authed_get` result), and `check_token`/`check_dev_bench` are reduced to gathering
+      and matching straight into the judge.
+- [x] **Both checks' verdict text is in `pure_verdicts()`**, every arm of it, so the stray-space
+      guard covers them. All 7 arms of `TokenAttempt` and all 7 of `DevBenchAttempt` are pushed into
+      the corpus (check 4's `Ok200` arm exercised once with well-formed JSON and once with a body
+      that fails to parse, since both reach the same Pass text). No arm needed fabricating a fact —
+      every one is reachable from data the gathering step could plausibly have produced.
+- [x] The `pure_verdicts()` header's *"The two checks it cannot reach"* paragraph is **rewritten to
       match reality**, not deleted: it is the record of why the corpus is shaped this way, and a
       later reader who finds a blind-spot warning describing a blind spot that no longer exists
-      will assume the guard is weaker than it is.
-- [ ] `embarch-umbrella/open.md`'s bullet is closed or narrowed to whatever is genuinely left.
-- [ ] A numbered decision **only if** the seam you choose differs materially from `judge_growth`'s;
-      if it is the same shape applied twice more, that is an implementation, not a decision.
-- [ ] Gate green: `cargo build` / `test` / `clippy --all-targets -- -D warnings` in
-      `embarch-umbrella`, and `python3 scripts/check-docs.py` in the doc repo.
+      will assume the guard is weaker than it is. Replaced with a paragraph naming `judge_token`/
+      `judge_dev_bench` as the same gather-then-judge split `judge_growth` already uses.
+- [x] `embarch-umbrella/open.md`'s bullet is closed or narrowed to whatever is genuinely left.
+      Closed outright — the guard now reaches both checks and `umbrella/031`'s normalisation is
+      already landed, so nothing about this bullet was still open.
+- [x] A numbered decision **only if** the seam you choose differs materially from `judge_growth`'s;
+      if it is the same shape applied twice more, that is an implementation, not a decision. Same
+      shape applied twice more — no decision filed.
+- [x] Gate green: `cargo build` / `test` / `clippy --all-targets -- -D warnings` in
+      `embarch-umbrella`, and `python3 scripts/check-docs.py` in the doc repo. All green (226 tests
+      pass, `no_check_renders_a_run_of_two_or_more_spaces` now covers checks 1-17 with no offenders
+      found in checks 4 or 12's text — nothing was shipping a stray space).
+
+## Result
+
+No stray spaces were found in checks 4 or 12's rendered text once split out — the guard now covers
+17 of 17 checks with a clean pass, so there was no pre-existing defect to fix here (unlike check 14's
+history). `decisions/doctor.md` and `decisions/bind.md` were left alone: no numbered decision was
+owed by this unit, so the reserve/compaction condition in the dispatch note did not trigger.
 
 ## What this may not do
 
