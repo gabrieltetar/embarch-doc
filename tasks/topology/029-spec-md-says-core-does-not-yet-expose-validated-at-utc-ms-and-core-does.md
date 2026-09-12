@@ -1,6 +1,8 @@
 # 029 — `spec.md` says Core's `POST /validate` "does not yet expose" `validated_at_utc_ms`; it does
 
-**State:** open
+**State:** claimed — leg 088, 2026-09-11.
+**Doc-size reserve for this sub-project:** nothing in `embarch-topology` is in reserve. If your work
+pushes a file into its last 10%, file `tasks/topology/<NNN>-compact-topology.md` in the same commit.
 **Source:** refill sweep, leg 087, 2026-09-11. `embarch-topology/spec.md` and
 `decisions/validate-timing.md`, checked against `embarch-core/src/api.rs` and against
 `embarch-core/interfaces/topology.md`, which already records the field as landed.
