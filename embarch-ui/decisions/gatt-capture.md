@@ -26,7 +26,7 @@ The human half of [embarch-study-designer](../../embarch-study-designer/decision
 
 **A tap's default file name is the characteristic's name**, sliced to the stream-name limit **here, where it was chosen**, rather than refused at submit.
 
-**One CSS fix that is a real bug, not a polish pass.** A parameter caption's style uppercases its span, and a selective-monitor checkbox borrows that layout — so the name rendered as `SDS_HRM_RRM`. Invisible while that span held hex digits; **wrong the moment it holds a C identifier**, because an identifier's case is part of it and the firmware source does not spell it that way. A separate value class opts out.
+**One CSS fix that is a real bug, not a polish pass.** A parameter caption's style uppercases its span, and a selective-monitor checkbox borrows that layout — so the name rendered as `SDS_HRM_RRM`. Invisible while that span held hex digits; **wrong the moment it holds a C identifier**, because an identifier's case is part of it and the firmware source does not spell it that way. A separate value class opted out — dead now that decision 17's dialog replaced the inline checkbox list it styled, and removed with it.
 
 ### 17 — The selective-monitor target list becomes a dialog, grouped by named service
 

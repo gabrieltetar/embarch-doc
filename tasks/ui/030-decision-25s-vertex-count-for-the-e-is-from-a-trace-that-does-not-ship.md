@@ -1,6 +1,6 @@
 # 030 — Decision 25's vertex count for the E is from a trace that does not ship
 
-**State:** claimed (leg 091)
+**State:** done (leg 091)
 **Source:** refill sweep for scope spread, leg 090, 2026-09-11. Filed rather than dispatched because
 leg 090 reached its four-unit cap; not yet re-verified by a supervisor, so **check every line number
 below against the source before you act on it** — they are as the sweep reported them.
@@ -52,9 +52,19 @@ sentence without the CSS**; either alone leaves the same drift pointing the othe
 
 ## Done when
 
-- [ ] Decision 25's E vertex count matches the committed inline path, verified by counting it.
-- [ ] The union-mode explanation and the two correct numbers survive.
-- [ ] `gatt-capture.md:29`'s opt-out claim and `.sd-param-value` are settled together, or the reason
+- [x] Decision 25's E vertex count matches the committed inline path, verified by counting it.
+      Recounted `index.html:34`'s first path myself: 22 coordinate pairs before the first `Z`, then
+      a 4-vertex counter loop — matches the task's own recount, not the stale 16. Corrected
+      `shell.md:29` to "22 vertices plus a 4-vertex counter for the E".
+- [x] The union-mode explanation and the two correct numbers survive.
+      `embarch-mark.svg` is still 693 B; grepped its path data and it does trace to 53 vertices as
+      stated. `657 B inline` re-measured via `wc -c` on the two `<path>` elements in
+      `index.html:34` and is exact.
+- [x] `gatt-capture.md:29`'s opt-out claim and `.sd-param-value` are settled together, or the reason
       they were left is written here.
-- [ ] No rendered colour or layout change, no new numbered decision.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+      Confirmed zero call sites (`grep -c sd-param-value assets/app.js assets/index.html` → `0, 0`).
+      Deleted the dead rule and its comment from `style.css` (was lines 644-655) and corrected the
+      sentence in `gatt-capture.md` to say the opt-out is dead now that decision 17's dialog
+      replaced the checkbox list it styled.
+- [x] No rendered colour or layout change, no new numbered decision.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
