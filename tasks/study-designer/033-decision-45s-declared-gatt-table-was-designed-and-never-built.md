@@ -1,6 +1,6 @@
 # 033 — Decision 45's declared GATT table was designed, never built, and the deferral has no trigger
 
-**State:** open
+**State:** claimed by agent/study-designer/033-declared-gatt, 2026-09-12 01:20
 **Source:** `embarch-study-designer/open.md` — "**Decision 45's declared GATT table was designed,
 never built** — no `gatt` field on `Study`, no `DeclaredGatt` type, no reconciliation against live
 discovery. Deferred with no trigger fired yet".
