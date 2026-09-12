@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- A `wire` feature carrying the hardware wire types without `probe-rs` or `serialport`, so a consumer that cannot link a probe can name the types Core serves instead of mirroring them (decision 31).
 - spec.md states what a caller may hold across calls (per-operation only, no cache) — decision 29.
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
