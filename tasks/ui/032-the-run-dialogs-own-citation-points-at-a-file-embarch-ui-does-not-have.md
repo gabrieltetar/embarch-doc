@@ -43,11 +43,25 @@ citing a pre-split path.
 
 ## Done when
 
-- The dialog cites a path that resolves. Decide and state whether user-facing strings cite
-  `decisions.md` (the index, per `DOC-CONVENTIONS.md`'s link-the-index rule) or the topic file; the
-  index is the better answer for the same reason that rule exists, and `ui/031`'s own experience
-  says it should be written down rather than re-derived.
-- Any sibling strings in `assets/` citing a pre-split `embarch-ui` path are fixed in the same unit.
-- `check-decision-refs.py` is green, and if it could not have caught this — a citation inside an
-  HTML string rather than a Markdown link — say so in the unit's report, because that is a gap worth
-  a separate task.
+- [x] The dialog cites a path that resolves. Decided: user-facing strings cite `embarch-ui/decisions.md`
+      (the index), not the topic file — same reasoning as `DOC-CONVENTIONS.md`'s link-the-index rule
+      (a topic file can move an entry between missions without renumbering; the index is what a
+      splitter maintains, so it survives). Fixed `assets/index.html:350` (`embarch-ui/design.md` §3
+      decision 11 -> `embarch-ui/decisions.md`, decision 11).
+- [x] Any sibling strings in `assets/` citing a pre-split path are fixed in the same unit. Found one
+      more rendered (non-comment) instance: `assets/index.html:517`'s trace-tab note cited
+      `embarch-outpost/design.md` §3 decision 10 — also a repo with no `design.md` (it too has
+      already split into `decisions.md` + `decisions/*.md`). Fixed to `embarch-outpost/decisions.md`,
+      decision 10. Everything else matching `design.md` in `assets/` and `src/` is inside a `//` or
+      `/* */` comment or an HTML `<!-- -->` comment — never rendered — so left alone as out of this
+      unit's "ships to a user" scope; those are the same class `core/008`/`umbrella/043`/`api/052`
+      already clean up in source comments, and there are many (dozens across `app.js`,
+      `study_designer.rs`, `main.rs`, `snapshot.rs`, `trace.rs`, `logs.rs`, `config.rs`,
+      `style.css`) — worth a dedicated task, not folded into this one silently.
+- [x] `check-decision-refs.py` is green (1690 references resolve). **It could not have caught this**:
+      `md_files()` (the script's own file walker) globs only `*.md` under the repo root and explicitly
+      skips `scripts/`/`.claude`/etc — it never opens `assets/index.html`, `*.rs`, `*.js`, or `*.css`
+      at all. A wrong citation baked into a non-Markdown string is invisible to it by construction,
+      not by a gap in its regexes. That is a real gap: worth a separate task if shipped strings are
+      meant to be checked mechanically (e.g. extracting quoted/rendered text from `assets/*.html`
+      before running the same resolver against it).
