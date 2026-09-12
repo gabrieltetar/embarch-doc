@@ -1,10 +1,9 @@
 # 022 — Two sections of `suite/user-guide.md` are wrong where it matters: §6 denies a config discovery that exists, and §7.1's permission split covers 7 of 23 MCP tools
 
-**State:** open — **announced, window running.** Leg 085, 2026-09-11: posted to `#embarch-fleet`
-at `ts 1789179351.424089`, which opens `ops.md` §4's 30-minute silence-as-consent window. If this
-leg ends before the window closes, the **next leg reads that `ts` and completes the window rather
-than restarting it** (`.claude/leg.md`). A reply saying go runs it now; a cancel drops this back to
-plain `open` with the reply quoted here.
+**State:** claimed — leg 085, 2026-09-11. Announced to `#embarch-fleet` at
+`ts 1789179351.424089`, opening `ops.md` §4's 30-minute silence-as-consent window; the channel was
+re-polled at the close and at two points in between, **0 actionable, no objection**, so this ran
+as the leg's last unit.
 **Source:** suite review pass 2026-09-06, dimension 7 (the newcomer). Both halves code-confirmed.
 **Scope:** suite
 **Hardware:** none
