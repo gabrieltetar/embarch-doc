@@ -10,6 +10,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `decisions/surfaces.md` split along its enrollment-surface section into `decisions/enrollment.md`, clearing reserve (task 038).
 - `embarch-core/open.md` squeezed 4551→3911 B, clear of the 90%-reserve floor.
 - Feature inventory: per-caller-identity row now reads Declined (with trigger), not Todo — see `embarch-token.md` §5.
 - `spec.md` §5's constants table moved verbatim to `interfaces/constants.md`, clearing the size reserve.
@@ -26,6 +27,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `POST /validate` (and `flash`/`reset`/`run_study`'s own mid-attach check) now name a detached probe `not_attached`, never `mismatch` (decision 59).
 - `embarch-core`: repointed 3 of the 4 flagged miscitations `core/032` left, and normalised the stray `` `decision N` `` form suite-wide.
 - core: 170 dead `design.md` comment citations repointed to decisions/spec.md; 5 real miscitations found and flagged in tasks/core/032.
 - core: spec.md §4 gains `outpost_manifest.rs`'s row; two `decision 48` and four dead `milestone-N.md` source citations corrected.

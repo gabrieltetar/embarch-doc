@@ -31,7 +31,7 @@ been changed. A drop in `inbox/` is not in the queue and nothing dispatches from
 **Read its `## What` honestly before claiming it: `doctor` renders nothing here today**, so this
 task may be a no-op that closes by writing the constraint down where the next person to add such a
 line will see it. That is a legitimate outcome and is what the "if ever" in the title means.
-**Source:** `tasks/core/027`, `embarch-core` decision 57 (`decisions/surfaces.md`)
+**Source:** `tasks/core/027`, `embarch-core` decision 57 (`decisions/enrollment.md`)
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
