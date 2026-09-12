@@ -10,6 +10,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `core`: `decisions/flashing.md` split — backend/vendor-tool decisions (36, 49, 52, 54) moved verbatim to new `decisions/flash-backend.md`.
 - `decisions/surfaces.md` split along its enrollment-surface section into `decisions/enrollment.md`, clearing reserve (task 038).
 - `embarch-core/open.md` squeezed 4551→3911 B, clear of the 90%-reserve floor.
 - Feature inventory: per-caller-identity row now reads Declined (with trigger), not Todo — see `embarch-token.md` §5.
