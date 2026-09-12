@@ -1,6 +1,7 @@
 # 039 — `embarch-ui/Cargo.toml` still cites a `design.md` that does not exist
 
-**State:** open
+**State:** claimed — leg 098, 2026-09-12.
+**Doc-size reserve for `ui`:** nothing in reserve; no compaction debt expected from this unit.
 **Source:** `ui/037`'s worker, found while re-grepping `embarch-ui` for stale-doc source-comment
 citations (2026-09-12).
 **Scope:** ui
