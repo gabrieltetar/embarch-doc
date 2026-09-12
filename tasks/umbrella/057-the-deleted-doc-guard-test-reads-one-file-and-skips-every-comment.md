@@ -45,14 +45,34 @@ asserts the repo-wide claim.
 
 ## Done when
 
-- [ ] The test reads **every** `src/*.rs`, not just `doctor.rs`.
-- [ ] Comments are no longer skipped wholesale.
-- [ ] `install.rs`'s `LEGACY_MARKER` is exempted **by name**, in the test, with the reason inline —
+- [x] The test reads **every** `src/*.rs`, not just `doctor.rs`.
+- [x] Comments are no longer skipped wholesale.
+- [x] `install.rs`'s `LEGACY_MARKER` is exempted **by name**, in the test, with the reason inline —
       an exemption a reader can see, not one that depends on a comment three files away.
-- [ ] The test actually fails when it should: inserting `let _ = "design.md";` into a production
+- [x] The test actually fails when it should: inserting `let _ = "design.md";` into a production
       line of a non-`doctor.rs` source file makes `cargo test` red. **Demonstrate this and say so in
       the report** — a guard that cannot be shown to fail is the defect being fixed.
-- [ ] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green.
+
+  Demonstrated: inserted `let _ = "design.md";` into `src/env.rs`'s `under_wsl2` (a non-`doctor.rs`
+  production line), and `cargo test no_check_text_names_a_document_the_four_file_split_deleted`
+  went red with `env.rs:10: line names a deleted doc: ...`. Reverted with `git checkout -- src/env.rs`
+  before committing.
+
+- [x] `cargo build`/`test`/`clippy --all-targets -- -D warnings` green.
+
+## What else this task did
+
+- Rewrote `install.rs`'s two doc/inline comments around `LEGACY_MARKER` so the *prose* no longer
+  spells `design.md` literally (it now points at `LEGACY_MARKER`'s value instead) — the comment at
+  the test-module call site (`install.rs:706-709`) is inside `#[cfg(test)] mod tests { ... }`, which
+  the widened test still excludes from scanning (as before, test code legitimately exercises these
+  strings), so it needed no further exemption once reworded.
+- Only real repo-wide hits found were in `embarch-umbrella/src/install.rs`, already covered by the
+  named `LEGACY_MARKER` exemption above; no other `umbrella` source file, and no hits in any other
+  repo, so no `inbox/` drop was needed.
+- Filed `embarch-umbrella decision 52` in `decisions/reporting.md` (doc/doctor.md is in blocked
+  reserve, per this task's own note) and indexed it in `decisions.md`; added a `changelog.d/`
+  fragment.
 
 **Doc-size note:** `embarch-umbrella/decisions/doctor.md` is at 90.2% (1,206 B left) and filed
 against blocked `tasks/umbrella/048` — stay out of it.

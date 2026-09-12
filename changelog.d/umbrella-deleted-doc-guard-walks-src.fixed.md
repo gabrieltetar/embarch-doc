@@ -1,0 +1,1 @@
+- fixed: `umbrella`'s deleted-doc guard test now scans every `src/*.rs`, comments included, not just `doctor.rs` with comments skipped ([decision 52](../embarch-umbrella/decisions/reporting.md)).
