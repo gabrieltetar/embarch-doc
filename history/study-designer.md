@@ -16,6 +16,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `spec.md` §4 now states the real seal order (steps/streams grouped, then protocols); `record_checks` added to both field tables.
 - `limits.rs`: `MAX_RECORD_MAGIC_LEN`/`MAX_DECODERS_PER_STUDY` doc comments were spliced together; restored to their own constants.
 - `interfaces/limits.md` now lists `MAX_RECORD_MAGIC_LEN`/`MAX_BAD_RECORDS_REPORTED`; a full pass found no further gap.
 - `Sample::rx_utc_ms` is bench uptime, not UTC; three contracts claiming a resync no firmware performs are corrected. [Decision 72](../embarch-study-designer/decisions/versioning.md).
