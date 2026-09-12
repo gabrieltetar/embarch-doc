@@ -203,7 +203,7 @@ Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **
 
 **Reading and building are safe and frequent; anything that reaches a board — or rewrites what EmbArch remembers about one — should be a decision you make.** That is the whole surface, all 29 tools, split for `.claude/settings.local.json`:
 
-- **allow** — reads, and host-side builds that touch no hardware: `alerts`, `build`, `build_dev_bench`, `dev_bench_hello`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `serial_log`, `status`, `study_gatt_data`, `study_power_data`, `study_status`, `study_stream_data`, `study_watch`, `study_waveform_data`
+- **allow** — reads, and host-side builds that touch no hardware: `alerts`, `build`, `build_dev_bench`, `dev_bench_hello`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `serial_log`, `status`, `study_status`, `study_stream_data`, `study_watch`
 - **ask** — reaches a board, or writes what EmbArch has recorded about one: `build_and_flash`, `build_and_flash_dev_bench`, `declare_signal`, `dev_bench_link`, `enroll_probe`, `flash`, `flash_dev_bench`, `remove_signal`, `reset`, `reset_dev_bench`, `run_study`, `validate`
 
 **`run_study` is the one to be deliberate about**: with `reflash` it builds and flashes from your working tree *as it currently stands*, on both boards. `validate` only re-checks an enrolled board's identity, but it does attach to the probe, so it sits with the rest.

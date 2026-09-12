@@ -27,10 +27,22 @@ A refusal names every bound it exceeds — field, count, limit — a string in *
 
 **This inherits the artifact-transfer gap in a second place and does not fix it**, named here rather than discovered later; [../open.md](../open.md) is where it is tracked.
 
-`study_stream_data` replaces the three fixed per-channel tools, mirroring Core's collapse of three routes into one parameterised one. **The three stay as aliases for one release** rather than breaking an agent's working invocation mid-flight. `list_study_streams` names what a study actually captured, since an agent that must *guess* a tap name to read one has been handed a worse tool than it had. Two rules the implementation settled:
+`study_stream_data` replaces the three fixed per-channel tools, mirroring Core's collapse of three routes into one parameterised one. **The three stayed as aliases for one release** rather than breaking an agent's working invocation mid-flight. `list_study_streams` names what a study actually captured, since an agent that must *guess* a tap name to read one has been handed a worse tool than it had.
+
+> **Retired 2026-09-11 (`tasks/suite/015`).** `study_power_data`, `study_waveform_data` and
+> `study_gatt_data` are gone, with `get_study_power_data`/`get_study_waveform_data`/`get_study_gatt_data`
+> on `embarch-core-client` and the `study-power-data`/`study-waveform-data`/`study-gatt-data` CLI
+> subcommands. **The grant above could not expire on its own**: `v0.1.0` is still the suite's only
+> release, so "one release" had no closing edge and nothing tracked it. What forced the call is the
+> second bullet below — the aliases are the suite's only study-read path that *structurally cannot
+> report a truncated capture*, so every extra day they stood was a day an agent could be handed a
+> short capture that read as complete. One caller existed anywhere (`embarch-ui`'s GATT download);
+> it was repointed at `study_streams` + `get_study_stream` in the same change.
+
+Two rules the implementation settled:
 
 - **`truncated` is what the listing is *for*.** It is set both by a retention rotation deleting a segment and by a close reporting a non-zero drop count — two different losses a reader cares about identically. A listing that dropped the flag would hand back a capture that reads complete and is not, which is worse than no listing.
-- **The aliases' descriptions were updated, not frozen.** The don't-move-ground-under-a-live-client posture protects a *working invocation* — same name, same params, same bytes. **It does not protect stale prose**, and one alias's text still described an `Action` retired several schema versions earlier. Leaving a description that is simply false is the mislabelling class this whole area keeps closing.
+- **The aliases' descriptions were updated, not frozen.** The don't-move-ground-under-a-live-client posture protects a *working invocation* — same name, same params, same bytes. **It does not protect stale prose**, and one alias's text still described an `Action` retired several schema versions earlier. Leaving a description that is simply false is the mislabelling class this whole area keeps closing. *(Moot since the retirement above; kept because the rule it states outlives the tools it was stated about.)*
 
 ### 40 — A reflash selector, and this crate will not move an engineer's tree
 `reflash` is `none` (default) / `dev-bench` / `dut` / `both`. Default `none` because flashing is the destructive-ish half and **a study that merely observes a board you just flashed by hand should not silently reflash it**.

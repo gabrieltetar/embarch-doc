@@ -14,7 +14,24 @@ The consuming half of `embarch-study-designer` decision 39 and of `embarch-outpo
 
 **A second serial port belongs to a wire, not a device.** A direct-route signal tap is a bridge with the DUT's TX pin on it and nothing else, so it takes **neither lock** — blocking a `/flash` on a read-only listener would invent contention that does not exist — while its lifetime stays bounded by the study.
 
-**`streams/` replaces the three fixed CSVs as paths**, written incrementally with **raw bytes always before any decode**, which is what makes a run with a bad layout recoverable. `streams/index.json` exists because the aliases cannot otherwise resolve from disk: the old handlers read fixed filenames, while an alias must answer *which tap is the power tap* from a handler with no `Study` in hand, since Core keeps no resident copy.
+**`streams/` replaces the three fixed CSVs as paths**, written incrementally with **raw bytes always before any decode**, which is what makes a run with a bad layout recoverable. `streams/index.json` exists because a handler has no `Study` in hand — Core keeps no resident copy of a finished study — so the name a caller asks for has to resolve to a file off disk. That is also what stops a tap name escaping the streams directory: only a name the index already carries resolves to anything.
+
+> **Retired 2026-09-11 (`tasks/suite/015`).** `GET /study/{id}/power-data`, `/waveform-data` and
+> `/gatt-data` — kept as aliases for one release — are gone, along with `serve_alias`,
+> `StreamIndex::find_alias`, `alias_for`, and the persisted `alias` field on every
+> `streams/index.json` entry and on `GET /study/{id}/streams`'s response. The route sweep is 23 cases
+> over 22 registered routes.
+>
+> **Two things this settled that the grant had left open.** `alias_for` mapped a `PowerFrontEnd`
+> source to `"power"` — a capture that cannot exist, since power profiling is deferred with no
+> hardware ordered. And `serve_alias`'s **pre-`streams/` on-disk fallback was dead code**: all 50
+> studies under this machine's `study_results/` carry a `streams/index.json` [measured 2026-09-11],
+> so the branch that reads `data.csv`/`waveform.csv`/`gatt.csv` at the old fixed paths had nothing
+> left to serve. That is evidence from one machine rather than proof about all of them — but this
+> suite has shipped exactly one release, and it is the release that wrote `streams/`.
+>
+> `streams/index.json` itself stays. Resolving the aliases was its second job; the name → file
+> mapping in the paragraph above was always the load-bearing one.
 
 **A manifest is bound by the study's own flash and verified by build ID** — **selection whose lifetime is that study**, never a persisted "current firmware" record. On mismatch Core writes the raw stream and **renders nothing**: rendering against the nearest available manifest produces a trace that is completely readable and completely wrong, relabelling every marker and thread. Loud beats plausible. It rides as a sibling of `firmware` on the call that already carries the artifact, parsed **before** the flash so a build problem is reported while the person who ran the build is watching, stored **after** it succeeds, and **keyed per chip** because `/flash` also writes the bench's firmware. Refusal costs the *names*, never the capture.
 

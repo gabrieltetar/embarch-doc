@@ -19,7 +19,7 @@ embarch-api study-stream-data <study_id> --name <tap> --out capture.csv
 
 **Read `list-study-streams` before you read a capture.** It lists every capture the study declared, how many bytes each wrote, and — **the column that matters** — whether it was **truncated**. A truncated capture is a short one: either retention rotation deleted an older segment, or the bench reported dropping records. **Nothing else in the suite will tell you, and a short capture read as a complete one is the failure this whole area is built to prevent.** A capture listed with 0 bytes was declared and produced nothing, **which is a different problem from one that was never declared.**
 
-Add `--raw` to a fetch for the byte-for-byte bytes instead of the rendered CSV, and use `--out` rather than piping when a capture is not text. The older per-channel commands still work for one release and **cannot report truncation.**
+Add `--raw` to a fetch for the byte-for-byte bytes instead of the rendered CSV, and use `--out` rather than piping when a capture is not text. **The older per-channel commands are gone** — `study-power-data`, `study-waveform-data` and `study-gatt-data` were retired 2026-09-11, because they could not report truncation and `study-stream-data` can.
 
 ## 2. Saying which firmware a study is for
 
