@@ -24,7 +24,14 @@ Dev-bench firmware may be bare-metal and its runtime was undecided when this was
 
 Resolved over native embedded Rust and `zephyr-lang-rust` because the nRF54 family splits sharply by variant: nRF54L15 (single Cortex-M33) has a workable Rust path via existing `zephyr-lang-rust` samples on comparable Nordic parts, but nRF54H20's mandatory multi-core `sysbuild` build isn't a proven fit for that project's west-module/CMake integration. Either way Zephyr's BLE host stays a C API reached through generated bindings, so the BLE-heavy parts wouldn't be idiomatic Rust regardless. Going C sidesteps the split.
 
-This crate cross-compiles as a `#![no_std]` staticlib for the target ABI, exposing `extern "C"` functions to build/serialize/deserialize `Study`/`Step`; `cbindgen` generates the C header from the Rust source so it cannot drift by hand. The `postcard` encode/decode logic (decision 3) stays inside the compiled Rust — C calls into it rather than re-implementing the wire format, which is what stops this becoming the three-independent-definitions problem decision 1 exists to avoid.
+This crate cross-compiles as a `#![no_std]` staticlib for the target ABI, exposing `extern "C"` functions to build/serialize/deserialize `Study`/`Step`.
+
+> **Corrected 2026-09-11 (`tasks/suite/014`). Two sentences that stood here were false, and both were false in the direction that makes the C-side mirrors look safe** — which matters because the next person to bump a wire type reads this entry to find out how protected they are.
+>
+> - It said *"`cbindgen` generates the C header from the Rust source so it cannot drift by hand."* **There is no `cbindgen` anywhere in any repo** — only an open to-do in this crate's `README.md`. `embarch-dev-bench/app/src/study_ffi.h` is hand-written, and `study_ffi_real.c` re-declares the `essd_*` signatures a second time, saying in its own comment that both sides are kept in sync by hand. It has always been able to drift by hand; nothing checks it.
+> - It said *"C calls into it rather than re-implementing the wire format, which is what stops this becoming the three-independent-definitions problem decision 1 exists to avoid."* **The re-implementation is shipped, and it is roughly 3,000 lines**: `serial_protocol.c` (2,066 lines of hand-written varint/zigzag/COBS/CRC-32 postcard decode), `eap.h` (333 lines, whose own header comment says it mirrors `src/eap.rs` field for field) and `eap_interp.c` (609 lines). Decision 1's problem was not avoided here; it was accepted, undocumented.
+>
+> **What the boundary actually is**, stated so it is not re-derived wrongly: one live staticlib link, a **hand-written** C header and codec kept in step by hand and pinned only by the cross-side byte tests, and an FFI surface whose sole reaching caller is `study_ffi_schema_version()` — `essd_study_decode_and_verify` and `essd_study_decode_full` have **no caller in any repo**. Whether the staticlib earns its place for one `u32` is a separate, still-open call: `tasks/suite/032`.
 
 ### 8 — A sibling-repo path dependency, not a published crate and not a git reference
 
