@@ -1,6 +1,8 @@
 # 015 — Retire the three fixed-channel study-data aliases, kept "for one release" on a surface strictly worse than its replacement
 
-**State:** open
+**State:** open — announced 2026-09-11 by leg 092, `ts` `1789189358.707879`, 30-minute window per
+`embarch-fleet/ops.md` §4. If this leg ends before the window closes, **read the thread and complete
+the window rather than restarting it.**
 **Source:** suite review pass 2026-09-06, dimension 6 (deletion candidates). Code-confirmed, with a whole-suite caller grep.
 **Scope:** suite
 **Hardware:** none. Route retirement and one UI call repointed; no board, no study.
