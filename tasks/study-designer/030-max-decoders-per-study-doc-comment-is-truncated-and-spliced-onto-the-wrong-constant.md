@@ -1,6 +1,6 @@
 # 030 — `MAX_DECODERS_PER_STUDY`'s doc comment is truncated mid-sentence and spliced onto a different constant
 
-**State:** claimed — leg 089, 2026-09-11.
+**State:** done — leg 089, 2026-09-11.
 
 **Doc-size reserve for `study-designer`:** `embarch-study-designer/open.md` is at 89.2%
 (4,569/5,120 B, 551 B left) and its compaction task `tasks/study-designer/026-compact-study-designer.md`
@@ -59,8 +59,25 @@ constant is the one way that assertion can still mislead a reader who goes to th
 
 ## Done when
 
-- [ ] `MAX_RECORD_MAGIC_LEN` and `MAX_DECODERS_PER_STUDY` each carry their own complete doc comment.
-- [ ] No sentence in either ends mid-clause.
-- [ ] No constant's value changes and no public item is added or removed.
-- [ ] A pass over the rest of `src/limits.rs` for the same splice shape is reported here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] `MAX_RECORD_MAGIC_LEN` and `MAX_DECODERS_PER_STUDY` each carry their own complete doc comment.
+- [x] No sentence in either ends mid-clause.
+- [x] No constant's value changes and no public item is added or removed.
+- [x] A pass over the rest of `src/limits.rs` for the same splice shape is reported here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Resolution
+
+`MAX_RECORD_MAGIC_LEN` at `:98` now carries only its own comment (the "longest record
+magic" text). `MAX_DECODERS_PER_STUDY` at `:107` (renumbered from its old `:116` after
+the trim) got its full doc comment back, finished from `interfaces/limits.md`'s row for
+it as instructed, rather than composed fresh: "named payload layouts one study resolves
+out of the firmware repo's `study-structs.toml`. Bounded by what a study can actually
+reference: a decoder is only reachable through a tap's `StreamEncoding::Struct`, and
+there are at most that many taps — the arity of the thing, not a capacity guess."
+
+**Full-file pass:** read all 227 lines of `src/limits.rs` end to end. No other constant's
+doc comment is truncated mid-clause or carries another constant's prose — this was the
+only splice in the file.
+
+No constant value changed; no public item added or removed. `cargo build`, `cargo test`,
+`cargo clippy --all-targets -- -D warnings` all clean.
