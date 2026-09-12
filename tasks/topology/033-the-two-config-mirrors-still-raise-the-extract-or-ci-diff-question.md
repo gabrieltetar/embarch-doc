@@ -1,6 +1,6 @@
 # 033 — `CoreConfig`/`ProjectConfig` still mirror `embarch-api` internals, and the extract-or-CI-diff question is unanswered
 
-**State:** open
+**State:** claimed by agent/topology/033-config-mirrors, 2026-09-12 01:32
 **Source:** `embarch-topology/open.md` — "**The config mirrors of `embarch-api`-internal logic are
 untouched by this crate's existence** and still raise the extract-or-CI-diff question
 independently. … **`CoreConfig`/`ProjectConfig` mirror internals, not a shared concern the way
