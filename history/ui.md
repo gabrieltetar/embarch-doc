@@ -21,6 +21,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- `Cargo.toml` comments repointed off nonexistent `design.md` files to real spec/decisions.
 - Fixed: `embarch-ui` comments citing the nonexistent `milestone-1.md` repointed at real decisions or dropped.
 - `embarch-ui` source comments repointed off a pre-split `design.md` to `decisions.md`/topic files.
 - Run dialog and trace-tab notes now cite `decisions.md`, not the pre-split `design.md` that never existed here.
