@@ -1,6 +1,17 @@
 # 060 — `embarch-api/open.md` is 221 bytes inside its reserve floor
 
-**State:** blocked — leg 074, `agent/api/060-compact-api`. `open.md` cut 4,208 → 4,124 B (84 B of
+**State:** done — closed by leg 085, 2026-09-11, at `api/067`'s fold. **Not by a further squeeze:
+the file left reserve on its own.** `embarch-api/open.md` is **3,469 B against a 5,120 B cap —
+67.8%, clear of the 3,920 B reserve floor by 451 B**, and `check-doc-size.py --pressure` now
+reports it `PAID ... close its item`. Later units removed bullets this file had recorded as open
+questions once they stopped being open; none of them was a compaction pass. **The finding below
+stands and is the reason this task is worth reading**: two passes each squeezed this file to
+within single digits of the floor and each deleted a fact recorded nowhere else in the suite, and
+the argument that the 5 KB cap is the wrong lever (made here and independently in
+`tasks/core/036`) was never answered — it is `DOC-BUDGET.md`'s call and `DOC-BUDGET.md` is
+owner-reserved. Closing this task closes a byte-count debt, not that argument.
+
+**Previous state:** blocked — leg 074, `agent/api/060-compact-api`. `open.md` cut 4,208 → 4,124 B (84 B of
 connective filler); still 204 B inside reserve. Debt dated 2026-09-24, left unpaid — no safe
 further cut or split found without risking a repeat of `api/026`'s lost fact; see finding below.
 Unparks when either: `DOC-BUDGET.md`'s cap is revisited (the owner's call, argued for below) or a

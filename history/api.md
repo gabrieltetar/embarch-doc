@@ -47,7 +47,7 @@
 - `tools.md`'s Dev bench table now lists `reset_dev_bench`; a new test derives tool/subcommand lists from source and checks they match.
 - Build log capture no longer stops silently at a non-UTF-8 byte; the rest of the log survives and a lossy line is marked.
 - `dev-bench-hello --json`'s `schema_version` key no longer collides with the envelope stamp; renamed `dev_bench_schema_version`.
-- `token_discovery`'s WSL2 check now delegates to `embarch_topology::detect_wsl2` instead of its own narrower rule ([decisions](../embarch-api/decisions/core-link.md) 62).
+- `token_discovery`'s WSL2 check now delegates to `embarch_topology::detect_wsl2` instead of its own narrower rule ([decisions](../embarch-api/decisions/client-crate.md) 62).
 - `dev-bench-hello` CLI subcommand added; restores CLI ⊇ MCP, decisions/shape.md 61.
 - `EnrolledBoardResponse` no longer drops `link_port_interface`; it and `AlertResponse` are now pinned against a JSON literal each.
 - Six MCP tool descriptions citing the retired `design.md` now cite `<repo> decision N`, verified; `enroll_probe`'s wrong decision number fixed.
@@ -65,6 +65,7 @@
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions.md)).
 
 ### Decided
+- Decision 37/38 now says both signal-route mirrors are pinned; the crate's own lifecycle decisions moved to decisions/client-crate.md.
 - `list_serial_ports`/`serial_log`'s no-auto-fallback posture is now decision 70, in a new `decisions/hardware-selection.md` split off `tool-wrapping.md`.
 - `dev_bench_hello` now states and reuses `serial_timeout`, not inherited `status_timeout` (api decision 68); duration stays unmeasured/assumed.
 - api: decision 66 records why `embarch-core-client` stays in this repo, not a tenth; `modules.md` row corrected post-decision-56. `decisions/core-link.md`
