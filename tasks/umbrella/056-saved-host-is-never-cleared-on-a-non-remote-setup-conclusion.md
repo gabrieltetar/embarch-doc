@@ -1,6 +1,6 @@
 # 056 — `saved.host` outlives the run that gave it, and whether `apply_plan` should drop it is unsettled
 
-**State:** open
+**State:** claimed by agent/umbrella/056-saved-host-clearing, 2026-09-12 01:21
 **Source:** `embarch-umbrella/open.md` — "**`saved.host` is still never cleared on a non-`remote`
 `setup` conclusion** (decision 48 in `decisions/sticky-host.md`): an old `--host` can outlive the run
 that gave it. … whether `apply_plan` should drop it on a `local`/`wsl-host` conclusion is not
