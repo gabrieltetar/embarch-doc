@@ -38,6 +38,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `apply_plan` now clears `saved.host` on a non-`remote` `setup` conclusion (decision 51, sticky-host.md).
 - umbrella spec.md: `setup`/`init` end with next-step pointers, not `doctor` — [spec.md](../embarch-umbrella/spec.md)
 - `spec.md` now says seventeen `doctor` checks, matching the code; eighteenth named as designed and unbuilt.
 - `deploy-core` compares content digests, not byte counts, and fails on a missing elevated transcript instead of reporting "landed".
