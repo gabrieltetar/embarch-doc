@@ -15,6 +15,7 @@
 - `embarch-dev-bench`'s 180 KB `design.md` became spec.md, open.md and eight `decisions/<mission>.md` files — 81 KB, all 43 decision numbers intact, no file over 11.8 KB.
 
 ### Fixed
+- `serial_protocol.h`'s 48 dead `design.md §3` cites now point at each cited repo's `decisions.md`.
 - dev-bench: `.eap` trio's dead `design.md §3` cites repointed to `embarch-study-designer` decisions.
 - A scan-census overflow no longer hides behind `(truncated)`; both markers write when both conditions hold.
 - dev-bench: `fail_reason`'s name-list cut is now marked, and bounded before writing (decisions/scanning.md #45).
