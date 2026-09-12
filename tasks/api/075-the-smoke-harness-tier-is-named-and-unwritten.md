@@ -1,6 +1,6 @@
 # 075 — Decision 30's smoke-harness tier is named and still unwritten
 
-**State:** open
+**State:** claimed by agent/api/075-smoke-harness-tier, 2026-09-12 01:32
 **Source:** `embarch-api/open.md` — "**The smoke harness (decisions/tests.md 30) is
 named, unwritten.** Six mocked criteria live in `tests/` (decisions/tests.md 46);
 end-to-end is `#[cfg(unix)]`, Windows gets direct tests."
