@@ -42,8 +42,16 @@ leaked somewhere it did not — the audit the decision promises is the thing the
 
 ## Done when
 
-- [ ] The sentence's two counts agree with each other and with the source.
-- [ ] Declaration sites and call sites are not conflated.
-- [ ] The `.svg`'s literal colour is named as an exception or as work, with a reason.
-- [ ] No rendered colour changes.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] The sentence's two counts agree with each other and with the source.
+- [x] Declaration sites and call sites are not conflated.
+- [x] The `.svg`'s literal colour is named as an exception or as work, with a reason.
+- [x] No rendered colour changes.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Resolution
+
+Decision 25 rewritten: two declarations (`style.css:44` dark, `:73` light), two call sites
+(`style.css:124` sidebar wordmark, `index.html:34` header glyph). `embarch-mark.svg`'s literal
+`#e74c3c` is named explicitly as a deliberate exception, not a third call site — a standalone SVG
+file has no cascade to inherit a custom property from. No CSS/HTML/SVG asset touched; doc-only
+change.
