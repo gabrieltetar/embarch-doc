@@ -21,7 +21,6 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 
 ## Missing authoring paths
 
-- **Decision 45's declared GATT table was designed, never built** — no `gatt` field on `Study`, no `DeclaredGatt` type, no reconciliation against live discovery. Deferred with no trigger fired yet: the first study that needs to say which GATT table it was authored against. See [decisions/declares.md](decisions/declares.md) 45.
 - **`Study.protocols` has no path in the Study Designer UI.** Parse and resolve are public and the field is plain, so a study can carry a protocol programmatically or from hand-authored JSON; the builder emits an empty list, because the row type has no protocol variant and **inventing one ahead of the first real manifest would be designing against imagined authoring.**
 
   **The trigger fired on 2026-08-27**: a real engineer wrote a real manifest against a real DUT, driving its Batch Data Service through 34 request/pump/consume cycles on a live link. It was authored by hand and resolved programmatically, exactly as this said was possible — and **the study was built by a throwaway Rust program calling this crate rather than by anything in the suite**, which is the gap. Now with a worked example of what the missing path would have to produce. Two things that first manifest taught are recorded in [interfaces/eap.md](interfaces/eap.md).
