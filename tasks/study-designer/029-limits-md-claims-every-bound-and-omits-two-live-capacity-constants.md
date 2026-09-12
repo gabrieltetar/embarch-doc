@@ -40,9 +40,17 @@ because the absence reads as "no such bound exists".
 
 ## Done when
 
-- [ ] Both constants appear in the first table with their bound target and an honest
+- [x] Both constants appear in the first table with their bound target and an honest
       `[measured <date>]` / `[assumed]` marker.
-- [ ] A full pass over `src/limits.rs`'s public constants is done and any further gap is either
+- [x] A full pass over `src/limits.rs`'s public constants is done and any further gap is either
       filled or named in this task file.
-- [ ] No constant's value changes.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] No constant's value changes.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Full-pass result
+
+Walked all 46 public constants in `src/limits.rs` against `interfaces/limits.md`'s two tables.
+Only the two named in this task (`MAX_RECORD_MAGIC_LEN`, `MAX_BAD_RECORDS_REPORTED`) were missing;
+every other constant already had a row. Both new rows marked `[assumed]` — neither doc comment
+establishes a measurement, just a sizing rationale (record-magic headroom over the 4-byte real
+magics; the offset-list cap being about pattern-detection, not the true damaged-record count).
