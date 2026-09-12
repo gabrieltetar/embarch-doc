@@ -1,6 +1,6 @@
 # 019 — the EAP trio cites an `embarch-study-designer/design.md §3` that does not exist
 
-**State:** claimed
+**State:** done
 **Source:** leg 099's refill sweep, 2026-09-12. Verified by reading both sides.
 **Scope:** dev-bench
 **Hardware:** none
@@ -39,16 +39,19 @@ repo root only, and these are C comments.
 
 ## Done when
 
-- [ ] `grep -n "design\.md\|milestone-" app/src/eap.h app/src/eap_interp.h app/src/eap_interp.c`
+- [x] `grep -n "design\.md\|milestone-" app/src/eap.h app/src/eap_interp.h app/src/eap_interp.c`
       returns zero.
-- [ ] Each becomes `` `embarch-study-designer` decision N `` — the cross-repo form settled in
-      `api/052` — with N **unchanged** and confirmed resolvable in that repo's `decisions.md`.
-- [ ] The remaining six files' counts are filed as `tasks/dev-bench/NNN-*` follow-ups, each marked
-      as carrying unverified decision numbers.
-- [ ] Host-side checks green. **This repo's Zephyr `tests/unit` ztest suite cannot be built from a
+- [x] Each becomes `` `embarch-study-designer` decision N `` — the cross-repo form settled in
+      `api/052` — with N **unchanged** and confirmed resolvable in that repo's `decisions.md`
+      (58, 59, 61 -> `decisions/protocols.md`; 60, 62 -> `decisions/protocol-exec.md`).
+- [x] The remaining six files' counts are filed as `tasks/dev-bench/020` through `025`, each
+      marked as carrying unverified decision numbers.
+- [x] Host-side checks green. **This repo's Zephyr `tests/unit` ztest suite cannot be built from a
       worker's worktree** (no `west`, no `ZEPHYR_BASE`) — that is a standing, known debt, not
-      something this unit introduces or is expected to clear. Comment-only changes cannot alter
-      firmware behaviour; say plainly in your report what you could and could not run.
+      something this unit introduces or is expected to clear; not run here either. Verified
+      instead: `gcc -fsyntax-only` on `eap.h`/`eap_interp.h` (no Zephyr headers needed) is
+      clean, and comment-only edits cannot alter firmware behaviour. No `Cargo.toml` exists in
+      this repo, so `cargo build`/`test`/`clippy` do not apply.
 
 **Doc-size note:** `embarch-dev-bench/open.md` (93.4%) and `spec.md` (92.4%) are both in reserve and
 filed against blocked `tasks/dev-bench/012` — stay out of both.
