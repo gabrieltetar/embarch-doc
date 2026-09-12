@@ -24,6 +24,6 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/budgets.md](decisions/budgets.md) | 44, 45 | How long each remote call is given, and how one that did not come back is named |
 | [decisions/schema-skew.md](decisions/schema-skew.md) | 24, 33, 34, 35, 36 | What checks 11 and 15 compare, where each number comes from, and why skew warns |
 | [decisions/mirrors.md](decisions/mirrors.md) | 15, 16, 20 | The liftable-copy pattern, and what survived `embarch-topology` |
-| [decisions/deploy.md](decisions/deploy.md) | 32 | `deploy-core`, and the verification that is the point of it |
+| [decisions/deploy.md](decisions/deploy.md) | 32, 50 | `deploy-core`, and the verification that is the point of it |
 
 **Decisions 27 and 29 are one decision under two numbers** — an insertion renumbered it. See [release.md](decisions/release.md).
