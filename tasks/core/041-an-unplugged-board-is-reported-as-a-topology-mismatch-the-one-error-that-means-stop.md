@@ -1,6 +1,6 @@
 # 041 — An unplugged board is reported as a `topology mismatch`, the one error whose whole meaning is "stop and get a human"
 
-**State:** open
+**State:** claimed — leg 085, 2026-09-11, `agent/core/041-not-attached-is-not-a-mismatch`
 **Source:** leg 085, 2026-09-11. Hit live while selecting the bench unit `tasks/api/059`, with both
 boards unplugged and `GET /status` reporting `"probes": []`.
 **Scope:** core
