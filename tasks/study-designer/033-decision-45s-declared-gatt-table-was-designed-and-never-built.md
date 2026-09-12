@@ -33,13 +33,25 @@ longer advertise the field and the honest answer here may simply be the trigger-
 
 ## Done when
 
-- [ ] Either the type and field exist with round-trip tests, or `decisions/declares.md` carries a
-      named trigger — not both, and not neither.
-- [ ] If built: nothing in the docs or the code implies the declared table is reconciled against
-      live discovery, because it is not.
-- [ ] `embarch-study-designer/open.md`'s bullet is struck or replaced by the trigger.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
+- [x] Either the type and field exist with round-trip tests, or `decisions/declares.md` carries a
+      named trigger — not both, and not neither. **Named-trigger deferral kept**: no code was
+      built (correctly — decision 45 says building it before a real study needs it would be
+      designing against imagined authoring), and `decisions/declares.md` 45 now states the trigger
+      itself ("the first study that needs to say which GATT table it was authored against")
+      instead of pointing at open.md for it.
+- [x] If built: n/a — not built.
+- [x] `embarch-study-designer/open.md`'s bullet is struck or replaced by the trigger. Struck: the
+      trigger now lives at its source of truth, `decisions/declares.md`, so open.md no longer
+      carries a second copy.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green; gate green;
       `changelog.d/` fragment.
+
+## Notes
+
+`tasks/study-designer/008` had already landed before this task started (see
+`decisions/declares.md` 45 and `interfaces/types.md`'s existing "designed, never built" framing) —
+docs no longer advertise the field as real, confirming the task's own hint that the honest answer
+here is the trigger-deferral rewrite, not a build.
 
 **Reserve note:** `embarch-study-designer/open.md` is at **97.5%** (130 B left) and `spec.md` at
 91.3%, both behind blocked compaction tasks. **Striking a bullet from `open.md` shortens it, which
