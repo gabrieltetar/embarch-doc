@@ -11,6 +11,7 @@
 - `history/<scope>.md`, assembled per sub-project from `changelog.d/` fragments by `scripts/build_changelog.py`, capped at 20 KB with older windows rolled to `history/archive/`.
 
 ### Changed
+- `suite/decisions.md` compacted out of its reserve, 9,472 -> 9,035 B, with both decisions' reasoning, measurements and reversal conditions intact.
 - `suite/user-guide.md` tightened by 317 B with no fact removed; its §7 split is blocked by `DOC-PROTOCOL.md`, not `DOC-BUDGET.md` (`tasks/doc/045`).
 - One definition of the Study Designer's built-in actions; the picker renders what it is served ([decision 73](../embarch-study-designer/decisions/authoring.md)).
 - Suite-wide decisions have a home, `suite/decisions.md`. `embarch.md` §5's rustfmt bullet moved into it verbatim, and §5 reads as five one-line principles again.
