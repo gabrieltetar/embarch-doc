@@ -1,6 +1,8 @@
 # 031 — `suite/decisions.md` entered its reserve on its second decision, and the file is two decisions old
 
-**State:** open
+**State:** open — announced 2026-09-11 by leg 092, `ts` `1789188682.978919`, 30-minute window per
+`embarch-fleet/ops.md` §4. If this leg ends before the window closes, **read the thread and complete
+the window rather than restarting it.**
 **Source:** `tasks/suite/028`'s own fold, leg 087, 2026-09-11. `DOC-COMPACTION.md` §2 — the commit
 that spends the reserve is the one that files the debt, and this is that filing.
 **Scope:** suite
