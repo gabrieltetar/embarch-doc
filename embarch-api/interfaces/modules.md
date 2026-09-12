@@ -23,6 +23,7 @@ Current truth: [spec.md](../spec.md). Why: [decisions.md](../decisions.md).
 | `logging.rs` | the rolling per-user logfile |
 | `json_out.rs` | the one place a `serde_json` value becomes text, so the only place `schema_version` is stamped |
 | `tests/` | the recorded acceptance criteria, one file per area ([decisions](../decisions/tests.md) 46). **No hardware, no live Core, no added dependency** — a mock Core on loopback is the ceiling. `versions` is pinned to answer with no config at all |
+| `dev_bench.rs` | turns `[dev_bench]` config into a `resolve::Resolved`, reusing `build.rs`'s `BuildLocks`/`run_build` and `embarch-core-client`'s `CoreClient::flash` unchanged, for `build_dev_bench`/`flash_dev_bench`/`build_and_flash_dev_bench`/`reset_dev_bench`. Deliberately outside `[[projects]]` ([decisions](../decisions/dev-bench.md) 32, 45) |
 | `crates/embarch-core-client/` | `CoreClient` — every Core endpoint, bearer injection, per-call timeouts, the topology-branched flash transport, typed `409`/`404` — plus token discovery and the study event stream, whose decoder is byte-fed with no I/O of its own. **A workspace member and default-member of this repo** (decision 56), not merely a path dependency — but `embarch-ui` still path-depends on it from outside this repo, so a change here reaches a repo this one does not own (decision 66) |
 
 One thing no row above captures: `main` puts the tokio runtime on a thread of its own, with a stack far past the default. Why, and the number: [spec.md](../spec.md) §5 and §7.
