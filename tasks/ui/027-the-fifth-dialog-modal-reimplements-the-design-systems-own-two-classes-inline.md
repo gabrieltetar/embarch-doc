@@ -1,6 +1,6 @@
 # 027 — `spec.md` says the `.dialog` modal is used in five places; the fifth re-implements both classes inline
 
-**State:** open
+**State:** claimed — leg 087, 2026-09-11.
 **Source:** refill sweep, leg 087, 2026-09-11. `embarch-ui/spec.md`'s "Design system" paragraph,
 checked against `assets/index.html`, `assets/style.css` and `assets/app.js`.
 **Scope:** ui
@@ -41,3 +41,10 @@ rule: a change to `.dialog` reaches four modals and silently skips the fifth.
 - [ ] `spec.md`'s sentence is true as written — or corrected, if the fifth modal turns out to be
       deliberately different.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Doc-size reserve in your sub-project (supervisor's dispatch note, leg 087)
+
+**No `embarch-ui` doc is in reserve** as of this dispatch — you have full headroom. **If your work
+puts one there** (past 90% of its cap), file `tasks/ui/<NNN>-compact-ui.md` in the same commit
+(`tasks/README.md` has the shape; `scripts/check-task-numbers.py --next ui` gives a safe number).
+Recording the debt is the job; paying it is not.
