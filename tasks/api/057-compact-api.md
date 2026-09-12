@@ -1,6 +1,23 @@
 # 057 — `embarch-api/decisions/zephyr.md` is in reserve after decision 63
 
-**State:** blocked
+**State:** claimed — leg 099, 2026-09-12. **Unparked as a verbatim split, not a shortening pass.**
+`.claude/leg.md` is explicit that a verbatim split restates nothing, so `In flux: yes` cannot forbid
+one — and this task's own `In flux:` paragraph already names the seam ("what a call may name and how
+it resolves" = decisions 12, 20, 21, 51, vs "what `board.yml`/app scanning trusts and how it's kept
+honest" = 13, 22, 63). The flux argument is entirely an argument against *rewriting* prose a
+near-term Zephyr unit will revise; it is not an argument against moving that prose unchanged into a
+second file. Meanwhile the file is **1,950 B past its cap**, not merely in reserve — the worst
+single entry in the whole ledger — so the park was costing more than it protected.
+
+**Dispatch note (leg 099): split, do not compact.** Move decisions 13, 22 and 63 **byte-for-byte**
+into a new sibling topic file under `embarch-api/decisions/`, leaving 12, 20, 21 and 51 where they
+are. Do not reword, merge, summarise or shorten a single decision body on either side of the seam —
+if a decision looks like it could be tightened, that is a separate unit and not this one. The
+`Must not delete:` list below is therefore satisfied automatically by construction; check it anyway.
+Repoint every inbound citation (`check-decision-refs.py` and a repo-wide grep for `decisions/zephyr`
+across `*.md` **and** source comments, which is where `ui/033`/`ui/039` kept finding the misses), and
+give the new file the same `Current truth:` header shape its siblings carry. If after the split
+either file is still in reserve, file the residue as a fresh `tasks/api/NNN-compact-api.md`.
 **Source:** `api/056`'s fix (decision 63, the `app/`/`apps/` scan) landed the
 same commit that had already put this file 1,232 B into its reserve band;
 `DOC-COMPACTION.md` §2
