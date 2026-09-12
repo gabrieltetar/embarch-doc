@@ -1,6 +1,9 @@
 # 040 — twenty-two source comments cite other repos' decision numbers as if they were `embarch-ui`'s
 
-**State:** claimed — leg 102, 2026-09-12, branch `agent/ui/040-foreign-decision-citations`.
+**State:** done — leg 102, 2026-09-12, branch `agent/ui/040-foreign-decision-citations`.
+
+All 22 citations re-attributed, both one-line adjacent fixes made, `embarch-ui` build/test/clippy
+green. See `## Done when` below for the count and the re-derivation.
 
 **Doc-size reserve for `embarch-ui`:** nothing in reserve — no file of this sub-project is
 inside the last 10% of its cap. If your work pushes one in, file
@@ -54,25 +57,35 @@ executable changes.
 
 ## Done when
 
-- [ ] Every one of the twenty-two carries its owning repo in the settled cross-repo form
+- [x] Every one of the twenty-two carries its owning repo in the settled cross-repo form
       `` `<repo>` decision N ``, with N unchanged and **the body confirmed to be about the thing the
       comment claims**. Report the count you checked against the count you changed; if they differ,
       the difference is the interesting finding.
-- [ ] This returns nothing:
+
+      Checked all 22, changed all 22 — no discrepancy. Twenty-one resolve to
+      `embarch-study-designer` (decisions 34, 36, 39, 40, 41, 44, 52, 53, 54, 55, 56, several cited
+      more than once across the 22 sites); `trace.rs:2474` resolves to `embarch-core` decision 30,
+      confirmed against `embarch-core/decisions/streams.md`'s decision 30 body (Core clearing a
+      signal port's stale input on open), matching the lead exactly.
+- [x] This returns nothing:
       ```
       grep -rnoE ".{25}decisions? [0-9]+(/[0-9]+)*" src/*.rs assets/app.js assets/index.html | grep -vE "embarch-[a-z-]+\`? decision" | grep -E "decisions? (2[7-9]|[3-9][0-9])"
       ```
-- [ ] `embarch-ui` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+      Confirmed empty.
+- [x] `embarch-ui` `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
 
 Two small adjacent things found in the same sweep. **Fix them only if they are genuinely one line
 each; otherwise say so in your report and leave them**, rather than growing this unit:
 
-- `src/study_designer.rs:543` — an error string reads `"captures {} , but no step…"`, a stray space
-  before the comma. It is operator-facing.
-- `src/snapshot.rs:93-97` — a comment says "the other three" and "four near-identical ones" beside a
+- [x] `src/study_designer.rs:543` — an error string reads `"captures {} , but no step…"`, a stray space
+  before the comma. It is operator-facing. Fixed, one line.
+- [x] `src/snapshot.rs:93-97` — a comment says "the other three" and "four near-identical ones" beside a
   **six**-call `tokio::join!`. Stale prose with no doc side. Count the calls yourself before
-  changing the number.
+  changing the number. Counted: six futures (`status`, `list_enrolled`, `alerts`, `dev_bench_port`,
+  `list_signals`, `list_serial_ports`); `status` is the one whose error is surfaced, so "the other
+  three" → "the other five" and "four near-identical ones" → "five near-identical ones". Fixed, one
+  line each.
 
 **Worktree note:** an `embarch-ui` worktree needs **three** sibling symlinks into its parent —
 `embarch-study-designer`, `embarch-api` **and `embarch-topology`**. The last is the trap: `Cargo.toml`
