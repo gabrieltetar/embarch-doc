@@ -38,12 +38,48 @@ rather than inventing a plausible number.
 
 ## Done when
 
-- Every source-comment `design.md` citation in `embarch-ui` is repointed at the correct
-  `decisions.md` / `decisions/<topic>.md` path, in the settled form.
-- Any comment whose claim matches no standing decision is listed here rather than repointed at a
+- [x] Every source-comment `design.md` citation in `embarch-ui` is repointed at the correct
+  `decisions.md` / `decisions/<topic>.md` path, in the settled form — except the two listed below,
+  which match no standing decision.
+- [x] Any comment whose claim matches no standing decision is listed here rather than repointed at a
   guess.
-- `cargo test` and `clippy --all-targets -- -D warnings` stay clean (comments only, so this should
-  be free).
+- [x] `cargo test` and `clippy --all-targets -- -D warnings` stay clean (comments only, so this was
+  free).
+
+## Two citations that match no standing decision (left unrepointed)
+
+Both claim "Core being unreachable is an expected, renderable state" as `decision 5`'s own
+"confirmed" reasoning. `embarch-ui decision 5` (`decisions/wiring.md`) is real but is about
+routing every hardware-adjacent call over HTTP+Bearer to Core — it says nothing about Core's
+unreachability being expected or "confirmed." No other `embarch-ui` decision states this either
+(checked `topology-tab.md`, `trace-view.md`, `shape.md`, `shell.md` bodies, not just headings).
+Left as `design.md`-citing prose rather than repointed at a guess, per this task's own instruction:
+
+- `src/logs.rs:58` — `// here too (design.md §3 decision 5's own "confirmed" reasoning)`
+- `src/snapshot.rs:73-75` — `/// renderable state (§ design.md decision 5's own "confirmed"
+  reasoning: Core down is not a crash)`
+
+## Also found, out of scope for this task (repointed or noted separately)
+
+Several `design.md`-adjacent citations turned out to be pointing at the *wrong* decision number
+once the cited decision's body was actually read (per this task's own warning, taking `core/008`
+as precedent) — all now fixed in this unit:
+
+- `src/main.rs`: `embarch-topology decision 14` → `embarch-core decision 25` (the retired
+  `GET /enroll` page and its `hw_lock`-bypass fix — topology's decision 14 is the human-enrollment
+  scope call, unrelated); `embarch-outpost decisions 9, 16` → `embarch-outpost decision 18` (named/
+  timed as two independent booleans lives in `decisions/clocks.md` 18, not manifest/hardware).
+- `src/study_designer.rs`: `embarch-ui decision 15` → `decision 14` (project-open state, twice);
+  `embarch-study-designer decision 34` → `decision 35` (the registry itself, not the authoring UI);
+  `... decision 39` (app.js, vendor services) → `decision 41`; `... decision 41` (app.js,
+  `target_name`) → `decision 43`; and one bare `(design.md §3 decision 14)` in a section banner
+  that was actually about the auto-declared transcript tap → `decision 15`.
+
+Also two references to a `milestone-1.md` file that no longer exists in `embarch-ui`
+(`assets/style.css` §4.3/§4.4, `assets/app.js` §4.5/§4.7) — left untouched since this task's scope
+is `design.md` citations specifically, and there's no obvious decisions.md mapping for a
+milestone-tracking doc. Dropped separately to `embarch-doc/inbox/` for whoever owns that judgment
+call.
 
 ## Explicitly not this task
 
