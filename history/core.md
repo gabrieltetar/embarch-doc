@@ -28,6 +28,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `embarch-core` src/bin comments: 12 bare `decision N` citations repointed to the right repo or number (checked ~150+, changed 13 lines across main.rs/api.rs/study.rs/elevate.rs/stream_store.rs).
 - `Cross.toml`/`release.yml` no longer cite the deleted `milestone-6.md`; point at `embarch-umbrella` decision 14 and open.md.
 - Decision 56's owed `hardware_id` doc comments landed on the two response types that exist; the third was filed to `embarch-topology`, not invented here.
 - `flash_backend.rs`'s `nrfjprog` retirement comment cited decision 50/2026-09-10; corrected to decision 54/2026-09-06.
