@@ -47,13 +47,13 @@ Today `embarch-api` runs under WSL2, Core native on Windows, same physical machi
 
 Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [interfaces/modules.md](interfaces/modules.md). `crates/embarch-core-client/` is a **workspace member** ([decisions](decisions/tests.md) 56), so one `cargo test`/`cargo clippy --all-targets` at the repo root reaches its tests; `embarch-ui` path-depends on it from outside that workspace — **a change there reaches a repo this one does not own.**
 
-`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` doesn't size the thread calling `block_on`, and no knob does ([decisions](decisions/core-link.md) 36).
+`main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` doesn't size the thread calling `block_on`, and no knob does ([decisions](decisions/client-crate.md) 36).
 
 ## 6. Security
 
 **Inbound is "whoever can spawn the process"** — MCP and CLI alike, no API key, bearer token or session at this layer. A deliberate simplification; [open.md](open.md) carries what it costs.
 
-**Outbound** is `EMBARCH_TOKEN`: config `token`, then `token_env`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../embarch-token.md). Whichever value resolves is attached by **one funnel** in `embarch-core-client`, the only place there that sends one ([decisions](decisions/core-link.md) 55).
+**Outbound** is `EMBARCH_TOKEN`: config `token`, then `token_env`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../embarch-token.md). Whichever value resolves is attached by **one funnel** in `embarch-core-client`, the only sender ([decisions](decisions/client-crate.md) 55).
 
 ## 7. Constants
 

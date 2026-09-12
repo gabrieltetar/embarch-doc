@@ -33,7 +33,7 @@ So all five move to config, and **none is defaulted**. A default would have to p
 **What stays a constant, legitimately:** the app directory name, which is dev-bench's own repo layout and identical for every vendor family, not a property of any board. And the build lock key stays fixed: *which* board it is now varies, but the bench is still one at a time.
 
 ### 68 — `dev_bench_hello` reuses `serial_timeout`, not `status_timeout`, and says why in the doc comment
-Filed here rather than in `decisions/core-link.md` (over cap, `api/061` blocked) because the question is specific to the dev-bench route, not the link's general shape.
+Filed here rather than in `decisions/client-crate.md` because the question is specific to the dev-bench route, not the client crate's general shape.
 
 `embarch-core-client`'s convention reuses one of five named budgets per call site with a doc comment stating why. Nine sites reuse `status_timeout` legitimately — a local-file read or an OS-cached USB descriptor, no hardware in the critical path. `dev_bench_hello` had inherited `status_timeout` by the same inertia, but its justification does not hold: the route opens the bench's serial link, runs the `Hello`/`HelloAck` handshake, and only then reads the boot log the bench flushes after that ack (`embarch-core` decision 37), before closing the link. That is link setup plus a live exchange with a board — the same shape of cost `serial_log` already budgets for on the same physical link — so the route now reuses `serial_timeout` (15 s) instead.
 

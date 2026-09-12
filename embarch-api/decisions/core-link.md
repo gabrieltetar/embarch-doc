@@ -2,9 +2,17 @@
 
 **Status:** active, 2026-09-06.
 
-Address resolution, artifact transfer, the shared client crate, and the stack that had to move. The event stream split out to [study-events.md](study-events.md) on 2026-09-07. The per-machine logfile split out to [logging.md](logging.md) on 2026-09-10.
+Address resolution and artifact transfer — how a call finds Core and gets bytes to it. The shared
+client crate itself (extraction, the auth funnel, the stack, older-Core parsing, one WSL2
+predicate, and the crate's home) split out to [client-crate.md](client-crate.md) on 2026-09-11,
+`api/067`, once this file went over cap — a real topical seam (address resolution vs. the crate
+that does the addressing) rather than a squeeze. The event stream split out to
+[study-events.md](study-events.md) on 2026-09-07. The per-machine logfile split out to
+[logging.md](logging.md) on 2026-09-10.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The event stream: [study-events.md](study-events.md). The logfile: [logging.md](logging.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The client
+crate: [client-crate.md](client-crate.md). The event stream: [study-events.md](study-events.md).
+The logfile: [logging.md](logging.md).
 
 ### 11 — `base_url = "auto"`, resolved per-process at first use
 The WSL2⟷Windows split reaches Core at a host-gateway IP that **changes across WSL2 restarts**, so a literal address in config is guaranteed to go stale — and did. Resolution belongs here rather than in a setup step precisely because the value has to be right **at the moment a build is flashed**, not at the moment setup last ran, and this is the process present then. It does not weaken decision 7: `auto` makes localhost merely one candidate, and an explicit URL still wins outright. Mechanism: [../spec.md](../spec.md) §4.
@@ -21,44 +29,6 @@ The status call now also compares a compiled-in expected contract version, **war
 ### 26 — `serial_log`'s `serial_port` field was never meant to reach a DUT
 **Corrected 2026-09-09** (`api/041`): originally justified by calling a DUT's serial console "a different, project-specific port that config already covers" — treating DUT-UART capture as intended, on par with the bench's. Never true: Core's serial link was only ever meant to reach the bench; the field existing doesn't mean pointing it at a DUT was supported, only that nothing stops it. **No such fallback mechanism was ever built** — see `interfaces/tools.md`'s `serial_log` row.
 
-### 36 — The whole runtime moves onto a dedicated 512 MiB-stack thread
-A real GATT-sized status call reproduced a known deserialization stack overflow **in production**, crashing the live MCP server repeatedly — each crash silently respawning a fresh process, so the client saw only a closed connection.
-
-***Rejected, because it does not work:* `Builder::thread_stack_size`.** It only sizes threads the *runtime* spawns. The top-level future driven by `block_on` runs on whatever thread calls it, which for `#[tokio::main] fn main` is the process main thread, at the OS default, **with no knob to change it**.
-
-So `main` spawns the runtime on a thread it sizes itself. **64 MiB was empirically insufficient against a real payload; 512 MiB was needed.** A release build overflowing on any subcommand, even `list-projects`, was the same non-resizable-calling-thread issue surfacing through release-mode inlining — one fix, two bugs.
-
-### 37, 38 — `embarch-core-client` extracted, and given the two wrappers nothing here needed
-`embarch-ui` needed to reach Core exactly as this crate does — bearer injection, per-call timeouts, the topology-branched flash transport, typed error mapping — so the choice was between it duplicating that logic or **both depending on one implementation**. The latter follows the suite's one-implementation-many-call-sites shape rather than reintroducing the mirrored-copy risk that shape exists to eliminate. A plain path dependency, not a Cargo workspace, matching how this repo already depends on its sibling crates.
-
-Two Core endpoints then turned out to have **no client wrapper anywhere**, because this crate never needed either: enrolled-board listing and dev-bench port. The gap surfaced the moment `embarch-ui` routed *every* hardware-adjacent read through Core rather than only mutations. The port wrapper treats Core's 404 as `Ok(None)` rather than an error, so a caller rendering "not connected" does not have to match an error string to do it.
-
-Later additions followed the same rule and exposed its cost: the signal-route wrappers are **mirrors** of the topology crate's types rather than those types, because the real ones sit behind the feature that links `probe-rs`, and this crate never links hardware. That leaves a coupling **no crate in the suite can typecheck**, so it is pinned from each side against the same JSON literal, each test naming the other. The alert and enrolled-board mirrors still have that coupling unpinned.
-
-### 55 — One funnel applies the bearer token; nine routes were exempt from the rule that said so
-`send`/`send_no_content` consume the response, so the nine routes giving a status its own meaning (a `404` for "not enrolled", a `409` for a topology mismatch) and the SSE stream could not use them; each applied `.bearer_auth(…)` itself. All nine did send it; `client.rs`'s comment said none existed. **A convention nine of twenty-five sites are exempt from is not one** — and the comment was the worse half: a new route copies the hand-written form while the sentence a reader trusts says it cannot.
-
-So the funnel moves down. `dispatch` applies the token and the timeout and sends; `send`/`send_no_content` are thin readers over it; a route needing typed status handling hands it a `RequestBuilder` and reads the status itself. `bearer_token()` is **retired**. The guard is decision 50's shape applied to auth: one `.bearer_auth(…)` in the crate, no send site outside `dispatch`, both red by mutation.
-
-***Rejected: `default_headers` on the `ClientBuilder`.*** It attaches the token to every request the `reqwest::Client` makes, not this client's *routes* — prospectively true: `http()` hands that handle out, but has one call site today, through `dispatch`, so the two sets still coincide. **Nothing was unauthenticated before this**; the wire is unchanged.
-
-### 62 — `token_discovery`'s WSL2 check delegates to `embarch_topology::software::detect_wsl2`, dropping its own third signal
-This crate's private `is_wsl2` ran its own rule — `/proc/version` containing "microsoft" *or* "wsl", ignoring `$WSL_DISTRO_NAME` — while `resolve_software_topology`, linked into the same binary, used `detect_wsl2`'s union of kernel-string-or-env-var. The two could disagree: token discovery decides *where the token file is*, topology resolution decides *which Core to talk to*.
-
-The narrow rule's own comment argued for a union (an MCP launcher can scrub `$WSL_DISTRO_NAME`) — which `detect_wsl2` already is; it did not argue for a third, looser kernel-string match. No real WSL2 kernel is known to stamp "wsl" without "microsoft", so the extra branch covered no observed case. Delegating removes the disagreement at no known cost.
-
-`embarch-topology` decisions 4/8 (crate.md) claimed no two callers could disagree "since there is only one of them" — false while this crate linked the shared crate and still ran a second predicate beside it; the crate can't stop a caller writing one next to the call it never makes. `tasks/topology/020` corrects that.
-
-### 58 — Parsing an older Core is a rule of the crate, not a per-field judgement call
-`client.rs` had already made this choice **thirteen** times before `validate` broke it — counted as attribute lines, not as `grep -c 'serde(default)'`, which returns 14 on that file because one hit is a doc comment quoting the attribute: `link_port_interface` and `study_designer_schema_version` (among eleven others) are `#[serde(default)]` on an `Option<T>`, and `an_older_core_body_missing_link_port_interface_still_parses` is a test whose name states the rule out loud. `api/045` added `ValidateResponse::validated_at_utc_ms` as a bare required `u64` — the only field in the file that broke the pattern, not a considered exception to it. Against an `embarch-core` older than `tasks/core/026` (predates the field), every `validate` call failed at deserialization instead of coming back with the one timestamp Core does send — indistinguishable from a broken client rather than a version skew, on a machine where the deployed Core and this crate are already known not to move together (the MCP-binary-goes-stale gotcha).
-
-So: **every response field this crate deserializes that Core may not yet send is `Option<T>` with `#[serde(default)]`**, matching the thirteen existing fields in shape, not merely in having a default. `validated_at_utc_ms` is the fourteenth. `None` is never presented as a fabricated "validated at 1970" or silently dropped — a reader has to be told in words that this Core did not report the value, which is a different fact than validating at an unknown time.
-
-### 66 — The crate lives inside `embarch-api`'s own tree, not a tenth repo, and `embarch-ui` path-depends across a repo boundary to reach it
-Decisions 37/38 settled the shared Core client is one implementation; neither settled where it lives. It sits at `crates/embarch-core-client`, inside this repo, unlike this suite's other two shared crates: `embarch-study-designer` (decision 8) and `embarch-topology` (decision 13) each got a standalone repo. **Only decision 8 states the FFI/C rationale** — "three independently-versioned consumers … two Cargo dependents, one FFI/C consumer" as the case a standalone shared crate is for. **`embarch-topology` decision 13 states no such reason**: its argument is only that "a shared crate needs *somewhere* for three consumers to depend on", and the hardware feature it mentions is a Cargo feature flag added by Core, not a consumer-side FFI boundary. This crate has three consumers, all plain Cargo path dependents, no FFI boundary — that case does not hold here. But the question was never taken up either way: decisions 37/38 extracted the crate out of this repo's own `core_client.rs`/`config.rs`/`token_discovery.rs` and left it where the extraction happened, rather than moving it to a tenth repo the way the other two shared crates were given one.
-
-The cost, stated rather than softened (`spec.md:48`): `embarch-ui` path-depends on it from outside this repo, so **a change made here reaches a repo this one does not own**. `check-ownership.py` treats `embarch-api` as one worker's whole tree and does not refuse that move — nothing in the fleet mechanism stops an `api` task editing a crate `embarch-ui` depends on. `suite/decisions.md` 1 documents the further gate-spelling cost (`cargo test --all` reaching 33 files outside this repo, `embarch-topology` reached transitively through it).
-
-Kept anyway: a tenth repo for two Cargo-only consumers with no cross-language boundary pays the cost `embarch-study-designer`/`embarch-topology` accepted for a reason (FFI, independent hardware/software versioning) that does not hold here, and decision 56 already made the crate a workspace member with its own tests in this repo's gate — extraction would re-derive that wiring for no consumer that needs it. **Reverses** if a *fourth* Cargo consumer with its own release cadence appears, or an `api`-only change here breaks `embarch-ui` or `embarch-umbrella` silently — `tasks/ui/013`'s stale-claim fix is adjacent, not evidence of that yet.
-
-**Corrected at its own fold, 2026-09-10, on the reviewer's finding.** As written it said **two** consumers and triggered reversal on "a third appears" — which had already happened: `embarch-umbrella/Cargo.toml:47` path-depends on this crate since `umbrella/036` (2026-09-08), calling `token_discovery::resolve_token` directly. The count is three (`embarch-api`, `embarch-ui`, `embarch-umbrella`), the trigger is now a fourth, and the `embarch-topology` 13 attribution above was corrected by the same finding. **Conclusion unchanged**: all three are plain Cargo dependents with no FFI/C boundary, which is the distinction from decision 8 the argument rests on — decision 8's third consumer was an FFI/C one.
+Decisions 36, 37/38, 55, 58, 62 and 66 — the shared client crate's extraction, its auth funnel,
+its stack, its older-Core parsing, its one WSL2 predicate, and its home — moved to
+[client-crate.md](client-crate.md) on 2026-09-11 (`api/067`).
