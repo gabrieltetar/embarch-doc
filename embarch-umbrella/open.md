@@ -16,12 +16,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then `no-probe-found` with them back. **Whether the nine vendor IDs are the right nine is also unmeasured** — a question about the list's contents, not its home. The routing half is **settled**: the list stays here ([decision 49](decisions/probe-vendors.md)), and moves only if something other than `doctor`'s own message ever consumes it.
 
-- **The no-stray-spaces guard cannot reach checks 4 and 12** (both `async`, no pure judge, so their
-  rendered text is never tested at all). `umbrella/031` normalised both checks' bodies at the same
-  interpolation points check 1 needed fixed, but a corpus still can't exercise them without a live
-  Core — the untestability is what's open, not the normalisation
-  ([decision 43](decisions/message-rendering.md), `tasks/umbrella/031`).
-
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
 - **A user-level service needs no elevation on Linux or macOS** (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not weighed.
