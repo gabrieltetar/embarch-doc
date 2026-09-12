@@ -1,6 +1,6 @@
 # 042 — `embarch-core/open.md` says the auth sweep covers 27 routes; the router registers 26
 
-**State:** open
+**State:** claimed — leg 087, 2026-09-11.
 **Source:** refill sweep, leg 087, 2026-09-11. `embarch-core/open.md`'s route-sweep bullet, checked
 against `src/api.rs` and against `decisions/auth.md`, which already carries the corrected number.
 **Scope:** core
@@ -41,3 +41,13 @@ that no longer exists, which would hide the retirement of a route that *should* 
       code actually supports.
 - [ ] No route behaviour changes and no auth case is added or removed by this task.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## Doc-size reserve in your sub-project (supervisor's dispatch note, leg 087)
+
+`embarch-core/decisions/flashing.md` is at **93.5%** (11,487 of 12,288 B, 801 B left) and is
+**already filed** against `tasks/core/035-compact-core.md`, which is `blocked`. This unit should not
+need to write there at all. **If your work spends reserve in any `embarch-core` doc that nothing has
+filed** — pushes a file past 90%, or leaves one there unfiled — file
+`tasks/core/<NNN>-compact-core.md` in the same commit (`tasks/README.md` has the shape, and
+`scripts/check-task-numbers.py --next core` gives a safe number). Recording the debt is the job;
+paying it is not.
