@@ -27,6 +27,8 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Decision 56's owed `hardware_id` doc comments landed on the two response types that exist; the third was filed to `embarch-topology`, not invented here.
+- `flash_backend.rs`'s `nrfjprog` retirement comment cited decision 50/2026-09-10; corrected to decision 54/2026-09-06.
 - `interfaces/studies.md` and `interfaces/result-layout.md` now document `named`, `timed` and `self_excluded` on the stream index — was two of three.
 - `open.md`'s auth sweep count fixed from 27 to 26, agreeing with `decisions/auth.md`.
 - `POST /validate` (and `flash`/`reset`/`run_study`'s own mid-attach check) now name a detached probe `not_attached`, never `mismatch` (decision 59).
