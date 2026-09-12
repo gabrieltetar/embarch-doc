@@ -20,6 +20,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Fixed: decision 25's `--brand` count (two declarations, two call sites, not three); see `decisions/shell.md`.
 - The Enroll tab's assign modal now uses `.dialog`/`.dialog-backdrop` like the other four, not an inline reimplementation.
 - `snapshot.rs`/`app.js`'s "decision 54" cites now say 57, matching `core/039`'s renumbering; `study_designer.rs`'s own decision 54 is unrelated and untouched.
 - Fixed stale `embarch-ui` src comments: `study_designer` config doc names decision 14's real behaviour, `logs.rs` says `GET`, dead `milestone-*.md` pointers replaced with live docs.
