@@ -64,3 +64,36 @@ overclaiming.
 conclusion — the fix `open.md` still names as unmade — changes what a real `doctor` run reports on
 a real machine, which needs the bench to confirm and is out of scope for a documentation decision.
 That half stays open.
+
+### 51 — `apply_plan` clears `saved.host` on a non-`remote` conclusion
+
+Decision 48 left this unmade. Settled now: **clear**, not keep.
+
+**Why clear rather than keep.** `saved.host` exists to answer one question — "is an explicit
+`--host` on record?" — and `infer_class` treats its mere presence as sufficient to conclude
+`Remote` (`host.is_some()` ⇒ `Remote`, unconditionally; decision 48's "field" section). A machine
+that just concluded `local` or `wsl-host` has, by that same run, answered the question the other
+way: no host applies here. Leaving the old value in place means the *next* run with no `--host`
+flag reads a leftover from a session or topology that no longer holds, and `infer_class` calls it
+`Remote` again — the class this decision's own bug report describes as "steer a later run" wrong.
+Keeping it would only ever help one case (an operator alternating between the same two machines
+without retyping `--host` each time), and that case still has to retype the flag's *sibling*
+information — `EMBARCH_TOKEN` isn't sticky either — so the saving was partial regardless.
+
+**The rule.** `apply_plan` writes `state.host` as `plan.host` only when `plan.class` is
+`TopologyClass::Remote`; every other concluded class writes `None`, discarding whatever
+`make_plan`'s `host.map(str::to_string).or(saved.host)` carried forward. `make_plan` itself is
+unchanged — the carry-forward still has to happen there so a `remote` run with no `--host` this
+time can still resolve one from the saved value; the new branch is only in what gets written back
+out afterward.
+
+**What this changes for check 2.** Nothing in `check_service` itself — it still reads
+`config_host.or(saved_host)` off whatever the state file holds, and decision 48's account of what
+it may and may not infer from finding a value is unaffected. What changes is how often it *finds*
+one: a `saved_host` surviving into a later read now only ever postdates the most recent `remote`
+conclusion, not an arbitrarily older one from a different topology entirely.
+
+**Not verified against a real machine.** The state-transition unit test (`setup.rs`) covers a
+`remote` run that saves and a subsequent non-`remote` run that clears; confirming this on the
+primary bench — a real `--host` given, a real `local` re-run, a real `doctor` after — is
+`open.md`'s hardware debt, unchanged by this decision.
