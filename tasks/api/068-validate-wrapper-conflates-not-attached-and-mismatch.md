@@ -1,6 +1,6 @@
 # 068 — `embarch-api`'s `validate` MCP tool and CLI both re-wrap `/validate`'s JSON under one `topology mismatch` lead, for both conditions
 
-**State:** open
+**State:** claimed
 **Source:** `core/041`, 2026-09-11. Found while fixing the `embarch-core` half of the same defect
 (`embarch-core` decision 59, `embarch-core/decisions/surfaces.md`).
 **Scope:** api
