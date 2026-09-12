@@ -49,7 +49,7 @@ Claude Code                    human, direct:                  human, in a brows
                                           | serial (COBS-framed postcard)
                                           v
                                  embarch-dev-bench firmware
-                              (BLE central/peripheral + power sampling)
+                          (BLE central/peripheral; power sampling deferred)
 
                                          the one signal that skips the bench:
    DUT firmware (embarch-outpost compiled in) --UART, TX-only--> USB bridge --> embarch-core

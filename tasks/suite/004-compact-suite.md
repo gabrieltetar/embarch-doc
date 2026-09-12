@@ -38,6 +38,16 @@ by a real run. **In flux for that reason — not the same reason as either sibli
 distinction is the whole reason this guide has to mention the UI at all, and it reads as a
 throwaway clause once shortened.
 
+**Leg 083 grew it again** (2026-09-11, `tasks/suite/013`): 23,213 → 23,396 B, net of a *shortened*
+worked command, for **one clause saying a step is never a power-sampling window**. I did not
+shorten a second time, and the reason is the same one that makes this entry `In flux`: the clause
+is the only place in the corpus that tells a study author the step kind they will read about in
+older material **does not exist** (`Step::power_sample`, retired at wire schema v9,
+`embarch-study-designer` decision 39's 2026-08-25 amendment). **Must not delete** from it: that
+clause **with its decision citation**. Without the citation it is an unsourced negative claim about
+a wire schema, which is the shape a later reader is most likely to "correct" back to the wrong
+version.
+
 **`suite/user-guide.md` was added by leg 017** (2026-09-06), folding `umbrella/022`'s
 `status.d/` fragment: 22,813 → 23,246 B, over the 23,040 reserve line. **Third consecutive leg
 in which a `status.d/` fold pushed this file toward or past its line** — leg 016 shortened the
