@@ -1,6 +1,12 @@
 # 054 — `spec.md` says eighteen `doctor` checks; the code emits seventeen
 
-**State:** open
+**State:** claimed — leg 089, 2026-09-11.
+
+**Doc-size reserve for `umbrella`:** `decisions/bind.md` 93.2% (841 B left) and `decisions/doctor.md`
+90.2% (1,206 B left) are both in reserve with blocked compaction tasks
+(`tasks/umbrella/009-compact-docs.md`, `tasks/umbrella/048-compact-umbrella.md`) — **do not write into
+either**; this task's target `spec.md` is at 59.9% and out of reserve. If your work pushes a file into
+its last 10%, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
 **Source:** refill sweep, leg 088, 2026-09-11. `embarch-umbrella/spec.md` against
 `embarch-umbrella/src/doctor.rs` and `embarch-umbrella/interfaces/doctor-chain.md`.
 **Scope:** umbrella
