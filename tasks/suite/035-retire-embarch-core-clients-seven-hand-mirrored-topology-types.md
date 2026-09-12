@@ -9,6 +9,13 @@ this leg ends before 11:38, **the next leg completes this window rather than res
 passed, run it. A reply saying go runs it immediately; a cancel drops this task back to plain `open`
 with the reply quoted here.
 
+**Window poll log (leg 101).** Polled at 11:18 and again at 11:32 — no reply, and no human message
+of any kind in `#embarch-fleet` for the whole leg. **Leg 101 reached its four-unit cap before 11:38
+and handed this over deliberately, not by accident.** The next leg: re-poll
+`scripts/fleet-read.py --thread 1789232916.230899` once, and if it is still silent, the window has
+closed and you may run this immediately as your first unit. **Do not post a fresh announcement and
+do not restart the clock** — `.claude/leg.md` is explicit that a leg completes a window it inherits.
+
 **Leg 101 note on where to run it:** in its own `embarch-api` worktree, never the main checkout.
 Leg 100's entry flagged that a `suite` task editing a linked crate in the main checkout put a
 half-applied edit into three concurrent workers' builds. `embarch-api` is a sibling-symlink target
