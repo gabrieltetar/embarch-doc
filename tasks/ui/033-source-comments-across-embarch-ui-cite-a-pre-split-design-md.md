@@ -1,6 +1,6 @@
 # 033 — Source comments across `embarch-ui` cite a pre-split `design.md` that does not exist
 
-**State:** open
+**State:** claimed by agent/ui/033-design-md-comments, 2026-09-12
 **Source:** `inbox/ui-design-md-comment-citations.md`, dropped by `ui/032`'s siblings check,
 2026-09-12. Out of scope there — `ui/032` fixed only shipped/rendered strings in `assets/`, not
 source comments — so it was reported rather than widened into that unit.
