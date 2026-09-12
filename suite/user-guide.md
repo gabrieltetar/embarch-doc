@@ -59,9 +59,7 @@ embarch setup            :: Windows cmd.exe — no ./ prefix
 
 **On Windows + WSL2, run it twice, in this order:** the elevated Windows shell first, against the Windows archive — that installs and starts Core — then inside WSL2 against the **Linux** archive, which sets up the API side and finds the Core you just started.
 
-**Order matters, and getting it backwards has a confusing symptom.** Run the WSL2 leg first — easy, if that is the shell you already have open — and with no Core installed anywhere, `setup` cannot tell your machine from a plain single-OS one: it reports `Topology: local` and fails with `embarch-core: not found`, **which does not point you back at the Windows-first step.** If you see that, it is this trap and not a broken archive.
-
-**`Topology: local` from the elevated Windows leg itself, with no failure alongside it, is expected.** From native Windows alone, before the WSL2 leg has run, **`setup` has no way to see that a WSL2 side exists at all.** Confirm Core started and the token file is present, then run the WSL2 leg — that is the step that reports the real topology.
+**Order matters, and `Topology: local` means two different things depending on which leg printed it.** Run the WSL2 leg first — easy, if that is the shell you already have open — and with no Core installed anywhere, `setup` cannot tell your machine from a plain single-OS one: it reports `Topology: local` and fails with `embarch-core: not found`, **which does not point you back at the Windows-first step.** That is this trap, not a broken archive. **The same line from the elevated Windows leg, with no failure alongside it, is expected**: from native Windows alone, before the WSL2 leg has run, **`setup` has no way to see that a WSL2 side exists at all.** Confirm Core started and the token file is present, then run the WSL2 leg — that is the step that reports the real topology.
 
 **On macOS the binaries are not code-signed yet**, so Gatekeeper blocks them on first run: right-click → Open, or `xattr -d com.apple.quarantine ./embarch`.
 
@@ -71,7 +69,7 @@ embarch setup            :: Windows cmd.exe — no ./ prefix
 
 **Core stays running from now on.** It starts at boot; you do not launch it, and neither does the agent. **That is the whole reason there is nothing to start up every morning.**
 
-**One `PATH` caveat depending on how old your release is.** Current `setup` copies the three binaries to a canonical per-user location and edits `PATH` for real. **A release predating that only *prints* the line — and prints it in POSIX `export` syntax unconditionally, including on `cmd.exe` where it is not valid.** Translate it for the shell you are in (`$env:Path += ";<dir>"` in PowerShell), or on native Windows use **System Properties → Environment Variables** to add it durably — **a scripted registry edit risks truncating an already-long `PATH`.** Either way, **a shell that was already open when `setup` ran still needs restarting**, which is an OS constraint no installer works around.
+**One `PATH` caveat depending on how old your release is.** Current `setup` copies the three binaries to a canonical per-user location and edits `PATH` for real. **A release predating that only *prints* the line, in POSIX `export` syntax unconditionally — including on `cmd.exe`, where it is not valid.** Translate it for your shell (`$env:Path += ";<dir>"` in PowerShell), or on native Windows add it durably through **System Properties → Environment Variables**; **a scripted registry edit risks truncating an already-long `PATH`.** Either way, **a shell already open when `setup` ran still needs restarting** — an OS constraint no installer works around.
 
 ## 4. Check it worked
 
@@ -104,7 +102,7 @@ That creates an `embarch/` folder holding `embarch.toml`. **`embarch/build/` is 
 
 Three things worth knowing about what just happened:
 
-- **Nothing tracked by your repo was modified.** The folder is excluded via `.git/info/exclude`, local to your clone — your committed ignore file is untouched and `git status` stays clean. **Safe to run in a repo you do not own.** `embarch init --uninstall` reverses everything.
+- **Nothing tracked by your repo was modified.** The folder is excluded via `.git/info/exclude`, local to your clone — your committed ignore file is untouched, `git status` stays clean, and `embarch init --uninstall` reverses everything. **Safe to run in a repo you do not own.**
 - **EmbArch builds into its own directory**, separate from wherever your interactive `west build` goes. **Without this, you and EmbArch clobber each other's build tree** — different board revisions, different pristine-vs-incremental state — and you spend an afternoon confused.
 - **Your project is scoped to this repo.** An agent working here can only see and flash this repo's project, **not the unrelated board on your other USB port.**
 
@@ -160,9 +158,9 @@ embarch-api build-and-flash my-firmware --board roadrunner --variant os_5led --r
 - Narrow to **exactly one** match and the call proceeds.
 - Match **more than one** and the call **errors instead of guessing**, listing the narrowed remainder.
 - Give **none** and it lists everything, rather than guessing a default.
-- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** Omitting `--snippet` uses the project's `default_snippets`; **`--snippet none`, alone, forces zero snippets** over that default (2026-09-04). Mixing the literal with real snippet names, or using it where the app genuinely declares a snippet called `none`, is refused naming the ambiguity rather than guessed at.
-- **`[projects.default_target]`** gives a `zephyr-west` project a base board/variant/revision/app selection, and a call narrows it **per field** — so overriding the revision does not make you restate the other three. An error names which axes came from the default, and `list-targets` reports it. **Not accepted for a `static` project — and since 2026-09-05 nor are `default_snippets`, `default_extra_args`, `west_binary` or `build_dir_root`**: all five now fail at *config load*, in one message naming every one you set, rather than four of them loading silently into a project that can never honour them.
-- **All six of these flags are for a `zephyr-west` project.** Pass any of them to a `discovery = "static"` project and the call now **fails naming which were given** (`embarch-api` decision 51) — until 2026-09-03 they were accepted, discarded, and the build reported success.
+- `--snippet` and `--extra-arg` (both repeatable) layer on top of a resolved target — **additive, not narrowing.** Omitting `--snippet` uses the project's `default_snippets`; **`--snippet none`, alone, forces zero snippets** over that default. Mixing that literal with real snippet names, or using it where the app genuinely declares a snippet called `none`, is refused naming the ambiguity rather than guessed at.
+- **`[projects.default_target]`** gives a `zephyr-west` project a base board/variant/revision/app selection, and a call narrows it **per field** — so overriding the revision does not make you restate the other three. An error names which axes came from the default, and `list-targets` reports it.
+- **All six of these flags are for a `zephyr-west` project.** Pass any to a `discovery = "static"` project and the call **fails naming which were given** (`embarch-api` decision 51) — until 2026-09-03 they were accepted, discarded, and the build reported success. **`default_target`, `default_snippets`, `default_extra_args`, `west_binary` and `build_dir_root` are refused the same way, at *config load*,** in one message naming every one you set, rather than loading silently into a project that can never honour them.
 - `flash --firmware-path` still needs enough flags to resolve a **chip**: the override bypasses picking which *build*, not chip resolution.
 
 **There is no interactive picker.** `list-targets` shows the options; you re-run with more flags.
@@ -185,11 +183,11 @@ embarch-api serial-log my-firmware --duration-ms 5000
 
 Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **none** of the three these exit immediately with `no config path given`. **Prefer the upward search to exporting the variable** — an export makes the search unreachable, and no single `EMBARCH_API_CONFIG` value is ever right once you own a second firmware repo (`embarch-api` decision 25).
 
-**Note the naming split**: CLI subcommands are kebab-case, the MCP tools in §7 are snake_case. Each front end follows its own convention; `--help` is authoritative. Add `--json` to any of them for machine-readable output.
+**Note the naming split**: CLI subcommands are kebab-case, the MCP tools in §7 are snake_case — each front end follows its own convention, `--help` is authoritative, and `--json` works on all of them.
 
-**Why all three of build, flash and build-and-flash exist:** the combined one is what you want most of the time, and **it refuses to flash a stale or failed artifact.** But **iterating on compiler errors should not touch hardware every time**, and **re-flashing the same binary after a manual board reset should not rebuild.**
+**Why all three of build, flash and build-and-flash exist:** the combined one is what you want most of the time, and **it refuses to flash a stale or failed artifact** — but **iterating on compiler errors should not touch hardware every time**, and **re-flashing the same binary after a manual board reset should not rebuild.**
 
-**Failures print the full error chain**, not just a summary line — **the actual cause is usually several lines down. Read the whole thing.**
+**Failures print the full error chain**, not a summary line — **the actual cause is usually several lines down. Read the whole thing.**
 
 ## 7. Using it from Claude Code
 
@@ -225,7 +223,7 @@ Never build firmware or flash devices autonomously — ask me to run it.
 | What you see | What it means |
 |---|---|
 | **Core unreachable** | Core is not running, or not reachable from here. Try `embarch up`. On Windows+WSL2, check Core is running on the *Windows* side — **WSL2 restarts do not restart it, but they do change the address, which is why `base_url` must stay `"auto"`** |
-| **Core bound where you cannot reach it** | `doctor` check 17 says `bound-narrow`: Core **is** running and its registered `--bind` is loopback. A WSL2 guest reaches its Windows host over the gateway and never over loopback, so nothing answers anywhere. `embarch up` will not fix it — reinstall elevated with `embarch-core install --bind 0.0.0.0`. **Take `embarch setup` only when the check's own fix line offers it.** Where something already answers, or where re-running `setup` from this side would infer `local`, it installs nothing or reinstalls the narrow bind and rewrites the recorded class — greening the check with the bind untouched. Six codes split the case and **the fix line names the one you are in**; two change where you go rather than what you type — `bind-unproven` (registration unreadable: ask from the guest rather than reinstalling blind) and `bind-elsewhere` (a `remote` machine, whose Core is another computer's: run `embarch doctor` there). `bind-not-the-cause` means the bind is wide and the row above applies. [Decision 22](../embarch-umbrella/decisions/bind.md) carries the reasoning and the full taxonomy |
+| **Core bound where you cannot reach it** | `doctor` check 17 says `bound-narrow`: Core **is** running and its registered `--bind` is loopback. A WSL2 guest reaches its Windows host over the gateway and never over loopback, so nothing answers anywhere. `embarch up` will not fix it — reinstall elevated with `embarch-core install --bind 0.0.0.0`, and **take `embarch setup` only when the check's own fix line offers it**: re-run from the wrong side it installs nothing, or reinstalls the narrow bind and rewrites the recorded class, greening the check with the bind untouched. Six codes split the case and **the fix line names the one you are in**; two send you elsewhere rather than changing what you type — `bind-unproven` (registration unreadable: ask from the guest) and `bind-elsewhere` (Core is another computer's: run `embarch doctor` there). `bind-not-the-cause` means the bind is wide and the row above applies. [Decision 22](../embarch-umbrella/decisions/bind.md) carries the reasoning and the full taxonomy |
 | **401 Unauthorized** | Core *is* running and **the token does not match. Different problem, different fix** — see §9 |
 | **No probes found** | Not plugged in, or the OS has not enumerated it. **Check it appears on the machine Core runs on, not the one you are typing on** |
 | **`chip` is still a placeholder** | §5.1 — fill it in from `embarch-core chip-list` |
@@ -238,12 +236,9 @@ Never build firmware or flash devices autonomously — ask me to run it.
 
 ## 9. The token
 
-Core protects its endpoints with a single shared secret, and **in the normal case you never see or handle it**: Core generates one on first start and writes it to a machine-wide file, and `embarch-api` finds it on its own — **including across the WSL2⟷Windows boundary, since that is one physical machine with one filesystem to reach.**
-
-**The exception is a Core on a separate box: no shared filesystem, so no discovery.** Copy the value across by hand once — `embarch doctor` prints the exact line. To rotate: delete the file, restart Core, restart anything talking to it. Full lifecycle: [embarch-token.md](../embarch-token.md).
+Core protects its endpoints with a single shared secret, and **in the normal case you never see or handle it**: Core generates one on first start and writes it to a machine-wide file, and `embarch-api` finds it on its own — **including across the WSL2⟷Windows boundary, since that is one physical machine with one filesystem to reach.** **The exception is a Core on a separate box: no shared filesystem, so no discovery** — copy the value across by hand once, and `embarch doctor` prints the exact line. To rotate: delete the file, restart Core, restart anything talking to it. Full lifecycle: [embarch-token.md](../embarch-token.md).
 
 **Worth knowing: there is no TLS**, so the token crosses your network in cleartext. **Fine on localhost or a WSL2 loopback; think twice on shared wifi.**
-
 
 **Testing against a second board?** Studies, the dev bench, and capturing a DUT trace are their own guide: [studies-guide.md](studies-guide.md).
 
@@ -251,13 +246,11 @@ Core protects its endpoints with a single shared secret, and **in the normal cas
 
 **Skip this unless you are changing EmbArch, not just using it.** Everything above needs only the release archive.
 
-All the repos live as siblings under one parent — **the docs cross-reference each other by relative path, so this layout matters.** Build any of the Rust ones with a plain `cargo build`; `cargo clippy --all-targets -- -D warnings` and `cargo test` are expected clean before you commit.
-
-**Iterating across repos** — wiring a dev Core, API and umbrella together, or safely testing an umbrella change without it overwriting your real install — **is its own doc: [embarch-dev-workflow.md](../embarch-dev-workflow.md).** Its §4a covers the deploy direction: syncing, building and installing a Core change onto a real Windows service.
+All the repos live as siblings under one parent — **the docs cross-reference each other by relative path, so this layout matters.** Build any Rust one with a plain `cargo build`; `cargo clippy --all-targets -- -D warnings` and `cargo test` are expected clean before you commit. **Iterating across repos** — wiring a dev Core, API and umbrella together, or testing an umbrella change without it overwriting your real install — **is its own doc, [embarch-dev-workflow.md](../embarch-dev-workflow.md)**, whose §4a covers deploying a Core change onto a real Windows service.
 
 Two platform notes that will cost you time otherwise: **building on Windows natively needs Visual Studio Build Tools' "Desktop development with C++" workload** — a `rustup` toolchain alone has no linker for that target — and **do not build Core from a `\\wsl$`-mounted source tree**; use a native checkout.
 
-**Docs are part of the work, not a follow-up.** Each sub-project's `spec.md` and `decisions.md` in `embarch-doc` are the source of truth for its architecture, **updated in the same pass as the code that changes them** — see [DOC-PROTOCOL.md](../DOC-PROTOCOL.md).
+**Docs are part of the work, not a follow-up**: each sub-project's `spec.md` and `decisions.md` in `embarch-doc` is the source of truth for its architecture, **updated in the same pass as the code that changes it** — [DOC-PROTOCOL.md](../DOC-PROTOCOL.md).
 
 ## 11. Where to look next
 
