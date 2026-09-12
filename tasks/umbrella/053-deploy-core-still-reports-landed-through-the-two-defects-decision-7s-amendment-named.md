@@ -1,6 +1,6 @@
 # 053 — `deploy-core` still reports "landed" through both defects its own decision amendment named
 
-**State:** claimed — leg 088, 2026-09-11.
+**State:** done — leg 088, 2026-09-11.
 **Doc-size reserve for this sub-project:** `embarch-umbrella/decisions/doctor.md` is at 90.2%
 (11,082/12,288 B) and `decisions/bind.md` at 93.2% (11,447/12,288 B), both filed against blocked
 tasks. **`decisions/deploy.md` is NOT in reserve** — that is the file this unit writes to. If your
@@ -62,17 +62,38 @@ pure function, a guard, and their tests.
 
 ## Done when
 
-- [ ] `landed` compares content digests, not byte counts, and its tests assert the same-length
+- [x] `landed` compares content digests, not byte counts, and its tests assert the same-length
       different-content case explicitly — that is the case the amendment was written about.
-- [ ] A missing elevated transcript exits non-zero on its own, without reaching the content check.
-- [ ] No path prints "landed" while returning 0 on a deploy that did not install.
-- [ ] `src/deploy.rs:454`'s `--verify-only` either exists or is gone from the message.
-- [ ] `decisions/deploy.md` records that the amendment's two clauses are now built, as a fired
+- [x] A missing elevated transcript exits non-zero on its own, without reaching the content check.
+- [x] No path prints "landed" while returning 0 on a deploy that did not install.
+- [x] `src/deploy.rs:454`'s `--verify-only` either exists or is gone from the message.
+- [x] `decisions/deploy.md` records that the amendment's two clauses are now built, as a fired
       condition rather than a rewrite of the history — the amendment's account of how it was found is
       the valuable half and must survive.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
 
-**Hardware debt to record in the task file when you finish:** nothing here has met a real cancelled
-UAC prompt. The fix is unit-testable and untested against the event it exists for, and that stays
-true until the owner runs `deploy-core` on the Windows machine — which also waits on `core/015`'s
-outstanding native build.
+**Done.** `landed(built_digest, installed_digest_after)` in `embarch-umbrella/src/deploy.rs` now
+takes two `[u8; 32]` SHA-256 digests (new private `hash_file`/`hash_bytes`, `sha2 = "0.10"` added to
+`Cargo.toml`) instead of two `u64` lengths — the rename makes a length un-passable by accident. A
+missing elevated transcript (`std::fs::read_to_string(&log_path)` returning `Err`) now prints
+`FAILED` and returns `EXIT_FAILURE` immediately, before the digest comparison runs, so the exact
+shape of both real incidents — service still `RUNNING` because it was never stopped — can no longer
+print "landed". `:454`'s `--verify-only` message (no such flag exists, confirmed by
+`grep -n verify.only src/main.rs` and `grep -n print_script src/main.rs` — `DeployCore` only carries
+`print_script`) was rewritten rather than given a new flag: it now says the print-script path
+verifies nothing itself and offers a hash comparison or a full re-run instead. `decisions/deploy.md`
+gained decision 50 (new entry, not an edit to the pinned decision 32 — `check-doc-size.py` treats a
+pinned decision as shrink-only, so the fired-condition note is its own numbered decision, cross-linked
+from 32) recording both clauses as built and the account preserved unedited.
+
+**Hardware debt, as expected — not closed:** nothing here has met a real cancelled UAC prompt. The
+fix is unit-tested against the digest and missing-transcript logic in isolation
+(`same_length_different_content_is_not_landed` pins the exact same-length-different-content case),
+not against the live event both defects were found in. Stays open until the owner runs `deploy-core`
+on the Windows machine, which also waits on `core/015`'s outstanding native build.
+
+Gate: `cargo build` / `cargo test` (227 passed) / `cargo clippy --all-targets -- -D warnings`, all
+clean in `embarch-umbrella`. `embarch-doc`'s `scripts/check-docs.py` (11/11), `check-client-names.py`,
+and `check-ownership.py` (both `--scope umbrella` and `--code-repo`) all green. `decisions/deploy.md`
+and `decisions/bind.md`/`doctor.md` reserve status unaffected — no other file pushed into its last
+10%, so no `tasks/umbrella/055-compact-umbrella.md` filed.
