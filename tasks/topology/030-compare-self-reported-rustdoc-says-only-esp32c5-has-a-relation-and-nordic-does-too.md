@@ -1,6 +1,6 @@
 # 030 — `compare_self_reported`'s rustdoc says only `esp32c5` has a declared relation; the Nordic arm is right below it
 
-**State:** claimed — leg 089, 2026-09-11.
+**State:** done — leg 089, 2026-09-11.
 
 **Doc-size reserve for `topology`:** nothing in this sub-project is in reserve. If your work pushes a
 file into its last 10% of cap, file `tasks/topology/<NNN>-compact-topology.md` in the same commit.
@@ -85,10 +85,35 @@ This is also the fourth doc-versus-code count or enumeration defect in three day
 
 ## Done when
 
-- [ ] The rustdoc describes both declared arms and no longer says `esp32c5` is the only one.
-- [ ] The derivability standard the comment sets is preserved, not lost in the edit.
-- [ ] The Nordic arm's justification cites existing `embarch-topology` docs rather than restating
+- [x] The rustdoc describes both declared arms and no longer says `esp32c5` is the only one.
+- [x] The derivability standard the comment sets is preserved, not lost in the edit.
+- [x] The Nordic arm's justification cites existing `embarch-topology` docs rather than restating
       them at length, and **claims no verification that `open.md` says has not happened**.
-- [ ] A pass over the rest of `hardware_id.rs`'s prose for the same drift shape is reported here.
-- [ ] No behaviour changes: no arm added or removed, no function signature touched.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+- [x] A pass over the rest of `hardware_id.rs`'s prose for the same drift shape is reported here.
+- [x] No behaviour changes: no arm added or removed, no function signature touched.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `changelog.d/` fragment.
+
+## What the pass found
+
+`compare_self_reported`'s doc (`:169-183`) was rewritten to name both arms — `esp32c5` (unchanged
+paragraph) and the Nordic families via `is_nordic_deviceid_chip` — citing `nordic_expected_self_report`'s
+own doc comment and topology decision 21 for the derivation rather than restating it, and stating
+plainly that the relation is *declared*, not *verified across the family*: decision 21's silicon
+evidence is nRF54L15-only, and `open.md` records `nRF54L10`/`nRF54L05`/`nRF54LM20A` taking the same
+arm with no silicon attached, and the DUT's readback having no independent corroboration. Neither
+claim was promoted.
+
+**A second instance of the same drift shape was found and fixed**: the module-level doc comment
+(`:8-9`) said "only the *two* chip families this suite's real hardware actually uses are
+implemented", a count that predates the 2026-09-11 STM32G0 arm (`read_words`'s widening from
+`[u64; 2]` to a slice) — `read` now covers three vendor families (Nordic, ESP32-C5, STM32G0), four
+`ChipFamily` variants. Corrected to name the families instead of counting them, so a future arm
+doesn't reopen the same drift.
+
+`is_nordic_deviceid_chip`'s and `nordic_expected_self_report`'s own doc comments, and
+`SelfReportedIdentity`'s variants, were checked against `classify_chip`, `read`, and
+`compare_self_reported`'s current bodies and found consistent — no further drift.
+
+No behaviour changed: no `match` arm added, removed, or reordered; no signature touched; all 72
+`--features hardware` tests and `cargo clippy --all-targets --features hardware -- -D warnings`
+pass unchanged.
