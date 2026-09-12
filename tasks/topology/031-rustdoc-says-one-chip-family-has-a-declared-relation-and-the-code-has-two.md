@@ -1,4 +1,4 @@
-# 021 — The rustdoc says one chip family has a declared relation; the code has two
+# 031 — The rustdoc says one chip family has a declared relation; the code has two
 
 **State:** open
 **Source:** refill sweep for scope spread, leg 091, 2026-09-11. **Line numbers are as the sweep
