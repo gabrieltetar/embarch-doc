@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `embarch-outpost` gets host-only CI on push and PR; what it deliberately does not cover: [suite/decisions.md](../suite/decisions.md) 2.
 - The fleet ran a study against the real bench and green 2/2; where the DUT half stops is [studies-guide.md](../suite/studies-guide.md) §3a.
 - Every release workflow now fails before building when `Cargo.toml`'s version disagrees with the pushed tag ([decisions 27, 29](../embarch-umbrella/decisions.md)).
 - `history/<scope>.md`, assembled per sub-project from `changelog.d/` fragments by `scripts/build_changelog.py`, capped at 20 KB with older windows rolled to `history/archive/`.
