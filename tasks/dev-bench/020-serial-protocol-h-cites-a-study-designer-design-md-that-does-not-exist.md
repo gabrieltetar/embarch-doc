@@ -1,6 +1,13 @@
 # 020 — `serial_protocol.h` cites an `embarch-study-designer/design.md §3` that does not exist
 
-**State:** open
+**State:** claimed — leg 102, 2026-09-12, branch `agent/dev-bench/020-serial-protocol-h-citations`.
+
+**Doc-size reserve for `embarch-dev-bench`:** `open.md` 4782/5120 B (338 B left), `spec.md`
+9460/10240 B (780 B left) and `decisions/link.md` 11241/12288 B (1047 B left) are all in
+reserve, filed against blocked compaction tasks (`dev-bench/012`, `dev-bench/014`). This unit
+is a C-comment sweep and should need none of them; if it does spend reserve, file
+`tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same commit.
+
 **Source:** split out of `dev-bench/019`, 2026-09-12.
 **Scope:** dev-bench
 **Hardware:** none
