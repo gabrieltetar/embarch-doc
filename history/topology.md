@@ -37,6 +37,7 @@
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
 ### Decided
+- topology: config-mirror open bullet struck — answered elsewhere already (decision 30, decisions/scope.md)
 - decisions/links.md split verbatim: decision 18 stays there, 17 and 24 moved to decisions/links-port.md.
 - `decisions/enrollment.md` split: 20/27 moved verbatim to new `decisions/link-declares.md`, out of reserve.
 - Decision 23 cites `embarch-core` decision 53 for the `%ProgramData%\embarch` ACL, replacing the stale deferral.
