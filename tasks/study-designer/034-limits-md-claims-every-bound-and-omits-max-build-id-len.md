@@ -1,4 +1,4 @@
-# 033 — `interfaces/limits.md` claims "every bound the crate declares" and omits `MAX_BUILD_ID_LEN`
+# 034 — `interfaces/limits.md` claims "every bound the crate declares" and omits `MAX_BUILD_ID_LEN`
 
 **State:** open
 **Source:** leg 101's refill sweep, 2026-09-12. Verified by diffing all 47 `pub const MAX_*` in
