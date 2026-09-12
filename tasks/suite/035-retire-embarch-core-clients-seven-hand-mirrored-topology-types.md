@@ -1,6 +1,18 @@
 # 035 — retire `embarch-core-client`'s seven hand-mirrored `embarch-topology` types, now that the types are reachable
 
-**State:** open
+**State:** open — announced, awaiting its silence-as-consent window.
+
+**Announcement window (leg 101, 2026-09-12):** posted to `#embarch-fleet` at `ts 1789232916.230899`,
+opened **11:08 local**. Closes **11:38**. No `--action`, per `ops.md` §4 — silence is consent. If
+this leg ends before 11:38, **the next leg completes this window rather than restarting it**: poll
+`scripts/fleet-read.py --thread 1789232916.230899`, and if nothing objected and 30 minutes have
+passed, run it. A reply saying go runs it immediately; a cancel drops this task back to plain `open`
+with the reply quoted here.
+
+**Leg 101 note on where to run it:** in its own `embarch-api` worktree, never the main checkout.
+Leg 100's entry flagged that a `suite` task editing a linked crate in the main checkout put a
+half-applied edit into three concurrent workers' builds. `embarch-api` is a sibling-symlink target
+for `embarch-ui` worktrees, so this task has exactly that hazard.
 
 **Source:** the second half of `tasks/suite/020`, split out by leg 100 on 2026-09-12 after its first
 half landed. `020`'s own scoping section (written by leg 099) is the long-form version of everything
