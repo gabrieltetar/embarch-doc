@@ -1,6 +1,10 @@
 # 035 — retire `embarch-core-client`'s seven hand-mirrored `embarch-topology` types, now that the types are reachable
 
-**State:** open — announced, awaiting its silence-as-consent window.
+**State:** claimed — leg 102, 2026-09-12. **Window closed unobjected.** Re-polled
+`scripts/fleet-read.py --thread 1789232916.230899` at 12:21 local, 73 minutes after the 11:08
+announcement and 43 minutes after its 11:38 close: one reply, written by an app, no human message
+of any kind in `#embarch-fleet` for the whole of leg 101 or leg 102. Clock not restarted, no fresh
+announcement posted. Run by the supervisor's own hands in its own `embarch-api` worktree.
 
 **Announcement window (leg 101, 2026-09-12):** posted to `#embarch-fleet` at `ts 1789232916.230899`,
 opened **11:08 local**. Closes **11:38**. No `--action`, per `ops.md` §4 — silence is consent. If
