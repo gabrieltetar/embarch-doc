@@ -40,6 +40,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `locate.rs`/`config.rs` doc comments corrected: 2 stale claims fixed (decision 38 omitted, decision 20 miscited as 16), 1 wrong number (51/53 → embarch-api 53/13); rest of ~37 checked and held.
 - Four more `../embarch-doc` links in `embarch-umbrella/src/` were one level too shallow; now `../../embarch-doc`.
 - doctor.rs's two `fix` strings and two rustdoc links to embarch-doc pointed one level too shallow; now `../../`.
 - `doctor.rs`: six stale citations (moved spec.md table, two wrong decision pointers) fixed.
