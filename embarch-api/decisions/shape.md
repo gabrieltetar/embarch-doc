@@ -57,4 +57,6 @@ Deliberate, not a gap: `embarch-umbrella` still scaffolds `artifact_path_for_cor
 
 **Ends when:** `embarch-umbrella` stops scaffolding `artifact_path_for_core` and no config in the field still carries it — then refuse it too, as a separate load-behaviour task this decision does not authorize.
 
+**Amended 2026-09-13 (suite task 038): the first clause has fired; toleration now rests on the second alone.** `embarch-umbrella` no longer scaffolds or declares the field and its check 9 no longer reads it, so the *earning* argument above is spent — nothing outside this crate writes the key any more. Toleration is kept on the remaining clause only: **configs already on disk still carry it, and refusing a key by name turns a stale field into a startup error.** That clause is a fact about real machines, not checkable from inside the suite, so the retirement stops here deliberately rather than for want of a task. **What unparks it: one grep of the real configs** — none carrying it means refuse by name and this exception is gone.
+
 Shapes: [../interfaces/config.md](../interfaces/config.md), [../interfaces/tools.md](../interfaces/tools.md).
