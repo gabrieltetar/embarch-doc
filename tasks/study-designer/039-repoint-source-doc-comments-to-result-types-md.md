@@ -1,6 +1,6 @@
 # 039 — Repoint `embarch-study-designer` source doc comments from `interfaces/types.md` to `interfaces/result-types.md`
 
-**State:** claimed by agent/study-designer/039-repoint-source-doc-comments, 2026-09-13 14:03
+**State:** done
 **Source:** `tasks/study-designer/038`'s citation sweep, 2026-09-13 — found and deliberately left
 unfixed, since that task's own `## Not in scope` excluded any change to this sub-project's source.
 **Scope:** study-designer
@@ -54,7 +54,21 @@ not file a third task for them.
 
 ## Done when
 
-- [ ] The six sites above repointed to `interfaces/result-types.md`.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green in
+- [x] The six sites above repointed to `interfaces/result-types.md`.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green in
       `embarch-study-designer` (doc comments only, but confirm nothing else moved under this task).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `changelog.d/` fragment dropped.
+
+## Shipped
+
+Repointed all six sites (`README.md:23`, `src/result.rs:1,23,35,89`, `src/limits.rs:50`) from
+`interfaces/types.md` to `interfaces/result-types.md`. Re-grepped at claim time: the list from `038`
+still matched exactly — no other unit had landed in between. Every remaining `interfaces/types.md`
+mention in this crate (`README.md:15,22`, `src/lib.rs:11`, `src/study.rs` ×7, `src/ffi.rs` ×3,
+`src/gatt.rs:22`, `src/study_builder.rs:645`) is about `Study`/`Step`/`Action`/`Requirements`/GATT
+content that did not move — confirmed by reading each site's surrounding doc comment, not just the
+grep hit. `cargo build`, `cargo test` (116 + 9 tests), `cargo clippy --all-targets -- -D warnings`
+all green, no other diff. `changelog.d/study-designer-repoint-result-types-comments.fixed.md`
+dropped. `check-docs.py`: all 11 checks green, including `check-doc-size.py` — this unit did not
+touch `spec.md`/`open.md` (both in reserve per the dispatch note) or push any file into reserve, so
+no compaction task filed.
