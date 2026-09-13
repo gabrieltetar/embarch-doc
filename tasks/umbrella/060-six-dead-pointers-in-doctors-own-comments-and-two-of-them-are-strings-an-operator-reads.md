@@ -1,6 +1,6 @@
 # 060 — Six dead pointers in `doctor.rs`, and two of them are strings an operator reads
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, `agent/umbrella/060-doctor-dead-pointers`
 **Source:** leg 111's refill sweep — a read-only hunter over `embarch-umbrella`, run because
 `--refill-owed` fired on scope spread. Every finding below was verified against both sides before
 filing.
