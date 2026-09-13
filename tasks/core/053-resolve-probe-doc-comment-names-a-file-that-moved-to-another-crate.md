@@ -1,9 +1,9 @@
 # 053 — `resolve_probe`'s doc comment still calls `board_gate.rs` this crate's own file, 42 lines above the comment that gets it right
 
-**State:** open
+**State:** claimed — leg of 2026-09-13 16:20, `agent/core/053-resolve-probe-board-gate-comment`
 **Source:** `inbox/core-hardware-rs-stale-board-gate-comment.md`, dropped by `core/052`'s worker
-while re-verifying that task's ride-alongs and named there as out of its own scope. Filed by leg 111
-on 2026-09-13.
+while re-verifying that task's ride-alongs and named there as out of its own scope. Filed by the leg of 2026-09-13 16:20 (the
+leg-number field is self-assigned and has collided twice today; the timestamp is the handle).
 **Scope:** core
 **Hardware:** none — a source doc comment, nothing executed.
 **Owner:** no
