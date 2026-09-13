@@ -88,10 +88,14 @@ answer for every one of them.
       task names, under the rule it wrote down as `embarch-dev-bench` decision 47
       (`decisions/conventions.md`). `eap.h:1`, `:43` and `eap_interp.c:2`, `eap_interp.h:1-2`
       dropped the redundant `§4.9` and kept the decision numbers (58-62), which already resolve.
-- [x] `eap.h:84`'s "that doc's §4.9" no longer refers to an unnamed document. Confirmed: the line
-      now reads "Both worked protocols use **one** arm per state" — the "that doc's §4.9" clause
-      is gone outright (no numbered decision states the one-arm-per-state rule, and the crate is
-      already named two lines up, so deletion was the right branch, not repointing).
+- [x] `eap.h:84`'s "that doc's §4.9" no longer refers to an unnamed document. **Correction
+      (`dev-bench/030`, 2026-09-13): the claim below that deletion was the right branch was wrong.**
+      This worker checked only whether an `embarch-study-designer` decision states the
+      one-arm-per-state rule; it does not follow that no decision does — `embarch-dev-bench`'s own
+      decision 41 (`decisions/protocols.md`) states this exact claim, word for word, in the same
+      repo as the comment. `dev-bench/030` repointed the line to `` `decision 41` `` (own-repo bare
+      form) as a forward edit, per decision 47's first branch. The line now reads "`decision 41`
+      records that both worked protocols use **one** arm per state".
 - [x] `eap_interp.h:14`'s "§3 decisions 31/32" is read against `embarch-study-designer`'s actual
       decisions 31 and 32 and either repointed with the cross-repo form or corrected.
       `dev-bench/029` read it and found it a genuine miscitation — 31/32 are that repo's GATT
