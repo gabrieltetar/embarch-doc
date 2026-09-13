@@ -1,6 +1,6 @@
 # 043 — `embarch-ui/decisions/trace-view.md` is in reserve
 
-**State:** open
+**State:** claimed
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/ui/042`'s fix to decision
 10's marker-count sentence
 **Scope:** ui
@@ -8,6 +8,29 @@
 **Owner:** no
 **Compacts:** embarch-ui/decisions/trace-view.md
 **Size debt due:** 2026-10-13
+
+## Dispatch note (supervisor, leg 107)
+
+**This is a compaction unit and it is judged differently from every other kind.** Answer
+`DOC-COMPACTION-PASS.md`'s human question in your report, in your own words: *can `spec.md` alone
+answer what someone needs to work on the trace view today?* No script answers it and the gate does
+not either, so a report that only gives byte counts has not finished the task.
+
+**`In flux: no` is already established per file** and this task names exactly one file, so the
+split-first rule applies with nothing parking it. `DOC-COMPACTION.md` §2 prefers a **split** over
+squeezing, and the task already identifies the seam (decision 10's three sub-arguments vs.
+decisions 19 and 21). **A verbatim split restates nothing**, so prefer it; if you split, say which
+new file was created and confirm every inbound citation to `decisions/trace-view.md` still
+resolves — a decision link surviving a mission split and pointing at the wrong file is a defect
+this suite has already paid for (`tasks/doc/022`).
+
+**`embarch-ui/decisions/trace-view.md` is the only `embarch-ui` file in reserve** — 11093/12288 B,
+1195 B left, 90.3%. Note the standing, unrelated `embarch-ui` debt: the 18-record stale prefix has
+never met a real stale prefix (`tasks/ui/007`, blocked). Decision 19 is the stale-prefix decision;
+**do not delete the reasoning that debt is waiting on** while shortening it.
+
+**Report the byte numbers before and after**, for every file you touched — that is what closes the
+ledger entry, and `check-doc-size.py` is what the fold will re-run.
 
 ## What
 
