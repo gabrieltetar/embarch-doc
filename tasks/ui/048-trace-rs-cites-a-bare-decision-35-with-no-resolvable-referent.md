@@ -1,6 +1,6 @@
 # 048 — `src/trace.rs:132` cites a bare "decision 35" and no decision 35 anywhere is about what the comment describes
 
-**State:** claimed — leg of 2026-09-13 16:20, `agent/ui/048-trace-rs-decision-35-no-referent`
+**State:** done
 **Source:** `inbox/ui-src-trace-rs-132-bare-decision-35-no-referent.md`, dropped by `ui/047`'s
 worker, which named this site as real but outside its own `Done when`. Filed by the leg of 2026-09-13 16:20 (the
 leg-number field is self-assigned and has collided twice today; the timestamp is the handle).
@@ -68,11 +68,33 @@ its last 10%, file `tasks/ui/<next>-compact-ui.md` in the same commit
 
 ## Done when
 
-- [ ] `src/trace.rs:132`'s comment either cites a decision whose body you have read and quoted, or
+- [x] `src/trace.rs:132`'s comment either cites a decision whose body you have read and quoted, or
       cites none at all.
-- [ ] Your report names every decision index you checked and what each 35 actually is.
-- [ ] No other citation in `embarch-ui` was changed.
-- [ ] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
+- [x] Your report names every decision index you checked and what each 35 actually is.
+- [x] No other citation in `embarch-ui` was changed.
+- [x] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
       `embarch-ui`.
-- [ ] `changelog.d/` fragment in `embarch-doc`.
-- [ ] `python3 scripts/check-docs.py` green in `embarch-doc`.
+- [x] `changelog.d/` fragment in `embarch-doc`.
+- [x] `python3 scripts/check-docs.py` green in `embarch-doc`.
+
+## Outcome taken
+
+**Outcome 2** — no referent exists, and the claim is still true. `embarch-ui`'s own
+`decisions.md`/`decisions/*.md` top out at decision 26 (no 35 exists or ever existed under that
+number — `DOC-CONVENTIONS.md` states numbers are never renumbered or reused, which forecloses
+outcome 1's "renumbered" branch outright). All six sibling repos with an actual decision 35
+(`embarch-dev-bench`, `embarch-core`, `embarch-api`, `embarch-umbrella`, `embarch-study-designer`;
+`embarch-outpost` and `embarch-topology` have none) were read in full body, not by index line —
+none is about naming, identity, or a pointer rendered as a label (see report). `embarch-ui`
+decision 10 (`trace-view.md`) covers closely related ground — "'unnamed' is a first-class state
+here, not an error path, drawn italic and dotted with the number as the label" — and is already
+this module's umbrella citation (`trace.rs`'s top-of-file doc comment: "decision 10's second
+half"), but it was never numbered 35 under any theory, so it does not satisfy outcome 1 for *this*
+citation.
+
+The claim itself checked out against the rendering code: `assets/app.js` renders `unnamed`
+lanes/subjects muted, italic, with a dashed underline and an explanatory tooltip, in both the load
+table (`nameCell`, ~line 3692) and the lane chart (~lines 4269–4280, 4690). Dropped the dead
+citation in `embarch-ui/src/trace.rs:130-133` and restated the sentence as a plain, verified fact.
+No new decision authored; no `inbox/` drop needed since the claim held and nothing else in scope
+was left unresolved.
