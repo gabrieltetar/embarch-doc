@@ -11,6 +11,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- Decisions 19, 21 split verbatim off decisions/trace-view.md into decisions/trace-rows.md; decision 10 stays put.
 - The run dialog's "no reflashing here" wording is now verified against the shipped string, not assumed: [open.md](../embarch-ui/open.md).
 - `open.md` reshaped: the 250,000-row bullet is now a measurement table, out of size reserve.
 - `topology-tab.md` decision 10 compacted 4430→4034 B, cutting cold provenance/investigation prose; under the 4,096 B cap.
