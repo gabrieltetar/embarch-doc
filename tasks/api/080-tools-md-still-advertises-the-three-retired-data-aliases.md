@@ -1,6 +1,13 @@
 # 080 — `interfaces/tools.md` still advertises "the three data aliases" that `suite/015` retired
 
-**State:** open
+**State:** claimed — leg 107, unit 1, 2026-09-13.
+**Doc-size reserve for `api`:** `embarch-api/decisions/surface.md` 11258/12288 B (1030 B left,
+filed as blocked `tasks/api/069`), `embarch-api/interfaces/config.md` 11198/12288 B (1090 B left,
+filed as blocked `tasks/api/071`). `interfaces/tools.md` and `interfaces/studies.md` are not in
+reserve. If your work pushes a file into reserve or leaves one there unfiled, file
+`tasks/api/<NNN>-compact-api.md` in the same commit. If you must write into `surface.md` or
+`config.md` and the edit would not fit, compact that file in-unit per `DOC-COMPACTION.md` §2,
+carrying the parked task's `Must not delete:` list.
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-read the file:lines below.
 **"Scout-verified" is one reader, and it has already been wrong once** — the same scout, same
 sweep, reported a quoted source comment as never having existed when it had existed and was later
