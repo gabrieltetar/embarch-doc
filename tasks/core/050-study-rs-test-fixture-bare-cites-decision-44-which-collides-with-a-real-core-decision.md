@@ -1,6 +1,6 @@
 # 050 — `study.rs`'s test fixture bare-cites "Decision 44" and "Decision 62" for `embarch-study-designer` fields, and 44 collides with a real, unrelated `embarch-core` decision
 
-**State:** claimed
+**State:** done
 **Source:** leg 107 refill sweep, 2026-09-13, scout-verified against `embarch-core/src/study.rs`,
 `embarch-study-designer/src/result.rs` and both repos' decisions files. **The scout did not
 execute anything and "scout-verified" is one reader**, which has been wrong before in this queue
@@ -64,27 +64,60 @@ what `security_level` means.
 
 ## Done when
 
-- [ ] Both citations carry the repo name, in the form the comment three lines above already uses.
+- [x] Both citations carry the repo name, in the form the comment three lines above already uses.
       **Do not renumber anything** — the numbers are right for the repo that owns the fields; only
-      the attribution is missing.
-- [ ] Each target is **re-derived against the decision's actual text**, not accepted from this
-      file. Confirm `embarch-study-designer` 44 owns `security_level` and 62 owns `protocol`, and
-      say what you read.
-- [ ] `embarch-core`'s own decision 44 is confirmed to be the retired `/logs/stream` one, so the
-      collision is stated accurately if the fix mentions it.
-- [ ] **A sweep, and its result reported either way.** Run `grep -rnE 'decision[s]? [0-9]+'` (case
-      insensitive) over `embarch-core/src/` and `bin/`, and for each **bare** citation touching a
-      type that lives in a shared crate (`embarch-study-designer`, `embarch-topology`), check
-      whether it resolves to `embarch-core`'s own decision of that number and whether that decision
-      is topically right. The scout ran the "no matching heading anywhere" check across the crate
-      and this was the only hit; it did **not** do the wrong-body pass beyond this one function,
-      and says so. **A clean sweep finding nothing else is a useful result and must be recorded,
-      not left silent** — it is the only thing that would tell the next leg this class is closed in
-      this repo.
-- [ ] Gate green, including a `cargo test` — this is a test helper, so a comment edit that
-      accidentally lands inside the struct literal breaks the build rather than reading oddly.
-- [ ] `changelog.d/` fragment only if something reader-visible changed; a comment-only fix may
-      warrant none, and saying so is fine.
+      the attribution is missing. Done — `study.rs:4168` and `study.rs:4171` (now `4168`/`4171`
+      shifted by the added line) each now open with `` `embarch-study-designer` decision NN's ``,
+      matching the `decisions 31/32` comment two lines above them. Numbers untouched.
+- [x] Each target is **re-derived against the decision's actual text**, not accepted from this
+      file. Confirmed against `embarch-doc/embarch-study-designer/decisions/ble.md:17` — heading
+      `### 44 — `Action::BleSecurity { level }` — elevating the link is a step an engineer
+      authors`, whose implementation section states "The result gains a level field, populated on
+      *every* step" — that is `security_level`. And against
+      `embarch-doc/embarch-study-designer/decisions/protocol-exec.md:27` — heading `### 62 — A
+      protocol run reports the state it stopped in, and nothing it could lie about`, which states
+      "Where the outcome lands... this field reaches the file automatically" — that is `protocol`.
+      Both also cross-checked against `embarch-study-designer/src/result.rs:211`/`224`, whose doc
+      comments cite the same two decision numbers for the same two fields. The scout's mapping was
+      right on both.
+- [x] `embarch-core`'s own decision 44 is confirmed to be the retired `/logs/stream` one — read at
+      `embarch-doc/embarch-core/decisions/logging.md:22`, `### 44 — *(retired)* `/logs/stream`
+      advances its offset only past a `\n`, and pays a tick for it`. Confirmed unrelated to
+      `security_level`; the collision is two repos each legitimately holding a 44, not a defect in
+      either's numbering.
+- [x] **Sweep run.** `grep -rnE 'decision[s]? [0-9]+' -i src/ bin/` returned 244 hits (`bin/` has
+      none — only `src/` did). 97 already carry an explicit `embarch-<repo>` attribution somewhere
+      in the same doc-comment block (some split across lines, which a naive per-line check would
+      have flagged as false positives). Of the remaining bare ones, every citation's number was
+      checked against `embarch-core/decisions.md`'s own index and, where it touched a
+      shared-crate type (`StepResult`, `ProbeInfo`, `embarch_topology::hardware::{NotEnrolled,
+      TopologyMismatch, Alert}`, etc.), against the target heading's actual topic — e.g. `decision
+      40` (dev_bench_link.rs, `StepResult`'s diagnosis field) resolves to `studies.md`'s own
+      "An undecodable frame costs the frame..." and is topically about Core's frame handling, not
+      about the field's origin, so bare is correct there; `decision 28` (api.rs, `NotEnrolled`)
+      resolves to `enrollment.md`'s own "`POST /validate` and `GET /alerts`, reachable without
+      touching hardware," likewise correct. **Result: the two citations named in this task
+      (`study.rs`'s old lines 4168 and 4171, `security_level`/`protocol`) were the only wrong-body
+      case found.** Every other bare citation in `src/` resolves to a real, topically-matching
+      `embarch-core` decision. This class is closed in this repo as of this unit; nothing else
+      needs a repo-name added.
+- [x] Gate green, including `cargo test` — see below.
+- [x] No `changelog.d/` fragment. Comment-only fix inside a test helper; nothing reader-visible
+      changed (no behavior, no wire, no doc surface).
+
+## Gate results (this unit)
+
+- `cargo build`: green.
+- `cargo test`: 197 passed, 0 failed, 2 ignored.
+- `cargo clippy --all-targets -- -D warnings`: green.
+- `python3 scripts/check-docs.py` (doc worktree): all 11 checks green.
+- `scripts/check-client-names.py --repo <code worktree>`: clean against 7 denylist entries.
+- `scripts/check-ownership.py --scope core` (doc worktree): OK, 0 changed paths.
+- `scripts/check-ownership.py --scope core --code-repo --repo <code worktree>`: OK, worker owns
+  the whole tree, 1 path changed.
+
+Branches pushed: `agent/core/050-fixture-decision-citations` (code),
+`agent/core/050-fixture-decision-citations-doc` (doc).
 
 ## Do not
 
