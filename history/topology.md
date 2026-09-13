@@ -27,6 +27,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- Four dead citations in `embarch-topology`'s own source comments re-derived and fixed, none renumbered.
 - `hardware_id.rs:429`'s bare `decision 35` (embarch-core's, not topology's) now reads `embarch-core` decision 35.
 - topology's port.rs rustdoc named `espressif-vid-match` as a reachable `detected_by` value and "three recognized" gate VIDs; the gate admits only two.
 - fixed: `hardware_id.rs` rustdoc now names both declared self-report arms (esp32c5, Nordic), not just the first.
