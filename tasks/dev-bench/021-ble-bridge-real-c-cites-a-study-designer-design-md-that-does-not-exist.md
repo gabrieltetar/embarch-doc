@@ -1,6 +1,6 @@
 # 021 — `ble_bridge_real.c` cites an `embarch-study-designer/design.md §3` that does not exist
 
-**State:** open
+**State:** claimed by agent/dev-bench/021-ble-bridge-real-citations, 2026-09-13 10:45
 **Source:** split out of `dev-bench/019`, 2026-09-12.
 **Scope:** dev-bench
 **Hardware:** none
@@ -30,3 +30,14 @@ these are C comments.
 - [ ] Host-side checks green; say plainly what could and could not be run (the Zephyr
       `tests/unit` ztest suite cannot be built from a worker's worktree — standing debt, not
       introduced here).
+
+## Dispatch note (leg 105)
+
+**In reserve for `dev-bench`, all three already filed and parked:**
+`embarch-dev-bench/open.md` 4782/5120 (338 B left, `tasks/dev-bench/012`, blocked),
+`embarch-dev-bench/spec.md` 9460/10240 (780 B left, same task, blocked),
+`embarch-dev-bench/decisions/link.md` 11241/12288 (1047 B left, `tasks/dev-bench/014`,
+blocked). Plan your doc writes around those headrooms — this unit should need none of them,
+since it is a C-comment citation repoint with a `changelog.d/` fragment. If you do spend
+reserve in a file nothing has filed, file `tasks/dev-bench/<NNN>-compact-dev-bench.md` in the
+same commit.
