@@ -1,6 +1,6 @@
 # 053 — `resolve_probe`'s doc comment still calls `board_gate.rs` this crate's own file, 42 lines above the comment that gets it right
 
-**State:** claimed — leg of 2026-09-13 16:20, `agent/core/053-resolve-probe-board-gate-comment`
+**State:** done
 **Source:** `inbox/core-hardware-rs-stale-board-gate-comment.md`, dropped by `core/052`'s worker
 while re-verifying that task's ride-alongs and named there as out of its own scope. Filed by the leg of 2026-09-13 16:20 (the
 leg-number field is self-assigned and has collided twice today; the timestamp is the handle).
@@ -54,12 +54,12 @@ its last 10% you file `tasks/core/<next>-compact-core.md` in the same commit
 
 ## Done when
 
-- [ ] `src/hardware.rs:74`'s doc comment names `embarch_topology::hardware::validate_serial` as the
+- [x] `src/hardware.rs:74`'s doc comment names `embarch_topology::hardware::validate_serial` as the
       board-identity gate and does not assert `board_gate.rs` as a file in this crate.
-- [ ] The reason the function is `pub(crate)` survives the reword.
-- [ ] Decision 9's citation in that same comment is read against decision 9's body and either kept,
+- [x] The reason the function is `pub(crate)` survives the reword.
+- [x] Decision 9's citation in that same comment is read against decision 9's body and either kept,
       corrected with the derivation stated, or flagged in your report.
-- [ ] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
+- [x] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
       `embarch-core`.
-- [ ] `changelog.d/` fragment in `embarch-doc`.
-- [ ] `python3 scripts/check-docs.py` green in `embarch-doc`.
+- [x] `changelog.d/` fragment in `embarch-doc`.
+- [x] `python3 scripts/check-docs.py` green in `embarch-doc`.
