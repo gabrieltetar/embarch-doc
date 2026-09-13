@@ -19,6 +19,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- embarch-api/decisions/shape.md split: decisions 53, 64 moved verbatim to new decisions/config-retirement.md.
 - `interfaces/config.md`'s `[dev_bench]` section moved verbatim to `interfaces/dev-bench-config.md`, out of size reserve.
 - `dev_bench_hello` now says whose build `firmware_version` is: the bench's, corresponding to `requires.dev_bench_version` — [tools-dev-bench.md](../embarch-api/interfaces/tools-dev-bench.md).
 - Compacted `embarch-api/decisions/tests.md` out of size reserve (`tasks/api/077`), same facts intact.
