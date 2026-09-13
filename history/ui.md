@@ -22,6 +22,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- `assets/app.js`'s `delay_before_ms` comments cite decision 42, not 40; `decisions/surfaces.md` pointer fixed to `enrollment.md`.
 - Four stale pointers fixed: trace-view.md's marker count now names the fixture it measured; shell.md's three style.css line citations re-derived.
 - Twenty-two source comments now cite `embarch-study-designer`/`embarch-core` decisions by repo, not bare numbers.
 - `Cargo.toml` comments repointed off nonexistent `design.md` files to real spec/decisions.
