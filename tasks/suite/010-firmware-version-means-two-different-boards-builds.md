@@ -1,6 +1,9 @@
 # 010 — `firmware_version` means the bench's build on one surface and the DUT's on another, and `clamp_version` blames the wrong board
 
-**State:** open
+**State:** open — announced by leg 103 at 2026-09-12 23:37, `ts 1789277838.510359`, no `--action`
+(silence-as-consent). The 30-minute window closes at 2026-09-13 00:07. If this leg ends before
+then, **inherit the window, do not restart it**: re-poll with
+`embarch-fleet/scripts/fleet-read.py --thread 1789277838.510359` and run it if nothing objected.
 **Source:** suite review pass 2026-09-06, dimension 5 (cross-surface consistency). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
