@@ -1,6 +1,6 @@
 # 036 — Two interface docs say `StreamRef` refused a fourth field, and it grew exactly that field
 
-**State:** open
+**State:** claimed by agent/study-designer/036-streamref-fourth-field, 2026-09-13 12:05
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified on both sides. Every file:line below was
 read by the scout; re-check them rather than trusting the quotes.
 **Scope:** study-designer
