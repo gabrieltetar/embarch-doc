@@ -1,6 +1,9 @@
 # 036 — Three dead citations inside `embarch-topology`'s own source comments
 
-**State:** open
+**State:** claimed — leg 107, unit 2, 2026-09-13.
+**Doc-size reserve for `topology`:** nothing in `embarch-topology`'s docs is in reserve. If your
+work pushes a file into the last 10% of its cap, file `tasks/topology/<NNN>-compact-topology.md`
+in the same commit.
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-derive each target rather than
 trusting the quotes. **"Scout-verified" is one reader, and it has already been wrong once:** the
 same scout, in the same sweep, reported a quoted `state.rs` comment as never having existed
