@@ -1,6 +1,6 @@
 # 038 — Split `embarch-study-designer/interfaces/types.md`'s Results section into its own interface file
 
-**State:** claimed — leg 108, 2026-09-13, dispatched to `agent/study-designer/038-split-result-types`
+**State:** done — leg 108, 2026-09-13, landed on `agent/study-designer/038-split-result-types`
 **Source:** supervisor, leg 108, 2026-09-13 — filed against the size-reserve debt parked in
 `tasks/study-designer/037`, which is `blocked` on `In flux: yes` and stays blocked. See "Why this is
 not that task" below.
@@ -75,18 +75,43 @@ cited from more repos than most files in this suite. So:
 
 ## Done when
 
-1. `embarch-study-designer/interfaces/result-types.md` exists and holds the `Results` section
-   **byte-identical** to its text at this task's parent commit. Prove it: extract the section from
-   both sides and `diff` them, and put the exit status in the report. The only new prose anywhere is
-   the new file's title line, a `Current truth:` header line matching its siblings' convention, and
-   one cross-reference line in each file pointing at the other.
-2. `embarch-study-designer/interfaces/types.md` is out of reserve — under 11,059 B.
-3. The `StreamRef` four-field list and its `records`-vs-`truncated` gloss are verified present and
-   unchanged on the far side of the move, and the report says so.
-4. The suite-wide citation sweep above is done and its outcome reported either way.
-5. `python3 scripts/check-docs.py` is green in `embarch-doc`, including `check-doc-size.py` and
-   `check-decision-refs.py`.
-6. `tasks/study-designer/037` is **untouched**. This task's own file is closed `done`.
+1. [x] `embarch-study-designer/interfaces/result-types.md` exists and holds the `Results` section
+   **byte-identical** to its text at this task's parent commit. Verified: extracted the section
+   (`## Results` to EOF) from both the pre-move `types.md` and the new file and diffed them —
+   **exit status 0**. New prose is the title line, a `**Status:** active` header line naming
+   "Split out of types.md ... (tasks/study-designer/038)", matching the suite's real split-file
+   convention (`embarch-core`, `embarch-api`, `embarch-umbrella`'s own split interface files all use
+   this "Split out of X" shape, not literally the words "Current truth:" — none of `types.md`'s own
+   siblings in this sub-project carry a `Current truth:` line either; see report), a
+   "Current truth for the authoring types ... : types.md"-worded cross-reference line back to the
+   authoring types, and, in `types.md`, a one-line `## Results` pointer forward to the new file.
+2. [x] `embarch-study-designer/interfaces/types.md` is out of reserve — **8,999 B**, under 11,059 B.
+3. [x] The `StreamRef` four-field list (`name, bytes_written, truncated, records`) and its
+   `records`-vs-`truncated`-adjacent gloss (the `records: Option<RecordReport>` sentence) are
+   present, unchanged, verbatim, in `result-types.md`. Cross-checked against `study-designer/036`'s
+   own diff (`git show 5bbc0bc`), which is where the fourth field was added — the moved text matches
+   that landed version exactly.
+4. [x] Suite-wide citation sweep done. Outcome: swept this repo (docs, `history/`, `tasks/`,
+   `embarch-decision-reversals.md`) and every code repo's source/docs for `interfaces/types.md`.
+   Found and left alone (name only the type, or cite unmoved `Study`/`Step`/`Action` content):
+   `embarch.md:116`, `embarch-glossary.md:24` (both suite-level, untouched regardless),
+   `history/study-designer.md:8`, `embarch-study-designer/spec.md:5`,
+   `embarch-study-designer/decisions.md:5`, `embarch-study-designer/decisions/declared-gatt.md:14`,
+   `embarch-study-designer/decisions/streams.md:31` (a pre-existing `§4.8` numbered reference,
+   predating and unrelated to this split), `suite/studies-guide.md:13,100`,
+   `tasks/study-designer/031` (historical, closed). Found needing repoint but out of this task's own
+   `## Not in scope` (this crate's source): `embarch-study-designer/README.md:23`,
+   `src/result.rs:1,23,35,89`, `src/limits.rs:50` — filed as
+   `tasks/study-designer/039-repoint-source-doc-comments-to-result-types-md.md`. Found needing
+   repoint in a repo this task does not own: `embarch-ui/src/study_designer.rs:780` (a `StreamRef`
+   citation) — dropped as
+   `/home/gabriel/Github/embarch/embarch-doc/inbox/ui-repoint-streamref-citation-to-result-types-md.md`.
+   Its sibling citation at `study_designer.rs:1524` was checked and is unaffected (unmoved `Action`
+   content).
+5. [x] `python3 scripts/check-docs.py` green in `embarch-doc` — all 11 checks, including
+   `check-doc-size.py` and `check-decision-refs.py`.
+6. [x] `tasks/study-designer/037` untouched (confirmed: not in this unit's diff). This task's own
+   file closed `done`.
 
 ## Not in scope
 
