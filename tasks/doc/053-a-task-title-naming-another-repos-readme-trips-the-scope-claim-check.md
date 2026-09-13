@@ -3,8 +3,7 @@
 **State:** open
 **Source:** `inbox/doc-check-task-state-title-substring-false-positive.md`, filed by `core/052`'s
 worker; the same wall was hit independently by leg 110's supervisor, which worked around it by
-rewording its own task title (`5dcfc88`) rather than touching the script. Filed as a task by leg 111
-on 2026-09-13.
+rewording its own task title (`5dcfc88`) rather than touching the script. Filed as a task by the leg of 2026-09-13 16:20.
 **Scope:** doc
 **Hardware:** none — a checker script.
 **Owner:** required — every path it writes is under `scripts/`, which

@@ -3,7 +3,7 @@
 **State:** open
 **Source:** `inbox/umbrella-more-shallow-cross-repo-links.md`, dropped while closing
 `tasks/umbrella/061` (the `doctor.rs` cross-repo link-depth fix) and named there as outside that
-task's scope. Filed by leg 111 on 2026-09-13.
+task's scope. Filed by the leg of 2026-09-13 16:20.
 **Scope:** umbrella
 **Hardware:** none — comment and citation text only. No behaviour, no board, no running service.
 **Owner:** no

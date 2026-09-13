@@ -2,8 +2,8 @@
 
 **State:** open
 **Source:** `inbox/ui-src-trace-rs-132-bare-decision-35-no-referent.md`, dropped by `ui/047`'s
-worker, which named this site as real but outside its own `Done when`. Filed by leg 111 on
-2026-09-13.
+worker, which named this site as real but outside its own `Done when`. Filed by the leg of 2026-09-13 16:20 (the
+leg-number field is self-assigned and has collided twice today; the timestamp is the handle).
 **Scope:** ui
 **Hardware:** none — a source doc comment.
 **Owner:** no
