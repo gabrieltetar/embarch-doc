@@ -1,6 +1,14 @@
 # 041 — Forty `§N` references in this sub-project's docs point into a `design.md` that stopped existing on 2026-09-02
 
-**State:** open
+**State:** claimed — leg 110, 2026-09-13.
+**Doc-size reserve (supervisor, leg 110):** two files of yours are in reserve and both are already
+filed against a **blocked** compaction task, so plan around them rather than discovering them:
+`embarch-study-designer/spec.md` 9,350/10,240 B (**890 B left**, `tasks/study-designer/032`) and
+`embarch-study-designer/open.md` 4,659/5,120 B (**461 B left**, `tasks/study-designer/026`). This
+unit should be byte-negative or neutral in both — dropping a dead `§N` shortens a line — so do **not**
+compact either as part of this unit. If your work nonetheless pushes any file into reserve or leaves
+one there unfiled, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit
+(`scripts/check-task-numbers.py --next study-designer` for the number; never `ls | tail`).
 **Source:** the `embarch-reviewer` on `ui/044`, 2026-09-13, as a flagged-not-found aside: it noticed
 `interfaces/limits.md:24` still cites `§4.8` for `StreamTap.name`/`StreamRef.name`, the same dead
 section number `ui/044` had just dropped from `embarch-ui`'s side of the identical citation. The
