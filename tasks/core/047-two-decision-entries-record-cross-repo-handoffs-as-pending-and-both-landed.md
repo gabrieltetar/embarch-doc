@@ -1,6 +1,10 @@
 # 047 — Two `embarch-core` decision entries record a cross-repo hand-off as still owed, and both have landed
 
-**State:** claimed by agent/core/047-cross-repo-handoff-claims, 2026-09-13 11:45
+**State:** done — agent/core/047-cross-repo-handoff-claims, 2026-09-13. Both `embarch-ui` claims
+re-verified against its own code and confirmed satisfied; see `## Verification` below. One
+correction to the scout's framing: the studies.md paragraph quoted is decision **43**'s
+*Consequences* paragraph, not decision 54's — studies.md has no decision 54 (see
+`embarch-core/decisions.md`'s index row); the quoted text matches decision 43 verbatim.
 **Source:** leg 105 refill sweep, 2026-09-13. Both instances read in full before filing; the
 `embarch-ui` code claims below are the scout's and are **to be re-verified by whoever takes this**,
 not taken on trust.
@@ -50,17 +54,38 @@ either — `check-decision-refs.py` resolves decision *numbers*, and `check-link
 
 ## Done when
 
-- [ ] Decision 54's *Consequences* paragraph no longer describes the `embarch-ui` badge defect as
-      live and filed, and the reason the two step conventions diverged is kept intact.
-- [ ] Decision 57's two `tasks/<scope>/<NNN>` placeholders name what actually happened — the task
+- [x] Decision 54's *Consequences* paragraph no longer describes the `embarch-ui` badge defect as
+      live and filed, and the reason the two step conventions diverged is kept intact. (This is
+      decision 43, per the correction above; its *Consequences* paragraph now names the landed fix
+      — `ui/010`, `current_step + 2` clamped — alongside the kept explanation of why the two
+      counters diverged.)
+- [x] Decision 57's two `tasks/<scope>/<NNN>` placeholders name what actually happened — the task
       that landed, or, if a half turns out **not** to be satisfied, a real task number filed by an
-      `inbox/` drop rather than a placeholder left in place.
-- [ ] Each claim about `embarch-ui` is checked against `embarch-ui`'s own code and the file:line
+      `inbox/` drop rather than a placeholder left in place. (Both landed: `tasks/umbrella/045`
+      closed `done`; `tasks/ui/022` landed the fix, citing this decision by name.)
+- [x] Each claim about `embarch-ui` is checked against `embarch-ui`'s own code and the file:line
       said in the report. **Do not write `embarch-ui`** — it is not this scope's — and if either
       turns out unsatisfied, drop the task to
       `/home/gabriel/Github/embarch/embarch-doc/inbox/` (absolute path) instead of filing it.
-- [ ] `grep -rn '<NNN>' embarch-core/` returns nothing that is a live promise.
-- [ ] Gate green; `changelog.d/` fragment.
+      (Both claims satisfied — no inbox drop needed.)
+- [x] `grep -rn '<NNN>' embarch-core/` returns nothing that is a live promise.
+- [x] Gate green; `changelog.d/` fragment.
+
+## Verification
+
+- **(a)** `embarch-ui/assets/app.js:2486-2502` (`sdRunningStepLabel`) computes
+  `currentStep == null ? 1 : currentStep + 2`, clamped to `totalSteps`, and cites `embarch-core
+  decision 43` by name in its comment. `embarch-ui/src/study_designer.rs:1810-1825` pins this with
+  a test asserting `!APP_JS.contains("(state.current_step + 1)")`. Landed by `ui/010` (commit
+  `fa0a327`'s ancestor, `embarch-ui` git log), 2026-09-06 — the same day decision 43's bracket
+  already said so. The *Consequences* paragraph's tail was the only stale part; updated.
+- **(b)** `tasks/umbrella/045-relabel-confirmed-at-utc-ms-if-doctor-ever-renders-it.md` — **State:
+  done**, `doctor` renders neither timestamp, constraint folded into `doctor.rs`'s module doc.
+  `embarch-ui/assets/app.js:155-175` and `embarch-ui/src/snapshot.rs:11-29` — the Topology tab's
+  shared table labels the `confirmed_at_utc_ms` column **"Enrolled"** and cites `embarch-core
+  decision 57` by name. Landed as `ui/022` (`embarch-ui` commit `9361329`, 2026-09-10), which cited
+  decision 54 at the time (the number before it moved to 57) — `embarch-ui` commit `3d2f870`
+  repointed the citation to 57 the next day. Both halves landed; no `inbox/` drop was needed.
 
 ## Do not
 
