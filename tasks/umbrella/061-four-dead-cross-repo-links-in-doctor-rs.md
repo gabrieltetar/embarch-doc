@@ -1,6 +1,6 @@
 # 061 — Four cross-repo relative links in `doctor.rs` resolve to nothing, and two are strings an operator reads
 
-**State:** open
+**State:** claimed — leg 108, unit 2, 2026-09-13, branch `agent/umbrella/061-doctor-cross-repo-links`.
 **Doc-size reserve for `umbrella`:** `embarch-umbrella/decisions/bind.md` 11533/12288 B (**755 B
 left**, filed as blocked `tasks/umbrella/009`). This task should need no new decision — it is link
 text in comments and `fix` strings — but if you conclude one is owed, check
