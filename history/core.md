@@ -29,6 +29,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Fixed two source comments citing a wrong-but-live decision number (study.rs 18→39; api.rs 15 dropped, reworded); logs.md no longer claims two /logs routes.
 - `clamp_version` warned that *dev-bench* reported an over-long version for all four values reaching it, the DUT's included. It now takes a `VersionSubject` and names the board.
 - `embarch-core` src/bin comments: 12 bare `decision N` citations repointed to the right repo or number (checked ~150+, changed 13 lines across main.rs/api.rs/study.rs/elevate.rs/stream_store.rs).
 - `Cross.toml`/`release.yml` no longer cite the deleted `milestone-6.md`; point at `embarch-umbrella` decision 14 and open.md.
