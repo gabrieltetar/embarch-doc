@@ -42,6 +42,7 @@
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
 ### Decided
+- topology decision 32: `enroll`'s probe selection duplicates `embarch-core::resolve_probe`, documented not de-duplicated (dependency direction blocks it).
 - topology: config-mirror open bullet struck — answered elsewhere already (decision 30, decisions/scope.md)
 - decisions/links.md split verbatim: decision 18 stays there, 17 and 24 moved to decisions/links-port.md.
 - `decisions/enrollment.md` split: 20/27 moved verbatim to new `decisions/link-declares.md`, out of reserve.
