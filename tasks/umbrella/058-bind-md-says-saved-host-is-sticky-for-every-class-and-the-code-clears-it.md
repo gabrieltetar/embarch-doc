@@ -1,6 +1,6 @@
 # 058 — `decisions/bind.md` says `saved.host` is sticky for every class; `apply_plan` clears it
 
-**State:** open
+**State:** claimed by agent/umbrella/058-saved-host-no-longer-sticky, 2026-09-13 12:08
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified on both sides. Re-read each file:line
 rather than trusting the quotes below.
 **Scope:** umbrella
