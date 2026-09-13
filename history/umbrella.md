@@ -40,6 +40,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- Four more `../embarch-doc` links in `embarch-umbrella/src/` were one level too shallow; now `../../embarch-doc`.
 - doctor.rs's two `fix` strings and two rustdoc links to embarch-doc pointed one level too shallow; now `../../`.
 - `doctor.rs`: six stale citations (moved spec.md table, two wrong decision pointers) fixed.
 - `bind.md`/`sticky-host.md` no longer claim `saved.host` is sticky for every class; decision 51 cited.
