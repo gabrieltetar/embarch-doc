@@ -1,6 +1,6 @@
 # 085 — Four more `embarch-core` decision 22 citations in `embarch-core-client`, untouched by 084
 
-**State:** claimed — leg 108, unit 1, 2026-09-13, branch `agent/api/085-core-decision-22-citations`.
+**State:** done — leg 108, unit 1, 2026-09-13, branch `agent/api/085-core-decision-22-citations`.
 **Doc-size reserve for `api`:** `embarch-api/decisions/surface.md` 11258/12288 B (**1030 B left**,
 filed as blocked `tasks/api/069`) and `embarch-api/spec.md` 9090/10240 B (1150 B left, filed as
 blocked `tasks/api/083`). This task should need no new decision — it is citation text in doc
@@ -53,11 +53,56 @@ never `src/**`, so **nothing in the gate will catch a wrong number here**; the r
 
 ## Done when
 
-- [ ] `crates/embarch-core-client/src/client.rs:199,381,1249,1333` each either keep `embarch-core`
+- [x] `crates/embarch-core-client/src/client.rs:199,381,1249,1333` each either keep `embarch-core`
       decision 22 (**with a stated reason in the comment itself** that it is the correct, historical
       citation there) or are updated to `embarch-topology` decision 14, matching
       `src/tools.rs:945`'s current wording.
-- [ ] The report says, per site, which way it went and on what evidence from the two decision
+- [x] The report says, per site, which way it went and on what evidence from the two decision
       bodies.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
+
+## Resolution
+
+Read both decision bodies in full: `embarch-core/decisions/probes.md` #22 (the identity-gate
+mechanism: a machine-local table keyed by probe serial, "exactly one attached" enrollment
+enforcement, live-readback fail-closed comparison — its own text says this **"moved wholesale
+into `embarch-topology`"**) and `embarch-topology/decisions/enrollment.md` #14 (that crate's own
+storage now backing exactly that mechanism; #28 there confirms the *HTTP routes*
+`POST /probes/enroll`/`GET /probes/enrolled` stayed in `embarch-core`, but only as a thin surface
+over topology's storage).
+
+Line numbers had drifted from `319f0357`/`43ee8517`; re-grepped and confirmed all four sites
+still existed at 199, 381, 1249, 1333 (`EnrollProbeRequest::probe_serial`, `EnrolledBoardResponse`,
+`CoreClient::enroll_probe`, `CoreClient::list_enrolled`).
+
+All four **repointed to `embarch-topology` decision 14** — none legitimately keep `embarch-core`
+decision 22:
+
+- **:199 (`probe_serial` field)** — cited "`embarch-core` decision 22's own doc comment" for the
+  "exactly one attached" fallback default, which is decision 22's own mechanism text verbatim, now
+  living in `embarch-topology`. The sibling sites `084` already fixed for this *exact same field*
+  (`src/main.rs:332-334`, `src/tools.rs:404-406`) both dropped the decision-22 citation entirely
+  and kept only `embarch-topology` decision 15 (the optional-serial addition). Repointed to
+  decision 14 (naming the "exactly one attached" requirement explicitly) plus 15, rather than
+  dropping the first citation outright, to match this same file's own struct-level comment three
+  lines above (`:188`, already fixed by `084` to `embarch-topology` decision 14).
+- **:381 (`EnrolledBoardResponse`)** — `EnrolledBoardResponse = EnrolledBoard` is a **type alias of
+  `embarch_topology::hardware::EnrolledBoard`** (see line 396) — the struct itself is topology's,
+  not Core's. Repointed to match the sibling write-side comment's now-fixed pattern
+  (`:188`, "`embarch-topology` decision 14's `POST /probes/enroll`") with the read-side route:
+  "`embarch-topology` decision 14's `GET /probes/enrolled`".
+- **:1249 (`CoreClient::enroll_probe`)** — same route as `:188`'s struct comment, describing the
+  same mechanism ("records which physical board `role`'s probe is"). Repointed to decision 14;
+  the accompanying `embarch-api` decision 34 (this crate's own two-layer-wrapper rationale,
+  confirmed at `embarch-api/decisions/hardware-selection.md`) is untouched — out of scope, unrelated
+  to the storage/mechanism question.
+- **:1333 (`CoreClient::list_enrolled`)** — the doc comment's **own following sentence** already
+  said "a pure read of `embarch-topology`'s own storage on Core's side", directly contradicting
+  citing `embarch-core` decision 22 in the same breath. Repointed to decision 14.
+
+No site cited the HTTP route as a historical fact independent of the storage mechanism — all four
+were, on inspection, describing the mechanism/data itself (the identity-gate table, the enrolled-
+board record, the optional-serial fallback), which is exactly what decision 22 says moved. No new
+decision needed (comment-only fix); no wire, struct, or serde change — `embarch-ui`'s path-dep on
+this crate is unaffected.
