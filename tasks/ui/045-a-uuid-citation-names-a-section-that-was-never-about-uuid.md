@@ -1,6 +1,11 @@
 # 045 — `study_designer.rs:1524` cites `§4.3` for `Uuid`'s serialize form, and `§4.3` was never about `Uuid`
 
-**State:** open
+**State:** claimed — leg 110, 2026-09-13.
+**Doc-size reserve (supervisor, leg 110):** **no `embarch-ui` doc is in reserve** — all 13 files
+currently inside the last 10% of their cap belong to other sub-projects. You have headroom; the
+standing rule still applies, so if your work pushes any file into reserve, file
+`tasks/ui/<NNN>-compact-ui.md` in the same commit (`scripts/check-task-numbers.py --next ui` for the
+number).
 **Source:** the `embarch-reviewer` on `ui/044`, 2026-09-13, flagged deliberately as a report note
 rather than a finding — it is a citation-accuracy defect, not a contradiction of any decision, and it
 predates the unit the reviewer was reading. Filed by the supervisor (leg 109).
