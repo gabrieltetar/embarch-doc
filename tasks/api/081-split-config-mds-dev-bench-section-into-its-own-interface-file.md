@@ -1,6 +1,7 @@
 # 081 — Split `embarch-api/interfaces/config.md`'s `[dev_bench]` section into its own interface file
 
-**State:** claimed — leg 108, 2026-09-13, dispatched to `agent/api/081-split-dev-bench-config`
+**State:** done — worker, 2026-09-13, `agent/api/081-split-dev-bench-config` (code) /
+`agent/api/081-split-dev-bench-config-doc` (doc)
 **Source:** supervisor, leg 108, 2026-09-13 — filed against the size-reserve debt parked in
 `tasks/api/071`, which is `blocked` on `In flux: yes` and stays blocked. See "Why this is not that
 task" below.
@@ -78,17 +79,49 @@ file that no longer holds the thing cited. So:
 
 ## Done when
 
-1. `embarch-api/interfaces/dev-bench-config.md` exists and holds the `[dev_bench]` section
+1. [x] `embarch-api/interfaces/dev-bench-config.md` exists and holds the `[dev_bench]` section
    **byte-identical** to its text at this task's parent commit. Prove it: extract the section from
    both sides and `diff` them, and put the exit status in the report. The only new prose anywhere is
    the new file's title line, a `Current truth:` header line matching its siblings' convention, and
    one cross-reference line in each file pointing at the other.
-2. `embarch-api/interfaces/config.md` is out of reserve — under 11,059 B — and still carries every
+2. [x] `embarch-api/interfaces/config.md` is out of reserve — under 11,059 B — and still carries every
    item on the Must-not-delete list that belongs to it.
-3. The suite-wide citation sweep above is done and its outcome reported either way.
-4. `python3 scripts/check-docs.py` is green in `embarch-doc`, including `check-doc-size.py` and
+3. [x] The suite-wide citation sweep above is done and its outcome reported either way.
+4. [x] `python3 scripts/check-docs.py` is green in `embarch-doc`, including `check-doc-size.py` and
    `check-decision-refs.py`.
-5. `tasks/api/071` is **untouched**. This task's own file is closed `done`.
+5. [x] `tasks/api/071` is **untouched**. This task's own file is closed `done`.
+
+## What shipped
+
+`config.md`'s `[dev_bench]` section (lines 64–81 at the parent commit, 2,349 B) moved verbatim to
+new `embarch-api/interfaces/dev-bench-config.md`. `diff` of the section extracted from both sides:
+**exit status 0** — byte-identical. New prose is exactly the new file's title line, its
+`**Status:**` line, a `Current truth:` line matching siblings' convention, and one cross-reference
+line in each direction — nothing else. `config.md` is now **8,978 B** (was 11,198 B), out of
+reserve with ~2,220 B headroom; `dev-bench-config.md` is well under its 12 KB
+`interfaces/<topic>.md` cap.
+
+**Citation sweep:** searched this repo (including `history/`, `tasks/`, `embarch-decision-reversals.md`),
+`embarch-api`'s whole source tree, and every other sub-project repo
+(`embarch-core`, `embarch-umbrella`, `embarch-study-designer`, `embarch-topology`, `embarch-dev-bench`,
+`embarch-outpost`, `embarch-ui`, `embarch-fleet`) for `interfaces/config.md` and for `dev_bench`
+co-mentions. **Found nothing to repoint.** Every existing citation of `interfaces/config.md` is
+either generic (points at the file as the config doc overall — `embarch.md`, `spec.md`,
+`decisions.md`'s index lines) or names a different, un-moved section (`[[projects]]`'s
+`build_cwd`/`soc_chip_overrides`/snippet semantics, or the top-of-file "where the config comes
+from" convention, cited from `embarch-umbrella/src/init.rs` and `embarch-study-designer/src/registry.rs`).
+None named `[dev_bench]` or content that moved. This file's citations are settled; no repoint
+needed anywhere.
+
+Code branch (`agent/api/081-split-dev-bench-config`) carries zero commits, as expected — pure doc
+split, `check-ownership.py --code-repo` confirms 0 changed paths.
+
+Gate: `python3 scripts/check-docs.py` — all 11 checks green (including `check-doc-size.py`,
+`check-decision-refs.py`). `check-client-names.py --repo <code worktree>` — clean. `check-ownership.py
+--scope api` (doc worktree) and `--code-repo` (code worktree) — both green.
+
+`tasks/api/071` untouched — its `In flux: yes` and `blocked` state stand; this task's landing
+discharges its size-reserve debt rather than paying it, per this file's own reasoning above.
 
 ## Not in scope
 
