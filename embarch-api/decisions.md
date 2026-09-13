@@ -8,7 +8,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, the one target a `static` project has, and retired config keys | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 53, 61, 64 | 10.5 KB |
+| [Scope and boundaries](decisions/shape.md) — what this is, what it is not, the one-way relationships, and the `dev_bench_hello` CLI twin | 1, 2, 3, 4, 6, 7, 8, 9, 10, 25, 61 | 6.0 KB |
+| [Retired config keys and target selection](decisions/config-retirement.md) — the one target a `static` project has, and the general rule for a config key this crate stops reading | 53, 64 | 6.3 KB |
 | [How far the tests reach](decisions/tests.md) — the named smoke-harness tier, the one-module `lib` target, where the bearer sweep's exhaustiveness comes from, and how the gate came to reach the shared client's own tests | 30, 46, 54, 56 | 10.6 KB |
 | [The tool and CLI surface — shape and errors](decisions/surface.md) — JSON/error shape, watching a study live, what this binary says about itself, how a tool description cites its own decision, the parity rule extended to the signal/dev-bench-link writers, `validate`'s two call sites branching on `kind` | 16, 24, 50, 57, 67, 71 | 11.0 KB |
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52 | 6.0 KB |
