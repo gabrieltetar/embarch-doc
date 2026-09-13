@@ -1,6 +1,6 @@
 # 082 — `dev-bench-config.md` exists and nothing that points a reader at the config schema knows it
 
-**State:** claimed by agent/api/082-dev-bench-config-index-pointers, 2026-09-13 14:26
+**State:** done
 **Source:** a supervisor sweep (leg 109, 2026-09-13) of the two verbatim splits that landed
 yesterday alongside `study-designer/038`, hunting the same stale-citation class. `tasks/api/081`'s
 split turned out to be clean on citations — 24 hits examined across all nine repos, every one naming
@@ -47,15 +47,43 @@ once is not a cosmetic gap.
 
 ## Done when
 
-- [ ] `spec.md`'s and `decisions.md`'s `Config:` pointers name both files, in whatever form matches
+- [x] `spec.md`'s and `decisions.md`'s `Config:` pointers name both files, in whatever form matches
       the surrounding line's existing convention — do not invent a new one, and do not restate what
       either file contains; a pointer is a pointer.
-- [ ] `interfaces/tools-dev-bench.md` links the config doc its whole table depends on.
-- [ ] A `status.d/` fragment filed for `embarch.md`'s interface list, naming the file and the line.
-- [ ] `check-links.py` (inside `check-docs.py`) green — every link you add resolves.
-- [ ] `changelog.d/` fragment **only if** something reader-visible changed; say which way you judged
+- [x] `interfaces/tools-dev-bench.md` links the config doc its whole table depends on.
+- [x] A `status.d/` fragment filed for `embarch.md`'s interface list, naming the file and the line.
+- [x] `check-links.py` (inside `check-docs.py`) green — every link you add resolves.
+- [x] `changelog.d/` fragment **only if** something reader-visible changed; say which way you judged
       it. Making a shipped doc reachable is arguably reader-visible and arguably bookkeeping. Your
       call, stated.
+
+## What shipped
+
+- `embarch-api/spec.md:5` and `embarch-api/decisions.md:5` — both `Config:` pointers now name
+  `interfaces/config.md` and `interfaces/dev-bench-config.md`, matching the existing
+  comma-separated-links convention used by the same line's `Tools/subcommands:` pointer.
+- `embarch-api/interfaces/tools-dev-bench.md` — added a `Config:` line under the header pointing at
+  `dev-bench-config.md`, naming the five fields (`source_path`, chip, format, offset, probe serial)
+  the whole table depends on.
+- `status.d/api-dev-bench-config-index.md` filed for `embarch.md`'s per-sub-project interface-list
+  row (three files named, should be four) — not edited directly, per protocol.md §3.
+- **Judgement call: `changelog.d/` fragment filed.** Reader-visible — a shipped doc
+  (`dev-bench-config.md`) that was previously unreachable from every index now is, which is a real
+  change to what a reader can find, not pure bookkeeping.
+- **Debt recorded, not paid:** the `spec.md:5` pointer edit pushed `embarch-api/spec.md` into its
+  size reserve (9090/10240 B, 88.8%, 1150 B left, under `RESERVE_FLOOR`). Filed
+  `tasks/api/083-compact-api.md`, `State: blocked` (`In flux: yes` — this is the sub-project's
+  living spec, touched by nearly every unit), due 2026-09-27, with a `Must not delete:` list and a
+  candidate split seam.
+- All three cargo gates (`build`, `test`, `clippy --all-targets -- -D warnings`) run in the code
+  worktree: green, no-op as expected — this is a pure doc unit with an empty code branch.
+- `check-docs.py`: all 11 checks green. `check-ownership.py --scope api` (doc worktree) and
+  `--code-repo` (code worktree): both green. `check-client-names.py --repo <code worktree>`: green
+  against all 7 denylist entries.
+- Merged `origin/main` (fast-forward, be9efce) mid-task to pick up another agent's fix to a broken
+  link this same task file carried on line 32 (`../../embarch-fleet/protocol.md` needed a third
+  `../`, since `embarch-doc` tracks its own `embarch-fleet/` directory) — that agent's message and
+  fix are the ones now in the file; nothing of mine conflicted with it.
 
 ## Dispatch note (supervisor, leg 109)
 

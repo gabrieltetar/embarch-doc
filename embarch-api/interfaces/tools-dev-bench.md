@@ -2,6 +2,8 @@
 
 **Status:** active, 2026-09-02. Split out of [tools.md](tools.md) 2026-09-10 (`tasks/api/053`) — see that file's header for the one-table premise this section still honours.
 
+Config: [dev-bench-config.md](dev-bench-config.md) — every field named below (`source_path`, chip, format, offset, probe serial) is `[dev_bench]`.
+
 | Tool / subcommand | Params | Behaviour |
 |---|---|---|
 | `build_dev_bench` | — | `west build -b <board> app` in `[dev_bench] source_path`. No project or selection params: the bench is one board at a time, and *which* board is config, not a call-time choice |
