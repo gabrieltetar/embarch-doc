@@ -22,7 +22,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 6 | `embarch-api` itself accepts the config, via shell-out (decision 16); else a permissive warn-only read |
 | 7 | Each project's build entrypoint resolves to an executable — branching on discovery kind |
 | 8 | Chip is not still the placeholder (static); at least one real target exists (zephyr-west) — by shelling out to the located `embarch-api`'s own listing (decision 17) |
-| 9 | Artifact paths name **the same file**; for zephyr-west, that the path translation itself succeeds |
+| 9 | `artifact_path` names a file that exists (static); for zephyr-west, nothing is stored to check ahead of time. **Re-scoped, number kept**: the Windows-visible `artifact_path_for_core` half went with the field itself (suite task 038) |
 | 10 | Registered **and answering**: reads the registration out of the agent CLI's own config by the binary it names rather than only the key `embarch`, spawns it, and completes one JSON-RPC `initialize` over stdio within 10 s. An entry with nothing to spawn is a warn, never a pass (decisions 23, 37, 40) |
 | 11 | The study-designer schema versions: Core's served host version against the **located `embarch-api`**'s compiled one, plus **Core's own `compatible` verdict** on the bench's wire version, plus this binary's own constant as a mixed-install warn. The `/dev-bench/hello` fetch behind that verdict, and behind check 13, gets its own 10 s budget rather than the 500 ms the reads get (decision 44) |
 | 12 | Dev-bench port detected — informational; absent is an expected state |

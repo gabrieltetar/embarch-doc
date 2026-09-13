@@ -11,6 +11,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- `embarch init` no longer writes `artifact_path_for_core` and `doctor` check 9 drops its UNC half, keeping its number: it now only asks that `artifact_path` names a file that exists.
 - Decision 42 moved verbatim out of `decisions/doctor.md` into new `decisions/locate-api.md`; `doctor.md` is out of reserve.
 - Checks 4 and 12 now split into `judge_token`/`judge_dev_bench`, so the stray-space guard covers them.
 - `doctor.rs` and `tasks/umbrella/045` now cite `embarch-core` decision 57, not 54, for the enrolled-label rule.
