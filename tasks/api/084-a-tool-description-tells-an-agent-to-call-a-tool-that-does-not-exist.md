@@ -1,6 +1,6 @@
 # 084 — A tool description tells a connecting agent to call `study_steps`, which is not a tool
 
-**State:** claimed — leg 111, 2026-09-13, `agent/api/084-study-steps-and-two-stale-citations`
+**State:** done — leg 111, 2026-09-13, `agent/api/084-study-steps-and-two-stale-citations`
 **Source:** leg 111's refill sweep — a read-only hunter over `embarch-api`, run because
 `--refill-owed` fired on scope spread. Every finding below was verified against both sides before
 filing.
@@ -75,9 +75,63 @@ Two sibling sites carry the same stale pair and belong in this unit: `src/tools.
 
 ## Done when
 
-- [ ] `src/tools.rs:1219` and `embarch-api/interfaces/studies.md:25` name only surfaces that exist.
-- [ ] `src/tools.rs:1387` points at something real, in the current citation form.
-- [ ] `src/main.rs:320-322`, `src/tools.rs:389` and
+- [x] `src/tools.rs:1219` and `embarch-api/interfaces/studies.md:25` name only surfaces that exist.
+- [x] `src/tools.rs:1387` points at something real, in the current citation form.
+- [x] `src/main.rs:320-322`, `src/tools.rs:389` and
       `crates/embarch-core-client/src/client.rs:188-192` agree with `src/tools.rs:945`.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
+
+## Closed 2026-09-13, leg 111
+
+**Finding 1 judgement:** the `lagged` recovery line in both `src/tools.rs:1219`
+(`study_watch`'s description) and `embarch-api/interfaces/studies.md:25` named
+`study_status/study_steps`. `study_steps` is real only as an internal
+`embarch-core-client` method (`GET /study/{study_id}/steps`, unwrapped as
+either a tool or a CLI subcommand — confirmed by grep and by the parity test).
+Replaced with `study_status/list_study_streams`, not `study_status` alone:
+`study_watch` watches for sample-batch events too (`include_samples`), and
+`study_status`'s `result.streams` is only populated once a study is terminal
+(`result: Option<StudyResult>`), so mid-study — exactly when a live-feed
+subscriber falls behind — `list_study_streams` is the surface that still
+answers the per-tap question `study_status` cannot yet.
+
+**Finding 2:** `src/tools.rs:1387`'s citation changed from
+`` `embarch-study-designer` spec.md §4.8 `` (a section that does not exist —
+`spec.md` §4 has no subsections) to
+`` `embarch-study-designer/interfaces/result-types.md` ``, the file that
+actually defines `StreamRef`, matching this repo's own cross-repo citation form
+(e.g. `crates/embarch-core-client/src/study_events.rs:7`'s
+`` `embarch-core/interfaces.md` ``).
+
+**Finding 3:** `src/main.rs:320-322`, `src/tools.rs:389` and
+`crates/embarch-core-client/src/client.rs:188-192` all cited `embarch-core`
+decision 22 and the pre-`embarch-topology` name `known_boards`. `embarch-core`
+decision 22's own body says its mechanism was "moved wholesale into
+`embarch-topology`"; the current entry is `embarch-topology` decision 14
+(`embarch-topology/decisions/enrollment.md`). All three now read
+"`embarch-topology`'s enrollment storage (`embarch-topology` decision 14)",
+matching `src/tools.rs:945`'s MCP twin verbatim in substance.
+
+**Grep parity with the task's claims:**
+- `study_steps`: my grep found the same two live-citation sites the task
+  named (`src/tools.rs:1219`, `embarch-api/interfaces/studies.md:25`) plus the
+  real internal method (`client.rs:1745`) and its test references
+  (`tests/core_client_http.rs:62,80,129`) — no additional stale citation sites.
+- `known_boards`/decision 22: the task named exactly three sites
+  (`main.rs:320-322`, `tools.rs:389`, `client.rs:188-192`); my grep found those
+  three plus **four more** `` `embarch-core` decision 22 `` citations in
+  `client.rs` outside the task's named range — lines 199, 381, 1249, 1333, for
+  `POST /probes/enroll`'s and `GET /probes/enrolled`'s own doc comments (no
+  `known_boards` wording alongside them, unlike the three named sites). Left
+  untouched: they are outside this task's `Done when`, and whether each should
+  cite `embarch-topology` decision 14 or is legitimately historical (decision
+  22 did originally establish these HTTP routes before the storage moved)
+  needs its own look. Dropped as
+  `/home/gabriel/Github/embarch/embarch-doc/inbox/api-stale-decision-22-citations-remaining.md`.
+- **Counts do not match the task's claim.** The task says the parity test
+  "yields 26 tools and 27 subcommands" — re-deriving both lists with the
+  test's own extraction logic gives **26 tools and 26 subcommands** (`Versions`
+  is the one documented CLI-only asymmetry, already accounted for). The test
+  itself (`cargo test --test tool_subcommand_parity`) passes; only the task's
+  stated count is wrong.
