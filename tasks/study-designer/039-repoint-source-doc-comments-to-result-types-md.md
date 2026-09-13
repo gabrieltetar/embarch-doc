@@ -1,6 +1,6 @@
 # 039 — Repoint `embarch-study-designer` source doc comments from `interfaces/types.md` to `interfaces/result-types.md`
 
-**State:** open
+**State:** claimed by agent/study-designer/039-repoint-source-doc-comments, 2026-09-13 14:03
 **Source:** `tasks/study-designer/038`'s citation sweep, 2026-09-13 — found and deliberately left
 unfixed, since that task's own `## Not in scope` excluded any change to this sub-project's source.
 **Scope:** study-designer
@@ -35,6 +35,22 @@ and `check-decision-refs.py`/`check-links.py` cannot see (the path still resolve
 holds the cited content). `038` chose not to fix it in the same unit because its `## Not in scope`
 explicitly excluded any change to this crate's source, to keep that unit doc-only with a
 predictably-empty code branch. This task is the deferred half.
+
+## Dispatch note (supervisor, leg 109)
+
+**In reserve for `study-designer`** (last 10% of cap, still writable): `spec.md` 9350/10240 B
+(890 B left), `open.md` 4659/5120 B (461 B left). `interfaces/types.md` is now **out** of reserve
+(73.2%) after `038`'s split. If your work pushes a file into reserve or leaves one there that
+nothing has filed, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit
+(`tasks/README.md` has the shape) — recording the debt, not paying it.
+
+This unit should not come near any of them: it is six doc-comment lines in your own crate's source
+plus a `changelog.d/` fragment.
+
+**Scope correction carried forward from `038`.** That task's "not in scope: any change to this
+sub-project's source" was the supervisor's wording error — it meant *no logic change*. Doc comments
+in your own repo are squarely yours to fix, which is why this task exists at all. Fix all six; do
+not file a third task for them.
 
 ## Done when
 
