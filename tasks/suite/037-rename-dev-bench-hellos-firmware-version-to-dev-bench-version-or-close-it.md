@@ -1,6 +1,22 @@
 # 037 — Rename `GET /dev-bench/hello`'s `firmware_version` to `dev_bench_version`, or close the question for good
 
-**State:** open
+**State:** blocked — leg 108, 2026-09-13. **The announcement window is closed and is no longer what
+holds this.** Leg 107 posted it at `ts` `1789326123.058939` and left the task `open` so a successor
+would complete the clock rather than restart it; leg 108 read the thread with
+`scripts/fleet-read.py --thread 1789326123.058939` at 2026-09-13 ~13:35, found one app-authored
+reply and **no objection from the owner**, and the 30 minutes had elapsed. So §4's consent is
+satisfied and spent. What remains is the gate, and it is not a leg's to clear — see "Why leg 107
+announced it and then did not execute it" below, which is unchanged and still the whole story.
+**Unparks when:** the owner produces a native Windows build of `embarch-core`
+(`embarch-dev-workflow.md` §4a sync→build→deploy, outstanding as `tasks/core/015`) **and takes this
+task in that same sitting** — or says explicitly that the rename may land gated on host checks
+alone. Either one is his; neither is a supervisor's to grant.
+**Why `blocked` and not `open`:** `open` was right while the clock was running, because a leg could
+still have finished it. It is wrong now. Four consecutive legs have re-read this task, re-derived
+that they cannot gate it, and left it — `blocked` is what `.claude/leg.md` means by "nothing here
+can be done", and it keeps the task visible to the one actor who can act on it instead of offering
+it to legs that cannot. **Do not re-announce.** The window is spent; a new one would buy nothing
+the first did not already buy.
 **Source:** split out of `suite/036` by leg 105, 2026-09-13, when that task's documentation half
 landed (`embarch-doc` `6f369d3`, `embarch-api` `72e8b12` + `265c8ff`). **This is the half it could
 not take**, because leg 105's announcement window covered documenting the field and this is a
@@ -11,12 +27,13 @@ board. (But see "The old-Core half" — the Core *running* on this machine matte
 no board does.)
 **Owner:** no
 **Announced:** `#embarch-fleet` `ts` `1789326123.058939`, leg 107, 2026-09-13 — the 30-minute
-window under `ops.md` §4 is **open and running from that timestamp**. It names all three repos and
-the breaking-change half in its threaded detail, so it satisfies this task's first `Done when`
-item. **Do not re-announce it.** If leg 107 ends before the window closes, the next leg reads this
-line, checks the thread with `scripts/fleet-read.py --thread 1789326123.058939`, and executes on
-the existing clock rather than starting a fresh one. A reply saying go runs it immediately; a
-cancel drops this task back to plain `open` with the reply quoted here.
+window under `ops.md` §4 **ran and closed with no objection** — leg 108 checked the thread with
+`scripts/fleet-read.py --thread 1789326123.058939` at 2026-09-13 ~13:35 and found one app-authored
+reply and nothing from `U0AGQGSHM2P`. It names all three repos and the breaking-change half in its
+threaded detail, so this task's first `Done when` item is **satisfied**. **Do not re-announce it**,
+and do not start a fresh clock: the consent §4 exists to produce has been produced, and it does not
+expire because the leg that collected it died. A later reply saying go runs the task immediately; a
+cancel drops it to plain `open` with the reply quoted here.
 
 **Why leg 107 announced it and then did not execute it, so the next leg does not rediscover this.**
 The window is not the obstacle; the **gate** is. This task's fourth `Done when` item requires a
