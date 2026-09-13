@@ -1,6 +1,6 @@
 # 062 — Four more sites carry the shallow cross-repo link depth `doctor.rs` was fixed for
 
-**State:** claimed — leg of 2026-09-13 16:20, `agent/umbrella/062-shallow-cross-repo-link-depth`
+**State:** done
 **Source:** `inbox/umbrella-more-shallow-cross-repo-links.md`, dropped while closing
 `tasks/umbrella/061` (the `doctor.rs` cross-repo link-depth fix) and named there as outside that
 task's scope. Filed by the leg of 2026-09-13 16:20.
@@ -58,10 +58,28 @@ its last 10%, file `tasks/umbrella/<next>-compact-umbrella.md` in the same commi
 
 ## Done when
 
-- [ ] Every `../embarch-doc/` site in `embarch-umbrella/src/` resolves to a file that exists from the
+- [x] Every `../embarch-doc/` site in `embarch-umbrella/src/` resolves to a file that exists from the
       directory containing it, and your report states how many sites there were.
-- [ ] No citation changed form, only depth.
-- [ ] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
+- [x] No citation changed form, only depth.
+- [x] `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` green in
       `embarch-umbrella`.
-- [ ] `changelog.d/` fragment in `embarch-doc`.
-- [ ] `python3 scripts/check-docs.py` green in `embarch-doc`.
+- [x] `changelog.d/` fragment in `embarch-doc`.
+- [x] `python3 scripts/check-docs.py` green in `embarch-doc`.
+
+## Result
+
+Found exactly four sites, matching the drop's list (line numbers had shifted, text hadn't):
+`src/config.rs:33`, `src/config.rs:291` (was :296), `src/setup.rs:32`, `src/main.rs:220`. A full
+`grep -rn '\.\./embarch-doc' src/` after the fix turned up nothing shallower than `../../embarch-doc`;
+`doctor.rs`'s six `061`-fixed sites were already correct. Two other `main.rs` sites
+(`main.rs:3`, `main.rs:127`) use the suite-root-relative form (`embarch-doc/...`, no `../`) — left
+alone per the task, since picking a suite-wide form is not this task's call.
+
+Each fixed target confirmed to exist from its citing file's directory:
+- `../../embarch-doc/embarch-umbrella/decisions/mirrors.md` (config.rs, both sites)
+- `../../embarch-doc/embarch-core/spec.md` (setup.rs)
+- `../../embarch-doc/embarch-core/interfaces.md` (main.rs)
+
+Did not touch: the suite-root-relative citations, the `github.com/.../embarch-doc/...` URLs in
+`deploy.rs`, or `DOC-CONVENTIONS.md` — the two-conventions question is flagged for the suite via an
+`inbox/` drop, not decided here.
