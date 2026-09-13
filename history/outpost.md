@@ -17,6 +17,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- Decision 26's Rejected clause restated for the CI this repo now has; five stray decision-22 skip citations (run-all.sh, vocab_check.py, README.md) corrected to 26.
 - outpost's open.md and decisions/testing.md no longer cite closed task `tasks/suite/021`; both state the no-CI fact in their own words, citing embarch.md §5.
 - decode_outpost.py decodes in two passes now; a records frame before the first header no longer picks up names from a manifest the stream goes on to refuse.
 - decode_outpost.py now checks frame_bytes against actual chunk length; a divergence empties rx_utc_ms, not stamps a wrong join.
