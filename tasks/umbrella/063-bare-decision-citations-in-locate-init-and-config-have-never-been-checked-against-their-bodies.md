@@ -53,8 +53,43 @@ repo's decision 16"* — and those are fine as they are; the task is the unquali
 
 ## Done when
 
-- [ ] Every bare `decision N` in `locate.rs`, `init.rs` and `config.rs` has been resolved against
+- [x] Every bare `decision N` in `locate.rs`, `init.rs` and `config.rs` has been resolved against
       its body and either left, attributed, or corrected — and the commit message says how many of
       each.
-- [ ] Gate green (`../../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/umbrella-*` fragment.
+- [x] Gate green (`../../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/umbrella-*` fragment.
+
+## Result
+
+All ~37 bare citations checked against their `embarch-umbrella` decision bodies. Breakdown by file
+(commit `551e33c` in `embarch-umbrella`):
+
+- **`init.rs`: 10 of 10 held.** Every bare citation (10, 12, 13, 17×2, 41×5) matched its body.
+- **`locate.rs`: 18 of 20 held, 2 fixed.** Both fixes are the same underlying gap: decision 38
+  (2026-09-13, adding the Windows service registration read to `locate_core`) landed after these two
+  doc comments were written, and neither was updated.
+  - `locate_core`'s precedence-order doc cited decisions 7/28 for the whole chain but never mentioned
+    the registration read, which now runs first in the WSL2 branch, ahead of the canonical-location
+    guess — added `(decision 38)`.
+  - `windows_core_service_binary_path`'s doc said `locate_core` "deliberately guesses"; true before
+    decision 38, false since — reworded to say it reads the registration first too and only falls
+    back to guessing.
+- **`config.rs`: 2 of 4 bare citations held, 2 wrong numbers fixed.** (The other ~3 mentions in this
+  file already carry the `` `embarch-api` `` qualifier and were out of scope.)
+  - The module doc's "(decisions 51/53)" for the two upstream retired-key refusals — decision 51 is
+    embarch-api's `zephyr.md` entry (static-project target rejection, unrelated); the real pair is
+    embarch-api decisions 53/13 (`shape.md` / `zephyr-scan.md`), confirmed against `mirrors.md`
+    decision 16's own "upstream decisions 53/13" phrasing and against this file's own two
+    `Config::validate` call sites, which already cite 53 and 13 correctly.
+  - `ProjectConfig`'s "minus the fields nothing here reads (decision 20)" — that exact phrase is
+    decision 16's own wording (the config-mirror amendment that retired `artifact_path_for_core`),
+    not decision 20 (the CI-diff-vs-extract-a-crate question); corrected to decision 16.
+
+No decision bodies were edited; no behavioural change. `doctor.rs` (~100 more citations) is
+deliberately untouched, per the task's own scope note.
+
+Gate: `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean (225 tests) in
+`embarch-umbrella`. `check-docs.py` in `embarch-doc` is green except a pre-existing
+`check-links.py` red on `tasks/doc/054` → `../../embarch-fleet/protocol.md` (that repo isn't
+checked out here; unrelated to this task, confirmed present before this unit's changes).
+`check-ownership.py` and `check-client-names.py` clean in both worktrees.
