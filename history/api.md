@@ -43,6 +43,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- tools.md no longer lists the three retired study-data aliases; dev-bench.md's status_timeout count and lib.rs's study_timeout misattribution corrected.
 - `embarch-api` comments no longer cite deleted `milestone-*.md` docs (task 078).
 - spec.md's outbound token precedence corrected: `token_env` wins, then `token`, matching `resolve_token`.
 - `[dev_bench]`'s `env` row now says additive, matching code and the `[[projects]]` row (was "replaces").
