@@ -70,17 +70,28 @@ build_id:              postcard string
 
 **Reserved for a future RX direction:** nothing in v1 sends anything to the DUT, but `frame_type` is exactly the field a later command channel is added to.
 
-## The host decoder's rules are tested, and one of the two tests always runs
+## The host decoder's rules are tested, and it is one of three legs, of six total, that always run without a Zephyr toolchain
 
 `tests/decoder_unit.py` in the module repo is stdlib `unittest` over bytes it
-synthesises itself, and it is the only check here with **no** external
-requirement — no `west`, no `ZEPHYR_BASE`, no sibling repos, no fixtures.
-`tests/run-all.sh` runs it **before** the west guard for exactly that reason:
-the other three legs need a Zephyr toolchain and the cross-decoder leg needs two
-sibling checkouts, so until it existed the reference decoder for a wire with
-three implementations that must agree had **no test guaranteed to execute**.
-That is `cross_decoder.py`'s own argument — a check nobody is forced to run is
-not a check — applied to itself.
+synthesises itself, and it needs no external requirement at all — no `west`,
+no `ZEPHYR_BASE`, no sibling repos, no fixtures. `tests/vocab_check.py` needs
+just as little for its own check: no `west` or `ZEPHYR_BASE` either, only text
+it can read locally, and both run in CI on every push and PR without any
+toolchain ([suite decision 2](../../suite/decisions.md)). The cross-decoder
+leg is a different case: it needs no Zephyr toolchain either, but unlike the
+other two it needs two sibling checkouts to compare anything for real, and
+skips loudly rather than failing when they are absent
+([../decisions/testing.md](../decisions/testing.md) decision 26).
+`tests/run-all.sh` runs all three of these **before** the west guard for
+exactly that reason: of the six legs in that script — decoder unit, vocab
+check, cross-decoder, unit (ztest), module off, and end-to-end stream — the
+three after the guard need a Zephyr toolchain, and only the cross-decoder leg
+among the first three needs sibling checkouts, which is a different
+requirement from a toolchain, not the same absence. Until this leg existed,
+the reference decoder for a wire with three implementations that must agree
+had **no test guaranteed to execute**. That is `cross_decoder.py`'s own
+argument — a check nobody is forced to run is not a check — applied to
+itself.
 
 It pins the rules that already carry scar tissue in comments, because those are
 the ones a rewrite silently undoes: COBS round-trip including the 0xFF run that

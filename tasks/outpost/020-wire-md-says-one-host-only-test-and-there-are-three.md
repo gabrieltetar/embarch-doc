@@ -1,6 +1,6 @@
 # 020 — `interfaces/wire.md` says one host-only test and its leg arithmetic is short; there are three and six
 
-**State:** claimed
+**State:** done
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified against `run-all.sh` and the CI
 workflow. The scout did **not execute** either script — see "Not verified" below. **And
 "scout-verified" is one reader, which has already been wrong once**: the same scout, same sweep,
@@ -54,17 +54,27 @@ did not reach this file.
 
 ## Done when
 
-- [ ] The three statements match `run-all.sh` as it is now: the leg count, which legs are host-only,
+- [x] The three statements match `run-all.sh` as it is now: the leg count, which legs are host-only,
       and what each of the rest actually requires — distinguishing "needs a Zephyr toolchain" from
-      "needs two sibling checkouts", which are different obstacles with different fixes.
-- [ ] Derived by reading `run-all.sh` and `.github/workflows/host-tests.yml`, with the leg names
+      "needs two sibling checkouts", which are different obstacles with different fixes. Confirmed
+      six legs (`grep -n '^echo "=== ' tests/run-all.sh` → decoder unit, vocab check, cross-decoder,
+      unit ztest, module off, end-to-end stream); the west guard sits at `tests/run-all.sh:69`, after
+      the first three. Rewrote `embarch-doc/embarch-outpost/interfaces/wire.md`'s heading and its two
+      following paragraphs (former `:73`, `:76`, `:79`) to state six legs, that decoder_unit and
+      vocab_check need nothing external at all, and that cross-decoder needs no toolchain but does
+      need two sibling checkouts to check anything for real — a different requirement, not the same
+      absence.
+- [x] Derived by reading `run-all.sh` and `.github/workflows/host-tests.yml`, with the leg names
       quoted from the script rather than paraphrased.
-- [ ] **Run what you can**: `decoder_unit.py` and `vocab_check.py` are claimed to need nothing but
-      host Python. Run both and say what happened — if either turns out to need something, that is
-      the more interesting finding and it changes the fix.
-- [ ] Suite decision 2 is cited correctly if referenced — through `suite/decisions.md`, never
+- [x] **Run what you can**: `decoder_unit.py` and `vocab_check.py` are claimed to need nothing but
+      host Python. Ran both from the code worktree: `decoder_unit.py` — 31 tests, all pass, exit 0;
+      `vocab_check.py` — exit 0, prints its loud sibling-skip note (`embarch-study-designer` not
+      checked out beside it) and `PASS: 11 kinds and 8 flag bits agree`. Neither needed anything
+      beyond host Python; the claim holds.
+- [x] Suite decision 2 is cited correctly if referenced — through `suite/decisions.md`, never
       through the topic file that holds the text, or `check-decision-refs.py` will not resolve it.
-- [ ] Gate green; `changelog.d/` fragment.
+      Cited as `[suite decision 2](../../suite/decisions.md)`; `check-decision-refs.py` passes.
+- [x] Gate green; `changelog.d/` fragment.
 
 ## Not verified by the scout
 
