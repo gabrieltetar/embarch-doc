@@ -1,6 +1,6 @@
 # 043 — `Uuid`'s raw-array `Serialize` form is undocumented anywhere in `embarch-study-designer`
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, `agent/study-designer/043-uuid-serialize-form`
 **Source:** `ui/045`'s worker, while fixing `embarch-ui/src/study_designer.rs:1524`'s dead `§4.3`
 citation for the same fact (repointed to a bare, section-less file citation; that fix does not
 touch this finding).
