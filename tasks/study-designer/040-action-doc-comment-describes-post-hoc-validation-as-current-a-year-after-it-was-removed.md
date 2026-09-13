@@ -1,6 +1,6 @@
 # 040 — `Action`'s doc comment describes post-hoc validation as current, three weeks after decision 48 removed it
 
-**State:** claimed by agent/study-designer/040-action-doc-comment-post-hoc-validation, 2026-09-13 14:19
+**State:** done — 2026-09-13
 **Source:** the `embarch-reviewer` on `study-designer/038`, 2026-09-13, as an explicit out-of-scope
 aside — it flagged the citation while reviewing an unrelated documentation split. Filed by the
 supervisor (leg 108), who **verified it against the source and both decisions** and found it worse
@@ -49,20 +49,58 @@ real-time `Outcome` half untouched, and that is what every study has always actu
 
 ## Done when
 
-1. The comment no longer says Core validates content post-hoc. **Say what is true instead**, which
+1. [x] The comment no longer says Core validates content post-hoc. **Say what is true instead**, which
    decision 48 states plainly: there is no post-hoc content validation anywhere in this suite, and
    the real-time `Outcome` a step reports is the whole of it.
-2. The citation resolves to something that is not retired. Decision 48 is the one that settles this;
+   Done. `study.rs:377` now reads: *"There is no post-hoc content validation anywhere in this suite
+   — decision 48 removed it outright — and no on-device validation `Action` variant; the real-time
+   `Outcome` a step reports (decision 19's surviving half) is the whole of it."*
+2. [x] The citation resolves to something that is not retired. Decision 48 is the one that settles this;
    decision 19's **real-time half** is what survives and is what a reader actually needs. Follow this
    repo's citation convention for which of the two to name — and if both, say which is which.
-3. **Sweep `embarch-study-designer`'s source for the rest of the class before closing.** This comment
+   Both are named, and which is which is stated inline: decision 48 for the removal, decision 19's
+   "surviving half" for the real-time `Outcome` mechanism that is what's actually left.
+3. [x] **Sweep `embarch-study-designer`'s source for the rest of the class before closing.** This comment
    was not found by a check and would not have been; it was found by a reviewer reading an unrelated
    diff. Grep the crate for every mention of `decision 19`, `decision 28`, `validations`,
    `PostHocValidation`, `ContentValidity`, `ValidationResult`, `core-validation` and `signal.rs` in
    prose, and report **either way** — a clean result is the only thing that tells the next leg this
    class is closed here, and it is exactly the sentence a worker omits when it finds nothing.
-4. Gate green. `changelog.d/` fragment only if something reader-visible changed; a doc comment
+
+   **Swept. Two more instances of the class found and fixed, both small:**
+   - `src/result.rs:260-263` — `Outcome`'s own doc comment: *"Whether the content was correct is a
+     separate, Core-side, post-hoc question (decision 19, decisions/removed.md)"* — same defect,
+     stating the retired mechanism as a live fact about where content correctness gets checked.
+     Rewritten to name decision 19's surviving half as this type itself and decision 48 as what
+     removed the rest.
+   - `src/limits.rs:20-24` — `MAX_PAYLOAD_LEN`'s and `MAX_FAIL_REASON_LEN`'s doc comments each still
+     listed a removed type (`ExpectedValue::Equals`/`Contains`, `ContentValidity::Invalid.reason`) as
+     a current user of the constant. Confirmed by grep that neither type exists anywhere in the
+     crate any more (`ExpectedValue`/`ContentValidity` have zero non-comment hits). Both comments
+     trimmed to their real, current consumers.
+
+   **Everything else that matched is clean** — all in `src/schema_version.rs`, all inside `# History`
+   sections narrating past schema-version bumps in the past tense (`"(decision 19, retired)"`,
+   `"post-hoc validation is removed outright"`, etc.), correctly describing what *was* removed rather
+   than asserting it as current. No hits at all for `decision 28`, `PostHocValidation` as a live type,
+   `core-validation`, or `signal.rs` outside that same historical narration.
+
+   **One ambiguous, out-of-class citation found and deliberately left alone:** `src/ffi.rs:215`
+   reads *"superseding neither `essd_study_decode_and_verify` nor decision 19's existing check"*.
+   This doesn't restate the retired post-hoc mechanism as live — it doesn't mention post-hoc
+   validation, Core, or content at all — but decision 19 (real-time `Outcome`, produced after an
+   action runs) doesn't obviously name a check performed during *decode*, either; decision 17
+   (CRC seals) or decision 18 (Core's structural pre-flight validation) look like closer fits for
+   whatever "existing check" is meant. That's a **different bug shape** — a possibly-wrong decision
+   number, not a retired mechanism asserted as current — and confirming the intended number needs
+   more certainty than this task's scope gives me. Left unfixed; noted here rather than silently
+   passed over. Total instance count for the actual class: **3** (the filed one plus these 2), well
+   inside "a handful" — no general cross-repo task triggered, nothing dropped in `inbox/`.
+4. [x] Gate green. `changelog.d/` fragment only if something reader-visible changed; a doc comment
    usually is not — say which way you judged it.
+   Judged **reader-visible**: this wasn't prose polish, it corrected a doc comment that stated a
+   removed mechanism as a live fact — a developer reading `study.rs`/`result.rs`/`limits.rs` today
+   would be actively misled. Filed `changelog.d/study-designer-action-doc-comment-post-hoc.fixed.md`.
 
 ## Why a check will not catch this and what that means
 
@@ -103,3 +141,18 @@ citation task, which is not yours to file as a `suite`-scoped item — drop it i
   result stops meaning anything.
 - Removing or changing any code. Decision 48's removal is complete; this is about prose that outlived
   it.
+
+## Shipped
+
+Doc comments fixed in `embarch-study-designer`: `src/study.rs` (`Action`, the filed defect),
+`src/result.rs` (`Outcome`, found by the sweep), `src/limits.rs` (`MAX_PAYLOAD_LEN`,
+`MAX_FAIL_REASON_LEN`, found by the sweep). No code, no wire format, no schema version touched —
+comments only, as scoped. `changelog.d/study-designer-action-doc-comment-post-hoc.fixed.md` filed.
+No `status.d/`, no `features.d/` fragment — no suite-level fact and no capability changed. No new
+compaction debt filed: `spec.md`/`open.md` (in reserve) and `interfaces/types.md` (out of reserve)
+are untouched by this unit and already have `032`/`026`/`037` filed against them.
+
+Gate: `cargo build`/`cargo test`/`cargo clippy --all-targets -- -D warnings` clean in the code
+worktree; `scripts/check-docs.py` all 11 checks green in the doc worktree; `check-ownership.py`
+green on both branches (code: whole-tree, `--code-repo`; doc: `--scope study-designer`, 2 paths,
+both owned).
