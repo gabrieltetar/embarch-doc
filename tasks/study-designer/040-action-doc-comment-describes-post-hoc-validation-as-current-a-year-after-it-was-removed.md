@@ -1,6 +1,6 @@
 # 040 — `Action`'s doc comment describes post-hoc validation as current, three weeks after decision 48 removed it
 
-**State:** open
+**State:** claimed by agent/study-designer/040-action-doc-comment-post-hoc-validation, 2026-09-13 14:19
 **Source:** the `embarch-reviewer` on `study-designer/038`, 2026-09-13, as an explicit out-of-scope
 aside — it flagged the citation while reviewing an unrelated documentation split. Filed by the
 supervisor (leg 108), who **verified it against the source and both decisions** and found it worse
@@ -75,6 +75,25 @@ right-number-wrong-repo, `dev-bench/030`'s resolvable-but-deleted, and now cited
 `core/050`'s entry already named the general fix: **one task about citations in a multi-repo suite as
 a class**, not a fourth per-repo sweep. This task is filed narrowly on purpose; if it turns up more
 than a handful of siblings in item 3, that is the signal for the general one.
+
+## Dispatch note (supervisor, leg 109)
+
+**In reserve for `study-designer`** (last 10% of cap, still writable): `spec.md` 9350/10240 B
+(890 B left), `open.md` 4659/5120 B (461 B left). `interfaces/types.md` is out of reserve (73.2%)
+since `038`'s split. If your work pushes a file into reserve or leaves one there that nothing has
+filed, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit
+(`tasks/README.md` has the shape) — recording the debt, not paying it.
+
+**`039` has landed** (code `419e196`, doc `21909b6`), so your branch point already carries the six
+repointed path citations. Do not re-do or re-check them; item 3's sweep is about the *retired
+mechanism* class, which is a different defect with a different cause.
+
+**Item 3 is the half I care most about.** Report the grep result either way, in the task file, in
+words — a clean sweep stated explicitly is what closes this class for `study-designer`, and it is
+exactly the sentence a worker omits when it finds nothing. If you find more than a handful of
+siblings, say so rather than fixing them all: that is the trigger for one general cross-repo
+citation task, which is not yours to file as a `suite`-scoped item — drop it in
+/home/gabriel/Github/embarch/embarch-doc/inbox/ (absolute path) and I will file it.
 
 ## Not in scope
 
