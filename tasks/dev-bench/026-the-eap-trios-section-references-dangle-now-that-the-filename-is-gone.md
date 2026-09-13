@@ -42,6 +42,17 @@ The same residue very likely exists in the six files `tasks/dev-bench/020`–`02
 widen into them** — note in your report whether it does, so those tasks can be corrected to cover
 both halves at once rather than repointing filenames twice.
 
+**Confirmed for one of them, leg 105, 2026-09-13.** `dev-bench/021` repointed
+`app/src/ble_bridge_real.c` and found **three** of its 39 citations were not decision references at
+all: `design.md §4.3` and `design.md §4.3a`, section pointers with no decision number. They were
+stripped to bare `§4.3` / `§4.3a` — the same treatment `019` gave `eap.h`'s `§4.9`, and the same
+residue. So this task's class now has **nine** known instances, not six, and the three new ones are
+in a file this task does not name. **Widen this task to cover `ble_bridge_real.c`'s two section
+numbers as well**, or file the extra separately; it is recorded nowhere else. The reviewer confirmed
+`embarch-study-designer/spec.md` has no numbered subsections at all (only `## 1.`–`## 7.`), so none
+of these can be repointed at a successor section — deleting or re-attributing is the only honest
+answer for every one of them.
+
 ## Done when
 
 - [ ] Each of the six references either names the real section of a real document, or is deleted.
