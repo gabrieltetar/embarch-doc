@@ -19,6 +19,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- `dev_bench_hello` now says whose build `firmware_version` is: the bench's, corresponding to `requires.dev_bench_version` — [tools-dev-bench.md](../embarch-api/interfaces/tools-dev-bench.md).
 - Compacted `embarch-api/decisions/tests.md` out of size reserve (`tasks/api/077`), same facts intact.
 - `decisions/studies.md` split into `study-reads.md` and `study-reflash.md`, out of size reserve.
 - - api: `target.json` provenance decision split into 19 (hash) and 69 (file), under the per-decision cap.
