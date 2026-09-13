@@ -44,6 +44,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- A lagged-recovery instruction named a nonexistent `study_steps` tool; enroll_probe citations agree on `embarch-topology` decision 14.
 - `spec.md`, `decisions.md` and `tools-dev-bench.md` now link `dev-bench-config.md`; it was unreachable from every index.
 - tools.md no longer lists the three retired study-data aliases; dev-bench.md's status_timeout count and lib.rs's study_timeout misattribution corrected.
 - `embarch-api` comments no longer cite deleted `milestone-*.md` docs (task 078).
