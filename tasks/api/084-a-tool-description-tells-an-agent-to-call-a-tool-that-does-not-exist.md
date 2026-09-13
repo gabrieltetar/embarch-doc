@@ -1,6 +1,6 @@
 # 084 — A tool description tells a connecting agent to call `study_steps`, which is not a tool
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, `agent/api/084-study-steps-and-two-stale-citations`
 **Source:** leg 111's refill sweep — a read-only hunter over `embarch-api`, run because
 `--refill-owed` fired on scope spread. Every finding below was verified against both sides before
 filing.
