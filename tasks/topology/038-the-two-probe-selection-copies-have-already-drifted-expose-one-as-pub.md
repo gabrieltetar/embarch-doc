@@ -1,6 +1,6 @@
 # 038 — The two probe-selection copies have already drifted; expose one as `pub` so `embarch-core` can stop keeping its own
 
-**State:** open
+**State:** claimed by agent/topology/038-expose-probe-selection, 2026-09-13 17:47
 **Source:** `inbox/core-resolve-probe-duplicates-topology-enroll-selection.md`, itself the follow-up
 to `tasks/topology/037` and `embarch-topology` decision 32. Re-confirmed live against both files by
 the leg of 2026-09-13 17:5x before filing, which is how the drift below was found — **the drop said
