@@ -2,6 +2,11 @@
 
 **State:** open
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-derive each number.
+**"Scout-verified" is one reader, and it has already been wrong once** — the same scout, same
+sweep, reported a quoted source comment as never having existed when it had existed and was later
+rewritten (`umbrella/058`). That matters most for (a) below, which turns on exactly that
+distinction: a number that was true of an older fixture is not the same defect as one that was
+never true.
 **Scope:** ui
 **Hardware:** none — four numbers in two decisions files. No rendered pixel changes.
 **Owner:** no

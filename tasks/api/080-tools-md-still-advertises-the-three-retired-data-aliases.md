@@ -2,6 +2,9 @@
 
 **State:** open
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-read the file:lines below.
+**"Scout-verified" is one reader, and it has already been wrong once** — the same scout, same
+sweep, reported a quoted source comment as never having existed when it had existed and was later
+rewritten (`umbrella/058`). Re-derive the counts here rather than inheriting them.
 **Scope:** api
 **Hardware:** none — one documentation line, and a sweep to prove it is the only one.
 **Owner:** no

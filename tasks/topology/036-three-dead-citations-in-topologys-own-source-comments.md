@@ -2,7 +2,11 @@
 
 **State:** open
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-derive each target rather than
-trusting the quotes.
+trusting the quotes. **"Scout-verified" is one reader, and it has already been wrong once:** the
+same scout, in the same sweep, reported a quoted `state.rs` comment as never having existed
+(`umbrella/058`) when it had existed and was later rewritten — caught only because that worker went
+to the history. **Expect one framing in ten to be wrong**, and in particular expect
+"was never right" and "was right and moved" to be confused, because they look identical to a grep.
 **Scope:** topology
 **Hardware:** none — three comments in two source files. No behaviour changes.
 **Owner:** no
