@@ -1,4 +1,10 @@
-# 052 — `embarch-core/README.md` says Core binds `0.0.0.0` by default and that loopback was rejected; decision 6 reversed exactly that
+# 052 — the `embarch-core` crate's own readme says Core binds `0.0.0.0` by default and that loopback was rejected; decision 6 reversed exactly that
+
+**The file this task is about lives in the CODE repo** — `embarch-core/README.md` inside
+`/home/gabriel/Github/embarch/embarch-core/`, which a `core` worker owns in full. It is **not**
+`embarch-doc`'s reserved top-level readme, and nothing here asks you to write a reserved path. The
+heading avoids spelling the bare filename because `check-task-state.py` matches tracked
+`embarch-doc` paths as substrings of a title and cannot tell the two apart.
 
 **State:** claimed — leg 108, unit 3, 2026-09-13, branch `agent/core/052-readme-bind-and-stale-claims`.
 **Doc-size reserve for `core`:** `embarch-core/decisions/auth.md` 11356/12288 B (**932 B left**,
