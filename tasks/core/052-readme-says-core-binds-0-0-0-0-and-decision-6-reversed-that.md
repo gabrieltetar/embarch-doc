@@ -6,7 +6,7 @@
 heading avoids spelling the bare filename because `check-task-state.py` matches tracked
 `embarch-doc` paths as substrings of a title and cannot tell the two apart.
 
-**State:** claimed — leg 108, unit 3, 2026-09-13, branch `agent/core/052-readme-bind-and-stale-claims`.
+**State:** done — leg 108, unit 3, 2026-09-13, branch `agent/core/052-readme-bind-and-stale-claims`.
 **Doc-size reserve for `core`:** `embarch-core/decisions/auth.md` 11356/12288 B (**932 B left**,
 filed as blocked `tasks/core/046`). **That is the file decision 6 lives in**, so if you conclude a
 decision body needs amending, read `DOC-COMPACTION.md` §2 first and compact in-unit if your edit
@@ -81,9 +81,82 @@ every one before changing it**; report any that turn out correct rather than edi
 
 ## Done when
 
-- [ ] `README.md:135-138` states the loopback default, decision 6's reason for it, and the real
+- [x] `README.md:135-138` states the loopback default, decision 6's reason for it, and the real
       widening remedy — and no longer asserts the reversed rationale.
-- [ ] Each ride-along taken is verified against the source first, and each one left is named in the
+- [x] Each ride-along taken is verified against the source first, and each one left is named in the
       report with why.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
+
+## Closing notes
+
+**Re-derivation of the task's own citations** — all confirmed correct except one line-number nit:
+`src/main.rs:32` (`DEFAULT_BIND = "127.0.0.1"`) — exact. `decisions/auth.md` — the "was originally
+`0.0.0.0` … Reversed" text is real, but lives on line 15 as one long paragraph, not "14-15" as two
+lines — a citation slip, not a wrong quote. `spec.md` §2's "Default bind is `127.0.0.1`" — exact, at
+line 36. `embarch-umbrella/decisions/bind.md`'s claim about `setup` inferring `local` when run
+natively on Windows and reinstalling the narrow bind — read and confirmed (2026-09-06 amendment).
+`suite/user-guide.md:226`'s `bound-narrow` row — confirmed, prescribes `embarch-core install --bind
+0.0.0.0` run elevated, exactly as the task states.
+
+**Fix applied** (`README.md:135-145`, in the `## Running` section): loopback default restated,
+decision 6's actual rationale (composed weaknesses, not "reachability is the point"), and the real
+widening remedy named as a command (`embarch-core install --bind 0.0.0.0`, elevated) with the
+`embarch setup`-only-from-the-guest caveat. `src/main.rs:32` untouched, per the task's own
+instruction — the doc was the wrong side.
+
+**Ride-alongs — all three taken, all three re-verified first:**
+- `README.md:5` ("five... endpoints") — confirmed wrong; `DOCUMENTED_ROUTE_COUNT = 22` at
+  `src/api.rs:1569`, and `cargo test` passes the test that pins it against `interfaces.md`. Changed
+  to "22", pointed at `embarch-doc/embarch-core/interfaces.md` for the full list rather than
+  hand-listing all 22 in the README (table below still shows the same 5 core routes it always did,
+  now explicitly labeled a subset).
+- `README.md:35` (`src/dev_bench.rs` in the Layout tree) — confirmed the file does not exist
+  (`ls` fails); removed the stale entry. Did not replace it with a new tree line for
+  `embarch_topology::hardware`, since that's a different crate's module and the README already says
+  so ~30 lines below (`README.md:63-66` as edited, formerly ~64-67).
+- `README.md:158` (`open_first_probe()` claim) — confirmed gone from `hardware.rs`; `resolve_probe`
+  (line 79) is the real function and **errors loudly on ambiguity**, the opposite of what the README
+  said. The whole bullet was a "what's not here yet" gap that's now closed (decision 9 /
+  `hardware.rs:61-66`'s own doc comment records the fix), so removed rather than reworded in place.
+
+**Left alone (verified correct, not touched):** nothing else in the file — the three ride-alongs
+above were the only ones the task named, and no other line was found wrong during the read-through
+of the whole file (done in full before editing).
+
+**Dropped to inbox, not fixed here (both out of this task's scope):**
+- `/home/gabriel/Github/embarch/embarch-doc/inbox/core-hardware-rs-stale-board-gate-comment.md` —
+  the task's own named `src/hardware.rs:74` stale `board_gate.rs` reference (confirmed real:
+  `board_gate.rs` doesn't exist in this crate; `hardware.rs:116`'s doc comment already has the
+  corrected story, `hardware.rs:74`'s doesn't).
+- `/home/gabriel/Github/embarch/embarch-doc/inbox/doc-check-task-state-title-substring-false-positive.md`
+  — found while gating, not part of this task: `scripts/check-task-state.py`'s Rule 6 title scan
+  flags this very task's title as naming `embarch-doc`'s reserved root `README.md`, because it does
+  a raw substring match with no path boundary and this task's title contains the substring
+  `README.md` inside `embarch-core/README.md` — a different file in a different repo, one `core`
+  legitimately owns. See `## Gate results` below.
+
+**Windows build debt.** Per the fleet's standing debt (§7 in `protocol.md`, `embarch-core`'s native
+Windows target): this unit did not attempt or verify a Windows build. Nothing here touches
+platform-conditional code (`README.md` prose only), so the risk this adds is minimal, but it is
+still an addition to that standing debt per this fleet's own accounting rule, and is recorded here
+so the supervisor logs it.
+
+## Gate results
+
+- `cargo build` / `cargo test` / `cargo clippy --all-targets -- -D warnings` (code worktree): **all
+  green**. 197 tests passed (2 ignored), including `registered_route_count_matches_the_count_
+  documented_in_interfaces_md`, which is what makes "22" a verified-live number rather than a
+  hand count.
+- `python3 scripts/check-docs.py` (doc worktree): **RED on one sub-check**,
+  `check-task-state.py`, and it is a false positive — see the inbox drop above. Every other
+  sub-check (`check-links.py`, `check-staleness.py`, `check-decision-refs.py`,
+  `check-doc-conventions.py`, `check-doc-size.py`, `check-task-numbers.py`,
+  `build_changelog.py --check`, `build_features.py --check`, `install.py --verify`,
+  `check-client-names.py`) passed.
+- `scripts/check-client-names.py --repo <code worktree>`: **green** — "clean against 7 denylist
+  entries."
+- `scripts/check-ownership.py --scope core` (doc worktree): **green** — "all 1 changed path(s) owned
+  by the 'core' worker" (base `37a9198f67a3`).
+- `scripts/check-ownership.py --scope core --code-repo` (code worktree): **green** — "worker for
+  'core' owns the whole tree" (base `f852fa8d2908`).
