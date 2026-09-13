@@ -1,6 +1,6 @@
 # dev-bench/020 review finding: decision 39 misattributed on DevBenchLogLevel citation
 
-**State:** open
+**State:** claimed — leg 103, 2026-09-12.
 **Source:** embarch-reviewer, reviewing dev-bench/020 (code merge `adbc380`, doc merge `b1a026b`)
 **Scope:** dev-bench
 **Hardware:** none — this is a citation-text correctness question, no board involved
@@ -50,6 +50,20 @@ commit touching many nearby hunks) — simplest fix is a follow-up one-line edit
 changing that single occurrence's `` `embarch-study-designer` decision 39 ``
 to plain `decision 39` (dev-bench's own, this repo's existing bare-citation
 convention), not a revert of the whole unit.
+
+## Dispatch note (leg 103)
+
+Re-derive from the decision bodies in both repos before editing, and check the other four
+same-numbered occurrences in that file while you are there — the finding says they are correct,
+so confirm rather than assume. No build is possible in a fleet worktree (the Zephyr toolchain
+is absent); a comment-only change is fine, but say so in your report rather than claiming a
+green build.
+
+**Doc-size reserve for `embarch-dev-bench`:** `open.md` (338 B left), `spec.md` (780 B left) and
+`decisions/link.md` (1,047 B left) are all in reserve, with their compaction tasks
+(`tasks/dev-bench/012`, `tasks/dev-bench/014`) blocked on `In flux: yes`. Keep your doc edit
+small; if you must spend the last of a reserve, compact that file as part of this unit carrying
+the parked task's `Must not delete:` list.
 
 ## Done when
 
