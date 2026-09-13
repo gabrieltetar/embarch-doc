@@ -1,6 +1,6 @@
 # 037 — `validate::enroll`'s probe selection is a copy of `embarch-core::resolve_probe`, not a share
 
-**State:** open
+**State:** claimed by agent/topology/037-enroll-copies-core-probe-selection, 2026-09-13 17:20
 **Source:** `inbox/topology-enroll-duplicates-core-probe-selection.md`, dropped by `tasks/core/053`'s
 worker while rewording `embarch-core/src/hardware.rs`'s `resolve_probe` doc comment. Filed by the
 leg of 2026-09-13 17:0x.
