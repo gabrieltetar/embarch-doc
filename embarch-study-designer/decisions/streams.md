@@ -28,7 +28,7 @@ A small append-only unit enum plus a channel id, **riding once per batch rather 
 ### 39 — One generic inbound stream pipeline; the write direction explicitly not accepted
 Opened by [embarch-outpost](../../embarch-outpost/decisions.md), whose DUT-side debug UART needs its bytes captured for a study's duration and which would otherwise have become **the fourth** near-identical capture pipeline here, after power, sensor waveform, and (as of the day before) the GATT transcript. **Four pipelines differing only in what the bytes mean is the point at which the pattern has to be named rather than repeated again.**
 
-`Study` gains one field beside `steps`: a list of `StreamTap`s. A tap declares four things and nothing else — **where the bytes come from, how long the tap lives, how to render what arrives, and what to call the output.** Every bespoke channel becomes a declared source; every bespoke row shape becomes a declared encoding. Shapes: [../interfaces/types.md](../interfaces/types.md) §4.8.
+`Study` gains one field beside `steps`: a list of `StreamTap`s. A tap declares four things and nothing else — **where the bytes come from, how long the tap lives, how to render what arrives, and what to call the output.** Every bespoke channel becomes a declared source; every bespoke row shape becomes a declared encoding. Shapes: [../interfaces/taps.md](../interfaces/taps.md).
 
 | Was | Becomes |
 |---|---|
