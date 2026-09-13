@@ -58,6 +58,15 @@ Correct refusal, no way forward through the script. The supervisor must finish t
 itself — every step the script exists to make atomic, done manually at the one moment the atomicity
 mattered.
 
+## It happened twice in the leg that filed it
+
+Second occurrence, ~20 minutes later, on `suite/010`: the fold marked the task `done` and wrote a
+`## Closed` section into it — an ordinary supervisor edit, nothing to do with the `closed`/`done`
+vocabulary — and the `git rm` refused for the same reason, again after the log commit had landed
+(`embarch-fleet` `e038fe3`). **So the `closed` case is the likeliest trigger but not the shape of
+the defect**: any unit whose fold touches its own task file hits this, which is most folds that do
+more than tick a checkbox. Two of this leg's four units did.
+
 ## Suggested fix
 
 `git rm -q -f --` for the finished task file. The file is being deleted in this very commit, so
