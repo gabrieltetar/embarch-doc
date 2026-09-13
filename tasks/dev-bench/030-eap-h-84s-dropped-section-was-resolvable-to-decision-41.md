@@ -1,6 +1,10 @@
 # 030 — `eap.h:84`'s dropped `§4.9` was resolvable to `decision 41`, not unresolvable
 
-**State:** claimed — leg 108, 2026-09-13, dispatched to `agent/dev-bench/030-eap-h-decision-41`
+**State:** done — leg 108, 2026-09-13, `agent/dev-bench/030-eap-h-decision-41`. Code: `app/src/eap.h`,
+`app/src/serial_protocol.h`, `app/src/ble_bridge.h`. `embarch-doc` gate green (11/11 checks), own
+tree not path-checkable but `check-ownership.py --code-repo` confirms sole-owner tree. **No build
+attempted** — the Zephyr toolchain is absent from this worker worktree, a standing recorded debt;
+this unit is a C-comment/citation fix, so a compile is not owed here.
 **Source:** reviewer pass on `dev-bench/026` (embarch-doc merge `c133703573648f1c4d959f04ccd509d5ba8c400f`),
 which closed as "already resolved by `dev-bench/029`" (`embarch-dev-bench` commit `4816230`).
 Re-derivation against `embarch-dev-bench/decisions/protocols.md` and `conventions.md` at
@@ -66,18 +70,41 @@ checked off as correctly handled, which closes the door on anyone looking again.
 
 ## Done when
 
-- [ ] `app/src/eap.h:84` cites `decision 41` (own-repo bare form, per decision 47's citation
+- [x] `app/src/eap.h:84` cites `decision 41` (own-repo bare form, per decision 47's citation
       grammar) for the one-arm-per-state claim, as a **forward edit** — do not revert `4816230`,
-      which would restore the dead `§4.9`.
-- [ ] `tasks/dev-bench/026`'s closure text is corrected where it records this line as correctly
+      which would restore the dead `§4.9`. Done: the line now reads "`decision 41` records that
+      both worked protocols use **one** arm per state".
+- [x] `tasks/dev-bench/026`'s closure text is corrected where it records this line as correctly
       deleted. That assertion is the reason nobody would look again, and leaving it standing is
-      most of the cost of this defect.
-- [ ] The same question is asked of the **other** citations `dev-bench/029` deleted rather than
+      most of the cost of this defect. Corrected in place (body edited, not appended) with a
+      dated correction naming this task and decision 41.
+- [x] The same question is asked of the **other** citations `dev-bench/029` deleted rather than
       repointed: for each, was there an `embarch-dev-bench`-owned decision that resolves it? Both
       prior units checked only `embarch-study-designer`, so the own-repo half of decision 47's
-      branch 1 has never been swept. Report the count either way — a clean sweep finding nothing
-      is a useful result and should be recorded, not left silent.
-- [ ] Gate green; `changelog.d/` fragment if anything reader-visible changed.
+      branch 1 has never been swept. **Swept. Two more found, both fixed as forward edits:**
+      - `app/src/serial_protocol.h:121` — "the BDS batch download" (`§4.9` deleted by `029`) is the
+        same 398-byte worked-protocol figure `decision 41` states word for word. Repointed to
+        `` `decision 41` ``.
+      - `app/src/ble_bridge.h:82` — "the crate's own docs state this explicitly for `Uuid` but not
+        for `BleAddress`" (`§4` deleted by `029`) is not just a missing citation: `embarch-dev-bench`
+        decision 23 (amended 2026-09-07) records that `embarch-study-designer` landed the
+        `BleAddress` display-order statement in `79a4c00` on 2026-09-06 — so the sentence's claim
+        was also stale, not only uncited. Repointed to `` `decision 23` ``, and corrected "but not
+        for `BleAddress`" to "for both `Uuid` and `BleAddress`".
+      - Checked and correctly left alone (no `embarch-dev-bench`-owned decision applies): the
+        `Sample.value` f32-mapping "still open" note in `ble_bridge.h` (genuinely open, no decision
+        anywhere resolves it); `main.c`'s `StepResult`/`Outcome` field-by-field-translation note
+        (searched all nine `decisions/*.md` files for `StepResult`/`Outcome`/`field-by-field`: no
+        hit); and three `StreamTap`/`StreamRecord` wire-shape citations in `serial_protocol.c`/`.h`
+        (searched all decisions for `StreamTap`/`StreamRecord`/`streams.rs`: `capture.md` discusses
+        *decoding* behavior, never the type's own field layout, so nothing in this repo owns that
+        claim — if it resolves anywhere it is an `embarch-study-designer` decision, out of this
+        task's own-repo scope).
+      - **Count: 3 of 8 outright-deleted `§N` citations resolve to an `embarch-dev-bench`-owned
+        decision** (the original `eap.h:84` plus these two); the other 5 do not and were correctly
+        left as deletions.
+- [x] Gate green; `changelog.d/` fragment if anything reader-visible changed. Fragment added:
+      `changelog.d/dev-bench-eap-h-decision-41-citation.fixed.md`.
 
 ## Note from the supervisor (leg 107)
 
