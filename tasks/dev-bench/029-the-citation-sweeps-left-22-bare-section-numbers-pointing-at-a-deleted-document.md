@@ -1,6 +1,18 @@
 # 029 — Three citation sweeps left bare `§N` pointers at a document that no longer exists
 
-**State:** open
+**State:** claimed — leg 107, unit 4, 2026-09-13.
+**Doc-size reserve for `dev-bench`, and read this before you pick a file for the new decision:**
+`embarch-dev-bench/open.md` 4782/5120 B (**338 B left**, filed as blocked `tasks/dev-bench/012`),
+`embarch-dev-bench/spec.md` 9460/10240 B (780 B left, same blocked task), and
+`embarch-dev-bench/decisions/link.md` 11241/12288 B (1047 B left, filed as blocked
+`tasks/dev-bench/014`). `decisions/link.md` is about the serial link, and the decision this task
+owes is about citation form — so **it almost certainly belongs in a different topic file**; check
+`embarch-dev-bench/decisions.md`'s index and pick the right one rather than the nearest one.
+`embarch-api` filed a decision into the wrong topic file on 2026-09-05 for exactly this reason and
+nothing failed. If the right file genuinely is one of the three above and your edit will not fit,
+compact that file in-unit per `DOC-COMPACTION.md` §2, carrying the parked task's `Must not delete:`
+list and closing only that file's item. If you push any `dev-bench` doc into reserve, file
+`tasks/dev-bench/<NNN>-compact-dev-bench.md` in the same commit.
 **Source:** `dev-bench/022`'s reviewer, 2026-09-13, asked the question directly and answered it
 plainly. Counts below are from the merge result (`embarch-dev-bench` `15c8796`).
 **Scope:** dev-bench
