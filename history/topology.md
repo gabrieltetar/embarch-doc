@@ -11,6 +11,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- `decisions/crate.md` split into `decisions/crate.md` + `decisions/consumer-boundary.md`; `spec.md` squeezed. Both out of reserve.
 - `EnrolledBoard::hardware_id` now carries the probe-read doc comment `embarch-core` decision 56 owed on this route.
 - `decisions/validation.md` split: decision 25 (the chip classifier) moved verbatim into new `decisions/validation-classifier.md`, out of reserve.
 - embarch-topology/spec.md compacted 9195B -> 8726B (85.2% of cap), no facts lost, task/topology/024.
