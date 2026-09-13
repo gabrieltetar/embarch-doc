@@ -1,6 +1,11 @@
 # 024 — `ble_bridge.h` cites an `embarch-study-designer/design.md §3` that does not exist
 
-**State:** open
+**State:** blocked — re-scoped into `tasks/dev-bench/022`, which covers this file and two others in
+one pass (leg 106, 2026-09-13). **Unparks when** `022`'s unit lands: if it covered
+`app/src/ble_bridge.h` this task is `done` and retired in that unit's fold; if it did not, this
+task goes back to `open` with the remaining count. Not dispatchable meanwhile — one task per
+sub-project is per slot, so running it separately would spend a second leg's unit on the same
+sweep.
 **Source:** split out of `dev-bench/019`, 2026-09-12.
 **Scope:** dev-bench
 **Hardware:** none
