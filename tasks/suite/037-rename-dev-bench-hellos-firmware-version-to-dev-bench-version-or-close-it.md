@@ -10,6 +10,13 @@ breaking change to a served field in three repos.
 board. (But see "The old-Core half" — the Core *running* on this machine matters here even though
 no board does.)
 **Owner:** no
+**Announced:** `#embarch-fleet` `ts` `1789326123.058939`, leg 107, 2026-09-13 — the 30-minute
+window under `ops.md` §4 is **open and running from that timestamp**. It names all three repos and
+the breaking-change half in its threaded detail, so it satisfies this task's first `Done when`
+item. **Do not re-announce it.** If leg 107 ends before the window closes, the next leg reads this
+line, checks the thread with `scripts/fleet-read.py --thread 1789326123.058939`, and executes on
+the existing clock rather than starting a fresh one. A reply saying go runs it immediately; a
+cancel drops this task back to plain `open` with the reply quoted here.
 
 ## The argument, stated here in full
 
