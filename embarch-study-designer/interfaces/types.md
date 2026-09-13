@@ -60,6 +60,8 @@ The study and result types. Field-level, concrete enough that a `serde`-derived 
 
 **`BleAddress`'s six raw bytes are display order, most-significant first**, matching this crate's big-endian UUID convention, for both `BleAddressKind`s alike. `src/ids.rs` states it on the type itself as of 2026-09-06, where an author looks first; before that this prose was the only statement of it in this sub-project. A wrong guess means an explicit `target_address` silently never matches, and reads as an absent DUT rather than as a byte-order bug.
 
+**`Uuid`'s `Serialize`/`Deserialize` is the raw 16-byte-array derived form** (`#[derive(Serialize, Deserialize)]` over `pub struct Uuid(pub [u8; 16])`, `src/ids.rs`) — the hyphenated `8-4-4-4-12` text an engineer types or reads is a display/parse-only convenience, produced by `Uuid::to_hyphenated()` and consumed by `Uuid::parse()` explicitly at each call site that needs it, never carried in the wire/JSON form itself. Two sites outside `src/ids.rs` depend on that split: `embarch-ui/src/study_designer.rs::uuid_field` converts a saved study's raw array to hyphenated text for the table on load, and the authoring `Raw` row (`../decisions/authoring.md` decision 37) parses hyphenated text typed into that row back into a `Uuid`.
+
 A step's `Outcome` is the only on-device signal: **did the action complete without a protocol-level error or timeout.** Whether the content it produced was *correct* is a separate question, and the answer is no longer post-hoc validation — see [../decisions/removed.md](../decisions/removed.md).
 
 ## Results
