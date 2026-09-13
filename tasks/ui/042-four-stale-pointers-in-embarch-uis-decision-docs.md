@@ -1,6 +1,8 @@
 # 042 — Four stale pointers in `embarch-ui`'s decision docs: a marker count and three CSS line numbers
 
-**State:** open
+**State:** claimed — leg 107, unit 3, 2026-09-13.
+**Doc-size reserve for `ui`:** nothing in `embarch-ui`'s docs is in reserve. If your work pushes
+a file into the last 10% of its cap, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified. Re-derive each number.
 **"Scout-verified" is one reader, and it has already been wrong once** — the same scout, same
 sweep, reported a quoted source comment as never having existed when it had existed and was later
