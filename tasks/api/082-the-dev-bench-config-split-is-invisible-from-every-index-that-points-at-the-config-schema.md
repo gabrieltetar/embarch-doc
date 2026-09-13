@@ -29,7 +29,7 @@ a one-line referral:
 
 There is a fourth, and it is **not yours**: `embarch.md:115` lists this sub-project's interface files
 and names three of the four. `embarch.md` is a shared suite-level doc — `never` for a worker in
-[protocol.md](../../embarch-fleet/protocol.md) §3's table. **Drop a `status.d/` fragment** naming the
+[protocol.md](../../../embarch-fleet/protocol.md) §3's table. **Drop a `status.d/` fragment** naming the
 target doc and the fact that changed, per [status.d/README.md](../../status.d/README.md), and the
 supervisor folds it when this unit lands. Do not edit `embarch.md`.
 
