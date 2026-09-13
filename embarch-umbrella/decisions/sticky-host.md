@@ -24,11 +24,14 @@ sticky", names exactly that gap and leaves it unmade here (see below).
 **What that makes the field mean.** Not "the remote host for a `remote` machine" — a `local` or
 `wsl-host` run never had a remote host to record, yet the field can still hold one, left over from
 whichever earlier `setup` invocation last passed `--host` (on this machine or a previous topology
-this same state file survived). `state.rs`'s "Only meaningful for `remote`" comment describes what
-the field is *for* — `infer_class` reads a host to decide `Remote` — but not what a **stored**
-value actually attests to, which is narrower: *at some past run, some `--host` was typed.* It says
-nothing about whether that run's conclusion still holds, or whether any run since has needed a
-host at all.
+this same state file survived). `state.rs`'s comment read *"Only meaningful for `remote`."* at the
+time — it described what the field is *for* — `infer_class` reads a host to decide `Remote` — but
+not what a **stored** value actually attests to, which is narrower: *at some past run, some
+`--host` was typed.* It said nothing about whether that run's conclusion still held, or whether any
+run since had needed a host at all. **That quote is gone now, not dead**: this decision's own fix
+(`umbrella/050`) rewrote the comment to state this point directly, and decision 51 rewrote it again
+to add the clearing rule — read `src/state.rs`'s current comment on `host`, not this sentence, for
+what it says today.
 
 **What check 2 may infer from finding one.** `check_service` reads `config_host.or(saved_host)`
 and feeds the result to `setup::infer_class`, the same function `setup` itself uses — deliberately,
@@ -63,7 +66,7 @@ overclaiming.
 **Deliberately does not change when `saved.host` is cleared.** Clearing it on a non-`remote`
 conclusion — the fix `open.md` still names as unmade — changes what a real `doctor` run reports on
 a real machine, which needs the bench to confirm and is out of scope for a documentation decision.
-That half stays open.
+That half stayed open — until decision 51, immediately below, settles it.
 
 ### 51 — `apply_plan` clears `saved.host` on a non-`remote` conclusion
 
