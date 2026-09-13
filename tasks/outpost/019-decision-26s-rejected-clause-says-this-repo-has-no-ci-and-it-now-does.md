@@ -1,6 +1,6 @@
 # 019 — Decision 26's *Rejected* clause says this repo has never had CI, and it has since 2026-09-11; the same fix's own runtime note miscites decision 22
 
-**State:** open
+**State:** claimed by agent/outpost/019-decision-26-ci-clause, 2026-09-13 11:13
 **Source:** leg 105 refill sweep, 2026-09-13. Both halves verified against the code and the
 workflow file before filing.
 **Scope:** outpost
@@ -71,3 +71,16 @@ file tree.
 **Do not add the cross-decoder to `host-tests.yml`.** Suite decision 2 deliberately leaves it out
 and records the reversal condition that would bring it in; changing that is a suite-scope call and
 not this task's. This task corrects what the decision *says*, not what the workflow *does*.
+
+## Dispatch note (leg 105)
+
+**Nothing in `embarch-outpost`'s docs is in size reserve** — `check-doc-size.py --pressure` lists
+no `embarch-outpost` file, so you have headroom everywhere. If your edit still pushes one into the
+last 10% of its cap, file `tasks/outpost/<NNN>-compact-outpost.md` in the same commit.
+
+**Cite a suite decision the way this repo already does**, not by file path: the form that resolves
+is `[suite decision N](<relative path>/suite/decisions.md)` — see `embarch-outpost/spec.md:53` and
+`decisions/clocks.md:14`. `check-decision-refs.py` does **not** resolve a suite decision cited as
+`` `suite/decisions/tooling.md` decision 2 ``; this task file was itself red for exactly that on
+first write, and it is a limitation of the checker rather than of the citation, so do not
+"fix" it by changing the decision number.
