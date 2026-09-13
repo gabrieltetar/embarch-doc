@@ -42,7 +42,7 @@ Three shape decisions, each with a plausible alternative:
 
 ### 9 — Async, job-based execution for the Core↔dev-bench-bridging HTTP surface, not a blocking call like `/flash`
 
-A study's BLE steps (advertise, wait for a connection) can legitimately take unbounded time, unlike Core's existing bounded operations — a synchronous call would need an unreasonably long client-side timeout or risk truncating a study mid-run. Core accepts a `Study`, returns a `study_id` immediately, and reports progress via polling. Endpoint shapes in §5.1; this decision covers the *shape* of the interaction, a property of the whole study-execution flow rather than of Core's implementation.
+A study's BLE steps (advertise, wait for a connection) can legitimately take unbounded time, unlike Core's existing bounded operations — a synchronous call would need an unreasonably long client-side timeout or risk truncating a study mid-run. Core accepts a `Study`, returns a `study_id` immediately, and reports progress via polling. Endpoint shapes in [embarch-core/interfaces/studies.md](../../embarch-core/interfaces/studies.md); this decision covers the *shape* of the interaction, a property of the whole study-execution flow rather than of Core's implementation.
 
 ### 16 — A crash mid-study on either side is catastrophic for that study, and dev-bench's needs a host-side watchdog to be detected at all
 
@@ -54,7 +54,7 @@ Recovering the *connection* in either direction is decision 12's `Hello`-as-hard
 
 ### 29 — The fuzz-testing loop is documented, not changed
 
-Review item 40 flagged that a 64-step ceiling, no queue, and a `409 Conflict` on concurrent submission make a fuzzing driver look like an awkward N-round-trip loop against a rejection. Examined and left as-is deliberately: raising the ceiling doesn't help a fuzzer exploring many *distinct* short studies rather than one long one (§4.1 already frames a `Study` as fuzzing's *output*, one concrete value per run), and a queue is real new machinery — persistence, ordering, partial-failure semantics — this suite has avoided everywhere else (`embarch-api/decisions.md` §3.6's no-database stance).
+Review item 40 flagged that a 64-step ceiling, no queue, and a `409 Conflict` on concurrent submission make a fuzzing driver look like an awkward N-round-trip loop against a rejection. Examined and left as-is deliberately: raising the ceiling doesn't help a fuzzer exploring many *distinct* short studies rather than one long one ([interfaces/types.md](../interfaces/types.md) already frames a `Study` as fuzzing's *output*, one concrete value per run), and a queue is real new machinery — persistence, ordering, partial-failure semantics — this suite has avoided everywhere else (`embarch-api` decision 1's no-database stance).
 
 The intended shape, stated explicitly: a fuzzing driver runs entirely client-side, generating one `Study` at a time, submitting it, polling `GET /study/{id}` to a terminal status, then generating the next. **The poll loop *is* the intended backpressure mechanism**, not a workaround for a missing one.
 
