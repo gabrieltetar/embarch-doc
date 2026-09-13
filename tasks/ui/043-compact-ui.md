@@ -1,6 +1,6 @@
 # 043 — `embarch-ui/decisions/trace-view.md` is in reserve
 
-**State:** claimed
+**State:** done — agent/ui/043-compact-ui, 2026-09-13.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/ui/042`'s fix to decision
 10's marker-count sentence
 **Scope:** ui
@@ -63,8 +63,45 @@ measurements, not pending prose changes.
 
 ## Done when
 
-- [ ] `decisions/trace-view.md` is out of reserve, or the task says why it cannot be and what
+- [x] `decisions/trace-view.md` is out of reserve, or the task says why it cannot be and what
       was deleted instead.
-- [ ] Prefer a split per `DOC-COMPACTION.md` §2 if a seam exists (decision 10's three
+- [x] Prefer a split per `DOC-COMPACTION.md` §2 if a seam exists (decision 10's three
       sub-arguments vs. decisions 19/21) before deleting live reasoning.
-- [ ] Whichever it was — split or delete — is stated, with the byte numbers before and after.
+- [x] Whichever it was — split or delete — is stated, with the byte numbers before and after.
+
+## Closed
+
+**Split, not squeeze.** `decisions/trace-view.md` (11,093 B) split verbatim along the seam the
+task named: decision 10 (post-hoc rendering, the two-boolean model, the gap-band/clock-tier axis,
+the load repartition and idle double-count) stayed in `trace-view.md`; decisions 19 (the
+stale-leading-prefix drop) and 21 (the served row cap) moved verbatim into a new
+`decisions/trace-rows.md`. Nothing was reworded — headers gained one cross-reference sentence
+each, the only prose that changed.
+
+**Bytes:** `trace-view.md` 11,093 B → 8,798 B (out of reserve, 3,490 B of the 12,288 B cap left).
+New `trace-rows.md`: 3,060 B. `decisions.md` and `interfaces.md` updated (the split-out row, and
+the one `decisions/trace-view.md` 21 file-qualified citation, now `decisions/trace-rows.md` 21).
+Every other inbound reference (`trace-chart.md`, `trace-transfer.md`, `topology-tab.md`,
+`outcome-decode.md`, `open.md`, `spec.md`, and out-of-scope task/history files) cites decision 10,
+19 or 21 by number rather than file path, or already pointed at `trace-view.md` for decision-10
+content that never moved — all still resolve.
+
+**Refused to delete:** all of decision 19's reasoning, including the `STALE_PREFIX_MAX_ROWS`
+(512) assumption and the four conditions, since `tasks/ui/007` is blocked on that drop meeting a
+real stale prefix and needs the full mechanism, not a summary of it, to eventually close.
+
+**Human question** (`DOC-COMPACTION-PASS.md`): yes. `trace-view.md` alone still states the whole
+Trace-view rendering contract — post-hoc-not-live, the two booleans, the CSV-refusal count, the
+gap-band overlay and its host/DUT bound, the load repartition and idle double-count, and the
+three-tier clock axis with its five rules — nothing in that chain depended on 19 or 21, which are
+about which rows are admitted before rendering starts and how many a view can ever hold, not on
+what a kept row means. A reader working on the trace view's render/clock behavior needs only
+`trace-view.md`; a reader touching row admission or the cap needs only `trace-rows.md`. Splitting
+answered the question the pass asks; a squeeze into the same file would not have, since decision
+10 was already the file's whole mass and had nothing left to cut without losing a rejected
+alternative.
+
+**Gate:** `check-docs.py` all 11 green, `check-doc-size.py` (trace-view.md no longer in reserve;
+15 other files in reserve, all filed, unrelated to this task), `check-ownership.py --scope ui`
+and `--code-repo` both clean, `check-client-names.py` clean. No code changed in `embarch-ui`
+(pure doc split); `cargo build`/`test`/`clippy` not re-run since nothing in the code repo moved.
