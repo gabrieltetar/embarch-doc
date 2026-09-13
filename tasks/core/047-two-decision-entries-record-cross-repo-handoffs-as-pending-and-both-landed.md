@@ -1,6 +1,6 @@
 # 047 — Two `embarch-core` decision entries record a cross-repo hand-off as still owed, and both have landed
 
-**State:** open
+**State:** claimed by agent/core/047-cross-repo-handoff-claims, 2026-09-13 11:45
 **Source:** leg 105 refill sweep, 2026-09-13. Both instances read in full before filing; the
 `embarch-ui` code claims below are the scout's and are **to be re-verified by whoever takes this**,
 not taken on trust.
