@@ -1,6 +1,17 @@
 # dev-bench/020 review finding: decision 39 misattributed on DevBenchLogLevel citation
 
-**State:** claimed — leg 103, 2026-09-12.
+**State:** closed — leg 103, 2026-09-12. Fixed and landed on `main` as `656516b`
+("dev-bench/020 fold fix"), ahead of this dispatch reaching a worker — found
+the code worktree already clean and `656516b` an ancestor of `origin/main`.
+Re-derived both decision 39 bodies to confirm the fix is right
+(`embarch-dev-bench/decisions/logging.md` #39 = runtime log-level-from-study,
+matching the `DevBenchLogLevel` comment; `embarch-study-designer/decisions/streams.md`
+#39 = the `StreamTap` inbound-pipeline unification) and checked the other five
+`decision 39` occurrences in `serial_protocol.h` (stream-tag retirement,
+`StreamTap` schema-v9, `GattTranscript` encode/split-out comments,
+`dbm_encode_transcript_entry` area) — all genuinely about the stream-pipeline
+unification and correctly attributed to `embarch-study-designer`. No code or
+doc edit needed in this unit.
 **Source:** embarch-reviewer, reviewing dev-bench/020 (code merge `adbc380`, doc merge `b1a026b`)
 **Scope:** dev-bench
 **Hardware:** none — this is a citation-text correctness question, no board involved
@@ -67,5 +78,6 @@ the parked task's `Must not delete:` list.
 
 ## Done when
 
-The `DevBenchLogLevel`/Zephyr-severity comment in `serial_protocol.h` cites
-dev-bench's own decision 39, not embarch-study-designer's.
+- [x] The `DevBenchLogLevel`/Zephyr-severity comment in `serial_protocol.h` cites
+      dev-bench's own decision 39, not embarch-study-designer's. (Landed as
+      `656516b`, already on `main`.)
