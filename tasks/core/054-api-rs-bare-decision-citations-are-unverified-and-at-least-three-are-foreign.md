@@ -1,6 +1,6 @@
 # 054 — `embarch-core/src/api.rs`'s bare decision citations are unverified, and at least three name another repo's decision
 
-**State:** open
+**State:** claimed by agent/core/054-api-rs-bare-decision-citations, 2026-09-13 17:20
 **Source:** the leg of 2026-09-13 17:0x, refill sweep. The carry-forward in
 `supervisor-log.md`'s 2026-09-12 entry says plainly that the wrong-decision-number defect class
 *"is bigger than assumed and no gate sees it"*, and that **no sweep has been filed yet for
