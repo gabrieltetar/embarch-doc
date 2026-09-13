@@ -1,4 +1,4 @@
-# 047 — `study.rs`'s test fixture bare-cites "Decision 44" and "Decision 62" for `embarch-study-designer` fields, and 44 collides with a real, unrelated `embarch-core` decision
+# 050 — `study.rs`'s test fixture bare-cites "Decision 44" and "Decision 62" for `embarch-study-designer` fields, and 44 collides with a real, unrelated `embarch-core` decision
 
 **State:** claimed
 **Source:** leg 107 refill sweep, 2026-09-13, scout-verified against `embarch-core/src/study.rs`,
