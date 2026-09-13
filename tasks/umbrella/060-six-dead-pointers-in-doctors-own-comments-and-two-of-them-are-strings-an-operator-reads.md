@@ -1,6 +1,6 @@
 # 060 — Six dead pointers in `doctor.rs`, and two of them are strings an operator reads
 
-**State:** claimed — leg 111, 2026-09-13, `agent/umbrella/060-doctor-dead-pointers`
+**State:** done — leg 111, 2026-09-13, `agent/umbrella/060-doctor-dead-pointers`
 **Source:** leg 111's refill sweep — a read-only hunter over `embarch-umbrella`, run because
 `--refill-owed` fired on scope spread. Every finding below was verified against both sides before
 filing.
@@ -66,6 +66,45 @@ because of.
 
 ## Done when
 
-- [ ] Every site above points at something that exists and says what the sentence claims.
-- [ ] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
-- [ ] `changelog.d/` fragment.
+- [x] Every site above points at something that exists and says what the sentence claims.
+- [x] `cargo build` / `test` / `clippy --all-targets -- -D warnings` green.
+- [x] `changelog.d/` fragment.
+
+## What actually landed
+
+Re-derived every replacement from `interfaces/doctor-chain.md`, `decisions/schema-skew.md`,
+and `embarch-core/decisions/{flash-backend,enrollment,surfaces}.md` as they stand, not from
+the hunter's report's conclusions taken on faith — but the line numbers themselves checked out
+exactly (4, 20, 1031, 1269, 1483, 3475), no drift to report.
+
+**Count re-checked: still six.** `grep -n "decision 36\|decision 57\|spec.md\|check 9" src/doctor.rs`
+found no seventh stale site. One near-miss considered and rejected: `doctor.rs:1` ("`embarch
+doctor` — spec.md's check chain") also says `spec.md`, but that one is **not** stale —
+`spec.md` §"The `doctor` chain" still exists and still describes the chain in prose, it only
+delegates the *table itself* to `doctor-chain.md`. The four table/row references (module doc
+line 4, decision-16 comment, the `Unanswerable` doc comment, and check 9's `fix` string) all
+point at content that moved; line 1's chain-level description did not move, so it was left
+alone.
+
+Fixes:
+1. `doctor.rs:4` (module doc) — `spec.md's table` → `doctor-chain.md's table`.
+2. `doctor.rs:20` — `decisions/surfaces.md` → `decisions/enrollment.md` (decision 57 lives
+   there; `moved to decision 57` is recorded in that same file).
+3. `doctor.rs:1031` — `spec.md` check 6's row → `doctor-chain.md` check 6's row.
+4. `doctor.rs:1269` — retargeted the markdown link from `spec.md` to
+   `interfaces/doctor-chain.md`, and corrected the link depth from `../../embarch-doc/...` to
+   `../embarch-doc/...` to match the convention already established twice elsewhere in this
+   same file (lines 569, 2753).
+5. `doctor.rs:1483` (the `fix` string an operator reads) — `see spec.md, check 9` → `see
+   doctor-chain.md, check 9`. Left as a bare filename, no markdown link and no added prose —
+   an operator reading a `fix` line needs an instruction, not a citation.
+6. `doctor.rs:3475` (the `detail` string check 14 prints) — `§3 decision 36` → `embarch-core
+   decision 36`. Bare `§3 decision N` addresses *this* sub-project's own decision (umbrella's
+   36, `schema-skew.md`'s fourth-number decision — unrelated); the flashing-backend decision
+   is `embarch-core`'s own 36 (`decisions/flash-backend.md`), so it needs the cross-project
+   prefix per `DOC-CONVENTIONS.md`'s rule. Matches the already-correct citation 85 lines
+   earlier at `doctor.rs:3390`.
+
+No `spec.md`/`decisions.md`/`open.md`/`status.d/`/`features.d/` edit needed — this is a
+citation-only fix inside `doctor.rs`'s own comments and strings, no behavior, capability, or
+suite-level fact changed. `decisions/bind.md` (in reserve) was not touched.
