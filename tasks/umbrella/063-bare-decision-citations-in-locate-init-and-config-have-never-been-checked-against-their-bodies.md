@@ -1,6 +1,6 @@
 # 063 — The bare decision citations in `locate.rs`, `init.rs` and `config.rs` have never been checked against their bodies
 
-**State:** open
+**State:** claimed by agent/umbrella/063-bare-decision-citations-locate-init-config, 2026-09-13 17:20
 **Source:** the leg of 2026-09-13 17:0x, refill sweep. `supervisor-log.md`'s 2026-09-12
 carry-forward says **no sweep has been filed yet for `embarch-umbrella`'s own source**, and that
 `check-decision-refs.py` resolves numbers only inside `*.md` — a wrong number in a `.rs` comment
