@@ -1,6 +1,7 @@
 # 026 — the EAP trio's `§` section references dangle now that the filename is gone
 
-**State:** claimed
+**State:** done — resolved by `dev-bench/029` before this task's worker started; see "Closed as
+resolved elsewhere" below.
 **Source:** leg 101, 2026-09-12, found while reading `dev-bench/019`'s merge diff. Verified against
 `embarch-study-designer/spec.md` directly.
 **Scope:** dev-bench
@@ -80,19 +81,55 @@ answer for every one of them.
 
 ## Done when
 
-- [ ] Each of the six references either names the real section of a real document, or is deleted.
-      Deleting is a legitimate answer: `` `embarch-study-designer` decision 61 `` is a complete
-      citation on its own, and a section number that adds nothing is not worth researching.
-- [ ] `eap.h:84`'s "that doc's §4.9" no longer refers to an unnamed document.
-- [ ] `eap_interp.h:14`'s "§3 decisions 31/32" is read against `embarch-study-designer`'s actual
-      decisions 31 and 32 and either repointed with the cross-repo form or corrected — say in your
-      report which, and why.
-- [ ] `grep -n '§' app/src/eap.h app/src/eap_interp.h app/src/eap_interp.c` — every surviving hit
-      resolves to a section that exists.
-- [ ] Host-side checks green. The Zephyr `tests/unit` ztest suite cannot be built from a worktree
-      (no `west`, no `ZEPHYR_BASE`); that is a standing debt, not this unit's. Comment-only changes
-      cannot alter firmware behaviour — say plainly what you could and could not run.
+- [x] Each of the six references either names the real section of a real document, or is deleted.
+      **Already true on `main` before this worker started.** `dev-bench/029` (leg 107, unit 4,
+      commit `4816230`, landed 2026-09-13 12:49, *before* this task was claimed at `eb910cc`
+      12:59) swept every bare `§N` this repo's C sources carried, including all six lines this
+      task names, under the rule it wrote down as `embarch-dev-bench` decision 47
+      (`decisions/conventions.md`). `eap.h:1`, `:43` and `eap_interp.c:2`, `eap_interp.h:1-2`
+      dropped the redundant `§4.9` and kept the decision numbers (58-62), which already resolve.
+- [x] `eap.h:84`'s "that doc's §4.9" no longer refers to an unnamed document. Confirmed: the line
+      now reads "Both worked protocols use **one** arm per state" — the "that doc's §4.9" clause
+      is gone outright (no numbered decision states the one-arm-per-state rule, and the crate is
+      already named two lines up, so deletion was the right branch, not repointing).
+- [x] `eap_interp.h:14`'s "§3 decisions 31/32" is read against `embarch-study-designer`'s actual
+      decisions 31 and 32 and either repointed with the cross-repo form or corrected.
+      `dev-bench/029` read it and found it a genuine miscitation — 31/32 are that repo's GATT
+      decisions (`decisions/gatt.md`), unrelated to "wire types in the crate, executor here" — and
+      corrected it by content to **decisions 59/60** (the primitive split / `RunProtocol` executor
+      decision), which is what the sentence actually describes. This worker re-verified the fix by
+      reading the live line rather than trusting the prior unit's say-so: `app/src/eap_interp.h:14`
+      now reads `` `embarch-study-designer` decisions 59/60 already set: the wire types and the
+      reference semantics live in the crate ``, and `embarch-study-designer/decisions/gatt.md`'s 31
+      and 32 are indeed GATT-discovery decisions with no wire-type/executor content — 59/60 is the
+      correct pair.
+- [x] `grep -n '§' app/src/eap.h app/src/eap_interp.h app/src/eap_interp.c` — every surviving hit
+      resolves to a section that exists. Re-run by this worker: **zero hits** in all three files.
+      Nothing survives to check.
+- [x] Host-side checks green. This worker made zero code changes (nothing left to fix), so no
+      firmware behaviour is at risk. `west`/`ZEPHYR_BASE` remain unavailable in this worktree
+      (standing debt, unrelated to this task). `scripts/check-docs.py` run from the doc worktree:
+      green.
+
+## Closed as resolved elsewhere
+
+This task's worker (leg dispatch, 2026-09-13) found the code worktree already at commit `4816230`
+— `dev-bench/029` had, in the same leg, already applied decision 47 retroactively to every bare
+`§N` this repo's C sources carried, and its own commit message and "What was done" section name
+`eap.h`, `eap_interp.h` and `eap_interp.c` explicitly, including the exact `eap_interp.h:14`
+re-derivation to decisions 59/60 that this task's dispatch note warned not to guess. `git log`
+shows `4816230` (029's landing) predates `eb910cc` (this task's own claim commit) by ten minutes,
+so 029 closed this task's scope before this worker ever opened a file. No further code change was
+needed or made; `grep -n '§'` across `app/src/eap.h`, `app/src/eap_interp.h` and
+`app/src/eap_interp.c` returns nothing.
+
+**The "widen to `ble_bridge_real.c`" note above is also moot.** `dev-bench/029`'s own scope
+included `ble_bridge_real.c` (it lists 8 hits there, one deliberately left: `§1.3`, the real
+Bluetooth Core Specification, per decision 47's exception). Verified directly: `grep -n '§4\.3'
+app/src/ble_bridge_real.c` returns nothing; the only surviving `§` in that file is line 380's
+`§1.3`, the external-standard citation this repo's own decision 47 says to leave alone. No separate
+task is needed for it.
 
 **Doc-size note:** `embarch-dev-bench/open.md` (93.4%) and `spec.md` (92.4%) are in reserve against
-blocked `tasks/dev-bench/012`, and `decisions/link.md` (91.5%) against blocked `014`. Stay out of all
-three; a comment repoint should need none of them.
+blocked `tasks/dev-bench/012`, and `decisions/link.md` (91.5%) against blocked `014`. Untouched by
+this unit — no code or doc change was needed.
