@@ -1,6 +1,6 @@
 # ui/040 review finding: two citations re-derived to the wrong sibling decision
 
-**State:** open
+**State:** claimed — leg 103, 2026-09-12.
 **Source:** reviewer (unit ui/040)
 **Scope:** ui
 **Hardware:** none — this is a documentation/citation correctness finding; confirming it needs no board.
@@ -41,6 +41,15 @@ authority it didn't earn.
 
 The two `app.js` sites above cite `` `embarch-study-designer` decision 41 `` instead of 39, or
 the owner reviews and disagrees.
+
+## Dispatch note (leg 103)
+
+Re-derive both sites from the decision bodies themselves before editing — that is the method
+this finding says the previous unit skipped. If decision 41's body does say "picked by id, never
+by typing a UUID", change the two cites; if it does not, leave them and say so.
+
+**Doc-size reserve for `embarch-ui`:** nothing in reserve. If your work pushes an `embarch-ui`
+doc into the last 10% of its cap, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 
 **Merge SHAs:** code `baebcaf8c33cf80a93112adf7238dfa9643f5ad5` (`embarch-ui`, on
 `origin/main`); doc side at `6cf5b58`. Revert of `baebcaf` alone is clean (both sites are
