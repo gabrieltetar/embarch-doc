@@ -31,4 +31,5 @@
 - Seven resolved open questions in `embarch-dev-bench` §4 — struck-through tombstones for questions closed weeks earlier. A resolved question is history, not an open question.
 
 ### Decided
+- dev-bench decision 47: a bare `§N` into a deleted `design.md` resolves to a decision, a live doc, or nothing.
 - decisions/ble.md split verbatim by mission: pairing/security stays, addressing/scanning moves to decisions/scanning.md.
