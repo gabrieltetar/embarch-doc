@@ -1,6 +1,17 @@
 # 059 — Split decision 42 out of `embarch-umbrella/decisions/doctor.md` into its own `locate-api.md`
 
-**State:** claimed — leg 108, 2026-09-13, dispatched to `agent/umbrella/059-split-locate-api`
+**State:** done — leg 108, 2026-09-13, `agent/umbrella/059-split-locate-api-doc`. Decision 42 moved
+byte-identical (`diff` exit 0) into new `embarch-umbrella/decisions/locate-api.md`; `doctor.md`
+6,039 B, out of reserve. Citation sweep found two path-qualified hits on decision 42
+(`tasks/umbrella/009-compact-docs.md`, twice) and the index row in `embarch-umbrella/decisions.md`,
+all repointed; `interfaces/doctor-chain.md`'s "(decisions 38, 42)" is a bare number with no file, left
+alone per this task's own rule. `check-docs.py`: all 11 green. Code branch carries zero commits, as
+expected. One residual: `scripts/decision-size-baseline.json`'s pin is keyed
+`embarch-umbrella/decisions/doctor.md#42` and could not be re-keyed to `locate-api.md#42` from here
+(`scripts/` is off-limits to a worker) — `check-doc-size.py --decisions` now shows it `OVER` rather
+than `pin`, which does **not** fail the gate (only a pinned decision growing past its own baseline
+does), but the pin itself is stale until someone with `scripts/` access reseeds it. Filed as
+`inbox/doc-reseed-locate-api-decision-42-pin.md`.
 **Source:** supervisor, leg 108, 2026-09-13 — filed against the size-reserve debt parked in
 `tasks/umbrella/048`, which is `blocked` on `In flux: yes` and stays blocked. Its
 `Size debt due: 2026-09-20` is the soonest date on the whole ledger that a split can reach. See "Why
