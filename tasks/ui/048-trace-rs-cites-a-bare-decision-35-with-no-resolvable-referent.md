@@ -1,6 +1,6 @@
 # 048 — `src/trace.rs:132` cites a bare "decision 35" and no decision 35 anywhere is about what the comment describes
 
-**State:** open
+**State:** claimed — leg of 2026-09-13 16:20, `agent/ui/048-trace-rs-decision-35-no-referent`
 **Source:** `inbox/ui-src-trace-rs-132-bare-decision-35-no-referent.md`, dropped by `ui/047`'s
 worker, which named this site as real but outside its own `Done when`. Filed by the leg of 2026-09-13 16:20 (the
 leg-number field is self-assigned and has collided twice today; the timestamp is the handle).
