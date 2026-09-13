@@ -17,6 +17,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- study-designer's own doc comments (README, result.rs, limits.rs) now cite interfaces/result-types.md, not the file 038 moved that content out of.
 - `taps.md`/`types.md` now show `StreamRef`'s fourth field, `records`; taps.md no longer says it was refused.
 - `interfaces/limits.md` was missing `MAX_BUILD_ID_LEN` (128, `OutpostHeader`'s two build-ID fields); row added.
 - `spec.md` §4 now states the real seal order (steps/streams grouped, then protocols); `record_checks` added to both field tables.
