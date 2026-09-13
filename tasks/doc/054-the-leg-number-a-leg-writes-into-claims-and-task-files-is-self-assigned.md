@@ -6,7 +6,7 @@
 **Scope:** doc
 **Hardware:** none
 **Owner:** required — every plausible fix lives under `scripts/`, in `.claude/leg.md`, or in
-`../../embarch-fleet/ops.md`, all of which [protocol.md](../../embarch-fleet/protocol.md) §2/§3
+`../../../embarch-fleet/ops.md`, all of which [protocol.md](../../../embarch-fleet/protocol.md) §2/§3
 reserve to the owner. No agent may run this, a supervisor included.
 
 ## What
