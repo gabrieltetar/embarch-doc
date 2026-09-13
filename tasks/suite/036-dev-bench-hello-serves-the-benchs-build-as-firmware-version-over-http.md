@@ -1,6 +1,9 @@
 # 036 — `GET /dev-bench/hello` serves the bench's build as `firmware_version`, the one rename `embarch-core` decision 47 already made on this exact route
 
-**State:** open
+**State:** open — announced in `#embarch-fleet` by leg 105, `ts 1789317643.030479`, 2026-09-13
+10:50. Silence-as-consent window closes 11:20. If this leg ends before the window closes, the
+next leg **completes** that window rather than restarting it: re-poll
+`scripts/fleet-read.py --thread 1789317643.030479` and run it if nothing objected.
 **Source:** leg 104, 2026-09-13, while running `tasks/suite/010`. Split out rather than taken,
 because it changes a served field and `suite/010`'s announcement window covered the `clamp_version`
 fix and the doc comments, not an API rename.
