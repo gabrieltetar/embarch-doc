@@ -1,6 +1,13 @@
 # 042 — `ffi.rs:215` cites decision 19 for a decode-time seal check that decision 17 describes by name
 
-**State:** open
+**State:** claimed — leg 110, 2026-09-13.
+**Doc-size reserve (supervisor, leg 110):** two of your sub-project's docs are in reserve and both are
+already filed against a **blocked** compaction task: `embarch-study-designer/spec.md` 9,350/10,240 B
+(**890 B left**, `tasks/study-designer/032`) and `embarch-study-designer/open.md` 4,659/5,120 B
+(**461 B left**, `tasks/study-designer/026`). Do not compact either as part of this unit; plan around
+them. If your work pushes any file into reserve or leaves one there unfiled, file
+`tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit
+(`scripts/check-task-numbers.py --next study-designer` for the number; never `ls | tail`).
 **Source:** found by the worker on `study-designer/040` during that task's sweep and **deliberately
 left unfixed as ambiguous** — a different bug shape from the class it was sweeping for, and it said
 so in the task file rather than guessing. The `embarch-reviewer` on the same unit then settled it.
