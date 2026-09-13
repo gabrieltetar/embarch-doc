@@ -1,6 +1,6 @@
 # 035 — compact `embarch-topology`: `decisions/crate.md` and `spec.md` are both in reserve
 
-**State:** claimed — leg 103, 2026-09-12.
+**State:** done — leg 103, 2026-09-12.
 
 **Source:** filed by leg 100 on 2026-09-12 in the same commit as the work that spent the reserve
 (`suite/020` half (a), `embarch-topology` decision 31). The rule is `.claude/leg.md`'s: the actor
@@ -10,7 +10,7 @@ that pushes a file into reserve files the debt while it still holds the context 
 **Owner:** no
 **Compacts:** `embarch-topology/decisions/crate.md`, `embarch-topology/spec.md`
 **Size debt due:** 2026-10-12
-**In flux:** per file — `embarch-topology/decisions/crate.md` no, `embarch-topology/spec.md` yes.
+**In flux:** no — `suite/035` landed 2026-09-12; neither file is in flux.
 
 ## What
 
@@ -64,8 +64,25 @@ cannot introduce a contradiction — resist the urge to also reword while you ar
 
 ## Done when
 
-- [ ] `decisions/crate.md` is out of reserve, by a verbatim split along the seam above.
-- [ ] `decisions.md`'s index table names the new file and the decisions in it.
-- [ ] `spec.md` is either out of reserve or its item here is struck off with `suite/035` named as
-      what unparks it.
-- [ ] Gate green.
+- [x] `decisions/crate.md` is out of reserve, by a verbatim split along the seam above.
+- [x] `decisions.md`'s index table names the new file and the decisions in it.
+- [x] `spec.md` is out of reserve (`suite/035` landed first, so both files were done in one pass —
+      per the dispatch note).
+- [x] Gate green.
+
+## Closed (leg 103)
+
+Both files compacted in one pass, as the dispatch note directed: `suite/035` had already landed,
+so `spec.md`'s "What each consumer owns now" section was compacted as it stands on `main` today,
+not the stale wording the task body originally described.
+
+- `decisions/crate.md`: split verbatim. New file `decisions/consumer-boundary.md` carries decisions
+  4, 8, 31 — the "what a consumer may link" question — untouched byte-for-byte. `crate.md` keeps
+  1, 2, 3, 6, 13. Decisions 4 and 8's "holds now"/"true as written now" qualifications, already
+  reflecting `suite/035` having landed, carried over unchanged (they were not the stale text the
+  `Must not delete` item warned about — that text was already correct on `main`).
+- `decisions.md`: index table row split into two, naming both files and their decision lists.
+- `spec.md`: squeezed line by line (word-level trims, no facts dropped) from 9,570 B down to
+  9,040 B, clearing the 90%-of-cap / `RESERVE_FLOOR`-adjusted reserve threshold (9,040 B for a
+  10,240 B cap, per `scripts/check-doc-size.py`'s `RESERVE_FLOOR = 1200`). Confirmed via
+  `check-doc-size.py --pressure`: both files now show `PAID`.
