@@ -4,7 +4,7 @@
 
 Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../interfaces.md](../interfaces.md), [../decisions.md](../decisions.md).
 
-Pure local reads of Core's own current daily log file (`logs.rs`) — no hardware touched, no `hw_lock`. The CLI's `logs` subcommand is one implementation behind both routes.
+Pure local reads of Core's own current daily log file (`logs.rs`) — no hardware touched, no `hw_lock`. The CLI's `logs` subcommand is one implementation behind this route.
 
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
