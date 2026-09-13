@@ -1,6 +1,6 @@
 # ui/040 review finding: two citations re-derived to the wrong sibling decision
 
-**State:** claimed — leg 103, 2026-09-12.
+**State:** done — leg 103, 2026-09-12. Already fixed by `fa0a327` before dispatch; no new edit made, see resolution note below.
 **Source:** reviewer (unit ui/040)
 **Scope:** ui
 **Hardware:** none — this is a documentation/citation correctness finding; confirming it needs no board.
@@ -39,8 +39,17 @@ authority it didn't earn.
 
 ## Done when
 
-The two `app.js` sites above cite `` `embarch-study-designer` decision 41 `` instead of 39, or
-the owner reviews and disagrees.
+- [x] The two `app.js` sites above cite `` `embarch-study-designer` decision 41 `` instead of
+  39, or the owner reviews and disagrees.
+
+**Resolved by leg 103 as already-fixed, no new edit made.** Re-derived decision 41's body
+(`embarch-study-designer/decisions/gatt.md`, heading "41 — A built-in table of vendor-defined
+GATT service identities") before touching anything: it reads verbatim "picked by id, never by
+typing a UUID", matching both comments' claim. But `assets/app.js` lines 1136 and 1179 (current
+line numbers; the task's "~1129"/"~1177" had drifted) already cite decision 41, not 39 — commit
+`fa0a327` ("ui/040 fold fix: vendor-defined GATT selection cites decision 41, not 39"), landed
+on `origin/main` on top of `baebcaf` before this leg's worktree was cut. No further edit was
+needed or made in the code repo.
 
 ## Dispatch note (leg 103)
 
