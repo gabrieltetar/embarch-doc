@@ -80,7 +80,9 @@ last 10% of its cap, file `tasks/outpost/<NNN>-compact-outpost.md` in the same c
 
 **Cite a suite decision the way this repo already does**, not by file path: the form that resolves
 is `[suite decision N](<relative path>/suite/decisions.md)` — see `embarch-outpost/spec.md:53` and
-`decisions/clocks.md:14`. `check-decision-refs.py` does **not** resolve a suite decision cited as
-`` `suite/decisions/tooling.md` decision 2 ``; this task file was itself red for exactly that on
-first write, and it is a limitation of the checker rather than of the citation, so do not
-"fix" it by changing the decision number.
+`decisions/clocks.md:14`. `check-decision-refs.py` resolves a suite decision only through that
+index file; naming the **topic** file that holds the text, followed by the number, does not
+resolve and turns the gate red. This task file was itself red for exactly that on first write —
+twice, the second time because the warning quoted the failing form and the checker parsed the
+quote. It is a limitation of the checker rather than of the citation, so do not "fix" it by
+changing the decision number.
