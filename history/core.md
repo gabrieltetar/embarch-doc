@@ -29,6 +29,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `resolve_probe`'s doc comment no longer names `board_gate.rs`, a file that moved to `embarch_topology` (`embarch-core/src/hardware.rs:74`).
 - Core's README no longer says it binds `0.0.0.0`; loopback default and decision 6's real widening remedy stated instead.
 - Fixed two source comments citing a wrong-but-live decision number (study.rs 18→39; api.rs 15 dropped, reworded); logs.md no longer claims two /logs routes.
 - `clamp_version` warned that *dev-bench* reported an over-long version for all four values reaching it, the DUT's included. It now takes a `VersionSubject` and names the board.
