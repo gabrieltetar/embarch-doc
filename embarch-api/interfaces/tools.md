@@ -12,7 +12,7 @@
 
 - [Config and discovery](tools-discovery.md) — `list_projects`, `list_targets`, `status`, `versions`
 - [Build and flash](tools-build-flash.md) — `build`, `flash`, `build_and_flash`, `reset`, `serial_log`, `list_serial_ports`
-- [Studies](studies.md) — `run_study`, `study_status`, `study_watch`, `study_stream_data`, `list_study_streams`, the three data aliases
+- [Studies](studies.md) — `run_study`, `study_status`, `study_watch`, `study_stream_data`, `list_study_streams`. (The three fixed-channel aliases `study_power_data`/`study_waveform_data`/`study_gatt_data` were retired 2026-09-11 — `suite/015`, [decisions/study-reads.md](../decisions/study-reads.md) 39. `study_stream_data` is the forwarding address.)
 - [Dev bench](tools-dev-bench.md) — `build_dev_bench`, `flash_dev_bench`, `build_and_flash_dev_bench`, `reset_dev_bench`, `dev_bench_hello`, `dev_bench_link`
 - [Topology](tools-topology.md) — `enroll_probe`, `validate`, `alerts`, `declare_signal`, `list_signals`, `remove_signal`
 
