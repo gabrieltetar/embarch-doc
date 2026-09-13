@@ -1,6 +1,6 @@
 # 051 — Two source comments cite a decision number that resolves to the wrong decision, and `interfaces/logs.md` still says "both routes"
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, `agent/core/051-wrong-decision-citations`
 **Source:** leg 111's refill sweep — a read-only hunter over `embarch-core`, run because
 `--refill-owed` fired on scope spread and every remaining `open.md` bullet is a hardware debt or a
 deferred-with-named-trigger. Every finding below was verified against both sides before filing.
