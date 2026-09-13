@@ -1,11 +1,36 @@
 # 026 — the EAP trio's `§` section references dangle now that the filename is gone
 
-**State:** open
+**State:** claimed
 **Source:** leg 101, 2026-09-12, found while reading `dev-bench/019`'s merge diff. Verified against
 `embarch-study-designer/spec.md` directly.
 **Scope:** dev-bench
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note (supervisor, leg 107)
+
+**`embarch-dev-bench` doc files already in reserve** — plan around them, do not discover them:
+`open.md` 4782/5120 B (338 left), `spec.md` 9460/10240 B (780 left), `decisions/link.md`
+11241/12288 B (1047 left). All three are filed against **blocked** compaction tasks
+(`tasks/dev-bench/012`, `tasks/dev-bench/014`), which parks the *pass*, not the reserve: if your
+work has to write into one of them, compact that file as part of this unit per
+`DOC-COMPACTION.md` §2, carrying the parked task's `Must not delete:` list. If your work pushes
+any **other** `embarch-dev-bench` doc file into reserve, file
+`tasks/dev-bench/<next free NNN>-compact-dev-bench.md` in the same commit.
+
+**`decisions/conventions.md` is new and it is the rule you are applying.** Leg 106 landed
+`embarch-dev-bench` **decision 47** there yesterday, from `dev-bench/029`, and it is exactly about
+this defect class: a bare section citation resolves to **a decision** where one owns the content, a
+**live document** where the material moved there, or **nothing at all** where neither applies —
+never a naked `§N`. Read it before you touch a line, and cite it in your commit message. Deleting
+a dangling `§4.9` outright is a legal outcome under branch 3; inventing a plausible-looking
+replacement is not.
+
+**Do not guess `eap_interp.h:14`.** The task says so and it is the one line here that can be got
+confidently wrong: `31/32` are `embarch-study-designer`'s **GATT** decisions, and `dev-bench/029`'s
+worker already corrected a neighbouring citation from 31/32 to **59/60** (the wire-types/executor
+split). Re-derive that line's claim against the decisions' actual text; if it resolves to nothing,
+say so rather than repointing it.
 
 ## What
 
