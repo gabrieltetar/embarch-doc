@@ -11,8 +11,10 @@ gone a full leg without a type or field-list edit landing in it.
 **Compacts:** embarch-study-designer/interfaces/types.md
 **Size debt due:** 2026-09-27
 **In flux:** yes — this file enumerates every wire/host type's field list, and
-it has landed edits from four of the last seven merged units in this scope
-(031, 035, and now 036); a type gaining or losing a field is exactly what
+it has landed edits from three of the last seven merged units in this scope
+(031, 035, and now 036 — the count said four and named three; corrected in
+036's fold after the reviewer checked `git log` on this file); a type gaining
+or losing a field is exactly what
 lands here, and `records`/decision 70 is 2026-09-08, recent enough that
 another field is plausible before this parks.
 
