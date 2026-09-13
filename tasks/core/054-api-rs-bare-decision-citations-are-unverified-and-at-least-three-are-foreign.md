@@ -1,6 +1,6 @@
 # 054 — `embarch-core/src/api.rs`'s bare decision citations are unverified, and at least three name another repo's decision
 
-**State:** claimed by agent/core/054-api-rs-bare-decision-citations, 2026-09-13 17:20
+**State:** done by agent/core/054-api-rs-bare-decision-citations, 2026-09-13
 **Source:** the leg of 2026-09-13 17:0x, refill sweep. The carry-forward in
 `supervisor-log.md`'s 2026-09-12 entry says plainly that the wrong-decision-number defect class
 *"is bigger than assumed and no gate sees it"*, and that **no sweep has been filed yet for
@@ -55,10 +55,39 @@ and ask whether the comment's claim is what that decision actually says.
   against blocked `tasks/core/046`. You are unlikely to need to write a decision here at all; if
   you do and it spends that reserve, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 
+## Done
+
+Swept every `decision N` citation in `api.rs` (55 individual citations across 53 comment sites —
+grepping found more than the "~35" estimate, as flagged). 52 held: most bare and correctly resolving
+by convention to their own `embarch-core` decision, the rest already correctly repo-qualified.
+Three did not, all fixed in `db31be6`/`e4b5b72` (`embarch-core`):
+
+- `api.rs:825` — bare `decision 17` (`set-dev-bench-link`'s CLI/endpoint split) resolves by
+  convention to `embarch-core`'s own decision 17 ("CI everywhere", unrelated), but the claim is
+  `embarch-topology` decision 17's own text almost verbatim. Prefixed `embarch-topology`; the number
+  was already right, just unattributed — re-derivation confirmed it rather than changing it.
+- `api.rs:970-971` — `(decisions 8, 22)` cited, alongside decision 22 (the identity gate, which
+  does run mid-attach and supports the claim), `embarch-core`'s own decision 8 — the SoC-to-chip
+  table, unrelated to the mid-attach identity check and not touched by `validate_role_timed`'s call
+  path. Dropped the wrong number, kept 22.
+- `api.rs:1424` (test comment) — `` `embarch-dev-bench` decision 26 `` is that repo's
+  ESP32-C5-WROOM-1 board decision — unrelated. The actual claim (`base_address` only meaningful for
+  `format = "bin"`) is `embarch-core`'s own decision 18 (`flashing.md`, "Format::Bin at the merge
+  address"). Fixed to the correct repo (bare, this crate's own) and number.
+
+**The three "known leads" in this task (`api.rs:970, 1110, 1126`) were false alarms**, exactly as
+warned. `embarch-core` has its own decision 28 ("`POST /validate` and `GET /alerts`, reachable
+without touching hardware", `enrollment.md`) which is precisely what all three sites describe —
+bare is correct there. `embarch-topology`'s own, unrelated decision 28 was the coincidence that made
+them look suspicious.
+
+No decision bodies touched, no behavioural change. `cargo build`/`test`/`clippy --all-targets -- -D
+warnings` all clean.
+
 ## Done when
 
-- [ ] Every bare `decision N` in `embarch-core/src/api.rs` has been resolved against its body and
+- [x] Every bare `decision N` in `embarch-core/src/api.rs` has been resolved against its body and
       either left, attributed, or corrected — and the commit message says how many of each.
-- [ ] Any foreign citation names its repo **and** the number was re-derived in that repo.
-- [ ] Gate green (`../../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/core-*` fragment.
+- [x] Any foreign citation names its repo **and** the number was re-derived in that repo.
+- [x] Gate green (`../../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/core-*` fragment.
