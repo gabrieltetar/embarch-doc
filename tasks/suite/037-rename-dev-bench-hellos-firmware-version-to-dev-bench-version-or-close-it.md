@@ -18,6 +18,26 @@ line, checks the thread with `scripts/fleet-read.py --thread 1789326123.058939`,
 the existing clock rather than starting a fresh one. A reply saying go runs it immediately; a
 cancel drops this task back to plain `open` with the reply quoted here.
 
+**Why leg 107 announced it and then did not execute it, so the next leg does not rediscover this.**
+The window is not the obstacle; the **gate** is. This task's fourth `Done when` item requires a
+native Windows build of `embarch-core`, and `.claude/leg.md` requires the same of any leg landing a
+change where `embarch-core` is involved. Producing that build is the owner's attended
+`embarch-dev-workflow.md` §4a sync→build→deploy sitting, it is outstanding as `core/015`, and an
+unattended leg cannot run it. So the rename half of this task **cannot be gated by a leg**, and
+landing it ungated would put an un-buildable breaking change on `main`.
+
+**The other branch is not a free way out either.** Closing the task and recording the answer as an
+`embarch-core` decision would mean deciding *against* a rename this task argues for, on the
+strength of a tolerance problem the task itself already names the fix for (`Option` +
+`#[serde(default)]` under `embarch-api` decision 58, plus an explicit decision about what the
+reflash gate does when the field is absent, which must not be "treat it as matching"). That is a
+real design call and it should be made because someone judged it right, not because the leg that
+reached it could not compile the other branch.
+
+**So the honest state is: decided-how, blocked-on-whom.** The next actor to take this needs either
+the owner's native build in the same sitting, or the owner's explicit say-so to land the rename
+gated on host checks alone. Neither is a leg's to grant.
+
 ## The argument, stated here in full
 
 `suite/036`'s file was retired by its own fold, as every completed task is, so this does not point
