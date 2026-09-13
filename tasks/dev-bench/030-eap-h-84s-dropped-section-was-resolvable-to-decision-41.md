@@ -1,6 +1,6 @@
 # 030 — `eap.h:84`'s dropped `§4.9` was resolvable to `decision 41`, not unresolvable
 
-**State:** open
+**State:** claimed — leg 108, 2026-09-13, dispatched to `agent/dev-bench/030-eap-h-decision-41`
 **Source:** reviewer pass on `dev-bench/026` (embarch-doc merge `c133703573648f1c4d959f04ccd509d5ba8c400f`),
 which closed as "already resolved by `dev-bench/029`" (`embarch-dev-bench` commit `4816230`).
 Re-derivation against `embarch-dev-bench/decisions/protocols.md` and `conventions.md` at
