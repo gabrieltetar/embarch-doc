@@ -1,0 +1,91 @@
+# 037 — Rename `GET /dev-bench/hello`'s `firmware_version` to `dev_bench_version`, or close the question for good
+
+**State:** open
+**Source:** split out of `suite/036` by leg 105, 2026-09-13, when that task's documentation half
+landed (`embarch-doc` `6f369d3`, `embarch-api` `72e8b12` + `265c8ff`). **This is the half it could
+not take**, because leg 105's announcement window covered documenting the field and this is a
+breaking change to a served field in three repos.
+**Scope:** suite
+**Hardware:** none — an HTTP response field, its client types and its consumers. Nothing reaches a
+board. (But see "The old-Core half" — the Core *running* on this machine matters here even though
+no board does.)
+**Owner:** no
+
+## The argument, stated here in full
+
+`suite/036`'s file was retired by its own fold, as every completed task is, so this does not point
+at it: the long form is in `embarch-doc` commit **`6f369d3`** and in `supervisor-log.md`'s
+`suite/036` entry. Everything load-bearing is below.
+
+- **The defect.** `GET /dev-bench/hello` serves the **bench's** build as `firmware_version`. The
+  `Study` field it corresponds to is `requires.dev_bench_version`. The identically named
+  `requires.firmware_version` on the same struct is the **DUT's**. A caller matching name to name
+  pins a DUT requirement to the bench's build, and `embarch-core` only *compares*
+  `requires.firmware_version` when a run supplies `flashed_firmware_version` — so in the normal
+  no-reflash case the wrong value is accepted and recorded as `Declared`.
+- **The precedent.** `embarch-core` decision 47 made exactly this rename on exactly this route
+  (`hardware_id` → `self_reported_hardware_id`) for exactly this defect class.
+- **The count does not change, so a "third spelling" is not a reason to refuse.** `036` first
+  argued that it would; leg 105 corrected that, and its reviewer re-derived the enumeration from
+  `embarch-study-designer/src/protocol.rs:67`, `embarch-core/src/study.rs:621`,
+  `embarch-study-designer/src/study.rs:280-281` and `src/result.rs:44,49`, confirming `Provenance`
+  reuses the same two spellings and adds no third:
+
+| | wire (`HelloAck`) | HTTP (`/dev-bench/hello`) | study (`Requirements`) | distinct |
+|---|---|---|---|---|
+| today | `firmware_version` | `firmware_version` | `dev_bench_version` | **2** |
+| renamed | `firmware_version` | `dev_bench_version` | `dev_bench_version` | **2** |
+
+- **What the rename actually moves is where the crossing happens, and it cuts *for* the rename.**
+  Today the crossing is in the caller's hands, at the exact point where the HTTP name collides with
+  a field on the same struct holding a different board's version. After the rename the crossing is
+  inside Core, where Core composes the response and no caller crosses anything.
+
+## The old-Core half, which is the actual work
+
+**This is not a mechanical field rename.** `embarch-api` decision 58 is the crate-wide rule that
+every response field Core may not yet send is `Option<T>` with `#[serde(default)]`; decision 60 is
+that rule applied to `dev_bench_hello`'s three identity fields, precisely because decision 47's
+rename meant an older Core does not send them. `firmware_version` is a plain `String` on
+`embarch-core-client` today (`crates/embarch-core-client/src/client.rs`), and `embarch-api`'s
+reflash gate **compares** it (`src/reflash.rs:259-270`).
+
+So a renamed Core plus an un-tolerant client gives a silent empty string where a version check
+should be — **a real check turned vacuous, which is worse than the collision this task exists to
+fix.** And this is not hypothetical: the Core running on this machine is the Windows service, which
+is behind `main` by `core/015`'s outstanding native build, so "an older Core" is the bench.
+
+## Consumers
+
+- **`embarch-core`** — the response type for `GET /dev-bench/hello` (`src/study.rs`'s
+  `HelloAckInfo`), and `interfaces/studies.md`'s row, which already documents the collision and
+  would document the rename instead.
+- **`embarch-api`** — `embarch-core-client`'s response struct and its doc comment,
+  `src/reflash.rs`'s use, `src/cli.rs`'s `--json` key, `render_hello_ack`'s human line, the
+  `dev_bench_hello` MCP tool's output, and `interfaces/tools-dev-bench.md`.
+- **`embarch-ui`** — **two lines only.** It already spells the value `dev_bench` on its own
+  surface (`src/study_designer.rs:1581`, `:1645`); what changes is the field it deserializes. No
+  rendering changes and no `embarch-ui` doc mentions the field.
+- **Neither suite guide mentions it** — checked, leg 105.
+
+## Done when
+
+- [ ] **Announced in `#embarch-fleet` with its own 30-minute window**, naming the three repos and
+      the breaking-change half. `suite/036`'s window does not cover this.
+- [ ] Either the rename lands across every consumer above **with the old-Core tolerance answered**
+      — `Option` + `#[serde(default)]` under decision 58, and an explicit decision about what the
+      reflash gate does when the field is absent, which must not be "treat it as matching" — **or**
+      this task is closed and the answer recorded as a numbered decision in `embarch-core`, since
+      it owns the route.
+- [ ] Whichever way it goes, `embarch-study-designer` decision 74 gains a sentence pointing at the
+      answer. 74 deliberately left this open and says so; it should not stay open in 74 after it is
+      closed here.
+- [ ] Gate green in every repo touched, **including a native Windows build where `embarch-core` is
+      involved**; `changelog.d/` fragments for each.
+
+## Do not
+
+**Do not rename `HelloAck.firmware_version` on the wire.** `embarch-study-designer` decision 74
+rejected that on cost — it is a schema bump that reflashes every bench and redeploys Core in one
+sitting — and its reversal condition is the next wire bump taken for another reason. Taking it here
+would be reversing a decision one day old for a reason it already weighed.
