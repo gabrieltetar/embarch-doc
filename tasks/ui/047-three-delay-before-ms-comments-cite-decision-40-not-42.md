@@ -106,8 +106,8 @@ filename pointer was stale. Fixed `(decisions/surfaces.md)` → `(decisions/enro
 
 Not in scope, dropped to inbox: `src/trace.rs:132`'s bare "decision 35" —
 `/home/gabriel/Github/embarch/embarch-doc/inbox/ui-src-trace-rs-132-bare-decision-35-no-referent.md`.
-No `embarch-ui` decision 35 exists, and no sibling repo's decision 35 is a plausible referent
-(checked all five: `embarch-api` hardware-selection, `embarch-study-designer` registry,
+Resolves to no `embarch-ui` decision, and no sibling repo's numbering has a plausible referent
+either (checked all five: `embarch-api` hardware-selection, `embarch-study-designer` registry,
 `embarch-core` handshake, `embarch-dev-bench` link, `embarch-umbrella` schema-skew — none about
 naming an unnamed subject).
 
