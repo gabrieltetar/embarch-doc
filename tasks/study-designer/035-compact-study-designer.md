@@ -1,6 +1,6 @@
 # 035 — Compact `embarch-study-designer/decisions/declares.md`
 
-**State:** claimed by agent/study-designer/035-split-declares, 2026-09-13 10:46
+**State:** done — 2026-09-13
 **Source:** `scripts/check-doc-size.py`, filed by leg 104 in the same commit that spent the
 reserve (`tasks/suite/010`, decision 74). The file went 7,472 B → 11,309 B, 92.0% of cap, 979 B
 left.
@@ -49,9 +49,11 @@ currently pinned) and which the size ledger has already chosen not to shave.
 
 ## Done when
 
-- [ ] `declares.md` is out of reserve.
-- [ ] `decisions.md`'s index table names whatever file the split produced and the decisions in it.
-- [ ] Gate green.
+- [x] `declares.md` is out of reserve. Decision 45 moved verbatim to
+  `decisions/declared-gatt.md`; `declares.md` now 8,676/12,288 B (70.6%).
+- [x] `decisions.md`'s index table names whatever file the split produced and the decisions in it.
+  Split into two rows: `declares.md` (40, 74) and `declared-gatt.md` (45).
+- [x] Gate green.
 
 ## Dispatch note (leg 105)
 
