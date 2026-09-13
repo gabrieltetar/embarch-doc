@@ -1,6 +1,6 @@
 # 036 — Three dead citations inside `embarch-topology`'s own source comments
 
-**State:** claimed — leg 107, unit 2, 2026-09-13.
+**State:** done — leg 107, unit 2, 2026-09-13; see "Closed" at the bottom.
 **Doc-size reserve for `topology`:** nothing in `embarch-topology`'s docs is in reserve. If your
 work pushes a file into the last 10% of its cap, file `tasks/topology/<NNN>-compact-topology.md`
 in the same commit.
@@ -45,20 +45,43 @@ comments is unchecked by anything in the suite — which is also why this class 
 
 ## Done when
 
-- [ ] `hardware_id.rs:45` cites decision **25**, with the number re-confirmed against
+- [x] `hardware_id.rs:45` cites decision **25**, with the number re-confirmed against
       `embarch-doc/embarch-topology/decisions.md`'s index, and the comment says the citation was
       wrong from the start rather than implying a renumber.
-- [ ] Both `bin/main.rs` citations resolve to a line that exists and carries the text the sentence
+- [x] Both `bin/main.rs` citations resolve to a line that exists and carries the text the sentence
       is about. **A line number you could not identify is left un-guessed**: drop the citation to a
       file-and-section form, or say in your report that you could not resolve it. Never point a
       citation at a plausible-looking line.
-- [ ] `grep -rn 'decision [0-9]' embarch-topology/src embarch-topology/bin` — every hit checked
+- [x] `grep -rn 'decision [0-9]' embarch-topology/src embarch-topology/bin` — every hit checked
       against the owning repo's `decisions.md` index, and anything else wrong is fixed in the same
       pass or reported.
-- [ ] `grep -rnE '\.md:[0-9]+' embarch-topology/src embarch-topology/bin` — every hit's line number
+- [x] `grep -rnE '\.md:[0-9]+' embarch-topology/src embarch-topology/bin` — every hit's line number
       checked against the target's length.
-- [ ] Gate green (`cargo build`/`test`/`clippy --all-targets -- -D warnings`); `changelog.d/`
+- [x] Gate green (`cargo build`/`test`/`clippy --all-targets -- -D warnings`); `changelog.d/`
       fragment.
+
+## Closed 2026-09-13, leg 107
+
+All three named citations fixed, plus a fourth found by the required grep sweep (not named in the
+task): `hardware/enrollment.rs:40` cited `embarch-core decision 21's port migration` — decision 21
+is "Plain attach, not attach_under_reset", unrelated; the correct target is `embarch-core` decision
+27, "`POST /dev-bench/link`, declaring the runtime link as its own fact" (`decisions/enrollment.md`).
+
+Re-derivation, not trust, on both flagged targets:
+- `platform.md:32` (the scout's unverified guess) — **confirmed**: `Arc<Mutex<()>>` appears
+  literally only at that line, inside decision 14's paragraph ("`hw_lock` stayed `Arc<Mutex<()>>`;
+  a second, plain `std::sync::Mutex<Option<String>>` field...").
+- `surfaces.md:30` (never identified) — **resolved to `:17`**, decision 12's paragraph ("Plain-text
+  errors suit a human... Still worth building, and deliberately not built here"), which is what "no
+  message" in the source sentence is about (the deferred `{code, message, cause}` body).
+
+Full sweep of every `decision [0-9]` and `.md:[0-9]+` hit in `embarch-topology/src` and
+`embarch-topology/bin` (topology's own decisions plus cross-repo cites into `embarch-core`,
+`embarch-ui`, `embarch-study-designer`, `embarch-outpost`) checked against each owning repo's
+`decisions.md` index/headers. No other mismatch found. No decision renumbered anywhere; no
+`embarch-core` doc touched. Gate green: `cargo build`/`test` (79 tests)/`clippy --all-targets
+--all-features -- -D warnings` clean. `changelog.d/topology-dead-source-citations.fixed.md` filed.
+Doc-size reserve untouched (comment-only fix, no doc file edited).
 
 ## Do not
 
