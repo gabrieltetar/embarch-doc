@@ -1,6 +1,6 @@
 # 087 — A missing `kind` field renders an unplugged board as the one error a leg is told to stop on
 
-**State:** open
+**State:** claimed by agent/api/087-missing-kind-renders-as-mismatch, 2026-09-13 17:47
 **Source:** `inbox/api-validate-renders-an-unplugged-board-as-a-topology-mismatch-against-an-old-core.md`,
 observed live by the leg of 2026-09-13 17:05 running `validate` with `role: dev-bench` as the bench
 pre-check `.claude/leg.md` requires. Filed by the leg of 2026-09-13 17:5x.
