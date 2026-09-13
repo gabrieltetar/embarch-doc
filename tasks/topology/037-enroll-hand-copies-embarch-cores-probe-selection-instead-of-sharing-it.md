@@ -1,6 +1,6 @@
 # 037 — `validate::enroll`'s probe selection is a copy of `embarch-core::resolve_probe`, not a share
 
-**State:** claimed by agent/topology/037-enroll-copies-core-probe-selection, 2026-09-13 17:20
+**State:** done
 **Source:** `inbox/topology-enroll-duplicates-core-probe-selection.md`, dropped by `tasks/core/053`'s
 worker while rewording `embarch-core/src/hardware.rs`'s `resolve_probe` doc comment. Filed by the
 leg of 2026-09-13 17:0x.
@@ -37,13 +37,27 @@ removes the only written trace that the duplication exists at all.
 
 ## Done when
 
-- [ ] Decide, and say why in the commit: document the duplication, or de-duplicate it. Documenting
+- [x] Decide, and say why in the commit: document the duplication, or de-duplicate it. Documenting
       it means a numbered decision in `embarch-topology`'s decisions, cross-referencing
       `embarch-core` decision 9's drift class. De-duplicating means a `pub` helper or shared home —
       **but note `embarch-topology` is a dependency of `embarch-core`, not the other way round**,
       so "re-export `embarch-core`'s helper" is not available; check the direction before choosing.
-- [ ] If documented rather than de-duplicated, the note names **both** call sites
+
+      **Documented** — `embarch-topology` decision 32
+      (`embarch-doc/embarch-topology/decisions/crate.md`). Full de-duplication needs
+      `embarch-core::resolve_probe` to call a `pub` helper this crate would expose, which is an
+      edit inside `embarch-core` and out of reach for a `topology`-scoped change; a follow-up task
+      is dropped to `embarch-doc/inbox/core-resolve-probe-duplicates-topology-enroll-selection.md`.
+- [x] If documented rather than de-duplicated, the note names **both** call sites
       (`embarch-core::resolve_probe`, `embarch_topology::hardware::validate::enroll`) so a search
-      for either finds the other.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/topology-*` fragment; `open.md` updated if the decision leaves a question open.
+      for either finds the other. Both named in decision 32 and in `enroll`'s own doc comment
+      (`embarch-topology/src/hardware/validate.rs`).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `check-docs.py` shows one pre-existing RED
+      (`check-links.py`, a stale link in `tasks/doc/054` unrelated to this change — confirmed via
+      `git diff` that this branch does not touch that file). `cargo build`/`test --all-features`/
+      `clippy --all-targets --all-features -- -D warnings` clean in `embarch-topology`.
+      `check-ownership.py` green in both worktrees; `check-client-names.py` green.
+- [x] `changelog.d/topology-*` fragment; `open.md` updated if the decision leaves a question open.
+      Fragment: `changelog.d/topology-enroll-probe-selection-duplication.decided.md`. `open.md` gets
+      a new bullet naming decision 32 as the still-open instance (the two prior instances in that
+      same bullet stay closed).
