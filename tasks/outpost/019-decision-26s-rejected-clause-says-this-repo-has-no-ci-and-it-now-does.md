@@ -1,6 +1,6 @@
 # 019 — Decision 26's *Rejected* clause says this repo has never had CI, and it has since 2026-09-11; the same fix's own runtime note miscites decision 22
 
-**State:** claimed by agent/outpost/019-decision-26-ci-clause, 2026-09-13 11:13
+**State:** done by agent/outpost/019-decision-26-ci-clause, 2026-09-13
 **Source:** leg 105 refill sweep, 2026-09-13. Both halves verified against the code and the
 workflow file before filing.
 **Scope:** outpost
@@ -54,17 +54,29 @@ file tree.
 
 ## Done when
 
-- [ ] Decision 26's *Rejected* clause states the CI situation as it is — `host-tests.yml` exists,
+- [x] Decision 26's *Rejected* clause states the CI situation as it is — `host-tests.yml` exists,
       [suite decision 2](../../suite/decisions.md) is the suite-scope call that was made, the
       cross-decoder leg is deliberately outside it — while **keeping the rejection**, with the
       residual risk it prices still named.
-- [ ] Both `run-all.sh` strings cite **decision 26**, not 22. `grep -n "decision 22" tests/` in
-      `embarch-outpost` returns nothing that means the skip rationale.
-- [ ] Check nothing else in `embarch-outpost/` — prose or shell — still says this repo has no CI.
-- [ ] Host-side checks green; say plainly what could and could not be run (the Zephyr legs of
+- [x] Both `run-all.sh` strings cite **decision 26**, not 22. `grep -n "decision 22" tests/` in
+      `embarch-outpost` returns nothing that means the skip rationale. (`grep -rn "decision 22"
+      tests/` now returns only `run-all.sh:37`, the leg-ordering citation decision 22 actually is.
+      Two more instances of the same mis-citation turned up outside `run-all.sh` — `vocab_check.py`'s
+      own docstring and `README.md`'s test section — and were fixed the same way; not named in this
+      task's original two, but the same defect class, in the same file tree.)
+- [x] Check nothing else in `embarch-outpost/` — prose or shell — still says this repo has no CI.
+      (`grep -rn` for "never had"/"no CI"/"never has been" across the repo: only unrelated hits.)
+- [x] Host-side checks green; say plainly what could and could not be run (the Zephyr legs of
       `tests/run-all.sh` need a `west` toolchain that is not present in a worker's worktree —
-      standing debt, not introduced here).
-- [ ] `changelog.d/` fragment.
+      standing debt, not introduced here). Ran clean: `decoder_unit.py` (31/31), `vocab_check.py`
+      (11 kinds, 8 flags, sibling half SKIPs loudly as designed), `cross_decoder.py` (SKIPs loudly,
+      no sibling fixtures in this worktree), and `run-all.sh` itself with `WEST`/`ZEPHYR_BASE`
+      unset — all three host legs run and pass, the skip note now cites decision 26, and it then
+      exits 1 at the `WEST` guard exactly as designed for a toolchain-free checkout. The three
+      Zephyr legs and a `WEST`-present run of `run-all.sh` were **not** run — no `west`/Zephyr SDK
+      in this worktree; standing debt per the dispatch note, not introduced by this task.
+      `embarch-outpost` has no `Cargo.toml`, so `cargo build`/`test`/`clippy` select nothing here.
+- [x] `changelog.d/` fragment.
 
 ## Do not
 
