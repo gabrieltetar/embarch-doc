@@ -1,6 +1,13 @@
 # 038 — Retire `artifact_path_for_core` in `embarch-umbrella` and `embarch-api` in one change, or record why it stays
 
-**State:** open
+**State:** open — **announced and parked by leg 108, 2026-09-13, `ts 1789336383.873349`.**
+The 30-minute window under `../../embarch-fleet/ops.md` §4 opened at that `ts`. **The announced
+scope is the SPLIT version below** — the `embarch-umbrella` half only, with `embarch-api`'s
+toleration left standing. If this leg ends before the window closes, **the next leg reads this `ts`
+and completes the window rather than restarting it**; a reply saying go runs it now, a reply saying
+cancel drops this back to plain `open` with the reply quoted here. It is also deliberately
+sequenced last: a `suite` task must not edit a repo a worker currently holds, and this leg has
+workers in both `embarch-api` and `embarch-umbrella`.
 **Source:** leg 110's refill sweep, 2026-09-13, from the **"Ends when"** clause of `embarch-api`
 decision 64 (`embarch-api/decisions/shape.md:58`) rather than from anything a leg observed — the
 decision named its own retirement condition and nothing has been filed against it.
