@@ -1,6 +1,6 @@
 # 020 — `interfaces/wire.md` says one host-only test and its leg arithmetic is short; there are three and six
 
-**State:** open
+**State:** claimed
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified against `run-all.sh` and the CI
 workflow. The scout did **not execute** either script — see "Not verified" below. **And
 "scout-verified" is one reader, which has already been wrong once**: the same scout, same sweep,
@@ -9,6 +9,22 @@ rewritten (`umbrella/058`). Re-derive the leg count from the script.
 **Scope:** outpost
 **Hardware:** none — one documentation section. No code, no board.
 **Owner:** no
+
+## Dispatch note (supervisor, leg 107)
+
+**No `embarch-outpost` doc file is in reserve** — you have headroom, so this unit has no
+compaction obligation unless your edit pushes a file past 90% of its cap, in which case file
+`tasks/outpost/<next free NNN>-compact-outpost.md` in the same commit.
+
+**Re-derive the leg count yourself; the scout's numbers are a floor, not a fact.** The task says
+so and names the reason (`umbrella/058`). Run `grep -n '^echo "=== ' embarch-outpost/tests/run-all.sh`
+against the checkout you are given and read the west guard's position in that script, rather than
+trusting "six" because it is written above.
+
+**You cannot execute `run-all.sh`, and that is expected, not a blocker.** The `embarch-outpost`
+Zephyr toolchain is absent from a worker's worktree — a standing fleet debt, recorded in every
+recent log entry. Derive the layout by reading the script and the CI workflow, say in your report
+that nothing was executed, and do **not** report a leg as passing or failing.
 
 ## What
 
