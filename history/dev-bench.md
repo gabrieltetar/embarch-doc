@@ -15,6 +15,7 @@
 - `embarch-dev-bench`'s 180 KB `design.md` became spec.md, open.md and eight `decisions/<mission>.md` files — 81 KB, all 43 decision numbers intact, no file over 11.8 KB.
 
 ### Fixed
+- Four dev-bench files' 122 dead `design.md §3` cites now point at each cited repo's `decisions.md`.
 - `ble_bridge_real.c`'s 39 dead `design.md §3` citations repointed to `decisions.md`/decision N, cross-repo form settled in api/052.
 - `serial_protocol.h`'s 48 dead `design.md §3` cites now point at each cited repo's `decisions.md`.
 - dev-bench: `.eap` trio's dead `design.md §3` cites repointed to `embarch-study-designer` decisions.
