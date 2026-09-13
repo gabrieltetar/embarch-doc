@@ -1,6 +1,6 @@
 # 035 — Compact `embarch-study-designer/decisions/declares.md`
 
-**State:** open
+**State:** claimed by agent/study-designer/035-split-declares, 2026-09-13 10:46
 **Source:** `scripts/check-doc-size.py`, filed by leg 104 in the same commit that spent the
 reserve (`tasks/suite/010`, decision 74). The file went 7,472 B → 11,309 B, 92.0% of cap, 979 B
 left.
@@ -52,3 +52,18 @@ currently pinned) and which the size ledger has already chosen not to shave.
 - [ ] `declares.md` is out of reserve.
 - [ ] `decisions.md`'s index table names whatever file the split produced and the decisions in it.
 - [ ] Gate green.
+
+## Dispatch note (leg 105)
+
+**Answer `DOC-COMPACTION-PASS.md`'s human question in your report, in your own words:** can
+`embarch-study-designer/spec.md` alone answer what someone needs to work on this crate today?
+No script answers it and the gate does not either.
+
+**Also in reserve for `study-designer`, and both parked — do not spend either:**
+`embarch-study-designer/spec.md` 9350/10240 (890 B left, `tasks/study-designer/032`, blocked)
+and `embarch-study-designer/open.md` 4659/5120 (461 B left, `tasks/study-designer/026`,
+blocked). A verbatim split of `declares.md` should not touch either; if the index row in
+`decisions.md` grows, check `decisions.md`'s own headroom before you write it.
+
+**Prefer the split this task already argues for.** It is verbatim, so it restates nothing and
+the `In flux:` answer cannot forbid it. Squeezing decision 40 is explicitly the worse move.
