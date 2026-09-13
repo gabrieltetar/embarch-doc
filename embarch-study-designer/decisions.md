@@ -20,7 +20,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53 |
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
-| [What a study declares](decisions/declares.md) — firmware versions and the GATT table | 40, 45, 74 |
+| [What a study declares](decisions/declares.md) — firmware versions, and how each is verified | 40, 74 |
+| [The GATT table a study declares](decisions/declared-gatt.md) — designed, never built | 45 |
 | [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 71 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, and what it may report | 60, 62 |
 | [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library, one built-in vocabulary | 6, 34, 37, 38, 73 |
