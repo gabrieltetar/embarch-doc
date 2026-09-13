@@ -17,6 +17,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- Forty `§N` citations into the dead 2026-09-02 `design.md` split repointed at live files/decisions or dropped; none changed what a doc says.
 - study.rs, result.rs and limits.rs doc comments no longer state removed post-hoc validation as current; citations now point at decision 19's real-time half and decision 48.
 - study-designer's own doc comments (README, result.rs, limits.rs) now cite interfaces/result-types.md, not the file 038 moved that content out of.
 - `taps.md`/`types.md` now show `StreamRef`'s fourth field, `records`; taps.md no longer says it was refused.
