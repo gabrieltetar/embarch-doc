@@ -1,6 +1,6 @@
 # 065 — `doctor.rs` carries 116 bare decision citations and no gate can resolve one
 
-**State:** open
+**State:** claimed by agent/umbrella/065-doctor-citations, 2026-09-13 18:00
 **Source:** `tasks/umbrella/063`'s own closing note — it swept `locate.rs`, `init.rs` and `config.rs`
 and deliberately left `doctor.rs` out as *"roughly another hundred bare citations in one file — not
 a twenty-minute pass"*, adding that **nothing is filed for it**. The leg of 2026-09-13 17:5x counted
