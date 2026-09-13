@@ -1,6 +1,6 @@
 # 062 — Four more sites carry the shallow cross-repo link depth `doctor.rs` was fixed for
 
-**State:** open
+**State:** claimed — leg of 2026-09-13 16:20, `agent/umbrella/062-shallow-cross-repo-link-depth`
 **Source:** `inbox/umbrella-more-shallow-cross-repo-links.md`, dropped while closing
 `tasks/umbrella/061` (the `doctor.rs` cross-repo link-depth fix) and named there as outside that
 task's scope. Filed by the leg of 2026-09-13 16:20.
@@ -22,8 +22,9 @@ is `../../embarch-doc/...`. The drop names four more sites in the same repo with
 | `src/main.rs:220` | markdown link `[embarch-core/interfaces.md](../embarch-doc/embarch-core/interfaces.md)` |
 
 **Verify each one against the real filesystem before and after**, the way `061` did — resolve the
-path from the directory the file actually lives in and confirm the target exists. Line numbers drift;
-find the sites by their text.
+path from the directory the file actually lives in and confirm the target exists. **Line numbers in
+that table are already stale**: `suite/038` landed in `src/config.rs`, `src/init.rs` and
+`src/doctor.rs` an hour before this was dispatched. Find the sites by their text, not by line.
 
 ## What to be careful about
 
