@@ -1,6 +1,6 @@
 # 085 — Four more `embarch-core` decision 22 citations in `embarch-core-client`, untouched by 084
 
-**State:** open
+**State:** claimed — leg 108, unit 1, 2026-09-13, branch `agent/api/085-core-decision-22-citations`.
 **Doc-size reserve for `api`:** `embarch-api/decisions/surface.md` 11258/12288 B (**1030 B left**,
 filed as blocked `tasks/api/069`) and `embarch-api/spec.md` 9090/10240 B (1150 B left, filed as
 blocked `tasks/api/083`). This task should need no new decision — it is citation text in doc
