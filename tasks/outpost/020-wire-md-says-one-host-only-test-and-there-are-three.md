@@ -2,7 +2,10 @@
 
 **State:** open
 **Source:** leg 106 refill sweep, 2026-09-13, scout-verified against `run-all.sh` and the CI
-workflow. The scout did **not execute** either script — see "Not verified" below.
+workflow. The scout did **not execute** either script — see "Not verified" below. **And
+"scout-verified" is one reader, which has already been wrong once**: the same scout, same sweep,
+reported a quoted source comment as never having existed when it had existed and was later
+rewritten (`umbrella/058`). Re-derive the leg count from the script.
 **Scope:** outpost
 **Hardware:** none — one documentation section. No code, no board.
 **Owner:** no
