@@ -1,6 +1,6 @@
 # 086 — `embarch-api/decisions/shape.md` is in reserve after decision 64's "Ends when" fired
 
-**State:** open
+**State:** claimed by agent/api/086-compact-api, 2026-09-13 17:20
 **Source:** suite task 038 amended decision 64 in place (`embarch-umbrella` stopped scaffolding
 `artifact_path_for_core`, so the first clause of that decision's "Ends when" has fired), which put
 this file into its reserve band; `DOC-COMPACTION.md` §2
