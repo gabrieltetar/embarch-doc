@@ -48,6 +48,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- `embarch-core-client/src/client.rs` citation sweep (partial, cut short): 3 bare `decision 59`s wrongly resolving to api's own unrelated decision 59 relabelled `embarch-core`.
 - api: resolve/tools/cli.rs's decision cites swept; fixed a duplicated d12 cite and a fabricated topology-d18 amendment date.
 - client.rs/config.rs: 3 wrong-number and 3 unlabelled cross-repo decision citations fixed; 130 held.
 - CoreClient::dispatch names the timeout parenthetical only on a real reqwest timeout, not every configured one.

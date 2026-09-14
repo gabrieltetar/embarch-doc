@@ -9,6 +9,14 @@ finish the primary-source check for everything below.
 **Hardware:** none — source comments only.
 **Owner:** no
 
+**`095` was closed `done` and its file removed, not left `blocked`** — leg 115's correction, made
+because the worker had written `blocked` for a task nothing was blocking. A `fleet stop` is not a
+standing condition anyone can clear, and every line `095` did not reach is enumerated below, so
+there was nothing left for a park to hold. **This task is therefore the only live record of what
+remains**; `095`'s own tally lives in the `2026-09-14 api/095` entry of
+`embarch-fleet/supervisor-log.md`. Do not read the absence of `tasks/api/095` as the sweep having
+finished.
+
 ## What `095` actually verified (do not re-check these)
 
 Decision bodies read directly: `embarch-api/decisions/core-link.md`, `client-crate.md`,
