@@ -13,6 +13,8 @@ Decisions that span more than one sub-project and therefore belong to none of th
 | 1 | `rustfmt` is not enforced, and nobody runs `cargo fmt` | [decisions/tooling.md](decisions/tooling.md) |
 | 2 | `embarch-outpost` gets a host-only CI workflow, and a green check there covers strictly less than a local run | [decisions/tooling.md](decisions/tooling.md) |
 | 3 | `rx_utc_ms` keeps its name in both homes, and every home says which clock it is | [decisions/naming.md](decisions/naming.md) |
+| 4 | The outpost's own answer is computed once, in `embarch-core`, the only component on both paths and in the release archive | [decisions/placement.md](decisions/placement.md) |
 
 - **[decisions/tooling.md](decisions/tooling.md)** — how the suite's formatting and CI checks are run, and what a green one covers.
 - **[decisions/naming.md](decisions/naming.md)** — what a field name shared across two sub-projects is allowed to promise.
+- **[decisions/placement.md](decisions/placement.md)** — which sub-project holds a computation more than one path needs, when what the computation is *about* does not settle it.
