@@ -1,6 +1,6 @@
 # 044 — Compact `embarch-topology/spec.md` the last 70 bytes out of reserve
 
-**State:** open
+**State:** claimed by agent/topology/044-compact-topology, 2026-09-14 00:36
 **Source:** `topology/043` (leg 112, 2026-09-13) compacted `spec.md` from 9,825 B to **9,110 B** and
 hit the target its own `Done when` box named — *"under roughly 9,216 B, i.e. 90% of 10,240"*. **That
 target was arithmetically wrong**, so the file is still in reserve by 70 bytes and
@@ -9,6 +9,15 @@ the worker's and the sweep it did was clean.
 **Scope:** topology
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note (leg 115)
+
+**In reserve for `topology` right now** — exactly one file, and it is this task's own target:
+`embarch-topology/spec.md` 9,110/10,240 B, **1,130 B left** against a 1,200 B floor. Nothing else in
+`embarch-topology/` is in reserve, so a clean pass here empties this scope's ledger. **If your work
+pushes some other doc file into reserve, or leaves one there that nothing has filed, file
+`tasks/topology/<NNN>-compact-topology.md` in the same commit** (`tasks/README.md` has the shape;
+`scripts/check-task-numbers.py --next topology` gives a safe number).
 
 ## What
 
