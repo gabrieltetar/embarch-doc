@@ -46,6 +46,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- client.rs/config.rs: 3 wrong-number and 3 unlabelled cross-repo decision citations fixed; 130 held.
 - CoreClient::dispatch names the timeout parenthetical only on a real reqwest timeout, not every configured one.
 - Smoke harness's real bound was `status_timeout_secs` (10s), not a reachability poll; fixture sets 60s, `CoreClient` names the timeout on failure (decision 74; [decisions.md](../embarch-api/decisions.md) routes a number to its file — 74 moved to `decisions/smoke-harness.md` the same day). **Amended 2026-09-13 (`tasks/api/092`): it names the timeout only when the failure actually was one.**
 - A kind-less validate mismatch now reads unknown, not mismatch, and drops fix_it_url (embarch-api decision 73).
