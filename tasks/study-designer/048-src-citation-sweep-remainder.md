@@ -1,6 +1,6 @@
 # 048 — Citation sweep: `src/` remainder after `lib.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/048-src-citation-sweep-remainder, 2026-09-13 23:12
 **Source:** `tasks/study-designer/047`, which swept `src/lib.rs` (the fourth and
 last of the four files `044` originally named) and left the rest of `src/`.
 **Scope:** study-designer
