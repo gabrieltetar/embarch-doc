@@ -1,6 +1,6 @@
 # 038 — The two probe-selection copies have already drifted; expose one as `pub` so `embarch-core` can stop keeping its own
 
-**State:** claimed by agent/topology/038-expose-probe-selection, 2026-09-13 17:47
+**State:** done
 **Source:** `inbox/core-resolve-probe-duplicates-topology-enroll-selection.md`, itself the follow-up
 to `tasks/topology/037` and `embarch-topology` decision 32. Re-confirmed live against both files by
 the leg of 2026-09-13 17:5x before filing, which is how the drift below was found — **the drop said
@@ -100,9 +100,22 @@ room. If your work pushes one into the last 10% of its cap or leaves one there u
 
 ## Done when
 
-- [ ] The selection rule is one `pub` function in `embarch-topology`, `enroll` calls it, and all
+- [x] The selection rule is one `pub` function in `embarch-topology`, `enroll` calls it, and all
       three divergences above are reconciled with the choice argued in a numbered decision.
-- [ ] Unit tests cover zero / one / two probes and serial-hit / serial-miss.
-- [ ] Decision 32 amended (not closed), `enroll`'s doc comment corrected, `open.md` updated.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+- [x] Unit tests cover zero / one / two probes and serial-hit / serial-miss.
+- [x] Decision 32 amended (not closed), `enroll`'s doc comment corrected, `open.md` updated.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+
+## Closed
+
+`select_probe(probes: Vec<probe_rs::probe::DebugProbeInfo>, probe_serial: Option<&str>, action:
+&str) -> Result<probe_rs::probe::DebugProbeInfo>` lands in `src/hardware/validate.rs`, re-exported
+via `hardware::select_probe`; `enroll` now calls it instead of its own inline block. Five unit
+tests (zero, one, two probes, serial-hit, serial-miss) run with a fake `DebugProbeInfo` built from
+a real, never-opened `ProbeFactory` — no hardware. The three divergences and the choice made on
+each are argued in topology decision 33 (`decisions/crate.md`); decision 32 is amended, not closed,
+naming `tasks/core/055` as the remaining half; `enroll`'s doc comment no longer claims exposing this
+as `pub` is out of reach. `spec.md` needed no change — nothing it asserted went false.
+`decisions/crate.md` landed in reserve (95.0%, 612 B left); filed as `tasks/topology/039`, blocked
+on `core/055` landing (the subsystem is still in flux until then).
