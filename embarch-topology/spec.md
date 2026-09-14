@@ -66,13 +66,13 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 
 ## Storage and roles
 
-**A role is unique.** Enrolling displaces any other board holding that role, and the displaced row is **returned, not dropped**. Two rows claiming one role would leave the by-role lookup returning whichever came first — **the unplugged board, carrying a dead link serial that narrows resolution to a port that cannot exist** (decision 20).
+**A role is unique.** Enrolling displaces any other board holding that role; the displaced row is **returned, not dropped** (decision 20).
 
-**A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`) — the fix for a stale fact: `NotFound` names which rule emptied the candidate list and routes to clearing it, rather than re-enrolling by role, which carries the fact back (decision 27).
+**A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`): `NotFound` names which rule emptied the candidate list and routes to clearing it (decision 27).
 
-**A detected port says whether it was guessed.** When several candidates were resolved by the lowest-interface rule, the result carries how many, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
+**A detected port says whether it was guessed** — the result carries how many candidates the lowest-interface rule chose among, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
 
-**The declared *interface* decides which of the two VCOMs is the console** — `COM16` and `COM17` differ in nothing else a detector can read, and it is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess.** Signature: a bench that flashes, boots, runs, and times out waiting for a handshake (decision 20).
+**The declared *interface* decides which of the two VCOMs is the console** — `COM16` and `COM17` differ in nothing else a detector can read, and it is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess** (decision 20).
 
 **`guessed_among`'s trigger is an *under-declared* bench, not a crowded one** — adding probes cannot produce a guess while an interface is declared.
 
@@ -97,11 +97,11 @@ A validate call previously carried only the enrolled record's `confirmed_at_utc_
   than one probe attached with no serial given** refuses, naming the count and every attached probe's
   identifier and serial; **a given serial that matches nothing attached** refuses by name. Every error
   string is part of the contract — see decision 33 for the exact wording of each.
-- **`embarch-core`** keeps the hardware I/O, calling the crate for which port or probe, and whether valid — no copy of the identity-recheck logic, board storage, identity reads or port heuristic, and **no dev-bench port override env var.**
+- **`embarch-core`** keeps the hardware I/O, calling the crate for which port or probe, and whether valid — no copy of that logic, and **no dev-bench port override env var.**
 - **`embarch-api`** links the crate **without the hardware feature** — only its `base_url = "auto"` branch calls it; the declared-address fast path does not.
 - **`embarch-umbrella`** does the same; its env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
 
-**Three features, and the middle one is new** (decision 31). `software` (default) is topology-class detection and Core-reachability probing, needing `reqwest`/`tokio`. `wire` is `serde` and nothing else: the hardware module's plain data types — `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route`, `SignalDirection` — with every function that reads a probe, enumerates a port or writes `enrollment.toml` compiled out. `hardware` is those functions, implies `wire`, and needs `probe-rs`/`serialport`; `embarch-core` is its only consumer. **`wire`'s point: "no `probe-rs` outside Core" no longer costs a consumer a hand-written copy of Core's data.**
+**Three features, and the middle one is new** (decision 31). `software` (default) is topology-class detection and Core-reachability probing, needing `reqwest`/`tokio`. `wire` is `serde` and nothing else: the hardware module's plain data types — `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route`, `SignalDirection` — with every function that reads a probe, enumerates a port or writes `enrollment.toml` compiled out. `hardware` is those functions, implies `wire`, and needs `probe-rs`/`serialport`; `embarch-core` is its only consumer.
 
 ## What a caller may assume across calls
 
@@ -110,14 +110,13 @@ no invalidation signal — a caller may hold a result only for the one
 operation it was taken for (one flash, one reset, one study attempt), never
 across a retry or a later operation. A board unplugged, re-enrolled, or
 moved between calls is invisible until the next call; **never cache a pass
-as durable — re-call instead** (decision 29: rejected an invalidation
-signal — every real caller already re-resolves per operation).
+as durable — re-call instead** (decision 29).
 
 ## Where it stands
 
 Both real boards are enrolled; a real flash-plus-study has run clean.
 
-**The mismatch path is exercised, not just designed:** two different nRF54L15 DUTs have alternated on one probe three times, each tripping the gate — an end-to-end refusal, not a log line beside one (decision 12).
+**The mismatch path is exercised, not just designed:** two different nRF54L15 DUTs have alternated on one probe three times, each tripping the gate (decision 12).
 
 **No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, overwriting the record; **no override on the store path** — its only variable is `ProgramData`, unsettable once the service runs.
 

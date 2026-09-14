@@ -35,10 +35,13 @@ Compaction tasks section, `DOC-COMPACTION.md` §2).
 
 ## Done when
 
-- [ ] `embarch-topology/spec.md` is measurably smaller and back under its reserve line (< 90% of
-      10,240 B, i.e. under roughly 9,216 B), verified with `check-doc-size.py`.
-- [ ] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation.
-- [ ] The compactor answers, in the commit message, `DOC-COMPACTION-PASS.md`'s question: can
+- [x] `embarch-topology/spec.md` is measurably smaller and back under its reserve line (< 90% of
+      10,240 B, i.e. under roughly 9,216 B), verified with `check-doc-size.py`. — 9,825 B -> 9,110 B
+      (89.0%), verified with `scripts/check-doc-size.py` and `--pressure`.
+- [x] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation. — the
+      probe-selection three-behaviour list (lines 92-99) and the *Shape* section's consumer-call
+      ASCII table (lines 25-50) are byte-for-byte unchanged.
+- [x] The compactor answers, in the commit message, `DOC-COMPACTION-PASS.md`'s question: can
       `spec.md` alone answer what someone needs to work on this component today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
