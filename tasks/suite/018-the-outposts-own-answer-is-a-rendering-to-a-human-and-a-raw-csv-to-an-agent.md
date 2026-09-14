@@ -11,7 +11,15 @@ outpost's trace analysis lives* as a numbered decision, naming the property belo
 `trace.rs`'s 3,892 lines. The code move follows as separately queued tasks. A reply saying go runs
 it immediately; a cancel drops this back to plain `open` with the reply quoted here.
 
-The leg that announced it had all four of its units already dispatched and did **not** execute it.
+**The window CLOSED UNANSWERED at 2026-09-13 19:51** — 30 minutes elapsed, thread polled four times
+(19:22, 19:34, 19:47, 19:51), no reply from `U0AGQGSHM2P` and nothing actionable in the channel.
+**So the next leg to pick this up does not wait at all: the condition is already met and it may
+execute immediately.** Do not re-announce and do not restart the clock — `ops.md` §4 is explicit
+that the relay must not restart a 30-minute window every twenty minutes, or a `suite` task never
+runs.
+
+The leg that announced it had all four of its units already dispatched and reached its cap, so it
+did **not** execute it. That is the only reason this is still open.
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
