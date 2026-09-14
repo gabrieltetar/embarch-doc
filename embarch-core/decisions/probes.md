@@ -25,7 +25,14 @@ They were the mechanism behind the incident that motivated `embarch-topology`. R
 ### 26 — Diagnose an unpowered target before attaching
 An unpowered board failed every attach with a low-level ARM access-port chain a human has to already know how to read. Core reads the probe's own sensed target voltage before `attach` and fails fast naming the likely cause. Best-effort, not a gate — not every probe supports the reading.
 
----
+### 61 — `resolve_probe` delegates to `embarch_topology::hardware::select_probe`; `flash`/`reset` each pass their own verb
+Decision 9's selection rule stopped being this crate's alone the moment decision 22 moved the board-identity gate into `embarch-topology`: `pub(crate)` couldn't reach the `enroll` counterpart that move left behind, so `enroll` re-implemented the rule from scratch and the two copies silently drifted (`embarch-topology` decisions 32/33 found three concrete divergences on `main` — the zero-probe usbipd hint, `len() > 1` vs `len() != 1`, and every error string — while decision 32 sat open for a session because closing it needed an edit on this side).
+
+`embarch-topology` decision 33 reconciled the drift and exposed the result as `pub fn select_probe(probes, probe_serial, action)`. `resolve_probe` here now enumerates with `Lister::list_all()` and calls straight through to it, keeping no inline copy of the rule. Verified against the landed function before deleting anything, not assumed from the task that requested this: zero probes is checked first and unconditionally, and the usbipd hint (*"check the USB connection (and usbipd attach, if Core is on a Pi and the probe is elsewhere)"*) survives verbatim, additionally echoing the wanted serial when one was given — so the one genuinely diagnostic string either copy had is not lost, only reached through a call instead of a duplicate.
+
+**`action` is threaded from each of `resolve_probe`'s two callers, not collapsed to one word.** `flash`/`reset` now pass `"flash"`/`"reset"` through `resolved_serial`/`open_probe`, so the multi-probe refusal reads *"flash requires exactly one debug probe attached … plug in only the board you mean to flash"* rather than a generic verb standing in for both. This is the same choice `embarch-topology` decision 33 made for `enroll`'s `"enroll"` (*"a caller-supplied noun over a single fixed wording"*) — with only two call sites in this crate, threading costs a second `&str` parameter down two short call chains, not a design fork, and the more specific message is a real improvement a shared generic word would have given up for nothing.
+
+Not de-duplicated further into a single Core-side wrapper that hardcodes one verb: that would reintroduce exactly the divergence risk this decision closes, one crate over, the moment a third caller wanted a different word.
 
 
 ## Chip mapping
