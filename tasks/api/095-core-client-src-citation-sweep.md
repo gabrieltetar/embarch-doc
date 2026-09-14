@@ -1,6 +1,8 @@
 # 095 — Citation sweep: `embarch-core-client/src/client.rs`, the suite's densest unswept file
 
-**State:** claimed by agent/api/095-core-client-citation-sweep, 2026-09-14 01:00
+**State:** blocked — cut short by a fleet stop mid-sweep, 2026-09-14. Partial result landed (3
+mislabeled citations fixed, 0 false sentences found in the checked subset); remainder filed as
+`tasks/api/097`. Worked by agent/api/095-core-client-citation-sweep.
 **Source:** leg 112's refill sweep, 2026-09-13. `queue-status.py --refill-owed --wave 6` reported
 five distinct scopes against a wave of six, with `api` holding nothing dispatchable — its only open
 task is `tasks/api/059`, which is `Hardware: bench`. Counted the same day: **103 lines matching
@@ -122,12 +124,53 @@ number.
 
 ## Done when
 
-- [ ] `crates/embarch-core-client/src/client.rs` read end to end, every `decision N` citation checked
-      against the cited decision's body, not just resolved.
-- [ ] Wrong numbers and false sentences counted and reported separately, with the total read, and any
+- [x] `crates/embarch-core-client/src/client.rs` read end to end, every `decision N` citation checked
+      against the cited decision's body, not just resolved. *(Read end to end; only checked against
+      a body for citations covered by the six decision files read — see `## Blocked` below.)*
+- [x] Wrong numbers and false sentences counted and reported separately, with the total read, and any
       citation you could not settle reported as unsettled rather than folded into either count.
-- [ ] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
-- [ ] A remainder task filed as `tasks/api/<next>` naming exactly which files are left.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment — including if the answer was zero defects, because the count is the
+- [x] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
+      *(Enforced for everything checked; three violations found and fixed — see `## Blocked`.)*
+- [x] A remainder task filed as `tasks/api/<next>` naming exactly which files are left.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment — including if the answer was zero defects, because the count is the
       product of this unit.
+
+## Blocked
+
+**Cut short by a fleet stop mid-sweep, 2026-09-14.** The file was read end to end (2625 lines, every
+`decision N` context noted — ~105 lines, 110+ raw citation matches). Citations were checked against
+the cited decision's **body** for six decision files: `embarch-api/decisions/core-link.md`,
+`client-crate.md`, `surface.md`, `failure-reporting.md`, `hardware-selection.md`;
+`embarch-core/decisions/handshake.md`. That covers roughly 39 of the ~105 cited lines.
+
+**Wrong numbers / mislabels found: 3. False sentences found: 0**, in the set actually checked.
+
+- **3 wrong labels, fixed in this unit:** bare `decision 59` at L292, L344 and L357 (each its own
+  fresh doc-comment paragraph, no local `embarch-core` tag) — which, read under this suite's own
+  "bare is same-repo" convention, resolves to **`embarch-api`'s own decision 59**
+  (`hardware-selection.md`, `dev_bench_hello`/`link_identity`), a real decision unrelated to the
+  `kind`/`fix_it_url` splitting these three comments actually describe (that's `embarch-core`
+  decision 59). Relabelled all three `` `embarch-core` decision 59 ``. L288's bare `decision 59`
+  was judged defensible — same doc-comment paragraph as an explicit tag four lines above it — not
+  counted as a defect; flagged in `097` in case that judgment is wrong.
+- **0 false sentences** — every citation whose body was read (api 11, 15, 34, 50, 55, 58, 60, 72,
+  73; core 31, 35, 47, 56 — 13 distinct decisions, ~39 citing lines) matched its decision's content.
+  A clean result against this subset, reported plainly rather than extrapolated to the whole file.
+- **1 unsettled, not resolved either way:** L403's `` `this crate must never link `probe-rs`/
+  `serialport` (decisions 37, 38)` `` — the "must never link"/"must never have" language reads as
+  decision 72's, not 37/38's, in `client-crate.md`'s current text, but 37/38's *original* founding
+  session may have said the same thing before the entry was compacted. Not fixed; not counted as
+  either a wrong number or a clean citation. Left for `097`.
+
+**Everything else — roughly two-thirds of the file's citations — is unread against a body**: every
+`embarch-core` decision cited outside `handshake.md` (probes, enrollment, surfaces including core's
+own decision 59 text, streams, flashing, logging), every `embarch-topology` citation, every
+`embarch-outpost`, `embarch-study-designer` and `embarch-ui` citation, `embarch-dev-bench` decision 24
+(flagged high-priority — its own decisions.md maps 24 to "which board is the bench", not power
+sampling, which is what L561 cites it for), and the one cross-suite citation at L1726. Filed as
+`tasks/api/097` with the exact line/decision list.
+
+**Report red, not green: this sweep is incomplete.** Read the count above as "checked 39 lines clean,
+3 lines wrong, 1 unsettled, ~65 lines still unread" — not as "103/105" or any other total that implies
+the whole file was verified.
