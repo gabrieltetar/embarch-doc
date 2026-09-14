@@ -1,6 +1,7 @@
 # 040 — 103 source citations never swept, and `hardware/validate.rs` was rewritten yesterday
 
-**State:** claimed by agent/topology/040-src-citation-sweep, 2026-09-13 20:00
+**State:** done — worker agent/topology/040-src-citation-sweep, 2026-09-13. All 103 citation lines
+read; see Result below.
 **Source:** the leg of 2026-09-13 18:3x, counting every repo's source citations while filling the
 queue. `tasks/topology/036` fixed **three** dead citations in this repo's source comments, but it
 was findings-driven — it fixed the three somebody happened to notice. **No systematic sweep of
@@ -60,14 +61,51 @@ For each citation:
 3. **Do not manufacture findings.** "Twenty-one checked, twenty-one held" is a real and reportable
    outcome. Say how many you actually read versus how many you counted.
 
+## Result
+
+All 103 citation lines in all 11 files read against the decision body behind each number, not just
+against whether the number resolves. Two classes of defect found, both the same class the task
+predicted: a sentence true when written, made false by a later landing that never touched the
+comment.
+
+**`validate.rs`** (21 read): `enroll`'s doc comment said decision 32 was "amended, not closed" and
+named `tasks/core/055` as "blocked on this landing" — both written by `topology/038` on
+2026-09-13, true then. `topology/041` closed decision 32 in `decisions/crate.md` the same day
+(`core/055` landed as `86345c01a451b0696af36f42c28bf6676478124c`) but never touched this comment.
+Rewritten to say decision 32 is closed and name `embarch-core` decision 61. Second defect, same
+file: a comment written 2026-08-23 (one day *before* `GET /enroll` was retired 2026-08-24) still
+named that retired Core page as "the first caller" needing optional `probe_serial` — false since
+the day after it was written, untouched when decision 15's citation was added on 2026-09-07.
+Rewritten to name the retirement and `embarch-ui`'s Enroll surface without asserting whether the
+new caller exercises the same disambiguation (unverifiable from this repo).
+
+**`mod.rs`** (15 read): the same decision-32-staleness class, independently — `select_probe`'s
+doc comment named `tasks/core/055` as future work for `embarch-core::resolve_probe` to adopt.
+Fixed the same way.
+
+**`hardware_id.rs`** (8 read): one cross-repo citation used "its decision 49" rather than the
+labelled `embarch-core decision 49` form the Done-when box requires — number and claim both held,
+relabelled for form only.
+
+**port.rs (19), signal.rs (15), alert.rs (7), software.rs (6), enrollment.rs (5), lib.rs (3),
+paths.rs (3), wsl2.rs (1)** — 59 citations read, all held: number and surrounding sentence both
+checked against the cited decision's body (cross-repo citations verified against `embarch-core`,
+`embarch-ui`, `embarch-study-designer` and `embarch-outpost`'s own decisions where labelled).
+`enrollment.rs` is worth naming on its own: it correctly disambiguates two *different* decision 27s
+(`embarch-core`'s and `embarch-topology`'s own) inside one file by labelling both, which is the
+disambiguation this task's rule 2 asks for, already done right.
+
+**Read 103 of 103 counted.** 3 false sentences fixed, 1 citation mislabelled and fixed, 0 wrong
+numbers. No `tasks/topology/<next>` filed for a remainder — there is none.
+
 ## Done when
 
-- [ ] `hardware/validate.rs` is swept end to end and every comment describing probe selection
+- [x] `hardware/validate.rs` is swept end to end and every comment describing probe selection
       matches what `select_probe` actually does after `topology/038`.
-- [ ] The remaining files are swept, or the boundary is stated exactly and the remainder filed.
-- [ ] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment. A numbered decision only if something was actually *decided*.
+- [x] The remaining files are swept, or the boundary is stated exactly and the remainder filed.
+- [x] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. A numbered decision only if something was actually *decided*.
 
 ## Reserve, for planning
 
