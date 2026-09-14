@@ -1,6 +1,6 @@
 # 053 — Compact `embarch-ui/open.md` back out of reserve
 
-**State:** open
+**State:** claimed by agent/ui/053-compact-ui, 2026-09-14 00:36
 **Source:** leg 112's `ui/051` fold, 2026-09-13. A reviewer finding on `ui/051` required restoring a
 record that half of suite decision 4's move is still outstanding; I wrote that bullet into
 `embarch-ui/open.md` in the fold, and it put the file back in reserve at **4,033 / 5,120 B**, 113 B
@@ -9,6 +9,16 @@ which is the uncomfortable part and is addressed below.
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note (leg 115)
+
+**In reserve for `ui` right now** — exactly one file, and it is this task's own target:
+`embarch-ui/open.md` 4,033/5,120 B, **1,087 B left** against a 1,200 B floor. Nothing else in
+`embarch-ui/` is in reserve. **If a split is your answer, the new file counts too** — run
+`python3 scripts/check-doc-size.py` on the result and make sure you have not simply moved the debt.
+**If your work leaves any doc file in reserve that nothing has filed, file
+`tasks/ui/<NNN>-compact-ui.md` in the same commit** (`tasks/README.md` has the shape;
+`scripts/check-task-numbers.py --next ui` gives a safe number).
 
 ## What
 
