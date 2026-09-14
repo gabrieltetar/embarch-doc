@@ -1,6 +1,6 @@
 # 049 — `study_designer.rs` holds 73 citations and is the half of `embarch-ui` no sweep has reached
 
-**State:** open
+**State:** claimed by agent/ui/049-study-designer-rs-citations, 2026-09-13 18:27
 **Source:** `tasks/ui/040` swept `embarch-ui`'s foreign decision citations and `tasks/ui/048`
 repointed `trace.rs`'s bare decision 35. Neither reached `src/study_designer.rs`, which the leg of
 2026-09-13 17:5x counted at **73** citations — more than half of `embarch-ui`'s 132 and the largest
