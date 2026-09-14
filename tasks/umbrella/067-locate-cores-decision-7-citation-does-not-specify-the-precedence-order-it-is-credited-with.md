@@ -1,6 +1,6 @@
 # 067 — `locate_core`'s decision-7 citation does not specify the precedence order it is credited with
 
-**State:** open
+**State:** claimed by agent/umbrella/067-locate-core-decision-7-citation, 2026-09-13 20:33
 **Source:** `inbox/umbrella-066-review-locate-core-decision-7-citation.md`, filed by `umbrella/066`'s
 **reviewer** (doc merge `4844a1cba9aa7037ab4c26b6169ae95db7dff684`; the code branch carried no
 commits). Numbered and filed into the queue by the leg of 2026-09-13 19:4x, which **declined to fix
@@ -11,6 +11,24 @@ should file rather than fix. This is that case, so it is filed.
 **Hardware:** none — one doc comment in `embarch-umbrella/src/locate.rs`. No board, no live Core,
 no install, no deploy.
 **Owner:** no
+
+**Reserve (told at dispatch, 2026-09-13 20:33):** one `embarch-umbrella` doc file is in reserve —
+`decisions/bind.md`, **93.9%**, 755 B left, filed against `tasks/umbrella/009` which is
+**`blocked` on `In flux: yes`**. Nothing else in this sub-project is in reserve. If the fix here
+means amending a decision body, check first whether that body lives in `bind.md`: if it does and
+your edit spends that reserve, `DOC-COMPACTION.md` §2 applies — compact it in this same unit,
+carrying `tasks/umbrella/009`'s `Must not delete:` list and closing only that file's item. If you
+push any *other* `embarch-umbrella` doc file into its last 10%, file
+`tasks/umbrella/<next>-compact-docs.md` in the same commit (`check-task-numbers.py --next
+umbrella` for the number — never `ls | tail`).
+
+**One caution carried from yesterday's sweeps.** The failure mode here is not "the number does not
+resolve" — it does. It is that the sentence credits decision 7 with a *precedence order* its body
+may not state. When you correct it, **do not replace one unverifiable claim with another**:
+`core/056` did exactly that, and its replacement asserted a new false thing about a different
+repo's decision. State only what the decision bodies you have actually read support; if the real
+precedence order is not written down in any decision, say so in the task rather than inventing a
+citation for it.
 
 ## What
 
