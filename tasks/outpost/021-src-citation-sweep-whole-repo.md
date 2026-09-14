@@ -1,6 +1,6 @@
 # 021 — Citation sweep: all of `embarch-outpost`'s source, in one pass
 
-**State:** open
+**State:** claimed by agent/outpost/021-src-citation-sweep-whole-repo, 2026-09-13 23:12
 **Source:** leg 112's refill sweep, 2026-09-13. `queue-status.py --refill-owed --wave 6` reported
 five distinct scopes against a wave of six, with `outpost` holding nothing dispatchable —
 `tasks/outpost/002` is `blocked` and `tasks/outpost/018` is `Hardware: required`. The citation-sweep
