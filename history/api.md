@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- New MCP tool schema: study_stream_load (CLI study-stream-load), Core's outpost load-share route; closes suite decision 4's agent-side half only — the one-implementation half waits on tasks/ui/051.
 - `interfaces/modules.md` gained a `dev_bench.rs` row citing decisions/dev-bench.md 32, 45.
 - Added `ble_connect_worked_example.json`: the first authored `target_address`/`target_name` `BleConnect` fixture.
 - `embarch-api` decision 30's smoke-harness tier is written: `tests/smoke_harness.rs`, throwaway Core + fixture repo.
