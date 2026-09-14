@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `outpost_load.rs` gains tests for gap-band union, idle double-count, and subject sort order, recovered from `embarch-ui`'s deleted `load_summary_tests`.
 - `GET /study/{id}/stream/{name}/load`: an outpost trace's per-subject load shares and coverage line, agent-reachable.
 - `POST /validate` now returns `validated_at_utc_ms` alongside `confirmed_at_utc_ms`, additive.
 - `EnrolledBoard`/`Alert` now pin their JSON shape in `embarch-core` against `embarch-api`'s mirror literals, so field drift fails on both sides.
