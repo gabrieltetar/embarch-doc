@@ -33,6 +33,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | ESP-IDF bootloader flashing fallback | Todo — explicitly out of v1 scope | n/a | 18 |
 | Per-caller identity beyond one shared token | Declined — single-engineer scope forbids a permission model; revisit only if Core ever needs to tell *which* caller, not just authorized or not | n/a | `embarch-token.md` §5 |
 | `503` naming the holder on `hw_lock` contention (500 ms wait, then refuse) | Shipped | unit | 14 |
+| `GET /study/{id}/stream/{name}/load` — an outpost capture's per-subject load shares and coverage line, agent-reachable | Shipped — unit-tested against real firmware bytes, **no live study has hit this route yet** | unit | 62 |
 
 ## embarch-api
 
