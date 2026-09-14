@@ -1,6 +1,6 @@
 # 051 — Retire `embarch-ui`'s own copy of the timeline arithmetic and read Core's answer instead
 
-**State:** open
+**State:** claimed by agent/ui/051-retire-timeline-arithmetic, 2026-09-13 22:37
 **Source:** `tasks/core/057`'s own "Sequencing" section, which named this follow-up, ranked it
 **lowest of the three**, and said it must not be filed until `core/057` landed. It landed
 2026-09-13 (code `a131f63` in `embarch-core`, doc `886a0bc` in `embarch-doc`), so it is filed now,
