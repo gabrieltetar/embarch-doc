@@ -51,11 +51,13 @@ believe it.** The general defect is filed for the owner as `tasks/doc/058`.
 
 ## Done when
 
-- [ ] `python3 scripts/check-doc-size.py` exits 0 with `embarch-topology/spec.md` no longer listed —
-      **that check, not an arithmetic target of your own.**
-- [ ] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation, and none of
-      `043`'s seven cuts is restored.
-- [ ] The compactor answers, in the commit message, `DOC-COMPACTION-PASS.md`'s question: can
+- [x] `python3 scripts/check-doc-size.py` exits 0 with `embarch-topology/spec.md` no longer listed —
+      **that check, not an arithmetic target of your own.** — 9,110 B -> 9,001 B (87.9%), `--pressure`
+      shows it `PAID`, out of reserve; nothing else in `embarch-topology/` entered reserve.
+- [x] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation, and none of
+      `043`'s seven cuts is restored. — diff is two hunks, both outside the protected probe-selection
+      list and the Shape consumer-call table, and neither overlaps `043`'s seven quoted cuts.
+- [x] The compactor answers, in the commit message, `DOC-COMPACTION-PASS.md`'s question: can
       `spec.md` alone answer what someone needs to work on this component today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.

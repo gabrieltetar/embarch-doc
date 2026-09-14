@@ -6,7 +6,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## What it is
 
-The suite's one abstraction for **topology**, previously ad hoc across env vars, config files and doctor checks:
+The suite's one abstraction for **topology**:
 
 - **Software topology** — where each process runs relative to the others: API and Core on one machine, a WSL2-hosted API talking to native-Windows Core, or Core on a headless LAN box.
 - **Hardware topology** — what is physically wired to what: which USB port carries a board's debug probe vs. its serial link, which board plays which role, and that role's current identity.
@@ -107,7 +107,7 @@ A validate call previously carried only the enrolled record's `confirmed_at_utc_
 
 **An answer is good only at the instant it was taken.** No cache, no watcher,
 no invalidation signal — a caller may hold a result only for the one
-operation it was taken for (one flash, one reset, one study attempt), never
+operation it was taken for, never
 across a retry or a later operation. A board unplugged, re-enrolled, or
 moved between calls is invisible until the next call; **never cache a pass
 as durable — re-call instead** (decision 29).
