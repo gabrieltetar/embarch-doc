@@ -8,7 +8,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ### 11 — The two version fields, the reflash selector, and provenance on a result
 
-The human surface for [embarch-study-designer](../../embarch-study-designer/decisions/versioning.md) decision 40.
+The human surface for [embarch-study-designer](../../embarch-study-designer/decisions/declares.md) decision 40.
 
 **The two `requires` fields are prefilled from live bench state, not left blank** — dev-bench's from Core's `GET /dev-bench/hello`, the DUT's from the configured project's own `git describe`. Prefilling is what makes a mandatory field a help rather than a tax: the common case is "the builds currently in front of me," and **typing a hash by hand to express that would guarantee people paste `any` to get past it**, defeating the decision.
 
