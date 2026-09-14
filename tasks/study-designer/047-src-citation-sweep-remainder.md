@@ -111,13 +111,15 @@ already walked back).
 
 ## Done when
 
-- [ ] One named file (`src/lib.rs`, unless a reason is given to reorder) fully
-      swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+- [x] One named file (`src/lib.rs`, unless a reason is given to reorder) fully
+      swept, wrong numbers and false sentences counted separately. **41
+      citations checked, 2 wrong numbers fixed, 0 false sentences.**
+- [x] Cross-repo citations in it carry their repo name. **None in this file.**
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). **`tasks/study-designer/048`,
+      naming all 21 remaining files and their counts.**
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment.
 
 ## Reserve, for planning
 
