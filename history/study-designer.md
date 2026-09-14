@@ -18,6 +18,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- study.rs's 52 decision citations swept (comment-only): 3 wrong numbers, 1 unlabelled cross-repo cite fixed, 0 false sentences.
 - study-designer: `schema_version.rs`'s history swept; one bare `decision 29` was actually `embarch-dev-bench`'s, now labelled.
 - `essd_study_decode_full`'s doc comment cited decision 19 for its `steps_crc` check; decision 17 is the one that describes it.
 - Forty `§N` citations into the dead 2026-09-02 `design.md` split repointed at live files/decisions or dropped; none changed what a doc says.
