@@ -1,6 +1,6 @@
 # 052 — `embarch-ui` decision 7's retention line describes a mechanism Core never built
 
-**State:** open
+**State:** claimed by agent/ui/052-decision-7-retention-line, 2026-09-13 23:45
 **Source:** an `inbox/` drop written by `core/058`'s worker mid-sweep, 2026-09-13, filed here by leg
 112. It found this while checking `embarch-core/src/main.rs`'s citation of `embarch-ui` decision 7
 and **could not fix it — `embarch-ui` is not that worker's scope.** The drop is reproduced in full
