@@ -35,13 +35,33 @@ for what it does. Decision 32's close should record what `core/055` actually did
 
 ## Done when
 
-- [ ] `embarch-topology` decision 32 gets a dated note (or a further amendment) recording that
+- [x] `embarch-topology` decision 32 gets a dated note (or a further amendment) recording that
       `core/055` landed and `embarch-core::resolve_probe` now calls `select_probe` — the
       duplication decision 32 opened is fully closed on both sides.
-- [ ] `open.md`'s matching bullet ("A third instance of the same class is half-closed…") is
+- [x] `open.md`'s matching bullet ("A third instance of the same class is half-closed…") is
       removed or corrected to say the instance is now fully closed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Closed 2026-09-13
+
+Read `embarch-core/src/hardware.rs` directly (commit `86345c01a451b0696af36f42c28bf6676478124c`)
+rather than taking this task's word: `resolve_probe` now just enumerates probes with
+`Lister::list_all()` and delegates to `embarch_topology::hardware::select_probe`, threading a
+caller-supplied `action` (`"flash"`/`"reset"`, mirroring `enroll`'s own `"enroll"`) through
+`resolved_serial`/`open_probe` so the multi-probe refusal names the right verb for each caller —
+`embarch-core` decision 61. No inline copy of the selection rule remains in either crate.
+
+Added a short closing paragraph after decision 32's existing 2026-09-13 amendment (kept, not
+replaced — the amendment still records what `038` alone had closed) rather than rewriting it.
+`decisions/crate.md` landed at 12075/12288 B (213 B to spare) — the amendment fit inside
+`612` B of headroom without touching `tasks/topology/039`'s size debt, so that task is untouched
+in this unit. Removed `open.md`'s matching bullet outright (the instance it tracked is fully
+closed, and `open.md` is unresolved-only), rather than rewording it in place.
+
+Note for whoever next reads `tasks/topology/039`: both of its own "Done when" landing conditions
+(`tasks/core/055` landed; decision 32 marked closed) are now true, so it can unpark — this unit
+did not touch it, since its own condition ("if it does not fit, pay part of `039`") did not fire.
 
 ## Reserve, for planning
 
