@@ -1,6 +1,6 @@
 # 045 — Citation sweep: `src/` remainder after `schema_version.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/045-study-rs-citations, 2026-09-13 20:00
 **Source:** `tasks/study-designer/044`, which swept `src/schema_version.rs` (the first
 of four files it named) and left the rest.
 **Scope:** study-designer
@@ -77,3 +77,18 @@ specifically in whatever file you take next.
       `src/`, saying so and closing the sweep).
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/study-designer-*` fragment.
+
+## Reserve, for planning (added at dispatch, 2026-09-13 20:00)
+
+Two `embarch-study-designer` docs are inside the last 10% of their caps, and **both of their
+compaction tasks are `blocked`**, so nothing is going to shorten them before you run:
+
+- `embarch-study-designer/spec.md` — 9,350/10,240 B, **890 B left, 91.3%** (`tasks/study-designer/032`, blocked)
+- `embarch-study-designer/open.md` — 4,659/5,120 B, **461 B left, 91.0%** (`tasks/study-designer/026`, blocked)
+
+A comment sweep should not need either file, and the expectation is that you touch neither. But
+**`open.md` is the one you might reach for by habit** — if this sweep turns up a question worth
+recording, file it as `tasks/study-designer/<next>` instead, where there is no cap pressure at all.
+461 B is about one bullet. If you do end up spending reserve in any `embarch-study-designer` doc and
+nothing has filed for it, file `tasks/study-designer/<next>-compact-study-designer.md` in the same
+commit — **your own scope**, never `tasks/doc/`.
