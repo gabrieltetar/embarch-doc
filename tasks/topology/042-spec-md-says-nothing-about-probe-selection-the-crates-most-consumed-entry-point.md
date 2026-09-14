@@ -1,6 +1,6 @@
 # 042 — `spec.md` says nothing about probe selection, and that is now the crate's most-consumed entry point
 
-**State:** claimed — leg 111, 2026-09-13, branch `agent/topology/042-spec-md-probe-selection`.
+**State:** done
 **Source:** the supervisor's answer to `DOC-COMPACTION-PASS.md`'s human question while folding
 `tasks/topology/039`, 2026-09-13. That unit split decisions 32 and 33 out of
 `decisions/crate.md` into a new `decisions/probe-selection.md` and paid the size debt cleanly. The
@@ -51,20 +51,37 @@ sweep will ever visit it.
 
 ## Done when
 
-- [ ] `spec.md` states, in the *Shape* or *What each consumer owns now* section, that probe
+- [x] `spec.md` states, in the *Shape* or *What each consumer owns now* section, that probe
       selection is this crate's and that `embarch-core` delegates to it rather than holding a
       copy — linking decisions 32 and 33 by number, not by file path.
-- [ ] A caller can learn from `spec.md` alone what the three observable behaviours are
+- [x] A caller can learn from `spec.md` alone what the three observable behaviours are
       (zero probes, multiple probes, the error text contract) or where to read them, without
       being sent to the source.
-- [ ] `spec.md` stays clear of its reserve line — it has room, but check with
+- [x] `spec.md` stays clear of its reserve line — it has room, but check with
       `check-doc-size.py` rather than assuming.
-- [ ] Do **not** restate decisions 32/33's reasoning in `spec.md`. `DOC-PROTOCOL.md`'s
+      **Correction (leg 111's dispatch note was right): it was not clear of the line.** Adding
+      the section put `spec.md` at 9,825 / 10,240 B (95.9%, in reserve), so the debt is filed
+      instead, per the dispatch note's preferred outcome 1: `tasks/topology/043-compact-topology.md`.
+- [x] Do **not** restate decisions 32/33's reasoning in `spec.md`. `DOC-PROTOCOL.md`'s
       no-restatement rule applies, and duplicating the very text a split just consolidated would
       be the exact failure this crate spent a unit undoing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment. A numbered decision only if something was actually decided —
-      writing down what is already true decides nothing.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. A numbered decision only if something was actually decided —
+      writing down what is already true decides nothing. No decision filed: this states a fact
+      that was already true, decides nothing new.
+
+## What shipped
+
+`spec.md`'s *What each consumer owns now* section gained a bullet: probe selection is
+`embarch-topology`'s (`select_probe`, decision 32), `embarch-core::resolve_probe` delegates to it
+threading a caller `action`, and the three observable behaviours from decision 33 (zero-probes-first
+with the usbipd hint, multi-probe naming the count and every attached probe, serial-miss naming the
+serial) are stated as facts with no restated reasoning. No code change — `embarch-topology` code
+worktree pushed unchanged.
+
+This spent `spec.md`'s reserve; the debt is filed as `tasks/topology/043-compact-topology.md` per
+the dispatch note's preferred outcome, since nothing in `spec.md` restated the split content and so
+there was nothing free to delete on the way past (outcome 2 did not apply).
 
 ## Dispatch note — leg 111, 2026-09-13
 

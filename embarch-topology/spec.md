@@ -89,6 +89,14 @@ A validate call previously carried only the enrolled record's `confirmed_at_utc_
 
 ## What each consumer owns now
 
+- **Probe selection is this crate's, not `embarch-core`'s.** `select_probe` (decision 32) is the
+  suite's one implementation of which attached debug probe a caller gets; `embarch-core::resolve_probe`
+  delegates to it rather than holding a copy, threading a caller `action` verb (`"enroll"`, `"flash"`,
+  `"reset"`, …) through for its error text. Three observable behaviours a caller can rely on
+  (decision 33): **zero probes attached** is checked first and always names the usbipd hint; **more
+  than one probe attached with no serial given** refuses, naming the count and every attached probe's
+  identifier and serial; **a given serial that matches nothing attached** refuses by name. Every error
+  string is part of the contract — see decision 33 for the exact wording of each.
 - **`embarch-core`** keeps the hardware I/O, calling the crate for which port or probe, and whether valid — no copy of the identity-recheck logic, board storage, identity reads or port heuristic, and **no dev-bench port override env var.**
 - **`embarch-api`** links the crate **without the hardware feature** — only its `base_url = "auto"` branch calls it; the declared-address fast path does not.
 - **`embarch-umbrella`** does the same; its env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
