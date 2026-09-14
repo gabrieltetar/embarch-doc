@@ -1,6 +1,6 @@
 # 053 — Compact `embarch-ui/open.md` back out of reserve
 
-**State:** claimed by agent/ui/053-compact-ui, 2026-09-14 00:36
+**State:** done
 **Source:** leg 112's `ui/051` fold, 2026-09-13. A reviewer finding on `ui/051` required restoring a
 record that half of suite decision 4's move is still outstanding; I wrote that bullet into
 `embarch-ui/open.md` in the fold, and it put the file back in reserve at **4,033 / 5,120 B**, 113 B
@@ -59,12 +59,28 @@ the file did not have this morning. If they are not, squeeze 113 bytes and say s
 
 ## Done when
 
-- [ ] `python3 scripts/check-doc-size.py` exits 0 with `embarch-ui/open.md` no longer listed — **that
+- [x] `python3 scripts/check-doc-size.py` exits 0 with `embarch-ui/open.md` no longer listed — **that
       check, not an arithmetic target of your own** (`tasks/doc/058` is why: the reserve line is
       `max(1200 B, 10% of cap)`, and for a 5,120 B cap the floor wins).
-- [ ] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation.
-- [ ] **The split-vs-squeeze question above answered explicitly in the commit message**, either way.
-- [ ] The compactor answers `DOC-COMPACTION-PASS.md`'s question: can `open.md` alone tell someone what
+- [x] Nothing on the `Must not delete:` list above is gone or reduced to a bare citation.
+- [x] **The split-vs-squeeze question above answered explicitly in the commit message**, either way.
+- [x] The compactor answers `DOC-COMPACTION-PASS.md`'s question: can `open.md` alone tell someone what
       is unresolved in `embarch-ui` today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Shipped
+
+**Squeezed, did not split.** `embarch-ui/open.md` 4,033 → 3,879 B (5,120 B cap, reserve line
+3,920 B) — 154 B clear, not a repeat of `ui/050`'s 78 B margin. Full reasoning in the commit message;
+short version: the tooling has no `open/<topic>.md` split role (`scripts/check-doc-size.py`'s `CAPS`
+only defines `decision-group` and `interface-group`), so a split file would fall into the `legacy`
+25 KB bucket — unratcheted and outside `DOC-BUDGET.md` §3's four-file shape — which is moving the
+debt, not paying it. Filed `/home/gabriel/Github/embarch/embarch-doc/inbox/open-md-split-role.md`
+recommending the suite add that role if `open.md` hits reserve a third time; not mine to add
+(`scripts/` is reserved).
+
+Five cuts, none touching the `Must not delete:` list: two redundant clauses (whose ownership/pointer
+was already carried by a cited decision), one grammar-only edit, one filler word, and one clause
+restating what "Still unmeasured" already said. Every trigger and decision citation is intact
+verbatim.
