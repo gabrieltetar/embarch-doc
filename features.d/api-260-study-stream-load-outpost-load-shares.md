@@ -1,0 +1,1 @@
+| `study_stream_load`/`study-stream-load` — an outpost capture's per-subject load shares and coverage line, reaching Core's `/stream/{name}/load` route (closes suite decision 4's agent-side half) | Shipped | unit (wire-shape, bearer-token sweep, CLI/MCP parity); hw only for a real capture | 3, 10 |
