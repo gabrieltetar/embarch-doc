@@ -1,6 +1,6 @@
 # 048 — Citation sweep: `src/` remainder after `lib.rs`
 
-**State:** claimed by agent/study-designer/048-src-citation-sweep-remainder, 2026-09-13 23:12
+**State:** done by agent/study-designer/048-src-citation-sweep-remainder, 2026-09-13
 **Source:** `tasks/study-designer/047`, which swept `src/lib.rs` (the fourth and
 last of the four files `044` originally named) and left the rest of `src/`.
 **Scope:** study-designer
@@ -154,14 +154,38 @@ whether the general topic area is adjacent.
 
 ## Done when
 
-- [ ] One named file (`src/study_builder.rs`, unless a reason is given to
+- [x] One named file (`src/study_builder.rs`, unless a reason is given to
       reorder) fully swept, wrong numbers and false sentences counted
-      separately.
-- [ ] Cross-repo citations in it carry their repo name.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+      separately. **38 citation lines (36 distinct citation instances) read
+      against `decisions/authoring.md` (34, 37, 73), `decisions/registry.md`
+      (35), `decisions/gatt.md` (36, 41, 53), `decisions/ble.md` (43, 44, 50),
+      `decisions/declares.md` (40), `decisions/seals.md` (26),
+      `decisions/streams.md` (39), `decisions/study.md` (42),
+      `decisions/limits.md` (46), plus `embarch-ui` decisions 11 and 17. 3
+      wrong numbers (delay_before_ms's doc comment cited decision 40, fixed to
+      42, matching the file's own later section headers/tests and confirmed
+      independently by `embarch-ui/047`'s identical finding on the same
+      field; a steps_crc/streams_crc comment mislabelled as `embarch-api
+      decision 26` — that repo's real decision 26 is unrelated
+      `serial_log`/`serial_port` — fixed by removing the repo prefix, since
+      decision 26 is this crate's own; a vendor-row test doc's "no schema
+      bump" claim credited to decision 39 — the streams/tap pipeline, which
+      *is* a schema bump — fixed to decision 41, the vendor-identity table,
+      whose own text says "No schema bump" of exactly this case), 0 false
+      sentences.**
+- [x] Cross-repo citations in it carry their repo name. **Both pre-existing
+      cross-repo citations (`embarch-ui` decisions 11 and 17) were already
+      correctly labelled; the one mislabel found (`embarch-api decision 26`)
+      was actually a same-repo decision wrongly given a foreign label — fixed
+      by removing the label, not by correcting it.**
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). **`tasks/study-designer/049`,
+      naming `src/protocol.rs` next (largest of the 20 remaining).**
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). **`cargo build`,
+      `cargo test` (both plain and `--all-features`), `cargo clippy
+      --all-targets [--all-features] -- -D warnings` all clean; single-crate
+      repo, no nested `Cargo.toml` members to miss.**
+- [x] `changelog.d/study-designer-*` fragment.
 
 ## Reserve, for planning
 
