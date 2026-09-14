@@ -41,6 +41,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- `locate_core`'s doc comment no longer credits decision 7 with a precedence order it never states.
 - doctor.rs's 116 decision citations checked: 2 wrong numbers fixed, 0 false sentences found.
 - `decisions/mirrors.md` repointed a stale `embarch-api` shape.md citation and disambiguated two bare cross-repo decision numbers; all five of its own citations checked, all five held.
 - `locate.rs`/`config.rs` doc comments corrected: 2 stale claims fixed (decision 38 omitted, decision 20 miscited as 16), 1 wrong number (51/53 → embarch-api 53/13); rest of ~37 checked and held.
