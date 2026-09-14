@@ -78,10 +78,56 @@ exposed to, and it is exactly why the spot-check was commissioned.
 
 ## Done when
 
-- [ ] `locate.rs`'s `locate_core` doc comment no longer credits decision 7 with the precedence order.
-- [ ] The decision-7 question in step 2 is answered in writing, either way.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] `locate.rs`'s `locate_core` doc comment no longer credits decision 7 with the precedence order.
+- [x] The decision-7 question in step 2 is answered in writing, either way.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Resolution
+
+Read both decision bodies in full (`decisions/topology.md` decision 7, `decisions/install.md`
+decision 28, and `decisions/topology.md` decision 38 — confirmed to be **`embarch-umbrella`'s own**
+decision 38, not a cross-repo number: `topology.md`'s own index line lists `6, 7, 8, 9, 30, 38`).
+
+**Decision 7 states no resolution order and does not belong in this comment at all.** It is
+entirely about *elevation policy* for controlling/starting the Core service (Windows vs. Linux
+system-service elevation, self-elevation moving into `embarch-core`, the no-GUI/no-TTY fallback).
+`locate_core` does not start or elevate anything — it is a read-only search for a binary that may
+already be running. The WSL2-only branch inside `locate_core` traces to decision 6 (topology is
+auto-detected) and decision 30/38 (what `up`/`doctor` do with a WSL2-guest's topology), never to
+decision 7. So step 2's question is answered **no** — decision 7 does not belong anywhere in this
+comment, not even in a separate sentence for "why the WSL2 branch exists": that reasoning describes
+a different mechanism (starting a service) than the one this function performs (finding a binary),
+and citing it for existence-of-the-branch would be exactly the same category of error the reviewer
+flagged, just moved to a different sentence.
+
+**Decisions 28 and 38 cover five of the six steps, not all six.** Decision 28's own text is close to
+verbatim: "Core and the API now resolve via env var → saved state → `PATH` → (WSL2 only) the real
+canonical Windows location" — that is steps 1, 2, 3 and 5. Decision 38 explicitly inserts step 4
+(the Windows service's own registration) "after `PATH`... and ahead of both guesses, because a
+reading beats a guess" — matching the code's own inline comment at the call site (`locate.rs:263`,
+unedited, already correct).
+
+**The sixth step — the older fixed conventional directories, tried last — is not specified by any
+decision**, in either file, or in `spec.md` (grepped, no hits). The function `windows_conventional_core_paths`
+carries its own doc comment calling itself "a fallback for a copy installed some other way than
+decision 28's canonical per-user location" — descriptive, not decision-backed. It most likely
+predates decision 28 (from before there was a "real canonical" location to guess past), but nothing
+in `decisions/install.md`, `decisions/topology.md`, `decisions.md`'s index, or `spec.md` ever
+elevated it to a numbered decision. Per the caution against replacing one unverifiable claim with
+another, the fixed doc comment says this plainly rather than inventing a citation for it.
+
+**No new `embarch-umbrella` decision filed.** This last step is a short, already-reasoned
+implementation default (the function's own doc comment states the trade-off: "guessing at a
+developer's source checkout would find a stale debug build as often as the real thing"), not a
+suite-level policy anyone outside this function depends on, and the Reserve note at dispatch flagged
+this unit as source-comment-only. If this fallback's shape or order ever needs to be stable across a
+larger surface, it is a good candidate for a future decision — for now it stays exactly where it
+already lived, correctly described.
+
+**Net for the citation-sweep tally:** this task's own finding is the same defect `066`'s reviewer
+already called — decision 7 does not specify the precedence order. Fixed here, once, at the source.
+`066`'s landed changelog and task resolution are untouched, per instruction.
 
 ## Also checked by the reviewer — no finding, do not re-derive
 
