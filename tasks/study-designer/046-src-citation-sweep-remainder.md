@@ -1,6 +1,6 @@
 # 046 — Citation sweep: `src/` remainder after `study.rs`
 
-**State:** claimed — leg 111, 2026-09-13, branch `agent/study-designer/046-src-citation-sweep-gatt-extract`.
+**State:** done — leg 111, 2026-09-13, branch `agent/study-designer/046-src-citation-sweep-gatt-extract`.
 **Source:** `tasks/study-designer/045`, which swept `src/study.rs` (the second
 of four files `044` named) and left the rest.
 **Scope:** study-designer
@@ -86,14 +86,38 @@ against the specific claim, not just "does N exist."
 
 ## Done when
 
-- [ ] One named file (`src/gatt_extract.rs`, unless a reason is given to
+- [x] One named file (`src/gatt_extract.rs`, unless a reason is given to
       reorder) fully swept, wrong numbers and false sentences counted
-      separately.
-- [ ] Cross-repo citations in it carry their repo name.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+      separately. **36 citations read against `decisions/gatt-extract.md` (33,
+      56, 57), `decisions/gatt.md` (31, 32), `decisions/seals.md` (18),
+      `decisions/crate.md` (23). 3 wrong numbers (a design fact belonging
+      solely to decision 56 — service identifiers get names "by the same
+      mechanism" as characteristics — was additionally credited to decision 57
+      in three separate comments: `GattSymbolKind`'s doc, `parse_gatt_services`'s
+      doc, and a test doc comment. `git log --follow -p` on
+      `decisions/gatt-extract.md` confirmed the service-naming text was folded
+      into decision 56 "amended the same session" as characteristics, with no
+      connection to decision 57, which is entirely about repo-wide scan scope).
+      2 false sentences (the module doc's "Two failure modes decision 57 adds
+      outright" undercounts — the decision's own text names three, the third
+      — `NoSourceFilesFound` — already documented a few lines above under its
+      own citation; and `ExtractedGatt`'s doc claimed decision 33 "exists to
+      provide" *byte-for-byte* comparability, which decision 33's own text
+      explicitly disclaims — "weaker than this decision claimed... compare
+      them as sets" — while a second doc comment 20 lines below already used
+      the corrected framing). 0 unlabelled cross-repo citations (the file's
+      one cross-repo cite, `embarch-ui decision 17`, was already correctly
+      labelled and verified against `embarch-ui/decisions/gatt-capture.md`'s
+      decision 17). All 5 fixed.**
+- [x] Cross-repo citations in it carry their repo name. (Already did; verified
+      correct against the source repo.)
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). `tasks/study-designer/047`
+      names `src/lib.rs` next, plus the rest of `src/` unchanged.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`,
+      `cargo test` (18/18 `gatt_extract` tests, full suite), `cargo clippy
+      --all-targets --all-features -- -D warnings` all clean.
+- [x] `changelog.d/study-designer-*` fragment.
 
 ## Reserve, for planning
 
