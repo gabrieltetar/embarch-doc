@@ -1,6 +1,6 @@
 # 065 — `doctor.rs` carries 116 bare decision citations and no gate can resolve one
 
-**State:** claimed by agent/umbrella/065-doctor-citations, 2026-09-13 18:00
+**State:** done
 **Source:** `tasks/umbrella/063`'s own closing note — it swept `locate.rs`, `init.rs` and `config.rs`
 and deliberately left `doctor.rs` out as *"roughly another hundred bare citations in one file — not
 a twenty-minute pass"*, adding that **nothing is filed for it**. The leg of 2026-09-13 17:5x counted
@@ -58,10 +58,38 @@ should touch neither; if it does and leaves one in the last 10% of its cap unfil
 
 ## Done when
 
-- [ ] Every citation examined in the range you took is either confirmed against the cited body or
+- [x] Every citation examined in the range you took is either confirmed against the cited body or
       fixed, with **wrong numbers and false sentences counted separately**.
-- [ ] Cross-repo citations carry their repo name.
-- [ ] A follow-up task is filed for the remainder, naming the check number you stopped after — or a
+- [x] Cross-repo citations carry their repo name.
+- [x] A follow-up task is filed for the remainder, naming the check number you stopped after — or a
       line in the fold saying the file is fully swept.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/umbrella-*` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/umbrella-*` fragment.
+
+## Result
+
+Read every one of the ~132 `decision[s] N` citations in `doctor.rs` (checks 1 through 17,
+implementation and tests alike — the whole file, not a partial range), checking each cited
+decision's own body first and then the sentence around the citation, per this task's rule.
+
+**File is fully swept. No follow-up task needed.**
+
+- **Wrong numbers: 2**, both the same defect in two places. `TokenAttempt` (check 4's gather/judge
+  split doc, line ~701) and `DevBenchAttempt` (check 12's, line ~2253) each cited "decision 39" —
+  reporting.md's check-16-path-field decision — for the claim that the gather/judge split lets a
+  check be tested "without a network, a Core or a bench." That claim is decision 33's
+  (schema-skew.md: "The comparison is a pure function over injected numbers... tested with no
+  Core, no bench, no network"), not decision 39's, which is about nothing of the kind. Both fixed
+  to cite decision 33.
+- **False sentences: 0.** Every other citation's surrounding prose held up against the cited
+  decision's current body, cross-repo citations included (`embarch-core` decisions 13/37/57,
+  `embarch-api` decisions 15/52/53, `embarch-dev-bench` decision 25 — all verified against their
+  own repos' decision files, all already correctly labeled with their repo name in this file's
+  existing convention).
+- **Cross-repo citations**: already correctly labeled everywhere (`embarch-core decision N`,
+  `embarch-api decision N`, `embarch-dev-bench decision N`) — no bare numbers resolving against
+  the wrong repo's index were found, unlike `umbrella/064`'s `mirrors.md` finding. `decisions/14`'s
+  four-repo citation site this task's Bounding section flagged: `doctor.rs` does not add a fifth,
+  and does not cite decision 14 at all.
+- Touched only `src/doctor.rs` (2 one-word fixes); no `embarch-umbrella` doc file was edited, so
+  `bind.md` (93.9%) and `mirrors.md` (86.5–86.7%) are untouched and no compaction task is filed.
