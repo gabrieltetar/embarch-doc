@@ -1,6 +1,6 @@
 # 021 — Citation sweep: all of `embarch-outpost`'s source, in one pass
 
-**State:** claimed by agent/outpost/021-src-citation-sweep-whole-repo, 2026-09-13 23:12
+**State:** done
 **Source:** leg 112's refill sweep, 2026-09-13. `queue-status.py --refill-owed --wave 6` reported
 five distinct scopes against a wave of six, with `outpost` holding nothing dispatchable —
 `tasks/outpost/002` is `blocked` and `tasks/outpost/018` is `Hardware: required`. The citation-sweep
@@ -99,12 +99,58 @@ resolving an ambiguity toward zero.** Report anything you cannot settle as unset
 
 ## Done when
 
-- [ ] Every source and header file listed above read, every `decision N` citation checked against the
+- [x] Every source and header file listed above read, every `decision N` citation checked against the
       cited decision's body rather than merely resolved.
-- [ ] Wrong numbers and false sentences counted and reported separately, with the total read, and any
+- [x] Wrong numbers and false sentences counted and reported separately, with the total read, and any
       citation you could not settle reported as unsettled rather than folded into either count.
-- [ ] The record-layout 2 → 3 history checked specifically, per *Why this repo* above.
-- [ ] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment — including if the answer was zero defects, because the count is the
+- [x] The record-layout 2 → 3 history checked specifically, per *Why this repo* above.
+- [x] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment — including if the answer was zero defects, because the count is the
       product of this unit.
+
+## Closed 2026-09-13
+
+Recounted first: `grep -rn -E '[Dd]ecisions? [0-9]+' --include='*.c' --include='*.h' .` still returns
+the same 23 lines across the same 8 files the task lists. Read all 12 `decisions/*.md` files' bodies
+(every decision the repo owns: 1–9, 14, 17–26) and checked each of the 23 citations against the cited
+decision's body, not just that the number resolves.
+
+**23 read, 1 wrong number, 0 unsettled.**
+
+- **The one defect** — `src/outpost_priv.h`, the `cycles_per_sec` field comment: "the Kconfig is
+  legitimately 0 on targets that read their timer frequency at runtime **(decision 4)**." Decision 4
+  (`decisions/layout.md`) is the record-layout decision — cycles stamp, ring slot size, the 2→3 version
+  history — and never once mentions `CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC` or a build-time-vs-runtime rate
+  read. The actual fact is stated, word for word, in `interfaces/wire.md` (`cycles_per_sec` is read at
+  runtime... which legitimately defaults to 0...) with no decision number attached at all — it was never
+  a numbered decision, just an interface fact. This is the fourth shape from the method section: a
+  citation that resolves, to a real decision, in the right repo, with nothing to do with the line it
+  annotates. Fixed by repointing the citation from `(decision 4)` to `(interfaces/wire.md)`, the doc that
+  actually carries the claim — a bare deletion would have thrown away a citation a reader can still use.
+- **The record-layout 2 → 3 history** (the specific trap this task's *Why this repo* section named): all
+  four citations touching it — `outpost_priv.h`'s `OUTPOST_RECORD_LAYOUT_VERSION` block (decision 4,
+  twice), `tests/unit/src/main.c`'s varint worst-case test (decision 4), and `outpost_time.h`'s clock-read
+  constraint (decisions 3 and 4) — hold. None describes layout 2's behaviour under a decision-4 citation
+  or otherwise gets the lock-vs-clock distinction backwards.
+- **The one cross-repo citation** — `outpost_priv.h`'s COBS-framing note, `embarch-study-designer/
+  decisions.md decision 10` — checked against that repo's actual `decisions/wire.md` decision 10
+  ("COBS-framed postcard..."), and it is exactly the decision being cited, correctly labelled. No bare
+  `decision N` in this repo's source turned out to actually mean another repo's decision.
+- **The other 21** all check out: each cited decision's body contains the specific claim the comment
+  attributes to it (several — `outpost_priv.h`'s decision-20 hint-not-fact paragraph, decision 9's
+  no-manifest-CRC paragraph — are near word-for-word restatements of the decision text, which is the
+  clean-file signature the series' hypothesis predicts for code that explains itself rather than
+  restating another repo's decision).
+
+No decision needed filing — this stayed inside "check a citation," never "decide something new." No doc
+pushed into reserve (`check-doc-size.py` stayed green through `check-docs.py`), so no compaction task
+filed. Nothing found here belongs to another sub-project's decision set, so no `inbox/` drop was
+necessary this time.
+
+**Gate:** `python3 scripts/check-docs.py` — 11/11 green. `check-decision-refs.py` — 1979 refs resolve
+(872 ambiguous, non-error), 35 topic-file links and 16 reversal-row citations all resolve.
+`check-client-names.py --repo` on both worktrees — clean. `check-ownership.py --scope outpost` (doc) and
+`--code-repo` (code) — both OK. This repo has no `Cargo.toml`; the host-side build surface is
+`tests/decoder_unit.py` (31 tests) and `tests/vocab_check.py` (11 kinds / 8 flag bits), both run and
+green after the fix — no board build, no flash, no DUT touched, per this unit's hardware note.
