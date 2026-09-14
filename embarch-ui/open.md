@@ -1,14 +1,12 @@
 # embarch-ui: open
 
-**Status:** active, 2026-09-04.
+**Status:** active, 2026-09-13.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
 - **Whether `embarch-ui` belongs in the suite release archive is undecided, and not this repo's call** — [`embarch-umbrella`](../embarch-umbrella/decisions/install.md) decision 14's and the suite's. `assemble-suite.yml` ships three binaries, not this one, so a fresh `embarch setup` can't author or read back a trace. **Documentation half closed** (`tasks/suite/019`): [user-guide](../suite/user-guide.md) §3, [studies-guide](../suite/studies-guide.md) §4 — separate build, and where to get it. **Trigger:** first non-owner engineer walks the studies guide end to end.
 
 - **Where the reflash selector should live is undecided.** `run_study --reflash` is `embarch-api` orchestration; `embarch-ui` posts studies straight to Core, building nothing. Three shapes: duplicate it here, depend on `embarch-api` (a direction the suite has nowhere), or leave reflash terminal-only — settled as the third; the run dialog's string says so: a limitation, not a design goal. Decision 11.
-
-- **Where the trace analysis lives is settled — not here** ([suite decision 4](../suite/decisions.md)): timeline and load repartition move to `embarch-core` — on both paths and in the archive, which the bullet above says this is not; chart geometry and decision 18's binning stay. Nothing is wrong today: the move is queued (`tasks/core/057` first, `embarch-ui`'s half last) because the gap is on the agent path.
 
 - **Nothing has compared a trace's placement against a second stream in the same study.** The DUT clock measures; the host places it, at an observed **4.0 ms** median resolution on the reference capture. Whether the two line up against a power capture is what the dual-clock flag checks and has not run — every outpost wire constant stays an unmeasured default, overhead deliberately uncharacterised.
 
