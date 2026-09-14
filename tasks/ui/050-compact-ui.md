@@ -1,6 +1,6 @@
 # 050 — Compact `embarch-ui/open.md`
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, branch `agent/ui/050-compact-ui-open-md`.
 **Source:** `scripts/check-doc-size.py`, run as part of `tasks/suite/018`'s gate. That unit added
 one bullet to `embarch-ui/open.md` pointing at [suite decision 4](../../suite/decisions.md), and
 the file crossed into reserve: **4,341/5,120 B, 779 B left, 84.8%.** Filed in the same commit per
@@ -56,3 +56,34 @@ of thing in here.
       reserve floor.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/` fragment dropped.
+
+## Dispatch note — leg 111, 2026-09-13
+
+**This is a compaction unit, and it is judged on a question no script answers.** When you are
+done, answer `DOC-COMPACTION-PASS.md`'s human question **in your own words, in your closing
+section**: *can `spec.md` alone answer what someone needs to work on this component today?* The
+supervisor copies that answer into the log entry, and a pass that merely got the byte count down
+without answering it has not finished.
+
+**`In flux:` is `no` for `embarch-ui/open.md`, per-file, and that is why this is dispatchable at
+all.** Confirmed today, unchanged. Sizes re-measured: **`embarch-ui/open.md` 4,341 / 5,120 B, 779 B
+left (84.8%)**, and the reserve floor here is the flat `RESERVE_FLOOR` of 1,200 B rather than 10%
+of the cap — which is why an 84.8% file is flagged. **"Room to spare" means clear of 3,920 B**, not
+clear of 5,120.
+
+**The task is explicit that a split is the wrong remedy here and squeezing is the right one.**
+Take that seriously: there is one kind of thing in this file, so there is no seam, and
+`DOC-BUDGET.md`'s split-first rule does not apply. Cut *length*, not questions, triggers or
+measurements. The three `Must not delete:` items above survive in substance — in particular the
+archive bullet, because **suite decision 4 now leans on it** and shortening it to "the UI is not
+shipped" would delete the premise of a decision that lives in another file.
+
+Nothing else in `embarch-ui` is in reserve. **If your pass somehow pushes another `embarch-ui` doc
+into its reserve band**, file `tasks/ui/052-compact-ui.md` in the same commit — **`tasks/ui/`, your
+own scope**, never `tasks/doc/`, which `check-ownership.py` refuses to every worker.
+
+**One repo, one branch, one task.** This is a doc-only unit, so most of the work is in
+`embarch-doc`; both worktrees are on `agent/ui/050-compact-ui-open-md`. `embarch-ui`'s worktree has
+`embarch-study-designer`, `embarch-api` **and `embarch-topology`** symlinked beside it — the last
+one is the trap, since it is reached through `embarch-api/crates/embarch-core-client` and not
+through `embarch-ui`'s own manifest — so `cargo build` resolves if you need it.
