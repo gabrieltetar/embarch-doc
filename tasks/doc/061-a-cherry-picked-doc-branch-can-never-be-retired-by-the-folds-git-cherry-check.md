@@ -6,8 +6,10 @@
 never be deleted by the mechanism that is supposed to delete them.
 **Scope:** doc
 **Hardware:** none — a script change and a policy question. No board, no probe, no live Core.
-**Owner:** **required** — the fix is in `scripts/fold-commit.py`, which `check-ownership.py` reserves
-to the owner from both a worker and a supervisor.
+**Owner:** required — the fix is in `scripts/fold-commit.py`, which `check-ownership.py` reserves
+to the owner from both a worker and a supervisor. (Value deliberately unbolded: leg 115 first wrote
+`**required**` here and `queue-status.py` counted the task as dispatchable, which is exactly
+`tasks/doc/039`'s defect, hit by the leg that had just read the queue listing it.)
 
 ## What
 
