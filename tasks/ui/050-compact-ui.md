@@ -1,6 +1,6 @@
 # 050 — Compact `embarch-ui/open.md`
 
-**State:** claimed — leg 111, 2026-09-13, branch `agent/ui/050-compact-ui-open-md`.
+**State:** done — leg 111, 2026-09-13, branch `agent/ui/050-compact-ui-open-md`.
 **Source:** `scripts/check-doc-size.py`, run as part of `tasks/suite/018`'s gate. That unit added
 one bullet to `embarch-ui/open.md` pointing at [suite decision 4](../../suite/decisions.md), and
 the file crossed into reserve: **4,341/5,120 B, 779 B left, 84.8%.** Filed in the same commit per
@@ -49,13 +49,32 @@ of thing in here.
 
 ## Done when
 
-- [ ] A compaction pass run per `DOC-COMPACTION-PASS.md`, keeping every question, every trigger and
+- [x] A compaction pass run per `DOC-COMPACTION-PASS.md`, keeping every question, every trigger and
       every measurement, and cutting length.
-- [ ] The three Must-not-delete items above survive verbatim in substance.
-- [ ] `check-doc-size.py` green for `embarch-ui/open.md` with room to spare, not just under the
-      reserve floor.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] The three Must-not-delete items above survive verbatim in substance.
+- [x] `check-doc-size.py` green for `embarch-ui/open.md` with room to spare, not just under the
+      reserve floor. **4,341 → 3,841 B (75.0%), 78 B clear of the 3,920 B floor** — more headroom
+      than the file had before `suite/018`'s edit put it in reserve (it was 47 B under at 3,873).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Closing note — squeeze pass, no split
+
+All seven bullets kept (`collect-open-questions.py` sees the same seven before and after — verified
+by inspection, since it is a reporting tool with no diff mode). Cut was prose length only: redundant
+restatement ("kept... with this measurement as the reason" after already opening with "kept, against
+measurement"), a duplicated "in-memory"/"synthetic capture" pairing, one footnote's provenance dates
+(cold per `DOC-COMPACTION-PASS.md`'s hot/cold list — the measurement numbers and the "still
+unmeasured" sentence are what's hot, and both survive verbatim in substance), and connective tissue
+("genuinely", "and it is", trailing "not this one" where the bullet had already said "not here").
+No question, trigger, or measurement was dropped. No code change; `embarch-ui`'s worktree is clean
+and its branch pushes unchanged.
+
+**Human question, answered:** yes — `spec.md` and `decisions.md` already carry the settled truth and
+the reasoning; `open.md`'s job was only ever to hold what is *not yet* answered, and every one of its
+seven bullets still names its own open half (an undecided call, an unmeasured number, a debt against
+a board) exactly as before, just in fewer words. Nothing here moved bytes without choosing between
+them — every cut was a restatement or a date, never a claim, a trigger, or a number.
 
 ## Dispatch note — leg 111, 2026-09-13
 
