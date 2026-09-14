@@ -1,8 +1,10 @@
-# 089 — `embarch-api/decisions/tests.md` is in reserve after decision 74
+# 090 — `embarch-api/decisions/tests.md` is in reserve after decision 74
 
 **State:** open
 **Source:** `api/088`'s decision 74 (the smoke harness's real timeout bound) pushed this file into
-its reserve band; `DOC-BUDGET.md` §2
+its reserve band; `DOC-BUDGET.md` §2. **Filed by its worker as `089` and renumbered to `090` by the
+supervisor at landing**: the leg had already issued `tasks/api/089` in a refill commit this worker's
+branch was cut before, so two files claimed one number. Nothing about the debt changed.
 **Scope:** api
 **Hardware:** none
 **Owner:** no

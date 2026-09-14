@@ -94,8 +94,9 @@ say so and stop, because the evidence above would then be explained by something
 - [x] `changelog.d/` fragment. `changelog.d/api-smoke-harness-concurrent-load.fixed.md`.
 
 **Decision 74 pushed `embarch-api/decisions/tests.md` into its reserve band (12201/12288 B,
-99.3%, 87 B left) — filed `tasks/api/089-compact-api.md` in this same commit, per the reserve
-note below.**
+99.3%, 87 B left) — filed `tasks/api/090-compact-api.md` in this same commit, per the reserve
+note below.** (Filed as `089` and renumbered to `090` by the supervisor at landing: the leg had
+already issued `tasks/api/089` in a refill commit this branch was cut before.)
 
 ## Reserve, for planning
 
