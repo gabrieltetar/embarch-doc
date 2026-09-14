@@ -1,6 +1,6 @@
 # 047 — Citation sweep: `src/` remainder after `gatt_extract.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/047-src-citation-sweep-remainder, 2026-09-13 22:36
 **Source:** `tasks/study-designer/046`, which swept `src/gatt_extract.rs` (the
 third of four files `044` named) and left the rest.
 **Scope:** study-designer
