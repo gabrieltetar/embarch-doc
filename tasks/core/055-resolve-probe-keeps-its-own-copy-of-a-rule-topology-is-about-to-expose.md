@@ -1,11 +1,13 @@
 # 055 — `resolve_probe` keeps its own copy of a selection rule `embarch-topology` is about to expose
 
-**State:** blocked
-**Blocked on:** `tasks/topology/038` landing on `main`. That task exposes
-`embarch-topology`'s probe-selection rule as a `pub` function; until it does, there is nothing for
-this change to call and a `core`-scoped worker may not write `embarch-topology`. **Unparks the
-moment `topology/038` is merged** — a supervisor checking this task should verify that
-`pub` function exists in `embarch-topology` on `main` and then flip this to `open`.
+**State:** open
+**Unparked 2026-09-13 by the leg that filed it**, one hour after filing: `tasks/topology/038` landed
+(code `96e86c68cc3383a7dd491ff3dfb5394f5a93f547`) and the function to call now exists as
+**`embarch_topology::hardware::select_probe(probes, probe_serial, action)`** — re-exported from
+`hardware/validate.rs` through `hardware/mod.rs` under `#[cfg(feature = "hardware")]`. I checked the
+feature gate rather than assuming it: `embarch-core/Cargo.toml:42` already declares
+`embarch-topology = { path = "../embarch-topology", default-features = false, features = ["hardware"] }`,
+so the call is reachable from this crate with no manifest change.
 **Source:** `inbox/core-resolve-probe-duplicates-topology-enroll-selection.md`, the follow-up to
 `tasks/topology/037` and `embarch-topology` decision 32. Split into two tasks by the leg of
 2026-09-13 17:5x because the drop's own "Done when" names a `topology` prerequisite that a `core`
@@ -31,19 +33,29 @@ argued, and it names what the shared function gives up.
 Once `topology/038` lands, make `resolve_probe` call the shared function and drop its own inline
 copy.
 
-## The one thing to be careful about
+## The one thing to be careful about — and `topology/038` already handled it
 
 `resolve_probe`'s zero-probe message is the only genuinely diagnostic string in either copy:
 
 > no debug probe found — check the USB connection (and usbipd attach, if Core is on a Pi and the
 > probe is elsewhere)
 
-That hint is specific to **Core's** deployment topology — Core on a Pi, probe elsewhere — and is
-about the thing `embarch-topology` has no business knowing. If `topology/038`'s reconciled wording
-dropped it, **do not accept the loss silently**: either the shared function takes a caller-supplied
-context and `resolve_probe` supplies this one, or `resolve_probe` wraps the shared error and adds
-it. Say in your commit and changelog fragment which you did. Losing that sentence is a real
-regression in an error a human reads at exactly the moment they are confused.
+**`select_probe` keeps it verbatim**, checks zero probes *first and unconditionally* — that is
+`resolve_probe`'s ordering, not `enroll`'s — and additionally echoes the serial back when one was
+given. So the hint is not something you have to rescue. **Read the landed `select_probe` and confirm
+that for yourself before you delete anything**, rather than taking this paragraph's word for it.
+
+What you *do* have to decide is **`action`**, `select_probe`'s third parameter: a present-tense verb
+that appears in the multi-probe refusal (*"{action} requires exactly one debug probe attached … plug
+in only the board you mean to {action}"*). `enroll` passes `"enroll"`. `resolve_probe` has no single
+caller — `flash` and `reset` both reach it — so **either thread a verb through from each call site,
+or pick one honest word for both.** Say which and why. Threading is better if it is cheap: "flash
+requires exactly one debug probe attached" is a materially better message than a generic one, and
+that parameter exists precisely so neither caller has to keep its own copy of the function.
+
+Note also that `resolve_probe`'s multi-probe message **already** listed the attached probes and
+`enroll`'s did not; `select_probe` kept the listing. So on that branch adopting it costs
+`resolve_probe` nothing and there is no wording regression to guard against.
 
 Also update `open_probe`/`resolved_serial`'s doc comments, which describe `resolve_probe` as
 resolving the choice itself — **that becomes false when it delegates.** Do not repoint the citation
