@@ -1,6 +1,6 @@
 # 041 — Decision 32's amendment and `open.md`'s bullet both went false when `core/055` landed
 
-**State:** open
+**State:** claimed by agent/topology/041-close-decision-32, 2026-09-13 19:18
 **Source:** `inbox/topology-close-decision-32-open-19-after-core-055.md`, filed by `core/055`'s
 worker at landing per that task's "Flag back, do not fix" — a `core` worker may not write
 `embarch-topology`. Filed into the queue by the leg of 2026-09-13 18:5x.
