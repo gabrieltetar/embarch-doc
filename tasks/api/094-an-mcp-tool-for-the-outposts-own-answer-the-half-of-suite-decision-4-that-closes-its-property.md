@@ -1,6 +1,6 @@
 # 094 — An MCP tool for the outpost's own answer: the half of suite decision 4 that closes its property
 
-**State:** claimed — leg 111, 2026-09-13, branch `agent/api/094-mcp-tool-for-outpost-load-shares`.
+**State:** done — leg 111, 2026-09-13, branch `agent/api/094-mcp-tool-for-outpost-load-shares`.
 **Source:** `tasks/core/057`'s own "Sequencing" section, which named this follow-up and said
 explicitly that it must **not** be filed until `core/057` landed, because a worker given it earlier
 would be building against a route that did not exist. It landed 2026-09-13 (code `a131f63` in
@@ -57,15 +57,35 @@ not exist at all.
 
 ## Done when
 
-- [ ] An MCP tool returns an outpost capture's per-subject load shares and coverage line for a
-      study stream, by calling Core's route rather than computing anything.
-- [ ] It has a CLI subcommand, like every other tool (`embarch-api` decision 40's own rule).
-- [ ] `embarch-api/tools.md` documents it and the tool index count stays consistent.
-- [ ] The `422` column-mismatch case reaches the caller as a refusal with its reason intact.
-- [ ] A numbered `embarch-api` decision only if something was actually decided — wiring an
-      existing route to an existing tool pattern decides nothing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] An MCP tool returns an outpost capture's per-subject load shares and coverage line for a
+      study stream, by calling Core's route rather than computing anything. `study_stream_load`
+      (`src/tools.rs`) calls the new `CoreClient::get_study_load` (`crates/embarch-core-client/src/client.rs`),
+      which hits `GET /study/{id}/stream/{name}/load` and parses Core's `LoadAnswer` — no arithmetic
+      on this side of the wire.
+- [x] It has a CLI subcommand, like every other tool (decisions 3/10's superset rule — the task's
+      own "decision 40" is `suite/features.md`'s `api-040` row, not a decision number; corrected
+      here rather than repeated). `study-stream-load` in `src/main.rs`/`src/cli.rs`.
+- [x] `embarch-api/tools.md` documents it and the tool index count stays consistent.
+      `interfaces/tools.md`'s Studies bullet and `interfaces/studies.md`'s table both gained the
+      row; `src/cli.rs`'s hardcoded subcommand-arm count (26 → 27) and `tests/json_surface.rs`'s
+      `EVERY_SUBCOMMAND` both updated, so the mechanized surface counts stayed true rather than
+      going stale.
+- [x] The `422` column-mismatch case reaches the caller as a refusal with its reason intact.
+      `get_study_load` passes every non-2xx body through `format_study_error` untouched — Core's
+      handler returns the mismatch's own text as the body, and nothing here substitutes an empty
+      result for it.
+- [x] A numbered `embarch-api` decision only if something was actually decided — wiring an
+      existing route to an existing tool pattern decides nothing. **None written**: this followed
+      `study_stream_data`'s existing shape (mirrored struct, same three-refusal relay pattern, same
+      CLI/MCP pairing) with no new choice to record.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`cargo test`/
+      `cargo clippy --all-targets -- -D warnings` all clean in `embarch-api` (including the new
+      `get_study_load` sweep coverage in `tests/core_client_http.rs` and a wire-shape deserialize
+      test in `crates/embarch-core-client/src/client.rs`); `scripts/check-docs.py` all 11 green;
+      `check-client-names.py --repo embarch-api` clean; `check-ownership.py --scope api` and
+      `--code-repo` both clean.
+- [x] `changelog.d/` fragment. `changelog.d/api-outpost-load-tool.added.md`, naming the schema
+      change explicitly per this task's own "Watch for" note.
 
 ## Dispatch note — leg 111, 2026-09-13
 
