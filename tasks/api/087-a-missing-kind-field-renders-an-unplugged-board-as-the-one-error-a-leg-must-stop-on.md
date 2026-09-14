@@ -1,6 +1,6 @@
 # 087 — A missing `kind` field renders an unplugged board as the one error a leg is told to stop on
 
-**State:** claimed by agent/api/087-missing-kind-renders-as-mismatch, 2026-09-13 17:47
+**State:** done
 **Source:** `inbox/api-validate-renders-an-unplugged-board-as-a-topology-mismatch-against-an-old-core.md`,
 observed live by the leg of 2026-09-13 17:05 running `validate` with `role: dev-bench` as the bench
 pre-check `.claude/leg.md` requires. Filed by the leg of 2026-09-13 17:5x.
@@ -124,14 +124,72 @@ entry, never strike it through**, or the size gate stops recognising the line.
 
 ## Done when
 
-- [ ] One of the three is chosen, implemented, and written as a numbered `embarch-api` decision that
+- [x] One of the three is chosen, implemented, and written as a numbered `embarch-api` decision that
       says why the other two lose and what the `Option<String>` cost is.
-- [ ] `decisions/surface.md` is out of its reserve band via a **verbatim** mission split, with all
+- [x] `decisions/surface.md` is out of its reserve band via a **verbatim** mission split, with all
       three Must-not-delete items accounted for and `tasks/api/069` updated.
-- [ ] A unit test covers a `TopologyMismatchError` with **no `kind` field at all** — not just
+- [x] A unit test covers a `TopologyMismatchError` with **no `kind` field at all** — not just
       `kind: "not_attached"` and `kind: "mismatch"`. That absent-field case is the one nothing tests
       today and the one that produced the observed message.
-- [ ] If the rendering changed, `client.rs`'s test comment (*"reads the field, not `reason`'s
+- [x] If the rendering changed, `client.rs`'s test comment (*"reads the field, not `reason`'s
       wording"*) is re-read and corrected if the split made it false.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — **one exception, see Blocked below**.
+- [x] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+
+## Closed
+
+**Chose candidate 1** (a third rendering, `kind: "unknown"`, `fix_it_url` suppressed) over 2 and 3.
+Engaging decision 71's argument directly: the forbidden inference is deriving the *condition* from
+`live_hardware_id.is_none()`; reading whether the wire body's `kind` was *present at all* is a fact
+about which Core answered, not that inference, so it is not what decision 71 forbids. Candidate 3
+(leave it) was rejected because the `"mismatch"` default is not merely a conservative guess — it
+keeps offering `fix_it_url` on a merely-unplugged probe, which invites exactly the destructive
+re-enrolment the enrollment safety property exists to prevent. Candidate 2 (name the Core version
+in prose, keep the `"mismatch"` default) was rejected because the message alone does not stop a
+reader acting on the `fix_it_url` it would still carry.
+
+**The `Option<String>` cost turned out to be small and entirely internal**, not the public break it
+looked like at first: only the **private** `TopologyMismatchBody.kind` (never part of the public
+API) needed to become `Option<String>`. The **public** `TopologyMismatchError.kind: String` and
+`is_not_attached()` are unchanged — the new state is a third string value, `"unknown"`, plus a new
+predicate `is_unknown()`, both additive. This matters because `embarch-core-client` has three
+external Cargo dependents outside this repo (`embarch-ui`, `embarch-umbrella`,
+`client-crate.md` decision 66) this task cannot inspect, and decision 66 already names "an
+api-only change here breaks `embarch-ui` or `embarch-umbrella` silently" as its own reversal
+trigger — a public field-type change was the one thing to avoid; an additive method and a new
+string value are not that.
+
+Recorded as `embarch-api` decision 73 in the new `decisions/failure-reporting.md`. Decision 71
+amended in place, dated, per this task's instruction (its first fact no longer holds): an absent
+`kind` now reads `"unknown"`, not `"mismatch"`. The other two facts (503/409 share one parse; both
+wrappers call `is_not_attached()` rather than `live_hardware_id.is_none()`) are unchanged, so
+`api/068`'s regression is not reintroduced.
+
+`tools.rs` and `cli.rs` both gained a third match arm (`mismatch.is_unknown()`), textually parallel
+to the existing two, before the general `Some(mismatch)` arm — same pattern `068`/`071` established.
+`client.rs`'s `not_attached_and_mismatch_render_distinct_leads` test comment ("reads the field, not
+`reason`'s wording") was re-read: still true, unchanged by the split. A new test,
+`a_body_with_no_kind_field_converts_to_an_unknown_error_with_no_fix_it_url`, covers the exact
+absent-`kind` case end to end (body parse → `TopologyMismatchError::from` → `is_unknown()`/
+`fix_it_url`/`Display`); the pre-existing body-level test was renamed
+(`an_older_core_body_has_no_kind_field`) since `TopologyMismatchBody.kind` no longer defaults to a
+string.
+
+**Verbatim mission split done** per `api/069`'s own proposed seam: decisions 57, 67, 71 moved
+unchanged into new `decisions/failure-reporting.md` (9.0 KB); 16, 24, 50 stayed in `surface.md`
+(now 4.9 KB, out of reserve). All three Must-not-delete facts intact (see `tasks/api/069`'s own
+Closed section for the detail). `interfaces/tools-topology.md` and `interfaces/tools-dev-bench.md`
+repointed their explicit decision-67 links to the new file; `interfaces/tools-topology.md`'s
+`validate` row also gained the third-condition sentence citing decision 73. `spec.md` untouched —
+its own 1,138 B reserve (filed against blocked `tasks/api/083`) was not spent.
+
+## Blocked
+
+Not on this task — filed and reported, not a reason to hold the branch. The verbatim split moved
+decision 67 to a new file, and three **out-of-scope** explicit `[decision 67](...)` links now name
+the wrong file: `embarch-ui/decisions/topology-tab.md`, `embarch-topology/decisions/links.md`, and
+the shared `suite/studies-guide.md` — none writable by an `api`-scope worker
+(`protocol.md` §3). `scripts/check-decision-refs.py` is RED on this in the `embarch-doc` gate as a
+result (1 of 11 `check-docs.py` checks). Filed as
+`/home/gabriel/Github/embarch/embarch-doc/inbox/suite-decision-67-stale-links-after-api-087-split.md`
+(scope `suite`, since it spans `ui`/`topology`/the shared guide) rather than fixed here.
