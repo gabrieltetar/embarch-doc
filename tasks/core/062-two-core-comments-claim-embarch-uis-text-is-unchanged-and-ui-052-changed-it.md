@@ -1,6 +1,6 @@
 # 062 — Two `embarch-core` comments say `embarch-ui`'s text is unchanged, and `ui/052` changed it
 
-**State:** open
+**State:** claimed by agent/core/062-core-comments-vs-ui-052, 2026-09-14 00:36
 **Source:** `ui/052`'s worker, filed mid-task as an `inbox/` drop, 2026-09-13; filed here by leg 114
 in `ui/052`'s own fold. `ui/052` fixed `embarch-ui`'s stale retention sentence; this is the other
 side its `Done when` list required checking rather than editing (`embarch-core` is not `ui/052`'s
@@ -8,6 +8,17 @@ scope). The body below is the worker's own text.
 **Scope:** core
 **Hardware:** none — comment text only. No board, no probe, no live Core, no deploy.
 **Owner:** no
+
+## Dispatch note (leg 115)
+
+**In reserve for `core` right now** — `embarch-core/decisions/auth.md` 11,356/12,288 B, **932 B
+left** (filed against `tasks/core/046`, which is `blocked`); `embarch-core/decisions/streams.md`
+11,219/12,288 B, **1,069 B left** (filed against `tasks/core/060`, which is `open` and was
+deliberately not dispatched beside this unit). Neither is a file this task needs to touch — this is
+source comments plus at most a `changelog.d/` fragment. **If your work does push a doc file into
+reserve, or leaves one there that nothing has filed, file
+`tasks/core/<NNN>-compact-core.md` in the same commit** (`tasks/README.md` has the shape;
+`scripts/check-task-numbers.py --next core` gives a safe number). Do not compact anything yourself.
 
 ## What
 
