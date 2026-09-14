@@ -11,6 +11,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- embarch-topology/spec.md compacted from 9,825 B to 9,110 B, back under its 90% reserve line.
 - spec.md now names select_probe as this crate's, and the three observable behaviours a caller sees.
 - Decisions 32/33 split from `embarch-topology/decisions/crate.md` to `decisions/probe-selection.md`; crate.md out of reserve.
 - `decisions/crate.md` split into `decisions/crate.md` + `decisions/consumer-boundary.md`; `spec.md` squeezed. Both out of reserve.
