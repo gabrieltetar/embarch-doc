@@ -128,3 +128,16 @@ blocked, `In flux: yes` per `046`'s dispatch note. Check
 sweep should not need either file regardless. If this sweep turns up a
 question worth recording, file it as `tasks/study-designer/<next>` rather than
 adding to `open.md`.
+
+## Ride-along, added by leg 111's supervisor at `046`'s fold
+
+**One word of `046`'s own fix points the wrong way, and it is a free fix for
+whoever opens `src/gatt_extract.rs` next.** `046` corrected the module doc's
+undercount to *"Two of the three failure modes decision 57 adds outright — the
+third, an empty walk, is [`ExtractError::NoSourceFilesFound`] **above**"*. The
+arithmetic is right and `046`'s reviewer confirmed it against decision 57's
+three named failure modes — but that variant's own doc comment sits **below**
+the module doc in file order, not above. Change the direction word; nothing
+else. It carries no decision claim, which is why `046`'s reviewer raised it as
+a nit rather than a finding, and why it is a ride-along here rather than a task
+of its own.
