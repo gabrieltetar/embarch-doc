@@ -1,6 +1,6 @@
 # 043 — Compact embarch-topology/spec.md
 
-**State:** open
+**State:** claimed by agent/topology/043-compact-topology, 2026-09-13 22:36
 **Source:** `topology/042` spent `spec.md`'s reserve adding the probe-selection section its
 `Done when` boxes required; the dispatch note for `topology/042` (leg 111) named this as the
 preferred outcome over shrinking the new section to dodge the line.
