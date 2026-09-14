@@ -1,6 +1,6 @@
 # 058 — Citation sweep: `embarch-core/src` remainder after `api.rs` and `study.rs`
 
-**State:** open
+**State:** claimed by agent/core/058-src-citation-sweep-remainder, 2026-09-13 22:35
 **Source:** leg 111's refill sweep, 2026-09-13. `core/054` swept `src/api.rs` (3 defects in 54) and
 `core/056` swept `src/study.rs` (10 defects in 109, the worst rate the series has produced).
 Neither filed a remainder task, so the ~92 citations in the rest of `src/` have had no owner since.
