@@ -1,6 +1,6 @@
 # 055 — `resolve_probe` keeps its own copy of a selection rule `embarch-topology` is about to expose
 
-**State:** open
+**State:** claimed by agent/core/055-resolve-probe-delegates-to-select-probe, 2026-09-13 18:26
 **Unparked 2026-09-13 by the leg that filed it**, one hour after filing: `tasks/topology/038` landed
 (code `96e86c68cc3383a7dd491ff3dfb5394f5a93f547`) and the function to call now exists as
 **`embarch_topology::hardware::select_probe(probes, probe_serial, action)`** — re-exported from
