@@ -1,6 +1,6 @@
 # 090 — `embarch-api/decisions/tests.md` is in reserve after decision 74
 
-**State:** claimed by agent/api/092-timeout-classification, 2026-09-13 19:18
+**State:** done — agent/api/092-timeout-classification, 2026-09-13
 
 Claimed together with `tasks/api/092`, which cannot land its decision-74 amendment until this
 split pays the headroom. Same worker, same branch, same commit.
@@ -44,10 +44,16 @@ above to make room for a sixth.
 
 ## Done when
 
-- [ ] `embarch-api/decisions/tests.md` is back under its reserve band — a mission split (the
+- [x] `embarch-api/decisions/tests.md` is back under its reserve band — a mission split (the
       smoke-harness tier vs. the mocked unit-test infrastructure, per above) is one honest way,
       not the only one.
-- [ ] `decisions.md`'s index table still points at whichever file each of 30, 46, 54, 56, 74 ends
+      Done exactly as proposed: decisions 30 and 74 (the smoke-harness tier) moved verbatim to a
+      new `decisions/smoke-harness.md` (3,936 B); 46, 54, 56 (mocked unit-test infrastructure) stay
+      in `tests.md` (9,941 B, down from 12,201). Both comfortably under the 12,288 B cap.
+- [x] `decisions.md`'s index table still points at whichever file each of 30, 46, 54, 56, 74 ends
       up in.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+      Split into two rows: "How far the tests reach" (46, 54, 56 → tests.md) and "The named
+      smoke-harness tier" (30, 74 → smoke-harness.md). `open.md`'s decision-30 citation, the one
+      other in-repo link that pointed at the old location, updated too.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
