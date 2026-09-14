@@ -1,6 +1,6 @@
 # 057 — Serve the outpost's own answer from Core: the code half of suite decision 4
 
-**State:** open
+**State:** claimed by agent/core/057-serve-outposts-own-answer, 2026-09-13 20:33
 **Source:** `tasks/suite/018`, executed by the supervisor's own hands on 2026-09-13 as
 [suite decision 4](../../suite/decisions.md). That decision named the home and
 **deliberately did not move the code**; this is the move.
@@ -8,6 +8,17 @@
 **Hardware:** none — the analysis is pure computation over a rendered CSV. No board, no probe, no
 live Core, no deploy. A committed capture fixture is enough, and `embarch-ui` already has one.
 **Owner:** no
+
+**Reserve (told at dispatch, 2026-09-13 20:33):** one `embarch-core` doc file is in reserve —
+`decisions/auth.md`, **92.4%**, 932 B left, filed against `tasks/core/046` which is **`blocked`
+on `In flux: yes`**. Nothing else in this sub-project is in reserve, so **the new numbered
+decision this task owes must not go in `auth.md`** — it is a study/stream route decision and
+belongs in the topic file that already holds the stream surface. If you find yourself forced into
+`auth.md` anyway, `DOC-COMPACTION.md` §2 applies: compact that file as part of this unit, carrying
+`tasks/core/046`'s `Must not delete:` list and closing only that file's item. And if your work
+pushes any `embarch-core` doc file into its last 10%, file
+`tasks/core/<next>-compact-core.md` in the same commit (`check-task-numbers.py --next core` for
+the number — never `ls | tail`).
 
 ## What
 
