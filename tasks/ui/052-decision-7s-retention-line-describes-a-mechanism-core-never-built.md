@@ -1,6 +1,6 @@
 # 052 — `embarch-ui` decision 7's retention line describes a mechanism Core never built
 
-**State:** claimed by agent/ui/052-decision-7-retention-line, 2026-09-13 23:45
+**State:** done — agent/ui/052-decision-7-retention-line, 2026-09-13.
 **Source:** an `inbox/` drop written by `core/058`'s worker mid-sweep, 2026-09-13, filed here by leg
 112. It found this while checking `embarch-core/src/main.rs`'s citation of `embarch-ui` decision 7
 and **could not fix it — `embarch-ui` is not that worker's scope.** The drop is reproduced in full
@@ -52,14 +52,50 @@ commit message.
 
 ## Done when
 
-- [ ] `embarch-ui/decisions/debug-tab.md` decision 7 either describes the actual daily-rolling
+- [x] `embarch-ui/decisions/debug-tab.md` decision 7 either describes the actual daily-rolling
       mechanism Core built, or is explicitly marked as describing an earlier design that shipped
       differently — one or the other, chosen deliberately and justified in the commit message.
-- [ ] Checked whether any other `embarch-ui` file (`spec.md`, source comments, shipped strings)
-      repeats the "size-capped" claim and needs the same fix.
-- [ ] `embarch-core`'s two comments re-read to confirm they now agree with whatever this task lands —
+      **Chosen: marked as describing an earlier design that shipped differently**, via a dated
+      blockquote correction in the house style already used by `embarch-outpost/decisions/clocks.md`
+      ("It used to say... corrected \<date\>, \<task\>"). The original sentence is left standing —
+      it is the record of what was proposed — with the correction naming what actually shipped
+      (Core's daily-rolling file, `max_log_files(7)`, `embarch-core` decision 16) and why nothing
+      in `embarch-ui` needed rebuilding: the UI never reads that file directly, only the data Core
+      hands it, so it has no retention policy of its own to correct.
+- [x] Checked whether any other `embarch-ui` file (`spec.md`, source comments, shipped strings)
+      repeats the "size-capped" claim and needs the same fix. Grepped `embarch-ui`'s code repo
+      (`.rs`, `.ts`, `.tsx`, `.md`) and `embarch-doc/embarch-ui/{spec.md,decisions.md,open.md}` for
+      `size-capped`/`size capped`: no other occurrence. Decision 7 was the only place it lived.
+- [x] `embarch-core`'s two comments re-read to confirm they now agree with whatever this task lands —
       `core/058` corrected them to stop claiming a correction exists; if this task *makes* one exist,
       they may want updating again. **That is a finding for `inbox/`, not an edit**: `embarch-core`
-      is not this task's scope.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+      is not this task's scope. Filed:
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/core-embarch-ui-052-corrected-decision-7.md`
+      — this task did *not* make `embarch-ui` decision 7 read as daily-rolling (it stayed marked as
+      an abandoned proposal), so `core/058`'s two comments likely still agree as written; flagged
+      for `embarch-core`'s own worker to confirm rather than assumed here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `check-docs.py`: 10 of 11 PASS; the one RED
+      (`check-links.py`) is pre-existing baseline noise from `embarch-fleet` being an empty
+      placeholder directory in this worktree (per this repo's own "a leg never checks it out" rule),
+      confirmed unrelated to this change by stashing the edit and re-running — same RED, same lines,
+      none touching `embarch-ui/*`.
+- [x] `changelog.d/` fragment. `changelog.d/ui-debug-tab-retention-line.fixed.md`.
+
+## Outcome
+
+Verified the drop's claim directly rather than trusting it: `embarch-core/src/main.rs`'s
+`build_log_file_writer` uses `Rotation::DAILY` + `.max_log_files(7)`, and
+`embarch-core/decisions/logging.md` decision 16 (title: "One daily-rolling log file, one
+implementation, three front ends") confirms it in prose, including the line "which had proposed a
+second size-capped logfile without knowing this one existed" — i.e. decision 7's retention sentence
+was `embarch-ui`'s original proposal, abandoned once Core's real logfile was found, never corrected
+in the doc. The drop was accurate.
+
+**Not a decision reversal**: nothing about what `embarch-ui` decided (never read Core's file
+directly, hand the tab whatever Core serves) changed. Only a factual, unqualified sentence about a
+mechanism's shape was stale. No new numbered decision authored, decision 7 not renumbered or
+retired.
+
+No code changes: `embarch-ui`'s code repo has no occurrence of the stale claim (checked by grep),
+so the code branch `agent/ui/052-decision-7-retention-line` carries no commits — pushed as-is,
+unused, per the task's own instruction for that case.
