@@ -10,6 +10,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `resolve_probe` now calls `embarch_topology::select_probe` instead of keeping its own copy (decision 61).
 - decisions/studies.md 43 and decisions/enrollment.md 57 now say their embarch-ui hand-offs landed, not still owed.
 - `core`: `decisions/flashing.md` split — backend/vendor-tool decisions (36, 49, 52, 54) moved verbatim to new `decisions/flash-backend.md`.
 - `decisions/surfaces.md` split along its enrollment-surface section into `decisions/enrollment.md`, clearing reserve (task 038).
