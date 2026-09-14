@@ -19,6 +19,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- embarch-api/decisions/tests.md split: smoke-harness tier (30, 74) moved to decisions/smoke-harness.md, out of reserve.
 - embarch-api/decisions/shape.md split: decisions 53, 64 moved verbatim to new decisions/config-retirement.md.
 - `interfaces/config.md`'s `[dev_bench]` section moved verbatim to `interfaces/dev-bench-config.md`, out of size reserve.
 - `dev_bench_hello` now says whose build `firmware_version` is: the bench's, corresponding to `requires.dev_bench_version` — [tools-dev-bench.md](../embarch-api/interfaces/tools-dev-bench.md).
@@ -45,7 +46,8 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
-- Smoke harness's real bound was `status_timeout_secs` (10s), not a reachability poll; fixture sets 60s, `CoreClient` names the timeout on failure ([decisions](../embarch-api/decisions/tests.md) 74).
+- CoreClient::dispatch names the timeout parenthetical only on a real reqwest timeout, not every configured one.
+- Smoke harness's real bound was `status_timeout_secs` (10s), not a reachability poll; fixture sets 60s, `CoreClient` names the timeout on failure (decision 74; [decisions.md](../embarch-api/decisions.md) routes a number to its file — 74 moved to `decisions/smoke-harness.md` the same day). **Amended 2026-09-13 (`tasks/api/092`): it names the timeout only when the failure actually was one.**
 - A kind-less validate mismatch now reads unknown, not mismatch, and drops fix_it_url (embarch-api decision 73).
 - Four more embarch-core-client doc comments repointed off stale `embarch-core` decision 22, and the enroll routes kept named as Core's rather than `embarch-topology` decision 14's.
 - A lagged-recovery instruction named a nonexistent `study_steps` tool; enroll_probe citations agree on `embarch-topology` decision 14.
@@ -91,6 +93,6 @@
 - api: decision 66 records why `embarch-core-client` stays in this repo, not a tenth; `modules.md` row corrected post-decision-56. `decisions/core-link.md`
 - - `embarch-api` decision 26 retitled about intent; the false dev-bench-port fallback claim is gone, per [decisions/core-link.md](../embarch-api/decisions/core-link.md).
 - The drain's decoding policy is its own decision (65), split out of decision 18 into `decisions/log-capture.md`.
-- Refusing retired config keys by name is now the default; `artifact_path_for_core`'s tolerance is the recorded exception (decisions/shape.md 64).
+- Refusing retired config keys by name is now the default; `artifact_path_for_core`'s tolerance is the recorded exception (decision 64; [decisions.md](../embarch-api/decisions.md) routes a number to its file — 64 moved to `decisions/config-retirement.md` on 2026-09-13).
 - `validated_at_utc_ms` is `Option<u64>`; an older Core parses, matching 13 other fields (decision 58).
 - `schema_version` is on every `--json` and MCP object, stamped by one serializer; `error_kind` retired unbuilt — Core serves no error codes. See embarch-api/decisions/surface.md 16, 24, 50.

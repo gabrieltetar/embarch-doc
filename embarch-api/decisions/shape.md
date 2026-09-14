@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-13.
 
-What this crate is, what it deliberately is not, and the two one-way relationships that keep it that way. **How far its tests reach moved to [tests.md](tests.md) on 2026-09-06** — decisions 30, 46 and 54, verbatim — because one file carrying both missions had 7 bytes left against its cap. **Retired config keys and the one target a `static` project has moved to [config-retirement.md](config-retirement.md) on 2026-09-13** — decisions 53 and 64, verbatim — for the same reason.
+What this crate is, what it deliberately is not, and the two one-way relationships that keep it that way. **How far its tests reach moved to [tests.md](tests.md) on 2026-09-06** — decisions 30, 46 and 54, verbatim — because one file carrying both missions had 7 bytes left against its cap. **Decision 30 moved on again on 2026-09-13, to [smoke-harness.md](smoke-harness.md)**; [../decisions.md](../decisions.md) is what routes a number to its current file, and it is the reference to prefer over any of these paths. **Retired config keys and the one target a `static` project has moved to [config-retirement.md](config-retirement.md) on 2026-09-13** — decisions 53 and 64, verbatim — for the same reason.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Test reach: [tests.md](tests.md). Retired config keys: [config-retirement.md](config-retirement.md).
 
