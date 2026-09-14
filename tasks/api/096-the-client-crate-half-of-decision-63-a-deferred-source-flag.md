@@ -4,7 +4,7 @@
 **Source:** `tasks/core/061`, split by leg 114 (2026-09-13). That task was written as one unit spanning
 **two code repos** — `embarch-core` (where the flag is set) and `embarch-api` (the client crate that
 deserializes it, and the tool description that explains it). A worker gets one task in one repo
-([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md) §5), so it is two tasks. This is
+(`../../embarch-fleet/protocol.md` §5), so it is two tasks. This is
 the `embarch-api` half; `tasks/core/061` is the `embarch-core` half and is now narrowed to that repo.
 **Scope:** api
 **Hardware:** none — a struct field and two doc strings. No board, no probe, no live Core, no deploy.
@@ -58,5 +58,4 @@ is being written against this spelling in parallel.
       declared correctly and captured nothing.
 - [ ] A test pins that the field deserializes as `None` when Core omits it, and as `Some(true)` when
       Core sends it.
-- [ ] Gate green ([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md) §10);
-      `changelog.d/` fragment.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment.

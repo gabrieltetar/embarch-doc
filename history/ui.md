@@ -24,6 +24,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Decision 7's retention line described a size-capped logfile that was never built; Core's is daily-rolling.
 - `study_designer.rs`'s 74 decision citations checked; two bare decision-40 citations given the `embarch-study-designer` prefix.
 - `trace.rs`'s `Lane::unnamed` comment cited a nonexistent decision 35; now a plain, verified statement.
 - `assets/app.js`'s `delay_before_ms` comments cite decision 42, not 40; `decisions/surfaces.md` pointer fixed to `enrollment.md`.
