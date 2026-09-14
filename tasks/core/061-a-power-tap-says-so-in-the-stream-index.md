@@ -1,9 +1,14 @@
 # 061 — Implement decision 63: a `PowerFrontEnd` tap says so in the stream index
 
-**State:** open
+**State:** claimed by agent/core/061-power-tap-says-so-in-stream-index, 2026-09-13 23:43
 **Source:** `suite/029` (leg 113, 2026-09-13), which chose the shape and recorded it as
 [`embarch-core` decision 63](../../embarch-core/decisions/streams.md). This task is that decision's
 implementation and nothing else — **the design question is settled; do not reopen it.**
+**Narrowed to one repo by leg 114 (2026-09-13).** As filed it spanned `embarch-core` **and**
+`embarch-api`, which no single worker may do ([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md)
+§5: one task, one repo, one branch). The `embarch-api` half — the `StudyStreamEntry` field in
+`crates/embarch-core-client/src/client.rs` and the `list_study_streams` description in `src/tools.rs` —
+is now **`tasks/api/096`**, running in parallel with this one. **This task is `embarch-core` only.**
 **Scope:** core
 **Hardware:** none to build or test it. Confirming the end state against a real study needs the
 dev-bench board, and that is not this task's business — say so in your report as a debt.
@@ -17,21 +22,24 @@ captures nothing, because its decision 24 defers the front end. Today the only e
 and produced nothing"* — an authoring outcome. Asking for hardware that does not exist is currently
 indistinguishable from mis-naming a signal.
 
-Decision 63's shape, in three parts:
+Decision 63's shape. **Your part is the one in `embarch-core`; the other two are `tasks/api/096` and
+are listed here only so you can see the whole:**
 
-1. **`embarch-api/crates/embarch-core-client/src/client.rs`** — add a fourth
-   `#[serde(default)] pub <name>: Option<bool>` to `StudyStreamEntry`, beside `named`, `timed` and
-   `self_excluded`, documented in the same voice: what `Some(false)` means, and that `None` is a Core
-   that predates the field. Name it for the fact, not for power — a second deferred source later must
-   fit the same field.
-2. **`embarch-core`** — set it where the stream index entry is built, from the tap's declared
-   `StreamSource`, and set `note` with the prose for a person. **Cite `embarch-dev-bench` decision 24
-   at that site**: Core *states* this fact, it does not measure it, and decision 63 says so explicitly.
-3. **`embarch-api/src/tools.rs`** — `list_study_streams`' `#[tool(description = ...)]` gains a sentence
-   distinguishing this from a plain `bytes_written: 0`. The description already contains the sentence
-   that creates the ambiguity (*"An entry with bytes_written 0 is a tap that was declared and produced
-   nothing…"*); the new sentence sits with it, and `streams_json` in the same file is what surfaces the
-   flag.
+1. *(`api/096`, not you)* `embarch-api/crates/embarch-core-client/src/client.rs` — the fourth
+   `#[serde(default)] Option<bool>` on the client crate's own `StudyStreamEntry`.
+2. **`embarch-core` — yours.** Add the fourth `#[serde(default)] pub source_deferred: Option<bool>` to
+   the stream-index entry this repo serves (`src/stream_store.rs` ~line 231 and the response struct in
+   `src/study.rs` ~2923 both carry `self_excluded`; follow it exactly), **set it where the entry is
+   built** from the tap's declared `StreamSource`, and set `note` with the prose for a person.
+   **Cite `embarch-dev-bench` decision 24 at that site**: Core *states* this fact, it does not measure
+   it, and decision 63 says so explicitly.
+3. *(`api/096`, not you)* `embarch-api/src/tools.rs` — the `list_study_streams` description sentence.
+
+**The field name is pinned: `source_deferred`.** Leg 114 pinned it rather than leaving it to whichever
+half ran first, because `api/096` is being written against this spelling in parallel. Decision 63 left
+the name open ("name it for the fact, not for power"); the roadmap's own word for power sampling is
+*deferred, not cancelled*, so the name carries the general fact and a second deferred source later
+fits the same field. **Do not rename it.**
 
 ## Watch for
 
@@ -48,6 +56,8 @@ Decision 63's shape, in three parts:
   roadmap calls power sampling *deferred, not cancelled*, and a study file written today against a tap
   the firmware will support later is not a mistake to reject. Acceptance stays.
 - **Do not implement power capture.** Nothing here changes what any tap captures.
+- **Your repo is `embarch-core` only.** Do not edit `embarch-api` — not the client crate, not
+  `tools.rs`. `api/096` is running in parallel and a second worker is in that repo.
 - **`embarch-core/decisions/streams.md` is in reserve** (11,219 B, 160 B inside the floor) and
   `tasks/core/060` is filed against it, `open`, not blocked. Decision 63's entry is already written —
   you should be adding no doc prose there at all. If you must, take the bytes from 060's budget and say
@@ -64,7 +74,7 @@ Decision 63's shape, in three parts:
 
 - [ ] A study declaring a `PowerFrontEnd` tap produces evidence in `GET /study/{id}/streams`
       distinguishable from a tap that was declared correctly and captured nothing.
-- [ ] `list_study_streams`' tool description says how to tell the two apart.
 - [ ] A test pins the distinction — a power tap and a genuinely-empty tap of another source do not
       produce the same entry.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment per repo touched.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment.
+- *(`list_study_streams`' description is `api/096`'s box, not yours.)*
