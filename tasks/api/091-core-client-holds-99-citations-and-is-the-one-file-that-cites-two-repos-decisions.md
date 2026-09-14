@@ -1,8 +1,13 @@
-# 089 — `embarch-core-client/src/client.rs` holds 99 citations and is the one file that cites two repos' decisions
+# 091 — `embarch-core-client/src/client.rs` holds 99 citations and is the one file that cites two repos' decisions
 
 **State:** open
 **Source:** the leg of 2026-09-13 18:3x, counting every repo's source citations while filling the
-queue. `embarch-api` carries **297** `decision[s] N` lines across `src/`, `crates/` and `tests/` —
+queue. **Filed as `089` and renumbered to `091` at 19:2x by the leg that filed it.** `api/088`'s
+worker independently filed its own reserve task as `089` from a branch cut before the refill commit
+landed, so two files claimed one number and both are in history —
+`check-task-numbers.py` flags a number the tree holds whose history carries a different slug, so
+`089` is burned and neither file may keep it. The worker's went to `090`, this one to `091`.
+Nothing about either task changed. `embarch-api` carries **297** `decision[s] N` lines across `src/`, `crates/` and `tests/` —
 the second-largest source citation surface in the suite after `embarch-study-designer` — and **no
 sweep of it has ever been filed or run.** `client.rs` alone is a third of it.
 **Scope:** api
