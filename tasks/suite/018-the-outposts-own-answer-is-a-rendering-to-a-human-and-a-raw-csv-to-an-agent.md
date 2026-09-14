@@ -1,6 +1,17 @@
 # 018 — The one question `embarch-outpost` exists to answer is answerable by a human and not by an agent
 
-**State:** open
+**State:** open — **announced and parked, 2026-09-13 19:21, `ts` `1789348880.412099`**
+(`#embarch-fleet`, `C0BUKTL2FPC`). The 30-minute window opened at that post and is **not to be
+restarted**: `.claude/leg.md` and `../../embarch-fleet/ops.md` §4 both say a leg that ends before
+the window closes leaves the `ts` here and the *next* leg completes it. Poll with
+`python3 ../../embarch-fleet/scripts/fleet-read.py --thread 1789348880.412099`.
+
+**What was announced, which bounds what may be executed under this window:** settle *where the
+outpost's trace analysis lives* as a numbered decision, naming the property below — **not** move
+`trace.rs`'s 3,892 lines. The code move follows as separately queued tasks. A reply saying go runs
+it immediately; a cancel drops this back to plain `open` with the reply quoted here.
+
+The leg that announced it had all four of its units already dispatched and did **not** execute it.
 **Source:** suite review pass 2026-09-06, dimension 3 (one philosophy). Code-confirmed.
 **Scope:** suite
 **Hardware:** none
