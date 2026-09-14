@@ -1,6 +1,6 @@
 # 044 — 435 citations in `src/` and no sweep has ever been filed for this repo
 
-**State:** open
+**State:** claimed by agent/study-designer/044-src-citation-sweep, 2026-09-13 18:27
 **Source:** the leg of 2026-09-13 17:5x, counting every repo's source while filing refill work.
 `embarch-study-designer` has the **largest** source citation surface in the suite — 435 lines
 matching `decision[s] N` across `src/` — and unlike `embarch-core`, `embarch-umbrella`,
