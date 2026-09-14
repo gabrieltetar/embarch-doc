@@ -1,6 +1,6 @@
 # 066 — The ~104 citations outside `doctor.rs` are the half `umbrella/065` did not reach
 
-**State:** open
+**State:** claimed by agent/umbrella/066-src-citation-sweep, 2026-09-13 19:18
 **Source:** `tasks/umbrella/065` swept `src/doctor.rs` end to end on 2026-09-13 — ~129 citations
 across checks 1–17, two wrong numbers found (both `decision 39` where the claim belonged to decision
 33) and, for the first time in four days of sweeps, **zero false sentences.** That sweep stopped at
