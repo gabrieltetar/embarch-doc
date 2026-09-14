@@ -1,6 +1,6 @@
 # 042 — `spec.md` says nothing about probe selection, and that is now the crate's most-consumed entry point
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, branch `agent/topology/042-spec-md-probe-selection`.
 **Source:** the supervisor's answer to `DOC-COMPACTION-PASS.md`'s human question while folding
 `tasks/topology/039`, 2026-09-13. That unit split decisions 32 and 33 out of
 `decisions/crate.md` into a new `decisions/probe-selection.md` and paid the size debt cleanly. The
@@ -65,3 +65,40 @@ sweep will ever visit it.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/` fragment. A numbered decision only if something was actually decided —
       writing down what is already true decides nothing.
+
+## Dispatch note — leg 111, 2026-09-13
+
+**Read this before you write a word into `spec.md`: the "it has room" line above is now wrong, and
+that is the one thing in this task file you must not take on trust.** Measured today:
+`embarch-topology/spec.md` is **9,037 / 10,240 B — 1,203 B of headroom**, and `check-doc-size.py`'s
+reserve floor is **1,200 B**. So the file is **three bytes** from its reserve band. Any section
+that actually answers this task's two substantive `Done when` boxes crosses it.
+
+**That is not a reason to write less. It is a reason to plan for the debt, which is exactly what
+the reserve band is for** (`.claude/leg.md`: a cap is a debt, not a wall — the gate still passes
+inside reserve). Two acceptable outcomes, in order of preference:
+
+1. **Write the section properly and file the debt in the same commit** as
+   `tasks/topology/043-compact-topology.md` — **`tasks/topology/`, your own scope**, never
+   `tasks/doc/`, which `check-ownership.py` refuses to every worker. `tasks/README.md` has the
+   shape; it must carry a literal `**Compacts:** embarch-topology/spec.md`, a `**Size debt due:**`
+   date (a park with no date is the one state the size gate fails), an `**In flux:**` answer
+   **for that file specifically**, and a `**Must not delete:**` list. You are the only actor who
+   will ever hold the context for the flux answer, which is the whole reason you file it rather
+   than the supervisor.
+2. **Or spend a few hundred bytes of `spec.md` on its way past** — `decisions/crate.md` just went
+   12,075 B → 5,054 B in `topology/039`, so if some of `spec.md` is prose that the split moved into
+   `decisions/probe-selection.md` and left restated here, deleting it is free and better than
+   filing a debt. Check before assuming; do not manufacture a compaction to dodge a task file.
+
+**Do not shrink the section to stay under the line.** A `spec.md` that technically fits and still
+does not tell a caller what happens with zero probes has failed this task, and the reserve band
+exists precisely so you do not have to make that trade.
+
+Nothing else in `embarch-topology` is in reserve: `open.md` is 2,973 / 5,120 B,
+`decisions/probe-selection.md` 5,437 / 12,288 B.
+
+**One repo, one branch, one task.** Code repo `embarch-topology` (you may not need it at all —
+this is one documentation file), docs in `embarch-doc`, both on
+`agent/topology/042-spec-md-probe-selection`. `embarch-topology` has no path-dep siblings, so its
+worktree needs no symlinks.
