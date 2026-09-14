@@ -1,6 +1,11 @@
 # 092 — `dispatch` stamps "(request timeout Ns)" on failures that were never timeouts
 
-**State:** open
+**State:** claimed by agent/api/092-timeout-classification, 2026-09-13 19:18
+
+Dispatched with `tasks/api/090-compact-api.md` folded into the same unit, per the "Do `090` first,
+or in the same unit" instruction below. The split is to land **first**; if budget runs out after
+it, `090` closes `done` and this task returns to `open` with the split paid and the headroom
+banked.
 **Source:** `embarch-reviewer`, reviewing landed unit `api/088` (code
 `be04f9e8a6410bf9aedd36fad3a7a541566c4540`, doc `6ef2131809969c4606e4816ab2a3c01f6d5b0a05`).
 Finding accepted by the leg of 2026-09-13 19:4x and filed rather than fixed in the fold — see

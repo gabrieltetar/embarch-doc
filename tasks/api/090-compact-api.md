@@ -1,6 +1,9 @@
 # 090 — `embarch-api/decisions/tests.md` is in reserve after decision 74
 
-**State:** open
+**State:** claimed by agent/api/092-timeout-classification, 2026-09-13 19:18
+
+Claimed together with `tasks/api/092`, which cannot land its decision-74 amendment until this
+split pays the headroom. Same worker, same branch, same commit.
 **Source:** `api/088`'s decision 74 (the smoke harness's real timeout bound) pushed this file into
 its reserve band; `DOC-BUDGET.md` §2. **Filed by its worker as `089` and renumbered to `090` by the
 supervisor at landing**: the leg had already issued `tasks/api/089` in a refill commit this worker's
