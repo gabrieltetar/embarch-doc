@@ -11,6 +11,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- `embarch-ui/open.md` squeezed back out of reserve, 4,033 → 3,879 B; every trigger and citation kept.
 - embarch-ui now fetches the Trace tab load repartition from embarch-core (GET .../load) instead of recomputing it locally (suite decision 4).
 - `embarch-ui/open.md` compacted (squeeze, not split): 4,341 -> 3,841 B, out of reserve.
 - Decisions 19, 21 split verbatim off decisions/trace-view.md into decisions/trace-rows.md; decision 10 stays put.
