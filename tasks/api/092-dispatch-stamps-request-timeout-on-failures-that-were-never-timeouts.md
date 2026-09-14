@@ -1,6 +1,6 @@
 # 092 — `dispatch` stamps "(request timeout Ns)" on failures that were never timeouts
 
-**State:** claimed by agent/api/092-timeout-classification, 2026-09-13 19:18
+**State:** done — agent/api/092-timeout-classification, 2026-09-13
 
 Dispatched with `tasks/api/090-compact-api.md` folded into the same unit, per the "Do `090` first,
 or in the same unit" instruction below. The split is to land **first**; if budget runs out after
@@ -77,12 +77,27 @@ before (2026-09-05, `zephyr.md`, 96 B left) and it is the failure `DOC-COMPACTIO
 
 ## Done when
 
-- [ ] `dispatch` names the timeout only when the failure was one.
-- [ ] Decision 74 carries a dated amendment saying so, in `decisions/tests.md`, with the headroom to
+- [x] `dispatch` names the timeout only when the failure was one.
+      Gated on `reqwest::Error::is_timeout()` (`crates/embarch-core-client/src/client.rs`,
+      `dispatch`). Two new tests in `tests/core_client_http.rs` pin both directions:
+      `the_timeout_parenthetical_names_only_a_real_timeout` (a `BlackHole` mock, real timeout, bound
+      still named) and `a_connection_refused_never_reads_as_a_timeout` (port 1, refused, no
+      parenthetical).
+- [x] Decision 74 carries a dated amendment saying so, in `decisions/tests.md`, with the headroom to
       hold it — which means `tasks/api/090` is paid first or alongside.
-- [ ] The decision-50 question above is answered in writing, either way.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+      `090` landed first in this same unit, and moved decision 74 itself to a new sibling file,
+      `decisions/smoke-harness.md` — the amendment lives there, beside the entry it corrects, with
+      8,352 B of headroom to spare. Not `decisions/tests.md` verbatim as this task's checkbox
+      names it, because that file no longer holds decision 74 after the split; the intent (a dated
+      amendment beside 74, with room) is met.
+- [x] The decision-50 question above is answered in writing, either way.
+      Answered in the amendment: naming a real, confirmed timeout's bound does not reopen decision
+      50. Decision 50 refused *inventing* a failure kind; a measured duration on a failure already
+      confirmed (via `is_timeout()`) to be a timeout is not a kind, it is a fact about a fact
+      already established — the opposite of what `api/088` had actually shipped (a kind invented
+      from "a timeout was configured", never checked against what happened).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
 
 ## Reserve, for planning
 

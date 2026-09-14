@@ -1,0 +1,19 @@
+# embarch-api decisions: The named smoke-harness tier
+
+**Status:** active, 2026-09-13.
+
+The named smoke-harness tier that the live-run methodology became, and the real bound it runs under when a supervisor's concurrent worker load stretches wall time. Split out of [tests.md](tests.md) on 2026-09-13, verbatim: that file carried this tier and the mocked unit-test infrastructure in one 12,201 B body against a 12,288 B cap.
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Mocked unit-test infrastructure: [tests.md](tests.md).
+
+### 30 — A named smoke-harness tier, because the real methodology was unnamed
+**Every real bug found in this project to date came from a live run** against a real Core or a real repo, not from the still-unwritten unit-test suite. That is a real, working methodology, just an unnamed and unrepeatable one. So it gets a name and a script: a throwaway Core instance plus a synthetic fixture repo, re-running a fixed sequence of calls. Not a substitute for the mocked unit tests, which remain the acceptance criteria below the process boundary.
+
+**Written 2026-09-12** (`tasks/api/075`): `tests/smoke_harness.rs`. The throwaway Core is `tests/support::MockCore` (decision 46's mock, a real loopback HTTP server this test starts and tears down — not the live, deployed Core the fleet forbids touching); the synthetic fixture repo is a temp directory holding one `discovery = "static"` project whose `build_command` is a shell one-liner. The fixed sequence runs the compiled binary itself as a subprocess — `list-projects`, `list-targets`, `status`, `build` twice — which is what distinguishes this tier from decision 46's: nothing there ever exercises `main.rs`'s startup path or `cli::run`'s dispatch. `#[cfg(unix)]`, the same limit decision 46's own end-to-end tests already have.
+
+### 74 — The smoke harness's bound is CoreClient's per-request timeout, not a reachability poll
+A supervisor's concurrent worker load once failed `smoke_sequence_against_a_throwaway_core_and_a_fixture_repo` (30.53s vs. 0.29–0.35s quiet baselines), then passed on retry — a hundredfold wall-time jump, nothing else different. **Located, not assumed:** no reachability-poll loop exists here or in `tests/support::MockCore` — `MockCore::start` binds its listener before returning, so nothing waits for a server to *come up*. The sequence's one HTTP call (`status`) is bounded by `CoreConfig::status_timeout_secs`, defaulting to 10s (`crates/embarch-core-client/src/lib.rs`). Reproduced directly: artificial CPU contention on this host stretched the identical call from 0.30s to 2.5s, confirming scheduling delay, not logic.
+
+Fixed by raising the fixture's own `status_timeout_secs` to 60s (`tests/smoke_harness.rs`), not the crate-wide default real hardware calls still want short. `CoreClient::dispatch` now names the configured timeout in its error context on every failure, so a caller sees *how long* it waited, not only that `reqwest` errored.
+
+**Amended 2026-09-13** (`tasks/api/092`): "on every failure" was wrong. `dispatch` wrapped every `send()` failure that had a configured timeout with the parenthetical, whether or not `reqwest::Error::is_timeout()` said so — a connection-refused, a DNS failure and a TLS error all read as a timeout. That is the shape decision 50 refused (a coarse derived signal invites a caller to treat it as real classification) in a form coarser than the one decision 50 rejected: not derived from an observed fact, but from a timeout duration having been configured for the call at all. Fixed to gate the parenthetical on `is_timeout()`; a real timeout still names its bound, anything else says what it actually was or says nothing extra. This does not reopen decision 50: a measured duration on a confirmed timeout is not a *kind*, and decision 50's objection was to inventing a kind, not to reporting a real number about a real timeout.
