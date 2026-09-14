@@ -4,7 +4,7 @@
 **Source:** `tasks/core/061`, split by leg 114 (2026-09-13). That task was written as one unit spanning
 **two code repos** — `embarch-core` (where the flag is set) and `embarch-api` (the client crate that
 deserializes it, and the tool description that explains it). A worker gets one task in one repo
-([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md) §5), so it is two tasks. This is
+([`../../../embarch-fleet/protocol.md`](../../../embarch-fleet/protocol.md) §5), so it is two tasks. This is
 the `embarch-api` half; `tasks/core/061` is the `embarch-core` half and is now narrowed to that repo.
 **Scope:** api
 **Hardware:** none — a struct field and two doc strings. No board, no probe, no live Core, no deploy.
@@ -52,11 +52,29 @@ is being written against this spelling in parallel.
 
 ## Done when
 
-- [ ] `StudyStreamEntry` carries `source_deferred: Option<bool>` with `#[serde(default)]`, documented
+- [x] `StudyStreamEntry` carries `source_deferred: Option<bool>` with `#[serde(default)]`, documented
       in the voice of its three neighbours.
-- [ ] `list_study_streams`' description says how to tell a deferred-source tap from a tap that was
-      declared correctly and captured nothing.
-- [ ] A test pins that the field deserializes as `None` when Core omits it, and as `Some(true)` when
-      Core sends it.
-- [ ] Gate green ([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md) §10);
+- [x] `list_study_streams`' description says how to tell a deferred-source tap from a tap that was
+      declared correctly and captured nothing. `streams_json` in the same file renders `StreamRef`
+      (`embarch_study_designer`), not `StudyStreamEntry` — it never carried `named`/`timed`/
+      `self_excluded` either, so the "if it renders the other three" condition is false and nothing
+      there changes. The new sentence says so explicitly rather than implying this listing carries
+      the flag.
+- [x] A test pins that the field deserializes as `None` when Core omits it, and as `Some(true)` when
+      Core sends it (`source_deferred_defaults_to_none_and_round_trips_some_true`).
+- [x] Gate green ([`../../../embarch-fleet/protocol.md`](../../../embarch-fleet/protocol.md) §10);
       `changelog.d/` fragment.
+
+**Also fixed in this unit:** this file's own two `../../embarch-fleet/protocol.md` links were one
+`../` short (a depth-2 `tasks/<scope>/` file needs three, per every other such citation in `tasks/`,
+e.g. `tasks/core/033`, `tasks/study-designer/026`) and failed `check-links.py`. Corrected to
+`../../../embarch-fleet/protocol.md` in both places. **`tasks/core/061-a-power-tap-says-so-in-the-
+stream-index.md` has the identical bug** (same leg-114 split, same off-by-one) and is out of scope
+here (`core`, not `api`) — left alone; reported via `inbox/`.
+
+**Setup this unit needed and left in place:** the code worktree's sibling path-deps
+(`embarch-study-designer`, `embarch-topology`) were not symlinked at dispatch; created at
+`embarch-api/.worktrees/embarch-api/{embarch-study-designer,embarch-topology}` per `.claude/leg.md`'s
+table. Likewise `embarch-doc/.worktrees/embarch-doc/embarch-fleet` (beside every worktree there, not
+inside any of them) was missing and is what let `suite/*.md`, `features.d/README.md` and
+`status.d/README.md`'s own fleet links resolve.
