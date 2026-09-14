@@ -1,6 +1,6 @@
 # 056 — `study.rs` is `embarch-core`'s largest unswept citation surface, and `api.rs` was swept around it
 
-**State:** claimed by agent/core/056-study-rs-citations, 2026-09-13 19:18
+**State:** done — worker agent/core/056-study-rs-citations, 2026-09-13. See "Result" below.
 **Source:** `tasks/core/054` swept `embarch-core/src/api.rs` (54 citations, three wrong) and the
 supervisor log's carry-forward recorded that **no sweep had been filed for `embarch-core`'s own
 source as a whole**. The leg of 2026-09-13 17:5x counted the repo: **240 citations across `src/`,
@@ -64,10 +64,57 @@ comment-only so the count stays honest.
 
 ## Done when
 
-- [ ] Every citation in the range you took is confirmed against the cited body or fixed, with
+- [x] Every citation in the range you took is confirmed against the cited body or fixed, with
       **wrong numbers and false sentences counted separately**.
-- [ ] Cross-repo citations carry their repo name.
-- [ ] A follow-up task is filed for the remainder naming where you stopped — or a fold line saying
+- [x] Cross-repo citations carry their repo name.
+- [x] A follow-up task is filed for the remainder naming where you stopped — or a fold line saying
       the file is fully swept.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/core-*` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/core-*` fragment.
+
+## Result, 2026-09-13
+
+**109 citations read** (the file's own count is 109 matching `decision[s]? [0-9]` lines; the task
+header's 107 undercounted by two — no other discrepancy found). **`study.rs` swept top to bottom,
+fully — no remainder task.**
+
+**99 held, 6 wrong numbers, 4 false sentences.**
+
+**Wrong numbers** (right repo, wrong number — all `embarch-study-designer` except the two that
+should have carried no repo prefix at all, being `embarch-core`'s own):
+- Lines 86, 1349 — cited `embarch-study-designer` decision 63 (that decision is study-designer's own
+  `cargo test` harness stack overflow, unrelated) for the `GET /study/{id}` clone-by-value crash and
+  the accumulate-then-build fix. Both are `embarch-core` decision 24's own finding — fixed to bare
+  `decision 24`.
+- Lines 2538, 4211 — same wrong decision 63, this time for the **~1.3 MB StudyResult measurement**
+  itself, which is `embarch-study-designer` decision 49's own table (`1,293,608` bytes, "before").
+  Fixed to decision 49.
+- Line 2528 — cited `embarch-study-designer` decision 30 (Core's own per-message receipt-time stamp)
+  for "the clock-resync gap" — that's decision 72 (`rx_utc_ms` carries bench uptime, the seeding half
+  never built). Fixed.
+- Line 4552 — cited `embarch-study-designer` decision 35 (the custom-action registry, BLE writes) for
+  "no sniff, no fallback" on a `Raw`-encoded stream tap — an unrelated feature. The same claim at
+  line 2299 correctly cites decision 39 (the tap model); fixed line 4552 to match.
+
+**False sentences** (citation resolves, decision body no longer supports the claim):
+- Lines 141, 567, 2818 — three places describe `embarch-topology` decision 12 as a
+  "durable-log-plus-live-push shape," mirrored by Core's own SSE broadcast. Topology's own decision
+  19 retired that crate's live-push half (its only consumer, a standalone UI, was deleted) — decision
+  12's own text now reads it struck through. Reworded all three to state the live-push retirement
+  explicitly rather than claim topology still does what Core's SSE route does.
+- Lines 1908–1910 — claimed an outpost trace record "carries none of its own" clock, so Core's
+  receipt-time stamp is "the trace's only clock." `embarch-outpost` decisions 4 and 17 are exactly
+  the opposite: every record carries its own `cycles` stamp (the *measuring* clock); decision 17's
+  whole point is **two** clocks, not one. Reworded to state what each clock actually does (DUT
+  `cycles` measures, Core's receipt time places).
+
+None of the ten needed an `inbox/` drop — every defect was in `embarch-core`'s own prose, not in
+another repo's decision body, and all ten are fixed in this commit (comment-only, `src/study.rs`).
+`core/055` (landed same day, `resolve_probe` → `embarch_topology::select_probe`) did not make any
+`study.rs` citation false — the one place that logic is discussed (the dev-bench board-identity gate,
+~line 853) is a different code path (`embarch_topology::hardware::validate_role`) that never touched
+`resolve_probe` either before or after that landing.
+
+Gate: `cargo build`/`test`/`clippy --all-targets -- -D warnings` green (197 passed, 0 failed, 2
+ignored); `check-docs.py` 11/11 green; `check-client-names.py` clean; `check-ownership.py
+--scope core` and `--code-repo` both green.
