@@ -45,6 +45,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- Smoke harness's real bound was `status_timeout_secs` (10s), not a reachability poll; fixture sets 60s, `CoreClient` names the timeout on failure ([decisions](../embarch-api/decisions/tests.md) 74).
 - A kind-less validate mismatch now reads unknown, not mismatch, and drops fix_it_url (embarch-api decision 73).
 - Four more embarch-core-client doc comments repointed off stale `embarch-core` decision 22, and the enroll routes kept named as Core's rather than `embarch-topology` decision 14's.
 - A lagged-recovery instruction named a nonexistent `study_steps` tool; enroll_probe citations agree on `embarch-topology` decision 14.
