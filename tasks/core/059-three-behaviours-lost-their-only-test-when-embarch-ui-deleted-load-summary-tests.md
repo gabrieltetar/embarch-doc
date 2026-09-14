@@ -1,6 +1,6 @@
 # 059 — Three behaviours lost their only test when `embarch-ui` deleted `load_summary_tests`
 
-**State:** open
+**State:** claimed by agent/core/059-lost-load-summary-tests, 2026-09-13 23:12
 **Source:** `ui/051`'s reviewer, leg 112, 2026-09-13, reported as a secondary observation rather than
 a decision contradiction. `ui/051` deleted `embarch-ui/src/trace.rs`'s `summarize` and the
 `load_summary_tests` module that pinned it, because `core/057` had already ported that arithmetic
