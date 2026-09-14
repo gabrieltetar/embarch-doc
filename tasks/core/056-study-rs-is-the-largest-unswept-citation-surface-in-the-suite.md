@@ -1,6 +1,6 @@
 # 056 — `study.rs` is `embarch-core`'s largest unswept citation surface, and `api.rs` was swept around it
 
-**State:** open
+**State:** claimed by agent/core/056-study-rs-citations, 2026-09-13 19:18
 **Source:** `tasks/core/054` swept `embarch-core/src/api.rs` (54 citations, three wrong) and the
 supervisor log's carry-forward recorded that **no sweep had been filed for `embarch-core`'s own
 source as a whole**. The leg of 2026-09-13 17:5x counted the repo: **240 citations across `src/`,
