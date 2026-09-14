@@ -1,6 +1,7 @@
 # 066 — The ~104 citations outside `doctor.rs` are the half `umbrella/065` did not reach
 
-**State:** claimed by agent/umbrella/066-src-citation-sweep, 2026-09-13 19:18
+**State:** done — worker umbrella/066, 2026-09-13. All eleven files swept, 0 wrong numbers, 0 false
+sentences. See "Resolution" below.
 **Source:** `tasks/umbrella/065` swept `src/doctor.rs` end to end on 2026-09-13 — ~129 citations
 across checks 1–17, two wrong numbers found (both `decision 39` where the claim belonged to decision
 33) and, for the first time in four days of sweeps, **zero false sentences.** That sweep stopped at
@@ -73,12 +74,58 @@ For each citation:
 
 ## Done when
 
-- [ ] The listed files are swept, or the boundary is stated exactly and the remainder filed.
-- [ ] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form,
+- [x] The listed files are swept, or the boundary is stated exactly and the remainder filed.
+- [x] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form,
       or the task reports that it already did.
-- [ ] The `doctor.rs`-self-maintains theory is answered with a number, not an impression.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment. A numbered decision only if something was actually *decided*.
+- [x] The `doctor.rs`-self-maintains theory is answered with a number, not an impression.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. A numbered decision only if something was actually *decided*.
+
+## Resolution, worker (umbrella/066), 2026-09-13
+
+**All eleven files swept, not a partial pass.** `src/locate.rs` (23), `setup.rs` (~20), `install.rs`
+(14), `init.rs` (~15), `main.rs` (~10), `config.rs` (~9), `deploy.rs` (8), `state.rs` (~7),
+`zephyr.rs` (~4), `manifest.rs` (2), `env.rs` (2) — **~114 citations read, ~114 held, 0 wrong
+numbers, 0 false sentences.** No follow-up task filed; nothing remains outside `doctor.rs` to sweep
+in this scope.
+
+For each citation the cited decision's body was read against the sentence around it — not just
+that the number resolves. Every cross-repo citation found (`embarch-topology` decisions 2/3,
+`embarch-core` decision 6, `embarch-dev-bench` decisions 4 and 25, `embarch-api` decisions 12, 13,
+15, 53, 64) already carried the labelled `<repo> decision N` form; none needed a fix. `manifest.rs`'s
+decision-14/24 pair (flagged by `umbrella/044`, done 2026-09-10) was re-checked against both decision
+bodies and confirmed still correct as `umbrella/044` left it — not a new finding.
+
+**One soft/uncertain call, recorded but not fixed:** `locate.rs`'s `locate_core` doc comment reads
+"in the precedence order decisions 7 and 28 specify." Decision 28 (plus decision 38's later
+insertion) is what actually specifies the env-var → saved-state → PATH → Windows-registration →
+canonical → conventional order; decision 7 is about WSL2⟷Windows elevation and says nothing about
+ordering, though it is arguably the reason the WSL2-only branch exists at all (why umbrella looks
+for a Windows-side Core from a guest in the first place). Read charitably it holds; read strictly,
+decision 7 doesn't belong in that clause. Left as-is — not confident enough to call it a defect, and
+not important enough on its own to justify an inbox drop.
+
+**The `doctor.rs`-self-maintains theory, answered:** it does not hold up. `doctor.rs` (`umbrella/065`)
+found 2 wrong numbers and 0 false sentences in ~116-129 citations. This sweep of the eleven files
+`doctor.rs` never touches found 0 wrong numbers and 0 false sentences in ~114 citations — as clean
+or cleaner, not dirtier. Whatever keeps this repo's decision citations accurate, it is not
+"`doctor.rs` gets re-read every time a check changes and the rest doesn't" — these files are edited
+at least as unevenly as `doctor.rs` (some, like `locate.rs`/`setup.rs`, get touched by nearly every
+umbrella decision that lands; `env.rs`/`manifest.rs` barely change) and came back just as clean. The
+more likely explanation is something about how citations get written in this repo generally (each
+one apparently re-derived from the decision body at write time, per the `umbrella/044`/`umbrella/064`
+precedent of workers re-reading bodies rather than trusting titles) rather than anything specific to
+`doctor.rs`'s edit frequency.
+
+**Gate:** `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean in the code worktree
+(no code changed — nothing needed fixing). `scripts/check-docs.py`,
+`scripts/check-client-names.py --repo <code worktree>`, and
+`scripts/check-ownership.py --scope umbrella` / `--code-repo <code worktree>` all green in the doc
+worktree. `changelog.d/umbrella-src-citation-sweep-066.changed.md` added. No `spec.md`/`decisions.md`/
+`open.md` edit — nothing here was wrong, and both `spec.md` and `open.md` are in reserve
+(`umbrella/038`, `umbrella/009`, both blocked `In flux: yes`) so no new prose went in either. No
+compaction task filed — this unit added no umbrella prose to any doc, so nothing moved further into
+reserve.
 
 ## Reserve, for planning
 
