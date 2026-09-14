@@ -1,6 +1,6 @@
 # 096 — The `embarch-api` half of decision 63: carry and describe the deferred-source flag
 
-**State:** open
+**State:** claimed by agent/api/096-deferred-source-flag-client-half, 2026-09-13 23:44
 **Source:** `tasks/core/061`, split by leg 114 (2026-09-13). That task was written as one unit spanning
 **two code repos** — `embarch-core` (where the flag is set) and `embarch-api` (the client crate that
 deserializes it, and the tool description that explains it). A worker gets one task in one repo
