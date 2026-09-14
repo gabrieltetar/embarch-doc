@@ -120,7 +120,7 @@ A study can record more than pass/fail: **if your DUT's firmware has the [embarc
 **This section needs `embarch-ui`, which is not in the release archive** — build it from [its own repo](https://github.com/gabrieltetar/embarch-ui), per [the user guide](user-guide.md) §3. Declaring a signal has a CLI; **adding a trace tap and reading the trace back do not.**
 
 Two things have to be true first, **in the UI or, since
-[`embarch-api` decision 67](../embarch-api/decisions/surface.md), from a terminal**:
+[`embarch-api` decision 67](../embarch-api/decisions.md), from a terminal**:
 `declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`, each also an MCP tool.
 
 **1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software — nothing can detect it — so it can only be stated.** In the **Topology** tab, declare a signal: give it a name (that is what a study taps it by) and pick a route.
