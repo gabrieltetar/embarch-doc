@@ -1,6 +1,6 @@
 # 022 — Citation sweep: the half of the repo `021` never grepped
 
-**State:** open
+**State:** claimed by agent/outpost/022-citation-sweep-non-c-sources, 2026-09-13 23:44
 **Source:** `outpost/021`'s **reviewer**, leg 113, 2026-09-13. That unit called itself a whole-repo
 sweep and reported *"23 citations read, 1 wrong, 0 unsettled"*. Both numbers are true **only of the
 `.c`/`.h` files its grep scoped to.** The reviewer found `scripts/gen_outpost_manifest.py:613`
