@@ -1,6 +1,6 @@
 # 094 — An MCP tool for the outpost's own answer: the half of suite decision 4 that closes its property
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, branch `agent/api/094-mcp-tool-for-outpost-load-shares`.
 **Source:** `tasks/core/057`'s own "Sequencing" section, which named this follow-up and said
 explicitly that it must **not** be filed until `core/057` landed, because a worker given it earlier
 would be building against a route that did not exist. It landed 2026-09-13 (code `a131f63` in
@@ -66,3 +66,34 @@ not exist at all.
       existing route to an existing tool pattern decides nothing.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/` fragment.
+
+## Dispatch note — leg 111, 2026-09-13
+
+**Doc-size reserve in your sub-project, so you plan instead of discovering.** One file is in
+reserve: **`embarch-api/spec.md`, 9,102/10,240 B — 1,138 B left (88.9%)**. Its compaction task
+`tasks/api/083` is **`blocked` on `In flux: yes`**, and per `.claude/leg.md` a blocked compaction
+task parks the *pass*, not the *reserve*:
+
+- **If this unit writes into `embarch-api/spec.md`, compact that file as part of this unit**,
+  carrying `api/083`'s `Must not delete:` list verbatim (the §2 invariants, the Session-0/UNC
+  failure signature, `base_url = "auto"`'s resolution order and its "a `401` counts as an answer"
+  line, and every row *and* Provenance tag in §7's constants table). `api/083` itself names the
+  file's natural seam — §§1-2 "what it is and what must always hold" vs §§3-7 "how it does it" —
+  and a **verbatim split restates nothing, so `In flux: yes` cannot forbid one.** A split is the
+  cheaper move if one fits.
+- **If it does not write into `spec.md`, file nothing new** — the debt is already filed against
+  `api/083`. Nothing here asks you to do the whole compaction pass.
+
+Everything else you will touch has room: `embarch-api/interfaces/tools.md` 4,366 B and
+`interfaces/studies.md` 5,422 B are well clear.
+
+**If your work pushes any other `embarch-api` doc into its reserve band and nothing has filed
+against it**, file `tasks/api/095-compact-api.md` in the same commit (`tasks/README.md` has the
+shape; **`tasks/api/`, your own scope — never `tasks/doc/`**, which `check-ownership.py` refuses to
+every worker). You are not asked to do the compaction, only to record the debt while you still hold
+the one piece of context nobody else will have: whether that part of the subsystem is still in flux.
+
+**One repo, one branch, one task.** Code in `embarch-api`, docs in `embarch-doc`, both on
+`agent/api/094-mcp-tool-for-outpost-load-shares`. `embarch-api`'s worktree has
+`embarch-study-designer` and `embarch-topology` symlinked beside it — the path-dep closure — so
+`cargo build` resolves.
