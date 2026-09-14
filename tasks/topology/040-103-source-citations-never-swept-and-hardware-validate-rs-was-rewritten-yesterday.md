@@ -1,6 +1,6 @@
 # 040 — 103 source citations never swept, and `hardware/validate.rs` was rewritten yesterday
 
-**State:** open
+**State:** claimed by agent/topology/040-src-citation-sweep, 2026-09-13 20:00
 **Source:** the leg of 2026-09-13 18:3x, counting every repo's source citations while filling the
 queue. `tasks/topology/036` fixed **three** dead citations in this repo's source comments, but it
 was findings-driven — it fixed the three somebody happened to notice. **No systematic sweep of
@@ -71,9 +71,13 @@ For each citation:
 
 ## Reserve, for planning
 
-`embarch-topology/decisions/crate.md` is 11,676/12,288 B — **612 B left, 95.0%**, the second-highest
-pressure in the suite — filed against blocked `tasks/topology/039`, whose size debt is due
-**2026-09-20**, the soonest date on the whole ledger. **Do not write into `crate.md`.** If this unit
+`embarch-topology/decisions/crate.md` is **12,075/12,288 B — 213 B left, 98.3%**, re-measured at
+dispatch on 2026-09-13 20:00 and now the **highest** pressure in the suite; the figures above
+(612 B, 95.0%) were true when this task was filed and are not any more. It is filed against
+`tasks/topology/039`, whose size debt is due **2026-09-20**, the soonest date on the whole ledger —
+and note that `039` is **`open`, not blocked** as this task originally said, so the debt is payable
+by a later unit and does not need paying here. **Do not write into `crate.md`:** 213 B is roughly
+two sentences, and a unit that spends it turns an unrelated sweep into a compaction. If this unit
 needs to record something, put it in another `embarch-topology` decisions file and check that file's
 headroom first; if your work leaves any doc in this scope in the last 10% of its cap unfiled, file
 `tasks/topology/<next>-compact-topology.md` in the same commit — **your own scope**, never
