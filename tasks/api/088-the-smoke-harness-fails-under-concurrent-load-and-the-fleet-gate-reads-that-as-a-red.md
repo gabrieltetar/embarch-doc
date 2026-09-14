@@ -1,6 +1,6 @@
 # 088 — The smoke harness fails under concurrent load, and a supervisor's merge gate reads that as a real red
 
-**State:** claimed by agent/api/088-smoke-harness-concurrent-load, 2026-09-13 18:26
+**State:** done
 **Source:** observed by the leg of 2026-09-13 while landing `tasks/api/087`. Not a task anyone
 filed, and **not a defect in `api/087`'s change** — I proved that before writing this.
 **Scope:** api
@@ -68,13 +68,34 @@ say so and stop, because the evidence above would then be explained by something
 
 ## Done when
 
-- [ ] The actual bound is located and named, and the failure mode is confirmed as a startup timeout
-      rather than assumed.
-- [ ] The harness tolerates a loaded machine, or says clearly that it timed out and after how long.
-- [ ] A numbered `embarch-api` decision records the choice — derive the next free number with
+- [x] The actual bound is located and named, and the failure mode is confirmed as a startup timeout
+      rather than assumed. **Located, and it is not a "startup" timeout in the sense assumed above —
+      there is no reachability-poll loop anywhere in this harness or `tests/support::MockCore`.
+      `MockCore::start` binds its listener before returning, so nothing here waits for a server to
+      *come up*.** The bound is the existing per-request HTTP timeout on the sequence's one Core
+      call (`status`): `CoreConfig::status_timeout_secs`, defaulting to 10s
+      (`crates/embarch-core-client/src/lib.rs`). Confirmed by direct reproduction, not just reading
+      the code: scaled artificial CPU contention on the same worker machine (up to 80 competing
+      `yes` processes across 14 cores) stretched the identical call from 0.30s upward (0.97s at 21
+      competing loops, 2.52s at 80), the same direction and shape the leg's own numbers show, before
+      the fleet's own workload-interference guard refused further escalation on this shared machine.
+- [x] The harness tolerates a loaded machine, or says clearly that it timed out and after how long.
+      Fixed by raising the fixture's own `status_timeout_secs` to 60s (`tests/smoke_harness.rs`),
+      not the crate-wide default real hardware calls still want short. `CoreClient::dispatch` now
+      also names the configured timeout in its error context on every failure — a caller of this
+      crate sees *how long* it waited, not only that `reqwest` errored (it already said "operation
+      timed out" via the chain, just not the bound).
+- [x] A numbered `embarch-api` decision records the choice — derive the next free number with
       `scripts/check-decision-refs.py` / `decisions.md`, never by eyeballing the highest visible.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+      Decision 74, `embarch-api/decisions/tests.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). All 11 `check-docs.py` checks pass;
+      `check-client-names.py` and `check-ownership.py` (both repos) pass; `embarch-api`'s
+      `cargo build`/`cargo test`/`cargo clippy --all-targets -- -D warnings` all green.
+- [x] `changelog.d/` fragment. `changelog.d/api-smoke-harness-concurrent-load.fixed.md`.
+
+**Decision 74 pushed `embarch-api/decisions/tests.md` into its reserve band (12201/12288 B,
+99.3%, 87 B left) — filed `tasks/api/089-compact-api.md` in this same commit, per the reserve
+note below.**
 
 ## Reserve, for planning
 
