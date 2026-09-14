@@ -78,9 +78,25 @@ work leaves any `embarch-core` doc in the last 10% of its cap unfiled, file
 
 ## Done when
 
-- [ ] `resolve_probe` calls `embarch-topology`'s shared selection function and keeps no inline copy.
-- [ ] The usbipd/zero-probe hint survives somewhere a caller of `resolve_probe` still sees.
-- [ ] `open_probe`/`resolved_serial` doc comments corrected, not just repointed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including a native Windows build note if
-      one is owed — `core/015`'s outstanding native build already carries twelve landed changes.
-- [ ] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+- [x] `resolve_probe` calls `embarch-topology`'s shared selection function and keeps no inline copy.
+- [x] The usbipd/zero-probe hint survives somewhere a caller of `resolve_probe` still sees.
+      Verified against the landed `select_probe` (not assumed): zero probes is checked first
+      and unconditionally, the hint text is verbatim, and the wanted serial is additionally
+      echoed back when one was given.
+- [x] `open_probe`/`resolved_serial` doc comments corrected, not just repointed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`cargo test`/
+      `cargo clippy --all-targets -- -D warnings` all clean, `check-docs.py` 11/11,
+      `check-client-names.py` and `check-ownership.py` clean in both worktrees.
+      **Native Windows build not run (not mine to run) — this lands on top of `core/015`'s
+      outstanding native Windows build, now carrying thirteen landed `embarch-core` changes.**
+- [x] `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped. New `embarch-core`
+      decision 61 (`decisions/probes.md`) argues threading `action` from each caller rather
+      than one fixed word. `spec.md`'s `hardware.rs` row was already accurate (both function
+      names unchanged) — no edit needed there.
+
+## Flag back, do not fix — done
+
+Filed `/home/gabriel/Github/embarch/embarch-doc/inbox/topology-close-decision-32-open-19-after-core-055.md`:
+`embarch-topology` decision 32's amendment and `open.md`'s matching bullet both still say
+`embarch-core::resolve_probe` "keeps its own copy" and name this task as the blocker — both
+go false the moment this lands, and closing them is `topology`'s edit, not `core`'s.
