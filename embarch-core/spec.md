@@ -64,6 +64,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep. Holds no column knowledge |
 | `outpost_manifest.rs` | `ManifestSlot`: binds a flash's `outpost-manifest.json` to the DUT it flashed, checks the running firmware's build ID against it before rendering a trace, and refuses to render (never to warn) on a mismatch |
+| `outpost_load.rs` | Per-subject load shares and the coverage line over a rendered `*.trace.csv` (decision 62, suite decision 4) — the answer `GET /study/{id}/stream/{name}/load` serves. Consumes the CSV `outpost_manifest.rs` already produced; never touches the raw frames or the manifest |
 
 Board identity, enrollment, hardware-ID readback and dev-bench port detection are **not here**: they live in `embarch-topology`, which Core calls as `embarch_topology::hardware`.
 
