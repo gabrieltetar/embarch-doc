@@ -13,7 +13,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 *Rejected: the Enroll tab* — it answers "which physical board is which", a question about identity, where routing answers "what is wired to what", a question about the bench, and the Topology tab is already where the second one is *shown*. *Rejected outright: the Study Designer* — a study names a signal, never a carrier, so putting routing there would **bind bench wiring into saved studies and re-author every one of them the day a cable moves.**
 
 **There is deliberately no `embarch-topology` CLI mirror.** **This tab was the only human surface
-there was until 2026-09-10**, when [`embarch-api` decision 67](../../embarch-api/decisions/surface.md)
+there was until 2026-09-10**, when [`embarch-api` decision 67](../../embarch-api/decisions.md)
 wrapped `POST/GET/DELETE /signals` and `POST /dev-bench/link` as a CLI subcommand and an MCP tool
 each. **The rejection this generalised from was narrower than the generalisation**:
 [`embarch-topology` decision 18](../../embarch-topology/decisions/links.md) refused a
