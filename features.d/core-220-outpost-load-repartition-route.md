@@ -1,0 +1,1 @@
+| `GET /study/{id}/stream/{name}/load` — an outpost capture's per-subject load shares and coverage line, agent-reachable | Shipped — unit-tested against real firmware bytes, **no live study has hit this route yet** | unit | 62 |

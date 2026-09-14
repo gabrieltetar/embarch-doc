@@ -1,6 +1,7 @@
 # 057 — Serve the outpost's own answer from Core: the code half of suite decision 4
 
-**State:** claimed by agent/core/057-serve-outposts-own-answer, 2026-09-13 20:33
+**State:** done — `agent/core/057-serve-outposts-own-answer` (code) /
+`agent/core/057-serve-outposts-own-answer-doc` (doc), pushed 2026-09-13
 **Source:** `tasks/suite/018`, executed by the supervisor's own hands on 2026-09-13 as
 [suite decision 4](../../suite/decisions.md). That decision named the home and
 **deliberately did not move the code**; this is the move.
@@ -62,14 +63,42 @@ nothing.
 
 ## Done when
 
-- [ ] Core computes per-subject load shares and the coverage line for a capture it already holds.
-- [ ] It is reachable over HTTP, alongside the existing `/study/{id}/stream/{name}` surface, and
-      `embarch-core/interfaces/studies.md` documents the route.
-- [ ] The column-list-against-shared-crate-header check came across and still refuses a mismatch.
-- [ ] A numbered `embarch-core` decision records the route's shape.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including a native Windows build if one
-      can be had — this repo already owes `core/015`'s, fourteen changes deep.
-- [ ] `changelog.d/` fragment.
+- [x] Core computes per-subject load shares and the coverage line for a capture it already holds.
+      `src/outpost_load.rs`: `load_answer(csv: &str) -> Result<LoadAnswer, String>`, ported from
+      `embarch-ui/src/trace.rs`'s `parse`/`parse_with_cap`/`summarize` — the CSV-to-lanes-to-gaps
+      arithmetic only, not the chart geometry (`bin_window`, `BinRun`, `BinnedLane`, `BinnedWindow`,
+      `StepStamp`, `StepBand`, `StepRow`, `TraceView`, all correctly re-derived as *not* moving:
+      re-checked against the real file, which is 4,126 lines as the decision said, not the task's
+      original 3,892). Verified against the same real firmware fixture
+      `outpost_manifest.rs`'s own decoder test pins against
+      (`tests/fixtures/outpost-native-sim.bin`/`-manifest.json`) — rendered through
+      `outpost_manifest::render` unmodified, then fed to `load_answer`, in
+      `outpost_load::tests::a_real_firmware_captures_load_answer_reports_a_named_us_axis_with_a_real_gap`.
+- [x] It is reachable over HTTP, alongside the existing `/study/{id}/stream/{name}` surface:
+      `GET /study/{id}/stream/{name}/load` (`study::stream_load_handler`, wired in `api.rs`,
+      `// route:` comment matched, `AUTH_CASES` row added, `DOCUMENTED_ROUTE_COUNT` moved 22→23 —
+      all four caught by `api.rs`'s own self-checking tests before this was findable any other way).
+      `embarch-core/interfaces/studies.md` documents the route, its request/response shape and its
+      `400`/`404`/`422` cases.
+- [x] The column-list-against-shared-crate-header check came across and still refuses a mismatch:
+      `load_answer` checks `header != outpost::csv_header()` and refuses (`422` at the route),
+      same as `embarch-ui` decision 10 (trace)'s pin — covered by
+      `a_mismatched_column_list_is_refused_not_guessed`.
+- [x] A numbered `embarch-core` decision records the route's shape: decision 62, filed in
+      `decisions/streams.md` (30, 38, 39, 62 — **not** `auth.md`, per the Reserve note below).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) on Linux: `cargo build`, `cargo test`
+      (205 passed, 2 ignored — both pre-existing, hardware/fixture-gated), `cargo clippy
+      --all-targets -- -D warnings` (clean) in the code worktree; `scripts/check-docs.py` (11/11
+      green after fixing two `decision 4` citations the checker itself caught pointing at the topic
+      file instead of `suite/decisions.md` — `check-decision-refs.py`'s own rule, DOC-CONVENTIONS.md:
+      link the index); `scripts/check-ownership.py --scope core` (doc worktree) and
+      `--code-repo` (code worktree) both green; `scripts/check-client-names.py --repo <code
+      worktree>` clean against 7 denylist entries.
+      **Native Windows build not attempted** — same debt `tasks/core/015` already records (Windows
+      `cargo.exe` cannot resolve this worktree's symlinked path-dep siblings over UNC); this task
+      adds no new Windows-only surface (no `cfg(windows)` code), so the debt's shape is unchanged,
+      just one change deeper.
+- [x] `changelog.d/core-outpost-load-route.added.md`.
 
 ## Sequencing — read this before filing anything downstream
 
