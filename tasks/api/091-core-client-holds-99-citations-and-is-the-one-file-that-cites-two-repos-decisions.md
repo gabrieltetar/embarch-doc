@@ -1,6 +1,6 @@
 # 091 — `embarch-core-client/src/client.rs` holds 99 citations and is the one file that cites two repos' decisions
 
-**State:** claimed by agent/api/091-client-rs-citations, 2026-09-13 20:00
+**State:** done — `client.rs` and `config.rs` swept, `tasks/api/093` filed for the remainder
 **Source:** the leg of 2026-09-13 18:3x, counting every repo's source citations while filling the
 queue. **Filed as `089` and renumbered to `091` at 19:2x by the leg that filed it.** `api/088`'s
 worker independently filed its own reserve task as `089` from a branch cut before the refill commit
@@ -68,13 +68,51 @@ For each citation:
 
 ## Done when
 
-- [ ] `client.rs` is swept end to end, and every citation in it either resolves and reads true, or
+- [x] `client.rs` is swept end to end, and every citation in it either resolves and reads true, or
       is corrected with the correction argued.
-- [ ] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form.
-- [ ] Any remainder is filed as `tasks/api/<next>` naming the exact files not reached.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment. A numbered decision only if something was actually *decided* — a
+- [x] Every cross-repo citation in the swept files carries the labelled `<repo> decision N` form.
+- [x] Any remainder is filed as `tasks/api/<next>` naming the exact files not reached.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. A numbered decision only if something was actually *decided* — a
       sweep that corrects citations usually decides nothing and needs none.
+
+## Result
+
+Swept `client.rs` (99 citations) and, having budget left, `config.rs` (37 citations) too — both
+end to end, cross-checked against every cited decision's own body in `embarch-api`, `embarch-core`,
+`embarch-study-designer`, `embarch-outpost`, `embarch-topology` and `embarch-ui`.
+
+**`config.rs`: 37 checked, 37 held.** No wrong numbers, no false prose, no missing labels.
+
+**`client.rs`: 99 checked, 6 fixed, the rest held.**
+
+- **Wrong number (4 occurrences, one repo, both decisions genuinely exist).** `embarch-api`
+  decision 59 (`dev_bench_hello`, and `link_identity` is a stable string) was cited for content
+  that is actually decision 60's (`dev_bench_hello`'s three identity fields are optional, and
+  absence renders as its own third state) — the "two rendering states" language, the "never
+  computes a verdict of its own" sentence, and the reason the tool renders `"unavailable"` are all
+  decision 60's own text, not 59's. Fixed at all four sites: the doc comment introducing
+  `render_hello_ack`, two further doc-comment references, and — the one that matters most, since
+  it reaches a caller rather than a maintainer — the `"unavailable"` message `render_hello_ack`
+  itself builds at runtime, which named decision 59 as "why this tool renders unavailable" when
+  that reason is decision 60's.
+- **Ambiguous/unlabelled foreign citations (2 occurrences), both the same shape**: a bare
+  `decision N` immediately after a differently-labelled sibling citation in the same sentence, so
+  a reader has no cue it changed repos. `EnrollProbeRequest::probe_serial`'s doc comment cited
+  `` `embarch-core` decision 22's, whose mechanism decision 14 moved`` — `embarch-core` decision 14
+  is a real, unrelated decision (the `hw_lock`/503-naming-holder mechanism), and the "14" meant is
+  `embarch-topology`'s (the same one labelled ten lines above, in the enclosing struct's doc
+  comment). Labelled. `StudyRunOptions`'s doc comment cited `` (`embarch-core` decision 31's
+  amendment, decision 40)`` — `embarch-core` decision 40 is also real and unrelated (an
+  undecodable frame costs the frame, not the link); the "40" meant is `embarch-study-designer`'s,
+  confirmed two lines later where the same citation is spelled out in full. Labelled.
+- Left as bare, correctly, after checking: same-repo reuses within one already-labelled paragraph
+  (e.g. `embarch-core` decision 59's several bare reuses inside `TopologyMismatchError`'s own doc
+  block), and two same-*number*-different-repo collisions (`embarch-api` decision 15 vs.
+  `embarch-topology` decision 15; `embarch-api` decision 59 vs. `embarch-core` decision 59) where
+  every actual use was unambiguous in its local context.
+
+Remainder — `resolve.rs` (~32), `tools.rs` (~24), `cli.rs` (~17) — filed as `tasks/api/093`.
 
 ## Reserve, for planning
 
