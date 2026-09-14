@@ -1,6 +1,6 @@
 # 088 — The smoke harness fails under concurrent load, and a supervisor's merge gate reads that as a real red
 
-**State:** open
+**State:** claimed by agent/api/088-smoke-harness-concurrent-load, 2026-09-13 18:26
 **Source:** observed by the leg of 2026-09-13 while landing `tasks/api/087`. Not a task anyone
 filed, and **not a defect in `api/087`'s change** — I proved that before writing this.
 **Scope:** api
