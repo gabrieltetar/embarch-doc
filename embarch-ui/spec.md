@@ -1,6 +1,6 @@
 # embarch-ui: spec
 
-**Status:** active, 2026-09-04. Repo: [gabrieltetar/embarch-ui](https://github.com/gabrieltetar/embarch-ui).
+**Status:** active, 2026-09-13. Repo: [gabrieltetar/embarch-ui](https://github.com/gabrieltetar/embarch-ui).
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md).
 
@@ -31,6 +31,7 @@ embarch-ui (one Rust binary, axum, zero-build)
           GET /dev-bench/port · GET /dev-bench/hello
           POST /study · GET /study/{id} · GET /study/{id}/steps
           GET /study/{id}/streams · GET /study/{id}/stream/{name}
+          GET /study/{id}/stream/{name}/load
         GET /logs/recent, and nothing else under /logs. The Debug tab's
         Core-side backlog is one call to it on open; its live tail is a
         server-side re-poll of the same endpoint (500-line tail, every 2 s,
