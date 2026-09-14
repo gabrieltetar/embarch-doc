@@ -1,6 +1,6 @@
 # 091 — `embarch-core-client/src/client.rs` holds 99 citations and is the one file that cites two repos' decisions
 
-**State:** open
+**State:** claimed by agent/api/091-client-rs-citations, 2026-09-13 20:00
 **Source:** the leg of 2026-09-13 18:3x, counting every repo's source citations while filling the
 queue. **Filed as `089` and renumbered to `091` at 19:2x by the leg that filed it.** `api/088`'s
 worker independently filed its own reserve task as `089` from a branch cut before the refill commit
