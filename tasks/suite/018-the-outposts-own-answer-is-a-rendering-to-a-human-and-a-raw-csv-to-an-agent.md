@@ -1,6 +1,10 @@
 # 018 — The one question `embarch-outpost` exists to answer is answerable by a human and not by an agent
 
-**State:** open — **announced and parked, 2026-09-13 19:21, `ts` `1789348880.412099`**
+**State:** done — executed 2026-09-13 20:2x by leg 111's supervisor as
+[suite decision 4](../../suite/decisions.md), under the window below, which had already
+closed unanswered. The code move is `tasks/core/057`.
+
+**Previously:** open — **announced and parked, 2026-09-13 19:21, `ts` `1789348880.412099`**
 (`#embarch-fleet`, `C0BUKTL2FPC`). The 30-minute window opened at that post and is **not to be
 restarted**: `.claude/leg.md` and `../../embarch-fleet/ops.md` §4 both say a leg that ends before
 the window closes leaves the `ts` here and the *next* leg completes it. Poll with
@@ -66,8 +70,27 @@ session was briefed to reduce.** An agent handed a raw CSV is exactly that secon
 
 ## Done when
 
-- [ ] An agent can obtain per-subject load shares and the coverage line for an outpost capture
-      without re-implementing the timeline.
-- [ ] Whichever module holds the analysis is the only one that computes it, or the second copy is
-      pinned against the first.
-- [ ] Gate green; `changelog.d/` fragments for each repo touched.
+- [x] An agent can obtain per-subject load shares and the coverage line for an outpost capture
+      without re-implementing the timeline. — **named as the property suite decision 4 buys.** The
+      announced scope was to settle the home, not to build the route; the build is `tasks/core/057`
+      and the tool that actually closes this box is filed when that lands.
+- [x] Whichever module holds the analysis is the only one that computes it, or the second copy is
+      pinned against the first. — **settled as the first**, with the pin that already exists
+      (`embarch-ui` decision 10 (trace), CSV header against the shared crate) carried across.
+- [x] Gate green; `changelog.d/` fragments for each repo touched. — doc repo only; nothing else
+      was touched, because no code moved.
+
+## What this found that the task itself had wrong
+
+Both recorded in the decision, because each resolves to a real sentence in a real file:
+
+1. **`embarch-ui/open.md`'s *"a direction the suite has nowhere"* is from the reflash-selector
+   bullet** (`embarch-ui` decision 11, about `run_study --reflash` orchestration), **not** a
+   statement that the trace analysis is unreachable from the agent path. The conclusion holds on
+   other grounds; the evidence cited for it was about something else.
+2. **`embarch-ui` is already a server**, not a thick client — `src/main.rs` serves
+   `GET /api/trace/{study}/{tap}/bins` and decision 18 already puts the aggregation server-side.
+   The analysis was never "computation that happens to live in one consumer"; it is behind an HTTP
+   surface the agent path does not reach and the release archive does not ship. That reframing is
+   what made `embarch-core` the answer rather than a toss-up.
+3. `trace.rs` is **4,126** lines, not 3,892, and every line number this task cites is 20–30 out.
