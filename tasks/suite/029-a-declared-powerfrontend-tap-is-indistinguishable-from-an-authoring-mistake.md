@@ -1,6 +1,18 @@
 # 029 — A declared `PowerFrontEnd` tap and a study-authoring mistake produce the same evidence, and the honest place to say so is undecided
 
-**State:** open
+**State:** open — **announced and parked, leg 111, 2026-09-13.** `#embarch-fleet` `ts`
+**`1789358454.801729`**. Leg 111 ends at its 4-unit cap before the 30-minute window closes, so
+**the next leg completes this clock rather than restarting it** (`../../embarch-fleet/ops.md` §4):
+poll `scripts/fleet-read.py --thread 1789358454.801729`, and if no objection has arrived and 30
+minutes have passed since that `ts`, run this as that leg's **last** unit. A reply saying go runs
+it immediately; a reply saying cancel drops this back to plain `open` with the reply quoted here.
+
+**The announcement narrowed the task, and the narrowing is binding on whoever runs it.** Of the
+three shapes below, the **submit-time refusal is off the table** — leg 083 already announced
+(`ts` `1789117538.021209`) that it would not change study submit behaviour unattended, and nothing
+has changed that. The choice is between the `embarch-api` tool-description sentence and the
+`list_study_streams` shape, and the chosen one is recorded as a numbered decision naming why the
+other two were not taken.
 **Source:** split out of `tasks/suite/013` by leg 083, 2026-09-11. That unit closed 013's two
 documentation items and deliberately did **not** take this one — see "Why it was split" below.
 **Scope:** suite
