@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `GET /study/{id}/streams` gains `source_deferred`: a `PowerFrontEnd` tap now says why it captured nothing, distinct from a mis-named signal.
 - `outpost_load.rs` gains tests for gap-band union, idle double-count, and subject sort order, recovered from `embarch-ui`'s deleted `load_summary_tests`.
 - `GET /study/{id}/stream/{name}/load`: an outpost trace's per-subject load shares and coverage line, agent-reachable.
 - `POST /validate` now returns `validated_at_utc_ms` alongside `confirmed_at_utc_ms`, additive.
