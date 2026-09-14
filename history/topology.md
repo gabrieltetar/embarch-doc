@@ -42,6 +42,7 @@
 - `embarch-topology dev-bench` now says when a port was guessed, and `validate` prints `NotEnrolled`'s sentence, not its debug shape.
 
 ### Decided
+- Decision 32 closed: `embarch-core::resolve_probe` now calls `select_probe` too (`core/055`); no probe-selection copy remains in either crate.
 - `enroll`'s probe selection is now `pub hardware::select_probe`, reconciling three drifted behaviors vs. `embarch-core::resolve_probe` (decision 33).
 - topology decision 32: `enroll`'s probe selection duplicates `embarch-core::resolve_probe`, documented not de-duplicated (dependency direction blocks it).
 - topology: config-mirror open bullet struck — answered elsewhere already (decision 30, decisions/scope.md)

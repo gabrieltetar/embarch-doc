@@ -1,6 +1,10 @@
 # 039 — Compact `embarch-topology/decisions/crate.md`
 
-**State:** blocked — unparks when `tasks/core/055` lands
+**State:** open — **unparked 2026-09-13 by the leg folding `topology/041`.** Its stated unpark
+condition was `tasks/core/055` landing; it landed today
+(`86345c01a451b0696af36f42c28bf6676478124c`), and `topology/041` then closed decision 32 in the
+same file. Both halves of the handoff this task was waiting on are settled, so `blocked` had
+stopped meaning "nothing here can be done" — which is the only thing it is allowed to mean.
 **Source:** `scripts/check-doc-size.py`, run as part of `tasks/topology/038`'s gate —
 `embarch-topology/decisions/crate.md` landed at 95.0% of its cap (11676/12288 B, 612 B
 left) after that task's decision 33 and decision 32 amendment, with no debt filed.
@@ -11,12 +15,18 @@ Filed in the same commit per `../../embarch-fleet/protocol.md` §5 and `tasks/RE
 
 **Compacts:** embarch-topology/decisions/crate.md
 **Size debt due:** 2026-09-20
-**In flux:** yes
-**Must not delete:** decision 32's amendment note (the pointer to `tasks/core/055` as
-the remaining half of the close); decision 33's three-divergence reconciliation — what
-was chosen for zero-probes, the multi-probe predicate, and each error string, and why —
-until `core/055` lands and either decision can be written as settled rather than as an
-in-progress handoff.
+**In flux:** no — **was `yes`, and the flux it named is over.** This file's own
+Must-not-delete list below stated the condition explicitly: *"until `core/055` lands and either
+decision can be written as settled rather than as an in-progress handoff."* `core/055` landed and
+`topology/041` wrote the close, so decisions 32 and 33 can now be compacted as settled history
+rather than as a live handoff.
+**Must not delete:** decision 32's **close** — that both copies of the probe-selection rule are
+gone and `embarch-core::resolve_probe` delegates to `select_probe`, threading a caller `action`
+(`embarch-core` decision 61). The superseded 2026-09-13 *amendment* ("the topology half is landed;
+`embarch-core` still holds its copy") is now provenance and may go, but **the fact that the
+duplication is closed on both sides must survive.** Decision 33's three-divergence reconciliation
+stays — what was chosen for zero-probes, the multi-probe predicate, and each error string, and
+why; that is the hot half and nothing has superseded it.
 
 ## What
 
