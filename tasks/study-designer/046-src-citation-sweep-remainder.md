@@ -1,6 +1,6 @@
 # 046 — Citation sweep: `src/` remainder after `study.rs`
 
-**State:** open
+**State:** claimed — leg 111, 2026-09-13, branch `agent/study-designer/046-src-citation-sweep-gatt-extract`.
 **Source:** `tasks/study-designer/045`, which swept `src/study.rs` (the second
 of four files `044` named) and left the rest.
 **Scope:** study-designer
@@ -103,3 +103,25 @@ blocked. Check `scripts/check-doc-size.py` fresh rather than trusting this
 number — a comment sweep should not need either file regardless. If this sweep
 turns up a question worth recording, file it as `tasks/study-designer/<next>`
 rather than adding to `open.md`.
+
+## Dispatch note — leg 111, 2026-09-13
+
+**Reserve, re-checked today and unchanged in substance.** `embarch-study-designer/spec.md`
+**9,350/10,240 B (890 B left)** and `embarch-study-designer/open.md` **4,659/5,120 B (461 B left)**
+are both in reserve, and both are filed against `blocked` compaction tasks (`032` and `026`
+respectively, each `In flux: yes`). A source-comment sweep should touch neither. **If it does,**
+`.claude/leg.md`'s rule applies: a blocked compaction task parks the pass, not the reserve, so the
+file you write into is the file you compact in the same unit, carrying that task's
+`Must not delete:` list.
+
+**The next free number in this scope is 047**, so the remainder task you file at the end of your
+budget is `tasks/study-designer/047-…` — **in `tasks/study-designer/`, your own scope**, never
+`tasks/doc/`, which `check-ownership.py` refuses to every worker.
+
+**Sweep `src/gatt_extract.rs` (35 lines) — that is `044`'s ordering and it is the file to take.**
+Only move on to `src/lib.rs` if it is genuinely cheap once `gatt_extract.rs` is finished; a
+complete file beats two half-swept ones, and the remainder task is how the rest gets carried.
+
+**One repo, one branch, one task.** Code in `embarch-study-designer`, docs in `embarch-doc`, both
+on `agent/study-designer/046-src-citation-sweep-gatt-extract`. `embarch-study-designer` has no
+path-dep siblings, so its worktree needs no symlinks.
