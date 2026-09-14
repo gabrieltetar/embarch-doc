@@ -58,4 +58,13 @@ The store takes the study's declared decoders alongside its taps, because a stru
 
 **What this route does not carry, because it is chart geometry rather than part of the answer:** windowed binning, the study-step row, and anything of `embarch-ui`'s `TraceView` payload shape (that file's own decision 18, preserved). An agent wanting those still has no route to them, which is unchanged by this one.
 
+### 63 — A tap declared against a source this bench has no front end for says so in the stream index, as a fourth boolean and not a third meaning for `note`
+`embarch-dev-bench` accepts a `StreamSource::PowerFrontEnd` tap and captures nothing, because [its decision 24](../../embarch-dev-bench/decisions.md) defers the front end. The tap's only signal is `bytes_written: 0`, which `list_study_streams` defines as *"a tap that was declared and produced nothing"* — an **authoring** outcome. So asking for hardware that does not exist and mis-naming a signal produce identical evidence. `GET /study/{id}/streams` is where that is said: the surface the guide already sends a reader to first.
+
+**Neither alternative survives.** A sentence in `embarch-api`'s `study_power_data` description is not weak, it is **gone** — that alias was retired with the other fixed-channel aliases. A **submit-time refusal** changes study submit behaviour, which no unattended session makes, and the roadmap calls power sampling *deferred, not cancelled*: a study written today against a tap the firmware will support later is not a mistake to reject. Acceptance stays.
+
+**A fourth `#[serde(default)] Option<bool>` on `StudyStreamEntry`**, in the `named`/`timed`/`self_excluded` pattern, `None` meaning a Core predating it; `note` keeps the prose. **Not `note` alone, and the struct's own history is why.** `is_named`'s doc comment records that the old conjunction *"was correct while `note` could only ever mean 'unnamed'. It stopped being correct when a trace gained a second way to be incomplete"* — a third meaning for that field is the same defect one generation on, against a field documented as prose to be read and never branched on.
+
+**Core states this, it does not measure it**, citing `embarch-dev-bench` decision 24 where it sets the flag. No tap's capture changes.
+
 ---
