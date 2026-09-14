@@ -1,6 +1,6 @@
 # 095 — Citation sweep: `embarch-core-client/src/client.rs`, the suite's densest unswept file
 
-**State:** open
+**State:** claimed by agent/api/095-core-client-citation-sweep, 2026-09-14 01:00
 **Source:** leg 112's refill sweep, 2026-09-13. `queue-status.py --refill-owed --wave 6` reported
 five distinct scopes against a wave of six, with `api` holding nothing dispatchable — its only open
 task is `tasks/api/059`, which is `Hardware: bench`. Counted the same day: **103 lines matching
@@ -10,6 +10,21 @@ unswept citation surface left in any host-side repo in the suite.
 **Hardware:** none — source comments only. No board, no probe, no live Core, no deploy. Nothing here
 changes what any binary does.
 **Owner:** no
+
+## Dispatch note (leg 115)
+
+**`client.rs` moved again a few hours ago and the 103-line count predates it.** `api/096` landed
+`c26d930` on 2026-09-13 adding `source_deferred` to `StudyStreamEntry` as its fourth
+`#[serde(default)] Option<bool>`, with new doc prose citing `embarch-core` decision 63. **Re-derive
+the citation list yourself from the file at your branch point** rather than working from the count
+above — `outpost/022` was the third sweep in a row whose scope claim outran its own grep, and the
+correction landed for exactly this reason.
+
+**In reserve for `api` right now** — `embarch-api/spec.md` 9,102/10,240 B, **1,138 B left**, filed
+against `tasks/api/083`, which is `blocked` on `In flux: yes`. A comment sweep should not touch it;
+the `Watch for` section below carries the rule if your work writes into it anyway. Nothing else in
+`embarch-api/` is in reserve. **If your work leaves some other doc file in reserve that nothing has
+filed, file `tasks/api/<NNN>-compact-api.md` in the same commit.**
 
 ## What
 
