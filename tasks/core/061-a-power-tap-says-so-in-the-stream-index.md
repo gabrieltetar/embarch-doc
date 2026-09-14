@@ -5,8 +5,8 @@
 [`embarch-core` decision 63](../../embarch-core/decisions/streams.md). This task is that decision's
 implementation and nothing else — **the design question is settled; do not reopen it.**
 **Narrowed to one repo by leg 114 (2026-09-13).** As filed it spanned `embarch-core` **and**
-`embarch-api`, which no single worker may do ([`../../embarch-fleet/protocol.md`](../../embarch-fleet/protocol.md)
-§5: one task, one repo, one branch). The `embarch-api` half — the `StudyStreamEntry` field in
+`embarch-api`, which no single worker may do (`../../embarch-fleet/protocol.md` §5:
+one task, one repo, one branch). The `embarch-api` half — the `StudyStreamEntry` field in
 `crates/embarch-core-client/src/client.rs` and the `list_study_streams` description in `src/tools.rs` —
 is now **`tasks/api/096`**, running in parallel with this one. **This task is `embarch-core` only.**
 **Scope:** core
