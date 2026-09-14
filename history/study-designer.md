@@ -18,6 +18,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `src/lib.rs`'s 41 decision citations checked; two wrong numbers fixed (v12's security_level/pair miscredited to decision 50/51, now 44/50).
 - gatt_extract.rs's 36 decision citations swept (comment-only): 3 wrong numbers, 2 false sentences, 0 unlabelled cross-repo cites.
 - study.rs's 52 decision citations swept (comment-only): 3 wrong numbers, 1 unlabelled cross-repo cite fixed, 0 false sentences.
 - study-designer: `schema_version.rs`'s history swept; one bare `decision 29` was actually `embarch-dev-bench`'s, now labelled.
