@@ -1,6 +1,6 @@
 # 039 — Compact `embarch-topology/decisions/crate.md`
 
-**State:** claimed by agent/topology/039-compact-topology, 2026-09-13 20:33 — **unparked
+**State:** done — agent/topology/039-compact-topology, 2026-09-13. **Unparked
 2026-09-13 by the leg folding `topology/041`.** Its stated unpark
 condition was `tasks/core/055` landing; it landed today
 (`86345c01a451b0696af36f42c28bf6676478124c`), and `topology/041` then closed decision 32 in the
@@ -69,9 +69,21 @@ is the **soonest date on the ledger, 2026-09-20**. The next unit to write
       landed 2026-09-13 as `86345c01a451b0696af36f42c28bf6676478124c`.
 - [x] Decision 32 marked closed (or superseded) rather than amended-open — closed by
       `topology/041`, 2026-09-13.
-- [ ] A compaction pass run per `DOC-COMPACTION-PASS.md`, keeping the hot half of
+- [x] A compaction pass run per `DOC-COMPACTION-PASS.md`, keeping the hot half of
       decisions 1, 2, 3, 6, 13, 32, 33 and moving the cold half to git / a reversal row.
-- [ ] `check-doc-size.py` green for `embarch-topology/decisions/crate.md` with room to
-      spare, not just under cap.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+      Decisions 32/33 split verbatim-then-squeezed into `decisions/probe-selection.md`
+      (`decisions.md` index updated); decisions 1, 2, 3, 6, 13 left as-is in `crate.md` —
+      already at target density, none flagged by `--decisions`. No reversal row filed:
+      the cut cold material (the superseded 2026-09-13 amendment on decision 32, the
+      "found by core/053's worker" provenance, the fake-`DebugProbeInfo` test-harness
+      narrative) is a normal in-flight-to-settled progression, not a reversed assumption
+      — and `embarch-decision-reversals.md`/`reversals/*.md` are outside a `topology`
+      worker's reach either way (`protocol.md` §3).
+- [x] `check-doc-size.py` green for `embarch-topology/decisions/crate.md` with room to
+      spare, not just under cap. 12,075 B (98.3%) -> 5,054 B (41.1%); `probe-selection.md`
+      is a new file at 5,437 B (44.2%). Both well clear of the 90% reserve line.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `check-docs.py` 11/11,
+      `check-ownership.py --scope topology` clean in both worktrees. No code changed —
+      `cargo build`/`test`/`clippy` not applicable to this unit.
+- [x] `changelog.d/` fragment dropped —
+      `changelog.d/topology-crate-decisions-out-of-reserve.changed.md`.
