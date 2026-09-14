@@ -1,6 +1,6 @@
 # 062 — Two `embarch-core` comments say `embarch-ui`'s text is unchanged, and `ui/052` changed it
 
-**State:** claimed by agent/core/062-core-comments-vs-ui-052, 2026-09-14 00:36
+**State:** done
 **Source:** `ui/052`'s worker, filed mid-task as an `inbox/` drop, 2026-09-13; filed here by leg 114
 in `ui/052`'s own fold. `ui/052` fixed `embarch-ui`'s stale retention sentence; this is the other
 side its `Done when` list required checking rather than editing (`embarch-core` is not `ui/052`'s
@@ -52,10 +52,10 @@ true, but "`embarch-ui`'s own text is unchanged" is now stale in the other direc
 
 ## Done when
 
-- [ ] `src/logs.rs`'s module doc and `src/main.rs`'s comment re-read against the corrected
+- [x] `src/logs.rs`'s module doc and `src/main.rs`'s comment re-read against the corrected
       `embarch-ui/decisions/debug-tab.md` (post-`ui/052`) and updated if the "unchanged" clause (or
       anything else in either comment) no longer holds.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if anything changes.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if anything changes.
 
 ## Watch for
 
