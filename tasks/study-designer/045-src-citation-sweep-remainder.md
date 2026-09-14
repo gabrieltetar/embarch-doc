@@ -1,6 +1,6 @@
 # 045 — Citation sweep: `src/` remainder after `schema_version.rs`
 
-**State:** claimed by agent/study-designer/045-study-rs-citations, 2026-09-13 20:00
+**State:** done — `src/study.rs`'s 52 citations swept: 3 wrong numbers, 0 false sentences, 1 unlabelled cross-repo citation, all fixed. Remainder named in `tasks/study-designer/046`.
 **Source:** `tasks/study-designer/044`, which swept `src/schema_version.rs` (the first
 of four files it named) and left the rest.
 **Scope:** study-designer
@@ -70,13 +70,51 @@ specifically in whatever file you take next.
 
 ## Done when
 
-- [ ] One named file (`src/study.rs`, unless a reason is given to reorder) fully
+- [x] One named file (`src/study.rs`, unless a reason is given to reorder) fully
       swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes out
-      `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+- [x] Cross-repo citations in it carry their repo name.
+- [x] A follow-up task filed naming the files that remain (or, if this closes out
+      `src/`, saying so and closing the sweep). — `tasks/study-designer/046`
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment.
+
+## Result
+
+`src/study.rs`'s 52 `decision[s] N`-matching citations read against the cited
+decision's own body, not just resolved as a number. **3 wrong numbers, 0 false
+sentences, 1 unlabelled cross-repo citation — all fixed:**
+
+1. **Wrong number.** `streams_crc`'s doc comment: "Every submitter recomputes
+   and overwrites it anyway (embarch-api decision 26)." `embarch-api` decision
+   26 is `serial_log`'s `serial_port` field — unrelated. The actual match is
+   `embarch-api` decisions 27/28 (`decisions/study-reads.md`: "the seals are
+   computed and overwritten here"). Fixed to `embarch-api decisions 27/28`.
+2. **Wrong number.** `protocols_crc`'s doc comment attributed the "each seal
+   is carried immediately after the one contiguous span it covers" structural
+   rule to "decision 39's amendment." That rule is decision 17's
+   (`decisions/seals.md`), confirmed by decision 58's own text ("Decision 17's
+   structural rule ... is a property of the *pair*"). Decision 39 doesn't
+   discuss seal placement at all. Fixed to `decision 17`.
+3. **Wrong number.** `Action`'s retired-`StreamCapture` comment cited
+   "decisions 20/21" for the variant's origin. Decision 39's own Was/Becomes
+   table (`decisions/streams.md`) pairs decision 20 with 25 for the *power*
+   channel and attributes `GattOperation::StreamCapture` to decision 21
+   alone; decision 20's body never mentions `StreamCapture`. Fixed to
+   `decision 21`.
+4. **Unlabelled cross-repo citation.** `DevBenchLogLevel`'s doc comment: bare
+   "Decision 38 turned `CONFIG_LOG` on in the bench firmware" — content
+   matches `embarch-dev-bench` decision 38 (`decisions/logging.md`)
+   verbatim, but this repo's *own* decision 38 is a different thing (the
+   saved-study library at `<firmware-repo>/embarch/studies/*.json`), and two
+   other bare "decision 38" citations in this same file correctly mean the
+   own one. Same collision shape `044` found for decision 29 in
+   `schema_version.rs`. Fixed to `embarch-dev-bench decision 38`.
+
+All other 48 citations checked clean: the number resolves and the sentence
+around it states what the cited decision's body actually says, including
+every other bare-vs-labelled cross-repo citation in the file (`embarch-dev-bench`
+39/18, `embarch-api` 36, `embarch-topology` 3, and eleven bare same-repo
+numbers reused 2-4 times each).
 
 ## Reserve, for planning (added at dispatch, 2026-09-13 20:00)
 
