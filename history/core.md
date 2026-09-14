@@ -31,6 +31,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Swept all 92 remaining `src/` decision citations: 3 wrong numbers, 4 false sentences fixed.
 - `study.rs`'s 109 decision citations swept (comment-only, no behaviour change): 6 wrong numbers, 4 stale cross-repo claims fixed.
 - `api.rs`: 3 of 55 `decision N` citations named the wrong decision or the wrong repo; fixed.
 - `resolve_probe`'s doc comment no longer names `board_gate.rs`, a file that moved to `embarch_topology` (`embarch-core/src/hardware.rs:74`).
