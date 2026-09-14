@@ -1,6 +1,6 @@
 # 022 — Citation sweep: the half of the repo `021` never grepped
 
-**State:** claimed by agent/outpost/022-citation-sweep-non-c-sources, 2026-09-13 23:44
+**State:** done by agent/outpost/022-citation-sweep-non-c-sources, 2026-09-13
 **Source:** `outpost/021`'s **reviewer**, leg 113, 2026-09-13. That unit called itself a whole-repo
 sweep and reported *"23 citations read, 1 wrong, 0 unsettled"*. Both numbers are true **only of the
 `.c`/`.h` files its grep scoped to.** The reviewer found `scripts/gen_outpost_manifest.py:613`
@@ -73,9 +73,53 @@ next sweep in any repo says "whole repo", the grep should say so too.
 
 ## Done when
 
-- [ ] Every citation in the list above is read against its cited decision's body, and wrong numbers
+- [x] Every citation in the list above is read against its cited decision's body, and wrong numbers
       and false sentences are counted and reported **separately**.
-- [ ] The report says what the grep covered, in a form the next sweeper can re-run.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — for this repo that is the host-side test
+- [x] The report says what the grep covered, in a form the next sweeper can re-run.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — for this repo that is the host-side test
       surface, not cargo; `embarch-outpost` has no `Cargo.toml`.
-- [ ] `changelog.d/` fragment.
+- [x] `changelog.d/` fragment.
+
+## Result (2026-09-13)
+
+**Re-grepped scope, wider than the list above.** Command re-run (from `embarch-outpost` repo
+root), matching this task's file-type list plus a bare case-insensitive `decision` pass to catch
+anything the narrower pattern would miss:
+
+```
+grep -rnE 'decision[s]?[[:space:]]+[0-9]+|decisions/[a-z_]+\.md|decisions\.md' \
+  --include='Kconfig*' --include='*.py' --include='*.sh' --include='CMakeLists.txt' \
+  --include='*.yml' --include='*.yaml' --include='*.rst' --include='*.cmake' .
+```
+
+Same 9 files as the task's list, but **22 citation instances, not ~19** — three the original
+line list missed, all correct:
+- `tests/run-all.sh:40` — `vocab_check.py (decision 23)`. Decision 23's own body states it
+  "runs in `tests/run-all.sh` above the `WEST` guard" — the citation is right even though it
+  reads like an ordering claim (decision 22's subject).
+- `tests/native_sim_stream/assert_stream.py:85` — `decisions.md decision 19` (self-exclusion).
+  Matches `decisions/tracing.md` decision 19 exactly.
+- `.github/workflows/host-tests.yml:9` — cites the suite-level index for its item 2, for "a
+  workflow that provisioned [the Zephyr legs] would be real cost ... weighed and deliberately
+  not taken." Matches the suite tooling topic file's item 2 body, word for word ("weighed and
+  not taken").
+
+**Every one of the 22 read against its cited decision's body. 0 wrong numbers, 0 false
+sentences.** Six citations use the pre-topic-file-split form (`decisions.md decision N` /
+`suite/decisions.md N`) for a decision that has since moved to a topic file — per this task's
+own Watch-for note, that form still resolves and is **not itself wrong**, so left un-churned:
+`Kconfig:93`, `scripts/gen_outpost_manifest.py:4`, `scripts/gen_outpost_manifest.py:316`,
+`tests/native_sim_stream/assert_stream.py:47`, `tests/native_sim_stream/assert_stream.py:85`,
+`.github/workflows/host-tests.yml:9`.
+
+`decode_outpost.py:64`'s "`embarch-study-designer` decision noted at `src/outpost.rs:225-227`"
+was also read: it names *where* a bug was caught, not a numbered decision citation, and needed
+no check (the same fact is decision 23's own opening paragraph).
+
+**Gate:** `tests/decoder_unit.py` (31 tests, OK), `tests/vocab_check.py` (PASS, 11 kinds/8 flags),
+`tests/run-all.sh` (both host legs pass, stops at the `WEST` guard exactly as decision 22
+documents — no `west`/`ZEPHYR_BASE` on this machine). `changelog.d/outpost-citation-sweep-non-c-sources.changed.md`
+added. `scripts/check-docs.py` in `embarch-doc`: 10/11 green; `check-links.py` is red on
+`suite/*` → `../../embarch-fleet/*` links, confirmed pre-existing on the main `embarch-doc`
+checkout too (unrelated to this task, not touched here). `check-client-names.py` and
+`check-ownership.py` (both repos) clean.
