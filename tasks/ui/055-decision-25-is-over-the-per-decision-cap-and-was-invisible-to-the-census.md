@@ -1,6 +1,7 @@
 # 055 — `embarch-ui` decision 25 is over the per-decision cap, and was invisible to the census that was supposed to find it
 
-**State:** claimed by agent/ui/055-decision-25-over-cap, 2026-09-16 14:25
+**State:** done — agent/ui/055-decision-25-over-cap, 2026-09-16. Decision 25 squeezed from 4,307 B to
+3,758 B; see "Resolution" below.
 **Source:** leg 118, 2026-09-16. Leg 117 ran a suite-wide per-decision census, reported five breaches
 and filed four tasks; leg 118 landed all four, then found the census had never been capable of
 seeing the rest. `check-doc-size.py --decisions` prints the **twenty largest decisions in the suite**
@@ -79,10 +80,84 @@ still never met a real stale prefix. Nothing in this unit touches it.
 
 ## Done when
 
-- [ ] `embarch-ui` decision 25 is at or under 4,096 B, or split, with the branch justified.
-- [ ] The 1.12:1 measurement and both `oklch` values survive.
-- [ ] `embarch-ui/decisions.md`'s index matches, if split.
-- [ ] Every inbound citation still resolves to the claim it was citing.
-- [ ] Every cut hunk quoted verbatim in this task file.
-- [ ] No pin added to `scripts/decision-size-baseline.json`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `embarch-ui` decision 25 is at or under 4,096 B, or split, with the branch justified.
+- [x] The 1.12:1 measurement and both `oklch` values survive.
+- [x] `embarch-ui/decisions.md`'s index matches, if split. (Not split — index already reads `4, 8, 25` for `decisions/shell.md`, unchanged.)
+- [x] Every inbound citation still resolves to the claim it was citing.
+- [x] Every cut hunk quoted verbatim in this task file.
+- [x] No pin added to `scripts/decision-size-baseline.json`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Resolution — squeeze, not split
+
+**Byte count, measured directly (`decisions()`'s own boundary: the `### 25` heading through end of
+file, since 25 is the last decision in `shell.md`), not via the census, which cannot see this range:**
+
+- Before: **4,307 B** (211 B over the 4,096 B cap, 105%).
+- After: **3,758 B** (**338 B under cap**, 92% of the limit).
+- `shell.md` as a whole: 6,736 B → 6,187 B, against a 12,288 B `decision-group` cap (no reserve
+  pressure created).
+
+**Why squeeze, not split.** The entry is one claim — the mark's red and `--danger` are
+perceptually the same colour, so the accent stays cyan rather than brand red — argued once, plus
+three long paragraphs of *how* the logo asset (an SVG traced from a raster master) is generated and
+validated. That generation detail is cold by `DOC-COMPACTION-PASS.md`'s own test ("validation
+records" and "measurements" not cited elsewhere), not a second argument for the decision, so it does
+not meet the bar for a second decision number — consistent with the task's own steer that 105% over
+is a hard case to make for a split.
+
+**Cut hunks, verbatim and complete** (all four are the removal of a validation record / measurement
+that confirms the tracer tooling works, never the claim, the "why not", or a location that's cited
+elsewhere):
+
+1. From the header-glyph paragraph — vertex/byte counts for `trace_mark.py`'s output, immediately
+   after "the straight lines the art was drawn with":
+   > : 22 vertices plus a 4-vertex counter for the E, 15 plus a 4-vertex counter for the A, 657 B inline.
+   (the sentence now ends "...the art was drawn with.")
+
+2. From the standalone-SVG paragraph — the traced file's own size/vertex count, inside the opening
+   parenthetical:
+   > , 693 B, 53 vertices
+   (parenthetical now reads "(`assets/brand/embarch-mark.svg`)").
+
+3. From the same paragraph — the tolerance-sweep's numeric results, after "the sweep says it is the
+   right one":
+   > — against the master, 1.2 buys 0.04/255 for 8 more vertices and 0.8 buys 0.5 for 505, because those vertices trace the render's antialias wobble rather than the art.
+   (the bolded conclusion "**Tolerance 1.6 is the glyph's number and the sweep says it is the right
+   one.**" is kept verbatim and now ends the sentence itself.)
+
+4. From the end of the same paragraph — the raster-vs-vector accuracy measurement, after "two
+   independent downscales that could drift":
+   > Both land within 1.9/255 of the bitmaps they replace. What tracing a 256px raster costs is half a pixel of edge placement, measured at −0.24 to −0.43 px on the A's left edge and varying in sign, so it is grid quantisation rather than a bias worth correcting.
+
+**Kept verbatim, because they are the load-bearing content:** the 1.12:1 measurement sentence in
+full (`**The mark's red is `oklch(63% 0.194 29)` and `--danger` is `oklch(66% 0.19 25)`: measured in
+the browser they sit at 1.12:1 against each other, which is to say they are the same colour.**`),
+the "why not" (a red accent would read as destructive), the `--brand`/`--accent` split and its
+"exactly two things" call-site count (cited by `history/ui.md:39`), the tracing-vs-bitmap theming
+rationale, the union-mode rationale, and the light/dark contrast paragraph in full.
+
+**Inbound citations checked** (`grep -rn "decision 25"` across the whole doc repo, per the task's
+instruction): `changelog.d/ui-brand-token.added.md`, `embarch-ui/spec.md:81`, and
+`history/ui.md:39` all cite `embarch-ui` decision 25 and all three claims they cite (brand-vs-danger
+colour identity; the `--brand`/`--accent` split; the "two declarations, two call sites, not three"
+count) are still present verbatim. Every other `decision 25` hit in the repo (`embarch-core`,
+`embarch-topology`, `embarch-api`, `embarch-umbrella`) is that sub-project's own unrelated decision
+25, confirmed by reading each one, not by the number alone.
+
+**Census caveat honoured.** `check-doc-size.py --decisions` was not used to verify this — it only
+ever prints the 20 largest decisions in the suite and 27 pinned entries fill those slots, so a
+4,307 B → 3,758 B entry is invisible to it either way (`tasks/doc/064`). Verified instead with
+`decision_state()`'s own boundary logic run directly against the file, shown above.
+
+**No pin added to `scripts/decision-size-baseline.json`** — not touched; `scripts/` is
+owner-reserved and this entry no longer needs one.
+
+**Human question (`DOC-COMPACTION-PASS.md`):** *Can `spec.md` alone answer what someone needs to
+work on this component today?* Yes, unaffected by this unit — `spec.md:81` already states the
+load-bearing fact (`--brand` holds the logo red, it equals `--danger`, so it's never the accent) and
+cites decision 25 for the "why". This unit only trimmed decision 25's own cold detail; it did not
+add or remove anything `spec.md` depends on.
+
+**Left undone:** nothing in scope. `embarch-ui`'s other four unpinned/pinned decisions and the
+census mechanism itself (`tasks/doc/064`) are out of this task's scope — `doc`, owner-reserved.
