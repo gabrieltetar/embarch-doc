@@ -1,6 +1,8 @@
 # 098 — Fix `embarch-api/interfaces/studies.md`'s stale `decisions/streams.md` mention after core/060's split
 
-**State:** claimed by agent/api/098-streams-md-mention, 2026-09-16 12:26
+**State:** done — 2026-09-16 — `embarch-api/interfaces/studies.md` line 16 now cites `` (`embarch-core` decision
+62; suite decision 4) `` with no file-path mention, per `DOC-CONVENTIONS.md`'s bare-number preference.
+Verified no other `decisions/streams.md` mentions in `embarch-api/`. Gate green.
 **Source:** `tasks/core/060-compact-core.md` (leg 116, 2026-09-16) — found while compacting
 `embarch-core/decisions/streams.md` out of reserve.
 **Scope:** api
@@ -32,5 +34,5 @@ decision 62 will not find it there.
 
 ## Done when
 
-- [ ] `embarch-api/interfaces/studies.md` line 16 no longer names `decisions/streams.md`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `embarch-api/interfaces/studies.md` line 16 no longer names `decisions/streams.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
