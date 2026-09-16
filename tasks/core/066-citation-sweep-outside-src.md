@@ -1,4 +1,4 @@
-# 065 — Citation sweep: the nine `embarch-core` citations that live outside `src/`
+# 066 — Citation sweep: the nine `embarch-core` citations that live outside `src/`
 
 **State:** open
 **Source:** leg 121's refill sweep, 2026-09-16. `core/058` (merge `fd90452`) reported
