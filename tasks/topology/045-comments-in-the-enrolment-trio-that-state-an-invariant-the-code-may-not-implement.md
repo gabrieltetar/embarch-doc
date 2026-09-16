@@ -1,6 +1,6 @@
-# 037 — Comments in `embarch-topology`'s enrolment trio that state an invariant the code may not implement
+# 045 — Comments in `embarch-topology`'s enrolment trio that state an invariant the code may not implement
 
-**State:** claimed — `agent/topology/037-comments-vs-code-in-enrolment-trio`, leg 116, 2026-09-16
+**State:** claimed — `agent/topology/045-comments-vs-code-in-enrolment-trio`, leg 116, 2026-09-16
 **Source:** refill sweep, leg 116, 2026-09-16 — from
 [`embarch-decision-reversals.md`](../../embarch-decision-reversals.md)'s **shape 8, "the comment
 names the right invariant; the code does not implement it"** (rows 100, 101, 102, 104). That shape is
@@ -18,7 +18,7 @@ settled by attaching a board, that is a finding to report, not a thing to do.
 **Doc-size reserve for `topology`: nothing.** No `embarch-topology/` doc is in reserve — you have
 full headroom in all of them. (For contrast, five other sub-projects are in reserve right now.) If
 your work somehow pushes one *into* reserve, file
-`tasks/topology/038-compact-topology.md` in the same commit per `tasks/README.md`.
+`tasks/topology/046-compact-topology.md` in the same commit per `tasks/README.md`.
 
 ## Why this repo, and why these three files
 
@@ -88,7 +88,7 @@ chose and why:
   the narrower class truthfully rather than deleting the sentence.
 - Comment states the intended invariant and the code genuinely does not implement it → **do not
   silently implement it.** That is a behaviour change in a crate four repos depend on. Write the
-  comment down to what is true *and* file `tasks/topology/038-<slug>.md` describing the gap, so the
+  comment down to what is true *and* file `tasks/topology/046-<slug>.md` describing the gap, so the
   real fix is a task somebody chooses rather than a side effect of a comment sweep.
 - If a decision in `embarch-topology/decisions/*.md` is the thing that is wrong, **stop** — amending a
   decision is not this task's scope. Report it and it becomes its own unit.
