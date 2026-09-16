@@ -11,3 +11,5 @@ Pure local reads of Core's own current daily log file (`logs.rs`) — no hardwar
 | `GET` | `/logs/recent` | `?tail=200` | `{lines: [String]}` — the tail of the current log file as it stands right now, not a stream |
 
 `GET /logs/stream`, a live-tail SSE counterpart, was retired (`tasks/core/021`): no caller anywhere in the suite ever used it, and `embarch-ui` decision 13 structurally excludes an SSE source for this data. `decisions/logging.md` decision 44, the hold-past-`\n` rule that surface needed, is retired alongside it.
+
+**A caller should expect a trailing partial line.** `read_recent`/`tail_lines` (`logs.rs`) re-read the whole file fresh on every call and split on `\n`, so a call landing inside a mid-write append returns the unterminated last line as an ordinary array element, same as any complete one — correct for "show me the tail as it stands now," which is what this route promises, not a guarantee that every returned line is finished. A caller that renders one row per element, or diffs two polls against each other, has to tolerate the last line changing shape between calls.
