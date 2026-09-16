@@ -1,6 +1,6 @@
 # 058 — Restore `append-only` to decision 13's bullet 3, and report the bytes
 
-**State:** open
+**State:** claimed — leg 122, `agent/ui/058-restore-append-only`, 2026-09-16.
 **Source:** `inbox/ui-057-decision-13-squeeze-dropped-append-only.md` — the `ui/057`
 reviewer's residue check on that unit's own byte-cap squeeze.
 **Scope:** ui
