@@ -26,6 +26,8 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- embarch-ui/decisions/debug-tab.md#13 documents diff_new_lines's fallback for a trailing log line that mutates between polls.
+- embarch-ui/decisions/shell.md#25 states its E/A vertex counts again, restoring what history/ui.md:38 cites.
 - Decision 7's retention line described a size-capped logfile that was never built; Core's is daily-rolling.
 - `study_designer.rs`'s 74 decision citations checked; two bare decision-40 citations given the `embarch-study-designer` prefix.
 - `trace.rs`'s `Lane::unnamed` comment cited a nonexistent decision 35; now a plain, verified statement.
