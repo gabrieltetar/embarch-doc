@@ -1,6 +1,6 @@
 # 049 — Citation sweep: `src/` remainder after `study_builder.rs`
 
-**State:** claimed — `agent/study-designer/049-src-citation-sweep-remainder`, leg 116, 2026-09-16
+**State:** done — `agent/study-designer/049-src-citation-sweep-remainder`, leg 116, 2026-09-16
 **Source:** `tasks/study-designer/048`, which swept `src/study_builder.rs` (the
 largest of the 21 files `048` found remaining after `047`) and left the rest.
 **Scope:** study-designer
@@ -166,14 +166,44 @@ shared field.
 
 ## Done when
 
-- [ ] One named file (`src/protocol.rs`, unless a reason is given to reorder)
+- [x] One named file (`src/protocol.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+      **32 grep-matching lines, ~38 distinct citation instances checked
+      against 15 decision files across four repos (this crate's own
+      `wire.md`, `versioning.md`, `seals.md`, `study.md`, `streams.md`,
+      `gatt.md`, `declares.md`, `payload-meaning.md`, `protocols.md`,
+      `protocol-exec.md`, `crate.md`, plus `embarch-dev-bench`'s
+      `link.md`/`logging.md` and `embarch-core`'s `handshake.md`). 1 wrong
+      number found and fixed (L183: a seal-ordering structural rule
+      ("each seal immediately follows the one contiguous span it covers")
+      was credited to "decision 39's amendment set" — decision 39 is the
+      streams/tap retirement and has no seal-ordering content; both
+      `decisions/seals.md`'s own decision 17 entry and
+      `decisions/protocols.md`'s decision 58 amendment paragraph state the
+      identical rule and credit it to decision 17 — fixed to "Decision 17's
+      structural rule"). 0 false sentences.**
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+      **Four cross-repo citations found (`embarch-dev-bench decision 7`,
+      `embarch-dev-bench decision 18`, `embarch-dev-bench decision 39`,
+      `embarch-core decision 35`), all already correctly labelled. All four
+      were read against the far repo's own decision text (not just resolved
+      by number) and are genuinely on-topic — `embarch-dev-bench decision 39`
+      in particular looked suspicious at first (this crate's own decision 39
+      is the unrelated streams/tap retirement) but dev-bench's own decision
+      39 ("A study says how loud the bench should be, filtered at runtime
+      rather than compiled in", `decisions/logging.md`) is exactly the
+      firmware-side mirror of the field being documented. No same-repo
+      citation was found mislabelled as foreign this time (the `048` shape).**
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). **Filed `050`, naming
+      `src/streams.rs` next (29 grep-matching lines) and all 18 files after
+      it, plus `src/ids.rs` (0 citations, exhaustive listing).**
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build` /
+      `cargo test` (116 unit + 9 integration, 0 failed) / `cargo clippy
+      --all-targets -- -D warnings` all clean in the code worktree; single
+      `Cargo.toml`, no nested workspace-member gap.
+- [x] `changelog.d/study-designer-*` fragment. `changelog.d/study-designer-049-citation-sweep.fixed.md`.
 
 ## Reserve, for planning
 
