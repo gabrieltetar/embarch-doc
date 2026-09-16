@@ -34,5 +34,6 @@
 - `embarch-outpost` §1/§2 still described record layout 2 ("frame resolution, not cycle resolution") after layout 3 restored the DUT clock; `spec.md` now reflects the current state.
 
 ### Decided
+- outpost decision 17 (`decisions/clocks.md`) compacted 4,559 B -> 4,070 B, under the per-decision cap.
 - Decision 25 records the GPIO-dispatch family's two traps; decision 6 split to decisions/markers.md for room.
 - outpost decision 24: both `--allow-*` override flags are one posture, opt-in per invocation, never a default.
