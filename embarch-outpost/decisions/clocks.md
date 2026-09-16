@@ -11,32 +11,31 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 - **`cycles`, read per record, is what measures.** A span's duration is the difference between its two ends' own stamps; microsecond-exact on this target.
 - **`rx_utc_ms`, stamped per frame by [embarch-core](../../embarch-core/decisions.md) decision 30, is what places.** It is Core's real epoch clock, so laying a trace beside a power capture is an alignment rather than a guess. **The DUT's counter cannot do this at all — there is no sync point between them.**
 
-> **It used to say "the same wall clock every other stream in a study carries", and that is the one clause in this entry that is false** (corrected 2026-09-12, `tasks/suite/027`). **A study's own `rx_utc_ms` column is dev-bench uptime, not UTC** — milliseconds since that board booted, no epoch, no offset applied ([`embarch-study-designer` decision 72](../../embarch-study-designer/decisions/versioning.md)). One name, two clocks, in two files an analyst opens side by side. **A trace's `rx_utc_ms` is comparable with `core_rx_utc_ms` and every other `*_utc_ms` field in the suite; a study's is comparable with nothing outside its own capture.** The name is kept rather than renamed, and why is [suite decision 3](../../suite/decisions.md).
+> **Corrected 2026-09-12** (`tasks/suite/027`): this used to call it "the same wall clock every other stream in a study carries" — false. **A study's own `rx_utc_ms` column is dev-bench uptime, not UTC**, no epoch, no offset ([`embarch-study-designer` decision 72](../../embarch-study-designer/decisions/versioning.md)). **A trace's `rx_utc_ms` is comparable with `core_rx_utc_ms` and every other `*_utc_ms` field in the suite; a study's is comparable with nothing outside its own capture.** Kept, not renamed ([suite decision 3](../../suite/decisions.md)).
 
 **Neither substitutes for the other**, and the rules a host applies, in order:
 
-- **Measure on the finest clock every row carries, and say which one it used.** One row missing the stamp its tier needs **drops the whole view to the next tier down** — half a timeline in microseconds and half in milliseconds is one axis pretending to be another.
-- **Nothing interpolates, on any clock.** Even spacing inside a frame would look better and be fabricated.
-- **A frame is the resolution only when the host's clock draws the axis.** With `cycles` present, which frame delivered a record is a fact about the transport with no bearing on how long anything took.
-- **What is below the resolution is a property of the clock, not of the wire.** On the host's clock an ISR is below it *by construction* — counted, contributing zero — because enter and exit land in one frame essentially always. On the DUT's clock nothing is below it.
-- **The tier is chosen once for a whole view and named**, never per span.
+- **Measure on the finest clock every row carries, and say which one it used.** One row missing its tier's stamp **drops the whole view to the next tier down** — half a timeline in microseconds, half in milliseconds, is one axis pretending to be another.
+- **Nothing interpolates, on any clock.** Even spacing inside a frame is fabricated.
+- **A frame is the resolution only when the host's clock draws the axis.** With `cycles` present, which frame delivered a record is a transport fact with no bearing on how long anything took.
+- **What is below the resolution is a property of the clock, not of the wire.** On the host's clock an ISR is below it *by construction*, counted at zero, because enter and exit almost always land in one frame; on the DUT's clock nothing is below it. **The tier is chosen once for a whole view and named**, never per span.
 
 **The DUT's clock is the only one that can go backwards, for two unrelated reasons.**
 
-- **Microseconds, inherently.** A hook reads the counter and *then* reserves its ring slot, so an interrupt preempting a thread between those two operations reserves after it and is stamped before it. **A host must tolerate this — refusing the clock over it would refuse every real capture** — and the earliest instant in a capture is therefore not reliably in its first row, so a window is taken from the minimum.
-- **Seconds, meaning the counter restarted.** A capture spanning a DUT reset holds two epochs, and timing anything across the boundary is meaningless.
+- **Microseconds, inherently.** A hook reads the counter, *then* reserves its ring slot, so a preempting interrupt can land between the two and be stamped earlier than the thread it interrupted. **A host must tolerate this — refusing the clock over it would refuse every real capture** — so a capture's earliest instant is not reliably its first row; a window is taken from the minimum.
+- **Seconds, meaning the counter restarted.** A capture spanning a DUT reset holds two epochs; timing anything across the boundary is meaningless.
 
-**What separates them is the other clock, not a threshold.** A backwards step longer than the whole capture took is two independent clocks contradicting each other, and the host's is monotonic — so that is the test, with the DUT's own total forward span standing in when there are no host stamps. When it fires, a host **refuses the DUT clock, falls to the host's, and says so**; the harmless inversions stay reported either way.
+**What separates them is the other clock, not a threshold.** A backwards step longer than the whole capture means the clocks disagree — the host's is monotonic, so that is the test (the DUT's own forward span stands in when there are no host stamps). A host that trips it **refuses the DUT clock, falls to the host's, and says so**; harmless inversions still get reported.
 
-**A TX-only DUT transmits whether or not anyone is listening**, so the OS driver's receive buffer can already hold minutes-old bytes when a study opens the port. Core discards them on open.
+**A TX-only DUT transmits regardless of a listener**, so the OS receive buffer can already hold minutes-old bytes when a study opens the port; Core discards them on open.
 
-*Rejected: interpolating records evenly across a frame's interval* — one line of code, a visibly smoother chart, and **a lie in exactly the register this suite exists to refuse: it manufactures a resolution the wire does not have, and nothing downstream could tell the manufactured part from the measured part.**
+*Rejected: interpolating records evenly across a frame's interval* — **a lie: it manufactures a resolution the wire does not have, and nothing downstream could tell the manufactured part from the measured part.**
 
-*Rejected: reconstructing intra-frame timing from the record count and the baud rate* — that describes when the bytes *left*, not when the events *happened*. **The ring decouples them, which is the whole point of having a ring.**
+*Rejected: reconstructing intra-frame timing from the record count and the baud rate* — that is when the bytes *left*, not when the events *happened*. **The ring decouples them, which is the whole point of having a ring.**
 
-*Rejected: dropping `rx_utc_ms` now that `cycles` measures better* — it is **the only thing that places this trace against another stream in the same study**, a job the DUT's counter cannot do at all.
+*Rejected: dropping `rx_utc_ms` now that `cycles` measures better* — it is **the only thing that places this trace against another stream in the same study**, a job the DUT's counter cannot do.
 
-*Rejected: a host picking its clock per span* — measure the long spans on one clock and the short ones on the other and you have **a mixed axis, arrived at one span at a time, and unauditable.**
+*Rejected: a host picking its clock per span* — the long spans on one clock, the short ones on the other, gives **a mixed axis, arrived at one span at a time, and unauditable.**
 
 ### 18 — The arrival stamps are persisted beside the capture, keyed by frame index, and a join that cannot be verified stamps nothing
 
