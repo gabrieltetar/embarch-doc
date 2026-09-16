@@ -28,10 +28,7 @@ this same state file survived). `state.rs`'s comment read *"Only meaningful for 
 time — it described what the field is *for* — `infer_class` reads a host to decide `Remote` — but
 not what a **stored** value actually attests to, which is narrower: *at some past run, some
 `--host` was typed.* It said nothing about whether that run's conclusion still held, or whether any
-run since had needed a host at all. **That quote is gone now, not dead**: this decision's own fix
-(`umbrella/050`) rewrote the comment to state this point directly, and decision 51 rewrote it again
-to add the clearing rule — read `src/state.rs`'s current comment on `host`, not this sentence, for
-what it says today.
+run since had needed a host at all.
 
 **What check 2 may infer from finding one.** `check_service` reads `config_host.or(saved_host)`
 and feeds the result to `setup::infer_class`, the same function `setup` itself uses — deliberately,
