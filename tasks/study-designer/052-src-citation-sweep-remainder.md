@@ -1,6 +1,6 @@
 # 052 — Citation sweep: `src/` remainder after `limits.rs` and `result.rs`
 
-**State:** open
+**State:** claimed — leg 122, `agent/study-designer/052-src-citation-sweep-remainder`, 2026-09-16.
 **Source:** `tasks/study-designer/051`, which swept `src/limits.rs` and
 `src/result.rs` (the two largest of the 18 files `050` found remaining after
 `049`) and left the rest.
