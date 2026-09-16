@@ -48,6 +48,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- `client.rs` decision 62 cites (lines 593, 1724) are now bare-number, not the stale `decisions/streams.md` path.
 - `client.rs` L205/L430 now label `embarch-topology` decisions 15/17; L1774's "amendment" misdated decision 18's creation, now cited plainly.
 - `interfaces/studies.md` decision 62 cite is now bare-number, not the stale `decisions/streams.md` path.
 - client.rs citation sweep (api/095+097) done: 2 more wrong-number fixes (L430, L667), 0 false sentences found.

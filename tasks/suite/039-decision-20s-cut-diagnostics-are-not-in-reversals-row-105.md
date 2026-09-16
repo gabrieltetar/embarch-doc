@@ -9,7 +9,11 @@
 The fix lands in `reversals/rows-93-109.md`, and `check-ownership.py --scope topology`
 refuses that path (verified by leg 120, both directions). The reviewer filed it as
 `Scope: topology` in good faith; the gate disagrees, and the gate is right.
-**Announced:** see the `**Announcement:**` line below before executing (`../../embarch-fleet/ops.md` §4).
+**Announcement:** `1789596240.452339` posted to `#embarch-fleet` by leg 120 at 2026-09-16.
+The 30-minute silence-as-consent window (`../../embarch-fleet/ops.md` §4) opened at that `ts`.
+**If leg 120 ends before the window closes, the next leg reads this `ts` and completes the window
+rather than restarting it** — `scripts/fleet-read.py --thread 1789596240.452339`. A reply saying go
+runs it now; a cancel drops this back to `open` with the reply quoted here.
 
 ## What
 
