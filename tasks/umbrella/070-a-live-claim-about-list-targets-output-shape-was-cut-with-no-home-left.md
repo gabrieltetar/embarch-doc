@@ -1,6 +1,6 @@
 # 070 — umbrella/068: a live claim about `embarch-api list-targets`'s output shape was cut with no home left
 
-**State:** claimed by agent/umbrella/070-list-targets-output-shape-home, 2026-09-16 14:23
+**State:** done
 **Source:** embarch-reviewer on umbrella/068, filed to inbox/ and drained into the queue by leg 118; the Hardware claim was re-checked at drain and is correct. Originally: embarch-reviewer, umbrella/068 (merge `ad8d535`) — reading `embarch-umbrella/decisions/locate-api.md`#42's diff against `embarch-umbrella/decisions/schema-skew.md`#35
 **Scope:** umbrella
 **Hardware:** none — a documentation gap, not a hardware question. Confirming which check actually depends on the missing shape claim would need re-reading `embarch-api`'s `tools.rs`, not a board.
@@ -47,8 +47,15 @@ whole hunk sentence by sentence, not the topic.** That is the exact defect that 
 
 ## Done when
 
-- [ ] Either the `list-targets` shape claim (exit 0 with `{success: true, targets: [...]}`, exit 1 with `{success: false, error}`, both on stdout, log line on stderr) is restored somewhere it can be cited from — decision 42 itself, or `projects.md`#17 next to check 8's pass/fail rule — or someone determines the claim really is redundant with something I missed and says where.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Either the `list-targets` shape claim (exit 0 with `{success: true, targets: [...]}`, exit 1 with `{success: false, error}`, both on stdout, log line on stderr) is restored somewhere it can be cited from — decision 42 itself, or `projects.md`#17 next to check 8's pass/fail rule — or someone determines the claim really is redundant with something I missed and says where.
+      Restored in `embarch-umbrella/decisions/projects.md`#17, as its own paragraph
+      right after check 8's pass/fail rule. Decision 42 had only 77 B of margin
+      against the 4,096 B per-decision cap (4,019/4,096 B) and could not take the
+      paragraph back; decision 17 had 805 B (3,291/4,096 B). The added paragraph is
+      392 B; decision 17 is now 3,681/4,096 B (415 B margin). `projects.md` itself
+      went from 10,491 B to 10,881 B against its 12,288 B decision-group cap —
+      still 1,407 B short of the 11,059 B reserve line, so no reserve debt to file.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Not filed as a contradiction
 

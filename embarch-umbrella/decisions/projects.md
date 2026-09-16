@@ -34,6 +34,12 @@ list or `embarch-api`'s own error text is a **fail** about the repo, and
 *nobody to ask* — no located binary, no config, no JSON object — is a **warn
 naming which**, never a pass.
 
+**`list-targets`'s own wire shape**, observed directly against both binaries
+on this bench [2026-09-06]: exit 0 answers `{success: true, targets: [...]}`,
+exit 1 answers `{success: false, error}`, both on `stdout`, with its own log
+line on stderr — the fact that lets check 8, or anything else shelling out to
+`list-targets`, tell "no targets" from "process talked to the wrong stream."
+
 **The deletion bought more than one less copy.** The trimmed scanner counted
 the declared *default* revision as backed unconditionally, so for any repo with
 a parseable `boards/` and an `app/` it could not return zero — the "every
