@@ -1,6 +1,6 @@
 # 050 — Citation sweep: `src/` remainder after `protocol.rs`
 
-**State:** claimed by agent/study-designer/050-src-citation-sweep-remainder, 2026-09-16 12:27
+**State:** done
 **Source:** `tasks/study-designer/049`, which swept `src/protocol.rs` (the
 largest of the 20 files `049` found remaining after `048`) and left the rest.
 **Scope:** study-designer
@@ -180,15 +180,65 @@ error is which *rule* the sentence is describing.
 
 ## Done when
 
-- [ ] One named file (`src/streams.rs`, unless a reason is given to reorder)
+- [x] One named file (`src/streams.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text is read before it is called wrong.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
+- [x] A follow-up task filed naming the files that remain (or, if this closes
       out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment.
+
+## What shipped
+
+`src/streams.rs` fully swept: 29 grep-matching lines, 31 distinct citation
+instances (multi-number lines and repeated cites counted separately). Read
+against this crate's own `decisions/streams.md` (11, 20, 21, 27, 39),
+`decisions/registry.md` (35), `decisions/authoring.md` (34, 38),
+`decisions/gatt.md` (36), `decisions/seals.md` (18, 26), `decisions/
+versioning.md` (30), `decisions/payload-meaning.md` (52), plus
+`embarch-topology/decisions/crate.md` (3) and `links.md` (18),
+`embarch-outpost/decisions/capture.md` (10, 11, 12) and `manifest.md` (9),
+and `embarch-core/decisions/streams.md` (30).
+
+**Defect counts: 0 wrong numbers, 0 false sentences, 1 unlabelled cross-repo
+citation — fixed.** The one defect: line 210's `decision 9` repeated
+`embarch-outpost decision 9` (correctly labelled two mentions earlier, at
+lines 189 and 203) bare, in the next bullet, ~55 characters past its own
+label — outside a human reader's carry-forward and outside
+`check-decision-refs.py`'s 44-character attribution window (though that
+script does not check source comments at all, so this failed no gate).
+Confirmed the cited decision itself — `embarch-outpost` decision 9's own text
+says the persisted-CRC idea is "precisely the persisted-and-later-consulted
+record this decision spends three paragraphs distinguishing itself from,"
+matching the sentence exactly — and fixed by restoring the label, not by
+changing the number, checking (per the `api/097` lesson in this task's
+prologue) that the corrected citation's repo label and its neighbours
+(`embarch-topology decision 3` four words earlier, same sentence) are each
+still correctly labelled for their own repo.
+
+Two decision pairs double-checked and found correct rather than suspect:
+`decisions 34 and 36` (cited together twice, for `InvertedStepRange`'s
+"silently-empty capture" failure mode) — both `authoring.md` decision 34 and
+`gatt.md` decision 36 are independently opened by a variant of exactly that
+failure, confirmed by reading both texts; and `embarch-core decision 30`
+(hw_lock/study_lock) — a same-*number* coincidence with this crate's own
+unrelated decision 30 (arrival-time stamping), confirmed genuinely different
+and correctly labelled foreign, per the method the task warned against
+over-flagging.
+
+19 files remain unswept (`src/limits.rs` next, largest); follow-up filed as
+`tasks/study-designer/051-src-citation-sweep-remainder.md`.
+
+Doc-size reserve: `spec.md`/`open.md` unchanged (checked fresh via
+`check-doc-size.py`, no new reserve entries for this scope); neither file
+touched, both remain filed and blocked (`032`, `026`).
+
+Gate: `cargo build`/`cargo test`/`cargo clippy --all-targets -- -D warnings`
+all green in `embarch-study-designer` (single-crate repo, no nested
+`Cargo.toml`). `scripts/check-docs.py`, `check-client-names.py`,
+`check-ownership.py` (both repos) run from `embarch-doc` — see report.
 
 ## Reserve, for planning
 
