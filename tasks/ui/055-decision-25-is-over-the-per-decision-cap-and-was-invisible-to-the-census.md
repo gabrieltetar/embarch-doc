@@ -1,6 +1,6 @@
 # 055 — `embarch-ui` decision 25 is over the per-decision cap, and was invisible to the census that was supposed to find it
 
-**State:** open
+**State:** claimed by agent/ui/055-decision-25-over-cap, 2026-09-16 14:25
 **Source:** leg 118, 2026-09-16. Leg 117 ran a suite-wide per-decision census, reported five breaches
 and filed four tasks; leg 118 landed all four, then found the census had never been capable of
 seeing the rest. `check-doc-size.py --decisions` prints the **twenty largest decisions in the suite**
@@ -61,6 +61,21 @@ breach settles it.
 - **Report before/after byte counts and the margin left.** Three of leg 118's four compactions
   finished inside 150 B of the cap; if yours does too, say so plainly, because nothing mechanical
   distinguishes "paid" from "paid, barely".
+
+## Dispatch note — leg 119, 2026-09-16
+
+**In reserve for `ui`: nothing.** No `embarch-ui` file is inside the last 10% of its cap —
+`shell.md` is 6,736/12,288 B — so this is purely the per-decision cap and you have file-level room.
+If your work does push a file into reserve, file `tasks/ui/<NNN>-compact-ui.md` in the same commit
+(`scripts/check-task-numbers.py --next ui` for the number — **do not read the directory**).
+
+**Do not use the census to check your work.** `check-doc-size.py --decisions` prints only the twenty
+largest decisions in the suite, and 27 pinned over-cap entries fill those slots, so a 4,307 B entry
+dropping to 4,000 B simply vanishes from the list whether or not it is under cap (`tasks/doc/064`,
+owner-reserved). Count decision 25's bytes directly, before and after, and report both.
+
+**Standing `ui` debt, for context only, not yours to pay:** `embarch-ui`'s 18-record stale prefix has
+still never met a real stale prefix. Nothing in this unit touches it.
 
 ## Done when
 
