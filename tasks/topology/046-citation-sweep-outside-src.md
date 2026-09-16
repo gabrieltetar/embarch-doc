@@ -1,6 +1,6 @@
 # 046 — Citation sweep: the 18 `embarch-topology` citations that live outside `src/`
 
-**State:** open
+**State:** claimed — leg 122, `agent/topology/046-citation-sweep-outside-src`, 2026-09-16.
 **Source:** leg 117's refill sweep, 2026-09-16. Not from an `open.md` bullet — `embarch-topology/open.md`'s
 six live questions are all hardware debts, upstream deferrals, or explicitly-recorded standing
 limitations, none of them dispatchable. This came out of a mechanical census of citation-bearing
