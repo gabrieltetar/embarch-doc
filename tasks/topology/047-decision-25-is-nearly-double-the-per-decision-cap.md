@@ -1,6 +1,10 @@
 # 047 — `embarch-topology` decision 25 is 7,818 B — nearly double the per-decision cap, and nothing tracks it
 
-**State:** open
+**State:** claimed by agent/topology/047-decision-25-over-cap, 2026-09-16 12:54
+**Reserve (leg 118):** no `embarch-topology` file is in the last 10% of its cap —
+`decisions/validation-classifier.md` is at 68.4% of its *file* cap, which is exactly why this is a
+per-decision problem and not a file-size one. If your work pushes a file into reserve, file
+`tasks/topology/<NNN>-compact-topology.md` in the same commit.
 **Source:** leg 117, 2026-09-16. `core/063` closed the same gap for `embarch-core` decision 30 and
 its own framing was *"nothing is watching it, and that is the actual finding."* I ran the full
 census that task implied and it turned out to be true four more times: **five** decisions across the
