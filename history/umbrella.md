@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `list-targets`'s wire shape (exit 0/1, both on stdout, log line on stderr) restored next to check 8 in `projects.md`#17.
 - Check 16's first live reading: study_results/ is 809 MiB across 50 entries — the sweep bounds count, not size, which is the argument for decision 26's deferred --prune half.
 - `doctor` check 5 fails on a Linux probe that is attached but not permitted, instead of calling it unplugged: [decision 18](../embarch-umbrella/decisions.md).
 - `doctor` check 16 reports `study_results/` size and per-project build directories; `--prune` stays deferred ([decision 26](../embarch-umbrella/decisions.md)).
