@@ -1,11 +1,20 @@
 # 049 — Citation sweep: `src/` remainder after `study_builder.rs`
 
-**State:** open
+**State:** claimed — `agent/study-designer/049-src-citation-sweep-remainder`, leg 116, 2026-09-16
 **Source:** `tasks/study-designer/048`, which swept `src/study_builder.rs` (the
 largest of the 21 files `048` found remaining after `047`) and left the rest.
 **Scope:** study-designer
 **Hardware:** none — source comments only; nothing is built for a board.
 **Owner:** no
+
+**Doc-size reserve for `study-designer` (leg 116, 2026-09-16): two files, both already filed
+against.** `embarch-study-designer/spec.md` 9,350/10,240 B (890 B left) and
+`embarch-study-designer/open.md` 4,659/5,120 B (461 B left) — filed as `tasks/study-designer/032`
+and `026` respectively, both **blocked**. This unit is a source-comment sweep and should not need to
+write either file; **if it turns out you must**, spend the bytes and say so in your report, and if
+you leave either file deeper in reserve than you found it, file
+`tasks/study-designer/050-compact-study-designer.md` in the same commit per `tasks/README.md`. Do
+not compact `spec.md` or `open.md` as part of this unit — both have a live park and an owner.
 
 ## What
 
