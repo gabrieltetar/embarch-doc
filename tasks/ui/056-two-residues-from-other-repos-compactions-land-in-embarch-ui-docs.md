@@ -1,6 +1,6 @@
 # 056 — two compaction residues from other sub-projects land in `embarch-ui`'s docs
 
-**State:** claimed by agent/ui/056-two-compaction-residues, 2026-09-16 16:09
+**State:** done — agent/ui/056-two-compaction-residues, 2026-09-16.
 **Source:** two `inbox/` drops, folded into one task by leg 120 because they are the same scope and
 would otherwise be one dispatchable slot apiece: `ui-decision-25-history-citation-dangles.md` (the
 `embarch-reviewer` on `ui/055`) and `ui-debug-tab-diff-new-lines-fallback.md` (from
@@ -69,10 +69,24 @@ write the doc to match the retired sentence.
 
 ## Done when
 
-- [ ] `history/ui.md:38` and `embarch-ui/decisions/shell.md`#25 are consistent, by whichever of the
-      two shapes above you chose, with the reason stated.
-- [ ] `embarch-ui/decisions/debug-tab.md`#13 (or wherever `diff_new_lines` is actually documented)
+- [x] `history/ui.md:38` and `embarch-ui/decisions/shell.md`#25 are consistent, by whichever of the
+      two shapes above you chose, with the reason stated. **Chose "return the count somewhere
+      citable," not the history-entry rewrite the task suggested as cheaper**: `check-ownership.py
+      --scope ui` refuses `history/ui.md` for a `ui`-scoped worker (it is `build_changelog.py`
+      output, per `changelog.d/README.md`'s "nothing edits a shared history file directly" —
+      confirmed by first editing it, then getting a real ownership-check red). Restored the E/A
+      vertex counts to `embarch-ui/decisions/shell.md`#25 (the `layers`-mode SVG paragraph) instead,
+      so `history/ui.md:38`'s existing, untouched text is correct again.
+- [x] `embarch-ui/decisions/debug-tab.md`#13 (or wherever `diff_new_lines` is actually documented)
       states the trailing-partial-line behaviour and why it is correct rather than a bug — **verified
-      against the current implementation**, with the function and file named.
-- [ ] Decision 25 still at or under 4,096 B if touched, with bytes reported.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      against the current implementation**, with the function and file named. `diff_new_lines` at
+      `src/logs.rs:126` does have this fallback, though the code's own doc comment (`src/logs.rs:107`)
+      names a different trigger (volume aging the window out) for the same no-overlap branch — a
+      mutating trailing line never produces an exact-match overlap either, so it lands in the same
+      "replay the whole window" fallback. Documented in decision 13.
+- [x] Decision 25 still at or under 4,096 B if touched, with bytes reported. **3,906 B** (was 3,758 B;
+      +148 B for the restored vertex-count sentence), 190 B under cap.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`test`/`clippy --all-targets -D
+      warnings` clean in `embarch-ui` (no code changes needed — Part B is doc-only). All 11
+      `check-docs.py` checks green; `check-client-names.py` and `check-ownership.py --scope ui`
+      (doc repo) and `--code-repo` (code repo) all clean.
