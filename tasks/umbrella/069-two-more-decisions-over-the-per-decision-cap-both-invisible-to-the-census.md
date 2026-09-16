@@ -1,6 +1,6 @@
 # 069 — two more `embarch-umbrella` decisions are over the per-decision cap, both invisible to the census that missed them
 
-**State:** open
+**State:** claimed by agent/umbrella/069-two-decisions-over-cap, 2026-09-16 16:08
 **Source:** `agent/umbrella/068-two-decisions-over-cap` found `mirrors.md#16` while closing
 `tasks/umbrella/068` and filed it to `inbox/` rather than reaching past its own task — the right
 call. Leg 118 drained that drop, re-ran the census through `decision_state()` directly instead of
@@ -69,6 +69,25 @@ it is the shape that sometimes really is two decisions. Read it and say which yo
 - **Report before/after byte counts and the margin left** for each entry you touch. Three of leg
   118's four compactions finished inside 150 B of the cap; if yours does too, say so plainly, because
   nothing mechanical distinguishes "paid" from "paid, barely".
+
+## Dispatch note (leg 120, 2026-09-16)
+
+**Doc-size reserve for `umbrella`:** one file, and it is not one of yours —
+`embarch-umbrella/decisions/bind.md` at 11,533/12,288 B, **755 B left**, PARKED under
+`tasks/umbrella/009` which is `blocked`. Both files this task compacts are *out* of reserve
+(`mirrors.md` 86.7%, `sticky-host.md` 60.1%) and `check-doc-size.py` lists both as **PAID — close
+its item** once you are under. If your work pushes any `embarch-umbrella` doc into the last 10% of
+its cap and nothing has filed it, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
+
+**Do not touch `decisions/locate-api.md`#42.** A separate live task, `tasks/umbrella/071`, owns it —
+decision 42 cites decision 35 for a `list-targets` shape decision 35 does not record, and it has 77 B
+of margin. Leave it alone entirely so the two units do not collide.
+
+**The justification test, stated as this leg is stating it to every worker.** Five units in two legs
+have now cut a hunk on a justification that was true of the hunk's *topic* and false of one clause
+inside it. When you justify a cut with "this is already recorded in X", open X and read it **against
+the hunk sentence by sentence**, not against the hunk's subject. If X is a paraphrase, the cut is not
+covered. Quote the evidence, not the conclusion.
 
 ## Done when
 
