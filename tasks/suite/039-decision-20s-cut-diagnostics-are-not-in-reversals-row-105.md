@@ -1,6 +1,13 @@
 # 039 — decision 20's cut investigation log is not preserved in reversals row 105, and two named diagnostic methods now exist nowhere in the corpus
 
-**State:** open
+**State:** done — leg 120 (supervisor's own hands), 2026-09-16. Row 105 in
+`reversals/rows-93-109.md` now names both hypotheses, both refutation methods and the handshake
+test's per-candidate result. `reversals/rows-93-109.md` 12,532 → **12,838 B** (+306 B, no cap on a
+reversals row file); `embarch-decision-reversals.md` unchanged at 9,309/10,240 B, so its reserve
+item under `tasks/suite/004` neither moved nor grew.
+`embarch-topology/decisions/link-declares.md`#20 **not touched** — still 3,717 B, 379 B of margin.
+Corpus check after the edit: `grep -rnic 'debug status register\|generated devicetree'` across every
+`*.md` now hits `reversals/rows-93-109.md`, so the two methods survive this task file's own deletion.
 **Source:** `inbox/topology-decision-20-reversals-row-105-not-verbatim.md`, filed by the
 `embarch-reviewer` on `topology/048` (doc merge `d3f2f81`), drained by leg 120.
 **Scope:** suite
