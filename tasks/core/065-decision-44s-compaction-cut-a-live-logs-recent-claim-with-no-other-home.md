@@ -1,6 +1,6 @@
 # 065 — decision 44's compaction cut a live `/logs/recent` claim that is now documented nowhere
 
-**State:** open
+**State:** claimed by agent/core/065-logs-recent-partial-line-claim, 2026-09-16 14:22
 **Source:** `embarch-reviewer` on `core/064` (merge `74f3708` in `embarch-doc`), filed to `inbox/` as
 `core-decision-44-residue-live-route-claim.md` and drained into the queue by leg 118. Re-checked at
 drain: the `Hardware:` claim is correct — this is doc prose about behaviour the reviewer already
@@ -69,6 +69,24 @@ tail as it stands now'"). That reasoning is what stops someone treating it as a 
   exactly how a live claim inside one gets cut. Whether that test needs a clause about retired
   entries is an `inbox/` finding for the owner, not something to change here (`DOC-COMPACTION.md` is
   owner-reserved).
+
+## Dispatch note — leg 119, 2026-09-16
+
+**In reserve for `core`:** `embarch-core/decisions/auth.md` is 11,356/12,288 B, **932 B of headroom**,
+filed against `tasks/core/046-compact-core.md` (blocked, `In flux: yes`). You are not writing that
+file — but if your work does push a file into reserve, or leaves one there that nothing has filed,
+file `tasks/core/<NNN>-compact-core.md` in the same commit (`tasks/README.md` has the shape;
+`scripts/check-task-numbers.py --next core` gives a safe number — **do not read the directory**).
+
+**Per-decision cap:** `embarch-core` has no unpinned over-cap decision right now. Whichever home you
+pick, check the entry you are writing into stays at or under **4,096 B** — `python3
+scripts/check-doc-size.py --decisions` only prints the twenty largest in the suite, so it will not
+warn you about a smaller entry you just pushed over (`tasks/doc/064`).
+
+**The rule this leg is watching, and it caught nothing when stated loosely.** If you justify a cut —
+or a decision *not* to restate something — by pointing at another decision, **open that decision and
+confirm it covers the whole hunk sentence by sentence, not the topic.** This exact failure landed
+twice in leg 118 under an explicit instruction to quote cuts verbatim.
 
 ## Done when
 
