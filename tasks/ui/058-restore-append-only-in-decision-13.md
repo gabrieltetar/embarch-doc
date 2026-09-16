@@ -45,20 +45,43 @@ corrected but cut this → here) and it is a 12-byte edit into known headroom. T
 ## Reserve
 
 No `embarch-ui` file is in doc-size reserve this leg. The binding limit here is the
-**per-decision 4,096 B cap on decision 13 itself**, not a file cap — check it with
+**4,096 B per-decision cap on decision 13 itself**, not a file cap — check it with
 `scripts/check-doc-size.py --decisions` and report the before/after byte count for the
 `### 13` section, the same way `ui/057` did.
 
 ## Done when
 
-- [ ] `append-only` restored in decision 13's bullet-3 sentence.
-- [ ] Bullet 4's `only` / `timestamp-contradicting interleaving` restored if they fit,
+- [x] `append-only` restored in decision 13's bullet-3 sentence.
+- [x] Bullet 4's `only` / `timestamp-contradicting interleaving` restored if they fit,
       or explicitly reported as not fitting.
-- [ ] Before/after byte count of the `### 13` section reported, and the cap not
+- [x] Before/after byte count of the `### 13` section reported, and the cap not
       exceeded.
-- [ ] Nothing else in the entry cut to make room.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Nothing else in the entry cut to make room.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Result
+
+`### 13` section measured **4,079 B before, 4,096 B after** — exactly at the
+4,096 B cap, not over it (`check-doc-size.py` fails only on `size > limit`).
+
+What left the text: nothing. What entered it:
+- Bullet 3: `append-only ` (12 B) inserted before `file` in "The window is a
+  contiguous run of one **append-only** file, so the anchor is..." — restores
+  the word `ui/057` cut. Cost: 4,079 -> 4,091 B.
+- Bullet 4: `only ` (5 B) inserted before `its` in "reproduced against live
+  Core with **only** its recent-lines route delayed" — restores the word
+  `ui/057` cut. Cost: 4,091 -> 4,096 B.
+- Bullet 4's other restoration candidate, the phrase `timestamp-contradicting
+  interleaving`, does **not** fit: 0 B of headroom remained after the two
+  restorations above, and this phrase alone costs far more than that. Left
+  as `ui/057` wrote it ("exactly why this decision avoids a merged stream").
+  This is texture loss, not a cut fact — the property itself (timestamps
+  contradicting on a merged stream) is still stated in bullet 2 above
+  ("interleaving them by arrival order would put lines in an order their own
+  timestamps contradict").
+
+Nothing else in the entry was touched or trimmed.
 
 ## Not yours
 
