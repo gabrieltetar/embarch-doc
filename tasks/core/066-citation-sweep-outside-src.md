@@ -1,6 +1,6 @@
 # 066 — Citation sweep: the nine `embarch-core` citations that live outside `src/`
 
-**State:** open
+**State:** claimed — leg 122, `agent/core/066-citation-sweep-outside-src`, 2026-09-16.
 **Source:** leg 121's refill sweep, 2026-09-16. `core/058` (merge `fd90452`) reported
 *"embarch-core/src swept end to end"* — its scope was the directory, and three citation-bearing files
 sit outside it and have never been read. Same shape as the still-open `tasks/topology/046`, which was
