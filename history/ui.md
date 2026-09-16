@@ -26,6 +26,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Decision 13's growing-trailing-line claim is now conditional, not universal; decision 25's restored vertex count now matches its own file (693 B, 53 vertices).
 - embarch-ui/decisions/debug-tab.md#13 documents diff_new_lines's fallback for a trailing log line that mutates between polls.
 - embarch-ui/decisions/shell.md#25 states its E/A vertex counts again, restoring what history/ui.md:38 cites.
 - Decision 7's retention line described a size-capped logfile that was never built; Core's is daily-rolling.
