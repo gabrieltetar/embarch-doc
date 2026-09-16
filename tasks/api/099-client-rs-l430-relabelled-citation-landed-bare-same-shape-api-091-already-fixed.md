@@ -1,6 +1,6 @@
 # 099 — `client.rs` L430's decision-17 fix landed unlabelled, the same shape `api/091` already fixed once
 
-**State:** open
+**State:** claimed by agent/api/099-client-rs-l430-label, 2026-09-16 12:34
 **Source:** the `api/097` **reviewer**, leg 116, 2026-09-16, reviewing landed unit `api/097` (code
 `8f7fc5c`, doc `aa65f1e`). I had independently flagged the same line at merge review and was drafting
 a thinner version of this task; the reviewer's drop was the better document, so this **is** that drop,
