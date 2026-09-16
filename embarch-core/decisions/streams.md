@@ -19,19 +19,9 @@ The consuming half of `embarch-study-designer` decision 39 and of `embarch-outpo
 > **Retired 2026-09-11 (`tasks/suite/015`).** `GET /study/{id}/power-data`, `/waveform-data` and
 > `/gatt-data` — kept as aliases for one release — are gone, along with `serve_alias`,
 > `StreamIndex::find_alias`, `alias_for`, and the persisted `alias` field on every
-> `streams/index.json` entry and on `GET /study/{id}/streams`'s response. The route sweep is 23 cases
-> over 22 registered routes.
->
-> **Two things this settled that the grant had left open.** `alias_for` mapped a `PowerFrontEnd`
-> source to `"power"` — a capture that cannot exist, since power profiling is deferred with no
-> hardware ordered. And `serve_alias`'s **pre-`streams/` on-disk fallback was dead code**: all 50
-> studies under this machine's `study_results/` carry a `streams/index.json` [measured 2026-09-11],
-> so the branch that reads `data.csv`/`waveform.csv`/`gatt.csv` at the old fixed paths had nothing
-> left to serve. That is evidence from one machine rather than proof about all of them — but this
-> suite has shipped exactly one release, and it is the release that wrote `streams/`.
->
-> `streams/index.json` itself stays. Resolving the aliases was its second job; the name → file
-> mapping in the paragraph above was always the load-bearing one.
+> `streams/index.json` entry and on `GET /study/{id}/streams`'s response. The pre-`streams/`
+> on-disk fallback (`data.csv`/`waveform.csv`/`gatt.csv` at the old fixed paths) was dead code by
+> then: `streams/index.json`'s name → file mapping was always the load-bearing job.
 
 **A manifest is bound by the study's own flash and verified by build ID** — **selection whose lifetime is that study**, never a persisted "current firmware" record. On mismatch Core writes the raw stream and **renders nothing**: rendering against the nearest available manifest produces a trace that is completely readable and completely wrong, relabelling every marker and thread. Loud beats plausible. It rides as a sibling of `firmware` on the call that already carries the artifact, parsed **before** the flash so a build problem is reported while the person who ran the build is watching, stored **after** it succeeds, and **keyed per chip** because `/flash` also writes the bench's firmware. Refusal costs the *names*, never the capture.
 
