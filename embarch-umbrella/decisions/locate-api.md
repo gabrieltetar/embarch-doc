@@ -23,7 +23,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-
 
 *Rejected: rank the registration behind `PATH`, or drop it.* Stale JSON naming an old build would outrank a fresh install — a real cost, why a missing-file registration falls through rather than winning. It loses anyway: a stale entry is still **what the agent runs**, and hiding it is the invisible mixed install `open.md` complained about. *Rejected: call it by-design and delete the three bullets.* That requires believing `setup` installs a binary `doctor` is then right not to find.
 
-**Neither check 8 nor check 11 has run inside a live `doctor` yet** — that needs a live Core and stays in [`open.md`](../open.md). The CLI shapes both checks assume were observed directly against both binaries on this bench [2026-09-06], matching [decision 35](schema-skew.md)'s own record.
+**Neither check 8 nor check 11 has run inside a live `doctor` yet** — that needs a live Core and stays in [`open.md`](../open.md). The CLI shapes both checks assume were observed directly against both binaries on this bench [2026-09-06]: check 11's matches [decision 35](schema-skew.md), check 8's matches [decision 17](projects.md).
 
 **`init` passes no registration**, deliberately: it *writes* one, and handing it back its own output would let a dev path propagate into a fresh repo. It gains (c), the half it was missing.
 
