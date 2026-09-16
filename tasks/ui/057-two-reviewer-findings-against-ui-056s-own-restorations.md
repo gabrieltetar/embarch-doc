@@ -1,6 +1,6 @@
 # 057 — Both of `ui/056`'s restorations are wrong: decision 13's universal claim is false, decision 25's vertex count is on the wrong trace
 
-**State:** claimed by agent/ui/057-two-reviewer-findings, 2026-09-16 17:15
+**State:** done — agent/ui/057-two-reviewer-findings, 2026-09-16
 **Source:** two `embarch-reviewer` drops against `ui/056` (merge `b67da91`), drained from `inbox/` by
 leg 121 on 2026-09-16: `ui-debug-tab-13-by-construction-claim-wrong.md` and
 `ui-decision-25-restored-count-wrong-trace-mode.md`. Filed as one task because they are one unit's
@@ -83,13 +83,31 @@ trace); corrected to 22"* — confirms the 16→22 correction was about the **un
 
 ## Done when
 
-- [ ] Decision 13's sentence states the actual guarantee: a growing trailing line falls into the
+- [x] Decision 13's sentence states the actual guarantee: a growing trailing line falls into the
       no-overlap replay-the-window branch **unless** the window holds a line elsewhere identical to
       the pre-growth trailing line's content, in which case the overlap search can match spuriously
       and republish an already-sent line.
-- [ ] Decision 25's restored count is either moved back to the header-glyph (union-mode) paragraph as
+- [x] Decision 25's restored count is either moved back to the header-glyph (union-mode) paragraph as
       it read pre-`ui/055`, or rewritten in place with the layers-mode file's own numbers (693 B, 53
-      vertices).
-- [ ] Both decisions at or under 4,096 B, bytes reported before and after.
-- [ ] `history/ui.md:38` re-checked against wherever the number ends up — reported, not edited.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      vertices). Took the second shape: `assets/brand/embarch-mark.svg`'s own mention now reads
+      `(693 B, 53 vertices)` and the wrong 22/15-vertex/657 B sentence (the header-glyph/union trace's
+      numbers, misattributed) is removed from the layers-mode paragraph.
+- [x] Both decisions at or under 4,096 B, bytes reported before and after: debug-tab.md#13
+      4,080 B -> 4,079 B (rewrite plus trims elsewhere in the same entry — see commit message);
+      shell.md#25 3,906 B -> 3,778 B.
+- [x] `history/ui.md:38` re-checked against wherever the number ends up — reported, not edited. The
+      cited line has drifted to line 41 as newer fragments were folded in ahead of it ("Decision 25's E
+      vertex count was 16 (a non-union trace); corrected to 22...") and remains an accurate historical
+      record of `ui/030`'s union-trace fix — it does not describe present doc content either way, so it
+      needs no wording change. A second, `ui/056`-authored line (now at line 30 — "restoring what
+      history/ui.md:38 cites") records an action that is now known to have restored the number to the
+      wrong paragraph with the wrong file's figures; that stays as an accurate record of what `ui/056`
+      did, not a live claim, so it is also left alone. `history/ui.md` is `build_changelog.py` output
+      and out of a `ui`-scoped worker's reach either way (protocol.md §3); this unit's own fragment
+      (`changelog.d/ui-057-reviewer-corrections.fixed.md`) will fold into a further, newer line next
+      assembly.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) for everything this unit touched. One
+      pre-existing, unrelated red found in the full `check-docs.py` run:
+      `check-task-state.py` flags `tasks/topology/049-decision-21-no-longer-backs-history-topologys-three-times-count.md`
+      (topology scope, not touched by this unit, not in this branch's diff — confirmed via
+      `git diff --stat` against this branch's own two file changes).
