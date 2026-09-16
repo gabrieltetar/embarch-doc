@@ -1,6 +1,6 @@
 # 060 — Compact `embarch-core/decisions/streams.md` out of reserve
 
-**State:** open
+**State:** claimed — `agent/core/060-compact-core`, leg 116, 2026-09-16
 **Source:** `suite/029` (leg 113, 2026-09-13). That unit added **decision 63** to this file and took it
 from 9,356 B to **11,219 B**, which is 160 B inside the reserve floor. The supervisor trimmed the new
 decision twice — 11,462 → 11,219 — and stopped, because the next cut came out of the clause naming why
