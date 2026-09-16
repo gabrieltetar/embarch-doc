@@ -1,6 +1,6 @@
 # 048 — two `embarch-topology` decisions are over the per-decision cap, both below the census's cut
 
-**State:** open
+**State:** claimed by agent/topology/048-two-decisions-over-cap, 2026-09-16 14:24
 **Source:** leg 118, 2026-09-16. Leg 117's suite-wide per-decision census reported five breaches and
 filed four tasks, of which `topology/047` — decision 25, the largest decision entry in the suite — was
 one. Leg 118 landed all four and then found the census had never been capable of seeing the rest:
@@ -69,6 +69,18 @@ separately?** Answer that with a grep, not an impression.
 - **Grep the whole doc repo for inbound `decision 20` and `decision 21` citations first**, and
   remember a bare `decision 20` in another sub-project's file means *that* sub-project's 20.
 - **Report before/after byte counts and the margin left** for each entry you touch.
+
+## Dispatch note — leg 119, 2026-09-16
+
+**In reserve for `topology`: nothing.** No `embarch-topology` file is inside the last 10% of its cap,
+so you have file-level room and this is purely the per-decision cap. If your work does push a file
+into reserve, file `tasks/topology/<NNN>-compact-topology.md` in the same commit
+(`scripts/check-task-numbers.py --next topology` for the number — **do not read the directory**).
+
+**The census that filed this task is itself unreliable, so do not use it to check your work.**
+`check-doc-size.py --decisions` prints only the twenty largest decisions in the suite and 27 pinned
+over-cap entries fill those slots, so it cannot confirm a smaller entry is now under cap
+(`tasks/doc/064`, owner-reserved). Count the bytes of each entry you touch directly and report them.
 
 ## Done when
 
