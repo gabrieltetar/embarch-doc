@@ -1,6 +1,6 @@
 # 050 — Citation sweep: `src/` remainder after `protocol.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/050-src-citation-sweep-remainder, 2026-09-16 12:27
 **Source:** `tasks/study-designer/049`, which swept `src/protocol.rs` (the
 largest of the 20 files `049` found remaining after `048`) and left the rest.
 **Scope:** study-designer
