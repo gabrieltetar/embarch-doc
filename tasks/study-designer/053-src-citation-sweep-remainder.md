@@ -1,14 +1,13 @@
-# 052 — Citation sweep: `src/` remainder after `limits.rs` and `result.rs`
+# 053 — Citation sweep: `src/` remainder after `bounded.rs`
 
-**State:** done — leg 122, `agent/study-designer/052-src-citation-sweep-remainder`, 2026-09-16.
-**Source:** `tasks/study-designer/051`, which swept `src/limits.rs` and
-`src/result.rs` (the two largest of the 18 files `050` found remaining after
-`049`) and left the rest.
+**State:** open
+**Source:** `tasks/study-designer/052`, which swept `src/bounded.rs` (the
+largest of the 16 files `051` left remaining) and left the rest.
 **Scope:** study-designer
 **Hardware:** none — source comments only; nothing is built for a board.
 **Owner:** no
 
-**Doc-size reserve for `study-designer` (re-checked fresh by `051`,
+**Doc-size reserve for `study-designer` (re-checked fresh by `052`,
 2026-09-16, via `scripts/check-doc-size.py`): unchanged.**
 `embarch-study-designer/spec.md` and `open.md` remain in the last 10% of
 their caps, filed as `tasks/study-designer/032` and `026` respectively, both
@@ -18,8 +17,8 @@ report.
 
 ## What
 
-Nine of the four originally-named plus the five largest-remaining files are
-now swept:
+Ten of the four originally-named plus the six largest-remaining files are now
+swept:
 
 ```
 41  src/schema_version.rs — swept in 044
@@ -31,14 +30,14 @@ now swept:
 29  src/streams.rs        — swept in 050
 28  src/limits.rs         — swept in 051
 24  src/result.rs         — swept in 051
+22  src/bounded.rs        — swept in 052
 ```
 
-**16 files remain (plus `ids.rs`, which has no citations), largest first, by
+**14 files remain (plus `ids.rs`, which has no citations), largest first, by
 the same grep methodology** (`grep -cE '[Dd]ecision' src/<file>.rs` — a *line*
 count, not a citation-instance count):
 
 ```
-22  src/bounded.rs
 21  src/eap.rs
 15  src/ffi.rs
 14  src/crc.rs
@@ -56,7 +55,7 @@ count, not a citation-instance count):
  0  src/ids.rs — no citations; needs no sweep, listed so the count above is exhaustive
 ```
 
-Take one file — `src/bounded.rs` next, largest remaining, unless a reason is
+Take one file — `src/eap.rs` next, largest remaining, unless a reason is
 given to reorder — read every cited decision's body against the sentence
 around the citation, and fix what is wrong. Count wrong *numbers* and false
 *sentences* separately, per the method below. When you run out of budget, file
@@ -64,23 +63,18 @@ the next `tasks/study-designer/<next>` naming exactly which files remain, the
 same way this one does.
 
 **Grep-line-count does not predict citation-instance count, and does not
-predict cost.** `051` took two files (`limits.rs`, 28 grep-matching lines, 32
-distinct citation instances; `result.rs`, 24 grep-matching lines, 25 distinct
-citation instances — 57 total) in one leg with room to spare, and found two
-defects, one per file: `limits.rs`'s `MAX_SOURCES_PER_PROTOCOL` comment cited
-`decision 57` (an unrelated GATT-extraction-scope decision) for a claim that
-was itself false — "the real BDS download's three (`ctrl`/`status`/`data`)"
-— when the crate's own `interfaces/eap.md` says the real manifest
-**deliberately does not** name the bulk data characteristic as a source, so
-it is two (`ctrl`/`status`), not three; and `result.rs`'s `security_level`
-field doc cited `decision 50` (`Action::BleUnbond`, an unrelated action) when
-the field it documents — "populated for every step, not only for a security
-step" — is decision 44's own implementation note verbatim
-(`decisions/ble.md`). Both fixed by correcting the number/reference rather
-than the surrounding prose, which was otherwise accurate. Neither file had an
-unlabelled cross-repo citation; both files' several cross-repo cites
-(`embarch-dev-bench`, `embarch-core`, `embarch-topology`, `embarch-outpost`,
-`embarch-api`, `embarch-ui`) were all correctly labelled and on-topic.
+predict cost, and does not predict yield.** `052` took one file
+(`bounded.rs`, 22 grep-matching lines, 25 distinct citation instances) and
+found **zero** defects — a legitimate result, not a sign the pass was
+skipped: every citation (decisions 15, 46, 49, 54, 63, all same-crate, none
+cross-repo) was read against `decisions/limits.md` and `decisions/removed.md`
+in full, including three numeric claims (1,293,608 bytes, 32 × 536-byte
+records, the ~3.5x/262,144-byte ceiling derivation, 64 MiB in
+`.cargo/config.toml`), all of which check out exactly. This is the first zero
+in the chain since `044`/`046` era found only unlabelled-cross-repo defects —
+worth noting for the running tally this task's dispatcher asked for (see
+`changelog.d/study-designer-052-*` for `052`'s three numbers), since a sweep
+that finds nothing is still evidence about the corpus, not a wasted unit.
 
 ## Why now
 
@@ -92,15 +86,16 @@ depend on it or its output types), so its comments are read from several other
 repos' default citation index, which makes a bare `decision N` genuinely
 ambiguous here in a way it is not in a leaf repo.
 
-## Method (carried over from `044`-`051`, confirmed useful all nine times)
+## Method (carried over from `044`-`052`, confirmed useful all ten times)
 
 **Read the cited decision's body, then read the sentence around the citation,
 in that order.** A number that resolves is not evidence the claim holds — the
-real yield across five-plus days of these sweeps in other repos, and all nine
-sweeps in this one, has been prose a decision made false or a citation
-pointing at the wrong (but real) decision, not a bare typo. Count the two
-categories separately and report both, honestly, even if one or both is zero —
-"checked N, found none" is a legitimate result.
+real yield across five-plus days of these sweeps in other repos, and nine of
+the ten sweeps in this one, has been prose a decision made false or a
+citation pointing at the wrong (but real) decision, not a bare typo. `052`
+is the first true zero. Count the two categories separately and report both,
+honestly, even if one or both is zero — "checked N, found none" is a
+legitimate result.
 
 **A cross-repo citation that resolves to a real, on-topic decision is not
 automatically suspect just because it feels surprising.** Read the far-repo
@@ -113,8 +108,10 @@ bare `decision N` is same-repo by convention; another repo's decision must
 read `<repo> decision N` (e.g. `embarch-dev-bench decision 38`) — general form
 still open, owner-reserved, `tasks/doc/055`. `044` found one bare cross-repo
 citation missing its label, `045` found a second, structurally identical one.
-`046`, `047`, `049` and `051` found none. `048` found the *opposite* shape: a
-same-repo decision mislabelled *as* foreign. `050` found a **third** shape: a
+`046`, `047`, `049`, `051` and `052` found none (`052`'s file had no
+cross-repo citations of any kind, labelled or not — every one of its 25
+instances was same-crate). `048` found the *opposite* shape: a same-repo
+decision mislabelled *as* foreign. `050` found a **third** shape: a
 cross-repo decision correctly labelled on its first two mentions but repeated
 bare four lines later, past `check-decision-refs.py`'s attribution window.
 Check every bare *and* every labelled `decision N` against *this crate's own*
@@ -124,18 +121,17 @@ label is right, and is not proof it is wrong either.
 **A wrong number is not always a nearby-digit typo.** `051`'s two finds were
 both a real, existing, but topically wrong decision — not a transposed digit
 — found only by reading the cited decision's actual text against the claim,
-never by the number alone looking suspicious. **Reading the crate's own
-`interfaces/*.md` mattered as much as reading `decisions/*.md` this time**:
-`limits.rs`'s defect was only visible by comparing the comment against
-`interfaces/eap.md`'s own worked-protocol finding, which directly
-contradicted it — a case where the decision cited was simply the wrong one
-to check against at all, and the correct source is a "current truth"
-interface doc rather than a decision file.
+never by the number alone looking suspicious. Reading the crate's own
+`interfaces/*.md` mattered as much as reading `decisions/*.md` in `051`.
+`052` had no `interfaces/*.md` claims to check — `bounded.rs` cites only
+`decisions/limits.md` and `decisions/removed.md`, and its own `.cargo/config.toml`
+comment (not itself a citation, but useful corroboration) independently
+restates the same 64 MiB figure decision 63 gives.
 
 **Git history of the decisions file is worth checking when a citation's
-credit looks off**, though `047`'s, `048`'s, `049`'s, `050`'s and `051`'s
-findings all resolved without it. When no paired table or direct textual
-match exists, run `git log --follow -p -- embarch-study-designer/decisions/
+credit looks off**, though `047`'s, `048`'s, `049`'s, `050`'s, `051`'s and
+`052`'s findings all resolved without it. When no paired table or direct
+textual match exists, run `git log --follow -p -- embarch-study-designer/decisions/
 <file>.md` and read how the cited paragraph's wording evolved.
 
 ## Files already swept (do not re-do)
@@ -158,46 +154,53 @@ match exists, run `git log --follow -p -- embarch-study-designer/decisions/
   citation instances. 0 wrong numbers, 0 false sentences, 1 unlabelled
   cross-repo citation — fixed.
 - `src/limits.rs` — done in `051`. 28 grep-matching lines, 32 distinct
-  citation instances. **1 wrong number, 1 false sentence, 0 unlabelled
-  cross-repo citations — both fixed** (`MAX_SOURCES_PER_PROTOCOL`'s
+  citation instances. 1 wrong number, 1 false sentence, 0 unlabelled
+  cross-repo citations — both fixed (`MAX_SOURCES_PER_PROTOCOL`'s
   `decision 57` cite and its "three (`ctrl`/`status`/`data`)" claim; corrected
   to two, `ctrl`/`status`, per `interfaces/eap.md`).
 - `src/result.rs` — done in `051`. 24 grep-matching lines, 25 distinct
-  citation instances. **1 wrong number, 0 false sentences, 0 unlabelled
-  cross-repo citations — fixed** (`security_level`'s `decision 50` cite,
+  citation instances. 1 wrong number, 0 false sentences, 0 unlabelled
+  cross-repo citations — fixed (`security_level`'s `decision 50` cite,
   should be `decision 44`).
+- `src/bounded.rs` — done in `052`. 22 grep-matching lines, **25 distinct
+  citation instances. 0 wrong numbers, 0 false sentences, 0 unlabelled
+  cross-repo citations** — every citation (decisions 15, 46, 49, 54, 63)
+  checked against `decisions/limits.md` and `decisions/removed.md` and found
+  accurate, including all embedded numeric claims.
+
+## Running tally across the chain (`044`–`052`, nine files reporting per-file
+counts plus `045`'s discrepancy note on grep-vs-instance)
+
+Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
+count only reported; no distinct-instance recount published), `study.rs` 52
+(ditto), `gatt_extract.rs` 36 (ditto), `lib.rs` 41 (ditto),
+`study_builder.rs` 36, `protocol.rs` ~38, `streams.rs` 31, `limits.rs` 32,
+`result.rs` 25, `bounded.rs` 25. Wrong numbers found: 0+3+3+2+3+1+0+1+1+0 = 14.
+False sentences found: 0+0+2+0+0+0+0+1+0+0 = 3. **This running total is
+carried forward from `052`'s dispatch note — recompute it fresh in your
+report using the actual per-file numbers above plus whatever this unit adds,
+since some early files (`044`-`047`) never published a distinct-instance
+count separate from the grep-line count, only the grep count.**
 
 ## Done when
 
-- [x] One named file (`src/bounded.rs`, unless a reason is given to reorder)
+- [ ] One named file (`src/eap.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately.
-      **Result: 25 distinct citation instances checked (22 grep-matching
-      lines), 0 wrong numbers, 0 false sentences.** Every citation (decisions
-      15, 46, 49, 54, 63 — all same-crate) read against
-      `decisions/limits.md` and `decisions/removed.md`, including the
-      embedded numeric claims (1,293,608 bytes, 32 × 536-byte records, the
-      ~3.5x/262,144-byte ceiling, 64 MiB in `.cargo/config.toml`). All
-      checked out exactly. No source edit was needed — a legitimate "checked
-      N, found none" result, the first true zero in this nine-file-plus-one
-      chain.
-- [x] Cross-repo citations in it carry their repo name — and every citation,
+- [ ] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text is read before it is called wrong.
-      `bounded.rs` has **no** cross-repo citations at all — all 25 instances
-      resolve to same-crate decisions 15/46/49/54/63. No labelling defect
-      possible or found.
-- [x] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep). Filed
-      `tasks/study-designer/053-src-citation-sweep-remainder.md`, naming the
-      14 files still unswept (`ids.rs` has no citations and needs none).
-- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [x] `changelog.d/study-designer-*` fragment.
+- [ ] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep).
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      instances checked, wrong numbers found, and false sentences found as
+      three explicit numbers.
 
 ## Reserve, for planning
 
 `embarch-study-designer/spec.md` and `open.md` were both inside the last 10%
 of their caps as of `045`'s dispatch, with both compaction tasks (`032`, `026`)
-blocked, `In flux: yes` per `046`'s dispatch note; `047` through `051` all
+blocked, `In flux: yes` per `046`'s dispatch note; `047` through `052` all
 re-checked `scripts/check-doc-size.py` fresh and found no new reserve entries
 for this scope, touching neither file. Check fresh again rather than trusting
 this number — a comment sweep should not need either file regardless. If this
