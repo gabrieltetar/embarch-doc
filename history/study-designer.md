@@ -18,6 +18,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- `src/streams.rs` citation sweep: one `embarch-outpost decision 9` cite that had dropped its label four lines past the last one, fixed.
 - protocol.rs's 32 decision-citation lines swept (comment-only): 1 wrong number fixed (seal-ordering rule misattributed 39->17), 0 false sentences.
 - study_builder.rs's 38 decision citations swept (comment-only): 3 wrong numbers fixed (delay_before_ms->42; one embarch-api-mislabelled cite->26; vendor no-schema-bump->41), 0 false sentences.
 - `src/lib.rs`'s 41 decision citations checked; two wrong numbers fixed (v12's security_level/pair miscredited to decision 50/51, now 44/50).
