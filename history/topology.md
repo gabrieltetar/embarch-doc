@@ -11,6 +11,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- Decision 25 (chip classifier) compacted 7,818 B -> 4,001 B, under the 4 KB per-decision cap; not split, see `tasks/topology/047`.
 - embarch-topology/spec.md compacted from 9,110 B to 9,001 B, closing the last 70 B out of reserve.
 - embarch-topology/spec.md compacted from 9,825 B to 9,110 B, back under its 90% reserve line.
 - spec.md now names select_probe as this crate's, and the three observable behaviours a caller sees.
