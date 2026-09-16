@@ -1,6 +1,6 @@
 # 098 — Fix `embarch-api/interfaces/studies.md`'s stale `decisions/streams.md` mention after core/060's split
 
-**State:** open
+**State:** claimed by agent/api/098-streams-md-mention, 2026-09-16 12:26
 **Source:** `tasks/core/060-compact-core.md` (leg 116, 2026-09-16) — found while compacting
 `embarch-core/decisions/streams.md` out of reserve.
 **Scope:** api
