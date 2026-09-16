@@ -1,6 +1,6 @@
 # 063 — `embarch-core` decision 30 is over the per-decision cap, unpinned, and tracked by nothing
 
-**State:** open
+**State:** claimed by agent/core/063-decision-30-over-cap, 2026-09-16 12:27
 **Source:** the `core/060` **reviewer**, leg 116, 2026-09-16. It was checking `tasks/doc/052`'s
 pin-orphaning defect against the `streams.md` split and, in the course of establishing that **none**
 of decisions 30/38/39/62/63 was pinned in `scripts/decision-size-baseline.json`, noticed why that is
