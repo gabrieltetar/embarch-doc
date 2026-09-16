@@ -17,7 +17,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56 | 8.2 KB |
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 5.5 KB |
 | [The stream index](decisions/stream-index.md) | 62, 63 | 5.5 KB |
-| [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58 | 10.7 KB |
+| [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58 | 8.9 KB |
 | [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59 | 6.9 KB |
 | [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57 | 8.1 KB |
 
