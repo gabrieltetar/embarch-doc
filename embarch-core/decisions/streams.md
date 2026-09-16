@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-What Core captures for a study and what it refuses to render: tap files, the manifest binding, and being the trace's clock.
+What Core captures for a study and what it refuses to render: tap files, the manifest binding, and being the trace's clock. What the stream index reports back about a tap once it is captured — a computed load answer, and one declared against hardware this bench lacks — is [stream-index.md](stream-index.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -44,27 +44,5 @@ The store takes the study's declared decoders alongside its taps, because a stru
 
 ### 39 — The third pre-flight seal, and the two indices a manifest cannot check about itself
 `validate_study` recomputes `protocols_crc` too, and that seal exists for a reason the others make plain by contrast: `Study.decoders` is covered by **none** of them, because a layout only decides how Core *renders* a byte already captured, and re-rendering with a corrected layout must leave it the same study. A protocol is the opposite — dev-bench executes it — so corrupting one in flight would have firmware writing different bytes to a DUT's control point than the study said. Three sibling seals, checked independently, so a rejection names which third arrived wrong. **`validate_protocol` is called, not reimplemented.** The two indices it structurally cannot see are Core's, because they live on a `Step`: a `RunProtocol`'s protocol index and entry state, which nothing else in the suite resolves.
-
-### 62 — `GET /study/{id}/stream/{name}/load` answers the outpost's own load repartition, alongside the byte route rather than replacing it
-[Suite decision 4](../../suite/decisions.md) named `embarch-core` as the one place an outpost capture's per-subject load shares and its coverage line are computed, because Core is the only component on both the agent's path and the human's, and the only one in the release archive. This is that route's shape.
-
-**A sibling of `/stream/{name}`, not a query flag on it.** `?raw=1` on the existing route already picks between two *files* for the same encoding; the load answer is not a third file, it is a computed result over the rendered one, so it gets its own path segment (`outpost_load.rs`, `study.rs`'s `stream_load_handler`) rather than overloading a query string with a second, unrelated meaning.
-
-**Scoped to `StreamEncoding::OutpostTrace` and refused otherwise, by the same tap the byte route already resolves.** There is no timeline to repartition in a `Samples`/`GattTranscript`/`Raw`/`Text` capture, so a mismatched tap is a `400` naming its real encoding rather than an agent guessing why the numbers came back empty or zero. A tap that has not rendered — no manifest applied yet, or the render failed — is a `404` carrying the same reason `GET /study/{id}/streams`'s own `note` already gives; this route invents no second explanation for the same fact.
-
-**Consumes the rendered CSV; does not touch the raw frames or the manifest.** Core already owns the one decode of the wire (`outpost_manifest.rs`) and already refuses to render a manifest whose `record_layout_version` disagrees with the shared crate's. `outpost_load.rs` reads only the `*.trace.csv` that decode produced, and inherits [`embarch-ui` decision 10 (trace)](../../embarch-ui/decisions/trace-view.md)'s pin verbatim: the column list is checked against `embarch_study_designer::outpost::csv_header()` and refused (`422`) if it differs. [Reversals row 86](../../reversals/rows-73-92.md) is why that check moves with the computation rather than being loosened: a wire change that moves a column is exactly the drift two independent hosts can each get wrong differently, and a host that inherited the arithmetic without the pin would be the same failure with a new address.
-
-**A second implementation, not a second decoder — and known to be temporary.** `embarch-ui/src/trace.rs` keeps computing the same timeline for its own chart until the queued follow-up makes it read this answer instead; until then a change to `RecordKind`, a gap record's semantics, or the five-lies exclusion rules has to land in both files. Suite decision 4 accepts this as a priced, decision-pointed cost — the alternative, a shared host-side analysis crate both Core and the UI depend on, was considered and rejected on cost rather than principle.
-
-**What this route does not carry, because it is chart geometry rather than part of the answer:** windowed binning, the study-step row, and anything of `embarch-ui`'s `TraceView` payload shape (that file's own decision 18, preserved). An agent wanting those still has no route to them, which is unchanged by this one.
-
-### 63 — A tap declared against a source this bench has no front end for says so in the stream index, as a fourth boolean and not a third meaning for `note`
-`embarch-dev-bench` accepts a `StreamSource::PowerFrontEnd` tap and captures nothing, because [its decision 24](../../embarch-dev-bench/decisions.md) defers the front end. The tap's only signal is `bytes_written: 0`, which `list_study_streams` defines as *"a tap that was declared and produced nothing"* — an **authoring** outcome. So asking for hardware that does not exist and mis-naming a signal produce identical evidence. `GET /study/{id}/streams` is where that is said: the surface the guide already sends a reader to first.
-
-**Neither alternative survives.** A sentence in `embarch-api`'s `study_power_data` description is not weak, it is **gone** — that alias was retired with the other fixed-channel aliases. A **submit-time refusal** changes study submit behaviour, which no unattended session makes, and the roadmap calls power sampling *deferred, not cancelled*: a study written today against a tap the firmware will support later is not a mistake to reject. Acceptance stays.
-
-**A fourth `#[serde(default)] Option<bool>` on `StudyStreamEntry`**, in the `named`/`timed`/`self_excluded` pattern, `None` meaning a Core predating it; `note` keeps the prose. **Not `note` alone, and the struct's own history is why.** `is_named`'s doc comment records that the old conjunction *"was correct while `note` could only ever mean 'unnamed'. It stopped being correct when a trace gained a second way to be incomplete"* — a third meaning for that field is the same defect one generation on, against a field documented as prose to be read and never branched on.
-
-**Core states this, it does not measure it**, citing `embarch-dev-bench` decision 24 where it sets the flag. No tap's capture changes.
 
 ---
