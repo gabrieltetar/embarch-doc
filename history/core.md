@@ -13,6 +13,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- core decision 44 (`decisions/logging.md`) compacted 4,352 B -> 2,438 B, under the per-decision cap.
 - core decision 30 (`decisions/streams.md`) compacted 4,248 B -> 3,550 B, under the per-decision cap.
 - Streams decisions split: 62/63 moved verbatim to embarch-core/decisions/stream-index.md, out of reserve.
 - `resolve_probe` now calls `embarch_topology::select_probe` instead of keeping its own copy (decision 61).
