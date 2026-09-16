@@ -1,6 +1,6 @@
 # 056 — two compaction residues from other sub-projects land in `embarch-ui`'s docs
 
-**State:** open
+**State:** claimed by agent/ui/056-two-compaction-residues, 2026-09-16 16:09
 **Source:** two `inbox/` drops, folded into one task by leg 120 because they are the same scope and
 would otherwise be one dispatchable slot apiece: `ui-decision-25-history-citation-dangles.md` (the
 `embarch-reviewer` on `ui/055`) and `ui-debug-tab-diff-new-lines-fallback.md` (from
