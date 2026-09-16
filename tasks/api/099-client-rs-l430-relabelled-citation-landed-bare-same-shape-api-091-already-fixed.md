@@ -1,6 +1,18 @@
 # 099 — `client.rs` L430's decision-17 fix landed unlabelled, the same shape `api/091` already fixed once
 
-**State:** claimed by agent/api/099-client-rs-l430-label, 2026-09-16 12:34
+**State:** done — 2026-09-16 — `crates/embarch-core-client/src/client.rs` L430 now reads
+`` (`link_port_serial` added `embarch-topology` decision 17) ``. A full pass over the file's other
+`decision N` citations found one more instance of the same shape, not previously enumerated: L205
+(`probe_serial`'s field doc) read "this field existed on Core's side since decision 15" — bare, four
+lines after the labelled `` `embarch-topology` decision 15 `` mention it refers back to, and
+`embarch-api` has its own real, unrelated decision 15 ("Artifact transfer branches on topology
+class"). Labelled it `` `embarch-topology` decision 15 `` too. Checked every other bare `decision N`
+in the file against its own repo's decision table (34, 12, 37/38, 15 at L1183/L1269 — all genuinely
+`embarch-api`'s own); none collide. L1774's "2026-08-25 amendment" framing dropped — now cites
+`` `embarch-topology` decision 18 `` plainly, since that date is the decision's creation
+(`e46164b`), not an amendment. `cargo build`/`test`/`clippy --all-targets -- -D warnings` green at
+the workspace root. `tasks/api/098` already landed separately this leg, as noted below — nothing to
+do there.
 **Source:** the `api/097` **reviewer**, leg 116, 2026-09-16, reviewing landed unit `api/097` (code
 `8f7fc5c`, doc `aa65f1e`). I had independently flagged the same line at merge review and was drafting
 a thinner version of this task; the reviewer's drop was the better document, so this **is** that drop,
@@ -73,13 +85,14 @@ that ran, and blocking on nothing but a one-label edit.
 
 ## Done when
 
-- [ ] `crates/embarch-core-client/src/client.rs` L430 reads
+- [x] `crates/embarch-core-client/src/client.rs` L430 reads
       `` (`link_port_serial` added `embarch-topology` decision 17) `` (or equivalent phrasing that
       puts the `` `embarch-topology` `` label within the attribution window of "decision 17").
-- [ ] A pass over the rest of the file (or at minimum, every bare cross-repo citation reintroduced
+- [x] A pass over the rest of the file (or at minimum, every bare cross-repo citation reintroduced
       or touched by `api/091`/`095`/`097`) confirms no sibling instance of "labelled citation
-      immediately followed by an unlabelled one for the same foreign repo" slipped through.
-- [ ] **L1774's "2026-08-25 amendment" framing is corrected** — see the note below, which the
+      immediately followed by an unlabelled one for the same foreign repo" slipped through. Found
+      and fixed one more (L205, `embarch-topology` decision 15); no others.
+- [x] **L1774's "2026-08-25 amendment" framing is corrected** — see the note below, which the
       supervisor has promoted from a side remark into a required item. `api/097` left it
       **`unsettled`**, and the reviewer then settled it: `embarch-topology` decision 18 was
       **created** on that date (`e46164b`), so the cited text is its founding content and there is
@@ -87,7 +100,7 @@ that ran, and blocking on nothing but a one-label edit.
       the decision's origin. **Leaving it as-is is not an option now that it has been settled** — an
       `unsettled` that somebody has since resolved and nobody has written down is worse than the
       original wrong label, because the next sweep will spend the effort again.
-- [ ] `changelog.d/` fragment.
+- [x] `changelog.d/` fragment.
 
 ## Note from the reviewer — now item 3 of `Done when`, above
 
