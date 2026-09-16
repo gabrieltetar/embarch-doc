@@ -1,6 +1,6 @@
 # 071 — decision 42's "matching decision 35's own record" is true of check 11's shapes and false of check 8's
 
-**State:** open
+**State:** claimed by agent/umbrella/071-decision-42-cites-35, 2026-09-16 17:15
 **Source:** `inbox/umbrella-decision-42-cites-decision-35-for-a-shape-35-never-records.md`, filed by
 leg 119 while folding `umbrella/070`, drained by leg 120. Flagged independently by that unit's worker
 (no bytes to fix it) and its reviewer (pre-existing, correctly out of its scope); the supervisor is
@@ -69,6 +69,21 @@ and may save a few.
   PARKED under `tasks/umbrella/009`, blocked). You are not editing that file; if your work pushes any
   `embarch-umbrella` doc into its last 10% and nothing has filed it, file
   `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
+
+## Dispatch note (leg 121, 2026-09-16)
+
+**Reserve re-checked by me at dispatch and unchanged:** `embarch-umbrella/decisions/bind.md`
+11,533/12,288 B (755 B left), PARKED under `tasks/umbrella/009`, blocked. Nothing else in the scope
+is in reserve. You are not editing `bind.md`.
+
+**77 B of margin is the whole difficulty of this unit.** Work out the replacement sentence and
+measure it before you write it. If the narrowed attribution does not fit, the correct move is to
+*shorten* the sentence — dropping the corroboration clause entirely leaves a true sentence — not to
+find bytes elsewhere in entry 42 by rewriting a claim you were not sent to touch.
+
+**You may not write `history/umbrella.md`** — it is `build_changelog.py` output and outside §3's
+allowed paths for a worker. If your fix leaves a line there needing a change, report it; do not edit
+it. A sister unit burned a cycle on this exact edge two legs ago.
 
 ## Done when
 
