@@ -1,6 +1,6 @@
 # 097 — Citation sweep remainder: `embarch-core-client/src/client.rs`
 
-**State:** open
+**State:** claimed — `agent/api/097-core-client-src-citation-sweep-remainder`, leg 116, 2026-09-16
 **Source:** `tasks/api/095`, cut short by a fleet stop mid-sweep on 2026-09-14. `095` read the whole
 file end to end (2625 lines, all citation contexts noted) but cross-checked citations against the
 cited decision's **body** for only six decision files before stopping. This task is the remainder:
@@ -8,6 +8,12 @@ finish the primary-source check for everything below.
 **Scope:** api
 **Hardware:** none — source comments only.
 **Owner:** no
+
+**Doc-size reserve for `api` (leg 116, 2026-09-16): one file.** `embarch-api/spec.md` is
+9,102/10,240 B, 1,138 B left, filed as `tasks/api/083-compact-api.md` and **blocked**. This unit is a
+source-comment sweep and should not need to write it; if you do, say so, and if you leave it deeper
+in reserve than you found it, file `tasks/api/098-compact-api.md` in the same commit per
+`tasks/README.md`. Do not compact `spec.md` as part of this unit — it has a live park.
 
 **`095` was closed `done` and its file removed, not left `blocked`** — leg 115's correction, made
 because the worker had written `blocked` for a task nothing was blocking. A `fleet stop` is not a
