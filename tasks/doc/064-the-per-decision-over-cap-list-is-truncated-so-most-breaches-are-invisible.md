@@ -9,8 +9,11 @@ missed, and the answer is that **the census was never capable of seeing it.**
 **Scope:** doc
 **Hardware:** none — a `scripts/` change and a reading of its output. No board, no probe, no live
 Core.
-**Owner:** **required** — this is `scripts/check-doc-size.py`, which is owner-reserved. No agent may
-write it. Filed here so it is visible in the queue rather than nowhere.
+**Owner:** required — this is `scripts/check-doc-size.py`, which is owner-reserved. No agent may
+write it. Filed here so it is visible in the queue rather than nowhere. (Written unbolded on
+purpose: `tasks/doc/039` records that a **bolded** `Owner:` value is invisible to
+`queue-status.py`, which lists the task as dispatchable. I wrote it bolded first and the queue
+listing caught it.)
 
 ## What
 
