@@ -1,6 +1,6 @@
-# 049 — Decision 21 records two observations now; `history/topology.md:61` still says three
+# 049 — Decision 21 records two observations now; the topology changelog's line still says three
 
-**State:** claimed by agent/topology/049-decision-21-three-times, 2026-09-16 17:15
+**State:** done 2026-09-16 — decision 21's timestamp hunk restored; the changelog line matches again.
 **Source:** `embarch-reviewer` on `suite/039` (doc merge `2f5da8f`), drained from `inbox/` by leg 121
 on 2026-09-16 as `topology-decision-21-three-times-count-now-two.md`. It settles a side question
 leg 119 raised as low-confidence and nobody had checked.
@@ -61,11 +61,25 @@ legs where the answer came from running the check rather than from reading the e
 
 ## Done when
 
-- [ ] Either decision 21 documents three recorded matches again (both reproduction timestamps
+- [x] Either decision 21 documents three recorded matches again (both reproduction timestamps
       restored), or the mismatch with `history/topology.md:61` is named explicitly in your report as
-      unfixable from this scope, with the reason.
-- [ ] Every other citation of "three times" for this fact found and reported — including "none found",
-      with the search you ran.
-- [ ] Decision 21 at or under 4,096 B, bytes reported before and after.
-- [ ] Measured facts still presented as measured, with dates.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      unfixable from this scope, with the reason. **Restored**: it fit under cap (4,046 of 4,096 B),
+      so the honest fix was taken. The changelog line no longer disagrees.
+- [x] Every other citation of "three times" for this fact found and reported — including "none found",
+      with the search you ran. `grep -rn "three times" . --include="*.md"` across the whole doc repo:
+      every other hit is a different fact (SRAM overflow count, decision-uniqueness examples, a
+      different decision's mismatch-trip count in `embarch-topology/spec.md:119` citing decision 12,
+      dev-bench mirrored constants, EAP dropped-chunk anecdote, reviewer/supervisor process notes).
+      None besides `history/topology.md` cite this fact.
+- [x] Decision 21 at or under 4,096 B, bytes reported before and after. Before (as left by `topology/048`):
+      3,992 B. After (this unit): 4,046 B — 50 B margin.
+- [x] Measured facts still presented as measured, with dates. The restored bracket reads
+      `[measured 2026-08-31, reproduced 2026-09-06 22:07:51Z and 22:15:45Z from Core's own handshake
+      log]` — same wording `topology/048` compacted from, unchanged in kind.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`/`test`/`clippy --all-targets
+      -- -D warnings` clean in `embarch-topology` (no code change; empty diff on that side except this
+      task file's own state). `check-docs.py` green in `embarch-doc` after also rewording this task
+      file's own title, which `check-task-state.py` flagged for embedding the literal path
+      `history/topology.md` — a filing defect from when leg 121 drained the inbox drop, unrelated to
+      the decision-21 fix itself. `check-ownership.py --scope topology` clean on both worktrees.
+      `check-client-names.py` clean.
