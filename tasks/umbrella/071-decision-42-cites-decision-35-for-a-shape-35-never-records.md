@@ -1,6 +1,6 @@
 # 071 — decision 42's "matching decision 35's own record" is true of check 11's shapes and false of check 8's
 
-**State:** claimed by agent/umbrella/071-decision-42-cites-35, 2026-09-16 17:15
+**State:** done — agent/umbrella/071-decision-42-cites-35, 2026-09-16
 **Source:** `inbox/umbrella-decision-42-cites-decision-35-for-a-shape-35-never-records.md`, filed by
 leg 119 while folding `umbrella/070`, drained by leg 120. Flagged independently by that unit's worker
 (no bytes to fix it) and its reviewer (pre-existing, correctly out of its scope); the supervisor is
@@ -87,7 +87,30 @@ it. A sister unit burned a cycle on this exact edge two legs ago.
 
 ## Done when
 
-- [ ] Decision 42 no longer cites decision 35 for a `list-targets` shape decision 35 does not record.
-- [ ] The "neither check has run inside a live `doctor` yet" debt survives verbatim in force.
-- [ ] Decision 42 is still at or under 4,096 B, with before/after bytes reported.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Decision 42 no longer cites decision 35 for a `list-targets` shape decision 35 does not record.
+- [x] The "neither check has run inside a live `doctor` yet" debt survives verbatim in force.
+- [x] Decision 42 is still at or under 4,096 B, with before/after bytes reported.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed (leg 121 worker, 2026-09-16)
+
+Replaced the corroboration clause: "matching `decision 35`(`schema-skew.md`)'s own record" (159 B)
+became "check 11's matches `decision 35`(`schema-skew.md`), check 8's matches `decision 17`(`projects.md`)"
+(the two markdown links are rendered here as plain code spans, same reason as the `## What` section
+above — they resolve from `decisions/locate-api.md`, not from this file; left as real links in the
+decision itself). The clause before them also changed from a comma to a colon. Decision 42:
+4,019 -> 4,062 B (34 B of margin left, cap 4,096). The "neither check 8 nor check 11 has run inside
+a live `doctor` yet" sentence is untouched, verbatim.
+
+Gate: `cargo build`/`test`/`clippy --all-targets -- -D warnings` green in the code worktree (empty
+diff there — 0 paths changed, legitimate per this task's own framing). `check-docs.py` in the doc
+worktree: 10/11 green; the one red (`check-task-state.py` on
+`tasks/topology/049-decision-21-no-longer-backs-history-topologys-three-times-count.md`) is
+pre-existing, in `topology` scope, untouched by this diff. `check-ownership.py --scope umbrella`
+(doc) and `--code-repo` (code) both OK. `check-client-names.py` OK.
+
+Filed a `changelog.d/umbrella-decision-42-citation.fixed.md` fragment (not requested explicitly by
+this task, added per protocol.md §5.4). No `features.d/` row — nothing shipped/retired/changed
+maturity. Did not touch `history/umbrella.md` (worker-forbidden); nothing in it needs a change from
+this fix. No reserve crossing in `umbrella` from this diff (`bind.md` unchanged, still
+11,533/12,288 B PARKED under `tasks/umbrella/009`).
