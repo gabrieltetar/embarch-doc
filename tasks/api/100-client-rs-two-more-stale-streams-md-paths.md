@@ -1,6 +1,14 @@
 # 100 — `client.rs` carries two more stale `decisions/streams.md` paths that `api/098` could not reach
 
-**State:** claimed by agent/api/100-streams-md-stale-paths, 2026-09-16 16:09
+**State:** done — 2026-09-16 — `crates/embarch-core-client/src/client.rs` lines 593 and 1724 (now the
+`decision 62)` closing paren, no path) no longer name `decisions/streams.md`. Case-insensitive sweep
+of both repos (`grep -rni`) found no other `decisions/streams.md` mention inside `embarch-api`. Both
+surviving `decision 62` cites already carry `` `embarch-core` `` on the same line the decision number
+opens on (line 592 for the first, line 1723 for the second), well inside the 44-character window read
+as the flowing doc-comment sentence a reader or `rustdoc` renders it as — the raw-line-only window the
+script itself uses never reaches `.rs` files at all. No other citation defect found in `client.rs`
+while making this edit; did not run an independent full-file citation audit beyond this scan. Gate
+green.
 **Source:** the `api/098` **reviewer**, leg 117, 2026-09-16, reviewing landed unit `api/098` (doc
 `f78fe64`, no code commit). It confirmed `098`'s own fix was correct and complete *for the file
 `098` was scoped to*, then went looking for the same defect elsewhere and found it twice in the code
@@ -64,10 +72,10 @@ to write `spec.md` at all; if it does, say why.
 
 ## Done when
 
-- [ ] `crates/embarch-core-client/src/client.rs` lines 593 and 1724 no longer name
+- [x] `crates/embarch-core-client/src/client.rs` lines 593 and 1724 no longer name
       `decisions/streams.md`.
-- [ ] Each surviving `decision 62` citation carries an `` `embarch-core` `` label inside the
+- [x] Each surviving `decision 62` citation carries an `` `embarch-core` `` label inside the
       44-character window, or is already unambiguous and you say why.
-- [ ] No other `decisions/streams.md` mention remains anywhere in `embarch-api` (doc repo or code
+- [x] No other `decisions/streams.md` mention remains anywhere in `embarch-api` (doc repo or code
       repo) — grep both.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
