@@ -1,6 +1,6 @@
 # 097 — Citation sweep remainder: `embarch-core-client/src/client.rs`
 
-**State:** claimed — `agent/api/097-core-client-src-citation-sweep-remainder`, leg 116, 2026-09-16
+**State:** done — `agent/api/097-core-client-src-citation-sweep-remainder`, leg 116, 2026-09-16
 **Source:** `tasks/api/095`, cut short by a fleet stop mid-sweep on 2026-09-14. `095` read the whole
 file end to end (2625 lines, all citation contexts noted) but cross-checked citations against the
 cited decision's **body** for only six decision files before stopping. This task is the remainder:
@@ -138,11 +138,93 @@ anything you cannot settle as unsettled — do not fold a doubt into a clean zer
 
 ## Done when
 
-- [ ] Every citation listed above checked against its decision's body (not just resolved).
-- [ ] The L403 and L561 items settled one way or the other, with the reasoning stated.
-- [ ] Wrong numbers and false sentences counted and reported separately, added to `095`'s tally
+- [x] Every citation listed above checked against its decision's body (not just resolved).
+- [x] The L403 and L561 items settled one way or the other, with the reasoning stated.
+- [x] Wrong numbers and false sentences counted and reported separately, added to `095`'s tally
       (3 wrong labels already found/fixed, 0 false sentences found in the set `095` checked).
-- [ ] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
-- [ ] Any suite-level citation correction (L1726) filed to `embarch-doc/inbox/`, never edited directly.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment, including if the remaining count is zero defects.
+- [x] Cross-repo citations carry the labelled `<repo> decision N` form; same-repo ones stay bare.
+- [x] Any suite-level citation correction (L1726) filed to `embarch-doc/inbox/`, never edited directly.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment, including if the remaining count is zero defects.
+
+## Result (leg 116, 2026-09-16)
+
+**Tally, added to `095`'s (3 wrong labels, 0 false sentences):** this unit checked every
+remaining citation enumerated above against its decision's body. Found **2 more wrong-number
+defects, 0 false sentences.** Combined running total: **5 wrong labels, 0 false sentences**, across
+the whole file.
+
+**Defects found and fixed:**
+- **L430** — `EnrolledBoardResponse`'s doc comment read `` (`link_port_serial` added decision 27) ``.
+  Neither `embarch-api`'s own decision 27 (`study-reads.md`, seal/capacity validation) nor
+  `embarch-topology`'s decision 27 (`link-declares.md`, `NotFound`'s exclusion reason and
+  clear-link-fact CLI flags) is about adding the field. `embarch-topology` decision 17
+  (`links-port.md`) is: "an enrolled board gains the link port's *own* USB serial: a directly
+  declared fact" — the field's actual origin. Relabelled to `` `embarch-topology` decision 17 ``.
+- **L667** — `LogsRecentResponse`'s doc comment attributed "no server-side structuring/filtering"
+  to `` `embarch-ui` decision 7's resolution of that open question ``. `embarch-ui` decision 7
+  (`debug-tab.md`) never discusses formatting — verified against its full history, not just its
+  current body (no commit ever added such a clause). The actual reasoning — "served as plain text,
+  because reformatting a deployed service's output into JSON for one client is a bigger change
+  than this needs" — is `embarch-core` decision 16's (`logging.md`), which names `embarch-ui`'s
+  Debug tab as the consumer it was weighing the cost against. Relabelled to
+  `` `embarch-core` decision 16 ``. (The *other* `embarch-ui` decision 7 citation in this same
+  file, L1502, is correct: "never reads Core's logfile directly... handed the data" matches
+  decision 7's actual body.)
+
+**L403 settled: not a defect.** Checked `embarch-topology/decisions/consumer-boundary.md` decision
+31 and the git history of `embarch-api/decisions/client-crate.md` (not just its current body, per
+the task's own instruction). At the api/067 split (`d048f67`), decisions 37/38's text read: "the
+real ones sit behind the feature that links `probe-rs`, and this crate never links hardware" —
+the link-boundary fact genuinely originated in 37/38's founding content. The `suite/035` fold
+(`2b9c258`, 2026-09-12) replaced that sentence with "Retired by decision 72 below" when decision 72
+was written, and decision 72 now carries the explicit "dependencies this crate must never have"
+phrasing verbatim. So citing `(decisions 37, 38)` for the link-prohibition context in `client.rs`'s
+comment is grounded in real (if since-compacted) history, and the comment separately and correctly
+cites decision 72 two lines later for the current explicit wording. Left as-is.
+
+**L561 settled: not a defect — the task's own suspicion was wrong.** Read
+`embarch-dev-bench/decisions/boards.md`'s decision 24 entry directly, as instructed. Despite the
+index table's generic file-level description ("Boards — which board is the bench, and why it
+changed twice"), decision 24's actual body is titled "The power front end: a Nordic PPK2 as an
+external instrument, provisional" and is entirely about the unscoped/unbuilt power-sampling front
+end ("Not ordered, not wired into any workspace"). This matches `client.rs`'s citation exactly —
+`source_deferred`'s doc comment names decision 24 for "a source `embarch-dev-bench` has no front
+end for... power sampling, today." No defect; the index table's topic line is just generic, the
+decision text itself is on point.
+
+**L1726 (cross-suite, `suite decision 4`) verified, no `inbox/` drop needed.** `suite/decisions.md`
+lists decision 4 at `decisions/placement.md`, whose body ("The outpost's own answer is computed
+once, in `embarch-core`, the only component on both paths and in the release archive") matches
+`embarch-core` decision 62's own citation of the same suite decision, which `client.rs`'s
+`get_study_load` doc comment mirrors. The number resolves and the content matches.
+
+**One unsettled item, named rather than resolved toward clean:** L1774's
+`` `embarch-topology` decision 18's 2026-08-25 amendment `` (on `declare_signal`'s doc comment).
+The substantive claim (declaring is idempotent, re-declaring is the migration path) matches
+decision 18's body correctly. But decision 18's current text carries no documented amendment dated
+2026-08-25, unlike the structurally identical pattern at L213/L432 (`` `embarch-ui` decision 5's
+amendment ``), where decision 5's own body documents a same-day reversal ("Originally split along a
+mutation/read-only line instead; reversed the same day"). No corresponding reversal/amendment
+exists in `links.md` decision 18's text, and no commit around 2026-08-25 in `embarch-topology`
+touching signal declaration was found. Left uncorrected — the underlying claim is true, only the
+"amendment" framing is unverified — rather than guessed at either way.
+
+**Everything else enumerated in the task** (`embarch-api` zephyr.md/smoke-harness.md;
+`embarch-core` probes.md/enrollment.md/surfaces.md/streams.md/flashing.md/logging.md;
+`embarch-topology` enrollment.md/link-declares.md (decision 20 sites)/validate-timing.md/links.md
+(the idempotency claim itself)/alerts.md/crate.md/consumer-boundary.md (decision 8);
+`embarch-outpost` manifest.md/tracing.md/layout.md+clocks.md; `embarch-study-designer`
+versioning.md/declares.md/streams.md; `embarch-ui` wiring.md/topology-tab.md/trace-view.md)
+checked clean against the cited decision's body — every bare `decision N` checked against
+`embarch-api`'s own decision set first per the Method, including the L205/L1532 sites flagged for
+anaphora risk (both resolved correctly: L205 genuinely anaphoric to topology decision 15 at L201,
+L1532 genuinely `embarch-api`'s own decision 12 despite sitting near an explicit `embarch-core`
+decision 8 citation).
+
+**Gate:** `cargo build`/`test`/`clippy --all-targets -D warnings` green at the workspace root and
+explicitly `-p embarch-core-client` (now a workspace member per `embarch-api` decision 56, so the
+root run already covers it — confirmed by running the scoped form anyway). `check-docs.py` 11/11
+green. `check-client-names.py` clean against both worktrees. `check-ownership.py` clean in both.
+`check-doc-size.py`: 13 in reserve, all filed — no new reserve debt (neither `spec.md` nor any
+other `api` doc was touched by this unit).
