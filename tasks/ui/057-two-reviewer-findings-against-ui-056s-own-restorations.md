@@ -1,6 +1,6 @@
 # 057 — Both of `ui/056`'s restorations are wrong: decision 13's universal claim is false, decision 25's vertex count is on the wrong trace
 
-**State:** open
+**State:** claimed by agent/ui/057-two-reviewer-findings, 2026-09-16 17:15
 **Source:** two `embarch-reviewer` drops against `ui/056` (merge `b67da91`), drained from `inbox/` by
 leg 121 on 2026-09-16: `ui-debug-tab-13-by-construction-claim-wrong.md` and
 `ui-decision-25-restored-count-wrong-trace-mode.md`. Filed as one task because they are one unit's
