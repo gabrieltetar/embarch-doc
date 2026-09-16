@@ -1,6 +1,6 @@
 # 049 — Decision 21 records two observations now; `history/topology.md:61` still says three
 
-**State:** open
+**State:** claimed by agent/topology/049-decision-21-three-times, 2026-09-16 17:15
 **Source:** `embarch-reviewer` on `suite/039` (doc merge `2f5da8f`), drained from `inbox/` by leg 121
 on 2026-09-16 as `topology-decision-21-three-times-count-now-two.md`. It settles a side question
 leg 119 raised as low-confidence and nobody had checked.
