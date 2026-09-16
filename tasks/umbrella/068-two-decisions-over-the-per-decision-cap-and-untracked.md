@@ -1,6 +1,10 @@
 # 068 — `embarch-umbrella` has two decisions over the per-decision cap, both untracked
 
-**State:** open
+**State:** claimed by agent/umbrella/068-two-decisions-over-cap, 2026-09-16 12:54
+**Reserve (leg 118):** `embarch-umbrella/decisions/bind.md` is at 93.9% — 755 B left of 12288 — and
+is already filed against `tasks/umbrella/009-compact-docs.md`, which is **blocked**. Neither
+decision in this unit lives in `bind.md`; do not write into it. If your work spends reserve anywhere
+in `embarch-umbrella`, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit.
 **Source:** leg 117, 2026-09-16. `core/063` closed this gap for `embarch-core` decision 30 and named
 the real finding as *"nothing is watching it."* I ran the census that implied: **five** decisions
 suite-wide are over [`DOC-BUDGET.md`](../../DOC-BUDGET.md)'s **4,096 B per-decision cap** with no pin
