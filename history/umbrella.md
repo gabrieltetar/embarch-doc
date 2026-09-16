@@ -43,6 +43,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- Decision 42 no longer credits decision 35 with check 8's list-targets shape; that citation now points to decision 17, which actually records it.
 - `embarch-umbrella` decisions 16 and 48 compacted under the per-decision cap; no claim lost.
 - `locate_core`'s doc comment no longer credits decision 7 with a precedence order it never states.
 - doctor.rs's 116 decision citations checked: 2 wrong numbers fixed, 0 false sentences found.
