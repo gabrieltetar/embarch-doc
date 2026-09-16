@@ -1,6 +1,6 @@
 # 060 — Compact `embarch-core/decisions/streams.md` out of reserve
 
-**State:** claimed — `agent/core/060-compact-core`, leg 116, 2026-09-16
+**State:** done — `agent/core/060-compact-core`, leg 116, 2026-09-16
 **Source:** `suite/029` (leg 113, 2026-09-13). That unit added **decision 63** to this file and took it
 from 9,356 B to **11,219 B**, which is 160 B inside the reserve floor. The supervisor trimmed the new
 decision twice — 11,462 → 11,219 — and stopped, because the next cut came out of the clause naming why
@@ -47,9 +47,51 @@ and the refs by hand afterwards and say in your report that you did.
 
 ## Done when
 
-- [ ] `embarch-core/decisions/streams.md` is at or under 11,000 B, or split with each half under its
-      own cap.
-- [ ] `embarch-core/decisions.md`'s index table matches, numbers and sizes.
-- [ ] `DOC-COMPACTION-PASS.md`'s question answered in the supervisor's log entry, in the runner's own
-      words: can `spec.md` alone answer what someone needs to work on this component today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `embarch-core/decisions/streams.md` is at or under 11,000 B, or split with each half under its
+      own cap. **Split**, not squeezed: `decisions/streams.md` kept 30/38/39 (6,376 B / 6.2 KB) and
+      `decisions/stream-index.md` took 62/63 verbatim (5,672 B / 5.5 KB). The seam the task file
+      flagged was real — manifest binding/capture/rendering versus what the stream index reports back
+      about a tap to a caller — and a verbatim move restates nothing, so nothing was shortened.
+- [x] `embarch-core/decisions.md`'s index table matches, numbers and sizes. The streams row is now two
+      rows: `30, 38, 39 | 6.2 KB` and `62, 63 | 5.5 KB` (`decisions/stream-index.md`).
+- [x] `DOC-COMPACTION-PASS.md`'s question answered in the supervisor's log entry, in the runner's own
+      words: can `spec.md` alone answer what someone needs to work on this component today? **No, and
+      that is by design here.** `embarch-core/spec.md` states the current shape of the streams surface
+      (what `streams/` holds, what a manifest mismatch does, what the stream index reports), but it
+      does not carry the *why* — why a mismatch renders nothing instead of the nearest manifest, why
+      the load route is a sibling path instead of a query flag, why the deferred-tap flag is a fourth
+      boolean instead of a third meaning for `note`. Those arguments live only in `decisions/streams.md`
+      and the new `decisions/stream-index.md`, and this split was designed so a reader working on
+      either half — capture/manifest/render vs. what the index tells a caller — loads a smaller, more
+      on-topic file than before, not so `spec.md` could absorb the difference.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `scripts/check-docs.py`: 11/11 PASS.
+      `scripts/check-ownership.py --scope core`: 5 changed paths, all owned.
+      `scripts/check-decision-refs.py`: all 2054 references resolve, all 35 topic-file links resolve,
+      all 15 reversal-row citations resolve — checked by hand per `tasks/doc/052`/`044`: none of
+      30/38/39/62/63 was individually pinned over the 4 KB per-decision cap before the split (confirmed
+      via `check-doc-size.py --decisions`, which lists none of them), so no per-decision pin was dropped
+      by moving 62/63 verbatim.
+
+## Notes
+
+**Hard constraints honoured:**
+- Decision 63's second paragraph ("Neither alternative survives...") is untouched, moved verbatim.
+- Decision 62's quote of `embarch-ui` decision 10's column pin and its citation of reversals row 86 are
+  untouched, moved verbatim.
+- `embarch-core/decisions.md`'s index table updated in this commit: one row split into two.
+
+**One in-scope fix beyond the split:** `embarch-core/interfaces/studies.md` had a markdown link straight
+at `decisions/streams.md` for the load route's citation. Per `DOC-CONVENTIONS.md` ("link the index, not
+the topic file"), repointed it at `decisions.md` and switched the anchor text to the bare `decision 62`,
+so it survives future splits the way `history/`'s links already do.
+
+**One out-of-scope staleness found, dropped to inbox, not fixed here:**
+`embarch-api/interfaces/studies.md` line 16 names `decisions/streams.md` in inline code (not a link, so
+neither gate catches it) for decision 62, which now lives in `decisions/stream-index.md`. Filed at
+`/home/gabriel/Github/embarch/embarch-doc/inbox/api-fix-streams-md-mention-after-core-060-split.md`
+— `api` scope, not `core`'s to touch.
+
+**No `status.d/` fragment filed**: nothing suite-level changed — this is an internal reorganisation of
+one sub-project's own decisions file, no capability, spec fact, or interface shape moved.
+**No `features.d/` fragment**: no capability shipped, retired, or changed maturity.
+**Changelog fragment:** `changelog.d/core-streams-decisions-split.changed.md`.
