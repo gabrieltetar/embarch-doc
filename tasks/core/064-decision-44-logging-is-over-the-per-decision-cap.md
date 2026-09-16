@@ -1,6 +1,10 @@
 # 064 — `embarch-core` decision 44 (logging.md) is over the per-decision cap, unpinned, and retired
 
-**State:** open
+**State:** claimed by agent/core/064-decision-44-over-cap, 2026-09-16 12:54
+**Reserve (leg 118):** `embarch-core/decisions/auth.md` is at 92.4% — 932 B left of 12288 — and is
+already filed against `tasks/core/046-compact-core.md`, which is **blocked**. Do not write into
+`auth.md` at all in this unit; you have no reason to. If your work does spend reserve anywhere in
+`embarch-core`, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** `core/063`, 2026-09-16 — while compacting decision 30, `check-doc-size.py --decisions`
 (via `decision_state()` directly, since `--decisions` only prints its top 20 by size) showed
 `embarch-core/decisions/logging.md#44` at **4,352 B**, over the 4,096 B per-decision cap and
