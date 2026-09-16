@@ -1,6 +1,6 @@
 # 051 — Citation sweep: `src/` remainder after `streams.rs`
 
-**State:** claimed by agent/study-designer/051-src-sweep-remainder, 2026-09-16 17:15
+**State:** done by agent/study-designer/051-src-sweep-remainder, 2026-09-16
 **Source:** `tasks/study-designer/050`, which swept `src/streams.rs` (the
 largest of the 19 files `049` found remaining after `048`) and left the rest.
 **Scope:** study-designer
@@ -169,15 +169,32 @@ extra.
 
 ## Done when
 
-- [ ] One named file (`src/limits.rs`, unless a reason is given to reorder)
+- [x] One named file (`src/limits.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+      **Took a second, `src/result.rs`, with budget still left, per the
+      dispatch note.** `limits.rs`: 28 grep-matching lines, 32 distinct
+      citation instances, 1 wrong number + 1 false sentence (both in
+      `MAX_SOURCES_PER_PROTOCOL`'s comment — wrong decision cited and the
+      "three (`ctrl`/`status`/`data`)" claim itself false per
+      `interfaces/eap.md`), 0 unlabelled cross-repo citations. `result.rs`:
+      24 grep-matching lines, 25 distinct citation instances, 1 wrong number
+      (`security_level`'s `decision 50` should be `decision 44`), 0 false
+      sentences, 0 unlabelled cross-repo citations. Totals: 57 citation
+      instances checked, 2 wrong numbers, 1 false sentence, 0 unlabelled
+      cross-repo citations — all fixed.
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text is read before it is called wrong.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment.
+      Confirmed for both files: `embarch-dev-bench` (7, 18, 27),
+      `embarch-core` (35, 31), `embarch-topology` (18), `embarch-outpost` (9),
+      `embarch-api` (40) and `embarch-ui` (11, 15) citations were all
+      correctly labelled and read on-topic against the far-repo decision's
+      own text.
+- [x] A follow-up task filed naming the files that remain:
+      `tasks/study-designer/052-src-citation-sweep-remainder.md` (16 files,
+      `src/bounded.rs` next).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment.
 
 ## Dispatch note (leg 121, 2026-09-16)
 
