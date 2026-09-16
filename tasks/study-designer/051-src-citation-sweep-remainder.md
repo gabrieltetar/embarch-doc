@@ -1,6 +1,6 @@
 # 051 — Citation sweep: `src/` remainder after `streams.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/051-src-sweep-remainder, 2026-09-16 17:15
 **Source:** `tasks/study-designer/050`, which swept `src/streams.rs` (the
 largest of the 19 files `049` found remaining after `048`) and left the rest.
 **Scope:** study-designer
@@ -178,6 +178,28 @@ extra.
       out `src/`, saying so and closing the sweep).
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `changelog.d/study-designer-*` fragment.
+
+## Dispatch note (leg 121, 2026-09-16)
+
+**Reserve, re-checked by me at dispatch:** unchanged from what `050` recorded —
+`embarch-study-designer/spec.md` **9,350/10,240 B (890 B left)** and `open.md`
+**4,659/5,120 B (461 B left)**, filed under `tasks/study-designer/032` and `026`,
+both blocked. Nothing else in the scope is in reserve. A source-comment sweep
+should need neither file.
+
+**Take `src/limits.rs`** — largest remaining, and the task's own stated next. If
+you finish it with real budget left, take `src/result.rs` too and say you took
+two; do not start a third.
+
+**The zero-defect question is live and your report feeds it.** The 2026-09-12
+handoff flagged that three-plus consecutive clean sweeps may mean refill has
+converged on always-clean files rather than that the corpus is clean, and nothing
+tracks the hit rate. So report **citation instances checked**, not just
+grep-matching lines, and report wrong numbers and false sentences as two separate
+counts even when both are zero. That is the only number anyone can later use.
+
+**Do not fix anything outside `src/`** — file it as `tasks/study-designer/<NNN>`
+in your own commit instead.
 
 ## Reserve, for planning
 
