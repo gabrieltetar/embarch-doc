@@ -1,6 +1,6 @@
 # 072 — `interfaces.md`'s two error invariants were broken by decision 59, and `result-layout.md` still lists a retired `alias` field
 
-**State:** open
+**State:** claimed by agent/core/072-interfaces-error-invariants, 2026-09-17 01:50
 **Source:** leg 133's refill census of `embarch-core`, findings 3 and 4 of four —
 `tasks/core/071` carries the other two. **Filed so they survive**: they existed only in a census
 report, and `supervisor-log.md` folds daily and rolls into `log-archive/`.

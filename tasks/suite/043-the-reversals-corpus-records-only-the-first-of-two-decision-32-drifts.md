@@ -64,4 +64,6 @@ other units, and execute this as a leg's last unit only if no objection arrived 
 passed. If a leg ends before the window closes, this stays `open` with the `ts` below and the next
 leg completes the window rather than restarting it.
 
-**Announcement `ts`:** _none yet_
+**Announcement `ts`:** `1789631349.946519` — posted by leg 134 at 2026-09-17 ~01:49 local. The
+window closes 30 minutes later. No objection as of that post; the leg polls
+`scripts/fleet-read.py --thread 1789631349.946519` at every unit boundary.
