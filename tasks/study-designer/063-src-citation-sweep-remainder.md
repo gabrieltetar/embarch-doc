@@ -1,6 +1,6 @@
 # 063 — Citation sweep: `src/` remainder after `merged_actions.rs` (closes `src/`)
 
-**State:** open
+**State:** claimed by agent/study-designer/063-src-citation-sweep-remainder, 2026-09-17 01:50
 **Source:** `tasks/study-designer/062`, which swept `src/merged_actions.rs` (6
 grep-matching lines, 8 distinct citation instances, plus its own
 located singular-wrap at `:72`) and left the last four files.
