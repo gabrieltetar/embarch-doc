@@ -1,6 +1,6 @@
 # 054 — `hardware_id.rs`'s header cites topology's own decisions 2, 4 for a migration only `embarch-core` decision 22 records
 
-**State:** open
+**State:** claimed (leg 132 unit 2)
 **Source:** `topology/053` (leg 131, 2026-09-17), noticed while fixing the sibling
 defect in `validate.rs:1-3`. Not fixed there because that task's scope was
 exactly one line (`board_gate.rs`'s citation) and explicitly said not to sweep
