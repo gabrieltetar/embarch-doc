@@ -1,6 +1,6 @@
 # 109 — Expose `build_dir_name` in the study listing, or record why `embarch-umbrella`'s `--prune` stays unbuildable
 
-**State:** open
+**State:** claimed — leg 139, 2026-09-17, branch `agent/api/109-build-dir-name`
 **Source:** refill sweep, leg 137, 2026-09-17, from
 [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md)'s standing bullet: *"Decision 26's
 `--prune` is the last designed-and-unbuilt piece here, deferred by choice — it needs
@@ -20,6 +20,37 @@ has room, but [`open.md`](../../embarch-api/open.md)'s own last bullet warns thi
 narrow across `api`"*: several decision files sit a paragraph from the line and are invisible to
 `check-doc-size.py` until they cross. **The right file for a new entry is the one whose topic it is,
 not whichever has room** — that is the exact mistake leg 015 made with 96 bytes to spare.
+
+## Dispatch note — leg 139, 2026-09-17
+
+**Two `api` files are in reserve and neither is likely to be yours; the third-largest is the one to
+watch.** Measured at dispatch, against a 12,288 B cap for `decisions/*.md` and 10,240 B for
+`spec.md`:
+
+- `embarch-api/decisions/failure-reporting.md` — **11,578 B, 710 B left** (`tasks/api/111`,
+  blocked). Do not put a study-listing decision here; it is not the topic and there is no room.
+- `embarch-api/spec.md` — **9,089 B, 1,151 B left** (`tasks/api/083`, blocked). A one-line spec
+  amendment fits; a paragraph does not.
+- `embarch-api/decisions/client-crate.md` — **10,947 B, 1,341 B left (89.1%)**, *not* in reserve and
+  therefore **invisible to `check-doc-size.py`** — this is exactly the "a paragraph from the line"
+  case `embarch-api/open.md`'s last bullet warns about. If your decision belongs here, it will very
+  likely push the file into reserve, and then you file `tasks/api/<next free NNN>-compact-api.md` in
+  the same commit per `tasks/README.md`.
+
+**On current reading, `embarch-api/decisions/study-reads.md` (6,313 B) is the topic-appropriate home
+for a decision about what the study listing carries, and it has ~6 KB of room.** That is a
+suggestion, not an instruction: pick the file whose topic it is. If nothing fits the topic, say so
+and propose a new file rather than filing it somewhere with room.
+
+**Outcome 3 in `## What` is the one to take seriously.** "This stays deferred, and here is the cost"
+is a complete unit — the 803 MiB figure argues for the feature but nobody has argued `--prune` is
+worth its failure modes, and you are not obliged to win that argument by default. Equally, if
+box 1's re-derivation shows the umbrella bullet is simply **wrong**, saying so in writing is the
+best possible outcome of this unit and you should not manufacture a change to avoid it.
+
+**Ownership is checked on both your branches.** `embarch-umbrella/**` and `embarch-core/**` are not
+yours in any form. Drops go to `/home/gabriel/Github/embarch/embarch-doc/inbox/` by **absolute**
+path — a relative one is written inside your worktree and is deleted with it.
 
 ## What
 
