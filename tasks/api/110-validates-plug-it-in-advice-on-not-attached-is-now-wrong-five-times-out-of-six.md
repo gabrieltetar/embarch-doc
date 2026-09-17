@@ -1,6 +1,21 @@
 # 110 — `validate`'s "plug it in" advice on `kind: "not_attached"` is now wrong five times out of six
 
-**State:** open
+**State:** claimed — leg 138 unit 2, 2026-09-17, `agent/api/110-not-attached-advice`.
+
+**Supervisor dispatch note — doc-size reserve for `api`.** Two files to plan around rather than
+discover: `embarch-api/spec.md` **9,089/10,240 B (1,151 B left)**, in reserve and filed against the
+blocked `tasks/api/083-compact-api.md`; and `embarch-api/decisions/client-crate.md`
+**10,947/12,288 B (1,341 B left)**, not yet filed. If your work pushes a file into the reserve, or
+leaves one there that nothing has filed, file `tasks/api/<NNN>-compact-api.md` in the same commit
+(`tasks/README.md` has the shape) — recording the debt, not paying it.
+
+**Second supervisor note — this is a wording question, so say what you chose.** There are at least
+three defensible answers and I am not leaning: match Core's `"probe unavailable"` exactly; keep
+`embarch-api`'s own voice but drop the "plug it in" imperative and relay `reason`; or keep "not
+attached" and qualify it. Pick one on its merits and record the reasoning where an `embarch-api`
+decision belongs. I say this explicitly because two units in a row this morning found the
+supervisor's dispatch note had leaned one way and the worker was right to go the other.
+
 **Filed by:** leg 137, 2026-09-17, from
 `inbox/api-validate-not-attached-plug-it-in-is-now-wrong-for-five-of-six-causes.md`, written by the
 `core/077` worker as it landed decision 59's second amendment. Filed verbatim except for this
