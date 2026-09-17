@@ -1,6 +1,9 @@
 # 076 — Serve decoded per-lane spans on a sibling route to `/load`
 
-**State:** open
+**State:** claimed by agent/core/076-load-spans-route, 2026-09-17 14:02 — **announcement window
+closed with no objection.** Announced in `#embarch-fleet` at 13:29 (`ts` `1789673384.645649`), polled
+at every unit boundary of leg 137, nothing in the thread and nothing in the channel; 30 minutes
+elapsed, so `ops.md` §4's condition to execute is met and this runs as the leg's last unit.
 **Source:** `tasks/core/075` (`embarch-core` decision 64, `embarch-core/decisions/stream-index.md`)
 decided this should ship, and filed the building as this task rather than doing it itself
 (decision 64 is a decision, not an implementation).
@@ -72,3 +75,34 @@ per-lane paging, or a narrower payload — before shipping, not after.
 ## Not yours
 
 - Do not change `embarch-ui` — file its retirement task, do not do the retirement here.
+- **Do not change `embarch-topology`.**
+- **Do not bump any existing route's response shape.** This is additive: `GET
+  /study/{id}/stream/{name}/load` keeps serving exactly the `LoadSummary` it serves today. If you
+  find yourself needing to change `LoadSummary`, stop and say so — that is a different announcement.
+
+## Supervisor notes (leg 137, 2026-09-17)
+
+1. **The announcement is done and the window is closed.** Announced 13:29, `ts`
+   `1789673384.645649`, no reply in 30 minutes. You do not announce anything and you do not wait.
+2. **Reserve, read at dispatch, and it moved twice today — check it fresh, do not trust this line.**
+   `embarch-core/decisions/auth.md` **11,356/12,288 B**, blocked under `tasks/core/046`; and
+   **`decisions/surfaces.md` went into the band an hour ago at 11,253/12,288 B (91.6%, 1,035 B
+   left)**, filed as `tasks/core/079-compact-core.md`, `blocked`, `In flux: yes`. **Write into
+   neither.** `decisions/stream-index.md` is where this task's decision belongs and it has room.
+   Run `python3 scripts/check-doc-size.py --pressure` before and after; if your edits push a third
+   file into the band, file `tasks/core/<NNN>-compact-core.md` in the same commit — **and check the
+   next free number against `main` right before you write it**, because this leg already had one
+   number collision between a worker and the supervisor's own refill.
+3. **Measure the CSV before you quote decision 64's size argument.** The task's own section on this
+   is the most important thing in it. Decision 64's cost argument rests on the decoded spans being
+   *"the same order of magnitude as the CSV that already crosses this same call"*, and the 12.6 MB
+   half is sourced while **the CSV half is not** — `core/075`'s reviewer grepped the whole suite and
+   found no document stating the rendered CSV's byte size. Measure it, state it with its provenance,
+   and **if the CSV turns out materially smaller than 12.6 MB, say so and reconsider the response
+   shape before shipping** — streaming, per-lane paging, or a narrower payload. That is a legitimate
+   outcome of this task, not a failure of it.
+4. **Reuse `outpost_load.rs`'s decode; do not write a second one.** Building a parallel timeline is
+   the exact duplication this whole chain exists to end.
+5. **`tasks/ui/065` is already filed and `blocked` on this task landing** — do not file it again and
+   do not unpark it; that is the supervisor's call at the fold.
+6. You own exactly one sub-project: `embarch-core`.
