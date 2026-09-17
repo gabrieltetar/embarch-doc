@@ -1,6 +1,6 @@
 # 024 — Plural-citation re-check: the 8 lines every `outpost` sweep was structurally blind to
 
-**State:** claimed by agent/outpost/024-plural-citation-recheck, 2026-09-16 21:34
+**State:** done
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-outpost` was declared **completely** citation-swept after `outpost/021` and `outpost/022`.
@@ -74,3 +74,57 @@ Same pass the chain has run eleven times, unchanged except for the census patter
 Every plural-form citation line in `embarch-outpost` has had the existence-and-truth pass, the
 report states the instance count checked against the eight-line floor, and each defect found is
 either fixed here or filed with its reason for not being fixed here.
+
+## Result, 2026-09-16
+
+Re-censused with `grep -rInE '[Dd]ecisions [0-9]'`, case-insensitively: same eight lines as filed,
+no additional case-variant sites.
+
+Ran `core/068`'s wrap-check, `grep -rlIE '[Dd]ecisions[[:space:]]*$'`, over this repo: **zero
+hits** — unlike core, topology and ui, `embarch-outpost` has no citation wrapped across a comment
+continuation.
+
+**8 lines, 21 distinct decision instances checked**: Kconfig:93, `outpost.h:10`,
+`outpost_ring.c:10`, `outpost_hooks.c:10` and `outpost_time.h:10` each cite 2; `outpost.c:10` cites
+3; `gen_outpost_manifest.py:4` and `CMakeLists.txt:126` each cite 4 (task filed this as "roughly
+24" — the actual count is 21). Every cited number (2, 3, 4, 5, 6, 7, 8, 9, 17) exists in
+`embarch-outpost/decisions.md`'s own index and its `decisions/*.md` group files — all this repo's
+own, none a cross-repo trap. Read each citing file's surrounding code against its cited decision's
+current text: **zero wrong numbers, zero false claims.** Every one of these eight headers still
+accurately names what its file implements (markers/manifest for outpost.h; ring design/overflow
+for outpost_ring.c; markers/ISR-name/thread-name/manifest for gen_outpost_manifest.py;
+hooks/ISR-identity for outpost_hooks.c; transport/layout/overflow for outpost.c;
+transport/layout for outpost_time.h; manifest-selection/markers-ISR-thread-payoff for
+CMakeLists.txt:126). Kconfig:93's embedded factual claim ("so when it left the ring has no
+bearing [on when the host says it happened]") is still true of decisions 4/17/20 today.
+
+Two things read, checked, and deliberately left alone rather than fixed or filed:
+
+- **Kconfig:93** cites decisions 4 and 17 for that "no bearing" sentence, which is near-verbatim
+  decision 20's own wording (`decisions/transport.md`: "it carries its own DUT stamp, so when it
+  left the ring has no bearing on when a host says it happened") — and the whole help block above
+  it describes decision 20's drain-wait mechanism without ever citing 20. Decisions 4 and 17 are
+  each independently true of what they're actually attached to (4: the record's own per-record DUT
+  stamp; 17: the two-clock split that makes that stamp authoritative for placement), so nothing
+  here is a wrong number or a false claim. Decision 20 would be the more direct source for the
+  sentence as a whole; adding it would widen the citation past what this task asks, so left as is.
+- **`src/outpost_hooks.c:10`** cites decisions 2 and 7, both confirmed true and current. The same
+  file also implements decision 25's GPIO-dispatch hooks
+  (`sys_trace_gpio_fire_callbacks_enter_user` / `sys_trace_gpio_fire_callback_user`, matching
+  `decisions/tracing.md` decision 25 almost line for line) without citing 25 anywhere in the file,
+  header or inline. That is an absent citation on a decision that is itself correctly numbered and
+  current — not a wrong or false one — so it falls outside this task's existence-and-truth mandate
+  on the numbers already present. Not filed to `inbox/`: no defect to hand off, just a completeness
+  gap noted here per the task's instruction to report a line left unchanged with its reason.
+
+Separate class of defect, reported per the task's own instruction rather than silently corrected:
+three of these eight lines carry a `../embarch-doc/embarch-outpost/decisions.md` relative path
+(`include/embarch/outpost.h:10`, `scripts/gen_outpost_manifest.py:4`, `src/outpost.c:10`) at two
+different actual depths from the repo root (`outpost.h` two directories deep under `include/`;
+the other two one directory deep) but all three use exactly one `../` — read as a literal
+filesystem path each resolves to the wrong place, and inconsistently so between the three. Not
+corrected here; the right depth depends on where the file is read from, and this task's mandate is
+decision-number existence-and-truth, not path depth.
+
+**Tally: 8 lines / 21 distinct decision instances / 0 wrong numbers / 0 false claims / nothing
+fixed in the code repo.**
