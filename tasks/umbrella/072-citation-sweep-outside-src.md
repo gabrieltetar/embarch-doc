@@ -1,6 +1,6 @@
 # 072 — Citation sweep: the 17 `embarch-umbrella` citations that live outside `src/`
 
-**State:** claimed by agent/umbrella/072-citation-sweep-outside-src, 2026-09-16 18:46
+**State:** done
 **Source:** leg 122's refill sweep, 2026-09-16. `tasks/umbrella/066` closed with *"All eleven files
 swept"* — and its table is exactly `src/*.rs`; `065` was `doctor.rs`. Neither grep ever left `src/`.
 **Scope:** umbrella
@@ -74,14 +74,50 @@ workflow files are the least-read text in the repo and have never been checked b
 
 ## Done when
 
-- [ ] All citations in the five files checked for existence, repo label, and whether the sentence
-      around each is true — count re-taken as *instances*, not grep lines.
-- [ ] Wrong numbers and false sentences reported as separate counts, with the total checked. "Checked
-      17, found none" is a legitimate and useful result.
-- [ ] Any `file:line` citation checked for line drift, not just for path correctness.
-- [ ] No new bare cross-repo citation introduced anywhere in the diff.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/umbrella-*` fragment reporting the three numbers.
+- [x] All citations in the five files checked for existence, repo label, and whether the sentence
+      around each is true — count re-taken as *instances*, not grep lines. **27 instances** (Cargo.toml
+      12, CLAUDE.md 2, README.md 5, release.yml 5, assemble-suite.yml 3) against the grep census of 17
+      lines. Beyond `decision N`, four instances cited a file — `embarch-umbrella/milestone-6.md §3.7`
+      / `§3.8` — by name and section rather than by decision number; that file was deleted in the
+      four-file split and no longer exists anywhere in this repo.
+- [x] Wrong numbers and false sentences reported as separate counts, with the total checked.
+      **Checked 27, 0 wrong numbers, 8 false sentences:**
+      1. Cargo.toml: "only `token_discovery` is used, nothing else calls into it" — false since
+         decision 20's 2026-09-10 amendment also moved `CoreConfig` onto `embarch-core-client`.
+      2. README.md: "Status: bootstrap only… every command reports itself unimplemented" — false;
+         `src/` is ~12k lines of built `setup`/`doctor`/`deploy-core`.
+      3. README.md: the "Milestone 6" link, and 4/6/7 below: all four cite the now-deleted
+         `milestone-6.md`.
+      4. README.md: the user-guide link pointed at `embarch-doc/embarch-user-guide.md`, which has
+         never existed under that name; the real file is `suite/user-guide.md`.
+      5. release.yml: "unlike embarch-core/embarch-api, this crate has no embarch-study-designer
+         dependency" — false (Cargo.toml has depended on it since decision 33); the checkout list
+         backed the false claim by only ever checking out `embarch-topology`, so a real tagged
+         release's `cargo build` would fail resolving `embarch-study-designer` and
+         `embarch-api/crates/embarch-core-client`. Fixed the claim and added both checkouts.
+      6. release.yml: `milestone-6.md §3.7` → repointed at `decision 14`, which covers the same
+         per-repo-vs-suite-release ground.
+      7. assemble-suite.yml: `milestone-6.md §3.7` → `decision 14`.
+      8. assemble-suite.yml: `milestone-6.md §3.8` → `decision 14`, which describes the exact
+         `nullglob`/pipefail bug this comment names.
+- [x] Any `file:line` citation checked for line drift, not just for path correctness. No `path:line`
+      form citations found in these five files (the `§N` section citations above are to a doc that no
+      longer has sections at all, which is a different defect, not line drift).
+- [x] No new bare cross-repo citation introduced anywhere in the diff — all repointed citations are
+      bare `decision N` (same-repo, embarch-umbrella) or `embarch-umbrella decision N` matching each
+      file's own pre-existing local style.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy --all-targets
+      -D warnings` all clean (225 tests); `check-docs.py` 11/11; `check-client-names.py` clean;
+      `check-ownership.py` clean in both repos.
+- [x] `changelog.d/umbrella-*` fragment reporting the three numbers.
+
+**Declined:** the release.yml checkout fix is not verified against a real tag push — per decision
+27/29's own account, that is a release and not the fleet's to do. It mirrors the already-working
+`embarch-topology` checkout step verbatim, no new mechanism. `CLAUDE.md`'s "Four files, not one" line
+omits the `[Reference: interfaces.md, where there is one.]` clause DOC-PROTOCOL.md §6's template
+carries, even though umbrella has one (`interfaces/doctor-chain.md`) — noticed but left alone: it is a
+missing pointer, not a wrong citation, and whether all eight repos' `CLAUDE.md` need that clause is a
+suite-wide template question this single-repo sweep should not decide alone.
 
 ## Not yours
 
