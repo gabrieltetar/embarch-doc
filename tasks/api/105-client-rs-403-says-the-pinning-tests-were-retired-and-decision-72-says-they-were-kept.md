@@ -1,6 +1,6 @@
 # 105 — `client.rs`'s line-403 comment says the pinning tests were retired; decision 72 says they were kept
 
-**State:** claimed by agent/api/105-pinning-tests-kept-not-retired, 2026-09-16 20:57
+**State:** done
 **Source:** `inbox/api-104-review-client-rs-403-contradicts-decision-72.md` — filed by the
 `embarch-reviewer` spawned for unit `api/104`, drained into the queue by the supervisor on
 2026-09-16.
@@ -51,16 +51,16 @@ correction to shipped prose, **not a revert of anything**.
 
 ## Done when
 
-- [ ] `crates/embarch-core-client/src/client.rs:407-413` states that the round-trip pinning tests
+- [x] `crates/embarch-core-client/src/client.rs:407-413` states that the round-trip pinning tests
       were kept and re-scoped — "the wire has not moved under a deployed Core" — rather than
       retired, and stops contradicting the same file's comment at ~line 2012.
-- [ ] The three decision-number citations in that block are unchanged and still resolve.
-- [ ] Nothing else in the block's account of the mirror retirement changes — the *types* were
+- [x] The three decision-number citations in that block are unchanged and still resolve.
+- [x] Nothing else in the block's account of the mirror retirement changes — the *types* were
       genuinely retired by `suite/035`; only the claim about the *tests* is wrong.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
       `cargo test --workspace`, `cargo clippy --all-targets -- -D warnings` in `embarch-api`, and
       `check-docs.py` in `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped. No decision is created or amended: decision 72 already says
+- [x] `changelog.d/` fragment dropped. No decision is created or amended: decision 72 already says
       the right thing and is not being touched.
 
 ## Notes for whoever runs this
