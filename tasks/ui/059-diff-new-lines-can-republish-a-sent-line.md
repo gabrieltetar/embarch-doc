@@ -52,13 +52,34 @@ the last four edits to this entry cut something they should not have while makin
 
 ## Done when
 
-- [ ] A reasoned choice between fixing and accepting, stated in the commit message.
-- [ ] If fixed: a test that fails against the current `diff_new_lines` and passes after.
+- [x] A reasoned choice between fixing and accepting, stated in the commit message.
+      Chosen: **fix**. Traced the concrete example by hand across three poll
+      cycles: a spurious shorter match never drops genuinely new content (the
+      matched prefix is always, by construction, identical to previously-sent
+      previous-window content), so the defect is bounded to excess duplicates,
+      not the anchor-swallowing class decision 13 already fixed once — but the
+      fix itself (matching a run's last line by `starts_with` instead of `==`)
+      is small, keeps the same longest-run-first search order, and closes the
+      concrete case outright rather than leaving known-reachable duplicate
+      output undocumented as merely "tolerated." Decision 13's own trailing
+      paragraph (added by `ui/057`) described this exact failure mode as
+      present-tense truth; fixing it without updating that sentence would have
+      left the doc stating something false, so decision 13 was also edited
+      (shrunk, since it measured exactly 4096 B / 0 room) and a new decision 27
+      added with the reasoning and citing the two tests below.
+- [x] If fixed: a test that fails against the current `diff_new_lines` and passes after.
+      `a_growing_trailing_line_does_not_republish_a_line_already_sent` (plus
+      `a_growing_trailing_line_followed_by_a_real_new_line_publishes_only_the_new_line`)
+      in `embarch-ui/src/logs.rs`. Ran both against the unfixed code first —
+      confirmed failure (`left: ["B", "A2"]`, `right: []`) before touching
+      `diff_new_lines`, then again after the fix — both pass, and all 7
+      pre-existing `logs::tests` cases still pass unchanged.
 - [ ] If accepted: the tolerance stated in `embarch-ui/decisions/debug-tab.md` (new
       decision if decision 13 has no room), plus a test pinning the current behaviour.
-- [ ] `cargo test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+      N/A — fixed instead, see above.
+- [x] `cargo test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
 
 ## Not yours
 

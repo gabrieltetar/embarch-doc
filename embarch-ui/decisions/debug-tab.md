@@ -31,4 +31,28 @@ Decision 7's pattern works for Core because **Core is a long-running service wit
 - **The live tail's diff swallowed every line between two identical ones.** It anchored on the previous window's last line, searching the new window *backward* for its most recent occurrence — **under a comment stating the opposite preference** ("a few duplicate lines in a debug viewer is a smaller problem than missing ones"), **and a test asserting the loss as intended.** The window is a contiguous run of one append-only file, so the anchor is now the longest suffix/prefix overlap, not a line that may appear twice.
 - **The "full console reset, not a merge" property above was not actually held.** The backlog fetch was un-awaited and carried no identity, so switching source mid-flight **landed the old source's 200 lines in the new source's console, under the new source's heading** — reproduced against live Core with only its recent-lines route delayed — **exactly why this decision avoids a merged stream.** A generation token bumped on every switch now invalidates a stale answer.
 
-**The diff's tolerance for a growing trailing line is conditional, not universal** — Core's tail can end mid-line. `diff_new_lines` (`src/logs.rs:126`) needs exact overlap, so a growing trailing line falls into the no-overlap replay-the-window branch **unless** the window holds a line elsewhere identical to the pre-growth trailing line's content, in which case the overlap search can match spuriously and republish an already-sent line — the same repeat-verbatim property the anchor-bug fix above exists for.
+**A growing trailing line no longer breaks the overlap run** (decision 27): the search matches a run's last line by extension as well as equality, so a still-growing line can't force a fallback to a shorter, coincidental match on a repeated earlier line — the failure mode the sentence above once described.
+
+### 27 — `diff_new_lines`'s overlap run matches its last line by extension, not just equality, so a growing line can't be mistaken for a shorter repeat
+
+`tasks/ui/059`, filed from an inbox drop by the `ui/057` worker verifying a
+reviewer counter-example. With `previous = ["A", "B", "A"]` and `new = ["A",
+"B", "A2"]` — the trailing line grew, nothing else appended — the old exact-
+equality check failed at every overlap length down to 1, where it matched the
+*earlier* "A" instead, republishing "B", which decision 13's own reasoning
+("log lines repeat verbatim all the time") predicts and this reproduces.
+
+**This is not the anchor-swallowing bug decision 13 already fixed** — no line
+is dropped, only "B" is sent twice — but it is the same root cause: a
+same-length coincidental repeat outranking the true, longer anchor once exact
+equality can no longer hold. The fix keeps the true anchor pinned instead of
+falling back to a shorter one: at each candidate overlap length, every line
+but the last must match exactly, and the last only needs the new window's
+line to `starts_with` the previous window's — true whenever it is unchanged,
+and true when it is the same line with more appended, never true for an
+unrelated later repeat unless that repeat's text happens to be a prefix
+extension too, which is the same irreducible ambiguity decision 13 already
+tolerates for repeat-verbatim content. `src/logs.rs`'s
+`a_growing_trailing_line_does_not_republish_a_line_already_sent` test pins
+the case above; a second test confirms real new content past the growth
+still publishes.

@@ -11,7 +11,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9 | One consolidated process, zero-build, the VS Code launcher, the repo |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
 | [decisions/shell.md](decisions/shell.md) | 4, 8, 25 | The six-section shell, fragment navigation, the design system, the brand-vs-accent split |
-| [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
+| [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13, 27 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing) | Signal routing: the one human surface for declaring a wire |
 | [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace) | What a trace renders, on which clock, and the load repartition |
 | [decisions/trace-rows.md](decisions/trace-rows.md) | 19, 21 | Dropping a stale pre-reset head, and the served row cap |
