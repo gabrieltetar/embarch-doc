@@ -1,6 +1,6 @@
 # 064 — Settle whether `Lane`/`Span`/`Gap` and the four exclusion flags stay derived in both `trace.rs` and `outpost_load.rs`
 
-**State:** open
+**State:** claimed by agent/ui/064-lane-span-gap-derived, 2026-09-17 11:35
 **Source:** `embarch-ui/open.md`'s third bullet, swept by leg 134's refill. The bullet has been
 half-closed since `ui/051` retired the aggregation — shares and coverage now come from
 `.../stream/{name}/load` (`embarch-core` decision 62) — and it says in its own words what is left:
