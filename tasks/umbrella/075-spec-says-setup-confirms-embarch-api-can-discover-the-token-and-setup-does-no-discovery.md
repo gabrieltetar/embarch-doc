@@ -26,7 +26,7 @@ moved or a quotation is off, correct it in your report and work from what is act
 
 `embarch-doc/embarch-umbrella/spec.md`, in the **Token handling** section (reported at line 71):
 
-> Umbrella invents no token mechanism — [embarch-token.md](../embarch-token.md) is the source of
+> Umbrella invents no token mechanism — [embarch-token.md](../../embarch-token.md) is the source of
 > truth — and **writes no token value into any config file.** On a same-machine topology `setup`
 > starts Core once so the machine-wide token file exists, **then confirms `embarch-api` can discover
 > it.** Across machines there is no shared filesystem and no solution: it prints the export line for
