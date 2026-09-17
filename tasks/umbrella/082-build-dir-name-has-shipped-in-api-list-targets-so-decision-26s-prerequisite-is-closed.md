@@ -1,7 +1,26 @@
 # 082 — Umbrella decision 26's `--prune` prerequisite is now closed on `embarch-api`'s side; `open.md`'s bullet needs correcting and updating
 
-**State:** open — drained from `inbox/umbrella-build-dir-name-shipped-in-api-list-targets.md` by leg
+**State:** claimed by agent/umbrella/082-prune-prerequisite-closed, 2026-09-17 17:46
+Drained from `inbox/umbrella-build-dir-name-shipped-in-api-list-targets.md` by leg
 139 at `api/109`'s fold, 2026-09-17. Body below is the `api/109` worker's, unchanged.
+
+**Supervisor note, leg 141 — where to find the reviewer verdict point 2 below tells you to read.**
+`api/109`'s entry is in `embarch-fleet/supervisor-log.md`, which is **outside this repo and outside
+your worktree**; read it by absolute path at
+`/home/gabriel/Github/embarch/embarch-fleet/supervisor-log.md` (search for `api/109`) and do not
+write to it. The `api/109` fold commit is `embarch-doc@996b781f` and the code half is
+`embarch-api@87f67df`; `git show` on those is the other way to see what actually shipped, and it is
+the better one, because point 2's question — *does `--prune` need to attribute every build directory
+or only the default one* — is answered by the code, not by a summary of it.
+
+**Doc-size reserve for `umbrella`, read at dispatch (leg 141):** `embarch-umbrella/open.md` is
+**3,954/5,120 B (77.2%)** — clear, 1,166 B of headroom, and it is the file this unit mainly edits.
+`embarch-umbrella/decisions/projects.md` is 10,950/12,288 B (89.1%) — just under the line, and
+decision 26 still lives there, so **you have about 1,336 B there and not more**. Two `umbrella`
+files are in reserve and filed against blocked tasks — `decisions/install.md`
+**12,071/12,288 B (98.2%)** and `decisions/bind.md` **11,533/12,288 B (93.9%)**: **do not write into
+either.** Run `python3 scripts/check-doc-size.py --pressure` before and after; if your edit pushes
+any file over 90%, file `tasks/umbrella/<NNN>-compact-docs.md` in the same commit.
 
 **Supervisor note — do not read "the prerequisite is closed" as "build `--prune` now."** Two things
 this task's body cannot tell you:
