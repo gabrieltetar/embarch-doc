@@ -1,6 +1,12 @@
 # 101 — Citation sweep: `embarch-api`'s non-Rust files and `tests/`, the half every prior sweep scoped itself out of
 
-**State:** claimed by agent/api/101-citation-sweep-non-rust-and-tests, 2026-09-16 18:45
+**State:** done — 2026-09-16 — checked 46 instances (not the 45-line grep census; several lines cite
+more than one decision number). Found 3 wrong numbers, 0 false sentences: `.github/workflows/release.yml`
+cited `embarch-core` decision 7 (Rust/probe-rs/Axum/`spawn_blocking`/CI) for the MSVC Build Tools "Desktop
+development with C++" fact, which no `embarch-core` decision documents — repointed to `embarch-core/spec.md`.
+`tests/build_capture.rs` cited decision 19 (the readable build-dir hash) twice for `target.json`, which is
+decision 69's subject — both fixed to 69. `config.example.toml`'s eight checked first and separately, all
+correct. Follow-up filed: `tasks/api/102-citation-sweep-remaining-src-crates.md`. Gate green.
 **Source:** leg 122's refill sweep, 2026-09-16. `api/091` swept `client.rs`/`config.rs`; `api/093`
 swept `resolve.rs`/`tools.rs`/`cli.rs`; `api/095` and `097` finished `client.rs`. Every one of those
 scoped its grep to `src/` and `crates/`. The files below have never been read by anything.
@@ -89,16 +95,18 @@ the remainder is written down somewhere rather than rediscovered.
 
 ## Done when
 
-- [ ] Every citation in the listed files checked for existence, repo label, and whether the sentence
+- [x] Every citation in the listed files checked for existence, repo label, and whether the sentence
       around it is true — counted as *instances*, not grep lines.
-- [ ] `config.example.toml` done first and its eight reported separately, since a defect there ships
-      into users' configs.
-- [ ] Wrong numbers and false sentences reported as separate counts, with the total checked.
-      "Checked 45, found none" is a legitimate result.
-- [ ] Any `file:line` citation checked for line drift.
-- [ ] A follow-up task filed for the ~70-line `src/`/`crates/` remainder named above.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/api-*` fragment reporting the three numbers.
+- [x] `config.example.toml` done first and its eight reported separately, since a defect there ships
+      into users' configs. All eight correct — 0 wrong, 0 false.
+- [x] Wrong numbers and false sentences reported as separate counts, with the total checked.
+      Checked 46, found 3 wrong numbers, 0 false sentences.
+- [x] Any `file:line` citation checked for line drift. None of these twelve files use a `file:line`
+      citation form.
+- [x] A follow-up task filed for the ~70-line `src/`/`crates/` remainder named above.
+      `tasks/api/102-citation-sweep-remaining-src-crates.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/api-*` fragment reporting the three numbers.
 
 ## Not yours
 
