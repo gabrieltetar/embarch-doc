@@ -9,7 +9,7 @@ filing, so this task carries the census rather than the suspicion.
 **Hardware:** none — eight `CLAUDE.md` files and a `ls`. Nothing is built, flashed, or run.
 **Owner:** no — but **supervisor-executed, not dispatchable to a worker**, because it writes files
 in several code repos at once (`../../embarch-fleet/protocol.md` §8). It needs
-[ops](../../embarch-fleet/ops.md) §4's announcement-and-park window before it runs.
+`../../embarch-fleet/ops.md` §4's announcement-and-park window before it runs.
 
 ## The template
 
@@ -69,5 +69,5 @@ interface facts into `spec.md` instead, which is the drift the four-file split w
 - [ ] The two omissions closed and the `embarch-core` question answered explicitly.
 - [ ] The census re-taken after the change and all eight rows correct.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10) in every repo touched.
-- [ ] Announcement window observed per [ops](../../embarch-fleet/ops.md) §4, with its `ts` recorded
+- [ ] Announcement window observed per `../../embarch-fleet/ops.md` §4, with its `ts` recorded
       in this file.
