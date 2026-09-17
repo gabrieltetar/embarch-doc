@@ -1,6 +1,6 @@
 # 051 — `Cargo.toml`'s `bin` feature comment still says "CLI/UI binary"; the UI was retired in August
 
-**State:** claimed by agent/topology/051-cargo-toml-cli-ui-binary, 2026-09-16 21:33
+**State:** done
 **Source:** `topology/050`'s worker, 2026-09-16, which found and fixed the identical stale wording in
 `src/hardware/validate.rs` and correctly declined to widen — `Cargo.toml:48` cites no decision
 number, so it was outside a plural-citation sweep's mandate. Filed by the supervisor at that unit's
@@ -42,12 +42,16 @@ gated?" will land.
 
 ## Done when
 
-- [ ] `Cargo.toml:48`'s comment no longer claims a UI binary exists, and describes the `bin`
-      feature's actual surface.
-- [ ] A sweep of the rest of `embarch-topology` for the same stale `CLI/UI` phrasing — this is now
-      two instances of one sentence, so check whether there is a third before closing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
+- [x] `Cargo.toml:48`'s comment no longer claims a UI binary exists, and describes the `bin`
+      feature's actual surface. Fixed to "own CLI binary" plus a one-line pointer to decision 5's
+      2026-08-24 retirement, matching `topology/050`'s treatment of `validate.rs`.
+- [x] A sweep of the rest of `embarch-topology` for the same stale `CLI/UI` phrasing — this is now
+      two instances of one sentence, so check whether there is a third before closing. Grepped
+      `CLI/?UI|CLI and UI|UI and CLI|UI binary|its own UI` case-insensitively across `.rs`/`.toml`/
+      `.md`: zero remaining hits after this fix. This was the second and last site.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
       `cargo test` (including `--features hardware`), `cargo clippy --all-targets -- -D warnings`
-      in `embarch-topology`, and `check-docs.py` in `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped. No decision is created or amended: decision 5 already says
+      in `embarch-topology`, and `check-docs.py` in `embarch-doc`. All green; `cargo test --features
+      hardware` 80 passing, matching `topology/050`'s baseline.
+- [x] `changelog.d/` fragment dropped. No decision is created or amended: decision 5 already says
       the right thing.
