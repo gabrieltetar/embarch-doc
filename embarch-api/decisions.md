@@ -18,7 +18,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Hardware selection and identity](decisions/hardware-selection.md) — enrollment, mismatch alerts, the dev-bench identity cross-check, and why no tool here ever picks a physical board or port on a caller's behalf | 34, 35, 59, 60, 70 | 9.0 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, and the unix-only process-tree kill | 5, 75 | 2.9 KB |
 | [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |
-| [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, and the crate-owned hash | 19, 69 | 5.8 KB |
+| [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, the crate-owned hash, and `build_dir_name` on every `list-targets` row | 19, 69, 77 | 8.6 KB |
 | [The flash offset a `bin` needs](decisions/flash-address.md) — `base_address` as config, not a per-call parameter | 42 | 1.7 KB |
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 20, 21, 51 | 9.1 KB |
 | [What board.yml/app scanning trusts](decisions/zephyr-scan.md) — the retired SoC-override hatch, the uncached scan's cost bound, and the `app/`/`apps/` scan | 13, 22, 63 | 5.7 KB |

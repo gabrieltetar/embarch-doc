@@ -1,0 +1,1 @@
+| `build_dir_name` on every `list-targets` row (`zephyr-west`) — the identity `embarch-umbrella` decision 26 needs to prune a stale build directory | Shipped — the default-combination name only; `null` when the app's available snippets don't cover `default_snippets` | unit | 77 |
