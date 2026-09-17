@@ -1,6 +1,6 @@
 # 078 — A content hash on `/status` is the only thing that closes `doctor` check 15's same-version blindness, and it is this repo's call
 
-**State:** open
+**State:** claimed by agent/core/078-status-content-identity, 2026-09-17 17:46
 **Source:** refill sweep, leg 137, 2026-09-17, from
 [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md)'s standing bullet: *"**Check 15 is not
 a hash comparison and must not be read as one.** It catches a *cross-version* stale deploy and is
@@ -13,6 +13,24 @@ the deciding one and **nothing has ever been filed here**, so the call has no ow
 `src/api.rs`'s status handler, `decisions/surfaces.md` and the build. **Do not deploy, do not run a
 live Core, do not flash anything.**
 **Owner:** no
+
+**Doc-size reserve, re-read at dispatch (leg 141, 2026-09-17) — this supersedes the filing-time
+reading below, and it changes what you owe.** `embarch-core/decisions/surfaces.md` — the file this
+task's `Done when` names as the likely home for your decision — is **11,253/12,288 B (91.6%), IN
+RESERVE, 1,035 B left**. Its compaction task `tasks/core/079-compact-core.md` is **`blocked` on
+`In flux: yes`**, and `.claude/leg.md` is explicit that a blocked compaction task parks the *pass*,
+not the reserve: **if you write into `surfaces.md`, you compact `surfaces.md` as part of this unit**,
+carrying `tasks/core/079`'s `Must not delete:` list verbatim (read that file first — it names
+decision 12's scope/trigger paragraph, decision 59's original resolution, `core/074`'s correction and
+`core/077`'s settlement) and bringing the file back under 90%. You are the actor making the flux, so
+you are the only one who can shorten what you are rewriting without writing a clean statement of
+something about to be wrong. Do **not** close `tasks/core/079` — say in your report what you paid and
+leave the task for the supervisor to settle.
+
+**If the topic-correct home for your decision turns out not to be `surfaces.md`, none of the above
+applies** — say which file you chose and why, and check its headroom instead. What you must not do
+is pick a file by where there is room; `embarch-api` filed a decision in the wrong topic file on
+2026-09-05 for exactly that reason, with 96 B left, and nothing failed.
 
 **Doc-size reserve for `core`, read at filing:** `embarch-core/decisions/auth.md` is
 **11,356/12,288 B (932 B left)**, filed as `tasks/core/046` and blocked — do not write into it.
