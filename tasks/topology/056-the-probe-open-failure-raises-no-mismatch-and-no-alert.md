@@ -1,6 +1,6 @@
 # 056 — `validate`'s probe-open failure raises neither a `TopologyMismatch` nor an alert, and the type's own doc comment says it does
 
-**State:** open
+**State:** claimed by agent/topology/056-probe-open-no-mismatch, 2026-09-17 01:50
 **Source:** leg 133's refill census of `embarch-topology`, the fourth of four findings —
 `tasks/topology/055` carries the other three. **Filed so it survives**: it existed only in a census
 report, and `supervisor-log.md` folds daily and rolls into `log-archive/`.
