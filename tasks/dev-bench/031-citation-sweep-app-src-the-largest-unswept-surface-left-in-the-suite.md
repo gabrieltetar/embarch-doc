@@ -1,6 +1,6 @@
 # 031 — Citation sweep: `app/src/`, the largest unswept citation surface left in the suite
 
-**State:** open
+**State:** claimed by agent/dev-bench/031-app-src-citation-sweep, 2026-09-16 19:55
 **Source:** leg 124's refill sweep, 2026-09-16. The sweep chain has now closed
 `embarch-topology`, `embarch-umbrella` and `embarch-outpost` completely — every one of their
 citation-bearing files has had a decision-existence-and-sentence-truth pass, and the last two
