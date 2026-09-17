@@ -1,6 +1,6 @@
 # 052 — Wrapped-citation census: the nine lines every single-line sweep missed
 
-**State:** open
+**State:** claimed — leg 130 unit 1, 2026-09-16, `agent/topology/052-wrapped-citations`
 **Source:** `tasks/doc/071` (`Owner: required`, open), second `Done when` bullet — *"each
 sub-project already declared 'citation swept' end to end gets a follow-up task re-censusing with the
 wrap-aware method"*. `embarch-topology` was swept by `topology/040` (`src/`), `046` (outside `src/`)
