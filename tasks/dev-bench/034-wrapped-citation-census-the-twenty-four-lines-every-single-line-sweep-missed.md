@@ -74,17 +74,57 @@ comparable.
 
 ## Done when
 
-- [ ] Every wrapped citation the grep returns is read in full and answered against all three
+- [x] Every wrapped citation the grep returns is read in full and answered against all three
       questions above.
-- [ ] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
+- [x] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
       if you cannot establish what the right referent is — **left alone and reported**, never guessed.
-- [ ] `N lines / M instances / W wrong / L labels / F false` stated in the report.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). **This repo builds under a Zephyr
+- [x] `N lines / M instances / W wrong / L labels / F false` stated in the report.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). **This repo builds under a Zephyr
       toolchain that is not installed**, so there is no `west build` to run and none is expected: the
       gate for this unit is `check-docs.py` in `embarch-doc` plus
       `scripts/check-client-names.py --repo <code worktree>`. Say in your report that no firmware was
       built and why — do **not** attempt a build.
-- [ ] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+- [x] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+
+## Result (leg 131 unit 3, 2026-09-17)
+
+Re-ran `grep -rnIE '[Dd]ecisions?[[:space:]]*$'` over `embarch-dev-bench` at `4a1d67e` (excluding
+`.git`/`build/`): **24 lines**, matching the task's own re-check note. Of those, **1 is not a
+citation at all** — `app/src/ble_bridge_real.c:1197` ("... but the decision / is made from the
+*entry*, not from this packet's own type...") — plain prose, no number follows on the next line.
+Left alone, not counted. The `west.yml:1` hit **is** a real citation (dev-bench's own decisions
+2/3/5, all three resolve and match the sentence) — checked per the task's ask.
+
+**23 lines / 39 instances / 0 wrong numbers / 2 missing labels / 1 false sentence.**
+
+Fixed, all in `embarch-dev-bench`:
+- `app/src/serial_protocol.h:39-40` — bare "decisions 31/32" (GattDiscover/GattMonitorAll) is
+  `embarch-study-designer`'s, not dev-bench's own 31/32 (UUID byte order / `BleConnect.target_name`)
+  — a second same-number collision, distinct from the `decision 39` one this task's `main.c` note
+  named. Label added.
+- `app/src/serial_protocol.h:740-741` — bare "decision 39" (the `streams_crc` "sibling seal")
+  resolves to `embarch-study-designer` decision 39 (`streams.md`), not dev-bench's own decision 39
+  (logging/verbosity, `logging.md`) — this file's own single-line citations for the same
+  `streams_crc` concept (lines 231, and `serial_protocol.c:1142`/`1753`) already label it
+  `embarch-study-designer`; this wrapped one didn't. Label added.
+- `app/tests/scan_seen_mfg/src/main.c:1` — cited `embarch-dev-bench/decisions/ble.md decision 44`;
+  decision 44 (Manufacturer Specific Data joins the census) is in `scanning.md`, not `ble.md` —
+  number and repo were both right, only the file name was wrong. Fixed.
+
+All other 20 wrapped citations were read against the cited decision's own body and are
+content-true, correctly labelled (or correctly bare for their own repo). Notably confirmed, not
+just resolved: `main.c:1085`'s bare `decision 39` ("verbosity is study state... a study that died
+mid-run... must not leave the next one running at its level") is dev-bench's own decision 39
+(`logging.md`) — the *other* side of the same-number collision this task flagged, correctly bare
+here.
+
+Gate: `check-docs.py` in `embarch-doc` — all 11 checks green. `check-client-names.py --repo
+<dev-bench worktree>` — clean against 7 denylist entries. `check-ownership.py --scope dev-bench`
+(doc) and `--code-repo` (dev-bench) both green. No firmware built: `embarch-dev-bench` has no
+`Cargo.toml` (cargo build/test/clippy select nothing) and no Zephyr toolchain is installed here —
+this is a source-comment census over C text, not a build task.
+
+Doc-size reserve untouched: this unit needed none of `open.md`/`spec.md`/`decisions/link.md`.
 
 ## Not yours
 
