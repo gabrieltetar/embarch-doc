@@ -1,6 +1,28 @@
 # 083 — `serial-port.md`'s header claims a verification that had already missed a citation
 
-**State:** open
+**State:** claimed by agent/umbrella/083-serial-port-header-verification, 2026-09-17 18:02
+
+**Supervisor note, leg 141 — `tasks/api/114` no longer exists, and that changes one `Done when`
+box.** This leg ran `api/114` as its first unit and retired the task file in that unit's fold
+(`embarch-doc@ca564376`); the repointed `**Source:**` line this task is about went with it. **The
+citation the original grep missed is therefore a historical fact, not a live file**, and the header
+you write must say so — cite it as *"`tasks/api/114`'s `Source:` line, since retired"* with the fold
+SHA, or describe the citation's **shape** without naming a file that is gone. A header that sends a
+future reader to a path that 404s is the same class of defect this task exists to fix, one level up.
+**Read the file at its last living version** — `git show ca564376^:tasks/api/114-close-the-serial-port-referral-in-open-md-against-umbrella-decision-55.md`
+— rather than reconstructing what it said.
+
+**Doc-size for `umbrella`, read at dispatch (leg 141), and it is tighter than it was an hour ago:**
+`embarch-umbrella/decisions/serial-port.md` — the file you edit — has room, but
+`embarch-umbrella/decisions/projects.md` crossed into reserve during this same leg's `umbrella/082`
+and now sits at **11,163/12,288 B (90.8%)**, filed as `tasks/umbrella/084-compact-docs.md` and
+`blocked`: **do not write into it.** `decisions/install.md` (98.2%) and `decisions/bind.md` (93.9%)
+are also in reserve and filed against blocked tasks: **do not write into either.**
+`embarch-umbrella/open.md` is 3,954/5,120 B (77.2%) and clear. Run
+`python3 scripts/check-doc-size.py --pressure` before and after; if your edit pushes any file over
+90%, file `tasks/umbrella/<NNN>-compact-docs.md` in the same commit, using
+`python3 scripts/check-task-numbers.py --next umbrella` for the number — never read the directory.
+
 **Source:** `embarch-reviewer` on landed unit `umbrella/081` (`embarch-doc@63f7d4ea`), leg 140,
 2026-09-17, via `inbox/doc-umbrella081-stale-decision-55-source-anchor.md` — **drained and closed by
 the supervisor at that unit's fold**, which fixed the citation itself. This task is the half the
