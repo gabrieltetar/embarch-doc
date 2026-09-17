@@ -1,6 +1,6 @@
 # 032 — Citation sweep: `app/src/`, the files `dev-bench/031` did not reach
 
-**State:** open
+**State:** claimed by agent/dev-bench/032-citation-sweep-app-src, 2026-09-16 22:03
 **Source:** `dev-bench/031`, 2026-09-16. That unit swept `app/src/main.c` (1620 lines) and
 `app/src/serial_protocol.h` (930 lines) — the two largest files by the chain's citation-line
 census — decision-existence-and-sentence-truth, per-instance. It ran out of budget before the
