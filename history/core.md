@@ -38,6 +38,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Core's `outpost_load.rs` fixed a wrong ui-decision citation for the trace chart's step row.
 - Citation sweep, embarch-core outside src/: 9 checked, 1 wrong number, 2 false sentences fixed, 6 confirmed clean.
 - `interfaces/logs.md`'s `/logs/recent` row restates the trailing-partial-line fact decision 44's compaction cut.
 - `logs.rs`'s module doc no longer claims `embarch-ui`'s text is unchanged; `ui/052` corrected it.
