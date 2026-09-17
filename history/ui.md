@@ -58,6 +58,7 @@
 - The Trace view counts the rows its decoder refused — truncated or malformed — instead of claiming "every row in the capture": embarch-ui/decisions/trace-view.md, decision 10.
 
 ### Decided
+- Decision 27's split with `embarch-core` is permanent, not pending — `embarch-core` decision 66 answered the widening question `open.md` and `trace-view.md` were still waiting on.
 - Checked `embarch-core`'s spans route against `trace.rs` field-for-field: too thin to retire the decode pipeline. Decision 27, `core`-side gap filed to `inbox/`.
 - embarch-ui decision 27: trace.rs's decode pipeline stays split from outpost_load.rs until Core serves per-lane spans, not just the rollup.
 - `assets/app.js`'s 72 decision citations checked (task `ui/054`): 0 wrong numbers, 0 false sentences.
