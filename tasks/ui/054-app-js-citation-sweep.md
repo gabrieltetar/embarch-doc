@@ -1,6 +1,6 @@
 # 054 — Citation sweep: `embarch-ui/assets/app.js`, the largest never-swept citation surface in the suite
 
-**State:** open
+**State:** claimed by agent/ui/054-app-js-citation-sweep, 2026-09-16 19:25
 **Source:** leg 117's refill sweep, 2026-09-16. Not from an `open.md` bullet — `embarch-ui/open.md`'s
 six live questions are all hardware debts or upstream deferrals, none of them dispatchable without a
 board. This came out of a mechanical census of citation-bearing source files across the four scopes
