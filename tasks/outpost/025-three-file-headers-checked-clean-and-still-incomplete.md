@@ -1,6 +1,6 @@
 # 025 — Three things `outpost/024` checked, found clean, and correctly refused to fix
 
-**State:** open
+**State:** claimed by agent/outpost/025-three-headers-incomplete, 2026-09-16 22:01
 **Source:** `outpost/024`'s worker, 2026-09-16. That unit's mandate was decision-number
 existence-and-truth, and it closed **8 lines / 21 instances / 0 wrong numbers / 0 false claims**.
 Along the way it recorded three things that are *not* wrong numbers and so fell outside its mandate.
