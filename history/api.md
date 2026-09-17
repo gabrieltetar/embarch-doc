@@ -50,6 +50,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- - `spec.md`'s "timeout kills the process group" was unqualified and false on Windows; now unix-only, with the gap named in [decisions/build.md](../embarch-api/decisions/build.md) 75.
 - `client.rs` no longer says the wire-pinning tests were retired; decision 72 says kept and re-scoped, and they are.
 - main.rs's stack-size comment said 64 MiB; the code has been 512 MiB since day one — comment fixed.
 - Citation sweep of src/zephyr.rs, main.rs, reflash.rs, study.rs, crates/embarch-core-client/src/api_log.rs: 2 wrong decision numbers fixed of 67 instances checked, 0 false sentences.

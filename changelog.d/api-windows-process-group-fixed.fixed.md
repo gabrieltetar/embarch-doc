@@ -1,1 +1,0 @@
-- `spec.md`'s "timeout kills the process group" was unqualified and false on Windows; now unix-only, with the gap named in [decisions/build.md](../embarch-api/decisions/build.md) 75.
