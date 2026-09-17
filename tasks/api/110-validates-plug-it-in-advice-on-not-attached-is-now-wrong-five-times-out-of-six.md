@@ -1,6 +1,10 @@
 # 110 — `validate`'s "plug it in" advice on `kind: "not_attached"` is now wrong five times out of six
 
-**State:** claimed by agent/api/110-not-attached-advice, 2026-09-17 15:50 — leg 138 unit 2.
+**State:** done — leg 138 unit 2, 2026-09-17, `agent/api/110-not-attached-advice`. Chose to match
+`embarch-core`'s own wording ("probe unavailable") rather than keep this crate's "not attached" or
+qualify it — reasoning recorded as `embarch-api` decision 76
+(`decisions/failure-reporting.md`). Pushed that file into its reserve band; debt filed as
+`tasks/api/111-compact-api.md` in the same commit.
 
 **Supervisor dispatch note — doc-size reserve for `api`.** Two files to plan around rather than
 discover: `embarch-api/spec.md` **9,089/10,240 B (1,151 B left)**, in reserve and filed against the
@@ -84,13 +88,31 @@ ownership row to fix.
 
 ## Done when
 
-- [ ] `embarch-api/src/tools.rs`'s `validate` tool and `embarch-api/src/cli.rs`'s
+- [x] `embarch-api/src/tools.rs`'s `validate` tool and `embarch-api/src/cli.rs`'s
       `validate` command no longer claim "plug it in" (or an equivalent
       single-cause instruction) for every `kind: "not_attached"` result.
-- [ ] Whatever replaces it is true for all six reachable causes (absent, stuck
+- [x] Whatever replaces it is true for all six reachable causes (absent, stuck
       opening, unpowered, attach failure, core-select failure, hardware-ID-read
       failure) — trusting `reason`'s own text rather than re-asserting a
-      narrower claim on top of it.
-- [ ] Existing tests around these two call sites updated to match; any new
-      test the fix warrants added.
-- [ ] Gate green in `embarch-api`.
+      narrower claim on top of it. Chosen wording matches `embarch-core`'s own
+      lead ("probe unavailable for role …"), dropping "plug it in" outright
+      rather than replacing it; `embarch-api` decision 76 records the two
+      rejected alternatives and why.
+- [x] Existing tests around these two call sites updated to match; any new
+      test the fix warrants added. No existing test asserted on this literal
+      wording (checked `tests/`, `src/cli.rs`'s and `src/tools.rs`'s own
+      `#[cfg(test)]` modules) for any of the three `validate` error arms, and
+      the crate has no harness that drives these two call sites against a
+      mocked `503`/`409` body — building one from scratch was judged
+      disproportionate to a wording fix; none added.
+- [x] Gate green in `embarch-api`. `cargo build --all-targets`, `cargo test`
+      (64 passed), `cargo clippy --all-targets -- -D warnings` all clean.
+
+Also updated two stale doc comments that still said "ordinarily just
+unplugged" (`src/tools.rs`'s `#[tool(description = ...)]` for `validate`,
+`src/main.rs`'s `Validate` CLI variant) to name the same six causes — same bug,
+same call site, out of scope to leave contradicting the fixed message.
+
+`embarch-api/decisions/failure-reporting.md` crossed into its reserve band
+(11578/12288 B) recording decision 76; filed `tasks/api/111-compact-api.md` in
+the same commit per the reserve rule.

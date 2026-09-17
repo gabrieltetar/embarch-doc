@@ -37,3 +37,14 @@ A Core older than `embarch-core` decision 59 sends this shape with no `kind` fie
 **Against naming the Core version in the message while keeping the `"mismatch"` default:** the message alone doesn't stop a reader acting on the `fix_it_url` it would still carry — only dropping the URL removes the hazard.
 
 **Against leaving it:** the `"mismatch"` fallback isn't a merely conservative guess, it's unsafe in one direction — a `fix_it_url` on a response this client cannot classify invites exactly the re-enrolment the "never re-enrol on a mismatch" rule exists to prevent, on a probe that may simply be unplugged.
+
+### 76 — `validate`'s `not_attached` lead now says "unavailable", matching `embarch-core`; "plug it in" dropped, not replaced
+`embarch-core` decision 59's second amendment (`tasks/core/077`) folded five more causes into `kind: "not_attached"` — a probe found but unable to open, power-check, attach, core-select, or read a hardware ID from — none fixed by plugging anything in, all already named correctly by `mismatch.reason`. Decision 71's fixed suffix, `"— plug it in; this is not a topology mismatch"`, fit only the one cause it was written against; the `"probe not attached"` lead has the same problem, since a probe stuck opening or unpowered isn't correctly "not attached" either. `embarch-core` hit this identically and renamed its own plain-text lead to "unavailable" the same morning.
+
+**Chosen: match that wording**, in `tools.rs`'s `validate` tool and `cli.rs`'s `validate` command, dropping "plug it in" outright rather than replacing it — `reason` already carries the right instruction per cause. `"— this is not a topology mismatch"` stays; true for all six, unlike the dropped advice.
+
+**Against keeping "not attached" and only dropping the imperative:** still misdescribes five of six causes, just without also giving bad advice.
+
+**Against qualifying it ("not attached or otherwise unavailable"):** longer, and invents a second term for what Core already named once.
+
+Wire `kind` is untouched. Two doc comments still saying "ordinarily just unplugged" (`tools.rs`'s tool description, `main.rs`'s `Validate` variant) were updated to name the same six causes.
