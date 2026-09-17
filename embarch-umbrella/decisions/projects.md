@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-06.
 
-What `embarch init` derives from a firmware repo, and what it refuses to guess. The footprint it leaves is [integration.md](integration.md).
+What `embarch init` derives from a firmware repo, and what it refuses to guess. The footprint it leaves is [integration.md](integration.md); whether it writes a serial port is [serial-port.md](serial-port.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -101,12 +101,6 @@ skip it — "grows forever" is still
 literally true of build directories, and check 16 is what makes it visible.
 [../spec.md](../spec.md) claimed the flag until the 2026-09-03 audit and now
 says what actually ships.
-
-### 55 — `init` never writes `serial_port`: not a repo fact, present-tense state
-
-`embarch-api`'s referral (`open.md`) names the gap correctly but as unowned. **It stays out, deliberately.** Decisions 17 and 41 refuse to scaffold board and chip as fact because both are hardware truths `init` cannot observe. A serial port fails that test *harder*: board and chip name a property of a unit that persists across a session; a `serial_port` is assigned by the host OS at enumeration and can renumber on a replug, a hub power cycle, or a reboot — no cable move needed to invalidate a value correct an hour earlier. Scaffolding it would be worse than the board-guessing 17 replaced: that guess went wrong only on the wrong repo build; a written port goes wrong on a schedule `init` cannot predict, and TOML cannot say "as of enumeration N."
-
-**The remedy already exists on the other side of this boundary.** `embarch-api` decision 70's `list_serial_ports` answers this at call time; its interface doc already names the case: discover a value for `serial_log`'s `port` when a project has none configured. `serial_log` takes `port` per call, falling back to the configured value only when set — the shape decision 17 gave `chip`: resolved per call, not stored. Setting `serial_port` stays available for a caller wanting a stable default willing to re-edit after a replug; `init` just never guesses it in.
 
 ### 41 — `init` never writes an inferred board as fact, and picks none of several recorded builds
 
