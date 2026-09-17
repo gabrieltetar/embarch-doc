@@ -1,6 +1,8 @@
 # 040 — Two repos' `CLAUDE.md` omits the interfaces Reference clause, and `embarch-core`'s names half of its own
 
-**State:** open
+**State:** open — **announced 2026-09-16 20:35, `ts` `1789612542.894959`**, leg 126. The 30-minute
+`ops.md` §4 window closes ~21:05. If this leg ends before then, the next leg reads this `ts` and
+completes the window rather than restarting it.
 **Source:** `umbrella/072`'s worker, 2026-09-16, which noticed the omission in
 `embarch-umbrella/CLAUDE.md` and correctly declined to fix it — a single-repo citation sweep is not
 where a suite-wide template question gets settled. Leg 124 measured it across all eight repos before
