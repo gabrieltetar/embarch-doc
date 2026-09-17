@@ -1,6 +1,6 @@
 # 062 — "decisions 34/36/54/55 were each opened by" is still imprecise after `ui/061` fixed one member
 
-**State:** open
+**State:** claimed by agent/ui/062-four-member-opened-by-claim, 2026-09-16 21:34
 **Source:** `ui/061`'s reviewer, 2026-09-16. `ui/061` corrected one wrong member of a four-member
 citation (53 → 55); the reviewer then checked the other three and found the claim still does not
 hold for all of them. Filed by the supervisor at that unit's fold. The reviewer deliberately did
