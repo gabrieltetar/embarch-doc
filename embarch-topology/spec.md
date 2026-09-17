@@ -66,15 +66,9 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 
 ## Storage and roles
 
-**Enrolling keeps a role unique going forward:** it displaces any other board already holding that role, and returns the displaced row rather than dropping it silently (decision 20). **That uniqueness is a write-time rule, not a store invariant** — nothing on the load path checks it, so a hand-edited or pre-2026-08-31 `enrollment.toml` can still hold two rows sharing a role. If it does, only the first (by file order) comes back as displaced; any further row sharing that role is removed with no record.
-
-**A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`): `NotFound` names which rule emptied the candidate list and routes to clearing it (decision 27).
-
-**A detected port says whether it was guessed** — the result carries how many candidates the lowest-interface rule chose among, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
-
-**The declared *interface* decides which of the two VCOMs is the console** — `COM16` and `COM17` differ in nothing else a detector can read, and it is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess** (decision 20).
-
-**`guessed_among`'s trigger is an *under-declared* bench, not a crowded one** — adding probes cannot produce a guess while an interface is declared.
+Moved to [spec/storage-and-roles.md](spec/storage-and-roles.md), 2026-09-17 (reserve split,
+`tasks/topology/057`) — enrollment's write-time role uniqueness (decision 20), a declared link
+serial/interface's guess-and-clear semantics (decisions 20, 27).
 
 ## What validation asserts, and what it cannot
 

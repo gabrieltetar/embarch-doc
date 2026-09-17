@@ -1,15 +1,17 @@
 # 057 — `spec.md` is in reserve
 
-**State:** claimed by agent/topology/057-compact-topology, 2026-09-17 13:26 — **unparked by leg 136, 2026-09-17, because this task's own condition was met and
-nothing had acted on it.** It read *"unparks when `tasks/topology/056` lands, or is closed without
-touching `spec.md`, whichever comes first"*; `topology/056` landed on 2026-09-17 (doc `b3c5827`,
-fold `3d384c2`), and then `topology/058` — the follow-up 056 reserved the behaviour decision for —
-landed too (code `b96f758`, doc `c34532e`) **without touching `spec.md` at all**, by its dispatch
-note's instruction. So both halves of the condition are satisfied, not just one. The `058` worker
-saw this and correctly declined to unpark a task it was told to leave alone; doing it is the
-supervisor's job and this is it. **Filed by `topology/055` with two contradictory `**State:**`
-lines — `open` here and `blocked` further down; leg 133 resolved that to the `blocked` the body
-argues for.**
+**State:** done — a verbatim split (see `## Done` below) took `embarch-topology/spec.md` from
+9,826 to 8,658/10,240 B, clear of the reserve floor. Claimed by
+agent/topology/057-compact-topology, 2026-09-17 13:26. **Unparked by leg 136, 2026-09-17, because
+this task's own condition was met and nothing had acted on it.** It read *"unparks when
+`tasks/topology/056` lands, or is closed without touching `spec.md`, whichever comes first"*;
+`topology/056` landed on 2026-09-17 (doc `b3c5827`, fold `3d384c2`), and then `topology/058` — the
+follow-up 056 reserved the behaviour decision for — landed too (code `b96f758`, doc `c34532e`)
+**without touching `spec.md` at all**, by its dispatch note's instruction. So both halves of the
+condition are satisfied, not just one. The `058` worker saw this and correctly declined to unpark
+a task it was told to leave alone; doing it is the supervisor's job and this is it. **Filed by
+`topology/055` with two contradictory `**State:**` lines — `open` here and `blocked` further
+down; leg 133 resolved that to the `blocked` the body argues for.**
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/055`'s three
 correctness fixes (identity-gate equality shortcut, role-uniqueness cardinality, the alert log
 read-back caveat), 2026-09-17
@@ -61,11 +63,11 @@ each other. The `**Size debt due:**` date above still stands and is what put thi
 
 ## Done when
 
-- [ ] `spec.md` is out of reserve, or the task says why it cannot be and what was deleted instead.
-- [ ] Prefer a split per [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 if a seam exists (the
+- [x] `spec.md` is out of reserve, or the task says why it cannot be and what was deleted instead.
+- [x] Prefer a split per [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2 if a seam exists (the
       "Shape" / "Storage and roles" / "What validation asserts" sections are already distinct
       missions) before deleting live reasoning.
-- [ ] Whichever it was — split or delete — is stated, with the byte numbers before and after.
+- [x] Whichever it was — split or delete — is stated, with the byte numbers before and after.
 
 ## Must not delete
 
@@ -100,3 +102,71 @@ each other. The `**Size debt due:**` date above still stands and is what put thi
    asserts" section is now *wrong* rather than merely long, say so rather than compacting an error
    into a shorter error.
 5. You own exactly one sub-project: `embarch-topology`'s docs inside `embarch-doc`.
+
+## Done
+
+**Split, not squeeze.** "Storage and roles" (1,445 B: enrolling's write-time role-uniqueness
+caveat, decision 20's link-interface guess/clear rules, decision 27's `NotFound` routing) moved
+**verbatim** to new file `embarch-topology/spec/storage-and-roles.md` (2,051 B with its own
+`**Status:**` line and back-links). `spec.md`'s "Storage and roles" heading now holds a two-line
+pointer naming decisions 20 and 27, so the citation survives in `spec.md` itself, not only in the
+moved file. `spec.md`: **9,826 -> 8,658/10,240 B** (84.6%, well clear of the 9,040 B reserve
+line). `check-doc-size.py --pressure` before: `filed 96.0% embarch-topology/spec.md 9826/10240 B,
+414 B left`; after: `PAID 84.6% embarch-topology/spec.md is out of reserve; close its item`.
+
+**Why "Storage and roles" and not "Shape" or "What validation asserts".** Any one of the three
+named seams was enough on its own (1,445/1,735/1,583 B, all clear of the ~787 B needed). "Storage
+and roles" is the narrowest-scope mission of the three and the least central to "what does someone
+need first to work on this crate today" — "Shape" is the architecture overview linked from the
+top of the file, "What validation asserts" is the crate's core safety guarantee and the section
+`topology/058`'s decision 34 bears on (see below). Moving the narrowest one leaves the file's
+load-bearing sections intact and in place.
+
+**All three `Must not delete` items survive, none shortened.** The role-uniqueness
+write-time/store-invariant clause and its "first row only" caveat moved intact into the new file
+(not deleted — relocated, still one hop from `spec.md` via the pointer, which itself still names
+decisions 20 and 27). The identity-gate equality-shortcut clause ("What validation asserts") and
+the alert-log read-back qualifier ("Shape") were not touched at all — the split did not need to
+reach either section.
+
+**Decision-size-pin caveat (`tasks/doc/052`) does not apply.** That caveat is about
+`scripts/decision-size-baseline.json`, keyed `<file>#<decision-number>` for entries in
+`decisions.md`/`decisions/*.md`. `spec.md` carries no `### N` decision headings — only inline
+`(decision N)` citations — so no pinned decision moved files here and no baseline entry orphaned.
+
+**`topology/058`/decision 34 does not make "What validation asserts" wrong.** Checked
+`src/hardware/validate.rs` in the main checkout (read-only, nothing changed there): decision 34
+routes five previously-silent `validate_known_timed` failure points (`probe_info.open()`,
+`check_target_powered`, `.attach()`, `session.core(0)`, `hardware_id::read`) through `raise()` so
+they're now durably logged. `spec.md`'s "A role: the enrolled probe is enumerated and its live
+identity still matches the recorded one" makes no claim about which failures do or don't reach the
+alert log — it describes the positive-path assertion, and decision 34 is an addition to the
+negative path, not a contradiction of it. Nothing in `spec.md` needed correcting for this.
+
+**Gap found and dropped in the inbox, not fixed here:**
+`/home/gabriel/Github/embarch/embarch-doc/inbox/doc-spec-split-legacy-cap.md` — `check-doc-size.py`'s `CAPS` list has a
+dedicated `decision-group`/`interface-group` pattern (12 KB) for a `decisions.md`/`interfaces.md`
+mission split, but no `spec-group` pattern for a `spec.md` split. The new file falls into the
+generic `legacy` bucket at 25 KB — still capped and visible to `--report` (verified: it is *not*
+invisible to the gate, contrary to my first assumption), just at four times its siblings' cap with
+no considered reasoning behind that number. `scripts/` is owner-reserved so a worker cannot add the
+entry.
+
+**Gate, in this worktree:**
+`python3 scripts/check-docs.py` → `all 11 checks green` (includes `check-client-names.py`).
+`python3 scripts/check-ownership.py --scope topology` → `OK: all 2 changed path(s) owned by the
+'topology' worker.` No code worktree exists for this unit (deliberately), so no `--code-repo` run.
+`scripts/check-duplication.py embarch-topology` found two pre-existing overlaps, both about signal
+routes in `decisions/links.md` vs. `spec.md`/`open.md` — unrelated to "Storage and roles", not
+introduced by this change, left alone.
+
+**Human question — can `spec.md` alone answer what someone needs to work on `embarch-topology`
+today?** Yes, and slightly better than before. Every section that states a guarantee, a boundary,
+or a live invariant — "What it is", "Shape", "The declared facts", "What validation asserts", "What
+each consumer owns now", "What a caller may assume", "Where it stands" — is untouched and still in
+one file. The only thing now one hop away is the storage/role-uniqueness *detail*: `spec.md`'s
+two-line pointer still tells a reader the fact exists and which decisions back it (20, 27), so
+nobody reading only `spec.md` is left assuming a guarantee that isn't there — they're told to go
+one file over for the specifics, the same shape `interfaces.md` already uses for wire detail. The
+thing that would have made the answer "no" is deleting or shortening the role-uniqueness caveat
+itself, which is exactly what this split avoided.
