@@ -1,4 +1,4 @@
-# 030 — Citation sweep: `app/src/`, the largest unswept citation surface left in the suite
+# 031 — Citation sweep: `app/src/`, the largest unswept citation surface left in the suite
 
 **State:** open
 **Source:** leg 124's refill sweep, 2026-09-16. The sweep chain has now closed

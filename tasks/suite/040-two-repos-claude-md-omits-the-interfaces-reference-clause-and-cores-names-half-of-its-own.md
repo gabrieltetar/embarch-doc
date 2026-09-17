@@ -1,4 +1,4 @@
-# 039 — Two repos' `CLAUDE.md` omits the interfaces Reference clause, and `embarch-core`'s names half of its own
+# 040 — Two repos' `CLAUDE.md` omits the interfaces Reference clause, and `embarch-core`'s names half of its own
 
 **State:** open
 **Source:** `umbrella/072`'s worker, 2026-09-16, which noticed the omission in
