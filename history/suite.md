@@ -38,6 +38,7 @@
 - 22 shipped milestone docs and implementation guides, 334 KB. Two open items they alone recorded moved to their design docs' open questions first; 122 dangling file references became milestone names.
 
 ### Decided
+- Suite decision 4 claims one implementation of the outpost's **reduced** answer, not of the whole timeline — that has two, and `embarch-core` decision 66 makes the split permanent.
 - An outpost capture's load shares and coverage line are computed once, in `embarch-core` — on both paths and in the archive. [suite decision 4](../suite/decisions.md); the code move is queued.
 - `rx_utc_ms` keeps its name in both homes and each now says which clock it is — a trace's is Core's epoch, a study's is bench uptime ([suite decision 3](../suite/decisions.md)).
 - rustfmt is not enforced and nobody runs cargo fmt: 81 files / 1,881 lines across six crates, and it decays without a check only protocol §10 can carry. embarch.md §5 has the reversal condition.
