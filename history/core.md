@@ -38,6 +38,8 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Decision 59, `interfaces.md`/`topology.md`: a probe-open failure raises no `TopologyMismatch`; it's an accepted, undistinguished 500/502, not "already handled."
+- `interfaces.md`'s `503` bullet now names its third producer: `/flash`/`/reset`'s plain-text `not_attached`, sharing status+shape with `hw_lock` contention.
 - interfaces.md/spec.md stop claiming every non-2xx is plain text; POST /validate's kind field (decision 59) is documented as the exception.
 - result-layout.md's index.json field list drops `alias`, retired with the fixed-channel routes that needed it.
 - Decision 32 said sector-erase was rejected; it ships, confined to non-RRAM families by decision 36. hardware.rs, api.rs and interfaces/hardware.md corrected to match.
