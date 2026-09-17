@@ -1,6 +1,6 @@
 # 110 — `validate`'s "plug it in" advice on `kind: "not_attached"` is now wrong five times out of six
 
-**State:** claimed — leg 138 unit 2, 2026-09-17, `agent/api/110-not-attached-advice`.
+**State:** claimed by agent/api/110-not-attached-advice, 2026-09-17 15:50 — leg 138 unit 2.
 
 **Supervisor dispatch note — doc-size reserve for `api`.** Two files to plan around rather than
 discover: `embarch-api/spec.md` **9,089/10,240 B (1,151 B left)**, in reserve and filed against the

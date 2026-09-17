@@ -1,6 +1,6 @@
 # 065 — Retire `trace.rs`'s own decode-to-lanes pipeline once `embarch-core` serves per-lane spans
 
-**State:** claimed — leg 138 unit 4, 2026-09-17, `agent/ui/065-consume-core-spans`.
+**State:** claimed by agent/ui/065-consume-core-spans, 2026-09-17 15:50 — leg 138 unit 4.
 **Unparked by leg 137, 2026-09-17 14:20, because its condition is now met** — and `core/076` is
 now fully landed and folded (leg 138, doc fold `9e36bf6`), so the route is on `main` in both repos
 and nothing about it is still moving.
