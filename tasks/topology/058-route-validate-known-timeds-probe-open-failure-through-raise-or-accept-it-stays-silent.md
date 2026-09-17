@@ -1,6 +1,6 @@
 # 058 — Route `validate_known_timed`'s probe-open failure through `raise`, or accept it stays silent
 
-**State:** open
+**State:** claimed by agent/topology/058-route-probe-open-failure-through-raise, 2026-09-17 12:50
 **Filed by:** leg 134, from `inbox/topology-route-probe-open-failure-through-raise.md`, written by
 the `topology/056` worker while landing that unit. Filed verbatim except for the two corrections
 noted below, both mine. I re-checked the `Hardware: verify-only` claim myself and it holds: the
@@ -75,3 +75,27 @@ won't-open.
 Do not touch `embarch-core` from this task — same boundary `topology/056` respected. If the answer
 is "route through raise," file the `embarch-core`-side verification as its own task rather than
 reaching across.
+
+## Doc-size reserve for topology — read this before you plan where the decision goes
+
+**`embarch-topology/spec.md` is at 9,826/10,240 B — 414 B left, the tightest reserve in the whole
+suite right now.** It is filed against `tasks/topology/057-compact-topology.md`, which is
+`blocked`. Nothing else of topology's is in reserve; `decisions/alerts.md` has room, and decision 12
+lives there, so **that is where a new or amended decision belongs.** Run
+`python3 scripts/check-doc-size.py --pressure` before and after.
+
+**`tasks/topology/057`'s block condition has been met and nobody has acted on it.** Its `**State:**`
+line reads *"unparks when `tasks/topology/056` lands, or is closed without touching `spec.md`"* —
+and `topology/056` landed on 2026-09-17 (leg 135, doc `b3c5827` / fold `3d384c2`). Its `**In flux:**
+yes` rationale is *"`tasks/topology/056` is open against the same section `055` just edited"*, which
+is no longer true. So:
+
+- **If your unit does not need to write `spec.md`, do not.** Put the decision in
+  `decisions/alerts.md` and leave 057 alone; say in your report that its unpark condition is met so
+  the supervisor can re-state it.
+- **If your unit does write `spec.md` and would push it past 10,240 B, compact `spec.md` as part of
+  this unit** (`.claude/leg.md`: a blocked compaction task parks the pass, not the reserve). Carry
+  `057`'s `**Must not delete:**` list verbatim — the three qualifiers `topology/055` added, each of
+  which exists to stop a reader relying on a guarantee the code does not provide — and close `057`'s
+  single `Compacts:` item if you pay it. Do not shorten any of those three back into the flat claim.
+- Either way **do not silently unpark `057` and leave it `open` unpaid**; say what you did.
