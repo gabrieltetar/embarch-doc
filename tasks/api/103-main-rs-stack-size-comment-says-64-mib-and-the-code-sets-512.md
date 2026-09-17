@@ -1,6 +1,9 @@
 # 103 — `main.rs`'s stack-size comment says 64 MiB and the code sets 512
 
-**State:** claimed by agent/api/103-stack-size-comment, 2026-09-16 19:55
+**State:** done — agent/api/103-stack-size-comment, 2026-09-16. Case (1): the constant was 512 MiB
+from the commit that introduced it (`dc2b2d83`); only the comment's last sentence still described
+the abandoned 64 MiB attempt. Comment fixed in `src/main.rs`; `study.rs`'s 16 MiB checked and found
+drift-free.
 **Source:** `api/102`'s worker, 2026-09-16, which found it while sweeping `src/main.rs` for citations
 and correctly left it alone — it is not a decision citation, and a citation sweep that starts fixing
 every wrong number it walks past is a sweep with no boundary.
@@ -48,14 +51,24 @@ the chain's method would ever have caught it.
 
 ## Done when
 
-- [ ] Which of the three cases it is, established from history rather than assumed, and said
-      explicitly in the report.
-- [ ] The resulting one-line fix made — or, for case (2), the task left `open` with what was found
-      and why it is the owner's.
-- [ ] `study.rs`'s 16 MiB checked against its own constant at the same time, so the pair is
-      consistent afterwards.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/api-*` fragment.
+- [x] Which of the three cases it is, established from history rather than assumed, and said
+      explicitly in the report. — Case (1). `git log -S'512 * 1024 * 1024' -- src/main.rs` shows the
+      constant has been 512 MiB since the very commit that introduced it (`dc2b2d83`, "Fix a real
+      stack-overflow crash in study_status..."); that commit's own message says "512 MiB was
+      empirically required (64 MiB ... still overflowed against this real GATT-heavy payload)" —
+      but the in-code comment it landed alongside kept describing the abandoned 64 MiB attempt as
+      the fix. The comment was stale from day one; the constant was always deliberate.
+- [x] The resulting one-line fix made — or, for case (2), the task left `open` with what was found
+      and why it is the owner's. — `src/main.rs`'s comment now says 512 MiB was what empirical
+      testing required, and that 64 MiB (the `RUST_MIN_STACK` precedent) still overflowed.
+- [x] `study.rs`'s 16 MiB checked against its own constant at the same time, so the pair is
+      consistent afterwards. — `git log -S'16 * 1024 * 1024' -- src/study.rs`: introduced at 16 MiB
+      in the same commit as its comment (`f5ba286`, Milestone 2) and never changed since; a later
+      decision (46) shrank *why* the stack needs to be big, not the number. No drift there.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). — `cargo build/test/clippy --all-targets`
+      all clean in `embarch-api` (46 tests passed); `scripts/check-docs.py` (11/11),
+      `check-client-names.py`, `check-ownership.py --scope api` all clean in `embarch-doc`.
+- [x] `changelog.d/api-*` fragment. — `changelog.d/api-main-rs-stack-comment.fixed.md`.
 
 ## Not yours
 
