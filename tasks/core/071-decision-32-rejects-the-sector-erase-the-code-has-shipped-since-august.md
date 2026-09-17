@@ -1,6 +1,6 @@
 # 071 — Decision 32 records sector-erasing the NVM regions as *rejected*, and it is what `hardware.rs` has shipped since 2026-08-25
 
-**State:** open
+**State:** claimed by agent/core/071-sector-erase-decision-32, 2026-09-17 01:25
 **Source:** leg 133's refill census of `embarch-core`'s docs against its source. **Filed so it
 survives**: it existed only in a census report, and `supervisor-log.md` folds daily and rolls into
 `log-archive/`, so anything living there alone is on a timer. Nothing dispatches from a log entry.
