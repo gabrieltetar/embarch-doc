@@ -49,7 +49,7 @@ no hand-off file, no env var:
   umbrella's doctor:                resolve_*() / validate() -> pass/fail/warn
 ```
 
-**The only state that persists anywhere is a human's declared intent, inside the crate.** Consumers call functions and **never parse a topology file directly.**
+**The only state anything in this crate reads back as an input is a human's declared intent.** Consumers call functions and **never parse a topology file directly.** The durable alert log (Shape, above) is persisted too, but write-only from the crate's own point of view: nothing reads it back to resolve or validate anything, it exists for a human to review.
 
 ## The declared facts
 
@@ -66,7 +66,7 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 
 ## Storage and roles
 
-**A role is unique.** Enrolling displaces any other board holding that role; the displaced row is **returned, not dropped** (decision 20).
+**Enrolling keeps a role unique going forward:** it displaces any other board already holding that role, and returns the displaced row rather than dropping it silently (decision 20). **That uniqueness is a write-time rule, not a store invariant** — nothing on the load path checks it, so a hand-edited or pre-2026-08-31 `enrollment.toml` can still hold two rows sharing a role. If it does, only the first (by file order) comes back as displaced; any further row sharing that role is removed with no record.
 
 **A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`): `NotFound` names which rule emptied the candidate list and routes to clearing it (decision 27).
 
@@ -79,7 +79,7 @@ Storage: one file under the machine-wide directory this crate owns, one level be
 ## What validation asserts, and what it cannot
 
 - **A role:** the enrolled probe is enumerated and its live identity still matches the recorded one; runs on every flash, reset and handshake.
-- **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, comparing its JTAG-read identity against its self-report. **Two chip families have a declared relation; every other chip returns *undeclared*, never a pass.**
+- **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, comparing its JTAG-read identity against its self-report. **An exact match settles it for any chip** — two mechanisms agreeing byte for byte on a factory-unique value is conclusive on its own. Two chip families additionally have a declared relation, for when the two mechanisms format that same value differently; every chip with neither an exact match nor a declared relation returns *undeclared*, never a pass.
 - **A direct signal route:** the declared serial is enumerable. It **cannot** confirm the DUT's TX pin wire lands on that bridge.
 - **A via-bench route:** validates on the strength of being declared; its carrier is the bench link, whose liveness is the role check's job (decision 18).
 
