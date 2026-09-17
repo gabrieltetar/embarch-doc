@@ -1,6 +1,6 @@
 # 064 — Citation sweep: outside `src/` (`tools/`, `tests/`, `.cargo/config.toml`)
 
-**State:** open
+**State:** claimed by agent/study-designer/064-citation-sweep-outside-src, 2026-09-17 11:34
 **Source:** `tasks/study-designer/063`, which closed out `src/` (all twenty
 files swept, `044` through `063`) and, per its own instruction to note what
 else in the repo needs a citation check, found four files outside `src/`
