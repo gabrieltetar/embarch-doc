@@ -108,7 +108,7 @@ citation to decision 52 that no grep in this chain, ever, had caught.
 grep -rlIE '[Dd]ecisions?[[:space:]]*$'
 ```
 
-Re-run at `060` time, this surfaced **16 hits across the repo** (verified by
+Re-run at `060` time, this surfaced **17 hits across the repo** (verified by
 reading the line after each — all real number-on-next-line wraps, not false
 positives):
 
@@ -129,19 +129,29 @@ positives):
   (outside the `src/` file list; `Cargo.toml` is already in the standing
   continuation-grep's tracked set, just under the plural pattern only).
 
-**None of the seven already-closed files' singular-wrap citations have been
+**None of the singular-wrap citations in the six already-closed files has been
 re-checked for correctness against their decision text** — `044` through
 `049` and `053` all ran the plural-only grep, found nothing new, and closed.
-That is not evidence these seven specific citations are wrong; it is only
+That is not evidence these specific citations are wrong; it is only
 evidence they were never actually looked at by any unit in this chain,
 because the tool that was supposed to surface them could not see them. This
-is real, scoped audit work: seven citations (decision 10, decision 39 x2,
-decisions 37/46/41, decisions 40/40/31-32-52-53-54, decisions 58-62 x2 and
-47) in six already-closed files, none previously read against their decision
-bodies. **Whoever takes this task should spend part of the budget on these
-seven before or alongside `sample.rs`**, since they are cheap to check (the
-line is already located) and each is a citation this whole chain's own
-"exhaustive" claim was silently wrong about until now.
+is real, scoped audit work: **thirteen** citation lines (decision 10,
+decision 39 x2, decisions 37/46/41, decisions 40/40/31-32-52-53-54,
+decisions 58-62 x2 and 47) in **six** already-closed files — `protocol.rs`,
+`study.rs`, `study_builder.rs`, `schema_version.rs`, `lib.rs`, `eap.rs` —
+none previously read against their decision bodies. **Whoever takes this
+task should spend part of the budget on these thirteen before or alongside
+`sample.rs`**, since they are cheap to check (the line is already located)
+and each is a citation this whole chain's own "exhaustive" claim was
+silently wrong about until now.
+
+**The three counts in this section were wrong when `060` wrote them and are
+corrected here** — by `060`'s own reviewer, which re-ran the grep and got 17
+where the summary said 16, and found the same paragraph saying "seven
+already-closed files" and "six" two sentences apart. The itemised list above
+was right all along and adds to 17; **the summary numbers were the slip, not
+the itemisation**, which is the reassuring direction for that error to run.
+Corrected at `060`'s fold rather than left for the next unit to trip over.
 
 ## Method (carried over from `044`-`060`, confirmed useful all eighteen times)
 
