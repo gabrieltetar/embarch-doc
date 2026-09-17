@@ -8,6 +8,7 @@
 - The reference host decoder now has tests that always run — stdlib `unittest`, no west, no siblings; `run-all.sh` runs them before its west guard.
 
 ### Changed
+- outpost's plural-citation census re-run: 8 lines / 21 instances, 0 mis-cited, 0 fixed.
 - Citation sweep of the non-`.c`/`.h` half of outpost (`021` never grepped): 22 citations across 9 files, 0 mis-cited — plus 4 more in 3 further file classes (`README.md`, `cmake/*.in`, `*.overlay`) the sweep's extension list did not reach, checked by its reviewer, also 0 mis-cited.
 - Outpost decisions/testing.md#22 split verbatim into 22 (ordering) and 26 (skip-not-fail).
 - `embarch-outpost/spec.md`'s host-side-outputs section moved verbatim into `interfaces/integration.md` to clear its reserve; nothing was cut.
