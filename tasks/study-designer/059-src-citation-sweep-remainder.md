@@ -1,6 +1,6 @@
 # 059 — Citation sweep: `src/` remainder after `registry.rs`
 
-**State:** open
+**State:** claimed — leg 130 unit 3, 2026-09-16, `agent/study-designer/059-src-sweep-remainder`
 **Source:** `tasks/study-designer/058`, which swept `src/registry.rs` (9
 grep-matching lines, 9 distinct citation instances) and left the rest.
 **Scope:** study-designer
