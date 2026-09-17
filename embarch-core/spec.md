@@ -32,7 +32,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 - **A refusal renders nothing rather than guessing.** A manifest that does not verify costs the *names* in a trace, not the trace; an unverifiable time join stamps nothing.
 - **Core keeps no persisted "current firmware" record.** A manifest binding lives only as long as the study that made it. Write-ahead state that can go stale is the pattern this suite forbids.
 - **`GET /status` says which build answered.** `core_version` is compiled in from `CARGO_PKG_VERSION`, so a caller learns the deployed binary's version **over HTTP** without running it. Consumers **warn** on a skew, never refuse (decision 13). There is no hand-bumped `contract_version` beside it.
-- **Errors are plain text on every non-2xx**, so an error's *kind* is only its HTTP status. The designed `{code, message, cause}` body is deferred as cross-repo work (decision 12).
+- **Errors are plain text on every non-2xx except `POST /validate`**, so outside that one route an error's *kind* is only its HTTP status. `/validate` renders a `TopologyMismatch` as JSON with a `kind` field on both its `409` and its `503` (decision 59); details: [interfaces.md](interfaces.md). The designed `{code, message, cause}` body for every route is deferred as cross-repo work (decision 12).
 - **Default bind is `127.0.0.1`.** Widening is `embarch-umbrella setup`'s job, per detected topology.
 
 ## 3. Deployment

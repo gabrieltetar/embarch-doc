@@ -11,7 +11,7 @@ study_results/<study_id>/
 ├── events.json          the StudyResult: steps (with both time edges), provenance, streams
 │                        written incrementally, `.partial` until StudyDone
 └── streams/
-    ├── index.json       per tap: id, name, files, encoding, alias, rendered, note, named, timed, self_excluded, source_deferred
+    ├── index.json       per tap: id, name, files, encoding, rendered, note, named, timed, self_excluded, source_deferred
     ├── <tap>.bin        byte-for-byte what arrived — written first, always
     ├── <tap>.1.bin      the previous segment, after one rotation
     ├── <tap>.csv        the rendering, for Samples / GattTranscript / Struct
