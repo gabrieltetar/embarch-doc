@@ -10,6 +10,7 @@
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
 
 ### Changed
+- study-designer/052: citation sweep of bounded.rs, 25 checked, 0 wrong numbers, 0 false sentences; file 053
 - `interfaces/types.md`'s `Results` section moved verbatim to `interfaces/result-types.md`, out of reserve.
 - study-designer: `spec.md` §7 host/no_std sizes repointed at decision 63, which already carried them verbatim.
 - `decisions/registry.md` hot/cold compacted, 11.8K to 10.1K; `spec.md` now names the custom-action registry.
