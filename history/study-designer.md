@@ -19,6 +19,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- study-designer/056: citation sweep of eap_parse.rs, 13 checked, 1 wrong number (cross-repo->same-repo 59) fixed, 0 false sentences; file 057
 - study-designer/055: citation sweep of crc.rs, 14 checked, 0 wrong numbers, 1 false sentence; file 056
 - study-designer/054: citation sweep of ffi.rs, 16 checked, 0 wrong numbers, 1 false sentence, 2 unlabelled cross-repo cites fixed; file 055
 - `.cargo/config.toml`'s stale 107/107 test count fixed to today's measured 125/125; `src/eap.rs` swept, 21 citations checked, 1 wrong number (operand-form count), 0 false sentences.
