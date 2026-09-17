@@ -26,6 +26,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- Fixed a wrong decision citation (53 for 55) in two `study_designer.rs` comments naming the empty-capture failure family.
 - main.rs and trace.rs's 54 decision citations checked (task ui/060): 1 wrong number fixed, 0 false sentences.
 - Decision 13 bullet 3's 'append-only' and bullet 4's 'only' restored (4,079 B -> 4,096 B); the interleaving phrase still does not fit.
 - Decision 13's growing-trailing-line claim is now conditional, not universal; decision 25's restored vertex count now matches its own file (693 B, 53 vertices).
