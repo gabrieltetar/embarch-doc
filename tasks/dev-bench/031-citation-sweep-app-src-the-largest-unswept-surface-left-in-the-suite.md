@@ -8,7 +8,15 @@ passes in each found zero defects. `embarch-dev-bench` is the one repo where tha
 **never** been run.
 **Scope:** dev-bench
 **Hardware:** none — C comments and doc-comments only. Nothing is built for a board, nothing is
-flashed, no probe, no live Core, no study.
+flashed, no probe, no live Core, no study. **This classification depends on the change staying
+comment-only.** `tasks/README.md`'s Hardware section says `embarch-dev-bench` is the suite's one
+`toolchain` repo: its Zephyr tree lives *inside* the repo under gitignored
+`workspaces/*/{zephyr,modules,.west}`, so a worker's worktree holds `app/` and a `west.yml` and no
+Zephyr at all, and a build there would need a multi-GB `west update` first. **If a fix you want to
+make touches anything but a comment, stop and leave the task `open` saying so** — that version of
+the work is `toolchain` and belongs in the main checkout, where the
+`app/tests/serial_protocol` ztest suite builds for `native_sim` and runs its 57 tests in about a
+minute.
 **Owner:** no
 
 **Doc-size reserve for `dev-bench`: three files, all filed and all blocked.**
