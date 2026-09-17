@@ -1,6 +1,6 @@
 # 060 — Citation sweep: `src/` remainder after `outpost.rs`
 
-**State:** claimed — leg 131 unit 2, 2026-09-17, `agent/study-designer/060-src-citation-sweep-remainder`
+**State:** done — leg 131 unit 2, 2026-09-17, `agent/study-designer/060-src-citation-sweep-remainder`
 **Source:** `tasks/study-designer/059`, which swept `src/outpost.rs` (8
 grep-matching lines, 8 distinct citation instances) and left the rest.
 **Scope:** study-designer
@@ -62,6 +62,54 @@ what is wrong. Count wrong *numbers* and false *sentences* separately, per
 the method below. When you run out of budget, file the next
 `tasks/study-designer/<next>` naming exactly which files remain, the same way
 this one does.
+
+**Closed by this unit: `src/decoder.rs`.** 7 grep-matching lines, but **9**
+distinct citation instances — one more than the line count for two reasons
+the mechanical census misses: line 154's `(decisions 59/60)` is two numbers
+on one line, and the module doc's opening citation to decision 52 is split
+across a line wrap (`— decision` ends line 1, `52 (interfaces/decoders.md).`
+starts line 2) that the file's own singular "decision" does not match the
+standing continuation-grep at all (see the new finding below — this citation
+was found only by reading the file directly, not by any grep in this chain).
+Every citation checked against its decision's own text
+(`embarch-study-designer/decisions/payload-meaning.md` for 52,
+`decisions/registry.md` for 35, `decisions/streams.md` for 39,
+`decisions/protocols.md` for 59 and 61, `decisions/protocol-exec.md` for 60).
+**0 wrong numbers, 0 false sentences — the third true zero in the chain**
+(after `bounded.rs`, `gatt.rs`). No cross-repo citations in this file, so no
+unlabelled-cross-repo and no `056`-shape or `059`-shape candidates either;
+same-repo decision 39's "what a payload means is exactly the knowledge
+decision 39 took away from it" is independently corroborated by decision 55's
+own text using the identical phrase to cite the identical decision, which is
+about as verbatim-confirmed as a same-repo citation gets.
+
+**New finding, worth its own name: the standing continuation-grep is
+plural-only and has a real blind spot.** The method section's
+`grep -rlIE '[Dd]ecisions[[:space:]]*$'` only matches a line ending in the
+plural "decisions". A line ending in the singular "decision" — just as valid
+a wrap, e.g. `— decision` / `52 (interfaces/decoders.md).` in this very file
+— is invisible to it, and also invisible to the per-file
+`grep -cE '[Dd]ecisions? [0-9]+'` census, because that pattern requires the
+number on the *same* line as the word. Re-running the continuation-grep with
+`s?` made optional (`grep -rlIE '[Dd]ecisions?[[:space:]]*$'`) surfaces **16
+hits across the repo**, all genuine number-on-next-line wraps (verified by
+reading the following line of each): `src/decoder.rs:1` (this file, decision
+52, confirmed correct above), `src/protocol.rs:93` (decision 10 — swept in
+`049`), `src/study.rs:3` and `:88` (decision 39, twice — swept in `045`),
+`src/study_builder.rs:190`, `:1438` and `:1510` (decisions 37, 46, 41 — swept
+in `048`), `src/schema_version.rs:113`, `:133` and `:203` (decisions 40, 40,
+31/32/52/53/54 — swept in `044`), `src/lib.rs:38`, `:45` and `:758`
+(decisions 58-62 twice and 47 — swept in `047`), `src/eap.rs:1` (decisions
+58-62 — swept in `053`), `Cargo.toml:19` and `:91` (embarch-dev-bench
+decision 8, and decisions 34/35 — outside the `src/` file list), and
+`src/merged_actions.rs:72` (decision 39 — **not yet swept**, on this task's
+own remaining-files list). **None of these were re-checked for correctness
+by this unit** — that is real audit work belonging to whichever file each
+citation lives in, most of which already closed. This unit only confirmed
+the pattern gap exists and enumerated where it fires; the follow-up task
+below carries the corrected grep forward and flags the seven already-closed
+files as needing a citation re-check against their singular-wrap line the
+plural-only grep let through clean.
 
 **`059`'s find, carried forward: a citation can be correctly labelled
 cross-repo and still name the wrong decision, where the *general subject* is
@@ -210,19 +258,28 @@ prior unit already named.
   never discusses column knowledge — repointed to decision 38, three
   paragraphs later in the same `embarch-core/decisions/streams.md`, which
   states the identical claim almost verbatim).
+- `src/decoder.rs` — done in `060`. 7 grep-matching lines, **9** distinct
+  citation instances (line 154's `decisions 59/60` is two, plus one more the
+  line-based census cannot see at all: the module doc's opening citation to
+  decision 52 is split across a line wrap). 0 wrong numbers, 0 false
+  sentences, 0 unlabelled cross-repo citations — the third true zero in the
+  chain. Also surfaced that the standing continuation-grep is plural-only and
+  misses a singular "decision" line wrap entirely (16 such hits repo-wide,
+  none re-checked by this unit) — carried to `061`.
 
-## Running tally across the chain (`044`–`059`, seventeen files reporting
+## Running tally across the chain (`044`–`060`, eighteen files reporting
 per-file counts)
 
 Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
 count only reported), `study.rs` 52 (ditto), `gatt_extract.rs` 36 (ditto),
 `lib.rs` 41 (ditto), `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs`
 31, `limits.rs` 32, `result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16,
-`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13, `registry.rs` 9, `outpost.rs` 8.
-**Total: 463.** Wrong numbers found:
-0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1 = **17**. False sentences found:
-0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0 = **6**. Recompute this fresh in your
-report using the actual per-file numbers above plus whatever this unit adds.
+`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13, `registry.rs` 9, `outpost.rs` 8,
+`decoder.rs` 9. **Total: 472.** Wrong numbers found:
+0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1+0 = **17**. False sentences found:
+0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0+0 = **6**. `decoder.rs` is a true zero on
+both counts — see its entry above. Recompute this fresh in your report using
+the actual per-file numbers above plus whatever this unit adds.
 
 ## Also worth doing: the `.cargo/config.toml` count is now dated, not fixed
 
@@ -238,11 +295,13 @@ call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] One named file (`src/decoder.rs` or `src/sample.rs`, unless a reason is
+- [x] One named file (`src/decoder.rs` or `src/sample.rs`, unless a reason is
       given to reorder) fully swept, wrong numbers and false sentences
       counted separately, and every plain number and implementation-status
       claim in a cited sentence checked, not only the decision number.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+      `src/decoder.rs`: 9 distinct citation instances, 0 wrong numbers, 0
+      false sentences.
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text (including any amendment) is read
       before it is called wrong, or trusted. Remember `056`'s find:
@@ -252,17 +311,28 @@ call to make unprompted, noted here so it is not lost.
       can still be the wrong neighbouring decision in the same source file —
       read the whole cited decision, not just its header, and check nearby
       decisions in the same file before trusting a plausible-sounding topic
-      match.
-- [ ] The whole-repo continuation-grep
+      match. `decoder.rs` has zero cross-repo citations (all nine are
+      same-repo, bare `decision N`), so this file has no candidate for any
+      of these three shapes.
+- [x] The whole-repo continuation-grep
       (`grep -rlIE '[Dd]ecisions[[:space:]]*$'`) run fresh (do not assume
       `059`'s four-file list is exhaustive) and any hit reported, even one
-      landing outside the file being swept.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      landing outside the file being swept. Result: same four files as `059`
+      (`Cargo.toml`, `src/lib.rs`, `src/eap.rs`, `src/schema_version.rs`),
+      all already-swept or out of scope, all still correct — no change.
+      **Also found, outside this checkbox's literal grep**: the plural-only
+      pattern itself has a blind spot for a singular "decision" wrap (see the
+      new finding above and `061`).
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). Filed as
+      `tasks/study-designer/061-src-citation-sweep-remainder.md`, naming the
+      six remaining files and carrying the corrected continuation-grep and
+      the seven-file re-check list forward.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+      `changelog.d/study-designer-decoder-citation-sweep.changed.md`.
 
 ## Reserve, for planning
 
