@@ -58,6 +58,7 @@
 - The Trace view counts the rows its decoder refused — truncated or malformed — instead of claiming "every row in the capture": embarch-ui/decisions/trace-view.md, decision 10.
 
 ### Decided
+- embarch-ui decision 27: trace.rs's decode pipeline stays split from outpost_load.rs until Core serves per-lane spans, not just the rollup.
 - `assets/app.js`'s 72 decision citations checked (task `ui/054`): 0 wrong numbers, 0 false sentences.
 - New decision 26: Core down is an expected, renderable state, not a crash; both stale citations repointed.
 - 250,000-row view cap kept, measured at 250k/500k/1M in-memory: `open.md`.
