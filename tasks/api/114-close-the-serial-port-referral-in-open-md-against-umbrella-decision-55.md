@@ -1,6 +1,10 @@
 # 114 — Close the `serial_port` referral in `open.md` against umbrella decision 55
 
-**State:** claimed by agent/api/114-close-serial-port-referral, 2026-09-17 17:45
+**State:** done — leg 141, 2026-09-17, `agent/api/114-close-serial-port-referral`. Moved the
+`serial_port` bullet from "Known wrong / unfinished" to "Settled-deferred" in `embarch-api/open.md`,
+citing `embarch-umbrella` decision 55 and dropping "Not this crate's to fix." Judged the `109`
+`build_dir_name` bullet (a different section, a different topic — `list-targets` output shape, not
+port assignment) does not want to merge with this one; left both as separate bullets.
 Drained from `inbox/api-close-serial-port-referral.md` by leg 139, 2026-09-17, at
 `umbrella/080`'s fold. Body unchanged apart from this line, the number, and the note below.
 
@@ -65,10 +69,13 @@ answer exists now, but only umbrella's own decision corpus says so.
 
 ## Done when
 
-- [ ] `embarch-api/open.md`'s `serial_port` bullet either removed (if nothing here still needs
+- [x] `embarch-api/open.md`'s `serial_port` bullet either removed (if nothing here still needs
       tracking) or rewritten to point at `embarch-umbrella decision 55` as the settled answer,
       dropping the "Not this crate's to fix" framing since it no longer reads as unresolved.
-- [ ] Confirm no other `embarch-api` doc still frames `serial_port`'s absence from `init`'s schema
-      as an open question rather than a cross-repo-settled one.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment if the wording change is reader-facing.
+- [x] Confirm no other `embarch-api` doc still frames `serial_port`'s absence from `init`'s schema
+      as an open question rather than a cross-repo-settled one. (Grepped every `.md` in
+      `embarch-api/`: `interfaces/tools-build-flash.md`, `interfaces/config.md`,
+      `interfaces/tools-topology.md`, `decisions/hardware-selection.md` all describe the current
+      shipped behavior factually; none frame it as open.)
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment if the wording change is reader-facing. (`changelog.d/api-serial-port-referral-closed.changed.md`)
