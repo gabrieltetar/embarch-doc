@@ -1,6 +1,6 @@
 # 062 — "decisions 34/36/54/55 were each opened by" is still imprecise after `ui/061` fixed one member
 
-**State:** claimed by agent/ui/062-four-member-opened-by-claim, 2026-09-16 21:34
+**State:** done
 **Source:** `ui/061`'s reviewer, 2026-09-16. `ui/061` corrected one wrong member of a four-member
 citation (53 → 55); the reviewer then checked the other three and found the claim still does not
 hold for all of them. Filed by the supervisor at that unit's fold. The reviewer deliberately did
@@ -60,12 +60,37 @@ repair.
 
 ## Done when
 
-- [ ] Both sites say something true about the relationship between that failure and the decisions
+- [x] Both sites say something true about the relationship between that failure and the decisions
       they cite, and say it identically.
-- [ ] Whatever is decided is checked against decision 54's current text, since it is the one that
+- [x] Whatever is decided is checked against decision 54's current text, since it is the one that
       names the family.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`, `cargo test`,
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings` in `embarch-ui`, and `check-docs.py` in
       `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped. No `embarch-study-designer` doc is touched — that repo is not
+- [x] `changelog.d/` fragment dropped. No `embarch-study-designer` doc is touched — that repo is not
       this task's scope, and decision 54 is not wrong, only silent about its members.
+
+## What shipped
+
+Reworded both `src/study_designer.rs` sites (`build_taps`, ~line 536, and
+`a_gatt_tap_nothing_subscribes_to_is_refused_at_authoring_time`, ~line 2373) to
+claim family membership rather than identical origin: the no-subscriber tap
+failure is "one instance of the 'nothing captured, no error' family
+`embarch-study-designer` decisions 34/36/54/55 were each opened by; decision 54
+names the family, decision 55 describes this exact case." Both sites read
+identically on that clause.
+
+Confirmed by reading each decision directly (not the reviewer's characterisation
+alone): `decisions/authoring.md` (34 — empty run because nothing was *written*),
+`decisions/gatt.md` (36 — a capture window that didn't outlive its own step),
+`decisions/removed.md` (54 — names the "nothing captured, no error" family
+outright and says the suite "has now been opened by" it "from four
+directions"), `decisions/payload-meaning.md` (55 — the literal near-verbatim
+match for the no-subscriber-tap wording). All four are genuine members of
+decision 54's family; only 55 matches this exact mechanism. No
+`embarch-study-designer` doc touched.
+
+`embarch-ui`: `cargo build --all-targets`, `cargo test` (93 passed), `cargo
+clippy --all-targets -- -D warnings` all green. `embarch-doc`:
+`check-docs.py` (11/11), `check-ownership.py --scope ui` and `--code-repo`,
+`check-client-names.py --repo <ui worktree>` all green.
