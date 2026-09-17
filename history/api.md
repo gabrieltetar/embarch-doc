@@ -21,6 +21,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- api/104: plural-citation re-check, 13 lines/29 instances, 0 wrong numbers, 0 false sentences.
 - embarch-api/decisions/tests.md split: smoke-harness tier (30, 74) moved to decisions/smoke-harness.md, out of reserve.
 - embarch-api/decisions/shape.md split: decisions 53, 64 moved verbatim to new decisions/config-retirement.md.
 - `interfaces/config.md`'s `[dev_bench]` section moved verbatim to `interfaces/dev-bench-config.md`, out of size reserve.
