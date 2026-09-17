@@ -1,6 +1,6 @@
 # 062 — Citation sweep: `src/` remainder after `sample.rs`
 
-**State:** claimed by agent/study-designer/062-src-citation-sweep-remainder, 2026-09-17 01:03
+**State:** done by agent/study-designer/062-src-citation-sweep-remainder, 2026-09-17
 **Source:** `tasks/study-designer/061`, which swept `src/sample.rs` (7
 grep-matching lines, 7 distinct citation instances) plus the thirteen
 singular-wrap citations located but not yet checked in six already-closed
@@ -149,6 +149,13 @@ it repeats a hit a prior unit already named.
 See `tasks/study-designer/061`'s copy of this section for the full
 eighteen-file history through `decoder.rs`. Adding:
 
+- `src/merged_actions.rs` — done in `062`. 6 grep-matching lines, **8**
+  distinct citation instances (line 1's `decisions 34/35` is two) plus the
+  located singular-wrap at `:72` checked as part of this file's own sweep.
+  **1 wrong number** (`:72`, decision 39 → 41, fixed), **0 false sentences**.
+  1 cross-repo citation (`embarch-ui` decision 17, line 48), correctly
+  labelled and correct on the merits.
+
 - `src/sample.rs` — done in `061`. 7 grep-matching lines, 7 distinct
   citation instances. 0 wrong numbers, **1 false sentence** — fixed. The
   `rx_utc_ms` field doc asserted dev-bench "seeded and periodically
@@ -170,7 +177,7 @@ eighteen-file history through `decoder.rs`. Adding:
   continuation-grep had never surfaced them for any prior unit to check). All
   thirteen correct: 0 wrong numbers, 0 false sentences.
 
-## Running tally across the chain (`044`–`061`, nineteen files reporting
+## Running tally across the chain (`044`–`062`, twenty files reporting
 per-file counts, plus thirteen singular-wrap re-checks)
 
 Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
@@ -178,11 +185,15 @@ count only reported), `study.rs` 52 (ditto), `gatt_extract.rs` 36 (ditto),
 `lib.rs` 41 (ditto), `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs`
 31, `limits.rs` 32, `result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16,
 `crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13, `registry.rs` 9, `outpost.rs` 8,
-`decoder.rs` 9, `sample.rs` 7, plus 13 singular-wrap re-checks. **Total: 492.**
-Wrong numbers found: 0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1+0+0+0 = **17**. False
-sentences found: 0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0+0+1+0 = **7**. Recompute
-this fresh in your report using the actual per-file numbers above plus
-whatever this unit adds.
+`decoder.rs` 9, `sample.rs` 7, `merged_actions.rs` 8, plus 13 singular-wrap
+re-checks. **Total: 500.** Wrong numbers found:
+0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1+0+0+0+**1** = **18**. False sentences
+found: 0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0+0+1+0+**0** = **7**. (`decoder.rs`'s
+9 already includes its own singular-wrap citation, checked and counted in
+`060` — not double-counted here despite resurfacing in this unit's fresh
+continuation-grep; see "Files already swept" above.) Recompute this fresh in
+your report using the actual per-file numbers above plus whatever the next
+unit adds.
 
 ## Also worth doing: the `.cargo/config.toml` count is now dated, not fixed
 
@@ -198,25 +209,67 @@ call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] `src/merged_actions.rs` fully swept, wrong numbers and false sentences
+- [x] `src/merged_actions.rs` fully swept, wrong numbers and false sentences
       counted separately, every plain number and implementation-status claim
       in a cited sentence checked, and the located singular-wrap citation at
-      `:72` (decision 39) checked as part of the same pass.
-- [ ] Cross-repo citations carry their repo name — and every citation, bare
+      `:72` (decision 39) checked as part of the same pass. **8** distinct
+      citation instances (6 grep-matching lines — line 1's `decisions 34/35`
+      is two — plus the `:72` wrap). **1 wrong number, 0 false sentences.**
+      `:72`'s "decision 39 removes" was wrong: decision 39 (`streams.md`) is
+      "One generic inbound stream pipeline", unrelated to vendor UUIDs —
+      the claim ("transcribing a UUID Zephyr publishes ... is exactly the
+      busywork decision N removes") is true of **decision 41** (`gatt.md`,
+      "A built-in table of vendor-defined GATT service identities" — its own
+      body: "Requiring every engineer to transcribe a 128-bit UUID ... is
+      pure error surface"), which the *identical* claim two sections later
+      in the same file (line 170, `Vendor` match arm) already cites
+      correctly. Fixed `:72`→41. All other five citations (34, 35, `embarch-ui`
+      17, 41×3, 36) checked and correct — including the cross-repo
+      `embarch-ui` decision 17 at line 48, which looked unrelated on its
+      section heading ("selective-monitor target list becomes a dialog") but
+      whose own body (line 47 of that section) states the "browser-side copy
+      drifts silently" reasoning verbatim, and which this crate's own
+      decision 73 explicitly attributes it to.
+- [x] Cross-repo citations carry their repo name — and every citation, bare
       or labelled, is checked against this crate's own decisions first, and
       a cross-repo decision's own text (including any amendment) is read
       before it is called wrong, or trusted. Remember `056`'s find, `058`'s
-      find, and `059`'s find (see above).
-- [ ] The whole-repo continuation-grep, singular-inclusive pattern
+      find, and `059`'s find (see above). One cross-repo citation in this
+      file (`embarch-ui` decision 17, line 48), correctly labelled and
+      correct on the merits (see above) — no candidate for `056`'s
+      same-repo-duplicate shape (no same-repo decision makes the identical
+      claim). `057`–`061`'s five-file true-zero streak for that specific
+      check is unaffected (this file did have a cross-repo citation, just a
+      correct one).
+- [x] The whole-repo continuation-grep, singular-inclusive pattern
       `grep -rlIE '[Dd]ecisions?[[:space:]]*$'`, run fresh (do not assume
       this task's list is exhaustive) and any hit reported, even one landing
-      outside the file being swept.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      outside the file being swept. Result: same 9-file set as `060`/`061`
+      (`Cargo.toml`, `src/study_builder.rs`, `src/study.rs`,
+      `src/protocol.rs`, `src/decoder.rs`, `src/eap.rs`,
+      `src/merged_actions.rs`, `src/lib.rs`, `src/schema_version.rs`) — no
+      new hits, no new files. Re-confirmed `Cargo.toml:19` (`embarch-dev-bench`
+      decision 8) and `:91` (decisions 34/35, matching this unit's own
+      merged_actions.rs finding) both still correct. Re-confirmed
+      `decoder.rs:1` (decision 52) still correct — already checked and
+      counted in `060`'s nine, not a new find, despite surfacing again in
+      this unit's fresh grep.
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). Filed as
+      `tasks/study-designer/063-src-citation-sweep-remainder.md`, naming the
+      four remaining files (`gatt_names.rs`, `eap_interp.rs`, `vendor.rs`,
+      `records.rs`) — `src/` closes out after those four (plus `ids.rs`,
+      already confirmed to have no citations).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`,
+      `cargo test --all-targets` (125/125, unchanged), `cargo clippy
+      --all-targets -- -D warnings`, and the `--all-features` variants of
+      build/clippy all clean. `scripts/check-docs.py`,
+      `scripts/check-client-names.py`, `scripts/check-ownership.py` all
+      green (see report).
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+      `changelog.d/study-designer-merged-actions-citation-sweep.changed.md`.
 
 ## Reserve, for planning
 
