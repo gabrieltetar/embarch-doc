@@ -9,7 +9,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | Group | Decisions | What it settles |
 |---|---|---|
 | [decisions/release.md](decisions/release.md) | 1, 2, 27, 29 | The binary, its name, and the tag-versus-manifest assertion |
-| [decisions/install.md](decisions/install.md) | 3, 4, 5, 14, 21, 25, 28 | Core as an autostarting service, `up`/`down` as a fallback, the release archive, and what `setup` really writes |
+| [decisions/install.md](decisions/install.md) | 3, 4, 5, 14, 21, 25, 28, 54 | Core as an autostarting service, `up`/`down` as a fallback, the release archive, and what `setup` really writes |
 | [decisions/topology.md](decisions/topology.md) | 6, 7, 8, 9, 30, 38 | Detecting where Core is, elevation, the WSL2 loopback ambiguity, and which `embarch-core` a `wsl-host` machine actually runs |
 | [decisions/integration.md](decisions/integration.md) | 10, 12 | Where a repo's `embarch/` config lives, and how little of it anyone else can see |
 | [decisions/projects.md](decisions/projects.md) | 13, 17, 26, 41 | What `init` derives from a firmware repo, and what it refuses to guess |
