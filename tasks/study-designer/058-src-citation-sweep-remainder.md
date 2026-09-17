@@ -1,6 +1,6 @@
 # 058 — Citation sweep: `src/` remainder after `gatt.rs`
 
-**State:** open
+**State:** claimed — leg 129, 2026-09-16.
 **Source:** `tasks/study-designer/057`, which swept `src/gatt.rs` (11
 grep-matching lines, **13** distinct citation instances) and left the rest.
 `057` wrote 14 here; the reviewer re-derived it and the supervisor confirmed
