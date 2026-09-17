@@ -1,6 +1,6 @@
 # 059 — `diff_new_lines` can republish an already-sent line: decide, then record
 
-**State:** open
+**State:** claimed by agent/ui/059-diff-new-lines-republish, 2026-09-16 18:46
 **Source:** `inbox/ui-diff-new-lines-spurious-republish.md`, filed by the `ui/057`
 worker while verifying a reviewer counter-example against real code.
 **Scope:** ui
