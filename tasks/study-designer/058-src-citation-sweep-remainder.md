@@ -2,7 +2,12 @@
 
 **State:** open
 **Source:** `tasks/study-designer/057`, which swept `src/gatt.rs` (11
-grep-matching lines, 14 distinct citation instances) and left the rest.
+grep-matching lines, **13** distinct citation instances) and left the rest.
+`057` wrote 14 here; the reviewer re-derived it and the supervisor confirmed
+it independently at that unit's fold — of the 11 lines, only line 1
+(`decisions 31/32/33`) carries more than one number, so the count is
+10×1 + 3 = 13. Corrected in every place it appears below, including the
+running tally.
 **Scope:** study-designer
 **Hardware:** none — source comments only; nothing is built for a board.
 **Owner:** no
@@ -45,9 +50,9 @@ the same grep methodology** (`grep -cE '[Dd]ecisions? [0-9]+' src/<file>.rs`
 ```
  9  src/registry.rs
  8  src/outpost.rs
- 8  src/decoder.rs
+ 7  src/decoder.rs
  7  src/sample.rs
- 7  src/merged_actions.rs
+ 6  src/merged_actions.rs
  5  src/gatt_names.rs
  5  src/eap_interp.rs
  3  src/vendor.rs
@@ -154,10 +159,10 @@ it repeats a hit a prior unit already named.
   cross-repo citations — fixed (a cross-repo citation to `embarch-core`
   decision 30's "settlement 2", real but no longer a citable unit anywhere,
   repointed to same-repo decision 59, which states the identical reasoning).
-- `src/gatt.rs` — done in `057`. 11 grep-matching lines, 14 distinct citation
-  instances. 0 wrong numbers, 0 false sentences, 0 unlabelled cross-repo
-  citations — the second true zero in the chain; no cross-repo citations of
-  any kind in this file.
+- `src/gatt.rs` — done in `057`. 11 grep-matching lines, **13** distinct
+  citation instances (`057` reported 14; corrected at its fold). 0 wrong
+  numbers, 0 false sentences, 0 unlabelled cross-repo citations — the second
+  true zero in the chain; no cross-repo citations of any kind in this file.
 
 ## Running tally across the chain (`044`–`057`, fifteen files reporting
 per-file counts)
@@ -166,7 +171,7 @@ Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
 count only reported), `study.rs` 52 (ditto), `gatt_extract.rs` 36 (ditto),
 `lib.rs` 41 (ditto), `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs`
 31, `limits.rs` 32, `result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16,
-`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 14. **Total: 447.** Wrong numbers
+`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13. **Total: 446.** Wrong numbers
 found: 0+3+3+2+3+1+0+1+1+0+1+0+0+1+0 = **16**. False sentences found:
 0+0+2+0+0+0+0+1+0+0+0+1+1+0+0 = **5**. Recompute this fresh in your report
 using the actual per-file numbers above plus whatever this unit adds.
