@@ -1,6 +1,6 @@
 # 080 — `init` never writes `serial_port`, so every config reaches the serial tools without one
 
-**State:** claimed — leg 139, 2026-09-17, branch `agent/umbrella/080-init-serial-port`
+**State:** done
 **Filed by:** leg 138's refill sweep, 2026-09-17. `embarch-api/open.md` has carried this as a
 referral — *"Not this crate's to fix"* — with a named owner and no task behind it, which is how a
 cross-repo gap sits still indefinitely: the repo that found it correctly declines to fix it, and the
@@ -87,13 +87,58 @@ also cheap: reading decision 17 and one `embarch-api` decision, and writing a pa
 
 ## Done when
 
-- [ ] `embarch-umbrella`'s decision corpus records, by name, whether `init` writes `serial_port` and
+- [x] `embarch-umbrella`'s decision corpus records, by name, whether `init` writes `serial_port` and
       why — amending decision 17's body if that is the right home
       (`DOC-PROTOCOL.md`: edit the body, do not append a contradicting note beside the old text),
       or as a new numbered decision if the reasoning does not belong inside 17.
-- [ ] If the answer is "it stays out", the decision says what a caller with no configured port is
+- [x] If the answer is "it stays out", the decision says what a caller with no configured port is
       expected to do.
-- [ ] `embarch-umbrella/open.md` carries nothing that contradicts the answer.
-- [ ] Any `embarch-api`-side consequence is dropped to `inbox/`, not made here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] `embarch-umbrella/open.md` carries nothing that contradicts the answer.
+- [x] Any `embarch-api`-side consequence is dropped to `inbox/`, not made here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Done — leg 139, 2026-09-17
+
+**Answer: it stays out, deliberately.** New `embarch-umbrella decision 55`
+(`embarch-umbrella/decisions/projects.md`) settles it: a serial port is more volatile than a board
+or chip (decisions 17, 41 already refuse those as scaffolded fact) — host-OS-assigned at USB
+enumeration, can renumber on a replug, a hub power cycle, or a reboot with no cable move needed to
+invalidate a value correct an hour earlier — so scaffolding it would be worse than the
+board-guessing decision 17 replaced. The remedy is already built and documented on `embarch-api`'s
+side: `list_serial_ports` (decision 70) discovers a port at call time, and `serial_log` takes
+`port` as a per-call optional argument — the same "resolved per call, not stored" shape decision
+17 already gave `chip`. Verified against the real source: neither `render_zephyr_west_config` nor
+`render_config` in `src/init.rs` ever emits `serial_port`, and the real `ProjectConfig` mirror in
+`src/config.rs` doesn't declare the field either (only the upstream-shadow test struct does, to
+track `embarch-api`'s schema) — so this is a pure documentation fix, no code changed.
+
+**`embarch-umbrella/decisions.md`** index updated: `projects.md` row now lists `13, 17, 26, 41, 55`.
+
+**Doc-size hazard fired exactly as the dispatch note predicted, and then some**: the first full
+draft of decision 55 pushed `decisions/projects.md` to 12,888 B — **over the 12,288 B hard cap**,
+not just into reserve. Trimmed the decision's prose through several passes to land at exactly
+12,286/12,288 B (100.0%, 2 B left) — under cap but now fully saturated reserve, so filed
+`tasks/umbrella/081-compact-docs.md` in this same commit per `tasks/README.md`'s shape:
+`Compacts: embarch-umbrella/decisions/projects.md`, `Size debt due: 2026-10-17`, `In flux: no`
+(decision 55 closes the one open question this file carried; nothing else in the umbrella queue
+touches it), and a candidate seam noted (decision 26 is the most topically distinct entry and the
+largest, matching the pattern of two prior splits of this same file) without doing the split
+myself.
+
+**Inbox drop** (absolute path, `embarch-api` is not mine): `/home/gabriel/Github/embarch/embarch-doc/inbox/api-close-serial-port-referral.md`
+— asks `embarch-api/open.md`'s stale referral bullet be rewritten to point at decision 55 rather
+than framed as an open, unowned gap. No behavior change implied on `embarch-api`'s side; the
+remedy it already documents (`list_serial_ports` → `serial_log`'s `port`) is exactly what decision
+55 confirms is correct.
+
+**Gate:** `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+all green in the code worktree (no source changed, so this is confirming the pre-existing green,
+not a new result). `python3 scripts/check-docs.py` — all 11 checks green in the doc worktree,
+including `check-doc-size.py` (19 files in reserve, all filed, 0 over cap) and
+`check-client-names.py --repo <code worktree>`. `check-ownership.py --scope umbrella` and
+`--code-repo <code worktree>` both green — no path touched outside `embarch-umbrella/**`,
+`tasks/**`, and `changelog.d/**`.
+
+**Left undone:** the compaction of `decisions/projects.md` itself (that file's next writer's job,
+per `tasks/umbrella/081`), and `embarch-api/open.md`'s own edit (inbox drop, not mine to make).

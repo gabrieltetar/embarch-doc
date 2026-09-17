@@ -1,0 +1,56 @@
+# 081 — `embarch-umbrella/decisions/projects.md` is at cap, not just in reserve
+
+**State:** open
+**Source:** `scripts/check-doc-size.py --pressure`, run by `tasks/umbrella/080` (leg 139,
+2026-09-17), whose own edit is what pushed this file here.
+**Scope:** umbrella
+**Hardware:** none
+**Compacts:** embarch-umbrella/decisions/projects.md
+**Size debt due:** 2026-10-17
+**In flux:** no — decision 55 (below) closes the one open question this file carried
+(`embarch-api/open.md`'s `serial_port` referral). Nothing else in the umbrella queue currently
+touches `projects.md`; the historical note under `tasks/umbrella/009` about `umbrella/022`
+splitting decisions 10/12 out of this file (into `integration.md`) is settled, not ongoing.
+
+## What
+
+`080` added decision 55 (`init` never writes `serial_port`, deliberately) to
+`decisions/projects.md`, landing the file at **12,286/12,288 B — 2 B left, 100.0%.** That is not a
+normal reserve entry: the file is functionally full, and the next unit that needs to write here
+at all — an amendment to 13, 17, 26, 41 or 55, or a new decision that genuinely belongs in this
+group — meets the cap immediately, with no slack to word around.
+
+`projects.md` groups four decisions each with real amendment history (17's cross-repo interop
+verification and its target-count-check migration; 26's `--prune` deferral and the `build_dir_name`
+gap; 41's board-placeholder mechanism and rejected alternatives) plus decision 55. This group has
+been split before — twice (`umbrella/022` moved decisions 10/12 out to `integration.md`;
+`umbrella/037` moved decision 19 out to `dev-bench-firmware.md`, both times because the pass
+restates nothing and a verbatim move is not blocked by `In flux: yes`). The same move — pull one
+self-contained decision out to its own file — is the likely fix here, not prose-shortening, since
+none of the four remaining topics is stale enough to cut without losing an argument.
+
+**Candidate seam, not a mandate:** decision 26 (`study_results/` retention and build-directory
+pruning) is the largest single entry and the most topically distinct from 13/17/41/55, which are
+all about what `init` writes into `[[projects]]` at scaffold time; 26 is about `doctor --prune`,
+a different verb entirely. Check inbound links before cutting — `tasks/umbrella/009`'s history
+notes `embarch-api/decisions/build.md` and `embarch-decision-reversals.md` link this file for
+decisions 26 and 17, so a move must keep both anchors resolvable (redirect or duplicate the
+anchor, per `DOC-PROTOCOL.md`'s cross-repo-link rule) — that same check is what made `009` reject
+moving 26 previously, so re-verify it rather than assume it still holds.
+
+## Why now
+
+`check-doc-size.py` fails a file over its 90%-of-cap reserve line with no debt filed against it;
+`080`'s edit put `projects.md` at 100% in the same commit that must file this.
+
+## Done when
+
+- [ ] `decisions/projects.md` back under the 90% reserve line (11,059 B), by split or by genuine
+      shortening — never by deleting a rejected-alternative or a verification note that is still
+      load-bearing.
+- [ ] Every decision number (13, 17, 26, 41, 55) still resolves from `decisions.md`'s index, in
+      whichever file each ends up in.
+- [ ] Any cross-repo anchor into a moved decision (see `embarch-api/decisions/build.md`,
+      `embarch-decision-reversals.md` for 26 and 17) still resolves.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `changelog.d/umbrella-*` fragment dropped.
