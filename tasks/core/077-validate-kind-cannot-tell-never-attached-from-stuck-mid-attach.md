@@ -1,6 +1,6 @@
 # 077 — `POST /validate`'s `kind` classifier can't tell "never attached" from "attached but stuck mid-open", and that's now a live gap, not a hypothetical one
 
-**State:** claimed by agent/core/077-validate-kind-stuck-mid-attach, 2026-09-17 13:26
+**State:** done
 **Filed by:** leg 136, 2026-09-17, from
 `inbox/core-validate-kind-classifier-cant-tell-not-attached-from-stuck-mid-attach.md`. Filed
 verbatim except for this header and the note below. I re-checked the `Hardware: none` claim myself
@@ -64,26 +64,54 @@ task, not a reach across from the topology side.
 
 ## Done when
 
-- [ ] Re-derived from `embarch-topology/src/hardware/validate.rs` (the sibling checkout this crate's
+- [x] Re-derived from `embarch-topology/src/hardware/validate.rs` (the sibling checkout this crate's
       `Cargo.toml` path-dependency resolves to) what each of the five newly-`raise`-routed failures'
       `reason` text now says, and from `src/api.rs`'s `validate_handler`
       (`TopologyMismatch::downcast_ref` arm) exactly what `kind` and status it produces for each.
-- [ ] A decision: add a third `kind` value (name it, and say what changes in `embarch-api`,
+      All five (`.open()`, `check_target_powered`, `.attach()`, `session.core(0)`,
+      `hardware_id::read`) set `live_hardware_id: None`, so all five land on
+      `classify_topology_mismatch`'s existing `is_none()` arm: `kind: "not_attached"`, `503`, no
+      `fix_it_url` — same as the pre-existing "not in `Lister::list_all()`" case.
+- [x] A decision: add a third `kind` value (name it, and say what changes in `embarch-api`,
       `embarch-ui` and the user guide to consume it — do not implement the wire change in this task
       per `core/074`'s supervisor note 2, file it back to `inbox/` in full task format if warranted),
       or record why collapsing all five into `not_attached` is acceptable as a considered choice
       rather than an inherited accident.
-- [ ] `describe_topology_error`/`describe_gate_error`'s plain-text `flash`/`reset`/dev-bench-gate
+      **Decided: no third `kind`.** `.claude/leg.md`'s own binary split (not-attached leaves the
+      task `open`; a live-ID mismatch stops and alerts a human) puts every one of the five new
+      causes on the `open` side — none is an identity question, since nothing was ever compared.
+      No consumer in this suite (checked `embarch-ui`, `suite/user-guide.md`) branches on `kind`
+      today needing a finer split; `reason` already carries the distinguishing text in full. Full
+      reasoning: `decisions/surfaces.md` decision 59's second amendment. One real, adjacent gap
+      this surfaced — `embarch-api`'s `validate` tool/CLI hardcode a "plug it in" suffix on every
+      `"not_attached"` case, now wrong for five of the six causes — filed to
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/api-validate-not-attached-plug-it-in-is-now-wrong-for-five-of-six-causes.md`
+      rather than fixed here (it's `embarch-api`'s file, not this crate's).
+- [x] `describe_topology_error`/`describe_gate_error`'s plain-text `flash`/`reset`/dev-bench-gate
       paths (decision 59, `core/074` item 2) checked against the same question: do their lead-text
       strings now need to say more than "not attached" for these five cases, given they carry the
       distinction only in message text, never structurally?
-- [ ] `decisions/surfaces.md` decision 59 amended (again) if the classifier's scope or behavior
+      **Yes, one word-level fix, no wire change:** the lead used to read `"probe not attached for
+      role …"` unconditionally, which directly contradicts the five new causes' own `reason` text
+      ("... is attached but could not be opened ..."). Changed to `"probe unavailable for role
+      …"` in both `src/api.rs` and `src/study.rs`, with tests added
+      (`a_stuck_mid_open_probe_classifies_as_not_attached_without_contradicting_reason`,
+      `dev_bench_gate_stuck_mid_open_lead_does_not_contradict_reason`) guarding against the lead
+      re-asserting "not attached" when `reason` says otherwise.
+- [x] `decisions/surfaces.md` decision 59 amended (again) if the classifier's scope or behavior
       changes or if this task documents the gap as newly-live rather than newly-moot; `interfaces.md`
       / `interfaces/topology.md` updated to match, the same "one consistent account" bar `core/074`
       held itself to.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
+      Done — decision 59's second amendment records the settlement; `interfaces.md`'s `503` bullet
+      and `interfaces/topology.md`'s `/validate` row both updated to say `"not_attached"` covers six
+      causes now, not one, and that this was considered and declined as a fourth wire distinction.
+- [x] A `changelog.d/` fragment. `changelog.d/core-validate-stuck-mid-attach.decided.md`.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
       warnings` in `embarch-core`; `python3 scripts/check-docs.py` in `embarch-doc`.
+      `decisions/surfaces.md` crossed 90% of its 12288 B reserve amending decision 59 a second time;
+      filed `tasks/core/079-compact-core.md` (`In flux: yes`) in this same commit per protocol §5
+      item 5. **Filed as `078` and renumbered to `079` by leg 137 at landing** — `078` had been
+      taken by the same leg's refill commit while this worker was running.
 
 ## Not yours
 
