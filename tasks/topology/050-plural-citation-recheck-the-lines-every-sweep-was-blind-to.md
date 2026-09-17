@@ -1,6 +1,6 @@
 # 050 — Plural-citation re-check: the 12 lines every `topology` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/topology/050-plural-citation-recheck, 2026-09-16 20:57
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-topology` was declared **completely** citation-swept after `topology/040`, `046` and `049`.
