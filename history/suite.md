@@ -23,6 +23,7 @@
 - suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
 
 ### Fixed
+- `embarch-ui` and `embarch-umbrella`'s `CLAUDE.md` now name their interfaces doc, per [DOC-PROTOCOL.md](../DOC-PROTOCOL.md) §5.
 - Reversals row 105 now names both refuted hypotheses and how each was refuted, which a compaction had left nowhere in the corpus.
 - A hand-author gets a named worked study file and the externally-tagged `action` shape; the fixture no longer carries `validations`, retired at schema v11.
 - Decision 7 no longer claims `cbindgen` prevents C-side drift or that C does not re-implement the wire format; both were false ([crate.md](../embarch-study-designer/decisions/crate.md)).
