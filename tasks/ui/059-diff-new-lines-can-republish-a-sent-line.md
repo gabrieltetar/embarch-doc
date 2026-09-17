@@ -1,11 +1,84 @@
 # 059 — `diff_new_lines` can republish an already-sent line: decide, then record
 
-**State:** claimed by agent/ui/059-diff-new-lines-republish, 2026-09-16 18:46
+**State:** blocked — leg 123 refused the merge on a supervisor diff read. The worker's fix
+trades the duplicate for a **permanently dropped line remainder**, which inverts decision 13's own
+stated preference. **Unparks the moment the fix publishes the grown line instead of swallowing it**
+— see "Leg 123's refusal" below, which specifies it exactly. The branches are pushed and are worth
+reusing, not redoing: `agent/ui/059-diff-new-lines-republish` in `embarch-ui` (code `21a48de`) and
+`embarch-doc` (doc `dfe1d91`). **Neither was merged.**
 **Source:** `inbox/ui-diff-new-lines-spurious-republish.md`, filed by the `ui/057`
 worker while verifying a reviewer counter-example against real code.
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Leg 123's refusal — read this before the sections below
+
+The unit chose **fix**, wrote two tests, confirmed they failed before and passed after, and got a
+green gate in both repos. I still refused the merge, because the fix is wrong in a way the tests
+were written to assert rather than to catch.
+
+**The change.** In `diff_new_lines`, the overlap run's last line changed from `==` to
+`new_head[k-1].starts_with(prev_tail[k-1])`, so a still-growing trailing line no longer breaks the
+longest-run match.
+
+**What that does to the grown line.** When the last line has grown, the match now succeeds at the
+**full** overlap length `k`, and the function returns `new[k..]` — which is *empty*. The grown
+line's new content is in `new[k-1]`, and `new[k-1]` is never returned. `publish_new_lines` then does
+`*previous = latest` unconditionally, so the next poll compares against the grown text and the
+remainder is never published by any later poll either. The worker's own first test asserts exactly
+this: `diff_new_lines(["A","B","A"], ["A","B","A2"])` is `[]`. **"A2" never reaches the console, and
+nothing ever sends it.**
+
+**Why that is worse than what it replaced.** Before the change, the plain growth case (no repeated
+line anywhere) found no overlap at all and fell through to the replay-the-whole-window branch: every
+line duplicated once, **and the grown line delivered**. After the change, a viewer that is already
+connected shows the line truncated at whatever it was when the poll caught it, permanently. Decision
+13's own comment — quoted in `decisions/debug-tab.md` and in `logs.rs` itself — says *"a few
+duplicate lines in a debug viewer is a smaller problem than missing ones."* This inverts that
+ordering, and **decision 27 as drafted states the opposite of what the code does**: it says *"no
+line is dropped, only 'B' is sent twice"*, which describes the **old** behaviour, not the new one.
+
+**The fix is small and the diagnosis is the expensive half, which is already done.** When the run's
+last line matched by *strict extension* rather than equality, the return should start at `k-1`, not
+`k` — republish the grown line itself and everything after it. That is one duplicated line in
+exactly the case decision 13 already tolerates duplicates for, and nothing is lost. Equality at the
+last position must keep returning `new[k..]`, or every steady-state poll republishes its last line
+forever, so the two cases have to be distinguished rather than merged.
+
+**What the next worker owes, beyond the code:**
+
+- A test for the **plain growth case with no repeated line** — `["X","Y"]` → `["X","Y2"]` — asserting
+  the grown line is published. There is no such test today, which is why nothing caught this: both
+  new tests use a window containing a deliberate repeat, so both exercise only the half the fix got
+  right.
+- A test that the **steady state does not republish**: `["X","Y"]` → `["X","Y"]` must stay empty.
+- **Decision 27 rewritten, not patched.** Its current text asserts a property the code does not have.
+  Re-measure `scripts/check-doc-size.py --decisions` first — the worker shrank decision 13 from 514 B
+  to a 309 B pointer to make room, and that shrink is on the unmerged branch, not on `main`.
+- The `decisions/debug-tab.md` bullet above 27 and `logs.rs`'s own doc comment both describe the
+  conditional tolerance; whichever survives must say what is true of the merged code.
+
+**Do not re-derive this from scratch.** The branches carry a correct diagnosis of the original
+defect, a correct root-cause account, and two tests that are right about the repeat case. The
+disagreement is one index and the claim built on top of it.
+
+**Measured, not reasoned.** I compiled both versions of `diff_new_lines` side by side and ran six
+cases. This is the table; reproduce it rather than trusting it.
+
+| `previous` → `new` | before the change | after the change |
+|---|---|---|
+| `["X","Y"]` → `["X","Y2"]` (plain growth) | `["X","Y2"]` | **`[]`** |
+| `["A","B","A"]` → `["A","B","A2"]` (the task's case) | `["B","A2"]` | **`[]`** |
+| `["A","B","A"]` → `["A","B","A2","C"]` | `["B","A2","C"]` | **`["C"]`** |
+| `["X","Y"]` → `["X","Y"]` (steady state) | `[]` | `[]` |
+| `["X","Y2"]` → `["X","Y2Z"]` (line completes) | `["X","Y2Z"]` | **`[]`** |
+| `["X","Y2Z"]` → `["X","Y2Z","W"]` | `["W"]` | `["W"]` |
+
+Four of the six rows lose the grown line's content. Row 3 is the worst of them: `C` is published
+while `A2` is not, so the console ends up holding a **truncated line with complete lines after it** —
+a reader has no way to tell that line was cut. Rows 1 and 5 together mean a line that grows across
+two polls is never delivered in full at any point in its life.
 
 ## What
 
