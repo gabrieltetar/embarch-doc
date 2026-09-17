@@ -1,6 +1,6 @@
 # 055 — Three `spec.md` guarantees `embarch-topology` does not actually provide
 
-**State:** open
+**State:** claimed by agent/topology/055-three-spec-guarantees, 2026-09-17 01:26
 **Source:** leg 133's refill census of `embarch-topology`'s docs against its source. **Filed so they
 survive**: they existed only in a census report, and `supervisor-log.md` folds daily and rolls into
 `log-archive/`, so anything living there alone is on a timer. Nothing dispatches from a log entry.
