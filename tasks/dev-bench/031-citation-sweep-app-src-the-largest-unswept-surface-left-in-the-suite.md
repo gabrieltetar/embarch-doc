@@ -1,6 +1,6 @@
 # 031 — Citation sweep: `app/src/`, the largest unswept citation surface left in the suite
 
-**State:** claimed by agent/dev-bench/031-app-src-citation-sweep, 2026-09-16 19:55
+**State:** done
 **Source:** leg 124's refill sweep, 2026-09-16. The sweep chain has now closed
 `embarch-topology`, `embarch-umbrella` and `embarch-outpost` completely — every one of their
 citation-bearing files has had a decision-existence-and-sentence-truth pass, and the last two
@@ -117,18 +117,82 @@ For each citation, in this order:
 
 ## Done when
 
-- [ ] At least the two largest files fully swept, every citation checked for existence, repo
+- [x] At least the two largest files fully swept, every citation checked for existence, repo
       label, and whether the sentence around it is true — counted as *instances*, not grep lines.
-- [ ] Wrong numbers and false sentences reported as **separate** counts, with the total checked.
+- [x] Wrong numbers and false sentences reported as **separate** counts, with the total checked.
       "Checked N, found none" is a legitimate and useful result: whether this vein is exhausted
       is an open question and honest zeros are the only thing that answers it.
-- [ ] Any `file:line` citation checked for line drift.
-- [ ] A follow-up task filed naming exactly which files remain, or a statement that the repo is
+- [x] Any `file:line` citation checked for line drift.
+- [x] A follow-up task filed naming exactly which files remain, or a statement that the repo is
       swept out.
-- [ ] Mechanical checks green (grep gate zero, comment-block balance, 100-column limit,
+- [x] Mechanical checks green (grep gate zero, comment-block balance, 100-column limit,
       `check-client-names.py`), **and the report says in as many words that nothing was
       compiled.**
-- [ ] `changelog.d/dev-bench-*` fragment reporting the counts.
+- [x] `changelog.d/dev-bench-*` fragment reporting the counts.
+
+## What shipped
+
+Swept `app/src/main.c` (65 citation-bearing lines, ~77 individual decision-number instances) and
+`app/src/serial_protocol.h` (65 lines, ~81 instances) — the two largest files, per this task's own
+re-census. Both were re-counted with `[Dd]ecisions? [0-9]` before starting; grep-line counts came
+back 64/64, one below the printed 56/53 gap already flagged as a floor by the task itself.
+
+**Checked:** ~158 citation instances across the two files, against every dev-bench decision file
+(`decisions/*.md`, all 10) and the relevant `embarch-study-designer` decision files (`gatt.md`,
+`ble.md`, `payload-meaning.md`, `protocol-exec.md`, `removed.md`, `seals.md`, `wire.md`,
+`versioning.md`, `study.md`, `streams.md`), plus two cross-repo citations into `embarch-core`
+(`decisions/logging.md` decisions 35 and 37) and one into `reversals/rows-73-92.md` row 73 — all
+of which resolved and matched their surrounding claim.
+
+**Wrong numbers found and fixed (comment-only): 2.**
+1. `main.c`'s "Inbound link RX" section header cited `decision 29` — dev-bench's own decision 29
+   is the generic tap/forwarding pipeline (`capture.md`). The section's actual content (the
+   FIFO-overflow fix: a 1 ms poll loop vs. a 128-byte hardware FIFO at 1 Mbaud, the ISR-driven ring
+   buffer that replaced it, "~128 bytes completed, ~134 timed out") is decision 30's, verbatim
+   (`decisions/link.md`). Fixed to `decision 30`.
+2. `serial_protocol.h`'s `Hello`/`steps_crc` comment cited `embarch-study-designer` decisions
+   "24/27" for "`Hello` lost `steps_crc` (moved to `StudyStart`)". Decision 24 (`Study` crosses in
+   one message: `StudyStart { steps, steps_crc }`) supports the claim fully; decision 27
+   (`Sample` carries `unit`/`channel_id`, `streams.md`) has nothing to do with `Hello` or
+   `steps_crc`. Dropped the `/27`.
+
+**False sentences found: 0.** Every other resolved citation's surrounding sentence matched the
+cited decision's actual content, including several that looked like good candidates for a defect
+(the `security_level`/`protocol` StepResult pass-through fields, the `gatt_activity` retirement,
+the BLE-security pair, the transcript fan-out, the reversals-row-73 asymmetry).
+
+**`file:line` citations: none found in either file.** Neither cites another file by line number
+(both cite bare decision numbers or `embarch-study-designer decision N`), so there was nothing to
+check for drift in this pair.
+
+**Left alone, flagged, not edited (citation form, not truth):** `embarch-dev-bench` and
+`embarch-study-designer` each have their own decision 36 and decision 39 with unrelated content. A
+few bare (unlabeled) citations of these numbers in `main.c` — "decision 39" in the
+`transcript_tap_index` comment, "decisions 31/32" in `step_to_action` and its caller — sit far
+from any labeled anchor and, read under the bare-form-means-own-repo convention
+(`DOC-CONVENTIONS.md`), resolve to the wrong repo's decision even though the intended meaning is
+`embarch-study-designer`'s. This is the exact collision `serial_protocol.h`'s own comment on
+schema v13 names ("the two repos' decision 39s collide by number... which is how `dev-bench/020`
+got it wrong on the first pass") — but citation *form* is `tasks/doc/055`/`tasks/ui/038` territory,
+not this task's, so left as-is and named in `tasks/dev-bench/032` for whoever owns that call.
+
+**Left alone, already tracked:** `serial_protocol.h:21-25`'s promise that 27+ hand-mirrored crate
+constants stay manual "until decision 8's west-module wiring lets this firmware pull the
+constants directly" is false as written (decision 8 landed and explicitly did not do that — its
+own text says it deliberately avoided west-module plumbing). This is `tasks/dev-bench/010`'s exact
+subject, open and unclaimed; not re-filed.
+
+**Follow-up filed:** `tasks/dev-bench/032`, naming the eight files not yet reached
+(`ble_bridge_real.c` 49, `serial_protocol.c` 40, the two ztest `main.c`s, `ble_bridge.h`, `eap.h`,
+`dev_bench_log.{c,h}`, `README.md`, `study_ffi.h`), in priority order.
+
+**Nothing was compiled.** This repo is `toolchain`-gated (no Zephyr in the worktree); every check
+above was by reading source and doc text, not by building. Mechanical checks run instead: the
+`grep -c` census re-derived above, comment-block balance verified (no `/*` left without its `*/`
+in either edited file), no line introduced past 100 columns, `check-client-names.py --repo` clean.
+
+**Doc-size reserve:** untouched. No `dev-bench` doc (`spec.md`, `open.md`, `decisions/link.md`) was
+written; both fixes were comment-only edits inside `app/src/`.
 
 ## Not yours
 
