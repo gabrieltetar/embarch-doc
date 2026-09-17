@@ -1,6 +1,6 @@
 # 053 — `validate.rs`'s header cites two of this crate's own decisions for a migration only `embarch-core` records
 
-**State:** claimed — leg 131 unit 1, 2026-09-17, `agent/topology/053-validate-rs-migration-citation`
+**State:** done — leg 131 unit 1, 2026-09-17, `agent/topology/053-validate-rs-migration-citation`
 **Source:** `topology/052`'s reviewer, leg 130, 2026-09-16, filed as
 `inbox/topology-validate-rs-1-2-citation.md` and drained here. The `052` worker flagged the line and
 **correctly left it alone** — its task was scoped to wrapped citations and this one is single-line —
@@ -50,17 +50,34 @@ reason `tasks/doc/071` exists, seen from the other side.
 
 ## Done when
 
-- [ ] The header's citation is split so the "formerly `embarch-core`'s own `board_gate.rs`" clause
+- [x] The header's citation is split so the "formerly `embarch-core`'s own `board_gate.rs`" clause
       cites `` (`embarch-core` decision 22) `` and the "One implementation, multiple call sites"
       clause keeps decision 8. How it reads as prose is your call — match `enrollment.rs:3`'s shape
       if that reads well.
-- [ ] Say in your report whether **any other** bare `(decisions …)` in this crate attributes a
+- [x] Say in your report whether **any other** bare `(decisions …)` in this crate attributes a
       migration to a decision that does not describe one. Do not sweep the crate; just say what you
       noticed while you were in the file.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
+
+      Checked every "formerly `embarch-core`'s own X" doc comment in `src/`: `enrollment.rs` (fixed
+      by `topology/052`), `validate.rs` (this unit), `port.rs`, and `hardware_id.rs`.
+
+      **`port.rs:1-3`** cites `(decisions 2, 4)` for "formerly `embarch-core`'s own `dev_bench.rs`" —
+      **not a defect**. Decision 4 (`consumer-boundary.md`) names "the dev-bench port heuristic"
+      moving into this crate specifically, and no `embarch-core` decision documents that migration by
+      name, so decision 4 is the right and only provenance record available.
+
+      **`hardware_id.rs:1-6`** cites `(decisions 2, 4)` for "formerly `embarch-core`'s own
+      `hardware_id.rs`, moved here unchanged" — **same defect as this unit's own finding.** Decision 4
+      is a forward-looking scope decision that doesn't name this file or narrate why; the real
+      provenance record is `embarch-core` decision 22, whose own text ("a machine-local table keyed
+      by probe serial, holding the chip's own factory-burned ID read live over the debug port …
+      Moved wholesale into `embarch-topology`") describes `hardware_id.rs`'s exact mechanism, almost
+      verbatim against its own docstring. Left unfixed per this task's own scope and filed as an inbox
+      drop rather than swept: `/home/gabriel/Github/embarch/embarch-doc/inbox/topology-hardware-id-rs-migration-citation.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings` in `embarch-topology`; `check-docs.py` in
       `embarch-doc`.
-- [ ] `changelog.d/` fragment.
+- [x] `changelog.d/` fragment.
 
 ## Not yours
 
