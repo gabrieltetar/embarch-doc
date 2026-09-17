@@ -1,6 +1,8 @@
 # 063 — Wrapped-citation census: the ten lines every single-line sweep missed
 
-**State:** claimed — leg 130 unit 2, 2026-09-16, `agent/ui/063-wrapped-citations`
+**State:** done — 10 lines / 16 instances checked; one wrong decision number found and fixed
+(`src/study_designer.rs`, decision 57 → 56); no missing labels, no false sentences. Gate green.
+See `## Result` for the full breakdown.
 **Source:** `tasks/doc/071` (`Owner: required`, open), second `Done when` bullet — *"each
 sub-project already declared 'citation swept' end to end gets a follow-up task re-censusing with the
 wrap-aware method"*. `embarch-ui` was swept by `ui/054` (`assets/app.js`), `060` (`main.rs`,
@@ -76,16 +78,63 @@ comparable.
 
 ## Done when
 
-- [ ] All ten wrapped citations read in full and answered against all three questions above.
-- [ ] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
+- [x] All ten wrapped citations read in full and answered against all three questions above.
+- [x] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
       if you cannot establish what the right referent is — **left alone and reported**, never guessed.
-- [ ] `N lines / M instances / W wrong / L labels / F false` stated in the report.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
+- [x] `N lines / M instances / W wrong / L labels / F false` stated in the report.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings` in `embarch-ui`; `check-docs.py` in `embarch-doc`.
       Remember `embarch-ui`'s worktree needs `embarch-study-designer`, `embarch-api` **and
       `embarch-topology`** symlinked beside it or `cargo build` fails on a path inside the fleet's
       scratch directory — the supervisor has done this for you; say so if a build still fails that way.
-- [ ] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+- [x] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+
+## Result
+
+Re-ran `grep -rnIE '[Dd]ecisions?[[:space:]]*$'` against `embarch-ui` (excluding `.git`, `target`)
+and got the same 10 lines the task filed, across `assets/app.js` (3), `src/config.rs` (1),
+`src/trace.rs` (1) and `src/study_designer.rs` (5) — **10 lines / 16 instances**.
+
+Each wrapped citation was read with the line above and the line(s) after, and checked against all
+three questions (resolves, right repo, sentence true):
+
+- `app.js:1087` — `embarch-study-designer` decision 41 (vendor GATT service table). Resolves,
+  correctly labelled, true (Nordic UART Service example matches the decision body verbatim).
+- `app.js:2706` — `embarch-study-designer` decisions 52/55 (GATT-notify tap file + declared
+  layout). Both resolve, correctly labelled, true.
+- `app.js:3400` — unlabelled, no number on either line. Resolves by section header (`decision 10,
+  first half` at line 3251) to `embarch-ui` decision 10's **routing half**
+  (`decisions/topology-tab.md`), whose own text says "Re-declaring the same name *is* the migration
+  path" almost verbatim. Correctly unlabelled (same repo), true. The highest-risk shape named in
+  the task turned out to resolve cleanly here.
+- `src/config.rs:44` — `embarch-api` decision 11 (`base_url = "auto"`, resolved per-process).
+  Resolves, correctly labelled, true.
+- `src/trace.rs:3139` — unlabelled, `embarch-ui` decision 18 (server-side binning,
+  `?from&to&width`). Resolves, correctly unlabelled (same repo), true.
+- `src/study_designer.rs:65` — unlabelled, `embarch-ui` decision 14 (opening a project moves three
+  things together). Resolves, correctly unlabelled, true.
+- `src/study_designer.rs:430` — `embarch-study-designer` decisions 39/52/55 + `embarch-outpost`
+  decisions 11/12 (the `TapInput` shape). All five resolve, correctly labelled, all true against
+  the enum's actual two variants.
+- `src/study_designer.rs:828` — **wrong number.** Cited `embarch-study-designer` decision 57
+  ("the extraction scans the repo, not two files it was told about" — unrelated). The claim made
+  ("services get their own map because a merged map would have to guess which half a UUID wanted")
+  is decision **56**'s own sentence verbatim ("Two maps rather than one, because a merged map would
+  have to guess which lookup a UUID wanted"). Fixed in `src/study_designer.rs` to cite 56.
+- `src/study_designer.rs:1123` — `embarch-study-designer` decision 9 (async job execution, unbounded
+  BLE wait). Resolves, correctly labelled, true.
+- `src/study_designer.rs:1228` — `embarch-study-designer` decision 38 (`<firmware-repo>/embarch/studies`
+  saved-study library). Resolves, correctly labelled, true.
+
+**10 lines / 16 instances / 1 wrong / 0 labels / 0 false.** One fix landed in `embarch-ui`
+(`src/study_designer.rs`): decision 57 → 56. Nothing else needed a repo label added and no sentence
+was false against its correctly-cited decision.
+
+Gate: `cargo build --all-targets`, `cargo test` (91 passed, 4 ignored, plus 2 in
+`tests/element_ids.rs`), `cargo clippy --all-targets -- -D warnings` all green in `embarch-ui`
+(the `embarch-study-designer`/`embarch-api`/`embarch-topology` symlinks beside the worktree
+resolved with no extra linking needed). `check-docs.py`, `check-client-names.py --repo`, and
+`check-ownership.py` run from `embarch-doc`; results in the leg report.
 
 ## Not yours
 
