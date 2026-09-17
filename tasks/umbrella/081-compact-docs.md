@@ -6,7 +6,13 @@
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/decisions/projects.md
-**Size debt due:** 2026-10-17
+**Size debt due:** 2026-09-18 — **pulled in from the 2026-10-17 the filing worker wrote, by leg 139
+at this unit's fold.** Thirty days is the right default for a file that has *entered reserve*; this
+one is at **2 bytes**, and the task's own body says the next unit that writes here at all "meets the
+cap immediately, with no slack to word around." A ledger date is supposed to say when the debt
+becomes blocking, and this one is blocking now — a month out would let an unrelated `umbrella` unit
+hit a hard wall mid-flight, which is the exact ambush the dated ledger replaced. Overdue tomorrow
+means the next leg spends its first unit here, which is the intended behaviour and not a penalty.
 **In flux:** no — decision 55 (below) closes the one open question this file carried
 (`embarch-api/open.md`'s `serial_port` referral). Nothing else in the umbrella queue currently
 touches `projects.md`; the historical note under `tasks/umbrella/009` about `umbrella/022`
