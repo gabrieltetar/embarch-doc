@@ -13,6 +13,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- core/068: citation sweep, 15 lines/37 instances checked (4 line-wrapped, unfiled), 0 wrong, 0 false
 - core/067: citation sweep, README/release.yml/Cross.toml, 9 instances checked, 0 wrong numbers, 0 false sentences
 - core decision 44 (`decisions/logging.md`) compacted 4,352 B -> 2,438 B, under the per-decision cap.
 - core decision 30 (`decisions/streams.md`) compacted 4,248 B -> 3,550 B, under the per-decision cap.
