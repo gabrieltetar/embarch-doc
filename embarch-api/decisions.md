@@ -16,7 +16,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [How a failure is reported and attributed](decisions/failure-reporting.md) — how a tool description cites its own decision, the parity rule extended to the signal/dev-bench-link writers, `validate`'s call sites branching on `kind`, and the third `"unknown"` value for a `kind`-less Core | 57, 67, 71, 73 | 9.0 KB |
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52 | 6.0 KB |
 | [Hardware selection and identity](decisions/hardware-selection.md) — enrollment, mismatch alerts, the dev-bench identity cross-check, and why no tool here ever picks a physical board or port on a caller's behalf | 34, 35, 59, 60, 70 | 9.0 KB |
-| [Running a build](decisions/build.md) — the generic per-project command | 5 | 1.7 KB |
+| [Running a build](decisions/build.md) — the generic per-project command, and the unix-only process-tree kill | 5, 75 | 2.9 KB |
 | [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |
 | [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, and the crate-owned hash | 19, 69 | 5.8 KB |
 | [The flash offset a `bin` needs](decisions/flash-address.md) — `base_address` as config, not a per-call parameter | 42 | 1.7 KB |

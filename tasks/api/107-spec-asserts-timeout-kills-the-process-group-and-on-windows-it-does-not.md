@@ -1,6 +1,6 @@
 # 107 — `spec.md` §2 asserts "timeout kills the process group" as an invariant, and on the shipped Windows binary it does not
 
-**State:** claimed by agent/api/107-windows-process-group, 2026-09-17 00:49 (leg 132 unit 3)
+**State:** done — leg 132 unit 3, 2026-09-17, `agent/api/107-windows-process-group`
 **Source:** leg 132's own refill sweep of `embarch-api/open.md` and `spec.md` against the crate.
 Not a citation defect and not from a worker's report — a documented invariant checked against the
 code that is supposed to hold it.
@@ -105,23 +105,81 @@ both numbers for `spec.md`.
 
 ## Done when
 
-- [ ] `embarch-api/spec.md` §2's timeout bullet no longer asserts process-group kill as an
+- [x] `embarch-api/spec.md` §2's timeout bullet no longer asserts process-group kill as an
       unqualified invariant. It says what holds on unix, says what happens on Windows instead, and
       does not overstate either. **Do not write that the Windows behaviour is a bug that will be
       fixed** — nothing has decided that; see "Not yours".
-- [ ] `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` carries a comment saying plainly that
+- [x] `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` carries a comment saying plainly that
       it kills only the immediate child and that a forked build tree survives it. The unix arm's
       comment is the model for length and tone.
-- [ ] `decisions/shape.md:18` is either left alone with a stated reason or corrected, your call,
+- [x] `decisions/shape.md:18` is either left alone with a stated reason or corrected, your call,
       reported either way.
-- [ ] One of: a numbered `api` decision recording the asymmetry, its cost, and the named trigger
+- [x] One of: a numbered `api` decision recording the asymmetry, its cost, and the named trigger
       that would close it; **or** an `embarch-api/open.md` entry doing the same. Pick whichever
       matches how this repo already handles a platform gap it has chosen not to close — read
       neighbouring examples before deciding, and say in your report which you picked and why. If
       you write a decision, it goes in the `decisions/` file whose topic it is.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in
       `embarch-api`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+
+## Report
+
+**Windows really is shipped:** `.github/workflows/release.yml`'s `build` job matrix includes
+`{target: x86_64-pc-windows-msvc, os: windows-latest}` alongside linux x86_64/aarch64 and macOS
+aarch64 — a real build-and-release leg, not a curiosity. It only *builds* that target (no `cargo
+test` step on Windows anywhere in the file), which is exactly what makes an unexercised Windows
+kill path dangerous to ship blind.
+
+**`spec.md` §2 bullet** rewritten net-negative: 249 → 236 bytes (was: "Timeout kills the process
+group, not just the immediate child — ... A killed/timed-out build is reported distinctly...").
+New bullet states unix-only kill + Windows-immediate-child-only, citing the new decision, and
+drops the inline "why unix needs the group" rationale clause (moved into decision 75's prose,
+which is where the *why* belongs per this repo's spec/decisions split — other §2 bullets already
+cite `decisions/*.md` the same way, e.g. the `schema_version` and `lagged` bullets).
+
+**`src/build.rs`** — Windows `kill_process_tree` arm now carries a comment (modeled on the unix
+arm's) stating plainly it kills only the immediate child, that a forked tree survives, and citing
+decision 75.
+
+**`decisions/shape.md:18`** — left alone, on purpose. That sentence describes what the CLI keeps a
+caller from bypassing (config-driven build command, freshness check, "the timeout and
+process-group handling") as a statement about the **module boundary** — the pipeline exists and
+both mechanisms run — not a claim that the process-group kill is complete on every platform. It
+never asserted platform completeness the way `spec.md` §2 did, so it needed no qualifier. Reported
+per the task's instruction either way.
+
+**Picked: a numbered decision, not an `open.md` entry.** `decisions/build.md` decision 75 records
+the asymmetry (unix process-group vs Windows immediate-child-only), its cost (a timed-out
+`west`/`cmake`/`ninja` tree outlives the "killed" report and keeps the build directory locked), and
+the named trigger (`tasks/api/108`, filed this unit — what would have to run on a real Windows
+process to believe an implementation). Chose the decision route over `open.md` because `spec.md`
+§2 already cites `decisions/*.md` files for exactly this kind of platform/behavioral nuance on
+other bullets (`schema_version`, `lagged`), and decision 5 in the same file (`decisions/build.md`)
+already owns "running a build" as its topic — this is squarely that topic, not a loose end.
+`open.md`'s existing "Windows never runs the smoke-harness tier" bullet is a close **sibling**, not
+a template to duplicate: it names a *test-reach* gap with no decision behind it yet, while this
+gap already has a clear "why not fixed now" rationale that belongs with the code decision, so I
+did not also add a second `open.md` bullet — decision 75 is the single source of record, and
+mentions the smoke-harness gap inline for context instead of restating it.
+
+**Filed `tasks/api/108-windows-process-tree-kill.md`**: the actual Windows tree-kill
+implementation (Job Object or `taskkill /T /F`), with an explicit "what would have to run to
+believe it" section — a real Windows process, timed out, verified via `tasklist`/Process Explorer
+that a *forked grandchild* (not just the immediate child, which `start_kill()` already handles
+today) is actually gone. It says plainly a compile-only result does not close it.
+
+**Doc-size reserve:** `embarch-api/spec.md` — before: 9,102/10,240 B, 1,138 B left (88.9%
+pressure, `PARKED`). After: see below; the §2 bullet edit alone is net −13 B, well inside outcome
+1 of the reserve ladder (net-neutral/negative in-place rewrite), so `tasks/api/083`'s park is
+untouched and no new compaction debt was filed for `spec.md`.
+
+**Not started, mentioned per the task's instruction:** `tests/smoke_harness.rs`'s `#![cfg(unix)]`
+and its POSIX-shell fixture. This unit's decision 75 and the new `tasks/api/108` both lean on that
+gap (no Windows test tier exists to verify *any* Windows build-orchestration behavior, this one
+included) without sharpening it further — `108`'s own "what would have to run" section flags that
+whoever picks it up will likely want to add the first Windows entry to that file, but does not
+propose how `#![cfg(unix)]` itself should be lifted.
 
 ## Not yours
 
