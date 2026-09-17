@@ -48,6 +48,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- main.rs's stack-size comment said 64 MiB; the code has been 512 MiB since day one — comment fixed.
 - Citation sweep of src/zephyr.rs, main.rs, reflash.rs, study.rs, crates/embarch-core-client/src/api_log.rs: 2 wrong decision numbers fixed of 67 instances checked, 0 false sentences.
 - Citation sweep of embarch-api's non-Rust/tests files: checked 46, fixed 3 wrong decision numbers.
 - `client.rs` decision 62 cites (lines 593, 1724) are now bare-number, not the stale `decisions/streams.md` path.
