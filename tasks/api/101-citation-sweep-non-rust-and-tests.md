@@ -1,6 +1,6 @@
 # 101 — Citation sweep: `embarch-api`'s non-Rust files and `tests/`, the half every prior sweep scoped itself out of
 
-**State:** open
+**State:** claimed by agent/api/101-citation-sweep-non-rust-and-tests, 2026-09-16 18:45
 **Source:** leg 122's refill sweep, 2026-09-16. `api/091` swept `client.rs`/`config.rs`; `api/093`
 swept `resolve.rs`/`tools.rs`/`cli.rs`; `api/095` and `097` finished `client.rs`. Every one of those
 scoped its grep to `src/` and `crates/`. The files below have never been read by anything.
