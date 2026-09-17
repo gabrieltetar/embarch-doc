@@ -1,6 +1,6 @@
 # 034 — Wrapped-citation census: the twenty-four lines every single-line sweep missed
 
-**State:** open
+**State:** claimed — leg 131 unit 3, 2026-09-17, `agent/dev-bench/034-wrapped-citations`
 **Source:** `tasks/doc/071` (`Owner: required`, open), second `Done when` bullet — *"each
 sub-project already declared 'citation swept' end to end gets a follow-up task re-censusing with the
 wrap-aware method"*. `embarch-dev-bench` was swept by `dev-bench/031`, `032` and `033`, which
