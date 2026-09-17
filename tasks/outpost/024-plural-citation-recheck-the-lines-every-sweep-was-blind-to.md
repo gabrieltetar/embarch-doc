@@ -1,6 +1,6 @@
 # 024 — Plural-citation re-check: the 8 lines every `outpost` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/outpost/024-plural-citation-recheck, 2026-09-16 21:34
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-outpost` was declared **completely** citation-swept after `outpost/021` and `outpost/022`.
