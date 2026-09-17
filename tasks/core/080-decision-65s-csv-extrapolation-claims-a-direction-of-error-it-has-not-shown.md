@@ -1,7 +1,7 @@
 # 080 — Decision 65's CSV-size extrapolation names one source of bias and omits a larger one
 
-**State:** claimed by agent/core/080-decision-65-extrapolation-direction, 2026-09-17 15:50 — leg 138
-unit 3. Drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at `core/076`'s fold,
+**State:** done — leg 138 unit 3, 2026-09-17, `agent/core/080-decision-65-extrapolation-direction`.
+Drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at `core/076`'s fold,
 2026-09-17; body unchanged apart from this line, the number and the notes below.
 
 **Supervisor dispatch note 1 — this is prose, and the code is fine.** `core/076` landed 90 minutes
@@ -86,13 +86,32 @@ decision 65 as confirmation rather than as a rough sanity check.
 
 ## Done when
 
-- [ ] `embarch-core/decisions/stream-index.md` decision 65's "likely-low"
+- [x] `embarch-core/decisions/stream-index.md` decision 65's "likely-low"
       language either drops the directional claim (state the estimate as
       "order-of-magnitude, direction of error not established" rather than
       "likely-low") or is backed with an argument that addresses the
       lane/name-mix gap between the fixture and the reference profile, not
-      only `rx_utc_ms`.
-- [ ] No code change implied — `core/076`'s route, tests and the `/load`
+      only `rx_utc_ms`. **Chose the drop-the-claim route** (dispatch note 2's
+      first option): no second fixture with a different lane/name profile
+      exists in this repo to measure instead (only
+      `tests/fixtures/outpost-native-sim.bin`, the same one already used),
+      and dispatch note 2 explicitly rules out manufacturing one. The
+      replacement sentence states the estimate as order-of-magnitude with
+      direction of error not established, and names all three factors: the
+      `rx_utc_ms` gap the old text already had, the ~3x row-width spread
+      within the fixture itself (22–67 B around a 51.4 B mean), and the
+      4-lane/7-name vs 26-lane/112,804-span structural mismatch with the
+      reference profile. The "holds: same order of magnitude" conclusion
+      (decision 64 unaffected) is unchanged.
+- [x] No code change implied — `core/076`'s route, tests and the `/load`
       byte-for-byte-unchanged property are all fine as landed; this is a
-      documentation-precision fix only.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      documentation-precision fix only. Code worktree carries zero commits,
+      as expected, and is pushed anyway.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). The edit pushed
+      `stream-index.md` from 10,941 B into reserve (11,172/12,288 B, 90.9%)
+      because the honest replacement needed more words than the false one it
+      replaced — filed as `tasks/core/082-compact-core.md` in this same
+      commit, per protocol §5 item 5. **Filed by the worker as `081` and
+      renumbered to `082` by leg 138 at the fold**, because the supervisor's
+      own refill sweep had taken `081` in the same twenty minutes; see that
+      file's header.
