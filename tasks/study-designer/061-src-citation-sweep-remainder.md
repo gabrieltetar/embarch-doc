@@ -1,6 +1,6 @@
 # 061 — Citation sweep: `src/` remainder after `decoder.rs`
 
-**State:** open
+**State:** claimed (leg 132 unit 1)
 **Source:** `tasks/study-designer/060`, which swept `src/decoder.rs` (7
 grep-matching lines, 9 distinct citation instances, the third true zero in
 the chain) and left the rest.
