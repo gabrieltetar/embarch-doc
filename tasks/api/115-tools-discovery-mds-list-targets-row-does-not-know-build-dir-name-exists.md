@@ -1,6 +1,26 @@
 # 115 — `interfaces/tools-discovery.md`'s `list_targets` row does not know `build_dir_name` exists
 
-**State:** open
+**State:** claimed — leg 140, 2026-09-17, `agent/api/115-tools-discovery-build-dir-name`.
+
+**Dispatch note (supervisor, leg 140).** Take the second `Done when` bullet as seriously as the
+first: **re-read the whole `list_targets` row against the live tool definition in
+`embarch-api/src/tools.rs`, not just the missing field.** A row that was stale in one field is the
+cheapest possible place to find a second, and this unit's entire value is documentation currency.
+If you find nothing else stale, say so explicitly in your report — a checked-and-clean row is a
+result, and the next leg should not have to re-check it.
+
+**Do not restate the tool's runtime description verbatim into the doc.** `api/109` deliberately put
+the limit in `src/tools.rs` where a caller reads it; the interface doc should carry the same limit
+in its own voice, cite decision 77, and not become a second copy that can drift. `DOC-PROTOCOL.md`'s
+restate rule is the constraint here.
+
+**What is in reserve in `api`, so you plan instead of discover:** `decisions/failure-reporting.md`
+11,578/12,288 (710 B left, filed → `tasks/api/111`, blocked); `spec.md` 9,089/10,240 (1,151 B,
+filed → `tasks/api/083`, blocked); `open.md` 4,381/5,120 (739 B, filed → `tasks/api/113`, blocked).
+**Your target, `interfaces/tools-discovery.md`, is not in reserve** — check its headroom before you
+write and file `tasks/api/<next>-compact-api.md` in the same commit if your edit pushes it into the
+last 10% of its cap.
+
 **Filed by:** leg 139, 2026-09-17, at `api/109`'s fold, from that unit's reviewer — which found this
 and **deliberately declined to file it as a reviewer finding**, on the reasoning that it contradicts
 no numbered decision and would not justify reverting either commit. That judgement was right and the
