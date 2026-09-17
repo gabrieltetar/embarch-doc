@@ -1,6 +1,7 @@
 # 106 — The 18 singular-wrapped citations: the form even `core/068`'s wrap-check could not see
 
-**State:** claimed — leg 129, 2026-09-16.
+**State:** done — worker agent/api/106-singular-wrapped, 2026-09-16. 18 lines, 20 decision-number
+instances checked; 0 wrong numbers, 0 dead references, 0 false sentences; no edits needed.
 **Source:** leg 128's refill sweep, 2026-09-16, measured directly rather than inferred. `core/068`
 found on 2026-09-16 that a citation wrapped across a comment continuation is invisible to a
 line-based census, and its fix was the grep `grep -rlIE '[Dd]ecisions[[:space:]]*$'` — **plural
@@ -78,13 +79,50 @@ and `embarch-umbrella` both path-depend on, so a wrong number there is read from
 
 ## Done when
 
-- [ ] All 18 lines checked, with the count of distinct decision instances behind them reported.
-- [ ] Every wrong number, dead reference or false sentence fixed; every line deliberately left
+- [x] All 18 lines checked, with the count of distinct decision instances behind them reported.
+- [x] Every wrong number, dead reference or false sentence fixed; every line deliberately left
       alone named with the reason.
-- [ ] The measurement repeated after the edits, so the closing report states a number rather than
+- [x] The measurement repeated after the edits, so the closing report states a number rather than
       an impression.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
       `cargo test`, `cargo clippy --all-targets -- -D warnings` in `embarch-api`, and
       `check-docs.py` in `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped. No decision is created or amended unless you find one that
+- [x] `changelog.d/` fragment dropped. No decision is created or amended unless you find one that
       is actually wrong, in which case say so rather than editing quietly.
+
+## Result
+
+Re-ran `grep -rInE '[Dd]ecisions?[[:space:]]*$' embarch-api --include='*.rs' --include='*.toml'`
+(target excluded): the same 18 lines the task filed, no others. Each line's wrapped citation was
+read in its surrounding sentence, resolved against the repo the sentence actually names (not the
+grep column — several of these are cross-repo: `embarch-core` decisions 31, 62 and `embarch-ui`
+decision 14 sit among the eighteen), and checked against that decision's current text.
+
+Every one of the 18 checked out clean:
+
+- 15 lines cite exactly one decision number each: `config.example.toml:82` (api/40),
+  `src/main.rs:539` (api/52), `tests/json_surface.rs:3` (api/50), `src/build.rs:51` (api/19),
+  `src/reflash.rs:6` (`embarch-core`/31), `src/reflash.rs:182` (api/40), `src/resolve.rs:17`
+  (api/21), `src/resolve.rs:310` (api/51), `src/zephyr.rs:445` (api/12),
+  `crates/embarch-core-client/src/user_dirs.rs:9` (`embarch-ui`/14), `src/config.rs:255` (api/32),
+  `src/tools.rs:101` (api/12), `crates/.../client.rs:17` (api/11), `crates/.../client.rs:346`
+  (api/73), `crates/.../client.rs:355` (api/73), `crates/.../client.rs:841` (api/60), and
+  `crates/.../client.rs:1723` (`embarch-core`/62).
+- 1 line, `src/logging.rs:26`, cites three: "(decisions 4 and 3, 10)" — `Mode::Mcp` against
+  decision 4 ("MCP over stdio"), `Mode::Cli` against decisions 3, 10 ("Three responsibilities, and
+  a CLI alongside MCP") — matching `decisions.md`'s own merged heading for 3/10.
+
+**18 lines / 20 decision-number instances, 0 wrong numbers, 0 dead references, 0 false sentences.**
+No edits needed anywhere in `embarch-api`.
+
+Two lines got the extra read the task flagged: `src/reflash.rs:182` ("the difference is decision
+40's verification asymmetry") is the sentence's object, re-checked as prose rather than a
+parenthetical — it states exactly what `study-reflash.md` decision 40 says ("the difference *is*
+the verification asymmetry showing up as control flow"). `src/config.rs:255`'s "dev-bench remains
+... one at a time" was checked against decision 45 (which falsifies "there is exactly one
+dev-bench board" as a *board-identity* premise) — decision 45 itself says "the bench is still one
+at a time" for the build-lock key, so the citation still holds; the two decisions are about
+different axes (which board vs. how many concurrently).
+
+No comment blocks were reflowed; only the task file and one `changelog.d/` fragment changed.
+`embarch-api/spec.md` untouched (9,102/10,240 B, unchanged) — no compact task needed.
