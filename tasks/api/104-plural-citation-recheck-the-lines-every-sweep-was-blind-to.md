@@ -1,6 +1,6 @@
 # 104 — Plural-citation re-check: the 13 lines every `api` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/api/104-plural-citation-recheck, 2026-09-16 20:36
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-api` was declared citation-swept after `api/095`, `097`, `101` and `102`. **Every one of
