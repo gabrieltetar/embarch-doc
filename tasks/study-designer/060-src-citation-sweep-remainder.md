@@ -1,6 +1,6 @@
 # 060 — Citation sweep: `src/` remainder after `outpost.rs`
 
-**State:** open
+**State:** claimed — leg 131 unit 2, 2026-09-17, `agent/study-designer/060-src-citation-sweep-remainder`
 **Source:** `tasks/study-designer/059`, which swept `src/outpost.rs` (8
 grep-matching lines, 8 distinct citation instances) and left the rest.
 **Scope:** study-designer
