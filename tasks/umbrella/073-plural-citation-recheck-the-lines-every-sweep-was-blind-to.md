@@ -1,6 +1,6 @@
 # 073 — Plural-citation re-check: the 13 lines every `umbrella` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/umbrella/073-plural-citation-recheck, 2026-09-16 20:36
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-umbrella` was declared **completely** citation-swept after `umbrella/066` and `umbrella/072`.
