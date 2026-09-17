@@ -23,6 +23,13 @@ and `spec.md`.
 **This is a wire-schema bump.** Per `../../embarch-fleet/ops.md` §4, the supervisor announces it
 before it lands — do not skip that because the shape feels additive.
 
+**Announced by leg 137, 2026-09-17 13:29 — `ts` `1789673384.645649`** in `#embarch-fleet`. The
+window opened at that post and closes 30 minutes later; this task may be dispatched after it closes
+if no objection arrived. **If leg 137 ends before the window closes, this task goes back to `open`
+with this `ts` in place and the next leg completes the window rather than restarting the clock**
+(`ops.md` §4: the relay must not restart it every twenty minutes). A reply saying go runs it
+immediately; a reply saying cancel drops it to `open` with the reply quoted here.
+
 ## Why now
 
 `embarch-core` decision 64 decided to serve this rather than decline, reasoning that suite decision
