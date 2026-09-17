@@ -1,6 +1,9 @@
 # 076 — Three more `embarch-umbrella` doc-versus-code contradictions, from the same census that produced 075
 
-**State:** claimed by agent/umbrella/076-three-more-contradictions, 2026-09-17 01:04
+**State:** done — 2026-09-17. All three items resolved — item 1 as a code change (`src/doctor.rs`,
+decision 53), item 2 as a doc correction (`open.md`), item 3 as a code change across `deploy.rs` and
+`setup.rs`'s `up`/`down`/`uninstall`/`apply_plan`. `open.md` crossed into doc-size reserve while
+fixing item 2; filed as `tasks/umbrella/077-compact-docs.md` (open, not blocking).
 **Source:** leg 132's own refill census of `embarch-umbrella`'s docs against its source — the same
 pass that produced `tasks/umbrella/075`. **Filed so they survive**: they existed only in a
 supervisor's report, and `supervisor-log.md` folds daily and rolls into `log-archive/`, so anything
@@ -76,17 +79,65 @@ the stream it expects is not a hypothetical concern. Whichever way you resolve i
 
 ## Done when
 
-- [ ] Each of the three is either **fixed** or **reported as not holding**, with the evidence, one
+- [x] Each of the three is either **fixed** or **reported as not holding**, with the evidence, one
       by one. Partial is acceptable and expected: if you run out of budget, fix the ones you
       reached and **file a follow-up task naming exactly which of the three remain**, the way this
-      task names them.
-- [ ] Nothing is "fixed" on the strength of this task's own description. Every change rests on a
+      task names them. (All three fixed; no follow-up on the census items themselves needed.)
+- [x] Nothing is "fixed" on the strength of this task's own description. Every change rests on a
       line you read.
-- [ ] Item 1's outcome states explicitly whether it landed as a code change or a documented
-      limitation, and why.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in
-      `embarch-umbrella`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+- [x] Item 1's outcome states explicitly whether it landed as a code change or a documented
+      limitation, and why. (Code change — see report below and decision 53.)
+- [x] A `changelog.d/` fragment. (Three: `umbrella-usb-scan-wsl2-ambiguity.fixed.md`,
+      `umbrella-open-check5-protocol.fixed.md`, `umbrella-deploy-setup-stderr.fixed.md`.)
+- [x] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` in
+      `embarch-umbrella`, and `python3 scripts/check-docs.py` in `embarch-doc`. All green, plus
+      `check-ownership.py` (both repos) and `check-client-names.py`.
+
+## Outcome, item by item
+
+**Item 1 — fixed as a code change (decision 53), coordinates held near-exact.** `usb_scan_for` (was
+line 862, holds) gated purely on `winner_class`; `core_belongs_to` (line 216, comment confirms it is
+"only ever consulted when no binary could be located at all") is *not* a safe drop-in for check 5,
+because it is oblivious to whether a real local `embarch-core` binary was actually found — under WSL2
+with no explicit `--host` it always resolves `WslHost` regardless, so gating check 5 on it directly
+would silently disable the scan on every WSL2 machine, including one with a genuine native-Linux
+Core reachable via `usbipd`. Fix: `usb_scan_for` now also takes the located binary and `under_wsl2`,
+and scans when `winner_class == Local` **and** (not under WSL2, **or** the located binary is a native
+Linux exe rather than a Windows one reached through interop). No located binary reduces to the same
+"assume the Windows host" call `core_belongs_to` already makes, for the same reason. Four new/updated
+unit tests, all against synthetic `Located` values — unexercised on real hardware, matching the rest
+of this check's fail branch (`open.md`).
+
+**Item 2 — fixed as a doc correction, no code change.** `check_probes` (line 913, holds) confirmed:
+with the probe permitted again, `a.probes` is non-empty and the function returns Pass
+`probes-present` before the USB scan is ever consulted — `no-probe-found` needs a zero count *and*
+nothing on the bus, unreachable with a permitted known-VID probe. `open.md`'s settling protocol
+corrected to name the reachable code.
+
+**Item 3 — fixed as a code change, swept for all failure-exit sites in the named scope.**
+`deploy_core` (line 319, holds): every `println!` immediately preceding `return EXIT_FAILURE`
+converted to `eprintln!` (11 sites); progress/success prints (plan render, "syncing …", the transcript
+dump, "landed and running") stay on stdout. `setup::uninstall`: its three failure-language messages
+converted, even though the function always returns 0 (best-effort cleanup) — matched to the task's
+own framing of this site, not to the stricter exit-code rule used elsewhere. `refuse_if_remote`'s two
+call sites (`up`/`down`) and the adjacent `defer_to_windows_service`/`Deferral` mechanism: split so the
+`satisfied: true` (exit 0) message stays on stdout and the `satisfied: false` (exit 1) message moves
+to stderr — the two outcomes previously shared one `println!`. Also swept, same file, same shape:
+`apply_plan`'s `(_, None)` arm (`Can't continue without embarch-core`, exit 1). **Not swept:**
+`install_this_platform` and `apply_plan`'s other advisory messages (`Could not install the service`,
+`Could not save state`) — these are printed under branches that still return 0 by explicit design
+(`install_this_platform`'s own doc comment: "shouldn't silently abort the rest of `setup`"), so
+`spec.md`'s exit-code-1 promise does not govern them; converting them would blur that distinction, not
+fix it. Also not audited: `init.rs`, `main.rs::status`, `doctor.rs::doctor` — outside the task's named
+scope (`deploy.rs`, `setup::uninstall`, `refuse_if_remote`).
+
+## Coordinate drift
+
+`usb_scan_for` def: reported ~862, actual 862 (exact). `usb_scan_for` call site: reported ~3262,
+actual 3261 (drift 1). `core_belongs_to` call: reported ~3249, actual 3247 (drift 2). `check_probes`:
+reported ~920–925 for the Pass arm, actual 920–925 (exact). `deploy.rs` failure sites: reported ~523,
+~538–545, ~452, ~458; actual 520–526, 539–546, 452–453, 458–459 (drift 0–3, all within a line or two).
+Every shape held; only line numbers drifted, consistent with `umbrella/075`'s finding.
 
 ## Not yours
 
