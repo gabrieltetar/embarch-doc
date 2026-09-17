@@ -1,6 +1,6 @@
 # 063 — Wrapped-citation census: the ten lines every single-line sweep missed
 
-**State:** open
+**State:** claimed — leg 130 unit 2, 2026-09-16, `agent/ui/063-wrapped-citations`
 **Source:** `tasks/doc/071` (`Owner: required`, open), second `Done when` bullet — *"each
 sub-project already declared 'citation swept' end to end gets a follow-up task re-censusing with the
 wrap-aware method"*. `embarch-ui` was swept by `ui/054` (`assets/app.js`), `060` (`main.rs`,
