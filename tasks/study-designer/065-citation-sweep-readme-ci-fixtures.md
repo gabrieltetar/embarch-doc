@@ -1,6 +1,6 @@
 # 065 — Citation sweep: the crate's top-level readme, its CI workflow, and its `.eap` fixtures
 
-**State:** open
+**State:** claimed by agent/study-designer/065-citation-sweep-readme-ci-fixtures, 2026-09-17 13:26
 **Source:** `tasks/study-designer/064`, which closed the four files `063`
 found outside `src/` (`tools/extract_gatt_config.rs`,
 `tests/firmware_test_vectors.rs`, `tests/eap_worked_protocols.rs`,
@@ -93,3 +93,23 @@ is.
 their caps, filed as `tasks/study-designer/032`/`026`, both blocked. As of
 `064` neither needed touching for a comment sweep; check fresh
 (`scripts/check-doc-size.py --pressure`) rather than trusting this note.
+
+## Supervisor notes (leg 137, 2026-09-17)
+
+1. **Reserve, read by me at dispatch:** `embarch-study-designer/spec.md`
+   **9,350/10,240 B (890 B left)** and `open.md` **4,659/5,120 B (461 B
+   left)**, both filed and both blocked — **do not write into either.** If
+   your work pushes a third file into the band, file
+   `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit.
+   Almost all of this unit's edits should land in the code repo, not in
+   `embarch-doc`.
+2. **A clean sweep is a real result.** Four of this chain's recent units found
+   zero defects and four found real ones; do not manufacture a correction to
+   have something to report. Report the three numbers honestly per file.
+3. **Say plainly whether the chain should continue.** The suite has no single
+   added-up figure for this nine-unit chain and the last few handoffs have
+   asked whether it is still earning its keep. Your `Done when`'s fresh
+   whole-repo grep is the evidence: if nothing citation-bearing remains
+   unswept, say so and say the chain is finished rather than filing a
+   successor out of habit.
+4. You own exactly one sub-project: `embarch-study-designer`.
