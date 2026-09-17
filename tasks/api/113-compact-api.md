@@ -1,4 +1,4 @@
-# 112 — `embarch-api/open.md` is in reserve after task 109's `build_dir_name` bullet
+# 113 — `embarch-api/open.md` is in reserve after task 109's `build_dir_name` bullet
 
 **State:** blocked
 **Source:** `api/109`'s new Structural-limits bullet (`build_dir_name` names only the default
