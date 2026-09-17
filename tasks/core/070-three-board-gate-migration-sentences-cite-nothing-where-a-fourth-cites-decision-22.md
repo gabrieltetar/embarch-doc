@@ -1,6 +1,6 @@
 # 070 — Three `board_gate` migration sentences cite nothing, where a fourth cites decision 22
 
-**State:** open
+**State:** claimed — leg 131 unit 4, 2026-09-17, `agent/core/070-board-gate-migration-citations`
 **Source:** leg 131 refill, 2026-09-17, generalising `tasks/topology/052`'s finding. That unit
 found two sibling files in `embarch-topology` carrying the same *"formerly `embarch-core`'s own
 X"* sentence with the same wrong attribution, and observed that **one was only inside a sweep's
