@@ -1,6 +1,6 @@
 # 074 — Decision 59's "every distinguishing fact was already present" is false for a probe-open failure; `kind` may not cover that case
 
-**State:** claimed by agent/core/074-decision59-open-fail, 2026-09-17 11:34
+**State:** done — agent/core/074-decision59-open-fail, 2026-09-17
 **Filed by:** leg 135, from `inbox/core-decision59-open-fail-not-classified.md`, written by the
 `topology/056` reviewer. Filed verbatim below except for this header block and the two supervisor
 notes marked as mine. I re-checked the `Hardware: none` claim myself and it holds: every question
@@ -137,34 +137,124 @@ the same not-attached/mismatch distinction in its text lead. Say whether a calle
 
 **Item 1:**
 
-- [ ] Confirmed, from `embarch-core`'s actual `/validate` handler, what status and `kind` a
+- [x] Confirmed, from `embarch-core`'s actual `/validate` handler, what status and `kind` a
       probe-open (attached-but-`.open()`-fails) failure produces today — quoted from lines you read,
       not inferred.
-- [ ] If it is not distinguishable from a generic 500/unhandled error, decided whether it needs its
+- [x] If it is not distinguishable from a generic 500/unhandled error, decided whether it needs its
       own `kind` (a third arm) or is documented as an accepted gap, and **decision 59 and
       `interfaces/topology.md`'s `/validate` row amended to stop asserting "every distinguishing fact
       was already present."** Per supervisor note 2, do not implement a third arm.
-- [ ] Checked whether `flash`/`reset` and `study.rs`'s dev-bench gate (decision 59's
+- [x] Checked whether `flash`/`reset` and `study.rs`'s dev-bench gate (decision 59's
       `describe_topology_error`/`describe_gate_error`) have the same blind spot in their plain-text
       paths, and said so either way.
 
 **Item 2:**
 
-- [ ] `interfaces.md`'s `503` bullet and `spec.md`'s matching sentence name **every** case the code
+- [x] `interfaces.md`'s `503` bullet and `spec.md`'s matching sentence name **every** case the code
       produces — re-derived by you from `src/api.rs`, not copied from item 2's text — or item 2 is
       reported as not holding, with the lines that show it.
-- [ ] Said explicitly whether `502`/`describe_gate_error` needs a caller-facing mention.
-- [ ] Items 1 and 2 leave **one** consistent account of `503` across `interfaces.md`, `spec.md` and
+- [x] Said explicitly whether `502`/`describe_gate_error` needs a caller-facing mention.
+- [x] Items 1 and 2 leave **one** consistent account of `503` across `interfaces.md`, `spec.md` and
       `interfaces/topology.md`. A half-corrected invariant is worse than either side — that is
       `core/072`'s own instruction, and `core/072` is the unit that just broke it.
 
 **Both:**
 
-- [ ] Nothing corrected on the strength of this task's own description — every change rests on a line
+- [x] Nothing corrected on the strength of this task's own description — every change rests on a line
       you read.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
       warnings` in `embarch-core`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+
+## Resolution
+
+Both items held, re-derived from source rather than taken on the task's own word. No code changed
+anywhere, in either `embarch-core` or `embarch-topology`.
+
+**Item 1 — the completeness premise does not hold, and it is broader than "probe-open."** Read
+`embarch-topology/src/hardware/validate.rs` (the sibling checkout `../embarch-topology` this crate's
+`Cargo.toml` path-dependency actually resolves to) rather than assuming the task's paraphrase:
+`validate_known_timed` (226–277) only calls `raise()` — the one function that constructs a
+`TopologyMismatch` and logs an alert — from exactly two places: the probe absent from
+`Lister::list_all()` (234–243, `live_hardware_id: None`) and a live hardware-ID mismatch (261–271,
+`live_hardware_id: Some`). Every failure *between* those two points — `probe_info.open()` (246–248),
+`check_target_powered` (249–250), `probe.attach` (251–253), `session.core(0)` (254–256), and
+`hardware_id::read` (257) — returns a bare, non-downcastable `anyhow::Error` via `?`, with no alert
+logged. So the gap is not only "attached but `.open()` fails"; it is the whole mid-attach path after
+the probe is found, five failure points wide, none of them ever reaching `TopologyMismatch`. The
+crate's own corrected doc comment (`topology/056`, `fb754d7`, prose-only, no new decision number)
+already says this precisely for `live_hardware_id`; I confirmed it against the function body itself
+rather than trusting the comment alone.
+
+Traced what `embarch-core` does with that bare error at all four call sites that reach
+`validate_known_timed` (via `validate_serial_timed`/`validate_role_timed`):
+- `src/api.rs`'s `validate_handler` (1055–1123): neither `TopologyMismatch::downcast_ref` (1091) nor
+  `NotEnrolled::downcast_ref` (1115) matches a bare error, so it falls to `Err(internal_err(e))`
+  (1120) — plain-text `500`, the full `{e:?}` chain, no `kind` field at all.
+- `src/api.rs`'s `describe_topology_error` (201–219), used by `flash_handler` (446) and
+  `reset_handler` (574): the `None => internal_err(e)` arm (217) — plain-text `500`.
+- `src/study.rs`'s `describe_gate_error` (905–917), used by `enforce_dev_bench_gate` (894): the
+  `None => format!("{e:?}")` arm (915) — folded into `502 BAD_GATEWAY` by both its callers (`study.rs`
+  374, 968, 972, 1043, 1051, per that function's own doc comment, 897–904).
+
+So decision 59's "every distinguishing fact was already present... Core was the one collapsing it" is
+false for this case: there is no fact to collapse — `embarch-topology` never produced one. **Per
+supervisor note 2, no third `kind` arm implemented.** Amended decision 59's own last paragraph
+(`decisions/surfaces.md`) in place to record what it got right (no wire change needed for `kind`'s two
+existing arms) and what it did not (the completeness claim), and corrected
+`interfaces/topology.md`'s `/validate` row, which repeated the same "couldn't be opened at all"
+conflation this task's Item 1 quotes. Documented as an accepted, previously-unrecorded gap, not fixed
+in code — a third `kind` arm is a wire change with consumers in `embarch-api`/`embarch-ui`/the user
+guide, out of scope here.
+
+**Item 2 — held, and `interfaces.md`'s bullet undercounted by one.** `describe_topology_error`'s
+`not_attached` arm (203–209) returns `StatusCode::SERVICE_UNAVAILABLE` — a real, tested third `503`
+producer (`api.rs`'s own test `flash_reset_path_leads_differ_between_not_attached_and_mismatch`,
+2049–2060, pins both status and lead-text distinction), reached from `flash_handler`/`reset_handler`
+*after* `hw_lock` is already held (`acquire_hw_lock` at 413/567 runs first). That is a different
+`503` than `acquire_hw_lock`'s own contention `503` (103–123) — same status, same plain-text shape,
+distinguished only by the message's own lead word (`probe not attached for role …` vs
+`hw_lock held by …`), never by anything structural. `interfaces.md`'s bullet named only two meanings
+(`hw_lock` contention, `/validate`'s JSON `kind`) and missed this third one entirely — fixed by
+rewriting the bullet to name all three and say explicitly that two of them share status and shape.
+
+**`spec.md`'s "matching sentence" checked and left alone.** It only asserts "plain text on every
+non-2xx except `POST /validate`" and points to `interfaces.md` for detail — it never itself claimed
+"two distinct meanings" for `503` (that phrase is `interfaces.md`'s alone), and the plain-text/JSON
+split it does assert is still exactly true after this fix (`/flash`/`/reset`'s `not_attached` `503` is
+still plain text, not JSON). No edit needed there; verified rather than assumed.
+
+**`502` does need the caller-facing mention, and now has one.** `describe_gate_error`'s two arms
+(906–916) carry the same not-attached/mismatch distinction in their lead words that
+`describe_topology_error`'s do — confirmed by reading both functions side by side. Added one sentence
+to `interfaces.md`'s `404`/`502` lead saying so, so a caller of `study.rs`'s dev-bench gate knows to
+read the body's lead the same way a `/flash`/`/reset` caller now has to for `503`.
+
+**One consistent account of `503` now exists across all three files.** `interfaces.md` carries the
+full three-producer account and the accepted-gap note; `spec.md` points to it without repeating or
+contradicting it; `interfaces/topology.md`'s `/validate` row matches `interfaces.md` and no longer
+conflates "not found" with "found but failed to open."
+
+**Doc-size reserve:** `python3 scripts/check-doc-size.py --pressure` run before and after — same 14
+parked files both times, `decisions/auth.md` untouched (still 11,356/12,288 B). None of the three
+edited files (`decisions/surfaces.md` now 8,705 B, `interfaces.md` 6,067 B,
+`interfaces/topology.md` 3,744 B — `spec.md` unchanged at 8,456 B, not edited) entered the reserve
+band. No compaction task filed.
+
+**Not done, correctly:** no third `kind` arm, no new numbered decision, no change to
+`embarch-topology`, `decisions/auth.md` untouched, no handler/status/response-shape change anywhere
+(`git status`/`git diff` on the code worktree shows zero changes).
+
+**Gate:** `cargo build --all-targets`, `cargo test` (209 passed, 2 ignored, 0 failed),
+`cargo clippy --all-targets -- -D warnings` all green in the code worktree (doc-only unit, run for
+baseline — unaffected). `python3 scripts/check-docs.py` (11/11 green),
+`python3 scripts/check-ownership.py --scope core` (doc worktree, base `d69d3644b574`, 3 paths, all
+owned) and `--scope core --code-repo` (code worktree, 0 paths changed) both green,
+`python3 scripts/check-client-names.py --repo <code worktree>` clean against 7 denylist entries.
+
+**Hardware-verification debt:** none. Every claim here is settled by reading `embarch-core`'s
+`src/api.rs`/`src/hardware.rs`/`src/study.rs` and `embarch-topology`'s `src/hardware/validate.rs` — no
+board, no probe, no live Core, per this task's own `Hardware: none` line.
 
 ## Not yours
 
