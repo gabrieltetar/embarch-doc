@@ -1,6 +1,18 @@
 # 115 — `interfaces/tools-discovery.md`'s `list_targets` row does not know `build_dir_name` exists
 
-**State:** claimed — leg 140, 2026-09-17, `agent/api/115-tools-discovery-build-dir-name`.
+**State:** done — leg 140, 2026-09-17, `agent/api/115-tools-discovery-build-dir-name`. The
+`list_targets` row now names `build_dir_name` (limit stated in the doc's own words, citing
+[decisions/target-json.md](../../embarch-api/decisions/target-json.md) 77) and, re-reading the whole
+row against `src/resolve.rs`'s `list_targets`, found one more stale field: `default_target` (decision
+20's per-project base) is a real top-level sibling of `targets`/`snippets_by_app`/`default_snippets`/
+`default_extra_args` in the JSON the tool returns, and the row never mentioned it either. Added.
+Every other field in the row (the file-backing-validated tuple, `snippets_by_app`,
+`default_snippets`, `default_extra_args`, and the whole `static` half of the row) still matches
+`list_targets`'s live behaviour — checked field by field, nothing else stale. File size
+1,469 B → 1,784 B, well inside `interfaces/tools-discovery.md`'s 12,288 B `interface-group` cap (no
+reserve, no compaction task needed). No `changelog.d/` fragment: `history/api.md` already carries
+`build_dir_name`'s reader-facing announcement from `api/109`; this unit only brings the interface doc
+up to date with what already shipped, so there is no new reader-facing fact to log. `src/` untouched.
 
 **Dispatch note (supervisor, leg 140).** Take the second `Done when` bullet as seriously as the
 first: **re-read the whole `list_targets` row against the live tool definition in
@@ -60,13 +72,16 @@ gets written.
 
 ## Done when
 
-- [ ] `embarch-api/interfaces/tools-discovery.md`'s `list_targets` row names `build_dir_name`, says
+- [x] `embarch-api/interfaces/tools-discovery.md`'s `list_targets` row names `build_dir_name`, says
       what it is, and carries the same limit the tool description carries: **default combination
       only**, `null` when the configured default snippet is not among the app's available ones.
-- [ ] While you are in there, check whether the same row's other fields still match what
+- [x] While you are in there, check whether the same row's other fields still match what
       `list_targets` returns today — a row that was stale in one field is worth re-reading whole.
-- [ ] `changelog.d/` fragment only if the wording change is reader-facing beyond the fix itself.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      Found a second stale field, `default_target` (missing entirely); added it. Everything else
+      checked clean.
+- [x] `changelog.d/` fragment only if the wording change is reader-facing beyond the fix itself. Not
+      dropped — `history/api.md` already announces `build_dir_name` from `api/109`; nothing new here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Not yours
 
