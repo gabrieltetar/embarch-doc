@@ -1,6 +1,6 @@
 # 103 — `main.rs`'s stack-size comment says 64 MiB and the code sets 512
 
-**State:** open
+**State:** claimed by agent/api/103-stack-size-comment, 2026-09-16 19:55
 **Source:** `api/102`'s worker, 2026-09-16, which found it while sweeping `src/main.rs` for citations
 and correctly left it alone — it is not a decision citation, and a citation sweep that starts fixing
 every wrong number it walks past is a sweep with no boundary.
