@@ -1,6 +1,6 @@
 # 060 — Citation sweep: `src/main.rs` and `src/trace.rs`, the last unswept `ui` source
 
-**State:** open
+**State:** claimed by agent/ui/060-main-rs-trace-rs-citation-sweep, 2026-09-16 19:55
 **Source:** `tasks/ui/054`, which swept `assets/app.js` and excluded these two **by scope, not by
 running out of room** — it said so at filing and its worker said so again in its report. Filed here
 so the remainder is written down rather than rediscovered, the way the `study-designer/044`–`055`
