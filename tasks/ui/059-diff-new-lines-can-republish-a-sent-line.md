@@ -5,7 +5,14 @@ trades the duplicate for a **permanently dropped line remainder**, which inverts
 stated preference. **Unparks the moment the fix publishes the grown line instead of swallowing it**
 — see "Leg 123's refusal" below, which specifies it exactly. The branches are pushed and are worth
 reusing, not redoing: `agent/ui/059-diff-new-lines-republish` in `embarch-ui` (code `21a48de`) and
-`embarch-doc` (doc `dfe1d91`). **Neither was merged.**
+`embarch-doc` (doc **`6ed4267`** as pushed — the worker reported `dfe1d91`, which is the same work
+before I rebased the branch onto `main`; the `supervisor-log.md` entry for this unit quotes the
+worker's pre-rebase number, so `6ed4267` is the one to check out). **Neither was merged.**
+
+**The doc branch carries a stale copy of THIS file.** It was rebased onto `main` at `ceb6bd1`, one
+commit before the fold that set this task `blocked`, and it contains the worker's own edit marking
+the task closed. Merging that branch as-is would silently revert everything below. Take the code and
+the decision text from it; **re-apply this file by hand.**
 **Source:** `inbox/ui-diff-new-lines-spurious-republish.md`, filed by the `ui/057`
 worker while verifying a reviewer counter-example against real code.
 **Scope:** ui
