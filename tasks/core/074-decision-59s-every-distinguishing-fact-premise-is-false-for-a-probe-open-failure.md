@@ -1,6 +1,6 @@
 # 074 — Decision 59's "every distinguishing fact was already present" is false for a probe-open failure; `kind` may not cover that case
 
-**State:** open
+**State:** claimed by agent/core/074-decision59-open-fail, 2026-09-17 11:34
 **Filed by:** leg 135, from `inbox/core-decision59-open-fail-not-classified.md`, written by the
 `topology/056` reviewer. Filed verbatim below except for this header block and the two supervisor
 notes marked as mine. I re-checked the `Hardware: none` claim myself and it holds: every question
@@ -38,7 +38,17 @@ change with consumers in `embarch-api`, `embarch-ui` and the user guide — **do
 say so, and drop it in `/home/gabriel/Github/embarch/embarch-doc/inbox/` (absolute path) in full task
 format. Documenting it as an accepted gap is the cheaper outcome and is a legitimate answer.
 
+**Supervisor note 3 — a second reviewer finding was folded into this task rather than filed
+separately, because it is the same sentence from the other side.** `inbox/core-072-review-third-503-producer.md`
+(written by `core/072`'s reviewer, merge `76a48ed`, and deleted by me when I folded it in) is
+**item 2 below**. It is a defect in text that landed forty minutes before this task was written, in
+the same two files, about the same status code. Doing both in one unit is the only way they get a
+consistent answer; splitting them would have two workers writing the same bullet. **Both items are
+required for this task to be done.**
+
 ---
+
+## Item 1 — decision 59's completeness premise
 
 ## What
 
@@ -85,7 +95,47 @@ that the written rationale for the current shape rests on a premise the doc repo
 retracted elsewhere. **Establishing that is this task's first job, and "it is already handled" is a
 correct outcome.**
 
+---
+
+## Item 2 — the `503` bullet `core/072` just landed names two cases and the code has three
+
+**Do not take this on my word or the reviewer's — re-derive it.** `core/072` (merge `76a48ed`)
+rewrote `embarch-core/interfaces.md`'s `503` bullet and `embarch-core/spec.md`'s matching sentence to
+say `503` *"carries two distinct meanings"*: `hw_lock` contention everywhere, and `/validate`'s JSON
+`kind: "not_attached"` on that one route. `core/072`'s reviewer re-derived a third producer from
+`src/api.rs`: **`POST /flash` and `POST /reset`** (`flash_handler` ~446, `reset_handler` ~574) both
+call `describe_topology_error` (`api.rs` 201–219), which returns
+`(StatusCode::SERVICE_UNAVAILABLE, "probe not attached for role …")` — **plain text, after `hw_lock`
+was already successfully acquired**, whenever the `TopologyMismatch`'s `live_hardware_id` is `None`.
+That is neither `hw_lock` contention nor `/validate`.
+
+The reviewer reports this is inside decision 59's own scope rather than outside it: decision 59 says
+in its own words that *"`flash`/`reset` … ran the identical check mid-attach … fixed the same way …
+(`describe_topology_error`/`describe_gate_error`)"*, and `tasks/core/041`'s commit (`f1c18cc` in
+`embarch-core`) built both `/validate`'s `kind` field and `describe_topology_error`'s 503/409 split
+in one diff — reportedly confirmable with `git log -p -S describe_topology_error -- src/api.rs`, and
+pinned by the test `flash_reset_path_leads_differ_between_not_attached_and_mismatch` (`api.rs`
+~2045). **Check that history yourself.**
+
+**What it costs a reader:** a caller following the new text's *"check which route answered"* rule
+still misdiagnoses a detached probe on `/flash` as lock contention, because on those two routes the
+two causes share a status code and differ only in message text — which the new bullet never says.
+
+**A revert is available and is the worse option.** `76a48ed` touches only
+`embarch-core/interfaces.md`, `spec.md`, `interfaces/result-layout.md`, `decisions/surfaces.md`, two
+`changelog.d/` fragments and a task file, and nothing has touched those hunks since — but reverting
+restores the older, also-wrong *"plain text on every non-2xx / 503 means `hw_lock`"* invariant. Fix
+forward.
+
+**Also settle the `502`:** the reviewer checked `study.rs`'s dev-bench gate (`describe_gate_error`)
+and reports it folds into `502` rather than being a fourth `503` producer — but that `502` may carry
+the same not-attached/mismatch distinction in its text lead. Say whether a caller needs to be told.
+
+---
+
 ## Done when
+
+**Item 1:**
 
 - [ ] Confirmed, from `embarch-core`'s actual `/validate` handler, what status and `kind` a
       probe-open (attached-but-`.open()`-fails) failure produces today — quoted from lines you read,
@@ -97,6 +147,19 @@ correct outcome.**
 - [ ] Checked whether `flash`/`reset` and `study.rs`'s dev-bench gate (decision 59's
       `describe_topology_error`/`describe_gate_error`) have the same blind spot in their plain-text
       paths, and said so either way.
+
+**Item 2:**
+
+- [ ] `interfaces.md`'s `503` bullet and `spec.md`'s matching sentence name **every** case the code
+      produces — re-derived by you from `src/api.rs`, not copied from item 2's text — or item 2 is
+      reported as not holding, with the lines that show it.
+- [ ] Said explicitly whether `502`/`describe_gate_error` needs a caller-facing mention.
+- [ ] Items 1 and 2 leave **one** consistent account of `503` across `interfaces.md`, `spec.md` and
+      `interfaces/topology.md`. A half-corrected invariant is worse than either side — that is
+      `core/072`'s own instruction, and `core/072` is the unit that just broke it.
+
+**Both:**
+
 - [ ] Nothing corrected on the strength of this task's own description — every change rests on a line
       you read.
 - [ ] A `changelog.d/` fragment.
