@@ -11,6 +11,7 @@
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- `spec.md`'s "Storage and roles" moved verbatim to `spec/storage-and-roles.md`, paying its reserve debt.
 - `validate_known_timed`'s five mid-attach failures now `raise`/log too, not just not-attached/mismatch — decision 34.
 - Decisions 20 and 21 compacted under the 4,096 B per-decision cap; nothing cut duplicates or thins the safety claims.
 - Decision 25 (chip classifier) compacted 7,818 B -> 4,001 B, under the 4 KB per-decision cap; not split, see `tasks/topology/047`.
