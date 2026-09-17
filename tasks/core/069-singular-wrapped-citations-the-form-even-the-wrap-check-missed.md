@@ -1,6 +1,6 @@
 # 069 — The 15 singular-wrapped citations: the form `core/068`'s own wrap-check could not see
 
-**State:** open
+**State:** claimed by agent/core/069-singular-wrapped-citations, 2026-09-16 22:00
 **Source:** leg 128's refill sweep, 2026-09-16, measured directly rather than inferred. `core/068`
 is the unit that *discovered* the wrapped-citation blind spot and fixed it with
 `grep -rlIE '[Dd]ecisions[[:space:]]*$'` — **plural only**. Re-running it with the singular
