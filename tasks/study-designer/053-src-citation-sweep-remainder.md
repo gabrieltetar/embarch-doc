@@ -182,8 +182,33 @@ report using the actual per-file numbers above plus whatever this unit adds,
 since some early files (`044`-`047`) never published a distinct-instance
 count separate from the grep-line count, only the grep count.**
 
+## One extra, already diagnosed — a two-word fix, do it first
+
+`embarch-study-designer/.cargo/config.toml`'s comment says **"4 MiB passes
+107/107"**. `decisions/limits.md` decision 63 says **"4 MiB passes 108/108"**.
+`052`'s worker spotted the mismatch and correctly left it (`bounded.rs` does not
+cite that count); `052`'s **reviewer then settled it**, and the answer is
+recorded here so nobody re-derives it:
+
+**Decision 63 is right and the comment is wrong, and it was wrong the day it
+landed — this is not drift.** The reviewer checked out the commit pair that
+introduced both texts (code `a68c071`, doc `61e2c16`, same author, twelve
+seconds apart) into a scratch worktree and ran the real suite there:
+`RUST_MIN_STACK=4194304 cargo test --quiet` gave **108 passed**. The `107/107`
+was an off-by-one baked into that commit.
+
+Fix the comment to `108/108`. **Do not touch decision 63** — it is correct, and
+editing a correct decision to match a wrong comment is the failure mode this
+whole sweep chain exists to catch. Re-run the command above to confirm the count
+still holds today rather than taking the reviewer's word for it; if today's count
+differs from 108, that is a *different* finding and it needs saying rather than
+quietly writing whatever number you get.
+
 ## Done when
 
+- [ ] `.cargo/config.toml`'s test-count comment corrected to agree with the
+      measured count, decision 63 left alone, and the count re-measured rather
+      than copied.
 - [ ] One named file (`src/eap.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately.
 - [ ] Cross-repo citations in it carry their repo name — and every citation,
