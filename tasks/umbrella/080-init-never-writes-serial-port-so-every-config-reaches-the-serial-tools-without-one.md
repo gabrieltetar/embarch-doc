@@ -1,6 +1,6 @@
 # 080 — `init` never writes `serial_port`, so every config reaches the serial tools without one
 
-**State:** open
+**State:** claimed — leg 139, 2026-09-17, branch `agent/umbrella/080-init-serial-port`
 **Filed by:** leg 138's refill sweep, 2026-09-17. `embarch-api/open.md` has carried this as a
 referral — *"Not this crate's to fix"* — with a named owner and no task behind it, which is how a
 cross-repo gap sits still indefinitely: the repo that found it correctly declines to fix it, and the
@@ -11,6 +11,43 @@ which points at `embarch-umbrella` decision 17 (`embarch-umbrella/decisions/proj
 **Hardware:** none — this is a schema-and-reasoning question about what `init` scaffolds. **Do not
 attempt to discover a real port**, and do not run `init` against the owner's real configs.
 **Owner:** no
+
+## Dispatch note — leg 139, 2026-09-17
+
+**Doc-size reserve for `umbrella`, measured at dispatch.** Three files are in reserve and all three
+are filed against *blocked* compaction tasks, so nobody else is paying them:
+
+- `embarch-umbrella/decisions/install.md` — **12,071/12,288 B, 217 B left** (`tasks/umbrella/079`,
+  blocked). Effectively full. Nothing goes here.
+- `embarch-umbrella/decisions/bind.md` — 11,533 B, 755 B left (`tasks/umbrella/009`, blocked).
+- `embarch-umbrella/open.md` — 3,954 B, 1,166 B left (`tasks/umbrella/077`, blocked).
+
+**The file you will almost certainly write is `decisions/projects.md`, and it is the trap here.**
+Decision 17 lives there. It is **10,881/12,288 B — 88.6%, 1,407 B left — which is *just under* the
+reserve line and therefore invisible to `check-doc-size.py` today.** An amendment to decision 17's
+body of any real length will push it across. If it does, you file
+`tasks/umbrella/<next free NNN>-compact-docs.md` **in the same commit** (`tasks/README.md` has the
+shape), with a `**Size debt due:**` date and a per-file `In flux:` answer. That is your job because
+you hold the one piece of context nobody else will — whether this subsystem is still moving. It is
+**not** your job to do the compaction.
+
+Run `python3 scripts/check-doc-size.py --pressure` yourself before you push and act on what it says
+about `projects.md`; do not take my number as final, since your own edit is what moves it.
+
+**`DOC-PROTOCOL.md` says edit decision 17's body, not append a note beside it.** If the reasoning
+genuinely does not belong inside 17, a new numbered decision is correct — but check
+`embarch-umbrella/decisions.md` for the next free number against `main`, and be aware two legs in a
+row have had a task number collide because two actors picked "next free" against different views of
+`main` within the same twenty minutes. The same hazard applies to decision numbers.
+
+**"It stays out, deliberately" is the likely answer and it is a full unit.** The task is right that
+this is not a licence to write it without argument: if you land there, the decision must say what a
+caller with no configured port is expected to do, and it must engage with why a serial port is
+*more* volatile than a board rather than less.
+
+**Ownership is checked on both your branches.** `embarch-api/**` is not yours in any form,
+including `embarch-api/open.md`. Drops go to `/home/gabriel/Github/embarch/embarch-doc/inbox/` by
+**absolute** path — a relative one lives only inside your worktree and is deleted with it.
 
 ## What
 
