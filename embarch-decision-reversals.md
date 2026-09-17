@@ -11,7 +11,7 @@ Assumptions reality has already overturned — **the highest-signal page in this
 | 1-50 | [reversals/rows-1-50.md](reversals/rows-1-50.md) |
 | 51-72 | [reversals/rows-51-72.md](reversals/rows-51-72.md) |
 | 73-92 | [reversals/rows-73-92.md](reversals/rows-73-92.md) |
-| 93-109 | [reversals/rows-93-109.md](reversals/rows-93-109.md) |
+| 93-110 | [reversals/rows-93-110.md](reversals/rows-93-110.md) |
 
 **A row number is a permanent identity, not a position.** Numbers are never reused or renumbered, so a row may sit out of date order and a range file never re-splits an existing row into a different file. Rows 106-109 were renumbered from duplicates that shared a number.
 
@@ -29,7 +29,7 @@ Every row was caught by a real build, install, capture, or by reading a real rep
 
 **4. Two things that must agree, with nothing mechanical keeping them in step.** Rows 8, 22, 30, 44, 63, 103. **A note describing a gap is not a mechanism for closing one** (44) — the comment recording that a mirrored constant had been four bumps stale stayed accurate and did not prevent the immediate recurrence. A capacity constant is a contract the moment both sides have one (30).
 
-**5. A guess indistinguishable from an answer.** Rows 14, 82, 105. **The expensive part is never the guess, it is that nothing downstream can tell it was one** — a warning in a log while the endpoint reports full confidence turns a wrong port into a bench that flashes, boots, runs, and times out on a handshake, **which says nothing about a port having been chosen at all** (105).
+**5. A guess indistinguishable from an answer.** Rows 14, 82, 105, 110. **The expensive part is never the guess, it is that nothing downstream can tell it was one** — a warning in a log while the endpoint reports full confidence turns a wrong port into a bench that flashes, boots, runs, and times out on a handshake, **which says nothing about a port having been chosen at all** (105).
 
 **6. A wire capability verified to *exist* rather than verified to be *used*.** Rows 26, 68, 86. **A wire-format change is not done when the DUT emits it — it is done when every host that decodes it has been re-measured against it** (86), which cost a 46× error on the single number the next session was briefed to reduce. **A message type is the one place a "this half is someone else's scope" split can hide a hole**, because the half you are not building is exactly the half whose input you never construct (68).
 
