@@ -1,23 +1,13 @@
-# 058 — Citation sweep: `src/` remainder after `gatt.rs`
+# 059 — Citation sweep: `src/` remainder after `registry.rs`
 
-**State:** done — leg 129, 2026-09-16. Swept `src/registry.rs`: 9 distinct
-citation instances, 0 wrong numbers, 1 false sentence (fixed — see
-`tasks/study-designer/059`'s carried-forward account). Continuation-grep
-re-run fresh, same four already-swept files, no new hit. Follow-up filed as
-`tasks/study-designer/059`, naming the remaining eight files
-(`outpost.rs` down to `records.rs`).
-**Source:** `tasks/study-designer/057`, which swept `src/gatt.rs` (11
-grep-matching lines, **13** distinct citation instances) and left the rest.
-`057` wrote 14 here; the reviewer re-derived it and the supervisor confirmed
-it independently at that unit's fold — of the 11 lines, only line 1
-(`decisions 31/32/33`) carries more than one number, so the count is
-10×1 + 3 = 13. Corrected in every place it appears below, including the
-running tally.
+**State:** open
+**Source:** `tasks/study-designer/058`, which swept `src/registry.rs` (9
+grep-matching lines, 9 distinct citation instances) and left the rest.
 **Scope:** study-designer
 **Hardware:** none — source comments only; nothing is built for a board.
 **Owner:** no
 
-**Doc-size reserve for `study-designer` (re-checked fresh by `057`,
+**Doc-size reserve for `study-designer` (re-checked fresh by `058`,
 2026-09-16, via `scripts/check-doc-size.py --pressure`): unchanged.**
 `embarch-study-designer/spec.md` (9,350/10,240 B, 890 B left) and `open.md`
 (4,659/5,120 B, 461 B left) remain in the last 10% of their caps, filed as
@@ -27,7 +17,7 @@ it turns out you must, spend the bytes and say so in your report.
 
 ## What
 
-Fifteen files are now swept (the four originally-named plus eleven more):
+Sixteen files are now swept (the four originally-named plus twelve more):
 
 ```
 41  src/schema_version.rs — swept in 044
@@ -46,14 +36,14 @@ Fifteen files are now swept (the four originally-named plus eleven more):
 12  src/eap_parse.rs      — swept in 056 (recount; 056's own header table
                             estimated 13)
 11  src/gatt.rs           — swept in 057
+ 9  src/registry.rs       — swept in 058
 ```
 
-**9 files remain (plus `ids.rs`, which has no citations), largest first, by
+**8 files remain (plus `ids.rs`, which has no citations), largest first, by
 the same grep methodology** (`grep -cE '[Dd]ecisions? [0-9]+' src/<file>.rs`
 — a *line* count, not a citation-instance count):
 
 ```
- 9  src/registry.rs
  8  src/outpost.rs
  7  src/decoder.rs
  7  src/sample.rs
@@ -65,29 +55,45 @@ the same grep methodology** (`grep -cE '[Dd]ecisions? [0-9]+' src/<file>.rs`
  0  src/ids.rs — no citations; needs no sweep, listed so the count above is exhaustive
 ```
 
-Take one file — `src/registry.rs` next, largest remaining, unless a reason
-is given to reorder — read every cited decision's body against the sentence
+Take one file — `src/outpost.rs` next, largest remaining, unless a reason is
+given to reorder — read every cited decision's body against the sentence
 around the citation, and fix what is wrong. Count wrong *numbers* and false
 *sentences* separately, per the method below. When you run out of budget,
 file the next `tasks/study-designer/<next>` naming exactly which files
 remain, the same way this one does.
 
-**`056`'s find, carried forward (the reason this chain checks same-repo
-proximity, not just cross-repo labelling): a wrong number that was real,
+**`058`'s find, carried forward: a citation number can be to a real,
+existing decision and still be flatly wrong — not stale, not superseded,
+just never having said what the comment claims it said.** `src/registry.rs`
+line 36 cited "decision 35's own 'doesn't need it here' call" for excluding
+`GattOperation::StreamCapture` from `RegisteredOperation`; decision 35 (read
+in full, in every version back to its original 2026-08-24 text) never
+discusses `RegisteredOperation`'s variant set or `StreamCapture` at all — it
+is entirely about the registry's no-inference/enumerated-values design.
+Decision 39 (`decisions/streams.md`) is what actually says `StreamCapture`
+was folded into the tap model as `StreamSource::GattNotify`, which is the
+true reason a registered action never carries it. Fixed by repointing to 39.
+**Unlike `056`'s shape (a real citation that used to be right and drifted) or
+`055`'s shape (right decision, wrong module/status claim), this one never
+had a decision backing it at all** — worth checking for on every file: read
+the *whole* cited decision, not just its header, before trusting a
+citation that sounds plausible.
+
+**`056`'s find, still carried forward: a wrong number that was real,
 on-topic, cross-repo, and correctly labelled — and still wrong, because a
 nearer same-repo decision said the identical thing two lines above.** See
 `tasks/study-designer/057`'s predecessor text for the full account
 (`embarch-core` decision 30's "settlement 2" vs. same-repo decision 59, in
-`eap_parse.rs`). **`057` found zero candidates for this shape** — `gatt.rs`
-had no cross-repo citations at all — which is itself worth recording: the
-shape is real but not universal, and a file can be clean of it.
+`eap_parse.rs`). **`057` and `058` both found zero candidates for this
+shape** — neither `gatt.rs` nor `registry.rs` had any cross-repo citations at
+all, so two files running in the true-zero column for this specific check.
 
 **`055`'s find (carried forward, still the standing reminder): a false
 sentence can misattribute *where* a cited feature runs, not just *which*
 decision covers it.** See `tasks/study-designer/056`'s copy of this
 paragraph for the full `crc32_ieee` account.
 
-## Method (carried over from `044`-`057`, confirmed useful all fifteen
+## Method (carried over from `044`-`058`, confirmed useful all sixteen
 times)
 
 **Read the cited decision's body, then read the sentence around the
@@ -96,8 +102,10 @@ holds. **Check every number and every implementation-status claim in the
 cited sentence, not just the decision number.** Count the two categories —
 wrong numbers, false sentences — separately and report both, honestly, even
 if one or both is zero. **A zero is a real, reportable result, not a null
-one** — two of fifteen files so far (`bounded.rs`, `gatt.rs`) checked out
-completely clean.
+one** — two of sixteen files so far (`bounded.rs`, `gatt.rs`) checked out
+completely clean; `registry.rs` had exactly one problem, a false-sentence
+citation with no true zero of either kind (9 citations, 0 wrong numbers, 1
+false sentence).
 
 **Check cross-repo labelling as the first pass, specifically in this repo.**
 A bare `decision N` is same-repo by convention; another repo's decision must
@@ -105,20 +113,19 @@ read `<repo> decision N`. Check every bare *and* every labelled `decision N`
 against *this crate's own* decisions.md/decisions/*.md first regardless, and
 **for every cross-repo citation found, also ask whether a same-repo decision
 already says the same thing** (`056`'s shape) — a file can have none of
-these to check, as `gatt.rs` did.
+these to check, as `gatt.rs` and `registry.rs` both did.
 
 **Run the continuation-grep too, every file, not just the target.**
 `grep -rlIE '[Dd]ecisions[[:space:]]*$'` over the whole repo catches a
 citation wrapped across a comment continuation, which a line-based
 `grep -cE` census misses entirely (found first by `embarch-core/068`). As of
-`057` it hits **four files**: `Cargo.toml`, `src/lib.rs` (twice), `src/eap.rs`,
-and `src/schema_version.rs` — all four already-swept or out of this chain's
-file list, and all four checked correct. **`057` also found that
-`schema_version.rs`'s hit had not been named in `056`'s report despite the
-file being unchanged since `044`** — so re-run this full-repo grep fresh each
-time rather than trusting a prior unit's file list as closed; report
-whatever it finds, even if it lands outside the file being swept and even if
-it repeats a hit a prior unit already named.
+`058` it still hits the same **four files**: `Cargo.toml`, `src/lib.rs`
+(twice), `src/eap.rs`, and `src/schema_version.rs` — all four
+already-swept or out of this chain's file list, and all four checked
+correct again. Re-run this full-repo grep fresh each time rather than
+trusting a prior unit's file list as closed; report whatever it finds, even
+if it lands outside the file being swept and even if it repeats a hit a
+prior unit already named.
 
 ## Files already swept (do not re-do)
 
@@ -168,24 +175,34 @@ it repeats a hit a prior unit already named.
   citation instances (`057` reported 14; corrected at its fold). 0 wrong
   numbers, 0 false sentences, 0 unlabelled cross-repo citations — the second
   true zero in the chain; no cross-repo citations of any kind in this file.
+- `src/registry.rs` — done in `058`. 9 grep-matching lines, 9 distinct
+  citation instances (every matching line carries exactly one number). 0
+  wrong numbers, 1 false sentence, 0 unlabelled cross-repo citations —
+  fixed (`RegisteredOperation`'s doc comment attributed the exclusion of
+  `GattOperation::StreamCapture` to "decision 35's own 'doesn't need it
+  here' call"; decision 35 says nothing of the kind anywhere in its history,
+  in this file or any other decision file — repointed to decision 39, which
+  actually says `StreamCapture` was folded into the tap model as
+  `StreamSource::GattNotify`).
 
-## Running tally across the chain (`044`–`057`, fifteen files reporting
+## Running tally across the chain (`044`–`058`, sixteen files reporting
 per-file counts)
 
 Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
 count only reported), `study.rs` 52 (ditto), `gatt_extract.rs` 36 (ditto),
 `lib.rs` 41 (ditto), `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs`
 31, `limits.rs` 32, `result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16,
-`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13. **Total: 446.** Wrong numbers
-found: 0+3+3+2+3+1+0+1+1+0+1+0+0+1+0 = **16**. False sentences found:
-0+0+2+0+0+0+0+1+0+0+0+1+1+0+0 = **5**. Recompute this fresh in your report
-using the actual per-file numbers above plus whatever this unit adds.
+`crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13, `registry.rs` 9. **Total: 455.**
+Wrong numbers found: 0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0 = **16**. False
+sentences found: 0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1 = **6**. Recompute this
+fresh in your report using the actual per-file numbers above plus whatever
+this unit adds.
 
 ## Also worth doing: the `.cargo/config.toml` count is now dated, not fixed
 
 `053` found the test count had drifted from decision 63's dated
 [2026-09-02] 108/108 to a fresh [2026-09-16] measurement of **125/125**
-(116 lib + 9 `firmware_test_vectors` integration tests). `054` through `057`
+(116 lib + 9 `firmware_test_vectors` integration tests). `054` through `058`
 all re-ran the full suite fresh (`cargo test --all-targets`) and got the
 same 125/125 (116 + 9), so the comment does not yet need a third dated line.
 If this keeps drifting, a future sweep should decide whether the comment
@@ -195,25 +212,25 @@ call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [x] One named file (`src/registry.rs`, unless a reason is given to
+- [ ] One named file (`src/outpost.rs`, unless a reason is given to
       reorder) fully swept, wrong numbers and false sentences counted
       separately, and every plain number and implementation-status claim in
       a cited sentence checked, not only the decision number.
-- [x] Cross-repo citations in it carry their repo name — and every citation,
+- [ ] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text (including any amendment) is read
       before it is called wrong, or trusted. Remember `056`'s find: correctly
-      labelled and still wrong is possible; and check whether a same-repo
-      decision already says the same thing. (Zero cross-repo citations in
-      this file, same as `057`.)
-- [x] The whole-repo continuation-grep
+      labelled and still wrong is possible; and `058`'s find: a citation can
+      be to a real decision that never said the thing at all — read the
+      whole cited decision, not just its header.
+- [ ] The whole-repo continuation-grep
       (`grep -rlIE '[Dd]ecisions[[:space:]]*$'`) run fresh (do not assume
-      `057`'s four-file list is exhaustive) and any hit reported, even one
-      landing outside the file being swept. (Same four files, no new hit.)
-- [x] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep). (`tasks/study-designer/059`.)
-- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      `058`'s four-file list is exhaustive) and any hit reported, even one
+      landing outside the file being swept.
+- [ ] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep).
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
 
@@ -221,7 +238,7 @@ call to make unprompted, noted here so it is not lost.
 
 `embarch-study-designer/spec.md` and `open.md` were both inside the last 10%
 of their caps as of `045`'s dispatch, with both compaction tasks (`032`,
-`026`) blocked, `In flux: yes`. `047` through `057` all re-checked
+`026`) blocked, `In flux: yes`. `047` through `058` all re-checked
 `scripts/check-doc-size.py` fresh and found no new reserve entries for this
 scope, touching neither file. Check fresh again rather than trusting this
 number — a comment sweep should not need either file regardless. If this
