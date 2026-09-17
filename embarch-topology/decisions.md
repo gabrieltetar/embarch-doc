@@ -20,6 +20,6 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26 | The `validate` call's own freshness timestamp, distinct from the enrolled record's |
 | [decisions/links.md](decisions/links.md) | 18 | The DUT signal link's declared route |
 | [decisions/links-port.md](decisions/links-port.md) | 17, 24 | A link's own declared port, distinct from its probe's, and detection's fourth answer |
-| [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19 | How a mismatch reaches a human, and the live-push mechanism that was retired |
+| [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19, 34 | How a mismatch reaches a human, and the live-push mechanism that was retired |
 
 Decision 9 is **retired** — explicit-override detection, superseded by decisions 2 and 3 removing the override mechanism outright.
