@@ -1,6 +1,9 @@
 # 057 — `spec.md` is in reserve
 
-**State:** open
+**State:** blocked — unparks when `tasks/topology/056` lands, or is closed without touching
+`spec.md`, whichever comes first. **Filed by `topology/055` with two contradictory `**State:**`
+lines — `open` here and `blocked` further down; leg 133 resolved that to the `blocked` the body
+argues for.**
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/055`'s three
 correctness fixes (identity-gate equality shortcut, role-uniqueness cardinality, the alert log
 read-back caveat), 2026-09-17
@@ -8,7 +11,18 @@ read-back caveat), 2026-09-17
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-topology/spec.md
+**In flux:** yes — the sole file on the `Compacts:` line is in flux (per-file answer, and here
+there is only one file). `tasks/topology/056` is open against the same *"What validation asserts,
+and what it cannot"* section `055` just edited.
 **Size debt due:** 2026-10-17
+**Must not delete:** the three qualifiers `055` just added, because each one exists to stop a
+reader relying on a guarantee the code does not provide — that `compare_self_reported` matches on
+**case-insensitive string equality for any chip** before it ever reaches a declared relation, so
+`Undeclared` is not the only non-match outcome; that role uniqueness is a **write-time rule in
+`upsert_at`, not a store invariant**, and that the displaced-row guarantee covers only the *first*
+duplicate (`find` returns one, `retain` deletes all); and that `alerts.jsonl` **is** persisted and
+is merely never read back as an input. Shortening any of these into the original flat claim
+re-introduces the defect `055` was filed to fix.
 
 ## What
 
@@ -24,15 +38,15 @@ missing — not padding, and together they pushed `spec.md` from 9,001/10,240 B 
 The debt is real once a file is within the last 10% of its cap, and recording it is the whole
 mechanism (`tasks/topology/014`'s own wording, same rule).
 
-## In flux: yes
+## In flux
 
+**Yes** — recorded as the `**In flux:**` field above, and this section is the reasoning behind it.
 `tasks/topology/056` (the probe-open failure raising neither a `TopologyMismatch` nor an
 `alerts.jsonl` row) is still open against this same crate's validation surface and may touch
 `spec.md`'s "What validation asserts, and what it cannot" section — the same section `055` just
-edited. Set `**State:** blocked`.
-
-**State:** blocked — unparks when `tasks/topology/056` lands (or is filed away without touching
-`spec.md`), whichever comes first.
+edited. That is what holds this task `blocked`, and it is a dated park, not an absorbing one: the
+`**Size debt due:**` above is what makes a leg spend its first unit here whether or not it is
+blocked.
 
 ## Done when
 
