@@ -1,6 +1,8 @@
 # 073 — Plural-citation re-check: the 13 lines every `umbrella` sweep was structurally blind to
 
-**State:** claimed by agent/umbrella/073-plural-citation-recheck, 2026-09-16 20:36
+**State:** done — worker agent/umbrella/073-plural-citation-recheck, 2026-09-16. Re-census matched
+the floor exactly (13 lines); existence-and-truth pass on all 30 instances found 0 wrong numbers
+and 0 false sentences. No code change landed in `embarch-umbrella` — see "Result" below.
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-umbrella` was declared **completely** citation-swept after `umbrella/066` and `umbrella/072`.
@@ -80,3 +82,53 @@ Same pass the chain has run eleven times, unchanged except for the census patter
 Every plural-form citation line in `embarch-umbrella` has had the existence-and-truth pass, the
 report states the instance count checked against the thirteen-line floor, and each defect found is
 either fixed here or filed with its reason for not being fixed here.
+
+## Result, worker (umbrella/073), 2026-09-16
+
+**Re-census:** `grep -rInE '[Dd]ecisions? [0-9]'` over the repo (excluding `.git`/`target`),
+filtered to the plural form, returned exactly the same 13 lines listed above — no fourteenth line,
+no dropped one.
+
+**Instance count:** 30, not the ~31 estimated as a floor (`config.rs:21` is 2, `state.rs:32` is 2,
+`main.rs:306` is 2, `release.yml:23` is 2, `Cargo.toml:24` is 4, `Cargo.toml:52` is 2, `env.rs:6` is
+2, `setup.rs:5` is 3, `setup.rs:76` is 2, `init.rs:3` is 3, `doctor.rs:141` is 2, `doctor.rs:1977`
+is 2, `doctor.rs:4329` is 2 — sum 30). All 30 got the full existence-and-truth pass: number resolved
+in the file the citation names (own-repo bare, or the stated cross-repo prefix), then the cited
+decision's current body read against the sentence around the citation.
+
+**Findings: 0 wrong numbers, 0 false sentences.** Notable checks:
+
+- The three `` `embarch-topology` decisions 2, 3 `` sites (`main.rs:306`, `setup.rs:76`,
+  `doctor.rs:141`, plus `env.rs:6` bare) all assert present-tense "live, in-process, every call" —
+  checked against `embarch-topology/decisions/crate.md`'s decisions 2 and 3 (unreversed, unamended)
+  and against the actual code: all three call sites do call
+  `embarch_topology::software::resolve_software_topology`/`topology::resolve_software_topology`
+  live, per call. Holds.
+- `Cargo.toml:24`'s `` `embarch-topology` decisions 2, 3, 4, 6 `` (the line that wraps) — all four
+  exist (2/3 in `crate.md`, 4 in `consumer-boundary.md`, 6 in `crate.md`) and the sentence
+  ("software-topology detection... now calls this shared crate live, in-process", no `hardware`
+  feature) matches all four bodies, including decision 4's "both software and hardware topology, in
+  one pass."
+- `Cargo.toml:52`/`state.rs:32`'s decisions 32/50 and 48/51 (`embarch-umbrella/decisions/deploy.md`,
+  `sticky-host.md`) checked against both the decision bodies and the current
+  `src/deploy.rs::landed`/`src/setup.rs::apply_plan` implementations — both still hash-based (not
+  length) and still clear `saved.host` on a non-`remote` conclusion, exactly as the comments claim.
+- `release.yml:23`'s `27/29` is one decision recorded under two numbers
+  (`decisions/release.md`'s own "renumbered... recorded rather than renumbered again" note) — a
+  plural citation of a single entry, not two separate ones; both resolve to the same heading and
+  the sentence (mismatch fails the release outright, gates the build matrix) matches, and the repo's
+  `verify-version` job still `needs:`-gates the build matrix.
+- `config.rs:21`'s `` `embarch-api` decisions 53/13 `` (targets/soc_chip_overrides retirement) still
+  matches the two structural refusals in `Config::validate`.
+- `setup.rs:5`'s bare `decisions 3, 4, 7` and `init.rs:3`'s bare (capitalized) `Decisions 10, 12, 13`
+  — both own-repo, both resolved to `install.md`/`topology.md` and `integration.md`/`projects.md`
+  respectively, and both module-doc summaries still match the decision bodies' current text.
+- `doctor.rs:1977`/`doctor.rs:4329`'s decisions 33/35/36 (own repo, `decisions/schema-skew.md`) —
+  match the `SchemaVersions` struct fields and the check-11 test names/bodies exactly.
+
+**Doc-size reserve:** untouched. No prose written to `spec.md`, `open.md`, or any decisions file;
+`decisions/bind.md` stays at its filed, blocked `tasks/umbrella/009` reserve. No new compaction task
+needed.
+
+**No `inbox/` drop filed** — no finding here fell outside this task's scope (no wrong number that
+wasn't a decision citation, no second-repo issue).
