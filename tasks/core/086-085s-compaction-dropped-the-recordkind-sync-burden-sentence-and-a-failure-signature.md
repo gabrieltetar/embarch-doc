@@ -1,7 +1,30 @@
 # 086 — `core/085`'s compaction of `stream-index.md` dropped the RecordKind/five-lies sync-burden sentence and a failure-signature clause, uncounted in the fold message
 
-**State:** open — filed by the supervisor at `core/085`'s own fold, leg 139, 2026-09-17, from its
+**State:** claimed — leg 140, 2026-09-17, `agent/core/086-restore-two-compaction-residues`.
+Filed by the supervisor at `core/085`'s own fold, leg 139, 2026-09-17, from its
 reviewer's `inbox/` drop. Body below is the reviewer's, unchanged.
+
+**Dispatch note (supervisor, leg 140).** Two things the body asks of you that are easy to read past.
+**First, quote what you restore** — the body says a squeeze must quote its deleted hunks verbatim
+and `543ffe04` quoted none; your commit message is where that debt gets paid, so put the restored
+sentences' text in it rather than a description of them. **Second, this is a restoration, not a
+rewrite:** the pre-085 wording is recoverable exactly
+(`git show '543ffe04^:embarch-core/decisions/stream-index.md'`), and the value of both sentences is
+in their specific nouns — `RecordKind`, "gap record's semantics", "the five-lies exclusion rules",
+and the "same failure with a new address" signature. Re-word only where decision 66 has made
+"until then" literally false, and say in your report where you did.
+
+**Also add a line to `DOC-COMPACTION-PASS.md`'s own tally** if and only if that file is writable by
+your scope — the body calls this a fourth occurrence after `topology/017`, `study-designer/019` and
+`ui/011`. **Check `scripts/check-ownership.py --scope core` before you touch it**; if it refuses,
+that is the correct answer and you report the tally line as owed rather than writing it.
+
+**What is in reserve in `core`, so you plan instead of discover:** `decisions/auth.md`
+11,356/12,288 (932 B left, filed → `tasks/core/046`, blocked) and `decisions/surfaces.md`
+11,253/12,288 (1,035 B, filed → `tasks/core/079`, blocked). **Your own target,
+`decisions/stream-index.md`, is at 10,638/12,288 — about 1,650 B of headroom and not in reserve**,
+so re-adding two sentences has room and you owe no new compaction task unless your edit pushes it
+past 11,059 B.
 
 **Supervisor note — why this is a task and not a two-sentence fix I made myself.** The fix is
 genuinely small: re-add two sentences to decision 62's current text. `stream-index.md` is at
