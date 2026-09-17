@@ -28,6 +28,37 @@ logged". The recovery is real but manual: `git add` the task file, `git rm -f` i
 doc-side commit by hand, at which point `fold-commit.py` refuses a retry (correctly) because the log
 no longer has an uncommitted change.
 
+## The documented workaround does not work, and it is the one two other docs tell you to use
+
+**Added by leg 136, 2026-09-17, hit live while folding `suite/043`.** The recovery paragraph above
+opens with *"`git add` the task file"*, and `.claude/leg.md`'s dispatch guidance says the same in
+the other direction — `tasks/suite/043`'s own "known mechanical traps" section says, in as many
+words, *"`git add` this file before the fold."* **I did exactly that, and it fails too, with a
+different git message:**
+
+```
+error: the following file has changes staged in the index:
+    tasks/suite/043-....md
+(use --cached to keep the file, or -f to force removal)
+```
+
+So `git rm` refuses **both** states a `suite/` task file can be in at fold time — unstaged
+modification *and* staged modification. Its only accepted state is a file identical to `HEAD` that
+already reads `**State:** done`, and a `suite/` task is never in that state, because the supervisor
+is the actor that writes `done` and there is no branch for it to arrive on. **The pre-emptive
+`git add` does not avoid the failure; it converts it into a second one that looks unrelated**, and
+it costs the same log-committed-fold-not-committed recovery.
+
+What actually worked, and what the fix should probably make unnecessary: `git rm -f` the task file
+directly (its content is about to be deleted, so the unlanded `done` edit is discarded harmlessly),
+then write the doc-side commit by hand naming the already-landed log commit. Landed that way as
+`095797a`, log `embarch-fleet@409134c`.
+
+**Two documents to correct when this is fixed** — both owner-reserved, which is why they are named
+rather than edited: `.claude/leg.md`'s `suite`-task guidance, and this task's own recovery
+paragraph. A workaround that is wrong in two places is worse than no workaround, because it reads
+as tested.
+
 ## Why it only bites `suite/` tasks
 
 **Every ordinary unit's task file arrives already committed.** A worker sets `**State:** done` on
