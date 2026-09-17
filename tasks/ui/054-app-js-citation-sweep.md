@@ -1,6 +1,6 @@
 # 054 — Citation sweep: `embarch-ui/assets/app.js`, the largest never-swept citation surface in the suite
 
-**State:** claimed by agent/ui/054-app-js-citation-sweep, 2026-09-16 19:25
+**State:** done — agent/ui/054-app-js-citation-sweep, 2026-09-16
 **Source:** leg 117's refill sweep, 2026-09-16. Not from an `open.md` bullet — `embarch-ui/open.md`'s
 six live questions are all hardware debts or upstream deferrals, none of them dispatchable without a
 board. This came out of a mechanical census of citation-bearing source files across the four scopes
@@ -73,8 +73,41 @@ remainder can be filed as its own task, exactly as the `study-designer` chain ha
 
 ## Done when
 
-- [ ] Every `decision N` citation in `embarch-ui/assets/app.js` has been checked for existence, repo
+- [x] Every `decision N` citation in `embarch-ui/assets/app.js` has been checked for existence, repo
       label, and whether its sentence is true.
-- [ ] Wrong labels and false sentences reported as separate counts, with the total citations covered.
-- [ ] No new bare cross-repo citation introduced anywhere in the diff.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Wrong labels and false sentences reported as separate counts, with the total citations covered.
+- [x] No new bare cross-repo citation introduced anywhere in the diff.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result
+
+**Zero defects. 72 of 72 `[Dd]ecision [0-9]`-matching lines checked, plus one bonus (`decisions
+53/55`, line 853, which the plural form makes the census regex miss) — 73 citations covered total.
+0 wrong decision numbers, 0 wrong repo labels, 0 false sentences. No diff to `app.js`.**
+
+Checked against the decisions.md index and the specific `decisions/*.md` entry for every number, in
+every repo a citation named: `embarch-ui` (bare 2, 5, 6, 7, 10 ×4 distinct meanings — routing/trace/
+chart/scope — 11, 13, 14, 15, 17, 18, 20, 23), `embarch-topology` (10, 17, 18, 19), `embarch-core`
+(43, 57), `embarch-study-designer` (35, 36, 40, 41, 42, 43, 44, 52, 53, 55, 56), `embarch-api` (43),
+`embarch-outpost` (19). Specifically re-verified, because each looked suspicious on first read and
+turned out fine:
+
+- Line 4780's `embarch-topology decision 19` citation for `fix_it_url` sits ~30 characters after its
+  own `` `embarch-topology` `` label in the same sentence — inside the 44-char window, so it carries;
+  not the fourth `client.rs`-shaped defect.
+- Line 856/970's "`embarch-study-designer` decision 56, amended 2026-08-26" — decision 56's own file
+  carries no explicit "amended" line, but `git log -S serviceLabel` and `-S charTitle` both land on
+  2026-08-26 commits (`a534213`, `95305e1`), matching the decision text's "the same length of time"
+  claim. True, just not restated as an amendment in the doc.
+- Line 889's "`embarch-study-designer` decision 53 added two" (built-ins) — confirmed against
+  `interfaces/types.md`/`decisions/wire.md`: decision 53 added exactly two `Action` variants,
+  `GattMonitorSelected` (9) and `GattMonitorSelectedStart` (10).
+
+**Not in scope, confirmed still unswept:** `embarch-ui/src/main.rs` (26 citation lines) and
+`src/trace.rs` (25, one already fixed by `ui/048`) — left untouched per this task's own scope note.
+Whoever refills the queue next should file `tasks/ui/<NNN>-main-rs-trace-rs-citation-sweep.md` (or
+split in two) for those ~50 lines; not filed here since this task's own scope excluded them rather
+than running out of room to do them.
+
+No hardware, no doc-size reserve crossing (embarch-ui files stay clear), no code change in either
+repo — `embarch-ui`'s `agent/ui/054-app-js-citation-sweep` branch carries no commit over `main`.
