@@ -1,6 +1,6 @@
 # 068 — Plural-citation re-check: the 11 lines every `core` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/core/068-plural-citation-recheck, 2026-09-16 20:35
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-core` was declared citation-swept after `core/058`, `core/066` and `core/067`. **Every one
