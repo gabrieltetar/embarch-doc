@@ -1,6 +1,19 @@
 # 065 — Retire `trace.rs`'s own decode-to-lanes pipeline once `embarch-core` serves per-lane spans
 
-**State:** blocked — **unparks when `tasks/core/076` lands.** Filed `open` by the `core/075` worker;
+**State:** open — **unparked by leg 137, 2026-09-17 14:20, because its condition is now met.**
+`tasks/core/076` landed (code `ef60321` in `embarch-core`, doc `e0d54e6`), so the route exists and
+its shape is settled: **`GET /study/{id}/stream/{name}/load/spans`**, serving a `SpansAnswer` of
+`{unit, t_from, t_to, records_lost, rows, rows_dropped_by_cap, row_cap, rows_unparsed, gaps, lanes}`
+where `lanes` carries `Lane { key, label, unnamed, kind, spans }` and each `Span` is
+`{from, to, open_start, open_end, crosses_gap, below_resolution}`. Reasoning recorded as
+`embarch-core` decision 65 (`decisions/stream-index.md`). **Before you start, check that the payload
+actually carries everything `trace.rs` builds** — `embarch-core`'s own `Lane` doc comment says the
+label bookkeeping, point events and browser-search indices `embarch-ui`'s `Lane` carries alongside
+these are chart concerns and **stay in `embarch-ui`**, so "retire the decode pipeline" is not the
+same as "retire `Lane`". If something `trace.rs` needs is not served, say so rather than widening
+`embarch-core` from here.
+
+**Previously:** blocked — unparked when `tasks/core/076` lands. Filed `open` by the `core/075` worker;
 changed to `blocked` by leg 136 at filing time, because the drop's own body says *"do not start this
 before that route exists and its shape is settled; the route name and payload shape are that task's
 call, not this one's"* — and a task nothing can be done on is `blocked`, not `open`. Leaving it
