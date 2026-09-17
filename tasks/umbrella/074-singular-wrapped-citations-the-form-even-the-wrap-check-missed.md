@@ -1,6 +1,6 @@
 # 074 — The 9 singular-wrapped citations: the form even `core/068`'s wrap-check could not see
 
-**State:** open
+**State:** claimed — leg 129, 2026-09-16.
 **Source:** leg 128's refill sweep, 2026-09-16, measured directly rather than inferred. `core/068`
 found on 2026-09-16 that a citation wrapped across a comment continuation is invisible to a
 line-based census, and its fix was the grep `grep -rlIE '[Dd]ecisions[[:space:]]*$'` — **plural
