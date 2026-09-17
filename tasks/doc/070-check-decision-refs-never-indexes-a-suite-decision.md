@@ -34,12 +34,21 @@ invisible to the checker**, regardless of citation form.
 4") with no doc-path in the preceding 44-char attribution window, so they fall into the
 *warning* bucket (`explicit is None` branch) rather than erroring — silently absorbed into the
 script's existing "1005 ambiguous (--warnings to list)" count, indistinguishable from a real
-unresolvable citation. But a citation that spells out the actual defining path —
-`` `suite/decisions/placement.md` decision 4 `` — matches `DOC_PATH`, sets `explicit = 'suite'`,
-and then **hard-fails** with `not defined by suite`, even though the decision plainly exists and
-the sentence citing it is true. `ui/060`'s own task file hit this red and had to reword around it
-(drop the literal path, cite `suite decision 4` bare instead) rather than fix the indexer, since
-`scripts/` is owner-reserved and outside every worker's ownership row.
+unresolvable citation. But a citation that spells out the actual defining path — the
+`placement.md` file under `suite/decisions/`, followed within the attribution window by a
+`decision N` reference — matches `DOC_PATH`, sets `explicit = 'suite'`, and then **hard-fails**
+with `not defined by suite`, even though the decision plainly exists and the sentence citing it is
+true. `ui/060`'s own task file hit this red and had to reword around it (drop the literal path,
+cite the decision bare instead) rather than fix the indexer, since `scripts/` is owner-reserved
+and outside every worker's ownership row.
+
+**This file had to do the same thing, and that is the third instance of a pattern this queue has
+now hit three times: documentation shaped exactly like the data it documents.** The sentence above
+originally wrote the path-plus-number form out literally, to show the reader exactly what fails —
+and the checker failed it, turning the gate red on `main` inside the fold that filed this task
+(leg 125, 2026-09-16). It is reworded here so the gate passes. **Whoever fixes the indexer should
+restore the literal form in this paragraph as the fix's own regression case**, because a task
+describing a citation defect that cannot spell the defective citation is a poor bug report.
 
 **Two failure modes from one root cause:** real suite-decision drift would currently pass silently
 (never checked), and a *correct*, precisely-attributed citation of one is the one form the checker
