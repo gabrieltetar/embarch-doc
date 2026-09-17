@@ -1,6 +1,25 @@
 # 081 — `embarch-umbrella/decisions/projects.md` is at cap, not just in reserve
 
-**State:** open
+**State:** claimed — leg 140, 2026-09-17, `agent/umbrella/081-compact-projects`.
+
+**Dispatch note (supervisor, leg 140).** This is the leg's first unit because the ledger says so:
+`--due` puts this entry at **1 day left** and the file at **12,286/12,288 B — 2 bytes**, the only
+`filed`-not-`PARKED` entry in the whole pressure list. Treat the cap as a wall you are standing on,
+not a line you are near: **make your first edit a removal or a move, not an addition**, or your very
+first write fails the gate.
+
+**What else is in reserve in `umbrella`, so you plan instead of discover:**
+`decisions/install.md` 12,071/12,288 (217 B left, filed → `tasks/umbrella/079`, blocked);
+`decisions/bind.md` 11,533/12,288 (755 B, filed → `tasks/umbrella/009`, blocked);
+`open.md` 3,954/5,120 (1,166 B, filed → `tasks/umbrella/077`, blocked). All three are already filed
+against, so you owe no new compaction task for them — but **do not solve `projects.md` by moving
+prose into `install.md`**, which has 217 bytes and would simply relocate the wall.
+
+**One ordering fact the body cannot know:** `tasks/umbrella/082` is `open` in this same queue and is
+specifically about **decision 26** — the very decision this task's "candidate seam" suggests moving.
+If you move 26, say in your report exactly which file it landed in and what its new anchor is; the
+supervisor re-points `082` at the fold. Do not edit `tasks/umbrella/082` yourself.
+
 **Source:** `scripts/check-doc-size.py --pressure`, run by `tasks/umbrella/080` (leg 139,
 2026-09-17), whose own edit is what pushed this file here.
 **Scope:** umbrella
