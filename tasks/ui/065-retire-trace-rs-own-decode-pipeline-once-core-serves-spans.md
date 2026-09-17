@@ -1,6 +1,35 @@
 # 065 — Retire `trace.rs`'s own decode-to-lanes pipeline once `embarch-core` serves per-lane spans
 
-**State:** open — **unparked by leg 137, 2026-09-17 14:20, because its condition is now met.**
+**State:** claimed — leg 138 unit 4, 2026-09-17, `agent/ui/065-consume-core-spans`.
+**Unparked by leg 137, 2026-09-17 14:20, because its condition is now met** — and `core/076` is
+now fully landed and folded (leg 138, doc fold `9e36bf6`), so the route is on `main` in both repos
+and nothing about it is still moving.
+
+**Supervisor dispatch note 1 — the escape hatch below is real, and taking it is a success.** The
+`## What` body already tells you to check first that the payload carries everything `trace.rs`
+builds, and to say so rather than widen `embarch-core` if it does not. I am underlining it: **a unit
+that reads both sides, finds a gap, documents precisely what is missing and files the `core`-side
+follow-up to `inbox/` is a complete unit**, not a failed one. Do not half-retire the pipeline to
+show progress, and do not reach into `embarch-core` under any circumstance.
+
+**Supervisor dispatch note 2 — what actually landed, so you read the right thing.**
+`GET /study/{id}/stream/{name}/load/spans` serves `SpansAnswer`
+`{unit, t_from, t_to, records_lost, rows, rows_dropped_by_cap, row_cap, rows_unparsed, gaps, lanes}`.
+`t_from`/`t_to` are absolute window bounds (`LoadSummary::window_extent` only ever carried their
+difference). Reasoning is `embarch-core` decision 65 in `embarch-core/decisions/stream-index.md`;
+the route is in `embarch-core/interfaces/studies.md` and `spec.md`. **Note that decision 65 has a
+known precision defect under repair in parallel** (`tasks/core/080`, leg 138 unit 3): its CSV-size
+extrapolation claims a direction of error it has not shown. That is prose about transfer cost only
+— **it says nothing about the payload's shape**, which is what you depend on, so it does not block
+you. Do not edit it.
+
+**Supervisor dispatch note 3 — doc-size reserve for `ui`.** Nothing in `embarch-ui` is in the
+reserve. The two closest: `embarch-ui/spec.md` **9,035/10,240 B (1,205 B left)** and
+`embarch-ui/decisions/trace-view.md` **9,877/12,288 B (2,411 B left)** — decision 27 lives in the
+latter and you have room to edit its body properly rather than squeezing. If your work pushes a
+file into the reserve, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
+
+**Previously, from leg 137:** unparked because its condition is met.
 `tasks/core/076` landed (code `ef60321` in `embarch-core`, doc `e0d54e6`), so the route exists and
 its shape is settled: **`GET /study/{id}/stream/{name}/load/spans`**, serving a `SpansAnswer` of
 `{unit, t_from, t_to, records_lost, rows, rows_dropped_by_cap, row_cap, rows_unparsed, gaps, lanes}`
