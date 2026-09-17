@@ -22,6 +22,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- `open.md`'s `serial_port` gap reframed as settled (`embarch-umbrella` decision 55), not unowned.
 - api/106: singular-wrapped citation re-check, 18 lines/20 instances, 0 wrong, 0 false.
 - api/104: plural-citation re-check, 13 lines/29 instances, 0 wrong numbers, 0 false sentences.
 - embarch-api/decisions/tests.md split: smoke-harness tier (30, 74) moved to decisions/smoke-harness.md, out of reserve.
