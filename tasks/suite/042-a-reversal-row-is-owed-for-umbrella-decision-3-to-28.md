@@ -1,10 +1,9 @@
 # 042 — A reversal row is owed for `embarch-umbrella` decision 3 → 28, and adding it needs a range-file call first
 
-**State:** open — **announced and parked by leg 130, 2026-09-16 23:16, `ts 1789622198.825569`**
-(`ops.md` §4). The 30-minute silence window closes at **23:46**; leg 130 intends to execute this as
-its last unit if nothing objects. **If a leg ends before the window closes, leave this `open` with
-the `ts` above and complete the window rather than restarting it** — re-read the thread with
-`/home/gabriel/Github/embarch/embarch-fleet/scripts/fleet-read.py --thread 1789622198.825569`.
+**State:** claimed — leg 130 unit 4, 2026-09-16. Announced at 23:16 (`ts 1789622198.825569`), window
+re-read at 23:45 and again at 23:46:48 with **no reply of any kind**, so the 30 minutes closed
+silent and this is executing by supervisor's own hand (`ops.md` §4). No branch: a `suite` task is
+not dispatchable to a worker and lands from the leg worktree.
 **Source:** `umbrella/074`'s reviewer, leg 129, 2026-09-16, filed as
 `inbox/doc-umbrella-074-reversal-row-owed.md` and drained here. The supervisor verified the
 admission-bar argument independently against `embarch-decision-reversals.md`'s own header and
