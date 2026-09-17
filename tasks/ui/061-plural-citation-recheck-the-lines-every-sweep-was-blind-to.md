@@ -1,6 +1,6 @@
 # 061 — Plural-citation re-check: the 7 lines every `ui` sweep was structurally blind to
 
-**State:** open
+**State:** claimed by agent/ui/061-plural-citation-recheck, 2026-09-16 20:57
 **Source:** leg 125's refill sweep, 2026-09-16, acting on the measurement
 `inbox/citation-census-grep-cannot-see-a-plural-citation.md` asked for and nobody had run.
 `embarch-ui`'s citation surface was swept across `ui/049`, `ui/052` and `ui/054`, and `ui/060` takes
