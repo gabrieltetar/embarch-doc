@@ -1,6 +1,6 @@
 # 052 — Wrapped-citation census: the nine lines every single-line sweep missed
 
-**State:** claimed — leg 130 unit 1, 2026-09-16, `agent/topology/052-wrapped-citations`
+**State:** done — leg 130 unit 1, 2026-09-16, `agent/topology/052-wrapped-citations`
 **Source:** `tasks/doc/071` (`Owner: required`, open), second `Done when` bullet — *"each
 sub-project already declared 'citation swept' end to end gets a follow-up task re-censusing with the
 wrap-aware method"*. `embarch-topology` was swept by `topology/040` (`src/`), `046` (outside `src/`)
@@ -72,14 +72,35 @@ comparable.
 
 ## Done when
 
-- [ ] All nine wrapped citations read in full and answered against all three questions above.
-- [ ] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
+- [x] All nine wrapped citations read in full and answered against all three questions above.
+- [x] Every wrong number fixed, every missing repo label added, every false sentence corrected or —
       if you cannot establish what the right referent is — **left alone and reported**, never guessed.
-- [ ] `N lines / M instances / W wrong / L labels / F false` stated in the report.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
+- [x] `N lines / M instances / W wrong / L labels / F false` stated in the report.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings` in `embarch-topology`; `check-docs.py` in
       `embarch-doc`.
-- [ ] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+- [x] `changelog.d/` fragment. A zero-defect result is still a result and still gets one.
+
+## Result
+
+9 lines / 12 instances / 2 wrong / 1 label / 0 false.
+
+- `src/hardware/validate.rs:401` — cited `decision 10` (scope.md, the dev-bench/DUT chip-family
+  risk) for a claim about same-probe-type ambiguity that is actually decision 15's
+  (`decisions/enrollment.md`: "two boards sharing an identical probe type still cannot be told
+  apart by serial alone" — near-verbatim match to the comment). Fixed the number and reworded the
+  parenthetical from "chip family" to "identical probe type" to match decision 15's actual content;
+  kept the "e.g. two J-Links" illustration since it fits a same-probe-type example.
+- `src/hardware/enrollment.rs:3-4` — cited bare `(decisions 2, 3, 7)` for "formerly `embarch-core`'s
+  own `known_boards.rs`/`known_boards.toml`". None of `embarch-topology`'s own decisions 2, 3, 7
+  discuss that migration; `embarch-core` decision 22
+  (`embarch-core/decisions/probes.md`) does, verbatim: "nothing in a USB descriptor says 'I'm wired
+  to the DUT'" and "Moved wholesale into `embarch-topology`". Fixed to `(`embarch-core` decision
+  22)` — both the numbers and the missing cross-repo label.
+- The other 7 lines (10 instances: `lib.rs:8` decisions 2,3; `software.rs:22` decision 1;
+  `software.rs:268` decision 3; `hardware/alert.rs:1` decision 12; `hardware/signal.rs:13` decision
+  14; `hardware/hardware_id.rs:81` decision 21; `hardware/validate.rs:392` decision 33) all resolve,
+  are correctly bare/same-repo, and match their cited decision's body. No changes.
 
 ## Not yours
 
