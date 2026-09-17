@@ -1,6 +1,6 @@
 # 075 — Decide whether `/load` serves decoded per-lane spans, or record why it will not
 
-**State:** open
+**State:** claimed by agent/core/075-load-per-lane-spans-decision, 2026-09-17 12:51
 **Filed by:** leg 135, from `inbox/core-outpost-load-per-span-endpoint.md`, written by the `ui/064`
 worker while landing that unit. Filed verbatim below except for this header and the two supervisor
 notes. I re-checked the `Hardware: none` claim myself and it holds: deciding this is a read of
