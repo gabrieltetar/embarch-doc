@@ -1,6 +1,9 @@
 # 071 — Decision 32 records sector-erasing the NVM regions as *rejected*, and it is what `hardware.rs` has shipped since 2026-08-25
 
-**State:** claimed by agent/core/071-sector-erase-decision-32, 2026-09-17 01:25
+**State:** done — decision 32 amended (struck the "Rejected" framing, added a 2026-09-17 note that
+sector-erase is what ships, confined to RRAM families by decision 36); hardware.rs's doc comment,
+api.rs's `erase` field comment, and interfaces/hardware.md's citation all corrected. Full history
+re-derivation and confinement verification in the commit and worker report.
 **Source:** leg 133's refill census of `embarch-core`'s docs against its source. **Filed so it
 survives**: it existed only in a census report, and `supervisor-log.md` folds daily and rolls into
 `log-archive/`, so anything living there alone is on a timer. Nothing dispatches from a log entry.
@@ -97,20 +100,40 @@ do not leave a correct sentence resting on a wrong reference because the sentenc
 
 ## Done when
 
-- [ ] Item 1 is resolved with its history re-derived, and the outcome states **explicitly** whether
+- [x] Item 1 is resolved with its history re-derived, and the outcome states **explicitly** whether
       decision 32 was amended (and to say what) or whether the census's reading of the history was
-      wrong.
-- [ ] Item 1's write-up says whether decision 36's confinement was **verified against
-      `SOC_TO_CHIP`** or merely assumed. If you could not verify it, say so and do not assert it.
-- [ ] Item 2's three sites — `hardware.rs`'s doc comment, `api.rs`'s `erase` field comment, and
+      wrong. **Amended.** Re-derived history goes further than the task's own account: the design.md
+      predecessor already carried a 2026-08-25 "Correction" and an 2026-08-27 "Superseded by decision
+      36" note explaining the exact same drift and resolving it — the 2026-09-02 four-file migration
+      (`c767f8d`) dropped both notes and reverted the paragraph to the flat "Rejected" framing, which
+      survived unchanged into the 7-file split (`3854e13`). `embarch-decision-reversals.md` rows 19,
+      28 and 55 still record the *first* occurrence of this drift (2026-08-25 to 08-27) but nothing
+      records the second (2026-09-02 regression) — worth a status.d/inbox note if anyone wants a
+      permanent record; not filed here since it is not this task's job and touches a suite-level doc.
+- [x] Item 1's write-up says whether decision 36's confinement was **verified against
+      `SOC_TO_CHIP`** or merely assumed. **Verified.** `SOC_TO_CHIP` itself lives in `chip_resolve.rs`,
+      not `flash_backend.rs` (which does hold `requires_vendor_tool`, at the task's reported location).
+      It lists 16 entries: nRF51/52/53/91 families (NVMC flash, not RRAM) and nRF54L15/nRF54LM20A
+      (RRAM — `requires_vendor_tool`
+      matches `nrf54l*`, routed to the vendor tool before probe-rs's sector-erase runs), plus ESP32-C5
+      and STM32G0B1 (non-Nordic, no RRAM). No entry currently in the table is RRAM-shaped *and*
+      probe-rs-routed. This is contingent on future table entries keeping the same discipline decision
+      49 already documents (nRF54H got an explicit refusal rather than a permissive default) — not a
+      guarantee against a new RRAM family silently added without its own `requires_vendor_tool` case.
+- [x] Item 2's three sites — `hardware.rs`'s doc comment, `api.rs`'s `erase` field comment, and
       `interfaces/hardware.md`'s decision-32 citation — are each corrected or each reported as
-      holding. **All three or none**: a half-converted description is worse than either side, and
-      `api.rs` explicitly delegates its explanation to the other one.
-- [ ] Nothing is "fixed" on the strength of this task's own description. Every change rests on a
-      line you read.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
-      in `embarch-core`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+      holding. **All three corrected.** `hardware.rs`'s comment no longer claims a full chip erase;
+      `api.rs`'s field comment matches; `interfaces/hardware.md`'s citation moved from decision 32 (which
+      does not establish "never a chip erase in any backend" — that property lives in `flash_backend.rs`
+      code, under the backend-selection design decision 36 authorizes) to decision 36.
+- [x] Nothing is "fixed" on the strength of this task's own description. Every change rests on a
+      line you read — git history, current source, and the pre-migration doc text were all re-read,
+      not taken from the task file.
+- [x] A `changelog.d/` fragment. `changelog.d/core-decision-32-sector-erase-correction.fixed.md`.
+- [x] Gate green: `cargo build --all-targets`, `cargo test` (209 passed), `cargo clippy --all-targets
+      -- -D warnings` in `embarch-core`, and `python3 scripts/check-docs.py` (11/11) in `embarch-doc`.
+      Also `check-client-names.py --repo` and `check-ownership.py --scope core` / `--code-repo` in both
+      worktrees — all green.
 
 ## Not yours
 
