@@ -1,6 +1,6 @@
 # 078 — Weigh the user-level service against decision 3, instead of leaving it "not weighed"
 
-**State:** open
+**State:** claimed by agent/umbrella/078-weigh-user-level-service, 2026-09-17 12:51
 **Source:** `embarch-umbrella/open.md`, swept by leg 134's refill. The bullet is one sentence and
 ends by saying nobody has done the work: *"A user-level service needs no elevation on Linux or macOS
 (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not
@@ -56,6 +56,15 @@ unit's work.
 job, so it should relieve pressure rather than add it — but re-check with
 `python3 scripts/check-doc-size.py --pressure` before and after, and if a decision file crosses into
 reserve, file a compaction task for it in the same commit.
+
+**Supervisor dispatch note, leg 136 — the second umbrella file in reserve, which this task's own
+reserve paragraph does not mention.** `embarch-umbrella/decisions/bind.md` is at **11,533/12,288 B
+(755 B left)**, filed against `tasks/umbrella/009-compact-docs.md` and blocked. **Do not write your
+new decision into `bind.md`.** Put it wherever umbrella's `DOC-CONVENTIONS.md` routing actually
+sends a service/install decision, and check that file's headroom first — if the only correct home is
+`bind.md` and the entry will not fit in 755 B, say so in your report and file
+`tasks/umbrella/<NNN>-compact-docs.md` in the same commit rather than squeezing the entry.
+Nothing else of umbrella's is in reserve.
 
 ## Done when
 
