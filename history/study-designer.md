@@ -24,6 +24,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- outside-src citation sweep (tools/, tests/, .cargo): 27 checked, 3 wrong numbers fixed, 0 false sentences.
 - src/ citation sweep closed: 516 instances checked chain-wide, 22 wrong numbers, 7 false sentences; this unit fixed 4 same-shape 57->56 mislabels in gatt_names.rs/vendor.rs.
 - registry.rs citation sweep: 9 checked, 0 wrong numbers, 1 false sentence (StreamCapture wrongly attributed to decision 35, repointed to 39).
 - study-designer/056: citation sweep of eap_parse.rs, 13 checked, 1 wrong number (cross-repo->same-repo 59) fixed, 0 false sentences; file 057
