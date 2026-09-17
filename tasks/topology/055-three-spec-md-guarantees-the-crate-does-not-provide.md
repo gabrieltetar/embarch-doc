@@ -1,6 +1,6 @@
 # 055 — Three `spec.md` guarantees `embarch-topology` does not actually provide
 
-**State:** claimed by agent/topology/055-three-spec-guarantees, 2026-09-17 01:26
+**State:** done
 **Source:** leg 133's refill census of `embarch-topology`'s docs against its source. **Filed so they
 survive**: they existed only in a census report, and `supervisor-log.md` folds daily and rolls into
 `log-archive/`, so anything living there alone is on a timer. Nothing dispatches from a log entry.
@@ -127,17 +127,81 @@ is fine as written.
 
 ## Done when
 
-- [ ] Each of the three is either **fixed** or **reported as not holding**, with the evidence, one by
+- [x] Each of the three is either **fixed** or **reported as not holding**, with the evidence, one by
       one.
-- [ ] Nothing is "fixed" on the strength of this task's own description. Every change rests on a line
+- [x] Nothing is "fixed" on the strength of this task's own description. Every change rests on a line
       you read.
-- [ ] Item 1's outcome states explicitly whether the doc moved or the code did, and why — and if the
+- [x] Item 1's outcome states explicitly whether the doc moved or the code did, and why — and if the
       doc moved, **all three sites** (`spec.md` 82, `hardware_id.rs`'s doc comment, decision 21's
       framing) are consistent afterwards, not just the first one found.
-- [ ] Item 2 says whether anything de-duplicates the store, and how that was checked.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+- [x] Item 2 says whether anything de-duplicates the store, and how that was checked.
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
       in `embarch-topology`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+
+## Resolution
+
+All three findings held and all three were doc-only fixes; no code behaviour changed.
+
+**Item 1 — held.** `compare_self_reported` (`src/hardware/hardware_id.rs`, function at 199–223,
+equality shortcut at 203–207) checks case-insensitive string equality *before* the declared-relation
+match, for any chip — confirmed reachable and deliberate: the shortcut's own comment argues it, a
+dedicated test (`identical_ids_match_for_any_chip_without_needing_a_declared_relation`) pins it, and
+`git log -p` shows it present since the function's very first commit (`98aec25`), before decision 21
+(`155fc34`) even existed — so the doc's "every other chip returns undeclared, never a pass" was wrong
+from decision 21's own outset, not a later regression. **The doc moved, not the code**, per the task's
+own steer plus this evidence. Fixed at all three sites: `spec.md` line 82 (exact match settles it for
+any chip; a declared relation is only needed when the two mechanisms format the value differently),
+`hardware_id.rs`'s doc comment (added a paragraph on the equality fast path, ahead of the
+declared-relation paragraphs, and reworded the "every other chip" sentence to "every chip that neither
+matches exactly nor has a declared relation"), and decision 21's opening framing in
+`decisions/validation.md` (now names the exact-match shortcut alongside the declared relation, and
+notes the Nordic case never hit it because the two sides' encoding differs by design — halves swapped,
+never byte-identical).
+
+**Item 2 — held, both costs addressed.** Checked whether anything de-duplicates the store: grepped
+the whole crate for `dedup`/`retain`/every `load_at` call site — `load_at` (enrollment.rs 98–105) is a
+plain `toml::from_str` with no post-parse uniqueness pass anywhere, and `find_by_role`'s own doc
+comment (line 147) already states the soft "first by file order" contract, which only makes sense if
+nothing enforces uniqueness on load. So: nothing de-duplicates the store; uniqueness is enforced by
+`upsert_at` alone, at write time. Fixed `spec.md` line 69 to say uniqueness is a write-time rule, not a
+store invariant, and to state the cardinality limit explicitly (only the first duplicate is returned;
+further ones are silently removed by `retain`). Amended decision 20 (`decisions/link-declares.md`)
+with the same caveat, since it made the identical unqualified claim. Also added a matching caveat to
+`upsert`'s own doc comment in `enrollment.rs` for consistency with item 1's multi-site treatment,
+though the task didn't name a second code site for this item.
+
+**Item 3 — held, resolved as a qualifier, not a defect.** `alert.rs`'s `record` (87–103) does append
+unconditionally to `alerts.jsonl`, contradicting spec.md line 52's "only state that persists ... is
+declared intent" against the same file's own Shape block (30–37), which lists the alert log as
+something the crate owns. Traced every reader of that log (`alert::recent`, called once from
+`mod.rs`) and found it is consulted only for display (the UI's recent-alerts list via Core's
+`GET /alerts`) — never as an input to any resolution or validation decision. So the charitable reading
+holds: "the only *persisted input*" is correct once that clause is explicit. Reworded line 52 to say
+so directly, and named the alert log as the one persisted-but-write-only exception, consistent with
+the Shape block.
+
+**Coordinate drift, re-derived against the task's reported lines:** essentially none this time — a
+change from the two prior census tasks in this fleet. `spec.md` lines 52/69/82, `hardware_id.rs`
+195/199–212/203–207/~105 (exact at 105, not just "~"), `enrollment.rs` `upsert_at` 196–211, and
+`validate.rs`'s warn block 457–468 all matched exactly. The only drift found: `enrollment.rs`'s
+`load_at` (reported 98–107) actually ends at 105, and `alert.rs`'s `record` (reported 87–104) actually
+ends at 103 — both off by ~1–2 lines, consistent with the pattern the task described.
+
+**Doc-size reserve:** `spec.md` grew from 9,001/10,240 B (87.9%) to 9,826/10,240 B (96.0%, 414 B left)
+— pushed into reserve by these three genuine corrections. Filed `tasks/topology/057-compact-topology.md`
+in this same commit, `**State:** blocked` on `tasks/topology/056` (still open against the same
+validation section of `spec.md`).
+
+**Not touched, out of scope on purpose:** no code behaviour changed (item 1's equality shortcut and
+item 2's de-duplication both stay exactly as shipped, per "Not yours"); no new numbered decision was
+authored (existing decisions 20 and 21 were amended instead); `tasks/topology/056` was left alone.
+
+**Gate:** `cargo build --all-targets` clean; `cargo test` (default features) 15 passed, `cargo test
+--features hardware` 80 passed; `cargo clippy --all-targets -- -D warnings` clean on both default and
+`--features hardware`; `python3 scripts/check-docs.py` in `embarch-doc` — all 11 checks green (after
+filing 057, `check-doc-size.py` also green); `check-ownership.py --scope topology` and `--code-repo`
+both OK; `check-client-names.py --repo <code worktree>` OK against 7 denylist entries.
 
 ## Not yours
 
