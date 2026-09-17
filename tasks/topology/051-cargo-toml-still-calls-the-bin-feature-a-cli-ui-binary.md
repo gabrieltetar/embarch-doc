@@ -1,6 +1,6 @@
 # 051 — `Cargo.toml`'s `bin` feature comment still says "CLI/UI binary"; the UI was retired in August
 
-**State:** open
+**State:** claimed by agent/topology/051-cargo-toml-cli-ui-binary, 2026-09-16 21:33
 **Source:** `topology/050`'s worker, 2026-09-16, which found and fixed the identical stale wording in
 `src/hardware/validate.rs` and correctly declined to widen — `Cargo.toml:48` cites no decision
 number, so it was outside a plural-citation sweep's mandate. Filed by the supervisor at that unit's
