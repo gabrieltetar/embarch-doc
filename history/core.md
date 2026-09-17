@@ -82,6 +82,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- `embarch-core` will serve decoded per-lane spans on a `/load` sibling route (decision 64); build filed as `tasks/core/076`.
 - `embarch-core` decision 63: a tap declared against a source this bench has no front end for says so in the stream index — a fourth optional boolean, not a third meaning for `note`.
 - Every route's wiring is checked against the handler's own `// route:` comment; decision 60.
 - Core decision 58: `/serial-log`'s duration/byte caps and `truncated: bool` (not a count) get a numbered rationale; `open.md`'s owed-decision bullet is closed.
