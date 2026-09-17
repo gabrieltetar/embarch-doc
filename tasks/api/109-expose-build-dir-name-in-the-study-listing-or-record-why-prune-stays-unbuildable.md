@@ -1,6 +1,27 @@
 # 109 — Expose `build_dir_name` in the study listing, or record why `embarch-umbrella`'s `--prune` stays unbuildable
 
-**State:** claimed — leg 139, 2026-09-17, branch `agent/api/109-build-dir-name`
+**State:** done — leg 139, 2026-09-17, branch `agent/api/109-build-dir-name`
+
+**Resolution:** the umbrella bullet's framing was wrong on two counts, corrected in writing
+(`embarch-api` decision 77, `decisions/target-json.md`, and the inbox drop below): the field
+decision 26 actually names belongs to `list-targets` (the target menu), not a "study listing" —
+this crate has no listing of multiple studies at all, and nothing in `StudyResult` or
+`study_results/<study_id>/` (keyed by `study_id`) ever named a build directory. The 803 MiB
+`study_results/` figure the bullet cited is a separate, already count-bounded gap (Core's
+`sweep_study_results`), unrelated to `build_dir_name`. The real gap — `list-targets`'s JSON
+carrying the tuple but not `build_dir_name` — was real and **entirely this crate's own call**: no
+`embarch-core` wire change needed, since `build_dir_name` is `zephyr::Target::build_dir_name`,
+computed locally. Shipped additively: every `zephyr-west` `list-targets` row now carries
+`build_dir_name`, resolved against the project's configured `default_snippets`/`default_extra_args`
+(the identity a bare `build` for that row writes to today), `null` when the app's available
+snippets don't cover `default_snippets`. Three unit tests cover the default case, the null
+fallback, and a real default-snippet fold. Known, documented residual: this names only the default
+combination — a non-default snippet/`extra_args` build is exactly as current per decision 26 and
+gets no name here, needing `target.json` (decision 69) instead; recorded as a Structural-limits
+bullet in `open.md` so a future `--prune` design does not rediscover it.
+`embarch-umbrella/open.md`'s stale bullet is filed for correction, not edited directly:
+`/home/gabriel/Github/embarch/embarch-doc/inbox/umbrella-build-dir-name-shipped-in-api-list-targets.md`.
+`embarch-api/open.md`'s new bullet pushed it into reserve; compaction debt filed as `tasks/api/112`.
 **Source:** refill sweep, leg 137, 2026-09-17, from
 [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md)'s standing bullet: *"Decision 26's
 `--prune` is the last designed-and-unbuilt piece here, deferred by choice — it needs
@@ -90,17 +111,17 @@ process-tree kill), so `api` has had no closeable work for several legs.
 
 ## Done when
 
-- [ ] Re-derived from source whether the study listing carries a build-directory identity today, and
+- [x] Re-derived from source whether the study listing carries a build-directory identity today, and
       the umbrella bullet's claim confirmed or corrected in writing.
-- [ ] Either the field is exposed (additive, with a test), or a numbered decision in the right
+- [x] Either the field is exposed (additive, with a test), or a numbered decision in the right
       `embarch-api/decisions/*.md` records why it is not and what would change that.
-- [ ] If the answer needs `embarch-core` to serve something new, that half is dropped in `inbox/` in
-      full task format and **not implemented here**.
-- [ ] `embarch-api/open.md` gains or loses a bullet to match, and the `embarch-umbrella/open.md`
+- [x] If the answer needs `embarch-core` to serve something new, that half is dropped in `inbox/` in
+      full task format and **not implemented here**. (Not needed: closed entirely within this crate.)
+- [x] `embarch-api/open.md` gains or loses a bullet to match, and the `embarch-umbrella/open.md`
       bullet's claim about this repo is either confirmed or filed for correction — **do not edit
       `embarch-umbrella/open.md` yourself**, it is another sub-project's doc.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
       warnings` in `embarch-api`; `python3 scripts/check-docs.py` in `embarch-doc`.
 
 ## Not yours

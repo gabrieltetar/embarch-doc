@@ -22,6 +22,7 @@ None currently — the one open here (`list_serial_ports`, task `041`) is now [d
 - **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
 - **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively.
 - **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/study-reads.md) 39): a remote Core can't see local paths.
+- **`list-targets`' `build_dir_name` names only the default combination** ([decisions/target-json.md](decisions/target-json.md) 77) — a directory built with a non-default snippet selection or `extra_args` is exactly as current and gets no name here; only its own `target.json` (decision 69) can attribute it. Closes `embarch-umbrella` decision 26's stated ask for this repo; that decision's own `--prune` still has to fold `target.json` in for anything beyond the default build.
 
 ## Settled-deferred
 
