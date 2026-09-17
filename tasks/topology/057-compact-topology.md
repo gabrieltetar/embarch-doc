@@ -1,6 +1,6 @@
 # 057 — `spec.md` is in reserve
 
-**State:** open — **unparked by leg 136, 2026-09-17, because this task's own condition was met and
+**State:** claimed by agent/topology/057-compact-topology, 2026-09-17 13:26 — **unparked by leg 136, 2026-09-17, because this task's own condition was met and
 nothing had acted on it.** It read *"unparks when `tasks/topology/056` lands, or is closed without
 touching `spec.md`, whichever comes first"*; `topology/056` landed on 2026-09-17 (doc `b3c5827`,
 fold `3d384c2`), and then `topology/058` — the follow-up 056 reserved the behaviour decision for —
@@ -51,13 +51,13 @@ mechanism (`tasks/topology/014`'s own wording, same rule).
 
 ## In flux
 
-**Yes** — recorded as the `**In flux:**` field above, and this section is the reasoning behind it.
-`tasks/topology/056` (the probe-open failure raising neither a `TopologyMismatch` nor an
-`alerts.jsonl` row) is still open against this same crate's validation surface and may touch
-`spec.md`'s "What validation asserts, and what it cannot" section — the same section `055` just
-edited. That is what holds this task `blocked`, and it is a dated park, not an absorbing one: the
-`**Size debt due:**` above is what makes a leg spend its first unit here whether or not it is
-blocked.
+**No, as of 2026-09-17 — this section is superseded and kept only so the change is visible.** It
+used to read *"Yes… `tasks/topology/056` is still open against this same crate's validation surface
+and may touch `spec.md`'s 'What validation asserts, and what it cannot' section."* Both `056` and
+its follow-up `058` have since landed, and **neither touched `spec.md`** (`058` was instructed not
+to and did not). Leg 136 corrected the `**In flux:**` field above to `no` and did not reach this
+paragraph; leg 137 is correcting it here, in the claim commit, so the two cannot be read against
+each other. The `**Size debt due:**` date above still stands and is what put this task first.
 
 ## Done when
 
@@ -76,3 +76,27 @@ blocked.
 - Decision 20/21/27's cross-references in "Storage and roles" and "What validation asserts" — each
   is the only place `spec.md` sends a reader to the decision with the actual reasoning; deleting the
   citation without deleting the claim it backs turns a sourced statement into an unsourced one.
+
+## Supervisor notes (leg 137, 2026-09-17)
+
+1. **Doc-size reserve for `topology`:** `embarch-topology/spec.md` is the only `topology` file in
+   the band — **9,826/10,240 B, 414 B left, the tightest in the suite.** No other `embarch-topology/`
+   doc is in reserve, so `decisions/*.md` and `open.md` all have room and are legitimate split
+   targets. Run `python3 scripts/check-doc-size.py --pressure` before and after and quote both
+   numbers in your report.
+2. **Prefer a verbatim split; it restates nothing.** `DOC-BUDGET.md`'s split-first rule applies and
+   the three section missions named in `Done when` ("Shape", "Storage and roles", "What validation
+   asserts, and what it cannot") are the candidate seam. If you split, `DOC-PROTOCOL.md`'s rules for
+   a new file apply and `tasks/doc/052` warns that a verbatim split **silently drops the
+   decision-size pin of every decision it moves** — say in your report whether that applies here.
+3. **Answer `DOC-COMPACTION-PASS.md`'s human question in your own words**, because I have to put it
+   in the log entry: *can `spec.md` alone answer what someone needs to work on `embarch-topology`
+   today?* No script answers this and the gate does not either.
+4. **This is a doc-only unit — you get an `embarch-doc` worktree and no code worktree, deliberately.**
+   Read `embarch-topology`'s source from the main checkout at
+   `/home/gabriel/Github/embarch/embarch-topology` if you need to check a claim, but change nothing
+   there. `topology/058` landed a behaviour change on `validate_known_timed` this morning (code
+   `b96f758`, decision 34, five mid-attach failures now `raise`); if `spec.md`'s "What validation
+   asserts" section is now *wrong* rather than merely long, say so rather than compacting an error
+   into a shorter error.
+5. You own exactly one sub-project: `embarch-topology`'s docs inside `embarch-doc`.
