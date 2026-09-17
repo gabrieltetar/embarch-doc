@@ -1,6 +1,6 @@
 # 053 — `validate.rs`'s header cites two of this crate's own decisions for a migration only `embarch-core` records
 
-**State:** open
+**State:** claimed — leg 131 unit 1, 2026-09-17, `agent/topology/053-validate-rs-migration-citation`
 **Source:** `topology/052`'s reviewer, leg 130, 2026-09-16, filed as
 `inbox/topology-validate-rs-1-2-citation.md` and drained here. The `052` worker flagged the line and
 **correctly left it alone** — its task was scoped to wrapped citations and this one is single-line —
