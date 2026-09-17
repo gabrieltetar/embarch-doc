@@ -1,6 +1,6 @@
 # 046 — Citation sweep: the 18 `embarch-topology` citations that live outside `src/`
 
-**State:** claimed — leg 122, `agent/topology/046-citation-sweep-outside-src`, 2026-09-16.
+**State:** done — leg 122, 2026-09-16; see "Closed" at the bottom.
 **Source:** leg 117's refill sweep, 2026-09-16. Not from an `open.md` bullet — `embarch-topology/open.md`'s
 six live questions are all hardware debts, upstream deferrals, or explicitly-recorded standing
 limitations, none of them dispatchable. This came out of a mechanical census of citation-bearing
@@ -73,10 +73,42 @@ date with an amendment to it. Check this one rather than assuming.
 
 ## Done when
 
-- [ ] All 18 citations in `Cargo.toml`, `bin/main.rs` and `README.md` checked for existence, repo
+- [x] All 18 citations in `Cargo.toml`, `bin/main.rs` and `README.md` checked for existence, repo
       label, and whether the sentence around each is true.
-- [ ] The `Cargo.toml` line 97 date claim (`2026-08-24`, decision 5) either confirmed against git
+- [x] The `Cargo.toml` line 97 date claim (`2026-08-24`, decision 5) either confirmed against git
       history or corrected.
-- [ ] Wrong numbers and false sentences reported as separate counts, with the total checked.
-- [ ] No new bare cross-repo citation introduced anywhere in the diff.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Wrong numbers and false sentences reported as separate counts, with the total checked.
+- [x] No new bare cross-repo citation introduced anywhere in the diff.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed
+
+**21 distinct citation instances checked** (the 18-line census, plus 3 more path-form citations
+in `bin/main.rs`'s `refuse_if_core_reachable` doc comment — `decisions/platform.md:32`,
+`decisions/enrollment.md:15` and `decisions/surfaces.md:17` — that `check-decision-refs.py`'s
+`*.md`-only scope and the original grep both missed since they cite by file:line, not `decision N`).
+**2 wrong numbers, 1 false sentence.**
+
+- `bin/main.rs`'s `SetDevBenchLink` doc comment cited **decision 20** for the
+  `--clear-serial`/`--clear-interface` fix ("a stale declared fact... re-enrolling by role carries
+  it right back over... no way to clear it short of hand-editing `enrollment.toml`"). That content
+  is **decision 27**'s, verbatim in places — decision 20 covers role uniqueness and the
+  guessed-interface heuristic only, never mentions the clear flags. Repointed to decision 27.
+- The same function's doc comment cited `embarch-core/decisions/surfaces.md:17` for "races Core's
+  lock with no queue and no message". Line 17 of that file is decision 12's JSON-error-body text —
+  unrelated. The real content ("a second process calling the same function does not share that
+  lock") lived in `surfaces.md` until `embarch-core`'s `decisions/enrollment.md` split out of it on
+  2026-09-11; the citation was written 2026-09-13 (`topology/036`, `e51f7ed`), two days after the
+  split, so it was already wrong the day it landed. Repointed to `embarch-core/decisions/enrollment.md:10`.
+- `README.md` called the crate's shared data directory "admin-owned". Decision 23 explicitly
+  corrected that exact wording as an error (2026-09-07, `tasks/topology/013`): only
+  `embarch-core`'s token *file* is admin-locked via `icacls`; the directory keeps `ProgramData`'s
+  default, permissive ACL. Fixed the sentence.
+
+`Cargo.toml`'s 9 citations (decisions 5×3, 8, 13, 19×2, 31×2) all check out, including the
+`bin/ui.rs` retirement date — confirmed against `git log` (`7d13781`, 2026-08-24) rather than
+assumed. `bin/main.rs`'s two other decision-20 citations (`guessed_among`, lines 97/102) check out
+too. `Cargo.toml` and `README.md` stayed well clear of reserve; no compaction task filed.
+`bin/main.rs`'s two citation-form issues (mixed bare/backtick/string-literal forms, and the
+same-repo cross-repo-labelled form in the user-facing string on line 168) are left for
+`tasks/doc/055` per this task's own instruction — not settled here.
