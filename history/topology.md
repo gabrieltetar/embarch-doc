@@ -33,6 +33,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- `validate.rs`'s header now cites `embarch-core` decision 22 for `board_gate.rs`'s move, not topology's own decision 2.
 - topology's wrapped-citation census: 9 lines/12 instances, 2 wrong numbers fixed (1 also missing its cross-repo label), 0 false.
 - Cargo.toml:48's `bin` feature comment no longer claims a UI binary; it's CLI-only, decision 5.
 - topology's plural-citation census re-run; validate.rs's stale "own CLI/UI" claim fixed, UI retired 2026-08-24.
