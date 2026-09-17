@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- `list-targets` now reports `build_dir_name` per row (decision 77), closing `embarch-umbrella` decision 26's prune blocker.
 - `StudyStreamEntry.source_deferred` (`embarch-core` decision 63): a deferred-source tap now says so, not just `bytes_written: 0`.
 - New MCP tool schema: study_stream_load (CLI study-stream-load), Core's outpost load-share route; closes suite decision 4's agent-side half only — the one-implementation half waits on tasks/ui/051.
 - `interfaces/modules.md` gained a `dev_bench.rs` row citing decisions/dev-bench.md 32, 45.

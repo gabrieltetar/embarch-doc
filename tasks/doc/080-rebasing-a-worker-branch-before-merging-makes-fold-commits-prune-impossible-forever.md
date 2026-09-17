@@ -38,6 +38,37 @@ rule above and is recorded in that leg's final report.
 `agent/ui/059-diff-new-lines-republish`. Nobody filed them, which is the tell that this has been
 happening quietly for a while.
 
+**Leg 139, 2026-09-17 — the force-push remedy was applied to all three units and it is NOT
+sufficient.** That leg rebased and **force-pushed every branch before merging**, which is what this
+task's own `Done when` proposes. Results, three units, six branches:
+
+| unit | code branch | doc branch |
+|---|---|---|
+| `umbrella/080` | pruned (no-op branch, identical to `main`) | **pruned** |
+| `core/085` | pruned | **NOT pruned** |
+| `api/109` | pruned | see that unit's entry |
+
+**`core/085`'s doc branch is the counter-example and it is a clean one.** After the fold, with the
+branch still on the remote at `2e7195f0`: `git cherry origin/main origin/agent/core/085-widen-spans-gap`
+printed **nothing** (every commit already on `main` by patch-id), and
+`git merge-base --is-ancestor 2e7195f0 HEAD` answered **yes** (the tip is literally an ancestor of
+`main`, not merely equivalent). So the branch met the stated prune condition by both the test
+`fold-commit.py` uses and the stronger one, and was still left behind — **while the same fold pruned
+`embarch-core`'s branch in the same run**, and the previous fold pruned `umbrella/080`'s doc branch
+under the same procedure.
+
+**That narrows the defect considerably and moves it off the rebase.** It is not "a rebased branch
+can never be pruned": a rebased, force-pushed doc branch *was* pruned one unit earlier. Whatever the
+real condition is, it distinguishes two folds that look identical from the outside. **The most
+likely candidate, and the one to check first: `fold-commit.py` evaluates the prune against
+`origin/main` as it stands at fold time, and the supervisor pushes `main` only *after* the fold
+commit** — so a branch whose commits reached `origin/main` only via that same push is invisible to
+the check that ran a moment earlier. If that is it, the fix is ordering (or a re-check after the
+push), not patch-ids, and the `Done when` below is aiming at the wrong half.
+
+**Left on the remote by leg 139 rather than deleted by hand**, per `.claude/leg.md`'s rule, so the
+evidence is still there to inspect: `agent/core/085-widen-spans-gap` in `embarch-doc`.
+
 **Why it matters beyond tidiness.** `.claude/leg.md`'s own liveness rule says *"a branch present on
 its remote carrying commits means that worker finished — you may gate and land it"*, and calls that
 asymmetry load-bearing: presence may retire a worker, absence never may. **A permanently unpruned
