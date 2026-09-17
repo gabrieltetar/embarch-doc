@@ -32,7 +32,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **Working directory** for a `static` project is `source_path` joined with `build_cwd` if set, validated before spawning; `artifact_path` resolves against **that**, not `source_path` alone. Setting `build_cwd` is usually wrong ([decisions](decisions/build.md) 5). A `zephyr-west` project's is per-target.
 - **Capture** drains stdout/stderr in two concurrent tasks, as raw bytes not decoded text — draining one while the other fills its OS buffer hangs a child, and decoding per line rather than per stream means one non-UTF-8 byte costs one line, never the rest; a line needing lossy decoding is named in a summary marker, never silent ([decisions](decisions/log-capture.md) 65).
 - **Truncation keeps the head *and* the tail** behind a marker naming how many bytes went and how many were kept at each end, **the cap bounding the retained total rather than each half** ([decisions](decisions/log-capture.md) 18, numbers in §7). Under the cap, text is untouched and unmarked.
-- **Timeout kills the process group**, not just the immediate child — `west`/`cmake`/`make` fork subprocesses a plain kill orphans. A killed/timed-out build is reported **distinctly** from a nonzero exit, so a hang isn't misread as a code problem.
+- **Timeout kills the process group on unix, only the immediate child on Windows** ([decisions](decisions/build.md) 75). A killed/timed-out build is reported **distinctly** from a nonzero exit, so a hang isn't misread as a code problem.
 - **One build in flight per project**, via a per-project async lock. Separate from Core's hardware lock: guards two calls stomping one output directory, not USB contention.
 
 ## 4. Deployment and topology
