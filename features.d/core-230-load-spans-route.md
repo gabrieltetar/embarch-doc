@@ -1,0 +1,1 @@
+| `GET /study/{id}/stream/{name}/load/spans` — the decoded per-lane timeline `/load` reduces and discards, served directly | Shipped — unit-tested against real firmware bytes and cross-checked against `/load`'s own summary, **no live study has hit this route yet** | unit | 65 |

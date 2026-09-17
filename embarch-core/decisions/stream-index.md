@@ -47,4 +47,13 @@ Decision 62 moved only the *aggregate* (`LoadSummary`) off `embarch-ui`. `outpos
 
 **Nothing here ships the route.** Per `tasks/core/075`'s supervisor note 2, deciding is this task's job; building is not. The shape: a sibling of `/load` (name and exact response settled by the implementing task, not this one) serving `Lane`/`Span`/`Gap` — made `Serialize` — that `outpost_load.rs` already builds internally before reducing them to `LoadSummary`. Filed as `tasks/core/076`. It is a wire-schema bump: the supervisor announces it before it lands (`../../embarch-fleet/ops.md` §4). The matching `embarch-ui` follow-up — retiring `trace.rs`'s own row-decode/clock-health/stale-prefix/lane-building once it can consume this instead — is outside this repo's ownership row and is dropped to `inbox/`, not filed here.
 
+### 65 — `GET /study/{id}/stream/{name}/load/spans` serves decision 64's spans; the CSV half of its size argument is now measured, and holds
+Built by `tasks/core/076`. Additive: `/load` unchanged, still exactly `LoadSummary`.
+
+**Shape.** `Lane`/`Span`/`Gap` are now `pub`+`Serialize` (were private). Response is `SpansAnswer`: `{unit, t_from, t_to, records_lost, rows, rows_dropped_by_cap, row_cap, rows_unparsed, gaps: [Gap], lanes: [Lane]}`. `t_from`/`t_to` are the window's absolute bounds — `LoadSummary::window_extent` only ever carried their difference.
+
+**One decode, two reductions.** The CSV-to-timeline body is factored into a private `decode_with_cap`; `summarize` still reduces its `Decoded` to `LoadSummary`, and a new `spans_answer` reduces the same `Decoded` to `SpansAnswer`, no further computation. `study.rs`'s two handlers share one tap-resolution helper and differ only in which function gets the CSV.
+
+**The CSV half, measured.** No reference-shaped CSV (225,627 rows/112,804 spans/26 lanes, decision 18's 12.6 MB figure) exists to re-measure — not checked in; `embarch-ui`'s `EMBARCH_VIEW_CSV` scratch test reads an arbitrary local path. Measurable instead: `embarch-core`'s own real-firmware fixture renders to **43,573 B / 831 rows — 52.367 B/row** [measured 2026-09-17]. Extrapolated to 225,627 rows: **≈ 11.8 MB**, likely-low since this fixture's `rx_utc_ms` is empty throughout (no arrival log), understating a populated capture's row width. **Holds: same order of magnitude as 12.6 MB, not materially smaller** — decision 64 stands; no response-shape change follows.
+
 ---

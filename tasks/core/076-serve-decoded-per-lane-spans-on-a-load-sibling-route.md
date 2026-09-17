@@ -1,6 +1,6 @@
 # 076 — Serve decoded per-lane spans on a sibling route to `/load`
 
-**State:** claimed by agent/core/076-load-spans-route, 2026-09-17 14:02 — **announcement window
+**State:** done — built by agent/core/076-load-spans-route, 2026-09-17. **Announcement window
 closed with no objection.** Announced in `#embarch-fleet` at 13:29 (`ts` `1789673384.645649`), polled
 at every unit boundary of leg 137, nothing in the thread and nothing in the channel; 30 minutes
 elapsed, so `ops.md` §4's condition to execute is met and this runs as the leg's last unit.
@@ -42,18 +42,23 @@ open until this lands.
 
 ## Done when
 
-- [ ] The new route serves decoded per-lane spans over HTTP, reusing `outpost_load.rs`'s existing
-      decode rather than writing a second one.
-- [ ] `embarch-core/interfaces/studies.md` and `spec.md` document the new route.
-- [ ] `embarch-core/decisions/stream-index.md` gets the implementation decision (numbered), citing
-      decision 64.
-- [ ] A follow-up `embarch-ui` task (filed via `inbox/`, since it is outside this task's own repo)
+- [x] The new route serves decoded per-lane spans over HTTP, reusing `outpost_load.rs`'s existing
+      decode rather than writing a second one. `GET /study/{id}/stream/{name}/load/spans`,
+      `study::stream_load_spans_handler`, `outpost_load::spans_answer` — reuses the same
+      `decode_with_cap` that `load_answer` reduces to `LoadSummary`; `spans_answer` reduces the
+      identical `Decoded` to `SpansAnswer` with no second decode.
+- [x] `embarch-core/interfaces/studies.md` and `spec.md` document the new route.
+- [x] `embarch-core/decisions/stream-index.md` gets the implementation decision (numbered), citing
+      decision 64. Filed as decision 65.
+- [x] A follow-up `embarch-ui` task (filed via `inbox/`, since it is outside this task's own repo)
       retires `trace.rs`'s row-decode/clock-health/stale-prefix/lane-building in favor of consuming
       this route. Not this task to file from scratch if `tasks/core/075` already dropped it —
-      check `inbox/` and the `embarch-ui` queue first.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
-- [ ] `changelog.d/` fragment. `status.d/` fragment if this makes any suite-level doc's description
-      of `/load` stale.
+      check `inbox/` and the `embarch-ui` queue first. Already filed and `blocked` as
+      `tasks/ui/065`; left untouched per the supervisor notes below.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10.
+- [x] `changelog.d/` fragment. `status.d/` fragment if this makes any suite-level doc's description
+      of `/load` stale. `/load` itself is unchanged and no suite-level doc's description of it went
+      stale, so no `status.d/` fragment was needed.
 
 ## Measure the CSV before you quote decision 64's size argument — leg 136, from `core/075`'s reviewer
 
@@ -71,6 +76,15 @@ rendered CSV for that same reference capture, state it with its provenance, and 
 the implementation decision or say plainly that the comparison did not hold.** If the CSV turns out
 to be materially smaller than 12.6 MB, that is a reason to revisit the response shape — streaming,
 per-lane paging, or a narrower payload — before shipping, not after.
+
+**Resolved (this task, 2026-09-17).** The exact reference capture no longer exists to re-measure
+(confirmed again: not checked in anywhere, and `embarch-ui`'s `EMBARCH_VIEW_CSV` scratch test reads an
+arbitrary local path). Measured instead against `embarch-core`'s own checked-in real-firmware fixture
+— 43,573 B / 831 rows, 52.367 B/row — and extrapolated linearly to the reference shape's 225,627 rows:
+**≈ 11.8 MB, a likely-low estimate** (this fixture's `rx_utc_ms` column is empty throughout, which
+understates a populated capture's row width). **The comparison holds**: same order of magnitude as
+12.6 MB, not materially smaller. No response-shape change follows. Full writeup: decision 65,
+`embarch-core/decisions/stream-index.md`.
 
 ## Not yours
 
