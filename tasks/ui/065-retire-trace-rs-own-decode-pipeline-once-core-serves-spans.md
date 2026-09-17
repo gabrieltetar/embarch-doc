@@ -1,6 +1,10 @@
 # 065 — Retire `trace.rs`'s own decode-to-lanes pipeline once `embarch-core` serves per-lane spans
 
-**State:** claimed by agent/ui/065-consume-core-spans, 2026-09-17 15:50 — leg 138 unit 4.
+**State:** done — escape hatch taken, worker 2026-09-17. `embarch-core`'s `/load/spans` payload
+does not carry everything `trace.rs` needs; see `## Escape hatch taken` below. No `embarch-ui` code
+changed. `embarch-ui` decision 27 and `open.md` updated to record precisely what is missing;
+core-side follow-up filed as `inbox/core-widen-spans-gap-and-consider-axis-diagnostics.md`, **drained
+by leg 138 at this unit's fold into `tasks/core/085`**.
 **Unparked by leg 137, 2026-09-17 14:20, because its condition is now met** — and `core/076` is
 now fully landed and folded (leg 138, doc fold `9e36bf6`), so the route is on `main` in both repos
 and nothing about it is still moving.
@@ -85,14 +89,46 @@ and `tasks/core/076` is building it. This is the other half.
 
 ## Done when
 
-- [ ] `trace.rs` consumes `embarch-core`'s decoded per-lane spans instead of decoding the CSV itself.
-- [ ] The retired row-decode/clock-health/stale-prefix/lane-building code is deleted, not left dead
-      alongside the new call.
-- [ ] `embarch-ui` decision 27 is updated to record the split closing (edit the body, per
-      `DOC-PROTOCOL.md` — do not append a contradicting note beside the old text).
-- [ ] `embarch-ui/open.md`'s bullet about needing per-span data or a decision is resolved.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
-- [ ] `changelog.d/` fragment.
+- [ ] ~~`trace.rs` consumes `embarch-core`'s decoded per-lane spans instead of decoding the CSV
+      itself.~~ Not done — see `## Escape hatch taken`.
+- [ ] ~~The retired row-decode/clock-health/stale-prefix/lane-building code is deleted, not left
+      dead alongside the new call.~~ Not done, for the same reason: nothing was safe to delete.
+- [x] `embarch-ui` decision 27 is updated (`decisions/trace-view.md`) — not to record the split
+      closing, since it did not, but to record precisely why not, in place of the old open question.
+- [x] `embarch-ui/open.md`'s bullet is resolved from a vague wait into a precise, checked blocker.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10 (`embarch-ui` code untouched; docs gate
+      run in the doc worktree).
+- [x] `changelog.d/ui-trace-spans-gap-checked-not-closable-yet.decided.md`.
+
+## Escape hatch taken
+
+Checked `embarch-core`'s `GET .../load/spans` payload (decisions 64/65, `tasks/core/076`) against
+every field `trace.rs` builds, before touching any code, per this task's own instruction. It falls
+short three ways, none of them a build mistake on `core`'s side:
+
+1. **`Gap` is `{from, to}` only.** `trace.rs`'s own `Gap` also carries `records_lost`, `row_index`
+   and `unbounded_start`, all three rendered today in `app.js`'s gap table (~3860-3861, ~4250-4252).
+   Swapping to Core's shape as it stands would delete columns a reader currently sees.
+2. **None of the axis-health diagnostics are served** — `frames`, `resolution_ms`, `dual_clock`,
+   `unstamped_rows`, `undated_rows`, `dut_backsteps`, `dut_backstep_max_us`, `dut_step_max_us`,
+   `dut_clock_refused`, `stale_prefix_rows`, `stale_prefix_step_us`, `out_of_order_rows` — every one
+   rendered today in `app.js`'s clock-health notes (~3780-3848). Decisions 62/64 scope these out by
+   name as chart geometry / `TraceView`'s own shape, so this is a documented boundary, not a gap to
+   quietly widen.
+3. **Point events are excluded by the same decisions**, and in `trace.rs` are built in the same
+   row-iteration pass as `Lane`/`Span`/`Gap`. As long as they stay excluded, `embarch-ui` must keep
+   decoding the raw CSV row-by-row regardless — so `dut_clock_health`, `stale_prefix_end` and the
+   row decode itself cannot be deleted even after fixing (1), unless point events are served too.
+
+A partial swap (`Lane`/`Span`/`Gap` only, keeping row-decode for markers/diagnostics) was
+considered and rejected: it would either regress the gap table (missing columns) or add a second
+source of the same facts beside code that has to stay regardless — not a retirement, and explicitly
+what this task's dispatch note says not to do. No `embarch-ui` code was changed.
+
+Follow-up filed to `/home/gabriel/Github/embarch/embarch-doc/inbox/core-widen-spans-gap-and-consider-axis-diagnostics.md`
+(scope `core`): widen `Gap`'s three missing fields (mechanical), and decide whether the axis-health
+diagnostics/point events are ever in `embarch-core`'s scope to serve, or whether decision 27's split
+is permanent.
 
 ## Not yours
 
