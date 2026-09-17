@@ -1,6 +1,6 @@
 # 074 — The 9 singular-wrapped citations: the form even `core/068`'s wrap-check could not see
 
-**State:** claimed — leg 129, 2026-09-16.
+**State:** done — leg 129, 2026-09-16. All 9 lines checked, 0 defects.
 **Source:** leg 128's refill sweep, 2026-09-16, measured directly rather than inferred. `core/068`
 found on 2026-09-16 that a citation wrapped across a comment continuation is invisible to a
 line-based census, and its fix was the grep `grep -rlIE '[Dd]ecisions[[:space:]]*$'` — **plural
@@ -74,15 +74,53 @@ see.
 
 ## Done when
 
-- [ ] All 9 lines checked, with the count of distinct decision instances behind them reported.
-- [ ] `src/install.rs:5`'s reversal claim checked against `embarch-decision-reversals.md` as well as
+- [x] All 9 lines checked, with the count of distinct decision instances behind them reported.
+      9 lines cite 9 distinct (repo, number) decision instances: `install.rs:5` cites two —
+      umbrella 3 and umbrella 28 — on one wrapped line; `install.rs:422` cites umbrella 21;
+      `config.rs:56` cites `embarch-api` 12; `config.rs:107` cites `embarch-api` 53; `doctor.rs:1350`
+      cites umbrella 17; `doctor.rs:1459` cites umbrella 23; `doctor.rs:5368` cites umbrella 8;
+      `locate.rs:311` and `locate.rs:349` both cite umbrella 30 (the same instance twice, which is
+      why 9 lines still total 9 distinct instances rather than 10). All 9 resolve, all in the repo
+      the surrounding code actually means (the two `config.rs` lines are genuinely `embarch-api`'s,
+      confirmed against `embarch-api/decisions/zephyr.md` decision 12 and
+      `embarch-api/decisions/config-retirement.md` decision 53 — the repo-prefix trap did not fire),
+      and every sentence around every citation is still true against the cited decision's text in
+      `embarch-umbrella/decisions/{install,projects,mcp,topology}.md`.
+- [x] `src/install.rs:5`'s reversal claim checked against `embarch-decision-reversals.md` as well as
       against this repo's own `decisions/` — both numbers, and the direction of the reversal.
-- [ ] Every wrong number, dead reference or false sentence fixed; every line deliberately left
+      `decisions/install.md` decision 3 ("Replaced by decision 28") and decision 28 ("Reversing
+      decision 3's sibling-lookup refinement... with the repo owner directly requesting the
+      reversal") agree with each other and with the source comment's direction (3 reversed by 28,
+      at the user's explicit request, over a `wsl-host` Core-path misreport) — both directions
+      checked, no mismatch. `embarch-decision-reversals.md` and its four `reversals/rows-*.md` range
+      files have no row citing umbrella decision 3 or 28 — this reversal is not one of the doc's
+      catalogued shapes (its header: "every entry is handled correctly in its own owning doc; this
+      page does not restate a correction's mechanism" — it collects instructive defect patterns
+      found by a real build/install/capture or a documentation-pass review, not every ordinary
+      superseded decision). Decision 3/28's reversal is fully and correctly recorded in its owning
+      doc (`decisions/install.md`) already, same-day, by the repo owner's own request — nothing
+      here matches the reversals doc's admission bar, so no row was added.
+- [x] Every wrong number, dead reference or false sentence fixed; every line deliberately left
       alone named with the reason.
-- [ ] The measurement repeated after the edits, so the closing report states a number rather than
-      an impression.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
+      All 9 lines left alone — 0 defects found. Reason, per line: `install.rs:5` (3→28 reversal
+      verified correct both directions, see above); `install.rs:422` (decision 21 is exactly the
+      `--dry-run` plan the comment describes); `config.rs:56` (`embarch-api` decision 12 is exactly
+      the live-vs-static `Discovery` split the comment describes); `config.rs:107` (`embarch-api`
+      decision 53 is exactly the `[[projects.targets]]` retirement the comment describes);
+      `doctor.rs:1350` (decision 17 is exactly the "chip has nowhere to be written down, resolved
+      per call" the comment describes); `doctor.rs:1459` (decision 23 is exactly the "timeout
+      outcome reported distinctly" / "assumed, not measured" budget the comment describes);
+      `doctor.rs:5368` (decision 8 is exactly the "no remote orchestration" the comment describes);
+      `locate.rs:311` and `:349` (decision 30 is exactly the WSL2-guest Windows-service-first probe
+      both comments describe).
+- [x] The measurement repeated after the edits, so the closing report states a number rather than
+      an impression. Re-run after review (no edits made, so unchanged):
+      `grep -rInE '[Dd]ecisions?[[:space:]]*$' embarch-umbrella --include='*.rs' --include='*.toml'`
+      still returns the same 9 lines in the same 4 files.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build --all-targets`,
       `cargo test`, `cargo clippy --all-targets -- -D warnings` in `embarch-umbrella`, and
       `check-docs.py` in `embarch-doc`.
-- [ ] `changelog.d/` fragment dropped. No decision is created or amended unless you find one that
+- [x] `changelog.d/` fragment dropped. No decision is created or amended unless you find one that
       is actually wrong, in which case say so rather than editing quietly.
+      No decision was wrong, so none was amended. Fragment:
+      `changelog.d/umbrella-singular-wrapped-citation-sweep.changed.md`.
