@@ -1,6 +1,6 @@
 # 077 — `POST /validate`'s `kind` classifier can't tell "never attached" from "attached but stuck mid-open", and that's now a live gap, not a hypothetical one
 
-**State:** open
+**State:** claimed by agent/core/077-validate-kind-stuck-mid-attach, 2026-09-17 13:26
 **Filed by:** leg 136, 2026-09-17, from
 `inbox/core-validate-kind-classifier-cant-tell-not-attached-from-stuck-mid-attach.md`. Filed
 verbatim except for this header and the note below. I re-checked the `Hardware: none` claim myself
@@ -95,3 +95,23 @@ task, not a reach across from the topology side.
 - **`embarch-core/decisions/auth.md` is in reserve** (filed under `tasks/core/046`, blocked) —
   do not write into it. Run `python3 scripts/check-doc-size.py --pressure` before and after; if this
   task's edits push another file into the reserve band, file the compaction task in the same commit.
+
+## Supervisor notes (leg 137, 2026-09-17)
+
+1. **Reserve, read by me at dispatch:** the only `embarch-core/` file in the band is
+   `decisions/auth.md` at **11,356/12,288 B (932 B left)**, blocked under `tasks/core/046`.
+   `decisions/surfaces.md`, `interfaces.md` and `interfaces/topology.md` all have room.
+2. **"Collapsing into `not_attached` is acceptable" is a first-class answer, not a consolation.**
+   `topology/058` deliberately declined to widen `live_hardware_id` on the reasoning that the shape
+   change belongs to the consumer that would use it. You are that consumer, so the question is
+   genuinely yours — but *declining* and recording why is a decision, and the cheaper one. Weigh the
+   operator's actual next action ("check the cable" vs "close whatever holds the probe") against a
+   wire change reaching `embarch-api`, `embarch-ui` and the user guide, and say which way you came
+   down and on what evidence. **I am not leaning either way; `core/075`'s dispatch note leaned one
+   way this morning and the worker was right to go the other.**
+3. **If you conclude a third `kind` is warranted, do not implement it.** Name it, and drop the
+   `embarch-api`/`embarch-ui`/user-guide work in `/home/gabriel/Github/embarch/embarch-doc/inbox/`
+   in full task format — **absolute path**, so it is not stranded in your worktree.
+4. **Read `topology/058`'s five `reason` strings from `main`, not from a branch.** It landed
+   (code `b96f758`). Do not edit `embarch-topology`; you may read it.
+5. You own exactly one sub-project: `embarch-core`.
