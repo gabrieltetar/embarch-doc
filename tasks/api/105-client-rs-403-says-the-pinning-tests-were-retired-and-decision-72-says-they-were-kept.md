@@ -1,6 +1,6 @@
 # 105 — `client.rs`'s line-403 comment says the pinning tests were retired; decision 72 says they were kept
 
-**State:** open
+**State:** claimed by agent/api/105-pinning-tests-kept-not-retired, 2026-09-16 20:57
 **Source:** `inbox/api-104-review-client-rs-403-contradicts-decision-72.md` — filed by the
 `embarch-reviewer` spawned for unit `api/104`, drained into the queue by the supervisor on
 2026-09-16.
