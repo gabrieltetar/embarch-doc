@@ -10,6 +10,7 @@
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
 
 ### Changed
+- outpost.rs's 8 decision citations swept (comment-only): 1 wrong number (embarch-core 30 -> 38) fixed, 0 false sentences.
 - study-designer/057: citation sweep of gatt.rs, 14 checked, 0 wrong numbers, 0 false sentences; file 058
 - study-designer/052: citation sweep of bounded.rs, 25 checked, 0 wrong numbers, 0 false sentences; file 053
 - `interfaces/types.md`'s `Results` section moved verbatim to `interfaces/result-types.md`, out of reserve.
