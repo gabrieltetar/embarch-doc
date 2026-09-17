@@ -33,10 +33,36 @@ Two consecutive units in the same repo hit the same defect family, and nothing s
 writer reaching for form 1 and getting the depth wrong again. A form already immune to the bug
 exists in the suite but is not documented as the answer.
 
+## A fourth defect family, added by leg 122 (2026-09-16): the `:line` suffix
+
+`topology/046` found a cross-repo citation that was **wrong the day it was written**:
+`bin/main.rs` cited `embarch-core/decisions/surfaces.md:17` for a claim whose text had moved to
+`embarch-core/decisions/enrollment.md:10` when that file split out two days earlier. The repo,
+the path *and* the relative depth were all fine. **The line number was the defect.**
+
+That is a different failure from the three above and it is worse in one specific way: a wrong
+depth breaks a follow-link visibly, while a wrong line number lands the reader on a real
+sentence about something else. `topology/046`'s reviewer confirmed both surviving line-anchored
+citations resolve correctly *today* — which is exactly the property that expires without notice
+the next time either target file is edited.
+
+Nothing can check this: `check-decision-refs.py` resolves decision *numbers*, walks `*.md` only,
+and never leaves the doc repo, so a `file:line` citation in another repo's source is invisible to
+every gate the suite has.
+
+**So this task should settle whether a `:line` suffix is allowed at all in a cross-repo citation**,
+alongside the relative-form question. The obvious alternative — cite the decision number, or the
+section heading, and let the reader search — is stable under edits by construction. Note that the
+same `topology/046` comment also cites `embarch-core/decisions/enrollment.md:10`, which sits inside
+a **retired** decision whose body explicitly says the fact outlived it; the reviewer judged that
+acceptable and had no better anchor to propose. If line anchors go away, that case needs an answer.
+
 ## Done when
 
 - [ ] `DOC-CONVENTIONS.md` states which relative form is canonical for a sibling-repo source
       comment citing `embarch-doc`, and why (auditability of depth vs. resistance to depth drift).
+- [ ] It also says whether a `:line` suffix is permitted in such a citation, given that nothing
+      checks one and that a stale one reads as a real citation of the wrong sentence.
 - [ ] Existing sites in the non-canonical form are either left as a documented exception or queued
       as their own per-sub-project follow-ups — this decision must not itself become a suite-wide
       rewrite task.

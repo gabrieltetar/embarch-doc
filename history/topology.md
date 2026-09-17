@@ -33,6 +33,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- topology's Cargo.toml/bin/main.rs/README.md: 21 citation instances checked (18 census + 3 found), 2 wrong numbers fixed, 1 false sentence fixed.
 - Decision 21's JTAG-vs-self-report match again names both reproduction timestamps, restoring its "three times" count.
 - embarch-topology src/ citation sweep: 103 lines read, 3 false sentences fixed (stale decision-32/core-055 closure), 1 mislabel.
 - Four dead citations in `embarch-topology`'s own source comments re-derived and fixed, none renumbered.
