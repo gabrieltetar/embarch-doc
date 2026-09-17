@@ -46,7 +46,7 @@ task's own `Done when` proposes. Results, three units, six branches:
 |---|---|---|
 | `umbrella/080` | pruned (no-op branch, identical to `main`) | **pruned** |
 | `core/085` | pruned | **NOT pruned** |
-| `api/109` | pruned | see that unit's entry |
+| `api/109` | **NOT pruned** | **NOT pruned** |
 
 **`core/085`'s doc branch is the counter-example and it is a clean one.** After the fold, with the
 branch still on the remote at `2e7195f0`: `git cherry origin/main origin/agent/core/085-widen-spans-gap`
@@ -66,8 +66,24 @@ commit** — so a branch whose commits reached `origin/main` only via that same 
 the check that ran a moment earlier. If that is it, the fix is ordering (or a re-check after the
 push), not patch-ids, and the `Done when` below is aiming at the wrong half.
 
+**`api/109`'s two have a different and fully understood cause, and they are not evidence about
+rebasing at all:** that unit's fold was **hand-committed**, because `fold-commit.py` failed settling
+its instance paths (`tasks/doc/082`). The prune is a step *inside* `fold-commit.py`, so it simply
+never ran. Both tips are ancestors of their `main` — verified with `git merge-base --is-ancestor` —
+so both are safe to prune whenever something does.
+
+**The two defects compound, and that is the part worth carrying forward.** `tasks/doc/082` makes a
+fold finish outside `fold-commit.py`; every fold that finishes outside it silently skips the prune;
+and `.claude/leg.md` forbids a leg from deleting the branch by hand. So each occurrence of `082`
+manufactures a permanent false presence of the kind this task's own "Why it matters" paragraph
+describes — and the liveness rule tells a future leg that a branch with commits is a finished worker
+to land.
+
 **Left on the remote by leg 139 rather than deleted by hand**, per `.claude/leg.md`'s rule, so the
-evidence is still there to inspect: `agent/core/085-widen-spans-gap` in `embarch-doc`.
+evidence is still there to inspect. Three from this leg, all verified landed:
+`agent/core/085-widen-spans-gap` (`embarch-doc`), `agent/api/109-build-dir-name` (`embarch-doc` and
+`embarch-api`). That brings the remote's standing total to **six**, counting the three older ones
+above.
 
 **Why it matters beyond tidiness.** `.claude/leg.md`'s own liveness rule says *"a branch present on
 its remote carrying commits means that worker finished — you may gate and land it"*, and calls that
