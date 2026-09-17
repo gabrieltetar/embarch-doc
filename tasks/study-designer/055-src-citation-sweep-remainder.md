@@ -1,6 +1,11 @@
 # 055 — Citation sweep: `src/` remainder after `ffi.rs`
 
-**State:** claimed by agent/study-designer/055-src-citation-sweep-remainder, 2026-09-16 19:55
+**State:** done
+2026-09-16. `src/crc.rs` swept: 14 grep-matching lines, 14
+distinct citation instances (no plural-citation lines), 0 wrong numbers, 1
+false sentence fixed, 0 unlabelled cross-repo citations (the file cites only
+this crate's own decisions). Follow-up filed as `056`, naming `eap_parse.rs`
+next.
 **Source:** `tasks/study-designer/054`, which fixed two unlabelled cross-repo
 citations and one false sentence in `src/ffi.rs` (the largest of the 13 files
 `053` left remaining), and left the rest.
@@ -252,20 +257,37 @@ this task's call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] One named file (`src/crc.rs`, unless a reason is given to reorder)
+- [x] One named file (`src/crc.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately, and
       every plain number in a cited sentence checked, not only the decision
-      number.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+      number. Result: 14 checked, 0 wrong numbers, 1 false sentence
+      (`crc32_ieee`'s doc wrongly claimed the in-frame `crc32` grammar
+      primitive is "applied host-side at render time (`crate::eap_parse`)";
+      decision 71 and `open.md` both record it as parsed-and-pinned with no
+      render consumer — rewritten to cite decision 71 for the gap and
+      `crate::records`'s `RecordCheck` (decision 70) as the function's real
+      caller).
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text (including any amendment) is read
-      before it is called wrong, or trusted.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      before it is called wrong, or trusted. Result: `crc.rs` has no
+      cross-repo citations at all — every one of its 14 resolves to this
+      crate's own `decisions/*.md`.
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). Filed as
+      `tasks/study-designer/056-src-citation-sweep-remainder.md`, naming
+      `src/eap_parse.rs` next (11 files plus `ids.rs` remain).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build
+      --all-targets`, `cargo test --all-targets` (125 passed: 116 lib + 9
+      `firmware_test_vectors`), `cargo clippy --all-targets -- -D warnings`
+      all clean in the code worktree; `python3 scripts/check-docs.py` clean
+      in the doc worktree (see report).
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+      `changelog.d/study-designer-crc-rs-sweep.fixed.md`: "study-designer/055:
+      citation sweep of crc.rs, 14 checked, 0 wrong numbers, 1 false
+      sentence; file 056".
 
 ## Reserve, for planning
 
