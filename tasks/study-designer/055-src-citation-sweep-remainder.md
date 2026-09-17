@@ -1,6 +1,6 @@
 # 055 — Citation sweep: `src/` remainder after `ffi.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/055-src-citation-sweep-remainder, 2026-09-16 19:55
 **Source:** `tasks/study-designer/054`, which fixed two unlabelled cross-repo
 citations and one false sentence in `src/ffi.rs` (the largest of the 13 files
 `053` left remaining), and left the rest.
