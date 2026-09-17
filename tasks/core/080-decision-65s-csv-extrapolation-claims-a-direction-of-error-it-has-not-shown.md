@@ -1,7 +1,30 @@
 # 080 — Decision 65's CSV-size extrapolation names one source of bias and omits a larger one
 
-**State:** open — drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at
-`core/076`'s fold, 2026-09-17. Unchanged apart from this line and the number.
+**State:** claimed — leg 138 unit 3, 2026-09-17, `agent/core/080-decision-65-extrapolation-direction`.
+Drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at `core/076`'s fold,
+2026-09-17; body unchanged apart from this line, the number and the notes below.
+
+**Supervisor dispatch note 1 — this is prose, and the code is fine.** `core/076` landed 90 minutes
+ago (code `ef60321` in `embarch-core`, doc `e0d54e6`) with a green gate I re-ran myself. The reviewer
+that raised this checked the route, its tests and the `/load`-unchanged property explicitly and found
+them sound. **Expect your code branch to carry zero commits** and push it anyway so I have it to
+land; that is the right instinct, not a failure.
+
+**Supervisor dispatch note 2 — I am not telling you which way to resolve it.** The `Done when` list
+offers two routes (drop the directional claim, or back it with an argument that addresses the
+lane/name-mix gap) and both are legitimate. A third is open to you: re-measure something that closes
+the gap — if a second fixture or a renderable capture with a different lane/name profile exists in
+this repo, measuring it would turn an argument into evidence. **Do not manufacture one**, and do not
+touch hardware. Say what you chose and why.
+
+**Supervisor dispatch note 3 — doc-size reserve for `core`.** The file you are editing,
+`embarch-core/decisions/stream-index.md`, is **10,941/12,288 B (1,347 B left)** — not in reserve but
+close, and decision 65 is already the longest entry in it, so prefer rewriting its existing sentence
+over appending a qualifying one. Two `core` files *are* in reserve and neither is yours to touch
+here: `decisions/surfaces.md` 11,253/12,288 B (1,035 B left, filed as the blocked
+`tasks/core/079-compact-core.md`) and `decisions/auth.md` 11,356/12,288 B (932 B left, filed as the
+blocked `tasks/core/046-compact-core.md`). If your work pushes a file into the reserve, or leaves one
+there that nothing has filed, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** embarch-reviewer on `core/076` (code merge `ef603210f88a407efdf68b215e89349656ec69b7`, doc merge `e0d54e642ff144c08fae1f13b4b8e860b9fc6305`) — directed check from the reviewing supervisor, re-deriving decision 65's fixture measurement
 **Scope:** core
 **Hardware:** none
