@@ -1,7 +1,13 @@
 # 057 — `spec.md` is in reserve
 
-**State:** blocked — unparks when `tasks/topology/056` lands, or is closed without touching
-`spec.md`, whichever comes first. **Filed by `topology/055` with two contradictory `**State:**`
+**State:** open — **unparked by leg 136, 2026-09-17, because this task's own condition was met and
+nothing had acted on it.** It read *"unparks when `tasks/topology/056` lands, or is closed without
+touching `spec.md`, whichever comes first"*; `topology/056` landed on 2026-09-17 (doc `b3c5827`,
+fold `3d384c2`), and then `topology/058` — the follow-up 056 reserved the behaviour decision for —
+landed too (code `b96f758`, doc `c34532e`) **without touching `spec.md` at all**, by its dispatch
+note's instruction. So both halves of the condition are satisfied, not just one. The `058` worker
+saw this and correctly declined to unpark a task it was told to leave alone; doing it is the
+supervisor's job and this is it. **Filed by `topology/055` with two contradictory `**State:**`
 lines — `open` here and `blocked` further down; leg 133 resolved that to the `blocked` the body
 argues for.**
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/055`'s three
@@ -11,9 +17,14 @@ read-back caveat), 2026-09-17
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-topology/spec.md
-**In flux:** yes — the sole file on the `Compacts:` line is in flux (per-file answer, and here
-there is only one file). `tasks/topology/056` is open against the same *"What validation asserts,
-and what it cannot"* section `055` just edited.
+**In flux:** no — the sole file on the `Compacts:` line is settled (per-file answer, and here there
+is only one file). The `yes` this line used to carry rested entirely on *"`tasks/topology/056` is
+open against the same 'What validation asserts, and what it cannot' section `055` just edited"* —
+`056` is done, and `058`, the behaviour decision `056` deferred, is done as well and deliberately
+wrote nothing into `spec.md`. **Nothing is queued against that section any more**, so the reason for
+the park is gone rather than merely stale. `spec.md` is at 9,826/10,240 B — **414 B left, the
+tightest reserve in the suite** — so this is now the most urgent compaction debt on the board even
+though its date is far out.
 **Size debt due:** 2026-10-17
 **Must not delete:** the three qualifiers `055` just added, because each one exists to stop a
 reader relying on a guarantee the code does not provide — that `compare_self_reported` matches on
