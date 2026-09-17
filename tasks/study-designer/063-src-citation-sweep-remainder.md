@@ -1,6 +1,6 @@
 # 063 — Citation sweep: `src/` remainder after `merged_actions.rs` (closes `src/`)
 
-**State:** claimed by agent/study-designer/063-src-citation-sweep-remainder, 2026-09-17 01:50
+**State:** done — 2026-09-17, `agent/study-designer/063-src-citation-sweep-remainder`
 **Source:** `tasks/study-designer/062`, which swept `src/merged_actions.rs` (6
 grep-matching lines, 8 distinct citation instances, plus its own
 located singular-wrap at `:72`) and left the last four files.
@@ -202,29 +202,105 @@ call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] `src/gatt_names.rs`, `src/eap_interp.rs`, `src/vendor.rs`,
+- [x] `src/gatt_names.rs`, `src/eap_interp.rs`, `src/vendor.rs`,
       `src/records.rs` all fully swept, wrong numbers and false sentences
       counted separately per file, every plain number and
       implementation-status claim in a cited sentence checked, not only the
       decision number.
-- [ ] Cross-repo citations carry their repo name — and every citation, bare
+- [x] Cross-repo citations carry their repo name — and every citation, bare
       or labelled, is checked against this crate's own decisions first, and
       a cross-repo decision's own text (including any amendment) is read to
       its end before it is called wrong, or trusted. Remember `056`'s find,
       `058`'s find, `059`'s find, and `062`'s same-repo near-duplicate shape
       (see above).
-- [ ] The whole-repo continuation-grep, singular-inclusive pattern
+- [x] The whole-repo continuation-grep, singular-inclusive pattern
       `grep -rlIE '[Dd]ecisions?[[:space:]]*$'`, run fresh (do not assume
       this task's list is exhaustive) and any hit reported, even one landing
       outside the file being swept — and cross-checked against "Files
       already swept" before treating any hit as new.
-- [ ] Say plainly whether this closes out `src/` (all four files done, `src/`
+- [x] Say plainly whether this closes out `src/` (all four files done, `src/`
       exhausted) or, if not, file the next `tasks/study-designer/<next>`
       naming exactly which files remain.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+
+## Result
+
+**`src/` is now fully swept** — all twenty files (`044` through `063`) plus
+`Cargo.toml` checked. No file in `src/` remains.
+
+**Per-file counts, this unit:**
+
+- `src/gatt_names.rs` — 5 grep-matching lines, **5** distinct citation
+  instances (lines 1, 83, 126, 146, 269, each one citation). **3 wrong
+  numbers** (lines 83, 126, 269 all cited "decision 57" for claims that are
+  actually decision 56's — fixed to 56), **0 false sentences** once the
+  number is corrected (the surrounding claims themselves — the two-map
+  split, vendor-wins precedence, the group-header naming — all check out
+  against decision 56's body).
+- `src/eap_interp.rs` — 5 grep-matching lines, **6** distinct citation
+  instances (line 10's "decisions 31/32" is two). **0 wrong numbers, 0
+  false sentences.** Decision 60 (`protocol-exec.md`, `RunProtocol`)
+  confirmed for all three citations including the "no `Event` for a write's
+  own ATT response" claim; decisions 31/32 (`gatt.md`, `GattDiscover`/
+  `GattMonitorAll`) confirmed by title; decision 62 (`protocol-exec.md`, "A
+  protocol run reports the state it stopped in") confirmed for the
+  session-variables-not-reported claim.
+- `src/vendor.rs` — 3 grep-matching lines, **3** distinct citation
+  instances. **1 wrong number** (line 192, "decision 57" → 56, same shape
+  as `gatt_names.rs` above — the "service a UUID names" / vendor-wins-one-
+  level-up claim is decision 56's content), **0 false sentences**. Decision
+  41 (`gatt.md`, vendor-defined GATT service identities) confirmed for the
+  module's own header citation; decision 56 (line 59, `short_name` as a
+  separate field) confirmed.
+- `src/records.rs` — 2 grep-matching lines, **2** distinct citation
+  instances. **0 wrong numbers, 0 false sentences.** Decision 70
+  (`payload-meaning.md`) confirmed word-for-word against the module doc
+  comment's 10 h-drain account (976 bytes, four 244-byte notifications, 3 of
+  598 records, 9538149 vs 9537173 bytes). Decision 39 (`streams.md`)
+  confirmed for the "byte meaning is the knowledge decision 39 took away
+  from dev-bench" claim, cross-checked against decisions 55/60's own
+  restatements of the same fact.
+
+**This unit's totals: 16 distinct citation instances checked, 4 wrong
+numbers found, 0 false sentences found.**
+
+**New find, carried into `064`:** unlike every prior wrong number in this
+chain (each its own one-off mistake, or `062`'s two-different-decisions
+shape), this was **the same wrong number, "decision 57" for "decision 56",
+repeated four times across two files**, for what reads as the same
+underlying claim each time (service naming reuses the characteristic-naming
+mechanism). Worth checking whether the pattern recurs in the four files this
+unit found unswept outside `src/` (see below) — `filed as
+tasks/study-designer/064`.
+
+**Not closed: four files outside `src/` this chain has never checked.**
+`tools/extract_gatt_config.rs` (7 grep-matching lines), `tests/
+firmware_test_vectors.rs` (8), `tests/eap_worked_protocols.rs` (3), `.cargo/
+config.toml` (6) all carry citations and were outside this task's and every
+prior unit's scope (`Cargo.toml` itself was re-checked through `061`–`063`,
+but nothing under `tools/` or `tests/`, and `.cargo/config.toml` is a
+different file from `Cargo.toml`). Filed as
+`tasks/study-designer/064-citation-sweep-outside-src.md`.
+
+**Running tally across the chain (`044`–`063`), recomputed:** distinct
+citation instances checked: 500 (through `062`) + 16 (this unit) = **516**.
+Wrong numbers found: 18 (through `062`) + 4 (this unit) = **22**. False
+sentences found: 7 (through `062`) + 0 (this unit) = **7**.
+
+**Continuation-grep (`grep -rlIE '[Dd]ecisions?[[:space:]]*$'`), run fresh:**
+same nine files as `062`/`063` — `Cargo.toml`, `src/protocol.rs`,
+`src/decoder.rs`, `src/lib.rs`, `src/schema_version.rs`,
+`src/study_builder.rs`, `src/eap.rs`, `src/merged_actions.rs`,
+`src/study.rs`. All nine already fully checked in prior units (per "Files
+already swept"); no hit lands in this unit's four files. Nothing new.
+
+**Reserve:** re-checked fresh via `scripts/check-doc-size.py --pressure`.
+`spec.md` (9,350/10,240 B) and `open.md` (4,659/5,120 B) unchanged, both
+still parked with their existing blocked compaction tasks (`032`, `026`).
+This unit touched neither file.
 
 ## Reserve, for planning
 
