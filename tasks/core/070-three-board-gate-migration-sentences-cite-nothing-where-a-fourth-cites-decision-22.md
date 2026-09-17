@@ -1,6 +1,6 @@
 # 070 — Three `board_gate` migration sentences cite nothing, where a fourth cites decision 22
 
-**State:** claimed — leg 131 unit 4, 2026-09-17, `agent/core/070-board-gate-migration-citations`
+**State:** done — leg 131 unit 4, 2026-09-17, `agent/core/070-board-gate-migration-citations`
 **Source:** leg 131 refill, 2026-09-17, generalising `tasks/topology/052`'s finding. That unit
 found two sibling files in `embarch-topology` carrying the same *"formerly `embarch-core`'s own
 X"* sentence with the same wrong attribution, and observed that **one was only inside a sweep's
@@ -82,14 +82,57 @@ line wrap. Report whatever you find back into that argument explicitly, zero inc
 
 ## Done when
 
-- [ ] All four sentences above adjudicated individually — fixed, or reported as correct with the
+- [x] All four sentences above adjudicated individually — fixed, or reported as correct with the
       decision body that makes them correct quoted.
-- [ ] The class grep run fresh over `embarch-core/src`, its real count reported, and every hit
+- [x] The class grep run fresh over `embarch-core/src`, its real count reported, and every hit
       adjudicated.
-- [ ] No sentence reworded beyond what a cited decision's own text supports.
-- [ ] Gate green (`../../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`,
+- [x] No sentence reworded beyond what a cited decision's own text supports.
+- [x] Gate green (`../../../embarch-fleet/protocol.md` §10): `cargo build --all-targets`,
       `cargo test`, `cargo clippy --all-targets -- -D warnings`. **You do not have a native Windows
       toolchain and are not expected to run one** — say so in your report; the supervisor carries
       that as `core/015`'s standing debt.
-- [ ] `changelog.d/core-*` fragment, reporting sentences checked, sentences fixed, and sentences
+- [x] `changelog.d/core-*` fragment, reporting sentences checked, sentences fixed, and sentences
       found correct as three explicit numbers.
+
+## Resolution (leg 131 unit 4, 2026-09-17)
+
+All four sentences checked: 1 already correct (`api.rs:681`, already cited decision 22), 3 fixed
+(`hardware.rs:76`, `hardware.rs:107`, `study.rs:873` — each got `decision 22;` added inline before
+"formerly", matching `api.rs:681`'s existing phrasing). Sentences checked: 4. Sentences fixed: 3.
+Sentences found already correct: 1.
+
+Read decision 22 (`decisions/probes.md`) in full before editing. Its own text closes with "Moved
+wholesale into `embarch-topology`", and the paragraph that sentence closes explicitly describes
+**all three** migrated symbols, not just `enroll`: enrollment storage, the identity-gate compare
+(`flash`/`reset`/handshake "compare live against recorded"), and "a role-keyed variant ... because
+a plain UART bridge has no JTAG capability, so it can never be an enrollment candidate" — that last
+clause is `study.rs:873`'s `validate_role`/former `board_gate::enforce_for_role`. So decision 22 is
+the correct citation for all three missing spots, not just the two `validate_serial` ones.
+
+Read decision 61 in full too, per the task's instruction to check it before ruling it out at
+`hardware.rs:107`. Confirmed it is genuinely a different decision — `resolve_probe` delegating to
+`embarch_topology::hardware::select_probe`, and `flash`/`reset` threading their own verb through it
+— with no mention of the `board_gate.rs`/`board_gate::enforce_for_role` move anywhere in its body.
+The existing `decision 61` citations at `hardware.rs:78/89/103` were left untouched: they are
+correctly scoped to the selection-delegation fact, a separate fact from the migration sentence
+sitting next to them, and repointing them would have been the wrong fix.
+
+Checked decision 22's neighbours (9, 23, 26) and `embarch-topology`'s own `enrollment.md` and
+`validate-timing.md` for a nearer/better citation for the role-keyed move specifically — none
+mentions `board_gate` or the move by name; decision 22 is the only place this suite records it.
+
+Fresh sweep: `grep -rnIE "formerly|used to live|moved (in|out) of|moved wholesale|migrated from"
+src/` over `embarch-core` returns exactly 4 hits, matching the task's four rows with no fifth
+member of the class. Re-run after editing, same 4 hits, all now carrying `decision 22`.
+
+No sentence reworded — only `decision 22;` inserted inline at each of the three spots, in the same
+position/format `api.rs:681` already used, so nothing else in the paragraph changed and the
+existing `decision 61` cross-references in the same doc comments were left alone.
+
+Gate: `cargo build --all-targets`, `cargo test` (209 passed, 2 ignored, plus the `version_stdout`
+integration test, 0 failed), `cargo clippy --all-targets -- -D warnings` all green on host
+(Linux/WSL). No native Windows toolchain run — standing `core/015` debt, unaffected by this unit
+(doc comments only, no code-path change).
+
+No `embarch-core` doc touched, so the `auth.md` reserve is untouched and no
+`tasks/core/<NNN>-compact-core.md` was needed.
