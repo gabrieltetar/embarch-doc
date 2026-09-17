@@ -1,6 +1,6 @@
 # 086 — `core/085`'s compaction of `stream-index.md` dropped the RecordKind/five-lies sync-burden sentence and a failure-signature clause, uncounted in the fold message
 
-**State:** claimed — leg 140, 2026-09-17, `agent/core/086-restore-two-compaction-residues`.
+**State:** done — leg 140, 2026-09-17, `agent/core/086-restore-two-compaction-residues`.
 Filed by the supervisor at `core/085`'s own fold, leg 139, 2026-09-17, from its
 reviewer's `inbox/` drop. Body below is the reviewer's, unchanged.
 
@@ -111,3 +111,36 @@ touched `embarch-core/decisions/stream-index.md`. A full revert would also undo 
 the decision-64 correction, which are not in question — undoing just the two lost sentences
 by hand (re-adding them to decision 62's current text) is the narrower fix and does not need a
 git revert.
+
+## Resolution (leg 140, 2026-09-17)
+
+Both sentences re-added to `embarch-core/decisions/stream-index.md` decision 62's current text,
+by hand, not by reverting `543ffe04`. `stream-index.md`: 10,638 B → 10,853 B (+215 B), well
+inside the ~1,650 B of headroom the dispatch note gave and short of the 11,059 B line that would
+have owed a new compaction task — no `tasks/core/<NNN>-compact-core.md` filed.
+
+**Residue 2 (CSV-header pin's failure signature) restored verbatim**, appended to the existing
+sentence in the "Reads only the rendered CSV" paragraph: *"and a host that inherited the
+arithmetic without the pin would be the same failure with a new address."* No rewording needed —
+this sentence's claim (the rejected alternative's failure mode) is untouched by decision 66.
+
+**Residue 1 (RecordKind/five-lies sync-burden sentence) restored with one reword**, inserted
+into the "A second implementation of the timeline" paragraph as: *"A change to `RecordKind`, a
+gap record's semantics, or the five-lies exclusion rules has to land in both files."* The
+pre-085 original opened with *"until then"* — *"until then a change to `RecordKind`, a gap
+record's semantics, or the five-lies exclusion rules has to land in both files"* — tied to
+`embarch-ui/src/trace.rs` reading Core's answer once a "queued follow-up" landed. `core/085`
+itself, in the same unit, corrected this paragraph's heading to say decision 66 makes the
+duplication *permanent, not temporary* ("decisions 64/66 are what that duplication resolves
+to"), so restoring "until then" verbatim would put a literally false temporal condition back
+next to a heading that already says there is no "then." Dropped only the two words "until
+then" and capitalized "A" to start the sentence; the three specific nouns (`RecordKind`, "gap
+record's semantics", "the five-lies exclusion rules") are restored exactly as they were.
+
+**`DOC-COMPACTION-PASS.md`'s tally line is owed, not written.** Trialed the edit and ran
+`scripts/check-ownership.py --scope core`, which refused it: `DOC-COMPACTION-PASS.md <- supervisor
+or owner only`. Reverted the trial edit. The fourth-occurrence line (after `topology/017`,
+`study-designer/019`, `ui/011`) still needs adding by whoever owns that file.
+
+No `embarch-core` source changed — this is a pure `embarch-doc` restoration, so the
+`embarch-core` code branch carries no new commit; both branches pushed regardless, per protocol.
