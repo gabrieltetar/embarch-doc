@@ -1,6 +1,6 @@
 # 057 — Citation sweep: `src/` remainder after `eap_parse.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/057-src-citation-sweep-remainder, 2026-09-16 22:02
 **Source:** `tasks/study-designer/056`, which swept `src/eap_parse.rs` (12
 grep-matching lines, 13 distinct citation instances) and left the rest.
 **Scope:** study-designer
