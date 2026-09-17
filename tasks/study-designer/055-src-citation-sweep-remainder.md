@@ -1,14 +1,14 @@
-# 054 — Citation sweep: `src/` remainder after `eap.rs`
+# 055 — Citation sweep: `src/` remainder after `ffi.rs`
 
-**State:** done — 2026-09-16. `src/ffi.rs` swept; 16 citation instances checked, 0 wrong numbers, 1 false sentence, 2 unlabelled cross-repo citations, all fixed. Follow-up filed as `tasks/study-designer/055-src-citation-sweep-remainder.md`.
-**Source:** `tasks/study-designer/053`, which fixed `.cargo/config.toml`'s
-stale test-count comment and swept `src/eap.rs` (the largest of the 14 files
-`052` left remaining), and left the rest.
+**State:** open
+**Source:** `tasks/study-designer/054`, which fixed two unlabelled cross-repo
+citations and one false sentence in `src/ffi.rs` (the largest of the 13 files
+`053` left remaining), and left the rest.
 **Scope:** study-designer
 **Hardware:** none — source comments only; nothing is built for a board.
 **Owner:** no
 
-**Doc-size reserve for `study-designer` (re-checked fresh by `053`,
+**Doc-size reserve for `study-designer` (re-checked fresh by `054`,
 2026-09-16, via `scripts/check-doc-size.py --pressure`): unchanged.**
 `embarch-study-designer/spec.md` (9,350/10,240 B, 890 B left) and `open.md`
 (4,659/5,120 B, 461 B left) remain in the last 10% of their caps, filed as
@@ -18,7 +18,7 @@ it turns out you must, spend the bytes and say so in your report.
 
 ## What
 
-Eleven of the four originally-named plus the seven largest-remaining files
+Twelve of the four originally-named plus the eight largest-remaining files
 are now swept:
 
 ```
@@ -33,14 +33,14 @@ are now swept:
 24  src/result.rs         — swept in 051
 22  src/bounded.rs        — swept in 052
 21  src/eap.rs            — swept in 053
+15  src/ffi.rs            — swept in 054
 ```
 
-**13 files remain (plus `ids.rs`, which has no citations), largest first, by
+**12 files remain (plus `ids.rs`, which has no citations), largest first, by
 the same grep methodology** (`grep -cE '[Dd]ecision' src/<file>.rs` — a *line*
 count, not a citation-instance count, re-measured fresh for this dispatch):
 
 ```
-15  src/ffi.rs
 14  src/crc.rs
 13  src/eap_parse.rs
 11  src/gatt.rs
@@ -56,7 +56,7 @@ count, not a citation-instance count, re-measured fresh for this dispatch):
  0  src/ids.rs — no citations; needs no sweep, listed so the count above is exhaustive
 ```
 
-Take one file — `src/ffi.rs` next, largest remaining, unless a reason is
+Take one file — `src/crc.rs` next, largest remaining, unless a reason is
 given to reorder — read every cited decision's body against the sentence
 around the citation, and fix what is wrong. Count wrong *numbers* and false
 *sentences* separately, per the method below. When you run out of budget, file
@@ -64,20 +64,25 @@ the next `tasks/study-designer/<next>` naming exactly which files remain, the
 same way this one does.
 
 **Grep-line-count does not predict citation-instance count, and does not
-predict cost, and does not predict yield.** `053` took one file (`eap.rs`, 21
-grep-matching lines, 21 distinct citation instances — a range citation
-(`decisions 58-62`) expanding to 5 instances offsetting four lines that used
-the bare word "decision" with no number) and found **one wrong number**: the
-module doc's `//! The expression set is three operand forms...` — `Operand`
-has always had four variants (`Literal`, `Field`, `Session`, `SpanLen`,
-all added in the same commit that created the file) — wrong the day it
-landed, never a drift. Zero false sentences: every one of the ten unique
-decision numbers cited (3, 18, 35, 39, 52, 58, 59, 60, 61, 62), all
-same-crate, checked against `decisions/wire.md`, `decisions/seals.md`,
-`decisions/registry.md`, `decisions/streams.md`, `decisions/payload-meaning.md`
-and `decisions/protocols.md`/`decisions/protocol-exec.md`, held up including
-the embedded numeric claims (`ScalarType`'s 18 variants, confirmed against
-`src/decoder.rs` and `interfaces/decoders.md`).
+predict cost, and does not predict yield.** `054` took one file (`ffi.rs`, 15
+grep-matching lines, 16 distinct citation instances — line 1's `decisions 7,
+23` expands to two instances on one line) and found **zero wrong numbers** but
+**one false sentence**: the `essd_study_decode_and_verify` doc comment cited
+`embarch-topology decision 18's amendment` as sharing this crate's "no caller
+anywhere" posture — but that decision's own 2026-09-11 amendment (`tasks/suite/014`)
+had already retracted exactly that mutual citation as circular and said
+plainly that this crate's surface "gets no such defence." The comment was true
+when written and became false the day the far-repo decision was amended out
+from under it, and nothing in this repo would ever have caught that — the
+sentence resolved to a real, on-topic decision the whole time.
+`054` also found **two unlabelled cross-repo citations**, both bare `decision
+21` (lines that would have been same-repo by convention) referring to
+`embarch-dev-bench decision 21` — correctly labelled on its first mention in
+the same file, then repeated bare twice more, the same "third shape" `050`
+found in `streams.rs`. This crate's *own* decision 21 (`decisions/streams.md`)
+is `GattOperation::StreamCapture`, an unrelated superseded streaming
+mechanism — reading it, not just noticing a repo prefix was missing, is what
+confirmed the bare citations meant the far-repo one and not this crate's own.
 
 ## Why now
 
@@ -89,26 +94,32 @@ depend on it or its output types), so its comments are read from several other
 repos' default citation index, which makes a bare `decision N` genuinely
 ambiguous here in a way it is not in a leaf repo.
 
-## Method (carried over from `044`-`053`, confirmed useful all eleven times)
+## Method (carried over from `044`-`054`, confirmed useful all twelve times)
 
 **Read the cited decision's body, then read the sentence around the citation,
 in that order.** A number that resolves is not evidence the claim holds — the
-real yield across five-plus days of these sweeps in other repos, and ten of
-the eleven sweeps in this one, has been prose a decision made false or a
+real yield across five-plus days of these sweeps in other repos, and eleven of
+the twelve sweeps in this one, has been prose a decision made false or a
 citation pointing at the wrong (but real) decision, or a plain wrong count
 elsewhere in the same sentence, not a bare typo in the citation number itself.
-`052` is the only true zero so far; `053` found a wrong number that had
-nothing to do with which decision was cited — the citation itself resolved
-correctly, but a number in the sentence it was attached to was wrong. **Check
-every number in the cited sentence, not just the decision number.** Count the
-two categories separately and report both, honestly, even if one or both is
-zero — "checked N, found none" is a legitimate result.
+`052` is the only true zero so far. `054`'s false sentence adds a new shape to
+the pile: a cited decision that was correct when the comment was written and
+was made false later by an *amendment to the far-repo decision itself*, not by
+anything in this crate — worth remembering because nothing in `check-decision-refs.py`
+or this crate's own history would surface it; only reading the cited decision's
+current text does. **Check every number in the cited sentence, not just the
+decision number.** Count the two categories separately and report both,
+honestly, even if one or both is zero — "checked N, found none" is a
+legitimate result.
 
 **A cross-repo citation that resolves to a real, on-topic decision is not
 automatically suspect just because it feels surprising.** Read the far-repo
 decision's own text before concluding a cross-repo cite is wrong — a
 coincidence in numbering is not evidence either way (`049`'s
-`embarch-dev-bench decision 39` case, confirmed correct).
+`embarch-dev-bench decision 39` case, confirmed correct). **Reading it is also
+what catches the opposite failure** — `054`'s false sentence looked
+unremarkable (a real, named, on-topic-sounding far-repo decision) until the
+far-repo file was actually opened and its amendment block read.
 
 **Check cross-repo labelling as the first pass, specifically in this repo.** A
 bare `decision N` is same-repo by convention; another repo's decision must
@@ -121,9 +132,11 @@ instance in both was same-crate). `048` found the *opposite* shape: a
 same-repo decision mislabelled *as* foreign. `050` found a **third** shape: a
 cross-repo decision correctly labelled on its first two mentions but repeated
 bare four lines later, past `check-decision-refs.py`'s attribution window.
-Check every bare *and* every labelled `decision N` against *this crate's own*
-decisions.md/decisions/*.md first regardless — a repo prefix is not proof the
-label is right, and is not proof it is wrong either.
+`054` found that same third shape again, in a different file and a different
+far repo — two more bare repeats of an already-labelled `embarch-dev-bench
+decision 21`. Check every bare *and* every labelled `decision N` against *this
+crate's own* decisions.md/decisions/*.md first regardless — a repo prefix is
+not proof the label is right, and is not proof it is wrong either.
 
 **A wrong number is not always a nearby-digit typo, and is not always the
 decision number itself.** `051`'s two finds were both a real, existing, but
@@ -138,13 +151,18 @@ definitions mattered as much as reading `decisions/*.md`.
 
 **Git history of the decisions file (and, per `053`, of the source file
 itself) is worth checking when a citation's credit — or a plain count near
-one — looks off**, though `047`'s through `053`'s findings all resolved
-without needing the decisions-file history; `053`'s one find *did* need
-`git log -S` on the source file, to confirm the wrong count was original to
-the file's first commit rather than a later drift. When no paired table or
-direct textual match exists, run `git log --follow -p -- embarch-study-designer/decisions/
+one — looks off**, though `047`'s through `054`'s findings all resolved
+without needing the decisions-file history beyond reading the cited entry's
+current (possibly amended) text; `053`'s one find *did* need `git log -S` on
+the source file, to confirm the wrong count was original to the file's first
+commit rather than a later drift. When no paired table or direct textual
+match exists, run `git log --follow -p -- embarch-study-designer/decisions/
 <file>.md` (or, for a count claim about the crate's own code, `git log -p -S"<the actual definition>" -- src/<file>.rs`)
-and read how the cited paragraph, or the type it describes, evolved.
+and read how the cited paragraph, or the type it describes, evolved. **`054`'s
+lesson applies to a cross-repo cite too:** if it resolves and reads on-topic,
+still check whether the far-repo decision carries a later amendment block
+that changes what it says — a resolved number is not evidence the *current*
+text of that decision still supports the sentence citing it.
 
 ## Files already swept (do not re-do)
 
@@ -185,17 +203,33 @@ and read how the cited paragraph, or the type it describes, evolved.
   module doc's "three operand forms" should be "four": `Operand` has always
   had `Literal`/`Field`/`Session`/`SpanLen`, wrong since the file's first
   commit).
+- `src/ffi.rs` — done in `054`. 15 grep-matching lines, 16 distinct citation
+  instances (line 1's `decisions 7, 23` expanding to 2). 0 wrong numbers, 1
+  false sentence, 2 unlabelled cross-repo citations — all fixed. The false
+  sentence: `essd_study_decode_and_verify`'s doc cited `embarch-topology
+  decision 18`'s amendment as sharing this crate's "no caller anywhere"
+  justification for `streams_crc` staying unchecked at the FFI boundary — that
+  amendment (2026-09-11, `tasks/suite/014`) had retracted exactly that mutual
+  citation as circular and said this crate's surface "gets no such defence."
+  Rewritten to cite decision 7's own 2026-09-11 correction (which already
+  records the two decode functions as having no caller in any repo) and
+  `tasks/suite/032` (the still-open call on retiring the surface) instead. The
+  two unlabelled cites: both bare `decision 21`, which is `embarch-dev-bench
+  decision 21` (`main.c` dispatches a real `Study`) correctly labelled on its
+  first mention in the same file, then repeated bare twice more — this
+  crate's own decision 21 (`decisions/streams.md`) is the unrelated,
+  superseded `GattOperation::StreamCapture`.
 
-## Running tally across the chain (`044`–`053`, ten files reporting per-file
-counts plus `045`'s discrepancy note on grep-vs-instance)
+## Running tally across the chain (`044`–`054`, twelve files reporting
+per-file counts plus `045`'s discrepancy note on grep-vs-instance)
 
 Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
 count only reported; no distinct-instance recount published), `study.rs` 52
 (ditto), `gatt_extract.rs` 36 (ditto), `lib.rs` 41 (ditto),
 `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs` 31, `limits.rs` 32,
-`result.rs` 25, `bounded.rs` 25, `eap.rs` 21. **Total: 390.** Wrong numbers
-found: 0+3+3+2+3+1+0+1+1+0+1 = **15**. False sentences found:
-0+0+2+0+0+0+0+1+0+0+0 = **3**. Recompute this fresh in your report using the
+`result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16. **Total: 406.**
+Wrong numbers found: 0+3+3+2+3+1+0+1+1+0+1+0 = **15**. False sentences found:
+0+0+2+0+0+0+0+1+0+0+0+1 = **4**. Recompute this fresh in your report using the
 actual per-file numbers above plus whatever this unit adds, since some early
 files (`044`-`047`) never published a distinct-instance count separate from
 the grep-line count, only the grep count.
@@ -208,68 +242,36 @@ the grep-line count, only the grep count.
 and the doctest binary both currently declare zero tests) — real growth in
 the fourteen days between, not a re-measurement error, and *not* evidence
 decision 63 was ever wrong (it is dated, and stands as the historical record
-of what a specific commit pair measured). The comment now carries **two**
-dated measurements side by side. If this keeps drifting, a future sweep
-should decide whether the comment should track "as of last sweep" indefinitely
-or drop the running-count framing entirely in favor of just decision 63's
-citation — not this task's call to make unprompted, noted here so it is not
-lost.
+of what a specific commit pair measured). `054` re-ran the full suite fresh
+(`cargo test`) and got the same 125/125 (116 + 9), so the comment does not yet
+need a third dated line. The comment now carries **two** dated measurements
+side by side. If this keeps drifting, a future sweep should decide whether
+the comment should track "as of last sweep" indefinitely or drop the
+running-count framing entirely in favor of just decision 63's citation — not
+this task's call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [x] One named file (`src/ffi.rs`, unless a reason is given to reorder)
+- [ ] One named file (`src/crc.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately, and
       every plain number in a cited sentence checked, not only the decision
-      number. **16 distinct citation instances checked (15 grep-matching
-      lines; line 1's `decisions 7, 23` expands to 2). 0 wrong numbers, 1
-      false sentence.** The false sentence: `essd_study_decode_and_verify`'s
-      doc cited `embarch-topology decision 18`'s amendment as sharing this
-      crate's "no caller anywhere" justification for leaving `streams_crc`
-      unchecked at the FFI boundary — but that amendment (2026-09-11,
-      `tasks/suite/014`) had already retracted exactly that mutual citation
-      as circular and states plainly that this crate's surface "gets no such
-      defence." Rewritten to cite decision 7's own 2026-09-11 correction
-      (which already records both decode functions as having no caller in
-      any repo) and `tasks/suite/032` instead. Every other citation (bare
-      decisions 7, 8, 12, 15, 17, 23, 39, and the two now-labelled
-      `embarch-dev-bench decision 21` instances) checked against
-      `decisions/crate.md`, `decisions/limits.md`, `decisions/seals.md`,
-      `decisions/versioning.md`, `decisions/streams.md`, and — for the
-      cross-repo cites — `embarch-dev-bench/decisions/platform.md` and
-      `decisions/dispatch.md`, and held up including embedded claims (the
-      `target_os = "none"`/`feature = "ffi"` cfg gate, checked against
-      `Cargo.toml`'s own feature and the panic handler's actual line number).
-- [x] Cross-repo citations in it carry their repo name — and every citation,
+      number.
+- [ ] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
-      and a cross-repo decision's own text is read before it is called wrong.
-      **2 unlabelled cross-repo citations found and fixed** (bare `decision
-      21` at two sites, both `embarch-dev-bench decision 21` — labelled
-      correctly on its first mention in the same file, then repeated bare
-      twice more, the same "third shape" `050` found in `streams.rs`. This
-      crate's own decision 21, `decisions/streams.md`'s `GattOperation::StreamCapture`,
-      is unrelated and superseded — reading it, not just noticing a missing
-      prefix, is what confirmed the bare cites meant the far-repo decision).
-- [x] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep). **Filed
-      `tasks/study-designer/055-src-citation-sweep-remainder.md`, naming the
-      12 files still remaining (`src/crc.rs` next, 14 grep-matching lines,
-      largest remaining) plus `ids.rs` (0 citations, no sweep needed).**
-- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`,
-      `cargo test` (125/125: 116 lib + 9 `firmware_test_vectors`, matching
-      `053`'s fresh count), `cargo clippy --all-targets -- -D warnings`, and
-      the full `embarch-doc` gate (`scripts/check-docs.py`, 11/11 green) all
-      clean. `check-client-names.py --repo <code worktree>` clean against 7
-      denylist entries. `check-ownership.py --scope study-designer` (doc
-      repo) and `--code-repo` (code repo) both clean.
-- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      and a cross-repo decision's own text (including any amendment) is read
+      before it is called wrong, or trusted.
+- [ ] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep).
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
-      three explicit numbers. `changelog.d/study-designer-ffi-citation-sweep.fixed.md`.
+      three explicit numbers.
 
 ## Reserve, for planning
 
 `embarch-study-designer/spec.md` and `open.md` were both inside the last 10%
 of their caps as of `045`'s dispatch, with both compaction tasks (`032`, `026`)
-blocked, `In flux: yes` per `046`'s dispatch note; `047` through `053` all
+blocked, `In flux: yes` per `046`'s dispatch note; `047` through `054` all
 re-checked `scripts/check-doc-size.py` fresh and found no new reserve entries
 for this scope, touching neither file. Check fresh again rather than trusting
 this number — a comment sweep should not need either file regardless. If this
