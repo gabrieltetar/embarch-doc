@@ -1,6 +1,14 @@
 # 085 — `/load/spans`'s `Gap` is thinner than `embarch-ui`'s own, and its diagnostics are entirely absent
 
-**State:** claimed — leg 139, 2026-09-17, branch `agent/core/085-widen-spans-gap`.
+**State:** done — worker, 2026-09-17, branch `agent/core/085-widen-spans-gap`. Both decisions taken:
+`Gap` widened to full parity (`embarch-core` decision 66), and the boundary call made — axis-health
+diagnostics and point events are permanently out of `embarch-core`'s scope, not pending. Full
+reasoning in `embarch-core/decisions/stream-index.md` decision 66; decision 64's closing sentence
+corrected in place, citing it. `embarch-core/decisions/stream-index.md` also compacted as part of
+this unit (`tasks/core/082` closed and removed — its `Compacts:` line now names no file). Follow-ups
+filed, not built: `tasks/ui/067` (close `embarch-ui`'s two stale "waiting on `embarch-core`"
+sentences) and an `inbox/` drop for `suite/decisions/placement.md` §4, which this repo may not edit
+(`/home/gabriel/Github/embarch/embarch-doc/inbox/suite-placement-decision-4s-exactly-one-implementation-property-is-permanently-false.md`).
 Drained from `inbox/core-widen-spans-gap-and-consider-axis-diagnostics.md` by leg
 138 at `ui/065`'s fold, 2026-09-17. Body unchanged apart from this line, the number and the
 supervisor note below; `Scope: core` was already correct.
@@ -111,16 +119,33 @@ This is a decision task, not (necessarily) a build one — the right first step 
 serving the axis-health diagnostics and point events (a real scope expansion past decisions 62/64's
 stated boundary, and probably its own decision either way).
 
-- [ ] Decide: widen `Gap` to `{from, to, records_lost, row_index, unbounded_start}` (and optionally
+- [x] Decide: widen `Gap` to `{from, to, records_lost, row_index, unbounded_start}` (and optionally
       `cycle_span`, `frame_index` for full parity with `trace.rs`'s own `Gap`), or say why not.
-- [ ] Decide: whether the axis-health diagnostics and point events are ever in scope for
+      **Widened to full parity** (all seven fields) — `embarch-core/src/outpost_load.rs`, mechanical,
+      every field already available at the gap-building call site. Decision 66.
+- [x] Decide: whether the axis-health diagnostics and point events are ever in scope for
       `embarch-core` to serve, or whether decisions 62/64's boundary stands permanently and
       `embarch-ui` decision 27's split is therefore not closable by this route at all — in which
       case say so, so `embarch-ui/open.md`'s bullet can be closed as "settled, permanently split"
       rather than left open waiting on something that will never land.
-- [ ] If widened: `embarch-core`'s own decision record updated, and the matching `embarch-ui`
-      follow-up (consuming the wider shape) filed back to `tasks/ui/`, not built here.
-- [ ] **Decision 64's closing sentence is corrected, whichever way the boundary call goes.** Added
+      **Boundary stands, permanently.** Two independent reasons in decision 66: (a) every one of the
+      twelve axis-health fields is already a field of `trace.rs`'s own `TraceView` struct, so
+      decision 62's "excluded as `TraceView` payload shape" already named this exact set — nothing
+      new is being drawn here; (b) `ui/065` showed that serving them (or point events) piecemeal
+      would not let `embarch-ui` delete anything, because point events share `trace.rs`'s row-decode
+      pass with `Lane`/`Span`/`Gap`, so the loop and its clock-health/stale-prefix machinery stay
+      regardless. Serving everything (including point events) was considered and rejected: point
+      events are chart-level markers over the same decoded rows, explicitly named a chart concern by
+      `outpost_load.rs`'s own pre-existing `Lane` doc comment, not a new boundary invented for this
+      task. `tasks/ui/067` filed to close `embarch-ui/open.md`'s bullet and decision 27's closing
+      sentence on this basis (cannot edit `embarch-ui` from here).
+- [x] If widened: `embarch-core`'s own decision record updated (decision 66), and the matching
+      `embarch-ui` follow-up filed back to `tasks/ui/`. **Not** a "consume the wider `Gap`" task,
+      deliberately: per the boundary decision above, nothing in `embarch-ui` can retire on a widened
+      `Gap` alone (the same partial-swap rejection `ui/065` already recorded), so `tasks/ui/067` is
+      the honest follow-up — closing the two docs that still describe the split as pending a call
+      that has now been made, not a code change.
+- [x] **Decision 64's closing sentence is corrected, whichever way the boundary call goes.** Added
       by leg 138 on its reviewer's recommendation. Decision 64 currently reads *"Serving spans is
       what closes the gap decision 4 opened and decision 62 left standing"* — and `ui/065`
       established field-for-field that it does not: `embarch-core/src/outpost_load.rs` and
@@ -130,4 +155,11 @@ stated boundary, and probably its own decision either way).
       open, and it is `embarch-core`'s to fix; nothing else will reach it. Fix it even if you
       decide the boundary is permanent — especially then, since a permanent split is precisely the
       case decision 64's sentence denies.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      **Corrected** in `embarch-core/decisions/stream-index.md` decision 64, pointing at decision 66.
+      §4 itself is a shared suite doc this repo may not edit; the narrower fix (distinguishing
+      `LoadSummary`'s real single-implementation from the fuller timeline's permanent split) is
+      filed as an `inbox/` drop
+      (`suite-placement-decision-4s-exactly-one-implementation-property-is-permanently-false.md`).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `cargo build`/`test`/`clippy` clean in
+      `embarch-core`; `check-docs.py` (11/11), `check-client-names.py`, `check-ownership.py` (both
+      repos) all green.
