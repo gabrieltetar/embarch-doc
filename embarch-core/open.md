@@ -21,6 +21,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not-needed-*yet*, with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
 - **A byte count alongside `GET /serial-log`'s `truncated: bool`** — rejected, not deferred (decision 58). Trigger: a caller that must act differently on 1 byte lost versus 900 KB.
+- **A sibling route serving decoded per-lane spans** (decision 64) — decided yes, not yet built. `outpost_load.rs` and `embarch-ui/src/trace.rs` keep independently building the same timeline until it ships. Filed as `tasks/core/076`; it is a wire-schema bump the supervisor announces before landing.
 
 ## Structural limits
 

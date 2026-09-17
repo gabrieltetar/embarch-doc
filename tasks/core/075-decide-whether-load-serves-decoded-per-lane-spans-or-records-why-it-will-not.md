@@ -1,6 +1,6 @@
 # 075 — Decide whether `/load` serves decoded per-lane spans, or record why it will not
 
-**State:** claimed by agent/core/075-load-per-lane-spans-decision, 2026-09-17 12:51
+**State:** done
 **Filed by:** leg 135, from `inbox/core-outpost-load-per-span-endpoint.md`, written by the `ui/064`
 worker while landing that unit. Filed verbatim below except for this header and the two supervisor
 notes. I re-checked the `Hardware: none` claim myself and it holds: deciding this is a read of
@@ -70,17 +70,47 @@ it is `embarch-core`'s to make, not `embarch-ui`'s to assert.
 
 ## Done when
 
-- [ ] `embarch-core` decides whether to serve decoded per-lane spans (what shape, on the existing
+- [x] `embarch-core` decides whether to serve decoded per-lane spans (what shape, on the existing
       `/load` response or a sibling call), or declines and records why — a cost this note did not
       account for, most plausibly. **Either way it is a numbered decision in `embarch-core`**, citing
       decision 62 and `embarch-ui` decision 27.
-- [ ] Supervisor note 3's check on `embarch-ui` decision 18 answered explicitly, from decision 18's
+      **Decided yes** — `embarch-core` decision 64 (`embarch-core/decisions/stream-index.md`), on a
+      new sibling route to `/load`, shape left to the implementing task. The note's own hedge
+      ("declines... most plausibly") did not hold up: decision 62's own text already called the
+      duplication "known to be temporary... until the queued follow-up," and suite decision 4's
+      bought property — "exactly one implementation of that timeline" — is not actually true while
+      only the aggregate is shared. Full reasoning in decision 64.
+- [x] Supervisor note 3's check on `embarch-ui` decision 18 answered explicitly, from decision 18's
       own text.
-- [ ] If it ships, a follow-up `embarch-ui` task retires `trace.rs`'s own row-decode/clock-health/
+      **Read `embarch-ui/decisions/trace-transfer.md` directly (not `ui/064`'s or decision 27's
+      restatement).** Decision 18 decides where *binning* runs and what crosses to the *browser* —
+      `GET /api/trace/{study}/{tap}/bins`'s payload, "the view's own payload drops `lanes[].spans`
+      entirely." It never says which server holds the decoded capture that gets binned; "one decoded
+      capture is cached server-side" is silent on whether that server is `embarch-ui`'s own or
+      `embarch-core`'s. Suite decision 4 (`suite/decisions/placement.md`) already read it the same
+      way and said so outright: "What changes is which server holds the decoded view. The browser's
+      contract is untouched." **The premise holds — decision 18 is not wider than it was read as.**
+- [x] If it ships, a follow-up `embarch-ui` task retires `trace.rs`'s own row-decode/clock-health/
       stale-prefix/lane-building in favor of consuming `embarch-core`'s structure. **Not this
       task** — file it, do not do it.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
+      Filed to `/home/gabriel/Github/embarch/embarch-doc/inbox/ui-retire-trace-rs-decode-pipeline-once-core-serves-spans.md`
+      (a `core`-scoped worker cannot write `tasks/ui/` directly). The `embarch-core` build itself is
+      `tasks/core/076`.
+- [x] A `changelog.d/` fragment.
+      `changelog.d/core-load-per-lane-spans.decided.md`.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10.
+      `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings` all green
+      in `embarch-core` (no source touched by this task); `python3 scripts/check-docs.py` green in
+      `embarch-doc`. `check-doc-size.py --pressure` re-run after: no new file in reserve (this task
+      grew `embarch-core/decisions/stream-index.md` to 9,333/12,288 B, 76%, comfortably below the
+      90% pressure line).
+
+## What this task did not do
+
+- **Did not implement the route** (supervisor note 2) — filed as `tasks/core/076`.
+- **Did not touch `embarch-ui`** — decision 27 stands until `tasks/core/076` and its `embarch-ui`
+  follow-up land; the follow-up is an `inbox/` drop, not a direct edit.
+- **Did not touch `embarch-core/decisions/auth.md`** — in reserve, parked under `tasks/core/046`.
 
 ## Not yours
 
