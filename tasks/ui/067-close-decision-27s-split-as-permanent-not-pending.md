@@ -1,6 +1,15 @@
 # 067 — Close decision 27's split as permanent, not a wait on `embarch-core`
 
-**State:** claimed — leg 140, 2026-09-17, `agent/ui/067-decision-27-split-permanent`.
+**State:** done — worker, 2026-09-17, `agent/ui/067-decision-27-split-permanent`. Both bullets
+updated to cite `embarch-core` decision 66 and state the split as permanent. `embarch-ui/open.md`
+was in reserve (4,169/5,120 B) before this edit; the decision-27 bullet's rewrite plus a further
+compaction of that same bullet brought it to 3,916/5,120 B (76.5%), out of reserve — confirmed via
+`check-doc-size.py --pressure`, which now reports `embarch-ui/open.md is out of reserve; close its
+item -> tasks/ui/066-compact-ui.md [BLOCKED]`. Per the dispatch note, `tasks/ui/066` itself was not
+touched — reported here for the supervisor to re-assess. The same rewrite on
+`embarch-ui/decisions/trace-view.md` initially pushed *that* file into reserve (11,177/12,288 B);
+trimmed to 11,000/12,288 B (89.5%) to stay clear, since the dispatch note said nothing else in
+`embarch-ui` was in reserve going in.
 
 **Dispatch note (supervisor, leg 140).** Dispatched ahead of `tasks/ui/066` deliberately, for the
 reason this file already gives: **you are the last writer of the bullet `066` is blocked on.** Do
@@ -72,8 +81,9 @@ the answer.
 
 ## Done when
 
-- [ ] `embarch-ui/open.md`'s bullet ends stating the split is permanent, citing `embarch-core`
+- [x] `embarch-ui/open.md`'s bullet ends stating the split is permanent, citing `embarch-core`
       decision 66, not "filed to `inbox/`, not decided here."
-- [ ] `embarch-ui/decisions/trace-view.md` decision 27's closing sentence updated the same way.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/ui-decision-27-split-closed-as-permanent.md`.
+- [x] `embarch-ui/decisions/trace-view.md` decision 27's closing sentence updated the same way.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — `check-docs.py`: all 11 checks green;
+      `check-ownership.py --scope ui` clean in both worktrees.
+- [x] `changelog.d/ui-decision-27-split-closed-as-permanent.decided.md`.
