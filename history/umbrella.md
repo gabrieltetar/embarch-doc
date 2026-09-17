@@ -87,6 +87,7 @@
 - Decisions 27 and 29 are one entry an insertion renumbered, not a deletion; same for api 31 and 33.
 
 ### Decided
+- Decision 55 moved verbatim from `decisions/projects.md` to new `decisions/serial-port.md`.
 - `init` never writes `serial_port`, deliberately (decision 55): discover it per call via `list_serial_ports`.
 - Decision 54: a user-level service is rejected, decision 3's system-level service stands (see `decisions/install.md`).
 - `doctor` check 5's nine debug-probe vendor IDs stay here, not routed to `embarch-core`: `embarch-topology`'s three VIDs pick a serial port, not a probe (decision 49).

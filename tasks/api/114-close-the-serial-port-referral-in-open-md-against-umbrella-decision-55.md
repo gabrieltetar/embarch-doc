@@ -12,8 +12,15 @@ answer changed what this bullet should say** — both are about what `init` does
 scaffold, and they may want to be one bullet rather than two.
 
 **Owner:** no
-**Source:** `embarch-umbrella decision 55` (`embarch-umbrella/decisions/projects.md`), landed by
-`tasks/umbrella/080`, 2026-09-17.
+**Source:** `embarch-umbrella decision 55` (`embarch-umbrella/decisions/serial-port.md`), landed by
+`tasks/umbrella/080`, 2026-09-17. **Repointed by the supervisor at `umbrella/081`'s fold, leg 140,
+from that unit's reviewer finding.** This line named `decisions/projects.md` until `umbrella/081`
+split decision 55 out into its own file; the split's own grep missed this citation because it is
+inline code with a parenthetical rather than a `[decision N](path)` link, which is the only shape
+`check-decision-refs.py` inspects. That is a fresh, concrete instance of `tasks/doc/044` —
+**a verbatim split is the move that check structurally cannot see** — and the gate stayed green over
+it the whole time. Cite decision 55 by number alone where you can; the number is permanent and the
+file is not.
 **Scope:** api
 **Hardware:** none
 
