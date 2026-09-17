@@ -1,6 +1,6 @@
 # 054 — Citation sweep: `src/` remainder after `eap.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/054-src-citation-sweep-remainder, 2026-09-16 19:25
 **Source:** `tasks/study-designer/053`, which fixed `.cargo/config.toml`'s
 stale test-count comment and swept `src/eap.rs` (the largest of the 14 files
 `052` left remaining), and left the rest.
