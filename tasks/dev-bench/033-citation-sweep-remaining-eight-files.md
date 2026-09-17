@@ -1,6 +1,6 @@
 # 033 — Citation sweep: the eight files `032` did not reach
 
-**State:** open
+**State:** claimed — leg 129, 2026-09-16.
 **Source:** `dev-bench/032`, 2026-09-16. That unit fully swept `app/src/ble_bridge_real.c` (56
 instances) and `app/src/serial_protocol.c` (44 instances) — decision-existence, repo-label and
 sentence-truth, per-instance — and fixed 5 wrong decision numbers plus 4 false/unsupported
