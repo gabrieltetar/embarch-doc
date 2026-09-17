@@ -1,6 +1,6 @@
 # 061 — Citation sweep: `src/` remainder after `decoder.rs`
 
-**State:** claimed (leg 132 unit 1)
+**State:** done — 2026-09-17, `agent/study-designer/061-src-citation-sweep-remainder`
 **Source:** `tasks/study-designer/060`, which swept `src/decoder.rs` (7
 grep-matching lines, 9 distinct citation instances, the third true zero in
 the chain) and left the rest.
@@ -198,27 +198,44 @@ seventeen-file history through `outpost.rs`. Adding:
   decision 52, split across a line wrap). 0 wrong numbers, 0 false sentences,
   0 unlabelled cross-repo citations — the third true zero in the chain, and
   the file that found the continuation-grep's blind spot.
+- `src/sample.rs` — done in `061`. 7 grep-matching lines, 7 distinct citation
+  instances. 0 wrong numbers, **1 false sentence** — fixed (the `rx_utc_ms`
+  field doc still asserted the seed-and-resync claim decision 72 corrected at
+  three other sites; `sample.rs` was a fourth, uncorrected site naming the
+  very field decision 72 is titled after). 0 unlabelled cross-repo citations.
+- Thirteen singular-wrap citations in six already-closed files
+  (`protocol.rs:93`; `study.rs:3`, `:88`; `study_builder.rs:190`, `:1438`,
+  `:1510`; `schema_version.rs:113`, `:133`, `:203`; `lib.rs:38`, `:45`,
+  `:758`; `eap.rs:1`) — checked for the first time in `061`, all correct: 0
+  wrong numbers, 0 false sentences.
 
-## Running tally across the chain (`044`–`060`, eighteen files reporting per-file counts)
+## Running tally across the chain (`044`–`061`, nineteen files reporting per-file counts, plus thirteen singular-wrap re-checks)
 
 Distinct citation instances checked so far: `schema_version.rs` ~53 (grep
 count only reported), `study.rs` 52 (ditto), `gatt_extract.rs` 36 (ditto),
 `lib.rs` 41 (ditto), `study_builder.rs` 36, `protocol.rs` ~38, `streams.rs`
 31, `limits.rs` 32, `result.rs` 25, `bounded.rs` 25, `eap.rs` 21, `ffi.rs` 16,
 `crc.rs` 14, `eap_parse.rs` 13, `gatt.rs` 13, `registry.rs` 9, `outpost.rs` 8,
-`decoder.rs` 9. **Total: 472.** Wrong numbers found:
-0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1+0 = **17**. False sentences found:
-0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0+0 = **6**. Recompute this fresh in your
-report using the actual per-file numbers above plus whatever this unit adds.
-This total does not yet include any of the seven singular-wrap citations
-found in already-closed files above — those were located, not counted or
-verified, by `060`.
+`decoder.rs` 9, `sample.rs` 7, plus 13 singular-wrap re-checks (`protocol.rs`,
+`study.rs` x2, `study_builder.rs` x3, `schema_version.rs` x3, `lib.rs` x3,
+`eap.rs`, in already-closed files). **Total: 492.** Wrong numbers found:
+0+3+3+2+3+1+0+1+1+0+1+0+0+1+0+0+1+0+0+0 = **17**. False sentences found:
+0+0+2+0+0+0+0+1+0+0+0+1+1+0+0+1+0+0+1+0 = **7** (the one new false sentence
+is `sample.rs`'s `rx_utc_ms`/decision-72 finding above; the thirteen
+singular-wrap re-checks added zero of either). This total now includes all
+seventeen singular-wrap hits the corrected continuation-grep found: thirteen
+checked here, one (`decoder.rs:1`, decision 52) already checked and counted
+in `060`'s nine, and `merged_actions.rs:72` still outstanding, left for that
+file's own sweep (`062`) rather than checked twice or out of turn — `Cargo.toml`'s
+two hits stay outside the `src/` file count as before. Recompute this fresh
+in your report using the actual per-file numbers above plus whatever this
+unit adds.
 
 ## Also worth doing: the `.cargo/config.toml` count is now dated, not fixed
 
 `053` found the test count had drifted from decision 63's dated
 [2026-09-02] 108/108 to a fresh [2026-09-16] measurement of **125/125**
-(116 lib + 9 `firmware_test_vectors` integration tests). `054` through `060`
+(116 lib + 9 `firmware_test_vectors` integration tests). `054` through `061`
 all re-ran the full suite fresh (`cargo test --all-targets`) and got the
 same 125/125 (116 + 9), so the comment does not yet need a third dated line.
 If this keeps drifting, a future sweep should decide whether the comment
@@ -228,28 +245,92 @@ call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] `src/sample.rs` fully swept, wrong numbers and false sentences counted
+- [x] `src/sample.rs` fully swept, wrong numbers and false sentences counted
       separately, and every plain number and implementation-status claim in
-      a cited sentence checked, not only the decision number.
-- [ ] The seven singular-wrap citations found in already-closed files
-      (`merged_actions.rs:72` is the exception — not yet swept, check it as
-      part of that file's own turn instead) read against their decision
-      bodies and reported correct or fixed, same as any other citation.
-- [ ] Cross-repo citations carry their repo name — and every citation, bare
+      a cited sentence checked, not only the decision number. 7 distinct
+      citation instances, 0 wrong numbers, 1 false sentence (fixed — see
+      below).
+- [x] The seven — corrected to **thirteen**, see note below — singular-wrap
+      citations found in already-closed files (`merged_actions.rs:72` is the
+      exception — not yet swept, left for that file's own turn instead) read
+      against their decision bodies and reported correct or fixed, same as
+      any other citation. All thirteen checked, all correct: 0 wrong
+      numbers, 0 false sentences.
+- [x] Cross-repo citations carry their repo name — and every citation, bare
       or labelled, is checked against this crate's own decisions first, and
       a cross-repo decision's own text (including any amendment) is read
       before it is called wrong, or trusted. Remember `056`'s find, `058`'s
-      find, and `059`'s find (see above).
-- [ ] The whole-repo continuation-grep, **using the corrected,
+      find, and `059`'s find (see above). `sample.rs` has no cross-repo
+      citations (all seven are bare, same-repo `decision N`), so no
+      candidate for any of the three shapes; the thirteen singular-wrap
+      citations are likewise all same-repo.
+- [x] The whole-repo continuation-grep, **using the corrected,
       singular-inclusive pattern** `grep -rlIE '[Dd]ecisions?[[:space:]]*$'`,
       run fresh (do not assume this task's list is exhaustive) and any hit
-      reported, even one landing outside the file being swept.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+      reported, even one landing outside the file being swept. Result: same
+      17 hits as `060`'s corrected count (`Cargo.toml` x2,
+      `src/study_builder.rs` x3, `src/decoder.rs`, `src/study.rs` x2,
+      `src/eap.rs`, `src/schema_version.rs` x3, `src/lib.rs` x3,
+      `src/protocol.rs`, `src/merged_actions.rs`) — no new hits.
+- [x] A follow-up task filed naming the files that remain (or, if this closes
+      out `src/`, saying so and closing the sweep). Filed as
+      `tasks/study-designer/062-src-citation-sweep-remainder.md`, naming the
+      five remaining files and `merged_actions.rs:72`'s still-outstanding
+      singular-wrap check.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `cargo build`,
+      `cargo test --all-targets` (125/125), `cargo clippy --all-targets -- -D
+      warnings` and the `--all-features` variants of build/clippy all clean.
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+      `changelog.d/study-designer-sample-citation-sweep.changed.md`.
+
+## Closed by this unit
+
+**The task header's "six already-closed files... none previously read"
+paragraph undercounted by one: it says "seven" once and "thirteen" (the
+correct itemised count) elsewhere in the same section — both from `060`'s
+list, which itemises thirteen lines across six files.** The itemised list
+was right; **thirteen** is the number this unit actually checked, not seven.
+Noted here rather than left for `062` to trip over, the same way `060`
+corrected its own predecessor's slip.
+
+**`src/sample.rs`: 7 grep-matching lines, 7 distinct citation instances.**
+Checked against `decisions/streams.md` (decisions 20, 27 x2, 39),
+`decisions/versioning.md` (decision 12), `decisions/wire.md` (decision 10),
+and `decisions/crate.md` (decision 2). **0 wrong numbers, 1 false
+sentence** — fixed.
+
+**The false sentence, and why it is the same defect decision 72 exists to
+fix, missed at the one site decision 72's own correction pass didn't visit.**
+`Sample::rx_utc_ms`'s doc comment said the field was "seeded and
+periodically resynced from Core's `host_utc_ms` on every `Hello`" for a
+dev-bench-mediated tap. Decision 72 (`decisions/versioning.md`) is titled
+exactly "`Sample::rx_utc_ms` carries bench uptime, and the name's promise is
+corrected rather than kept" and names three sites carrying this same false
+claim that it corrected: this crate's `interfaces/decoders.md`, decision
+12's own paragraph, and `src/protocol.rs`'s doc comment on
+`Hello.host_utc_ms`. **`src/sample.rs`'s own doc comment on the very field
+decision 72 is about was not among the three sites the correction pass
+named, and still asserted the false claim** — the firmware stamps
+`k_uptime_get()` with no offset applied anywhere (confirmed against
+`src/protocol.rs`'s corrected comment, which now carries the decision-72
+caveat verbatim). Fixed to match the corrected language already present in
+`src/protocol.rs` and `interfaces/decoders.md`: still cites decision 12 for
+the *design*, adds decision 72 for the fact that the resync half is not
+implemented, and states plainly that a dev-bench-mediated tap's
+`rx_utc_ms` is bench uptime, not UTC, and not comparable with
+`core_rx_utc_ms`.
+
+**The thirteen singular-wrap citations in six already-closed files, checked
+for the first time (the plural-only continuation-grep had never surfaced
+them for any unit to check):** `src/protocol.rs:93` (decision 10),
+`src/study.rs:3` and `:88` (decision 39, twice), `src/study_builder.rs:190`,
+`:1438`, `:1510` (decisions 37, 46, 41), `src/schema_version.rs:113`,
+`:133`, `:203` (decisions 40, 40, and 31/32/52/53/54 together), `src/lib.rs:38`,
+`:45`, `:758` (decisions 58-62 twice and 47), `src/eap.rs:1` (decisions
+58-62). **All thirteen checked against their decision bodies and found
+correct — 0 wrong numbers, 0 false sentences.**
 
 ## Reserve, for planning
 
