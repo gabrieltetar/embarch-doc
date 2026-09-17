@@ -1,11 +1,18 @@
 # 102 — Citation sweep: the ~70-line `src/`/`crates/` remainder `api/101` deliberately left unswept
 
-**State:** open
+**State:** claimed by agent/api/102-citation-sweep-remaining-src-crates, 2026-09-16 19:25
 **Source:** `tasks/api/101-citation-sweep-non-rust-and-tests.md`, filed at that task's own request as its
 "larger unswept block, deliberately not in this task."
 **Scope:** api
 **Hardware:** none — comments and doc-comments in Rust source, no build, no probe, no live Core.
 **Owner:** no
+
+**Doc-size reserve for `api` (fresh, `scripts/check-doc-size.py --pressure`, 2026-09-16 19:25):**
+one file — `embarch-api/spec.md` at **9,102/10,240 B (1,138 B left)**, filed as `tasks/api/083` and
+**blocked**. Nothing else in scope is in reserve. A source-comment sweep should not need to write
+it; if it does, say why in your report. If your work leaves any `api` doc inside the last 10% of its
+cap and nothing has filed it, file `tasks/api/<next free NNN>-compact-api.md` in the same commit per
+`tasks/README.md`. **`tasks/doc/` is not yours.**
 
 ## What
 
