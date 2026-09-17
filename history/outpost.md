@@ -19,6 +19,7 @@
 - `embarch-outpost`'s 129 KB `design.md` became spec.md, open.md, two `interfaces/` files and nine `decisions/<mission>.md` — 92 KB, all 21 numbers intact, none over 9.6 KB.
 
 ### Fixed
+- outpost: `Kconfig` fill-wait help now cites decision 20; `outpost_hooks.c` now cites decision 25.
 - Citation sweep of all 23 `decision N` comments in outpost source: 1 mis-cited (fixed), 22 held.
 - wire.md's test section now says six legs and distinguishes toolchain from sibling-checkout needs.
 - Decision 26's Rejected clause restated for the CI this repo now has; five stray decision-22 skip citations (run-all.sh, vocab_check.py, README.md) corrected to 26.
