@@ -1,6 +1,6 @@
 # 053 — Citation sweep: `src/` remainder after `bounded.rs`
 
-**State:** claimed by agent/study-designer/053-src-citation-sweep-remainder, 2026-09-16 18:45
+**State:** done
 **Source:** `tasks/study-designer/052`, which swept `src/bounded.rs` (the
 largest of the 16 files `051` left remaining) and left the rest.
 **Scope:** study-designer
@@ -206,20 +206,43 @@ quietly writing whatever number you get.
 
 ## Done when
 
-- [ ] `.cargo/config.toml`'s test-count comment corrected to agree with the
+- [x] `.cargo/config.toml`'s test-count comment corrected to agree with the
       measured count, decision 63 left alone, and the count re-measured rather
-      than copied.
-- [ ] One named file (`src/eap.rs`, unless a reason is given to reorder)
-      fully swept, wrong numbers and false sentences counted separately.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+      than copied. **Found a different result than expected**: today's
+      measured count is 125/125 (116 lib + 9 `firmware_test_vectors`), not
+      108/108 — real growth in the 14 days since decision 63's dated
+      [2026-09-02] measurement, not a re-measurement error. Decision 63 is
+      untouched (it is dated and stands as the historical record); the
+      comment now states both dated measurements rather than picking one.
+- [x] One named file (`src/eap.rs`) fully swept, wrong numbers and false
+      sentences counted separately: 21 distinct citation instances checked
+      (one range citation, `decisions 58-62`, expanded to 5 individual
+      instances), **1 wrong number**, **0 false sentences**. The module doc's
+      "The expression set is three operand forms" was wrong — `Operand` has
+      always had four variants (`Literal`/`Field`/`Session`/`SpanLen`, all
+      added in the file's first commit) — fixed to "four". All ten unique
+      decision numbers cited (3, 18, 35, 39, 52, 58, 59, 60, 61, 62) checked
+      against their full decision bodies and found on-topic and accurate,
+      including the embedded numeric claims (`ScalarType`'s 18 variants,
+      confirmed against `src/decoder.rs`).
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text is read before it is called wrong.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
-      out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
-      instances checked, wrong numbers found, and false sentences found as
-      three explicit numbers.
+      `src/eap.rs` had **no cross-repo citations at all**: every one of the
+      ten unique decision numbers resolved to `embarch-study-designer`'s own
+      `decisions/*.md`, confirmed unique per number across the whole
+      `decisions/` directory.
+- [x] A follow-up task filed naming the files that remain:
+      `tasks/study-designer/054-src-citation-sweep-remainder.md`, naming
+      `src/ffi.rs` (15 grep lines) as next, then `crc.rs` (14),
+      `eap_parse.rs` (13), `gatt.rs` (11), `registry.rs` (9), `outpost.rs` (8),
+      `decoder.rs` (8), `sample.rs` (7), `merged_actions.rs` (7),
+      `gatt_names.rs` (5), `eap_interp.rs` (5), `vendor.rs` (3), `records.rs`
+      (2); `ids.rs` has no citations.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — see report.
+- [x] `changelog.d/study-designer-053-eap-citation-sweep.fixed.md` fragment,
+      reporting distinct citation instances checked (21), wrong numbers found
+      (1) and false sentences found (0).
 
 ## Reserve, for planning
 
