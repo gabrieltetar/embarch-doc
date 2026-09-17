@@ -33,6 +33,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- `validate.rs`'s doc comments no longer claim a probe-open failure raises a `TopologyMismatch` or logs an alert — it raises neither; only "not attached" and a hardware-ID mismatch do.
 - `spec.md`/decisions no longer overclaim: identity gate's equality shortcut, role-uniqueness cardinality limit, and the alert log's write-only status are now stated.
 - `hardware_id.rs`'s header now cites `embarch-core` decision 22 for the move, not topology's own decisions 2, 4.
 - `validate.rs`'s header now cites `embarch-core` decision 22 for `board_gate.rs`'s move, not topology's own decision 2.
