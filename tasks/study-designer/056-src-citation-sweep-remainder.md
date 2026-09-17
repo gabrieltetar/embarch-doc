@@ -1,6 +1,6 @@
 # 056 — Citation sweep: `src/` remainder after `crc.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/056-src-citation-sweep-remainder, 2026-09-16 21:35
 **Source:** `tasks/study-designer/055`, which swept `src/crc.rs` (14 grep-matching
 lines, 14 distinct citation instances) and left the rest.
 **Scope:** study-designer
