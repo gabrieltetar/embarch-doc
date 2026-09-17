@@ -1,6 +1,6 @@
 # 076 — Three more `embarch-umbrella` doc-versus-code contradictions, from the same census that produced 075
 
-**State:** open
+**State:** claimed by agent/umbrella/076-three-more-contradictions, 2026-09-17 01:04
 **Source:** leg 132's own refill census of `embarch-umbrella`'s docs against its source — the same
 pass that produced `tasks/umbrella/075`. **Filed so they survive**: they existed only in a
 supervisor's report, and `supervisor-log.md` folds daily and rolls into `log-archive/`, so anything
