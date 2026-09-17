@@ -92,7 +92,9 @@ the other repos rather than this one:
   `list-targets`' JSON carries the tuple and not `build_dir_name`, which folds
   snippets and an `extra_args` hash a listing never sees — so a `--prune`
   needs `embarch-api` to publish that name, never a second attempt to derive
-  it here.
+  it here. **Shipped 2026-09-17** (decision 77): `list-targets` now names
+  `build_dir_name` for each row's *default* combination; a non-default build
+  still needs `target.json` above. `--prune` needs both, not this alone.
 
 So: **measure now, delete never.** With 17's amendment built, `--prune` is
 deferred by choice rather than blocked: nothing has reported disk pressure,

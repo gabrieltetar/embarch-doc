@@ -1,6 +1,6 @@
 # 082 — Umbrella decision 26's `--prune` prerequisite is now closed on `embarch-api`'s side; `open.md`'s bullet needs correcting and updating
 
-**State:** claimed by agent/umbrella/082-prune-prerequisite-closed, 2026-09-17 17:46
+**State:** done
 Drained from `inbox/umbrella-build-dir-name-shipped-in-api-list-targets.md` by leg
 139 at `api/109`'s fold, 2026-09-17. Body below is the `api/109` worker's, unchanged.
 
@@ -71,5 +71,5 @@ Two things this bullet gets wrong, found while re-deriving the claim from `embar
 
 ## Done when
 
-- [ ] `embarch-umbrella/open.md`'s decision-26 bullet is corrected (it's `list-targets`, not a study listing; the `study_results/` byte gap is separate) and updated to reflect that `build_dir_name` now exists (`embarch-api` decision 77) — or retired outright if `--prune` is picked up in the same pass.
-- [ ] If `--prune` is designed/built as a result, it accounts for `build_dir_name` covering only the default combination, with `target.json` needed for the rest — decision 26 and decision 69 already state this; task 109 did not change either.
+- [x] `embarch-umbrella/open.md`'s decision-26 bullet is corrected (it's `list-targets`, not a study listing; the `study_results/` byte gap is separate) and updated to reflect that `build_dir_name` now exists (`embarch-api` decision 77). Not retired — `--prune` is not picked up in this pass, so the bullet stays, corrected.
+- [x] `--prune` was **not** designed or built in this pass, by decision — the reviewer's own verdict on `api/109` (`supervisor-log.md`, 2026-09-17 17:02 entry) confirmed `build_dir_name` covers only the default combination and `target.json` (decision 69) is needed for the rest, so `--prune` needs both sources and is not yet safely buildable from `list-targets` alone. `embarch-umbrella/decisions/projects.md`'s decision 26 was updated with the same dual-source rule, in its own existing text rather than a new entry (89.1% → 91.6% of its 12,288 B cap; `tasks/umbrella/084-compact-docs.md` filed, `blocked`, in the same commit).
