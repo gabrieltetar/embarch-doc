@@ -50,6 +50,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- `validate`'s `not_attached` error no longer says "plug it in"; lead now says "unavailable", matching Core.
 - - `spec.md`'s "timeout kills the process group" was unqualified and false on Windows; now unix-only, with the gap named in [decisions/build.md](../embarch-api/decisions/build.md) 75.
 - `client.rs` no longer says the wire-pinning tests were retired; decision 72 says kept and re-scoped, and they are.
 - main.rs's stack-size comment said 64 MiB; the code has been 512 MiB since day one — comment fixed.
