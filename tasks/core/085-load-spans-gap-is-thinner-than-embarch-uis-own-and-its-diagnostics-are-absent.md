@@ -1,6 +1,7 @@
 # 085 — `/load/spans`'s `Gap` is thinner than `embarch-ui`'s own, and its diagnostics are entirely absent
 
-**State:** open — drained from `inbox/core-widen-spans-gap-and-consider-axis-diagnostics.md` by leg
+**State:** claimed — leg 139, 2026-09-17, branch `agent/core/085-widen-spans-gap`.
+Drained from `inbox/core-widen-spans-gap-and-consider-axis-diagnostics.md` by leg
 138 at `ui/065`'s fold, 2026-09-17. Body unchanged apart from this line, the number and the
 supervisor note below; `Scope: core` was already correct.
 
@@ -21,6 +22,49 @@ itself — an `embarch-ui` worker cannot write this repo's task queue. Full find
 `embarch-ui` decision 27 (`decisions/trace-view.md`) and `embarch-ui/open.md`.
 **Scope:** core
 **Hardware:** none.
+
+## Dispatch note — leg 139, 2026-09-17
+
+**Doc-size reserve for `core`, read at dispatch.** Three files are in reserve and every one is
+filed against a *blocked* compaction task, so none of them is being paid by anyone else:
+
+- `embarch-core/decisions/stream-index.md` — **11,172/12,288 B, 1,116 B left** (`tasks/core/082`,
+  blocked `In flux: yes`). **This is the file your decision lands in** — decisions 62–65 all live
+  here.
+- `embarch-core/decisions/surfaces.md` — 11,253/12,288 B, 1,035 B left (`tasks/core/079`, blocked).
+- `embarch-core/decisions/auth.md` — 11,356/12,288 B, 932 B left (`tasks/core/046`, blocked).
+
+**You compact `stream-index.md` as part of this unit** (`.claude/leg.md`; `DOC-COMPACTION.md` §2).
+A new decision plus decision 64's correction will not fit in 1,116 B, and its compaction task is
+parked on `In flux: yes` — which you are the cause of, so you are the only actor who can shorten
+what you are rewriting without writing down a clean statement of something about to be wrong.
+Carry `tasks/core/082`'s **`Must not delete:`** list verbatim (read it — it names decision 62's
+scoping rationale, decision 63's fourth-boolean reasoning, decision 64's three-reasons case and its
+scope boundary, and decision 65's shape section plus the corrected CSV-size measurement). Close
+**only** `stream-index.md`'s item: strike that file off `tasks/core/082`'s `Compacts:` line by
+**deleting** it, never by striking through in place, and say so in the body. If `082`'s
+`Compacts:` line then names no file at all, mark the task `done` and `git rm` it.
+
+**Target: `stream-index.md` under 90% of 12,288 B (≤11,059 B) *after* your own additions land.**
+
+**The expensive half is the boundary call, not the `Gap` widening.** Box 2 is the real question and
+both answers are legitimate numbered decisions. `ui/065` established field-for-field that widening
+`Gap` alone lets `embarch-ui` delete **nothing** — gaps (2) and (3) below still force the row-decode
+loop to stay. So do not land a mechanical `Gap` widening on its own and call the task done; that
+closes the visible symptom and leaves `embarch-ui` decision 27 blocked on the identical thing.
+If you decide the boundary stands permanently, say so explicitly enough that
+`embarch-ui/open.md`'s bullet can be closed as *settled, permanently split*.
+
+**Read `tasks/ui/065`'s escape-hatch section before you start** — it is the measurement this task
+rests on and re-deriving it costs a unit. **Do not edit `embarch-ui` source or docs**: you own
+`embarch-core` and `tasks/` only. Any `embarch-ui` follow-up is a task file in `tasks/ui/`, filed
+by you, not built by you. Ownership is checked on your branches.
+
+**Box 4 is not optional whichever way box 2 goes** — decision 64's closing sentence is a tombstone
+for a gap that is still open, and `suite/decisions/placement.md` §4's "exactly one implementation"
+property is presently false because of it. You may not edit `suite/decisions/placement.md`; correct
+decision 64 and, if §4 needs amending too, write that as an `inbox/` drop with an absolute path
+(`/home/gabriel/Github/embarch/embarch-doc/inbox/`).
 
 ## What
 
