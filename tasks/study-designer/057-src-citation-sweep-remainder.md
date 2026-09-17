@@ -220,24 +220,77 @@ this task's call to make unprompted, noted here so it is not lost.
 
 ## Done when
 
-- [ ] One named file (`src/gatt.rs`, unless a reason is given to reorder)
+- [x] One named file (`src/gatt.rs`, unless a reason is given to reorder)
       fully swept, wrong numbers and false sentences counted separately, and
       every plain number and implementation-status claim in a cited sentence
       checked, not only the decision number.
-- [ ] Cross-repo citations in it carry their repo name — and every citation,
+- [x] Cross-repo citations in it carry their repo name — and every citation,
       bare or labelled, is checked against this crate's own decisions first,
       and a cross-repo decision's own text (including any amendment) is read
       before it is called wrong, or trusted. Remember `056`'s find: correctly
       labelled and still wrong is possible.
-- [ ] The whole-repo continuation-grep
+- [x] The whole-repo continuation-grep
       (`grep -rlIE '[Dd]ecisions[[:space:]]*$'`) run and any hit reported,
       even one landing outside the file being swept.
-- [ ] A follow-up task filed naming the files that remain (or, if this closes
+- [x] A follow-up task filed naming the files that remain (or, if this closes
       out `src/`, saying so and closing the sweep).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/study-designer-*` fragment, reporting distinct citation
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/study-designer-*` fragment, reporting distinct citation
       instances checked, wrong numbers found, and false sentences found as
       three explicit numbers.
+
+## Result (`057`)
+
+**`src/gatt.rs` swept.** 11 grep-matching lines, **14 distinct citation
+instances** (line 1's `decisions 31/32/33` is a three-number list, expanding
+to 3; every other matching line cites one decision). **0 wrong numbers, 0
+false sentences, 0 unlabelled cross-repo citations — no cross-repo citations
+of any kind appear in this file**, so there was nothing to check against the
+`056` shape (a same-repo decision saying the same thing as a plausible-looking
+cross-repo one): every citation in `gatt.rs` is already same-repo, and each
+was read against its decision body and its file-neighbours (decisions 31/32
+vs 33, 53 vs `GattTarget`'s two-UUID shape, 54 vs the retired-cap comment, 72
+vs the `rx_utc_ms` doc, 30 vs `csv_header`'s `core_rx_utc_ms` split) with no
+mismatch found. Verified against `decisions/gatt.md`, `decisions/gatt-extract.md`,
+`decisions/removed.md`, `decisions/wire.md`, `decisions/versioning.md`, and
+cross-checked the `32`-record cap and `MAX_GATT_ACTIVITY_RECORDS` tombstone
+against `interfaces/limits.md` (both correct). This is the **second true
+zero** in the chain (`bounded.rs`, `052`, was the first) — not every file in
+this crate has a wrong citation, and reporting a real zero honestly matters
+as much as reporting a real find.
+
+**Whole-repo continuation-grep** (`grep -rlIE '[Dd]ecisions[[:space:]]*$'`)
+run fresh: **4 files hit, 5 lines** — `Cargo.toml` (1), `src/lib.rs` (2),
+`src/eap.rs` (1), and **`src/schema_version.rs` (1, new to this report)**.
+The first three match `056`'s prior finding exactly (already-swept or
+out-of-chain, already checked correct). The fourth — `src/schema_version.rs:203`,
+a wrapped `decisions\n31/32 together (decisions\n52/53/54)` citing decisions
+52 (`StreamEncoding::Struct`), 53 (`GattMonitorSelected`/`...SelectedStart`)
+and 54 (`StepResult.gatt_activity` removal) for v14's three-change bump —
+was not named in `056`'s list of continuation-grep hits, but checked correct
+against `decisions/payload-meaning.md` (52) and `decisions/gatt.md`/`removed.md`
+(53/54): the three decisions map exactly to the three changes named in the
+same paragraph, in the same order. No fix needed; noted here because it
+should have appeared in an earlier report and did not, so a later sweep
+should not assume the continuation-grep file list is closed at four.
+
+**Gate:** `cargo build --all-targets`, `cargo test --all-targets` (125/125:
+116 lib + 9 integration, matching `.cargo/config.toml`'s
+[re-measured 2026-09-16] figure exactly — no drift), and
+`cargo clippy --all-targets -- -D warnings` all clean. No source edit was
+needed, so no risk of a gate regression from this unit.
+
+**Running tally, recomputed** (`044`-`057`, fifteen files): distinct citation
+instances **433 + 14 = 447**. Wrong numbers **16 + 0 = 16**. False sentences
+**5 + 0 = 5**. The task file's own carried-forward tally (433/16/5 across
+14 files) re-derives correctly from the per-file figures listed above it —
+recomputed by hand and it sums exactly, so no correction needed there, only
+the addition for this unit.
+
+**Follow-up filed:** `tasks/study-designer/058-src-citation-sweep-remainder.md`,
+naming the 9 files still remaining (`registry.rs`, `outpost.rs`, `decoder.rs`,
+`sample.rs`, `merged_actions.rs`, `gatt_names.rs`, `eap_interp.rs`, `vendor.rs`,
+`records.rs`), largest first, `registry.rs` next.
 
 ## Reserve, for planning
 
