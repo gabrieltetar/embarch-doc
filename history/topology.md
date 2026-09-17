@@ -33,6 +33,7 @@
 - embarch-topology compacted to spec/decisions/open, 77 KB to 46 KB across 8 files; design.md deleted.
 
 ### Fixed
+- Cargo.toml:48's `bin` feature comment no longer claims a UI binary; it's CLI-only, decision 5.
 - topology's plural-citation census re-run; validate.rs's stale "own CLI/UI" claim fixed, UI retired 2026-08-24.
 - topology's Cargo.toml/bin/main.rs/README.md: 21 citation instances checked (18 census + 3 found), 2 wrong numbers fixed, 1 false sentence fixed.
 - Decision 21's JTAG-vs-self-report match again names both reproduction timestamps, restoring its "three times" count.
