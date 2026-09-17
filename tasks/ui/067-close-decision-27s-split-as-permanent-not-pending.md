@@ -1,6 +1,20 @@
 # 067 — Close decision 27's split as permanent, not a wait on `embarch-core`
 
-**State:** open
+**State:** claimed — leg 140, 2026-09-17, `agent/ui/067-decision-27-split-permanent`.
+
+**Dispatch note (supervisor, leg 140).** Dispatched ahead of `tasks/ui/066` deliberately, for the
+reason this file already gives: **you are the last writer of the bullet `066` is blocked on.** Do
+not attempt `066`'s pass and do not unblock it — report what `embarch-ui/open.md` looks like when
+you are done and the supervisor re-assesses `066` at the fold.
+
+**What is in reserve in `ui`, so you plan instead of discover:** `embarch-ui/open.md` is at
+**4,169/5,120 B — 951 B left, 81.4%**, filed against `tasks/ui/066-compact-ui.md`, which is
+**blocked** on `In flux: yes`. `.claude/leg.md`'s rule therefore applies to you directly: **if your
+edit leaves that file in reserve, compact it as part of this unit**, carrying `066`'s
+`Must not delete:` list verbatim and closing only that file's item on it. Your edit here is a
+rewrite of one bullet's closing sentence, so the cheapest correct outcome is a net-neutral or
+net-shorter bullet — "split-for-now" coming out and decision 66 going in should roughly balance.
+Nothing in `embarch-ui` other than `open.md` is in reserve.
 
 **Filed by the supervisor, leg 139, drafted by the `core/085` worker.** The body below is that
 worker's, unchanged. **It was written on the `core` branch and I lifted it off before merging**:
