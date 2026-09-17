@@ -15,6 +15,7 @@
 - `embarch-dev-bench`'s 180 KB `design.md` became spec.md, open.md and eight `decisions/<mission>.md` files — 81 KB, all 43 decision numbers intact, no file over 11.8 KB.
 
 ### Fixed
+- Eight remaining files' citation sweep: 139 instances checked, 3 wrong numbers + 12 missing repo labels fixed, 0 false sentences; app/src, app/tests now swept out.
 - ble_bridge_real.c/serial_protocol.c citation sweep: 5 wrong decision numbers, 4 false sentences fixed of 100 instances checked; 8 files left (dev-bench/033).
 - main.c/serial_protocol.h citation sweep: 158 instances checked, 2 wrong decision numbers fixed, 0 false sentences.
 - Three `.eap`/`BleAddress` C comments citing a dead `§N` now cite the owning `embarch-dev-bench` decision (41, 41, 23) instead.
