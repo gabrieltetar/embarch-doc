@@ -1,6 +1,6 @@
 # 067 — Citation sweep: the six citations outside `src/` and `Cargo.toml`, every one of them cross-repo
 
-**State:** open
+**State:** claimed by agent/core/067-citation-sweep-the-six-cross-repo-citations-outside-src-and-cargo-toml, 2026-09-16 19:25
 **Source:** leg 123's refill sweep, 2026-09-16. `core/058` swept `embarch-core/src/` end to end;
 `core/066` swept `Cargo.toml` and found **3 defects in 9 instances**. Neither touched the three
 files below, and nothing else ever has.
