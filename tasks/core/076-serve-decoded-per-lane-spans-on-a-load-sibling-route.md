@@ -45,6 +45,23 @@ open until this lands.
 - [ ] `changelog.d/` fragment. `status.d/` fragment if this makes any suite-level doc's description
       of `/load` stale.
 
+## Measure the CSV before you quote decision 64's size argument — leg 136, from `core/075`'s reviewer
+
+Decision 64 argues this route is **not a new category of transfer** because decision 18 measured a
+reference capture's decoded spans at **12.6 MB serialized**, *"the same order of magnitude as the CSV
+that already crosses this same call today."* The 12.6 MB half is quoted correctly from decision 18
+(225,627 rows / 112,804 spans / 26 lanes, measured 2026-09-04). **The other half is not sourced.**
+`core/075`'s reviewer grepped `embarch-core`, `embarch-ui` and the `suite/` tree at the merge SHA and
+found **no document anywhere stating the rendered CSV's byte size** — so "same order of magnitude" is
+an assumption, not a comparison anyone has made.
+
+It is not a contradiction of anything locked, which is why no finding was filed and decision 64 was
+not amended. But it is **the one number this task's whole cost argument rests on**, so: measure the
+rendered CSV for that same reference capture, state it with its provenance, and **either cite it in
+the implementation decision or say plainly that the comparison did not hold.** If the CSV turns out
+to be materially smaller than 12.6 MB, that is a reason to revisit the response shape — streaming,
+per-lane paging, or a narrower payload — before shipping, not after.
+
 ## Not yours
 
 - Do not change `embarch-ui` — file its retirement task, do not do the retirement here.
