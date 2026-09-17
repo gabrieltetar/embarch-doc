@@ -40,6 +40,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Restored decision 62's RecordKind/five-lies sync-burden sentence and CSV-pin failure-signature that `core/085`'s squeeze dropped.
 - Decision 59, `interfaces.md`/`topology.md`: a probe-open failure raises no `TopologyMismatch`; it's an accepted, undistinguished 500/502, not "already handled."
 - `interfaces.md`'s `503` bullet now names its third producer: `/flash`/`/reset`'s plain-text `not_attached`, sharing status+shape with `hw_lock` contention.
 - interfaces.md/spec.md stop claiming every non-2xx is plain text; POST /validate's kind field (decision 59) is documented as the exception.
