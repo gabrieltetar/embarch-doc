@@ -43,6 +43,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- Swept 27 citations outside src/: fixed 8 stale/false ones (4 dead milestone-6.md refs, a missing-checkout bug in release.yml).
 - Decision 42 no longer credits decision 35 with check 8's list-targets shape; that citation now points to decision 17, which actually records it.
 - `embarch-umbrella` decisions 16 and 48 compacted under the per-decision cap; no claim lost.
 - `locate_core`'s doc comment no longer credits decision 7 with a precedence order it never states.
