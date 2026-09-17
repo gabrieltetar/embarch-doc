@@ -1,0 +1,1 @@
+core/067: citation sweep, README/release.yml/Cross.toml, 9 instances checked, 0 wrong numbers, 0 false sentences

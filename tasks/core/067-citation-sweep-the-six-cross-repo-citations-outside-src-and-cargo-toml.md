@@ -1,6 +1,6 @@
 # 067 — Citation sweep: the six citations outside `src/` and `Cargo.toml`, every one of them cross-repo
 
-**State:** claimed by agent/core/067-citation-sweep-the-six-cross-repo-citations-outside-src-and-cargo-toml, 2026-09-16 19:25
+**State:** done — worker agent/core/067-citation-sweep-the-six-cross-repo-citations-outside-src-and-cargo-toml, 2026-09-16. 9 instances checked (re-census found 3 more than the filing census), 0 wrong numbers, 0 false sentences; no edits needed.
 **Source:** leg 123's refill sweep, 2026-09-16. `core/058` swept `embarch-core/src/` end to end;
 `core/066` swept `Cargo.toml` and found **3 defects in 9 instances**. Neither touched the three
 files below, and nothing else ever has.
@@ -87,21 +87,57 @@ That is also why the count being small is not an argument against the unit. `cor
 
 ## Done when
 
-- [ ] All citations in the three files checked for existence, repo label, and whether the sentence
+- [x] All citations in the three files checked for existence, repo label, and whether the sentence
       around each is true — count re-taken as *instances*, not grep lines.
-- [ ] `embarch-umbrella` decision 14's two citations checked against its text **separately**, and
+- [x] `embarch-umbrella` decision 14's two citations checked against its text **separately**, and
       `embarch-topology` decision 13's two likewise.
-- [ ] Wrong numbers and false sentences reported as separate counts, with the total checked.
+- [x] Wrong numbers and false sentences reported as separate counts, with the total checked.
       "Checked 6, found none" is a legitimate and useful result — three consecutive zero-defect
       sweeps in a repo is itself evidence about whether this vein is exhausted, and nothing tracks
       the hit rate.
-- [ ] Any `file:line` citation checked for line drift, not just path correctness.
-- [ ] No new bare cross-repo citation introduced anywhere in the diff.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10). Note `embarch-core` also needs a native
+- [x] Any `file:line` citation checked for line drift, not just path correctness.
+- [x] No new bare cross-repo citation introduced anywhere in the diff.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). Note `embarch-core` also needs a native
       Windows build that **no unattended leg can run** — leg 122 established the WSL cross-check dies
       in `hidapi`'s C build script, so it is not a partial payment. Say in your report that it was
       not run; do not claim it was.
-- [ ] `changelog.d/core-*` fragment reporting the three numbers.
+- [x] `changelog.d/core-*` fragment reporting the three numbers.
+
+## Result
+
+**Re-census found 9 instances, not 6** — the original grep census
+(`grep -cE '[Dd]ecision [0-9]'`) missed `release.yml:24`'s `` `embarch-umbrella` decisions 27/29 ``
+because the plural "decisions" doesn't match a singular-then-space-then-digit pattern. Full
+instance list, by site:
+
+| Site | Decision(s) cited | Repo | Verdict |
+|---|---|---|---|
+| `README.md:60` | 23 (bare) | core, own | correct — matches `decisions/probes.md` #23 |
+| `README.md:108` | 8 | study-designer | correct — matches `decisions/crate.md` #8 |
+| `README.md:108` | 13 | topology | correct — matches `decisions/crate.md` #13 |
+| `README.md:134` | 6 (bare) | core, own | correct — matches `decisions/auth.md` #5,6 (already fixed by `core/052`) |
+| `release.yml:3` | 14 | umbrella | correct — matches `decisions/install.md` #14 (four targets: msvc, linux-gnu, aarch64-linux-gnu, aarch64-darwin) |
+| `release.yml:24` | 27, 29 | umbrella | correct — matches `decisions/release.md` #27,29 (one entry under two numbers by that decision's own text) |
+| `release.yml:89` | 13 | topology | correct — matches `decisions/crate.md` #13's own release-CI-sibling-checkout passage, verbatim to the workflow's fix |
+| `Cross.toml:3` | 14 | umbrella | correct — matches `decisions/install.md` #14 |
+
+**9 instances checked, 0 wrong numbers, 0 false sentences.** Both decisions flagged for
+double-citation risk (`umbrella` 14, `topology` 13) were read against **each** citing sentence
+separately, as asked; no shared number covered two different, mismatched claims. Both bare
+`README.md` citations confirmed same-repo, correct direction. No `file:line`-suffixed citations
+exist in any of the three files (checked, none found), so no line-drift class applies here. No
+edits made to `README.md`, `release.yml`, or `Cross.toml` — every citation already checks out, so
+there is no fact to fix and no essay to avoid writing. This is the fourth consecutive zero-defect
+sweep in this vein this leg-window (`study-designer/052`, `umbrella`'s 11-file src sweep, and this
+one), for whatever that says about how much longer this class of unit keeps paying.
+
+**Native Windows build not run** — no unattended leg can run it (WSL cross-check dies in
+`hidapi`'s `build.rs`; the native Windows path only works from the main checkout, not a worktree).
+Not claimed as done, not counted as partial payment, per the task's own instruction.
+
+No `core` doc is in the last 10% of its cap other than the already-filed, already-blocked
+`embarch-core/decisions/auth.md` (`tasks/core/046`) — this sweep touched none of it, so nothing new
+to file.
 
 ## Not yours
 
