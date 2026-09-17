@@ -1,6 +1,10 @@
 # 078 — A content hash on `/status` is the only thing that closes `doctor` check 15's same-version blindness, and it is this repo's call
 
-**State:** claimed by agent/core/078-status-content-identity, 2026-09-17 17:46
+**State:** done — decided by agent/core/078-status-content-identity, 2026-09-17. Decision: **yes**, a
+self-hash of the running binary (not a git SHA, not a build timestamp) is the field worth building.
+Recorded as decision 67, `embarch-core/decisions/surfaces.md`. Not implemented here — it is a
+wire-schema bump on `/status`; the build is filed as `tasks/core/088`, `open`, awaiting a supervisor
+announcement per `ops.md` §4 before it can be dispatched.
 **Source:** refill sweep, leg 137, 2026-09-17, from
 [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md)'s standing bullet: *"**Check 15 is not
 a hash comparison and must not be read as one.** It catches a *cross-version* stale deploy and is
@@ -73,22 +77,46 @@ either way.
 
 ## Done when
 
-- [ ] Re-derived from `src/api.rs` (or wherever the status handler now lives) exactly what `/status`
-      carries today, rather than trusting this task's summary of it.
-- [ ] A numbered decision in `embarch-core/decisions/surfaces.md` (or the topic-correct file — **not
-      `auth.md`**) recording either the field, its shape and what it proves, or the reasoned refusal
-      and the trigger that would reverse it. This suite's posture is not to build machinery first, so
-      a refusal with a named trigger is in keeping with it.
-- [ ] If the answer is yes and it changes `/status`'s response shape, **that is a wire-schema bump
-      and you do not land it** — the supervisor must announce it first (`ops.md` §4). Make the
-      decision, file the implementation as a separate task, and say so in your report.
-- [ ] `embarch-core/interfaces.md` (or `interfaces/*.md`) updated to match whatever `/status` is
-      documented to carry, held to the same "one consistent account" bar `core/074` and `core/077`
-      used.
-- [ ] `embarch-core/open.md` gains the open question or loses nothing, as appropriate.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
-      warnings` in `embarch-core`; `python3 scripts/check-docs.py` in `embarch-doc`.
+- [x] Re-derived from `src/api.rs` (the status handler lives there, `status_handler`/`StatusResponse`
+      at lines ~238–288) exactly what `/status` carries today: `status`, `probes`,
+      `study_designer_schema_version`, `core_version` — confirmed against the code, not this task's
+      summary of it.
+- [x] A numbered decision in `embarch-core/decisions/surfaces.md` recording the field, what it
+      proves, and what it costs — decision 67. `surfaces.md` was the topic-correct file (it already
+      holds decision 13, the `core_version` decision this one extends) and had room once compacted
+      (see below); `auth.md` was never written to.
+- [x] The answer is yes and it changes `/status`'s response shape, so **it is not landed here** — the
+      decision is made, the implementation is filed as `tasks/core/088` (`open`, a wire-schema bump
+      awaiting a supervisor announcement per `ops.md` §4), and this is said plainly in this task's
+      `State:` line and in the worker's report.
+- [x] `embarch-core/interfaces.md`/`interfaces/hardware.md` checked against decision 67: `/status`'s
+      field set is unchanged by this unit (the field is decided, not built), so the existing row
+      already matches — no edit needed, and none made.
+- [x] `embarch-core/open.md` gains the open item: a new "Designed, not built" bullet for decision 67,
+      naming `tasks/core/088` and the wire-schema-bump note, matching the pattern decision 64's
+      bullet already used.
+- [x] A `changelog.d/` fragment: `changelog.d/core-status-content-hash.decided.md`.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D
+      warnings` in `embarch-core` (unchanged by this unit — no source edits were needed, since the
+      unit is a decision plus a filed follow-up task); `python3 scripts/check-docs.py` in
+      `embarch-doc`.
+
+## Doc-size debt paid in this unit
+
+`embarch-core/decisions/surfaces.md` was 11,253/12,288 B (91.6%, in reserve) at dispatch, with its
+compaction task `tasks/core/079` `blocked` on `In flux: yes`. Per this task's dispatch note, writing
+decision 67 into it meant compacting it in the same unit, carrying `tasks/core/079`'s `Must not
+delete:` list verbatim. Paid: decision 55 (a retired-name entry, not on the must-not-delete list)
+tightened from 1,116 B to 631 B; decision 59's four amendment paragraphs (the two on the
+must-not-delete list — `core/074`'s correction and `core/077`'s settlement — plus its unprotected
+intro and closing paragraphs) tightened in wording only, every fact from the must-not-delete list
+still present (decision 12's scope/trigger citation untouched; decision 59's original `kind`
+field/`503`/`409` split/`fix_it_url: None` reasoning intact; `core/074`'s four call sites and the
+un-downcastable failure list intact; `core/077`'s considered-collapse reasoning, the
+`.claude/leg.md` downstream-handling argument, the wire-change cost list, and the `embarch-api`
+"plug it in" inbox drop all intact). Net: file now 10,896/12,288 B (88.7%), decision 67 added, all
+five decision numbers (12, 13, 55, 59, 67) still resolving. **`tasks/core/079` was not closed** —
+left `blocked` for the supervisor to settle, per this task's own instruction not to close it.
 
 ## Not yours
 
