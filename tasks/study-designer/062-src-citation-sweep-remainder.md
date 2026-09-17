@@ -1,6 +1,6 @@
 # 062 — Citation sweep: `src/` remainder after `sample.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/062-src-citation-sweep-remainder, 2026-09-17 01:03
 **Source:** `tasks/study-designer/061`, which swept `src/sample.rs` (7
 grep-matching lines, 7 distinct citation instances) plus the thirteen
 singular-wrap citations located but not yet checked in six already-closed
