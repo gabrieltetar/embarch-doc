@@ -1,6 +1,6 @@
 # 107 — `spec.md` §2 asserts "timeout kills the process group" as an invariant, and on the shipped Windows binary it does not
 
-**State:** claimed (leg 132 unit 3)
+**State:** claimed by agent/api/107-windows-process-group, 2026-09-17 00:49 (leg 132 unit 3)
 **Source:** leg 132's own refill sweep of `embarch-api/open.md` and `spec.md` against the crate.
 Not a citation defect and not from a worker's report — a documented invariant checked against the
 code that is supposed to hold it.

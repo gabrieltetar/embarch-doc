@@ -1,6 +1,6 @@
 # 075 — `spec.md` says `setup` "confirms `embarch-api` can discover" the token; `setup` does an existence check and its own code comment says so
 
-**State:** claimed (leg 132 unit 4)
+**State:** claimed by agent/umbrella/075-setup-token-discovery, 2026-09-17 00:51 (leg 132 unit 4)
 **Source:** leg 132's own refill census of `embarch-umbrella`'s docs against its source. **Not from
 a worker's report and not a citation defect** — a documented behaviour checked against the code that
 is supposed to perform it.
