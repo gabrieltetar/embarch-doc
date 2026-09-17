@@ -11,7 +11,7 @@ Assumptions reality has already overturned — **the highest-signal page in this
 | 1-50 | [reversals/rows-1-50.md](reversals/rows-1-50.md) |
 | 51-72 | [reversals/rows-51-72.md](reversals/rows-51-72.md) |
 | 73-92 | [reversals/rows-73-92.md](reversals/rows-73-92.md) |
-| 93-110 | [reversals/rows-93-110.md](reversals/rows-93-110.md) |
+| 93-111 | [reversals/rows-93-111.md](reversals/rows-93-111.md) |
 
 **A row number is a permanent identity, not a position.** Numbers are never reused or renumbered, so a row may sit out of date order and a range file never re-splits an existing row into a different file. Rows 106-109 were renumbered from duplicates that shared a number.
 
@@ -21,7 +21,7 @@ Owners are abbreviated in the tables: `core` [embarch-core](embarch-core/decisio
 
 Every row was caught by a real build, install, capture, or by reading a real repo's actual files — **never by inspection alone.** Read across them and the same eleven shapes keep arriving. This list is the page's actual predictive content; the rows are its evidence.
 
-**1. Documented as implemented, wasn't.** The single most common shape here, and it survives every kind of test suite. Rows 15, 28, 33, 35, 55, 71, 99. **A decision recorded as settled — even one carrying its own note that it is unbuilt — is indistinguishable in a later reader's eyes from one that shipped** (55). A stub whose blocking reason is written into its own message **ages into a check that asserts a falsehood, and reads as a known gap rather than a wrong answer** (71). A feature can be fully typed, wired into two repos, enabled by a Cargo feature and advertised to every agent that ever called it, **and still be inert** (33).
+**1. Documented as implemented, wasn't.** The single most common shape here, and it survives every kind of test suite. Rows 15, 28, 33, 35, 55, 71, 99, 111. **A decision recorded as settled — even one carrying its own note that it is unbuilt — is indistinguishable in a later reader's eyes from one that shipped** (55), and **a compaction pass can un-correct one silently: dropping its correction paragraphs re-asserts the original claim with the decision's own authority, and the diff reads as a move** (111). A stub whose blocking reason is written into its own message **ages into a check that asserts a falsehood, and reads as a known gap rather than a wrong answer** (71). A feature can be fully typed, wired into two repos, enabled by a Cargo feature and advertised to every agent that ever called it, **and still be inert** (33).
 
 **2. A bound measured on the wrong side of the wire.** Rows 25, 39, 60, 63, 69, 70, 74, 89, 96. **A `size_of` on the sending side is not a bound on the receiving side, and a serialized worst case can exceed the value it serializes** (69). A buffer sized for a message that cannot arrive costs kilobytes twice, **because fixing one direction makes the mirror-image bound harder to see, not easier** (60, 70). And a capacity requirement derived from **a capture of a broken system** would have bought a six-component wire change to fix a number a one-line study change removed (96).
 
