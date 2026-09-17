@@ -1,6 +1,6 @@
 # 078 — Weigh the user-level service against decision 3, instead of leaving it "not weighed"
 
-**State:** claimed by agent/umbrella/078-weigh-user-level-service, 2026-09-17 12:51
+**State:** done
 **Source:** `embarch-umbrella/open.md`, swept by leg 134's refill. The bullet is one sentence and
 ends by saying nobody has done the work: *"A user-level service needs no elevation on Linux or macOS
 (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not
@@ -68,11 +68,48 @@ Nothing else of umbrella's is in reserve.
 
 ## Done when
 
-- [ ] Decision 3 is quoted, not paraphrased, and what it depends on is stated exactly.
-- [ ] One numbered `embarch-umbrella` decision records the outcome, with a reversal condition.
-- [ ] `open.md`'s bullet no longer says "not weighed" — it either states the answer or states a
+- [x] Decision 3 is quoted, not paraphrased, and what it depends on is stated exactly.
+- [x] One numbered `embarch-umbrella` decision records the outcome, with a reversal condition.
+- [x] `open.md`'s bullet no longer says "not weighed" — it either states the answer or states a
       narrower question with what is missing.
-- [ ] A `changelog.d/` fragment; a `status.d/` fragment for any suite-level fact this made false.
-- [ ] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`,
+- [x] A `changelog.d/` fragment; a `status.d/` fragment for any suite-level fact this made false.
+- [x] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`,
       `check-docs.py`, `check-ownership.py --scope umbrella`,
       `check-client-names.py --repo <code worktree>`.
+
+## What shipped
+
+Decision 3, quoted exactly (`decisions/install.md`): *"if Core autostarts at boot **there is nothing
+for a human to start, ever**"*. Read closely, that guarantee is independent of any login event, not
+merely "already running by the time a logged-in human tries it" — and every consumer this suite
+documents (a human's own shell, an MCP client spawned inside that human's editor session) already
+implies a login has happened, so for them a user-level service is equivalent in practice. The case
+the guarantee actually protects and the open.md bullet never named: a machine dedicated to running
+Core where nobody ever completes an interactive login. There, a macOS launch agent never starts (no
+lingering-session equivalent) and a `systemd --user` unit needs `loginctl enable-linger`, which
+`setup` does not run and cannot assume. No platform split survives it either — macOS has nothing to
+switch to, so a Linux-only user-level mode would help only the platform that isn't the problem.
+
+Recorded as **embarch-umbrella decision 54** in `decisions/install.md` (the file decisions 3, 4, 5,
+14, 21, 25, 28 already live in — the correct home per `decisions.md`'s own routing), with a stated
+reversal condition: a documented consumer needing Core running with zero logins since boot, which
+nothing in `spec.md` currently describes. The `open.md` bullet is deleted outright rather than
+reworded to "resolved" — `DOC-CONVENTIONS.md` states every top-level `open.md` bullet is an open
+question, and this one no longer is; the decision and its reversal condition are the durable record.
+
+Built nothing: no install mode, no flag, no service file. Ran no `setup`, touched no live Core.
+
+**Doc-size reserve, both checked before and after (`check-doc-size.py --pressure`):** `open.md`
+shrank 4,127 → 3,954 B (80.6% → 77.2%), relieving rather than adding pressure, and stays filed under
+the existing `tasks/umbrella/077-compact-docs.md` (blocked, unchanged). `decisions/install.md` had
+no slack to add a target-sized decision entry without crossing its own reserve line: 11,009 → 12,071 B
+(89.6% → 98.2% of its 12,288 B cap, 217 B left, still under the hard cap). Filed
+`tasks/umbrella/079-compact-docs.md` in this same commit, per protocol, rather than squeezing decision
+54 to fit — `decisions/bind.md` (755 B left, filed against `009`) was left untouched, decision 54 was
+not written there.
+
+Gate: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green in the
+`embarch-umbrella` worktree (no source touched, doc-only unit — see report for exact commands and
+whether the crate had any code changes). `check-docs.py`, `check-doc-size.py`,
+`check-ownership.py --scope umbrella`, `check-client-names.py --repo <code worktree>` all green in
+the `embarch-doc` worktree.

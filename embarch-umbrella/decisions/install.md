@@ -80,3 +80,9 @@ Reversing decision 3's sibling-lookup refinement, **prompted by a real `wsl-host
 **Not fully verified, and the gap is named.** There is no Windows linker in this sandbox, so the Windows registry code was checked by **extracting it into a standalone throwaway crate** and type-checking it against the Windows target — real end-to-end behaviour (a registry write taking effect, a new shell picking up the change) still needs a real Windows machine. The Unix path and everything else is built, tested and clippy-clean on the host.
 
 **The trade-off, accepted explicitly:** `setup` now writes outside the locations it already owned — a registry key and two dotfiles. Accepted because **every one of those writes is per-user, needs no elevation, and is idempotent and reversible**, which is materially less risk than the service install elevation was already required for.
+
+### 54 — A user-level service is rejected; decision 3's system-level service stands
+
+Decision 3 requires "if Core autostarts at boot **there is nothing for a human to start, ever**" — independent of any login, not merely running by the time a logged-in human tries it. Every consumer this suite documents (a human's own shell, an MCP client spawned inside that human's editor session) already implies a login has happened, so for them a user-level service (`systemd --user`, a launch agent) works identically. The case it actually guards: a machine dedicated to Core where nobody ever completes an interactive login. There a launch agent never starts — macOS has no lingering-session equivalent — and a `systemd --user` unit needs `loginctl enable-linger`, which `setup` does not run. No platform split survives it: macOS has nothing to switch to, so a Linux-only user-level mode would help only the platform that is not the problem.
+
+**Reversal:** a documented consumer needing Core running with zero logins since boot. None exists in `spec.md` today.
