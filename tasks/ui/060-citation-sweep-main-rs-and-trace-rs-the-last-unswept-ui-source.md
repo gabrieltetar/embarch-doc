@@ -1,6 +1,6 @@
 # 060 — Citation sweep: `src/main.rs` and `src/trace.rs`, the last unswept `ui` source
 
-**State:** claimed by agent/ui/060-main-rs-trace-rs-citation-sweep, 2026-09-16 19:55
+**State:** done
 **Source:** `tasks/ui/054`, which swept `assets/app.js` and excluded these two **by scope, not by
 running out of room** — it said so at filing and its worker said so again in its report. Filed here
 so the remainder is written down rather than rediscovered, the way the `study-designer/044`–`055`
@@ -65,15 +65,47 @@ worse than an honest partial.
 
 ## Done when
 
-- [ ] Both files swept — or one swept thoroughly and the other filed as its own task.
-- [ ] Every citation checked for existence, repo label, and whether its sentence is true, counted as
+- [x] Both files swept — or one swept thoroughly and the other filed as its own task.
+- [x] Every citation checked for existence, repo label, and whether its sentence is true, counted as
       *instances* rather than grep lines, with a census pattern that catches plural citations.
-- [ ] Wrong numbers and false sentences reported as **separate** counts with the total checked.
+- [x] Wrong numbers and false sentences reported as **separate** counts with the total checked.
       "Checked N, found none" is a legitimate and useful result: whether this vein is exhausted is an
       open question and honest zeros are the only thing that answers it.
-- [ ] No new bare cross-repo citation introduced anywhere in the diff.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/ui-*` fragment reporting the counts.
+- [x] No new bare cross-repo citation introduced anywhere in the diff.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/ui-*` fragment reporting the counts.
+
+## Result
+
+Re-census with `[Dd]ecisions? [0-9]+` (catches the plural; none found in either file):
+`main.rs` 26 grep lines / 27 citation instances, `trace.rs` 25 grep lines / 27 citation
+instances — both match the task's floor exactly, no undercounted plurals this time.
+
+**54 instances checked. 1 wrong number, 0 false sentences.**
+
+- `src/trace.rs`'s module doc (the "two clocks" section) misstated the row-86 incident:
+  "4286 of **9205** spans read as unmeasurable" — every other account of the same incident
+  (`embarch-ui` decision 10 (trace), `embarch-outpost/spec.md`'s resolution table,
+  `reversals/rows-73-92.md` row 86, and suite decision 4's own placement writeup) says
+  **4955**. `9205` is this same file's own row count for an unrelated capture (`~490 rows of
+  a 9205-row capture`, used correctly two paragraphs later) — a transposition, not a second
+  measurement. Fixed to `4286 of 4955 spans`; nothing else in that sentence needed changing.
+- Every decision-number resolution checked against the cited repo's actual text: all 27
+  citations in `main.rs` and all 27 in `trace.rs` resolve to a decision that exists and whose
+  body backs the sentence citing it, including the three-way bare `decision 10` collision
+  (routing/trace/chart) — every bare `decision 10` in both files resolves unambiguously from
+  its surrounding sentence, and two of them (`main.rs:423`, `trace-chart.md`'s own text) are
+  already explicit about which half they mean.
+- One unverifiable-but-not-contradicted date: `trace.rs:33-34` cites "`embarch-outpost`
+  decision 4's 2026-08-27 rework" while `trace.rs:67-68`'s own account puts layout 3's restore
+  "the day before" the file's own fix (dated 2026-08-27) — i.e. 2026-08-26. No decision doc
+  pins an exact date for the layout 2→3 change, so this could not be resolved either way and
+  was left standing rather than guessed at. Flagging it here for whoever sweeps `trace.rs`
+  next.
+- `tasks/ui/051` (cited twice, `trace.rs:268` and `main.rs:489`/`609`) no longer exists as a
+  file — normal task retirement — but its claim ("`embarch-ui` stopped recomputing the load
+  arithmetic locally") is corroborated in `history/ui.md`'s Changed section and left standing,
+  same precedent as the dated-amendment case in the Watch-for list.
 
 ## Not yours
 
