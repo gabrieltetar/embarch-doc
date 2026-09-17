@@ -1,4 +1,4 @@
-# 112 — Close the `serial_port` referral in `open.md` against umbrella decision 55
+# 114 — Close the `serial_port` referral in `open.md` against umbrella decision 55
 
 **State:** open — drained from `inbox/api-close-serial-port-referral.md` by leg 139, 2026-09-17, at
 `umbrella/080`'s fold. Body unchanged apart from this line, the number, and the note below.

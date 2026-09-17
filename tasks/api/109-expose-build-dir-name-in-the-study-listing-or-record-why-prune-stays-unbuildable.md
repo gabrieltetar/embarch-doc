@@ -21,7 +21,7 @@ gets no name here, needing `target.json` (decision 69) instead; recorded as a St
 bullet in `open.md` so a future `--prune` design does not rediscover it.
 `embarch-umbrella/open.md`'s stale bullet is filed for correction, not edited directly:
 `/home/gabriel/Github/embarch/embarch-doc/inbox/umbrella-build-dir-name-shipped-in-api-list-targets.md`.
-`embarch-api/open.md`'s new bullet pushed it into reserve; compaction debt filed as `tasks/api/112`.
+`embarch-api/open.md`'s new bullet pushed it into reserve; compaction debt filed as `tasks/api/113` (filed as `112`, renumbered at the fold -- `112` had been taken mid-leg by a drained inbox drop).
 **Source:** refill sweep, leg 137, 2026-09-17, from
 [`embarch-umbrella/open.md`](../../embarch-umbrella/open.md)'s standing bullet: *"Decision 26's
 `--prune` is the last designed-and-unbuilt piece here, deferred by choice — it needs
