@@ -12,6 +12,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- Re-checked 13 plural-form decision-citation lines (30 instances) in embarch-umbrella, invisible to the singular-only census; 0 wrong, 0 false.
 - Decisions 49 (probe-vendors) and 42 (locate-api) compacted under the 4,096 B per-decision cap: 6,962→3,956 B and 5,157→4,019 B.
 - 11 src files' ~114 decision citations outside doctor.rs checked: 0 wrong numbers, 0 false sentences, all cross-repo citations already labelled.
 - `embarch init` no longer writes `artifact_path_for_core` and `doctor` check 9 drops its UNC half, keeping its number: it now only asks that `artifact_path` names a file that exists.
