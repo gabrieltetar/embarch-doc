@@ -1,7 +1,22 @@
 # 114 — Close the `serial_port` referral in `open.md` against umbrella decision 55
 
-**State:** open — drained from `inbox/api-close-serial-port-referral.md` by leg 139, 2026-09-17, at
+**State:** claimed by agent/api/114-close-serial-port-referral, 2026-09-17 17:45
+Drained from `inbox/api-close-serial-port-referral.md` by leg 139, 2026-09-17, at
 `umbrella/080`'s fold. Body unchanged apart from this line, the number, and the note below.
+
+**The `109` concurrency bar below is satisfied.** `tasks/api/109` landed in leg 140
+(`embarch-api@87f67df`, doc `996b781f`) and its task file is retired. Re-read `embarch-api/open.md`
+on `main` before starting — `109` did rewrite bullets around this one, and it added a new
+`list-targets`/`build_dir_name` bullet. Judge for yourself whether this bullet and that one want to
+be one bullet or two; the task body's suggestion that they might is a suggestion, not a finding.
+
+**Doc-size reserve for `api`, read at dispatch (leg 141):** `embarch-api/open.md` is
+**4,381/5,120 B (85.6%)** — *not* in reserve, 739 B of headroom, but the nearest file to the line
+that this unit will touch. `embarch-api/spec.md` is 9,089/10,240 B (88.8%), also clear.
+`embarch-api/decisions/failure-reporting.md` is **11,578/12,288 B (94.2%) — in reserve and filed
+against a blocked `tasks/api/111`; do not write into it.** Run
+`python3 scripts/check-doc-size.py --pressure` before and after; if your edit pushes any file over
+90%, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 
 **Do not dispatch this concurrently with `tasks/api/109`.** `109` was in flight when this drop
 arrived and its own `Done when` list includes *"`embarch-api/open.md` gains or loses a bullet to
