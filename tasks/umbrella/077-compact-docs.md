@@ -1,10 +1,29 @@
 # 077 — `embarch-umbrella/open.md` is back in reserve
 
-**State:** open
+**State:** blocked — see `**In flux:**` below. Filed `open` by `umbrella/076`; **changed to `blocked`
+by leg 133 at the fold**, because `.claude/leg.md` is explicit that a compaction task whose flux
+answer is yes for every file on its `Compacts:` line is `blocked`, and this task's own "In flux"
+section answers **Yes** for its single file. A worker dispatched into it would be shortening prose
+the next umbrella unit is likely to rewrite. `blocked` is not absorbing here: the debt carries a
+date, and a leg spends its first unit on the oldest overdue entry whether or not it is blocked.
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/076`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/open.md
+**In flux:** yes — the sole file on the `Compacts:` line is in flux (per-file answer, and here
+there is only one file). See the "In flux" section for the enumeration.
+**Unparks when:** umbrella's `open.md` bullets stop moving — concretely, when check 17's two Fail
+arms (`tasks/umbrella/033`), check 13's bench run (`tasks/umbrella/037`) and check 5's
+never-exercised fail branch have each either landed or been closed, since each of those rewrites
+the file. Any one of them landing is reason to re-read this field rather than to unpark on sight.
+**Must not delete:** `open.md`'s note that check 15 is not a hash comparison and must not be read
+as one; its note that check 17's two Fail branches have never met a real narrow-bound Core **and
+which half of that debt each arm settles**; its note that `saved.host` is sticky and `doctor`
+check 2 still reads it **including why that was left unfixed** — a deliberate abstention that
+reads as an oversight without the reason; and the mirrored-mode WSL2 bullet `umbrella/076` just
+corrected, in particular **which outcome check 5 actually produces with udev rules restored**
+(`probes-present`, not `no-probe-found`) — that correction exists because the old text named an
+unreachable code path, and shortening it back into vagueness would re-open the same trap.
 
 **Size debt due:** 2026-10-17
 

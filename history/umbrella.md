@@ -45,6 +45,9 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- Check 5's USB scan now also weighs the located core binary, not winner_class alone, under WSL2 (decision 53).
+- deploy-core, uninstall, up and down now print failures on stderr, matching spec.md's exit-code promise.
+- open.md's check-5 settling protocol named an unreachable outcome; corrected to Pass probes-present.
 - spec.md's Token handling section no longer claims `setup` confirms `embarch-api` can discover the token; that's `doctor` check 4/`status`'s job, and only `local` actually starts Core.
 - Swept 27 citations outside src/: fixed 8 stale/false ones (4 dead milestone-6.md refs, a missing-checkout bug in release.yml).
 - Decision 42 no longer credits decision 35 with check 8's list-targets shape; that citation now points to decision 17, which actually records it.
