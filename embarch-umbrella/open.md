@@ -14,13 +14,13 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **`apply_plan` now clears `saved.host` on a non-`remote` `setup` conclusion** ([decision 51](decisions/sticky-host.md)), settling what decision 48 left open. Covered by a unit test over the state transition. **Hardware debt:** confirm on a real machine — a real `--host` given, a real `local` re-run, a real `doctor` after.
 
-- **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then `no-probe-found` with them back. **Whether the nine vendor IDs are the right nine is also unmeasured** — a question about the list's contents, not its home. The routing half is **settled**: the list stays here ([decision 49](decisions/probe-vendors.md)), and moves only if something other than `doctor`'s own message ever consumes it.
+- **Check 5's not-permitted fail has never met a real permission-denied probe** (decision 18). Synthetic `/sys/bus/usb/devices` tree only, and **the primary topology cannot exercise it**: Core is on Windows, so the scan is skipped. Settling it: a Linux box running Core natively, probe attached, udev rules removed — Fail `probe-not-permitted`, then Pass `probes-present` with them back (restoring the rules lets Core enumerate the probe itself, which `check_probes` reads off `a.probes` before the USB-tree scan is ever consulted — `no-probe-found` needs a zero count *and* nothing on the bus, which a permitted, attached, known-VID probe cannot produce). **Whether the nine vendor IDs are the right nine is also unmeasured** — a question about the list's contents, not its home. The routing half is **settled**: the list stays here ([decision 49](decisions/probe-vendors.md)), and moves only if something other than `doctor`'s own message ever consumes it.
 
 - **Config fragments or includes**, so the Core section is not copied into every firmware repo's config (decision 10). Needs an include mechanism in `embarch-api`'s loader. **Deferred, not rejected.**
 
 - **A user-level service needs no elevation on Linux or macOS** (systemd `--user`, a launch agent) **but would not start before login, defeating decision 3.** Not weighed.
 
-- **Mirrored-mode WSL2 networking has defined behaviour and no evidence.** Only NAT has run here, and that is all that got live-validated. Decision 30's ambiguity is real either way.
+- **Mirrored-mode WSL2 networking has defined behaviour and no evidence.** Only NAT has run here, and that is all that got live-validated. Decisions 30 and 53's ambiguity is real either way.
 
 - **macOS is unvalidated and has no machine to validate on.** Not blocking: a Mac-only engineer walks the guide once the primary topology is proven. **Gatekeeper may make "just download and run" false there**, the aarch64 build unsigned.
 
