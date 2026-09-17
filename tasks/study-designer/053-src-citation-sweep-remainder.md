@@ -1,6 +1,6 @@
 # 053 — Citation sweep: `src/` remainder after `bounded.rs`
 
-**State:** open
+**State:** claimed by agent/study-designer/053-src-citation-sweep-remainder, 2026-09-16 18:45
 **Source:** `tasks/study-designer/052`, which swept `src/bounded.rs` (the
 largest of the 16 files `051` left remaining) and left the rest.
 **Scope:** study-designer
