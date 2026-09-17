@@ -12,7 +12,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/install.md](decisions/install.md) | 3, 4, 5, 14, 21, 25, 28, 54 | Core as an autostarting service, `up`/`down` as a fallback, the release archive, and what `setup` really writes |
 | [decisions/topology.md](decisions/topology.md) | 6, 7, 8, 9, 30, 38 | Detecting where Core is, elevation, the WSL2 loopback ambiguity, and which `embarch-core` a `wsl-host` machine actually runs |
 | [decisions/integration.md](decisions/integration.md) | 10, 12 | Where a repo's `embarch/` config lives, and how little of it anyone else can see |
-| [decisions/projects.md](decisions/projects.md) | 13, 17, 26, 41 | What `init` derives from a firmware repo, and what it refuses to guess |
+| [decisions/projects.md](decisions/projects.md) | 13, 17, 26, 41, 55 | What `init` derives from a firmware repo, and what it refuses to guess |
 | [decisions/doctor.md](decisions/doctor.md) | 18, 31, 53 | The check chain, and the states it refuses to conflate |
 | [decisions/locate-api.md](decisions/locate-api.md) | 42 | How `locate_api` finds `embarch-api` — the agent CLI's registration and `setup`'s install directory, not just `PATH` |
 | [decisions/bind.md](decisions/bind.md) | 22 | Check 17: whether Core is listening where this topology can reach it |
