@@ -19,9 +19,14 @@ this task's body cannot tell you:
    `api/109`'s own reviewer was asked this question directly; read its verdict in
    `supervisor-log.md`'s `api/109` entry before you decide.
 
-**Reserve warning:** `embarch-umbrella/decisions/projects.md` is at **12,286/12,288 B — two bytes** —
-and `tasks/umbrella/081` is its `open`, `In flux: no` compaction task, **overdue 2026-09-18**. If
-this task touches `projects.md` at all, pay `081` first or as part of the same unit.
+**Reserve warning — withdrawn, and the numbers below are the reason.** This said `projects.md` was
+at **12,286/12,288 B — two bytes** and told you to pay `tasks/umbrella/081` first. **`081` landed in
+leg 140, 2026-09-17**: decision 55 moved verbatim into a new
+`embarch-umbrella/decisions/serial-port.md`, leaving `projects.md` at **10,950/12,288 B (89.1%),
+out of reserve** with about 1,336 B of headroom. **Decision 26 did not move and is still in
+`projects.md`** — `081` re-checked that seam and rejected it again, because
+`embarch-api/decisions/target-json.md` links `projects.md` by path twice for decision 26 and a
+`umbrella` worker cannot edit the far end. So this task needs no re-pointing and has room to write.
 
 **Source:** `embarch-api` task 109 (`tasks/api/109-expose-build-dir-name-in-the-study-listing-or-record-why-prune-stays-unbuildable.md`), dispatched from this repo's own `open.md` standing bullet.
 **Scope:** umbrella
