@@ -1,6 +1,6 @@
 # 072 — Citation sweep: the 17 `embarch-umbrella` citations that live outside `src/`
 
-**State:** open
+**State:** claimed by agent/umbrella/072-citation-sweep-outside-src, 2026-09-16 18:46
 **Source:** leg 122's refill sweep, 2026-09-16. `tasks/umbrella/066` closed with *"All eleven files
 swept"* — and its table is exactly `src/*.rs`; `065` was `doctor.rs`. Neither grep ever left `src/`.
 **Scope:** umbrella
