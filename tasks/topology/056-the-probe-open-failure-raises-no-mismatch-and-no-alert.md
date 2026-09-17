@@ -1,6 +1,6 @@
 # 056 — `validate`'s probe-open failure raises neither a `TopologyMismatch` nor an alert, and the type's own doc comment says it does
 
-**State:** claimed by agent/topology/056-probe-open-no-mismatch, 2026-09-17 01:50
+**State:** done — agent/topology/056-probe-open-no-mismatch, 2026-09-17
 **Source:** leg 133's refill census of `embarch-topology`, the fourth of four findings —
 `tasks/topology/055` carries the other three. **Filed so it survives**: it existed only in a census
 report, and `supervisor-log.md` folds daily and rolls into `log-archive/`.
@@ -61,16 +61,75 @@ decision 12 is wrong; it is the two in-repo sentences that overstate.
 
 ## Done when
 
-- [ ] The two in-repo claims are each **corrected** or **reported as holding**, on lines you read —
+- [x] The two in-repo claims are each **corrected** or **reported as holding**, on lines you read —
       `validate.rs`'s `live_hardware_id` doc comment, and the module header's *"every mismatch is
       durably logged"*.
-- [ ] Your report states explicitly whether you changed prose only, or whether you concluded the
+- [x] Your report states explicitly whether you changed prose only, or whether you concluded the
       code should route the open failure through `raise`. **If the latter, do not implement it** —
       see "Not yours".
-- [ ] Your report says which of the reported line numbers had drifted.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+- [x] Your report says which of the reported line numbers had drifted.
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
       in `embarch-topology`, and `python3 scripts/check-docs.py` in `embarch-doc`.
+
+## Resolution
+
+**Prose only — the code was not touched.** Both claims held as findings, both corrected as prose.
+Verified every branch of `validate_known_timed` (`src/hardware/validate.rs`): exactly two call
+`raise` — probe absent from `Lister::list_all()` (`live_hardware_id: None`), and a hardware-ID
+compare that fails (`live_hardware_id: Some(...)`) — and five do not: `.open()`, `check_target_powered`,
+`.attach()`, `session.core(0)`, `hardware_id::read`, each surfacing a bare `anyhow::Error` via `?`
+that is un-logged and not downcastable to `TopologyMismatch`.
+
+**`live_hardware_id`'s doc comment** (`validate.rs:128-130`) named the wrong case: it said `None`
+means "the enrolled probe couldn't even be opened (unplugged, most likely)". That prose is what
+actually misled a prior worker — `tasks/core/041`'s resolution paraphrases the same field the same
+way ("`None` exactly when nothing was compared (the probe couldn't be opened)") to describe the
+*not-attached* arm, which is the only arm that is actually correct. The literal "probe is listed but
+`.open()` itself fails" case is a third, distinct outcome neither comment names, and it produces
+neither `None` via `raise` nor anything else — it never reaches `TopologyMismatch` at all. Corrected
+the comment to say `None` means "not found in `Lister::list_all()`" and to explicitly carve out the
+open-failure case as un-logged and non-downcastable.
+
+**The module header** (`validate.rs:11-17`, reported 11-14) claimed "every mismatch is durably
+logged... before the structured error is even constructed." Narrowed to "every *constructed*
+`TopologyMismatch` is durably logged" (decision 12's actual, one-directional claim, which holds) and
+added the same carve-out: the open/power/attach/core-select/read failures fail closed — the
+operation is still blocked — but construct no `TopologyMismatch` and log no alert.
+
+**Did not conclude the code should change.** Routing the open failure through `raise` would widen
+`alerts.jsonl` and change what `embarch-core`'s `/validate` returns on that path, across the repo
+boundary this task's "Not yours" section reserves, with no bench here to exercise `embarch-core`'s
+side. Left as a finding for `embarch-doc/inbox/` and a follow-up task per the task's own instruction,
+rather than implemented.
+
+**Line-number drift against the census:**
+- Module header claims: reported 11-14, actual paragraph spans 11-17; the two cited sentences are
+  at 11 and 12-13 respectively — no material drift.
+- `live_hardware_id` doc comment: reported 128, actual 128-130 (field itself at 131) — no drift.
+- `raise`: reported ~148, actual exactly 148 — no drift.
+- Probe-not-listed branch: reported 221-232, actual match arm 221-232 — no drift.
+- `.open()` failure: reported 234-236, actual 234-236 — no drift.
+- `check_target_powered`: reported 237-238, actual 237-238 — no drift.
+- `.attach()`: reported 239-241, actual 239-241 — no drift.
+- `session.core(0)`: reported 242-243, actual spans 242-244 (the `.context(...)?` closing the call is
+  on 244) — off by one line.
+- `hardware_id::read`: reported 244, actual 245 — off by one line (pushed by the above).
+- Hardware-ID-mismatch branch: reported 250-259, actual `return Err(raise(...));` spans 250-259
+  exactly (the `if` condition itself opens on 249) — no material drift.
+- **`validate_known_timed`'s own span: reported 214-248, actual 214-265** — the function runs 17
+  lines past what was reported; the tail (`validated_at_utc_ms` read and the `Ok((known, ...))`
+  return, lines 261-265) wasn't in the census's range but doesn't affect this task's claims.
+
+**Reserve check:** `embarch-topology/spec.md` unchanged by this unit (no doc-repo prose files
+touched — only `embarch-topology/src/hardware/validate.rs`, in the code repo). `check-doc-size.py
+--pressure` before and after both show the same 9,826/10,240 B, still parked under
+`tasks/topology/057`. No new file entered reserve; no compaction task filed.
+
+**Gate:** `cargo build --all-targets`, `cargo test --features hardware` (80 passed, 0 failed —
+default-feature `cargo test` only runs 15, since `hardware` is opt-in), `cargo clippy --all-targets
+--features hardware -- -D warnings` all clean in `embarch-topology`. `python3 scripts/check-docs.py`
+green in `embarch-doc` (see report for exact output).
 
 ## Not yours
 
