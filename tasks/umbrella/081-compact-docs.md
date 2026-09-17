@@ -1,6 +1,6 @@
 # 081 — `embarch-umbrella/decisions/projects.md` is at cap, not just in reserve
 
-**State:** claimed — leg 140, 2026-09-17, `agent/umbrella/081-compact-projects`.
+**State:** done — leg 140, 2026-09-17, `agent/umbrella/081-compact-projects`.
 
 **Dispatch note (supervisor, leg 140).** This is the leg's first unit because the ledger says so:
 `--due` puts this entry at **1 day left** and the file at **12,286/12,288 B — 2 bytes**, the only
@@ -70,12 +70,40 @@ moving 26 previously, so re-verify it rather than assume it still holds.
 
 ## Done when
 
-- [ ] `decisions/projects.md` back under the 90% reserve line (11,059 B), by split or by genuine
+- [x] `decisions/projects.md` back under the 90% reserve line (11,059 B), by split or by genuine
       shortening — never by deleting a rejected-alternative or a verification note that is still
       load-bearing.
-- [ ] Every decision number (13, 17, 26, 41, 55) still resolves from `decisions.md`'s index, in
+- [x] Every decision number (13, 17, 26, 41, 55) still resolves from `decisions.md`'s index, in
       whichever file each ends up in.
-- [ ] Any cross-repo anchor into a moved decision (see `embarch-api/decisions/build.md`,
+- [x] Any cross-repo anchor into a moved decision (see `embarch-api/decisions/build.md`,
       `embarch-decision-reversals.md` for 26 and 17) still resolves.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/umbrella-*` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/umbrella-*` fragment dropped.
+
+## Closed (leg 140)
+
+**Decision 26 was re-checked and rejected again, for the same reason `umbrella/009` gave.**
+`embarch-api/decisions/target-json.md` links `embarch-umbrella/decisions/projects.md` twice by
+file path for decision 26, and `embarch-decision-reversals.md` links the same file by path for
+decision 17 — both are anchors this worker cannot edit (one is a different sub-project's doc, the
+other is suite-level). `suite/user-guide.md` does the same for decision 41. Moving any of 17, 26 or
+41 out of `projects.md` would leave those three anchors pointing at a file that no longer holds the
+decision they name, with no way for this unit to fix the far end. **26 stays in `projects.md`,
+unmoved** — `tasks/umbrella/082` needs no re-pointing.
+
+**What actually moved: decision 55 only**, to new `embarch-umbrella/decisions/serial-port.md`.
+It has no inbound cross-repo (or suite-level) anchor anywhere in the doc corpus — confirmed by
+grep across the whole `embarch-doc` tree before the cut — so no redirect was needed. New anchor:
+`embarch-umbrella/decisions/serial-port.md#55` (decision numbers are permanent per
+`DOC-CONVENTIONS.md`; the file is new, the number is unchanged). `decisions.md`'s index row for
+`projects.md` now reads `13, 17, 26, 41`, with a new row for `serial-port.md` reading `55`.
+
+**Byte counts (measured, this worktree):**
+- `embarch-umbrella/decisions/projects.md`: 12,286 B → 10,950 B (89.1%, out of reserve)
+- `embarch-umbrella/decisions/serial-port.md`: new file, 2,277 B
+- `embarch-umbrella/decisions.md`: 3,175 B → 3,296 B (index row split into two)
+
+Gate: `python3 scripts/check-docs.py` — all 11 checks green. `scripts/check-doc-size.py --pressure`
+now lists `projects.md` as `PAID`. `scripts/check-ownership.py --scope umbrella` clean in the doc
+worktree; `--code-repo` clean in the code worktree (this task touched no code — the umbrella code
+repo has zero diff on this branch).
