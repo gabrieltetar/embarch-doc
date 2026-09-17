@@ -1,7 +1,7 @@
 # 080 — Decision 65's CSV-size extrapolation names one source of bias and omits a larger one
 
-**State:** claimed — leg 138 unit 3, 2026-09-17, `agent/core/080-decision-65-extrapolation-direction`.
-Drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at `core/076`'s fold,
+**State:** claimed by agent/core/080-decision-65-extrapolation-direction, 2026-09-17 15:50 — leg 138
+unit 3. Drained from `inbox/core-decision-65-size-extrapolation.md` by leg 138 at `core/076`'s fold,
 2026-09-17; body unchanged apart from this line, the number and the notes below.
 
 **Supervisor dispatch note 1 — this is prose, and the code is fine.** `core/076` landed 90 minutes
