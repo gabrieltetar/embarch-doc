@@ -8,7 +8,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 
 | Group | Decisions | What it settles |
 |---|---|---|
-| [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9 | One consolidated process, zero-build, the VS Code launcher, the repo |
+| [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9, 28 | One consolidated process, zero-build, the VS Code launcher, the repo; Start focuses the window and tab already open, matched on the page title |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
 | [decisions/shell.md](decisions/shell.md) | 4, 8, 25 | The six-section shell, fragment navigation, the design system, the brand-vs-accent split |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
