@@ -1,6 +1,6 @@
 # 073 — "`erase` never becomes a chip erase in **any** backend" is cited to decision 36, which only settles backend *selection*
 
-**State:** open
+**State:** claimed by agent/core/073-erase-citation, 2026-09-17 18:45 (leg 143 unit 1)
 **Source:** leg 133's reviewer on `core/071`, as the honest answer to a directed check rather than as
 a contradiction finding. `core/071` moved this citation from decision 32 to decision 36 — correctly,
 because 32 does not establish the property either — and the reviewer then established that **36 does
