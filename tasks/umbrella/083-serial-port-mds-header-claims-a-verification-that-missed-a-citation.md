@@ -1,6 +1,21 @@
 # 083 — `serial-port.md`'s header claims a verification that had already missed a citation
 
-**State:** claimed by agent/umbrella/083-serial-port-header-verification, 2026-09-17 18:02
+**State:** done — 2026-09-17, `agent/umbrella/083-serial-port-header-verification`. Rewrote
+`serial-port.md`'s header sentence to say what was checked (a grep for the `[decision N](path)`
+link shape) and what shape it cannot see (inline code with a parenthetical), naming `tasks/api/114`
+as the citation the original grep missed — cited as its `**Source:**` line, since retired in this
+repo's `ca564376` fold, not as a live path — and `tasks/doc/044` as the general defect. Re-ran both
+grep shapes myself over the whole `embarch-doc` tree before writing the header: the link shape
+turned up one unrelated hit (`history/api.md`'s `embarch-api` decision 55, a different sub-project's
+number); the inline-code-with-parenthetical shape turned up only historical task-file text (this
+task's own body, and `tasks/umbrella/080`), no live stale pointer — `embarch-api/open.md` already
+cites `embarch-umbrella` decision 55 by number alone, no path, per `tasks/api/114`'s own advice. No
+`changelog.d/` fragment: the correction is entirely contained in the header it fixes, nothing else
+reader-facing changed. Gate green: `cargo build`/`test`/`clippy --all-targets -- -D warnings` in
+`embarch-umbrella` (228 tests pass, 0 clippy warnings), `check-docs.py` 11/11 in `embarch-doc`,
+`check-ownership.py --scope umbrella` green on both worktrees. `decisions/serial-port.md` is
+3,330/12,288 B (27%) after the edit — no compaction task needed; `projects.md`/`install.md`/
+`bind.md` untouched, all still exactly where the supervisor note found them.
 
 **Supervisor note, leg 141 — `tasks/api/114` no longer exists, and that changes one `Done when`
 box.** This leg ran `api/114` as its first unit and retired the task file in that unit's fold
@@ -59,13 +74,14 @@ example of how to verify a seam, and it is currently an example of a verificatio
 
 ## Done when
 
-- [ ] `serial-port.md`'s header states what was actually checked and what shape of citation that
+- [x] `serial-port.md`'s header states what was actually checked and what shape of citation that
       check can and cannot see — not "no inbound link exists".
-- [ ] It names `tasks/api/114` as the citation the original grep missed, and `tasks/doc/044` as the
+- [x] It names `tasks/api/114` as the citation the original grep missed, and `tasks/doc/044` as the
       general defect, so the next person splitting a file in this sub-project greps for the inline
       form too.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment only if the correction is reader-facing beyond the fix itself.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment only if the correction is reader-facing beyond the fix itself. (Not
+      filed — the correction is self-contained in the header it fixes.)
 
 ## Not yours
 
