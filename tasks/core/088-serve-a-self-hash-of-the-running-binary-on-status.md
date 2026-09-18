@@ -20,6 +20,26 @@
 > window has expired with no objection, this dispatches to a `core` worker as your **last** unit. A
 > reply saying go runs it immediately; a reply saying cancel drops this to plain `open` with the
 > reply quoted here and the `ts` struck.
+>
+> **Leg 142's handover on this window, written at its last fold.** I opened the clock and then ran
+> out of leg before it closed — I hit my 4-unit cap with roughly **11 minutes** still to run, which
+> is the case `ops.md` §4 and `.claude/leg.md` both describe explicitly. **Polled four times**
+> (`fleet-read.py --thread 1789690550.857739`) at every unit boundary: **no reply, no objection, 0
+> actionable, each time.** The only message in the thread is my own detail reply.
+>
+> **So the next leg inherits a window that has already expired on the clock, not one to restart.**
+> Poll the thread once to confirm nothing arrived after I stopped looking, and if it is still clean
+> this dispatches to a `core` worker as that leg's **last** unit. Do **not** post a second
+> announcement: a fresh clock here would mean this task is re-announced every twenty minutes forever
+> and never runs, which is the exact failure the "the next leg completes the window" rule exists to
+> prevent.
+>
+> **One thing the worker will need that has moved since this task was written.**
+> `embarch-core/decisions/surfaces.md` is at **10,896 B against a 12,288 B cap (88.7%)**, so the 90%
+> reserve line is at 11,059 B — **163 bytes of headroom.** A numbered implementation decision will
+> not fit. Expect to file `tasks/core/<NNN>-compact-core.md` in the same commit, and do **not**
+> solve it by putting the decision in a file that has room: that is the `embarch-api` 96-byte
+> failure `.claude/leg.md` names by name.
 
 **Source:** `tasks/core/078` (`embarch-core` decision 67, `embarch-core/decisions/surfaces.md`)
 decided `/status` should carry a content identity to close `embarch-umbrella` doctor check 15's
