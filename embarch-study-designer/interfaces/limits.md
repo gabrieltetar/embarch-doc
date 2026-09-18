@@ -61,4 +61,14 @@ Every bound the crate declares, each marked `[measured <date>]` or `[assumed]`. 
 | `MAX_REMEMBER_PER_ARM` | 2 | `EventArm.remember` | [assumed] session-variable updates one arm performs before its guards are evaluated |
 | `MAX_WRITE_FIELDS` | 6 | `WriteAction.fields` (decision 61) | a control-point write is a one-byte opcode and occasionally an argument; sized for the argument |
 
+## Advisory dev-bench capacities
+
+**Advisory, never a gate, and nothing here branches on them** — mirrors of caps in `embarch-dev-bench`'s own headers (paths below are under `embarch-dev-bench/app/src/`), served so an authoring host can *warn*. Why: [../decisions/limits.md](../decisions/limits.md) decision 76.
+
+| Constant | Value | Mirrors | Why the bench is tighter |
+|---|---|---|---|
+| `DEV_BENCH_MAX_STEPS_PER_STUDY` | 16 | `DBM_MAX_STEPS_PER_STUDY` (`serial_protocol.h:54`), embarch-dev-bench decision 27 | `struct dbm_step`'s action union at this crate's 64 slots does not fit that board's RAM |
+| `DEV_BENCH_MAX_EVENT_ARMS_PER_STATE` | 2 | `EAP_MAX_EVENT_ARMS_PER_STATE` (`eap.h:90`), embarch-dev-bench decision 41 | an arm is the heaviest thing a state holds, multiplied by states, by protocols, and again by two static `struct dev_bench_message` copies |
+| `DEV_BENCH_MAX_PROTOCOLS_WIRE_LEN` | 3072 | `DBM_MAX_PROTOCOLS_WIRE_LEN` (`serial_protocol.h:113-129`), embarch-dev-bench decision 41 | **mirrors no crate constant at all**: the count caps multiply into ~7.4 KB for one `ProtocolDef`, against 398 bytes for the real BDS manifest. Measured by `crc::protocols_wire_len`, which encodes the **whole field, length prefix included** |
+
 Retired constants, kept here because a reader meeting the name in older code needs to know it went and why: ~~`MAX_RESULT_REF_LEN = 64`~~ and the original ~~`MAX_BATCH_SAMPLES`~~ role — `StepResult.power_samples_ref`/`waveform_ref`, retired 2026-08-25 with the fields (decision 39). ~~`MAX_GATT_ACTIVITY_RECORDS = 32`~~ — retired 2026-08-26 with the field it bounded (decision 54); it was what a capped in-memory copy of a streamed capture cost, and the stack-safety risk it carried went with it. ~~`MAX_STREAM_CHUNK_LEN`~~ — nothing left to bound once `StreamChunk` carried a `Sample` rather than an arbitrary byte buffer. ~~`MAX_VALIDATIONS_PER_STUDY = 64`~~ — retired with post-hoc validation (decision 48).

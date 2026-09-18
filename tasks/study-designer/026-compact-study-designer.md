@@ -134,3 +134,6 @@ worktree>` (green), `check-ownership.py --scope study-designer` (0 changed paths
 from the `embarch-doc` worktree; `cargo build`/`test`/`clippy --all-targets -- -D warnings` clean
 in the `embarch-study-designer` code worktree (no code changes were needed — this is a doc-only
 unit). `changelog.d/study-designer-026-open-checked.decided.md` added.
+
+**Amendment, 2026-09-17 (`tasks/suite/045`).** `open.md` is now **5,447 / 5,120 B — 327 B OVER**, up from 4,662. Two changes, both structural rather than additive: the "Missing authoring paths" bullet moved to a new **Closed** section (the trigger it named fired and the path was built), and a new **Open** section carries one question — whether a saved study should be checked against the `.eap` file it was built from, with its trigger. The closed bullet is the compaction seam: a closed question in a file whose contract is unresolved-only either leaves or shrinks to its pointer.
+

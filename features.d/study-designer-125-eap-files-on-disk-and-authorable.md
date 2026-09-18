@@ -1,0 +1,1 @@
+| `.eap` manifests live in `<firmware-repo>/embarch/protocols/` and are authorable from the Study Designer — scanned leniently (one bad file does not fail the directory), written only after they parse and resolve, and one duplicate protocol name across files refused in exactly one place | Shipped | unit, local | 75 |
