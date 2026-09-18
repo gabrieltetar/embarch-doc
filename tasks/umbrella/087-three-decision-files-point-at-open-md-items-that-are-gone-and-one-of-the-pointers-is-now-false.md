@@ -16,7 +16,10 @@ decision file in the same directory**:
 1. **`decisions/locate-api.md` (around line 26) is false, not just stale.** It says:
 
    > **Neither check 8 nor check 11 has run inside a live `doctor` yet** — that needs a live Core and
-   > stays in [`open.md`](../open.md).
+   > stays in `open.md`.
+
+   (The quoted sentence links `open.md` in the original; the link is flattened here because a
+   relative target copied out of `decisions/` does not resolve from `tasks/umbrella/`.)
 
    But `decisions/budgets.md` (around line 40) already records:
 
