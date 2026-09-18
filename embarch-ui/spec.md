@@ -60,7 +60,7 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 | **Topology** | The board/probe diagram, the alert list, and **signal routing** — the one human surface for declaring a DUT signal's route |
 | **Study Designer** | **Authoring and saving** a study; running and watching moved to Live Study (decision 31), and its Run buttons post and switch tabs. Steps, the two `requires` fields, security levels, GATT capture taps and their record framing, `RunProtocol` steps against the repo's `.eap` manifests, the dev-bench log level, the declared-GATT picker, the custom-action registry and payload layouts (author, edit, delete), and an `.eap` text editor |
 | **Enroll** | Submits to Core's enroll endpoint |
-| **Live Study** | Runs a saved study and watches it land, or opens any past one and reads it back. One long page of stacked cards: run/open with the studies list, status, steps filling in live, the event feed, one console per `Text` tap, the outpost trace chart, and one data card per remaining tap |
+| **Live Study** | Runs a saved study and watches it land, or opens any past one and reads it back. One long page of stacked cards: run/open with the studies list, status, steps filling in live, the event feed, one console per `Text` tap, the **Time chart** (every stream on one axis), the outpost trace chart, and one data card per tap |
 | **Debug** | Live log tail, switchable between Core (server-side poll of `GET /logs/recent`) and `embarch-api` (its rolling file); both reach the browser as this UI's own `lines` SSE event |
 
 Everything live reaches the browser as **SSE** served by this binary; there is no client-side interval polling anywhere (no `setInterval` in `app.js`). Where a source has no push surface this repo consumes, the polling is server-side and the browser never sees it — the Debug tab's two log feeds are both that shape.
@@ -85,6 +85,7 @@ Everything live reaches the browser as **SSE** served by this binary; there is n
 - **`lagged` is displayed, never swallowed**, and this UI's own broadcast overrun is a *different* fact from embarch-core's: the first says the disk record is complete and this feed is not, the second that a reload catches up.
 - **`interrupted` is never rendered as completed or failed** ([`embarch-core` decision 69](../embarch-core/decisions/study-record.md)), and **a terminal status is never un-said by a later poll** — embarch-core's registry can still report `running` for the moment between the last step landing and the job closing.
 - **A post-run re-read replaces a card only where its own read succeeded**, so a tap embarch-core will not serve keeps what the live feed put there.
+- **A shared axis reads `core_rx_utc_ms` and nothing else** — a study CSV's `rx_utc_ms` is dev-bench uptime under one name ([suite decision 3](../suite/decisions.md)). A mark is placed, unplaceable or uncertain; an unplaceable one is a gutter count, never a guessed position; the tier is chosen once and an improvement is an epoch bump, never a silent move ([decisions/time-chart.md](decisions/time-chart.md)).
 - **Unreadable is rendered as unreadable, not as a mismatch or an empty list.** A bench that is not plugged in has no version to disagree with; a Core that answered `404` to the signals route has not told you there are no signals.
 
 ## The trace chart
