@@ -50,3 +50,18 @@ Decision 59's split staged four primitives — `repeat` with `count_from`, `bitp
 
 `ResolvedProtocol::render_layout(frame)` is now the loud accessor: `Ok(Some(layout))` for a frame that renders, `Ok(None)` for a frame with no layout for an unrelated shape reason (a `span`, a second repeating group, an empty frame — unchanged), and `Err(RenderUnimplemented { frame, primitive })` naming exactly which of the four staged primitives is missing its render half. `struct_layouts()` — which nothing in this crate or its two current consumers calls yet — is unchanged, so this is additive. Implementing the bit-unpacker, the counted walker or the CRC check itself stays out of scope for the reason decision 48 gives: building it against no real capture is testing against synthetic bytes.
 
+### 75 — One directory of `.eap` files, scanned leniently, with duplicate names refused in exactly one place
+
+Decision 58 made a manifest **resolved, not referenced** — the study carries a `ProtocolDef`, not a filename. That left open where the text lives, and until 2026-09-17 the only real manifest ever written was resolved by a throwaway Rust program ([open.md](../open.md)).
+
+It lives at `<firmware-repo>/embarch/protocols/`, beside `study-actions.toml` and `study-structs.toml`, for the reason decision 52 gives for those: a manifest is engineer-authored knowledge about *this* DUT, so it travels with the firmware repo. A **directory** rather than one file, because an `.eap` is a text document somebody edits by hand and a repo with three handshakes should have three of them.
+
+`eap_repo` is that layer, and three of its properties are the opposite of the obvious implementation:
+
+**`scan` never fails on a bad file.** A directory holding one unparseable `.eap` still scans, that file carrying its error and every other file carrying its protocols. This is what makes an editor possible at all — the reason to open one is that a file is wrong, and an `Err` for the whole directory would leave the editor nothing to show. Same posture `embarch-ui`'s actions response already takes for a malformed `study-structs.toml`. A file that cannot be *read* is listed carrying an I/O error, never omitted: **a file the scan cannot see is not the same as a file that is not there**, and an editor listing the second when the first is true would hide a protocol a study already names.
+
+**`defs()` is the only place a duplicate protocol name is refused**, and that refusal is what lets a study row carry a **name and no filename**. Within one repo a protocol name resolves to exactly one block, or the repo does not resolve at all. Two files declaring one name is what copying a file produces, and it is refused rather than settled by directory order. Carrying the index instead would make a saved study depend on how many protocols preceded it in whatever list built it — a study that silently means something else after an unrelated row is deleted.
+
+**`save` parses and resolves before it writes**, as both registries' `save` validate first, so the directory never holds text this crate would refuse — which is what lets `scan`'s per-file errors mean *somebody edited this outside the tool*. A refused save leaves the file **byte-identical**: a failed save must not cost an engineer the working version they were editing away from.
+
+A file yields **at most one parse error** and up to one resolve error per block, because the parser stops at the first thing it cannot read. Nothing promises a multi-error list the parser cannot produce.

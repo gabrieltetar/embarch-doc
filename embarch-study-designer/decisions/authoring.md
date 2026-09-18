@@ -51,3 +51,10 @@ So: `BuiltInActionKind` is now the **only** definition, on both sides, and it ca
 What replaced the old count-pinned test is `every_submittable_built_in_is_offered_with_a_label`: it asserts that every variant a row can submit is one a row can be offered, with a non-empty label. That is the property that was actually violated. A count could not have caught it, because both counts were internally consistent.
 
 ---
+
+**Amendment, 2026-09-17: `RunProtocol` joined that vocabulary rather than becoming a row kind of its own.** Every other authoring choice a row makes is a field beside `which` — decision 44 added `security_level`, decision 53 added `targets` — so `BuiltInActionKind::RunProtocol` plus `protocol`/`entry_state` on `RowAction::BuiltIn` costs the browser nothing (it renders the served list) and keeps lowering in `resolve_action`, where every other row lowers. In `ALL` it sits after `GattMonitorSelectedStart` and before `GattMonitorStop`, by that order's own documented logic: a protocol run is normally bracketed by a capture window, so it is reached for after the step that opens one and before the step that closes it.
+
+Both new fields are **names, never indices**, for the reason decision 75 gives. And `build_study` **derives** what the study carries — the distinct protocols its rows name, in first-mention order — rather than taking an authored list: `Study.protocols` is by definition what a `RunProtocol` step can reach, so a separately-authored list could only be a write-ahead copy of one already implied, which is the staleness pattern [embarch-decision-reversals.md](../../embarch-decision-reversals.md) row 37 exists to reject.
+
+A terminal entry state is **refused**, in decision 15's shape: a step that passes instantly and captures nothing is worse than one that does not run, because it reports success. That gives `eap::ProtocolError::EntryStateIsTerminal` its first caller.
+

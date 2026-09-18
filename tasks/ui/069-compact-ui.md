@@ -12,7 +12,7 @@ focus-the-existing-tab change) and its one-line `spec.md` body edit
 ## What
 
 `decisions/shape.md` is **12,194 / 12,288 B (99.2%), 94 B left** and `spec.md` is
-**9,227 / 10,240 B (90.1%), 1,013 B left**. Both are out of reserve when this closes, or the task
+**11,211 / 10,240 B — 971 B OVER, up from 9,227 when this was filed** (`tasks/ui/070`, 2026-09-17: the Study Designer's row in the six-tab table, four new invariants about served facts, advisory caps, destructive-edit refusals and unchecked captures, and the `.dialog` count). Both are out of reserve when this closes, or the task
 says why not and what was deleted instead.
 
 `shape.md` is the file that matters: it now carries decisions 1, 2, 3, 9 and 28, and **28 alone is
@@ -23,7 +23,7 @@ registry, the page title as a load-bearing interface, and four rejected alternat
 both about the **VS Code launcher** and cite each other — 28 extends 3's thin-launcher stance
 directly. A verbatim split of 3 + 28 into `decisions/launcher.md` restates nothing.
 
-`spec.md` is one line over the floor and wants a squeeze, not a split.
+`spec.md` **was** one line over the floor and wanting a squeeze; it is now 971 B past its cap and wants a real one. The four invariants `ui/070` added are the kind this file exists for — each is a fact someone has to hold before they change the Study Designer — so the squeeze is elsewhere, or it is a split.
 
 ## Why now
 

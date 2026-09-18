@@ -71,3 +71,10 @@ All [measured 2026-09-02]. A debug-profile test that builds four `DevBenchMessag
 
 ---
 
+### 76 — Three advisory dev-bench capacities, and a measured wire length for the one that mirrors nothing
+
+An authoring host can only warn that a study is past what this suite's bench accepts if it knows the bench's numbers. Three now live in `limits`, in their own band with their own posture: **advisory, never a gate, and nothing in this crate branches on them.** The bench on somebody's desk may be a different build, and a host refusing to author a study its own bench would run would be enforcing a number it cannot see.
+
+Distinct from every other constant in that module, all of which bound a value this crate itself constructs or validates. These bound a value *dev-bench* refuses, and the refusal stays dev-bench's.
+
+`DEV_BENCH_MAX_PROTOCOLS_WIRE_LEN` is the interesting one: **it mirrors no crate constant at all**, deliberately, because dev-bench's own comment argues that the count caps multiply into a wire bound nothing would ever send. So there is nothing on this side to derive it from, and `crc::protocols_wire_len` measures the encoding instead — the **whole field, length prefix included**, since that is what the cap bounds. Summing element encodings under-reports by the varint count, which is the off-by-a-header that makes an advisory read "within caps" right up to the frame the bench refuses. Values and citations: [../interfaces/limits.md](../interfaces/limits.md).
