@@ -5,6 +5,7 @@
 ## 2026-09
 
 ### Added
+- GET /status now serves binary_sha256, a cached SHA-256 of the running Core binary, closing umbrella check 15's same-version blind spot (decision 67, 68).
 - `GET /study/{id}/stream/{name}/load/spans` serves the decoded per-lane spans `/load` reduces and discards.
 - `GET /study/{id}/streams` gains `source_deferred`: a `PowerFrontEnd` tap now says why it captured nothing, distinct from a mis-named signal.
 - `outpost_load.rs` gains tests for gap-band union, idle double-count, and subject sort order, recovered from `embarch-ui`'s deleted `load_summary_tests`.
