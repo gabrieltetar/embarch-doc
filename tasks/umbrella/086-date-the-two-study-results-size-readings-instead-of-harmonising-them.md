@@ -1,6 +1,9 @@
 # 086 — Date the two `study_results/` size readings instead of harmonising them
 
-**State:** claimed by agent/umbrella/086-date-study-results-readings, 2026-09-17 18:38
+**State:** done — both date stamps added; the parenthetical citing decision 26
+was left out of both files, since either insertion point in `bind.md` or
+`open.md` would have pushed an already-parked file (94.0%, 85.4%) closer to
+cap for a mechanism decision 26 already contains in full.
 **Claim-line shape corrected mid-flight by leg 142**, which wrote all four of its claims this leg in
 a shape `tasks/README.md` does not document — `claimed <date> leg N unit M — \`agent/...\`` instead of
 `claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>`. `check-task-state.py` passes it (it reads
@@ -122,15 +125,17 @@ again, having lost the archaeology this drop just did.
 
 ## Done when
 
-- [ ] `embarch-umbrella/decisions/bind.md` decision 22's `809 MiB` sentence
+- [x] `embarch-umbrella/decisions/bind.md` decision 22's `809 MiB` sentence
       gains `[measured 2026-09-05]`.
-- [ ] `embarch-umbrella/open.md`'s current bullet (the one closing decision
+- [x] `embarch-umbrella/open.md`'s current bullet (the one closing decision
       26's `build_dir_name` prerequisite, added by `f61b43ff`) has its
       `803 MiB` gain `[measured 2026-09-06]`.
-- [ ] `embarch-umbrella/decisions/reporting.md` decisions 37/39 already carry
-      a date on `802.9 MiB` — no change needed there; do not touch it.
-- [ ] `history/umbrella.md`'s changelog line is append-only history and needs
-      no change — leave it as is.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] No `changelog.d/` fragment needed — no reader-facing number changes,
+- [x] `embarch-umbrella/decisions/reporting.md` decisions 37/39 already carry
+      a date on `802.9 MiB` — no change needed there; not touched.
+- [x] `history/umbrella.md`'s changelog line is append-only history and needs
+      no change — left as is.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — all 11
+      `check-docs.py` checks pass, plus `check-ownership.py` on both
+      worktrees; see worker report for byte counts.
+- [x] No `changelog.d/` fragment needed — no reader-facing number changes,
       only provenance dates are added to existing statements.
