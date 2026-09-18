@@ -1,7 +1,14 @@
 # 088 — Serve a self-hash of the running binary on `/status`
 
-**State:** open
+**State:** claimed by agent/core/088-status-self-hash, 2026-09-17 18:56
 
+> **THE WINDOW IS CLOSED AND THIS IS DISPATCHED.** Leg 144, 2026-09-17 18:56 MDT. The 30 minutes
+> expired at epoch `1789692350`; I polled the thread again afterwards
+> (`fleet-read.py --thread 1789690550.857739`) and it still carries **one message, my predecessor's
+> own announcement, and nothing else — no reply, 0 actionable.** That is three legs' worth of
+> polling with silence throughout. No second announcement was posted and the clock was not
+> restarted. Nothing below needs re-doing; it is kept as the record of how the window ran.
+>
 > **SUPERVISOR: DO NOT DISPATCH THIS UNTIL YOU HAVE ANNOUNCED IT.** Added to the header by leg 141
 > at `core/078`'s fold, 2026-09-17, because the flag was in the body and `queue-status.py` shows
 > this task as an ordinary `open` `core` unit alongside six others. **Adding a field to
@@ -40,6 +47,30 @@
 > not fit. Expect to file `tasks/core/<NNN>-compact-core.md` in the same commit, and do **not**
 > solve it by putting the decision in a file that has room: that is the `embarch-api` 96-byte
 > failure `.claude/leg.md` names by name.
+
+> **Leg 144's three additions to the brief, all about the same 163 bytes.**
+>
+> 1. **`embarch-core/decisions/surfaces.md` is 10,896 B against a 12,288 B cap — the 90% reserve line
+>    is 11,059 B, so you have 163 bytes before you are in the band.** Your numbered decision will not
+>    fit in that. **Write it tightly**: the shape chosen, the dependency, the failure-mode answer,
+>    and the rejected alternatives in one line each. Resist restating decision 67's reasoning — cite
+>    it. A decision that is 400 B and complete beats one that is 1,200 B and thorough here.
+> 2. **File `tasks/core/091-compact-core.md` in the same commit if your edit spends the reserve**
+>    (pushes `surfaces.md` past 11,059 B, or leaves it there with nothing filed). **091 is the number
+>    to use** — `090` was taken by leg 144's inbox drain and `core/079`, the old compaction task for
+>    this file, is already closed, so there is nothing standing to inherit. `tasks/README.md` has the
+>    shape; answer `In flux:` **per file**, and it is your call, not a formality — you will be the
+>    only actor who knows whether this surface is still moving.
+> 3. **Update `surfaces.md`'s size cell in `embarch-core/decisions.md` in the same edit** — line 21,
+>    currently `| [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59, 67 | 10.6 KB |`.
+>    Your new decision number goes in that row's *Decisions* cell **and** the size cell gets the
+>    measured new value. `tasks/core/084` is an open task to re-measure that whole table; it was
+>    deliberately not dispatched this leg because this unit invalidates the row it would fix, so
+>    **fix your own row and leave the other twenty alone.**
+>
+> **Do not solve a shortage of room by filing the decision somewhere that has room.** That is the
+> `embarch-api` 96-byte failure `.claude/leg.md` names by name: a decision filed in the wrong topic
+> file, with nothing failing.
 
 **Source:** `tasks/core/078` (`embarch-core` decision 67, `embarch-core/decisions/surfaces.md`)
 decided `/status` should carry a content identity to close `embarch-umbrella` doctor check 15's
