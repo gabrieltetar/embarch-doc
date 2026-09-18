@@ -49,4 +49,4 @@ What is printed now: a verb, then the chain *below* `reqwest`'s own layer. **A t
 
 **Foreign text is flattened to one line where this module introduces it** — [decision 43](message-rendering.md)'s own prescription, applied at the interpolation point rather than widened into an exemption. `tasks/umbrella/031` closed the rest: check 1's `--version` output and the other sites that echo another program's raw text are normalised the same way.
 
-**What it does not do is re-read the past.** The three runs are gone; this changes what the *next* one prints. That is the point — the debt in [../open.md](../open.md) is now settleable by a single run either way, where before a failure and a timeout looked alike.
+**What it does not do is re-read the past.** The three runs are gone; this changes what the *next* one prints. That is the point — which failure it was is now settleable by a single run either way, where before a failure and a timeout looked alike.
