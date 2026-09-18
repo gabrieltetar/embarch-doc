@@ -1,0 +1,1 @@
+| **Time chart** — every stream a study produced on one axis: step bands, GATT, struct rows, console lines, sample strips and trace markers, with unplaceable marks counted rather than guessed at | Shipped, post-hoc; live path next | local | 34, 35, 36 |
