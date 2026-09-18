@@ -38,6 +38,44 @@ ones this tab could neither edit nor launch.
       invariants, `interfaces.md`'s served-fields and route tables,
       `open.md` for the unrun hardware legs and the divergence pointer.
 
-**Left undone, deliberately:** legs E and J need the dev bench plugged in — the
-caps note against a live `dev_bench_limits`, and a `Debug` run's clamp on the
-bench's own log stream. Carried in `embarch-ui/open.md` as hardware debt.
+## Legs E and J, run 2026-09-18 on a live nRF54L15 bench
+
+Bench `5540469a-dirty`, `link_identity: match`, **no DUT attached** — which
+turned out not to matter: `StudyStart`'s guards pass, so the level is applied
+and the steps' own failure is irrelevant to what these legs measure.
+
+**Leg E — 5/5.** Against a live Core reading the bench over `HelloAck`: within
+caps the note is silent, 17 steps names 17 and 16, Run stays enabled, and the
+run dialog's block carries the same sentence plus a real `/preflight` reading.
+
+**Leg E's second half describes a state this design cannot produce, and that is
+the plan's own doing, not a defect.** It expected "unplug the bench → the block
+reads unknown". The advisory caps are `embarch-study-designer::limits`
+constants — mirrors of dev-bench's headers, which is what the plan's own
+decision made them — so they are served identically whether a bench is attached
+or Core is unreachable entirely (**measured: byte-identical `dev_bench_limits`
+from a live-Core UI and a dead-Core one**). `unknown` is the "the actions
+response has not been read" state, which was verified headless. The leg asked
+for a reading off the bench; nothing reads off the bench.
+
+**Leg J — 6/6 in the browser, plus the end-to-end A/B.** Two studies saved
+through this tab differing *only* in the level (**identical `steps_crc`**, which
+is itself the confirmation that no seal covers it), each run through the new
+`/studies/{slug}/run` route on real hardware:
+
+| level | `dev-bench` tap |
+|---|---|
+| `Off` | **0 bytes** |
+| `Debug` | **7,440 bytes**, 129 lines — 125 `<dbg>`, 3 `<wrn>`, 1 `<err>` |
+
+`Off` forwarding nothing, including the fatal dump, is exactly what the UI's
+note for it says. The `Debug` capture also measured the cost that note warns
+about: three `log: N log record(s) dropped before this backend saw them`
+warnings, **138 records lost** to link bandwidth. The capture came back with
+`records: null`, which the browser renders as *not checked* — the invariant, on
+a real capture rather than a synthetic one.
+
+**Left undone:** the clamp note itself never fired, because `app/prj.conf` is
+`CONFIG_LOG_DEFAULT_LEVEL=4` with runtime filtering — `Debug` is reachable, so
+`reached == want` and `main.c:1389` correctly says nothing. Its delivery path is
+proven; only the trigger is unexercised. Carried in `embarch-ui/open.md`.
