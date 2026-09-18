@@ -1,6 +1,11 @@
 # 116 — The `study_results/` size figure is 803 MiB in one place and 809 MiB in two others, and nothing says which
 
-**State:** open
+**State:** claimed 2026-09-17 leg 142 unit 1 — `agent/api/116-study-results-size-figure`
+**Doc-size reserve for `api`** (leg 142, before dispatch): `embarch-api/decisions/failure-reporting.md`
+710 B left, `embarch-api/spec.md` 1151 B left, `embarch-api/open.md` 665 B left — all three already
+filed against a blocked compaction task. **`embarch-api/decisions/target-json.md`, the file this unit
+edits, is not in reserve.** If this unit pushes any file into the last 10% of its cap, file
+`tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** `embarch-reviewer` on landed unit `umbrella/082` (`embarch-doc@f61b43ff`), leg 141,
 2026-09-17. **The reviewer deliberately did not file this as a finding** — it is pre-existing,
 `umbrella/082` neither introduced nor touched it, and flagging it as a fault in that diff would have
