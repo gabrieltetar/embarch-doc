@@ -1,1 +1,1 @@
-| The same Time chart **fed live** — the axis grows as the trace arrives, a mark is placed once and never moves, and one past the leading edge is counted rather than guessed at | Shipped, not yet bench-validated | local, hw | 37 |
+| The same Time chart **fed live** — the axis grows as the trace arrives, a mark is placed once and never moves, and one past the leading edge is counted rather than guessed at | Shipped; bench-validated without a trace, the traced path still unrun | local, hw | 37 |
