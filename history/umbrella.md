@@ -12,6 +12,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- `open.md` and decision 26 now say `build_dir_name` shipped (api decision 77) for the default combo only; `target.json` still needed for the rest.
 - umbrella's singular-wrapped citation census run: 9 lines / 9 instances, 0 mis-cited, 0 fixed.
 - Re-checked 13 plural-form decision-citation lines (30 instances) in embarch-umbrella, invisible to the singular-only census; 0 wrong, 0 false.
 - Decisions 49 (probe-vendors) and 42 (locate-api) compacted under the 4,096 B per-decision cap: 6,962→3,956 B and 5,157→4,019 B.
