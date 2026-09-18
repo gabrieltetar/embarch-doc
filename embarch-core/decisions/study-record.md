@@ -31,4 +31,13 @@ Results sat in `study_results/<id>/` with **no route that lists them** — reach
 
 **The status derivation is the entry.** A results directory outlives the process that wrote it and the job registry does not, so disk is the truth for *what ran* and the registry only for *what is running now*. Where the registry still has the job its status is served verbatim; otherwise a finalized `events.json` is `completed`, neither file is `unknown`, and an `events.json.partial` is **`interrupted`** — never `completed`, because it is not, and **never `failed`, because nobody said it failed.** Decision 24 leaves `.partial` behind on an abort and decision 45's `reason` lived in the registry, so a study that genuinely failed and one whose Core was killed mid-run leave *byte-identical* evidence; `interrupted` is the fact the filesystem carries. For the same reason `steps`/`taps` are **absent, not empty** when the record cannot be parsed: "ran no steps" is the opposite fact from "we could not read them".
 
+### 71 — `GET /study/{id}` falls back to disk, so a forgotten study stops being a `404`
+Decision 19 called a previously-real `study_id` `404`ing after a restart "indistinguishable from one that never existed, by design". **It was not a design, it was a gap, and decision 69 is what exposed the cost.** `GET /studies` made every past study reachable — and opening one led straight back to this route, because `StudyResult.streams` (each tap's `bytes_written`, its `truncated` flag, its record check) and the run's `provenance` exist **nowhere else on the HTTP surface**. A reader could see that a study had run and had no way to learn that one of its captures was short.
+
+A missing job now falls through to `events.json`, with the status derived exactly as decision 69 derives it: finalized is `completed`, a `.partial` is `interrupted` with no `result` and a note saying why, and a directory that is not there at all is still a `404`. The two cases decision 19 said were indistinguishable are now distinguished by the only thing that can tell them apart — whether the record is on disk.
+
+**`current_step`/`total_steps` come back absent rather than reconstructed.** Neither is written to `events.json`; a completed study's step count could be counted out of the file, but `current_step` is documented as the index of the last step that *finished* (decision 43), and inferring it from a record that may be truncated would put a different number under a name three other surfaces already print.
+
+*Found by* the browser harness driving the Live Study tab against a real Core, on a study that had outlived the process that ran it — which is every study on this bench.
+
 ---
