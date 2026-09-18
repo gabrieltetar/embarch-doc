@@ -13,7 +13,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/shell.md](decisions/shell.md) | 4, 8, 25 | The six-section shell, fragment navigation, the design system, the brand-vs-accent split |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing) | Signal routing: the one human surface for declaring a wire |
-| [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace) | What a trace renders, on which clock, and the load repartition |
+| [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace), 27 | What a trace renders, on which clock, the load repartition, and why the decode-to-lanes pipeline stays duplicated with `embarch-core`'s `outpost_load.rs` |
 | [decisions/trace-rows.md](decisions/trace-rows.md) | 19, 21 | Dropping a stale pre-reset head, and the served row cap |
 | [decisions/trace-chart.md](decisions/trace-chart.md) | 10 (chart) | Zoom, pan, exact aggregation, the study-step row |
 | [decisions/outcome-decode.md](decisions/outcome-decode.md) | 23 | One outcome decoder for both wire shapes |
