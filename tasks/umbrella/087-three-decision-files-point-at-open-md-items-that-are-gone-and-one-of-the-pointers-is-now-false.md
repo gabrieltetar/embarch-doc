@@ -1,6 +1,6 @@
 # 087 — Three decision files point at `open.md` items that are gone, and one of those pointers is now false
 
-**State:** open
+**State:** claimed by agent/umbrella/087-open-md-pointers, 2026-09-17 18:57
 **Source:** leg 144's refill sweep, 2026-09-17 — a mechanical check of every `open.md` pointer in
 `embarch-umbrella/decisions/` against what `embarch-umbrella/open.md` actually still carries.
 **Scope:** umbrella
