@@ -1,6 +1,11 @@
 # 087 — Decision 64 still quotes the decision-62 language that decision 66 retired
 
-**State:** open
+**State:** claimed 2026-09-17 leg 142 unit 2 — `agent/core/087-decision-64-retired-language`
+**Doc-size reserve for `core`** (leg 142, before dispatch): `embarch-core/decisions/auth.md` 932 B
+left, filed against blocked `tasks/core/046-compact-core.md`. **`embarch-core/decisions/stream-index.md`,
+the file this unit edits, is not in reserve** (leg 141's `core/078` took `decisions/surfaces.md` out
+of reserve; `stream-index.md` was never in it). If this unit pushes any file into the last 10% of
+its cap, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** `embarch-reviewer` on landed unit `core/086` (`embarch-doc@e75618d0`), leg 140,
 2026-09-17. **The reviewer deliberately did not file this as a finding** — it predates `core/086`,
 contradicts nothing that unit did, and it flagged it as context rather than as a fault in the diff
