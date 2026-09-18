@@ -46,6 +46,7 @@
 - embarch-umbrella compacted to spec/decisions/open, 116 KB to 54 KB; design.md and milestone-6.md deleted.
 
 ### Fixed
+- decisions/locate-api.md no longer claims checks 8 and 11 have never run in a live `doctor`; decision 44's 2026-09-07 bench run shows both did.
 - Check 5's USB scan now also weighs the located core binary, not winner_class alone, under WSL2 (decision 53).
 - deploy-core, uninstall, up and down now print failures on stderr, matching spec.md's exit-code promise.
 - open.md's check-5 settling protocol named an unreachable outcome; corrected to Pass probes-present.
