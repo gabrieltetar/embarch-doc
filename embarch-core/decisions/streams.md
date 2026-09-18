@@ -35,4 +35,13 @@ The store takes the study's declared decoders alongside its taps, because a stru
 ### 39 — The third pre-flight seal, and the two indices a manifest cannot check about itself
 `validate_study` recomputes `protocols_crc` too, and that seal exists for a reason the others make plain by contrast: `Study.decoders` is covered by **none** of them, because a layout only decides how Core *renders* a byte already captured, and re-rendering with a corrected layout must leave it the same study. A protocol is the opposite — dev-bench executes it — so corrupting one in flight would have firmware writing different bytes to a DUT's control point than the study said. Three sibling seals, checked independently, so a rejection names which third arrived wrong. **`validate_protocol` is called, not reimplemented.** The two indices it structurally cannot see are Core's, because they live on a `Step`: a `RunProtocol`'s protocol index and entry state, which nothing else in the suite resolves.
 
+### 70 — A `Text` tap pushes its chunks live, verbatim; `Raw` pushes nothing
+`Text` and `Raw` tap bytes were written to disk and **pushed nowhere** — `StudyEvent` had no variant for them — so the one encoding whose payload a person reads directly was the one no client could watch arrive. Both of `embarch-ui`'s consoles (the reserved `dev-bench` log tap, and a DUT shell declared as a `Text` tap on a notify characteristic) hung off this single gap, in the one arm of `write_stream_record` that wrote the file and returned. `StudyEvent::StreamText` is emitted beside that write, in the shape `SampleBatch` and `GattTranscript` already have three arms up.
+
+**The chunk is carried exactly as it arrived.** No line framing: a record can split a line, and it can split a UTF-8 character. Assembling lines is the consumer's job, because Core inventing line boundaries would be Core interpreting a payload — what this function's own contract refuses and what decision 39 settled by making a tap's declared encoding the only source of meaning. `text` is `from_utf8_lossy`, so a split character costs a replacement character in the *event* and never touches the capture, which keeps the bytes intact. Bounded without a cap of its own: a record is at most `MAX_STREAM_CHUNK_BYTES` (512).
+
+**`Raw` deliberately gets no event**, and says so in the code: a console of hex is noise and nothing has asked for one. Pinned by a test, so adding one later is a decision somebody takes rather than a test nobody had to change.
+
+*No schema bump.* This is the host-side HTTP/SSE surface, not the dev-bench wire protocol. An older `embarch-api` is unaffected: its mirror enum is `#[serde(tag = "kind")]` and an unknown kind already decodes to `StudyStreamItem::Unrecognized` by design.
+
 ---
