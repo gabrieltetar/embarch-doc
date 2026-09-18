@@ -1,6 +1,6 @@
 # 068 — `embarch-ui/decisions.md`'s index has no row for decision 27
 
-**State:** open
+**State:** claimed by agent/ui/068-decisions-index-27, 2026-09-17 18:57
 **Source:** leg 144's refill sweep, 2026-09-17 — a mechanical check of every sub-project's
 `decisions.md` index against the decision numbers actually present in its `decisions/` files.
 **Scope:** ui
