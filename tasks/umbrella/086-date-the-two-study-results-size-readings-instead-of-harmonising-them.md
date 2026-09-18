@@ -1,8 +1,14 @@
 # 086 — Date the two `study_results/` size readings instead of harmonising them
 
-**State:** claimed 2026-09-17 leg 142 unit 4 — `agent/umbrella/086-date-study-results-readings`.
-Drained from `inbox/umbrella-date-the-study-results-size-figures.md` at `api/116`'s fold the same
-day and numbered `086`; body unchanged apart from this line and the verification note below.
+**State:** claimed by agent/umbrella/086-date-study-results-readings, 2026-09-17 18:38
+**Claim-line shape corrected mid-flight by leg 142**, which wrote all four of its claims this leg in
+a shape `tasks/README.md` does not document — `claimed <date> leg N unit M — \`agent/...\`` instead of
+`claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>`. `check-task-state.py` passes it (it reads
+token zero only) but **`queue-status.py` reported this task as `recoverable`, "claim line carries no
+parseable timestamp; branch None", while its worker was live** — which is a live task offered up for
+reclaim and re-dispatch. Drained from `inbox/umbrella-date-the-study-results-size-figures.md` at
+`api/116`'s fold the same day and numbered `086`; body unchanged apart from these lines and the
+verification note below.
 **Doc-size reserve for `umbrella`** (leg 142, at dispatch): `decisions/install.md` 217 B left,
 `decisions/bind.md` **755 B left (93.9%, already in reserve)**, `decisions/projects.md` 1125 B left
 (90.8%), `open.md` 770 B left (85.0%) — `install.md`, `bind.md`, `projects.md` and `open.md` are each
