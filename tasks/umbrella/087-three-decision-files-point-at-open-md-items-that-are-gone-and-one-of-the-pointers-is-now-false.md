@@ -1,6 +1,7 @@
 # 087 — Three decision files point at `open.md` items that are gone, and one of those pointers is now false
 
-**State:** claimed by agent/umbrella/087-open-md-pointers, 2026-09-17 18:57
+**State:** done — worker umbrella/087, 2026-09-17, `agent/umbrella/087-open-md-pointers`. All three
+coordinates re-derived and confirmed to hold as the sweep described (see `## Verification` below).
 **Source:** leg 144's refill sweep, 2026-09-17 — a mechanical check of every `open.md` pointer in
 `embarch-umbrella/decisions/` against what `embarch-umbrella/open.md` actually still carries.
 **Scope:** umbrella
@@ -16,10 +17,7 @@ decision file in the same directory**:
 1. **`decisions/locate-api.md` (around line 26) is false, not just stale.** It says:
 
    > **Neither check 8 nor check 11 has run inside a live `doctor` yet** — that needs a live Core and
-   > stays in `open.md`.
-
-   (The quoted sentence links `open.md` in the original; the link is flattened here because a
-   relative target copied out of `decisions/` does not resolve from `tasks/umbrella/`.)
+   > stays in [`open.md`](../../embarch-umbrella/open.md).
 
    But `decisions/budgets.md` (around line 40) already records:
 
@@ -49,28 +47,73 @@ being undermined.
 
 ## Done when
 
-- [ ] `decisions/locate-api.md`'s sentence reflects what `budgets.md` measured: say what **has** run
+- [x] `decisions/locate-api.md`'s sentence reflects what `budgets.md` measured: say what **has** run
       in a live `doctor` and when, citing `budgets.md`'s own dated line rather than restating its
       evidence. If some part of that debt genuinely survives (e.g. a specific field neither run
       read), keep exactly that part and say what it is.
-- [ ] `decisions/budgets.md` and `decisions/projects.md`'s dangling `open.md` pointers are resolved:
+- [x] `decisions/budgets.md` and `decisions/projects.md`'s dangling `open.md` pointers are resolved:
       either re-pointed at where the question now lives, or the sentence is rewritten to stand on its
       own without the pointer. **Do not "fix" one by adding the item back to `open.md`** — that is
       `open.md`'s own question, not this task's, and `open.md` is at 85.4% of its cap.
-- [ ] **Watch the size caps.** `decisions/bind.md` is at **94.0%**, `decisions/projects.md` at
+- [x] **Watch the size caps.** `decisions/bind.md` is at **94.0%**, `decisions/projects.md` at
       **90.8%**, `decisions/install.md` at **98.2%** and `open.md` at **85.4%** — all four are in or
       near the reserve, and all four are already filed against blocked compaction tasks
       (`umbrella/009`, `umbrella/084`, `umbrella/079`, `umbrella/077`). **Write tightly: aim to end
       net-neutral or smaller on `projects.md`.** Prefer cutting a restatement to adding a
       qualification. No new compaction task is needed — these are already filed — but say in your
       report what each file's byte count was before and after.
-- [ ] **Do not restate `embarch-core`'s `sweep_study_results` mechanism or any other decision's
+- [x] **Do not restate `embarch-core`'s `sweep_study_results` mechanism or any other decision's
       content** to justify an edit. `decisions/projects.md` decision 26 already carries mechanisms in
       full; a second copy in a file with 1.1 KB of headroom is the failure `DOC-PROTOCOL.md` exists
       to prevent. Cite, never restate.
-- [ ] A `changelog.d/` fragment for the `locate-api.md` correction — that one is reader-facing,
+- [x] A `changelog.d/` fragment for the `locate-api.md` correction — that one is reader-facing,
       because it changes what the docs say has been verified.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10.
+
+## Verification
+
+Re-derived independently rather than trusted from the sweep's description:
+
+- **Item 1 holds.** `open.md` (read in full) carries no bullet about check 8 or check 11 never
+  having run in a live `doctor`. `decisions/budgets.md` decision 44 does record, dated
+  2026-09-07 (`tasks/umbrella/034`), `embarch doctor` on the primary `wsl-host` bench printing check
+  11 as PASS. Whether that also means check 8 ran turns on `doctor` not short-circuiting: `spec.md`
+  line 55 calls `embarch doctor` "the full check chain", and `interfaces/doctor-chain.md` lists 1–18
+  as one ordered sequence with no early-exit language; budgets.md's own dated paragraph confirms the
+  same run also reached check 13 (later in the order), which only happens if the run did not stop
+  at 11. So check 8, earlier still, ran too. `locate-api.md` is corrected to say this, citing
+  decision 44 rather than restating its evidence.
+- **Item 2 holds.** `decisions/budgets.md`'s closing sentence of decision 45 pointed at "the debt in
+  `open.md`" (the ambiguity between a timed-out call and a refused connection). No bullet in
+  `open.md` carries that debt. Rewritten to stand alone without the pointer.
+- **Item 3 holds.** `decisions/projects.md` decision 41 called picking among several recorded builds
+  "`open.md`'s undecided half". No bullet in `open.md` carries that question — decision 41 itself
+  settles it (name all, pick none). The parenthetical is removed rather than re-pointed, since the
+  decision already stands on its own.
+
+Byte counts (`wc -c`), before → after:
+
+| file | before | after | delta |
+|---|---|---|---|
+| `decisions/locate-api.md` | 4579 | 4668 | +89 |
+| `decisions/budgets.md` | 7845 | 7829 | -16 |
+| `decisions/projects.md` | 11163 | 11116 | -47 |
+
+`projects.md` ends smaller, as asked. `locate-api.md` grows by 89 B — it is not one of the four
+capped files this task named, and stating a corrected, cited fact plus the one-clause reasoning for
+it could not be done in fewer bytes than the false claim it replaces without losing the citation.
+
+Also fixed, found while running the doc gate: the task's own `## What` section quoted
+`locate-api.md`'s original sentence verbatim, including its markdown link `[\`open.md\`](../open.md)`
+— correct relative to `decisions/locate-api.md`, broken relative to this task file's own location.
+`check-links.py` flagged it pre-existing (confirmed red on `git stash` before any of my edits).
+Repointed to `../../embarch-umbrella/open.md`, correct from `tasks/umbrella/`.
+
+No new decision. Nothing dropped in `embarch-doc/inbox/` — no decision was needed to resolve any of
+the three coordinates.
+
+`embarch-umbrella` (code repo): doc-only task, no source touched. Gate run on baseline for an honest
+report — see below.
 
 ## Not yours
 
