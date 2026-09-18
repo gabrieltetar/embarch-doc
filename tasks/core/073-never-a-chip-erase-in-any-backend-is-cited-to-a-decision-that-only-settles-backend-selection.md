@@ -1,6 +1,6 @@
 # 073 — "`erase` never becomes a chip erase in **any** backend" is cited to decision 36, which only settles backend *selection*
 
-**State:** claimed by agent/core/073-erase-citation, 2026-09-17 18:45 (leg 143 unit 1)
+**State:** done — agent/core/073-erase-citation, 2026-09-17 (leg 143 unit 1)
 **Source:** leg 133's reviewer on `core/071`, as the honest answer to a directed check rather than as
 a contradiction finding. `core/071` moved this citation from decision 32 to decision 36 — correctly,
 because 32 does not establish the property either — and the reviewer then established that **36 does
@@ -64,13 +64,17 @@ tool, not an observation of an erase on silicon. Do not write it as measured.
 
 ## Done when
 
-- [ ] The property is either **recorded where `interfaces/hardware.md` points**, or the citation
+- [x] The property is either **recorded where `interfaces/hardware.md` points**, or the citation
       re-pointed at a decision that genuinely carries it — with the reading that established which.
-- [ ] Your report says plainly whether the reviewer's claim held: that no decision text anywhere
-      asserts the vendor arms' non-chip-erase behaviour. Re-run the grep.
-- [ ] Nothing asserts the vendor arms' behaviour as observed on hardware.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+      Recorded in decision 36 itself (`decisions/flash-backend.md`) — the citation was already correct
+      in principle, it just pointed at a decision whose body hadn't caught up.
+- [x] Your report says plainly whether the reviewer's claim held: that no decision text anywhere
+      asserts the vendor arms' non-chip-erase behaviour. Re-run the grep. **It held**: a fresh
+      `grep -rni "chip erase\|chip_erase\|ERASE_RANGES\|erase_chip" decisions/ interfaces/` before this
+      edit found only `interfaces/hardware.md`'s own citation sentence — no decision text anywhere.
+- [x] Nothing asserts the vendor arms' behaviour as observed on hardware.
+- [x] A `changelog.d/` fragment.
+- [x] Gate green: `cargo build --all-targets`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
       in `embarch-core`, and `python3 scripts/check-docs.py` in `embarch-doc`.
 
 ## Not yours
