@@ -1,6 +1,6 @@
 # 116 — The `study_results/` size figure is 803 MiB in one place and 809 MiB in two others, and nothing says which
 
-**State:** claimed 2026-09-17 leg 142 unit 1 — `agent/api/116-study-results-size-figure`
+**State:** done 2026-09-17 leg 142 unit 1 — `agent/api/116-study-results-size-figure`
 **Doc-size reserve for `api`** (leg 142, before dispatch): `embarch-api/decisions/failure-reporting.md`
 710 B left, `embarch-api/spec.md` 1151 B left, `embarch-api/open.md` 665 B left — all three already
 filed against a blocked compaction task. **`embarch-api/decisions/target-json.md`, the file this unit
@@ -56,18 +56,35 @@ established.
 
 ## Done when
 
-- [ ] The provenance of **both** figures is established from git history — which commit introduced
+- [x] The provenance of **both** figures is established from git history — which commit introduced
       each, citing the SHA, and what each one says it measured. `git log -S '803 MiB'` and
       `git log -S '809 MiB'` over `embarch-doc` is the whole method.
-- [ ] Either the two are shown to be **independent readings**, in which case **each surviving
-      statement gains its measurement date** and nothing is harmonised — two dated readings of a
-      growing directory is correct data and the fix is labelling, not agreement; or one is shown to
-      be a **copy of the other with a digit changed**, in which case the wrong one is corrected in
-      the file this worker owns and the rest goes to `inbox/`.
-- [ ] If the history cannot settle it — both introduced in commits whose messages say nothing —
-      **say so and stop.** Do not pick the more plausible one. Mark the `api` statement as
-      *"[measured <date>; an independent 809 MiB reading exists in `embarch-umbrella`, provenance
-      unresolved]"* and file the `umbrella` half to `inbox/` so the same marker can go there. An
-      honest unresolved pointer is worth more than a harmonised number nobody can defend.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment only if a reader-facing number changed.
+
+      **809 MiB** — `de07c827` ("The first doctor run against a Core that actually got deployed",
+      2026-09-05 20:37:56). Its own prose: *"Check 16's first live reading is 809 MiB across 50
+      entries."* This is the number `history/umbrella.md`'s changelog line carries (correctly,
+      unchanged since) and the number `embarch-umbrella/decisions/bind.md` decision 22 cites
+      (written by `0824325f`, 2026-09-06 01:30:24 — the previous day's reading, before the second
+      one below existed).
+
+      **803 MiB** (802.9 MiB precisely) — looked at first glance like a copy of 809 with a digit
+      changed (same entry count, one day apart, and the commit that changes it, `fc4f4ac0`
+      ["umbrella/027: doctor runs live, and the check waiting for a bench was waiting for a
+      timeout", 2026-09-06 18:52:37], says nothing about `study_results/` in its own message). It
+      is not a copy: the same commit independently fills in
+      `embarch-umbrella/decisions/reporting.md` decisions 37/39 with *"**Verified live** [measured
+      2026-09-06, `embarch doctor` and `embarch doctor --json` on the primary `wsl-host` bench]:
+      `detail` read `study_results/ at /mnt/c/ProgramData/embarch/study_results: 50 entries, 802.9
+      MiB`"* — a literal, dated capture of `doctor`'s own output. That is a second, genuine reading,
+      one day after the first, and its precision (802.9, not a round 803) is not something a
+      transcription of "809" would produce.
+- [x] **Shown to be independent readings**, not a copy. `embarch-api/decisions/target-json.md`
+      decision 77 now reads *"study_results/ at 803 MiB [measured 2026-09-06]"* — dated, not
+      harmonised. The `embarch-umbrella` side (`bind.md`'s undated 809 MiB, `open.md`'s undated 803
+      MiB) is not this worker's file; filed as a full task to
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/umbrella-date-the-study-results-size-figures.md`
+      with the same provenance so the `umbrella` worker does not have to redo the archaeology.
+- [x] (Not reached — history settled it; see above.)
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] No `changelog.d/` fragment — no reader-facing number changed, only a measurement date was
+      added to an existing figure.
