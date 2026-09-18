@@ -22,7 +22,6 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
 - **A byte count alongside `GET /serial-log`'s `truncated: bool`** — rejected, not deferred (decision 58). Trigger: a caller that must act differently on 1 byte lost versus 900 KB.
 - **A sibling route serving decoded per-lane spans** (decision 64) — decided yes, not yet built. `outpost_load.rs` and `embarch-ui/src/trace.rs` keep independently building the same timeline until it ships. Filed as `tasks/core/076`; it is a wire-schema bump the supervisor announces before landing.
-- **A self-hash of the running binary on `/status`** (decision 67) — decided yes, not yet built. Closes doctor check 15's same-version blindness. Filed as `tasks/core/088`, a wire-schema bump the supervisor announces before landing.
 
 ## Structural limits
 
