@@ -1,6 +1,6 @@
 # 085 — Check 15's open question still says a content hash is "`embarch-core`'s call", and the call was made
 
-**State:** claimed 2026-09-17 leg 142 unit 3 — `agent/umbrella/085-check-15-hash-call-made`
+**State:** done 2026-09-17 leg 142 unit 3 — `agent/umbrella/085-check-15-hash-call-made`
 **Doc-size reserve for `umbrella`** (leg 142, before dispatch): `decisions/install.md` 217 B left,
 `decisions/bind.md` 755 B left, `decisions/projects.md` 1125 B left, `open.md` 851 B left — all four
 filed against blocked compaction tasks. **`open.md` is the file this unit edits**; see the fourth
@@ -62,18 +62,19 @@ the field, this bullet will read as though the fix is still unowned.
 
 ## Done when
 
-- [ ] The check-15 bullet's closing clause names `embarch-core` decision 67 as the call that was
+- [x] The check-15 bullet's closing clause names `embarch-core` decision 67 as the call that was
       made, in the *decided-not-built* tense, and points at where the build is tracked
       (`tasks/core/088`) rather than at an unnamed future decider.
-- [ ] The bullet's first sentence — check 15 is not a hash comparison and must not be read as one —
+- [x] The bullet's first sentence — check 15 is not a hash comparison and must not be read as one —
       survives verbatim, and the `decision 34` link still resolves.
-- [ ] `embarch-core/open.md` is read and **not edited**, and the two bullets are confirmed to agree
+- [x] `embarch-core/open.md` is read and **not edited**, and the two bullets are confirmed to agree
       in tense afterwards.
-- [ ] `embarch-umbrella/open.md` is still inside its cap with room to spare. It was **4,269/5,120 B
+- [x] `embarch-umbrella/open.md` is still inside its cap with room to spare. It was **4,269/5,120 B
       (83.4%)** at filing, filed against blocked `tasks/umbrella/077-compact-docs.md`
       (`In flux: yes`). This edit should be roughly net-neutral; if it is not, and the file crosses
       into the last 10%, say so in the report rather than silently spending the headroom.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment: **not expected.** Nothing a reader of `history/umbrella.md` acts on
+      **Landed at 4,350/5,120 B (85.0%)** — +81 B, still 15.0% of cap free, not in the last 10%.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment: **not expected.** Nothing a reader of `history/umbrella.md` acts on
       changes — this is an open question's pointer, not shipped behaviour. If you disagree, say why
       rather than adding one by reflex.
