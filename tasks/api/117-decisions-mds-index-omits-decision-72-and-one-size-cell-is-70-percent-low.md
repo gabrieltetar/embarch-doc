@@ -1,6 +1,6 @@
 # 117 — `embarch-api/decisions.md`'s index omits decision 72, and one size cell is 70% low
 
-**State:** open
+**State:** claimed by agent/api/117-decisions-index-census, 2026-09-17 18:57
 **Source:** leg 144's refill sweep, 2026-09-17 — a mechanical check of every sub-project's
 `decisions.md` index against the decision numbers and file sizes actually on disk.
 **Scope:** api
