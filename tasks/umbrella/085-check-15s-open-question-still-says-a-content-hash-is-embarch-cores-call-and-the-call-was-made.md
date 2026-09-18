@@ -20,7 +20,9 @@ files and one decision against each other.
 
 > **Check 15 is not a hash comparison and must not be read as one.** It catches a *cross-version*
 > stale deploy and is blind to a same-version one: `core_version` is `CARGO_PKG_VERSION`, so a
-> rebuild and failed deploy at one version reads as a match ([decision 34](decisions/schema-skew.md)).
+> rebuild and failed deploy at one version reads as a match ([decision 34](../../embarch-umbrella/decisions/schema-skew.md)).
+> *(The link is written relative to `tasks/umbrella/` here; in the file itself it is
+> `decisions/schema-skew.md`, relative to `embarch-umbrella/`. Keep the file's own spelling.)*
 > **A content hash on `/status` would close it, `embarch-core`'s call.**
 
 That last clause was true when written and is now stale. **`embarch-core` made the call on
