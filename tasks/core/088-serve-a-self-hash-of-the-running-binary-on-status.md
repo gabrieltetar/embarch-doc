@@ -1,6 +1,6 @@
 # 088 — Serve a self-hash of the running binary on `/status`
 
-**State:** claimed by agent/core/088-status-self-hash, 2026-09-17 18:56
+**State:** done — built on `agent/core/088-status-self-hash`, 2026-09-17.
 
 > **THE WINDOW IS CLOSED AND THIS IS DISPATCHED.** Leg 144, 2026-09-17 18:56 MDT. The 30 minutes
 > expired at epoch `1789692350`; I polled the thread again afterwards
@@ -121,23 +121,41 @@ identical reasoning. Not urgent — nothing is broken, a capability is missing.
 
 ## Done when
 
-- [ ] `StatusResponse` carries the new field, computed once and cached, not re-hashed per request.
-- [ ] The pinned-field-set test in `api.rs` (decision 13) is updated to expect it.
-- [ ] `embarch-core/interfaces.md` (or `interfaces/*.md`) documents the new `/status` field —
-      name, shape, what it proves, and what it reads as if the self-read fails.
-- [ ] `embarch-core/decisions/surfaces.md` gets the implementation decision (numbered), citing
-      decision 67 — the field's exact shape, the dependency chosen, and the failure-mode answer.
-      **Check `scripts/check-doc-size.py --pressure` before writing** — decision 67 already used
-      most of the reserve this compaction bought back; if `surfaces.md` is back in the band, file
-      `tasks/core/<NNN>-compact-core.md` in the same commit rather than picking a file by where
-      there is room.
-- [ ] `embarch-core/open.md` loses the "designed, not built" bullet this closes, if one exists there
-      by the time this runs (it does not exist yet at filing — decision 67 is not phrased there as
-      an open item, since it resolved to "build it" rather than "defer it").
-- [ ] A `changelog.d/` fragment. A `status.d/` fragment for `embarch-umbrella`'s `open.md` bullet
-      this closes — that file is not this task's to edit (`suite`/cross-repo docs are out of scope
-      for a `core`-scoped worker), so the fragment is how the fact reaches the fold.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
+- [x] `StatusResponse` carries the new field, computed once and cached, not re-hashed per request.
+      Field: `binary_sha256: Option<String>`, full 64-char lowercase hex SHA-256 of
+      `std::env::current_exe()`'s bytes, hashed once via a `static HASH: OnceLock<Option<String>>`
+      in `api.rs`. `None`/`null` if the exe path or its read fails.
+- [x] The pinned-field-set test in `api.rs` (decision 13) is updated to expect it. Also added
+      `status_serves_a_self_hash_of_its_own_binary`, mirroring the existing `core_version` test:
+      hits `/status` in-process and checks the served hash against an independently-computed
+      SHA-256 of the same test binary's own exe bytes.
+- [x] `embarch-core/interfaces/hardware.md`'s `/status` row documents the new field — name, shape,
+      what it proves, and the `null`-on-read-failure case.
+- [x] `embarch-core/decisions/surfaces.md` gets decision 68, citing decision 67. **This did spend
+      the last of the 163 B headroom** — the file is now 11579/12288 B (94.2%), so
+      `tasks/core/091-compact-core.md` is filed in this commit, `In flux: yes` (four edits to this
+      file in one day: `core/074`, `core/077`, `core/078`, this one). `decisions.md` line 21's
+      Decisions and Size cells are updated for this row only, per the header's instruction not to
+      touch the other twenty.
+- [x] `embarch-core/open.md` loses the "designed, not built" bullet this closes.
+- [x] A `changelog.d/` fragment (`changelog.d/core-status-binary-hash.added.md`) and a
+      `features.d/` row update (`features.d/core-010-get-status-connected-probes-plus.md`, the
+      existing `/status` row, now naming `binary_sha256` and decision 68).
+- [x] **The task file's `status.d/` instruction does not hold — filed as a finding, not done as
+      written.** `embarch-umbrella/open.md` is not one of the six shared suite-level docs
+      `status.d/README.md` and `DOC-PROTOCOL.md` §2 name (`embarch.md`, `suite/roadmap.md`,
+      `suite/features.md`, `embarch-decision-reversals.md`, `embarch-glossary.md`,
+      `suite/user-guide.md`) — it's `embarch-umbrella`'s own sub-project doc, out of a
+      `core`-scoped worker's ownership row the same way any other repo's file is. Dropped
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/umbrella-status-hash-landed.md` instead (full
+      task format, quoting the stale bullet verbatim) — the mechanism this repo's own worker
+      contract names for exactly this case.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10 — `cargo build`/`test`/`clippy
+      --all-targets -- -D warnings` clean in `embarch-core`; `check-docs.py` in `embarch-doc` is
+      10/11 green, the one red (`check-links.py`, `tasks/umbrella/087...md -> ../open.md`) is a
+      pre-existing broken link in a file this unit never touched (`embarch-umbrella`'s own task,
+      not core's); `check-ownership.py` clean in both worktrees;
+      `check-client-names.py --repo <core worktree>` clean.
 
 ## Not yours
 
