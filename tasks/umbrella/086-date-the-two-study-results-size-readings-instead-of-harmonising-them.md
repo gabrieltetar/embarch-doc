@@ -1,8 +1,15 @@
 # 086 — Date the two `study_results/` size readings instead of harmonising them
 
-**State:** open — drained from `inbox/umbrella-date-the-study-results-size-figures.md` by leg 142 at
-`api/116`'s fold, 2026-09-17, and numbered `086`. Body unchanged apart from this line and the
-verification note below.
+**State:** claimed 2026-09-17 leg 142 unit 4 — `agent/umbrella/086-date-study-results-readings`.
+Drained from `inbox/umbrella-date-the-study-results-size-figures.md` at `api/116`'s fold the same
+day and numbered `086`; body unchanged apart from this line and the verification note below.
+**Doc-size reserve for `umbrella`** (leg 142, at dispatch): `decisions/install.md` 217 B left,
+`decisions/bind.md` **755 B left (93.9%, already in reserve)**, `decisions/projects.md` 1125 B left
+(90.8%), `open.md` 770 B left (85.0%) — `install.md`, `bind.md`, `projects.md` and `open.md` are each
+already filed against a blocked compaction task (`umbrella/079`, `009`, `084`, `077` respectively).
+**Two of the files this unit edits are in that list**, which is why the note below caps what it may
+write. **Do not file a duplicate compaction task** for a file whose debt is already filed; only file
+one if you push a *different* file into the last 10%.
 **Owner:** no
 
 > **Verified by the supervisor at the drain, because one claim in the parent task was wrong.**
@@ -37,9 +44,17 @@ verification note below.
 > swept at every `POST /study`. **50 is a retention ceiling, so once a bench has run 50 studies every
 > later reading shows exactly 50 by construction** while the byte total drifts with *which* 50 are
 > retained. That makes the identical entry count inevitable rather than suspicious, and it is the
-> piece of evidence that actually closes this — **whoever runs this task should write that mechanism
-> into whatever prose it touches**, because three documents have now gestured at decision 26 without
-> stating it.
+> piece of evidence that actually closes this, and three documents have now gestured at decision 26
+> without stating it.
+>
+> **But do not spend the reserve writing it down.** Amended by leg 142 at dispatch: all three
+> candidate files are already in the size reserve — `decisions/bind.md` **93.9%**,
+> `decisions/projects.md` **90.8%**, `open.md` **85.0%** — and decision 26 already *contains* the
+> mechanism, so adding a paragraph would be restating a decision in three places that have no room
+> for it. **The required work is the two date stamps, roughly 40 bytes total.** If a short
+> parenthetical citing decision 26 fits without pushing a file further into reserve, add it; if it
+> does not, say so and leave it. The mechanism is recorded here and in `supervisor-log.md`, which is
+> where it needs to survive.
 
 **Source:** `tasks/api/116` (established the provenance below; `api`'s own half —
 `embarch-api/decisions/target-json.md` decision 77 — is already fixed in that
