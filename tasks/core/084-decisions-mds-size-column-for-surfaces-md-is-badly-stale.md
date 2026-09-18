@@ -17,6 +17,15 @@ worker's to write. Whoever runs it: the second `Done when` box asks for a pass o
 so do that pass rather than fixing the one row named — the reviewer that filed this already checked
 five rows and found them clean at `74c410b`, but `main` has moved several units since.
 
+**The one row this task names is already fixed, and the task is still open on purpose.** Leg 141's
+`core/078` (`embarch-doc@00f9d79d`) added decision 67 to `decisions/surfaces.md` and compacted 55
+and 59 in the same unit, and updated that row to **10.6 KB** against a file now at **10,896 B** —
+correct. **What is left is the second `Done when` box, which is the whole value here**: a pass of
+*every* row against `wc -c`, not the outlier that got noticed. Do not read the corrected row as the
+task being done; the five rows the original reviewer checked were checked at `74c410b` and `main`
+has moved a dozen units since. Note also that the arithmetic below is stated against `74c410b` and
+is now history, not the current state.
+
 ## What
 
 `embarch-core/decisions.md`'s index lists `decisions/surfaces.md` at **6.9 KB**. The file on disk
