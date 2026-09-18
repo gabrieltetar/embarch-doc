@@ -17,7 +17,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 **v1 scope, explicitly bounded:**
 
 - **TX-only.** The DUT talks; nothing talks back. No host commands, no runtime enable, no acknowledgement of any kind. The frame type is the field a later command channel is added to, rather than a reshape.
-- **Study-scoped, rendered post-hoc.** No always-on mode and **no live feed** — settled against this work's own opening framing, which asked for realtime.
+- **Study-scoped; rendered post-hoc *and* decoded live.** No always-on mode — that half of [decision 10](decisions/capture.md) stands; **no live feed** was half-reversed 2026-09-18 ([row 112](../embarch-decision-reversals.md)). The render stays authoritative — whole-capture header pre-pass, stale-prefix drop, verified arrival join, none of which live can have — so live is a stated preview and says when it has no header yet.
 - **Zephyr only.** No vendor-neutral porting layer is being designed up front.
 - **No power, no pin sampling, no stimulus.** The outpost observes its own MCU. A GPIO record names the *handler* that ran, never a pin's level.
 
@@ -43,7 +43,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
         stamps every frame's arrival, decodes both against the
         build-time manifest
                            ▼
-                      embarch-ui — timeline, post-hoc
+                      embarch-ui — timeline, live and post-hoc
 ```
 
 Three properties carry the design:

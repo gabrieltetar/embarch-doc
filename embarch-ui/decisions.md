@@ -21,5 +21,5 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20, 22 | Version fields, security level, declared GATT, opening a project, the run badge's counter, the stream-name cap |
 | [decisions/study-authoring.md](decisions/study-authoring.md) | 29, 30 | The `.eap` editor dialog, and running a saved study as it is on disk |
 | [decisions/gatt-capture.md](decisions/gatt-capture.md) | 15, 16, 17 | Per-characteristic taps, characteristic names, the target dialog |
-| [decisions/time-chart.md](decisions/time-chart.md) | 34, 35, 36 | One axis for every stream a study produced: `core_rx_utc_ms` as the only clock read, a tier chosen once and never promoted, and the three states of a mark |
+| [decisions/time-chart.md](decisions/time-chart.md) | 34, 35, 36, 37 | One axis for every stream a study produced: `core_rx_utc_ms` as the only clock read, a tier chosen once and never promoted, and the three states of a mark |
 | [decisions/live-study.md](decisions/live-study.md) | 31, 32, 33 | One tab that runs a study and reads one back: the server-side session rings, the console rule, and what the browser is handed already decoded |
