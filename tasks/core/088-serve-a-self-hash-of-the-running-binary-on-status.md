@@ -1,6 +1,19 @@
 # 088 — Serve a self-hash of the running binary on `/status`
 
 **State:** open
+
+> **SUPERVISOR: DO NOT DISPATCH THIS UNTIL YOU HAVE ANNOUNCED IT.** Added to the header by leg 141
+> at `core/078`'s fold, 2026-09-17, because the flag was in the body and `queue-status.py` shows
+> this task as an ordinary `open` `core` unit alongside six others. **Adding a field to
+> `StatusResponse` is a wire-schema bump**, and `embarch-fleet/ops.md` §4 requires the supervisor to
+> post to #embarch-fleet, record the `ts` **in this file**, park the task, and run it as a leg's
+> **last** unit only if 30 minutes have passed with no objection. It is still a single-repo task, so
+> once the window has closed it dispatches to a `core` worker normally — the announcement is the
+> gate, not the execution. `embarch-core/interfaces.md`'s `/status` row and the `StatusResponse`
+> serialized-key test must move in the same change, and three consumers read that surface.
+>
+> **No announcement has been posted. A fresh 30-minute clock is owed.**
+
 **Source:** `tasks/core/078` (`embarch-core` decision 67, `embarch-core/decisions/surfaces.md`)
 decided `/status` should carry a content identity to close `embarch-umbrella` doctor check 15's
 same-version blindness, and filed the building as this task rather than doing it itself (decision 67
