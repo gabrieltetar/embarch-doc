@@ -22,6 +22,9 @@ The served field set is pinned by a test on `StatusResponse`'s serialized keys (
 
 **Trigger to reverse to "no":** none identified — decision 13 was built, not deferred, on this identical reasoning for version.
 
+### 68 — `binary_sha256` on `/status`: full lowercase-hex SHA-256, cached once (2026-09-17)
+Implements decision 67's yes. **Shape:** full 64-char lowercase hex, not truncated — a consumer string-compares it against its own hash of the deployed artifact, and truncation buys nothing here. **Dependency:** `sha2`, already resolved transitively via `probe-rs` → `espflash` at `0.11.0`; pinned direct at that version rather than adding a second copy (`Cargo.toml`'s own comment has the `cargo tree` check). **Failure mode:** `null` if `std::env::current_exe()` or the subsequent read fails — `/status` still serves the rest; a caller reads `null` as unknown, not as a mismatch.
+
 ### 12 — A `{code, message, cause}` JSON error body — deferred, and it is not Core's alone
 Plain-text errors suit a human reading a CLI error, but `doctor --json` and a UI need to branch on error *kind*; a `{code, message, cause}` body would also retire the "finer CLI exit codes" idea, since a script branching on failure kind wants a field, not an exit code. Still worth building, and **deliberately not built here.**
 

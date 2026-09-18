@@ -18,7 +18,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 5.5 KB |
 | [The stream index](decisions/stream-index.md) | 62, 63, 64, 65, 66 | 10.4 KB |
 | [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58 | 8.9 KB |
-| [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59, 67 | 10.6 KB |
+| [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59, 67, 68 | 11.3 KB |
 | [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57 | 8.1 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.
