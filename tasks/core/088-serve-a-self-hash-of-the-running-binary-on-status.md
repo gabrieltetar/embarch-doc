@@ -12,7 +12,14 @@
 > gate, not the execution. `embarch-core/interfaces.md`'s `/status` row and the `StatusResponse`
 > serialized-key test must move in the same change, and three consumers read that surface.
 >
-> **No announcement has been posted. A fresh 30-minute clock is owed.**
+> **The announcement has now been posted.** Leg 142, 2026-09-17, `ts` **`1789690550.857739`** in
+> #embarch-fleet. The 30 minutes expire at epoch **1789692350**. No `--action` was used, per
+> `.claude/leg.md`: an announcement whose mechanism is silence-as-consent does not page the owner.
+> **If you are a later leg reading this: do not restart the clock.** Poll it with
+> `embarch-fleet/scripts/fleet-read.py --thread 1789690550.857739` at your unit boundaries; if the
+> window has expired with no objection, this dispatches to a `core` worker as your **last** unit. A
+> reply saying go runs it immediately; a reply saying cancel drops this to plain `open` with the
+> reply quoted here and the `ts` struck.
 
 **Source:** `tasks/core/078` (`embarch-core` decision 67, `embarch-core/decisions/surfaces.md`)
 decided `/status` should carry a content identity to close `embarch-umbrella` doctor check 15's
