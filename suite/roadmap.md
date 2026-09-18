@@ -56,7 +56,7 @@ Built: a capture window that outlives its step, a streamed uncapped GATT transcr
 
 *Outpost, topology, Core, Study Designer, dev-bench, API, UI.* Opened by a goal nothing in this suite could serve: **"a study told me the DUT responded in 40 ms; I need to know whether that was one busy thread, forty context switches, or an ISR storm."** Every existing component observes the DUT from outside it. This milestone builds the one that ships *inside*: a Zephyr module compiled into the DUT's own debug firmware, emitting compact records out a **TX-only** UART into a lock-free ring, decoded host-side against a build-ID-matched manifest.
 
-**Capture is study-scoped and rendered post-hoc — there is no live feed**, reversing this milestone's own opening framing, deliberately.
+**Capture is study-scoped**, reversing this milestone's own framing, deliberately; its *no live feed* half reversed 2026-09-18 ([row 112](../embarch-decision-reversals.md)).
 
 Three pieces landed alongside it, none optional: the **dev-bench bypass** became a real modelled route rather than a description of how things happen to be wired (the bench has neither the spare pins nor the pass-through firmware); the **stream pipeline's inbound half was accepted**, which is what kept this from becoming the suite's fourth near-identical capture pipeline; and the UI gained route declaration plus a Trace view. A fourth piece joined the same pass, wider than the outpost that prompted it: **a study now declares the firmware versions it is meant to run against**, closing a gap nobody had named — **a result could not say what firmware it ran against, making two runs of one study against two builds indistinguishable afterwards.**
 
