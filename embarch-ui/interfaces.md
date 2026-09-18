@@ -12,6 +12,28 @@ It stays SVG. Sub-pixel spans aggregate into per-pixel occupancy runs per lane, 
 
 Two view caps, both served rather than restated (`decisions/trace-rows.md` 21, `decisions/study-designer.md` 22): **250,000 rows per view** (`MAX_ROWS`, `TraceView::row_cap`), reported rather than swallowed, and a name-length limit (`MAX_STREAM_NAME_LEN`, `ActionsResponse::max_stream_name_len`) applied where a name is chosen rather than at submit.
 
+## Design system
+
+Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Plex Mono for data and log lines. An oklch token system: one cyan accent, green/amber/red semantics, chroma and lightness held across hues. `--brand` holds the logo's red for the wordmark and header glyph only — it is the same colour as `--danger`, so it is never the accent (decision 25). Hand-authored components — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console, and a `.dialog`/`.dialog-backdrop` modal used in seven places, one of which (`.dialog-wide`, the `.eap` editor) is the only modifier that variable-width rule has. No bundler.
+
+## The Live Study tab's own routes
+
+Under `/api/live/` and `/api/studies/`. `502` + the error for a Core hop, `400` for a bad column or window, `404` for a study or tap embarch-core does not have.
+
+| Method | Path | Notes |
+|---|---|---|
+| `GET` | `live/events?study=<id>` | SSE. **A full snapshot frame on connect**, then incremental `status`/`step`/`console`/`samples`/`gatt` frames — that ordering is what makes opening or reloading mid-run work (decision 31). Omitting `study` attaches to whatever ran last in this process. Opening a study id registers a session for it, so one subscription to embarch-core serves every browser |
+| `POST` | `live/run` | `{slug, allow_version_mismatch}`. The same body `study-designer/studies/{slug}/run` runs, through the same function: the Study Designer still owns building and validating a saved study, and only the hand-off changed |
+| `GET` | `studies` | embarch-core's `GET /studies` proxied, `keep` and all. `steps`/`taps` stay **absent rather than empty** where embarch-core could not read the record |
+| `GET` | `studies/{id}` | One call for opening a past study: steps, taps and — where embarch-core still has the job — its status and provenance. **Each of the three carries its own note** rather than the call failing, so a study whose `events.json` will not parse still shows its readable stream index |
+| `GET` | `studies/{id}/stream/{name}/rows?from&limit` | Paged table rows, parsed server-side, plus which columns are numeric and which is the arrival stamp. At most 500 a page |
+| `GET` | `studies/{id}/stream/{name}/series?column&from&to&width` | One numeric column binned for a plot: **min/max/count per bin, never an average** — an average hides the spike that is usually the reason somebody is looking. At most `width` bins, the discipline `/api/trace/…/bins` already uses |
+| `GET` | `studies/{id}/stream/{name}/text?from&limit` | A `Text` tap's console off disk. A last line with no trailing newline comes back as `partial`, not as a line |
+| `GET` | `studies/{id}/stream/{name}/head?bytes` | A `Raw` tap's first bytes as hex plus printable ASCII. **Not a sniff** — bytes as bytes |
+| `GET` | `studies/{id}/stream/{name}/download?raw` | One tap's capture proxied whole, because the browser has no bearer token. `raw=1` forwards embarch-core's own flag rather than making the choice here |
+
+`/api/trace/...` is unchanged — the chart moved house, not implementation.
+
 ## What the Study Designer is served
 
 `GET /api/study-designer/actions` is this tab's one channel for anything the browser must not restate — a limit, a vocabulary, or a fact about the firmware repo. A test asserts `app.js` holds no copy of any of it, and the response struct's own literal in `study_designer.rs` is what makes the positive half compiler-enforced: a field added without a line there does not compile.
