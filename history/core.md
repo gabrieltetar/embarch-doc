@@ -40,6 +40,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Core decision 64 no longer implies the trace duplication is temporary; it now points to decision 66, which settled it as permanent.
 - Restored decision 62's RecordKind/five-lies sync-burden sentence and CSV-pin failure-signature that `core/085`'s squeeze dropped.
 - Decision 59, `interfaces.md`/`topology.md`: a probe-open failure raises no `TopologyMismatch`; it's an accepted, undistinguished 500/502, not "already handled."
 - `interfaces.md`'s `503` bullet now names its third producer: `/flash`/`/reset`'s plain-text `not_attached`, sharing status+shape with `hw_lock` contention.
