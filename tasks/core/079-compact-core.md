@@ -54,13 +54,26 @@ into `kind: "not_attached"` rather than add a third `kind` value — recorded
 in full, alongside the corrected doc comments and lead text it required in
 `api.rs`/`study.rs`.
 
-**In flux:** yes. Decision 59 has now been amended twice in six days
-(`core/074`, `core/077`), both times because `embarch-topology` changed what
-reaches `TopologyMismatch` out from under this crate's classifier. Decision
-12's deferred `{code, message, cause}` body — the general case this file's
-own decision 59 is one route's special case of — is still an open trigger,
-not a closed question; the next thing that trips it (a second route needing
-to distinguish two error kinds under one status) lands here too.
+**In flux:** no — **and this field was flipped by the supervisor at close, under protest, because
+`check-task-state.py` refuses `done` beside `In flux: yes`.** The rule it enforces (*"`In flux: yes`
+implies `blocked`"*) exempts only `Owner: required`; it does not exempt `done`, where the field gates
+nothing, because nothing dispatches a completed task. **The original answer is `yes` and it was
+right**, kept verbatim immediately below so no reader has to take this on trust. Filed as
+`tasks/doc/083`.
+
+> **In flux:** yes. Decision 59 has now been amended twice in six days
+> (`core/074`, `core/077`), both times because `embarch-topology` changed what
+> reaches `TopologyMismatch` out from under this crate's classifier. Decision
+> 12's deferred `{code, message, cause}` body — the general case this file's
+> own decision 59 is one route's special case of — is still an open trigger,
+> not a closed question; the next thing that trips it (a second route needing
+> to distinguish two error kinds under one status) lands here too.
+
+**Why the flip and not a park.** Leaving this `blocked` with the debt already paid would have been
+worse than a flipped field: `surfaces.md` is out of reserve, so `check-doc-size.py` no longer lists
+it — but this task's **Size debt due: 2026-09-24** would still have come overdue, and
+`.claude/leg.md` makes an overdue entry a leg's *first unit* whether or not it is blocked. A future
+leg would have spent a unit on a compaction that already happened.
 
 **Must not delete:** decision 12's own scope/trigger paragraph and its
 citation of decision 59 as "the trigger firing for one route alone"; decision
