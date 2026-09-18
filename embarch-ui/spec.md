@@ -42,7 +42,10 @@ embarch-ui (one Rust binary, axum, zero-build)
         the only log route Core serves.
 
 vscode-extension/ (thin, TypeScript)
-  spawns/stops the binary, opens the system browser, renders nothing itself
+  pre-flights the address before spawning the binary, stops what it spawned,
+  and shows the page in the system browser — focusing the window and tab
+  already open, matched on the page title (decision 28), rather than opening
+  a second one. Renders nothing itself
 ```
 
 **It never links `embarch-topology`'s `hardware` feature, and the reason is load-bearing:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's. The crate itself is in the tree transitively (`embarch-core-client` depends on it, `software` feature only); what stays out is every hardware-touching path, which is what the `probe-rs`/`serialport` invariant below actually measures.
