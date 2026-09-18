@@ -86,6 +86,7 @@
 - `GET /logs/stream` (SSE) is retired — no caller ever existed; `/logs/recent` unaffected.
 
 ### Decided
+- Decision 36 now records that `jlink`/`nrfutil` never map `erase` to a chip erase — by generated command, not by hardware measurement.
 - Decision 67: /status will carry a self-hash of the running binary, not a git SHA; build filed as core/088.
 - `/load/spans`'s `Gap` widens to full parity with `embarch-ui`'s own; axis-health diagnostics and point events stay out of `embarch-core`, permanently (decision 66).
 - `kind: "not_attached"` stays one value for a stuck-mid-open probe too; its plain-text lead stops saying "not attached" when it is.
