@@ -1,14 +1,13 @@
 # 068 — `embarch-study-designer/decisions/declares.md` is in reserve
 
-**State:** blocked
+**State:** open
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 77
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-study-designer/decisions/declares.md
 **Size debt due:** 2026-09-25
-**In flux:** yes
-**Blocked on:** decision 77 being exercised on a bench — one study run with the build toggle on, which is what would move `MAX_SNIPPETS_PER_BUILD`/`MAX_BUILD_EXTRA_ARGS` if anything does. Unparks the moment that run lands.
+**In flux:** no
 
 ## What
 
@@ -32,13 +31,12 @@ So: `decisions/builds.md`, decision 77 moved verbatim, per
 "verification asymmetry" paragraph gains a pointer to the file that closes the
 DUT half of it.
 
-## In flux
+## No longer in flux
 
-**The `limits.rs` caps 77 adds are sized against one target repo and have never
-been hit.** `MAX_SNIPPETS_PER_BUILD` (8) and `MAX_BUILD_EXTRA_ARGS` (8) in
-particular are the kind of number a real composition moves; a bench run with the
-build toggle on is what would settle them, and the entry will want room to
-record it.
+**A study carrying a real `BuildSpec` built and ran on 2026-09-19** with two
+snippets and no extra args — well inside `MAX_SNIPPETS_PER_BUILD` (8) and
+`MAX_BUILD_EXTRA_ARGS` (8), and nothing in that run argues for moving either.
+The entry is stable; the split is now ordinary compaction work.
 
 ## Done when
 

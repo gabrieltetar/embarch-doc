@@ -35,7 +35,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `503` naming the holder on `hw_lock` contention (500 ms wait, then refuse) | Shipped | unit | 14 |
 | `GET /study/{id}/stream/{name}/load` — an outpost capture's per-subject load shares and coverage line, agent-reachable | Shipped — unit-tested against real firmware bytes, **no live study has hit this route yet** | unit | 62 |
 | `GET /study/{id}/stream/{name}/load/spans` — the decoded per-lane timeline `/load` reduces and discards, served directly | Shipped, `Gap` at full parity with `embarch-ui`'s own — unit-tested against real firmware bytes and cross-checked against `/load`'s own summary, **no live study has hit this route yet**. Axis-health diagnostics and point events are permanently out of scope (decision 66) | unit | 65, 66 |
-| A study's declared outpost trace mode is read off the DUT's own header frame before step 1 and refused as a `412` if it does not match | Shipped — **never met real hardware**: unit-tested against crafted headers, and the listen/reset/timeout path has not run against a board | unit | 74 |
+| A study's declared outpost trace mode is read off the DUT's own header frame before step 1 and refused as a `412` if it does not match | Shipped, **validated on hardware** 2026-09-19: a satisfiable declaration ran, an unsatisfiable one was refused naming both bytes before any step, and the header arrived in **~200 ms with no reset** on all three reads | hw | 74 |
 
 ## embarch-api
 
@@ -114,7 +114,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Post-hoc validation | **Retired** — fully typed, wired into two repos, and it never once ran | n/a | 48 |
 | The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
 | Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break; plus a guard that fails if a `release.yml` ever appears without `verify-version` | Shipped — green locally; **no staticlib cross-link exists to assert `ffi`**, and the release guard has met no real tag | local | 64, 65 |
-| A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped — **unrun on a bench**: the types, their caps and every validation rule are unit-tested, and no study carrying either field has been run | unit | 77 |
+| A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped, **run on hardware** 2026-09-19: a saved study carrying both built, flashed, reset and ran; its declared flags were checked against the firmware's own header | hw | 77 |
 
 ## embarch-outpost
 
@@ -184,7 +184,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The same Time chart **fed live** — the axis grows as the trace arrives, a mark is placed once and never moves, and one past the leading edge is counted rather than guessed at | Shipped; bench-validated without a trace, the traced path still unrun | local, hw | 37 |
 | Signal routing in the Topology tab — **the only human surface there is** | Shipped | hw | 10 |
 | Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
-| Build and flash the DUT from the Study Designer — an ordered snippet picker, a three-state outpost mode, the build as a live phase of the run, and past build logs in the Debug tab | Shipped — the pickers are **driven in a browser against this bench's own workspace** (30 targets, 13 snippets, move-up demonstrably reordering); **no build has actually been run from the UI**, so the build/flash/reset sequence itself is unexercised | browser | 38, 39, 40 |
+| Build and flash the DUT from the Study Designer — an ordered snippet picker, a three-state outpost mode, the build as a live phase of the run, and past build logs in the Debug tab | Shipped, **end to end on hardware** 2026-09-19: 443 build lines streamed live, then flash, reset, submit and a completed study; the 48 KB log read back through the Debug tab's builds source | hw, browser | 38, 39, 40 |
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**; first paint 12.7 KB + 30.5 KB, a window 1–6 ms. Never driven against a live Core or a real DUT capture | local | 18 |
 | A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: crafted fixtures only, and the 18-record bridge-buffered case that motivates it has not been replayed | unit | 19 |
 
