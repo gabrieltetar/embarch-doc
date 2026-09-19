@@ -35,6 +35,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `503` naming the holder on `hw_lock` contention (500 ms wait, then refuse) | Shipped | unit | 14 |
 | `GET /study/{id}/stream/{name}/load` — an outpost capture's per-subject load shares and coverage line, agent-reachable | Shipped — unit-tested against real firmware bytes, **no live study has hit this route yet** | unit | 62 |
 | `GET /study/{id}/stream/{name}/load/spans` — the decoded per-lane timeline `/load` reduces and discards, served directly | Shipped, `Gap` at full parity with `embarch-ui`'s own — unit-tested against real firmware bytes and cross-checked against `/load`'s own summary, **no live study has hit this route yet**. Axis-health diagnostics and point events are permanently out of scope (decision 66) | unit | 65, 66 |
+| A study's declared outpost trace mode is read off the DUT's own header frame before step 1 and refused as a `412` if it does not match | Shipped — **never met real hardware**: unit-tested against crafted headers, and the listen/reset/timeout path has not run against a board | unit | 74 |
 
 ## embarch-api
 
@@ -106,12 +107,14 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Dropping the bond mid-study, with a bond scoped to one study | Shipped | local | 46 |
 | Dev-bench link same-chip verification via the handshake's reported identity | Shipped | hw | 47 |
 | **Engineer-declared DUT protocols** (`.eap`: types, grammar, validator, interpreter, three seals) | Shipped, runnable end to end | ztest, hw | 58-62 |
+| `.eap` manifests live in `<firmware-repo>/embarch/protocols/` and are authorable from the Study Designer — scanned leniently (one bad file does not fail the directory), written only after they parse and resolve, and one duplicate protocol name across files refused in exactly one place | Shipped | unit, local | 75 |
 | One generic **inbound** stream pipeline (declared source, sink, scope, encoding) | Shipped | hw | 39 |
-| Study version requirements, operator-selected reflash, provenance on a result | Shipped — **the UI half is deliberately not built** | hw | 40 |
+| Study version requirements, operator-selected reflash, provenance on a result | Shipped — the UI half landed 2026-09-18 (`embarch-ui` decisions 38-40), **unrun on a bench** | hw | 40 |
 | Declared GATT table on a study, reconciled against live discovery | **Design-only, no code** | n/a | 45 |
 | Post-hoc validation | **Retired** — fully typed, wired into two repos, and it never once ran | n/a | 48 |
 | The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
 | Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break; plus a guard that fails if a `release.yml` ever appears without `verify-version` | Shipped — green locally; **no staticlib cross-link exists to assert `ffi`**, and the release guard has met no real tag | local | 64, 65 |
+| A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped — **unrun on a bench**: the types, their caps and every validation rule are unit-tested, and no study carrying either field has been run | unit | 77 |
 
 ## embarch-outpost
 
@@ -172,13 +175,16 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
 | Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
+| Study Designer authors every field a `Study` carries — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30 |
 | Saved-study library in the firmware repo | Shipped | local | 14 |
 | Opening a firmware repo from the tab, and creating a study in it | Shipped | local | 14 |
 | Selective-monitor targets in a grouped dialog rather than a wall of inline checkboxes | Shipped | local | 17 |
 | Post-hoc **Trace** view — lanes, gap bands as overlays, per-subject load repartition, a chart bounded by pixels not dataset, a projected study-step row | Shipped | local | 10 |
+| **Time chart** — every stream a study produced on one axis: step bands, GATT, struct rows, console lines, sample strips and trace markers, with unplaceable marks counted rather than guessed at | Shipped, post-hoc; live path next | local | 34, 35, 36 |
+| The same Time chart **fed live** — the axis grows as the trace arrives, a mark is placed once and never moves, and one past the leading edge is counted rather than guessed at | Shipped; bench-validated without a trace, the traced path still unrun | local, hw | 37 |
 | Signal routing in the Topology tab — **the only human surface there is** | Shipped | hw | 10 |
 | Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
-| Reflash selector in the run dialog | **Deliberately not built** — it is `embarch-api` orchestration | n/a | 11 |
+| Build and flash the DUT from the Study Designer — an ordered snippet picker, a three-state outpost mode, the build as a live phase of the run, and past build logs in the Debug tab | Shipped — **the available path is unrun**: `drive_build.py` drives only the no-project/no-config state, and no build has been run from the UI on a bench | browser | 38, 39, 40 |
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**; first paint 12.7 KB + 30.5 KB, a window 1–6 ms. Never driven against a live Core or a real DUT capture | local | 18 |
 | A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: crafted fixtures only, and the 18-record bridge-buffered case that motivates it has not been replayed | unit | 19 |
 

@@ -1,0 +1,1 @@
+| A study's declared outpost trace mode is read off the DUT's own header frame before step 1 and refused as a `412` if it does not match | Shipped — **never met real hardware**: unit-tested against crafted headers, and the listen/reset/timeout path has not run against a board | unit | 74 |

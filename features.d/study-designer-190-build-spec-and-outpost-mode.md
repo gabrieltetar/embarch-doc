@@ -1,0 +1,1 @@
+| A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped — **unrun on a bench**: the types, their caps and every validation rule are unit-tested, and no study carrying either field has been run | unit | 77 |

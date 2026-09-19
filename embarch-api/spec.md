@@ -45,7 +45,7 @@ Today `embarch-api` runs under WSL2, Core native on Windows, same physical machi
 
 ## 5. Modules
 
-Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [interfaces/modules.md](interfaces/modules.md). `crates/embarch-core-client/` is a **workspace member** ([decisions](decisions/tests.md) 56), so one `cargo test`/`cargo clippy --all-targets` at the repo root reaches its tests; `embarch-ui` path-depends on it from outside that workspace — **a change there reaches a repo this one does not own.**
+Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [interfaces/modules.md](interfaces/modules.md). **Two** sibling crates under `crates/` are **workspace members** ([decisions](decisions/tests.md) 56), so one `cargo test`/`cargo clippy --all-targets` at the repo root reaches both their tests: `embarch-core-client/` and, since 2026-09-18, `embarch-firmware-build/` — `config`/`zephyr`/`resolve`/`build`/`json_out`, lifted out of `src/` so `embarch-ui` can build a study's firmware through the same implementation ([decisions](decisions/firmware-build-crate.md) 78). `embarch-ui` path-depends on both from outside that workspace — **a change there reaches a repo this one does not own.**
 
 `main` spawns the entire tokio runtime — `block_on` included — **on a dedicated thread with a 512 MiB stack**, because `Builder::thread_stack_size` doesn't size the thread calling `block_on`, and no knob does ([decisions](decisions/client-crate.md) 36).
 

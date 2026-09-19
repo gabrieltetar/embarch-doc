@@ -23,6 +23,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 20, 21, 51 | 9.1 KB |
 | [What board.yml/app scanning trusts](decisions/zephyr-scan.md) — the retired SoC-override hatch, the uncached scan's cost bound, and the `app/`/`apps/` scan | 13, 22, 63 | 5.7 KB |
 | [Reaching Core](decisions/core-link.md) — address resolution and artifact transfer | 11, 14, 15, 17, 26 | 3.9 KB |
+| [The shared firmware-build crate](decisions/firmware-build-crate.md) — why `config`/`zephyr`/`resolve`/`build`/`json_out` left this repo for a sibling `embarch-ui` can reach, and the streaming build log that followed | 78, 79 | 4.7 KB |
 | [The shared client crate](decisions/client-crate.md) — extraction, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate, the crate's home, and the retired mirrored `embarch-topology` types | 36, 37, 38, 55, 58, 62, 66, 72 | 10.7 KB |
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
 | [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 2.7 KB |
