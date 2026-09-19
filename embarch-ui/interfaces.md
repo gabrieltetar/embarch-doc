@@ -14,7 +14,7 @@ Two view caps, both served rather than restated (`decisions/trace-rows.md` 21, `
 
 ## Design system
 
-Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Plex Mono for data and log lines. An oklch token system: one cyan accent, green/amber/red semantics, chroma and lightness held across hues. `--brand` holds the logo's red for the wordmark and header glyph only — it is the same colour as `--danger`, so it is never the accent (decision 25). Hand-authored components — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console, and a `.dialog`/`.dialog-backdrop` modal used in seven places, one of which (`.dialog-wide`, the `.eap` editor) is the only modifier that variable-width rule has. No bundler.
+Dark-first developer console, togglable to light. IBM Plex Sans for UI text, Plex Mono for data and log lines — both served from `/fonts/` out of the binary, Latin subsets, ~91 KB, never from a CDN (decision 42). An oklch token system: one cyan accent, green/amber/red semantics, chroma and lightness held across hues. `--brand` holds the logo's red for the wordmark and header glyph only — it is the same colour as `--danger`, so it is never the accent (decision 25). Hand-authored components — stat cards, status badges, data tables, pill toggles, chip inputs, a terminal-styled console, and a `.dialog`/`.dialog-backdrop` modal used in seven places, one of which (`.dialog-wide`, the `.eap` editor) is the only modifier that variable-width rule has. No bundler.
 
 ## The Live Study tab's own routes
 
