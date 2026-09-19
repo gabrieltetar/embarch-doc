@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-Authoring a study: the two version fields, security, and opening a firmware project. Authoring GATT capture and its pickers is in [gatt-capture.md](gatt-capture.md).
+Authoring a study: the two version fields, security, and opening a firmware project. GATT capture and its pickers: [gatt-capture.md](gatt-capture.md). How the tab's panels are laid out: [designer-panels.md](designer-panels.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
