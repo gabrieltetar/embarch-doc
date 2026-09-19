@@ -1,19 +1,18 @@
 # 094 — `embarch-core/decisions/handshake.md` is at its cap
 
-**State:** blocked
+**State:** open
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 74
 **Scope:** core
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-core/decisions/handshake.md
 **Size debt due:** 2026-09-25
-**In flux:** yes
-**Blocked on:** decision 74 being validated against real hardware — one study run with `requires.outpost` set against a board with an outpost compiled in, which will either confirm the listen/reset budgets and the refusal text or change them. Unparks the moment that run lands.
+**In flux:** no
 
 ## What
 
-The handshake decision group is **12,288 / 12,288 B (100.0%), 0 B left**. Out of
-reserve when this closes, or the task says why not.
+The handshake decision group is **12,643 / 12,288 B, 355 B over**, on this
+task's clock. Out of reserve when this closes, or the task says why not.
 
 The entry that crossed the floor is **74**, the outpost mode pre-flight. It was
 trimmed four times on the way in to fit, and what went was phrasing rather than
@@ -34,14 +33,13 @@ run against real hardware.
 So: `decisions/outpost-preflight.md`, decision 74 moved verbatim, per
 [../../DOC-BUDGET.md](../../DOC-BUDGET.md) §3.
 
-## In flux
+## No longer in flux
 
-**Decision 74 has not met a board.** Its listen budget (3 s), its post-reset
-budget (6 s) and the reset fallback itself are reasoned from
-`CONFIG_EMBARCH_OUTPOST_HEADER_INTERVAL_MS`'s default and from
-`embarch-outpost/interfaces/wire.md`, not measured. A bench run may change any
-of the three and will want room to say so, which is an argument for doing the
-split before that run rather than after.
+**Decision 74 met a board on 2026-09-19 and did not move.** Three reads on a
+real nff_dev@7 returned the header in 171-258 ms with `after_reset=false`, so
+the 3 s listen budget and the reset fallback are both confirmed as written and
+neither number is expected to change. The entry is stable; the split is now
+ordinary compaction work.
 
 ## Done when
 
