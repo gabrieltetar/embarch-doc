@@ -22,6 +22,8 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **The build card stays on screen after the study starts**, because what was flashed is part of reading the run that followed. A browser that falls behind the broadcast is told so and pointed at the whole log, rather than left with a card that looks complete.
 
+**A failed build leaves its error on screen, and the banner names it.** The console's cap drops oldest-first, so a trailing compiler error is never the line scrolled away — confirmed by breaking a real build rather than by reading the code. The banner itself was the defect that run found: it read *"west exited Some(1)"* and described only the shape of the failure while the compiler's own error sat 35 lines up the console. It now quotes that error, through `BuildOutcome::failure_reason` (`embarch-api` decision 79), so the line read first is the line worth reading.
+
 ### 39 — A build log is kept locally and read as a third Debug source, not uploaded to Core
 
 Two places, because they answer different questions: live, so a build in progress is watchable; durably, so a build from an hour ago is readable at all.
