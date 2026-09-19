@@ -56,7 +56,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 | `steps` | yes | `steps_crc` |
 | `streams` (declared taps) | yes | `streams_crc` |
 | `protocols` (`.eap` manifests) | yes — dev-bench *executes* them | `protocols_crc` |
-| `requires` (firmware versions) | **no** | — |
+| `requires` (firmware versions; the DUT build spec and outpost mode, decision 77) | **no** | — |
 | `decoders` (payload layouts) | **no** — only an index rides on a tap | — |
 | `dev_bench_log_level` | yes | **deliberately neither** |
 | `record_checks` (per-tap record framing) | **no** — Core checks the capture after the run | — |

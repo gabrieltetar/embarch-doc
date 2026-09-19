@@ -1,1 +1,1 @@
-| Reflash selector in the run dialog | **Deliberately not built** — it is `embarch-api` orchestration | n/a | 11 |
+| Build and flash the DUT from the Study Designer — an ordered snippet picker, a three-state outpost mode, the build as a live phase of the run, and past build logs in the Debug tab | Shipped — **the available path is unrun**: `drive_build.py` drives only the no-project/no-config state, and no build has been run from the UI on a bench | browser | 38, 39, 40 |

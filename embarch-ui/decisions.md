@@ -19,6 +19,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/outcome-decode.md](decisions/outcome-decode.md) | 23 | One outcome decoder for both wire shapes |
 | [decisions/trace-transfer.md](decisions/trace-transfer.md) | 18 | Server-side binning: the view asks for the window it draws |
 | [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20, 22 | Version fields, security level, declared GATT, opening a project, the run badge's counter, the stream-name cap |
+| [decisions/firmware-build.md](decisions/firmware-build.md) | 38, 39, 40 | A study builds its own DUT firmware: the ordered snippet picker, the three-state outpost mode, the build as a phase of a run, where its log is read, and when a saved study's version is rewritten |
 | [decisions/study-authoring.md](decisions/study-authoring.md) | 29, 30 | The `.eap` editor dialog, and running a saved study as it is on disk |
 | [decisions/gatt-capture.md](decisions/gatt-capture.md) | 15, 16, 17 | Per-characteristic taps, characteristic names, the target dialog |
 | [decisions/time-chart.md](decisions/time-chart.md) | 34, 35, 36, 37 | One axis for every stream a study produced: `core_rx_utc_ms` as the only clock read, a tier chosen once and never promoted, and the three states of a mark |

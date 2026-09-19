@@ -42,6 +42,8 @@ embarch-api run-study --study-file my-study.json --reflash dut --project my-firm
 
 **One limit worth knowing: nothing can read a firmware version back off a DUT.** When EmbArch says a run flashed a particular version, it means **"this run built and flashed *this tree*, at this revision"**, derived by running `git describe` in your project. **The bench is different — it reports its own version over its link, so that one is a real measurement.**
 
+**The UI can do all of this too, since 2026-09-18.** A study's Build card turns the same check-build-flash-reset sequence on per study, storing the board, app and snippets it wants rather than a build anybody produced once ([`embarch-ui` decision 38](../embarch-ui/decisions/firmware-build.md)). A study can also say **which outpost trace mode it needs**, and Core reads that off the DUT's own header frame before step 1 and refuses a run against firmware that is not in it — the one thing a DUT genuinely does report about itself.
+
 Where it plugs in: your DUT keeps its own probe on Core, and **the bench connects to Core over a second, separate serial link** that Core auto-detects. **One bench, one DUT, one study at a time**; testing two DUTs means two independent Core-plus-bench pairs.
 
 Flashing the bench itself goes through EmbArch like anything else: `build-and-flash-dev-bench`, then `reset-dev-bench` — **flashing halts the chip rather than starting it running** — or `--reflash dev-bench` to do it as part of a run.

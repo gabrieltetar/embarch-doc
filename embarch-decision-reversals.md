@@ -11,7 +11,7 @@ Assumptions reality has already overturned — **the highest-signal page in this
 | 1-50 | [reversals/rows-1-50.md](reversals/rows-1-50.md) |
 | 51-72 | [reversals/rows-51-72.md](reversals/rows-51-72.md) |
 | 73-92 | [reversals/rows-73-92.md](reversals/rows-73-92.md) |
-| 93-112 | [reversals/rows-93-111.md](reversals/rows-93-111.md) |
+| 93-114 | [reversals/rows-93-111.md](reversals/rows-93-111.md) |
 
 **A row number is a permanent identity, not a position.** Numbers are never reused or renumbered, so a row may sit out of date order and a range file never re-splits an existing row into a different file. Rows 106-109 were renumbered from duplicates that shared a number.
 
