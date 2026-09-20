@@ -1,0 +1,1 @@
+| A study stores no board/variant/revision: a run builds for the board type in the **DUT role**, read at run time, and a study saved with an explicit board has the override announced on the build log rather than silently applied | Shipped | local | 45 |

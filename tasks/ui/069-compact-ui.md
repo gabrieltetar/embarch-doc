@@ -29,6 +29,8 @@ directly. A verbatim split of 3 + 28 into `decisions/launcher.md` restates nothi
 
 **Bytes:** `spec.md` 12,239 B → 10,154 B (under its 10,240 B cap, off the ledger). New `spec/capture-rendering.md`: 4,030 B. `decisions/shape.md`'s half is **untouched and still open** — 12,194 / 12,288 B, still wanting the launcher split this task describes.
 
+**And back on the ledger the next day, 2026-09-20, at 10,825 B — 585 B over.** Decision 45 (roles hold two bindings; a board is a type) rewrote three of this file's invariants and added two, and the new prose was tightened by 235 B rather than paying for itself in full: what remains is the statement that a study stores no board and that a diagram status is only ever written by a validate pass, neither of which this file can leave out. **Named here rather than squeezed**, because the next 585 B would come out of established reasoning — which is the failure mode `DOC-BUDGET.md` says a squeeze has. The seam left in `spec.md` is the tab table itself: five rows that each restate a decision, which a `spec/tabs.md` split could take verbatim.
+
 **The human question, for the half that moved:** yes. `spec.md` alone still answers what someone needs to change the UI's *shape* — the five tabs, the Core boundary, the served-vocabulary rule, the roles-and-boards model — and a reader touching how a capture is drawn now has one file that is only about that, rather than thirteen bullets interleaved with tab descriptions. The two readers were never the same person.
 
 ## Why now

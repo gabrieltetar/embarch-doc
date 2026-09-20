@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-19.
 
-What a role is, what a board is, and the three surfaces that follow once the two stop being the same string. The tab's other half — signal routing (decision 10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md).
+Why a role stopped being a board's name, and the surfaces that followed: the project catalog, the validate pass, retracting, saved benches. **Decision 45 corrected two things about the model this entry set up** and is in [topology-roles.md](topology-roles.md): a probe is not an attribute of a board, and a board is a *type* rather than a unit of hardware. The tab's other half — signal routing (10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -12,7 +12,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 So the two facts split, each to the owner that can actually answer it:
 
-- **A role** is one of `dut` and `dev-bench`, and Core's `POST /probes/enroll` answers `400` to anything else ([`embarch-core` decision 75](../../embarch-core/decisions/enrollment.md)). **Closed on the write path, tolerant on the load path**: nothing re-checks a row already in `enrollment.toml`, because a store predating a later fact must keep loading — which is also what keeps the pre-existing `client-nucleo` row visible instead of silently dropped.
+- **A role** is one of `dut` and `dev-bench`, and Core's `POST /probes/enroll` answers `400` to anything else ([`embarch-core` decision 75](../../embarch-core/decisions.md)). **Closed on the write path, tolerant on the load path**: nothing re-checks a row already in `enrollment.toml`, because a store predating a later fact must keep loading — which is also what keeps the pre-existing `client-nucleo` row visible instead of silently dropped.
 - **A board's name** is a new `name` field on the enrolment, opaque to Core and to `embarch-topology` ([its decision 35](../../embarch-topology/decisions/enrollment.md)) — recorded, never interpreted.
 - **What a board *is*** — its chip, what it builds as, a note — lives in the **open firmware repo**, at `embarch/boards.toml`, beside `embarch/studies/`. *Rejected: a machine-wide catalog in Core's data directory.* A board is a thing a project's engineers talk about, and putting it beside the studies that ran on it is what makes a second engineer's checkout describe the same bench. The cost is re-adding a dev bench per project, which is one row.
 

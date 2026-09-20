@@ -40,7 +40,10 @@ Two kinds, and the split is the point (decision 44). `/api/enroll`, `/api/signal
 
 | Method | Path | Notes |
 |---|---|---|
-| `POST` | `enroll` | `{role, chip, probe_serial?, name?}` → Core's `POST /probes/enroll`. `name` is the board, recorded and never interpreted; Core answers `400` to a role outside `dut`/`dev-bench` |
+| `POST` | `enroll` | `{role, chip, probe_serial?, name?}` → Core's `POST /probes/enroll`. Binds the **probe** half of a role and reads an identity through it; `chip` and `name` come from the board *type* already in that role (45), not from anything typed |
+| `POST` | `topology/roles/{role}/board` | `{board, chip}` → Core's `PUT /probes/enrolled/{role}/board`. The **board** half: which board type is in the role. **Opens no probe**, works with nothing plugged in, and leaves any recorded hardware ID alone so a validate pass can disagree with it |
+| `GET` | `topology/pickers` | What each role's board picker offers: `dut` from the open project's catalog, `dev-bench` from the suite's supported pair, each `{board, label, chip}`. **Served, never restated in `app.js`** |
+| `POST` | `topology/boards/rescan` | Merges the west targets this repo builds for into the catalog. **Only ever adds**: an entry already in the file keeps every field, and one the scan does not find is reported in `not_in_scan` and kept, since a repo builds for boards on branches that are not checked out |
 | `DELETE` | `enrolled/{role}` | → Core's `DELETE /probes/enrolled/{role}`. `404` when nothing held that role. Takes a role outside the pair on purpose: clearing exactly those is what it is for |
 | `POST` | `topology/link` | `{serial?, interface?}` → Core's `POST /dev-bench/link`. Its caller is a confirmed profile proposal, not a form |
 | `POST` | `topology/validate` | One pass: each role through Core's `POST /validate`, the dev-bench port resolved live, each declared signal's carrier, and any enrolled name absent from the catalog. `{ok, failed, warned, checked_at_utc_ms, checks: [{id, label, status, detail, log?}]}` — `status` is `pass`/`fail`/`warn`/`empty`, **`warn` is never a pass**, and `log` is Core's own words verbatim. `502` when Core is unreachable |
