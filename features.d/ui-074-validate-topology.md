@@ -1,0 +1,1 @@
+| **Validate topology** — one pass: each role's live hardware-ID re-read, the dev-bench port (a *guessed* one is a warning, never a pass), every declared signal's carrier, and any enrolled board name absent from the catalog. Core's reason printed verbatim. It replaced the tab's alert list | Shipped | local (stub Core, headless Firefox) | 44 |

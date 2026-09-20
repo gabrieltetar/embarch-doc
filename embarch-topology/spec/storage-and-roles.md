@@ -10,6 +10,8 @@ guess-and-clear semantics) is distinct from "Shape" and "What validation asserts
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
+**There are two roles and a board's name is a separate field** (decision 35, [`embarch-ui` 44](../../embarch-ui/decisions/topology-boards.md)). `CANONICAL_ROLES` is `dev-bench` and `dut`; `is_canonical_role` is the check, applied on the **write** path by `embarch-core`'s `POST /probes/enroll` and by this crate's own CLI, and by nothing on the load path — a store predating the rule still loads, foreign row and all, and `remove_by_role` (`DELETE /probes/enrolled/{role}`) is what clears one. `EnrolledBoard.name` is the board's own label: recorded verbatim, compared against nothing here, and resolved — where anything resolves it — against a firmware repo's `embarch/boards.toml`, which is not on this machine.
+
 **Enrolling keeps a role unique going forward:** it displaces any other board already holding that role, and returns the displaced row rather than dropping it silently (decision 20). **That uniqueness is a write-time rule, not a store invariant** — nothing on the load path checks it, so a hand-edited or pre-2026-08-31 `enrollment.toml` can still hold two rows sharing a role. If it does, only the first (by file order) comes back as displaced; any further row sharing that role is removed with no record.
 
 **A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`): `NotFound` names which rule emptied the candidate list and routes to clearing it (decision 27).

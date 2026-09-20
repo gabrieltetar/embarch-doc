@@ -34,6 +34,22 @@ Under `/api/live/` and `/api/studies/`. `502` + the error for a Core hop, `400` 
 
 `/api/trace/...` is unchanged — the chart moved house, not implementation.
 
+## The Topology tab's own routes
+
+Two kinds, and the split is the point (decision 44). `/api/enroll`, `/api/signals`, `/api/enrolled/{role}` and `/api/topology/link` are **proxies**: the write is Core's, and this binary holds the bearer token so the browser never sees it. The rest read and write **project files** in the open firmware repo — `embarch/boards.toml` and `embarch/topologies/` — and answer `409` with the way out when no project is open, since the catalog is not missing, it is unanswerable.
+
+| Method | Path | Notes |
+|---|---|---|
+| `POST` | `enroll` | `{role, chip, probe_serial?, name?}` → Core's `POST /probes/enroll`. `name` is the board, recorded and never interpreted; Core answers `400` to a role outside `dut`/`dev-bench` |
+| `DELETE` | `enrolled/{role}` | → Core's `DELETE /probes/enrolled/{role}`. `404` when nothing held that role. Takes a role outside the pair on purpose: clearing exactly those is what it is for |
+| `POST` | `topology/link` | `{serial?, interface?}` → Core's `POST /dev-bench/link`. Its caller is a confirmed profile proposal, not a form |
+| `POST` | `topology/validate` | One pass: each role through Core's `POST /validate`, the dev-bench port resolved live, each declared signal's carrier, and any enrolled name absent from the catalog. `{ok, failed, warned, checked_at_utc_ms, checks: [{id, label, status, detail, log?}]}` — `status` is `pass`/`fail`/`warn`/`empty`, **`warn` is never a pass**, and `log` is Core's own words verbatim. `502` when Core is unreachable |
+| `GET`/`POST` | `topology/boards` | The catalog, and an upsert by name. `POST` takes a `{name, chip, build_target, variant, revision, notes}`; both answer the whole list back |
+| `DELETE` | `topology/boards/{name}` | Forgets a board. **Unenrols nothing** — a role holding it keeps the name, which then renders as *not in catalog* |
+| `GET`/`POST` | `topology/profiles` | Saved benches, newest first, and a save of the bench as it stands. **A file that will not parse is listed with its error, never skipped** |
+| `DELETE` | `topology/profiles/{slug}` | Deletes the file, not the bench |
+| `POST` | `topology/profiles/{slug}/apply` | Declares the signals and (where dev-bench is already enrolled) the link, then returns `proposals` — one per role, each with the board, chip, probe serial, whether that probe is attached, and who it would displace. **It enrols nothing** |
+
 ## What the Study Designer is served
 
 `GET /api/study-designer/actions` is this tab's one channel for anything the browser must not restate — a limit, a vocabulary, or a fact about the firmware repo. A test asserts `app.js` holds no copy of any of it, and the response struct's own literal in `study_designer.rs` is what makes the positive half compiler-enforced: a field added without a line there does not compile.
