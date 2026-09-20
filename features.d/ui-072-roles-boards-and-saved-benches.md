@@ -1,0 +1,1 @@
+| A role is a fixed slot (`dut`/`dev-bench`) and a board is a name: the project's `embarch/boards.toml` catalog, a role retractable from the diagram's table, and `embarch/topologies/` benches that re-declare the wiring and *propose* each enrolment | Shipped | local (stub Core, headless Firefox) | 44 |

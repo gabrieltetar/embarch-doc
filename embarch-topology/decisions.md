@@ -13,7 +13,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/consumer-boundary.md](decisions/consumer-boundary.md) | 4, 8, 31 | What a consumer may link, and what the crate owes a consumer that cannot link all of it |
 | [decisions/storage.md](decisions/storage.md) | 23 | Where the crate's storage physically sits, and why it must match embarch-core's |
 | [decisions/scope.md](decisions/scope.md) | 7, 9, 10, 11, 22, 29, 30 | What it models, what it defers, and the override mechanism it deleted |
-| [decisions/enrollment.md](decisions/enrollment.md) | 14, 15, 16, 28 | The one surface that needs a human, and the facts detection cannot produce |
+| [decisions/enrollment.md](decisions/enrollment.md) | 14, 15, 16, 28, 35 | The one surface that needs a human, the facts detection cannot produce, and the fixed role pair a board's own name was split out of |
 | [decisions/link-declares.md](decisions/link-declares.md) | 20, 27 | A role's declared link facts, and what `NotFound` reports when they exclude everything |
 | [decisions/validation.md](decisions/validation.md) | 21 | What the live identity gate asserts about the silicon on a link, and what it cannot |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |

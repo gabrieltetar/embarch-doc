@@ -58,6 +58,7 @@ Everything else is detected live. These four cannot be:
 | Fact | Why detection cannot produce it |
 |---|---|
 | **Which board is enrolled as which role** | No software can derive which board a probe is wired to — only a person isolating it and saying so |
+| **What that board is called** | A name is a human's word for a physical object; `name` is recorded beside the role and interpreted by nothing here (decision 35) |
 | **A link port's own USB serial** | The link can differ from the JTAG probe's USB device, and **no identity readback is possible over a plain UART** |
 | **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
