@@ -1,6 +1,6 @@
 # embarch-ui decisions: Boards, roles, saved benches and the validate pass
 
-**Status:** active, 2026-09-19.
+**Status:** active, 2026-09-20.
 
 Why a role stopped being a board's name, and the surfaces that followed: the project catalog, the validate pass, retracting, saved benches. **Decision 45 corrected two things about the model this entry set up** and is in [topology-roles.md](topology-roles.md): a probe is not an attribute of a board, and a board is a *type* rather than a unit of hardware. The tab's other half — signal routing (10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md).
 
@@ -47,3 +47,24 @@ So the two facts split, each to the owner that can actually answer it:
 A catalog entry carries the **west** board target it builds as — a different thing from the physical board the entry is, which is why the field is `build_target` and not `board`. The Build card *offers* it, as a button naming the DUT's own target, and applies it only when pressed and only when the scan actually found that target. *Rejected: filling the Build card from the DUT automatically.* Which target a study builds is the study's own field; a bench rewired this morning must not re-target a study saved last week.
 
 **Driven in a real browser**: `tests/browser/drive_topology.py` grew from eighteen checks to forty — the roles table and its labels, a foreign role flagged and cleared, the box titled by role with the board underneath, a passing role beside a failing one with Core's reason printed verbatim, a guessed port as a warning, a board added to the catalog and offered in the enroll dialog, a bench saved to the project and loaded back, and a proposal confirmed into a real enrolment.
+
+### 47 — A board type's row is its build menu, and a DUT is picked as a real combination
+
+The catalog list carried **Chip** and **Builds as**. Both are true and neither is what a human reads a bench list for: a chip is set once and never looked at again, and the west target mostly restates the row's own name. **What is worth a column is what this repo can actually build that board as** — which is also the menu the DUT is picked from, so the list and the picker became two views of one scan instead of two descriptions of one row.
+
+So the row is now the board type, its **revisions**, its **variants**, and the **apps** it is in the tree for, each as a chip. Chip and west target did not leave the model — they are on the row's tooltip and in its Edit dialog, where a value you set once belongs.
+
+**Four states, said four different ways**, because they are four different facts: the repo could not be scanned at all (with the reason on the tooltip), this board type is not in the scan, it is in the scan and declares none of that axis, or here they are. Folding any pair together would state something about the bench nobody established — the same split the catalog is already under for an unreadable file (44) and the signal list for an unreadable route (10).
+
+**The pinned combination is marked, and a stale pin is marked differently.** `embarch/boards.toml` records which revision and variant a build for this board uses; that chip renders in the accent, and a pin the scan no longer backs renders in the warning colour with a `?` rather than being dropped. It is what a run for that role would ask for and it is about to be refused — a list that hid it would be silent about exactly the row that is going to fail.
+
+**The DUT picker binds to a combination, not to two dropdowns.** Under the board type is one select of the combinations the repo's own scan reports, each naming its revision and variant and carrying the west qualifier it assembles to. *Rejected: a revision list and a variant list side by side.* Zephyr backs a `(variant, revision)` pair only where a real file backs it — a named variant does not inherit the default-revision shortcut — so a cross product offers targets `west build` then refuses. The browser test's fixture is exactly that case: two revisions and one named variant is four pairs and **three** real combinations.
+
+**One gesture, two owners, and the order is fixed.** Confirming the picker writes the board type to Core (`PUT /probes/enrolled/{role}/board`) and *then* the combination to `embarch/boards.toml`. Which board type is in a role is Core's fact; which combination of it this repo builds is the project's, and **Core is never told about a revision**. Writing the file first would leave a catalog pinned for a role Core then refused. A board type outside the catalog — a dev-bench type, a name from another project — pins nothing and says nothing: both are states already rendered honestly elsewhere, and neither is a reason to fail a write to Core that has already happened.
+
+**A dev-bench board is offered no combination at all**, for the reason decision 45 already gives: a bench is a piece of the suite, not a project's board, so it has no catalog row to pin one on.
+
+### A dev-bench board type is shown by its label, never by its qualifier
+
+The suite's supported bench list has always carried a human label beside the west qualifier, and only the picker used it — so the diagram box, the Dashboard's table and every validate line read `esp32c5_devkitc/esp32c5/hpcore`. **That is a path, and the picture is asking which board is on the desk.** The label is what is rendered now (the qualifier stays on the tooltip, and stays the value everywhere it is *sent*), and the two labels were rewritten to name the products: *Nordic nRF54L15 DK* and *Espressif ESP32-C5-DevKitC*. A bench type the list does not carry renders unchanged — an unknown bench board is still the bench's board.
+
