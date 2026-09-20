@@ -1,6 +1,6 @@
 # embarch-ui: decisions
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-20.
 
 Why the UI is shaped this way. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md).
 
@@ -10,10 +10,10 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 |---|---|---|
 | [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9, 28 | One consolidated process, zero-build, the VS Code launcher, the repo; Start focuses the window and tab already open, matched on the page title |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
-| [decisions/shell.md](decisions/shell.md) | 4, 8, 25, 42 | The shell's sections, fragment navigation, the design system, the brand-vs-accent split, and the typefaces served by the binary rather than a CDN |
+| [decisions/shell.md](decisions/shell.md) | 4, 8, 25, 42, 46 | The shell's sections, fragment navigation, the design system, the brand-vs-accent split, the typefaces served by the binary rather than a CDN, and the open project as a shell control at the foot of the sidebar |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing), 43 | Signal routing: the one human surface for declaring a wire; and enrolling a board by dropping a probe onto the diagram, the Enroll tab folded in |
-| [decisions/topology-boards.md](decisions/topology-boards.md) | 44 | A role is a fixed slot and a board is a name: the project's board catalog, retracting a role, saved benches that propose rather than enrol, and the validate pass that replaced the alert list |
+| [decisions/topology-boards.md](decisions/topology-boards.md) | 44, 47 | A role is a fixed slot and a board is a name: the project's board catalog, retracting a role, saved benches that propose rather than enrol, and the validate pass that replaced the alert list; a catalog row lists what the repo can build it as, and the DUT is picked as one real scanned combination |
 | [decisions/topology-roles.md](decisions/topology-roles.md) | 45 | A role holds two independent bindings — a probe and a board *type*; the roles table folds into the diagram, a status appears only after a validate pass, the catalog is scanned from the repo, and a run builds for the board in the DUT role |
 | [decisions/trace-view.md](decisions/trace-view.md) | 10 (trace), 27 | What a trace renders, on which clock, the load repartition, and why the decode-to-lanes pipeline stays duplicated with `embarch-core`'s `outpost_load.rs` |
 | [decisions/trace-rows.md](decisions/trace-rows.md) | 19, 21 | Dropping a stale pre-reset head, and the served row cap |

@@ -1,6 +1,6 @@
 # embarch-ui decisions: The shell and the design system
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-20.
 
 One app behind a persistent sidebar, and a design system settled against real mockups.
 
@@ -43,3 +43,15 @@ Decision 8 picked IBM Plex; the fonts arrived over a `<link>` to `fonts.googleap
 **~91 KB buys it**, the same Latin subsets the `<link>` used to pull: Plex Sans as one variable file (wght 100–700, which is what makes the card titles' `font-weight:650` render at 650 rather than snap to a static cut), Plex Mono as two static weights. **The `<link>` also pulled Mono 500 and nothing ever used it** — the two 500 rules in the stylesheet are both UI-font — so it is not shipped. Latin only: the glyphs the UI draws that these files lack (the arrows, the bullet, the warning sign, the chevrons) were **absent from Google's subsets too**, so they came from a fallback font before this change and still do. Italic is likewise synthesised, as it always was — the old URL declared no italic axis either.
 
 **Self-hosting trades one silent failure for four name agreements** — the `url()` in `style.css`, the file in `assets/fonts/`, the match arm in `main.rs`, the `<link rel="preload">` in `index.html` — and a typo in any one of them reproduces the original bug in a new costume. `tests/fonts.rs` holds all four to one list and fails if a name resolves to nothing, and `tests/browser/drive_fonts.py` checks in a real browser what no text guard can: that the faces load, that no request went to a font CDN, and that the shipped Mono's advance is what the trace gutter's constant claims. **It was not: the constant read 6.6 px/char and the font measures 0.6 em exactly — 6.9 px at 11.5 px — so every lane label had been under-measured by 4.5% since the trace view shipped.** Corrected in the same change, and now guarded, because it was only checkable at all once the font was guaranteed to be there.
+
+### 46 — The open project belongs to the shell, not to the Study Designer
+
+**One firmware repo is open at a time, and it always was** — the server holds exactly one, and the catalog, the saved benches, the studies, the Build card and half this binary's error messages are relative to it. What was wrong was where it was *stated*: a card on the Study Designer, so "which repo am I looking at?" was answered on one of five tabs, and the Topology tab's refusals ended with "open one on the Study Designer tab first", pointing a reader off the tab that needed it.
+
+The control sits at the foot of the sidebar now, under the nav: the word Project, the repo's directory name, and the full path in mono. **The path truncates from the left**, because two checkouts of one firmware differ in their last segments and an ellipsis at the end hides what tells them apart. Nothing open reads *none open* in the warning colour — a state, not an error.
+
+**One picker, two doors.** The control opens the dialog, and the Study Designer's card keeps a **Change project…** button onto the *same* dialog rather than a second copy of the fields. The dialog is decision 14's panel unchanged in substance, for unchanged reasons: a browser directory picker yields no usable path, and the path is resolved server-side anyway, because the server is what reads the files.
+
+**What stays on that tab is the half that is only its own**: the summary of what the open project holds, and the static analysis of its source. *Rejected: leaving the picker there and mirroring the state into the sidebar.* Two renderers of one fact is how a footer comes to name a repo a tab has already left; there is one render function over one state object, and the sidebar, the summary line and the dialog are its three outputs.
+
+**A switch now reloads the board catalog and the saved benches too** — project files that would otherwise show one repo's bench under another repo's name, survivable before only because the switch happened on a tab that does not render them. The server's refusals were re-pointed in the same change, so a message that says what to do names something on screen wherever the reader is.
