@@ -32,7 +32,7 @@ Two places, because they answer different questions: live, so a build in progres
 
 ***Rejected: uploading it to Core with the study's results.*** It would make provenance complete, at the cost of a new route, a new on-disk artifact and a retention rule — and what actually establishes which firmware a run used is the outpost header Core reads in its own pre-flight, not the text of a compiler's output. The build ran here; Core never saw it.
 
-**A third source on the Debug tab, not a Builds tab.** That tab is already the thing that switches between log sources, and a build log is a log; a seventh section in a shell whose six-section shape is decision 4 would be a larger change than the feature. It is **stored, not tailed** — a finished build's log does not change — so it carries no SSE stream and brings its own picker, which the other two sources have nothing to pick with. Pruned to fifty: a log is evidence about a run that already happened, and an unbounded directory is a slow leak nobody notices.
+**A third source on the Debug tab, not a Builds tab.** That tab is already the thing that switches between log sources, and a build log is a log; another section in a shell whose section list is decision 4's would be a larger change than the feature. It is **stored, not tailed** — a finished build's log does not change — so it carries no SSE stream and brings its own picker, which the other two sources have nothing to pick with. Pruned to fifty: a log is evidence about a run that already happened, and an unbounded directory is a slow leak nobody notices.
 
 ### 40 — A saved study's `firmware_version` is rewritten only when a mismatch was waved through, and never over `any`
 

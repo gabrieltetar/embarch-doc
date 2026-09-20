@@ -8,7 +8,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ### 4 — One app, not linked-but-separate pages
 
-A persistent left sidebar plus a top status bar, with **six** sections behind it: Dashboard, Topology, Study Designer, Enroll, Trace, Debug — the last two present in none of the three surfaces this replaces. Client-side navigation, one shared header throughout, **so it reads as one product rather than a pile of tools that happen to share a port.**
+A persistent left sidebar plus a top status bar, with **six** sections behind it as designed: Dashboard, Topology, Study Designer, Enroll, Trace, Debug — the last two present in none of the three surfaces this replaces. **It is five now**, by two changes in opposite directions that cancelled: Trace folded into the Live Study tab that replaced the run card (decision 31), and Enroll folded into Topology's own diagram (decision 43). Client-side navigation, one shared header throughout, **so it reads as one product rather than a pile of tools that happen to share a port.**
 
 **Trace is its own section rather than a panel inside the Study Designer's run card**, for one reason: **a trace belongs to a *completed* study, which is not necessarily the one this tab currently has in its table** — a run from an hour ago, or one a terminal submitted, is exactly as valid a thing to open, and a per-run panel could only ever show the run you just did. The run card links into it, handing over the study id, so the common case costs no typing.
 
