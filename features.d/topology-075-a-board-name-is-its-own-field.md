@@ -1,1 +1,1 @@
-| Roles are a fixed pair on the write path, a board's `name` is its own field, and `remove_by_role` retracts one — the counterpart enrolling went without | Shipped | unit | 35 |
+| A role's two halves are independent rows-in-one: a board **type** (`name`/`chip`, written with no probe opened) and a probe binding (`probe_serial`/`hardware_id`, null until one is bound), plus `remove_by_role` to retract | Shipped | unit | 35 |
