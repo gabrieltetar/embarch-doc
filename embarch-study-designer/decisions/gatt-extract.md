@@ -53,3 +53,16 @@ Order is **stable but deliberately not a claim about ATT handle order**, which a
 *Rejected: a configured file or glob list per project* — explicit and auditable, and **silently incomplete in exactly the way the two-file read was, the moment someone adds a file, which is the bug.** *Rejected for now: an exclude knob* — the escape hatch if a *tracked* vendored copy ever trips the duplicate error, **and that error names the two files, which is a better time to design the knob than in advance.** *Rejected: shelling out to `git ls-files`* — same file set with no new dependency, but **it needs the git binary and a real checkout, and an extractor that returns nothing when pointed at an export is the silent failure again.**
 
 Validated against the real checkout: **three services where a bounded read found two**, every characteristic named.
+
+### 78 — A properties macro defined twice under a `#if` resolves to the union of its branches, named in the report
+
+Found by running the extractor against the reference DUT, which returned **nothing at all**: `unrecognized characteristic-properties token: WDS_CHRC_TX_PROP`. That macro is `BT_GATT_CHRC_INDICATE` under `CONFIG_WDS_CONFIRMED_TX` and `BT_GATT_CHRC_NOTIFY` without it, and decision 57's scan **does not evaluate preprocessor conditionals** — so one `#define` in one service took **four services and nineteen characteristics** down with it. [embarch-ui](../../embarch-ui/decisions/designer-panels.md) decision 41 recorded it as "a real extractor limitation" and nothing tracked it; its decision 51, removing the extractor's off switch, made it load-bearing — a blanked table is now **every picker back to hex UUIDs.**
+
+**Properties tokens now resolve through `#define`s**, the using file's first and the whole repo's second — **the same local-then-repo-wide order, and reason, as the UUID variables.** **Two definitions of one name are unioned, not picked.** Which branch a build compiled **is not a fact in the source** — the same class of build fact as the linker's handle order that 57 refuses to guess. Three candidate answers: pick one, *a guess indistinguishable from an answer*; fail, *what it was already doing, and the characteristic exists in every build*; or read it as **"the source declares this characteristic as one of these"**, the only one of the three that is true.
+
+**The union is only defensible because it is visible**, which is the actual decision here. `notify | indicate` is a properties byte **no build compiles**, so `ScanReport` grew `conditional_properties` — the alias, its branches, what was used — and the panel says it in words. Recorded **at the point of use**: a repo-wide walk reads plenty of conditional macros nothing reaches for, and listing those is the defensive posture 57 warns turns a scanner into a broken tool.
+
+**The loud failure is untouched.** A token that is neither a `BT_GATT_CHRC_*` macro nor an alias resolving to one is still `UnparseableProperties`, and **a half-read expression is refused rather than contributing the bits it recognized** — `chrc_property_bit`'s own rule, one level up. Alias chains follow to a bounded depth, not a fixpoint.
+
+Validated against the real checkout: **four services, nineteen characteristics, every one named, where the extraction had been returning an error.**
+
