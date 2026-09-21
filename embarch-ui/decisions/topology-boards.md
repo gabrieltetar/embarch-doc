@@ -67,4 +67,3 @@ So the row is now the board type, its **revisions**, its **variants**, and the *
 ### A dev-bench board type is shown by its label, never by its qualifier
 
 The suite's supported bench list has always carried a human label beside the west qualifier, and only the picker used it — so the diagram box, the Dashboard's table and every validate line read `esp32c5_devkitc/esp32c5/hpcore`. **That is a path, and the picture is asking which board is on the desk.** The label is what is rendered now (the qualifier stays on the tooltip, and stays the value everywhere it is *sent*), and the two labels were rewritten to name the products: *Nordic nRF54L15 DK* and *Espressif ESP32-C5-DevKitC*. A bench type the list does not carry renders unchanged — an unknown bench board is still the bench's board.
-
