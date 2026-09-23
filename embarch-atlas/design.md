@@ -2,7 +2,7 @@
 
 **Status:** paused, 2026-07-20. No repo yet.
 
-Placeholder — this doc becomes the source of truth once `embarch-atlas` design work resumes. See [embarch.md](../embarch.md) §2 for its lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose, and [suite/roadmap.md](../suite/roadmap.md)'s Later bucket.
+Placeholder — this doc becomes the source of truth once `embarch-atlas` design work resumes. **A landscape survey is being gathered in [`research/`](research/) (2026-09-22)** — raw intake, not decisions, and it folds into this doc and is deleted once the design that consumes it is written; [its README](research/README.md) records the scope the survey was run under. See [embarch.md](../embarch.md) §2 for its lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose, and [suite/roadmap.md](../suite/roadmap.md)'s Later bucket.
 
 ## Open questions, recorded before resuming (so they aren't re-litigated from scratch)
 
