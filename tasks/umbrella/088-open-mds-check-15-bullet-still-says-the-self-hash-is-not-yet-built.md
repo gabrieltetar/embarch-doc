@@ -1,6 +1,10 @@
 # 088 — `open.md`'s check-15 bullet still says the self-hash is "not yet built"; it landed as `core/088`
 
-**State:** claimed by agent/umbrella/088-check-15-self-hash-bullet, 2026-09-28 17:02
+**State:** done — `open.md` line 9's bullet now says `binary_sha256` is built and served
+(`embarch-core` decisions 67, 68) rather than "not yet built", and points at `tasks/umbrella/089`
+for consuming it in check 15 — retired with a one-line reason rather than implemented here (see
+"What I decided" below). `077`'s parked `open.md` compaction rode along in this unit and closed:
+4,372 B (85.4%, PARKED) -> 3,905 B (76.3%, PAID).
 **Source:** `embarch-core` task `088` (`tasks/core/088-serve-a-self-hash-of-the-running-binary-on-status.md`),
 landed on `agent/core/088-status-self-hash`. `embarch-umbrella/open.md` line 9
 reads: *"Check 15 is not a hash comparison and must not be read as one. It
@@ -64,10 +68,37 @@ reserve, file `tasks/umbrella/<NNN>-compact-docs.md` in the same commit.
 
 ## Done when
 
-- [ ] `embarch-umbrella/open.md` line 9's bullet reflects that the field is
+- [x] `embarch-umbrella/open.md` line 9's bullet reflects that the field is
       built and served, not "not yet built."
-- [ ] Either check 15 gains a content-hash comparison against `binary_sha256`
+- [x] Either check 15 gains a content-hash comparison against `binary_sha256`
       (a real behavior change, its own task) or the bullet is retired with a
       one-line note on why comparing it is left undone — `embarch-umbrella`'s
       call, not asserted here.
-- [ ] Gate green.
+- [x] Gate green.
+
+## What I decided
+
+**Retired the "would close it" half with a one-line reason, rather than implementing the
+comparison here.** Consuming `binary_sha256` in check 15 is a real behavior change: it needs a new
+decision (warn-level semantics for a *content* disagreement, not just a version one; whether to
+always hash the located binary or only when `core_version` already matched; what a `null` hash on
+either side means), new test coverage for the four presence/absence combinations, and touches
+`AuthedStatus`, `judge_core_build`/`check_core_build`, and `decisions/schema-skew.md` (already at
+94.0%, 733 B left, parked on blocked `tasks/umbrella/009` — a new decision there would need its own
+sibling file). Bundling that into a task whose primary job was a stale doc bullet, alongside the
+parked `open.md` compaction riding on the same unit, was more risk than one worker session should
+carry at once. Filed as `tasks/umbrella/089-consume-binary-sha256-in-check-15.md`, `open`, with the
+open design questions named rather than assumed.
+
+**No code changed in `embarch-umbrella` this task** — doc-only (`open.md`, this task file, `077`,
+the new `089`, a `changelog.d/` fragment). `cargo build`/`test`/`clippy` were still run in the code
+worktree to confirm nothing regressed from having the worktree present; they were green
+independent of this task's content.
+
+**`open.md`'s compaction (`077`) rode along**, per the dispatch note, since the file the bullet
+lives in was in reserve and 077's `Must not delete:` list's first item is this very bullet. Bytes:
+4,372 -> 3,905 (85.4% -> 76.3%, PARKED -> PAID). Two genuine `check-duplication.py` overlaps were
+resolved by pointing at the owning decision instead of restating its mechanism (check-15 bullet vs
+`decisions/schema-skew.md` decision 34; `apply_plan` hardware-debt bullet vs
+`decisions/sticky-host.md` decision 51); every other bullet's facts were preserved, only wording
+tightened. `077` closed `done` with the before/after recorded there.
