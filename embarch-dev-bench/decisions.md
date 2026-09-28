@@ -10,7 +10,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 |---|---|---|
 | [Platform and build system](decisions/platform.md) — one RTOS, west workspaces, the Rust staticlib | 1, 2, 3, 5, 8, 9, 16, 20 | 5.9 KB |
 | [Boards](decisions/boards.md) — which board is the bench, and why it changed twice | 4, 10, 24, 26, 43 | 6.7 KB |
-| [The Core link](decisions/link.md) — the serial hop, detection, flashing, the handshake, two hardware ceilings | 6, 7, 12, 13, 18, 19, 25, 30, 35, 36 | 9.4 KB |
+| [The Core link](decisions/link.md) — the serial hop, detection, flashing, the handshake | 6, 7, 12, 13, 18, 19, 25, 36 | 7.3 KB |
+| [Frame and step ceilings](decisions/link-limits.md) — the inbound-path FIFO ceiling and the local step-cap divergence | 30, 35 | 4.3 KB |
 | [BLE pairing and security](decisions/ble.md) — connection-count enforcement, hard-reset teardown, pairing, security elevation | 11, 15, 33, 34, 37 | 7.7 KB |
 | [Addressing and scan-time discovery](decisions/scanning.md) — the bench's own address, GATT UUID byte order, name filtering, the advertiser census | 17, 23, 31, 32, 44, 45, 46 | 9.1 KB |
 | [Dispatching a study](decisions/dispatch.md) — steps, discovery, monitoring windows | 14, 21, 22, 27, 28 | 8.7 KB |
