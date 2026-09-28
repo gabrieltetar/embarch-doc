@@ -4,7 +4,7 @@
 
 The Build card, the ordered snippet picker, the outpost mode declaration, the build as a phase of a run, and where a build log is read afterwards. The half of [study-designer.md](study-designer.md) decision 11 this reverses is stated there and in [reversals](../../embarch-decision-reversals.md) row 113.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The shared crate this rests on: [`embarch-api` decision 78](../../embarch-api/decisions/firmware-build-crate.md). What a study stores: [`embarch-study-designer` decision 77](../../embarch-study-designer/decisions/declares.md). What Core checks before step 1: [`embarch-core` decision 74](../../embarch-core/decisions.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The shared crate this rests on: [`embarch-api` decision 78](../../embarch-api/decisions/firmware-build-crate.md). What a study stores: [`embarch-study-designer` decision 77](../../embarch-study-designer/decisions.md). What Core checks before step 1: [`embarch-core` decision 74](../../embarch-core/decisions.md).
 
 ### 38 — A study carries a build spec, the picker is ordered, and the mode is three-state
 
