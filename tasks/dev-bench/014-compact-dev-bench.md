@@ -1,12 +1,23 @@
 # 014 — `embarch-dev-bench/decisions/link.md` is in reserve after decision 35's amendment
 
-**State:** blocked — **state corrected by leg 057, 2026-09-09.** `In flux:` below says **yes** and
-names its own unparking condition (whichever of the flash-route migration or the step-cap
-divergence is next quiet), so this was never dispatchable: `.claude/leg.md` forbids sending a worker
-to a compaction task whose `In flux:` says yes, and an `open` state on one is the filer having got
-the state wrong rather than the flux having ended. Nothing about the file changed; only the state
-line did. Note the mirror of this correction on `tasks/umbrella/038` in the same commit — two
-`In flux: yes` compaction tasks sitting `open` in one queue is a pattern, not a slip.
+**State:** claimed by agent/dev-bench/014-compact-dev-bench, 2026-09-28 16:29
+**Dispatch note (supervisor, 2026-09-28):** **unparked on its own clock and its own condition.**
+`In flux:` named "whichever of the flash-route migration or the step-cap divergence is next quiet";
+`git log -- embarch-dev-bench/decisions/link.md` shows the file untouched since `84243a33`
+(2026-09-08), twenty days quiet, and no open task targets decisions 13 or 35 (`dev-bench/010`
+cites 35's divergence but is `toolchain`-gated and not in flight). Same reading as `dev-bench/012`
+on 2026-09-28. The file is **11,241 / 12,288 B, 1,047 B left**; re-derive it and re-check `git log`
+before you shorten anything, as the field below asks. Prefer a verbatim split (`DOC-COMPACTION.md`
+§2) — the 30/35 inbound-path and step-ceiling pair against the flashing/detection/identity
+decisions is the seam the task names — and if a decision moves, update `decisions.md`'s group
+table and every inbound citation; a citation **outside `dev-bench`** you do not edit: drop an inbox
+file by absolute path (`/home/gabriel/Github/embarch/embarch-doc/inbox/`) with the exact fix and
+say so in your report, and the supervisor repoints it at landing. No other `embarch-dev-bench` file
+is in reserve.
+**Previous state (leg 057, 2026-09-09):** blocked — `In flux:` said **yes** and named its own
+unparking condition, so this was never dispatchable while it held: `.claude/leg.md` forbids sending
+a worker to a compaction task whose `In flux:` says yes. Note the mirror of that correction on
+`tasks/umbrella/038` in the same commit.
 **Source:** `check-doc-size.py`, run during `tasks/dev-bench/002` — decision 35's amendment (the
 step-cap removal it claimed was never implemented) pushed the file to 91.5% of its cap
 (11,241/12,288 B, 1,047 B left)
@@ -16,7 +27,8 @@ step-cap removal it claimed was never implemented) pushed the file to 91.5% of i
 
 **Compacts:** embarch-dev-bench/decisions/link.md
 **Size debt due:** 2026-09-22
-**In flux:** yes — decision 13 took a live amendment on 2026-09-07 (Core-flashing the nRF54L15DK
+**In flux:** no — rewritten 2026-09-28: both areas the old answer named have been quiet since
+2026-09-08 (evidence in the dispatch note above). The old answer, kept as history: yes — decision 13 took a live amendment on 2026-09-07 (Core-flashing the nRF54L15DK
 attempted for the first time) and decision 35 just took one in this same commit. Two of this
 file's ten entries have been actively corrected within the last two days; do not compact until
 whichever of those areas (the flash-route migration, or the step-cap divergence) is next quiet,
