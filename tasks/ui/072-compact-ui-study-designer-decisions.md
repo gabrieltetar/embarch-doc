@@ -1,6 +1,6 @@
 # 072 — `embarch-ui/decisions/study-designer.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/ui/072-compact-ui-study-designer-decisions, 2026-09-28 17:01
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 11's reversal rewrite
 **Scope:** ui
 **Hardware:** none
@@ -33,6 +33,15 @@ decision the new `firmware-build.md` cites most (the Build card matches its
 project by that repo's path). A `decisions/project.md` taking 14 verbatim
 leaves this file about authoring, per
 [../../DOC-BUDGET.md](../../DOC-BUDGET.md) §3.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+Three days past its clock, and it has grown since filing: `check-doc-size.py --pressure` now reads
+**11,392 / 12,288 B, 896 B left**, not the 11,232 above. **Also in reserve in `ui`, not yours to
+write:** `decisions/shape.md` **94 B left** and `spec.md` at 11,022 / 10,240 B (both
+`tasks/ui/069`, open — a separate unit), and `open.md` 253 B left (`tasks/ui/074`, blocked). If
+your work pushes any other `ui` file into reserve, file `tasks/ui/<NNN>-compact-ui.md` in the same
+commit.
 
 ## Done when
 
