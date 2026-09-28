@@ -1,0 +1,34 @@
+# embarch-api decisions: `validate`'s `kind`-classification thread
+
+**Status:** active, 2026-09-28.
+
+`validate`'s two call sites branch on the response's `kind` field, never `reason`'s wording; a `kind`-less Core (older than `embarch-core` decision 59) reads a third, explicit `"unknown"` rather than defaulting to `"mismatch"`; and the `not_attached` lead's own wording, amended twice to keep matching what `embarch-core` folds into that `kind`. Split **verbatim** out of [failure-reporting.md](failure-reporting.md) once that file crossed its reserve band (`tasks/api/111`) — decisions 71, 73 and 76 moved unchanged. Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Tool description citing decisions, and the parity rule extended to the enrollment-file writers: [failure-reporting.md](failure-reporting.md).
+
+### 71 — `validate`'s two call sites read `kind`, not `reason`'s wording; `not_attached` gets its own lead and no `fix_it_url`
+`embarch-core` decision 59 split `POST /validate`'s `409`/`503` body into `kind: "not_attached" | "mismatch"` because the two conditions — a probe that could not be opened at all (ordinarily just unplugged) versus a live identity that genuinely disagrees with what was enrolled — are opposite in what a caller should do about them, and `embarch-core-client`'s `TopologyMismatchError` had been carrying enough fields (`live_hardware_id: Option<String>`) to tell them apart since before Core's own fix, yet both `tools.rs`'s `validate` MCP tool and `cli.rs`'s `validate` subcommand still built their lead ("topology mismatch for role '...'") unconditionally, for both conditions, from the same literal format string repeated at two call sites (`tasks/api/068`).
+
+**Fixed at three layers**, not two, because the wire shape itself needed the new field before either wrapper could read it: `embarch-core-client::TopologyMismatchBody`/`TopologyMismatchError` both gained `kind: String` (`#[serde(default = "default_mismatch_kind")]`, defaulting to `"mismatch"` so a Core older than decision 59 — which only ever sent this shape for a genuine mismatch — still parses) and `fix_it_url` became `Option<String>` (`None` on `"not_attached"`, per decision 59). `validate()` now dispatches on `503 Service Unavailable` the same way it already dispatched on `409 Conflict` — both dispatch to the one `TopologyMismatchBody` parse, since decision 59 answers `503` for `"not_attached"` and kept `409` for `"mismatch"` alone. `TopologyMismatchError::is_not_attached()` is the one predicate either wrapper calls; its own `Display` leads with "probe not attached" and never offers "fix it at" for that arm, so a caller relying on the error's own text (rather than reading `kind` itself) still gets a distinguishable string.
+
+Both `tools.rs` and `cli.rs` now match `Some(mismatch) if mismatch.is_not_attached()` before the general `Some(mismatch)` arm — two call sites, two matches, kept textually parallel on purpose (the pattern `068` names as the actual failure mode: fixing one and not the other). Neither wrapper infers the condition from `live_hardware_id.is_none()` locally; that inference is exactly what decision 59 moved server-side into a real field, and re-deriving it client-side would silently drift from Core's own rule the moment Core's criteria for `"not_attached"` change.
+
+**Amended 2026-09-13 (decision 73):** an absent `kind` no longer defaults to `"mismatch"` — it converts to a third value, `"unknown"`, and `fix_it_url` is suppressed on that arm too. The other two facts above are unchanged: `503` still dispatches through the same parse as `409`, and both wrappers still call `is_not_attached()` rather than `live_hardware_id.is_none()`.
+
+### 73 — A `409`/`503` body with no `kind` field converts to `kind: "unknown"`, not `"mismatch"`, and drops `fix_it_url`
+A Core older than `embarch-core` decision 59 sends this shape with no `kind` field at all, and decision 71's default read that as `"mismatch"` — the more alarming of the two named conditions, but still a guess, and one that kept a `fix_it_url` inviting the re-enrolment the enrollment safety property exists to prevent, on a probe that was simply unplugged (this task's own observed instance).
+
+**Chosen: a third, explicit `"unknown"` value and predicate (`TopologyMismatchError::is_unknown`), `fix_it_url` suppressed on that arm too** — a fact about which Core answered (the wire body's own `kind` was absent), read once at the body-to-error conversion, never re-derived from `live_hardware_id.is_none()`, which is exactly the inference decision 71 forbids. Cost: the private `TopologyMismatchBody.kind` becomes `Option<String>`; the public `TopologyMismatchError.kind: String` and `is_not_attached()` are unchanged. Amends decision 71's first fact: absence no longer defaults to `"mismatch"`.
+
+**Against naming the Core version in the message while keeping the `"mismatch"` default:** the message alone doesn't stop a reader acting on the `fix_it_url` it would still carry — only dropping the URL removes the hazard.
+
+**Against leaving it:** the `"mismatch"` fallback isn't a merely conservative guess, it's unsafe in one direction — a `fix_it_url` on a response this client cannot classify invites exactly the re-enrolment the "never re-enrol on a mismatch" rule exists to prevent, on a probe that may simply be unplugged.
+
+### 76 — `validate`'s `not_attached` lead now says "unavailable", matching `embarch-core`; "plug it in" dropped, not replaced
+`embarch-core` decision 59's second amendment (`tasks/core/077`) folded five more causes into `kind: "not_attached"` — a probe found but unable to open, power-check, attach, core-select, or read a hardware ID from — none fixed by plugging anything in, all already named correctly by `mismatch.reason`. Decision 71's fixed suffix, `"— plug it in; this is not a topology mismatch"`, fit only the one cause it was written against; the `"probe not attached"` lead has the same problem, since a probe stuck opening or unpowered isn't correctly "not attached" either. `embarch-core` hit this identically and renamed its own plain-text lead to "unavailable" the same morning.
+
+**Chosen: match that wording**, in `tools.rs`'s `validate` tool and `cli.rs`'s `validate` command, dropping "plug it in" outright rather than replacing it — `reason` already carries the right instruction per cause. `"— this is not a topology mismatch"` stays; true for all six, unlike the dropped advice.
+
+**Against keeping "not attached" and only dropping the imperative:** still misdescribes five of six causes, just without also giving bad advice.
+
+**Against qualifying it ("not attached or otherwise unavailable"):** longer, and invents a second term for what Core already named once.
+
+Wire `kind` is untouched. Two doc comments still saying "ordinarily just unplugged" (`tools.rs`'s tool description, `main.rs`'s `Validate` variant) were updated to name the same six causes.
