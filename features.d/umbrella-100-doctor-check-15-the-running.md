@@ -1,1 +1,1 @@
-| `doctor` check 15 — the running Core's `core_version` is the located build; catches a **cross-version** stale deploy only | Shipped, never run against a live Core | unit | 34 |
+| `doctor` check 15 — the running Core's `core_version` is the located build, and (where both sides serve a hash) its `binary_sha256` too, closing the **same-version** blind spot | Shipped, never run against a live Core | unit | 34, 56 |
