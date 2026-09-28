@@ -1,6 +1,18 @@
 # 067 — `interfaces/limits.md` and `decisions/protocols.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/study-designer/067-compact-study-designer, 2026-09-28 16:30
+**Dispatch note (supervisor, 2026-09-28):** overdue since 2026-09-24. The numbers below still hold
+(14 B and 75 B left); re-derive them, and re-check `git log` on both — last touched 2026-09-17
+(`685b691c`, the owner's "Study Designer authors every field" pass). **`interfaces/eap.md` already
+exists (8,368 B)**, so before creating a new file for the `.eap` constants check whether they belong
+there — a split into the file that already owns the `.eap` interface is cheaper than a new one, but
+not if it pushes `eap.md` past 90% of 12,288 B (11,059 B). Also in reserve in this sub-project and
+**not yours**: `decisions/gatt-extract.md` (36 B left, `069`), `decisions/declares.md` (88 B left,
+`068`), `spec.md` (840 B left, `032`, blocked) and `open.md` (over its 5,120 B cap, `026`, blocked)
+— push none of them further in; if a moved decision's citation lives in one of them, repoint it
+only if the repoint does not grow the file. A citation **outside `study-designer`** you do not
+edit: drop an inbox file by absolute path (`/home/gabriel/Github/embarch/embarch-doc/inbox/`) with
+the exact fix and say so in your report; the supervisor repoints it at landing.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by `tasks/suite/045` — decision 75's `eap_repo` and the three advisory dev-bench caps
 **Scope:** study-designer
 **Hardware:** none
