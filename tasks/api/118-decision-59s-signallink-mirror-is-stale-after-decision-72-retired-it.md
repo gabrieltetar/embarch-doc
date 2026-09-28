@@ -1,6 +1,6 @@
 # 118 — Decision 59's "`SignalLink`'s own mirror" is stale after decision 72 retired it
 
-**State:** claimed by agent/api/118-decision-59-signallink-mirror, 2026-09-28 16:32
+**State:** done by agent/api/118-decision-59-signallink-mirror, 2026-09-28
 **Dispatch note (supervisor, 2026-09-28):** reconciled before dispatch — still true:
 `crates/embarch-core-client/src/client.rs:432` imports `SignalLink` from `embarch-topology`, so it
 is an alias, and `hardware-selection.md:23` still says "`SignalLink`'s own mirror". Two more places
@@ -50,9 +50,38 @@ type needs the same "can't link `hardware`, so mirror it" treatment.
 
 ## Done when
 
-- [ ] `hardware-selection.md` decision 59's parenthetical is reworded to reflect
+- [x] `hardware-selection.md` decision 59's parenthetical is reworded to reflect
       that `SignalLink` is now a type alias (decision 72), not an independent
       mirror — or the sentence is rewritten to make its point without leaning on
       `SignalLink`'s current shape.
-- [ ] A pass over the same paragraph confirms no other type named there was
+- [x] A pass over the same paragraph confirms no other type named there was
       also among decision 72's retired seven.
+
+## Resolution
+
+Reworded decision 59's parenthetical in place (9,124 B → 9,303 B, still clear
+of `hardware-selection.md`'s 12,288 B cap): it now says the "cannot link the
+`hardware` feature" constraint is what made `SignalLink` a hand-written mirror
+*before* decision 72, and that decision 72 retired that mirror in favor of a
+type alias to the real `embarch-topology` type. The rest of the paragraph names
+only `HelloAckInfo` (Core's own `study` type, not `embarch-topology`) and
+`HelloAckResponse` (this crate's own mirror of that Core type, unaffected by
+decision 72) — neither is among decision 72's retired seven, so no other edit
+was needed there.
+
+Decision 60's line 55 ("the same day this route's mirror was written") also
+names a mirror, but it is `HelloAckResponse`'s field-for-field mirror of
+Core's `study::HelloAckInfo` — a different mirror than the one decision 72
+retired, and still accurate today. Left unchanged.
+
+Checked `crates/embarch-core-client/src/client.rs:882`'s pointer at
+"`SignalLink`'s own doc comment above for the same constraint on a different
+type" against the block comment above the `pub use embarch_topology::hardware::{
+Alert, DetectedPort, EnrolledBoard, Route, SignalDirection, SignalLink };` at
+lines 408–428. That comment exists and still states the constraint ("this
+crate must never link `probe-rs`/`serialport`") accurately, in a form already
+updated for decision 72 (it opens "Until 2026-09-12 the six types below were
+hand-written copies... now the originals are reachable here... the copies are
+gone"). Per the dispatch note's own test — stale only if that comment no
+longer exists or no longer states the constraint — it is not stale. No code
+change made in `embarch-api`; zero commits there.
