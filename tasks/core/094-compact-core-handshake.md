@@ -1,6 +1,6 @@
 # 094 — `embarch-core/decisions/handshake.md` is at its cap
 
-**State:** claimed by agent/core/094-compact-core-handshake, 2026-09-28 15:06
+**State:** done
 **Dispatch note (supervisor, 2026-09-28):** this file is **one of three that turn `main`'s
 `check-doc-size.py` RED** — over its cap and past its 2026-09-25 clock — so the unit is judged
 first on whether that red is gone. The other two reds (`embarch-ui/open.md`,
@@ -51,12 +51,36 @@ ordinary compaction work.
 
 ## Done when
 
-- [ ] Out of reserve, or the task says why not.
-- [ ] **Nothing about why the reset is conditional survives only in prose that
-      was cut.** The `HEADER_INTERVAL_MS=0` case, the fatal input-buffer clear
-      and the lock-held-across-the-listen argument are the three a later reader
-      will try to "simplify away"; each must still be findable.
-- [ ] `decisions.md`'s index row and its size column updated.
+- [x] Out of reserve, or the task says why not. **Out of reserve**:
+      `check-doc-size.py --pressure` reports `PAID 71.8% embarch-core/decisions/handshake.md
+      is out of reserve; close its item`.
+- [x] **Nothing about why the reset is conditional survives only in prose that
+      was cut.** Moved verbatim — `diff` against the pre-split section shows the
+      only removed byte is the file-separator `---` line that sat between
+      decisions 56 and 74 in the old file, not decision 74 itself. The
+      `HEADER_INTERVAL_MS=0` case, the fatal input-buffer clear and the
+      lock-held-across-the-listen argument are all still there, word for word.
+- [x] `decisions.md`'s index row and its size column updated. Split the
+      `handshake.md` row (now 31, 35, 47, 56 / 8.6 KB) and added a row for
+      `decisions/outpost-preflight.md` (74 / 4.5 KB).
 - [ ] Every inbound reference to 74 still resolves (`check-decision-refs.py`).
-- [ ] Byte numbers before and after.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+      **Not fully** — one reference is broken by this split and it is not
+      `core`'s to fix: `embarch-ui/decisions/firmware-build.md:7` links
+      `[embarch-core decision 74](../../embarch-core/decisions/handshake.md)`,
+      which now names the wrong file. Filed to
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/ui-repoint-firmware-build-decision-74-link.md`
+      per `DOC-CONVENTIONS.md`'s own fix (link `embarch-core/decisions.md`, the
+      routing table, instead of a topic file). No other inbound reference to 74
+      is link-shaped; the rest are bare `(decision 74)` prose that resolves
+      against the sub-project regardless of which topic file holds the entry.
+- [x] Byte numbers before and after. `decisions/handshake.md`: 12,643 B → 8,819 B
+      (cap 12,288 B, was 355 B over). New `decisions/outpost-preflight.md`:
+      4,621 B (cap 12,288 B).
+- [~] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/`
+      fragment added (`core-outpost-preflight-split.changed.md`). Gate is
+      **not** all-green: `check-doc-size.py` still shows the two pre-existing
+      `embarch-ui` reds named in the dispatch note (`open.md`, `decisions/shell.md`)
+      — not this unit's, unchanged by it. `check-decision-refs.py` shows the one
+      new `embarch-ui` reference above, filed to inbox rather than fixed here
+      (out of `core`'s ownership). Every other one of the 11 gate scripts is
+      `PASS`.
