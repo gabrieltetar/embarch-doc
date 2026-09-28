@@ -12,6 +12,7 @@
 - `embarch setup --dry-run` runs every detection step and prints the whole plan — install, `PATH`, service call — changing nothing.
 
 ### Changed
+- open.md's check-15 bullet: `binary_sha256` is built, not "not yet built"; consuming it is tasks/umbrella/089.
 - `open.md` and decision 26 now say `build_dir_name` shipped (api decision 77) for the default combo only; `target.json` still needed for the rest.
 - umbrella's singular-wrapped citation census run: 9 lines / 9 instances, 0 mis-cited, 0 fixed.
 - Re-checked 13 plural-form decision-citation lines (30 instances) in embarch-umbrella, invisible to the singular-only census; 0 wrong, 0 false.
