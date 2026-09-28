@@ -4,7 +4,7 @@
 
 Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file — which is what let them move from `design.md` §3 to one `decisions.md` and then into these seventeen files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file — which is what let them move from `design.md` §3 to one `decisions.md` and then into these twenty files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
 
 | Load this for | Decisions |
 |---|---|
@@ -21,6 +21,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57, 78 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
 | [What a study declares](decisions/declares.md) — firmware versions, and how each is verified | 40, 74 |
+| [What a study builds](decisions/builds.md) — a study's own build spec, and the outpost mode it requires | 77 |
 | [The GATT table a study declares](decisions/declared-gatt.md) — designed, never built | 45 |
 | [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 75 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, and what it may report | 60, 62 |
