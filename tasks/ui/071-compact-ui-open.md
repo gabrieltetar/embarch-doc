@@ -1,6 +1,17 @@
 # 071 — `embarch-ui/open.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/ui/071-compact-ui-open, 2026-09-28 15:07
+**Dispatch note (supervisor, 2026-09-28):** **the numbers below are stale.** The file grew after
+this task was filed (the owner's 2026-09-19/20 `ui` decisions) and is now **6,630 / 5,120 B —
+1,510 B over its cap and past its 2026-09-24 clock**, which makes it one of three files turning
+`main`'s `check-doc-size.py` RED. So the order of goals is: **(1) under the 5,120 B cap** — that is
+what fails the gate; **(2) out of reserve** (floor `max(1200 B, 10%)` from the top = **3,920 B**)
+if it can be done without closing a question by attrition, otherwise say why not. Re-derive every
+number yourself. The other two reds (`embarch-core/decisions/handshake.md`,
+`embarch-ui/decisions/shell.md`) are not yours; `shell.md` is `tasks/ui/073` and runs **after** this
+unit, so do not touch it, nor `decisions/shape.md` (94 B left, `069`), `decisions/topology-boards.md`
+(111 B, `073`), `decisions/study-designer.md` (896 B, `072`) or `spec.md` (`069`). If a retired
+entry's settled content must move into a decision file, it may not push any of those further in.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by `tasks/ui/070`'s two new entries
 **Scope:** ui
 **Hardware:** none
