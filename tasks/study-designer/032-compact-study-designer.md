@@ -1,6 +1,12 @@
 # 032 — Compact `embarch-study-designer/spec.md`
 
-**State:** claimed by agent/study-designer/032-compact-study-designer, 2026-09-28 17:29
+**State:** done — 2026-09-28. Split §4 ("What a study carries") verbatim to
+`spec/carriage.md`, per the dispatch note's split-first instruction; renumbered the remaining
+sections (5→4, 6→5, 7→6) since nothing in this suite's own docs cited them by number, and fixed
+`embarch-study-designer/src/study.rs:1062`'s own `spec.md §7` comment to `§6` in the same commit.
+`spec.md` is now 7,924/10,240 B (out of reserve). Found one cross-repo citation this split made
+stale — `embarch-api/src/main.rs:538`'s `spec.md §7` — outside this task's ownership row, dropped
+at `/home/gabriel/Github/embarch/embarch-doc/inbox/api-stale-study-designer-spec-section-cite.md`.
 **Source:** `scripts/check-doc-size.py`, filed by leg landing task 031 (2026-09-11):
 `spec.md` crossed into its last 10% (91.3%, 890 B left) from that task's seal-placement
 correction and `record_checks` table row.
@@ -52,6 +58,11 @@ reserve, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same
 
 ## Done when
 
-- [ ] `spec.md` compacted (or this task re-parked with a fresh look), such that
+- [x] `spec.md` compacted (or this task re-parked with a fresh look), such that
       it alone still answers what someone needs to work on this component today.
-- [ ] Gate green.
+      Split, not squeezed: §4 moved verbatim to `spec/carriage.md` (the seal-ordering sentence
+      under "Must not delete" above travelled with it, unreworded), so `spec.md` alone still
+      answers what someone needs today and `spec/carriage.md` is one link away for the carriage
+      detail. No inbound link named §4/§5/§6/§7 by number from any current (non-historical,
+      non-task) doc in either repo except the two source comments above, both fixed or reported.
+- [x] Gate green.

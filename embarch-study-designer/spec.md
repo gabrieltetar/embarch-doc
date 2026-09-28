@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md) · [interfaces/decoders.md](interfaces/decoders.md) · [interfaces/eap.md](interfaces/eap.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md) · [interfaces/decoders.md](interfaces/decoders.md) · [interfaces/eap.md](interfaces/eap.md). What a study carries and which seal covers it: [spec/carriage.md](spec/carriage.md).
 
 ## 1. What it is
 
@@ -49,30 +49,14 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 
 **The FFI boundary is panic-safe by construction:** `panic = "abort"` plus an explicit status code on every exported function, rather than `catch_unwind`, which needs `std`. Board→target-triple selection lives in dev-bench's CMake, and the soft-float variant is mandatory on Cortex-M33 here — a hard-float staticlib fails to link the moment any path touches an `f32`, which includes a field inside `Sample` and not just the exposed signatures.
 
-## 4. What a study carries
-
-| Field | Crosses to dev-bench? | Sealed by |
-|---|---|---|
-| `steps` | yes | `steps_crc` |
-| `streams` (declared taps) | yes | `streams_crc` |
-| `protocols` (`.eap` manifests) | yes — dev-bench *executes* them | `protocols_crc` |
-| `requires` (firmware versions; the DUT build spec and outpost mode, decision 77) | **no** | — |
-| `decoders` (payload layouts) | **no** — only an index rides on a tap | — |
-| `dev_bench_log_level` | yes | **deliberately neither** |
-| `record_checks` (per-tap record framing) | **no** — Core checks the capture after the run | — |
-
-**Three sibling seals, not one widened one.** `struct Study`'s declaration order — which postcard encoding follows — carries the two step/stream seals *together*, after both of their spans: `steps, streams, steps_crc, streams_crc`, then `protocols, protocols_crc` on its own. Only `protocols_crc` immediately follows the one span it covers; a hand-written C decoder digesting `steps` and then `streams` before either seal still gets, at the end, one run of bytes per seal and a mismatch that names **which third** arrived wrong.
-
-**What is outside every seal is a rule, not an oversight:** how the host later *renders* a captured byte, and how loud the bench is while capturing it, change neither what dev-bench executes nor what it captures. **Re-rendering a capture with a corrected layout, or re-running at a louder log level, must leave it the same study** — otherwise debugging a failure would require altering the artifact under investigation.
-
-## 5. Result storage
+## 4. Result storage
 
 Core writes `study_results/<study_id>/`, and this crate owns every **row shape** in it while Core owns the paths and the storage. Layout and the endpoint surface: [embarch-core/interfaces.md](../embarch-core/interfaces.md) — *Result layout on disk*, and the `/study/{id}/…` routes above it.
 
 - `events.json` — the `StudyResult`: per-step outcomes with both time edges, provenance, and one entry per declared tap. Written incrementally, one step result at a time, because the type is ~9 KB even after the size passes and Core never materialises a whole one.
 - `streams/<tap>.*` — raw bytes **always written before any decode is attempted**, plus a rendered file where the declared encoding has one. Row shapes are this crate's: a sample row, a transcript row (with the payload rendered **twice** — exact hex and printable-ASCII, so a shell transcript is readable without decoding by hand while nothing is lost for a binary protocol), and a struct row.
 
-## 6. Consumers
+## 5. Consumers
 
 **`embarch-core`** bridges HTTP to serial: it validates a submission, checks all three seals, runs the handshake, relays `StudyStart`, receives step results, opens a signal tap's own port where the route bypasses dev-bench, and writes the results. One study in flight at a time; no cancel endpoint; the in-memory job registry does not survive a restart, so a poll afterwards is indistinguishable from an id that never existed — by design.
 
@@ -80,6 +64,6 @@ Core writes `study_results/<study_id>/`, and this crate owns every **row shape**
 
 **`embarch-dev-bench`** links the staticlib and executes: it verifies `steps_crc` before step 0, decodes one step at a time from the retained span, opens declared taps from their scope, forwards arrival-stamped bytes **interpreting nothing**, and runs a `.eap` state machine against the live DUT.
 
-## 7. Constants
+## 6. Constants
 
 Every capacity bound lives in one `limits` module. Values and provenance: [interfaces/limits.md](interfaces/limits.md); why they are fixed-capacity: [decisions/limits.md](decisions/limits.md). The two schema constants and what each guards: [decisions/versioning.md](decisions/versioning.md). Whole-`Study`/`DevBenchMessage` sizes on the host vs. `no_std` shapes, and why the test harness needs a raised `RUST_MIN_STACK`: [decisions/limits.md](decisions/limits.md) decision 63.
