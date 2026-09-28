@@ -22,5 +22,6 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Topology](interfaces/topology.md) — probe enrollment, live validation, signals | `/probes/enroll`, `/probes/enrolled`, `/probes/enrolled/{role}`, `/validate`, `/alerts`, `/dev-bench/link`, `/signals`, `/signals/{name}` |
 | [Logs](interfaces/logs.md) | `/logs/recent` |
 | [Studies](interfaces/studies.md) — the dev-bench handshake, the async study job, and the listing of past ones | `/dev-bench/hello`, `/studies`, `/study`, `/study/{id}`, `/study/{id}/events`, `/study/{id}/steps`, `/study/{id}/streams`, `/study/{id}/stream/{name}` |
+| [Streams](interfaces/streams.md) — a tap's arrival times and its `OutpostTrace` load repartition | `/study/{id}/stream/{name}/arrivals`, `/study/{id}/stream/{name}/load`, `/study/{id}/stream/{name}/load/spans` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |

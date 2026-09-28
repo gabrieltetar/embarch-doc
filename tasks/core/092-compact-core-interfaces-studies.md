@@ -1,6 +1,13 @@
 # 092 — `embarch-core/interfaces/studies.md` is in reserve
 
-**State:** claimed by agent/core/092-compact-core-interfaces-studies, 2026-09-28 16:31
+**State:** done — 2026-09-28 — the three `/stream/{name}*` sub-routes (`arrivals`,
+`load`, `load/spans`) split verbatim into new `interfaces/streams.md` (3,969 B).
+`studies.md` is now 9,076 B (was 12,101 B), well clear of the 12,288 B cap.
+`interfaces.md`'s index gained a Streams row; a one-line pointer in `studies.md`
+sends a reader to the new file. No `embarch-core` source comment cited these
+rows by file, so the code repo has **zero commits** — checked with
+`grep -rn` for `interfaces/studies` across `.rs` files, no hits. Native Windows
+build: **not owed**, no source changes.
 **Dispatch note (supervisor, 2026-09-28):** **the numbers below are stale, and worse.** The file is
 now **12,101 / 12,288 B, 187 B left**, overdue since 2026-09-25 — `core/094` (landed this afternoon,
 doc `fe7c52c9`) added a 72-byte pointer to the new `decisions/outpost-preflight.md` that decision 74
@@ -47,11 +54,22 @@ routes stops being a reference.
 
 ## Done when
 
-- [ ] Out of reserve, or the task says why not.
-- [ ] **Nothing about a refusal was dropped.** Each route's `400`/`404`/`422`
-      cases survive the move, including which of them name the tap's real
-      encoding — those are what a caller branches on.
-- [ ] Every inbound link to a moved row still resolves (`check-links.py`,
-      `check-decision-refs.py`).
-- [ ] Byte numbers before and after.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+- [x] Out of reserve, or the task says why not. `studies.md` 12,101 B → 9,076 B.
+- [x] **Nothing about a refusal was dropped.** All three moved rows' `400`/
+      `404`/`422` text carried verbatim into `streams.md` — the shared
+      tap-resolution `404`, `/load`'s `400`/`422`, and `/load/spans`'s "same
+      `400`/`404`/`422` cases as `/load`" cross-reference, none rewritten.
+- [x] Every inbound link to a moved row still resolves — `check-links.py` and
+      `check-decision-refs.py` both green; no source comment or doc anywhere in
+      either repo cited these rows by `interfaces/studies.md` line number.
+- [x] Byte numbers before and after — see below.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/`
+      fragment (`changelog.d/core-interfaces-streams-split.changed.md`).
+
+## Bytes before/after
+
+| File | Before | After |
+|---|---|---|
+| `embarch-core/interfaces/studies.md` | 12,101 B | 9,076 B |
+| `embarch-core/interfaces/streams.md` | — (new) | 3,969 B |
+| `embarch-core/interfaces.md` | 6,185 B | 6,401 B (Streams index row added) |
