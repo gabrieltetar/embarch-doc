@@ -1,17 +1,20 @@
 # 077 — `embarch-umbrella/open.md` is back in reserve
 
-**State:** blocked — see `**In flux:**` below. Filed `open` by `umbrella/076`; **changed to `blocked`
-by leg 133 at the fold**, because `.claude/leg.md` is explicit that a compaction task whose flux
-answer is yes for every file on its `Compacts:` line is `blocked`, and this task's own "In flux"
-section answers **Yes** for its single file. A worker dispatched into it would be shortening prose
-the next umbrella unit is likely to rewrite. `blocked` is not absorbing here: the debt carries a
-date, and a leg spends its first unit on the oldest overdue entry whether or not it is blocked.
+**State:** done — paid out by `umbrella/088`, riding on that unit's own edit to the check-15 bullet
+(077's `Must not delete:` list's first item) per `.claude/leg.md`'s "the compaction rides in this
+unit" rule for a file in reserve that a task is already editing. `open.md` went from **4,372 B
+(85.4%, PARKED)** to **3,905 B (76.3%, PAID)** — `scripts/check-doc-size.py --pressure` now reports
+it out of reserve. Every bullet's fact survived; `check-duplication.py embarch-umbrella` was run
+before and after (two real overlaps found and resolved: the check-15 bullet against
+`decisions/schema-skew.md` decision 34, and the `apply_plan` hardware-debt bullet against
+`decisions/sticky-host.md` decision 51 — both now point at the decision instead of restating its
+mechanism). The check-5 bullet's protected clause (which outcome udev-rules-restored actually
+produces) and the check-17 bullet were left untouched. Previously: blocked — see the original
+`**In flux:**` note below, superseded now that the pay-out landed.
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/076`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/open.md
-**In flux:** yes — the sole file on the `Compacts:` line is in flux (per-file answer, and here
-there is only one file). See the "In flux" section for the enumeration.
 **Unparks when:** umbrella's `open.md` bullets stop moving — concretely, when check 17's two Fail
 arms (`tasks/umbrella/033`), check 13's bench run (`tasks/umbrella/037`) and check 5's
 never-exercised fail branch have each either landed or been closed, since each of those rewrites
@@ -52,9 +55,9 @@ Not yet blocking anything — 993 B of headroom remains. Filed now per this repo
 convention (`DOC-COMPACTION.md`, `check-doc-size.py`'s "RESERVE" band) so the debt survives past
 this leg rather than living only in a supervisor's report.
 
-## In flux
+## In flux (at filing — resolved by the pay-out above)
 
-**Yes.** `open.md` is the sub-project's running list of unresolved questions across every check and
+**Yes, at filing.** `open.md` is the sub-project's running list of unresolved questions across every check and
 command umbrella owns — check 13, 15, 17, decision 26's `--prune`, decision 51, check 5's
 never-exercised fail branch, config fragments, macOS validation, check 10's MCP environment, and
 now the mirrored-mode WSL2 bullet this unit touched (decisions 30 and 53). Any one of the open
@@ -63,8 +66,11 @@ re-check which bullets are still open before compacting, not trust this list.
 
 ## Done when
 
-- [ ] `open.md` back under 80% of its 5,120 B cap, by shortening or moving, not by deleting a live
-      question.
-- [ ] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
-- [ ] No question disappears from `collect-open-questions.py` unless it can be named as answered.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] `open.md` back under 80% of its 5,120 B cap (in fact under the script's real reserve line,
+      3,920 B — 3,905 B, 76.3%), by shortening wording, not by deleting a live question.
+- [x] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere
+      (run before and after; the two flagged overlaps are what got shortened).
+- [x] No question disappears from `collect-open-questions.py` unless it can be named as answered —
+      the routing half of the check-5 bullet was the one thing removed outright, and decision 49
+      itself already names that half settled, not open.
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped.
