@@ -3,8 +3,9 @@
 **Status:** active, 2026-09-02.
 
 How Core runs at all: language and framework choices, how it installs and elevates as an OS
-service, and what serialises hardware access. Auth, binding, configuration, and keeping the
-documented HTTP surface in agreement with the router are [decisions/auth.md](auth.md).
+service, and what serialises hardware access. Auth, binding, and configuration are
+[decisions/auth.md](auth.md); keeping the documented HTTP surface in agreement with the router
+is [decisions/route-sweep.md](route-sweep.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
