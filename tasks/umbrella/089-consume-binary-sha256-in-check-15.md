@@ -1,6 +1,6 @@
 # 089 — consume `binary_sha256` in check 15, closing its same-version blind spot
 
-**State:** open
+**State:** claimed by agent/umbrella/089-consume-binary-sha256-in-check-15, 2026-09-28 17:34
 **Source:** `embarch-umbrella/open.md`'s check-15 bullet, corrected by `tasks/umbrella/088`.
 `embarch-core`'s `/status` now serves `binary_sha256` (`embarch-core` decision 68, citing
 decision 67) — a lowercase-hex SHA-256 of the running Core binary's own bytes, cached once
@@ -41,6 +41,32 @@ Not urgent — check 15 already warns rather than fails, and the cross-version c
 remains the common one. Filed so the gap `embarch-umbrella/open.md`'s check-15 bullet names has a
 tracked home now that the field it needs exists, rather than the bullet re-growing prose about a
 field embarch-core hadn't built yet.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+**One correction to the paragraph above: `decisions/schema-skew.md` is not in reserve.** It is
+7,469 / 12,288 B, room for a decision. The "94.0% / 733 B left, blocked on `tasks/umbrella/009`"
+figures belong to `decisions/bind.md`. Put the decision where its mission is — schema-skew.md
+already holds 34, the decision this narrows — and check `python3 scripts/check-doc-size.py
+--pressure` after, not before.
+
+**The three open questions are yours to settle, and the decision records the answer and what was
+rejected.** Two constraints bound them. `embarch-core` decision 13 ("consumers warn, never refuse"), which this repo's
+decision 34 already follows, stands unless
+the decision says why a positive content disagreement differs from an unmeasurable gap — do not
+change a check's severity without that argument written down. And **no hardware, no live Core**:
+`Hardware: verify-only` means the host-side change ships with pure-function unit tests on
+`judge_core_build` (or its companion), and the real-machine confirmation — one `doctor` run
+against the installed Core — is written as a hardware-verification debt in this file, not
+attempted. Read `embarch-core` decision 68 (`embarch-core/decisions/surfaces.md`) for exactly what the served field is (when it is
+computed, what `null` means) rather than inferring it from the name.
+
+**Also in reserve in `umbrella`, not yours to write:** `decisions/install.md` 217 B left
+(`tasks/umbrella/079`, blocked), `decisions/bind.md` 733 B left (`tasks/umbrella/009`, blocked),
+`decisions/projects.md` 1,172 B left (`tasks/umbrella/084`, blocked). `open.md` left reserve one
+unit ago (3,905 B, `umbrella/088`) — retiring or rewriting its check-15 bullet must not push it
+back in; if your work pushes any `umbrella` file into reserve, file
+`tasks/umbrella/<NNN>-compact-docs.md` in the same commit.
 
 ## Done when
 
