@@ -1,11 +1,16 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** blocked — **corrected from `open` 2026-09-09 by `tasks/doc/030`.** `In flux:` below is
-`yes` for both remaining files and it is re-argued there on live grounds, so `blocked` is the state
-the vocabulary means and `check-task-state.py` now fails on the other spelling. It is not a park
-that absorbs: `**Size debt due:** 2026-09-22` is on this file, and a leg spends its first unit on
-the oldest overdue ledger entry whether or not the item is blocked (`.claude/leg.md`).
-**What unparks it** is on the `In flux:` line.
+**State:** claimed by agent/dev-bench/012-compact-dev-bench, 2026-09-28 15:03
+**Unparked 2026-09-28 by the supervisor, at claim.** It was `blocked` from 2026-09-09 on `In flux:
+yes`; the unpark condition that field named — "or the 2026-09-22 clock, whichever comes first" —
+fired six days ago, and the flux it cited has ended on the evidence (see the `In flux:` field).
+This is the oldest *payable* overdue ledger entry: the one older, `tasks/suite/030`, is still
+blocked on owner-reserved `tasks/doc/045`.
+**Dispatch note (supervisor, 2026-09-28):** reserve is `max(1200 B, 10%)` from the top, so the
+floors are `spec.md` **9,040 B** (now 9,460 — 420 B to shed) and `open.md` **3,920 B** (now 4,782
+— 862 B to shed). `decisions/link.md` (11,241/12,288) is also in reserve but belongs to
+`tasks/dev-bench/014` — **leave it alone.** Out of reserve, or the task says why not: a squeeze
+that has to delete an open question to reach the floor stops short and says so.
 **Partially closed**: leg 050, 2026-09-08, dispatched and closed as a **split only**.
 `decisions/ble.md` split verbatim into `decisions/ble.md` (pairing/security: 11, 15, 33, 34, 37;
 7.7 KB) and the new `decisions/scanning.md` (addressing/scan-time discovery: 17, 23, 31, 32, 44;
@@ -33,7 +38,12 @@ no debt filed* — the parser had stopped recognising the line at all. The `Comp
 `In flux: yes` block below, which describes `decisions/ble.md`** — the file that is now paid. Read
 that park against `DOC-BUDGET.md`'s split-first rule before assuming it blocks these two; a verbatim
 split restates nothing, so `In flux` cannot forbid one.
-**In flux:** **yes for both files still on the line — but re-argued, because the block that used to
+**In flux:** no — **re-checked 2026-09-28 by the supervisor at claim.** `git log` shows neither
+`spec.md` nor `open.md` changed since 2026-09-08 (twenty days), and the two advertiser-census tasks
+this field named as the live cause, `007` and `008`, are both gone from the queue (`008` folded
+2026-09-10 as decision 46). The 2026-09-09 answer below is kept as history, and the worker still
+re-checks `git log` immediately before shortening anything.
+**Was:** **yes for both files still on the line — but re-argued, because the block that used to
 carry this answer was about a file that has left it.** Corrected 2026-09-09 by `tasks/doc/030`,
 which found `In flux:` is answered *per file* and that this field had been left behind by
 `decisions/ble.md` when leg 057 struck it off `Compacts:`. The paragraph directly above already
