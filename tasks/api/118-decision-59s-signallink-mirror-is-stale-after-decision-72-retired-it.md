@@ -1,6 +1,17 @@
 # 118 — Decision 59's "`SignalLink`'s own mirror" is stale after decision 72 retired it
 
-**State:** open
+**State:** claimed by agent/api/118-decision-59-signallink-mirror, 2026-09-28 16:32
+**Dispatch note (supervisor, 2026-09-28):** reconciled before dispatch — still true:
+`crates/embarch-core-client/src/client.rs:432` imports `SignalLink` from `embarch-topology`, so it
+is an alias, and `hardware-selection.md:23` still says "`SignalLink`'s own mirror". Two more places
+to read while you are there, and fix only if they make the same stale claim: the same file's line
+55 ("the same day this route's mirror was written"), and `client.rs:882`'s code comment pointing at
+"`SignalLink`'s own doc comment above for the same constraint" — if that doc comment no longer
+exists or no longer states the constraint, the pointer is the same defect in source. Decision 59's
+file is 9,124 B, clear of reserve. **In reserve in `api` and not yours**:
+`decisions/failure-reporting.md` (710 B left, `111`), `spec.md` (858 B, `083`), `open.md` (665 B,
+`113`) — all blocked; push none further in. Correcting a decision's stale parenthetical is an
+amendment in place, not a new decision number.
 **Source:** embarch-api/decisions/hardware-selection.md decision 59 (2026-09-11) vs
 embarch-api/decisions/client-crate.md decision 72 (2026-09-12) — found while
 reviewing api/117 (merge a942c23f), which only touched decisions.md's index and
