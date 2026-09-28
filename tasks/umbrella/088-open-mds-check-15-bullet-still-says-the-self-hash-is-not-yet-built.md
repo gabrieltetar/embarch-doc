@@ -1,6 +1,6 @@
 # 088 — `open.md`'s check-15 bullet still says the self-hash is "not yet built"; it landed as `core/088`
 
-**State:** open
+**State:** claimed by agent/umbrella/088-check-15-self-hash-bullet, 2026-09-28 17:02
 **Source:** `embarch-core` task `088` (`tasks/core/088-serve-a-self-hash-of-the-running-binary-on-status.md`),
 landed on `agent/core/088-status-self-hash`. `embarch-umbrella/open.md` line 9
 reads: *"Check 15 is not a hash comparison and must not be read as one. It
@@ -37,6 +37,30 @@ either, so `status.d/` isn't the right mechanism (that fragment type is for
 `embarch-glossary.md`/`suite/user-guide.md` only, per `status.d/README.md`
 and `DOC-PROTOCOL.md` §2). This drop is how the fact reaches `embarch-umbrella`'s
 own queue instead.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+**Reconciled at claim: still true.** `embarch-umbrella/open.md` line 9 still says "not yet built",
+and nothing under `embarch-umbrella/src/` reads `binary_sha256`.
+
+**The file you are editing is in reserve and its compaction is parked on flux**, so per
+`.claude/leg.md` the compaction rides in this unit. `embarch-umbrella/open.md` is **4,372 / 5,120
+B, 748 B left**, filed against `tasks/umbrella/077` (`blocked`, `In flux: yes`). Compact it as part
+of this unit, **carrying 077's whole `Must not delete:` list** — and note that its first item is
+*the check-15 bullet you are rewriting*: "check 15 is not a hash comparison and must not be read as
+one" has to survive whatever you do to the "not yet built" half. Close only that file's item: 077
+has one file, so if `open.md` leaves reserve, record the before/after bytes in 077 and set it
+`done`; if it does not, say in 077 what you paid and why it was not enough, and leave it `blocked`.
+
+**The Done-when's second box is `embarch-umbrella`'s call, as the task says.** Consuming
+`binary_sha256` in check 15 is a real behavior change with its own decision; retiring the bullet
+with a one-line reason is the other legal answer. Either is in scope.
+
+**Also in reserve in `umbrella`, not yours to write:** `decisions/install.md` 217 B left
+(`tasks/umbrella/079`), `decisions/bind.md` 733 B left (`tasks/umbrella/009`),
+`decisions/projects.md` 1,172 B left (`tasks/umbrella/084`) — all blocked. A new decision, if you
+make one, goes in the topic file whose mission fits and has room; if that pushes a file into
+reserve, file `tasks/umbrella/<NNN>-compact-docs.md` in the same commit.
 
 ## Done when
 
