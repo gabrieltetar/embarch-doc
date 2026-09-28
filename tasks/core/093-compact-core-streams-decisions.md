@@ -1,14 +1,20 @@
 # 093 — `embarch-core/decisions/streams.md` is in reserve
 
-**State:** blocked
+**State:** claimed by agent/core/093-compact-core-streams-decisions, 2026-09-28 16:58
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decisions 72 and 73
 **Scope:** core
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-core/decisions/streams.md
 **Size debt due:** 2026-09-25
-**In flux:** yes
-**Blocked on:** decisions 72 and 73 being validated against real hardware — a traced study run with the outpost bridge attached, which will either confirm the live path's frame indices and header handling or change them. Unparks the moment that run lands.
+**In flux:** no — for the move this task makes. Unparked at claim, 2026-09-28, three days past
+its clock. 72 and 73 are still unvalidated on hardware (the old answer, below), but this task's
+own remedy is a verbatim split, and `DOC-BUDGET.md`'s split-first rule is that a verbatim move
+restates nothing, so flux cannot forbid one. The file is untouched since `a2c58650` (2026-09-18).
+The old answer, kept as history: *yes — blocked on decisions 72 and 73 being validated against
+real hardware, a traced study run with the outpost bridge attached, which will either confirm the
+live path's frame indices and header handling or change them.* That still governs any **squeeze**
+of 72 or 73; it does not govern moving them.
 
 ## What
 
@@ -33,6 +39,19 @@ layout**, and 70/72/73 are about **pushing live**. A split into
 (the outpost bridge is not attached), so a squeeze taken now would be cutting
 reasoning that has not finished being tested against hardware. A split moves it
 untouched instead, which is why the split is the remedy and the squeeze is not.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+**Split only; squeeze nothing.** Move 70, 72 and 73 byte-identical into
+`decisions/streams-live.md` (or the seam you find better, said why), and rewrite none of them —
+the unpark above covers a move and nothing else. Check inbound links to 70/72/73 across the suite
+before cutting (`grep -rn` over `embarch-doc` and `embarch-core`), and repoint any that name the
+file rather than a bare number.
+
+**Also in reserve in `core`, not yours to write:** `decisions/surfaces.md` 709 B left
+(`tasks/core/091`, blocked), `decisions/auth.md` 932 B left (`tasks/core/046`, blocked). If your
+work pushes any other `core` file into reserve, file `tasks/core/<NNN>-compact-core.md` in the
+same commit.
 
 ## Done when
 
