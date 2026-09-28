@@ -1,6 +1,6 @@
 # 073 — `embarch-ui/decisions/shell.md` and `topology-boards.md` are in reserve
 
-**State:** claimed by agent/ui/073-compact-ui, 2026-09-28 15:48
+**State:** done
 **Dispatch note (supervisor, 2026-09-28):** **the numbers below are stale.** `decisions/shell.md`
 is now **12,538 / 12,288 B — over its cap and past its 2026-09-27 clock**, the last of the files
 turning `main`'s `check-doc-size.py` RED (the other two were paid earlier this leg by `ui/071` and
@@ -64,11 +64,68 @@ that would have to be re-judged against an entry still settling.
 
 ## Done when
 
-- [ ] Both files are out of reserve, or the task says why not.
-- [ ] A split along a named seam was preferred over deleting live reasoning, per
+- [x] Both files are out of reserve, or the task says why not.
+- [x] A split along a named seam was preferred over deleting live reasoning, per
       `DOC-COMPACTION.md` §2 — or the report says why the seam was rejected.
-- [ ] If it split: every inbound citation still resolves, and `decisions.md`'s group table gained
+- [x] If it split: every inbound citation still resolves, and `decisions.md`'s group table gained
       the new row(s).
-- [ ] Byte numbers before and after, for every file touched.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered in the report, in your own words.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment dropped.
+- [x] Byte numbers before and after, for every file touched.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered in the report, in your own words.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment dropped.
+
+## Report
+
+**Both named seams taken, verbatim, both files out of reserve:**
+
+- `decisions/shell.md`: **12,538 B → 5,228 B.** Decisions 8, 25 and 42 (the
+  design system, the brand-vs-accent split, the self-hosted typefaces) moved
+  verbatim into new `decisions/design-system.md` (**7,770 B**). Shell keeps 4
+  and 46 (the sections/fragment-nav arrangement and the open-project control).
+- `decisions/topology-boards.md`: **12,177 B → 9,806 B** (`wc -c` gives 10,013
+  including the rewritten header; body content unchanged). Decision 44's own
+  tail — "Retracting" and "A saved bench" (which carries the slug rule) —
+  moved verbatim into new `decisions/saved-benches.md` (**2,648 B**). 44's
+  core (role/name split), the validate-pass section, the build_target section
+  and all of 47 stay in `topology-boards.md`.
+- Every moved section was diffed programmatically against the pre-split file
+  at the branch point (`d9b9d246ef91`) by heading: all 12 sections moved
+  **byte-for-byte identical**, nothing rewritten or summarised.
+- `decisions.md`'s group table: split the `shell.md` row into `shell.md` (4,
+  46) and a new `design-system.md` row (8, 25, 42); split the
+  `topology-boards.md` row's description (dropped the retract/saved-bench
+  clause it no longer covers) and added a `saved-benches.md` row, numbered
+  `44 (saved bench)` — the same disambiguation style already used for decision
+  10 across `topology-tab.md`/`trace-view.md`/`trace-chart.md`.
+- **Inbound citations:** a repo-wide search for `decisions/shell.md` and
+  `decisions/topology-boards.md` found one link that needed repointing —
+  `changelog.d/ui-brand-token.added.md`'s `[decision 25](../embarch-ui/decisions/shell.md)`,
+  now pointed at `../embarch-ui/decisions.md` (the index, per
+  `DOC-CONVENTIONS.md`'s rule for history-shaped links, since a changelog
+  fragment is exactly that shape). Every other hit cites decision 44 or 47,
+  neither of which moved — their numbered headings stayed in
+  `topology-boards.md`, so those links (in `embarch-core/decisions/roles.md`,
+  `embarch-api/interfaces/tools-topology.md`,
+  `embarch-topology/spec/storage-and-roles.md`,
+  `embarch-topology/decisions/enrollment.md`, and two other `ui` changelog
+  fragments) needed no change. **No inbox drop was needed** — nothing outside
+  `ui` cited a decision that actually moved file.
+- **Code branch:** grepped `embarch-ui` (the code worktree) for
+  `shell.md`/`topology-boards.md`/`decisions/` — zero hits in source, so the
+  code branch carries **zero commits**, per the task's own allowance.
+- `check-decision-refs.py`: all 3,169 references resolve, all 49
+  `[decision N]` topic-file links name a file that defines that number.
+  `check-doc-size.py`: both files clear; the one remaining RED
+  (`embarch-core/decisions/handshake.md`) is `core/094`'s, not this unit's.
+  Full `check-docs.py`: 10 of 11 PASS, same unrelated RED.
+  `check-ownership.py --scope ui`: all 6 changed paths owned.
+  `check-client-names.py`: clean.
+- **`DOC-COMPACTION-PASS.md`'s human question** ("Can `spec.md` alone answer
+  what someone needs to work on this component today?") **is unaffected by
+  this pass, honestly**: this was a pure verbatim split of `decisions/`
+  content to clear the size gate, not a `spec.md` rewrite — `spec.md` was not
+  touched (it is `069`'s, already in reserve, and untouched here). The
+  question the gate actually poses for a split, per `DOC-COMPACTION-PASS.md`
+  ("A split needs none of this... moving a section verbatim deletes nothing"),
+  is whether every inbound reference still resolves after the move — it does,
+  mechanically checked above.
+- `changelog.d/ui-compact-shell-and-boards.changed.md` dropped (147 B).
