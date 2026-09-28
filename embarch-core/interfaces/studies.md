@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-07. Split out of [../interfaces.md](../interfaces.md) on 2026-09-07 (`tasks/core/020`) when that file reached its size cap — a reference table, not cut, per [../DOC-COMPACTION.md](../../DOC-COMPACTION.md) §3.
 
-Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../interfaces.md](../interfaces.md), [../decisions/studies.md](../decisions/studies.md), [../decisions/handshake.md](../decisions/handshake.md).
+Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../interfaces.md](../interfaces.md), [../decisions/studies.md](../decisions/studies.md), [../decisions/handshake.md](../decisions/handshake.md), [../decisions/outpost-preflight.md](../decisions/outpost-preflight.md).
 
 Async and job-based rather than blocking, unlike everything in the other route groups: a study's BLE steps can take unbounded time. One study in flight at a time via `study_lock`; no cancel endpoint; the in-memory job registry has no expiry and does not survive a restart. Design of record: [../../embarch-study-designer/decisions.md](../../embarch-study-designer/decisions.md) §5.1.
 
