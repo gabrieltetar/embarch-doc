@@ -1,6 +1,6 @@
 # 111 — `embarch-api/decisions/failure-reporting.md` is in reserve after decision 76
 
-**State:** blocked
+**State:** claimed by agent/api/111-compact-api, 2026-09-28 17:33
 **Source:** `api/110`'s decision 76 (the `validate` `not_attached` lead wording) pushed this file
 past its reserve band; `DOC-COMPACTION.md` §2
 **Scope:** api
@@ -9,13 +9,17 @@ past its reserve band; `DOC-COMPACTION.md` §2
 
 **Compacts:** embarch-api/decisions/failure-reporting.md
 **Size debt due:** 2026-09-27
-**In flux:** yes — `validate`'s `kind`/`reason` split has taken three amendments this month alone
-(71, 73, now 76) and `embarch-core`'s own classifier for the condition changed again the same
-morning this decision landed (`tasks/core/077`). A compaction pass run now risks shortening prose
-the next such amendment will need to build on within days.
-Unparked once a unit lands here without adding a new amendment to decisions 71/73/76, or once the
-file is judged safe to split (its own natural seam: decision 57/67, the parity-rule entries, versus
-71/73/76, the `validate` `kind`-classification thread).
+**In flux:** no — for the move this task makes. Unparked at claim, 2026-09-28, one day past its
+clock, on this task's own second condition: the file is judged safe to **split** along the seam it
+names, because a verbatim move restates nothing (`DOC-BUDGET.md`'s split-first rule; the same
+reading `core/093` got today). The file is untouched since `bf73fcf1` (2026-09-17). The old answer,
+kept as history, still governs any **squeeze** of 71/73/76: *yes — `validate`'s `kind`/`reason`
+split has taken three amendments this month alone (71, 73, now 76) and `embarch-core`'s own
+classifier for the condition changed again the same morning this decision landed
+(`tasks/core/077`). A compaction pass run now risks shortening prose the next such amendment will
+need to build on within days. Unparked once a unit lands here without adding a new amendment to
+decisions 71/73/76, or once the file is judged safe to split (its own natural seam: decision 57/67,
+the parity-rule entries, versus 71/73/76, the `validate` `kind`-classification thread).*
 **Must not delete:**
 - Decision 71's own text describing the three-layer fix (wire shape, `is_not_attached()`
   predicate, two call sites) — the only record of why the client-side inference was rejected.
@@ -30,6 +34,22 @@ file is judged safe to split (its own natural seam: decision 57/67, the parity-r
 `python3 scripts/check-doc-size.py` names `embarch-api/decisions/failure-reporting.md` at
 11578/12288 B (94.2%, 710 B left) — inside the last 10% reserve band (`RESERVE_FLOOR` = 1200 B),
 crossed by `api/110`'s decision 76 addition.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+**Split only; squeeze nothing.** Move 71, 73 and 76 byte-identical into a new topic file (e.g.
+`decisions/validate-kind.md`), or the seam you find better, said why — and rewrite none of them:
+the unpark above covers a move and nothing else. Update `decisions.md`'s routing row. Check inbound
+links to 57, 67, 71, 73 and 76 across the suite before cutting (`grep -rn` over `embarch-doc` and
+the code repo, including tool descriptions under `src/`, which decision 57 says cite by `<repo>
+decision N`) and repoint any that name the file rather than a bare number; a link in another
+sub-project's directory you cannot write goes in an `inbox/` drop at
+`/home/gabriel/Github/embarch/embarch-doc/inbox/` (absolute path), and the supervisor repoints it at
+the fold.
+
+**Also in reserve in `api`, not yours to write:** `spec.md` 858 B left (`tasks/api/083`, blocked),
+`open.md` 665 B left (`tasks/api/113`, blocked). If your work pushes any other `api` file into
+reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 
 ## Done when
 
