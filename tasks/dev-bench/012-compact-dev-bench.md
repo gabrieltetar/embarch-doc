@@ -1,6 +1,6 @@
 # 012 — `embarch-dev-bench/decisions/ble.md` is 710 bytes from its cap
 
-**State:** claimed by agent/dev-bench/012-compact-dev-bench, 2026-09-28 15:03
+**State:** done
 **Unparked 2026-09-28 by the supervisor, at claim.** It was `blocked` from 2026-09-09 on `In flux:
 yes`; the unpark condition that field named — "or the 2026-09-22 clock, whichever comes first" —
 fired six days ago, and the flux it cited has ended on the evidence (see the `In flux:` field).
@@ -87,16 +87,29 @@ filing, dropped in the same commit that spent the reserve (decision 23's amendme
 - [x] Every `Must not delete:` item above is still readable, verbatim or faithfully restated —
       moved byte-for-byte, verified by diffing every decision body against the pre-split file.
 - [x] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
-- [x] Gate green (`../../embarch-fleet/protocol.md` §10) for the split. `spec.md` and `open.md`
-      remain in reserve, untouched, and still block the rest of this task — see `## Blocked` below.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) for the split.
+- [x] `spec.md` squeezed 9,460 → 9,038 B (floor 9,040), no topic dropped — every invariant,
+      constant (with its `[measured]`/`[assumed]` tag) and constraint reason kept; only "why"
+      duplicated with `decisions.md`, or wording redundant with `open.md`/its own constants table,
+      was cut. `check-doc-size.py --pressure` now reports it `PAID … out of reserve` at 88.3%.
+- [x] `open.md` squeezed 4,782 → 3,916 B (floor 3,920), no open question dropped — 14 bullets
+      before, 14 after (`collect-open-questions.py` diff count unchanged, spot-checked verbatim);
+      every failure signature, rejected alternative and "why not" clause kept, only provenance
+      narrative (leg numbers, dates, derivation arithmetic) and cross-file duplication (the log
+      buffer overrun, already in `spec.md` §5) trimmed. Now `PAID … out of reserve` at 76.5%.
 
-## Blocked
+## Closed 2026-09-28
 
-`spec.md` (780 B left) and `open.md` (338 B left) are squeezes, not splits, and this task's
-`In flux: yes` still holds for both — BLE is still an active area of the dev-bench firmware, so a
-squeeze risks restating something about to change or silently dropping a qualification. Whoever
-picks this up next must re-check both files against `git log` immediately before shortening
-anything, per the standing `In flux` note above.
+`In flux` re-checked against `git log` immediately before editing: neither file had moved since
+2026-09-08 (twenty days), and the two advertiser-census tasks (`007`, `008`) the old `In flux: yes`
+named as the live cause are both gone from the queue — consistent with the supervisor's dispatch
+note. Both files are squeezes with no seam, so every cut was prose-tightening against the
+hot/cold test (`DOC-COMPACTION-PASS.md`), never a deleted topic; neither had to stop short of its
+floor. Full gate (`check-docs.py`) is RED only on the three pre-existing, not-mine files named in
+the dispatch note (`embarch-core/decisions/handshake.md`, `embarch-ui/decisions/shell.md`,
+`embarch-ui/open.md`) — unchanged by this unit. `check-ownership.py` clean in both worktrees;
+`check-client-names.py` clean. Code repo (`embarch-dev-bench`) carries 0 commits, as expected for
+a doc-only squeeze.
 
 **Widened 2026-09-07 by the reserve floor.** `check-doc-size.py`'s reserve was 90% of a limit; a percentage of a small cap is not runway, and the corpus reached `suite/features.md` with 36 bytes left and `embarch-api/decisions/core-link.md` with 22. Reserve is now `max(1200 B, 10%)` from the top, so the paths added to the `**Compacts:**` line above crossed on the rule change, not on an edit. **Prefer a SPLIT** — [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: a split restates nothing, so it costs no argument, and a file warned 1.2 KB out still has a seam to cut. Squeeze only where there is none.
 
