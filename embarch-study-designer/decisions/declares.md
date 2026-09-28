@@ -4,7 +4,10 @@
 
 Firmware versions, and how each is verified. The GATT table a study declares
 split out 2026-09-13, verbatim, to [declared-gatt.md](declared-gatt.md) — it is
-designed-never-built and shares no code or citation with 40 or 74.
+designed-never-built and shares no code or citation with 40 or 74. **What a
+study builds — a selection resolved before the run, not a version string
+compared after it — split out 2026-09-28, verbatim, to
+[builds.md](builds.md).**
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -20,7 +23,7 @@ Two free-form strings matching the shape the bench already reports. **Host-side 
 
 **On a mismatch with no reflash requested, the study is rejected before any step runs**, naming both strings. **Not a warning that proceeds: a result attributed to the wrong firmware is worse than no result**, which is this decision's whole premise. An explicit override is available and **recorded in the result** rather than silently honoured.
 
-**The verification asymmetry is the load-bearing limitation and cannot be designed away.** The bench *self-reports* its version, so a bench requirement is genuinely **checked**. **The DUT reports nothing at all** — Core flashes it through a debug probe with no readback path — so a DUT requirement is verifiable only when the outpost is compiled in, whose header carries a build ID, **or the run just flashed it.** A result therefore records not just the versions but **how each was established**: reported by the bench, reported by the outpost, flashed this run, or merely declared. **A result quietly presenting a declared string as a verified one would be the same defect in a new place.**
+**The verification asymmetry is the load-bearing limitation and cannot be designed away.** The bench *self-reports* its version, so a bench requirement is genuinely **checked**. **The DUT reports nothing at all** — Core flashes it through a debug probe with no readback path — so a DUT requirement is verifiable only when the outpost is compiled in, whose header carries a build ID — closed by decision 77, [builds.md](builds.md) — **or the run just flashed it.** A result therefore records not just the versions but **how each was established**: reported by the bench, reported by the outpost, flashed this run, or merely declared. **A result quietly presenting a declared string as a verified one would be the same defect in a new place.**
 
 **A consequence this decision did not anticipate, and the most useful thing its implementation produced:** supplying the flashed version is also **what makes the DUT requirement *checkable*.** That sentence in the asymmetry above had no implementation anywhere, and it is now Core's gate rejecting on the DUT half too. What the flashed string *is*, stated because the asymmetry does not go away: **it is derived from the tree that was built, not from the board.** So flashed-this-run is **stronger than declared, where nobody checked at all, and weaker than a bench self-report, which is a measurement** — exactly the ordering the provenance type exists to express.
 
@@ -43,19 +46,3 @@ The comparison rule and the is-this-verified decision both live in this crate, *
 **The failure this closes is silent, which is why naming it is worth a decision rather than a comment.** A caller that reads `/dev-bench/hello`'s `firmware_version` and writes it into `requires.firmware_version` has pinned a DUT requirement to the bench's build — and `embarch-core` only *compares* `requires.firmware_version` when a `flashed_firmware_version` is supplied, so in the normal no-reflash case the wrong value is accepted and recorded as `Declared`. **That is precisely the mislabelling `Provenance`'s source fields exist to prevent**, reached by a route those fields cannot see: the source is honestly `Declared`, and what was declared is a fact about the wrong board.
 
 **Reversal condition.** The next wire-schema bump this crate takes for another reason is when the rename becomes free. If one lands and `HelloAck.firmware_version` is still called that, this decision was kept past its cost argument.
-
-### 77 — A study can declare the firmware it builds for itself, and the outpost mode it needs the DUT to be in
-
-Decision 40 names a gap it could not close: **the DUT reports nothing.** dev-bench self-reports over `HelloAck`; Core flashes the DUT through a probe with no readback path, so `firmware_version` is verifiable only when the run just flashed it. That asymmetry was called one that "cannot be designed away".
-
-**It can, for a DUT with an outpost compiled in, and the mechanism was already on the wire.** The header frame carries a `build_id` *and* a `flags` byte saying which hook families the running firmware has. `Requirements` gains two host-only `Option` fields against it: **`build: Option<BuildSpec>`**, the DUT firmware this study builds and flashes before it runs — field-for-field the selection `embarch-firmware-build`'s `resolve::Selection` already takes, because the resolver is the one thing that knows what a selection means and a second set of axes would need a translation layer whose only job is to lose information — and **`outpost: Option<OutpostModeRequirement>`**, two `u8` masks over that flags byte.
-
-**A declaration, resolved every time, with no pinned `build_id`** — the write-ahead staleness pattern `embarch-topology` decision 3 exists to eliminate, which a later `west build`, a moved tree or a pruned build root falsifies silently. **It names no project either**, which keeps a study portable: which `[[projects]]` entry is the DUT is a property of the bench, as `reflash::dut_project` already treats it.
-
-***Two masks rather than one, because a flag's clear state can be the requirement.*** `TRACE_SELF` is the standing case: clear means the trace deliberately omits the outpost's own drain thread and UART interrupt, so a study reasoning about unaccounted-for intervals needs it **off**, and a single "required" mask cannot ask for that. A bit in neither mask is genuinely not cared about — the third state, and the common one.
-
-**Validation lives here so Core and an authoring UI hold no second copy.** A blank axis is refused where an absent one is fine: the resolver fills an absent axis from the project's `default_target`, while a blank one is the nobody-filled-this-in case decision 40 already refuses for a version. `snippets` mixing the reserved `"none"` literal with real names is refused here as well as at build time (`embarch-api` decision 21's ambiguity, caught at save time). A bit required both set and clear is refused: no firmware satisfies it, so it is a typo. **Snippet order is stored, never normalised** (reversals row 114) — west applies `-S` in order, so two orderings are two images.
-
-**`outpost_requirement_is_satisfiable` is separate, being the one rule needing a field outside `requires`.** The flags byte arrives in an outpost capture's header, so a mode declared without that tap has no subject — refused at submit, which is the difference between "you forgot the tap" while authoring and a DUT sitting reset waiting for a frame nobody asked for.
-
-**`HOST_TYPE_SCHEMA_VERSION` moves to 19; the wire number stays at 15** — `requires` never crosses to dev-bench (decisions 17/39/40). It moves even though both fields default to `None`, because a Core too old to run the pre-flight would otherwise accept a study carrying a build spec and run it unchecked. The new `limits.rs` caps are sized against a real target repo — thirteen snippets, longest name 17 characters; board strings of 26 and 30 — each roughly double the measured case.
