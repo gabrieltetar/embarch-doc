@@ -20,6 +20,8 @@ The Live Study tab showed everything a study produced and none of it *together* 
 
 *Declined:* carrying each mark's payload in the view. `GET .../mark/{id}` fetches the row, and the id is `(lane << 40) | row_index`, so a mark and a table row are the same object by construction — carrying payloads inline would reproduce [decision 18](trace-transfer.md)'s 12.6 MB defect.
 
+**Checked against a second stream on real hardware, and it holds — against GATT, not against a power capture.** On study `b1e9ec7d` (traced, dual-clock, 6 ms resolution), **64 of 64** separable GATT marks land inside their own row's step band; 125 of 245 rows placed, 120 fell after the capture closed (the tap's scope, not an error). No power-capture study exists on Core's disk yet — [open.md](../open.md) carries that half as still unrun.
+
 ### 35 — The axis is chosen once and is never silently promoted
 One run can walk three axes: no trace → Core's clock; a trace tap opens with no header frame → host arrivals; the header arrives → DUT microseconds, a new unit *and* a new origin. Every mark's position changes meaning twice. **So the tier is chosen once per view and never promoted under a reader.** A study that declares a trace draws no axis until its first stamped-and-dated frame and says it is waiting.
 
