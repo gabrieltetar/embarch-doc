@@ -21,3 +21,13 @@ Four conditions, each one a way this would otherwise eat real data. **The step e
 `MAX_ROWS` (`src/trace.rs`) is what `rows_dropped_by_cap` counts against, but the banner naming it to the reader was a literal — `"caps at 250,000"`, unreachable from the constant. `TraceView` now carries `row_cap` beside `rows_dropped_by_cap`, and `app.js` renders that field: same reasoning as [gatt-capture.md](gatt-capture.md) 17's `max_monitor_targets` (task `ui/003`).
 
 **No numeric fallback for a missing field** — a guessed cap next to a served one is the same restatement wearing a different hat. The read is still guarded (`typeof view.row_cap === "number"`), and renders a capped-but-unstated note rather than a wrong number if it is ever absent.
+
+**250,000 is kept on measurement, not extrapolation.** `trace::scratch_view::synth_capture` builds an in-memory capture shaped like the fixture; `measure_the_row_cap_at_scale` and `measure_the_request_path_at_scale` decode/encode it at scale [release build, synthetic]:
+
+|rows|decode|resident JSON¹|`/bins`²|encode|total|
+|---|---|---|---|---|---|
+|250k|257ms|4.48MB|165KB|4.6ms|210ms|
+|500k|604ms|9.03MB|180KB|8.3ms|518ms|
+|1M|1.69s|18.1MB|1.5KB|23.5ms|1.32s|
+
+¹server-side only, never sent (decision 18). ²1,170-wide grid stays small — payload bound (decision 18) holds past 250k; decode/memory, not payload, cost the raised cap. **Not covered:** the three awaited Core calls before `parse` runs — [open.md](../open.md) carries that half as still unmeasured.
