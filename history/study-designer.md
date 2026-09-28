@@ -10,6 +10,7 @@
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
 
 ### Changed
+- `spec.md` §4 ("What a study carries") split verbatim to `spec/carriage.md`; sections renumbered 4-6.
 - `decisions/declares.md` split out of reserve: decision 77 moved verbatim to new `decisions/builds.md`.
 - The .eap protocol constants split into interfaces/eap-limits.md; decision 71 moved to decisions/payload-meaning.md.
 - study-designer/065: README.md/test.yml/.eap fixtures citation sweep, 55 checked, 0 wrong, 0 false; whole-repo grep now clean, chain done.
