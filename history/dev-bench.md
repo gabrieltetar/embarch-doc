@@ -8,6 +8,7 @@
 - The advertiser census now logs Manufacturer Specific Data (company ID + up to 4 payload bytes, capped visibly) alongside name and address (decision 44).
 
 ### Changed
+- `decisions/link.md` split verbatim, out of reserve: 30/35 (frame/step ceilings) moved to new `decisions/link-limits.md`.
 - `spec.md` and `open.md` squeezed clear of reserve, no content dropped; `decisions/ble.md`'s split (leg 050) already closed.
 - dev-bench/034: wrapped citation census, 23 lines/39 instances, 0 wrong, 2 labels fixed, 1 false sentence fixed.
 - A failed `BleConnect` census now counts what it is leaving out (`no name match; 2/10 named: …`), and writes its full per-advertiser log on an address-filtered connect too — decision 46.
