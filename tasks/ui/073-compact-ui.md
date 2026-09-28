@@ -1,6 +1,17 @@
 # 073 — `embarch-ui/decisions/shell.md` and `topology-boards.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/ui/073-compact-ui, 2026-09-28 15:48
+**Dispatch note (supervisor, 2026-09-28):** **the numbers below are stale.** `decisions/shell.md`
+is now **12,538 / 12,288 B — over its cap and past its 2026-09-27 clock**, the last of the files
+turning `main`'s `check-doc-size.py` RED (the other two were paid earlier this leg by `ui/071` and
+`core/094`). `topology-boards.md` is 12,177 B (111 B left). Re-derive every number, and re-check
+`git log` on both files first — the owner last touched them 2026-09-20 (decisions 46–50). Prefer
+the split the task names; if a decision moves, update `decisions.md`'s group table and **every
+inbound citation, including from other sub-projects' docs** — if one of those is outside `ui`,
+do not edit it: drop an inbox file by absolute path and say so in your report, and the supervisor
+repoints it at landing. `ui/071` just landed and moved text into `decisions/trace-rows.md` and
+`decisions/time-chart.md`; `decisions/shape.md` (94 B left, `069`), `decisions/study-designer.md`
+(`072`) and `spec.md` (`069`) are in reserve and not yours — push none of them further in.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decisions 46 (the open project
 as a shell control) and 47 (a board type's row is its build menu), which landed with their code
 **Scope:** ui
