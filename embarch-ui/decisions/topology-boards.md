@@ -1,8 +1,8 @@
-# embarch-ui decisions: Boards, roles, saved benches and the validate pass
+# embarch-ui decisions: Boards, roles and the validate pass
 
 **Status:** active, 2026-09-20.
 
-Why a role stopped being a board's name, and the surfaces that followed: the project catalog, the validate pass, retracting, saved benches. **Decision 45 corrected two things about the model this entry set up** and is in [topology-roles.md](topology-roles.md): a probe is not an attribute of a board, and a board is a *type* rather than a unit of hardware. The tab's other half — signal routing (10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md).
+Why a role stopped being a board's name, and the surfaces that followed: the project catalog and the validate pass. **Decision 45 corrected two things about the model this entry set up** and is in [topology-roles.md](topology-roles.md): a probe is not an attribute of a board, and a board is a *type* rather than a unit of hardware. The tab's other half — signal routing (10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md). Retracting a role and saved benches are in [saved-benches.md](saved-benches.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -27,20 +27,6 @@ So the two facts split, each to the owner that can actually answer it:
 **Three kinds of check, and the difference between them is what each can honestly assert.** A role re-reads the enrolled board's live hardware ID over the probe (Core's `POST /validate`) — the only one that touches hardware. The dev-bench link resolves the port live, and **a guessed port is a warning, never a pass**: the lowest-interface fallback is wrong on a two-VCOM probe, which is the failure `link_port_interface` exists for ([`embarch-topology` decision 20](../../embarch-topology/decisions.md)), and a report that called it a pass would hide exactly the state it was written to surface. A signal route is checked only as far as it was declared — a `direct` route's serial must still be enumerable, a `via-dev-bench` one rides the bench link — and **every one of those lines says what it cannot confirm**, because no software can see a cable between two headers.
 
 **Core's own words are printed, never paraphrased.** A mismatch reason, a `fix_it_url`, a refusal: this UI did not diagnose the failure and a second, worse description of it helps nobody. The Dashboard keeps its alert cards; Core keeps the durable log and the MCP tool over it. What went is the card that stood where a live check belonged.
-
-### Retracting: the counterpart enrolling never had
-
-`DELETE /probes/enrolled/{role}` is new in Core, wrapped here as the `✕` on a role row. Until it existed, enrolling could *displace* a row but nothing could remove one, so a mis-enrolment — or a board under an invented role — stayed in `enrollment.toml` for good, short of hand-editing a file behind the NTFS permission wall on the real deployment. **It opens no probe**: a board that no longer answers is precisely the one a human is most likely to be clearing.
-
-### A saved bench: portable, and loading never touches hardware
-
-`embarch/topologies/<slug>.toml` holds which named board played which role, on which probe, plus dev-bench's link and every declared signal. **Loading splits by what each half claims.** The signals and the link are *declarations* — re-stating them changes a file on Core and asserts nothing about silicon — so they apply immediately, each reporting its own outcome. Each enrolment is an *identity claim*, bound after a live hardware-ID read, so it comes back as a **proposal** with a button, and confirming it runs the ordinary enroll.
-
-*Rejected: applying the enrolments directly.* A file on disk is not evidence about what is plugged in, and a load that enrolled from one would be the stale-declared-state failure [`embarch-topology`](../../embarch-topology/spec.md) exists to prevent, rebuilt inside the UI. A proposal carries three facts and decides on none of them: whether the role already holds that probe, whether the probe is attached at all, and which board would be displaced.
-
-**dev-bench's link is deferred rather than skipped.** Core amends it onto the dev-bench enrolment row, so it is refused while that role is empty — the state a fresh load is usually in. The apply report says so in words, and the link is declared with the enrolment when the proposal is confirmed; a silent skip would leave a bench half-loaded with nothing on screen about it.
-
-**A file name is derived from the name, never taken from it**: lowercase, every other run of characters collapsed to one hyphen, so `../../etc/passwd` slugs to `etc-passwd` and a saved bench cannot address anything outside `embarch/topologies/`.
 
 ### The one link between a board and a build
 
