@@ -28,7 +28,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | 12 | Dev-bench port detected — informational; absent is an expected state |
 | 13 | Dev-bench firmware version matches the local checkout's `git describe` — no checkout configured, and a reported id no longer in that checkout's history, are each their own fail rather than a warn or an ordinary mismatch (decision 47) |
 | 14 | Which program Core would flash each chip family with, by running the located binary — on `wsl-host`, the service's own exe, **measured** (decision 38). Unlocatable is one skip worded per class, not a flashing verdict — each wording is reachable only before *that* class's own `setup` finishes (decision 31) |
-| 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy, and blind to a same-version one |
+| 15 | The running Core's `core_version` is the located `embarch-core` binary's — a **cross-version** stale deploy. Where both sides also serve a `binary_sha256`, that's compared too, closing the same-version case; blind to it when either side has no hash (decision 56) |
 | 16 | `study_results/` entries and their bytes **at the directory it names**, and build directories per project — informational (decisions 26, 39) |
 | 17 | Core's bind address matches what this topology needs — the class `setup` recorded, against the address `/status` was reached at and against the service's own registered `--bind` (decision 22) |
 | 18 | Tail of Core's log file, informational — **design-only** ([embarch-core](../../embarch-core/decisions/logging.md)'s daily-rolling log) |
