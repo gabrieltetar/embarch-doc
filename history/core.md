@@ -15,6 +15,7 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- Core's `/stream/{name}/arrivals`, `/load` and `/load/spans` rows moved verbatim from `interfaces/studies.md` into new `interfaces/streams.md`.
 - `embarch-core/decisions/handshake.md` split by mission: the outpost mode pre-flight now lives in `decisions/outpost-preflight.md`.
 - Core decision 65's CSV-size estimate now says direction of error is unestablished (lane/name-mix gap), not "likely-low".
 - core/068: citation sweep, 15 lines/37 instances checked (4 line-wrapped, unfiled), 0 wrong, 0 false
