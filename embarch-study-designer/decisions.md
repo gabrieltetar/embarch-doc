@@ -16,13 +16,13 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, and what sits outside them | 17, 18, 26 |
 | [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39 |
-| [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70 |
+| [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53 |
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57, 78 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
 | [What a study declares](decisions/declares.md) — firmware versions, and how each is verified | 40, 74 |
 | [The GATT table a study declares](decisions/declared-gatt.md) — designed, never built | 45 |
-| [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 71, 75 |
+| [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 75 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, and what it may report | 60, 62 |
 | [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library, one built-in vocabulary | 6, 34, 37, 38, 73 |
 | [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67, 69 |
