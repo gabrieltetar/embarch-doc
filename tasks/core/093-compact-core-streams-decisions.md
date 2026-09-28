@@ -1,6 +1,6 @@
 # 093 — `embarch-core/decisions/streams.md` is in reserve
 
-**State:** claimed by agent/core/093-compact-core-streams-decisions, 2026-09-28 16:58
+**State:** done
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decisions 72 and 73
 **Scope:** core
 **Hardware:** none
@@ -55,10 +55,36 @@ same commit.
 
 ## Done when
 
-- [ ] Out of reserve, or the task says why not.
-- [ ] Decisions 72 and 73 keep every clause about what the post-hoc render has
+- [x] Out of reserve, or the task says why not.
+- [x] Decisions 72 and 73 keep every clause about what the post-hoc render has
       that live cannot, and about which clock each arrival sidecar records.
       Those are what a later reader will otherwise re-derive wrongly.
-- [ ] `decisions.md`'s index row split to match, with both files' numbers.
-- [ ] Byte numbers before and after.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+- [x] `decisions.md`'s index row split to match, with both files' numbers.
+- [x] Byte numbers before and after.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+
+## Closed 2026-09-28
+
+Split, not squeeze, per the dispatch note. 70, 72 and 73 moved verbatim (checked byte-identical
+against the pre-split file with a Python diff, decision by decision) into new
+`decisions/streams-live.md`; 30, 38 and 39 stayed in `decisions/streams.md`, also verified
+byte-identical to their pre-split text. Nothing was rewritten or squeezed.
+
+**Byte numbers.** Before: `decisions/streams.md` 11,094 B (90.3% of 12,288, 1,194 B left — in
+reserve). After: `decisions/streams.md` 5,760 B (46.9%), `decisions/streams-live.md` 5,889 B
+(47.9%). Both well clear of the 90% reserve line.
+
+`decisions.md`'s index row split into two, sizes corrected to match (the pre-existing "7.7 KB" was
+already stale before this task — real pre-split size was 11.1 KB).
+
+**Inbound-link check** (`grep -rn` over `embarch-doc` and `embarch-core`, both worktrees): every
+citation of 70/72/73 elsewhere in the suite is a bare decision number (resolved by
+`scripts/check-decision-refs.py` regardless of file), except one — `embarch-ui/decisions/live-study.md`
+line 30 links decision 70 straight at `../../embarch-core/decisions/streams.md`, which is now
+the wrong file. `embarch-ui/` is outside this task's `core` scope, so that repoint is dropped as
+an inbox task rather than fixed here:
+`/home/gabriel/Github/embarch/embarch-doc/inbox/ui-repoint-streams-md-decision-70-cite.md`.
+
+Gate: `check-docs.py` green, `check-ownership.py --scope core` green on both branches (doc and
+code), `check-client-names.py` green. Code repo touched nothing — this was a pure doc split, no
+Rust changes, so `cargo build`/`test`/`clippy` were not re-run (nothing to build).
