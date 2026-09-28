@@ -1,6 +1,6 @@
 # 014 — `embarch-dev-bench/decisions/link.md` is in reserve after decision 35's amendment
 
-**State:** claimed by agent/dev-bench/014-compact-dev-bench, 2026-09-28 16:29
+**State:** done — agent/dev-bench/014-compact-dev-bench, 2026-09-28
 **Dispatch note (supervisor, 2026-09-28):** **unparked on its own clock and its own condition.**
 `In flux:` named "whichever of the flash-route migration or the step-cap divergence is next quiet";
 `git log -- embarch-dev-bench/decisions/link.md` shows the file untouched since `84243a33`
@@ -56,7 +56,37 @@ filing, dropped in the same commit that spent the reserve (decision 35's amendme
 
 ## Done when
 
-- [ ] `embarch-dev-bench/decisions/link.md` clear of the 90%-of-cap reserve line.
-- [ ] Every `Must not delete:` item above is still readable, verbatim or faithfully restated.
-- [ ] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `embarch-dev-bench/decisions/link.md` clear of the 90%-of-cap reserve line.
+- [x] Every `Must not delete:` item above is still readable, verbatim or faithfully restated.
+- [x] No decision number renumbered; `check-decision-refs.py` still resolves every citation.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed 2026-09-28
+
+Verbatim split, per the dispatch note's named seam: decisions 30 and 35 (the inbound-path
+FIFO ceiling and the step-cap divergence) moved out to new `embarch-dev-bench/decisions/link-limits.md`,
+byte-for-byte. `link.md` kept 6, 7, 12, 13, 18, 19, 25, 36 (transport/detection/identity) and both
+`Must not delete:` items — decision 35's amendment paragraph and decision 13's "what is still
+unestablished" paragraph — moved/stayed verbatim, neither trimmed.
+
+Before: `decisions/link.md` 11,241 B (91.5% of 12,288 B cap).
+After: `decisions/link.md` 7,434 B; new `decisions/link-limits.md` 4,419 B.
+
+Updated in the same commit: `decisions.md`'s group table (split the "The Core link" row into two,
+dropped "two hardware ceilings" from `link.md`'s own description since the ceilings moved out) and
+`decisions/dispatch.md:27`'s citation of decision 35's amendment, which now points at
+`link-limits.md` instead of `link.md` (both files are this repo's own — no cross-repo citation
+found, no inbox drop needed). `history/dev-bench.md`'s existing entry naming `decisions/link.md`
+for decision 35's 2026-09-08 amendment was left as-is: it is a historical record of where that
+amendment lived *at that time*, not a live citation, and outpost's own precedent
+(`history/topology.md`) does the same after a split.
+
+No code-repo change: this is a doc-only compaction, `embarch-dev-bench` (code) worktree stayed at
+zero commits.
+
+Gate: `check-docs.py` all 11 green; `check-ownership.py --scope dev-bench` OK (3 paths, all owned);
+`check-ownership.py --code-repo` OK (0 paths changed); `check-client-names.py` clean against both
+worktrees; `check-doc-size.py` exit 0, dev-bench absent from every reserve/over-cap list;
+`check-duplication.py` no dev-bench overlaps. `changelog.d/dev-bench-link-limits-split.changed.md`
+dropped (121 B). No `features.d/` fragment — no capability shipped, retired, or changed maturity.
+No `status.d/` fragment — nothing outside `embarch-dev-bench` changed truth.
