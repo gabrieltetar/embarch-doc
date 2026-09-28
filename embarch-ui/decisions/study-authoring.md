@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-17.
 
-Split out of [study-designer.md](study-designer.md) when it reached its size cap ([../../DOC-BUDGET.md](../../DOC-BUDGET.md)) — a verbatim move, nothing shortened. That file keeps the tab's older choices: the version fields, security, declared GATT, opening a project, the run badge, the stream-name cap. This one holds the two surfaces added when the tab learned to author every field a `Study` carries (`tasks/ui/070`). What each is served, and the routes behind them: [../interfaces.md](../interfaces.md).
+Split out of [study-designer.md](study-designer.md) when it reached its size cap ([../../DOC-BUDGET.md](../../DOC-BUDGET.md)) — a verbatim move, nothing shortened. That file keeps the tab's older choices: the version fields, security, declared GATT, the run badge, the stream-name cap; opening a project is now [project.md](project.md). This one holds the two surfaces added when the tab learned to author every field a `Study` carries (`tasks/ui/070`). What each is served, and the routes behind them: [../interfaces.md](../interfaces.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
