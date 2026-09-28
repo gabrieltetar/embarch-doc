@@ -24,7 +24,8 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/trace-chart.md](decisions/trace-chart.md) | 10 (chart) | Zoom, pan, exact aggregation, the study-step row |
 | [decisions/outcome-decode.md](decisions/outcome-decode.md) | 23 | One outcome decoder for both wire shapes |
 | [decisions/trace-transfer.md](decisions/trace-transfer.md) | 18 | Server-side binning: the view asks for the window it draws |
-| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 14, 20, 22 | Version fields, security level, declared GATT, opening a project, the run badge's counter, the stream-name cap |
+| [decisions/study-designer.md](decisions/study-designer.md) | 11, 12, 20, 22 | Version fields, security level, declared GATT, the run badge's counter, the stream-name cap |
+| [decisions/project.md](decisions/project.md) | 14 | Opening a firmware project: the repo picker, the recents list, and the first-time-project detection rule |
 | [decisions/designer-panels.md](decisions/designer-panels.md) | 41, 51 | The Study Designer's panel layout: one apply-study path, build options behind a button, static firmware analysis as an explicit action with no extractor field, one "Define the wire" panel |
 | [decisions/firmware-build.md](decisions/firmware-build.md) | 38, 39, 40 | A study builds its own DUT firmware: the ordered snippet picker, the three-state outpost mode, the build as a phase of a run, where its log is read, and when a saved study's version is rewritten |
 | [decisions/study-authoring.md](decisions/study-authoring.md) | 29, 30 | The `.eap` editor dialog, and running a saved study as it is on disk |

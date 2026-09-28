@@ -1,0 +1,21 @@
+# embarch-ui decisions: Opening a firmware project
+
+**Status:** active, 2026-09-28.
+
+Split out of [study-designer.md](study-designer.md) at its size cap ([../../DOC-BUDGET.md](../../DOC-BUDGET.md)) — a verbatim move, nothing shortened. "Which firmware repo is open" is a property of the whole tab, not of authoring one study, and it is the decision [firmware-build.md](firmware-build.md) decision 38 cites most (the Build card matches its project by that repo's path). What a study itself *says* — version fields, security, declared GATT, the run badge, the stream-name cap — stays in [study-designer.md](study-designer.md).
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
+
+### 14 — "Open project": the firmware repo is picked at runtime, and the config field becomes the default rather than the only way in
+
+The config field's original reasoning was right — **a *guess* at which firmware repo an engineer meant is worse than a clear "not configured" state** — and this amends it rather than reversing it: an explicit human pick is not a guess, so a picker satisfies that reasoning better than the field does. What changes is that the field's *absence* no longer leaves the whole tab dead. It stays the zero-click default for a single-repo bench.
+
+**A typed path with server-side validation, not a file picker, and this is a constraint rather than a preference.** A browser has no directory picker that yields a usable path, and even a real path would still have to be resolved server-side because **the server is what reads the files.** So the choice was a typed path with a real check plus a recents list, or a picker that looks better and cannot work.
+
+**The invariant that makes this more than a text box: the repo path is read by three different things** — the saved-studies directory, the custom-action registry, and the static GATT extractor. **A switch has to move all three together or the tab shows one repo's studies beside another repo's registry.** The repo path is also the *whole* of a project, since decision 51 left nothing else to configure. The static-extraction cache **stopped being a `OnceLock` for exactly this reason:** it needs three states — not computed for this project, computed and empty, computed — and **a `OnceLock` cannot tell the first two apart** once the project became switchable.
+
+**A repo with no `embarch/` directory is a first-time state, not a fault**, since the first save creates it — so the survey reports "is this a source repo" and "does it have studies yet" as separate answers and the acceptance rule only reads the first. **A bare `embarch/` subdirectory is not evidence of anything, and a live run is how that was learned:** the first rule counted it, and on this bench **that accepted `$HOME`**, because the suite's own parent folder is `~/embarch`. A directory *called* `embarch` says nothing about its contents; only something written inside it does. The rule is now `.git` **or** a firmware/Cargo marker **or** a real `embarch/` config, and a refusal names all of them rather than saying "invalid".
+
+**Recent projects persist in the per-user data directory, not in the config file.** The config is a file an engineer writes and this process only reads; **writing a UI convenience into it would mean rewriting a human's own file, comments and all.** They go beside `embarch-api`'s own logfile, through the shared `user_dirs` rather than resolved twice. An unreadable or absent file is an empty list, logged, never an error: **a convenience list that can refuse to start the tab would be worse than no list.**
+
+**"Create study" writes a study that is valid the moment it exists**, through the same builder a save uses rather than a shape only this route can produce: `requires` explicit-any on both fields (mandatory, no serde default — it has to be *said*), both CRCs sealed, both UI sidecars present — editable and loadable from creation, not only after its first save. A name whose slug already exists is a `409`, never a silent overwrite. Its route is deliberately **not** `/studies/new`, because **`new` is a perfectly good slug** and that path would be ambiguous with a real study of that name on the sibling route.

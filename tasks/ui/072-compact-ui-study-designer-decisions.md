@@ -1,6 +1,6 @@
 # 072 — `embarch-ui/decisions/study-designer.md` is in reserve
 
-**State:** claimed by agent/ui/072-compact-ui-study-designer-decisions, 2026-09-28 17:01
+**State:** done — agent/ui/072-compact-ui-study-designer-decisions, 2026-09-28.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 11's reversal rewrite
 **Scope:** ui
 **Hardware:** none
@@ -45,11 +45,47 @@ commit.
 
 ## Done when
 
-- [ ] Out of reserve, or the task says why not.
-- [ ] **Decision 11's reversal paragraph is not what gets cut.** It is the
+- [x] Out of reserve, or the task says why not.
+- [x] **Decision 11's reversal paragraph is not what gets cut.** It is the
       newest text in the file and the one a reader arriving from the reversals
       page lands on.
-- [ ] `decisions.md`'s index row updated for whatever moves.
-- [ ] Every inbound reference still resolves (`check-decision-refs.py`).
-- [ ] Byte numbers before and after.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+- [x] `decisions.md`'s index row updated for whatever moves.
+- [x] Every inbound reference still resolves (`check-decision-refs.py`).
+- [x] Byte numbers before and after.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+
+## Closed 2026-09-28
+
+Split by mission per the "Why the seam is a split" section above: decision 14
+("Open project") moved **verbatim** to a new `decisions/project.md`, leaving
+decision 11's reversal paragraph (row 113) untouched — it was never the target,
+per the "seam is a split" reasoning already in this file.
+
+**Byte counts:**
+- `decisions/study-designer.md`: 11,392 B → **7,897 B** (64.3% of 12,288 cap,
+  out of reserve).
+- `decisions/project.md`: new, **4,237 B**.
+
+**Updated:** `decisions.md` index (split one row into two), the two other
+files that described "opening a project" as living in `study-designer.md`
+(`decisions/designer-panels.md`, `decisions/study-authoring.md`) now point to
+`project.md` instead. `decisions/firmware-build.md` and `decisions/shell.md`
+cite decision 14 by number only (no file link), so they needed no change —
+confirmed by `check-decision-refs.py`, which resolves all 3,141 decision
+references and all 48 `[decision N]` topic-file links with none broken by the
+move.
+
+**Not touched, per the dispatch note:** `decisions/shape.md`, `spec.md`
+(`tasks/ui/069`), `open.md` (`tasks/ui/074`) — all still in reserve, none
+pushed further into reserve by this change. No other `ui` file crossed into
+reserve as a result of this edit, so no new `tasks/ui/<NNN>-compact-ui.md` was
+filed.
+
+**Gate:** `scripts/check-docs.py` — all 11 checks green.
+`scripts/check-ownership.py --scope ui` (doc worktree) — OK, all 4 changed
+paths owned by `ui`. `scripts/check-ownership.py --code-repo --repo
+<embarch-ui worktree>` — OK, zero code changes (docs-only task, no `embarch-ui`
+commits). `scripts/check-client-names.py --repo <embarch-ui worktree>` — OK,
+clean against 8 denylist entries.
+
+`changelog.d/ui-study-designer-project-split.changed.md` filed (116 B).

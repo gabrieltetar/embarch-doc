@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-19.
 
-How the tab is laid out, and the one rule that keeps a panel from showing the study before last. What a study *says* — the version fields, security, the declared GATT, opening a project — is in [study-designer.md](study-designer.md); GATT capture and its pickers are in [gatt-capture.md](gatt-capture.md).
+How the tab is laid out, and the one rule that keeps a panel from showing the study before last. What a study *says* — the version fields, security, the declared GATT — is in [study-designer.md](study-designer.md); which firmware repo is open is in [project.md](project.md); GATT capture and its pickers are in [gatt-capture.md](gatt-capture.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
