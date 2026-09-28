@@ -1,6 +1,6 @@
 # 068 — `embarch-study-designer/decisions/declares.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/study-designer/068-compact-study-designer-declares, 2026-09-28 17:00
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 77
 **Scope:** study-designer
 **Hardware:** none
@@ -37,6 +37,16 @@ DUT half of it.
 snippets and no extra args — well inside `MAX_SNIPPETS_PER_BUILD` (8) and
 `MAX_BUILD_EXTRA_ARGS` (8), and nothing in that run argues for moving either.
 The entry is stable; the split is now ordinary compaction work.
+
+## Dispatch note (supervisor, 2026-09-28)
+
+Three days past its clock. **Also in reserve in `study-designer`, not yours to write:**
+`decisions/gatt-extract.md` **36 B left** (`tasks/study-designer/069`, open — a separate unit, so
+leave it alone even if a seam looks shared), `spec.md` 840 B left (`tasks/study-designer/032`,
+blocked), and `open.md` at 5,447 / 5,120 B, over its role cap (`tasks/study-designer/026`,
+blocked). A new sibling file and a `decisions.md` routing-table row are the only other writes this
+should need; if your work pushes any other file into reserve, file
+`tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit.
 
 ## Done when
 
