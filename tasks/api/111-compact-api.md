@@ -1,6 +1,6 @@
 # 111 — `embarch-api/decisions/failure-reporting.md` is in reserve after decision 76
 
-**State:** claimed by agent/api/111-compact-api, 2026-09-28 17:33
+**State:** done
 **Source:** `api/110`'s decision 76 (the `validate` `not_attached` lead wording) pushed this file
 past its reserve band; `DOC-COMPACTION.md` §2
 **Scope:** api
@@ -53,8 +53,42 @@ reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 
 ## Done when
 
-- [ ] `embarch-api/decisions/failure-reporting.md` is back under its reserve band, its "must not
+- [x] `embarch-api/decisions/failure-reporting.md` is back under its reserve band, its "must not
       delete" facts intact — a split along the seam above is one honest way to do it, not the only
       one.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Closed
+
+Split along the seam the dispatch note named, verbatim: decisions 71, 73 and 76 (`validate`'s
+`kind`-classification thread) moved unchanged into new `embarch-api/decisions/validate-kind.md`;
+57 and 67 stayed in `failure-reporting.md`. Byte-identical move, checked line-for-line against the
+original before truncating it — nothing squeezed.
+
+**Sizes:** `failure-reporting.md` 11578 B → 5657 B (57/67 only). `validate-kind.md` (new) → 6980 B
+(71/73/76). Both files' Status lines bumped to 2026-09-28 (the split itself); no decision content's
+own dates changed. `decisions.md`'s routing row split into two matching rows.
+
+**Inbound-link check:** `grep -rn` over `embarch-doc` and the `embarch-api` code repo (including
+`src/` tool descriptions) for `failure-reporting`, and for bare `decision 57/67/71/73/76` citations
+that might be `embarch-api`'s. Every citation in the code repo (`tools.rs`, `cli.rs`, `main.rs`,
+`client.rs`) is a bare `embarch-api decision N`, per decision 57's own convention — none names a
+filename, so none went stale. Two doc files link straight at `failure-reporting.md` for decision 67
+(`interfaces/tools-topology.md`, `interfaces/tools-dev-bench.md`) — 67 stayed in that file, so both
+stay correct. No file anywhere links to `failure-reporting.md` for 71, 73 or 76 specifically — only
+`decisions.md`'s own row named them, and that row moved with them. **No inbox drop needed**: nothing
+outside `api` referenced the moved decisions by file path.
+
+**Gate:** `check-docs.py` 11/11 green, including `check-decision-refs.py` (no stale topic-file
+links) and `check-doc-size.py` (both files well clear of cap and reserve). `check-ownership.py
+--scope api` (doc worktree) and `--code-repo` (api worktree) both clean. `check-client-names.py`
+clean in both. `embarch-api`: `cargo build`/`test`/`clippy --all-targets -- -D warnings` all green
+on the workspace (no code changed by this task; both `crates/*` are workspace members, so the gate
+reaches them).
+
+**DOC-COMPACTION-PASS.md's human question** ("Can `spec.md` alone answer what someone needs to
+work on this component today?"): unaffected by this task — `spec.md` is untouched, and a verbatim
+split moves bytes between two decision files without deleting or restating anything, so whatever
+`spec.md` could answer before this task, it still can. This was a split, not a squeeze; the
+hot/cold second pass was explicitly out of scope (dispatch note: "split only, squeeze nothing").
