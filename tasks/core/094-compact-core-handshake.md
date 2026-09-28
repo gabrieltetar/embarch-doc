@@ -1,6 +1,14 @@
 # 094 — `embarch-core/decisions/handshake.md` is at its cap
 
-**State:** open
+**State:** claimed by agent/core/094-compact-core-handshake, 2026-09-28 15:06
+**Dispatch note (supervisor, 2026-09-28):** this file is **one of three that turn `main`'s
+`check-doc-size.py` RED** — over its cap and past its 2026-09-25 clock — so the unit is judged
+first on whether that red is gone. The other two reds (`embarch-ui/open.md`,
+`embarch-ui/decisions/shell.md`) are not yours and will still show in your gate run; report them as
+pre-existing, not as your failure. Other `core` files in reserve that this unit must **not** touch:
+`interfaces/studies.md` (259 B left, `tasks/core/092`), `decisions/surfaces.md` (`091`, blocked),
+`decisions/auth.md` (`046`, blocked), `decisions/streams.md` (`093`, blocked). `decisions.md`'s
+index row and Size cell for the new file and for `handshake.md` are yours.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 74
 **Scope:** core
 **Hardware:** none
