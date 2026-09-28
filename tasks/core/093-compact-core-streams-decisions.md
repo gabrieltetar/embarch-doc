@@ -85,6 +85,16 @@ the wrong file. `embarch-ui/` is outside this task's `core` scope, so that repoi
 an inbox task rather than fixed here:
 `/home/gabriel/Github/embarch/embarch-doc/inbox/ui-repoint-streams-md-decision-70-cite.md`.
 
-Gate: `check-docs.py` green, `check-ownership.py --scope core` green on both branches (doc and
-code), `check-client-names.py` green. Code repo touched nothing — this was a pure doc split, no
-Rust changes, so `cargo build`/`test`/`clippy` were not re-run (nothing to build).
+**Gate: `check-docs.py` is RED — 10 of 11 checks pass, `check-decision-refs.py` fails on exactly
+the one out-of-scope link above** (`embarch-ui/decisions/live-study.md:30`, decision 70 pointing at
+`streams.md` when it now lives in `streams-live.md`). This is the expected shape of a mission split
+that another sub-project cited by file path rather than by bare number (`DOC-CONVENTIONS.md`'s own
+"prefer the bare number" rule, and the precedent at `tasks/api/098` for `core/060`'s earlier split).
+Fixing it requires editing `embarch-ui/`, which `check-ownership.py --scope core` refuses this
+worker; the inbox drop above is the fix. `check-ownership.py --scope core` is green on both
+branches, `check-client-names.py` is green. Code repo touched nothing — this was a pure doc split,
+no Rust changes, so `cargo build`/`test`/`clippy` were not re-run (nothing to build).
+
+**Branch tips:** `embarch-doc` `06dc821783f0553aa2abe358757c3f059c35c1de`, `embarch-core`
+`48dc591493e657e5c978382a35777868309040bd` (unchanged — no code commit). Both pushed to
+`agent/core/093-compact-core-streams-decisions`.
