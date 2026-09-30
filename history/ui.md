@@ -32,6 +32,7 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- spec.md's dev-bench-picker invariant again names it "served by the binary", dropped by an unaccounted-for squeeze.
 - `study_designer.rs` fixed a wrong embarch-study-designer decision citation for the service-names split.
 - Fixed study_designer.rs's decisions-34/36/54/55 claim: family membership, not identical origin.
 - Fixed a wrong decision citation (53 for 55) in two `study_designer.rs` comments naming the empty-capture failure family.
