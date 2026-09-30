@@ -11,6 +11,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- `decisions/shape.md` split its launcher decisions (3, 28) into `decisions/launcher.md`; `spec.md` split its tab table into `spec/tabs.md`. Both out of reserve.
 - decisions/study-designer.md out of reserve: decision 14 (opening a project) split verbatim to decisions/project.md.
 - `decisions/shell.md` and `topology-boards.md` split verbatim (`design-system.md`, `saved-benches.md`) to clear the size cap; no content rewritten.
 - `open.md` 6,630 B → 4,867 B: decision 27 retired (settled in `trace-view.md`), two entries' settled halves moved to `decisions/trace-rows.md` and `decisions/time-chart.md`.
