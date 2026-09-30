@@ -1,6 +1,6 @@
 # 108 — Implement and verify a Windows process-tree kill for timed-out builds
 
-**State:** open — code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
+**State:** blocked — needs a Windows run of a timed-out forked build tree; code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
 2026-09-29
 **Source:** `tasks/api/107` — correcting `spec.md` §2's unqualified "timeout kills the process
 group" invariant surfaced that `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` kills only
@@ -81,6 +81,12 @@ question.
       forked grandchild. **This box stays unchecked and this task stays open** until a Windows
       session (native `cargo.exe`, per the owner's documented working path, or a CI runner) builds
       and exercises it per "What would have to run to believe it".
+      **Supervisor, 2026-09-29, after landing:** native `cargo.exe` (Windows, rsync'd copy) —
+      `clippy -p embarch-firmware-build --all-targets` compiles clean for this crate (two
+      pre-existing unused-import errors under `-D warnings` in `embarch-core-client`'s
+      `token_discovery.rs`), and `cargo test -p embarch-firmware-build build::` passes 7/7. No
+      test there times out a forked tree, so the kill itself is still unexercised. (The crate's
+      `config::` tests fail on Windows; not investigated, likely unix paths.)
 - [ ] `decisions/build.md` decision 75 and `spec.md` §2's timeout bullet are updated to drop the
       unix-only qualifier once the Windows arm is real and verified — not before. **Decision 75's
       text is updated to describe the new code and its unverified state; the qualifier itself is
