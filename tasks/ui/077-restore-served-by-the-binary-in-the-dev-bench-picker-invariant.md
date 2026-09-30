@@ -1,7 +1,9 @@
 # 077 — Restore "served by the binary" in spec.md's dev-bench-picker invariant
 
-**State:** open — drained from `inbox/ui-075-dropped-served-by-binary.md` at step 0 of the leg
-after the recovery leg, 2026-09-29. Body unchanged apart from this line and the number.
+**State:** claimed by agent/ui/077-served-by-the-binary, 2026-09-29 22:14
+
+Drained from `inbox/ui-075-dropped-served-by-binary.md` at step 0 of the leg after the recovery
+leg, 2026-09-29. Body unchanged apart from this line and the number.
 **Source:** embarch-reviewer, unit ui/075 (merge SHA embarch-doc 1fe6295b)
 **Scope:** ui
 **Hardware:** none — one phrase in `embarch-ui/spec.md`; re-checked at the drain.
