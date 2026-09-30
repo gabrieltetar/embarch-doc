@@ -1,6 +1,6 @@
 # 121 — Two pre-existing Windows-only reds in embarch-api: unused imports in core-client, failing `config::` tests in firmware-build
 
-**State:** open
+**State:** claimed by agent/api/121-windows-reds, 2026-09-29 23:40
 **Source:** supervisor-log.md, leg entry for `api/108` (2026-09-29 22:33) — found while running native
 Windows `cargo.exe` on an rsync'd copy of `embarch-api`; not filed by that leg. Supervisor-filed.
 **Scope:** api
