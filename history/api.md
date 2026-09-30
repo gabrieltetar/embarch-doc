@@ -54,6 +54,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- Decision 72 said "seven" retired mirrors and named six; count and list now agree (six), git-confirmed.
 - `main.rs`'s stack-size comment cites study-designer decision 63, not the `spec.md` §7 that split renumbered.
 - Decision 59's `SignalLink` parenthetical amended: it is decision 72's type alias now, not a hand-written mirror.
 - `validate`'s `not_attached` error no longer says "plug it in"; lead now says "unavailable", matching Core.
@@ -104,7 +105,7 @@
 - `embarch-api` decisions 31 and 33 were byte-identical — the duplicate created in the very commit that deleted 31, which is why the deletion went unnoticed. One entry now owns both numbers.
 
 ### Removed
-- `embarch-core-client` names `embarch-topology`'s wire types instead of hand-mirroring seven of them; old spellings kept as aliases. [decision 72](../embarch-api/decisions/client-crate.md)
+- `embarch-core-client` names `embarch-topology`'s wire types instead of hand-mirroring six of them; old spellings kept as aliases. [decision 72](../embarch-api/decisions/client-crate.md)
 - `soc_chip_overrides` is retired unbuilt and refused at load on both kinds — an unmapped SoC stops at Core's registry-validated table ([decision 13](../embarch-api/decisions.md)).
 - `[[projects.targets]]` retired — refused at config load; `list_targets` now reports a `static` project's one real target, itself ([decision 53](../embarch-api/decisions.md)).
 
