@@ -1,6 +1,6 @@
 # 120 — `embarch-api/src/main.rs:538` cites a study-designer `spec.md` section number that split renumbered
 
-**State:** open
+**State:** claimed by agent/api/120-main-rs-spec-section-cite, 2026-09-29 21:05
 **Source:** `inbox/api-stale-study-designer-spec-section-cite.md`, dropped by the
 `study-designer/032` worker (2026-09-28) and filed by the supervisor at that unit's fold.
 Splitting `embarch-study-designer/spec.md` §4 ("What a study carries") to `spec/carriage.md`
