@@ -31,16 +31,22 @@ leg's attention on its own.
 
 ## Done when
 
-- [ ] The count is correct, **or** the sentence is rephrased so it cannot go stale again (e.g.
+- [x] The count is correct, **or** the sentence is rephrased so it cannot go stale again (e.g.
       "into the files under `decisions/`"). **Prefer the rephrase** and say why in one sentence: a
       number that no check reads will drift again, and this sentence is about permanence of
       *identifiers*, not about how many files there happen to be.
-- [ ] While you are in `decisions.md`, check the group table the same way: every decision number
+      Rephrased to "into the files under `decisions/`" — done, since the next split makes any
+      number wrong again the same way it made seventeen and twenty wrong.
+- [x] While you are in `decisions.md`, check the group table the same way: every decision number
       present in `decisions/*.md` appears in exactly one row, and every number a row claims exists.
       Report the tally either way — a clean result is a useful one.
-- [ ] No `changelog.d/` fragment unless the table census turns up something reader-facing; a
-      corrected count is not.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
+      Clean: 78 decision numbers total (headers `### N` across `decisions/*.md`), no duplicates
+      either in the files or in the table, and the two sets are identical — every number a file
+      declares appears in exactly one table row and every number a row claims exists as a file
+      header. The table itself also has 20 rows for 20 files, matching 1:1.
+- [x] No `changelog.d/` fragment unless the table census turns up something reader-facing; a
+      corrected count is not. — census was clean, no fragment filed.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10.
 
 ## Not yours
 
