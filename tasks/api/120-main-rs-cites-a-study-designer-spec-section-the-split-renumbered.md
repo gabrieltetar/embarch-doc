@@ -32,9 +32,10 @@ it — `embarch-api` is outside its ownership row.
 
 ## Done when
 
-- [ ] `embarch-api/src/main.rs:538`'s comment cites decision 63 (or `spec.md §6`), and says so in
-      the report.
-- [ ] `grep -rn 'spec.md §' src/ crates/` in `embarch-api` shows no other citation into
-      `embarch-study-designer/spec.md` by a section number that moved.
-- [ ] Gate green in `embarch-api` (`cargo build`/`test`/`clippy --all-targets -- -D warnings`,
-      `check-client-names.py`), `changelog.d/` fragment.
+- [x] `embarch-api/src/main.rs:538`'s comment cites decision 63 (or `spec.md §6`), and says so in
+      the report. Repointed to `embarch-study-designer` decision 63 (`decisions/limits.md`).
+- [x] `grep -rn 'spec.md §' src/ crates/` in `embarch-api` shows no other citation into
+      `embarch-study-designer/spec.md` by a section number that moved. Grep returns nothing.
+- [x] Gate green in `embarch-api` (`cargo build`/`test`/`clippy --all-targets -- -D warnings`,
+      `check-client-names.py`), `changelog.d/` fragment. All green;
+      `changelog.d/api-spec-section-cite.fixed.md` added.
