@@ -1,6 +1,7 @@
 # 108 — Implement and verify a Windows process-tree kill for timed-out builds
 
-**State:** claimed by agent/api/108-windows-tree-kill, 2026-09-29 22:14
+**State:** open — code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
+2026-09-29
 **Source:** `tasks/api/107` — correcting `spec.md` §2's unqualified "timeout kills the process
 group" invariant surfaced that `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` kills only
 the immediate child, and `107` was explicitly told not to implement the fix (see its own "Not
@@ -60,18 +61,51 @@ question.
 
 ## Done when
 
-- [ ] A Windows tree-kill is implemented in `#[cfg(not(unix))] kill_process_tree`.
-- [ ] It has been **run on an actual Windows process** per "What would have to run to believe it"
-      above, and the result — pass or fail, and what was run, by whom, on what — is recorded here
-      before this task closes. A worker dispatched this task and unable to run it on real Windows
-      leaves this `open` with what it tried, the same way hardware-gated tasks do, rather than
-      reporting green on a build alone.
+- [x] A Windows tree-kill is implemented in `#[cfg(windows)] kill_process_tree`: a Win32 Job Object
+      (`windows-sys`, `JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE`), created and assigned to the child right
+      after `spawn()`, `TerminateJobObject`ed on timeout. Falls back to `child.start_kill()` if the
+      job could not be created/assigned. See `crates/embarch-firmware-build/src/build.rs`
+      (`kill_process_tree`, `mod windows_job`) and decision 75's updated text for the full
+      mechanism and why Job Object over `taskkill /T /F`.
+- [ ] **Not run on an actual Windows process.** What was tried instead, and why it stopped there:
+      only `x86_64-pc-windows-msvc` is installed (`rustup target list --installed`); no mingw
+      target/linker is present, so no cross-build-and-run under WSL2 interop was possible per the
+      dispatch note. A `cargo check --target x86_64-pc-windows-msvc` attempt (to at least
+      type-check the new code against the real target) also failed, but before reaching this
+      crate's code at all: `embarch-core-client`'s `reqwest` → `rustls` → `aws-lc-sys` chain tries
+      to cross-compile C sources with the host Linux `cc`, which fails on
+      `pthread_rwlock_t`/Windows-only headers it doesn't have — the same shape of gap
+      `embarch-core`'s `hidapi` cross-build hits, and pre-existing, unrelated to this task's own
+      code. So this task's new code has compiled and passed `cargo test`/`clippy` on the native
+      (unix) target only, and has never been built for Windows at all, let alone run against a
+      forked grandchild. **This box stays unchecked and this task stays open** until a Windows
+      session (native `cargo.exe`, per the owner's documented working path, or a CI runner) builds
+      and exercises it per "What would have to run to believe it".
 - [ ] `decisions/build.md` decision 75 and `spec.md` §2's timeout bullet are updated to drop the
-      unix-only qualifier once the Windows arm is real and verified — not before.
-- [ ] `open.md`'s Windows-smoke-harness bullet is either linked from here or left alone with a
-      reason, since a Windows test added for this task is the first crack in that gap.
-- [ ] A `changelog.d/` fragment.
-- [ ] Gate green: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`.
+      unix-only qualifier once the Windows arm is real and verified — not before. **Decision 75's
+      text is updated to describe the new code and its unverified state; the qualifier itself is
+      deliberately left in place** (`spec/implementation.md` §3's timeout bullet, since §2 moved
+      under `DOC-COMPACTION.md` on 2026-09-29) — not done, correctly, pending the box above.
+- [x] `open.md`'s Windows-smoke-harness bullet: **left alone with a reason.** `open.md` is in its
+      compaction reserve (`tasks/api/113`, ~665 B of its 5 KB cap left) — adding a pointer sentence
+      there would have spent reserve this task doesn't need to spend, since the bullet's substance
+      (this task, its unverified state, and the aws-lc-sys cross-compile gap) is now fully covered
+      by decision 75's updated text, which `open.md`'s bullet already links to only indirectly.
+      No Windows test was added to `tests/smoke_harness.rs` either — the same "cannot run it"
+      reason above — so that gap is unchanged and stays exactly as `open.md` already describes it.
+- [x] A `changelog.d/` fragment: `changelog.d/api-windows-tree-kill-job-object.decided.md`.
+- [x] Gate green on the native (unix) target: `cargo build`, `cargo test`,
+      `cargo clippy --all-targets -- -D warnings` all pass. **Not gated on Windows** — see above.
+
+## Blocked
+
+Code-complete, unverified. Leaving this `open` per the task's own "Not yours" section and its
+"Done when" instructions: a worker cannot run this on real Windows. What would close it next:
+a Windows machine or CI runner building `embarch-api` at `agent/api/108-windows-tree-kill`,
+running a build with a forking child under a short `build_timeout_secs`, letting the timeout
+fire, and confirming via `tasklist`/Process Explorer that the grandchild is gone — then flipping
+the two boxes above and dropping the unix-only qualifier in decision 75 and
+`spec/implementation.md` §3.
 
 ## Not yours (repeated from `107`, still true here)
 
