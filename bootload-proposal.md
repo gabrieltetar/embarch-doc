@@ -30,7 +30,7 @@ The result names what happened, not just whether: bytes written, duration, wheth
 
 **`embarch-smp`**: built — [its spec](embarch-smp/spec.md). It sends byte-identical requests to smpclient on every recorded upload, and ships the simulated bootloader Core's tests will drive.
 
-**`embarch-topology`**: two optional declared facts on the DUT row — the **application** port identity (where the entry command goes) and the **bootloader** port identity (where SMP goes), each a VID:PID plus optional USB serial — and a resolver that finds each among live ports. Set and unset like the dev-bench link fields (`embarch-topology` decision 27).
+**`embarch-topology`**: built — `hardware::bootload`, decision 36. Declaring a pair one port could match both of is refused, which closes this proposal's first open question.
 
 **`embarch-core`**: `POST /bootload` (multipart: the image, the optional entry command and line ending, the image index, the declared buffer size), the flow above under `hw_lock`, the image-header check, and the study-tap refusal. A new route means a new `AUTH_CASES` row and a contract-version bump the API checks (`embarch-api` decision 17). About a day.
 
@@ -38,15 +38,13 @@ The result names what happened, not just whether: bytes written, duration, wheth
 
 ## Open
 
-- **Same USB identity in application and bootloader.** If the firmware keeps one VID:PID for both, Core cannot tell by looking which one is running. Proposed: require distinct identities and refuse at enrollment when they are equal, rather than inferring from disappear-and-reappear timing. The first DUT still uses Zephyr's default VID:PID and sets no USB serial, so this is a real constraint on its firmware, and one to raise with its owners now.
 - **Whether `bootload` should verify the image afterwards.** Serial recovery's image-state read is itself a Kconfig option, so it cannot be assumed present. First cut: application re-enumeration is the success signal, and a hash check is added only where the bootloader answers one.
 - **Timeouts** (bootloader enumeration, per-chunk response, application return) are placeholders until measured on the first DUT.
 
 ## Order of work
 
-1. `embarch-topology`: the two declared port identities and their resolver.
-2. `embarch-core`: `POST /bootload`.
-3. `embarch-api`: the two tools and the config.
-4. Later, and not blocking 1–3: hardware validation on the first DUT once it has MCUboot, then the UI button.
+1. `embarch-core`: `POST /bootload`.
+2. `embarch-api`: the two tools and the config.
+3. Later, and not blocking 1–2: hardware validation on the first DUT once it has MCUboot, then the UI button.
 
 Each accepted piece moves into its sub-project's own docs and is **deleted from this file, not restated** ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3).

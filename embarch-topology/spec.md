@@ -53,7 +53,7 @@ no hand-off file, no env var:
 
 ## The declared facts
 
-Everything else is detected live. These four cannot be:
+Everything else is detected live. These cannot be:
 
 | Fact | Why detection cannot produce it |
 |---|---|
@@ -62,6 +62,7 @@ Everything else is detected live. These four cannot be:
 | **A link port's own USB serial** | The link can differ from the JTAG probe's USB device, and **no identity readback is possible over a plain UART** |
 | **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
+| **A DUT's bootload ports** (app and bootloader USB identities) | Zephyr's default VID:PID is shared by every board built from defaults (decision 36) |
 
 Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file (decision 23); a store predating later facts still loads.
 
