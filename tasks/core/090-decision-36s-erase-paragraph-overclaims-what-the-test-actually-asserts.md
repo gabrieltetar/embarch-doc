@@ -59,16 +59,19 @@ Left alone it is a decision that reads as guaranteed and is not.
 
 ## Done when
 
-- [ ] Decision 36's paragraph says the test covers only the `jlink` arm, and the `nrfutil` claim is
+- [x] Decision 36's paragraph says the test covers only the `jlink` arm, and the `nrfutil` claim is
       either **(a)** demoted in the text to "true by source reading, unguarded by a test" or
       **(b)** backed by a real test — e.g. extracting the `--options` string construction into a
       function that returns it, the way `jlink_script` already is, and asserting on it.
       **(b) is the better outcome if it is small**; do not force it if extracting the string means
       restructuring `run()`.
-- [ ] If you take (b), the new test lives beside `no_backend_maps_erase_to_a_full_chip_erase` and the
+      Took (b): extracted `nrfutil_erase_options(erase: bool) -> &'static str` out of `run()`
+      (`src/flash_backend.rs`), no restructuring needed.
+- [x] If you take (b), the new test lives beside `no_backend_maps_erase_to_a_full_chip_erase` and the
       decision text then says what it actually asserts, not what it aspires to.
-- [ ] A `changelog.d/` fragment noting the correction.
-- [ ] Gate green per `../../embarch-fleet/protocol.md` §10.
+      `nrfutil_options_never_request_a_full_chip_erase` added directly after it.
+- [x] A `changelog.d/` fragment noting the correction.
+- [x] Gate green per `../../embarch-fleet/protocol.md` §10.
 
 ## Not yours
 
