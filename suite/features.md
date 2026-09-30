@@ -72,6 +72,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `list_serial_ports`/`list-serial-ports` — discovers a `serial_log` port value from Core's own machine | Shipped | unit | 70 |
 | Declare/list/remove a DUT signal link and dev-bench's own link, from an agent or a terminal (`declare_signal`, `list_signals`, `remove_signal`, `dev_bench_link`, and their CLI twins) | Shipped — wraps Core's existing `/signals`/`/dev-bench/link` routes, no new Core behaviour | no (client wrappers were already round-trip tested; parity test covers the CLI/MCP pairing) | 67 |
 | `study_stream_load`/`study-stream-load` — an outpost capture's per-subject load shares and coverage line, reaching Core's `/stream/{name}/load` route (closes suite decision 4's agent-side half) | Shipped | unit (wire-shape, bearer-token sweep, CLI/MCP parity); hw only for a real capture | 3, 10 |
+| `bootload` / `build_and_bootload` — a signed MCUboot image to the DUT's own bootloader over USB, plus `declare_bootload_ports`/`show_bootload_ports`/`clear_bootload_ports`, each with a CLI twin | Shipped — **no real bootloader has answered it**: mock-HTTP and unit tested only, and no real sysbuild `domains.yaml` from the first DUT has been read | unit | 80 |
 
 ## embarch-dev-bench
 

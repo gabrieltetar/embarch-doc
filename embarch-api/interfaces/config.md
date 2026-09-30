@@ -26,6 +26,7 @@ In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upw
 | `reset_timeout_secs` | integer | no | 10 | |
 | `flash_timeout_secs` | integer | no | 120 | Its own budget: flashing takes far longer than a status check |
 | `serial_timeout_secs` | integer | no | 15 | |
+| `bootload_timeout_secs` | integer | no | 300 | `bootload` alone: two re-enumerations and a default-buffer upload outlast a flash ([../decisions](../decisions/bootload.md) 80) |
 
 ## `[[projects]]` — zero or more
 
@@ -45,6 +46,7 @@ In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upw
 | `serial_port` / `serial_baud` | string / integer | no | none | Fallbacks for `serial_log`'s params; baud then defaults to 115200 |
 | `probe_serial` | string | no | none | Passed through on flash/reset — disambiguates the DUT probe when a second is attached. Omitted, Core falls back to first-probe-found |
 | `[projects.default_target]` | table (`board?`, `variant?`, `revision?`, `app?`) | no | none | `zephyr-west` only; **refused at config load** on a `static` project (below) and when the table is empty. The **base** selection a call's own params narrow further, **per field** (below). `list_targets` reports it |
+| `[projects.bootload]` | table: `entry_command?`, `entry_line_ending?` (`lf`\|`cr`\|`crlf`), `artifact?` (default `zephyr.signed.bin`), `buffer_size?` | no | none | DUT facts for `bootload`, all declared: the shell command that reboots into serial recovery, its line ending, the signed image's file name inside the application's `zephyr/` directory, and the DUT's `CONFIG_BOOT_SERIAL_MAX_RECEIVE_SIZE`. Absent, only a DUT already in its bootloader can be bootloaded, at the slow default buffer. A value that cannot be honoured, or an unknown key, fails config load ([../decisions](../decisions/bootload.md) 80) |
 | `version_command` | array of strings | no | `git describe --always --dirty --abbrev=8` | Only consulted by a DUT reflash. argv, run in `source_path`, trimmed stdout becomes the version this run reports flashing. **It describes the tree that was built, not the image running on the board.** A `git` argv naming a tree-mutating subcommand is **refused, wherever in the argv it appears** |
 | `soc_chip_overrides` | — | — | — | **Retired unbuilt 2026-09-05** ([../decisions](../decisions/zephyr-scan.md) 13). A SoC→chip escape hatch nothing ever deserialized, on either kind; a config declaring it now **fails at load** naming the retirement. An unmapped SoC stops at Core's 404 — add it to Core's table, `chip-list` finds the string |
 | `[[projects.targets]]` | — | — | — | **Retired 2026-09-05** ([../decisions](../decisions/config-retirement.md) 53). A menu nothing ever selected from; a config still declaring one **fails at load naming the retirement**, advice per `discovery`: `static` declares one `[[projects]]` entry per target, `zephyr-west` deletes the rows — it resolves targets live per call |

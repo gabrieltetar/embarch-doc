@@ -1,0 +1,1 @@
+| `bootload` / `build_and_bootload` — a signed MCUboot image to the DUT's own bootloader over USB, plus `declare_bootload_ports`/`show_bootload_ports`/`clear_bootload_ports`, each with a CLI twin | Shipped — **no real bootloader has answered it**: mock-HTTP and unit tested only, and no real sysbuild `domains.yaml` from the first DUT has been read | unit | 80 |
