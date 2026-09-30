@@ -42,6 +42,20 @@ names.
 `check-doc-size.py` names this file with no filed debt after `core/088`; per
 protocol §5 item 5, that failure must be filed rather than left silent.
 
+## Paid as a ride-along (`core/089`, 2026-09-29)
+
+`core/089` needed to restore four evidence citations to decision 59 (a symbol
+name, a file path, a confirmation-trail sentence, a grep receipt — see its own
+`## What`), which pushed this file back over reserve on its own. Per
+`.claude/leg.md`'s ride-along rule, `core/089` compacted it in the same unit,
+carrying this task's `Must not delete:` list verbatim: every item on that list
+still resolves in substance. What was paid: prose trimmed across decisions 13,
+67, 68, 12, 55 and 59 (filler words, redundant clauses, one merged sentence per
+paragraph) — no decision number, finding, or protected fact removed. File is
+now 11042/12288 B (89.9%), under the 90% reserve line. This task stays
+`blocked` — not closed — because `In flux: yes` still holds; the four
+citations just restored are themselves evidence this file keeps taking edits.
+
 ## Done when
 
 - [ ] `embarch-core/decisions/surfaces.md` back under reserve (under 90% of
