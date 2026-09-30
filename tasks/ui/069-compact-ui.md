@@ -1,6 +1,6 @@
 # 069 — `embarch-ui/decisions/shape.md` and `spec.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/ui/069-compact-ui, 2026-09-29 21:05
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 28 (the launcher's
 focus-the-existing-tab change) and its one-line `spec.md` body edit
 **Scope:** ui
