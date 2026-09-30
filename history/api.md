@@ -54,6 +54,7 @@
 - `embarch-api`'s 158 KB `design.md` became spec.md, open.md, two `interfaces/` files and six `decisions/<mission>.md` — 71 KB, all 45 decision numbers intact.
 
 ### Fixed
+- core-client's unused-import Windows clippy red and firmware-build's `config::` test-fixture-only Windows red both fixed.
 - Decision 72 said "seven" retired mirrors and named six; count and list now agree (six), git-confirmed.
 - `main.rs`'s stack-size comment cites study-designer decision 63, not the `spec.md` §7 that split renumbered.
 - Decision 59's `SignalLink` parenthetical amended: it is decision 72's type alias now, not a hand-written mirror.
