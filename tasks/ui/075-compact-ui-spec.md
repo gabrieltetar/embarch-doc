@@ -1,6 +1,6 @@
 # 075 — `embarch-ui/spec.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/ui/075-compact-ui-spec, 2026-09-29 21:31
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by this task's own tab-table
 split (`tasks/ui/069`): the split itself paid down 1,747 B, but that only bought `spec.md` back
 to 90.6% of cap — still inside the reserve band — because the file had drifted 971 B over cap
