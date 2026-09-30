@@ -1,6 +1,6 @@
 # 083 — `embarch-api/spec.md` is in reserve after the dev-bench-config index fix
 
-**State:** blocked
+**State:** claimed by agent/api/083-compact-api, 2026-09-29 21:22
 **Source:** `api/082`'s `Config:` pointer edit (adding `interfaces/dev-bench-config.md` alongside
 `interfaces/config.md`) put this file into its reserve band; `DOC-COMPACTION.md` §2
 **Scope:** api
@@ -9,13 +9,18 @@
 
 **Compacts:** embarch-api/spec.md
 **Size debt due:** 2026-09-27
-**In flux:** yes — this is the sub-project's "what is true now" doc, and nearly every `api` unit
+**In flux:** no — for the move this task makes. Unparked at claim, 2026-09-29, two days past its
+clock, the way `core/093` was: the remedy is a **verbatim** mission split at the seam this field
+already names (§§1-2 stay in `spec.md`; §§3-7 move verbatim to a new `spec/` file linked from it),
+and `DOC-BUDGET.md`'s split-first rule is that a verbatim move restates nothing, so flux cannot
+forbid it. The file is untouched since `ac9c2116` (2026-09-18). **No squeeze** — the old answer
+below still governs any rewording. The old answer, kept as history: *yes — this is the sub-project's "what is true now" doc, and nearly every `api` unit
 that lands a behaviour change touches it (most recently `api/080`, `api/082`); a compaction pass
 run now risks shortening prose the next such unit will need to revise or add to within days.
 Unparked once a unit lands here without adding a new invariant, constant row or module note, or
 once the file is judged safe to split (its own natural seam: §§1-2 "what it is and what must
 always hold" vs §§3-7 "how it does it" — build orchestration, deployment, modules, security,
-constants).
+constants).*
 **Must not delete:**
 - Every bullet in §2 Invariants — each is a load-bearing rule an agent must not invert, several
   citing the specific incident that established it (the artifact-freshness race, the tree-mutating
