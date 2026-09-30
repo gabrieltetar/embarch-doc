@@ -1,6 +1,6 @@
 # 081 — `open.md` still says the per-lane spans route is decided but not yet built
 
-**State:** open
+**State:** claimed by agent/core/081-open-md-spans-route, 2026-09-29 22:30
 **Filed by:** leg 138's refill sweep, 2026-09-17, reconciling `embarch-core/open.md` against what
 landed an hour earlier in the same leg. Not a worker's report and not a reviewer finding — the
 supervisor read the open-questions index and found a bullet the queue had already overtaken.
@@ -10,6 +10,7 @@ spans (decision 64)"*.
 **Hardware:** none — one bullet of prose in one file, and reading two decisions to confirm what
 replaced it.
 **Owner:** no
+**Reserve (core):** `embarch-core/decisions/surfaces.md` 709 B left (parked, tasks/core/091) — do not add to it.
 
 ## What
 
