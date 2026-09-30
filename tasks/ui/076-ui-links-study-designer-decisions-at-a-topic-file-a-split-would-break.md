@@ -35,10 +35,10 @@ is time-pressured, avoids a forced squeeze-only compaction later when
 
 ## Done when
 
-- [ ] `embarch-ui/decisions/gatt-capture.md`'s reference to
+- [x] `embarch-ui/decisions/gatt-capture.md`'s reference to
       `embarch-study-designer` decision 56 links to
       `../../embarch-study-designer/decisions.md`, not the topic file.
-- [ ] `embarch-ui/decisions/designer-panels.md`'s references to decisions 33
+- [x] `embarch-ui/decisions/designer-panels.md`'s references to decisions 33
       and 78 do the same.
-- [ ] `scripts/check-decision-refs.py` still green.
-- [ ] `changelog.d/` fragment.
+- [x] `scripts/check-decision-refs.py` still green.
+- [x] `changelog.d/` fragment.
