@@ -64,16 +64,30 @@ something unsupported; it asserts supported things without saying where the supp
 
 ## Done when
 
-- [ ] Each of the four is either **restored** to decision 59 in the shortest form that still names
+- [x] Each of the four is either **restored** to decision 59 in the shortest form that still names
       the symbol (a parenthetical, not the original sentence), or **deliberately dropped** with one
       line in the body saying so and why — `surfaces.md` has ~1.4 KB of headroom at 88.7%, so
       restoring all four is affordable; do not spend more than a few hundred bytes on it.
-- [ ] `validate_handler`'s survival is checked against the four `done` task files that currently
+      **Restored, all four**: `validate_handler`'s final `Err(internal_err(e))` (twice: as the
+      `500`-for-the-whole-class reason, and inside the confirmation-trail parenthetical);
+      `embarch-topology/src/hardware/validate.rs` next to `validate_known_timed`; the confirmation
+      trail itself (`describe_topology_error`/`describe_gate_error`'s `None` arms and
+      `validate_handler`'s `Err(internal_err(e))`, `src/api.rs`/`src/study.rs`); the grep receipt
+      (`` `embarch-ui`, the user guide: no hits on `kind`/`not_attached` ``). The reserve note's
+      "88.7%, ~1.4 KB headroom" was stale by the time this landed — the file was actually at 94.2%
+      with 709 B left (`tasks/core/091`'s reserve dispatch) — so restoring the citations pushed it
+      back over reserve, and the ride-along compaction (below) paid for it in the same unit.
+- [x] `validate_handler`'s survival is checked against the four `done` task files that currently
       carry it (`tasks/core/072`, `074`, `077`, `tasks/topology/056`) — **those are retired on
-      close**, so "it is written down over there" is not an answer.
-- [ ] Say in the report whether `tasks/core/079`'s `Must not delete:` list should have covered
+      close**, so "it is written down over there" is not an answer. Confirmed all four are `done`;
+      `validate_handler` now survives in `surfaces.md` itself, not only in those files.
+- [x] Say in the report whether `tasks/core/079`'s `Must not delete:` list should have covered
       citations as well as findings. If yes, that is a general lesson about how those lists are
       written and belongs in `inbox/` as a `doc` task, not fixed here —
-      `DOC-COMPACTION-PASS.md` is owner-reserved.
-- [ ] `check-doc-size.py` clean and `surfaces.md` still under 90% afterwards.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      `DOC-COMPACTION-PASS.md` is owner-reserved. **Yes** — filed as
+      `/home/gabriel/Github/embarch/embarch-doc/inbox/doc-must-not-delete-citations.md`.
+      (Note: `tasks/core/079` no longer exists as a separate file in this worktree; its
+      `Must not delete:` list was carried forward into `tasks/core/091`, which this unit also
+      ride-along-compacted per the leg dispatch note above.)
+- [x] `check-doc-size.py` clean and `surfaces.md` still under 90% afterwards. 11042/12288 B (89.9%).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
