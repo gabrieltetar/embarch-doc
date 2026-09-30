@@ -1,8 +1,10 @@
 # 083 — Task 076's "Resolved" section still asserts decision 65's retracted directional claim
 
-**State:** open — drained from `inbox/core-task-076-retains-retracted-likely-low-claim.md` by leg 138
-at `ui/065`'s fold, 2026-09-17. Body unchanged apart from this line, the number, and the scope
-correction below.
+**State:** claimed by agent/core/083-task-076-retracted-claim, 2026-09-29 22:14
+
+Drained from `inbox/core-task-076-retains-retracted-likely-low-claim.md` by leg 138 at `ui/065`'s
+fold, 2026-09-17. Body unchanged apart from the state line, the number, and the scope correction
+below.
 **Source:** review of `core/080` (merge `74c410b` in `embarch-doc`). `core/080` corrected
 `embarch-core/decisions/stream-index.md` decision 65 from "likely-low ... understating a populated
 capture's row width" to "order-of-magnitude, direction of error not established," naming the
