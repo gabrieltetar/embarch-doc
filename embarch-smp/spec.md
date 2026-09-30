@@ -1,30 +1,37 @@
 # embarch-smp: spec
 
-**Status:** planned, 2026-09-30.
+**Status:** active, 2026-09-30.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). The cross-repo design it serves: [bootload-proposal.md](../bootload-proposal.md).
 
-**Repo created, no code yet.** Everything below the first section is the committed scope, not shipped behaviour.
+**Built and tested against the reference and a simulator; no real bootloader has answered it yet.** Nothing in the suite links it yet: Core's `POST /bootload` is the first consumer, and it is not built.
 
 ## 1. What it is
 
-**A Rust client for SMP — the Simple Management Protocol mcumgr and MCUboot speak — ported from [smpclient](https://github.com/intercreate/smpclient) and the [smp](https://github.com/JPHutchins/smp) package beneath it.** It exists so Core can hand a signed image to a DUT's MCUboot serial-recovery bootloader over USB CDC ACM, the second way to put firmware on a DUT after a debug probe.
+**A Rust client for SMP — the Simple Management Protocol mcumgr and MCUboot speak — ported from [smpclient](https://github.com/intercreate/smpclient) 7.3.0 and the [smp](https://github.com/JPHutchins/smp) 4.2.0 package beneath it.** It exists so Core can hand a signed image to a DUT's MCUboot serial-recovery bootloader over USB CDC ACM, the second way to put firmware on a DUT after a debug probe.
 
-**It never opens a port.** Every call takes a `Read + Write` the caller already opened; in the suite that caller is `embarch-topology`'s `hardware` feature, which stays the only code that opens a serial port ([decision 2](decisions.md)).
+**It never opens a port.** Every call takes a `Read + Write` the caller already opened; in the suite that caller is `embarch-topology`'s `hardware` feature, which stays the only code that opens a serial port ([decision 2](decisions.md)). A caller sets a short read timeout on the port; the client treats `TimedOut` as "nothing yet" and keeps its own deadline.
 
-## 2. Scope of the first cut
+## 2. What it does
 
-| Layer | What | Ported from |
+| Module | What | Ported from |
 |---|---|---|
-| Serial framing | Line-oriented packets: a start (`06 09`) or continuation (`04 14`) delimiter, base64 body, `\n`. The decoded frame is a big-endian `u16` length, the SMP message, and a CRC16/XMODEM over the message alone; the length counts the CRC. Fragmented to a caller-chosen line length (default 127) | `smp.packet` |
-| Header | The 8-byte SMP header: op and version packed in one byte, flags, `u16` length, `u16` group, sequence, command | `smp.header` |
-| Commands | OS group: echo, reset. Image group: state read, upload. CBOR bodies | `smp.os_management`, `smp.image_management` |
-| Client | A blocking request/response loop over `Read + Write`, sequence-number matching, and an upload that follows the server's returned offset | `smpclient` |
-| Image check | Parse an MCUboot image header and TLV area, so a caller can refuse an unsigned image before it touches a device | `smpclient.mcuboot` |
-| Test double | An in-process simulated serial-recovery bootloader, driven over a pipe, behind a feature flag so Core's tests can use it too | new |
+| `packet` | Serial framing: a start (`06 09`) or continuation (`04 14`) delimiter, base64, `\n`. The decoded frame is a big-endian `u16` length, the message, and a CRC16/XMODEM over the message alone; the length counts the CRC. `LineSplitter` separates SMP packets from console bytes sharing the line | `smp.packet`, smpclient's serial buffer state machine |
+| `header` | The 8-byte header: op and version in one byte, flags, `u16` length, `u16` group, sequence, command | `smp.header` |
+| `message` | Echo, reset, image state read, image upload; canonical CBOR bodies ([decision 6](decisions.md)); error responses ([decision 8](decisions.md)) | `smp.os_management`, `smp.image_management`, `smp.error` |
+| `fragmentation` | How large a message the server takes: `BufferSize` (a declared reassembly buffer) or `BufferParams` (an encoded line budget, the default) ([decision 7](decisions.md)) | `smpclient.transport.serial.encoded` |
+| `client` | Blocking request/response with sequence matching; `upload` fills every chunk to the buffer and follows the server's returned offset | `smpclient.SMPClient` |
+| `image` | MCUboot image header and both TLV areas, so a caller can refuse an unsigned image before an upload erases the running application | `smpclient.mcuboot` |
+| `sim` (feature) | A simulated serial-recovery bootloader behind `Read + Write`, modelled on MCUboot's `boot_serial.c`, for tests here and in callers | new |
 
-**Out of scope:** BLE and UDP transports, every other management group, async.
+**Throughput is the buffer size.** A 200 KB image takes **1,423 requests at the default, 427 declaring a 512-byte buffer, 207 declaring 1,024** — MCUboot's Kconfig default for `CONFIG_BOOT_SERIAL_MAX_RECEIVE_SIZE`. Counted against the simulator; wall-clock time on a real CDC ACM link is unmeasured.
+
+**Out of scope:** BLE and UDP transports, every other management group, the MCUmgr-parameters handshake, async.
 
 ## 3. Testing
 
-Unit tests over committed fixtures, generated once from the Python `smp` package by a script kept in the repo (`tools/`). **Python is a fixture generator, never a build or runtime dependency** ([decision 5](decisions.md)). Integration tests run the client against the simulator. **No hardware validation yet**: the first DUT has no MCUboot, so a real-bootloader run is a later step ([bootload-proposal.md](../bootload-proposal.md), "Order of work").
+`cargo test --all-features`: 30 tests.
+
+- **Byte-for-byte against the reference.** `tests/fixtures/reference.json` holds what the pinned Python releases produce — CRCs, 32 framing cases, eight requests, eleven responses including MCUboot's own `rc` shapes, two synthetic images with and without protected TLVs, and **every request smpclient would send for 18 uploads** across three buffer strategies. The Rust client sends identical bytes for all 18. `tools/gen_fixtures.py` regenerates the file; **Python is never a build or runtime dependency** ([decision 5](decisions.md)).
+- **Behaviour against the simulator** and against scripted servers: flash-aligned offsets, a lost reply, a buffer declared larger than the bootloader's, console text interleaved with replies, a late reply to an earlier request, an offset that never moves, one past the end, a SHA mismatch, and a server that asks for offset 0 again.
+- **No hardware yet**: the first DUT has no MCUboot ([open.md](open.md)).

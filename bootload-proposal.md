@@ -21,35 +21,32 @@
 2. **Core checks the image before touching the device.** It must parse as an MCUboot image — header magic, header and image sizes consistent with the file, a TLV area present. An unsigned `zephyr.bin` is refused here with a message naming the likely fix, rather than accepted by the bootloader, written over the application, and rejected at boot.
 3. **Core takes `hw_lock`** and refuses if an active study's direct-route tap is reading either declared port. Those taps take no lock today (`study.rs`), and Windows lets one process open a COM port, so without this check the upload fails with an opaque open error mid-study.
 4. **Into the bootloader.** If the bootloader identity is already enumerated, skip ahead. Otherwise open the application port, write the declared command and line ending, close it, and **wait for the bootloader identity to enumerate**. Timeout: a declared default, measured on real hardware before it is trusted.
-5. **Upload.** Open the bootloader port (asserting DTR, which a Zephyr CDC ACM may need before it transmits), stream the image in chunks sized to the bootloader's advertised or declared buffer, and follow the bootloader's returned offset rather than a local counter.
+5. **Upload.** Open the bootloader port (asserting DTR, which a Zephyr CDC ACM may need before it transmits), stream the image in chunks sized to the declared buffer — serial recovery cannot advertise one, and follow the bootloader's returned offset rather than a local counter.
 6. **Reset** over SMP, then wait for the application identity to re-enumerate.
 
 The result names what happened, not just whether: bytes written, duration, whether the command was needed (`entered_via`: `already-in-bootloader` or `shell-command`), and **whether the application came back**. That last one is reported, not asserted: an image the bootloader accepted and the application then failed to start is a real outcome and must not read as a transport error.
 
 ## What each repo carries
 
-**`embarch-smp`** (new): serial framing (line-oriented, base64, length-prefixed, CRC16-checked), the 8-byte SMP header, CBOR bodies, and the four commands serial recovery needs: echo, image state read, image upload, reset. No BLE or UDP transports; no other management groups. Test vectors are generated once from the Python `smp` package by a script kept in the repo and committed as fixtures — **Python is a fixture generator, never a build or runtime dependency.** An in-process simulated serial-recovery bootloader, driven over a pipe, backs the integration tests here and in Core. Estimated 1,000–1,500 lines, 2–3 days.
+**`embarch-smp`**: built — [its spec](embarch-smp/spec.md). It sends byte-identical requests to smpclient on every recorded upload, and ships the simulated bootloader Core's tests will drive.
 
 **`embarch-topology`**: two optional declared facts on the DUT row — the **application** port identity (where the entry command goes) and the **bootloader** port identity (where SMP goes), each a VID:PID plus optional USB serial — and a resolver that finds each among live ports. Set and unset like the dev-bench link fields (`embarch-topology` decision 27).
 
-**`embarch-core`**: `POST /bootload` (multipart: the image, the optional entry command and line ending, the image index), the flow above under `hw_lock`, the image-header check, and the study-tap refusal. A new route means a new `AUTH_CASES` row and a contract-version bump the API checks (`embarch-api` decision 17). About a day.
+**`embarch-core`**: `POST /bootload` (multipart: the image, the optional entry command and line ending, the image index, the declared buffer size), the flow above under `hw_lock`, the image-header check, and the study-tap refusal. A new route means a new `AUTH_CASES` row and a contract-version bump the API checks (`embarch-api` decision 17). About a day.
 
-**`embarch-api`**: `bootload` and `build_and_bootload` as MCP tools and CLI subcommands, one table row each in `interfaces/tools.md`; project config gains a `bootload` table (`entry_command`, `entry_line_ending`, `artifact`), and signed-image resolution. About half a day. **A UI button is deliberately later**, once the flow has run on hardware.
+**`embarch-api`**: `bootload` and `build_and_bootload` as MCP tools and CLI subcommands, one table row each in `interfaces/tools.md`; project config gains a `bootload` table (`entry_command`, `entry_line_ending`, `artifact`, and `buffer_size` — the DUT's `CONFIG_BOOT_SERIAL_MAX_RECEIVE_SIZE`, which serial recovery cannot report and which cuts a 200 KB upload from 1,423 requests to 207, `embarch-smp` decision 7), and signed-image resolution. About half a day. **A UI button is deliberately later**, once the flow has run on hardware.
 
 ## Open
 
 - **Same USB identity in application and bootloader.** If the firmware keeps one VID:PID for both, Core cannot tell by looking which one is running. Proposed: require distinct identities and refuse at enrollment when they are equal, rather than inferring from disappear-and-reappear timing. The first DUT still uses Zephyr's default VID:PID and sets no USB serial, so this is a real constraint on its firmware, and one to raise with its owners now.
-- **Chunk size.** MCUboot's receive buffer and line length are Kconfig choices on the DUT. Whether serial recovery reports them, or they have to be declared, is to be confirmed against the port's source before the upload loop is written.
 - **Whether `bootload` should verify the image afterwards.** Serial recovery's image-state read is itself a Kconfig option, so it cannot be assumed present. First cut: application re-enumeration is the success signal, and a hash check is added only where the bootloader answers one.
 - **Timeouts** (bootloader enumeration, per-chunk response, application return) are placeholders until measured on the first DUT.
 
 ## Order of work
 
-1. This proposal, and the `embarch-smp` sub-project (repo skeleton, four docs, fleet ownership entry).
-2. `embarch-smp`: framing, header, commands, fixtures, simulator.
-3. `embarch-topology`: the two declared port identities and their resolver.
-4. `embarch-core`: `POST /bootload`.
-5. `embarch-api`: the two tools and the config.
-6. Later, and not blocking 1–5: hardware validation on the first DUT once it has MCUboot, then the UI button.
+1. `embarch-topology`: the two declared port identities and their resolver.
+2. `embarch-core`: `POST /bootload`.
+3. `embarch-api`: the two tools and the config.
+4. Later, and not blocking 1–3: hardware validation on the first DUT once it has MCUboot, then the UI button.
 
 Each accepted piece moves into its sub-project's own docs and is **deleted from this file, not restated** ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3).
