@@ -17,6 +17,7 @@ embarch/
 ├── embarch-study-designer/ embarch-outpost/      (implemented)
 ├── embarch-dev-bench/      embarch-promptu/      (planned, no repo)
 ├── embarch-umbrella/       embarch-atlas/        (paused, no repo)
+├── embarch-smp/            (planned, repo created)
 ├── embarch-fleet/          the agent fleet's own repo: its rules, scripts and
 │                           agent definitions. A leg never checks it out
 └── embarch-doc/
