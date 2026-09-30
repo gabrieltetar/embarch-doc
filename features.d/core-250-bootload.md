@@ -1,0 +1,1 @@
+| `POST /bootload` — a signed image into the DUT's MCUboot serial-recovery bootloader over USB CDC ACM, and `/bootload/ports` to declare its two identities | Shipped — **no real bootloader has answered it**: tested end to end against `embarch-smp`'s simulator only, and every timeout is a placeholder | unit | 77 |

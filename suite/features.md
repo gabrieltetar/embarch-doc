@@ -36,6 +36,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `GET /study/{id}/stream/{name}/load` — an outpost capture's per-subject load shares and coverage line, agent-reachable | Shipped — unit-tested against real firmware bytes, **no live study has hit this route yet** | unit | 62 |
 | `GET /study/{id}/stream/{name}/load/spans` — the decoded per-lane timeline `/load` reduces and discards, served directly | Shipped, `Gap` at full parity with `embarch-ui`'s own — unit-tested against real firmware bytes and cross-checked against `/load`'s own summary, **no live study has hit this route yet**. Axis-health diagnostics and point events are permanently out of scope (decision 66) | unit | 65, 66 |
 | A study's declared outpost trace mode is read off the DUT's own header frame before step 1 and refused as a `412` if it does not match | Shipped, **validated on hardware** 2026-09-19: a satisfiable declaration ran, an unsatisfiable one was refused naming both bytes before any step, and the header arrived in **~200 ms with no reset** on all three reads | hw | 74 |
+| `POST /bootload` — a signed image into the DUT's MCUboot serial-recovery bootloader over USB CDC ACM, and `/bootload/ports` to declare its two identities | Shipped — **no real bootloader has answered it**: tested end to end against `embarch-smp`'s simulator only, and every timeout is a placeholder | unit | 77 |
 
 ## embarch-api
 

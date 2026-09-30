@@ -91,12 +91,12 @@ Three facts combine into a workflow that is not obvious from any one of them:
 
 So: sync source Linux → Windows, build on Windows, install into the service's path, restart the service.
 
-### Step 1 — sync the source, all three crates
+### Step 1 — sync the source, all four crates
 
-Core has two `path` dependencies, **so syncing Core alone produces a build against stale siblings — which compiles, and is wrong.** Sync **shared crates first, Core last** — the same ordering §6 requires for commits, for the same reason:
+Core has three `path` dependencies (`embarch-smp` joined for `POST /bootload`), **so syncing Core alone produces a build against stale siblings — which compiles, and is wrong.** Sync **shared crates first, Core last** — the same ordering §6 requires for commits, for the same reason:
 
 ```sh
-for r in embarch-study-designer embarch-topology embarch-core; do
+for r in embarch-study-designer embarch-topology embarch-smp embarch-core; do
   rsync -a --exclude '/target/' --exclude '/.git/' \
     /home/gabriel/Github/embarch/$r/ /mnt/c/Users/tmp12/source/repos/$r/
 done

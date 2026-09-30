@@ -6,7 +6,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 1. What it is
 
-The OS-level service that owns the debug probe (flash/reset), the DUT serial console, and the `embarch-dev-bench` serial link. It is the lowest layer in EmbArch and has no idea `embarch-api` or Claude Code exist. It exposes a bearer-token-authed HTTP API and holds the hardware connections so nothing else fights over a USB port.
+The OS-level service that owns the debug probe (flash/reset), the DUT's USB bootloader (bootload, decision 77), the DUT serial console, and the `embarch-dev-bench` serial link. It is the lowest layer in EmbArch and has no idea `embarch-api` or Claude Code exist. It exposes a bearer-token-authed HTTP API and holds the hardware connections so nothing else fights over a USB port.
 
 It is **not**: aware of projects, toolchains, or build commands (it takes a bare `chip`/`firmware_path`/`format` per call); a build system — it never invokes `west` or `arduino-cli`, `embarch-api` sequences check → build → flash → submit, and decision 36 is the one exception, where Core *delegates* to a vendor flasher; or multi-tenant (one process, one hardware connection, one shared token).
 
@@ -23,7 +23,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 ## 2. Invariants
 
 - **Every route requires `Authorization: Bearer <token>`**, no exceptions — and "every" is asserted mechanically: the test sweep derives its route list from `build_router`'s own source, so a route added without an auth case fails the build rather than shipping open (decision 42). One shared secret, exact-string compared in `auth_middleware`, resolved from `EMBARCH_TOKEN` and otherwise from the machine-wide file, generated and persisted on first startup. No per-caller identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md).
-- **One `hw_lock` serialises all hardware access**, held for the whole handler body. **A second caller waits up to 500 ms for the first to finish; past that it is refused `503` naming the route holding the lock** (decision 14, built `tasks/core/013`) rather than queueing silently and indefinitely — an unbounded wait is indistinguishable from Core being unresponsive, which is the failure decision 14 exists to rule out. A separate `study_lock` serialises studies; a signal tap's read-only port takes neither.
+- **One `hw_lock` serialises all hardware access**, held for the whole handler body. **A second caller waits up to 500 ms for the first to finish; past that it is refused `503` naming the route holding the lock** (decision 14, built `tasks/core/013`) rather than queueing silently and indefinitely — an unbounded wait is indistinguishable from Core being unresponsive, which is the failure decision 14 exists to rule out. A separate `study_lock` serialises studies; a signal tap's read-only port takes neither, but registers the port it holds so `/bootload` refuses it by name.
 - **Every blocking hardware call runs in `tokio::task::spawn_blocking`.** `probe-rs` and `serialport` are synchronous.
 - **Probe attach is per-call, never held open.** Open, attach, operate, drop.
 - **Identity fails closed.** Before touching hardware, the resolved probe's serial must be enrolled and its live hardware ID must match what was recorded. Unenrolled or mismatched blocks the operation; never a guess.
@@ -52,6 +52,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 | `main.rs` | CLI; `init_tracing()` (stderr + daily-rolling file), token resolution, `AppState`, Axum start |
 | `api.rs` | router, handlers, `auth_middleware` |
 | `hardware.rs` | probe-rs: list, flash, reset; `resolve_probe`/`open_probe`; target-power pre-flight |
+| `bootload.rs` | `POST /bootload`'s flow around `embarch-smp`: image check, bootloader entry, upload, reset, the application's return (decision 77) |
 | `flash_backend.rs` | per-chip-family backend choice and vendor-tool discovery (decision 36) |
 | `chip_resolve.rs` | Zephyr SoC → probe-rs chip target, validated against probe-rs's own registry |
 | `serial.rs` | fixed-duration UART capture (not a stream) |
