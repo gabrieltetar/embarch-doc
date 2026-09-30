@@ -13,6 +13,7 @@ splits into `interfaces/<topic>.md`.
 | `EMBARCH_SIGNAL_BAUD` | 1 Mbaud | [assumed] a `SignalLink` records where a signal goes, not how fast it talks |
 | `EMBARCH_STREAM_MAX_BYTES` | 32 MiB, 2 segments | [assumed] |
 | `/serial-log` duration/byte caps | 10,000 ms / 1 MiB | [assumed] `400` over the ms cap, under the client's 15,000 ms timeout (decision 58) |
+| `bootload::PLACEHOLDER_TIMEOUTS` | enter 10 s, first chunk 40 s, chunk 2.5 s, app return 15 s, poll 100 ms | [assumed] **placeholders**, none timed on a real DUT; the two chunk values are `embarch-smp`'s defaults (decision 77) |
 | `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] |
 | `MAX_UNDECODABLE_FRAMES` | 10 | [assumed] separates one lost frame from a noise stream |
 | log retention | 7 daily files | [assumed] |

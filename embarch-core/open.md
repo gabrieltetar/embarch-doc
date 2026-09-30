@@ -6,6 +6,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 ## Never exercised
 
+- **`POST /bootload` has never met a real bootloader.** The flow is tested end to end against `embarch_smp::sim` with a simulated re-enumeration; the first DUT has MCUboot's partitions and no MCUboot yet. Its timeouts are placeholders until timed there, and whether the uploaded image should be verified afterwards stays open: serial recovery's image-state read is a Kconfig option, so re-enumeration of the application is the success signal until a bootloader answers a hash (decision 77).
 - **The signal-tap path has never run against real hardware.** Unit-tested on Linux and native Windows; no real port has been resolved or read — this bench has no USB-UART bridge. `validate_signal` has no caller by design: resolving a route at use *is* the validation.
 - **Decision 35's gate has never met ESP32-C5 silicon.** The Nordic arm is live and answers `match`; the Espressif relation is verified only by construction against the checked-out HAL headers and by unit test, that board being unplugged.
 - **The Windows registry write for an *explicit* `EMBARCH_TOKEN` has never executed on real hardware.** A real install/start is verified with no explicit token; only an explicit one reaches that path, and the common case — auto-generated — never does.

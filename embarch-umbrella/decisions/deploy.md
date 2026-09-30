@@ -10,7 +10,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **A documented five-step manual procedure with a silent failure mode in the middle is a command waiting to be written.** Writing the procedure down fixed the forgetting; **it did not fix the re-typing** — every deploy since had been a hand-assembled sync loop, a hand-typed absolute compiler path, and a from-scratch elevated script, **re-derived, un-reviewed, and different each time.** The session that said this out loud had already written that script from scratch one more time first.
 
-**What it does unelevated:** sync the three crates — **shared first, Core last, because Core has path dependencies on both, so a run that copied it first and died leaves a tree that builds cleanly and is wrong** — then build with the Windows compiler. Then one elevation around stop → copy → start. Then **verify the binary on disk actually changed.**
+**What it does unelevated:** sync the four crates — **shared first, Core last, because Core has path dependencies on the other three, so a run that copied it first and died leaves a tree that builds cleanly and is wrong** — then build with the Windows compiler. Then one elevation around stop → copy → start. Then **verify the binary on disk actually changed.**
 
 **That verification is the point of the whole command.** Core's own self-elevating update **exits `0`, prints nothing, and does nothing** when the consent dialog is never answered — which once left the live Core down for several minutes. **A deploy that cannot distinguish success from that is not a deploy.**
 
