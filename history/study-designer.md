@@ -10,6 +10,7 @@
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
 
 ### Changed
+- decisions/gatt-extract.md squeezed 12,288 -> 11,053 B, out of reserve; no argument dropped.
 - `spec.md` §4 ("What a study carries") split verbatim to `spec/carriage.md`; sections renumbered 4-6.
 - `decisions/declares.md` split out of reserve: decision 77 moved verbatim to new `decisions/builds.md`.
 - The .eap protocol constants split into interfaces/eap-limits.md; decision 71 moved to decisions/payload-meaning.md.
