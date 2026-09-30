@@ -1,6 +1,6 @@
 # 119 — Decision 72 says "seven" retired mirrors and names six
 
-**State:** open
+**State:** claimed by agent/api/119-decision-72-mirror-count, 2026-09-29 21:31
 **Source:** the `api/118` reviewer, 2026-09-28, reading decision 72 while checking decision 59's
 amendment against it. Pre-existing — decision 72 was authored at `c62cc870` (2026-09-12) and
 `api/118` did not touch it. Filed by the supervisor at `api/118`'s fold.
