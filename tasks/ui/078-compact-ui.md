@@ -1,6 +1,7 @@
 # 078 — Compact ui's spec.md
 
-**State:** open
+**State:** blocked — `In flux: yes` (see below); set by the supervisor 2026-09-29, it was filed `open`.
+**Size debt due:** 2026-10-13 (two weeks; the file is 5 B inside reserve).
 **Source:** tasks/ui/077 restored "served by the binary" in `embarch-ui/spec.md`'s
 dev-bench-picker invariant, which pushed the file to 9045/10240 B (88.3%),
 inside `check-doc-size.py`'s reserve.
