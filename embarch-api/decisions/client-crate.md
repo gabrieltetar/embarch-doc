@@ -23,7 +23,7 @@ So `main` spawns the runtime on a thread it sizes itself. **64 MiB was empirical
 
 Two Core endpoints then turned out to have **no client wrapper anywhere**, because this crate never needed either: enrolled-board listing and dev-bench port. The gap surfaced the moment `embarch-ui` routed *every* hardware-adjacent read through Core rather than only mutations. The port wrapper treats Core's 404 as `Ok(None)`, so a caller rendering "not connected" need not match an error string.
 
-Later additions exposed the cost — seven hand-written mirrors of topology types. **Retired by decision 72 below.**
+Later additions exposed the cost — six hand-written mirrors of topology types. **Retired by decision 72 below.**
 
 ### 55 — One funnel applies the bearer token; nine routes were exempt from the rule that said so
 `send`/`send_no_content` consume the response, so the nine routes giving a status its own meaning (a `404` for "not enrolled", a `409` for a topology mismatch) and the SSE stream could not use them; each applied `.bearer_auth(…)` itself. All nine did send it; `client.rs`'s comment said none existed. **A convention nine of twenty-five sites are exempt from is not one** — and the comment was the worse half, since a new route copies the hand-written form while the sentence a reader trusts says it cannot exist.
@@ -51,8 +51,8 @@ Kept anyway: a tenth repo for Cargo-only consumers with no cross-language bounda
 
 **Corrected at its own fold, 2026-09-10, on the reviewer's finding.** As written it said **two** consumers and triggered reversal on "a third appears" — which had already happened: `embarch-umbrella` path-depends on this crate since `umbrella/036`, calling `token_discovery::resolve_token`. The count is three (`embarch-api`, `embarch-ui`, `embarch-umbrella`) and the trigger is now a fourth. **Conclusion unchanged**: all three are plain Cargo dependents with no FFI/C boundary.
 
-### 72 — The seven mirrored `embarch-topology` types are retired; the tests that pinned them are kept and re-scoped
-Decisions 37/38 accepted seven hand-written copies of `embarch_topology::hardware`'s `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route` and `SignalDirection`, because the originals sat behind that crate's `hardware` feature — which links `probe-rs`/`serialport`, dependencies this crate must never have. `embarch-topology` decision 31 split a `wire` feature out of it: the plain data types, pure serde, no C toolchain. So the copies are gone. This crate depends on `embarch-topology` with `default-features = false, features = ["software", "wire"]` and names the real types; the old `*Response` spellings survive as **aliases**, so no call site moves and the shipped crate keeps its public names.
+### 72 — The six mirrored `embarch-topology` types are retired; the tests that pinned them are kept and re-scoped
+Decisions 37/38 accepted six hand-written copies of `embarch_topology::hardware`'s `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route` and `SignalDirection`, because the originals sat behind that crate's `hardware` feature — which links `probe-rs`/`serialport`, dependencies this crate must never have. `embarch-topology` decision 31 split a `wire` feature out of it: the plain data types, pure serde, no C toolchain. So the copies are gone. This crate depends on `embarch-topology` with `default-features = false, features = ["software", "wire"]` and names the real types; the old `*Response` spellings survive as **aliases**, so no call site moves and the shipped crate keeps its public names.
 
 **The cost was not hypothetical.** `EnrolledBoardResponse` silently dropped `link_port_interface` for a release — the field that exists because an nRF54L15DK's console is on the *higher* VCOM (`embarch-topology` decision 20) — and `tasks/api/032` exists to paper over it. Two structs in two crates that never meet are not comparable by any compiler, which is what "drift" means here.
 
