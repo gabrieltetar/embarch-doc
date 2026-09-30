@@ -1,6 +1,6 @@
 # 066 — `decisions.md` says "these seventeen files" and there are nineteen
 
-**State:** open — **the number is right again, the defect is not gone.** `study-designer/068`
+**State:** claimed by agent/study-designer/066-decisions-md-no-count, 2026-09-29 21:23 — was open — **the number is right again, the defect is not gone.** `study-designer/068`
 (2026-09-28) split `decisions/builds.md` out and corrected the sentence to "these twenty files",
 which matches the directory. What is left is this task's own preference: rephrase so no count can
 go stale, plus the table census. The next split makes "twenty" wrong exactly as it made seventeen
