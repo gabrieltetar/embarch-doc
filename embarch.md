@@ -24,6 +24,7 @@ Each has four capped docs: `spec.md` for what is true now, `decisions.md` for wh
 | [`embarch-dev-bench`](embarch-dev-bench/spec.md) | **The physical rig that plays the DUT's BLE counterpart** — advertise, connect, GATT exchange, protocol execution — Zephyr C firmware, one shared application spanning vendor-specific west workspaces | Shipped, running real studies against a real independent DUT |
 | [`embarch-outpost`](embarch-outpost/spec.md) | **The only component that ships *inside* the DUT**: a Zephyr module an engineer compiles into their own debug firmware, emitting a thread/ISR/GPIO-callback/marker timeline out a TX-only UART so a study can answer *"what was the CPU actually doing while that ran"*. **It keeps two clocks** — the DUT stamps each record from its own counter, Core stamps each *frame* on arrival; the first orders and measures within a frame, the second places the trace against every other stream in a study | **Working end to end on real silicon**: 437,789 bytes in 20 s, zero records lost |
 | [`embarch-topology`](embarch-topology/spec.md) | The suite's **single abstraction for software topology** (where processes run relative to each other) **and hardware topology** (what is physically wired to what) — a shared crate Core, the API and umbrella all link and call live, in-process, **replacing detection logic that used to be duplicated across them** | Implemented, merged, deployed, live-validated |
+| [`embarch-smp`](embarch-smp/spec.md) | **A Rust port of smpclient**: the SMP client Core uses to hand a signed image to a DUT's MCUboot serial-recovery bootloader over USB CDC ACM. **Never opens a port** — it speaks over a stream `embarch-topology` opened. Apache-2.0, unlike the rest of the suite | Planned, repo created, no code |
 | [`embarch-ui`](embarch-ui/spec.md) | **One consolidated human-facing UI**, five tabs, having replaced three ad hoc surfaces outright, plus a thin VS Code launcher. Signal routing and enrolling both live in its Topology tab — **the only human surface for either** — and a post-hoc Trace view renders an outpost capture | Five tabs live against the real deployed Core |
 | [`embarch-umbrella`](embarch-umbrella/spec.md) | **The one binary a new engineer downloads**: sets up the suite on whatever topology their machine is, integrates a firmware repo, verifies the chain, and starts Core when it is not already a service. **Deliberately not a supervisor and not in the runtime path** | Shipped |
 | [`embarch-promptu`](embarch-promptu/design.md) | Curated library of firmware-specific agent skills, subagents and prompt patterns | Planned, no repo |
@@ -85,6 +86,7 @@ setup and verification, off to the side and out of the runtime path entirely:
   |---|---|---|
   | `embarch-study-designer` | **yes** — `test.yml`, push + PR | yes |
   | `embarch-topology` | **yes** — `test.yml`, push + PR | yes |
+  | `embarch-smp` | **yes** — `test.yml`, push + PR | no — not in the fleet's repo set yet |
   | `embarch-doc` | **yes** — `docs-ci.yml`, push to `main` + PR | yes (`check-docs.py`) |
   | `embarch-api`, `embarch-core`, `embarch-umbrella` | no — `release.yml` only, tag-triggered; `embarch-umbrella` also has a manual `assemble-suite.yml` | yes |
   | `embarch-ui` | no — no `.github` directory | yes |
@@ -117,6 +119,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-outpost](embarch-outpost/spec.md) | [wire.md](embarch-outpost/interfaces/wire.md) — the record and frame format; `integration.md` — the DUT-repo path |
 | [embarch-dev-bench](embarch-dev-bench/spec.md) | — |
 | [embarch-topology](embarch-topology/spec.md) | — |
+| [embarch-smp](embarch-smp/spec.md) | — |
 | [embarch-ui](embarch-ui/spec.md) | — |
 | [embarch-umbrella](embarch-umbrella/spec.md) | — |
 
@@ -129,6 +132,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-zephyr.md](embarch-zephyr.md) | Relationship to Zephyr: board-qualifier grammar, revisions, snippets, sysbuild |
 | [embarch-dev-workflow.md](embarch-dev-workflow.md) | Iterating locally without touching a real install; **§4a is the reverse trip** — how a Core change reaches the live Windows service |
 | [SUITE-REVIEW-PASS.md](SUITE-REVIEW-PASS.md) | **The one sweep that reads every sub-project at once**, hunting what is wrong across two modules and right within each — seven dimensions, run by hand as `/suite-review`, landing as `inbox/` drops. Every other check here is scoped to one repo, one diff or one file |
+| [bootload-proposal.md](bootload-proposal.md) | **Proposed**: a second way to put firmware on a DUT — build, then upload the signed image through MCUboot serial recovery over USB CDC ACM — and the new `embarch-smp` sub-project it needs |
 | [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) | **Inbound half accepted and built**; the outbound half — an authored step that writes to a DUT and confirms the reply — is **still a proposal** |
 | [embarch-fleet/spec.md](embarch-fleet/spec.md) | **Start here for the fleet** — what it is, the three windows, what lives in which repo, and what it deliberately does not do |
 | [the protocol](../embarch-fleet/protocol.md) | How background agent threads work in parallel across the suite without colliding: the listener, the leg, the relay |
