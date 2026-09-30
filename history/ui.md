@@ -11,6 +11,7 @@
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- embarch-ui decisions now link embarch-study-designer's decisions.md index, not a topic file, so a future split can't stale them.
 - `decisions/shape.md` split its launcher decisions (3, 28) into `decisions/launcher.md`; `spec.md` split its tab table into `spec/tabs.md`. Both out of reserve.
 - decisions/study-designer.md out of reserve: decision 14 (opening a project) split verbatim to decisions/project.md.
 - `decisions/shell.md` and `topology-boards.md` split verbatim (`design-system.md`, `saved-benches.md`) to clear the size cap; no content rewritten.
