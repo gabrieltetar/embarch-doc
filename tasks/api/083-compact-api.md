@@ -40,7 +40,15 @@ pointer-line edit.
 
 ## Done when
 
-- [ ] `embarch-api/spec.md` is back under its reserve band, its "must not delete" facts intact —
+- [x] `embarch-api/spec.md` is back under its reserve band, its "must not delete" facts intact —
       a mission split (§§1-2 vs §§3-7) is one honest way to do it, not the only one.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+      Done: `spec.md` now 3616 B (§§1-2 only), §§3-7 moved verbatim to
+      `embarch-api/spec/implementation.md` (6545 B), linked from `spec.md`. All four
+      "must not delete" items (invariants bullets, Session-0 failure signature,
+      `base_url = "auto"` resolution order, §7 constants table with Provenance
+      tags) carried over byte-identical.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10). `check-docs.py` all 11
+      checks pass; `check-links.py` found no broken inbound links to repoint —
+      every existing `[spec.md](spec.md)`-style link still resolves (the file
+      wasn't renamed, only shortened), so no repointing was needed.
+- [x] `changelog.d/` fragment: `changelog.d/api-spec-implementation-split.changed.md`.
