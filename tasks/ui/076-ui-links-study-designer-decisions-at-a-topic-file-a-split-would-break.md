@@ -1,6 +1,6 @@
 # `embarch-ui` links two of its decisions straight at a topic file that a future `embarch-study-designer` split would break
 
-**State:** open
+**State:** claimed by agent/ui/076-repoint-study-designer-links, 2026-09-29 21:23
 **Source:** found while working `study-designer/069` (`decisions/gatt-extract.md` reserve)
 **Scope:** ui
 **Hardware:** none — prose only.
