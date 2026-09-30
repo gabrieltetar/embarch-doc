@@ -1,6 +1,6 @@
 # 069 — `embarch-ui/decisions/shape.md` and `spec.md` are in reserve
 
-**State:** claimed by agent/ui/069-compact-ui, 2026-09-29 21:05
+**State:** done by agent/ui/069-compact-ui, 2026-09-29
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 28 (the launcher's
 focus-the-existing-tab change) and its one-line `spec.md` body edit
 **Scope:** ui
@@ -48,17 +48,50 @@ manual pass over the launcher — a verification step, not a pending prose chang
 
 ## Done when
 
-- [ ] `decisions/shape.md` and `spec.md` are both out of reserve, or the task says why not.
+- [x] `decisions/shape.md` and `spec.md` are both out of reserve, or the task says why not.
       **`spec.md` done 2026-09-19** (split into `spec/capture-rendering.md`, 12,239 → 10,154 B);
-      `decisions/shape.md` still open.
-- [ ] A split along the launcher seam (3 + 28) was preferred over deleting live reasoning, per
-      `DOC-COMPACTION.md` §2 — or the report says why the seam was rejected.
-- [ ] If it split: every inbound citation to `decisions/shape.md` still resolves, and
-      `decisions.md`'s group table gained the new row.
-- [ ] Decision 28's four invariants, the page-title interface and its four rejected alternatives
-      survive in full — each one is a defect that was measured, not reasoned, and the title
-      paragraph is what stops a later rename from silently restoring the original bug.
-- [ ] Byte numbers before and after, for every file touched.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered in the report, in your own words: can
+      **`decisions/shape.md` done 2026-09-29** (split into `decisions/launcher.md`, 12,194 → 2,079 B).
+- [x] A split along the launcher seam (3 + 28) was preferred over deleting live reasoning, per
+      `DOC-COMPACTION.md` §2 — done: `decisions/launcher.md` holds 3 and 28 verbatim.
+- [x] If it split: every inbound citation to `decisions/shape.md` still resolves, and
+      `decisions.md`'s group table gained the new row. `decisions.md`'s table now lists
+      `decisions/shape.md` (1, 2, 9) and `decisions/launcher.md` (3, 28) as separate rows.
+      `changelog.d/ui-launcher-focus-existing-tab.changed.md`'s link to decision 28 updated to
+      point at `decisions/launcher.md`. No other file in the suite cites embarch-ui's decision 3
+      or 28 by number (grepped; other repos' "decision 3"/"decision 28" hits are their own
+      sub-projects' numbering, and embarch-ui's own cites of "suite decision 3" name a different
+      suite-level decision, unaffected).
+- [x] Decision 28's four invariants, the page-title interface and its four rejected alternatives
+      survive in full — moved verbatim into `decisions/launcher.md`, nothing reworded, nothing cut.
+- [x] Byte numbers before and after, for every file touched. See below.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered in the report, in your own words: can
       `spec.md` alone answer what someone needs to work on the launcher today?
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment dropped
+      (`changelog.d/ui-compact-shape-and-spec.changed.md`).
+
+## This pass's bytes (2026-09-29)
+
+- `spec.md`: 11,022 → 9,275 B (was 971 B over its 10,240 B cap; now 965 B of headroom).
+- New `spec/tabs.md`: 2,435 B — the five-tab table, moved verbatim, plus a Status line
+  (`check-doc-conventions.py` requires one; the split source didn't carry a section header of its
+  own to inherit one from, so a new two-sentence provenance note was added, matching
+  `spec/capture-rendering.md`'s own pattern).
+- `decisions/shape.md`: 12,194 → 2,079 B (was 94 B from its 12,288 B cap; now holds only
+  decisions 1, 2, 9).
+- New `decisions/launcher.md`: 10,373 B — decisions 3 and 28, moved verbatim, under a new file
+  header (Status line + index links, no prose reworded).
+
+Both files this task names are now out of reserve.
+
+## The human question
+
+**Can `spec.md` alone answer what someone needs to work on the launcher today? Yes, with one
+hop.** `spec.md` still states that `vscode-extension/` is thin, pre-flights the address, spawns
+and stops the binary, and focuses the existing tab (citing decision 28) — that's the fact someone
+touching the launcher needs first, to know it exists and what it's for. The *reasoning* — the four
+measured invariants, the rejected alternatives, why the tab-class filter is case-sensitive — lives
+in `decisions/launcher.md` now, one click away via the same citation `spec.md` already carried.
+This mirrors the `spec.md`/`decisions.md` split the whole repo already uses: `spec.md` is never
+meant to carry decision reasoning inline, only to point at it. Nothing that used to answer the
+launcher question stopped answering it; it just moved from an interleaved five-decision file to a
+file about exactly this one thing.
