@@ -6,7 +6,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 1. What it is
 
-Three responsibilities on top of `embarch-core`: **(a)** Core's capabilities as MCP tools, **(b)** the same as CLI subcommands — a **superset**, `versions` has no tool — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`.
+Three responsibilities on top of `embarch-core`: **(a)** Core's capabilities as MCP tools, **(b)** the same as CLI subcommands — a **superset**, `versions` has no tool — and **(c)** running a configured build command and feeding the artifact to Core's `/flash`, or its signed MCUboot image to Core's `/bootload`.
 
 **Subcommand presence is the mode switch.** No subcommand → an MCP stdio server; a subcommand → run that one operation and exit. Both front-ends call the same modules; neither is privileged.
 
