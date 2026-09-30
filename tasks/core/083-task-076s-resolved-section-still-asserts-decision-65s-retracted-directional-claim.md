@@ -1,6 +1,6 @@
 # 083 — Task 076's "Resolved" section still asserts decision 65's retracted directional claim
 
-**State:** claimed by agent/core/083-task-076-retracted-claim, 2026-09-29 22:14
+**State:** done — agent/core/083-task-076-retracted-claim, 2026-09-29.
 
 Drained from `inbox/core-task-076-retains-retracted-likely-low-claim.md` by leg 138 at `ui/065`'s
 fold, 2026-09-17. Body unchanged apart from the state line, the number, and the scope correction
@@ -45,9 +45,18 @@ reach.
 
 ## Done when
 
-- [ ] `tasks/core/076...md`'s "Resolved" section either matches decision 65's current
+- [x] `tasks/core/076...md`'s "Resolved" section either matches decision 65's current
       (`core/080`) language or explicitly notes it was superseded there, with a date.
-- [ ] No other completed task file in `tasks/core/` still states the CSV estimate as "likely-low"
-      or "understating" (grep for both terms turned up only this file and the changelog fragment,
-      which is dated and not misleading).
-- [ ] Gate green.
+- [x] No other completed task file in `tasks/core/` still states the CSV estimate as "likely-low"
+      or "understating" (grep for both terms turned up only this file, `080` itself — which
+      describes the retraction, not a stray copy — and the changelog fragment, which is dated and
+      not misleading).
+- [x] Gate green.
+
+## Resolved (this task, 2026-09-29)
+
+`tasks/core/076...md` lines 84-87 rewritten to drop "a likely-low estimate ... understates a
+populated capture's row width" and state the corrected framing from decision 65 (`core/080`):
+order of magnitude, direction of error not established, naming the rx_utc_ms gap, the fixture's
+own ~3x row-width spread, and the 4-lane/7-name vs 26-lane/112,804-span structural mismatch. Added
+a dated pointer to `core/080`'s correction alongside the existing decision-65 reference.

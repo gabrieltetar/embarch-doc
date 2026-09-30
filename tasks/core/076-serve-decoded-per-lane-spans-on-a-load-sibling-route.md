@@ -81,10 +81,13 @@ per-lane paging, or a narrower payload — before shipping, not after.
 (confirmed again: not checked in anywhere, and `embarch-ui`'s `EMBARCH_VIEW_CSV` scratch test reads an
 arbitrary local path). Measured instead against `embarch-core`'s own checked-in real-firmware fixture
 — 43,573 B / 831 rows, 52.367 B/row — and extrapolated linearly to the reference shape's 225,627 rows:
-**≈ 11.8 MB, a likely-low estimate** (this fixture's `rx_utc_ms` column is empty throughout, which
-understates a populated capture's row width). **The comparison holds**: same order of magnitude as
-12.6 MB, not materially smaller. No response-shape change follows. Full writeup: decision 65,
-`embarch-core/decisions/stream-index.md`.
+**≈ 11.8 MB, order of magnitude, direction of error not established** (this fixture's `rx_utc_ms`
+column is empty throughout; the fixture's own row width spreads ~3x, 22–67 B around a 51.4 B mean,
+and the extrapolation carries a 4-lane/7-name fixture to a 26-lane/112,804-span reference shape —
+so which way the estimate is off is not established). **The comparison holds**: same order of
+magnitude as 12.6 MB, not materially smaller. No response-shape change follows. Full writeup:
+decision 65, `embarch-core/decisions/stream-index.md` (corrected `core/080`, 2026-09-29 — this
+paragraph updated to match, per `core/083`).
 
 ## Not yours
 
