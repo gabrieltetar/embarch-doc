@@ -42,8 +42,16 @@ the commit message. If it does enter the reserve, file
 
 ## Done when
 
-- [ ] `embarch-ui/spec.md`'s dev-bench-picker sentence restores "served by the
+- [x] `embarch-ui/spec.md`'s dev-bench-picker sentence restores "served by the
       binary" (or an equivalent phrase tying it to topology-roles.md's "served
       from the binary like every other vocabulary").
-- [ ] Every hunk quoted in the commit message.
-- [ ] `python3 scripts/check-docs.py` green.
+- [x] Every hunk quoted in the commit message.
+- [x] `python3 scripts/check-docs.py` green.
+
+## Outcome
+
+Restored verbatim, and trimmed "the open repo's" -> "the repo's" and "can
+only add to" -> "only adds to" in the same sentence to offset some of the
+added bytes. Net still pushed `embarch-ui/spec.md` to 9045/10240 B (88.3%),
+inside `check-doc-size.py`'s reserve, so filed `tasks/ui/078-compact-ui.md`
+in this commit per the Size section above.
