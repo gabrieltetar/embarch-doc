@@ -8,7 +8,8 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 
 | Group | Decisions | What it settles |
 |---|---|---|
-| [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 9, 28 | One consolidated process, zero-build, the VS Code launcher, the repo; Start focuses the window and tab already open, matched on the page title |
+| [decisions/shape.md](decisions/shape.md) | 1, 2, 9 | One consolidated process, zero-build, the repo |
+| [decisions/launcher.md](decisions/launcher.md) | 3, 28 | The VS Code launcher: thin, sideload-only, one strategy behind a registry; Start focuses the window and tab already open, matched on the page title |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
 | [decisions/shell.md](decisions/shell.md) | 4, 46 | The shell's sections, fragment navigation, and the open project as a shell control at the foot of the sidebar |
 | [decisions/design-system.md](decisions/design-system.md) | 8, 25, 42 | The visual design system settled against real mockups: the palette, the brand-vs-accent split, and the typefaces served by the binary rather than a CDN |
