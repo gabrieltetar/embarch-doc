@@ -1,6 +1,6 @@
 # 108 — Implement and verify a Windows process-tree kill for timed-out builds
 
-**State:** open
+**State:** claimed by agent/api/108-windows-tree-kill, 2026-09-29 22:14
 **Source:** `tasks/api/107` — correcting `spec.md` §2's unqualified "timeout kills the process
 group" invariant surfaced that `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` kills only
 the immediate child, and `107` was explicitly told not to implement the fix (see its own "Not
