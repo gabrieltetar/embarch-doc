@@ -44,6 +44,7 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- Decision 36 now cites a real test for the `nrfutil` erase-mode claim, not just `jlink`'s.
 - `embarch-core/decisions.md`'s size column: 11 of 15 rows were stale against `wc -c`, corrected.
 - Core decision 64 no longer implies the trace duplication is temporary; it now points to decision 66, which settled it as permanent.
 - Restored decision 62's RecordKind/five-lies sync-burden sentence and CSV-pin failure-signature that `core/085`'s squeeze dropped.
