@@ -22,6 +22,7 @@
 - The six recorded acceptance criteria now have tests: `embarch-api/tests/`, a loopback mock Core, no new dependency. See embarch-api decision 46.
 
 ### Changed
+- `embarch-api/spec.md` §§3-7 moved verbatim to [spec/implementation.md](../embarch-api/spec/implementation.md), out of reserve.
 - `decisions/failure-reporting.md` split: 71/73/76 (`validate`'s `kind` thread) moved verbatim to `decisions/validate-kind.md`.
 - `open.md`'s `serial_port` gap reframed as settled (`embarch-umbrella` decision 55), not unowned.
 - api/106: singular-wrapped citation re-check, 18 lines/20 instances, 0 wrong, 0 false.
