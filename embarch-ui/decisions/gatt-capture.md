@@ -18,7 +18,7 @@ Three surfaces. A **selective monitor row** renders a checkbox per notify/indica
 
 ### 16 — Every characteristic picker shows a name; the UUID moves to the tooltip
 
-The human half of [embarch-study-designer](../../embarch-study-designer/decisions/gatt-extract.md) decision 56, raised by the repo owner immediately after 15 shipped the pickers: "the option show up as numbers." They did — `00000002`, `00000003`, `00000004` — and **on this DUT the choice was between eighteen characteristics differing in one hex digit.**
+The human half of [embarch-study-designer](../../embarch-study-designer/decisions.md) decision 56, raised by the repo owner immediately after 15 shipped the pickers: "the option show up as numbers." They did — `00000002`, `00000003`, `00000004` — and **on this DUT the choice was between eighteen characteristics differing in one hex digit.**
 
 **One name map for the whole response, not a `name` field on the subscribable list.** Four places in the browser render a characteristic, and **three of them read from the actions response, not from the subscribable list** — so a field on one list would have named the options in one picker and left the same characteristic a bare UUID in the next, **which is worse than uniformly showing UUIDs.** It covers every characteristic any source found rather than only the notify-capable ones: a name is a name regardless of what a study can do with it.
 
