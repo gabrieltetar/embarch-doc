@@ -68,3 +68,4 @@ notes were and were not looking for:
 | [`03-zephyr-build-metadata.md`](03-zephyr-build-metadata.md) | What a Zephyr build already computes, verified against the real workspace |
 | [`04-repo-comprehension-evidence.md`](04-repo-comprehension-evidence.md) | The research literature, and the deterministic-vs-LLM-vs-embeddings answer |
 | [`05-embedded-landscape.md`](05-embedded-landscape.md) | Who is already doing this for firmware: vendors, startups, commercial backends, and the white space |
+| [`06-ui-concept.md`](06-ui-concept.md) | The human surface: an Atlas tab in embarch-ui as a layered stack map, the owner's answers, and what it needs from the backend |
