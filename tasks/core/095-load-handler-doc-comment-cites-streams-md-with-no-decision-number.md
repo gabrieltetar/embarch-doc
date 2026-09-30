@@ -1,6 +1,6 @@
 # 095 — The `/load` handler's doc comment cites "`embarch-core` decision, `decisions/streams.md`" with no number, and the decision it means is in another file
 
-**State:** open
+**State:** claimed by agent/core/095-load-handler-decision-62-cite, 2026-09-29 21:23
 **Source:** the `core/093` reviewer, 2026-09-28, while sweeping inbound citations of the decisions
 that unit moved. Not caused by `core/093`: this comment names no number at all, so no split could
 have broken it, and it predates the leg.
