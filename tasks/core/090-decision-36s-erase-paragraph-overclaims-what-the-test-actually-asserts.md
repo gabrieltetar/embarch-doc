@@ -1,6 +1,6 @@
 # 090 — Decision 36's erase paragraph overclaims what `no_backend_maps_erase_to_a_full_chip_erase` asserts
 
-**State:** open
+**State:** claimed by agent/core/090-decision-36-erase-overclaim, 2026-09-29 21:31
 **Source:** reviewer finding on `core/073`, merge SHAs `embarch-doc@a070fccb`,
 `embarch-core@b6774e0e` (the code branch carried zero commits — pre-existing code, reviewed here for
 the first time against a *new* decision claim about it). Dropped in `inbox/` as
