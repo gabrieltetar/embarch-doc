@@ -29,10 +29,12 @@ that split and has been wrong-file since.
 
 ## Done when
 
-- [ ] The comment cites the decision by number, in this repo's source-comment citation form (bare
+- [x] The comment cites the decision by number, in this repo's source-comment citation form (bare
       number, no topic-file path — the form the `study-designer` and `topology` citation sweeps
-      converged on, so the next split cannot strand it again).
-- [ ] `grep -rn 'decisions/streams\.md' embarch-core/src` checked for any other comment of the same
-      shape, and the tally reported either way.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green (a comment-only
-      change still has to pass the gate); no `changelog.d/` fragment — nothing reader-facing moved.
+      converged on, so the next split cannot strand it again). Confirmed against
+      `decisions/stream-index.md` (### 62): the comment meant exactly this one decision, plus suite
+      decision 4 (already correctly cited alongside it). New text: `(decision 62; suite decision 4).`
+- [x] `grep -rn 'decisions/streams\.md' embarch-core/src` checked for any other comment of the same
+      shape: zero hits after this fix — this was the only one.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green (245 passed, 0
+      failed, 2 ignored; clippy clean); no `changelog.d/` fragment — nothing reader-facing moved.
