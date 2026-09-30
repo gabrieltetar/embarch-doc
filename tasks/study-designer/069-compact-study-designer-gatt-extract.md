@@ -1,6 +1,6 @@
 # 069 — `embarch-study-designer/decisions/gatt-extract.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/study-designer/069-compact-gatt-extract, 2026-09-29 21:05
 **Source:** `scripts/check-doc-size.py`'s reserve floor, crossed by decision 78
 **Scope:** study-designer
 **Hardware:** none — prose only, plus a `grep` over the corpus.
