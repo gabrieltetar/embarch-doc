@@ -1,6 +1,6 @@
 # 089 — Decision 59's compaction dropped four evidence citations, and none of them survives in a permanent doc
 
-**State:** open
+**State:** claimed by agent/core/089-decision-59-citations, 2026-09-29 22:18
 **Source:** leg 141, 2026-09-17. **Found by the supervisor reading `core/078`'s diff before merging
 it** — the merge gate's one judgement call, applied because that diff retires and rewrites decision
 prose — and then **confirmed and extended by `core/078`'s reviewer**, which token-diffed decisions 55
@@ -12,6 +12,12 @@ filing, which is why this exists: four is a different fact from two.
 **Hardware:** none — one decision's prose, and a grep over the doc corpus to say what is reachable.
 Nothing built, no board, no probe, no live Core.
 **Owner:** no
+
+**Reserve (leg dispatch note, 2026-09-29):** `embarch-core/decisions/surfaces.md` is at 94.2%,
+709 B left, and its compaction task `tasks/core/091` is `blocked` on `In flux: yes`. The "~1.4 KB of
+headroom at 88.7%" below is stale. Per `.claude/leg.md`'s ride-along rule, compact `surfaces.md`
+inside this unit, carrying `091`'s `Must not delete:` list, and bring it back under 90%. Do not
+close `091`; say in its body what you paid.
 
 ## What
 
