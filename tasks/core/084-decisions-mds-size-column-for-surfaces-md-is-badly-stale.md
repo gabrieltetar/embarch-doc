@@ -1,8 +1,8 @@
 # 084 — `decisions.md`'s size column for `decisions/surfaces.md` is badly stale
 
-**State:** open — drained from `inbox/core-decisions-md-surfaces-size-column-stale.md` by leg 138 at
-`ui/065`'s fold, 2026-09-17. Body unchanged apart from this line, the number, and the scope
-correction below.
+**State:** claimed by agent/core/084-size-column-pass, 2026-09-29 21:05
+**Filed:** drained from `inbox/core-decisions-md-surfaces-size-column-stale.md` by leg 138 at
+`ui/065`'s fold, 2026-09-17.
 **Source:** review of `core/080` (merge `74c410b`). That unit corrected `embarch-core/decisions.md`'s
 `stream-index.md` row from 10.7 KB to 10.9 KB in the same commit it grew that file — a good update,
 but scoped to the one row it was already touching. Checking the table's other rows against actual
