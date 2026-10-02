@@ -1,6 +1,6 @@
 # embarch-atlas: design
 
-**Status:** paused, 2026-07-20. No repo yet.
+**Status:** active, 2026-10-01. The working design is the `embarch-atlas` repo's `DESIGN.md` (local, not yet published) until it moves here; the human surface is [embarch-ui decisions 52-54](../embarch-ui/decisions/atlas-tab.md).
 
 Placeholder — this doc becomes the source of truth once `embarch-atlas` design work resumes. **A landscape survey is being gathered in [`research/`](research/) (2026-09-22)** — raw intake, not decisions, and it folds into this doc and is deleted once the design that consumes it is written; [its README](research/README.md) records the scope the survey was run under. See [embarch.md](../embarch.md) §2 for its lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose, and [suite/roadmap.md](../suite/roadmap.md)'s Later bucket.
 

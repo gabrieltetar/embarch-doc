@@ -91,3 +91,6 @@ Under `/api/study-designer/`. `404` with no project open, `400` for authoring, `
 
 Both registries' `save` rewrite the whole TOML through `to_string_pretty`, so **comments in a hand-edited `study-actions.toml` or `study-structs.toml` are lost.** Already true of the upsert these grew out of; an edit form makes it routine. A comment-preserving writer is a new dependency and its own decision.
 
+## The Atlas tab's own routes
+
+Under `/api/atlas`, all `GET`, files only: [interfaces/atlas.md](interfaces/atlas.md).

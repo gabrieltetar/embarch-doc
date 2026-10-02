@@ -78,7 +78,7 @@ Three pieces landed alongside it, none optional: the **dev-bench bypass** became
 - **Core on a Raspberry Pi over the LAN.** Detected and verified today, and **cross-machine token distribution stays manual.** A deliberately late milestone.
 - **macOS validation.** Shipped reasoned-only, with no machine to test on; validating it means a Mac-only engineer walking the user guide.
 - **Power profiling** — milestone 4 above, deferred by explicit decision. **Resuming it is what unblocks four open questions.**
-- **`embarch-atlas`** — static analysis and graph visualization of a firmware codebase, for agents and engineers. Paused, no repo.
+- **`embarch-atlas`** — a hardware atlas joined to the firmware. Built locally, unpublished; drawn by embarch-ui's Atlas tab.
 - **Adopting `rustfmt`** — deferred by explicit decision 2026-09-06, **on sequencing**: the check that would keep it true lives in [the protocol](../../embarch-fleet/protocol.md) §10 and is the owner's, and formatting first decays immediately. Measured cost, and the reversal condition that fires the moment the check exists: [embarch.md](../embarch.md) §5.
 
 ## Release

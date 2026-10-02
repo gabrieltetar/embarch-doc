@@ -1,4 +1,4 @@
-# embarch-ui: the five tabs
+# embarch-ui: the six tabs
 
 **Status:** active, 2026-09-29.
 
@@ -12,4 +12,5 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 | **Topology** | One diagram carrying both of a role's bindings (45): its **board type**, clicked to pick — as one **real scanned combination** of revision and variant (47) — and its **probe**, dropped on (43). Plus **signal routing** (the one human surface for declaring a wire), the project's **board-type catalog**, **saved benches**, and **Validate topology**, which replaced the alert list (44) |
 | **Study Designer** | **Authoring and saving** a study; running it is Live Study's (31). Four panels (41): **project**, whose only field is the repo path (51), with the **Static firmware analysis** submenu that runs the GATT extractor — one ships, so there is a button and nothing to configure; the **study toolbar**, whose **Build options…** dialog holds the two `requires` fields, the dev-bench log level and the **Build card**; **steps**; and **Define the wire** — taps, `.eap` manifests and editor, the action registry, layouts. The Build card (38): app, an **ordered** snippet list, west flags and a three-state outpost mode per header flag — off by default, unavailable-with-a-reason off a configured project |
 | **Live Study** | Runs a saved study and watches it land, or opens a past one and reads it back. Stacked cards: run/open with the studies list, the **build card** where this run builds its own firmware, status, steps filling in live, the event feed, one console per `Text` tap, the **Time chart** (every stream on one axis), the trace chart, and one data card per tap |
+| **Atlas** | The open project's hardware atlas as one map (52): modules, MCU peripherals and pins, and every part on every board as a generic schematic symbol, each pin labelled with its net and the firmware's name for it (53). Picks an atlas, walks the problems, opens each claim's source down to the page or the code line (54). Read-only |
 | **Debug** | Three sources: two live tails — Core and `embarch-api`'s rolling file, both reaching the browser as this UI's own `lines` SSE event — and **builds**, stored rather than tailed: every firmware build this UI ran, picked from a list (39) |
