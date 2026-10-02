@@ -1,0 +1,1 @@
+| The Atlas tab: an `embarch-atlas` map — firmware modules, MCU pins and every part on every board as a generic schematic symbol, pins labelled with net and firmware names | Shipped — driven in headless Firefox on a synthetic atlas and one real two-board product; no second reader yet | local | 52, 53, 54 |

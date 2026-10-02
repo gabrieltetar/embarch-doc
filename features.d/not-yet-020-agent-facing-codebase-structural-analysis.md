@@ -1,1 +1,1 @@
-| Agent-facing codebase structural analysis (`embarch-atlas`) | Proposed | n/a | — |
+| Agent-facing hardware atlas (`embarch-atlas`): schematics, datasheets and the MCU reference manual joined to the firmware, with a mismatch report | Built locally on one real two-board product; repo not yet published | local | — |

@@ -25,6 +25,8 @@ embarch-ui (one Rust binary, axum, zero-build)
   +-- links embarch-topology transitively only, `software` feature only, never
   |   `hardware` (decisions/wiring.md)
   |
+  +-- reads <project>/embarch/atlas/ (the Atlas tab: files only, no Core call)
+  |
   +-- HTTP + Bearer --> embarch-core
         every hardware-adjacent call, read or write — both halves of a role,
         signals, ports, alerts, status, dev-bench, chip resolution, the whole
@@ -37,7 +39,7 @@ embarch-ui (one Rust binary, axum, zero-build)
 
 **The `hardware` feature is the one it must never link:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's.
 
-## The five tabs
+## The six tabs
 
 One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open project is shell furniture, at the foot of the sidebar** (46): one firmware repo at a time, named on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab and nothing else (31). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43). What each tab does: [spec/tabs.md](spec/tabs.md).
 
@@ -54,6 +56,7 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 - **A role is a fixed slot holding two independent bindings** (44, 45): which **probe** serves it, and which **board type** is in it. A probe moves between boards and only two are ever identified, so neither is an attribute of the other and either can be declared alone. A **board type is a shape**, listed in the repo's `embarch/boards.toml`, which **Rescan only adds to**; the dev-bench picker is the suite's own supported pair, served by the binary.
 - **A catalog row lists what this repo can build it as** (47): its revisions and its variants — **not its apps, which are the study's axis** (49) — the pinned combination marked and a pin the scan no longer backs marked as stale. Never a cross product: Zephyr backs a pair only where a file does. The board type goes to Core; **the combination goes to `embarch/boards.toml` and Core is never told a revision**.
 - **Picking a board type opens nothing**, and **leaves a stale `hardware_id` in place** so a validate pass can say the silicon no longer matches. Binding a probe is the only act that reads an identity, attaching as that board type's chip — **looked up, never typed** (48): a row stating none takes its targets' SoC through Core's `/resolve-chip`; a stated chip wins, nothing is written back, and an unanswerable one refuses here.
+- **The Atlas tab draws what the atlas wrote and decides nothing** (52): no Core call, no write but a page-render cache (54); vocabulary, clusters and positions come from `graph.json`.
 - **A page explains nothing it can show** (50): under a title, a path or state is the only note.
 - **A diagram status is written only by a Validate pass**, keyed by role and dropped when that role's bindings change: a badge moving on the five-second poll would claim a check nobody ran.
 - **Loading a saved bench never touches hardware** (44): `embarch/topologies/<slug>.toml`'s signals and dev-bench link are re-declared, and each enrolment is *proposed* for a human to confirm through the ordinary enroll — a file on disk is not evidence about what is plugged in.

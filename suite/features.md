@@ -176,7 +176,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| One consolidated human-facing UI, five tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
+| One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
 | Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
 | Study Designer authors every field a `Study` carries — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30 |
 | Saved-study library in the firmware repo | Shipped | local | 14 |
@@ -189,6 +189,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A role holds two independent bindings — a **probe** (dragged onto its box) and a **board type** (clicked to pick) — with the roles table folded into the diagram, the project's `embarch/boards.toml` catalog rescannable from the repo's own west targets, and `embarch/topologies/` benches that re-declare the wiring and *propose* each enrolment | Shipped | local (stub Core, headless Firefox) | 44, 45 |
 | **Validate topology** — one pass: each role's live hardware-ID re-read, the dev-bench port (a *guessed* one is a warning, never a pass), every declared signal's carrier, and any enrolled board type absent from the catalog. Core's reason printed verbatim, and it is the only thing that puts a status on the diagram | Shipped | hw (both roles re-read over their real probes) | 44, 45 |
 | A study stores no board/variant/revision: a run builds for the board type in the **DUT role**, read at run time, and a study saved with an explicit board has the override announced on the build log rather than silently applied | Shipped | local | 45 |
+| The Atlas tab: an `embarch-atlas` map — firmware modules, MCU pins and every part on every board as a generic schematic symbol, pins labelled with net and firmware names | Shipped — driven in headless Firefox on a synthetic atlas and one real two-board product; no second reader yet | local | 52, 53, 54 |
 | Debug tab — live log tail for Core and for `embarch-api` | Shipped | local | 7, 13 |
 | Build and flash the DUT from the Study Designer — an ordered snippet picker, a three-state outpost mode, the build as a live phase of the run, and past build logs in the Debug tab | Shipped, **both paths driven on hardware** 2026-09-19: the good one streamed 443 lines then flashed, reset and ran; a deliberate syntax error failed at phase `build`, flashed nothing, submitted nothing, and left the compiler's error on screen. **A failing flash or reset is still unwatched** | hw, browser | 38, 39, 40 |
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**; first paint 12.7 KB + 30.5 KB, a window 1–6 ms. Never driven against a live Core or a real DUT capture | local | 18 |
@@ -199,4 +200,4 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
 | Curated firmware-specific skills and prompt library (`embarch-promptu`) | Proposed | n/a | — |
-| Agent-facing codebase structural analysis (`embarch-atlas`) | Proposed | n/a | — |
+| Agent-facing hardware atlas (`embarch-atlas`): schematics, datasheets and the MCU reference manual joined to the firmware, with a mismatch report | Built locally on one real two-board product; repo not yet published | local | — |
