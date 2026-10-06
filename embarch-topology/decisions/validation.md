@@ -21,3 +21,11 @@ One conditional branch covers both of Nordic's device-ID register layouts, so **
 **What it does not confirm, kept explicit because the temptation is to round it up.** This is one board. The DUT's readback rests on the same code arm and the same chip family, but nothing corroborates its 64 bits independently — its firmware speaks no handshake that self-reports, so the relation cannot run on that end at all. Three distinct nRF54L15s have now been read (`6fcddc36cb781b71`, `834f2559f10a6cdf`, `2f77b9c3f85b29e9`) and **all six words are distinct**, which rules out the second address landing on something family-constant, but that is corroboration and not the same proof. `nRF54L10`, `nRF54L05` and `nRF54LM20A` share the arm and no such silicon has been on this bench.
 
 Which chips this arm's register pair actually covers — and how that coverage is decided — moved to [validation-classifier.md](validation-classifier.md) decision 25, once a second consumer (the flash path's vendor-tool refusal) needed the same answer.
+
+### 38 — An ID read back as all zeros or all ones is a failed read, not a different board
+
+On 2026-09-12 a NUCLEO-G0B1RE enrolled as `00250010343650172037334b` read `000000000000000000000000` three times within a minute, and the gate reported a **mismatch** (a different board) and refused flash and reset on a board that was the right one. On 2026-10-06 the same board, the same probe-rs (0.31.0) and the same `UID_BASE` reads gave the enrolled ID every time: running, connected under reset, and with the enrolled `STM32G0B1VE` chip name instead of the board's `RE`. Core's logs for that day had rotated out, so **the cause is unknown and recorded as such**: the read was transient.
+
+What can be fixed is the classification. **No factory-burned ID is all zeros or all ones**, so `hardware_id::read` retries such a read once and then fails it by name ("the target did not return its ID"), which the gate reports as an unreadable board, not as a mismatch. A mismatch alert accuses the board; a failed read says the read failed, which is what happened.
+
+**Rejected: retry until it reads.** One retry covers a transient; a loop would hold `hw_lock` against a board that genuinely cannot answer.
