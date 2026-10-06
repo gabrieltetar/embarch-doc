@@ -78,7 +78,8 @@ serial/interface's guess-and-clear semantics (decisions 20, 27).
 - **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, comparing its JTAG-read identity against its self-report. **An exact match settles it for any chip** — two mechanisms agreeing byte for byte on a factory-unique value is conclusive on its own. Two chip families additionally have a declared relation, for when the two mechanisms format that same value differently; every chip with neither an exact match nor a declared relation returns *undeclared*, never a pass.
 - **A direct signal route:** the declared serial is enumerable. It **cannot** confirm the DUT's TX pin wire lands on that bridge.
 - **A signal Core may write** is `host-to-dut` or `bidirectional` on a direct route (`SignalLink::host_can_write`, decision 37); a signal may declare its own `baud`, else Core's default applies.
-- **An ID read as all zeros or all ones** is retried once, then a failed read, never a mismatch (decision 38).
+- **An ID whose words are all the same** is retried once, then read with the core halted for microseconds, then a failed read, never a mismatch (decisions 38, 39).
+- **Attaching to an ARMv6 STM32** (F0, L0, G0) goes through `hardware::attach::attach`, which never read-modify-writes RCC or DBGMCU on a running core (decision 39).
 - **A via-bench route:** validates on the strength of being declared; its carrier is the bench link, whose liveness is the role check's job (decision 18).
 
 **A signal mismatch is not written to the alert log** — an alert's shape is board-specific and a wire has none of them.
