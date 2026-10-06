@@ -15,7 +15,7 @@
 - [Bootload](tools-bootload.md) — `bootload`, `build_and_bootload`, `declare_bootload_ports`, `show_bootload_ports`, `clear_bootload_ports`
 - [Studies](studies.md) — `run_study`, `study_status`, `study_watch`, `study_stream_data`, `list_study_streams`, `study_stream_load`. (The three fixed-channel aliases `study_power_data`/`study_waveform_data`/`study_gatt_data` were retired 2026-09-11 — `suite/015`, [decisions/study-reads.md](../decisions/study-reads.md) 39. `study_stream_data` is the forwarding address.)
 - [Dev bench](tools-dev-bench.md) — `build_dev_bench`, `flash_dev_bench`, `build_and_flash_dev_bench`, `reset_dev_bench`, `dev_bench_hello`, `dev_bench_link`
-- [Topology](tools-topology.md) — `enroll_probe`, `set_role_board`, `unenroll_probe`, `validate`, `alerts`, `declare_signal`, `list_signals`, `remove_signal`
+- [Topology](tools-topology.md) — `enroll_probe`, `set_role_board`, `unenroll_probe`, `validate`, `alerts`, `declare_signal`, `list_signals`, `remove_signal`, `signal_exchange`
 
 ## Error handling
 
