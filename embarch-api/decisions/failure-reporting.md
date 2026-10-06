@@ -23,3 +23,8 @@ Six `#[tool(description = ...)]` strings in `tools.rs` still cited the retired `
 ### 82 — `signal_exchange`: Core's signal write as a tool and a subcommand, and `baud` on `declare_signal`
 
 [`embarch-core`](../../embarch-core/decisions.md) decision 79's `POST /signals/{name}/exchange`, wrapped the way decision 67 wrapped the signal writers: one tool, one `signal-exchange` subcommand, both calling Core, never the serial port. **The one thing the wrapper adds is the newline**: `write` gets a trailing `\n` unless `append_newline` is false (`--no-newline`), because an agent sending `kernel uptime` means a command, and a command without its line ending is the silent failure a shell gives no error for. Everything else (the reply's escape codes, the prompt match) is passed through as Core returns it. `declare_signal` gains `baud` ([`embarch-topology`](../../embarch-topology/decisions.md) decision 37); `0` is refused by name rather than sent.
+
+### 83 — `mem_read`: Core's live memory read as a tool and a subcommand
+
+`embarch-core` decision 81's `POST /live/mem-read` gets a tool and a `mem-read` subcommand under decision 82's parity rule. Both take ranges as `ADDRESS[:WORDS]` strings (hex with `0x`, or decimal; one word when left out), parsed by one function, so the two front-ends cannot disagree on what `0x40021000:4` means. The answer is Core's as is: the words, `halted`, `halted_us`. Raw words only; decoding a register by name is the atlas's `reg_read`, which calls this subcommand, so the suite has one path to the hardware.
+
