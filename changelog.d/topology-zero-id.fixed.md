@@ -1,1 +1,1 @@
-Topology: an ID read back as all zeros or all ones is retried once, then a failed read, never a board mismatch (decision 38).
+Topology: an ID whose words are all the same (zeros, ones, or one stale bus value) is retried once, then a failed read, never a board mismatch (decision 38).
