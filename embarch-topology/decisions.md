@@ -15,7 +15,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/scope.md](decisions/scope.md) | 7, 9, 10, 11, 22, 29, 30 | What it models, what it defers, and the override mechanism it deleted |
 | [decisions/enrollment.md](decisions/enrollment.md) | 14, 15, 16, 28, 35 | The one surface that needs a human, the facts detection cannot produce, and the fixed role pair a board's own name was split out of |
 | [decisions/link-declares.md](decisions/link-declares.md) | 20, 27, 36 | A role's declared link facts, what `NotFound` reports when they exclude everything, and a DUT's two bootload ports |
-| [decisions/validation.md](decisions/validation.md) | 21, 38 | What the live identity gate asserts about the silicon on a link, what it cannot, and why an all-zero ID is a failed read |
+| [decisions/validation.md](decisions/validation.md) | 21, 38, 39 | What the live identity gate asserts about the silicon on a link, what it cannot, why an all-zero ID is a failed read, and attaching without rewriting a running target's clocks |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26 | The `validate` call's own freshness timestamp, distinct from the enrolled record's |
 | [decisions/links.md](decisions/links.md) | 18, 37 | The DUT signal link's declared route, which signals Core may write, and a signal's own line rate |
