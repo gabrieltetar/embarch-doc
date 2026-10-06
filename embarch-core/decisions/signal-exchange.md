@@ -14,6 +14,8 @@ An agent working a DUT needs its shell: write `kernel uptime`, read the reply. U
 
 **The rate is the signal's own** (`baud` in the declaration), else `EMBARCH_SIGNAL_BAUD`; the same rule now applies where a study opens a signal tap and where the outpost pre-flight reads its header.
 
+**`until` is matched only after the echo of what was written** (`match_after_echo`, on by default). Found on the first real DUT: a Zephyr CDC ACM shell prints a fresh prompt the moment the port opens and DTR rises, before the command's echo and output, so a plain match ended every read on that prompt with an empty reply. A console that does not echo turns it off.
+
 `404` when nothing is declared under the name; `409` when the signal is declared but not writable, or its port is not enumerable now.
 
 **Rejected: a raw `?port=` write like `/serial-log`'s read.** A write is the one operation that can change a board's state; naming it by a declared signal means the port, the direction and the rate are facts someone stated, and a `dut-to-host` trace can never be written by mistake.
