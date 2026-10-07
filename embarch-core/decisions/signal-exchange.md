@@ -19,3 +19,6 @@ An agent working a DUT needs its shell: write `kernel uptime`, read the reply. U
 `404` when nothing is declared under the name; `409` when the signal is declared but not writable, or its port is not enumerable now.
 
 **Rejected: a raw `?port=` write like `/serial-log`'s read.** A write is the one operation that can change a board's state; naming it by a declared signal means the port, the direction and the rate are facts someone stated, and a `dut-to-host` trace can never be written by mistake.
+
+**Amended 2026-10-06: `port_wait_ms`.** A caller that has just flashed or reset the DUT finds its USB CDC ACM console gone for a few seconds while the device re-enumerates, and the exchange answered `409` at once, so every agent wrote a sleep-and-retry loop. `port_wait_ms` (default 0, max 10,000, checked before `hw_lock`) makes Core poll enumeration every 250 ms for that long, and only for a declared direct port that is missing (`embarch-topology` decision 40's `SignalMismatch`); any other failure answers at once. The wait holds `hw_lock`, as the exchange it precedes does. The client adds it to the request's timeout.
+

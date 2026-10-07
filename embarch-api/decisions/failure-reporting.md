@@ -28,3 +28,5 @@ Six `#[tool(description = ...)]` strings in `tools.rs` still cited the retired `
 
 `embarch-core` decision 81's `POST /live/mem-read` gets a tool and a `mem-read` subcommand under decision 82's parity rule. Both take ranges as `ADDRESS[:WORDS]` strings (hex with `0x`, or decimal; one word when left out), parsed by one function, so the two front-ends cannot disagree on what `0x40021000:4` means. The answer is Core's as is: the words, `halted`, `halted_us`. Raw words only; decoding a register by name is the atlas's `reg_read`, which calls this subcommand, so the suite has one path to the hardware.
 
+**Amended 2026-10-06 (82):** `signal_exchange` and `signal-exchange` take `port_wait_ms` / `--port-wait-ms`, Core's wait for a console port that is gone after a reset (core decision 79, amended); the client adds it to the request's timeout so a long wait is not cut short by `serial_timeout`.
+
