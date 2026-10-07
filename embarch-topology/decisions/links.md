@@ -49,3 +49,8 @@ Two facts about what that landing costs, recorded here so they need not be re-de
 **`baud` is now part of the declared fact, optional.** A console at 115200 and the outpost at 1 Mbaud are two signals with two rates, and the single process-wide `EMBARCH_SIGNAL_BAUD` could only serve one. Absent means Core's default, so every row on disk loads unchanged and is written back without the key: no migration. A USB CDC ACM port ignores the rate, so declaring none there is correct.
 
 **Rejected: a separate "console" entity.** A console is a signal that also accepts writes; a second table would split one wire's facts across two places, and a `Study` would still have to tap it by the same name.
+
+### 40 — A direct signal's missing port says which ports are there, not dev-bench advice
+
+`resolve_signal_port` used to pass `port::select`'s error through for a `Direct` route, and that error is written for dev-bench's link: its VID gate, the link VIDs it recognises, and `set-dev-bench-link --clear-serial` as the fix. A DUT's USB CDC ACM console that is gone for a second while the board resets got that whole paragraph. The reason now names the declared USB serial, the serial ports that are visible, and that a CDC ACM port is gone while its device resets and returns once it re-enumerates. The error is still a `SignalMismatch` with `declared_port_serial` set, which is what `embarch-core`'s exchange keys its port wait on (core decision 79, amended).
+

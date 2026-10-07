@@ -18,7 +18,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/validation.md](decisions/validation.md) | 21, 38, 39 | What the live identity gate asserts about the silicon on a link, what it cannot, why an all-zero ID is a failed read, and attaching without rewriting a running target's clocks |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26 | The `validate` call's own freshness timestamp, distinct from the enrolled record's |
-| [decisions/links.md](decisions/links.md) | 18, 37 | The DUT signal link's declared route, which signals Core may write, and a signal's own line rate |
+| [decisions/links.md](decisions/links.md) | 18, 37, 40 | The DUT signal link's declared route, which signals Core may write, and a signal's own line rate |
 | [decisions/links-port.md](decisions/links-port.md) | 17, 24 | A link's own declared port, distinct from its probe's, and detection's fourth answer |
 | [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19, 34 | How a mismatch reaches a human, and the live-push mechanism that was retired |
 
