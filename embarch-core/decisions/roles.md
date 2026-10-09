@@ -23,3 +23,11 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **It leaves a recorded `hardware_id` alone**, deliberately. Changing a role's board type usually means different silicon is on that probe now, and the recorded ID is what lets `POST /validate` *say so*. Clearing it here would turn a detectable disagreement into a row that has merely never been checked — the difference between "these are different boards" and "nobody has looked", which this suite keeps apart everywhere else.
 
 **A role that holds a board type but no probe answers `404` on `/validate`, not `503`.** `503`/`not_attached` means the declaration exists and the hardware is missing, so retrying once it is plugged in is the fix; this is the *declaration* missing, and no amount of plugging in changes it until a human binds a probe. It is the same shape as the not-enrolled `404` above, and telling the two apart by status is what lets a caller decide whether to wait or to ask for a setup step.
+
+### 83 — A board enrolled with no role is a bench board, named, and retracted by its probe
+
+**`POST /probes/enroll` takes `role` absent or `""` as a bench board** ([`embarch-topology` decision 41](../../embarch-topology/decisions/enrollment.md)): it holds no role, and a project flashes and resets it by probe serial through the same identity gate. The role check from decision 75 still refuses anything else outside the pair.
+
+**A bench board must carry a `name`, and a blank one is a `400`.** With no role, the name is the only thing a human reads to tell it apart from the roles' boards and from other bench boards. The check sits beside decision 75's, after `hw_lock` and before any attach.
+
+**`DELETE /probes/by-serial/{serial}` is a bench board's retraction**, because `DELETE /probes/enrolled/{role}` cannot name a board with no role. It retracts any row by probe and keeps the same posture: `hw_lock`, no probe opened, `204` or `404`.

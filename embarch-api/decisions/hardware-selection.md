@@ -102,3 +102,9 @@ option.
 **`GET /serial-ports` and `GET /dev-bench/port` answer different questions and neither substitutes for the other.** The former is every enumerated port, unnarrowed; the latter is Core's own VID-filtered match for dev-bench's bridge specifically ([interfaces/tools-build-flash.md](../interfaces/tools-build-flash.md)). `serial_log`'s fallback chain stops at the project's configured port and never reaches into either list — a caller who wants dev-bench's own link uses `dev_bench_hello`/`dev_bench_link`, not this route.
 
 **Shipped under `tasks/api/041`, decision filed here under `tasks/api/063`** once that leg's burndown rule against new numbers no longer applied.
+
+### 84 — `enroll_probe` without a role enrolls a bench board, and `unenroll_probe` takes a probe serial
+
+**`role` is optional on `enroll_probe` and `enroll-probe`, and leaving it out enrolls a bench board** ([`embarch-core` decision 83](../../embarch-core/decisions/roles.md)). This is how a board that holds no role becomes reachable by the `flash`, `reset` and `build_and_flash` a project already has. Its `probe_serial` config names the probe, and Core's gate checks the board's identity. No tool gains a parameter for this: a project names its probe exactly as it did before.
+
+**`unenroll_probe` takes `role` or `probe_serial`, exactly one**, and the CLI's `--role` and `--probe-serial` conflict. A bench board can be retracted only by its probe. The client sends `""` for an absent role instead of growing an `Option` on the wire, so Core alone decides what no role means.
