@@ -12,6 +12,8 @@ The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owne
 
 **The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** The ESP32-C5 workspace stays in the tree, working (decision 43). **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
 
+**A second app, `pd-bench/`, is a USB PD partner** (decision 48): a Zephyr USB-C sink on a NUCLEO-G0B1RE with an X-NUCLEO-SNK1M1, scripted over its console shell with `signal_exchange`, enrolled as a bench board. It shares no code with `app/` and never speaks the wire.
+
 **v1 scope, explicitly bounded:** BLE plus power sampling only. GPIO/analog stimulus is future scope ([open.md](open.md)). **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: state is observable only through `embarch-core`.
 
 ## 2. Repository layout
@@ -30,6 +32,10 @@ app/                              shared C source, vendor-agnostic
 ├── tests/{serial_protocol,dev_bench_log}/     ztest, run on native_sim
 ├── boards/                       per-board overlays and .conf fragments
 └── CMakeLists.txt                referenced by every workspace, never copied
+
+pd-bench/                         the USB PD partner (decision 48): its own
+                                  app, shell only, built from a workspace
+                                  with the patched USB-C stack
 
 workspaces/                       one west topdir per vendor family
 ├── nordic/        NCS v3.4.0 + SoftDevice Controller — the current bench
