@@ -18,6 +18,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed | 29, 40, 42 | 7.8 KB |
 | [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter | 41 | 5.8 KB |
 | [Logging](decisions/logging.md) — a framed log backend, and per-study verbosity | 38, 39 | 10.1 KB |
+| [The PD bench](decisions/pd-bench.md) — a USB PD sink scripted over its shell, a second app beside the BLE bench | 48 | 1.6 KB |
 | [Documentation conventions](decisions/conventions.md) — citing a decision, and what a bare section number into a deleted `design.md` becomes | 47 | 4.1 KB |
 
 Decisions 9, 13 and 22 are reversals of earlier positions in this same doc and are kept where their subject lives rather than in a separate list; each says what it reversed and why.
