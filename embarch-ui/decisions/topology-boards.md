@@ -34,6 +34,10 @@ A catalog entry carries the **west** board target it builds as — a different t
 
 **Driven in a real browser**: `tests/browser/drive_topology.py` grew from eighteen checks to forty — the roles table and its labels, a foreign role flagged and cleared, the box titled by role with the board underneath, a passing role beside a failing one with Core's reason printed verbatim, a guessed port as a warning, a board added to the catalog and offered in the enroll dialog, a bench saved to the project and loaded back, and a proposal confirmed into a real enrolment.
 
+### 55 — A bench board is shown as a board, not as a leftover role
+
+**An enrolled row with an empty role is a bench board** ([`embarch-core` decision 83](../../embarch-core/decisions/roles.md)), not a name written where a role belongs. The validate pass therefore gives it its own `Bench board '<name>'` line, naming its probe and chip, and keeps the "Leftover role" warning for rows that do hold a non-canonical role. The dashboard table labels its role cell "Bench board", and the enrolled count lists it by name. Validating one live has no route yet: its flash runs the identity check, which is the check that matters for it.
+
 ### 47 — A board type's row is its build menu, and a DUT is picked as a real combination
 
 The catalog list carried **Chip** and **Builds as**. Both are true and neither is what a human reads a bench list for: a chip is set once and never looked at again, and the west target mostly restates the row's own name. **What is worth a column is what this repo can actually build that board as** — which is also the menu the DUT is picked from, so the list and the picker became two views of one scan instead of two descriptions of one row.
