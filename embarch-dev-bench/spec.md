@@ -12,7 +12,7 @@ The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owne
 
 **The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** The ESP32-C5 workspace stays in the tree, working (decision 43). **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
 
-**A second app, `pd-bench/`, is a USB PD partner** (decision 48): a Zephyr USB-C sink on a NUCLEO-G0B1RE with an X-NUCLEO-SNK1M1, scripted over its console shell with `signal_exchange`, enrolled as a bench board. It shares no code with `app/` and never speaks the wire.
+**A second app, `pd-bench/`, is a USB PD partner** (decisions 48, 49): a Zephyr USB-C port on a NUCLEO-G0B1RE, a sink on the X-NUCLEO-SNK1M1 or dual role on the X-NUCLEO-DRP1M1 (`-DSHIELD=x_nucleo_drp1m1`, 5 V source from its CN3 supply), scripted over its console shell with `signal_exchange`, enrolled as a bench board. It shares no code with `app/` and never speaks the wire.
 
 **v1 scope, explicitly bounded:** BLE plus power sampling only. GPIO/analog stimulus is future scope ([open.md](open.md)). **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: state is observable only through `embarch-core`.
 

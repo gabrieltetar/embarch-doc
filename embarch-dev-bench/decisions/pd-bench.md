@@ -15,3 +15,12 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **It builds outside `workspaces/`.** It needs the USB-C PD stack fixes that are not upstream yet, so it builds from a west workspace that carries them. A bug common to that stack and the DUT's passes unseen, which is why key results still need a third-party partner.
 
 **It is enrolled as a bench board** ([`embarch-topology` decision 41](../../embarch-topology/decisions/enrollment.md)). That lets it be flashed by probe serial without taking `dev-bench` from the nRF54L15DK.
+
+### 49 — Each expansion board is a Zephyr shield inside the app, and the DRP1M1 sources only what CN3 gives it
+
+**The PD bench now runs on two boards: the X-NUCLEO-SNK1M1 (sink) and the X-NUCLEO-DRP1M1 (dual role, TCPP03-M20).** Each is a Zephyr shield under `pd-bench/boards/shields/`, and `-DSHIELD=` picks one; with none given the SNK1M1 builds, unchanged. The Nucleo overlay keeps only what both share (UCPD1 on PA8/PB15). A shield, not an overlay file per variant, because a board's pins, its devicetree nodes and its Kconfig (the DRP1M1 needs `CONFIG_USBC_CSM_DRP` and I2C) travel together.
+
+**The DRP1M1 switches its CN3 supply onto VBUS as it is**, with no regulator, so the bench offers 5 V only (`source-pdos`, 5 V 3 A) and refuses to source unless CN3 reads vSafe5V. A source test above 5 V needs a different supply and a different `source-pdos`, not a command. The TCPP03 is driven over I2C from the app (`src/tcpp03.c`, binding `st,tcpp03`): the tree has no TCPP03 driver, and the bench needs only four control words. The provider and consumer paths are never closed together; a fault opens both and needs the recovery word.
+
+**What the stack cannot do stays out of the shell:** it answers PR_Swap only with Accept or Reject (no Wait), has no Try.SRC or Try.SNK, and has no DPM request for Source_Info, Revision, Source_Cap_Extended, Manufacturer_Info or Battery_Cap.
+
