@@ -68,7 +68,7 @@ largest hole in the fleet's uptime.
 - [ ] The HOLD message reports a true age and, where known, the reset time.
 - [ ] `install.py --check` clean; the shim in `embarch-doc/scripts/` is untouched.
 
-## Closed 2026-09-07 — the owner's session, `embarch-fleet` `e7394f5`
+## Closed 2026-09-07 — the owner's session, `embarch-fleet` `071f90a`
 
 All four `Done when` boxes, plus one defect this task did not name.
 
