@@ -38,7 +38,7 @@ Adds a sub-project, `embarch-desk`, and touches `embarch-ui` (its Dashboard tab 
 
 14. **Linear**: the card's issue status, movable. **GitHub**: PRs with CI state on their cards. **Slack**: every @mention and DM in every connected workspace, unread first — the fleet's own pages included — with **replies drafted by Claude and approved by the user**. **Harvest**: the tiles. Any number of accounts per service.
 15. **Writes:** a status move goes straight through (issue status, timer, mark read). **Anything carrying prose is a draft the user approves first.**
-16. **OAuth from v1 on all four, a pasted token as fallback on every one.** **Every user signs in as themselves** against one app registration per service, shipped with the suite and **owned by the personal account that owns the public EmbArch repos**.
+16. **Pasted tokens in v1, one per account; OAuth deferred to v2.** GitHub reuses the user's `gh` login, or takes a personal access token; Linear takes a personal API key per workspace; Harvest a personal access token, which covers every account the user has. **Slack has no personal token**, so EmbArch ships a manifest: the user creates a Slack app in their own workspace from it, installs it, and pastes its user token — no distribution and no redirect, because the app never leaves that workspace. **EmbArch owns no app registration.** Chosen 2026-10-22 over OAuth in v1, the same day — see [OAuth, deferred](#oauth-deferred-to-v2).
 17. **Tokens live in a file beside Core's**, owner-only, following [embarch-token.md](embarch-token.md)'s lifecycle.
 
 **Agents and Claude Code**
@@ -56,7 +56,7 @@ Adds a sub-project, `embarch-desk`, and touches `embarch-ui` (its Dashboard tab 
 ### `embarch-desk`, the new sub-project
 
 - **An always-on service beside Claude Code** — on a machine like the owner's, a systemd user service in WSL, not a Windows service beside Core. It runs `claude -p` and resolves repo paths locally; the Windows browser reaches it as it reaches `embarch-ui`. Umbrella installs and starts it.
-- **One HTTP surface for four callers**: the plugin's hooks, `embarch-ui`, `embarch-api`, and each OAuth redirect.
+- **One HTTP surface for three callers**: the plugin's hooks, `embarch-ui` and `embarch-api`.
 - **The store** — work items, links, tiles, lines, the ignore list, archived cards — **lives outside every repo**. Connector data (issue titles, messages, client names, hours) never reaches an EmbArch repo; they are public.
 - **Sync** pulls the issues, PRs and mentions the cards show; a write is one of the two kinds in 15.
 
@@ -74,9 +74,9 @@ Adds a sub-project, `embarch-desk`, and touches `embarch-ui` (its Dashboard tab 
 - **The Dashboard panel's content is deleted** and the tab renamed **Desk**; the Core snapshot stays, since Topology renders from it.
 - Cards, tiles and the Slack bar render from the desk's HTTP surface, not from Core.
 
-### What OAuth takes, per service
+### OAuth, deferred to v2
 
-**One registration per service, shipping only its client ID** — a secret inside a public binary is not one. Researched 2026-10-22 from each service's docs; **none of it has been tried**.
+**OAuth was the v1 choice for a few hours, and was reversed because it buys onboarding polish for users who do not exist yet**, at the cost of four registrations EmbArch must own and the per-service catches below. If it comes back, it is **one registration per service, shipping only its client ID** — a secret inside a public binary is not one. Researched 2026-10-22 from each service's docs; **none of it has been tried**.
 
 | Service | Desktop flow | The catch |
 |---|---|---|
@@ -90,19 +90,18 @@ Adds a sub-project, `embarch-desk`, and touches `embarch-ui` (its Dashboard tab 
 - **Hosting the desk inside `embarch-ui`**: sessions would be lost whenever the UI is closed. **A hook-written spool ingested later**: survives downtime, but no live tiles. **A Windows service beside Core**: every `claude -p` call and repo path crosses the WSL boundary, and Windows-service deploys need UAC.
 - **Time between prompts, or last-prompt-wins across parallel sessions**: both undercount, against 11.
 - **A fleet-arming hook to exclude the fleet**: the ignore list (12) already does it with no change to the fleet.
-- **Bring-your-own app registrations**: each user pays about what pasting tokens costs. **The OS credential store**: one more dependency per platform.
+- **OAuth in v1** (16): four registrations to own, Slack's HTTPS rule for distributed apps, and Harvest's undocumented implicit-grant lifetime, for polish no second user needs yet. **The OS credential store**: one more dependency per platform.
 - **An "Unsorted" card for sessions without a work item**, or auto-creating one per repo and branch: asking in the session (7) keeps attribution with the person who knows.
 
 ## Order of work
 
-1. **Test the two OAuth unknowns before registering anything** — Slack's localhost redirect on a distributed PKCE app, and Harvest's real `expires_in`.
-2. **v1, one milestone**: `embarch-desk`, the plugin, the `embarch-api` tools, the Desk tab, umbrella's install step.
-3. **Fold**: acceptance creates `embarch-desk/` here and its repo; decisions move into the four files of each sub-project touched, and this file is deleted as it is absorbed.
+1. **v1, one milestone**: `embarch-desk`, the plugin, the `embarch-api` tools, the Desk tab, umbrella's install step.
+2. **Fold**: acceptance creates `embarch-desk/` here and its repo; decisions move into the four files of each sub-project touched, and this file is deleted as it is absorbed.
 
 ## Open questions
 
-- **Does Slack's PKCE localhost redirect survive distribution?** If not, Slack alone needs a hosted HTTPS redirect, and 16's "no server" breaks for one connector.
-- **Harvest's implicit-grant lifetime.** If it is hours, the pasted token becomes Harvest's normal path.
+- **A managed Slack workspace may require admin approval to install any app**, the user's own included. Where it does, that workspace has no Slack feed until an admin approves.
+- **If OAuth returns in v2**: does Slack's PKCE localhost redirect survive distribution (its docs state the HTTPS rule and the localhost rule and never reconcile them), and what is Harvest's real implicit-grant `expires_in`? A probe script for both was written and never run.
 - **How `embarch-api` knows the calling session**, and so the work item a build or flash belongs to (9). Its MCP server is spawned per session, but what identifies that session to it is unchecked.
 - **Session-open time in hook terms**: which events bound a session, and a session crossing local midnight splitting across two days' tiles.
 - **The store's format and the MCP tool list.** Defaults taken without asking: N = 7 days (5), and a chip naming the account on a card when two workspaces of one service are connected.
