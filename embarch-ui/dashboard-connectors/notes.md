@@ -8,13 +8,13 @@ Remove everything the Dashboard shows today. Replace it with a way to **add conn
 
 ## The shape so far
 
-After twelve rounds of questions. The numbered decisions below are the record; this is the current truth they add up to.
+After thirteen rounds of questions. The numbered decisions below are the record; this is the current truth they add up to.
 
 - **A new always-on sub-project, `embarch-desk`,** owns the connectors — Linear, Harvest, Slack, GitHub, each over OAuth with a pasted token as fallback, any number of accounts per service — and the **work item**: an EmbArch object, usually one Linear issue, joining that issue to its PRs, its Claude Code sessions, its bench activity and its time.
 - **The Dashboard tab becomes Desk.** Everything it shows today is deleted. In its place, **one card per work item with recent activity**: issue status (movable from the card), PRs with CI state, sessions, bench activity, *open in VS Code with Claude Code prompted*, and **today's time tile inside the card**. Slack mentions and DMs sit on one bar that expands to the feed.
-- **Time captures itself and lands only on approval.** A Claude Code plugin's hooks report session-open time to the desk; each session's Claude appends a line to its tile as it works; opening the tile turns the lines into one Harvest note with a guessed project and task; **✓ sends it to Harvest, ✕ discards it.** Over-capture and cut — but fleet sessions never count.
+- **Time captures itself and lands only on approval.** A Claude Code plugin's hooks report session-open time to the desk, idle gaps included; every commit becomes a line on the tile, and the session's Claude adds one at each milestone without a commit; opening the tile turns the lines into one Harvest note with a guessed project and task; **✓ sends it to Harvest, ✕ discards it.** Over-capture and cut — except in repos on an ignore list, EmbArch's own among them, which is also all the fleet ever touches.
 - **Writes:** a status move goes straight through; anything carrying prose is a draft the user approves. Agents manage work items through `embarch-api`, and never approve a tile.
-- **v1 ships whole, on one machine.** A Claude chat panel inside the desk is v2.
+- **v1 ships whole, on one machine**, the desk running beside Claude Code (in WSL here). A Claude chat panel inside the desk is v2.
 
 ## Starting point
 
@@ -115,6 +115,17 @@ After twelve rounds of questions. The numbered decisions below are the record; t
 43. **The four app registrations belong to the personal account that owns the public EmbArch repos.** Least setup, and tied to the project's owner rather than to an employer. Rejected: a new EmbArch identity across four services, and the company's workspaces.
 44. **The Slack feed is every @mention and DM in every connected workspace**, unread first. No picked channels, no unanswered-only filter.
 
+**Round 13, 2026-10-22.**
+
+45. **The fleet is invisible to the desk.** It only ever works on EmbArch — open source, and not tracked work — so it shows no activity, no card and no time. Rejected: fleet activity labeled on cards, and a Fleet card of its own.
+46. **The fleet declares itself**: `/fleet start` tells the desk which session is the listener, and everything spawned inside it is excluded. One line in the fleet's arming template, in `embarch-fleet`. Rejected: matching agent names (breaks silently on a rename) and a manual toggle. **Superseded by 49.**
+47. **`embarch-desk` runs beside Claude Code** — on this machine, a systemd user service in WSL, not a Windows service beside Core. It runs `claude -p` and resolves repo paths for the VS Code launch directly; the Windows browser reaches it the way it reaches `embarch-ui` today. Rejected: a Windows service (every polish call and repo path crosses the WSL boundary, and Windows-service deploys need UAC).
+48. **Idle gaps count.** Three hours idle mid-session is still session-open time (13); the tile is where it gets trimmed.
+49. **An ignore list of repos and folders that are never tracked.** A session there makes no tile and never asks which work item it is on. **EmbArch's own repos go on it** — open-source work is not tracked work — **and that covers the fleet too**, since it only works there. **This supersedes 46**: no fleet-arming change. Rejected: keeping 46 as well, and tracking EmbArch sessions visibly with tiles that can never be sent.
+50. **Tile lines come from commits and milestones.** A hook turns every commit message into a line — no model, no cost. The plugin's skill has Claude add a line at a milestone with no commit: an investigation's finding, a flash or study result. Rejected: a line after every reply (forced by a Stop hook), and milestones without commits.
+51. **The "which work item?" question repeats on every prompt until answered** (41). One line each time; nothing slips. Rejected: asking once and leaving the session untracked, and asking once then nudging from the desk header.
+52. **The fleet's @mentions stay in the Slack feed.** A page meant for the user is a page. This is the one place the fleet touches the desk; 45 is about work and time.
+
 ## What OAuth would take
 
 Asked in round 7 instead of picking an auth model. Researched 2026-10-22 from each service's docs; **nothing here has been tried**.
@@ -124,24 +135,23 @@ Asked in round 7 instead of picking an auth model. Researched 2026-10-22 from ea
 | Service | Flow for a desktop app | Secret needed | The catch |
 |---|---|---|---|
 | GitHub | **Device flow**: the user types a short code at github.com | No | None found — it is how `gh` itself logs in. Or reuse an existing `gh` login and skip OAuth entirely |
-| Linear | Authorization code **with PKCE**, localhost redirect | No — `client_secret` optional under PKCE; refresh with `client_id` alone | A workspace can require admin approval of third-party apps ([docs](https://linear.app/docs/third-party-application-approvals)); whether the app must also be marked public to install in other workspaces is unchecked |
-| Slack | Authorization code **with PKCE**; a localhost redirect counts as a desktop redirect *only* on a PKCE-enabled app ([docs](https://docs.slack.dev/authentication/using-pkce)) | No | **Enabling PKCE is one-way.** Desktop redirects get **user scopes only, no bot scopes** — which suits a feed and replies sent as the user. **Refresh tokens expire after 30 days.** Installing in other workspaces needs the app's public distribution turned on (from memory, unchecked) |
-| Harvest | **No PKCE.** Implicit grant (token returned directly, no secret; documented for browser apps) or authorization code (needs the secret) ([docs](https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/)) | Only for authorization code | **The weak one.** Implicit grant returns no refresh token, so the user re-connects whenever the token expires (lifetime unchecked). The only alternative is a hosted relay holding the secret — a server EmbArch would have to run |
+| Linear | Authorization code **with PKCE**, localhost redirect | No — `client_secret` optional under PKCE; refresh with `client_id` alone | A workspace can require admin approval of third-party apps ([docs](https://linear.app/docs/third-party-application-approvals)). **The app's distribution must be set to public** to install outside its own workspace — private is the default ([manifests](https://linear.app/developers/oauth-app-manifests)). New apps get refresh tokens by default |
+| Slack | Authorization code **with PKCE**; a localhost redirect counts as a desktop redirect *only* on a PKCE-enabled app ([docs](https://docs.slack.dev/authentication/using-pkce)) | No | **Enabling PKCE is one-way.** Desktop redirects get **user scopes only, no bot scopes** — which suits a feed and replies sent as the user. **Refresh tokens expire after 30 days.** Installing in other workspaces needs distribution turned on (Manage Distribution), and **a distributed app must use HTTPS redirect URLs** ([docs](https://docs.slack.dev/app-management/distribution/)). **Whether the PKCE localhost exception survives distribution is unchecked — the first thing to test**, because if it does not, Slack needs a hosted HTTPS redirect after all |
+| Harvest | **No PKCE.** Implicit grant (token returned directly, no secret; documented for browser apps) or authorization code (needs the secret) ([docs](https://help.getharvest.com/api-v2/authentication-api/authentication/authentication/)) | Only for authorization code | **The weak one.** Implicit grant returns no refresh token, so the user re-connects whenever the token expires. **The v2 implicit lifetime is undocumented**: v2's authorization-code example shows 14 days, v1's implicit tokens lasted 18 hours — so possibly a daily re-connect. A Harvest personal access token, the fallback, is the steadier path. The only alternative is a hosted relay holding the secret — a server EmbArch would have to run |
 
 **Accepted in round 8 (decision 29):** OAuth from v1 for all four, no server anywhere — device flow for GitHub, PKCE for Linear and Slack, implicit grant for Harvest — **and keep paste-a-token as the fallback on every connector**, which is also the way in for a workspace whose admins block third-party apps.
 
 ## Open questions
 
-Not yet asked, or surfaced by an answer. Ranked by how much each one moves the design.
+**None is the owner's to answer any more**; round 13 closed the five that were. What is left is design work and two things to test before any app is registered.
 
-1. **How does the plugin tell a fleet session from a person's (40)?** The fleet's agents have known definitions and run in the listener window; whether a hook's payload carries enough to tell is unchecked. And do fleet sessions show on a card as *activity* at all, or are they invisible to the desk?
-2. **Where `embarch-desk` runs on a split machine.** Core is a Windows service, while Claude Code sessions here run in WSL and the browser on Windows. The desk must be reachable from the hooks, the UI, `embarch-api` and the OAuth redirect at once — Core already solves the same reachability, so start from [embarch-token.md](../../embarch-token.md) and umbrella's topology.
-3. **What session-open time is, exactly (13).** Which hook events count as activity, what bounds a session left open overnight, and whether a session crossing midnight splits across two days' tiles.
-4. **The agent-facing surface (27, 36):** the `embarch-api` MCP tools for work items and tile lines, and what the plugin's skill tells a session to do — how often it appends a line, and how it asks for a work item (41) without nagging.
-5. **Before registering any app (43):** Harvest's implicit-grant token lifetime, whether a Linear app must be marked public to install in other workspaces, and Slack's distribution step.
+1. **Test first: does Slack's PKCE localhost redirect survive distribution?** A distributed Slack app must use HTTPS redirects ([What OAuth would take](#what-oauth-would-take)). If the PKCE exception does not hold, Slack alone needs a hosted HTTPS redirect, and 29's "no server anywhere" breaks for one connector.
+2. **Read Harvest's real implicit-grant lifetime** from the `expires_in` on a first connect. If it is hours, the token fallback becomes Harvest's normal path, not its fallback.
+3. **The agent-facing surface (27, 36, 50):** the `embarch-api` MCP tools for work items and tile lines, and the plugin's skill text.
+4. **Session-open time in hook terms (13, 48):** which hook events bound a session, and a session crossing local midnight splits across two days' tiles.
 
-Smaller: the activity window N for which cards appear (24); how a card shows which account it came from when two Linear workspaces are connected; whether the fleet bot's own posts reach the Slack feed (44) and need filtering.
+**Defaults taken without asking**, overridable: cards appear after activity in the last **7 days** (24); a card shows **a small chip naming its account** when two workspaces of one service are connected.
 
 ## Next
 
-Promote these notes to `embarch-desk-proposal.md` at the root (the proposal tier, [DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3) once the five questions above are answered, add it to [embarch.md](../../embarch.md) §6, and delete this folder.
+**The notes are ready to promote.** Write `embarch-desk-proposal.md` at the root (the proposal tier, [DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3, 15 KB cap) from *The shape so far* and the live decisions — superseded ones and the round-by-round log stay in git — add it to [embarch.md](../../embarch.md) §6, and delete this folder.
