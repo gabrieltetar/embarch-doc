@@ -1,0 +1,1 @@
+| Work items joining a Linear issue to its PRs, Claude Code sessions, bench activity and time; day tiles sent to Harvest on a ✓ — the Desk tab | Shipped v1 — **no real Linear, Harvest or Slack account connected yet; one real headless session through the plugin** | unit, local | 6, 10, 13 |

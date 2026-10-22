@@ -1,0 +1,1 @@
+| Claude Code plugin: hooks turn session time, commits and `embarch-api` bench calls into tile data; MCP tools put a session on a work item and add a line | Shipped, installed on the owner's machine | local | 18, 20, 22 |

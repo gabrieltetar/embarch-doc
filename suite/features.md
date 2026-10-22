@@ -195,6 +195,13 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**; first paint 12.7 KB + 30.5 KB, a window 1–6 ms. Never driven against a live Core or a real DUT capture | local | 18 |
 | A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: crafted fixtures only, and the 18-record bridge-buffered case that motivates it has not been replayed | unit | 19 |
 
+## embarch-desk
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| Work items joining a Linear issue to its PRs, Claude Code sessions, bench activity and time; day tiles sent to Harvest on a ✓ — the Desk tab | Shipped v1 — **no real Linear, Harvest or Slack account connected yet; one real headless session through the plugin** | unit, local | 6, 10, 13 |
+| Claude Code plugin: hooks turn session time, commits and `embarch-api` bench calls into tile data; MCP tools put a session on a work item and add a line | Shipped, installed on the owner's machine | local | 18, 20, 22 |
+
 ## Not yet a sub-project
 
 | Feature | Status | Verified | Decision |

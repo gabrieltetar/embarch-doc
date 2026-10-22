@@ -28,3 +28,10 @@ The control sits at the foot of the sidebar now, under the nav: the word Project
 **What stays on that tab is the half that is only its own**: the summary of what the open project holds, and the static analysis of its source. *Rejected: leaving the picker there and mirroring the state into the sidebar.* Two renderers of one fact is how a footer comes to name a repo a tab has already left; there is one render function over one state object, and the sidebar, the summary line and the dialog are its three outputs.
 
 **A switch now reloads the board catalog and the saved benches too** — project files that would otherwise show one repo's bench under another repo's name, survivable before only because the switch happened on a tab that does not render them. The server's refusals were re-pointed in the same change, so a message that says what to do names something on screen wherever the reader is.
+
+### 56 — The Dashboard becomes the Desk
+
+**Everything the Dashboard showed was deleted** (2026-10-22): its stat cards, enrolled-boards table and alerts list all rendered from the snapshot Topology already draws, and the alerts had moved behind *Validate topology* (44). The tab in its place is the owner's work cockpit, backed by a separate service, [`embarch-desk`](../../embarch-desk/spec.md), whose decisions say what it shows and why.
+
+**The browser never reaches the desk.** `/api/desk/{*rest}` forwards with the desk token added server-side, so the token never enters the page and no other site open in the browser can make the desk post to Slack or Harvest as the user. **Live by SSE like every other tab** (6): `/api/desk-events` asks the desk every 10 s server-side; the first build polled from the browser every 15 s and was reverted the same day. A pushed view never re-renders under an open editor. `#dashboard` resolves to `#desk`, the way `#enroll` resolves to `#topology`.
+

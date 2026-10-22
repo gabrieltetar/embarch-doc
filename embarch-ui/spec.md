@@ -41,7 +41,7 @@ embarch-ui (one Rust binary, axum, zero-build)
 
 ## The six tabs
 
-One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open project is shell furniture, at the foot of the sidebar** (46): one firmware repo at a time, named on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab and nothing else (31). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43). What each tab does: [spec/tabs.md](spec/tabs.md).
+One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open project is shell furniture, at the foot of the sidebar** (46): one firmware repo at a time, named on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab and nothing else (31). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43), `#dashboard` is `#desk` (56). What each tab does: [spec/tabs.md](spec/tabs.md).
 
 ## Invariants
 

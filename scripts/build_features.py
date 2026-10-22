@@ -79,6 +79,7 @@ SECTIONS = [
     ("topology", "embarch-topology"),
     ("umbrella", "embarch-umbrella"),
     ("ui", "embarch-ui"),
+    ("desk", "embarch-desk"),
     ("not-yet", "Not yet a sub-project"),
 ]
 SCOPES = [k for k, _ in SECTIONS]
