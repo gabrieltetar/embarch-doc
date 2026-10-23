@@ -18,7 +18,7 @@ A Claude Code chat of the owner's own — "its own Claude Code chat basically, w
 - **Flags:** `--include-partial-messages` streams deltas; `--resume <id>` after exit keeps context; `--session-id <uuid>` fixes the id up front; `--prompt-suggestions` guesses the next prompt ("go ahead"); `--no-session-persistence` leaves no transcript.
 - **Around it:** `claude agents --json` (0.2 s) lists the chat as `interactive`; a subagent's messages carry `parent_tool_use_id`; Claude titles every session itself (an `ai-title` line, renewed as it goes); **transcripts are deleted after 30 days** (`cleanupPeriodDays` unset; the oldest here is 2026-09-23).
 
-**Memory:** 457 MB resident for a full session, 242 MB stripped; a background Bash task dies with its process. **Haiku thinks by default here** — 5–9 s for a one-line completion; `--max-thinking-tokens 0` makes it 1.2 s of API time, 1.85 s wall, $0.0016.
+**Memory:** 457 MB resident for a full session, 242 MB stripped; a background Bash task dies with its process.
 
 ## Decided
 
@@ -45,6 +45,8 @@ Numbers are permanent, grouped by topic.
 **5 —** **The extension runs each chat's `claude` process**, one per open chat, with the official panel's flags; a closed chat comes back with `--resume`. Chats die with their window, and **a chat belongs to the window that started it**. **Rejected:** the desk service hosting them (browser answering and surviving a reload, for 600–900 lines of Rust in a work-item service), a process per message (startup every turn, background tasks killed).
 
 **31 —** **A thread another window or a terminal runs is read-only here, with Jump.** Every window shows the same list; a foreign thread opens from its transcript, and Jump brings up the window or terminal running it. Windows share nothing. **Rejected:** taking a chat over (a lock file per session), one daemon running every chat (decision 5's rejected hosting again).
+
+**35 —** **A chat waiting on the owner off screen shows as a count** on the activity-bar icon and a status-bar item ("2 waiting") in every window; a click opens the oldest. No pop-ups. **Rejected:** a VS Code toast per wait, Claude's own phone push (untested for these chats).
 
 **30 —** **The panel runs the `claude` on `PATH`** (2.1.287 here, as the desk and terminals do), overridable in a setting. **Rejected:** the official extension's bundled binary (2.1.308 here), whose path changes with every extension update.
 
@@ -92,17 +94,7 @@ Numbers are permanent, grouped by topic.
 
 ### The Haiku assistant
 
-**19 —** **Quick replies follow the moment** — the owner's most-sent messages are one word (14) — **and Haiku drafts them**. **Rejected:** a fixed row of chips; none; the CLI's `--prompt-suggestions` guess alone or with two hand rules (blind to the draft); a hand-written table of situations.
-
-**24 —** **While the owner writes, Haiku offers ghost text and cards.** The completion shows in grey and Tab takes it; cards above the input suggest or warn. **Rejected:** a one-line note under the box (became the cards), a tighten-the-draft button.
-
-**28 —** **The cards are missing context and prompt improvements**: what Claude will need and the draft lacks (which board, issue, file), and how the prompt could be better put. **Rejected:** a library entry that fits, a heads-up that auto mode will flash, push or move an issue, a warning that another thread is on it.
-
-**25 —** **When Claude's turn ends, it drafts two to four replies as chips**, the CLI's own guess among them. **Rejected:** a checklist of what Claude asked, a one-line digest of the reply in the list.
-
-**26 —** **It runs on a pause** — 700 ms after typing stops, and after each turn; the next keystroke cancels a stale call. Each call is one stripped `claude -p` with thinking off, returning completion, cards and chips together: about 1.9 s and $0.002–0.004, so $1–2 a day at ~500 calls [estimate]. `EMBARCH_DESK_INTERNAL=1` keeps the desk out. **Rejected:** after turns only, only on a key.
-
-**27 —** **It sees the draft, Claude's last reply, the work item's card and the library's entry names** — 1–3K tokens. **Rejected:** the whole transcript (about 10× the cost), the draft and last reply only.
+Split into [embarch-chat-assistant-proposal.md](embarch-chat-assistant-proposal.md): decisions 19, 24–28, 34 and 36 — ghost text, cards, reply chips, when it runs and what it sees.
 
 ## Order of work
 
@@ -113,11 +105,10 @@ One build (23), about three days in all [estimate]:
 3. **The desk**: the thread list, binding before start, the header, and **the mailbox, with the Desk's Start work and Open chat writing to it** (11, 32, 33) — the one desk-side change.
 4. **Inline**: diffs, @-mentions, bench cards, atlas links. About half a day.
 5. **The library**: the plugin, the seeding run the owner cuts, the buttons. About half a day.
-6. **The Haiku assistant**. About half a day.
+6. **The Haiku assistant** ([its proposal](embarch-chat-assistant-proposal.md)). About half a day.
 7. **Fold**: `embarch-promptu/` becomes `embarch-chat/`; amend `embarch-ui` decision 3, `embarch-desk` decisions 21, 43, 44 and spec §5, [embarch.md](embarch.md) §3, the roadmap, the features and DOC-PROTOCOL §2; the new repo's `CLAUDE.md`; delete this file.
 
 ## Open questions
 
 - **Does Remote Control reach a chat the extension started?** Not needed at the desk (32), but it is the only way in from the phone, and nobody has opened one from claude.ai yet.
 - **When does an idle chat's process close?** At 457 MB each — say after 30 idle minutes unless a background task runs, with `--resume` on the next message.
-- **Does a click on an improvement card rewrite the draft**, or only show the better wording?
