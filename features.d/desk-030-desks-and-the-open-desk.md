@@ -1,0 +1,1 @@
+| Desks: one per project (Linear project or team, Harvest project and task, GitHub repos, firmware repos, saved bench), one open suite-wide; the day list of today's work | Shipped — **first desk open on the owner's machine; bench proposal names running studies only** | unit, local | 33, 36, 40 |

@@ -35,3 +35,9 @@ The control sits at the foot of the sidebar now, under the nav: the word Project
 
 **The browser never reaches the desk.** `/api/desk/{*rest}` forwards with the desk token added server-side, so the token never enters the page and no other site open in the browser can make the desk post to Slack or Harvest as the user. **Live by SSE like every other tab** (6): `/api/desk-events` asks the desk every 10 s server-side; the first build polled from the browser every 15 s and was reverted the same day. A pushed view never re-renders under an open editor. `#dashboard` resolves to `#desk`, the way `#enroll` resolves to `#topology`.
 
+### 57 — The open desk replaces the open project
+
+**The sidebar control names the open [desk](../../embarch-desk/spec.md), not a repo** (2026-10-22, amending 46): one desk per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and one open suite-wide. The desk's first firmware repo is what every tab reads, opened through the same path a typed repo takes, so 14's three-readers invariant holds unchanged. **"No desk" stays a state**: the dialog still opens a bare repo, and doing so closes the desk.
+
+**A switch made anywhere reaches the page.** An agent's `desk_open`, the CLI or a session's "switch?" question changes the desk's state, the pushed view (56) carries the open desk, and the shell follows: the repo opens and the sidebar renames. **Opening a desk proposes its saved bench and touches nothing**: a banner offers to load it on Topology (44's saved-bench flow, enrolments still confirmed one by one), naming any study Core lists as running first. A flash or bootload in progress is not in that list and is not named.
+
