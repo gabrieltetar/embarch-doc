@@ -33,14 +33,16 @@ Every route takes the desk's existing bearer token. Additions only; nothing exis
 | Route | What |
 |---|---|
 | `POST /sessions/{sid}/assign` | Gains `"client": "embarch-chat"`, marking a session the panel runs; `/view` reports it |
-| `POST /mailbox` | `{"kind":"start","item_id","folder","prompt"}` or `{"kind":"focus","session_id","folder"}` → `{"id"}`; an entry expires after 10 min, as a launch claim does |
-| `GET /mailbox?folder=<absolute path>` | The pending entries for that folder |
+| `POST /mailbox` | `{"kind":"focus","session_id","folder"}` → `{"id"}`; an entry expires after 10 min, as a launch claim does. **A `start` entry is written only by Start work, server-side** — a route that let a caller supply the prompt would let any page that reaches the desk run one in auto mode |
+| `GET /mailbox?folder=<absolute path>` | `{"entries":[…]}`, the pending entries for that folder |
 | `POST /mailbox/{id}/take` | The entry, once; `409` after |
 | `POST /items/{id}/start` | With the chat setting on, leaves a `start` entry for the worktree and answers without the Claude Code prompt link |
 | `GET`/`PUT /settings` | `{"chat_panel": bool}`, **off by default**: Start work keeps opening Claude Code's panel until the chat ships (decision 4) |
 | `GET /items/{id}/brief` | The pull (40): issue (title, state, description head, latest comments), PRs, sessions, notes (each memory note's newest state, the latest lines), bench — newest first, capped at 16,000 characters |
 | `GET /items/{id}/notes` | Every note, newest first (46) |
-| `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client` |
+| `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client`; **a card keeps its ended `embarch-chat` sessions**, so Open chat can resume one (32) |
+| `GET /view?desk=<id>` | The named desk's cards instead of the open desk's, for a window on another desk (9) |
+| `GET /view`, per card | `notes_ms`, the newest note's time, so a client reads `/notes` only when it moves |
 
 **MCP:** `desk_work_item` returns the brief for the calling session's item; `desk_add_line` gains `kind` — `done` by default, or `finding`, `decision`, `handoff`, `todo`. **A note** is `{id, ts_ms, session_id, kind, text, source_path}`; kind `memory` is a captured memory file, one per `source_path`, its versions kept. **Capture (45):** a PostToolUse `Write`, `Edit` or `MultiEdit` whose `file_path` is under `~/.claude/projects/*/memory/` and is not `MEMORY.md` files the file's text after the write on the session's item — held until the session has one, as lines are. **Import (47):** once, on the first start that has notes. **Harvest (43):** the polish reads that day's notes of every kind. **The SessionStart brief** names `desk_work_item` as the way to everything about the item.
 
