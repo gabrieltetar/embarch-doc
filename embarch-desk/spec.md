@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md).
 
-**v1 is built and running on the owner's machine; no real Linear, Harvest or Slack account has been connected to it yet.** Its time capture, hooks, MCP tools and Desk tab were driven end to end against a scratch desk and once through a real headless Claude Code session; GitHub was checked through a real `gh` login.
+**v1 is built and running on the owner's machine, with Linear, Harvest and GitHub connected and passing their checks [measured 2026-10-22]; Slack is not connected yet.** Its time capture, hooks, MCP tools and Desk tab were driven end to end against a scratch desk and once through a real headless Claude Code session; no tile has been sent to Harvest yet.
 
 ## 1. What it is
 
@@ -67,4 +67,4 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 6. Pointers
 
-The repo: `../embarch-desk` (local; no remote yet). The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The browser drive: `embarch-ui/tests/browser/drive_desk.py`.
+The repo: [gabrieltetar/embarch-desk](https://github.com/gabrieltetar/embarch-desk), checked out as `../embarch-desk`. The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The browser drive: `embarch-ui/tests/browser/drive_desk.py`.
