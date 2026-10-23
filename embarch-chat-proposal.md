@@ -102,7 +102,7 @@ Split into [embarch-chat-assistant-proposal.md](embarch-chat-assistant-proposal.
 
 ## Built (2026-10-23)
 
-Overnight, by background agents on the owner's word: `embarch-chat` (a local repo, not yet published), `embarch-desk` b722b3b and `embarch-ui` 2e73649 (pushed). Each was reviewed and fixed until a review found nothing above low. The extension was pulled from the owner's VS Code at 02:17 for two high findings (48); after three review rounds the last verdict is "fit to install with desk b722b3b". **Not deployed**: the desk waits on the import rule and the notes store ([its proposal](embarch-chat-desk-proposal.md)). **The fold follows the deploy**: `embarch-promptu/` becomes `embarch-chat/`; amend `embarch-ui` decision 3, `embarch-desk` decisions 21, 43, 44 and spec §5, embarch.md §3, the roadmap, the features and DOC-PROTOCOL §2; delete these three files.
+Overnight, by background agents on the owner's word: `embarch-chat` (a local repo, not yet published), `embarch-desk` b722b3b and `embarch-ui` 2e73649 (pushed). Each was reviewed and fixed until a review found nothing above low. The extension was pulled from the owner's VS Code at 02:17 for two high findings (48); after three review rounds the last verdict is "fit to install with desk b722b3b". **Deployed 2026-10-23 13:40**: the desk at d9a8efc, the UI at 2e73649, the extension at ad66c73, the chat setting on. **The fold is next**: `embarch-promptu/` becomes `embarch-chat/`; amend `embarch-ui` decision 3, `embarch-desk` decisions 21, 43, 44 and spec §5, embarch.md §3, the roadmap, the features and DOC-PROTOCOL §2; delete these three files.
 
 ## Open questions
 

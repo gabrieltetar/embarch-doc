@@ -22,7 +22,9 @@ What `embarch-desk` and its Desk tab gain for the owner's own Claude chat, split
 
 **45 —** **The desk's hook captures them.** The PostToolUse hook already runs on every tool call; a Write or Edit inside a `memory/` folder becomes a note on the session's work item, with the file's new text. The agent changes nothing, the file stays its own copy, and **the session decides the item, not the file's name**. **Rejected:** the desk's skill telling sessions to keep issue state with a desk tool (it competes with Claude Code's built-in memory rule); the desk scanning memory files by issue key (misses the 42 of 58 not named by key, and knows no session).
 
-**47 —** **The per-issue memories written before capture are attached once**: on first run the desk gives each memory file whose name or text holds an item's issue key to that item as its starting state. Harvest summarizes only a day's own notes, so no past entry changes. **Rejected:** starting fresh.
+**47 —** **The per-issue memories written before capture are attached once**, each to one item at most: the first key in the file's name, else in its frontmatter (the agent's own summary of the file), in `ABC-123` or `abc123` form. On the live desk it attached 6 files to 3 items [measured 2026-10-23]. Harvest summarizes only a day's own notes, so no past entry changes. **Rejected:** starting fresh; a key anywhere in the text (20 files, two of them to two items each, one 31.8K characters); the file name only.
+
+**49 —** **Notes stay in state.json, and a rollback restores a copy.** The worst case measured is 8.2 MB, 20 ms a write, and the state is rewritten only when something changes; the previous binary drops notes on its next write, so a deploy copies state.json first and a rollback restores the copy. **Rejected:** one memory version per file per day; versions older than the newest in `notes/<item>.jsonl` (also rollback-safe, about an hour more).
 
 **46 —** **A card shows each note's newest state; a click opens the full list.** **Rejected:** the newest with earlier versions folded under it, every change as its own line.
 
