@@ -86,6 +86,10 @@ Numbers are permanent, grouped by topic.
 
 **14 —** **It is seeded from the owner's past prompts, and the owner cuts.** 682 prompts in 145 local transcripts; the only exact repeats are one-word replies (done ×20, continue ×15, yes ×12, go ×11, push ×7), so one `claude -p` groups them by intent and drafts entries, each ✓ or ✕; about $0.30 on Sonnet [assumed]. **Rejected:** promptu's three then add-as-you-go, starting empty.
 
+**38 —** **Entries sit behind a 💡 by the input, one submenu per category**, beside the Haiku assistant's suggestions ([its proposal](embarch-chat-assistant-proposal.md)); context handling is one category. **Rejected:** a `/` list plus a pinned row, a toolbar of every entry, the `/` list only.
+
+**39 —** **promptu's two install pieces become commands that apply them**: `/embarch-permissions` and `/embarch-claude-md` show what they would write into the open repo (`settings.local.json`, `CLAUDE.md`) and write it on a yes — never silent (`embarch-umbrella` decision 12). **Rejected:** leaving them to umbrella's `init`, template files copied by hand.
+
 ### Bench and atlas
 
 **15 —** **Bench results show as cards**: an `embarch-api` build, flash, bootload, study or `serial_log` result becomes pass or fail, board, first error, steps passed and a link into `embarch-ui`, from the tool result already in the stream. **Rejected:** a live bench strip polled from Core (a second `embarch-ui`), plain output.

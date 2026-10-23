@@ -16,7 +16,9 @@ The Haiku assistant at the input of the owner's own Claude chat, split from [emb
 
 **28 —** **Cards for missing context and prompt improvements**: what Claude will need and the draft lacks (which board, issue, file), and how the prompt could be better put. **Rejected:** a library entry that fits, a heads-up that auto mode will flash, push or move an issue, a warning that another thread is on it.
 
-**36 —** **And a card for context handling**: Haiku judges whether the prompt calls for a **background agent**, **compacting first**, or **a handoff to a fresh chat**, so it also sees the chat's context usage (27). Like every card it only edits the draft (37): the background-agent card adds an instruction to run the work as a background subagent and report back; **the handoff card turns the draft into a request that this chat write a handoff** for a fresh chat to do it — this chat's model has the whole context. **Rejected:** a button starting a new chat or agent itself (cards never act outside the draft); Haiku writing the handoff (it sees 1–3K tokens); a `/handoff` library entry run by hand.
+**36 —** **And a card for context handling**: Haiku judges whether the prompt calls for a **background agent**, **compacting first**, or **a handoff to a fresh chat**, so it also sees the chat's context usage (27). Like every card it only edits the draft (37): the background-agent card adds an instruction to run the work as a background subagent and report back; **the compact card adds a first line, `/compact focus on: <what the draft is about>`** — Claude cannot run `/compact` itself — and on Enter the panel sends that line, waits for the compaction to finish, then sends the rest; **the handoff card turns the draft into a request that this chat write a handoff** for a fresh chat (its model has the whole context), and the chips after that turn offer **"Fresh chat with this handoff"** — a new chat on the same work item that starts with it, the old one left readable. **Rejected:** the draft replaced by `/compact` and restored after; no compact card (the header's button only); copying a handoff by hand, or a fresh chat opened unasked; a button starting a new chat or agent itself (cards never act outside the draft); Haiku writing the handoff (it sees 1–3K tokens); a `/handoff` library entry run by hand.
+
+**38 —** **Cards live behind a 💡 by the input, one submenu per category**, as VS Code's Quick Fix bulb does — missing context, improvements, context handling — and the library's entries sit in the same menu by category ([main proposal](embarch-chat-proposal.md), library). **Replaces 24's "cards above the input".** Rejected: cards stacked above the input.
 
 **37 —** **A card is an edit to the draft, previewed in place.** Hovering a card shows its change inside the draft, IntelliSense-style — added words in ghost grey, removed ones struck through; a click applies it, and Ctrl+Z restores the draft. **Rejected:** a Use-it button replacing the draft unseen, a rewrite in place with no preview, advice that leaves the editing to the owner.
 
@@ -30,5 +32,4 @@ The Haiku assistant at the input of the owner's own Claude chat, split from [emb
 
 ## Open questions
 
-- **What the compact card's edit is** (36): `/compact` is a command of its own, so the draft cannot both compact and ask.
-- **How a written handoff reaches a fresh chat** (36): a reply chip after that turn, or by hand.
+- **How the 💡 shows that Haiku has something** (38), and whether Haiku's categories and the library's share one menu.
