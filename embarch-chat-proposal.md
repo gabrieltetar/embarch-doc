@@ -2,7 +2,7 @@
 
 **Status:** proposal, 2026-10-22.
 
-Spans `embarch-chat` (new: what [`embarch-promptu`](embarch-promptu/design.md) becomes, below), `embarch-desk` and `embarch-ui`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Shaped with the owner in rounds of questions from 2026-10-22. **Not built: building waits for the owner's go.**
+Spans `embarch-chat` (new: what [`embarch-promptu`](embarch-promptu/design.md) becomes, below), `embarch-desk` and `embarch-ui`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Shaped with the owner in rounds of questions from 2026-10-22. **Reviewed in nine more rounds on 2026-10-22 and 23, with [the Haiku assistant](embarch-chat-assistant-proposal.md) and [the desk's side](embarch-chat-desk-proposal.md) split out at the size cap; the owner calls the three ready to build from. Not built: building waits for the owner's go.**
 
 ## The ask
 
@@ -50,7 +50,7 @@ Numbers are permanent, grouped by topic.
 
 **41 —** **A chat's process does not outlive its use**: it closes 5 minutes after the last input — Claude's default prompt-cache lifetime, so a reply within it skips both the restart and a cold cache — unless a background task runs or it waits on the owner, and the next message resumes it. **A full resume is cheap: ready in 0.66 s, first token at 1.46 s** [measured], and the prompt cache lives on the server, not in the process. **Rejected:** 30 idle minutes, 1 minute, at the end of each turn, a cap of live chats per window, never (457 MB each until the window closes).
 
-**30 —** **The panel runs the `claude` on `PATH`** (2.1.287 here, as the desk and terminals do), overridable in a setting. **Rejected:** the official extension's bundled binary (2.1.308 here), whose path changes with every extension update.
+**30 —** **The panel runs the `claude` on `PATH`** (2.1.287 here, as the desk and terminals do), overridable in a setting; **outside the versions a panel release was tested with, it warns in one line and keeps working**. **Rejected:** refusing to start chats on an untested version (a CLI auto-update could lock the owner out), no guard; the official extension's bundled binary (2.1.308 here), whose path changes with every extension update.
 
 **22 —** **A new chat starts in auto mode on the owner's default model**, as the official panel and Start work's worktrees do; both switch per chat. **Rejected:** ask mode, a mode and model per desk.
 
@@ -64,7 +64,7 @@ Numbers are permanent, grouped by topic.
 
 **18 —** **A chat's header is its card in two lines**: key, title, status dropdown, PRs with their state, today's time, a link to the Desk card. **Rejected:** key and title alone, the full card folded in.
 
-**20 —** **The extension's Node side calls the desk directly** on `127.0.0.1:4891` with the token file; **the webview never holds the token** (`embarch-desk` decision 28 — a webview is a page). The list polls `claude agents` and `GET /view` every 3 s while visible; the panel's own chats update from their streams. **Rejected:** `embarch-ui`'s proxy (nothing while the UI is down), an SSE route (a desk change to save 3 s).
+**20 —** **The extension's Node side calls the desk directly** on `127.0.0.1:4891` with the token file; **the webview never holds the token** (`embarch-desk` decision 28 — a webview is a page). **The list's live state comes from the desk alone**: `GET /view` every 3 s while visible, which already joins the hooks (instant) with the desk's own `claude agents` read every 30 s; the panel's own chats update from their streams. **Rejected:** `embarch-ui`'s proxy (nothing while the UI is down), an SSE route (a desk change to save 3 s), each window also running `claude agents` every 3 s (a 244 MB binary started 20 times a minute per window).
 
 **The desk's side** — Start work into a chat, the Desk's line per chat, the mailbox, the brief and the work item's notes — is [embarch-chat-desk-proposal.md](embarch-chat-desk-proposal.md): decisions 11, 32, 33, 40.
 
@@ -100,11 +100,11 @@ Split into [embarch-chat-assistant-proposal.md](embarch-chat-assistant-proposal.
 
 ## Order of work
 
-One build (23), about three days in all [estimate]:
+One build (23), about four days in all [estimate]:
 
 1. **The repo**: Preact and esbuild, the launcher moved in, a reinstall script. About two hours.
 2. **The chat**: process, resume, streamed rendering, approve, stop, mode switch, question and plan forms. About a day with step 3.
-3. **The desk**: the thread list, binding before start, the header, and [the desk's side](embarch-chat-desk-proposal.md) (11, 32, 33, 40).
+3. **The desk**: the thread list, binding before start, the header, and [the desk's side](embarch-chat-desk-proposal.md) — the mailbox, the line per chat, the pull, notes captured from memory writes. About a day.
 4. **Inline**: diffs, @-mentions, bench cards, atlas links. About half a day.
 5. **The library**: the plugin, the seeding run the owner cuts, the buttons. About half a day.
 6. **The Haiku assistant** ([its proposal](embarch-chat-assistant-proposal.md)). About half a day.

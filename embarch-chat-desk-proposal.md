@@ -22,8 +22,6 @@ What `embarch-desk` and its Desk tab gain for the owner's own Claude chat, split
 
 **45 —** **The desk's hook captures them.** The PostToolUse hook already runs on every tool call; a Write or Edit inside a `memory/` folder becomes a note on the session's work item, with the file's new text. The agent changes nothing, the file stays its own copy, and **the session decides the item, not the file's name**. **Rejected:** the desk's skill telling sessions to keep issue state with a desk tool (it competes with Claude Code's built-in memory rule); the desk scanning memory files by issue key (misses the 42 of 58 not named by key, and knows no session).
 
+**47 —** **The per-issue memories written before capture are attached once**: on first run the desk gives each memory file whose name or text holds an item's issue key to that item as its starting state. Harvest summarizes only a day's own notes, so no past entry changes. **Rejected:** starting fresh.
+
 **46 —** **A card shows each note's newest state; a click opens the full list.** **Rejected:** the newest with earlier versions folded under it, every change as its own line.
-
-## Open questions
-
-- **The per-issue memories written before the desk captured them** — attach them once to the items whose key they hold, or start fresh.
