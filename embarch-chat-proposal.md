@@ -48,7 +48,7 @@ Numbers are permanent, grouped by topic.
 
 **35 —** **A chat waiting on the owner off screen shows as a count** on the activity-bar icon and a status-bar item ("2 waiting") in every window; a click opens the oldest. No pop-ups. **Rejected:** a VS Code toast per wait, Claude's own phone push (untested for these chats).
 
-**41 —** **A chat's process does not outlive its use**: it closes soon after the last input — 5 minutes proposed — unless a background task runs or it waits on the owner, and the next message resumes it. **A full resume is cheap: ready in 0.66 s, first token at 1.46 s** [measured], and the prompt cache lives on the server, not in the process. **Rejected:** 30 idle minutes, a cap of live chats per window, never (457 MB each until the window closes).
+**41 —** **A chat's process does not outlive its use**: it closes 5 minutes after the last input — Claude's default prompt-cache lifetime, so a reply within it skips both the restart and a cold cache — unless a background task runs or it waits on the owner, and the next message resumes it. **A full resume is cheap: ready in 0.66 s, first token at 1.46 s** [measured], and the prompt cache lives on the server, not in the process. **Rejected:** 30 idle minutes, 1 minute, at the end of each turn, a cap of live chats per window, never (457 MB each until the window closes).
 
 **30 —** **The panel runs the `claude` on `PATH`** (2.1.287 here, as the desk and terminals do), overridable in a setting. **Rejected:** the official extension's bundled binary (2.1.308 here), whose path changes with every extension update.
 
