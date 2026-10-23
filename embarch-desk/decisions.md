@@ -96,3 +96,18 @@ On the owner's machine that is WSL, not a Windows service beside Core: it runs `
 
 ### 28 — The browser reaches the desk only through `embarch-ui`
 `/api/desk/{*rest}` is forwarded with the desk token added server-side. The token never enters the page, so no other site open in the browser can make the desk post to Slack or Harvest as the user.
+
+## The one access point
+
+### 29 — Agents reach Linear and Harvest only through the desk, with curated tools
+Decided 2026-10-22, the day v1 landed: two access points meant two logins per service, two sources of truth for time, and `harvest:day` logging the same day the tiles capture. The desk's MCP server gained the handful agents use — `linear_get_issue` (description and latest comments), `linear_my_issues`, `linear_search`, `linear_set_status`, `linear_draft_comment`, `linear_draft_issue`, `harvest_entries`, `harvest_projects` — on the desk's own tokens. **Rejected:** the desk as a gateway re-exposing the official servers' whole tool sets (an MCP client with their auth inside the desk), and re-implementing everything they offer.
+
+### 30 — Agents write under the tab's rules
+A status move goes through. A comment or a new issue is a **draft** on the Desk tab, sent only by the user's Send, as they leave it; a new issue drafted from a standalone card attaches to it once sent. **No tool logs time**: a session's time is already on its tile, and what it did goes in as a line. **Rejected:** agents writing directly through the desk, and read-only agents.
+
+### 31 — The desk replaces `harvest:day` and `harvest:track`
+`harvest:day` drafted entries from the day's sessions — what the tiles now do — so using both double-logged. `harvest:track`'s live timer for work away from Claude became the desk's manual timer: one at a time, a session of its own, its time landing on the item's tile; ticked whenever the view is read, so the 8-hour gap rule (23) never ends a running timer. The plugin carrying both skills is disabled on the owner's machine.
+
+### 32 — A hard switch, as each service is covered
+Each hosted connector goes the moment the desk covers its account: on 2026-10-22 the Harvest one and the owner's company Linear workspace's. **A connector is not removed before its account is connected to the desk** — the client's Linear workspace stayed until its key is added, or agents would have lost it. **Rejected:** denying writes first and removing later, and a week of both side by side.
+

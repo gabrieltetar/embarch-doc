@@ -19,7 +19,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
 - **A session with no work item is asked on every prompt until it answers** — a work item, an issue key, a new title, or "untracked" ([decision 7](decisions.md)). Time it ran up while being asked lands on the item it chooses.
-- **No agent tool approves, discards or archives.** ✓, ✕ and archive exist only as HTTP routes the Desk tab calls.
+- **No agent tool approves, discards, archives, sends a draft or logs time.** ✓, ✕, archive and Send exist only as HTTP routes the Desk tab calls.
 - **Prose is never sent unseen.** A tile's note and a Slack reply are drafted by Claude and sent only as the user left them; status moves (an issue's state, ✓, ✕) go straight through ([decision 15](decisions.md)).
 - **No token or connector data reaches a repo.** Tokens live in `~/.config/embarch-desk/connectors.toml`, state in `~/.local/share/embarch-desk/`, both owner-only.
 - **A hook never fails a session**: no desk, a slow desk or a bad event all exit 0 silently.
@@ -37,8 +37,10 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | `PATCH /tiles/{item@date}`; `POST …/line`, `/polish`, `/approve`, `/discard` | Edit note, hours, Harvest target; Claude drafts note and target; ✓ to Harvest; ✕ |
 | `GET /harvest/targets`; `POST /slack/draft`, `/slack/reply` | Projects and tasks; a drafted reply; send an approved one |
 | `GET/POST /connectors`, `DELETE /connectors/{kind}/{label}`; `GET/PUT /ignore`; `POST /sync` | Accounts (labels only, never tokens); the ignore list; refresh now |
+| `GET /linear/issue/{key}`, `/linear/mine`; `POST /linear/search`, `/linear/status`; `POST /harvest/entries` | What the agent tools call |
+| `POST /drafts`, `PATCH /drafts/{id}`, `POST /drafts/{id}/send`, `/discard`; `POST /timer/start`, `/timer/stop` | Agents' comment and issue drafts, sent only from the tab; the manual timer |
 
-**The plugin** (`plugin/` in the repo, marketplace `embarch` at its root): hooks on SessionStart, UserPromptSubmit, PostToolUse, Stop and SessionEnd, all running `embarch-desk hook`; an MCP server `embarch-desk mcp` with `desk_whoami`, `desk_set_work_item`, `desk_add_line`, `desk_list_items`, `desk_create_item`, `desk_link`; a `desk` skill. **A commit becomes a tile line** when a PostToolUse `Bash` command contains `git commit` and HEAD is new; **an `embarch-api` build, flash, bootload, reset or study call becomes bench activity** ([decision 22](decisions.md)).
+**The plugin** (`plugin/` in the repo, marketplace `embarch` at its root): hooks on SessionStart, UserPromptSubmit, PostToolUse, Stop and SessionEnd, all running `embarch-desk hook`; a `desk` skill; and an MCP server `embarch-desk mcp` that is **agents' one access point to Linear and Harvest** ([decision 29](decisions.md)) — work items (`desk_whoami`, `desk_set_work_item`, `desk_add_line`, `desk_list_items`, `desk_create_item`, `desk_link`), Linear (`linear_get_issue`, `linear_my_issues`, `linear_search`, `linear_set_status`, `linear_draft_comment`, `linear_draft_issue`), Harvest read-only (`harvest_entries`, `harvest_projects`) and the manual timer (`desk_timer_start`, `desk_timer_stop`). **A commit becomes a tile line** when a PostToolUse `Bash` command contains `git commit` and HEAD is new; **an `embarch-api` build, flash, bootload, reset or study call becomes bench activity** ([decision 22](decisions.md)).
 
 **Connectors** (pasted tokens, [decision 16](decisions.md)): Linear personal API key per workspace (GraphQL); Harvest personal access token (REST v2, every account it reaches); GitHub token or the user's `gh` login (REST; PR search `<KEY> type:pr involves:@me`, then check runs); Slack user token from an app made from `slack-manifest.json`.
 
@@ -60,7 +62,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 ## 5. What it deliberately does not do
 
 - **No OAuth in v1** — tokens only ([decision 16](decisions.md)); EmbArch owns no app registration.
-- **No time source but Claude Code sessions** — not VS Code focus, git, Slack or the bench.
+- **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
 - **No in-desk Linear comments, issue creation, PR review or merge, and no Claude chat panel** (v2).
 - **No second machine**: one desk, one state file, the machine with the bench.
 - **No archive or approve for agents.**

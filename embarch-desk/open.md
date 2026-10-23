@@ -4,7 +4,8 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **Slack is not connected, and no tile has reached Harvest.** Linear, Harvest and GitHub pass their connector checks [measured 2026-10-22]; the Harvest time-entry write, the Linear status move and Slack's `search.messages`/`conversations.*` reads have never run against a real account.
+- **The client's Linear workspace still goes through its hosted connector** ([decision 32](decisions.md)) until its API key is added to the desk; then that connector is removed too.
+- **No draft has been sent and no tile has reached Harvest**; the comment, issue and status mutations were checked only with invalid ids, the reads against the real accounts [measured 2026-10-22]. **Slack is not connected**, so its reads have never run.
 - **The polish prompt has never run against real Harvest targets.** Whether Claude picks the right project and task from assignments and recent entries is unmeasured.
 - **Is 8 hours the right gap?** ([decision 23](decisions.md)) A guess; a week of real tiles says whether overnight sessions leak in or long afternoons drop out.
 - **Umbrella does not install it yet.** `embarch-desk service install` and `claude plugin install embarch-desk@embarch` are run by hand; `embarch setup` should do both.
