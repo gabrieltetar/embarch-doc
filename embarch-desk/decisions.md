@@ -139,3 +139,9 @@ Once any desk exists, a work item with no issue needs one (or `none`) — the ta
 ### 40 — The Desk tab: the open desk's cards, then today's work
 Cards for the open desk only, a strip of other desks' unsent tiles, and **"Today's work" below** — every work item with time, a line, bench activity or a session that day, grouped by desk with the open one first, each row linking out to Linear and GitHub with its lines, note, status and sessions; a date picker reads other days. **Rejected:** a Harvest-style week grid, and a separate tab.
 
+### 41 — What Harvest already holds joins the day, and a tile proposes only the gap
+The first evening of real use showed the day list empty beside six hours already in Harvest: it read only the desk's own tiles. **Each day's Harvest entries are fetched** (today every two minutes, any other day when it is read) **and merged into the work item whose issue their note names**; an entry naming an issue with no card **makes the card**, dated by the entry so an old day read back does not look like today's work; an entry naming none is its own row under the desk billing its Harvest project. **A tile proposes only the time Harvest doesn't already hold** for its item that day, the entry its own ✓ made aside. **The user can edit an entry's hours and note, or delete it, from the list**; deleting one a tile made reopens that tile. **Rejected:** a separate "already in Harvest" block per desk (two lists for one day), read-only entries, keeping the full captured time on the tile, and silently dropping a tile Harvest already covers.
+
+### 42 — A card with no repo of its own opens its desk's
+A card made from an issue key or a Harvest entry has no session yet to learn its repo from (8), so "Open in VS Code" takes the desk's first firmware repo instead of asking.
+

@@ -18,6 +18,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 2. Invariants
 
+- **A tile proposes only what Harvest doesn't already hold** for its item that day (41).
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
 - **A session with no work item is asked on every prompt until it answers** — a work item, an issue key, a new title, or "untracked" ([decision 7](decisions.md)). Time it ran up while being asked lands on the item it chooses.
@@ -43,7 +44,8 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | `GET/POST /connectors`, `DELETE /connectors/{kind}/{label}`; `GET/PUT /ignore`; `POST /sync` | Accounts (labels only, never tokens); the ignore list; refresh now |
 | `GET /linear/issue/{key}`, `/linear/mine`; `POST /linear/search`, `/linear/status`; `POST /harvest/entries` | What the agent tools call |
 | `POST /drafts`, `PATCH /drafts/{id}`, `POST /drafts/{id}/send`, `/discard`; `POST /timer/start`, `/timer/stop` | Agents' comment and issue drafts, sent only from the tab; the manual timer |
-| `GET/POST /desks`, `DELETE /desks/{id}`; `GET/POST /open`; `GET /day/{date}`; `GET /linear/projects`, `/github/repos` | Desks and the open one (`none` closes it); a day's work grouped by desk; the form's choices |
+| `GET/POST /desks`, `DELETE /desks/{id}`; `GET/POST /open`; `GET /day/{date}`; `GET /linear/projects`, `/github/repos` | Desks and the open one (`none` closes it); a day's work grouped by desk, Harvest's entries merged in (41); the form's choices |
+| `PATCH`/`DELETE /harvest/entry/{account}/{id}` | The user's edit or delete of an entry already in Harvest, from the day list |
 
 **The plugin** (`plugin/` in the repo, marketplace `embarch` at its root): hooks on SessionStart, UserPromptSubmit, PostToolUse, Stop and SessionEnd, all running `embarch-desk hook`; a `desk` skill; and an MCP server `embarch-desk mcp` that is **agents' one access point to Linear and Harvest** ([decision 29](decisions.md)) — work items (`desk_whoami`, `desk_set_work_item`, `desk_add_line`, `desk_list_items`, `desk_create_item`, `desk_link`), Linear (`linear_get_issue`, `linear_my_issues`, `linear_search`, `linear_set_status`, `linear_draft_comment`, `linear_draft_issue`), Harvest read-only (`harvest_entries`, `harvest_projects`) the manual timer (`desk_timer_start`, `desk_timer_stop`), and desks (`desk_list_desks`, `desk_open` — only when the user says so). **A commit becomes a tile line** when a PostToolUse `Bash` command contains `git commit` and HEAD is new; **an `embarch-api` build, flash, bootload, reset or study call becomes bench activity** ([decision 22](decisions.md)).
 
