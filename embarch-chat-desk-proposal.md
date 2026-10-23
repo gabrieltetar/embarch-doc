@@ -25,3 +25,22 @@ What `embarch-desk` and its Desk tab gain for the owner's own Claude chat, split
 **47 —** **The per-issue memories written before capture are attached once**: on first run the desk gives each memory file whose name or text holds an item's issue key to that item as its starting state. Harvest summarizes only a day's own notes, so no past entry changes. **Rejected:** starting fresh.
 
 **46 —** **A card shows each note's newest state; a click opens the full list.** **Rejected:** the newest with earlier versions folded under it, every change as its own line.
+
+## Interface (the contract the build works to)
+
+Every route takes the desk's existing bearer token. Additions only; nothing existing changes shape.
+
+| Route | What |
+|---|---|
+| `POST /sessions/{sid}/assign` | Gains `"client": "embarch-chat"`, marking a session the panel runs; `/view` reports it |
+| `POST /mailbox` | `{"kind":"start","item_id","folder","prompt"}` or `{"kind":"focus","session_id","folder"}` → `{"id"}`; an entry expires after 10 min, as a launch claim does |
+| `GET /mailbox?folder=<absolute path>` | The pending entries for that folder |
+| `POST /mailbox/{id}/take` | The entry, once; `409` after |
+| `POST /items/{id}/start` | With the chat setting on, leaves a `start` entry for the worktree and answers without the Claude Code prompt link |
+| `GET`/`PUT /settings` | `{"chat_panel": bool}`, **off by default**: Start work keeps opening Claude Code's panel until the chat ships (decision 4) |
+| `GET /items/{id}/brief` | The pull (40): issue (title, state, description head, latest comments), PRs, sessions, notes (each memory note's newest state, the latest lines), bench — newest first, capped at 16,000 characters |
+| `GET /items/{id}/notes` | Every note, newest first (46) |
+| `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client` |
+
+**MCP:** `desk_work_item` returns the brief for the calling session's item; `desk_add_line` gains `kind` — `done` by default, or `finding`, `decision`, `handoff`, `todo`. **A note** is `{id, ts_ms, session_id, kind, text, source_path}`; kind `memory` is a captured memory file, one per `source_path`, its versions kept. **Capture (45):** a PostToolUse `Write`, `Edit` or `MultiEdit` whose `file_path` is under `~/.claude/projects/*/memory/` and is not `MEMORY.md` files the file's text after the write on the session's item — held until the session has one, as lines are. **Import (47):** once, on the first start that has notes. **Harvest (43):** the polish reads that day's notes of every kind. **The SessionStart brief** names `desk_work_item` as the way to everything about the item.
+

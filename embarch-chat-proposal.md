@@ -112,4 +112,4 @@ One build (23), about four days in all [estimate]:
 
 ## Open questions
 
-- **Does Remote Control reach a chat the extension started?** Not needed at the desk (32), but it is the only way in from the phone, and nobody has opened one from claude.ai yet.
+- **Remote Control from the phone** (32): it reaches a session of Claude Code's own panel — the owner drove one from the phone the evening of 2026-10-22 — and a panel chat runs with the same flags, so it is expected to work; not yet tried on one.
