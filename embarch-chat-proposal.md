@@ -1,6 +1,8 @@
 # Proposal: the owner's own Claude chat, in VS Code
 
-**Status:** draft, 2026-10-22. Shaping notes; becomes a proposal once its open questions are answered. Takes over [`embarch-promptu`](embarch-promptu/design.md)'s place in the suite (decision 6).
+**Status:** proposal, 2026-10-22.
+
+Spans `embarch-chat` (new: what [`embarch-promptu`](embarch-promptu/design.md) becomes, below), `embarch-desk` and `embarch-ui`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Shaped with the owner in seven rounds of questions on 2026-10-22. **Not built: building waits for the owner's go.**
 
 ## The ask
 
@@ -58,6 +60,29 @@ A Claude Code chat of the owner's own — "its own Claude Code chat basically, w
 26. **It runs on a pause**: 700 ms after typing stops, and after each turn; the next keystroke cancels a stale call. Each is one stripped `claude -p` with thinking off, returning whatever applies — completion, cards, chips — in about 1.9 s for $0.002–0.004, so $1–2 a day at ~500 calls [estimate]. It runs under `EMBARCH_DESK_INTERNAL=1`, so the desk ignores it. **Rejected:** after turns only, and only on a key.
 27. **It sees the draft, Claude's last reply, the work item's card and the library's entry names** — 1–3K tokens. **Rejected:** the whole transcript (tens of thousands of tokens a call, about 10× the cost), and the draft and last reply only.
 
-## Open
+28. **Cards above the input are of two kinds: missing context and prompt improvements.** Missing context names what Claude will need and the draft lacks — which board, which issue, which file; an improvement suggests how the prompt could be better put. **Rejected:** a library entry that fits, a heads-up that auto mode will flash, push or move an issue unasked, and a warning that another live thread is already on it.
 
-Which cards may appear above the input; whether `embarch-ui`'s launcher stays a separate extension or moves into `embarch-chat`'s.
+### Packaging
+
+29. **`embarch-ui`'s launcher moves into `embarch-chat`'s extension**: one sideloaded extension instead of two, so the silent drop a VS Code server update causes (the launcher's README) costs one reinstall. Its 436 lines move once, its commands unchanged. **Rejected:** two extensions with a reinstall script each, and one script reaching across both repos.
+30. **The panel runs the `claude` on `PATH`** — the one the desk, `claude agents` and the terminals use, 2.1.287 here — overridable in a setting. **Rejected:** the official extension's bundled binary (2.1.308 here, the version its panel is tested with), whose path changes with every extension update.
+
+## Order of work
+
+One build (23), in this order; about three days in all [estimate].
+
+1. **The repo**: `embarch-chat` with Preact and esbuild, the launcher moved in, a reinstall script. About two hours.
+2. **The chat**: process, resume, streamed rendering, approve, stop, mode switch, question forms. About a day with step 3.
+3. **The desk**: the thread list, binding before start, the header, the `vscode://` link — and **the desk's and the UI's Start work pointed at it**, the one desk-side change (11).
+4. **Inline**: diffs, @-mentions, bench cards, atlas links. About half a day.
+5. **The library**: the plugin, the seeding run the owner cuts, the buttons. About half a day.
+6. **The Haiku assistant**: ghost text, cards, reply chips. About half a day.
+7. **Fold**: `embarch-promptu/` becomes `embarch-chat/` (spec, decisions, open); `embarch-ui` decision 3 and its launcher docs, `embarch-desk` decisions 21 and 43 and spec §5, [embarch.md](embarch.md) §3, the roadmap, the feature inventory and [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §2's tree; the new repo's `CLAUDE.md` per DOC-PROTOCOL §6; delete this file.
+
+## Open questions
+
+- **Does Remote Control reach a chat the extension started?** Decision 5 leans on the Desk's Answer link, `remoteControlAtStartup` is a user setting the chat loads, and nobody has opened one from claude.ai yet.
+- **When does an idle chat's process close?** At 457 MB each, a day of chats wants a limit — say, close after 30 idle minutes unless a background task runs, and `--resume` on the next message.
+- **Does a plan's approval arrive as `can_use_tool` for `ExitPlanMode`?** Assumed in 8, untested.
+- **Does a click on an improvement card rewrite the draft**, or only show the better wording?
+- **Pasted images** (8, later): image blocks on the wire are untested.
