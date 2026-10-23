@@ -32,7 +32,7 @@ Every route takes the desk's existing bearer token. Additions only; nothing exis
 
 | Route | What |
 |---|---|
-| `POST /sessions/{sid}/assign` | Gains `"client": "embarch-chat"`, marking a session the panel runs; `/view` reports it |
+| `POST /sessions/{sid}/assign` | Gains `"client": "embarch-chat"`, marking a session the panel runs; `/view` reports it. **A resume sends the mark alone**: b722b3b records it, then answers 400 for the missing item, so the panel reads `client` back from `GET /sessions/{sid}` rather than trusting the status — a 200 for a mark alone is the owner's call |
 | `POST /mailbox` | `{"kind":"focus","session_id","folder"}` → `{"id"}`; an entry expires after 10 min, as a launch claim does. **A `start` entry is written only by Start work, server-side** — a route that let a caller supply the prompt would let any page that reaches the desk run one in auto mode |
 | `GET /mailbox?folder=<absolute path>` | `{"entries":[…]}`, the pending entries for that folder |
 | `POST /mailbox/{id}/take` | The entry, once; `409` after |
