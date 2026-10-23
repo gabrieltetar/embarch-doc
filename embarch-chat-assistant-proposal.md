@@ -18,7 +18,7 @@ The Haiku assistant at the input of the owner's own Claude chat, split from [emb
 
 **36 —** **And a card for context handling**: Haiku judges whether the prompt calls for a **background agent**, **compacting first**, or **a handoff to a fresh chat**, so it also sees the chat's context usage (27). Like every card it only edits the draft (37): the background-agent card adds an instruction to run the work as a background subagent and report back; **the compact card adds a first line, `/compact focus on: <what the draft is about>`** — Claude cannot run `/compact` itself — and on Enter the panel sends that line, waits for the compaction to finish, then sends the rest; **the handoff card turns the draft into a request that this chat write a handoff** for a fresh chat (its model has the whole context), and the chips after that turn offer **"Fresh chat with this handoff"** — a new chat on the same work item that starts with it, the old one left readable. **Rejected:** the draft replaced by `/compact` and restored after; no compact card (the header's button only); copying a handoff by hand, or a fresh chat opened unasked; a button starting a new chat or agent itself (cards never act outside the draft); Haiku writing the handoff (it sees 1–3K tokens); a `/handoff` library entry run by hand.
 
-**38 —** **Cards live behind a 💡 by the input, one submenu per category**, as VS Code's Quick Fix bulb does — missing context, improvements, context handling — and the library's entries sit in the same menu by category ([main proposal](embarch-chat-proposal.md), library). **Rejected:** cards stacked above the input.
+**38 —** **Cards live behind a 💡 by the input, one submenu per category**, as VS Code's Quick Fix bulb does — missing context, improvements, context handling. The bulb lights with a count when Haiku has something; the library has its own 📚 beside it ([main proposal](embarch-chat-proposal.md)). **Rejected:** cards stacked above the input; one bulb holding the library too.
 
 **37 —** **A card is an edit to the draft, previewed in place.** Hovering a card shows its change inside the draft, IntelliSense-style — added words in ghost grey, removed ones struck through; a click applies it, and Ctrl+Z restores the draft. **Rejected:** a Use-it button replacing the draft unseen, a rewrite in place with no preview, advice that leaves the editing to the owner.
 
@@ -29,7 +29,3 @@ The Haiku assistant at the input of the owner's own Claude chat, split from [emb
 **34 —** **It runs for the chat on screen only.** A background chat gets its chips when it is opened, one call then; the naming call (decision 12) still runs once per chat after its first turn. **Rejected:** every chat after every turn (cost grows with the chats running).
 
 **27 —** **It sees the draft, Claude's last reply, the work item's card, the library's entry names and the chat's context usage** — 1–3K tokens. **Rejected:** the whole transcript (about 10× the cost), the draft and last reply only.
-
-## Open questions
-
-- **How the 💡 shows that Haiku has something** (38), and whether Haiku's categories and the library's share one menu.

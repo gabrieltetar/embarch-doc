@@ -48,6 +48,8 @@ Numbers are permanent, grouped by topic.
 
 **35 —** **A chat waiting on the owner off screen shows as a count** on the activity-bar icon and a status-bar item ("2 waiting") in every window; a click opens the oldest. No pop-ups. **Rejected:** a VS Code toast per wait, Claude's own phone push (untested for these chats).
 
+**41 —** **A chat's process does not outlive its use**: it closes soon after the last input — 5 minutes proposed — unless a background task runs or it waits on the owner, and the next message resumes it. **A full resume is cheap: ready in 0.66 s, first token at 1.46 s** [measured], and the prompt cache lives on the server, not in the process. **Rejected:** 30 idle minutes, a cap of live chats per window, never (457 MB each until the window closes).
+
 **30 —** **The panel runs the `claude` on `PATH`** (2.1.287 here, as the desk and terminals do), overridable in a setting. **Rejected:** the official extension's bundled binary (2.1.308 here), whose path changes with every extension update.
 
 **22 —** **A new chat starts in auto mode on the owner's default model**, as the official panel and Start work's worktrees do; both switch per chat. **Rejected:** ask mode, a mode and model per desk.
@@ -60,15 +62,11 @@ Numbers are permanent, grouped by topic.
 
 **10 —** **A chat is on its work item before it starts.** The + on a group starts on that item; the top + picks one (a card, an issue key, a new title, untracked). The extension chooses the session id, assigns it through the desk's existing `POST /sessions/{sid}/assign` (which creates a session the desk has not seen), then starts `claude --session-id`. **Rejected:** the hooks asking on every prompt (`embarch-desk` decision 7).
 
-**11 —** **Start work on the Desk opens a chat here and sends the prompt** — `embarch-desk` decision 43's Enter press goes away. The Desk opens the worktree's window as today and leaves the start in the mailbox (33). **Rejected:** the prompt typed in and waiting; an empty chat; a `vscode://` link to the extension (VS Code hands it to one window, which one is untested — desk decision 25 waits 4 s between links for this).
-
-**32 —** **The Desk shows each chat as one line — state, what it waits for, age — and an Open chat button**, which brings up its window with the thread open through the mailbox, resuming it there if the window has closed; a terminal session gets Jump. **This replaces `embarch-desk` decision 44's Answer and last reply.** **Rejected:** Remote Control's Answer (the hand-off the ask ends), adding the title and the last reply, a bare dot.
-
-**33 —** **The desk is the panel's mailbox.** Start work and Open chat leave a request — start a chat on an item, in a folder, with a prompt; or focus a session — and the window whose folder matches takes it on its next poll, once: `embarch-desk` decision 25's launch claim extended to the panel, **a pending list and a route, the desk's one addition**. **Rejected:** a `vscode://` link (11).
-
 **18 —** **A chat's header is its card in two lines**: key, title, status dropdown, PRs with their state, today's time, a link to the Desk card. **Rejected:** key and title alone, the full card folded in.
 
 **20 —** **The extension's Node side calls the desk directly** on `127.0.0.1:4891` with the token file; **the webview never holds the token** (`embarch-desk` decision 28 — a webview is a page). The list polls `claude agents` and `GET /view` every 3 s while visible; the panel's own chats update from their streams. **Rejected:** `embarch-ui`'s proxy (nothing while the UI is down), an SSE route (a desk change to save 3 s).
+
+**The desk's side** — Start work into a chat, the Desk's line per chat, the mailbox, the brief and the work item's notes — is [embarch-chat-desk-proposal.md](embarch-chat-desk-proposal.md): decisions 11, 32, 33, 40.
 
 ### Matching Claude Code's panel
 
@@ -86,7 +84,7 @@ Numbers are permanent, grouped by topic.
 
 **14 —** **It is seeded from the owner's past prompts, and the owner cuts.** 682 prompts in 145 local transcripts; the only exact repeats are one-word replies (done ×20, continue ×15, yes ×12, go ×11, push ×7), so one `claude -p` groups them by intent and drafts entries, each ✓ or ✕; about $0.30 on Sonnet [assumed]. **Rejected:** promptu's three then add-as-you-go, starting empty.
 
-**38 —** **Entries sit behind a 💡 by the input, one submenu per category**, beside the Haiku assistant's suggestions ([its proposal](embarch-chat-assistant-proposal.md)); context handling is one category. **Rejected:** a `/` list plus a pinned row, a toolbar of every entry, the `/` list only.
+**38 —** **Entries sit behind a 📚 by the input, one submenu per category**, the category being `category:` in the entry's own frontmatter (none is Other); the Haiku assistant's suggestions have their own 💡 beside it ([its proposal](embarch-chat-assistant-proposal.md)). **Rejected:** one bulb holding both; the library inside the 💡 with Haiku as a dot; a `/` list plus a pinned row; a toolbar of every entry; the `/` list only; a folder per category (`/bench:flash-log` names), Haiku grouping them (stored somewhere new, and drifts).
 
 **39 —** **promptu's two install pieces become commands that apply them**: `/embarch-permissions` and `/embarch-claude-md` show what they would write into the open repo (`settings.local.json`, `CLAUDE.md`) and write it on a yes — never silent (`embarch-umbrella` decision 12). **Rejected:** leaving them to umbrella's `init`, template files copied by hand.
 
@@ -106,7 +104,7 @@ One build (23), about three days in all [estimate]:
 
 1. **The repo**: Preact and esbuild, the launcher moved in, a reinstall script. About two hours.
 2. **The chat**: process, resume, streamed rendering, approve, stop, mode switch, question and plan forms. About a day with step 3.
-3. **The desk**: the thread list, binding before start, the header, and **the mailbox, with the Desk's Start work and Open chat writing to it** (11, 32, 33) — the one desk-side change.
+3. **The desk**: the thread list, binding before start, the header, and [the desk's side](embarch-chat-desk-proposal.md) (11, 32, 33, 40).
 4. **Inline**: diffs, @-mentions, bench cards, atlas links. About half a day.
 5. **The library**: the plugin, the seeding run the owner cuts, the buttons. About half a day.
 6. **The Haiku assistant** ([its proposal](embarch-chat-assistant-proposal.md)). About half a day.
@@ -115,4 +113,3 @@ One build (23), about three days in all [estimate]:
 ## Open questions
 
 - **Does Remote Control reach a chat the extension started?** Not needed at the desk (32), but it is the only way in from the phone, and nobody has opened one from claude.ai yet.
-- **When does an idle chat's process close?** At 457 MB each — say after 30 idle minutes unless a background task runs, with `--resume` on the next message.
