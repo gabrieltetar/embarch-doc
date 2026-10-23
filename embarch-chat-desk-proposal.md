@@ -42,7 +42,7 @@ Every route takes the desk's existing bearer token. Additions only; nothing exis
 | `GET /items/{id}/notes` | Every note, newest first (46) |
 | `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client`; **a card keeps its ended `embarch-chat` sessions**, so Open chat can resume one (32) |
 | `GET /view?desk=<id>` | The named desk's cards instead of the open desk's, for a window on another desk (9) |
-| `GET /view`, per card | `notes_ms`, the newest note's time, so a client reads `/notes` only when it moves |
+| `GET /view`, per card | `notes_ms`, **when the item's notes last changed** — a note held before its session had an item lands with its older time, so the newest note's own time would not move — and a client reads `/notes` only when it moves |
 
 **MCP:** `desk_work_item` returns the brief for the calling session's item; `desk_add_line` gains `kind` — `done` by default, or `finding`, `decision`, `handoff`, `todo`. **A note** is `{id, ts_ms, session_id, kind, text, source_path}`; kind `memory` is a captured memory file, one per `source_path`, its versions kept. **Capture (45):** a PostToolUse `Write`, `Edit` or `MultiEdit` whose `file_path` is under `~/.claude/projects/*/memory/` and is not `MEMORY.md` files the file's text after the write on the session's item — held until the session has one, as lines are. **Import (47):** once, on the first start that has notes. **Harvest (43):** the polish reads that day's notes of every kind. **The SessionStart brief** names `desk_work_item` as the way to everything about the item.
 
