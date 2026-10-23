@@ -18,7 +18,7 @@ Connectors are a plug-in point with a setup flow, nothing hardcoded to one perso
 Its stat cards, enrolled-boards table and alerts list all rendered from the snapshot Topology already draws better, and the alerts had moved behind *Validate topology* (`embarch-ui` decision 44). Old `#dashboard` links land on the Desk.
 
 ### 4, 5 — One card per work item, its tile inside it; cards appear on activity and leave on archive
-A card carries the issue's status (a dropdown), PRs with CI, sessions, bench activity, *Open in VS Code*, and its day tiles. Slack collapses to one bar. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** tiles as a strip across the top, and three columns.
+A card carries the issue's status (a dropdown), PRs, sessions, bench activity, *Open in VS Code*, and its day tiles. Slack collapses to one bar. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** tiles as a strip across the top, and three columns.
 
 ### 6 — The work item is an EmbArch object, usually one Linear issue
 It exists because none of the four services holds the join between an issue, its PRs, its sessions and its time. **It can start without an issue** — a call, a meeting, ad hoc support — and gain one later. **Rejected:** inferring the grouping afresh on every read, and a Linear issue as the only anchor (no home for a meeting).
@@ -30,7 +30,7 @@ Set at birth by a card's launch (25) or a branch naming a card's issue (26); oth
 The working directory of a session already on it; else the linked PR's GitHub repo matched to a clone on disk (read from `.git/config`, no git process per directory); else the user picks the folder once.
 
 ### 9 — PRs attach by issue key, read-only
-Searched as `<KEY> type:pr involves:@me`, then **checked against title and branch on word boundaries**, because search matches `ABC-12` inside `ABC-123`. State and CI (check runs plus the combined status) only; no review list, no merge in v1.
+Searched as `<KEY> type:pr involves:@me`, then **checked against title and branch on word boundaries**, because search matches `ABC-12` inside `ABC-123`. Their state only — **CI was shown until 2026-10-22, when the owner asked for it gone**, and the desk stopped fetching check runs with it; no review list, no merge in v1.
 
 ## Time
 
@@ -49,7 +49,7 @@ Repos and folders on it make no tile and are never asked. EmbArch's own repos go
 ## Writes and connectors
 
 ### 14 — What each connector does in v1
-Linear: the card's issue and its status. GitHub: PRs with CI. Slack: every @mention and DM in every connected workspace, unread first, the fleet's own pages included, with **replies drafted by Claude and sent only as approved**. Harvest: the tiles. Any number of accounts per service.
+Linear: the card's issue and its status. GitHub: PRs and their state. Slack: every @mention and DM in every connected workspace, unread first, the fleet's own pages included, with **replies drafted by Claude and sent only as approved**. Harvest: the tiles. Any number of accounts per service.
 
 ### 15 — Status moves go through; prose is approved
 An issue's state, ✓ and ✕ happen on the click. A tile's note and a Slack reply are shown in an editable box and sent as the user left them — the reply route takes its text from the request, never from a stored draft.
