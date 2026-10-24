@@ -15,7 +15,7 @@ embarch/
 ├── embarch-core/           embarch-topology/     (implemented)
 ├── embarch-api/            embarch-ui/           (implemented)
 ├── embarch-study-designer/ embarch-outpost/      (implemented)
-├── embarch-dev-bench/      embarch-promptu/      (planned, no repo)
+├── embarch-dev-bench/      embarch-chat/         (implemented)
 ├── embarch-umbrella/       embarch-atlas/        (paused, no repo)
 ├── embarch-smp/            (planned, repo created)
 ├── embarch-desk/           (implemented)

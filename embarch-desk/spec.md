@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent.
+**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc).
 
 ## 1. What it is
 
@@ -13,6 +13,8 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 **Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from `embarch-ui`'s Desk tab ([decision 10](decisions.md)).
 
 **Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85).
+
+**The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump.
 
 **One binary, three roles:** `embarch-desk serve` (the always-on service), `embarch-desk hook` (what every hook runs) and `embarch-desk mcp` (the agent-facing tools). Its UI is `embarch-ui`'s Desk tab, which reaches it through a server-side proxy.
 
@@ -28,10 +30,12 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A hook never fails a session**: no desk, a slow desk or a bad event all exit 0 silently.
 - **The open desk scopes what is shown and where agents point, never what is tracked**: a session's time lands on the desk whose repo it is in (36).
 - **Switching desks touches no hardware**; the bench is proposed in the UI and loaded on a click (37).
+- **The session decides a note's item, never the file's name** (52); a note held before the session has an item lands once it gets one.
+- **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode.
 
 ## 3. Interfaces
 
-**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens; a CLI. The reference: [interfaces.md](interfaces.md).
+**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens; a CLI. The reference, `embarch-chat`'s additions included: [interfaces.md](interfaces.md).
 
 ## 4. Constants
 
@@ -43,6 +47,10 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Cards shown | the open desk's (all, with none open): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
 | Refresh | connectors 5 min, issues 3 min, PRs 5 min, Slack 2 min, Slack window 3 days |
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
+| Brief | 16,000 characters, about 4K tokens (48) |
+| Mailbox entry life | 10 min, as a launch claim (46) |
+| Memory note versions kept | 20 per file (52) |
+| Notes, worst case | 8.2 MB of state, 20 ms a write [measured 2026-10-23] (55) |
 | Polish model | `sonnet`, `EMBARCH_DESK_MODEL` |
 | `claude -p` cost, stripped | $0.0007 for a trivial prompt [measured 2026-10-22], against $0.20 unstripped ([decision 19](decisions.md)) |
 
@@ -50,11 +58,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 - **No OAuth in v1** — tokens only ([decision 16](decisions.md)); EmbArch owns no app registration.
 - **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
-- **No in-desk Linear comments, issue creation, PR review or merge, and no Claude chat panel** (v2).
+- **No in-desk Linear comments, issue creation, PR review or merge** (v2), **and no Claude chat panel of its own**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
 - **No second machine**: one desk service, one state file, the machine with the bench.
 - **No two desks open at once** (33) — later.
 - **No archive or approve for agents.**
 
 ## 6. Pointers
 
-The repo: [gabrieltetar/embarch-desk](https://github.com/gabrieltetar/embarch-desk), checked out as `../embarch-desk`. The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The browser drive: `embarch-ui/tests/browser/drive_desk.py`.
+The repo: [gabrieltetar/embarch-desk](https://github.com/gabrieltetar/embarch-desk), checked out as `../embarch-desk`. The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The chat: [embarch-chat](../embarch-chat/spec.md). The browser drive: `embarch-ui/tests/browser/drive_desk.py`.

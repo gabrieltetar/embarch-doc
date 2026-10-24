@@ -1,0 +1,1 @@
+| `embarch-chat`'s side: a mailbox VS Code windows poll for Start work and Open chat, one line per session on the Desk, the work item's notes with memory files captured, `desk_work_item`'s brief | Shipped, deployed | unit, local | 46, 48, 52 |

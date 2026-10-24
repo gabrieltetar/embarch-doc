@@ -28,7 +28,7 @@ Each has four capped docs: `spec.md` for what is true now, `decisions.md` for wh
 | [`embarch-ui`](embarch-ui/spec.md) | **One consolidated human-facing UI**, six tabs, having replaced three ad hoc surfaces outright, plus a thin VS Code launcher. Signal routing and enrolling both live in its Topology tab — **the only human surface for either** — a post-hoc Trace view renders an outpost capture, and the Atlas tab draws an `embarch-atlas` map | Five tabs live against the real deployed Core; the Atlas tab reads files only, driven in headless Firefox |
 | [`embarch-desk`](embarch-desk/spec.md) | **The work cockpit behind `embarch-ui`'s Desk tab, and the one access point to Linear and Harvest for agents**: one desk per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — open one at a time suite-wide; work items joining an issue to its PRs, sessions, bench activity and time; a Claude Code plugin whose hooks turn sessions into day tiles sent to Harvest on a ✓ | Built and running on the owner's machine with every connector and the first desk; no tile sent to Harvest yet |
 | [`embarch-umbrella`](embarch-umbrella/spec.md) | **The one binary a new engineer downloads**: sets up the suite on whatever topology their machine is, integrates a firmware repo, verifies the chain, and starts Core when it is not already a service. **Deliberately not a supervisor and not in the runtime path** | Shipped |
-| [`embarch-promptu`](embarch-promptu/design.md) | Curated library of firmware-specific agent skills, subagents and prompt patterns | Planned, no repo |
+| [`embarch-chat`](embarch-chat/spec.md) | **The owner's own Claude Code chat, as a VS Code extension beside the code** — what `embarch-promptu` became: one `claude` per chat on Claude Code's own wire, every chat on a desk work item before it starts, every thread of the window's desk at a glance, the prompt library as buttons, a Haiku assistant at the input, bench cards, atlas links, and `embarch-ui`'s launcher | Shipped and deployed from a local `.vsix` (decisions 1–49); 50–85 built, not yet installed. **The repo is local only, no GitHub remote, by the owner's choice** |
 | [`embarch-atlas`](embarch-atlas/design.md) | A hardware atlas of one board and one firmware commit: schematics, datasheets and the MCU reference manual distilled, joined to the firmware and checked for mismatches; queried by agents over MCP, drawn for humans by embarch-ui's Atlas tab | Built on one real two-board product; repo local, not yet published |
 | [`embarch-fleet`](embarch-fleet/spec.md) | **The machine that runs this suite's own work in parallel** — a supervisor keeps four to six short-lived workers in flight, one repo each, runs the gate and lands them itself. Its rules live in [their own repo](../embarch-fleet/README.md) and a leg never checks it out, because a supervisor that can edit its own constraints has none | Shipped, ten legs run |
 | `embarch-doc` | This repo — the design record, the inventory, the roadmap, the guides | Ongoing |
@@ -37,7 +37,7 @@ Each has four capped docs: `spec.md` for what is true now, `decisions.md` for wh
 
 ```
 Claude Code                    human, direct:                  human, in a browser:
-(embarch-promptu skills)       `embarch-api <subcommand> ...`  http://127.0.0.1:4890
+(embarch-chat library)         `embarch-api <subcommand> ...`  http://127.0.0.1:4890
       |                                   |                             |
       | MCP (stdio)                       |                             |
       v                                   v                             v
@@ -68,7 +68,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 
 **Umbrella is not a runtime hop, and that is a design constraint rather than an accident of scope**: it sets the stack up and diagnoses it, then gets out of the way — **a working machine keeps working if the `embarch` binary is deleted.** It is specifically *not* the process an MCP client spawns. It does link `embarch-core-client` and `doctor` does call Core, but only to *diagnose* one; nothing hardware-facing runs through it, which is what "out of the runtime path" means here.
 
-**`embarch-promptu` is not a separate hop either** — skills and prompt patterns an agent loads directly.
+**`embarch-chat` is not a separate hop either** — its panel runs Claude Code itself, and its library is skills and commands an agent loads directly.
 
 **Everything hardware-facing goes through one *implementation*, and that is the invariant — not one process, and not the API.** [`embarch-topology`](embarch-topology/spec.md)'s `hardware` feature is the only code in the suite that touches `probe-rs` or a serial port. `embarch-core` links it for every runtime path; **the crate's own `embarch-topology` CLI binary links it too, standalone, with no HTTP hop through Core** — deliberately, so a human sees exactly the validation Core enforces rather than a second opinion ([decisions](embarch-topology/decisions.md) 5 and 8). Umbrella's `doctor` also reads `/sys/bus/usb/devices` for probe vendor IDs, which is read-only enumeration and opens nothing. The bench is the physical fixture at that boundary.
 
@@ -122,7 +122,8 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-topology](embarch-topology/spec.md) | — |
 | [embarch-smp](embarch-smp/spec.md) | — |
 | [embarch-ui](embarch-ui/spec.md) | — |
-| [embarch-desk](embarch-desk/spec.md) | — the HTTP surface and plugin are in its spec |
+| [embarch-desk](embarch-desk/spec.md) | [interfaces.md](embarch-desk/interfaces.md) — the HTTP surface, `embarch-chat`'s additions, the plugin, connectors, CLI |
+| [embarch-chat](embarch-chat/spec.md) | [interfaces.md](embarch-chat/interfaces.md) — settings, commands and keys, the `claude` command line, the desk calls |
 | [embarch-umbrella](embarch-umbrella/spec.md) | — |
 
 **Cross-cutting**
@@ -138,9 +139,6 @@ setup and verification, off to the side and out of the runtime path entirely:
 | [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md) | **Inbound half accepted and built**; the outbound half — an authored step that writes to a DUT and confirms the reply — is **still a proposal** |
 | [embarch-host-study-proposal.md](embarch-host-study-proposal.md) | Host-run studies, operator prompts, SCPI bench instruments and a USB PD bench (NUCLEO-G0B1RE + X-NUCLEO-SNK1M1): **proposal**, phases 1-4 not built yet |
 | [embarch-desk-sessions-proposal.md](embarch-desk-sessions-proposal.md) | **Finishing an issue from the Desk**: the session drafts the PR, sent from the Desk; the issue to In Review on open; the worktree removed on merge. Start work and live sessions are built (`embarch-desk` 43–45). **Proposal** |
-| [embarch-chat-proposal.md](embarch-chat-proposal.md) | **The owner's own Claude chat**: a VS Code panel replacing Claude Code's for the owner's work — every thread of the open desk by work item, chats bound to their item before they start, the prompt library as buttons, bench cards, atlas links, a Haiku assistant at the input; turns `embarch-promptu` into `embarch-chat`. **Proposal**, not built |
-| [embarch-chat-assistant-proposal.md](embarch-chat-assistant-proposal.md) | **The chat's Haiku assistant**: ghost text, cards for missing context, prompt improvements and context handling, reply chips — on a pause, for the chat on screen. **Proposal**, not built |
-| [embarch-chat-desk-proposal.md](embarch-chat-desk-proposal.md) | **The desk's side of the chat**: Start work into a chat through the desk as a mailbox, one status line and Open chat per chat on the Desk, the work item as where the work's knowledge gathers. **Proposal**, not built |
 | [embarch-fleet/spec.md](embarch-fleet/spec.md) | **Start here for the fleet** — what it is, the three windows, what lives in which repo, and what it deliberately does not do |
 | [the protocol](../embarch-fleet/protocol.md) | How background agent threads work in parallel across the suite without colliding: the listener, the leg, the relay |
 | [running the fleet](../embarch-fleet/ops.md) | Running the fleet: arming the listener, latching the pump, sizing a leg, watching it from a phone, stopping it |

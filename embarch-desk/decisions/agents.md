@@ -32,7 +32,7 @@ Through the user's own install and login: no API key. **Measured 2026-10-22: a b
 Shipped in the plugin: look up, set, create, link, add a line. **Amends the proposal, which put these tools in `embarch-api`**: the plugin already ships with the desk, `embarch-api` stays the hardware tool, and bench activity needs no `embarch-api` change (22). Claude Code gives an MCP server no session identity, so the SessionStart hook puts the desk session id in the session's context and every session-scoped tool takes it.
 
 ### 21 — v1 ships whole, on one machine
-**Rejected:** shipping the time loop or read-only cards first. A Claude chat panel inside the desk is v2.
+**Rejected:** shipping the time loop or read-only cards first. A Claude chat panel inside the desk was v2; it became `embarch-chat`, a VS Code extension that runs its own `claude` processes (`embarch-chat` decisions 1, 5), with the desk's side in 46–55.
 
 ## The one access point
 

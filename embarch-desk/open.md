@@ -15,6 +15,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **"Is the bench busy?" sees studies only.** The bench proposal names a study Core lists as running; a flash or bootload in progress is not in that list ([decision 37](decisions.md)).
 - **A repo with several `embarch-api` projects** answers an unnamed build with the list (`embarch-api` decision 85). Whether a desk should name its default build project is unasked.
 - **Several desks open at once** ([decision 33](decisions.md)) is deliberately later.
-- **Is `claude.ai/code/<id>` the local session id?** Remote Control's docs call the URL's id the session id without saying which; Answer assumes the local one ([decision 44](decisions.md)). The first real session settles it.
+- **A mark alone answers 400.** A resumed `embarch-chat` chat sends only `client` to `POST /sessions/{sid}/assign`; the desk records it, then refuses for the missing item, so the panel reads the mark back from `GET /sessions/{sid}` ([interfaces.md](interfaces.md)). Whether a mark alone should be a 200 is the owner's call.
 - **A worktree of a repo built inside a west workspace** — does it need its own `west update`, or can it share the main clone's modules? The first real Start work settles it.
 

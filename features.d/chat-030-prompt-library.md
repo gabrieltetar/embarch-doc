@@ -1,0 +1,1 @@
+| Prompt library as 📚 buttons: a Claude Code plugin (`/embarch-permissions`, `/embarch-claude-md`, `build-flash-verify`) plus `~/.claude/commands` — what `embarch-promptu` was planned to be | Shipped — **not yet seeded from the owner's past prompts** | local | 7, 13, 39 |

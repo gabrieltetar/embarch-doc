@@ -202,10 +202,18 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Work items joining a Linear issue to its PRs, Claude Code sessions, bench activity and time; day tiles sent to Harvest on a ✓ — the Desk tab | Shipped v1 — **no real Linear, Harvest or Slack account connected yet; one real headless session through the plugin** | unit, local | 6, 10, 13 |
 | Claude Code plugin: hooks turn session time, commits and `embarch-api` bench calls into tile data; MCP tools put a session on a work item and add a line | Shipped, installed on the owner's machine | local | 18, 20, 22 |
 | Desks: one per project (Linear project or team, Harvest project and task, GitHub repos, firmware repos, saved bench), one open suite-wide; the day list of today's work | Shipped — **first desk open on the owner's machine; bench proposal names running studies only** | unit, local | 33, 36, 40 |
+| `embarch-chat`'s side: a mailbox VS Code windows poll for Start work and Open chat, one line per session on the Desk, the work item's notes with memory files captured, `desk_work_item`'s brief | Shipped, deployed | unit, local | 46, 48, 52 |
+
+## embarch-chat
+
+| Feature | Status | Verified | Decision |
+|---|---|---|---|
+| The owner's own Claude Code chat in a VS Code panel: one `claude` per chat on Claude Code's own wire, each chat on a desk work item before it starts, every thread of the window's desk by work item, waiting-on-you first | Shipped, deployed from a local `.vsix` — **decisions 50–85 (Claude Code panel parity: folded runs, rewind and fork, reload, background tasks, per-change diffs) built, not yet installed** | unit, local | 1, 5, 10 |
+| Haiku assistant at the input: ghost text, 💡 cards that only edit the draft, reply chips after each turn, a name for each new chat | Shipped, deployed — **holding a send for the cards awaits the owner's call** | unit, local | 19, 26, 37 |
+| Prompt library as 📚 buttons: a Claude Code plugin (`/embarch-permissions`, `/embarch-claude-md`, `build-flash-verify`) plus `~/.claude/commands` — what `embarch-promptu` was planned to be | Shipped — **not yet seeded from the owner's past prompts** | local | 7, 13, 39 |
 
 ## Not yet a sub-project
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| Curated firmware-specific skills and prompt library (`embarch-promptu`) | Proposed | n/a | — |
 | Agent-facing hardware atlas (`embarch-atlas`): schematics, datasheets and the MCU reference manual joined to the firmware, with a mismatch report | Built locally on one real two-board product; repo not yet published | local | — |

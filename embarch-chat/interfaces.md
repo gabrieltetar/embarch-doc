@@ -1,0 +1,63 @@
+# embarch-chat: interfaces
+
+**Status:** active, 2026-10-23.
+
+Reference: the settings, commands, keys and views the extension contributes; how it runs `claude`; what it asks the desk. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
+
+## Settings
+
+**Every setting is machine-scoped** (decision 48): VS Code takes it from the user settings, or in a WSL window from the Remote [WSL] settings (`~/.vscode-server/data/Machine/settings.json`), never from a workspace's `.vscode/settings.json`. In a WSL window a value in the local user settings does not apply.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `embarchChat.claudePath` | `claude` | The `claude` each chat runs (30) |
+| `embarchChat.idleMinutes` | `5` | How long an idle chat's process lives (41) |
+| `embarchChat.deskUrl` | `http://127.0.0.1:4891` | The desk; `127.0.0.1`, `::1` or `localhost` only, else nothing is sent |
+| `embarchChat.deskTokenPath` | `~/.config/embarch-desk/desk-token` | The desk's bearer token |
+| `embarchChat.assistant` | `true` | The Haiku assistant: ghost text, cards, chips, naming. Off, the instant prefix match and the CLI's own suggestion remain |
+| `embarchChat.showMessageTimestamps` | `false` | A time to the second over each message, a date line where the day changes (68) |
+| `embarchChat.autosave` | `true` | Save an open file's unsaved changes before Claude reads, edits or writes it (61) |
+| `embarchChat.continueAfterReload` | `true` | A chat cut off by a reload offers Continue, never by itself (63) |
+| `embarchChat.diagnosticsTool` | `false` | Give Claude `getDiagnostics`, the Problems panel (65) |
+| `embarchChat.attachOpenFile` | `true` | The open file goes with each message; off, a file goes only with selected lines (60) |
+| `embarchChat.attachSelection` | `true` | The selected lines go with each message; off, `@` still inserts them (60) |
+| `embarchUi.binaryPath` | `embarch-ui` | The binary the launcher starts (29) |
+| `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui` serves; also the Desk link and bench-card links |
+| `embarchUi.configPath` | empty | An `embarch-ui` TOML config, as `EMBARCH_UI_CONFIG` |
+| `embarchUi.autoStart` | `false` | Start `embarch-ui` with VS Code, stop it on close |
+
+## Views, commands and keys
+
+**Views:** an activity-bar container, *EmbArch Chat*, holding the **Threads** webview; a secondary-sidebar container holding the **Chat** webview; any chat also opens as an editor tab (17). Status bar, right: **EmbArch** (new chat, 54) and **N waiting** (35).
+
+**Commands** (`embarchChat.*`): New Chat, Open Chat in Editor, Open the Oldest Waiting Chat, Refresh Threads, Show Log, Mark as Unread, Rename Chat, Focus Chat Input, Leave Chat Input, Insert @-Mention of the Selection, Reopen Closed Chat Tab; in a pending diff tab Accept the Kept Changes, Reject the Change, Reject or Keep This Change (64); on a plan tab Add Comment, Remove Comment, Send the Comments and Keep Planning (77). `embarchUi.*`: EmbArch UI: Start, Stop, Open in Browser.
+
+**Keys** (59): Ctrl+Alt+Esc focuses the input from an editor (with lines selected, as an @-mention) and again leaves it; Alt+Shift+K inserts `@path#L10-24` at the input's caret; Ctrl+Shift+T reopens the last closed chat tab when a chat tab was the last closed, else VS Code's own reopen.
+
+**In the input:** `/` completes the session's commands and the library, `@` workspace paths and terminals; `/btw <question>` asks aside (57), as does the 💬 mode beside the 📚; `/rewind` and Esc twice (73), `/copy [N]` and `/export` (74), `/mcp` (81), `/remote-control` (83).
+
+## How a chat runs `claude`
+
+Per chat: `claude --input-format stream-json --output-format stream-json --verbose --permission-prompt-tool=stdio --setting-sources=user,project,local --permission-mode=<mode> --replay-user-messages --include-partial-messages --prompt-suggestions`, then `--session-id <uuid>` for a new chat, `--resume=<id>` to come back, or `--resume=<from> --fork-session --session-id <new> --resume-session-at <msg>` for a fork; `--model` and `--settings <the chat's flag settings>` when set (82). The environment drops `CLAUDECODE`, `CLAUDE_CODE_ENTRYPOINT`, `CLAUDE_CODE_CHILD_SESSION`, `CLAUDE_CODE_SSE_PORT`, `EMBARCH_DESK_INTERNAL` and every inherited `CLAUDE_CODE_RESUME_*`, and sets `CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING=true` (73).
+
+**The first line is `initialize`** (66): the PreToolUse autosave hook (61), the auto-mode and refusal-fallback dialogs, and with `diagnosticsTool` on the `getDiagnostics` MCP server spoken as `mcp_message` (65). **Answered from the CLI:** `can_use_tool` (permissions, `AskUserQuestion`, `ExitPlanMode`), `request_user_dialog`, `elicitation`; any other request is refused at once. **Sent to it:** `interrupt`, `set_permission_mode`, `set_model`, `apply_flag_settings`, `get_settings`, `rename_session`, `get_context_usage`, `background_tasks`, `get_task_output`, `stop_task`, `cancel_async_message`, `side_question`, `rewind_files`, `export_conversation`, `mcp_status`, `mcp_reconnect`, `mcp_toggle`, `remote_control`.
+
+**The assistant's call** (26): `claude -p --model haiku --max-thinking-tokens 0 --no-session-persistence --output-format stream-json --verbose --include-partial-messages --strict-mcp-config --setting-sources "" --system-prompt <its own> --tools ""`, the prompt on stdin, `EMBARCH_DESK_INTERNAL=1`.
+
+**Also read:** `claude agents --json` (Jump, and the resume guard of 31); `claude --version` (30); Claude Code's transcripts under `~/.claude/projects` for past chats and the prompt prefix match, kept in memory only (26).
+
+## What it asks the desk
+
+From the Node side only, bearer token from `deskTokenPath` (20). Shapes and status codes: [`embarch-desk`'s interfaces](../embarch-desk/interfaces.md).
+
+| Call | Why |
+|---|---|
+| `GET /view`, `GET /view?desk=<id>` | The thread list and the waiting count: every 3 s while the list is visible, 15 s while hidden; `?desk=` for a window on another desk than the open one, plain `/view` again once that desk is gone (9, 20) |
+| `POST /sessions/{sid}/assign` with `"client": "embarch-chat"` | A new chat on its item before `claude` starts (10); a resume sends the mark alone and never `untracked` (48) |
+| `GET /sessions/{sid}` | A resumed chat's item, and whether the desk kept the mark |
+| `POST /sessions/{sid}/line` | Keep, kind `finding` or `decision` (84) |
+| `GET /items/{id}/states`, `POST /items/{id}/status` | The header's status dropdown (18) |
+| `GET /mailbox?folder=`, `POST /mailbox/{id}/take` | Start work and Open chat, polled every 3 s per window folder (60 s back-off while the desk is unreachable or lacks the route), each entry taken once (11) |
+| `POST /mailbox` `{"kind":"focus"}` | Jump to a chat another window runs: that window takes the entry and shows it (31) |
+
+**A desk older than b722b3b** ignores `/view?desk=` and does not keep the mark: the list says "Update embarch-desk" and shows only chats in the window's repos.
