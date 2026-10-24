@@ -44,7 +44,7 @@ From `rate_limit_event`, by Claude Code's rules: nothing below 70 %, then percen
 
 ### 74 — Each reply copies whole; `/export` is Claude Code's own text
 
-Copy takes the turn's whole reply as Markdown, `/copy [N]` an earlier one; `/export` asks the CLI (`export_conversation`; a closed chat is resumed for it) and saves through VS Code's save dialog. **Rejected:** a Copy per assistant message, Claude Code's untitled editor, always the panel's own text.
+Copy takes the turn's whole reply as Markdown, `/copy [N]` an earlier one; `/export` asks the CLI (`export_conversation`; a closed chat is resumed for it) and saves the text the host received through VS Code's save dialog, opened in the last export folder, else home — never the chat's repo, where a conversation about client work is one `git add` from a remote. **Rejected:** a Copy per assistant message, Claude Code's untitled editor, always the panel's own text.
 
 ### 85 — A long chat stays fast: only what changed is drawn again, and every row stays in the page
 

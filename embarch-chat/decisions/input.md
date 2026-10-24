@@ -20,7 +20,7 @@ It answers from the conversation and the running turn, beside the timeline and n
 
 ### 58 — A terminal picked from @ goes as its last 100 lines
 
-Read at send by select-copy with the clipboard put back, as Claude Code does; a failed copy sends nothing rather than the owner's clipboard. **Rejected:** shell-integration reads (only commands run afterwards), pasting the output into the draft.
+Read at send by select-copy with the clipboard put back, as Claude Code does; a failed copy sends nothing rather than the owner's clipboard. The terminal is picked by its process, not its name, and shown without focus so keys typed meanwhile cannot reach the shell; the chip says the clipboard is used and only text comes back. **Rejected:** shell-integration reads (only commands run afterwards), pasting the output into the draft.
 
 ### 59 — Claude Code's keys, on chords it does not hold
 

@@ -12,7 +12,7 @@ The chat's first line to the CLI is `initialize`, declaring the auto-mode fallba
 
 ### 61 — An open file's unsaved changes are saved before Claude reads, edits or writes it
 
-As Claude Code's own panel does: a PreToolUse hook declared in `initialize`, which the tool waits on for at most 5 s and which always answers continue, so a failed save never blocks it. `embarchChat.autosave`, machine scope, on. **Rejected:** saving every editor on send (touches files Claude never reads, misses edits made mid-turn).
+As Claude Code's own panel does: a PreToolUse hook declared in `initialize`, which the tool waits on for at most 5 s and which always answers continue, so a failed save never blocks it. It saves only a document under the chat's folder or a workspace folder: the hook runs before the permission check, so a Read the owner refuses must not save a file elsewhere. `embarchChat.autosave`, machine scope, on. **Rejected:** saving every editor on send (touches files Claude never reads, misses edits made mid-turn).
 
 ### 65 — With `embarchChat.diagnosticsTool` on, Claude can call `getDiagnostics`
 
@@ -40,7 +40,7 @@ Each shell, Monitor or subagent with its output tail (read every second while it
 
 ### 73 — Rewind and fork from any of the owner's messages, as Claude Code's panel does it
 
-8's "later" half. A ↶ on each message, `/rewind` and Esc twice offer: fork the conversation into a new chat on the same item (the CLI's own `--resume --fork-session --resume-session-at`, the message back in the draft, named "<name> (fork)", assigned through the existing desk route), rewind the files Claude changed (`rewind_files`, which needs every chat started with `CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING=true`; its dry run shown, done only on the owner's click, never mid-turn), or both [measured]. **Rejected:** the CLI's in-place `rewind_conversation`, writing the fork's transcript ourselves, a file rewind without confirmation, a desk route for forks.
+8's "later" half. A ↶ on each message, `/rewind` and Esc twice offer: fork the conversation into a new chat on the same item (the CLI's own `--resume --fork-session --resume-session-at`, the message back in the draft, named "<name> (fork)", assigned through the existing desk route), rewind the files Claude changed (`rewind_files`, which needs every chat started with `CLAUDE_CODE_ENABLE_SDK_FILE_CHECKPOINTING=true`; its dry run shown, done only on the owner's click, never mid-turn or while a background task runs; at Rewind a fresh dry run is compared with the one shown, and a different list is shown again rather than acted on), or both [measured]. The host takes a rewind or fork only for an owner message of the chat it serves. **Rejected:** the CLI's in-place `rewind_conversation`, writing the fork's transcript ourselves, a file rewind without confirmation, a desk route for forks.
 
 ### 81 — The MCP pill is Claude Code's `/mcp`
 
@@ -52,4 +52,4 @@ The levels the model takes, and the Ultracode switch where the CLI offers it. It
 
 ### 83 — `/remote-control` bridges a chat to claude.ai/code
 
-A footer pill shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. **Rejected:** an always-shown pill, closing the process under a live bridge.
+A footer pill shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the CLI starts by itself (Claude Code's `remoteControlAtStartup`) shows the same pill, and Claude Code's disclosure once, as a note. **Rejected:** an always-shown pill, closing the process under a live bridge.
