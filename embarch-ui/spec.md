@@ -35,7 +35,7 @@ embarch-ui (one Rust binary, axum, zero-build)
         and nothing else under /logs. Which UI route reaches which: interfaces.md.
 ```
 
-`vscode-extension/` (thin, TypeScript) pre-flights the address, spawns/stops the binary, and shows the page in the system browser, focusing the window and tab already open (28). It renders nothing itself.
+The launcher (`embarch-chat` decision 29) pre-flights the address, spawns/stops the binary, and shows the page in the system browser, focusing the open window and tab (28). It renders nothing itself.
 
 **The `hardware` feature is the one it must never link:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's.
 
