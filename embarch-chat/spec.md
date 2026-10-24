@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 are built in the repo and not yet installed.** The repo is local only, with no GitHub remote, by the owner's choice.
+**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. The repo is local only, with no GitHub remote, by the owner's choice.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md).
 
@@ -12,7 +12,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 - **One `claude` per open chat**, run by the extension host over Claude Code's own stream-json wire with the official panel's flags (5): permission prompts, questions and plans arrive as requests and are answered as forms; the panel declares its own autosave hook, dialogs and, when on, a diagnostics MCP server in `initialize` (61, 65, 66). The `claude` on `PATH` (30).
 - **A chat belongs to the window that started it.** A thread another window or a terminal runs is read-only, opened from its transcript, with Jump (31). A past chat resumes here only when `claude agents` lists nothing running it.
-- **A process closes 5 minutes after its last input or reply** unless a background task runs, it waits on the owner, or a Remote Control bridge is on; the next message resumes it (41, 83). **A reload** — the window back within 90 s — brings back the chats on screen with their drafts, queued messages, mode and effort; an interrupted step continues only on a click (63).
+- **A process closes 5 minutes after its last input or reply** unless a background task runs, it waits on the owner, or a Remote Control bridge the owner turned on; the next message resumes it (41, 83). **A reload** — the window back within 90 s — brings back the chats on screen with their drafts, queued messages, mode and effort; an interrupted step continues only on a click (63).
 - **The desk is reached from the Node side only** (20): the list polls `GET /view`, each window polls the desk's mailbox for its folders, and Start work and Open chat land through it (11). The chat's header is its card in two lines (18).
 - **The library** is two folders: this repo's `plugin/` (a Claude Code plugin: `/embarch-permissions`, `/embarch-claude-md`, the `build-flash-verify` skill) and `~/.claude/commands` for anything naming a client, as 📚 buttons by `category:` (13, 38, 39).
 - **The Haiku assistant**, for the chat on screen only: ghost text, 💡 cards that edit the draft, reply chips, a name for each new chat — one stripped, unsaved `claude -p` per call (19, 24–28, 34, 36, 37).
