@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 are built (c292975, 2026-10-25) and not installed**; 88 needs `embarch-desk` 8f06ba0 or later and 87's card, study and board links need `embarch-ui` ab1b9f8, neither deployed. The repo is local only, with no GitHub remote, by the owner's choice.
+**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 installed 2026-10-25 17:08** (embarch-chat d998b2f), after three review rounds, live after the owner's window reload, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8 deployed the same minute. The repo is local only, with no GitHub remote, by the owner's choice.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md).
 
@@ -27,9 +27,9 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A chat is on its work item before `claude` starts** (10).
 - **Nothing new is stored**: the transcript is Claude's, session → item the desk's, a name Claude's own `rename_session` or `custom-title` (12, 75).
 - **Nothing reruns by itself**: after a reload, an interrupted step reruns only on Continue (63).
-- **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached (86).
+- **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached, and that row's preview is what shows (86).
 - **A reference in the draft is written from the desk's index, never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88).
-- **A link taken from outside** — a tool's output, a command, the desk's index — **opens only as https to its connector's own host**; the Desk's and the bench's are built from `embarch-ui`'s address (87).
+- **A link taken from outside** — a tool's output, a command, the desk's index — **opens only as https to its connector's own host**; the Desk's and the bench's are built from `embarch-ui`'s address. **A `gh` step's PR is linked only in the repo the step or its output names** (87).
 - **Effort is the chat's own**, never written to the owner's settings (82).
 - **A link opens once, through the extension**: http(s) in the browser, a path in the editor; any other URI is shown, not opened.
 

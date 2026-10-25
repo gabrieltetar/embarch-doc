@@ -203,16 +203,16 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Claude Code plugin: hooks turn session time, commits and `embarch-api` bench calls into tile data; MCP tools put a session on a work item and add a line | Shipped, installed on the owner's machine | local | 18, 20, 22 |
 | Desks: one per project (Linear project or team, Harvest project and task, GitHub repos, firmware repos, saved bench), one open suite-wide; the day list of today's work | Shipped — **first desk open on the owner's machine; bench proposal names running studies only** | unit, local | 33, 36, 40 |
 | `embarch-chat`'s side: a mailbox VS Code windows poll for Start work and Open chat, one line per session on the Desk, the work item's notes with memory files captured, `desk_work_item`'s brief | Shipped, deployed | unit, local | 46, 48, 52 |
-| Reference index for `embarch-chat`: every issue in a desk's Linear scope, archived included, and every PR in its repos, refreshed on its own task and served from memory as `GET /refs` | Built, not pushed or deployed — measured once on a scratch desk against the real accounts | unit, local | 56 |
+| Reference index for `embarch-chat`: every issue in a desk's Linear scope, archived included, and every PR in its repos, refreshed on its own task and served from memory as `GET /refs` | Shipped, deployed 2026-10-25 — live on the open desk, 178 issues and 48 PRs | unit, local | 56 |
 
 ## embarch-chat
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| The owner's own Claude Code chat in a VS Code panel: one `claude` per chat on Claude Code's own wire, each chat on a desk work item before it starts, every thread of the window's desk by work item, waiting-on-you first | Shipped, deployed from a local `.vsix`, decisions 1–85 including Claude Code panel parity (folded runs, rewind and fork, reload, background tasks, per-change diffs) | unit, local | 1, 5, 10 |
+| The owner's own Claude Code chat in a VS Code panel: one `claude` per chat on Claude Code's own wire, each chat on a desk work item before it starts, every thread of the window's desk by work item, waiting-on-you first | Shipped, deployed from a local `.vsix`, decisions 1–88 including Claude Code panel parity (folded runs, rewind and fork, reload, background tasks, per-change diffs) | unit, local | 1, 5, 10 |
 | Haiku assistant at the input: ghost text, 💡 cards that only edit the draft, reply chips after each turn, a name for each new chat | Shipped, deployed — **holding a send for the cards awaits the owner's call** | unit, local | 19, 26, 37 |
 | Prompt library as 📚 buttons: a Claude Code plugin (`/embarch-permissions`, `/embarch-claude-md`, `build-flash-verify`) plus `~/.claude/commands` — what `embarch-promptu` was planned to be | Shipped — **not yet seeded from the owner's past prompts** | local | 7, 13, 39 |
-| A step that reaches Linear, GitHub, Slack, the Desk or the bench shows the connector's glyph and names the issue, PR, channel, card, board or study it touched, as a link; the desk's reference index turns a vague "the widget PR" in a 💡 card into the PR itself, and a key or PR in Claude's prose into a link | Built, not installed — **references measured only against a synthetic index** | unit, local | 86, 87, 88 |
+| A step that reaches Linear, GitHub, Slack, the Desk or the bench shows the connector's glyph and names the issue, PR, channel, card, board or study it touched, as a link; the desk's reference index turns a vague "the widget PR" in a 💡 card into the PR itself, and a key or PR in Claude's prose into a link | Shipped, installed 2026-10-25, live after the owner's window reload — **the reference card not yet seen against the live index in real use** | unit, local | 86, 87, 88 |
 
 ## Not yet a sub-project
 

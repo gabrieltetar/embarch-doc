@@ -69,4 +69,4 @@ What the host hands a chat's webview from the desk and the chat's folder; the we
 | Message | What |
 |---|---|
 | `{t:"refs", refs}` | The window's desk's reference index, `{issues, prs}` whole, each time it changes; `null` with none (88) |
-| `githubRepo` in each snapshot's view | The chat's folder's GitHub repo, `owner/repo`, from its git config on disk, github.com only, picked as `gh` picks one with no terminal — the remote `gh repo set-default` marked, else upstream, github, origin; `null` with none (87, 88) |
+| `githubRepo` in each snapshot's view | The chat's folder's GitHub repo, `owner/repo`, from its git config on disk — regular files of 64 KB or less, a FIFO, a device or a larger file read as none — github.com only, picked as `gh` picks one with no terminal: the remote `gh repo set-default` marked, else upstream, github, origin; `null` with none. Used for a prose or draft `PR #N` only, never for a step (88) |

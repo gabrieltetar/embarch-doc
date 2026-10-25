@@ -6,7 +6,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Not done
 
-- **Decisions 86–88 are built and not installed.** The installed extension is the 2026-10-23 21:58 package, b6996cc (decisions 1–85) [measured 2026-10-25]. Unblocked by `./reinstall.sh` and a window reload, after the desk's 8f06ba0 is deployed (88) and `embarch-ui` ab1b9f8 runs (87's card, study and board links land on the tab only until then).
 - **`embarch-ui` still carries its own `vscode-extension/`**, the launcher's old copy (decision 29). Both register the `EmbArch UI:` commands, so this extension leaves them to the old one while both are installed. Removing the old copy from `embarch-ui` finishes the move.
 - **The library has not been seeded** (decision 14): the plugin holds promptu's three pieces and `~/.claude/commands` is empty [measured 2026-10-23]. The `claude -p` grouping pass over past prompts, then the owner's ✓/✕, is what fills it.
 
@@ -20,7 +19,8 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 ## Not yet seen
 
 - **Remote Control from the phone** (decision 83): `/remote-control` links a chat in 0.25 s and prompts are still asked in the panel, but nobody has answered one from the phone side.
-- **The desk's references against the live desk's real index** (decision 88): measured only against a synthetic index, with real Haiku, until the desk and this extension are deployed.
+- **Decisions 86–88 in the owner's window**: d998b2f installed 2026-10-25 17:08 by `./reinstall.sh` (the package's `dist` matches by md5), live only after his window reload; not yet confirmed.
+- **A reference card against the live desk's real index** (decision 88): the desk serves it since 2026-10-25 17:07 (178 issues, 48 PRs) [measured], but no card has been seen in real use; measured only against a synthetic index, with real Haiku.
 - **Slack's `app_redirect` link** (decision 87), for a channel a step names with no permalink, is untested.
 
 ## Structural limits
