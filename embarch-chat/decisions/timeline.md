@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-The timeline: steps, turns, compactions, answered questions, tool output, time, the cache and the usage limit, copying and export, long chats, bench cards and atlas links.
+The timeline: steps and what they touched, turns, compactions, answered questions, tool output, time, the cache and the usage limit, copying and export, long chats, bench cards and atlas links.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -13,6 +13,10 @@ Permission prompts, Stop, streamed text, the mode switch. **Claude's questions a
 ### 50 — A step says what the agent is doing, and quiet steps fold
 
 A tool row reads as the call's own one-line `description` when a built-in tool carries one, the tool a muted tag; otherwise the tool and what it acts on. An MCP tool's `description` is its data, never a label. Two or more quiet steps in a row fold into one collapsed row headed live by the latest step, with "N steps", a spinner, "waits on you" or a red error count; edits, todos, questions, plans, subagents and bench cards stand alone. The owner watches the header to stop an agent heading the wrong way. **Rejected:** a Haiku sentence per run (about 1 s behind, $0.002 a call), raw commands, auto-expanding runs.
+
+### 87 — A step that reaches Linear, GitHub, Slack, the Desk or the bench names what it touched, as a link
+
+After the tool's muted tag (50) comes the connector's glyph in one colour — Linear's, GitHub's and Slack's marks (Simple Icons, CC0) in the theme's text colour, the EmbArch mark for the Desk and the bench — then the thing by name: `ABC-12 Make the widget`, `#7 Widget`, `#channel`, a card's title, a board, `study <id>`. It is read from the step's own input and result (the desk's tools, a Linear MCP server, `gh` and its own output lines, Slack's reads, `embarch-api`); a step carrying only a key or a number takes its title and link from the desk's index (88), else from the chat's own item. **A click opens the thing itself**: an issue in Linear, a PR in GitHub, a channel by its permalink, and a card, a study or a board in `embarch-ui` at `#desk?item=`, `#live-study?study=` or `#topology?board=` (`embarch-ui` decision 58; a board by the role the step named, else its board type). **A URL from a tool's output is a link only as https to that connector's own host** — `linear.app`, `github.com`, a `slack.com` host — with no credentials or port; anything else shows unlinked. **A `gh` naming no repo acted on the chat's folder's repo**, read from its git config as `gh` picks one with no terminal; `GH_REPO` counts as `-R`, a `cd` first makes the repo unknown, and then `#7` shows alone, untitled and unlinked — never as the index's only #7. A `gh` is read only in a command's place, never inside quotes or as an argument. **A folded run lists what its steps touched**, each once, up to 3 and "N more", leaving the head's own to the head. List and search tools, Harvest and GitHub's MCP server name nothing yet. **Rejected:** colour marks, an issue opening its Desk card rather than Linear, a tool's URL linked as it came, a PR found by its number alone.
 
 ### 51 — Turns stand apart
 

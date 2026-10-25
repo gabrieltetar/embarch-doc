@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-The input: cards that arrive while the owner types, pasted images and long pastes, side questions, a terminal's output, the keys, the editor's selection, and a message sent while Claude works.
+The input: cards that arrive while the owner types, pasted images and long pastes, side questions, a terminal's output, the keys and the menus' keys, the editor's selection, and a message sent while Claude works.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -25,6 +25,10 @@ Read at send by select-copy with the clipboard put back, as Claude Code does; a 
 ### 59 — Claude Code's keys, on chords it does not hold
 
 Ctrl+Alt+Esc focuses or leaves the input, Alt+Shift+K mentions the selection as `@path#Lx-y`, Ctrl+Shift+T reopens a chat tab when one was the last closed. **Rejected:** Claude Code's own chords (both extensions run; they race), no keys.
+
+### 86 — A 💡 preview never moves what is under the pointer, and both menus go by keyboard as IntelliSense does
+
+The menu sits on the composer's top edge and a card's preview grows the draft (37), so a row under a still pointer moved away, its preview ended, the draft shrank and the row came back [measured in headless Firefox: the menu jumped 73 px and the preview flipped 13 times in 500 ms; after the change, 0]. **While the 💡 shows, the field holds the height of its tallest preview** — every card's, and the draft as it shows — measured again when the cards, the draft or the field's width change; a card arriving while the menu shows moves the layout once. **The keys focus a row as in IntelliSense**: ↑/↓ within a category, ←/→ between categories, Enter or Tab picks, Esc closes — through the input, which keeps the focus so typing goes on. **The pointer's row only previews**, as IntelliSense's hover does: Enter and Tab act only on a row ↑/↓ reached, and no row is focused when a menu opens, so a 💡 the held send opens (26) under a still pointer leaves Enter sending the draft as it is. While a menu shows, Tab never leaves the input; with no row focused it takes the ghost text or nothing. **Rejected:** pinning the menu, a delay before a hover previews, the preview inside the menu instead of in the draft (37), the pointer's row taking Enter.
 
 ### 60 — The selection, else the open file, goes with each message
 

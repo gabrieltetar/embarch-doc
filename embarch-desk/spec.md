@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc).
+**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is built** (bf96445, 2026-10-25), **not pushed or deployed**.
 
 ## 1. What it is
 
@@ -14,7 +14,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85).
 
-**The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump.
+**The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump. It also holds each desk's **reference index** (56) — every issue in its Linear scope, archived included, and every PR in its repos — which the chat mirrors from `GET /refs`.
 
 **One binary, three roles:** `embarch-desk serve` (the always-on service), `embarch-desk hook` (what every hook runs) and `embarch-desk mcp` (the agent-facing tools). Its UI is `embarch-ui`'s Desk tab, which reaches it through a server-side proxy.
 
@@ -32,6 +32,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **Switching desks touches no hardware**; the bench is proposed in the UI and loaded on a click (37).
 - **The session decides a note's item, never the file's name** (52); a note held before the session has an item lands once it gets one.
 - **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode.
+- **`GET /refs` answers from memory**: only the index's own task fetches, so no request waits on Linear or GitHub (56).
 
 ## 3. Interfaces
 
@@ -46,6 +47,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Launch claim window | 10 min |
 | Cards shown | the open desk's (all, with none open): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
 | Refresh | connectors 5 min, issues 3 min, PRs 5 min, Slack 2 min, Slack window 3 days |
+| Reference index | 1,000 issues; 300 PRs per repo; each desk every 5 min, by its own task's pass every 30 s (56) |
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
 | Brief | 16,000 characters, about 4K tokens (48) |
 | Mailbox entry life | 10 min, as a launch claim (46) |

@@ -23,3 +23,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **A saved study is never checked against the `.eap` file it was built from**, so the tab can offer a protocol whose text no longer matches what the study carries. The check is server-side, owned by `embarch-study-designer` — its [open.md](../embarch-study-designer/open.md) carries the question and trigger; this repo's half is only where a divergence would be *shown*. Named here so a reader does not conclude the silence is a design choice.
 
 - **The `Debug` level's clamp note has never fired.** Legs E and J of `tasks/ui/070` ran on a live nRF54L15 bench 2026-09-18 and closed everything else: the same study at `Off` and at `Debug` captured **0 vs 7,440 bytes** on the reserved `dev-bench` tap, so the level reaches the firmware and acts on it. What did not fire is the clamp itself — `app/prj.conf` is `CONFIG_LOG_DEFAULT_LEVEL=4` with runtime filtering, so `Debug` is *reachable* and there is nothing to report; a deliberately quieter build is needed to see it. **Delivery is proven** (the same `send_log_line` channel carried 129 lines); only the trigger is unexercised.
+
+- **`tests/browser/drive_topology.py` writes the real `~/.local/share/embarch/ui/recent-projects.json`** without `EMBARCH_UI_STATE`; 3 of its checks are stale since the Atlas tab.
+
+- **A reload no longer re-marks what a link named** (58); his call.

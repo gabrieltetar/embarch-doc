@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. The repo is local only, with no GitHub remote, by the owner's choice.
+**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 are built (c292975, 2026-10-25) and not installed**; 88 needs `embarch-desk` 8f06ba0 or later and 87's card, study and board links need `embarch-ui` ab1b9f8, neither deployed. The repo is local only, with no GitHub remote, by the owner's choice.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md).
 
@@ -15,8 +15,9 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A process closes 5 minutes after its last input or reply** unless a background task runs, it waits on the owner, or a Remote Control bridge the owner turned on; the next message resumes it (41, 83). **A reload** — the window back within 90 s — brings back the chats on screen with their drafts, queued messages, mode and effort; an interrupted step continues only on a click (63).
 - **The desk is reached from the Node side only** (20): the list polls `GET /view`, each window polls the desk's mailbox for its folders, and Start work and Open chat land through it (11). The chat's header is its card in two lines (18).
 - **The library** is two folders: this repo's `plugin/` (a Claude Code plugin: `/embarch-permissions`, `/embarch-claude-md`, the `build-flash-verify` skill) and `~/.claude/commands` for anything naming a client, as 📚 buttons by `category:` (13, 38, 39).
-- **The Haiku assistant**, for the chat on screen only: ghost text, 💡 cards that edit the draft, reply chips, a name for each new chat — one stripped, unsaved `claude -p` per call (19, 24–28, 34, 36, 37).
-- **Bench results become cards** from the `embarch-api` tool result already in the stream, and **atlas citations become links** into the repo's `embarch/atlas` (15, 16).
+- **The Haiku assistant**, for the chat on screen only: ghost text, 💡 cards that edit the draft, reply chips, a name for each new chat — one stripped, unsaved `claude -p` per call (19, 24–28, 34, 36, 37). The 💡 and 📚 menus go by keyboard as IntelliSense does, and a preview never moves the menu under the pointer (86).
+- **The desk's reference index is mirrored** from `GET /refs` (88): the cards call carries the issues and PRs the draft matches locally, so a vague "the widget PR" becomes the PR itself, and a key or PR in Claude's prose the index knows is a link.
+- **A step names what it touched** — the connector's glyph, then the issue, PR, channel, card, board or study as a link — and a folded run lists them (87). **Bench results become cards** from the `embarch-api` tool result already in the stream, and **atlas citations become links** into the repo's `embarch/atlas` (15, 16).
 
 ## 3. Invariants
 
@@ -26,7 +27,9 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A chat is on its work item before `claude` starts** (10).
 - **Nothing new is stored**: the transcript is Claude's, session → item the desk's, a name Claude's own `rename_session` or `custom-title` (12, 75).
 - **Nothing reruns by itself**: after a reload, an interrupted step reruns only on Continue (63).
-- **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55).
+- **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached (86).
+- **A reference in the draft is written from the desk's index, never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88).
+- **A link taken from outside** — a tool's output, a command, the desk's index — **opens only as https to its connector's own host**; the Desk's and the bench's are built from `embarch-ui`'s address (87).
 - **Effort is the chat's own**, never written to the owner's settings (82).
 - **A link opens once, through the extension**: http(s) in the browser, a path in the editor; any other URI is shown, not opened.
 
@@ -43,6 +46,9 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Autosave wait | 5 s, then the tool goes on (61) |
 | Tested `claude` | 2.1.287–2.1.308; outside it, one line of warning (30) |
 | Assistant | ghost text after a 300 ms pause, first token 0.82–0.89 s; cards on a 2 s pause, 3.8 s; chips and name 2.6 s; $0.002–0.004 a call [measured as built] (26) |
+| Cards with the desk's references | 2.34 s median, a replace naming the PR 8 of 8 [measured 2026-10-25 on a synthetic vague-PR case; 3.9 s and a question before] (88) |
+| `<desk_references>` block | at most 8 lines, about 600 tokens; a title clipped at 90 characters (88) |
+| Things a folded run lists | 3, then "N more" (87) |
 | Send held for cards | up to 4.5 s, drafts of six words or more (26) |
 | Terminal context | last 100 lines (58) |
 | Paste marked as pasted | over 800 characters or 2 line breaks (56) |

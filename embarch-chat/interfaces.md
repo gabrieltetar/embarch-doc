@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-Reference: the settings, commands, keys and views the extension contributes; how it runs `claude`; what it asks the desk. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
+Reference: the settings, commands, keys and views the extension contributes; how it runs `claude`; what it asks the desk; what the page is handed. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
 ## Settings
 
@@ -22,7 +22,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.attachOpenFile` | `true` | The open file goes with each message; off, a file goes only with selected lines (60) |
 | `embarchChat.attachSelection` | `true` | The selected lines go with each message; off, `@` still inserts them (60) |
 | `embarchUi.binaryPath` | `embarch-ui` | The binary the launcher starts (29) |
-| `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui` serves; also the Desk link and bench-card links |
+| `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui` serves; also the Desk link, bench-card links and a step's card, study and board links (87) |
 | `embarchUi.configPath` | empty | An `embarch-ui` TOML config, as `EMBARCH_UI_CONFIG` |
 | `embarchUi.autoStart` | `false` | Start `embarch-ui` with VS Code, stop it on close |
 
@@ -34,7 +34,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 
 **Keys** (59): Ctrl+Alt+Esc focuses the input from an editor (with lines selected, as an @-mention) and again leaves it; Alt+Shift+K inserts `@path#L10-24` at the input's caret; Ctrl+Shift+T reopens the last closed chat tab when a chat tab was the last closed, else VS Code's own reopen.
 
-**In the input:** `/` completes the session's commands and the library, `@` workspace paths and terminals; `/btw <question>` asks aside (57), as does the 💬 mode beside the 📚; `/rewind` and Esc twice (73), `/copy [N]` and `/export` (74), `/mcp` (81), `/remote-control` (83).
+**In the input:** `/` completes the session's commands and the library, `@` workspace paths and terminals; while the 💡 or 📚 shows, ↑/↓ focus a row, ←/→ change category, Enter or Tab picks the focused row, Esc closes (86); `/btw <question>` asks aside (57), as does the 💬 mode beside the 📚; `/rewind` and Esc twice (73), `/copy [N]` and `/export` (74), `/mcp` (81), `/remote-control` (83).
 
 ## How a chat runs `claude`
 
@@ -42,8 +42,7 @@ Per chat: `claude --input-format stream-json --output-format stream-json --verbo
 
 **The first line is `initialize`** (66): the PreToolUse autosave hook (61), the auto-mode and refusal-fallback dialogs, and with `diagnosticsTool` on the `getDiagnostics` MCP server spoken as `mcp_message` (65). **Answered from the CLI:** `can_use_tool` (permissions, `AskUserQuestion`, `ExitPlanMode`), `request_user_dialog`, `elicitation`; any other request is refused at once. **Sent to it:** `interrupt`, `set_permission_mode`, `set_model`, `apply_flag_settings`, `get_settings`, `rename_session`, `get_context_usage`, `background_tasks`, `get_task_output`, `stop_task`, `cancel_async_message`, `side_question`, `rewind_files`, `export_conversation`, `mcp_status`, `mcp_reconnect`, `mcp_toggle`, `remote_control`.
 
-**The assistant's call** (26): `claude -p --model haiku --max-thinking-tokens 0 --no-session-persistence --output-format stream-json --verbose --include-partial-messages --strict-mcp-config --setting-sources "" --system-prompt <its own> --tools ""`, the prompt on stdin, `EMBARCH_DESK_INTERNAL=1`.
-
+**The assistant's call** (26): `claude -p --model haiku --max-thinking-tokens 0 --no-session-persistence --output-format stream-json --verbose --include-partial-messages --strict-mcp-config --setting-sources "" --system-prompt <its own> --tools ""`, the prompt on stdin, `EMBARCH_DESK_INTERNAL=1`. **The cards prompt alone** carries a `<desk_references>` block when the draft matches the desk's index (88), one line each: `[r1] ABC-12 "Make the widget" Done · PR owner/repo#7 "Widget" merged`. A reference card answers `{"category":"missing","ref":"r1","find":"<the phrase, as the draft has it>","title","why"}` with no edit; the extension writes the replacement from the line's entry, and drops a card whose `ref` was not sent or whose `find` is not in the draft.
 **Also read:** `claude agents --json` (Jump, and the resume guard of 31); `claude --version` (30); Claude Code's transcripts under `~/.claude/projects` for past chats and the prompt prefix match, kept in memory only (26).
 
 ## What it asks the desk
@@ -59,5 +58,15 @@ From the Node side only, bearer token from `deskTokenPath` (20). Shapes and stat
 | `GET /items/{id}/states`, `POST /items/{id}/status` | The header's status dropdown (18) |
 | `GET /mailbox?folder=`, `POST /mailbox/{id}/take` | Start work and Open chat, polled every 3 s per window folder (60 s back-off while the desk is unreachable or lacks the route), each entry taken once (11) |
 | `POST /mailbox` `{"kind":"focus"}` | Jump to a chat another window runs: that window takes the entry and shows it (31) |
+| `GET /refs`, `GET /refs?desk=<id>` | The reference index of the desk `/view` is asked for (88): read once, then again only when `/view`'s `refs_ms` or the desk moves |
 
-**A desk older than b722b3b** ignores `/view?desk=` and does not keep the mark: the list says "Update embarch-desk" and shows only chats in the window's repos.
+**A desk older than b722b3b** ignores `/view?desk=` and does not keep the mark: the list says "Update embarch-desk" and shows only chats in the window's repos. **One older than 8f06ba0** has no `refs_ms` in `/view`, so `/refs` is never asked: no reference cards, no prose links, and a step shows only what it carries.
+
+## What the page is handed
+
+What the host hands a chat's webview from the desk and the chat's folder; the webview never holds the desk token (20):
+
+| Message | What |
+|---|---|
+| `{t:"refs", refs}` | The window's desk's reference index, `{issues, prs}` whole, each time it changes; `null` with none (88) |
+| `githubRepo` in each snapshot's view | The chat's folder's GitHub repo, `owner/repo`, from its git config on disk, github.com only, picked as `gh` picks one with no terminal — the remote `gh repo set-default` marked, else upstream, github, origin; `null` with none (87, 88) |

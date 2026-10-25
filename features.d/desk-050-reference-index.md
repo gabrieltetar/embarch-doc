@@ -1,0 +1,1 @@
+| Reference index for `embarch-chat`: every issue in a desk's Linear scope, archived included, and every PR in its repos, refreshed on its own task and served from memory as `GET /refs` | Built, not pushed or deployed — measured once on a scratch desk against the real accounts | unit, local | 56 |

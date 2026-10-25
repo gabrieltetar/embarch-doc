@@ -4,14 +4,14 @@
 
 Why it is the way it is. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). 1–21 were shaped with the owner over thirteen rounds of questions on 2026-10-22 and carried in `embarch-desk-proposal.md` until v1 was built the same day; 22 onward were settled while building it. 46–55 were shaped as `embarch-chat` decisions and moved here when its proposals folded (2026-10-23); each topic file names the old numbers.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). 1–21 were shaped with the owner over thirteen rounds of questions on 2026-10-22 and carried in `embarch-desk-proposal.md` until v1 was built the same day; 22 onward were settled while building it. 46–55 were shaped as `embarch-chat` decisions and moved here when its proposals folded (2026-10-23); each topic file names the old numbers. 56 was settled with the owner on 2026-10-25, with `embarch-chat` decisions 87 and 88.
 
 Cite them as `embarch-desk decision N`.
 
 | Group | Decisions | What it settles |
 |---|---|---|
 | [decisions/cockpit.md](decisions/cockpit.md) | 1–13 | A work cockpit for any user; the Desk tab, cards and the work item; asking a session for its item; repos and PRs; time captured, sent on ✓, idle included, an ignore list, the note written live and polished once |
-| [decisions/agents.md](decisions/agents.md) | 14–21, 29–32 | What each connector does, status moves vs approved prose, pasted tokens, where tokens live; the plugin, `claude -p` stripped, the desk's MCP server, v1 whole; the one access point to Linear and Harvest |
+| [decisions/agents.md](decisions/agents.md) | 14–21, 29–32, 56 | What each connector does, status moves vs approved prose, pasted tokens, where tokens live; the plugin, `claude -p` stripped, the desk's MCP server, v1 whole; the one access point to Linear and Harvest; the reference index `embarch-chat` mirrors |
 | [decisions/built.md](decisions/built.md) | 22–28 | Commits and bench activity from PostToolUse, the 8-hour gap, one state file, *Open in VS Code*, branch claims, the systemd service, the UI proxy |
 | [decisions/desks.md](decisions/desks.md) | 33–42 | One desk per project, one open; Linear project or team, folders, the switch question, the bench, Harvest defaults, a standalone item's desk, the day list, Harvest's entries joined |
 | [decisions/sessions.md](decisions/sessions.md) | 43–47 | Start work, live sessions on a card, no always-on window; `embarch-chat`'s mailbox and the Desk's line per chat |

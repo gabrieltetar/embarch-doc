@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-What each connector does, how tokens are held, how agents and Claude Code reach the desk, and the desk as the one access point to Linear and Harvest.
+What each connector does, how tokens are held, how agents and Claude Code reach the desk, the desk as the one access point to Linear and Harvest, and the reference index it holds for `embarch-chat`.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -47,3 +47,6 @@ A status move goes through. A comment or a new issue is a **draft** on the Desk 
 
 ### 32 — A hard switch, as each service is covered
 Each hosted connector goes the moment the desk covers its account: on 2026-10-22 the Harvest one and the owner's company Linear workspace's. **A connector is not removed before its account is connected to the desk** — the client's Linear workspace stayed until its key is added, or agents would have lost it. **Rejected:** denying writes first and removing later, and a week of both side by side.
+
+### 56 — The desk holds each desk's reference index, for `embarch-chat`
+Every issue in a desk's Linear scope and every PR in its GitHub repos — key or number, title, state, link — so the chat can turn a vague "the widget PR" in a draft into the PR itself and make a key in its timeline a link (`embarch-chat` decisions 87, 88). **The desk holds it because it is the one access point** (29): the chat has no Linear or GitHub token of its own. **A request never waits on the network**: the index's own task refreshes a desk at most every 5 minutes, at once after `POST /sync` and within 30 s of an edit to that desk, and `GET /refs` answers from memory, so the chat's match on a keystroke is local [measured 2026-10-25 on the owner's first desk, from a scratch desk: 178 issues and 48 PRs, 35 KB; a GET 2 ms; a refresh 1.9 s]. **Scope:** the desk's Linear project or team in every state — Done, Canceled and archived too (69 of the 178), since a reference to old finished work is the point, the archived ones kept pending the owner's call ([open.md](../open.md)); trashed ones not — the 1,000 most recently updated issues, and the 300 most recently updated PRs per repo, each with the issue keys in its title or branch whose team the index knows, so `UTF-8` is no issue. **Kept in `refs.json`** beside `state.json`, written only when the index changes: a restart serves the last one at once, and a polling window never rewrites the state file. `synced_ms`, and `/view`'s `refs_ms`, move only when a refresh changed the index, as a card's `notes_ms` does; a part whose fetch failed keeps its rows while its scope is unchanged. **Its own task, beside the sync loop**: inline, a refresh waiting out its timeouts on a lossy network held up timer catch-up, claim and mail expiry, the Slack feed and `POST /sync`. **Rejected:** a resolve route the chat calls per card (Linear and GitHub on the cards' path), Haiku calling the desk's tools, the cards alone (a card holds only its own item's PRs, and a Done issue never on a card was invisible), the refresh inline in the sync loop.

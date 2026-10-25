@@ -23,7 +23,7 @@
 
 ### Added for `embarch-chat`
 
-Every route takes the desk's bearer token. Additions only; nothing above changed shape. What the extension calls, and when: [embarch-chat's interfaces](../embarch-chat/interfaces.md).
+Every route takes the desk's bearer token. Additions only; nothing above changed shape. `?desk=` takes a desk's id or its name. What the extension calls, and when: [embarch-chat's interfaces](../embarch-chat/interfaces.md).
 
 | Route | What |
 |---|---|
@@ -39,6 +39,9 @@ Every route takes the desk's bearer token. Additions only; nothing above changed
 | `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client`; **a card keeps its ended `embarch-chat` sessions**, so Open chat can resume one (47) |
 | `GET /view?desk=<id>` | The named desk's cards instead of the open desk's, for a window on another desk (`embarch-chat` decision 9); 404 for a desk that does not exist |
 | `GET /view`, per card | `notes_ms`, **when the item's notes last changed** — a note held before its session had an item lands with its older time, so the newest note's own time would not move — and a client reads `/notes` only when it moves |
+| `GET /refs`, `GET /refs?desk=<id or name>` | The desk's reference index (56), from memory: `{"desk_id","synced_ms","issues":[{"key","title","state","url"}],"prs":[{"repo","number","title","state","draft","url","branch","keys"}]}`. Issues newest update first, `state` Linear's own name; PRs by repo in the desk's order, newest first, `state` `open`, `closed` or `merged`, `keys` the issue keys of a known team in the title or branch. The open desk's without `?desk=`; with none open, an empty index and `desk_id` null; 404 for a desk that does not exist. `synced_ms` is when a refresh last **changed** it, null before the first |
+| `GET /view` | `refs_ms`: the viewed desk's `synced_ms`, and a client re-reads `/refs` only when it moves (56) |
+| `POST /sync` | Also makes every desk's reference index due and wakes its task, without waiting on it (56) |
 
 ## The plugin
 
