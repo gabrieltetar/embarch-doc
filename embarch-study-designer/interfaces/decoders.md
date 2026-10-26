@@ -18,6 +18,8 @@ Authored in the firmware repo's `embarch/study-structs.toml` and resolved into t
 
 **A payload that doesn't fit still gets a row**, decoded columns empty and the raw bytes plus a reason filled. The raw file is written before any decode is attempted, so a wrong layout costs a rendering rather than a capture. **An empty repetition list is zero rows and no error** — a DUT sending a header with nothing after it is real, and a row invented for it would be invented data. The rendered error text carries no comma and no quote, asserted in its own tests, because **this crate refuses to produce a CSV value that would break the column shape rather than quoting it.**
 
+**A step name in any CSV cell** passes `csv_cell_ok` (no comma, quote, CR or LF; decision 81): `Sample::to_csv_row` blanks the cell, the GATT row refuses, `build_study` refuses the name.
+
 ## Sample layouts
 
 **`SampleLayout`** — `F32Le`/`F32Be`/`I16Le`/`I16Be`/`U16Le`/`U16Be`. **Element width, type and byte order only: no scaling, no offset, no unit conversion.** Those would be a claim about what a particular DUT's bytes *mean*, which is its engineers' knowledge and not this crate's; `unit` names the quantity, and nothing here transforms the number. Append-only.

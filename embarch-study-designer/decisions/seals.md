@@ -35,5 +35,10 @@ Decision 17 requires a correct seal on submission, **which makes a hand-authored
 
 The crate also ships a generated JSON schema, **so a human hand-authoring a study file gets editor and CI validation before ever submitting, independent of the seal question.**
 
----
+### 81 — A step name in a CSV cell has one rule, and a record check that checked nothing is not "all verified"
 
+**Step name.** `sample::csv_cell_ok` (no comma, quote, CR or LF) is the one rule, used by every renderer that writes a step name. **A sample row blanks a name that fails it** (an empty cell), because Core drops a row when the renderer returns `None` and a refusal there would lose samples; the GATT transcript row keeps refusing; and `build_study` refuses the name with `BuildStudyError::NameBreaksCsv`, so a name typed in the UI never reaches a file. Core already blanks on decoded rows, so all three files now agree. *Measured:* tests for each of the four characters. Core's own blanking can now delegate to `csv_cell_ok`.
+
+**Record check.** `validate_record_checks` refuses an empty `magic` (`RecordCheckError::EmptyMagic`), beside `validate_taps`; Core must call it at `POST /study` (filed to `core`). **`RecordReport::all_verified()` is false when `total == 0`**: an empty capture, a capture with no magic in it and an empty magic all checked nothing. A `Some` report with `total 0` now prints as "0 of 0", not "all verified". No serialized type changed shape, so no schema bump (decision 12).
+
+---

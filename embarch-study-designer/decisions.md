@@ -13,7 +13,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Bounded collections and type size](decisions/limits.md) — every capacity, 77 KB → 1 KB on the host, why the `no_std` shape stays big, and three caps that are another firmware's | 15, 46, 49, 63, 76 |
 | [Serialization, framing, and the link](decisions/wire.md) — two formats, COBS, an append-only enum | 3, 4, 10, 24, 25 |
 | [Schema versioning, handshake, clocks](decisions/versioning.md) — two constants, and where time comes from | 12, 30, 47, 72 |
-| [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, and what sits outside them | 17, 18, 26 |
+| [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, what sits outside them, and the CSV-name and record-check rules | 17, 18, 26, 81 |
 | [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51, 80 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39 |
 | [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |

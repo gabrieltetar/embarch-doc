@@ -1,6 +1,6 @@
 # 072 — A sample row cannot shift its CSV's columns, and a record check that checked nothing does not report every record verified
 
-**State:** claimed by agent/study-designer/072-csv-step-name-and-empty-record-check, 2026-10-26 01:20
+**State:** done on agent/study-designer/072-csv-step-name-and-empty-record-check, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer findings 2 and 3), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** none
@@ -43,10 +43,14 @@ Two of the crate's outputs claim more than they checked.
 
 ## Done when
 
-- [ ] A sample whose step name contains a comma, a quote or a newline never produces a row with more columns than `Sample::csv_header()`. A test covers each of the three characters.
-- [ ] The rule for a step name in a CSV cell is defined once in the crate and used by both the sample and the GATT transcript renderers.
-- [ ] A study whose `record_checks` carries an empty magic is refused when validated, with a named error.
-- [ ] Neither an empty magic nor an empty capture yields a report for which `all_verified()` is true. A test covers both.
-- [ ] If Core's log line or its blanking rule must change to match, an inbox drop for `core` is filed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/decoders.md` for the step-name rule), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A sample whose step name contains a comma, a quote or a newline never produces a row with more columns than `Sample::csv_header()`. A test covers each of the three characters.
+- [x] The rule for a step name in a CSV cell is defined once in the crate and used by both the sample and the GATT transcript renderers.
+- [x] A study whose `record_checks` carries an empty magic is refused when validated, with a named error.
+- [x] Neither an empty magic nor an empty capture yields a report for which `all_verified()` is true. A test covers both.
+- [x] If Core's log line or its blanking rule must change to match, an inbox drop for `core` is filed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/decoders.md` for the step-name rule), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result, 2026-10-26
+
+Decision 81 (`decisions/seals.md`). Step name: `sample::csv_cell_ok`, sample row blanks, GATT row refuses, `build_study` refuses (`BuildStudyError::NameBreaksCsv`). Records: `validate_record_checks` / `RecordCheckError::EmptyMagic`; `all_verified()` false when `total == 0`. No serialized shape changed, no schema bump. No consumer matches `BuildStudyError`; `RecordCheckError` is new. Core must call the validator and may delegate blanking: inbox drop `core-call-validate-record-checks-and-csv-cell-ok.md` filed. Hardware debt: none.
