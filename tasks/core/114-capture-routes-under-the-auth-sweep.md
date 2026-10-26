@@ -1,6 +1,6 @@
 # 114 — Put the three /signals/{name}/capture routes under the auth sweep and the route-count pin
 
-**State:** claimed by agent/core/114-capture-routes-under-the-auth-sweep, 2026-10-26 05:37
+**State:** done agent/core/114-capture-routes-under-the-auth-sweep, 2026-10-26
 **Source:** reviewer finding on core/100 (code 845f3ea, doc c43051a8): decisions 42 and 46 (embarch-core/decisions/route-sweep.md) contradicted by the new route registration; filed from `inbox/core-capture-routes-outside-auth-sweep.md` by the 2026-10-26 05:14 leg
 **Scope:** core
 **Hardware:** none
@@ -24,8 +24,8 @@ Decision 5's "every route, no exceptions" is the invariant; the sweep is its evi
 
 ## Done when
 
-- [ ] `AUTH_CASES` has the three capture rows and the sweep fails if they are removed.
-- [ ] `DOCUMENTED_ROUTE_COUNT` equals the documented rows.
-- [ ] A `.route(` line the scan cannot parse fails the test.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `decisions/route-sweep.md` amended if the scan's rule changes; `changelog.d/` fragment only if reader-facing. `embarch-core/spec.md` and `open.md` are in reserve under `tasks/core/112`: do not grow them.
+- [x] `AUTH_CASES` has the three capture rows and the sweep fails if they are removed.
+- [x] `DOCUMENTED_ROUTE_COUNT` equals the documented rows.
+- [x] A `.route(` line the scan cannot parse fails the test.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `decisions/route-sweep.md` amended if the scan's rule changes; `changelog.d/` fragment only if reader-facing. `embarch-core/spec.md` and `open.md` are in reserve under `tasks/core/112`: do not grow them.
