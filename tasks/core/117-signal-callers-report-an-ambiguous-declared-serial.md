@@ -1,6 +1,9 @@
 # 117 — Core's signal callers say a direct signal's declared serial is ambiguous, in their own words
 
-**State:** open
+**State:** claimed by agent/core/117-signal-callers-report-an-ambiguous-declared-serial, 2026-10-26 07:43
+**Reserve (2026-10-26 leg):** `embarch-core/open.md` 50 B left, `spec.md` 474 B, `decisions/probes.md`
+1,025 B, all parked under `core/112` (`In flux: yes`). This task should need none of them; if it must
+write into one, compact that file in this unit carrying `core/112`'s `Must not delete:` list.
 **Source:** topology/062 (decision 46, `embarch-topology@62d776e`). Filed from `inbox/core-exchange-names-signal-ambiguous.md` by the 2026-10-26 leg, in topology/062's fold.
 **Scope:** core
 **Hardware:** none
