@@ -1,6 +1,6 @@
 # 113 — `embarch-api/open.md` is in reserve after task 109's `build_dir_name` bullet
 
-**State:** blocked
+**State:** claimed by agent/api/113-compact-api-open, 2026-10-26 00:07
 **Source:** `api/109`'s new Structural-limits bullet (`build_dir_name` names only the default
 combination) put this file into its reserve band; `DOC-COMPACTION.md` §2
 **Scope:** api
@@ -9,7 +9,12 @@ combination) put this file into its reserve band; `DOC-COMPACTION.md` §2
 
 **Compacts:** embarch-api/open.md
 **Size debt due:** 2026-10-01
-**In flux:** yes — `open.md` is this sub-project's live "known wrong / unfinished" ledger and one
+**In flux:** no — for the pass this task now asks for. Unparked by the supervisor 2026-10-26 (overdue
+since 2026-10-01, the ledger's oldest payable entry): `DOC-BUDGET.md` names a role-capped 5 KB
+`open.md` as the case with no seam, so the remedy is not a split but **deleting answered questions**
+— a bullet whose answer is recorded in a decision, `interfaces/`, `spec/` or `history/` — and an
+answered bullet is not live prose the next unit will revise. No live bullet is tightened. The
+original park, kept for the record: `open.md` is this sub-project's live "known wrong / unfinished" ledger and one
 of its most frequently touched files (nine of the last fifteen `api` units landed a bullet here,
 most recently `api/090`/`092` and `api/086`); a compaction pass run now risks shortening prose the
 next such unit will need to revise within days. Unparked once a unit lands here without adding or
