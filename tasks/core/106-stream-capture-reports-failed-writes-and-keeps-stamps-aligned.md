@@ -1,6 +1,7 @@
 # 106 — A stream capture reports a failed write as lost data, and its arrival sidecars stay on Core's clock and aligned after rotation
 
-**State:** open
+**State:** claimed by agent/core/106-stream-capture-reports-failed-writes-and-keeps-stamps-aligned, 2026-10-26 03:42
+**Doc reserve (dispatch, 2026-10-26):** nothing in `embarch-core/` is in reserve. If your edit pushes a file into reserve, file `tasks/core/<NNN>-compact-core.md` in the same commit.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-core findings 3, 6 and 1), verified by Opus against embarch-core@40a58ccb
 **Scope:** core
 **Hardware:** none — every case can be driven with fabricated records and a temporary results directory.
