@@ -1,6 +1,6 @@
 # 102 — Run host studies in Core: send-and-read steps against the PD bench and the DUT console
 
-**State:** claimed by agent/core/102-host-study-exchange-steps, 2026-10-26 07:08
+**State:** done by agent/core/102-host-study-exchange-steps, 2026-10-26
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the PD source sequence ran 4 times as a bash script (plus 7 runs of its scratch versions). The scripts made 441 shell exchanges across 2 consoles in 16 e-load runs, about 1.7 s per operation. 2 runs stopped on an empty console reply (2026-10-10)
 **Scope:** core
 **Hardware:** verify-only
@@ -48,11 +48,29 @@ Each field script took its own bench lock and reimplemented abort and safe state
 
 ## Done when
 
-- [ ] `POST /host-studies` accepts a valid host study and answers 409 while any study holds `study_lock`.
-- [ ] `Exchange` and `Wait` execute, and `GET /study/{id}/steps` returns each reply with its byte count and elapsed time.
-- [ ] **A zero-byte reply is reported as its own outcome detail**, separate from a reply that never showed `until` before the timeout.
-- [ ] Teardown runs after a failed step, after a timeout and after `POST /study/{id}/cancel`. Unit tests over a scripted fake port prove all three.
-- [ ] No step compares a value. Only "written", "marker seen" and "port present" decide the outcome.
+- [x] `POST /host-studies` accepts a valid host study and answers 409 while any study holds `study_lock`.
+- [x] `Exchange` and `Wait` execute, and `GET /study/{id}/steps` returns each reply with its byte count and elapsed time.
+- [x] **A zero-byte reply is reported as its own outcome detail**, separate from a reply that never showed `until` before the timeout.
+- [x] Teardown runs after a failed step, after a timeout and after `POST /study/{id}/cancel`. Unit tests over a scripted fake port prove all three.
+- [x] No step compares a value. Only "written", "marker seen" and "port present" decide the outcome.
 - [ ] Bench check, run by the supervisor: the PD source sequence as a host study against `pd-bench` gives the same contract lines as the bash run, and teardown leaves the partner at 5 V after a forced failure.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done (worker, 2026-10-26)
+
+Decision 95 (`embarch-core/decisions/host-study.md`), `embarch-core/interfaces/host-studies.md`, code in `src/host_study.rs`, the exchange route's body factored to `api::run_signal_exchange`. No `open.md` edit (its open points are inside decision 95). `spec.md` got one module row.
+
+**What the task said that the code does differently, or in addition:**
+- `StepCompleted` is not reused: a bench `StepResult` has no reply field, so host steps emit a new `HostStepCompleted` on the same SSE channel.
+- `HostStudy` carries `teardown`, `Repeat`, `line_counts`, `streams`, `Prompt`, `Instrument` (study-designer 80, 86). Executed: `Exchange`, `Wait`, `teardown`. Refused by name `400` at submission: `Prompt`, `Instrument`, `Repeat`, `line_counts`, non-empty `streams`.
+- Core appends `\n` to a step's line: signals declare no terminator (topology has none). Assumed, see the debt below.
+- `POST /study/{id}/cancel` is new and lease-gated, like `POST /host-studies`.
+- Zero-byte reply: `Fail` with `detail: empty_reply`; bytes without `until`: `TimedOut`, `detail: until_not_seen`. A tested distinction.
+- `HOST_TYPE_SCHEMA_VERSION` untouched at 19; the landing leg bumps it to 20.
+
+## Hardware-verification debts
+
+- **Bench check (supervisor):** the PD source sequence as a host study against `pd-bench` gives the same contract lines as the bash run (the `\n` terminator is the thing to watch), and a forced failure mid-sequence plus a `POST /study/{id}/cancel` each leave the partner at 5 V via the study's `teardown`. Needs an enrolled `pd-bench` signal, the e-load and a live Core with this build.
+- **Native Windows build of `embarch-core`:** not run (Windows `cargo.exe` from the main checkout after landing).
+- Unmeasured: how long a cancel takes against a real load (an exchange in flight finishes first, up to 10 s).

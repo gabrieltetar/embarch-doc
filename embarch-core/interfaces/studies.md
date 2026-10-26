@@ -4,7 +4,7 @@
 
 Index: [../interfaces.md](../interfaces.md). Conventions and rationale: [../interfaces.md](../interfaces.md), [../decisions/studies.md](../decisions/studies.md), [../decisions/handshake.md](../decisions/handshake.md), [../decisions/outpost-preflight.md](../decisions/outpost-preflight.md).
 
-Async and job-based rather than blocking, unlike everything in the other route groups: a study's BLE steps can take unbounded time. One study in flight at a time via `study_lock`; no cancel endpoint; the in-memory job registry has no expiry and does not survive a restart. Design of record: [../../embarch-study-designer/decisions.md](../../embarch-study-designer/decisions.md) §5.1.
+Async and job-based rather than blocking, unlike everything in the other route groups: a study's BLE steps can take unbounded time. One study in flight at a time via `study_lock`; no cancel for a bench study (a host study's is in [host-studies.md](host-studies.md)); the in-memory job registry has no expiry and does not survive a restart. Design of record: [../../embarch-study-designer/decisions.md](../../embarch-study-designer/decisions.md) §5.1.
 
 | Method | Path | Body / Query | Response |
 |---|---|---|---|
