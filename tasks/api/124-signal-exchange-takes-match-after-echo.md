@@ -1,6 +1,7 @@
 # 124 — Let the signal_exchange tool and CLI pass match_after_echo, so a console with echo off returns at its prompt
 
-**State:** open
+**State:** claimed by agent/api/124-signal-exchange-takes-match-after-echo, 2026-10-26 04:32
+**Dispatch note:** the bench check under Done when is not yours: write it as a hardware-verification debt in this file and ship the host-side half. `decisions/client-crate.md` is in reserve (11,581/12,288 B, filed under `tasks/api/140`); if `embarch-core-client` needs the field, record the decision in `decisions/surface.md` (5,145 B) or `failure-reporting.md`, not `client-crate.md`. `embarch-core-client` is path-depended on by `embarch-ui`: an additive optional field only.
 **Source:** field use on a Zephyr USB CDC ACM shell, 2026-10-21: with `shell echo off`, every `signal_exchange` with `until: ":~$ "` ran to its full timeout (about 3 s per line) although the prompt came back in tens of milliseconds
 **Scope:** api
 **Hardware:** verify-only
