@@ -1,6 +1,6 @@
 # 080 — A console's unfinished line is capped like a finished one, instead of growing for the rest of the run
 
-**State:** claimed by agent/ui/080-console-partial-line-is-capped, 2026-10-26 04:55
+**State:** done — agent/ui/080-console-partial-line-is-capped, 2026-10-26
 **Dispatch note:** the compaction tasks named under Done when are renumbered: `spec.md` (9,099/10,240 B, 1,141 B left) is filed under `tasks/ui/089` (open), and `open.md` (4,366/5,120 B, 754 B left) under `tasks/ui/088` (blocked). Put the change in `decisions/live-study.md` (8,985 B, decision 32) as the task says; add at most a phrase to `spec.md`. If a browser drive is run, it must stay isolated from the live desk the way `ui/091` made `drive_topology.py` isolated, and must never reach a live Core or the desk on :4891.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 5), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
@@ -17,8 +17,8 @@ Decision 32 (`decisions/live-study.md`) names exactly this input and the require
 
 ## Done when
 
-- [ ] A unit test pushes several megabytes containing no `\n` through `push_chunk`. `partial` never exceeds the line cap, the surplus appears as lines marked truncated, and those lines count towards the ring's `dropped`/`total`.
-- [ ] A console frame's size stays bounded while that tap keeps streaming.
-- [ ] The existing tests for a chunk ending mid-line still pass, so a short partial line is still shown dim and never padded.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/live-study.md` (decision 32).
+- [x] A unit test pushes several megabytes containing no `\n` through `push_chunk`. `partial` never exceeds the line cap, the surplus appears as lines marked truncated, and those lines count towards the ring's `dropped`/`total`.
+- [x] A console frame's size stays bounded while that tap keeps streaming.
+- [x] The existing tests for a chunk ending mid-line still pass, so a short partial line is still shown dim and never padded.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/live-study.md` (decision 32).
