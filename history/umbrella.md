@@ -9,6 +9,9 @@
 - Split out decision 26 (verbatim) from projects.md into new prune-policy.md, which now carries the --prune deferral.
 - Umbrella decisions 21 and 25 moved verbatim from `decisions/install.md` to `decisions/setup-reversal.md`; install.md 12,071 -> 9,660 B (78.6%).
 - Compacted embarch-umbrella decisions/bind.md 11,555 -> 10,904 B (retired 22(b)/(c) and split history); decision 22's live reasoning untouched.
+
+### Fixed
+- umbrella: `setup --uninstall` exits 1 on a failed step; check 1 mismatch warns; check 13 dirty checkout is `dirty-checkout`, not stale; check 2 fix carries `--bind`.
 ## 2026-09
 
 ### Added
