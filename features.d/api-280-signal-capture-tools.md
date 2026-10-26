@@ -1,0 +1,1 @@
+| `capture_start` / `capture_read` / `capture_stop` — record one declared console in the background while driving another, each with a `capture-*` CLI twin | Shipped — mock-HTTP tested only; **no two-console bench run yet** | unit | 88 |

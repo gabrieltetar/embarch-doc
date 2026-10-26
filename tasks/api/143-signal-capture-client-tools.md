@@ -1,6 +1,6 @@
 # 143 — Client tools for Core's background signal capture
 
-**State:** claimed by agent/api/143-signal-capture-client-tools, 2026-10-26 05:37
+**State:** done by agent/api/143-signal-capture-client-tools, 2026-10-26
 **Source:** `tasks/core/100` (landed 2026-10-26, code `embarch-core@845f3ea`): Core's `POST|GET|DELETE /signals/{name}/capture`, decision 92 in `embarch-doc/embarch-core/decisions/signal-capture.md`. `tasks/api/131` (`bench_exchange`) builds on the same routes but is a higher-level tool; it does not cover these raw ones. Filed from `inbox/api-signal-capture-tools.md` by the 2026-10-26 05:14 leg.
 **Scope:** api
 **Hardware:** verify-only — client wrappers testable against the mock Core; the two-console bench check is Core's debt in `tasks/core/100`.
@@ -22,8 +22,16 @@ The field's 21 hand-written console listeners after `signal_exchange` shipped (1
 
 ## Done when
 
-- [ ] `capture_start`, `capture_read` and `capture_stop` exist as MCP tools and CLI subcommands, with a parity test.
-- [ ] `embarch-core-client` has the three calls, round-trip tested against the mock Core, including a `409` and a `404`.
-- [ ] A read that passes `next_offset` back returns only new text.
-- [ ] Bench verification (a capture on one console while exchanging on the other) filed as hardware-verification debt.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `spec.md`/`decisions.md`, `changelog.d/` fragment and the feature row updated. `decisions/client-crate.md` is in reserve under `tasks/api/140`: a new decision goes in another topic file.
+- [x] `capture_start`, `capture_read` and `capture_stop` exist as MCP tools and CLI subcommands, with a parity test.
+- [x] `embarch-core-client` has the three calls, round-trip tested against the mock Core, including a `409` and a `404`.
+- [x] A read that passes `next_offset` back returns only new text.
+- [x] Bench verification (a capture on one console while exchanging on the other) filed as hardware-verification debt.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `spec.md`/`decisions.md`, `changelog.d/` fragment and the feature row updated. `decisions/client-crate.md` is in reserve under `tasks/api/140`: a new decision goes in another topic file.
+
+## Done notes
+
+CLI spelling is `capture-start|capture-read|capture-stop <signal>` (hyphenated), not `capture start`: the parity test matches by kebab-cased name (decision 88). Tests: `tests/signal_capture.rs` (start body, offset passed back, DELETE, `409`, `404`), the bearer sweep, `tests/json_surface.rs`.
+
+## Hardware-verification debt
+
+Bench check not run (no hardware, no live Core). Needs: embarch-core with `embarch-core@845f3ea` or later deployed, two declared direct consoles (DUT and a bench board). Run `embarch-api capture-start <dut>`, then `signal-exchange` on the bench console, then `capture-read <dut> --after <next_offset>` and `capture-stop <dut>`; expect only new text on the second read, and reset the DUT mid-capture to see `reopening` and a `gaps` entry. Core's own two-console debt is in `tasks/core/100`.

@@ -1,0 +1,11 @@
+# embarch-api: capture tools
+
+**Status:** active, 2026-10-26. Split out of [tools.md](tools.md) (the one-table premise there applies). Why: [decisions/tool-wrapping.md](../decisions/tool-wrapping.md) 88. Core's side: `embarch-core` decision 92, [interfaces/topology.md](../../embarch-core/interfaces/topology.md).
+
+| Tool / subcommand | Params | Behaviour |
+|---|---|---|
+| `capture_start` / `capture-start <signal>` | `signal`, `max_s?`, `max_bytes?` (`--max-s`, `--max-bytes`) | Core `POST /signals/{signal}/capture`: starts a background read of a direct signal's port and returns Core's reply at once (`id`, `state`, ...). No hardware lock, so an exchange on another signal, flash and reset run meanwhile. Caps and defaults are Core's; `400` out of range and `409` (a capture already running, named) surface as Core's text |
+| `capture_read` / `capture-read <signal>` | `signal`, `after?` (0), `limit?`, `id?` | Core `GET /signals/{signal}/capture`: `{text, next_offset, state, running, total_bytes, elapsed_ms, gaps}`. Offsets are bytes into the capture's stream; pass `next_offset` back as `after` to get only new text. The tool keeps no state. `state` is `running`, `reopening`, `stopped`, `expired` or `byte_cap`; `reopening` with a `gaps` entry is a USB device re-enumerating, not a failure. `404`: no capture, or `id` is an older one. CLI: `text` alone on stdout, offsets/state/gaps on stderr |
+| `capture_stop` / `capture-stop <signal>` | `signal`, `after?`, `limit?`, `id?` | Core `DELETE /signals/{signal}/capture`: stops, answers as a read with the final state, drops the capture (the next read is `404`) |
+
+`embarch-core-client` carries `signal_capture_start|read|stop` and `SignalCaptureResponse` / `CaptureGap` (additive; every field but `state` defaults, so an older or newer Core parses). All three use `status_timeout`.

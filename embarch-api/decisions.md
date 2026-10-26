@@ -15,7 +15,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The tool and CLI surface — JSON shape and versioning](decisions/surface.md) — JSON shape, watching a study live, what this binary says about itself | 16, 24, 50 | 4.9 KB |
 | [How a failure is reported and attributed](decisions/failure-reporting.md) — how a tool description cites its own decision, and the parity rule extended to the signal/dev-bench-link writers and the live memory read | 57, 67, 82, 83 | 6.3 KB |
 | [`validate`'s `kind`-classification thread](decisions/validate-kind.md) — call sites branching on `kind`, the third `"unknown"` value for a `kind`-less Core, and the `not_attached` lead's wording | 71, 73, 76 | 6.8 KB |
-| [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52 | 6.0 KB |
+| [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52, 88 | 8.2 KB |
 | [Hardware selection and identity](decisions/hardware-selection.md) — enrollment, mismatch alerts, the dev-bench identity cross-check, and why no tool here ever picks a physical board or port on a caller's behalf | 34, 35, 59, 60, 70, 84, 87 | 8.9 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, and the unix-only process-tree kill | 5, 75 | 2.9 KB |
 | [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |

@@ -34,3 +34,12 @@ This crate compiles in `embarch-study-designer`'s `HOST_TYPE_SCHEMA_VERSION` and
 **CLI-only, no MCP twin.** [spec.md](../spec.md) §1 guarantees CLI ⊇ MCP — a human can do anything an agent can — which a CLI-only diagnostic leaves intact. The consumer is a process shelling out, and an agent submitting a study already learns of a mismatch from the refusal, when it matters.
 
 *Read since 2026-09-04:* `embarch-umbrella` check 11 shells out to it (its 33, 35, 36); that binary's own constant is now warn-only. **Read live 2026-09-07** — check 11 PASS, and `embarch-api --json versions` answered v17 against Core's v17 (`tasks/umbrella/034`).
+
+### 88 — `capture_start` / `capture_read` / `capture_stop`: Core's background capture as three stateless tools
+The surface half of `embarch-core` decision 92. A session that must record one console while driving another had been hand-writing a serial listener; the three routes return at once, so each tool is one short request under the client's existing `status_timeout`, and **no timeout was changed** (a capture's `max_s` is Core's, never the client's).
+
+**The tools keep no state.** The caller holds `next_offset` and passes it back as `after`; `id` is optional and only pins a read to one capture (an older one is Core's `404`). *Rejected: remembering the offset per signal in the MCP process.* A restarted server or a second front-end on the same Core would then disagree about what was already read, and the CLI, which exits between calls, could not share it.
+
+**Caps and defaults are Core's and are not restated here** (`max_s`, `max_bytes`, `limit`): an out-of-range value is forwarded and Core's `400` surfaces; a `409` on start names the running capture and its text is shown as it came. `reopening` plus a `gaps` entry is a re-enumerating USB device, not a failure, and the descriptions say so, because an agent otherwise reads `[embarch: port lost]` as an error and stops.
+
+**CLI spelling: `capture-start|capture-read|capture-stop <signal>`**, three kebab-case subcommands, not `capture start`. The parity test (`tests/tool_subcommand_parity.rs`) matches each tool to a subcommand by kebab-cased name, and a nested `capture` command would need three documented asymmetries for no gain. `capture-read` and `capture-stop` print `text` alone on stdout and the offsets, state and gaps on stderr; `--json` carries the whole reply. Interface rows: [../interfaces/tools-capture.md](../interfaces/tools-capture.md).
