@@ -1,6 +1,7 @@
 # 134 — embarch-api: print the erased ranges from `POST /flash`, and describe the new `erase` behaviour
 
-**State:** open
+**State:** claimed by agent/api/134-flash-print-erased-ranges, 2026-10-26 00:39
+**Reserve, for the worker:** no `embarch-api` doc is in reserve today (`open.md` 3,780 / 5,120 B after `api/113`).
 **Source:** `core/096`, 2026-10-25 (embarch-core decision 84)
 **Scope:** api
 **Hardware:** none — tool text and a parameter description, tested against the mock Core.
