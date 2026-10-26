@@ -1,6 +1,6 @@
 # 084 — `embarch-umbrella/decisions/projects.md` is back in reserve
 
-**State:** claimed by agent/umbrella/084-compact-projects-md, 2026-10-26 02:20
+**State:** done -- 2026-10-26 (agent/umbrella/084-compact-projects-md)
 **Source:** `scripts/check-doc-size.py --pressure`, run by `umbrella/082`
 **Scope:** umbrella
 **Hardware:** none
@@ -72,9 +72,13 @@ safe to shorten now if a pass is ever unblocked while 26 keeps moving.
 
 ## Done when
 
-- [ ] `projects.md` back under 90% of its 12,288 B cap, by shortening or moving, not by deleting a
+- [x] `projects.md` back under 90% of its 12,288 B cap, by shortening or moving, not by deleting a
       live question or a cited fact.
-- [ ] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
-- [ ] No question or fact disappears from `collect-open-questions.py` unless it can be named as
+- [x] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
+- [x] No question or fact disappears from `collect-open-questions.py` unless it can be named as
       answered.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped.
+
+## Result, 2026-10-26
+
+Decision 26 moved verbatim to `embarch-umbrella/decisions/prune-policy.md` (4,801 B); `projects.md` 11,116 -> 6,782 B (55.2%). Routed from `decisions.md`; `spec.md` decision-26 cite repointed. No decision-26 wording changed, so every Must-not-delete fact survives. `check-duplication` not rerun (nothing reworded). Other-repo links to `projects.md` meaning 26 (`embarch-api/decisions/target-json.md`, two) dropped to inbox.

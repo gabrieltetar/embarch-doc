@@ -13,7 +13,8 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/setup-reversal.md](decisions/setup-reversal.md) | 21, 25 | `setup --dry-run` prints the plan first, and `setup --uninstall` reverses it |
 | [decisions/topology.md](decisions/topology.md) | 6, 7, 8, 9, 30, 38 | Detecting where Core is, elevation, the WSL2 loopback ambiguity, and which `embarch-core` a `wsl-host` machine actually runs |
 | [decisions/integration.md](decisions/integration.md) | 10, 12 | Where a repo's `embarch/` config lives, and how little of it anyone else can see |
-| [decisions/projects.md](decisions/projects.md) | 13, 17, 26, 41 | What `init` derives from a firmware repo, and what it refuses to guess |
+| [decisions/projects.md](decisions/projects.md) | 13, 17, 41 | What `init` derives from a firmware repo, and what it refuses to guess |
+| [decisions/prune-policy.md](decisions/prune-policy.md) | 26 | `doctor` measures `study_results/` and build directories and deletes nothing; what a `--prune` needs first |
 | [decisions/serial-port.md](decisions/serial-port.md) | 55 | Why `init` never writes `serial_port`, unlike board and chip |
 | [decisions/doctor.md](decisions/doctor.md) | 18, 31, 53 | The check chain, and the states it refuses to conflate |
 | [decisions/locate-api.md](decisions/locate-api.md) | 42 | How `locate_api` finds `embarch-api` — the agent CLI's registration and `setup`'s install directory, not just `PATH` |
