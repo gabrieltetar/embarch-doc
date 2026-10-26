@@ -1,6 +1,6 @@
 # 076 — `OutpostManifest` reads the `devices` and `functions` tables, so GPIO records are named in Core's trace CSV as they are in the reference decoder
 
-**State:** claimed by agent/study-designer/076-outpost-manifest-gpio-names, 2026-10-26 02:23
+**State:** done
 **Source:** DeepSeek V4 Pro suite review 2026-10-25 (cross-repo finding 3), verified by Opus against embarch-study-designer@b9a2d5df and embarch-outpost@2968f0c1
 **Scope:** study-designer
 **Hardware:** none — a table lookup tested against a literal manifest and literal records. No capture is needed.
@@ -29,9 +29,9 @@ in the same commit.
 
 ## Done when
 
-- [ ] A unit test builds a manifest from literal JSON with both tables, and records of kinds 9 and 10 from literal values. The kind-10 pointer has bit 0 set. `to_csv_row` puts the device name and the handler name in the `name` column.
-- [ ] A manifest with neither table (schema 1) still parses, and kinds 9 and 10 render with empty names. An address missing from a present table also renders empty.
-- [ ] The existing outpost render tests and the committed layout-3 fixtures pass unchanged.
-- [ ] If a cross-decoder fixture with GPIO records is wanted, it goes to `inbox/` for whichever repo owns the fixture. It is not written from here.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A unit test builds a manifest from literal JSON with both tables, and records of kinds 9 and 10 from literal values. The kind-10 pointer has bit 0 set. `to_csv_row` puts the device name and the handler name in the `name` column.
+- [x] A manifest with neither table (schema 1) still parses, and kinds 9 and 10 render with empty names. An address missing from a present table also renders empty.
+- [x] The existing outpost render tests and the committed layout-3 fixtures pass unchanged.
+- [x] (not filed; noted in decision 82 as embarch-outpost's to own) If a cross-decoder fixture with GPIO records is wanted, it goes to `inbox/` for whichever repo owns the fixture. It is not written from here.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
