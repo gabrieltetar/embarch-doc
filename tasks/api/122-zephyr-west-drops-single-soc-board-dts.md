@@ -1,10 +1,20 @@
 # 122 — zephyr-west discovery drops every single-SoC board whose devicetree is `<board>.dts`
 
-**State:** open
+**State:** claimed by agent/api/122-zephyr-west-single-soc-dts, 2026-10-25 23:15
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — `list-targets` on the field repo with `discovery = "zephyr-west"` still answers `success: true, targets: []` (re-run 2026-10-20 on api `f82f8b6`), so the project never left `static`: 471 raw `west build` calls (about 3.0 h) went around EmbArch, against 26 EmbArch builds
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-25 leg
+
+**Doc reserve in your scope:** `embarch-api/open.md` is 4,714 / 5,120 B, **406 B left**, and its
+compaction (`tasks/api/113`) is parked `In flux: yes`. If your unit writes that file, compact it in
+the same commit, carrying 113's `Must not delete:` list, and say so; if it does not, leave it
+alone. Nothing else in `embarch-api/` is in reserve. `crates/embarch-firmware-build` is not a
+shared crate, but `embarch-core-client` is — do not touch it here. If `check-docs.py` is red only
+on `embarch-study-designer/open.md`, that is pre-existing on `main` and being paid by
+`study-designer/026` in parallel — not yours.
 
 ## What
 
