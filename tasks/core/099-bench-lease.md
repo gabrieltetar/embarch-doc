@@ -1,6 +1,6 @@
 # 099 — A bench lease: one session holds the bench across calls, and other callers are refused by name
 
-**State:** claimed by agent/core/099-bench-lease, 2026-10-26 06:00
+**State:** done — agent/core/099-bench-lease, 2026-10-26
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — two Claude sessions shared one DUT and one bench Nucleo from 2026-10-08; with no lease in Core they used a `mkdir` lock directory: 62 holds by 8 sessions (6.3 h held in all, the longest 1.4 h), one collision waited out in a shell `until mkdir` loop, and the rule had every session reflash its own image after taking the lock because it could not know what the other had left (80 flashes with an explicit image path from 2026-10-08 on)
 **Scope:** core
 **Hardware:** verify-only
@@ -24,10 +24,19 @@ On 2026-10-08 the session that hit the collision offered the user a lock file, a
 
 ## Done when
 
-- [ ] `POST /lease`, renew and `DELETE` exist; a hardware request without the token while a lease is live is refused with `409` naming holder, purpose, start and expiry, tested with two clients.
-- [ ] An expired lease frees the bench without a restart or a human; a crashed holder never blocks the bench past its TTL.
-- [ ] With no lease held, every existing route behaves as before (existing tests unchanged).
-- [ ] `GET /status` reports the live lease and, per board, the last image Core flashed (path, sha256, time, holder).
-- [ ] The client half is filed as an `api` task: the MCP server and CLI take, renew and send the token, in a form `embarch-atlas` live calls inherit (an environment variable or a per-process lease).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `POST /lease`, renew and `DELETE` exist; a hardware request without the token while a lease is live is refused with `409` naming holder, purpose, start and expiry, tested with two clients.
+- [x] An expired lease frees the bench without a restart or a human; a crashed holder never blocks the bench past its TTL.
+- [x] With no lease held, every existing route behaves as before (existing tests unchanged).
+- [x] `GET /status` reports the live lease and, per board, the last image Core flashed (path, sha256, time, holder).
+- [x] The client half is filed as an `api` task: the MCP server and CLI take, renew and send the token, in a form `embarch-atlas` live calls inherit (an environment variable or a per-process lease).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done
+
+Decision 93 (`embarch-core/decisions/lease.md`). `src/lease.rs` holds the lease and the per-chip last-image log; `api.rs` has `/lease` (one `.route(` line, four `AUTH_CASES` rows, `DOCUMENTED_ROUTE_COUNT` 34) and `lease_middleware`, keyed on the registered path against `lease::LEASE_GATED`. A test requires every route to be gated or open, so a later route must decide. Whole bench, not one board. Starting or stopping a capture is gated, reading one is not. `/status` gained `lease` and `last_images`, additive. The client half is the inbox drop `api-bench-lease-client.md`. `core/112`'s `Compacts:` line is untouched: no file's reserve was cleared (`open.md` 5,070 / 5,120 B, `spec.md` 9,638 / 10,240 B, `probes.md` unchanged).
+
+## Hardware-verification debts
+
+- The native Windows build of this branch (the owner runs it).
+- A two-client check against an installed Core: take a lease from one session, confirm a second session's `POST /reset` is `409` naming the first, renew, release; and that `last_images` shows the sha256 of a real flash and of a real `POST /bootload`. Needs a real probe, so nothing here has flashed anything.

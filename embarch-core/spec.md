@@ -27,6 +27,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 - **Every blocking hardware call runs in `tokio::task::spawn_blocking`.** `probe-rs` and `serialport` are synchronous.
 - **Probe attach is per-call, never held open.** Open, attach, operate, drop.
 - **A background capture holds its own port, never `hw_lock`** (decision 92): `/signals/{name}/capture` records one declared signal while flash, reset and other signals' exchanges run; an exchange on the captured signal goes through its open handle.
+- **A live bench lease gates every hardware route** (decision 93): without its token in `X-Embarch-Lease` a request is `409` naming holder, purpose, start and expiry; with none live, nothing changes. Expiry is lazy; the lease is in memory.
 - **Identity fails closed.** Before touching hardware, the resolved probe's serial must be enrolled and its live hardware ID must match what was recorded. Unenrolled or mismatched blocks the operation; never a guess.
 - **Ambiguity fails loudly.** More than one probe with no `probe_serial`, or more than one dev-bench port candidate, is a named error listing every candidate — never a silent pick.
 - **Raw bytes are written before any decode is attempted.** A failed decode costs a rendering, never a capture.

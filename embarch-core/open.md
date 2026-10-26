@@ -15,6 +15,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **Background capture (decision 92) has never met a port.** Tested against scripted ports only. Open on the bench: a capture on one console while exchanges run on the other and a flash and reset of either board; an exchange on the captured signal; a boot log across a UART-bridge reset; a CDC ACM re-enumeration reopening with a gap marker.
 
+- **The bench lease (decision 93) has never met an installed Core or a second real client.** Host-tested through the router only; the two-client check and the native Windows build are the owner's.
+
 ## Unverified diagnoses
 
 - **Whether probe-rs writes killed the nRF54L15 is evidence, not proof** (decision 36). One erase-and-program over J-Link recovered a board unresponsive across a whole session, but the counterfactual is not established: a full erase-and-reprogram may have cleared something else.
