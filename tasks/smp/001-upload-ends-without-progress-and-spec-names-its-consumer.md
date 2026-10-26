@@ -1,10 +1,20 @@
 # 001 — `Client::upload` ends when the offset stops progressing, not only when it stops moving, and the spec names Core as its consumer
 
-**State:** open
+**State:** claimed by agent/smp/001-upload-ends-without-progress, 2026-10-26 02:39
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-smp findings 1 and 2), verified by Opus against embarch-smp@92363628
 **Scope:** smp
 **Hardware:** none — a scripted server behind `Read + Write` covers every case, the same way the existing tests do.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg
+
+First `smp` unit the fleet has dispatched. Nothing in `embarch-smp/` docs is in reserve.
+`embarch-core` path-depends on this crate and calls `Client::upload` (`bootload.rs`), so keep the
+public API additive: a new error variant or option is fine, but say in your Result whether Core
+matches the error enum exhaustively (grep `/home/gabriel/Github/embarch/embarch-core/src`, read
+only). Gate in `embarch-smp`: `cargo build`, `cargo test --all-features`,
+`cargo clippy --all-targets --all-features -- -D warnings`, plus `check-client-names.py --repo`.
+Leave `embarch.md`'s "not in the fleet's repo set yet" row alone; the supervisor owns it.
 
 ## What
 
