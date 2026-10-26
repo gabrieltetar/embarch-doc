@@ -1,6 +1,6 @@
 # 085 — A tap's table is re-read when its card loads, so the post-run re-read is not a frozen mid-run snapshot
 
-**State:** claimed by agent/ui/085-table-is-re-read-when-its-card-loads, 2026-10-26 06:44
+**State:** done on agent/ui/085-table-is-re-read-when-its-card-loads, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 7), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
@@ -20,8 +20,12 @@ The trace and time-chart caches both say why they cannot go stale: "loading the 
 
 ## Done when
 
-- [ ] A test against a stub Core serves a short CSV, reads `/rows`, then serves a longer CSV for the same study and tap. A first-page read returns the longer table, and later pages and `/series` bins agree with it.
-- [ ] Paging through one loaded table still costs one Core fetch, not one per page.
-- [ ] A browser check against `stub_core.py` that opens a running study and lets it finish shows the full table in the Data card after the post-run re-read.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+- [x] A test against a stub Core serves a short CSV, reads `/rows`, then serves a longer CSV for the same study and tap. A first-page read returns the longer table, and later pages and `/series` bins agree with it.
+- [x] Paging through one loaded table still costs one Core fetch, not one per page.
+- [x] A browser check against `stub_core.py` that opens a running study and lets it finish shows the full table in the Data card after the post-run re-read.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+
+## Done
+
+`table_for` takes `refresh`; a `/rows` read with `from` absent or 0 re-fetches and replaces the cache, `from > 0` and `/series` reuse it (`embarch-ui decision 64`, `decisions/live-study.md`). Test `a_first_page_rows_read_refetches_and_later_reads_reuse_it` (`src/main.rs`) covers box 1 and 2 (3 rows, then 250: first page 250, later pages and series agree, 2 Core fetches total). Browser: `tests/browser/drive_table_refresh.py` (stub serves 3 rows until the run ends, then 40); passes, and the first-load check fails/behaves differently on unfixed code. `stub_core.py` gained the stateful `rail` capture for the running study. `drive.py` and `drive_race.py` still pass on scratch ports. Hardware: none.

@@ -20,6 +20,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 - **`lagged` is displayed, never swallowed**, and this UI's own broadcast overrun is a *different* fact from Core's: the first says the disk record is complete and this feed is not, the second that a reload catches up.
 - **`interrupted` is never rendered as completed or failed** (`embarch-core` decision 69), and **a terminal status is never un-said by a later poll** — Core's registry can still report `running` between the last step landing and the job closing.
 - **A post-run re-read replaces a card only where its own read succeeded**: a tap Core will not serve keeps what the feed put there.
+- **A Data card's table is re-fetched when the card loads** (decision 64): a first-page `/rows` read replaces the one-entry table cache, so the post-run re-read is never a mid-run snapshot; paging and `/series` reuse it.
 - **A shared axis reads `core_rx_utc_ms` and nothing else** — a study CSV's `rx_utc_ms` is dev-bench uptime under one name ([suite decision 3](../../suite/decisions.md)). A mark is placed, unplaceable or uncertain; unplaceable is a gutter count, never a guessed position; the tier is chosen once and an improvement is an epoch bump; live, a mark is placed once ([decisions/time-chart.md](../decisions/time-chart.md)).
 
 ## The trace chart
