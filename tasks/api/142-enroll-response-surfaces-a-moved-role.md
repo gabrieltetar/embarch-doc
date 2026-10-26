@@ -1,6 +1,7 @@
 # 142 — The client and the enroll result say when an enrol moved a role
 
-**State:** open
+**State:** claimed by agent/api/142-enroll-response-surfaces-a-moved-role, 2026-10-26 03:42
+**Doc reserve (dispatch, 2026-10-26):** `embarch-api/decisions/client-crate.md` 11,581 / 12,288 B (707 B left), filed against `tasks/api/140` (open); nothing else in `embarch-api/` is in reserve. If your edit pushes any other file into reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** embarch-core task 110 (core decision 87), inbox drop `api-surface-enroll-vacated-row.md`, filed 2026-10-26
 **Scope:** api
 **Hardware:** none
