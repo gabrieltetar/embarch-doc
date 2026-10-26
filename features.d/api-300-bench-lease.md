@@ -1,0 +1,1 @@
+| `lease_take`/`lease_renew`/`lease_release`/`lease_show` — hold the whole bench across calls; the token (`EMBARCH_LEASE_TOKEN`) is sent on every Core call, renewed by the MCP server, a refusal shown verbatim; `status` carries `last_images` | Shipped — mock-HTTP tested only; **no two-session run against a real Core** | unit | 90 |

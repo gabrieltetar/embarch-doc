@@ -1,6 +1,6 @@
 # 145 — The bench lease client: the MCP server and CLI take, renew and send the lease token
 
-**State:** claimed by agent/api/145-bench-lease-client, 2026-10-26 06:31
+**State:** done 2026-10-26 (branch agent/api/145-bench-lease-client)
 **Source:** `tasks/core/099` (embarch-core decision 93, `embarch-core/decisions/lease.md`): Core now serves `/lease`; with none live every route behaves as before, so nothing breaks until a session takes one. Field use on a USB PD charger board, 2026-10-08 to 2026-10-20: two Claude sessions shared one DUT and one bench board through a `mkdir` lock directory because no lease existed. Filed from `inbox/api-bench-lease-client.md` by the 2026-10-26 leg.
 **Scope:** api
 **Hardware:** verify-only — every box below is testable against a scripted Core (the client's existing mock pattern); the run against an installed Core with two real sessions is the hardware-verification debt. Reclassified from the drop's `none` on filing.
@@ -24,9 +24,19 @@ Without this the lease exists and no session can use it; the lock-directory stop
 
 ## Done when
 
-- [ ] The MCP server and CLI can take, renew, release and show a lease, and send the token on every Core call.
-- [ ] A session that did not take the lease gets Core's `409` text through the tool, naming the holder.
-- [ ] The token reaches a second process (an `embarch-atlas` live call) with no per-call argument.
-- [ ] `last_images` is exposed where a session can compare `sha256` with its own image before reflashing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] The MCP server and CLI can take, renew, release and show a lease, and send the token on every Core call.
+- [x] A session that did not take the lease gets Core's `409` text through the tool, naming the holder.
+- [x] The token reaches a second process (an `embarch-atlas` live call) with no per-call argument.
+- [x] `last_images` is exposed where a session can compare `sha256` with its own image before reflashing.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done
+
+Decision 90 (`embarch-api/decisions/lease.md`): the env-var arm. `CoreClient::dispatch` sends `X-Embarch-Lease` from the process's own lease, else `EMBARCH_LEASE_TOKEN`, on every call; the MCP server spawns `lease_keepalive` (renews at a third of the TTL); a lease `409` becomes `LeaseHeldError` with Core's text verbatim, ahead of the three other `409` meanings (`validate`, `post_study`, `dev_bench_hello`). Tools `lease_take`/`lease_renew`/`lease_release`/`lease_show` and CLI twins; `status` returns `lease` and `last_images`. Tests: `tests/lease_client.rs` (11, mock Core, including the real binary with the variable set and a refusal on stderr), the bearer sweep extended with the four `/lease` routes.
+
+Atlas: no change to `embarch-atlas`; its live calls inherit the variable if it is in the environment they are launched with. A token taken through an MCP tool is not exported anywhere automatically (recorded in `open.md`).
+
+## Hardware-verification debt
+
+Run on a real installed Core with the new client and two sessions: (1) session A `lease-take`, export the token, `status` shows `lease`; (2) session B `reset` or `flash` gets the `409` text naming A; (3) A's MCP server stays leased past its TTL with no manual renew (use `ttl_s` 30 and wait 60 s); (4) an `embarch-atlas` live call with the variable exported succeeds while B is refused; (5) after a flash `status.last_images` shows the image's `sha256`. Needs embarch-core at or after 5063c0b deployed (it is not).
