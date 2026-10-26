@@ -38,8 +38,8 @@ Today only a `tracing::warn!` in the topology crate says a role moved. A caller 
 
 ## Done when
 
-- [ ] The enroll response carries `displaced` and `vacated` (+ `vacated_kept`), absent when none; a test covers role->role.
-- [ ] Core's decision/spec names the fields; changelog fragment.
+- [x] The enroll response carries `displaced` and `vacated` (+ `vacated_kept`), absent when none; a test covers role->role.
+- [x] Core's decision/spec names the fields; changelog fragment.
 
 ## Blocked
 
@@ -48,3 +48,9 @@ Today only a `tracing::warn!` in the topology crate says a role moved. A caller 
 **Ready to apply once it lands** (all built and reviewed on this branch, then reverted): in `src/api.rs` add `displaced: Option<EnrolledBoard>`, `vacated: Option<EnrolledBoard>`, `vacated_kept: Option<bool>` to `EnrollProbeResponse`, each `#[serde(skip_serializing_if = "Option::is_none")]` (`vacated_kept` = `Some(up.vacated_kept)` only when `vacated` is `Some`); move the response construction into a pure `enroll_response(board, upserted)` fn so a unit test can cover role->role without a probe; call `enroll_reporting`. Docs: new decision 87 in `decisions/enrollment.md` (+ index row), the `POST /probes/enroll` row in `interfaces/topology.md`, changelog fragment.
 
 **Wire check (done):** `embarch-api`'s `EnrollProbeResponse` mirror (`crates/embarch-core-client/src/client.rs:275`) has no `deny_unknown_fields`, and none exists on any enroll-response type in api or ui, so additive fields are not a break. They are silently dropped there (the UI re-serialises that mirror), so surfacing them is a later client/UI half.
+
+## Done (second dispatch)
+
+Built as planned: `src/api.rs` (`enroll_response`, `enroll_reporting`, three tests), decision 87, `interfaces/topology.md` row, changelog. Gate green in the code repo. Wire check stands (no `deny_unknown_fields`).
+
+**Debt, owner:** native Windows build of embarch-core not run (WSL cannot); no live enrol run. Client/UI half (surface `vacated`) not filed here.

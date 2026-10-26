@@ -23,7 +23,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The stream index](decisions/stream-index.md) | 62, 63, 64, 65, 66 | 11.0 KB |
 | [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58 | 9.1 KB |
 | [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59, 67, 68 | 11.6 KB |
-| [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57 | 8.8 KB |
+| [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57, 87 | 8.8 KB |
 | [What a role is made of](decisions/roles.md) | 75, 76, 83 | 4.1 KB |
 | [Bootloading over MCUboot serial recovery](decisions/bootload.md) | 77, 78 | 4.5 KB |
 | [Writing to a declared signal](decisions/signal-exchange.md) | 79, 85 | 9.1 KB |

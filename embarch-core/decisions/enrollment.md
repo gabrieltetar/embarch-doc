@@ -35,3 +35,8 @@ Decision 50 put `validated_at_utc_ms` on `POST /validate` alone, because that is
 
 **Decisions 75 and 76 — the closed role vocabulary, the board name, the retraction route and the board half — moved verbatim to [roles.md](roles.md)** on 2026-09-20, a mission split under [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: this file is *the human enrollment surface* (a page, a link declaration, a live re-check, what a timestamp means), and those two are *what a role is made of*. Nothing was reworded.
 
+### 87 — `POST /probes/enroll` reports the rows it moved: `displaced`, `vacated`, `vacated_kept`, absent when empty (`tasks/core/110`)
+Re-enrolling the dev-bench probe as `dut` silently vacated `dev-bench`; only a `tracing::warn!` in `embarch-topology` said so (its decision 42), so no caller could tell the user. The handler now calls `hardware::enroll_reporting` and carries its `Upserted` in the response: `displaced` (the row that held the new role under a different probe), `vacated` (the row this probe held under a different real role, as it was) and `vacated_kept` (whether that row's board half stays on record, probe half cleared; present only with `vacated`). Each is omitted when empty, so a first enrol or same-role re-enrol returns the six original fields byte for byte.
+
+**Additive, checked:** no `deny_unknown_fields` on any enroll-response type in `embarch-api` (`embarch-core-client::EnrollProbeResponse`) or `embarch-ui`; they deserialize and silently drop the new fields. Surfacing them is a client/UI half, not this one. The body is built by a pure `enroll_response(board, upserted)` so role->role is unit-tested without a probe. Measured: unit tests only; no live enrol was run.
+
