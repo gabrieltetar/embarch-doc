@@ -1,6 +1,6 @@
 # 078 — Compact ui's spec.md
 
-**State:** done, 2026-10-26 — spec.md 9,516 -> see Result.
+**State:** done — 2026-10-26 — spec.md 9,516 -> see Result.
 **Size debt due:** 2026-10-13 (two weeks; the file is 5 B inside reserve).
 **In flux:** no — as of 2026-10-26. The "In flux" section below is kept as the history of why it was parked; its one instruction (re-check the "role is a fixed slot" paragraph, never re-drop "served by the binary") still binds and is repeated under `Must not delete`.
 **Source:** tasks/ui/077 restored "served by the binary" in `embarch-ui/spec.md`'s
