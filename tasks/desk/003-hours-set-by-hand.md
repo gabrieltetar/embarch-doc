@@ -1,6 +1,6 @@
 # 003 — A tile's hours count as set by hand only when the user set them
 
-**State:** claimed by agent/desk/003-hours-set-by-hand, 2026-10-26 02:40
+**State:** done by agent/desk/003-hours-set-by-hand, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk finding 1), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
 **Hardware:** none
@@ -32,8 +32,12 @@ When done, a tile's hours are "set by hand" only when a person typed them, and a
 
 ## Done when
 
-- [ ] A tile whose ✓'d entry is deleted reopens proposing the current gap (captured minus what Harvest holds that day), and closes as covered once Harvest covers it again. A test drives ✓, more session time, entry deletion, and a covering entry.
-- [ ] A user-set override survives a reopen, and `PATCH` with `"hours": null` clears it. A test covers both.
-- [ ] An inbox drop for `embarch-ui`'s tile dialog (send hours only when changed, and a way back to computed) is filed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 57's "set by hand" stated precisely; `interfaces.md` for `PATCH` null), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A tile whose ✓'d entry is deleted reopens proposing the current gap (captured minus what Harvest holds that day), and closes as covered once Harvest covers it again. A test drives ✓, more session time, entry deletion, and a covering entry.
+- [x] A user-set override survives a reopen, and `PATCH` with `"hours": null` clears it. A test covers both.
+- [x] An inbox drop for `embarch-ui`'s tile dialog (send hours only when changed, and a way back to computed) is filed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 57's "set by hand" stated precisely; `interfaces.md` for `PATCH` null), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Outcome
+
+Decision 61 (`decisions/cockpit.md`). New `Tile.sent_hours`; ✓ writes it, `State::reopen_tiles_of_entry` clears it; `hours_override` is typed-only; `PATCH` `"hours": null` clears. One test covers all of it. UI half: `inbox/ui-tile-hours-only-when-typed.md`. Not deployed (desk service is the owner's to rebuild). Stale overrides already stored stay until cleared with null.

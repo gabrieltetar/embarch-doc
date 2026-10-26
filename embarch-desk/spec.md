@@ -20,7 +20,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 2. Invariants
 
-- **A tile proposes only what Harvest doesn't already hold** for its item that day (41), and **one with nothing left to propose closes itself** unless its hours were set by hand — computed, so it opens again if the entries go (57).
+- **A tile proposes only what Harvest doesn't already hold** for its item that day (41), and **one with nothing left to propose closes itself** unless a person typed its hours (`null` clears them; ✓'s own hours never count, 61) — computed, so it opens again if the entries go (57).
 - **A folded tile carries only what it proposed**, and goes to history with its target, never before (58). A fold goes only to a later real day; a folded row reports the hours it carried, and ✓ without a note sends the folded lines too (60).
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
