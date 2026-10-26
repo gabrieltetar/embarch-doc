@@ -4,6 +4,9 @@
 
 ## 2026-10
 
+### Added
+- `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
+
 ### Changed
 - `enroll-probe` (CLI and MCP) says when an enrol vacated or displaced a role; the client mirror carries `displaced`, `vacated`, `vacated_kept`.
 - api: signal_exchange and signal-exchange now report Core's wire fields (port_lost, echo, port identity, core state); port_lost exits 5; decision 82 amended.
