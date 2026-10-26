@@ -1,6 +1,8 @@
 # 093 — `drive_desk_slack.py`'s setup clicks the Slack toggle before it can be clicked
 
-**State:** open
+**State:** claimed by agent/ui/093-drive-desk-slack-setup-clicks-the-toggle-before-it-can-be-clicked, 2026-10-26 08:12
+**Reserve (2026-10-26 08:09 leg):** `embarch-ui/open.md` 754 B left (`ui/088`, blocked). A harness fix should
+not need it; if your unit writes there, say so in your report.
 **Source:** the 2026-10-26 06:01 leg, landing `ui/081` (`embarch-ui@35fa9da`). The worker reported 8/8; the supervisor's two re-runs on scratch ports (geckodriver 4933, UI 4898, stub desk 4996) passed every assertion they reached and then died in a scenario's *setup*: run 1 at scenario 2, run 2 at scenario 3.
 **Scope:** ui
 **Hardware:** none
