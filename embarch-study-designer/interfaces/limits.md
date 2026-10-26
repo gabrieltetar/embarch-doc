@@ -64,4 +64,10 @@ Host-only, never on the dev-bench wire; all **[assumed]**, from one 49-step fiel
 | `MAX_HOST_LINE_LEN` | 256 | `Exchange.line`, `Instrument.line`, bytes |
 | `MAX_HOST_PROMPT_LEN` | 1024 | `Prompt.text`, bytes |
 | `MAX_HOST_REPLY_LEN` | 4096 | `HostStepResult.reply`, applied by Core |
+| `MAX_HOST_REPEAT_COUNT` | 100 | `Repeat.count`, length of `values` (decision 86) |
+| `MAX_HOST_REPEAT_STEPS` | 16 | inner steps of one `Repeat` |
+| `MAX_HOST_EXPANDED_STEPS` | 512 | passes times inner steps |
+| `MAX_HOST_VALUE_LEN` | 32 | one `values` entry, bytes |
+| `MAX_HOST_LINE_COUNTS` | 32 | `HostStudy.line_counts` |
+| `MAX_HOST_PATTERN_LEN` | 256 | `LineCount.pattern`, bytes |
 

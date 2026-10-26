@@ -1,0 +1,1 @@
+| A host study repeats a block of steps (count or a values sweep) and declares per-tap line counts, with pass markers in the result type; no expected value exists to compare against | Built, **types and validation only, host tests**; Core does not accept `HostStudy` or render counts yet | host | 86 |

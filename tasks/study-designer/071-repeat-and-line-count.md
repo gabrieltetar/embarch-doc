@@ -1,6 +1,6 @@
 # 071 — Repeat a block of host steps and count matching console lines per pass, with no verdict
 
-**State:** claimed by agent/study-designer/071-repeat-and-line-count, 2026-10-26 06:00
+**State:** done
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 34 of 96 logged bench tests repeated one action 2 to 30 times and reported a count ("8 Hard Resets: 7 rx errors + 3 overruns", "30 Get_Sink_Cap", "10 rounds each"). Every count was a `grep -c` over a raw console dump
 **Scope:** study-designer
 **Hardware:** none
@@ -24,10 +24,14 @@ The field count script was one-off bash: two PowerShell readers, then six `grep 
 
 ## Done when
 
-- [ ] `Repeat` validates: count from 1 to a cap, or a non-empty `values` list. One nesting level only. `{value}` is refused outside a repeat.
-- [ ] Iteration markers are part of the host study's result type, so a view can bucket lines by pass.
-- [ ] `LineCount` validates its tap name and compiles its pattern at submit time. The schema refuses fields such as `expected`, `min` or `max`.
-- [ ] A fixture study, 8 Hard Resets with counts of `Hard Reset`, `contract in force`, `rx overrun` and `rx message error` on two taps, validates.
-- [ ] An inbox drop for Core's renderer, which counts per pass in the report view from the raw bytes on disk, is filed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `Repeat` validates: count from 1 to a cap, or a non-empty `values` list. One nesting level only. `{value}` is refused outside a repeat.
+- [x] Iteration markers are part of the host study's result type, so a view can bucket lines by pass.
+- [x] `LineCount` validates its tap name and compiles its pattern at submit time. The schema refuses fields such as `expected`, `min` or `max`.
+- [x] A fixture study, 8 Hard Resets with counts of `Hard Reset`, `contract in force`, `rx overrun` and `rx message error` on two taps, validates.
+- [x] An inbox drop for Core's renderer, which counts per pass in the report view from the raw bytes on disk, is filed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Shipped
+
+Decision 86 (`embarch-study-designer/decisions/study.md`). In `embarch-study-designer`: `HostAction::Repeat`, `HostStudy.line_counts` (`LineCount`, `PatternKind`), `IterationRef`/`IterationMarker`/`HostStudyResult`, `pass_at`, six `MAX_HOST_*` caps, fixture `tests/fixtures/host_pd_hard_reset_counts.json`. `std` now pulls `regex` so a pattern compiles at validate time; under `alloc` alone a regex is checked non-blank only. No schema bump (no consumer references `HostStudy`, grepped). `open.md` not touched. Inbox drop filed for Core's renderer: `study-designer`-adjacent, `core-host-study-line-count-render.md`. Hardware: none.
