@@ -1,10 +1,22 @@
 # 110 — Core's POST /probes/enroll reports the row a probe vacated
 
-**State:** open
+**State:** claimed by agent/core/110-enroll-response-reports-vacated-row, 2026-10-26 02:57
 **Source:** embarch-topology task 063 (decision 42), landed as topology `6732ad6`
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg
+
+Nothing in `embarch-core/` docs is in reserve. The topology side is landed on `embarch-topology`
+`main` (`6732ad6`, decision 42 in `decisions/link-declares.md`); your worktree's parent links the
+main checkouts of `embarch-topology`, `embarch-study-designer` and `embarch-smp`. Never edit
+`embarch-topology` or `embarch-api`. The new fields must be additive and absent when empty: check
+how `embarch-api`'s `embarch-core-client` reads the enroll response (`deny_unknown_fields` or a
+shared topology `wire` type would turn an additive field into a break) and say what you found in your
+report. If a client or UI half is wanted, write it as an inbox drop by absolute path to
+`/home/gabriel/Github/embarch/embarch-doc/inbox/`, not an edit. Native Windows build is a debt the
+owner runs; record it, do not attempt it. Never touch the live Core or any hardware.
 
 ## What
 
