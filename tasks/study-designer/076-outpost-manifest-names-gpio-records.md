@@ -1,6 +1,6 @@
 # 076 — `OutpostManifest` reads the `devices` and `functions` tables, so GPIO records are named in Core's trace CSV as they are in the reference decoder
 
-**State:** open
+**State:** claimed by agent/study-designer/076-outpost-manifest-gpio-names, 2026-10-26 02:23
 **Source:** DeepSeek V4 Pro suite review 2026-10-25 (cross-repo finding 3), verified by Opus against embarch-study-designer@b9a2d5df and embarch-outpost@2968f0c1
 **Scope:** study-designer
 **Hardware:** none — a table lookup tested against a literal manifest and literal records. No capture is needed.
@@ -11,6 +11,13 @@
 Manifest schema 2 added two tables: `devices` (a port's `struct device *` → name) and `functions` (a code address → symbol). `embarch-outpost`'s reference decoder uses them to name `GpioDispatch` (9) and `GpioCallbackDone` (10) records. `OutpostManifest` in `src/outpost.rs` has neither field. Serde ignores both tables, and `label()` returns an empty string for both kinds. Core renders every `*.trace.csv` through this type, so a study on firmware with GPIO tracing on (`TRACE_GPIO` defaults to `y`) gets an empty `name` column for every GPIO row. The Python decoder names the same rows. The two decoders give different output for one wire format.
 
 Direction: add `devices` and `functions` as `#[serde(default)]` maps, so a schema-1 manifest still parses. In `label()`, look up kind 9's `a` in `devices`, and look up kind 10's `a` in `functions` with bit 0 masked. `decode_outpost.py` does that masking, and `interfaces/wire.md` requires it ("a decoder must mask before looking a handler up or every one renders unnamed"). An address the manifest does not name stays empty, never guessed, which is the rule `label()` already follows.
+
+**Dispatch note, 2026-10-26:** this is a shared crate (`embarch-core` path-depends on it); keep the
+change additive and do not alter a serialized type Core writes, so no wire bump is in play. `open.md`
+is in reserve at 4,473 / 5,120 B under `tasks/study-designer/026` (blocked, nothing payable): do not
+grow it. Read `check-doc-size.py --pressure` for whichever `decisions/*.md` you file into before you
+write, and if it would push that file into reserve, file `tasks/study-designer/<NNN>-compact-study-designer.md`
+in the same commit.
 
 ## Why now
 
