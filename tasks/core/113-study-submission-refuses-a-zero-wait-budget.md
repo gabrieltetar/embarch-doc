@@ -1,6 +1,7 @@
 # 113 — Core refuses a submitted study whose Notify or Indicate step has a wait budget of 0
 
-**State:** open
+**State:** claimed by agent/core/113-study-submission-refuses-a-zero-wait-budget, 2026-10-26 04:32
+**Dispatch note:** three `embarch-core` docs are in reserve, all parked under `tasks/core/112` (blocked, `In flux: yes` because of decision 89): `decisions/probes.md` 11,263/12,288 B, `spec.md` 9,225/10,240 B, `open.md` 4,262/5,120 B. File the new decision in `decisions/studies.md` (6,250 B) or another topic file with room, never `probes.md`. Prefer not to touch `spec.md`/`open.md`; if your change needs a line in either, pay that file out of reserve in this unit (a verbatim split or wording only), carry `core/112`'s `Must not delete:` list, and delete that file from `core/112`'s `Compacts:` line, saying so in its body. `embarch-study-designer` on `main` (`5ea5ac9`) already has `Study::validate_wait_budgets()`.
 **Source:** `tasks/study-designer/075` (`embarch-study-designer` decision 83, `5ea5ac9`). Filed from the worker's inbox drop `core-call-validate-wait-budgets.md`, 2026-10-26.
 **Scope:** core
 **Hardware:** none — a submission-time check, testable with a hand-built `Study` and no probe.
