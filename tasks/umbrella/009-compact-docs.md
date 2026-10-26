@@ -1,6 +1,6 @@
 # 009 — embarch-umbrella's open.md and decisions/bind.md are in reserve
 
-**State:** blocked
+**State:** claimed by agent/umbrella/009-compact-docs, 2026-10-26 00:56
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** umbrella
 **Hardware:** none
@@ -19,7 +19,17 @@ the line at all and failed the gate.
 
 **`open.md`'s item is closed, `umbrella/023`, 2026-09-06 — 4,661 -> 4,527 B (88.4%), out of reserve.** Paid the way `022` paid it, by deletion rather than squeezing, and by the task that earned the deletion: `023` answered the `embarch-api`-not-located half of check 11's bullet, so that clause left the file instead of being rewritten shorter, and the check-8 bullet — whose whole content was a *prediction* of a run — became a one-line statement of the one thing still unrun. The new material went to [decision 42](../../embarch-umbrella/decisions/locate-api.md) instead, which is where decision 38's own residual already lives. **No protected clause was touched**: check 15's not-a-hash note, check 17's two Fail branches with which half each arm settles, and `saved.host`'s stickiness with the reason it was left unfixed are all verbatim. `decisions/bind.md` is untouched at 11,409 B (92.8%) and its item stays open, and the pass stays parked on `In flux:` below — which `023` did not make any less true: it wrote `decisions/doctor.md` — see the paragraph above for that file's real final size — and one row of `spec.md`'s table.
 
-**In flux:** yes — the open umbrella tasks still rewrite the doctor table in spec.md, and check 17's entry, now [`decisions/bind.md`](../../embarch-umbrella/decisions/bind.md), is owed a live narrow-bound Core **and an answer to whether `embarch-core install --bind 0.0.0.0` rewrites an existing narrow registration** (`020`), either of which rewrites it again. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
+**In flux:** no — for the pass this task now asks for. Unparked by the supervisor 2026-10-26
+(overdue since 2026-10-06, the ledger's oldest payable entry after `api/113` and `ui/074`, which
+were unparked the same way). The file is one decision: `--decisions` puts decision 22 at
+10,713 B, 92% of `bind.md`, pinned over the 4 KB per-decision cap. `DOC-BUDGET.md`'s per-decision
+section names this exact file and gives the remedy: **compact that entry, or make it two numbered
+decisions if it is really two arguments.** A second numbered decision moved verbatim restates
+nothing; compacting touches only settled halves (the retired 22(b)/(c) material, history that git
+holds, sentences that repeat what `spec.md`'s table or `decisions/doctor.md` already owns). The
+live parts named below stay verbatim, and so does every `Must not delete:` clause. Out of reserve
+means at or under about 11,059 B (733 B left today). The original park follows, superseded:
+yes — the open umbrella tasks still rewrite the doctor table in spec.md, and check 17's entry, now [`decisions/bind.md`](../../embarch-umbrella/decisions/bind.md), is owed a live narrow-bound Core **and an answer to whether `embarch-core install --bind 0.0.0.0` rewrites an existing narrow registration** (`020`), either of which rewrites it again. (`007` closed 2026-09-05; `spec.md`'s reserve item was paid there as a ride-along, under `016`. The *pass* is still this task's and is still parked.)
 **Must not delete:** spec.md's eighteen-row `doctor` table, and in particular which rows are **designed and unbuilt** — decisions have described checks that do not exist, the doc asserted four of them as shipped for weeks, and that table is now the only place the distinction lives; open.md's note that check 15 is not a hash comparison and must not be read as one; open.md's note that check 17's two Fail branches have never met a real narrow-bound Core, **and which half of that debt each arm settles** (`018`); in **`decisions/bind.md`** (decision 22 moved there 2026-09-06, `020`), 22(a)'s record that a loopback hit discriminates nothing and that a fix line could green its own check — **now twice over**, `bind-too-narrow`'s and `bound-narrow`'s, which are different arms with different conditions and neither collapses into the other; and, added by `umbrella/021`, **both losing arguments in `bind.md`'s last amendment** — *retract the "cannot disagree" claim instead of fixing the input* (it loses because the **fix line**, not the decision, is what a human reads while deciding what to type, so a doc that accurately describes a lie still ships the lie) and *leave the `remote` arm unguarded because the fixed input makes it unreachable* (it loses because that makes a printed remedy's correctness depend on an invariant held two hundred lines away in a struct field's initialiser). Both read as redundant once shortened and neither is; and `open.md`'s note that `saved.host` is sticky and `doctor` check 2 still reads it, **including why it was left unfixed** — that is a deliberate abstention, and without the reason it reads as an oversight somebody will "fix" on a guess.
 
 **Supervisor note, leg 016, 2026-09-06 — this task's own unpark condition has now fired, and it
@@ -44,7 +54,13 @@ reserve has actually become a wall rather than a debt notice.
 
 **`open.md` is back in reserve, and `umbrella/017` is what put it there.** That unit resolved decision 22 — built (a) as check 17, retired (b) and (c) — which closed the "two designed pieces are confirmed unbuilt" bullet but opened a new one: check 17's two Fail branches have never met a real narrow-bound Core, and that debt has to be written down somewhere. `open.md` 4509 → **4840 B (94.5%)**; `spec.md` went the other way, 9014 → **8966 B (87.6%)**, because retiring 22(b-c) deleted two table rows. Filed here rather than as a second task, per `tasks/README.md`.
 
-This task stays `blocked` on `In flux: yes`, which is still true.
+This task stayed `blocked` on `In flux: yes` until the supervisor unparked it on 2026-10-26 (see
+`In flux:` above).
+
+**Reserve, for the worker (2026-10-26):** `decisions/bind.md` 733 B left (this task);
+`decisions/install.md` **217 B left** (parked on `umbrella/079`, do not write it);
+`decisions/projects.md` 1,172 B left (`umbrella/084`); `open.md` 1,072 B left (`umbrella/090`).
+If a settled fact has to move out of `bind.md`, check the destination's size first.
 
 ## What
 
