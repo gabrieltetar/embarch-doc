@@ -1,6 +1,11 @@
 # 098 — Make a console exchange say what happened on the wire: nothing back, the write sent, the port lost, the marker line cut
 
-**State:** open
+**State:** claimed by agent/core/098-exchange-says-what-happened-on-the-wire, 2026-10-26 00:58
+**Reserve, for the worker (2026-10-26):** no `embarch-core` doc file is in reserve, but decision 79
+(`decisions/signal-exchange.md`) is already 5,494 B against `DOC-BUDGET.md`'s 4 KB per-decision
+cap. Amend 79 only where its existing text becomes false; put the new reasoning (what the answer
+reports and why) in a new numbered decision that cites 79. `api/123` runs in parallel and does not
+see these fields; the api and atlas follow-ups this task asks for go to `inbox/` as drops.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 10 of 122 `signal_exchange` calls came back `text: ""`, `until_seen: false` from five different causes; 2 answered `500` for a command that had run; 14 of 29 replies waiting for a mid-line marker stopped inside that line (`pd: o`)
 **Scope:** core
 **Hardware:** verify-only
