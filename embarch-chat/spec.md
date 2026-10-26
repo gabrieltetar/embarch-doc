@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 installed 2026-10-25 17:08** (embarch-chat d998b2f), after three review rounds, live after the owner's window reload, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8 deployed the same minute. The repo is local only, with no GitHub remote, by the owner's choice.
+**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 installed 2026-10-25 17:08** (embarch-chat d998b2f), after three review rounds, live after the owner's window reload, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8 deployed the same minute. **Decisions 89–91 installed 2026-10-26 12:42** (embarch-chat 0f8d613), live after the owner's window reload. The repo has a public GitHub remote, and `main` is pushed.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md).
 
@@ -41,6 +41,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Constant | Value |
 |---|---|
 | Idle close | 5 min, `embarchChat.idleMinutes` (41) |
+| The column | 56rem centred, prose 42rem; gutter and step indent `clamp(8px, 2.5vw, 16px)` (91) |
 | Full resume | ready 0.66 s, first token 1.46 s [measured 2026-10-22] |
 | Memory per chat process | 457 MB full, 242 MB stripped [measured 2026-10-22] |
 | Prompt cache a reply writes | 1 hour [measured 2026-10-23, every recorded reply] (69) |
