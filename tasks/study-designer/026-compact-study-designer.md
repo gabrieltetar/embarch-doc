@@ -1,6 +1,6 @@
 # 026 — Compact `embarch-study-designer/open.md`
 
-**State:** open
+**State:** blocked — paid under cap on 2026-10-25 (5,447 → 4,473 B, the Closed section removed), still in reserve (floor 3,892 B); every remaining bullet is a live question or a design boundary. Unparks exactly as `## Blocked` below says; nothing in the file is payable today.
 
 ## Dispatch note, 2026-10-25 leg — read this one first
 
