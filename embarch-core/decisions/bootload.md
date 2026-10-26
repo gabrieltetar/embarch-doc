@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-30.
 
-The second way firmware reaches a DUT, beside a probe's `POST /flash`: a signed image handed to the DUT's own MCUboot serial-recovery bootloader over its USB CDC ACM port. The cross-repo design, and what is still to build: [bootload-proposal.md](../../bootload-proposal.md). The SMP client is [`embarch-smp`](../../embarch-smp/spec.md); the two port identities are [`embarch-topology` decision 36](../../embarch-topology/decisions/link-declares.md).
+The second way firmware reaches a DUT, beside a probe's `POST /flash`: a signed image handed to the DUT's own MCUboot serial-recovery bootloader over its USB CDC ACM port. The cross-repo design, and what is still to build: [bootload-proposal.md](../../bootload-proposal.md). The SMP client is [`embarch-smp`](../../embarch-smp/spec.md); the two port identities are [`embarch-topology` decision 36](../../embarch-topology/decisions/bootload-ports.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
