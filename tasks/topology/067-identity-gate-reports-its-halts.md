@@ -10,7 +10,7 @@
 
 `validate_serial_for_chip` (and `Validation`) should say how many times it halted the core while checking identity, so Core stops mirroring topology's `Stm32G0Uid` arm by prefix. When done, `Validation` carries `halts: u32` (0 when the core was already halted or the family reads its ID without halting), and a new halting family cannot make Core's count wrong.
 
-`embarch-topology` is a shared crate: build it under `--no-default-features --features software,wire` as well as the default before landing, because `embarch-core-client`, `embarch-ui` and `embarch-umbrella` build it that way. `embarch-topology/decisions/enrollment.md` and `links.md` are both under 170 B from their caps (`topology/060`, `066`, blocked); record the decision elsewhere or say why.
+`embarch-topology` is a shared crate: build it under `--no-default-features --features software,wire` as well as the default before landing, because `embarch-core-client`, `embarch-ui` and `embarch-umbrella` build it that way. `embarch-topology/decisions/enrollment.md` and `links.md` are both under 170 B from their caps (`topology/060` blocked, `066` open); record the decision elsewhere or say why.
 
 ## Why now
 
