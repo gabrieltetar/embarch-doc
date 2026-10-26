@@ -21,6 +21,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch-core chip-list` — enumerate the target database, no hardware needed | Shipped | local | 34 |
 | Bearer-token auth on every endpoint | Shipped — all 26 routes asserted `401` with no token and with a wrong one, from a route list derived from `build_router`'s own source (decision 42) | hw | §4 |
 | `hw_lock` — serializes all hardware access | Shipped | unit | 4 |
+| `POST /flash` `erase`: sector-erases non-alias writable NVM only, lists `erased` ranges | Shipped — **bench check on an STM32G0 owed** | unit | 84 |
 | Cross-platform service install and control | Shipped — **all four need elevation on every OS, not just Windows** | hw | 3 |
 | `start`/`stop` CLI subcommands | Shipped — smoke-tested on Linux only | hw | 3 |
 | Auto-generated machine-wide token file | Shipped | unit | §6 |
