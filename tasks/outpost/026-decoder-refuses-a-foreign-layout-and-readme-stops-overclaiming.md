@@ -1,6 +1,6 @@
 # 026 — The reference decoder refuses a record layout it does not speak, and the README stops claiming more than the tests and measurements show
 
-**State:** claimed by agent/outpost/026-decoder-refuses-foreign-layout, 2026-10-26 04:13
+**State:** done
 **Dispatch note (2026-10-26):** no `embarch-outpost` doc is in reserve. Gate for this unit: `python3 tests/decoder_unit.py` and `python3 tests/cross_decoder.py` (say exactly what the latter needed and whether it ran), plus `check-client-names.py` and `check-docs.py`. The ztest suite and `native_sim_stream` need a Zephyr toolchain a worktree does not carry; if you change `assert_stream.py`, record that it was not run as a toolchain debt rather than claiming it green.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-outpost findings 2 and 5, plus the README half of finding 4), verified by Opus against embarch-outpost@2968f0c1
 **Scope:** outpost
@@ -22,10 +22,14 @@ In the same pass, two README claims stop overstating:
 
 ## Done when
 
-- [ ] `decoder_unit.py` feeds a header whose layout is not 3, built from literal bytes. The decoder exits non-zero, renders no record rows, and names both layouts on stderr.
-- [ ] A manifest whose `record_layout_version` disagrees with the header is refused the way a build-ID mismatch is, and a test covers it. The existing build-ID and arrival-join tests pass unchanged.
-- [ ] `tests/cross_decoder.py` still agrees with the Rust decoder on the committed layout-3 fixtures.
-- [ ] README's Status section and the Kconfig file header say what is measured and what is still assumed, in agreement with `interfaces/integration.md`'s provenance column.
-- [ ] Every README sentence about what `native_sim_stream` proves is true of `assert_stream.py`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] `decoder_unit.py` feeds a header whose layout is not 3, built from literal bytes. The decoder exits non-zero, renders no record rows, and names both layouts on stderr.
+- [x] A manifest whose `record_layout_version` disagrees with the header is refused the way a build-ID mismatch is, and a test covers it. The existing build-ID and arrival-join tests pass unchanged.
+- [x] `tests/cross_decoder.py` still agrees with the Rust decoder on the committed layout-3 fixtures.
+- [x] README's Status section and the Kconfig file header say what is measured and what is still assumed, in agreement with `interfaces/integration.md`'s provenance column.
+- [x] Every README sentence about what `native_sim_stream` proves is true of `assert_stream.py`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result (2026-10-26)
+
+Decision 27. `decode_outpost.py` refuses a foreign header layout (exit 2, no rows, both numbers, no override) and a layout-disagreeing manifest (same flag as build-ID mismatch). `TestLayoutRefusal` in `decoder_unit.py` (35 tests pass). `cross_decoder.py` ran for real (not SKIP) via a scratch suite dir symlinking the real `embarch-core`/`embarch-ui` beside this worktree: both decoders agree on 831 rows. `assert_stream.py` was NOT edited; the READMEs narrowed to what it asserts instead, so there is no toolchain debt.

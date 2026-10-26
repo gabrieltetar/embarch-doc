@@ -8,7 +8,7 @@ Current truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 - **A burst still overruns the ring under real study load, and the only lever left is the record's size.** A real capture's bursts lose **19.7% of their records across three honestly-drawn gap bands while the link averages 36% busy** — average capacity has never been the constraint. Every cheaper lever is already in: self-exclusion, the fill wait, and the ring at 2048 slots, **which cannot grow further on this DUT** (40 KB against a build already at 81.75% of 256 KB).
 
-  A record costs **9.92 bytes**, and the two largest contributors are both absolute 32-bit values in five-byte varints — the cycle count, and `a` when it is a RAM pointer. Decision 4 rejected a per-record cycle delta **for a reason entirely about emit-path cost, not wire cost**; that reasoning is still correct and **no longer relevant**, since the delta would be computed at drain time. **It is a layout-4 change and is deliberately not made yet.**
+  A record costs **9.92 bytes**, and the two largest contributors are both absolute 32-bit values in five-byte varints — the cycle count, and `a` when it is a RAM pointer. Decision 4 rejected a per-record cycle delta **for a reason entirely about emit-path cost, not wire cost**; that reasoning is still correct and **no longer relevant**, since the delta would be computed at drain time. **It is a layout-4 change and is deliberately not made yet.** The Python decoder refuses a layout-4 stream until it is taught (decision 27).
 
 ## Unmeasured
 

@@ -14,7 +14,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Manual markers](decisions/markers.md) — build-registered IDs, and the manifest table that keeps getting deleted | 6 |
 | [Naming what the wire reports](decisions/naming.md) — a pointer and a vector number become names | 7, 8 |
 | [The transport](decisions/transport.md) — a lock-free ring, overflow, and the drain loop's fixed point | 3, 5, 20 |
-| [The record layout](decisions/layout.md) — three layouts in three days, and what each traded | 4 |
+| [The record layout](decisions/layout.md) — three layouts in three days, and what each traded | 5 |
 | [Two clocks](decisions/clocks.md) — which measures, which places, and a join that refuses | 17, 18 |
 | [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable, and an operator's override for both post-hoc refusals | 9, 24 |
 | [Capture and routing](decisions/capture.md) — study-scoped, post-hoc, carrier as a bench fact | 10, 11, 12, 13 |
