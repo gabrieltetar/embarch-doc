@@ -1,6 +1,6 @@
 # 090 — `embarch-umbrella/open.md` is in reserve
 
-**State:** claimed by agent/umbrella/090-compact-open-md, 2026-10-26 02:37
+**State:** done
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/089`
 **Scope:** umbrella
 **Hardware:** none
@@ -74,8 +74,12 @@ live reasoning to make room the task's own guidance says not to do.
 
 ## Done when
 
-- [ ] `open.md` back under 90% of its 5,120 B cap, by shortening or retiring a settled item, not by
+- [x] `open.md` back under 90% of its 5,120 B cap, by shortening or retiring a settled item, not by
       deleting a live unresolved one or an owed hardware debt.
-- [ ] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
-- [ ] No unresolved item disappears without its gap actually having closed.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
+- [x] No unresolved item disappears without its gap actually having closed.
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped.
+
+## Result
+
+open.md 4,048 -> 3,672 B (below reserve line 3,920). Shortened the decision-26 bullet (detail already in decisions/prune-policy.md) and check 5 parenthetical. No bullet retired; check-15 bullet and all Hardware debt facts untouched. Human question: yes, spec.md alone answers current work; open.md holds only unresolved items.
