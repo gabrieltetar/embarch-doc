@@ -34,4 +34,6 @@ So `Text` joins `OutpostTrace` in keeping a `<tap>.arrival.csv`, and **each is k
 
 **The stamp is Core's own, explicitly**, not the record's `rx_utc_ms`: a `Text` tap can arrive mediated by dev-bench, whose stamp is that board's uptime and is comparable with nothing outside its own capture ([suite decision 3](../../suite/decisions.md)). The trace's sidecar keeps recording `record.rx_utc_ms`, which on the signal-tap path it arrives by already *is* `current_utc_ms()` — changing it would move every existing trace's stamps for no gain.
 
+**Amended 2026-10-26 by [decision 88](streams.md):** the trace's sidecar now stamps Core's receipt time too, because `OutpostTrace` is accepted on any source and `record.rx_utc_ms` is Core's clock only on a direct signal tap; and the route rebases a `Text` sidecar's offsets once rotation deletes the raw head.
+
 *Consequences.* `GET /study/{id}/stream/{name}/arrivals` serves it, because unlike a trace's there is no rendered file to join it into. The sidecar is deliberately unrotated, at ~24 bytes a chunk.
