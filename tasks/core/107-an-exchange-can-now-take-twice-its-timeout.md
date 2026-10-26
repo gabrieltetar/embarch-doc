@@ -1,6 +1,7 @@
 # 107 — A console exchange can now take twice its `timeout_ms`, past the client timeout its cap was sized under
 
-**State:** open
+**State:** claimed by agent/core/107-exchange-twice-its-timeout, 2026-10-26 00:39
+**Reserve, for the worker:** no `embarch-core` doc is in reserve today; `decisions/signal-exchange.md` is where decision 79 lives, check its size before amending.
 **Source:** `core/097`'s reviewer, 2026-10-26 (below its bar, filed by the supervisor so it is not lost when the log folds).
 **Scope:** core
 **Hardware:** none
