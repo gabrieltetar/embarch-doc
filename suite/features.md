@@ -213,6 +213,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Haiku assistant at the input: ghost text, 💡 cards that only edit the draft, reply chips after each turn, a name for each new chat | Shipped, deployed — **holding a send for the cards awaits the owner's call** | unit, local | 19, 26, 37 |
 | Prompt library as 📚 buttons: a Claude Code plugin (`/embarch-permissions`, `/embarch-claude-md`, `build-flash-verify`) plus `~/.claude/commands` — what `embarch-promptu` was planned to be | Shipped — **not yet seeded from the owner's past prompts** | local | 7, 13, 39 |
 | A step that reaches Linear, GitHub, Slack, the Desk or the bench shows the connector's glyph and names the issue, PR, channel, card, board or study it touched, as a link; the desk's reference index turns a vague "the widget PR" in a 💡 card into the PR itself, and a key or PR in Claude's prose into a link | Shipped, installed 2026-10-25, live after the owner's window reload — **the reference card not yet seen against the live index in real use** | unit, local | 86, 87, 88 |
+| A message the CLI sends Claude is a row, never an owner bubble: a background task's end is one line (`Agent "…" completed`) that opens its card, also for a task that ends while idle and after a reload; another session's message folds to its sender | Shipped, built and tested, not yet installed — **seen in the panel only against recorded CLI 2.1.287 sessions and the headless page** | unit, local | 89 |
 
 ## Not yet a sub-project
 
