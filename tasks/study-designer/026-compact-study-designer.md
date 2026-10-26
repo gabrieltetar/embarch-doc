@@ -1,6 +1,6 @@
 # 026 — Compact `embarch-study-designer/open.md`
 
-**State:** done, 2026-10-25
+**State:** open
 
 ## Dispatch note, 2026-10-25 leg — read this one first
 
@@ -173,3 +173,5 @@ unit). `changelog.d/study-designer-026-open-checked.decided.md` added.
 ## Result, 2026-10-25 leg
 
 `embarch-study-designer/open.md`: **5,447 -> 4,473 B** (cap 5,120, under the 4,608 reserve floor). Removed the whole **Closed** section: the `Study.protocols` authoring-path question, closed by decision 75's `eap_repo`, the `RunProtocol` amendment in `decisions/authoring.md`, and `embarch-ui`'s `.eap` editor (`tasks/suite/045`, `tasks/ui/070`); what the manifest taught stays in `interfaces/eap.md`. No open bullet touched. Human question: yes, `spec.md` plus `decisions/` answer what someone needs to work on the crate today; `open.md` is a ledger of undecided things only, and the closed one was history the decisions already carry.
+
+**State left `open`:** under cap but the gate still counts 4,473 / 5,120 B (87.4%, 647 B left) as reserve, and a `done` task cannot carry the debt. Every remaining bullet is a live question or a design boundary; nothing more is strikeable.
