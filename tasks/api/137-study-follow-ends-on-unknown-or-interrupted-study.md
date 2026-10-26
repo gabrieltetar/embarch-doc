@@ -1,10 +1,22 @@
 # 137 — Make `study-status --follow` and `study_watch` end on an unknown or interrupted study instead of waiting forever
 
-**State:** open
+**State:** claimed by agent/api/137-study-follow-ends-on-unknown-or-interrupted-study, 2026-10-26 02:57
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-api finding 1), verified by Opus against embarch-api@6d664853
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg
+
+**Doc reserve in `embarch-api/`:** `decisions/client-crate.md` is 11,581 / 12,288 B (707 B left),
+filed as `api/140` (open, not yours). Decision 48 lives in `decisions/study-events.md`, which is not
+in reserve; amend it there or add the new decision there, and keep out of `client-crate.md`. If your
+work pushes any other `embarch-api/` file into reserve, file `tasks/api/<NNN>-compact-api.md` in the
+same commit. `ui/082` (the live-run badge on this same `follow_study` path) is **not** running this
+leg, so you are the first of the pair. `embarch-core-client` is path-depended on by `embarch-ui` and
+`embarch-umbrella`: keep its public API source-compatible, or say plainly in your report what a
+consumer must change. Never edit `embarch-core`; the Core line numbers above are context only.
+Never touch the live Core.
 
 ## What
 
