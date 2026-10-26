@@ -1,10 +1,29 @@
 # 063 — Re-enrolling a probe under another role, or an interrupted store write, never loses an enrolled row without saying so
 
-**State:** open
+**State:** claimed by agent/topology/063-enrollment-never-loses-a-row, 2026-10-26 02:38
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 2 and 3, with 13 folded into 3), verified by Opus against embarch-topology@93a83d9c
 **Scope:** topology
 **Hardware:** none — Both halves are store logic over a file, testable against temp paths through the `*_at` split that `upsert_at`'s tests already use. No probe is opened.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg — doc reserve in your scope, read before you write a decision
+
+- **`decisions/enrollment.md` is 12,045 / 12,288 B — 243 B left**, filed against
+  `tasks/topology/060` (blocked, due 2026-11-01). Decision 35 lives there; decision 20 is in
+  `decisions/link-declares.md` (9,537 B, room). **If your decision or amendment lands in
+  `enrollment.md`, pay that file first, in your own commit:** move decision 41 (a bench board
+  enrolled with no role) **verbatim** into a new `decisions/<name>.md` named for what it settles,
+  route it from `decisions.md`, and repoint every link inside `embarch-topology/` that means 41
+  (`scripts/check-decision-refs.py`; a link from another sub-project goes to `inbox/` by absolute
+  path, not fixed). That is `060`'s own "The move". Then delete `enrollment.md` from `060`'s
+  `**Compacts:**` line and say so in its body; leave `060` blocked for `spec.md`. Do not put your
+  decision in a different topic file to dodge the cap — that is the silent failure the reserve rule
+  exists to stop.
+- **`spec.md` is 9,550 / 10,240 B — 690 B left, and stays parked** (in flux for `topology/059` and
+  `suite/046`). Keep your `spec.md` edit tight; do not compact it. If it would cross the cap, stop
+  and say so here rather than squeezing other prose.
+- Shared crate: Core and api consume it. Prefer additive API; if a public signature or a serialized
+  type changes, say so plainly in your Result.
 
 ## What
 
