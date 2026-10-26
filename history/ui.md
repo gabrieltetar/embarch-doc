@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- `build_and_flash` now logs why it built the board it did on every path, and the stored build log keeps the version, board, flash and reset lines, including a flash failure.
 - The enrol dialog now says when an enrol vacated or displaced a role, in Core's own sentence ([decision 61](../embarch-ui/decisions/topology-roles.md)).
 - Tile dialog sends hours only when edited; new Use computed button clears the override (ui decision 59).
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
