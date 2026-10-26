@@ -1,6 +1,13 @@
 # 065 — The `wire`-only build compiles again, and `enroll_reporting` is reachable from `hardware`
 
-**State:** open
+**State:** claimed by agent/topology/065-wire-only-build-and-enroll-reporting-reachable, 2026-10-26 03:13
+**Dispatch note, 2026-10-26 leg:** doc reserve in `embarch-topology/`: `decisions/enrollment.md`
+12,045 / 12,288 B (243 B left, `topology/060`, blocked) — **do not write to it**;
+`decisions/link-declares.md` 11,155 / 12,288 B (`topology/064`, open, not yours) and `spec.md`
+9,550 / 10,240 B (`topology/060`) — a sentence at most in either, and never over the cap. The gate
+item for the `wire`-only build belongs where a worker reads it (the crate's `Cargo.toml` feature
+comment, a test, or `CLAUDE.md`), not in a reserved file. Never edit a consumer repo: their builds
+go green by your fix alone. This is a shared crate; the supervisor reads your diff before merging.
 **Source:** three inbox drops from the 2026-10-26 leg's workers, merged into one task by the
 supervisor: `topology-software-feature-build-breaks.md` (ui/090 worker),
 `topology-upserted-reexport-breaks-default-build.md` (umbrella/091 worker) and
