@@ -20,8 +20,20 @@
 
 ## Done when
 
-- [ ] A builder test: a `Raw`, a `Vendor` and a `Registered` row each with operation Notify (and one with Indicate) and `timeout_ms: 5000` produce a study whose operation's wait budget is nonzero and no longer than the step's.
-- [ ] A study carrying `Notify { timeout_ms: 0 }` or `Indicate { timeout_ms: 0 }` is refused at validation with a named error, or `interfaces/types.md` states what 0 means and dev-bench already does that. Whichever is chosen is written down, and an inbox drop is filed if dev-bench must change.
+- [x] A builder test: a `Raw`, a `Vendor` and a `Registered` row each with operation Notify (and one with Indicate) and `timeout_ms: 5000` produce a study whose operation's wait budget is nonzero and no longer than the step's.
+- [x] A study carrying `Notify { timeout_ms: 0 }` or `Indicate { timeout_ms: 0 }` is refused at validation with a named error, or `interfaces/types.md` states what 0 means and dev-bench already does that. Whichever is chosen is written down, and an inbox drop is filed if dev-bench must change.
 - [ ] Bench check (debt): a UI-built study with a Notify row against a DUT that notifies within the row's timeout reports `Pass`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/types.md` for the meaning of the operation's `timeout_ms`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/types.md` for the meaning of the operation's `timeout_ms`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Outcome (2026-10-26)
+
+Decision 83 (`decisions/gatt.md`): builder copies the row's `timeout_ms` into the operation; 0 is refused (`BuildStudyError::ZeroWaitBudget`, and opt-in `Study::validate_wait_budgets()` -> `WaitBudgetError`). dev-bench unchanged. `interfaces/types.md` states the meaning. No `spec.md` or `open.md` change needed (nothing there names the 0 default). Inbox drop filed: core must call `validate_wait_budgets` on submit.
+
+**Sibling grep (read-only, main checkouts of embarch-core, -api, -ui, -topology, -outpost, -umbrella, -dev-bench excluding vendored workspaces, and embarch-doc), for `GattOperation::Notify/Indicate`, `"Notify"/"Indicate":` JSON keys and `Notify {`/`Indicate {`:** zero hits carrying an operation `timeout_ms`. The only matches are `StreamSource::GattNotify` (a tap source, unrelated), study-designer's own eap `Event::Notify`, and prose. No committed study, fixture or test carries `Notify/Indicate { timeout_ms: 0 }`. `BuildStudyError` is not named in core, api or ui, so the new variant breaks no match there.
+
+**Unrelated pre-existing red:** `cargo test --locked --no-default-features --features alloc` fails to compile (`vec!` unresolved in `src/host_study.rs` tests, lines 332-350), on main too; not touched here.
+
+## Hardware-verification debt
+
+Bench check: a UI-built study with a Notify row against a DUT that notifies within the row's timeout reports `Pass`. Needs the dev bench plus a DUT (Core redeployed with this crate).

@@ -72,4 +72,3 @@ Source: field use on a USB PD charger board (96 logged bench tests, none of them
 - **`HOST_TYPE_SCHEMA_VERSION` is not bumped here** (still 19). The types cross no hop yet, and a Core that advertised a bump without being able to accept `HostStudy` would be the drift decision 12 exists to refuse. The bump belongs to the Core unit that accepts them.
 
 The fixture `tests/fixtures/host_pd_source_sequence.json` (fixed 5/9/15/20 V, PPS 5 to 21 V at 1 A, back to 5 V, with a two-step teardown) validates in the crate's tests.
-

@@ -17,7 +17,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51, 80 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39, 82 |
 | [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |
-| [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53 |
+| [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53, 83 |
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57, 78 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
 | [What a study declares](decisions/declares.md) — firmware versions, and how each is verified | 40, 74 |
