@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- api: `capture_start`/`capture_read`/`capture_stop` tools and `capture-*` CLI twins over Core's background signal capture ([tools-capture](../embarch-api/interfaces/tools-capture.md)).
 - `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
 
 ### Changed
