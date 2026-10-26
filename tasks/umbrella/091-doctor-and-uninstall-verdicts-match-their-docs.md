@@ -1,10 +1,22 @@
 # 091 — Fix four operator-facing verdicts in `doctor` and `setup --uninstall` that say the wrong thing
 
-**State:** open
+**State:** claimed by agent/umbrella/091-doctor-and-uninstall-verdicts-match-their-docs, 2026-10-26 02:57
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-umbrella findings 1, 2, 3 and 4), verified by Opus against embarch-umbrella@1e521166
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg
+
+Nothing in `embarch-umbrella/` docs is in reserve (`open.md` was compacted to 3,672 B by
+`umbrella/090` an hour ago; keep it under its 3,920 B reserve line or file a compaction task in the
+same commit). `umbrella/092` (check 13 reading hello's 503/409 as busy) touches the same check and
+is **not** running this leg. The dev-bench CMake fact in finding 3 is context: never edit
+`embarch-dev-bench`; a doc fix there is an inbox drop by absolute path to
+`/home/gabriel/Github/embarch/embarch-doc/inbox/`. **Never run `setup`, `install`, `uninstall`,
+`up` or `down` against the real machine**, and never touch the Windows service or the live Core: the
+uninstall exit-code test must drive the step outcomes without a service. Your worktree's parent links
+`embarch-topology`, `embarch-study-designer` and `embarch-api`.
 
 ## What
 
