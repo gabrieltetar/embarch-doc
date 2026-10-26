@@ -1,6 +1,6 @@
 # 145 — The bench lease client: the MCP server and CLI take, renew and send the lease token
 
-**State:** open
+**State:** claimed by agent/api/145-bench-lease-client, 2026-10-26 06:31
 **Source:** `tasks/core/099` (embarch-core decision 93, `embarch-core/decisions/lease.md`): Core now serves `/lease`; with none live every route behaves as before, so nothing breaks until a session takes one. Field use on a USB PD charger board, 2026-10-08 to 2026-10-20: two Claude sessions shared one DUT and one bench board through a `mkdir` lock directory because no lease existed. Filed from `inbox/api-bench-lease-client.md` by the 2026-10-26 leg.
 **Scope:** api
 **Hardware:** verify-only — every box below is testable against a scripted Core (the client's existing mock pattern); the run against an installed Core with two real sessions is the hardware-verification debt. Reclassified from the drop's `none` on filing.
@@ -9,6 +9,8 @@
 ## Supervisor note, 2026-10-26 leg
 
 `embarch-atlas` reaches Core only by running the `embarch-api` CLI as a subprocess (`embarch-atlas/src/embarch_atlas/live.py:85-99`, `subprocess.run`), so an environment variable that `embarch-api` reads on every Core call reaches atlas's live calls with **no change to `embarch-atlas`**. That makes the env-var arm of "pick one" below the one that satisfies the third `Done when` box without leaving this scope. You may still pick the per-process arm, but then the atlas box needs a cross-repo drop, and decision text must say why.
+
+**Doc reserve in your scope (dispatch, 2026-10-26 06:31):** `embarch-api/decisions/client-crate.md` 11,581 / 12,288 B (707 B left, filed `api/140`, open) and `embarch-api/open.md` 4,034 / 5,120 B (1,086 B left, filed `api/144`, open). Put the lease decision in a new topic file under `embarch-api/decisions/` (indexed in `decisions.md`) rather than growing `client-crate.md`; both debts are already filed, so you owe no new compaction task unless you push a third file into reserve. `embarch-core-client` is a shared crate (`embarch-ui` path-depends on it): keep its changes additive (new optional fields, new calls), and say in your report exactly which public items you added.
 
 ## What
 
