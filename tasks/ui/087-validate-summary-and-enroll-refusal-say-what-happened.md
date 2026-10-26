@@ -1,6 +1,6 @@
 # 087 — Validate's summary never says "passed" over a warning or an empty bench, and enroll refuses an unanswerable chip itself
 
-**State:** claimed by agent/ui/087-validate-summary-and-enroll-refusal-say-what-happened, 2026-10-26 05:14
+**State:** done agent/ui/087-validate-summary-and-enroll-refusal-say-what-happened, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 8 and 10), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
@@ -28,8 +28,15 @@ spec.md:63: "one missing either binding is *empty*, not failed; **a guessed dev-
 
 ## Done when
 
-- [ ] The validate response, or the tab's reading of it, never shows "every check passed" when any check is `warn` or every check is `empty`. A browser check (`tests/browser/drive_topology.py`) covers a warn-only bench and an all-empty bench.
-- [ ] `POST /api/enroll` with an empty chip and a board type whose chip cannot be resolved answers 400 with the same guidance as `api_set_role_board`, and makes no Core call. Unit test with a stub Core.
-- [ ] The drag-and-drop dialog's refusal names the missing chip when a board type is picked.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+- [x] The validate response, or the tab's reading of it, never shows "every check passed" when any check is `warn` or every check is `empty`. A browser check (`tests/browser/drive_topology.py`) covers a warn-only bench and an all-empty bench.
+- [x] `POST /api/enroll` with an empty chip and a board type whose chip cannot be resolved answers 400 with the same guidance as `api_set_role_board`, and makes no Core call. Unit test with a stub Core.
+- [x] The drag-and-drop dialog's refusal names the missing chip when a board type is picked.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+
+## Done, 2026-10-26
+
+- Validate response gains `verdict` (failed/warned/empty/passed); the tab draws it. Warn-only and all-empty benches covered in `drive_topology.py`.
+- `resolve_chip_or_refuse` (src/topology.rs) shared by `/api/enroll` and the role route; Rust test `enroll_refuses_a_board_with_no_chip_without_calling_core` counts stub-Core connections (0). Dialog names the missing chip.
+- Decision 48 amended (decisions/board-row.md); interfaces.md updated. spec.md and open.md untouched. A saved-bench proposal sends the same route, so it is refused the same way (no separate fix needed).
+- `drive_topology.py` now sets HOME to scratch and takes `EMBARCH_UI_BIN`. Two checks fail there, both the known `tasks/ui/092` ones (sidebar five tabs; its sibling).
