@@ -8,6 +8,7 @@
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
 ### Fixed
+- Dev-bench identity gate now takes hw_lock; GET /dev-bench/hello holds study_lock during its handshake (409 vs POST /study).
 - A console exchange's write and read now share one `timeout_ms` instead of the read getting a fresh one after the write (decision 79).
 - An exchange's line is written within `timeout_ms`, retried while the device throttles, and fails with the bytes taken instead of answering for a line sent with a hole in it.
 - `POST /flash` with `erase: true` skips alias and non-writable NVM (STM32 option bytes), checks all ranges first, and answers `erased` ranges. [decision 84](../embarch-core/decisions/flashing.md)
