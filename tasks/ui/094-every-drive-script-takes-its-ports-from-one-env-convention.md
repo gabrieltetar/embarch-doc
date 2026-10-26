@@ -1,10 +1,30 @@
 # 094 — Every browser drive script takes its geckodriver and UI addresses from one environment convention
 
-**State:** open
+**State:** claimed by agent/ui/094-drive-scripts-one-port-convention, 2026-10-26 07:09
 **Source:** the 2026-10-26 leg, landing `ui/085`: its worker passed scratch ports through environment variables to `tests/browser/drive.py` and `drive_race.py`, which read none, so both ran once against `127.0.0.1:4444` and `127.0.0.1:4899`, the owner's own geckodriver and UI. `drive.py` opened a headless session on the owner's geckodriver and failed on its first navigation; nothing was left running. Earlier legs tonight had workers reach live services too, so this is a harness gap, not one worker's slip.
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 07:09 leg
+
+**This task is the isolation gap itself, so do not test it the way `ui/085` did.** You do not need a
+browser to prove the convention: the check this task asks for (a grep-style test or a gate-runnable
+script) and a unit-level test of the address helper prove it without a geckodriver. **Do not run any drive
+script whose source you have not just converted**, and never one with the variables unset. If you do run
+one end to end, start your own geckodriver and UI on scratch ports (not 4444, 4899, 4891), record their
+PIDs when you start them (not `$!` of a subshell: `ui/081`'s leg leaked one that way), confirm with `ss
+-ltnp` that your script connected to yours, and kill them by those PIDs. A process on 4444 or 4899 is the
+owner's: leave it alone. Do not do `ui/093` (the Desk Slack toggle) here.
+
+**Reserve.** `embarch-ui/spec.md` 9,099 / 10,240 B (filed under `ui/089`), `embarch-ui/open.md` 4,366 /
+5,120 B (parked under `ui/088`). This is a test-harness change; the convention belongs in
+`tests/browser/README.md`, and a decision only if you change the defaults' behaviour (record it in the
+topic file with room, not `spec.md`).
+
+**Isolation.** Do not reach the owner's live services. No live Core, no desk on `:4891`, no geckodriver on
+`:4444` and no UI on `:4899`, no real serial ports or debug probes, no owner data directories (any UI or
+stub you start gets a fresh temp dir), and no MCP tools at all. Kill only processes you started, by PID.
 
 ## What
 
