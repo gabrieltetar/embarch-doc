@@ -1,6 +1,7 @@
 # 079 — The build log says when the DUT role could not decide the board, and the stored log keeps that line
 
-**State:** open
+**State:** claimed by agent/ui/079-build-log-says-why-it-built-the-board-it-did, 2026-10-26 04:32
+**Dispatch note:** the compaction tasks named under Done when are renumbered: `spec.md` (9,099/10,240 B, 1,141 B left) is filed under `tasks/ui/089` (open, `In flux: no`), and `open.md` (4,366/5,120 B, 754 B left) under `tasks/ui/088` (blocked). Put the decision in `decisions/firmware-build.md` (8,047 B) or `decisions/topology-roles.md` (7,762 B); if you must add to `spec.md`, add no more than a phrase. The browser drive must stay isolated from the live desk the way `ui/091` made `drive_topology.py` isolated (scratch `EMBARCH_DESK_PORT`, `EMBARCH_DESK_CONFIG_DIR`, `XDG_*`), and must never reach a live Core or the desk on :4891.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 4 and 12), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
