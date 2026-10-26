@@ -1,6 +1,6 @@
 # 097 — Make a console exchange write its whole line when the device throttles, instead of losing bytes to the 50 ms port timeout
 
-**State:** open
+**State:** claimed by agent/core/097-exchange-write-throttled-device, 2026-10-26 00:08
 **Source:** field use on an STM32G0 board with a Zephyr USB CDC ACM shell, 2026-10-21: a 357-character `image data` line sent through `signal_exchange` reached the device 16 characters short with the shell echo on and 8 short with echo off; the same device took every 960-character line of a 25.6 KB image intact from pyserial on the same Windows COM port
 **Scope:** core
 **Hardware:** verify-only
