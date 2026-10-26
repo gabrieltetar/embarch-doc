@@ -15,5 +15,9 @@ embarch-study-designer/072 made `RecordReport::all_verified()` false when `total
 
 ## Done when
 
-- [ ] The zero-record case prints wording that says nothing was found, with a test.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment if reader-facing.
+- [x] The zero-record case prints wording that says nothing was found, with a test.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment if reader-facing.
+
+## Done
+
+Wording fix, no decision: `record_summary` in `src/cli.rs` prints `[no records found]` (plus leading bytes if any) when `total == 0`; test `a_zero_record_report_says_no_records_found_not_damage`. No docs made false.
