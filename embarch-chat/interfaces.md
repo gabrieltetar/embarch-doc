@@ -10,6 +10,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 
 | Setting | Default | Meaning |
 |---|---|---|
+| `embarchChat.chatLocation` | `editor` | Where a chat opens: an editor tab of its own, or `sidebar` for the secondary sidebar (92) |
 | `embarchChat.claudePath` | `claude` | The `claude` each chat runs (30) |
 | `embarchChat.idleMinutes` | `5` | How long an idle chat's process lives (41) |
 | `embarchChat.deskUrl` | `http://127.0.0.1:4891` | The desk; `127.0.0.1`, `::1` or `localhost` only, else nothing is sent |
@@ -28,7 +29,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 
 ## Views, commands and keys
 
-**Views:** an activity-bar container, *EmbArch Chat*, holding the **Threads** webview; a secondary-sidebar container holding the **Chat** webview; any chat also opens as an editor tab (17). Status bar, right: **EmbArch** (new chat, 54) and **N waiting** (35).
+**Views:** an activity-bar container, *EmbArch Chat*, holding the **Threads** webview; each chat opens as an editor tab, and what it opens goes into that tab's group (92); with `chatLocation` = `sidebar`, a secondary-sidebar container holds the **Chat** webview and any chat also opens as a tab (17). Status bar, right: **EmbArch** (new chat, 54) and **N waiting** (35).
 
 **Commands** (`embarchChat.*`): New Chat, Open Chat in Editor, Open the Oldest Waiting Chat, Refresh Threads, Show Log, Mark as Unread, Rename Chat, Focus Chat Input, Leave Chat Input, Insert @-Mention of the Selection, Reopen Closed Chat Tab; in a pending diff tab Accept the Kept Changes, Reject the Change, Reject or Keep This Change (64); on a plan tab Add Comment, Remove Comment, Send the Comments and Keep Planning (77). `embarchUi.*`: EmbArch UI: Start, Stop, Open in Browser.
 

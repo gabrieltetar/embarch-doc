@@ -40,7 +40,11 @@ As the desk's v1 did (`embarch-desk` decision 21). **Rejected:** the library fir
 
 ### 17 — The list sits left, the chat right
 
-The list behind its own activity-bar icon, the chat in the secondary sidebar where Claude Code's panel is, any chat also openable as an editor tab. **Rejected:** both stacked on the right (the list folds away), every chat a tab (chats compete with code).
+The list behind its own activity-bar icon, the chat in the secondary sidebar where Claude Code's panel is, any chat also openable as an editor tab. **Rejected:** both stacked on the right (the list folds away), every chat a tab (chats compete with code). *Amended by 92: a chat now opens as a tab, and the sidebar is a setting.*
+
+### 92 — A chat opens as an editor tab, and what it opens goes beside it
+
+Amends 17, at the owner's word, 2026-10-26: the chat in the secondary sidebar sat in VS Code's agent chat pane, and he wants it in the editor. **A chat opens as an editor tab of its own** — from the list, the +, the status bar, Start work and Open chat — and the list marks the tab in front. The secondary sidebar's view stays behind `embarchChat.chatLocation` = `sidebar`, hidden otherwise. **What a chat opens goes into the chat's own editor group as a tab of its own**, next to the chat tab: a file, an atlas citation, a tool's whole output, a plan; a diff opens in the active group, which is the chat's when it is clicked from the tab. VS Code had put them in the first group, which is the wrong group whenever the chat is not there. A web link still opens in the browser. Ctrl+Alt+Esc with no chat tab showing brings the last one forward, else starts a chat. **Rejected:** removing the sidebar view (a larger change than the request); opening in a split beside the chat (the owner asked for a tab); preview tabs (a second link would replace the first).
 
 ### 21 — The webview is Preact bundled with esbuild
 

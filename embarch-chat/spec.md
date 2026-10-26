@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 installed 2026-10-25 17:08** (embarch-chat d998b2f), after three review rounds, live after the owner's window reload, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8 deployed the same minute. **Decisions 89–91 installed 2026-10-26 12:42** (embarch-chat 0f8d613), and 91's wider column **13:11** (0067fcf), each live after the owner's window reload. The repo has a public GitHub remote, and `main` is pushed.
+**Status:** active, 2026-10-23. Shipped and deployed on the owner's machine from a local `.vsix` — decisions 1–49, with `embarch-desk` d9a8efc, `embarch-ui` 2e73649 and the desk's chat setting on. **Decisions 50–85 installed 2026-10-23 21:58** (embarch-chat b6996cc), after three independent review rounds. **Decisions 86–88 installed 2026-10-25 17:08** (embarch-chat d998b2f), after three review rounds, live after the owner's window reload, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8 deployed the same minute. **Decisions 89–91 installed 2026-10-26 12:42** (embarch-chat 0f8d613), and 91's wider column **13:11** (0067fcf), each live after the owner's window reload. **92–93 installed 14:33** (1a2057d). The repo has a public GitHub remote, and `main` is pushed.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md).
 
@@ -11,6 +11,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 ## 2. How it works
 
 - **One `claude` per open chat**, run by the extension host over Claude Code's own stream-json wire with the official panel's flags (5): permission prompts, questions and plans arrive as requests and are answered as forms; the panel declares its own autosave hook, dialogs and, when on, a diagnostics MCP server in `initialize` (61, 65, 66). The `claude` on `PATH` (30).
+- **A chat is an editor tab**, what it opens goes beside it, and `chatLocation` = `sidebar` restores the sidebar (92). **A file link opens the file Claude meant** (93).
 - **A chat belongs to the window that started it.** A thread another window or a terminal runs is read-only, opened from its transcript, with Jump (31). A past chat resumes here only when `claude agents` lists nothing running it.
 - **A process closes 5 minutes after its last input or reply** unless a background task runs, it waits on the owner, or a Remote Control bridge the owner turned on; the next message resumes it (41, 83). **A reload** — the window back within 90 s — brings back the chats on screen with their drafts, queued messages, mode and effort; an interrupted step continues only on a click (63).
 - **The desk is reached from the Node side only** (20): the list polls `GET /view`, each window polls the desk's mailbox for its folders, and Start work and Open chat land through it (11). The chat's header is its card in two lines (18).
@@ -34,7 +35,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A link taken from outside** — a tool's output, a command, the desk's index — **opens only as https to its connector's own host**; the Desk's and the bench's are built from `embarch-ui`'s address. **A `gh` step's PR is linked only in the repo the step or its output names** (87).
 - **A line of the CLI's is never the owner's**: not matched to a pending message, edited or rewound to (89).
 - **Effort is the chat's own**, never written to the owner's settings (82).
-- **A link opens once, through the extension**: http(s) in the browser, a path in the editor; any other URI is shown, not opened.
+- **A link opens once, through the extension**: http(s) in the browser, a path beside the chat (92, 93); any other URI is shown, not opened.
 
 ## 4. Constants
 
