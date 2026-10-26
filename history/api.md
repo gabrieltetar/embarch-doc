@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- `enroll-probe` (CLI and MCP) says when an enrol vacated or displaced a role; the client mirror carries `displaced`, `vacated`, `vacated_kept`.
 - api: signal_exchange and signal-exchange now report Core's wire fields (port_lost, echo, port identity, core state); port_lost exits 5; decision 82 amended.
 - api: signal-exchange exits 3 (--until never seen), 4 (zero bytes) or 5 (truncated) with a stderr line; new --clean drops escapes, echo and prompt. Decision 82.
 - Flash results carry `erased`, the ranges Core blanked; the `erase` description now says it skips option bytes and never chip-erases (core decision 84).
