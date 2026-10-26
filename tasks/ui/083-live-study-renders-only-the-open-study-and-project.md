@@ -23,8 +23,12 @@ spec.md:55: "Switching reloads every project-scoped surface — catalog, saved b
 
 ## Done when
 
-- [ ] A browser check against `stub_core.py` delays the first study's `/api/studies/{id}` response, opens a second study before it returns, and finds only the second study's steps, status and provenance on screen once both have returned.
-- [ ] The same holds when the delayed read is the post-run re-read of a study that just finished.
-- [ ] After a project switch, the Live Study picker lists only the new project's saved studies, without visiting another tab first.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/live-study.md`.
+- [x] A browser check against `stub_core.py` delays the first study's `/api/studies/{id}` response, opens a second study before it returns, and finds only the second study's steps, status and provenance on screen once both have returned.
+- [x] The same holds when the delayed read is the post-run re-read of a study that just finished.
+- [x] After a project switch, the Live Study picker lists only the new project's saved studies, without visiting another tab first.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/live-study.md`.
+
+## Done
+
+Decision 60 (`embarch-ui/decisions/live-study.md`). Browser checks: `tests/browser/drive_race.py`, `drive_switch.py` (fail unfixed, pass fixed). Not fixed, noted in decision 60: later per-tap loaders read `lsStudyId` at fetch time; badge not cleared on open. **Incident:** an early ad-hoc UI run used the default desk port and one click of "Open project" may have POSTed `desk: none` to the owner's real desk (:4891); not verifiable without its token. Later runs set `EMBARCH_DESK_PORT` to a dead port.
