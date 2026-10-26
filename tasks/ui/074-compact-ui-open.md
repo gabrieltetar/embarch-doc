@@ -1,6 +1,6 @@
 # 074 — `embarch-ui/open.md` is still in reserve after `ui/071`
 
-**State:** claimed by agent/ui/074-compact-ui-open, 2026-10-26 00:38
+**State:** done 2026-10-26 — `open.md` 5,117 -> 4,366 B, still in reserve; see `## Outcome`
 **Source:** `scripts/check-doc-size.py --pressure`, filed the moment `tasks/ui/071` closes (`done`
 tasks carry no debt forward, so its `Compacts:` line stops counting)
 **Scope:** ui
@@ -56,9 +56,21 @@ that change created real room or a new split seam, never by shortening a trigger
 
 ## Done when
 
-- [ ] `open.md` is out of reserve (at or under 3,920 B), or a fresh reason is filed here for why
-      not, dated and re-derived against the file's size at that time.
-- [ ] Whatever unparked this (a fired trigger, a new split seam, a sub-project compaction pass) is
+- [x] `open.md` is out of reserve (at or under 3,920 B), or a fresh reason is filed here for why
+      not, dated and re-derived against the file's size at that time. (Reason filed: `## Outcome`.)
+- [x] Whatever unparked this (a fired trigger, a new split seam, a sub-project compaction pass) is
       named in the report, not just asserted.
-- [ ] No open question closed by attrition to get there.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+- [x] No open question closed by attrition to get there.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/` fragment.
+
+## Outcome (2026-10-26)
+
+`open.md` 5,117 -> 4,366 B (754 B back, 3,920 B target missed by 446 B). Removed only settled
+halves already recorded elsewhere: the umbrella bullet's closed documentation half (user-guide
+§3, studies-guide §4), the build-failure drive (`firmware-build` decision 38), the GATT-placement
+check (decision 34), the 1M-row cost (decision 21), the live no-trace run (decision 37, already
+had the 349 s / 3 ms figures), and the Debug-level 0-vs-7,440-byte result, moved into decision 32.
+**Why it stops at 4,366 B:** every one of the 11 remaining bullets is a live open question with its
+own trigger or cross-repo pointer and none mixes a further settled half; getting under 3,920 B
+means shortening a live bullet or closing one by attrition, which this unit is barred from. The
+reserve is cleared of the cap risk (754 B left), not of the band.
