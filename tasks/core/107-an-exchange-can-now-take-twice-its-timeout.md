@@ -30,8 +30,12 @@ came from.
 
 ## Done when
 
-- [ ] A unit test with a fake port that takes its line just inside the deadline shows the whole
+- [x] A unit test with a fake port that takes its line just inside the deadline shows the whole
       exchange ending within the bound decision 79 states.
-- [ ] Decision 79 (`embarch-core/decisions/signal-exchange.md`) says how `timeout_ms` is split
+- [x] Decision 79 (`embarch-core/decisions/signal-exchange.md`) says how `timeout_ms` is split
       between write and read, and its cap rationale is true of that split.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`). `changelog.d/` fragment.
+- [x] Gate green (`../../../embarch-fleet/gate.md`). `changelog.d/` fragment.
+
+## Outcome
+
+One deadline for write and read (`src/exchange.rs`); write's port timeout set to the remainder per attempt; at least one read pass. Decision 79 amended. Native Windows build and real-port blocking-write behaviour: hardware/Windows verification debt (same as 097).
