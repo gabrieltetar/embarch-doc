@@ -27,6 +27,16 @@ So a detected port now carries **how many candidates it was guessed among**, set
 
 Decision 24, on `detected_by` for a declared serial with the VID gate off, moved to [links-port.md](links-port.md) — its subject is what detection reports for a link's port, that file's mission, not this one's.
 
+### 42 — A probe moving between roles reports the role it vacates, and the role keeps what was never the probe's
+
+**Decision 20's return covered one way to lose a row and missed the other.** `upsert` also removes the row sharing the new row's *probe*, and re-enrolling the dev bench's probe as `dut`, or as a bench board (decision 41), deleted the dev-bench row with nothing returned and nothing logged. The row carried the role's board type (decision 35's second binding, written by `set_role_board`) and its declared link facts, so the loss surfaced later as `NotEnrolled`.
+
+**It is reported, by return value.** `upsert_reporting` returns `Upserted { displaced, vacated, vacated_kept }`, and `validate::enroll_reporting` passes it on; `enroll` is unchanged. Leaving a bench board for a role vacates nothing, since a bench board holds no role.
+
+**The vacated role keeps its board type and link facts, with the probe half cleared** (`probe_serial`, `hardware_id`, `confirmed_at_utc_ms` to `None`, the state `NoProbeBound` already names). Those facts were never the probe's: a probe is moved between boards (decision 35). A row with no name, chip or link facts has nothing to keep, and `vacated_kept` is false. Not measured on a bench; chosen from the two decisions above.
+
+**The moved row inherits no link facts**, so they stay with the role. `enroll` carried them keyed on probe serial alone, which was right when the role did not change and wrong for a move: they describe the old role's link, and decision 20's own failure was that same inheritance. They carry only when the prior row's role equals the new one.
+
 ### 27 — `NotFound` names the rule that emptied the candidate list, and a declared link serial/interface can be unset again
 
 Decision 20's failure mode had a message that could not act on it: `NotFound`'s `Display` always printed one generic remedy — re-enroll dev-bench by role — regardless of which fact actually excluded every candidate. **That remedy cannot work for the exact case decision 20 describes**, because re-enrolling by role goes through `validate::enroll`, which carries over any already-declared `link_port_serial`/`link_port_interface` **keyed on probe serial** precisely so a role move onto different silicon doesn't inherit a stranger's link facts — and a stale declared fact on the *same* board is exactly what re-enrolling under that same probe brings straight back. There was also, until now, no way to unset either fact at all short of hand-editing `enrollment.toml`.

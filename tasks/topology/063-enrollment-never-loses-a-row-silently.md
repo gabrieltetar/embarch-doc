@@ -1,6 +1,6 @@
 # 063 — Re-enrolling a probe under another role, or an interrupted store write, never loses an enrolled row without saying so
 
-**State:** claimed by agent/topology/063-enrollment-never-loses-a-row, 2026-10-26 02:38
+**State:** done
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 2 and 3, with 13 folded into 3), verified by Opus against embarch-topology@93a83d9c
 **Scope:** topology
 **Hardware:** none — Both halves are store logic over a file, testable against temp paths through the `*_at` split that `upsert_at`'s tests already use. No probe is opened.
@@ -54,10 +54,17 @@ The probe-keyed path breaks all three at `enrollment.rs:305-308`. The empty-file
 
 ## Done when
 
-- [ ] Re-enrolling a probe that holds a role under a different role, or as a bench board, tells its caller which role it vacated, by return value and not only a log line. Fixture tests cover the role→role and role→bench-board moves.
-- [ ] After such a move the vacated role's board-type binding is either still on record or its removal is the reported outcome. Which one is a recorded decision.
-- [ ] Whether the moved row keeps the old role's declared link facts is decided, recorded, and pinned by a test.
-- [ ] A store write that fails at any point leaves the previous `enrollment.toml` loadable and unchanged, never partial or empty. A test that fails the write before replacement shows it.
-- [ ] An existing `enrollment.toml` (boards, signals, bootload ports) round-trips byte for byte as it does today.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 20 or 35 amended for the probe-keyed case), `changelog.d/` fragment dropped. If Core's `POST /probes/enroll` response should carry the displaced or vacated row (today it carries neither, `embarch-core/src/api.rs:944-1008`), a follow-up `core` drop is filed.
+- [x] Re-enrolling a probe that holds a role under a different role, or as a bench board, tells its caller which role it vacated, by return value and not only a log line. Fixture tests cover the role→role and role→bench-board moves.
+- [x] After such a move the vacated role's board-type binding is either still on record or its removal is the reported outcome. Which one is a recorded decision.
+- [x] Whether the moved row keeps the old role's declared link facts is decided, recorded, and pinned by a test.
+- [x] A store write that fails at any point leaves the previous `enrollment.toml` loadable and unchanged, never partial or empty. A test that fails the write before replacement shows it.
+- [x] An existing `enrollment.toml` (boards, signals, bootload ports) round-trips byte for byte as it does today.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 20 or 35 amended for the probe-keyed case), `changelog.d/` fragment dropped. If Core's `POST /probes/enroll` response should carry the displaced or vacated row (today it carries neither, `embarch-core/src/api.rs:944-1008`), a follow-up `core` drop is filed.
+
+## Result
+
+- `enrollment::upsert_reporting` returns `Upserted { displaced, vacated, vacated_kept }`; `validate::enroll_reporting` returns it beside the board. `enroll` unchanged. Public API: **`enrollment::upsert` (module-private, no outside caller) was replaced by `upsert_reporting`; `Upserted` and `enroll_reporting` are additive; no serialized type changed.**
+- Decision **42** (`decisions/link-declares.md`): vacated role is reported, keeps board type and link facts with probe half cleared; the moved row inherits no link facts (`enroll` now carries them only for the same role). Decision **43** (`decisions/storage.md`): temp file, `sync_all`, rename. Nothing landed in `enrollment.md`, so `060`'s split was not triggered and `060` is untouched. `spec/storage-and-roles.md` carries the spec lines; `spec.md` itself untouched.
+- Tests: role->role, role->bench board, bare vacated row, bench->role, failed write (temp name squatted by a directory); `save_at` output bytes unchanged.
+- **Debts:** rename atomicity on NTFS `%ProgramData%` and a power cut mid-sync are untested (no Windows run). Core follow-up filed: `inbox/core-enroll-response-reports-vacated-row.md`.
