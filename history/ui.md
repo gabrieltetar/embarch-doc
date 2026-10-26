@@ -16,6 +16,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- The Time chart now says when a sample strip or live mark lane is capped, how many were not drawn and how far the strip reaches ([decision 66](../embarch-ui/decisions/time-chart.md)).
 - Desk Slack browser driver waits for the toggle and reports a setup timeout as a named FAIL, not a crash.
 - A Data card's table is re-fetched when it loads, so a study opened mid-run no longer ends on the partial table; see [embarch-ui decision 64](../embarch-ui/decisions/live-study.md).
 - Desk Slack reply goes to the message it was drafted for, not what now sits at that list position; a message gone from the list is not sent to ([decision 63](../embarch-ui/decisions/shell.md)).
