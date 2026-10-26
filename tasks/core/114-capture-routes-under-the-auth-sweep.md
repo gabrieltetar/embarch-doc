@@ -1,10 +1,16 @@
 # 114 — Put the three /signals/{name}/capture routes under the auth sweep and the route-count pin
 
-**State:** open
+**State:** claimed by agent/core/114-capture-routes-under-the-auth-sweep, 2026-10-26 05:37
 **Source:** reviewer finding on core/100 (code 845f3ea, doc c43051a8): decisions 42 and 46 (embarch-core/decisions/route-sweep.md) contradicted by the new route registration; filed from `inbox/core-capture-routes-outside-auth-sweep.md` by the 2026-10-26 05:14 leg
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:37 leg
+
+**Doc reserve in your scope:** `embarch-core/spec.md` 9,398 / 10,240 B (842 B left), `open.md` 4,872 / 5,120 B (248 B left) and `decisions/probes.md` 11,263 / 12,288 B, all three filed under `tasks/core/112`, blocked `In flux: yes`. You should not need any of them: the rule change belongs in `decisions/route-sweep.md` (8,468 B, room). If you do write one of the three, compact that file in this unit, carrying `core/112`'s `Must not delete:` list, and strike only that file off its `Compacts:` line. `src/api.rs` already carries `core/100`'s capture code; leave its behaviour alone and change only the registration form and the tests.
+
+**Isolation, not optional.** No live Core (never the WSL2 gateway or `:4884`), no desk on `:4891`, no real serial ports or probes, no owner data or config dirs (`/var/lib/embarch`, `~/.config`, `%PROGRAMDATA%`): any test that starts a server uses a scratch port and a scratch data dir. Never call the `mcp__embarch-api__*` or desk tools, and never `pkill` by name.
 
 ## What
 
