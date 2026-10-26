@@ -30,6 +30,8 @@ Prompted directly: a human enrolling both real boards, already both plugged in, 
 
 **Local-bootstrap is the one case that still runs the mutation in this process**, and is why this is a property (a refusal that yields) rather than a hard error: no candidate answering is exactly what `status` reports as `core: not found`, and a machine with no Core installed yet has no other way to produce its first `enrollment.toml`. `set-dev-bench-link`'s `--clear-serial`/`--clear-interface` (decision 20) have no documented Core-side equivalent — `embarch-core/interfaces/topology.md`'s `/dev-bench/link` entry never mentions clearing — so today they refuse the same way as `--serial`/`--interface` on a reachable Core, without being able to point at a clearing curl command; closing that gap on Core's side is Core's decision to make, not this crate's.
 
+*Amended by decision 45: the guard probes the port named by `--core-port`.*
+
 ### 35 — A role is a fixed pair and a board's name is its own field; enrolling gains a counterpart
 
 **`role` was a free string, so a board's name had nowhere else to go.** A bench with a third board acquired a third role — `client-nucleo` — and from then on nothing could answer "which board is the DUT" by looking, because a role, a name and a typo were the same kind of value. [`embarch-ui` decision 44](../../embarch-ui/decisions/topology-boards.md) is where that was felt; this is what the crate did about it.

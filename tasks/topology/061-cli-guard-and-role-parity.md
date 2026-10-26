@@ -1,6 +1,6 @@
 # 061 — The topology CLI's Core guard probes the port Core really listens on, and the CLI agrees with Core about bench boards
 
-**State:** claimed by agent/topology/061-cli-guard-and-role-parity, 2026-10-26 04:53
+**State:** done 2026-10-26 — decision 45 (`decisions/cli.md`); `--core-port` guard, bench-board enroll, `unenroll --probe-serial`, help text
 **Dispatch note:** decisions 28 and 41 both live in `decisions/enrollment.md`, which is at 12,045/12,288 B (243 B left, 98%) and parked under `tasks/topology/060` (blocked, `In flux: yes` for that file only). Do not grow it past the cap. Either record the guard-port and role-set outcomes as a new decision in a file with headroom (`decisions/scope.md` 7,301 B, or a new topic file listed in `decisions.md`) and leave at most a one-line pointer under 28/41, or, if you must amend 28 or 41 in place, first split `enrollment.md` verbatim per `DOC-COMPACTION.md` §2 (a verbatim split restates nothing, so the flux park does not forbid it) and close `topology/060`'s `enrollment.md` item in the same commit. `decisions/link-declares.md` (1,133 B left) is filed under `topology/064`; you should not need it. `spec.md` is 8,365/10,240 B. No change to any public type that `embarch-core`, `embarch-api` or `embarch-umbrella` build against: they path-depend on this crate's main checkout, so a shape change breaks them the moment this lands.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 5, 6 and 11), verified by Opus against embarch-topology@93a83d9c
 **Scope:** topology
@@ -35,8 +35,8 @@ The guard's hard-coded port is at `main.rs:209`. spec/storage-and-roles.md says 
 
 ## Done when
 
-- [ ] With a Core answering on a non-default port the operator names, every mutating subcommand refuses and names that Core, shown by a test against a local listener or the pure resolution.
-- [ ] The CLI and Core accept the same set of roles on enroll, or a numbered decision records the difference. If the CLI gains bench boards, an empty role without a name is refused the way Core refuses it, and retracting by probe serial works.
-- [ ] `embarch-topology status --help` describes the probe order `candidates` uses.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 28 for the guard's port; decision 41 or spec/storage-and-roles.md for the CLI's role set), `changelog.d/` fragment dropped.
+- [x] With a Core answering on a non-default port the operator names, every mutating subcommand refuses and names that Core, shown by a test against a local listener or the pure resolution.
+- [x] The CLI and Core accept the same set of roles on enroll, or a numbered decision records the difference. If the CLI gains bench boards, an empty role without a name is refused the way Core refuses it, and retracting by probe serial works.
+- [x] `embarch-topology status --help` describes the probe order `candidates` uses.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 28 for the guard's port; decision 41 or spec/storage-and-roles.md for the CLI's role set), `changelog.d/` fragment dropped.

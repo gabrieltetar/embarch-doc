@@ -14,6 +14,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/storage.md](decisions/storage.md) | 23, 43 | Where the crate's storage physically sits, why it must match embarch-core's, and how a write replaces the file |
 | [decisions/scope.md](decisions/scope.md) | 7, 9, 10, 11, 22, 29, 30 | What it models, what it defers, and the override mechanism it deleted |
 | [decisions/enrollment.md](decisions/enrollment.md) | 14, 15, 16, 28, 35, 41 | The one surface that needs a human, the facts detection cannot produce, the fixed role pair a board's own name was split out of, and the bench board that holds neither |
+| [decisions/cli.md](decisions/cli.md) | 45 | The CLI's Core guard probes the port the operator names, and the CLI enrols and retracts bench boards the way Core does |
 | [decisions/link-declares.md](decisions/link-declares.md) | 20, 27, 36, 42 | A role's declared link facts, the role a moving probe vacates, what `NotFound` reports when they exclude everything, and a DUT's two bootload ports |
 | [decisions/validation.md](decisions/validation.md) | 21, 38, 39, 44 | What the live identity gate asserts about the silicon on a link, what it cannot, why an all-zero ID is a failed read, attaching without rewriting a running target's clocks, and refusing a requested chip that is not the enrolled one before any attach |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |
