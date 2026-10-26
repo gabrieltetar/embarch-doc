@@ -1,6 +1,6 @@
 # 003 — A stylesheet comment cites a decision number chat has never issued, for the rows 89 records
 
-**State:** done, agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26
+**State:** done — agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26
 **Source:** `chat/001`'s reviewer, 2026-10-25 (below its bar, filed by the supervisor so it is not lost when the log folds).
 **Scope:** chat
 **Hardware:** none
