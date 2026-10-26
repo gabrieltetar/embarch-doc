@@ -27,10 +27,14 @@ The docs describe two things that the code does not do.
 
 ## Done when
 
-- [ ] Nothing in `embarch-api`'s spec or decisions describes a startup check that the code does not perform. If a probe is built, a test shows MCP start against an unreachable Core logs one warning and still serves `list_projects`. If it is retracted, the decisions say so and why.
-- [ ] Decision 17 no longer describes comparing a contract version that Core does not serve.
-- [ ] Against the mock Core, `study_stream_data` for an undeclared tap returns an error containing Core's declared-tap list. The other two 404 causes ("no captured streams", and a declared tap that captured nothing) each come through with Core's own wording.
-- [ ] The same holds for `get_study_stream_arrivals`'s three 404 cases.
-- [ ] `study_stream_data`'s tool description matches what the call now returns.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Nothing in `embarch-api`'s spec or decisions describes a startup check that the code does not perform. If a probe is built, a test shows MCP start against an unreachable Core logs one warning and still serves `list_projects`. If it is retracted, the decisions say so and why.
+- [x] Decision 17 no longer describes comparing a contract version that Core does not serve.
+- [x] Against the mock Core, `study_stream_data` for an undeclared tap returns an error containing Core's declared-tap list. The other two 404 causes ("no captured streams", and a declared tap that captured nothing) each come through with Core's own wording.
+- [x] The same holds for `get_study_stream_arrivals`'s three 404 cases.
+- [x] `study_stream_data`'s tool description matches what the call now returns.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Outcome
+
+Item 1: retracted, not built. Core serves no contract version (decision 17 unbuildable), and a startup log line never reaches the agent; per-call failures already do. Decision 14 amended, 17 retired in `decisions/core-link.md`; `spec/implementation.md` §4 reworded. Item 2: `get_study_csv` keeps Core's 404 body (fixed sentence only for an empty body); test `a_stream_404_keeps_cores_body_and_an_empty_one_falls_back`; tool description updated. No error type changed shape.
