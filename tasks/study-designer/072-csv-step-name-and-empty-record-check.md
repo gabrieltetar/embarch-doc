@@ -1,10 +1,32 @@
 # 072 — A sample row cannot shift its CSV's columns, and a record check that checked nothing does not report every record verified
 
-**State:** open
+**State:** claimed by agent/study-designer/072-csv-step-name-and-empty-record-check, 2026-10-26 01:20
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer findings 2 and 3), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26
+
+- **Shared crate.** `embarch-core`, `embarch-api`, `embarch-ui` and `embarch-umbrella` path-depend
+  on this crate. Keep the public surface additive. A new error variant on a public enum that a
+  consumer matches exhaustively would break that consumer's build, which you may not edit: grep
+  the four main checkouts under `/home/gabriel/Github/embarch/` for matches on any enum you extend,
+  and if one would break, stop and report it rather than landing a change that turns another
+  repo's `main` red. A change to what Core logs or blanks is an inbox drop for `core`, as the task
+  says (write it by absolute path: `/home/gabriel/Github/embarch/embarch-doc/inbox/`).
+- **Wire schema.** If the change alters any serialized type's shape, check decision 12's bump rule
+  (`decisions/versioning.md`) and say whether a bump is owed; a bump is a cross-repo pass and is not
+  yours to make — report it.
+- **`study-designer/070` landed an hour ago** (`HostStudy`, decision 80, `alloc`-gated tests): run
+  `cargo test --all-features` as well as the default, as that unit's gate did.
+- **Doc reserve:** `embarch-study-designer/open.md` is in reserve (4,473 / 5,120 B, parked under
+  `study-designer/026`) — do not add to it. `decisions/gatt-extract.md` is 11,053 B, **6 B under**
+  its 11,059 B reserve line; `decisions/protocols.md` 10,876 B; `interfaces/types.md` 10,707 B;
+  `decisions/study.md` 10,658 B. `interfaces/decoders.md` (4.9 K) is where the task says the
+  step-name rule goes. If your work pushes any file into reserve, file
+  `tasks/study-designer/<next NNN>-compact-study-designer.md` in the same commit
+  (`scripts/check-task-numbers.py --next study-designer`).
 
 ## What
 
