@@ -1,10 +1,16 @@
 # 087 — Validate's summary never says "passed" over a warning or an empty bench, and enroll refuses an unanswerable chip itself
 
-**State:** open
+**State:** claimed by agent/ui/087-validate-summary-and-enroll-refusal-say-what-happened, 2026-10-26 05:14
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 8 and 10), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:14 leg
+
+**Doc reserve in your scope (the Done-when below names stale task numbers):** `embarch-ui/spec.md` 9,099 / 10,240 B (1,141 B left), filed under `tasks/ui/089` (open). `embarch-ui/open.md` 4,366 / 5,120 B (754 B left), filed under `tasks/ui/088`, blocked `In flux: yes`. `embarch-ui/interfaces.md` 13,679 / 15,360 B, 145 B under its reserve line. `decisions/topology-boards.md` 10,645 / 12,288 B. Prefer amending decision 48 or a topology decision file with room over growing `spec.md`; do not grow `open.md` unless you close something in it. If your work pushes `interfaces.md` into reserve, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
+
+**Isolation, not optional — this is the scope where it went wrong.** A browser drive starts the UI with `EMBARCH_DESK_PORT` set to a free scratch port (check it), and `EMBARCH_DESK_CONFIG_DIR`, `XDG_DATA_HOME`, `XDG_CONFIG_HOME` and `HOME` pointing at scratch dirs, as `tests/browser/drive_topology.py` does since `ui/091`; the stub Core runs on its own scratch port. Never let a UI run use the desk on :4891 or the owner's real config, never point the UI at the live Core (the WSL2 gateway, `:4884`), never call the `mcp__embarch-api__*` or desk tools, never touch a real probe, and never `pkill` by name. Note `tasks/ui/092`: two of `drive_topology.py`'s sidebar checks are already stale on `main`, so read a failure there against `main` before blaming your change.
 
 ## What
 
