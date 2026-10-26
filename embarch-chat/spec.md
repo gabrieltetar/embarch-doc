@@ -18,6 +18,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **The Haiku assistant**, for the chat on screen only: ghost text, 💡 cards that edit the draft, reply chips, a name for each new chat — one stripped, unsaved `claude -p` per call (19, 24–28, 34, 36, 37). The 💡 and 📚 menus go by keyboard as IntelliSense does, and a preview never moves the menu under the pointer (86).
 - **The desk's reference index is mirrored** from `GET /refs` (88): the cards call carries the issues and PRs the draft matches locally, so a vague "the widget PR" becomes the PR itself, and a key or PR in Claude's prose the index knows is a link.
 - **A step names what it touched** — the connector's glyph, then the issue, PR, channel, card, board or study as a link — and a folded run lists them (87). **Bench results become cards** from the `embarch-api` tool result already in the stream, and **atlas citations become links** into the repo's `embarch/atlas` (15, 16).
+- **What the CLI sends Claude is not the owner's** (89): a `user` line whose `origin.kind` is not `human` is no bubble — a background task's end is a one-line row (`Agent "…" completed`) that opens its card, one that ends while idle gets its row ahead of the turn the CLI starts, another session's message folds to `Message from <name>`; a reload brings the same rows back from the transcript's `queued_command`.
 
 ## 3. Invariants
 
@@ -30,6 +31,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached, and that row's preview is what shows (86).
 - **A reference in the draft is written from the desk's index, never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88).
 - **A link taken from outside** — a tool's output, a command, the desk's index — **opens only as https to its connector's own host**; the Desk's and the bench's are built from `embarch-ui`'s address. **A `gh` step's PR is linked only in the repo the step or its output names** (87).
+- **A line of the CLI's is never the owner's**: not matched to a pending message, edited or rewound to (89).
 - **Effort is the chat's own**, never written to the owner's settings (82).
 - **A link opens once, through the extension**: http(s) in the browser, a path in the editor; any other URI is shown, not opened.
 

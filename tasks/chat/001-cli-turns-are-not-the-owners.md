@@ -1,6 +1,6 @@
 # 001 — A message the CLI sends Claude is never an owner bubble
 
-**State:** claimed by agent/chat/001-cli-turns-are-not-the-owners, 2026-10-25 23:14
+**State:** done (agent/chat/001-cli-turns-are-not-the-owners, 2026-10-25)
 **Source:** owner, 2026-10-25 — a background agent's `<task-notification>` showed in a chat as a raw-XML message the owner appeared to have sent; wire shape recorded the same day on CLI 2.1.287
 **Scope:** chat
 **Hardware:** none
@@ -33,19 +33,27 @@ The owner asked for it on 2026-10-25, after a real session showed the notificati
 
 ## Done when
 
-- [ ] Two scenarios in `test/record.mjs`, recorded in a scratch folder with neutral prompts and run through `sanitize.mjs`:
+- [x] Two scenarios in `test/record.mjs`, recorded in a scratch folder with neutral prompts and run through `sanitize.mjs`:
   - **Mid-turn:** a background Agent ends while the turn still runs a foreground tool, which produces the replay line.
   - **Idle:** it ends after the turn's `result`, which produces the self-started turn.
   - **What worked on 2026-10-25:** Haiku, `--tools Agent,Bash`, the prompt `Use the Agent tool with run_in_background: true (subagent_type general-purpose) to have a subagent reply with exactly the word PING`, then a foreground tool. A standalone `sleep 45` is refused by the CLI, so use a ticking loop like the `sendnow` scenario's.
-- [ ] Wire test on the mid-turn fixture: one row linked to the Agent card, and no user entry.
-- [ ] Wire test on the idle fixture: a row ahead of the reply.
-- [ ] Reducer test: a `peer` line without `handback` gives a collapsed message row. An `origin.kind: "human"` line, and one with no `origin`, still give a user entry, so the owner's own messages do not regress.
-- [ ] Reload test: a `queued_command` attachment gives the same row.
-- [ ] Webview e2e (`npm run test:webview`): the row renders, there is no bubble, and a click opens the card.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, which has an npm bullet since 2026-10-25; this repo has no `cargo`):
+- [x] Wire test on the mid-turn fixture: one row linked to the Agent card, and no user entry.
+- [x] Wire test on the idle fixture: a row ahead of the reply.
+- [x] Reducer test: a `peer` line without `handback` gives a collapsed message row. An `origin.kind: "human"` line, and one with no `origin`, still give a user entry, so the owner's own messages do not regress.
+- [x] Reload test: a `queued_command` attachment gives the same row.
+- [x] Webview e2e (`npm run test:webview`): the row renders, there is no bubble, and a click opens the card.
+- [x] Gate green (`../../embarch-fleet/gate.md`, which has an npm bullet since 2026-10-25; this repo has no `cargo`):
   - `npm ci` in the worktree, then `npm run build`, `npm run typecheck`, `npm test` and `npm run test:webview`.
   - `python3 ../embarch-doc/scripts/check-client-names.py --repo .`
   - `check-docs.py`
   - `check-ownership.py --scope chat`
   - The desk tests skip without `EMBARCH_DESK_BIN`, and that is fine here.
-- [ ] Decision in `embarch-chat/decisions/timeline.md`, `spec.md` updated, `changelog.d/` fragment with scope `chat`.
+- [x] Decision in `embarch-chat/decisions/timeline.md`, `spec.md` updated, `changelog.d/` fragment with scope `chat`.
+
+## Result
+
+Decision **89** (`embarch-chat/decisions/timeline.md`). Scenarios `notifymid` and `notifyidle` in `test/record.mjs` (the first takes `REC_PERSIST=1` to record the transcript the reload test reads); fixtures `test/fixtures/wire/notify{mid,idle}.jsonl` and `test/fixtures/transcripts/575f17ad-….jsonl`; tests in `test/notify.test.mjs` and one webview check. `sanitize.mjs --transcript` now keeps a `queued_command`'s prompt.
+
+Two things the task text did not say. The CLI's own XML wording is `Agent "X" finished`, so the row rebuilds `completed`/`failed`/`stopped` from `<status>`. And a transcript of the panel's own messages carries `turnOrigin: "sdk"` with no `origin`: the shared predicate returns "sdk" there (so `humanPrompt` still skips it, as before) while the reducer keeps it as the owner's.
+
+Not covered: a task that ends while idle and that the CLI never starts a turn for (no recording; its row waits and is dropped at the next message or turn end).
