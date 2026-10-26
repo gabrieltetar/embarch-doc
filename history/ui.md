@@ -11,6 +11,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- Console: a Text tap that never sends a newline now publishes its partial line as cut lines at 8 KB instead of growing and re-sending it for the whole run (decision 32).
 - Live Study: a slow read for a study no longer open is dropped, and a project switch reloads the saved-study picker.
 - A live study's badge reads `running N/M` from the first step instead of `pending` for the whole run; see embarch-ui/decisions/live-study.md decision 33.
 - Saved-study write-back stays in the run's repo, an unreadable taps sidecar refuses the load, and .eap delete scans every declared block (ui/084).
