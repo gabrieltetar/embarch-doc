@@ -1,6 +1,9 @@
 # 136 — Make two documented api behaviours true: the MCP startup warning, and a stream 404 that names the declared taps
 
-**State:** open
+**State:** claimed by agent/api/136-startup-check-and-stream-404-match-their-docs, 2026-10-26 07:58
+**Reserve (2026-10-26 leg):** `embarch-api/decisions/client-crate.md` 707 B left (`api/140` filed),
+`embarch-api/open.md` 832 B left (`api/144` filed). If your unit pushes either further into reserve, say
+so in your report.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-api findings 2 and 3), verified by Opus against embarch-api@6d664853
 **Scope:** api
 **Hardware:** none
