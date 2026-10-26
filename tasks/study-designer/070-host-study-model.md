@@ -1,6 +1,10 @@
 # 070 — Host-run study model: Exchange, Prompt, Instrument and Wait steps, with teardown
 
-**State:** open
+**State:** claimed by agent/study-designer/070-host-study-model, 2026-10-26 00:58
+**Reserve, for the worker (2026-10-26):** `embarch-study-designer/open.md` 647 B left, parked on
+`tasks/study-designer/026` with nothing live payable. Put new open points in the decision or
+`spec.md` where they belong; if `open.md` must take a line, delete an answered one first, and
+file `tasks/study-designer/<NNN>-compact-study-designer.md` if you leave it tighter than you found it.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 0 studies run against 96 logged bench tests: every PD and e-load run was a bash script over `signal-exchange` (16 logged e-load runs, 972 commands), because `Action` (`embarch-study-designer/src/study.rs:715`) has only BLE steps
 **Scope:** study-designer
 **Hardware:** none
