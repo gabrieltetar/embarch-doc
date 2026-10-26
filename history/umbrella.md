@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- embarch-umbrella open.md compacted 4,048 -> 3,672 B; no item retired, hardware debts intact.
 - Split out decision 26 (verbatim) from projects.md into new prune-policy.md, which now carries the --prune deferral.
 - Umbrella decisions 21 and 25 moved verbatim from `decisions/install.md` to `decisions/setup-reversal.md`; install.md 12,071 -> 9,660 B (78.6%).
 - Compacted embarch-umbrella decisions/bind.md 11,555 -> 10,904 B (retired 22(b)/(c) and split history); decision 22's live reasoning untouched.
