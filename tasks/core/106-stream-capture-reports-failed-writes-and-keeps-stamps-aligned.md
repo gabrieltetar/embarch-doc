@@ -23,10 +23,14 @@ When this is done, a write failure marks the tap as having lost data. An arrival
 
 ## Done when
 
-- [ ] A test where the raw append fails mid-capture yields `truncated: true` for that tap, and so does a failure on its rendered file. A failure on the arrival file leaves the frames untimed rather than wrongly timed.
-- [ ] A test that drives a `Text` tap through two rotations shows that every offset `GET .../arrivals` serves points at the bytes it pointed at when written, or that the route says the head was deleted instead of serving shifted offsets.
-- [ ] A test that feeds an `OutpostTrace` tap a record whose `rx_utc_ms` differs from Core's clock stamps the sidecar with Core's receipt time.
-- [ ] `interfaces/result-layout.md` lists both sidecar kinds and their columns.
-- [ ] A follow-up is filed for embarch-ui (an inbox drop) if its console lane must change to read a rebased or refused sidecar.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A test where the raw append fails mid-capture yields `truncated: true` for that tap, and so does a failure on its rendered file. A failure on the arrival file leaves the frames untimed rather than wrongly timed.
+- [x] A test that drives a `Text` tap through two rotations shows that every offset `GET .../arrivals` serves points at the bytes it pointed at when written, or that the route says the head was deleted instead of serving shifted offsets.
+- [x] A test that feeds an `OutpostTrace` tap a record whose `rx_utc_ms` differs from Core's clock stamps the sidecar with Core's receipt time.
+- [x] `interfaces/result-layout.md` lists both sidecar kinds and their columns.
+- [x] No embarch-ui follow-up needed: the route rebases, so its offsets already line up with `GET .../stream/{name}`; the new `X-Arrivals-Head-Deleted` header is optional for it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Outcome
+
+Decision 88. Wire change: `GET .../arrivals` on a `Text` tap serves rebased offsets once the raw head is deleted, plus an `X-Arrivals-Head-Deleted` header. Windows build: not run (owner debt, unchanged).

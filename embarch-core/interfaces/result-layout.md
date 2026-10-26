@@ -16,7 +16,9 @@ study_results/<study_id>/
     ├── <tap>.1.bin      the previous segment, after one rotation
     ├── <tap>.csv        the rendering, for Samples / GattTranscript / Struct
     ├── <tap>.txt        a Text tap: raw and rendering are the same bytes
-    └── <tap>.arrival.csv  OutpostTrace only: frame_index,rx_utc_ms,frame_bytes
+    └── <tap>.arrival.csv  the arrival sidecar, never rotated, Core's receipt time on every row:
+                           OutpostTrace  frame_index,rx_utc_ms,frame_bytes
+                           Text          byte_offset,core_rx_utc_ms,bytes
 ```
 
 `named`, `timed` and `self_excluded` are three independent booleans in the index and on the wire — a trace can be named and untimed, or neither. `named` is whether an applicable manifest named the trace's threads, ISRs and markers; `timed` is whether its frames carry Core's receipt time; `self_excluded` is the third way a trace can be incomplete and the only one the *firmware* decides — whether the outpost kept its own drain thread and its own UART's interrupt out of the trace, so intervals covered by no lane are the instrument's own rather than unexplained (`embarch-outpost` decision 19). `source_deferred` is a fourth, unrelated to traces: set when the tap's declared source has no front end on this bench yet (currently `PowerFrontEnd`, `embarch-dev-bench` decision 24), so hardware that does not exist yet reads differently from a mis-named signal (decision 63).
