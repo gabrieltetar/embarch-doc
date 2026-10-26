@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Fixed
+- An exchange's line is written within `timeout_ms`, retried while the device throttles, and fails with the bytes taken instead of answering for a line sent with a hole in it.
 - `POST /flash` with `erase: true` skips alias and non-writable NVM (STM32 option bytes), checks all ranges first, and answers `erased` ranges. [decision 84](../embarch-core/decisions/flashing.md)
 ## 2026-09
 
