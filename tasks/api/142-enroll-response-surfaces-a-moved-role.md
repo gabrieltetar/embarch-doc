@@ -1,6 +1,7 @@
 # 142 — The client and the enroll result say when an enrol moved a role
 
-**State:** claimed by agent/api/142-enroll-response-surfaces-a-moved-role, 2026-10-26 03:42
+**State:** done
+**Closed:** agent/api/142-enroll-response-surfaces-a-moved-role, 2026-10-26. Hardware-verification debt: none (a live enrol that moves a role was not run; tests cover the wire shape). UI follow-up: inbox/ui-enroll-result-shows-moved-role.md.
 **Doc reserve (dispatch, 2026-10-26):** `embarch-api/decisions/client-crate.md` 11,581 / 12,288 B (707 B left), filed against `tasks/api/140` (open); nothing else in `embarch-api/` is in reserve. If your edit pushes any other file into reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** embarch-core task 110 (core decision 87), inbox drop `api-surface-enroll-vacated-row.md`, filed 2026-10-26
 **Scope:** api
@@ -17,9 +18,9 @@ A caller cannot otherwise tell the user a role moved; only a topology log line d
 
 ## Done when
 
-- [ ] The mirror carries the three fields and a test deserializes a body with and without them.
-- [ ] The enroll result text names the vacated/displaced role.
-- [ ] Gate green, docs per `DOC-PROTOCOL.md`, `changelog.d/` fragment.
+- [x] The mirror carries the three fields and a test deserializes a body with and without them.
+- [x] The enroll result text names the vacated/displaced role.
+- [x] Gate green, docs per `DOC-PROTOCOL.md`, `changelog.d/` fragment.
 
 ## Supervisor note, filing
 

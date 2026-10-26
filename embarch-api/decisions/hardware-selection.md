@@ -108,3 +108,7 @@ option.
 **`role` is optional on `enroll_probe` and `enroll-probe`, and leaving it out enrolls a bench board** ([`embarch-core` decision 83](../../embarch-core/decisions/roles.md)). This is how a board that holds no role becomes reachable by the `flash`, `reset` and `build_and_flash` a project already has. Its `probe_serial` config names the probe, and Core's gate checks the board's identity. No tool gains a parameter for this: a project names its probe exactly as it did before.
 
 **`unenroll_probe` takes `role` or `probe_serial`, exactly one**, and the CLI's `--role` and `--probe-serial` conflict. A bench board can be retracted only by its probe. The client sends `""` for an absent role instead of growing an `Option` on the wire, so Core alone decides what no role means.
+
+### 87 — The enroll result says when an enrol moved a role
+
+`EnrollProbeResponse` carries `displaced`, `vacated` (both an `EnrolledBoard`) and `vacated_kept` ([`embarch-core` decision 87](../../embarch-core/decisions/enrollment.md)). All three are `Option`, `#[serde(default)]` and skipped when `None`, so the type the UI re-serialises is byte-identical when nothing moved. `moved_roles_note()` renders one clause per move; `enroll-probe` appends it to its line and both surfaces add `displaced`, `vacated`, `vacated_kept` and `moved` to their JSON only when something moved.
