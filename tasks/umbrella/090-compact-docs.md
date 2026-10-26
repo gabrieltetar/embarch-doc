@@ -1,11 +1,34 @@
 # 090 — `embarch-umbrella/open.md` is in reserve
 
-**State:** blocked — see `**In flux:**` below.
+**State:** claimed by agent/umbrella/090-compact-open-md, 2026-10-26 02:37
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/089`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/open.md
-**In flux:** yes — see the "In flux" section.
+**In flux:** no — the check-15 bullet alone is in flux, and it is fenced off below. The other nine
+bullets are independent items, none being rewritten by queued work, so shortening them squeezes no
+live reasoning (the "In flux" section's argument covers only the check-15 bullet).
+
+## Dispatch note, 2026-10-26 leg — read this one first
+
+**Unparked by the overdue ledger** (due 2026-10-19; the entries ahead of it are owner-only or have
+nothing to pay). The file is 4,048 / 5,120 B. **The target is its reserve line, 3,920 B** (the
+1,200 B `RESERVE_FLOOR` dominates on a 5 KB file), so at least 129 B must go; the "under 90%"
+target in `## Done when` below was already met and is not the bar.
+
+**Fenced off: the check-15 bullet (decision 56, `binary_sha256`).** Leave its wording exactly as it
+is; it is the in-flux one. **Also leave every `Hardware debt:` sentence's facts intact** — what run,
+on what machine, confirming what.
+
+**Where the bytes are**, for you to judge, not a script to follow: the check-5 bullet's long
+parenthetical on why restoring the udev rules yields Pass rather than `no-probe-found` (is it stated
+in decision 18 or 49 already? `scripts/check-duplication.py embarch-umbrella`); the decision-26
+bullet's restatement of `embarch-api` decisions 69/77 (decision 26 now lives in
+`decisions/prune-policy.md` since `umbrella/084`, and may already say this); any bullet whose gap has
+closed. Retire only a bullet whose question is actually answered, and move a fact into
+`spec.md`/a decision only where it is not already stated there. Nothing else in
+`embarch-umbrella/` is in reserve. Doc-only: you have an `embarch-doc` worktree only. Answer
+`DOC-COMPACTION-PASS.md`'s human question in your Result.
 **Unparks when:** the hardware-verification debt `umbrella/089` left in this same file (check 15's
 `binary_sha256` comparison, decision 56) is paid — a real `doctor` run against the installed Core.
 Closing it rewrites that bullet down to a settled line the way check 13's `umbrella/034` bullet
