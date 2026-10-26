@@ -30,7 +30,11 @@ core/104 landed 2026-10-26 (`embarch-core/decisions/platform.md` decisions 4/14/
 
 ## Done when
 
-- [ ] Check 13 distinguishes `503`/`409` from `502`/`404` and says "busy" with the body's holder.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Check 13 distinguishes `503`/`409` from `502`/`404` and says "busy" with the body's holder.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Done
+
+Check 13 and check 11 map hello `503`/`409` to a `Busy` outcome; check 13 gives Warn, code `busy`, body quoted (decision 19). Body is plain text with no structured holder field in Core (`study.rs` hello_with, `api.rs` acquire_hw_lock), so it is quoted, not parsed. Tests are host-side against injected outcomes. No hardware debt.
