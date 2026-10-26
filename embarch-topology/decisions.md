@@ -19,7 +19,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/bootload-ports.md](decisions/bootload-ports.md) | 36 | A DUT's two declared bootload USB identities, in their own table |
 | [decisions/validation.md](decisions/validation.md) | 21, 38, 39, 44 | What the live identity gate asserts about the silicon on a link, what it cannot, why an all-zero ID is a failed read, attaching without rewriting a running target's clocks, and refusing a requested chip that is not the enrolled one before any attach |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |
-| [decisions/validate-timing.md](decisions/validate-timing.md) | 26 | The `validate` call's own freshness timestamp, distinct from the enrolled record's |
+| [decisions/validate-timing.md](decisions/validate-timing.md) | 26, 47 | The `validate` call's own freshness timestamp, distinct from the enrolled record's, and the count of halts the identity gate made |
 | [decisions/links.md](decisions/links.md) | 18, 37, 40, 46 | The DUT signal link's declared route, which signals Core may write, a signal's own line rate, and a declared serial matching several ports |
 | [decisions/links-port.md](decisions/links-port.md) | 17, 24 | A link's own declared port, distinct from its probe's, and detection's fourth answer |
 | [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19, 34 | How a mismatch reaches a human, and the live-push mechanism that was retired |

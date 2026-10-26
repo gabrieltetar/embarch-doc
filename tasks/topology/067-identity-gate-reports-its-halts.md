@@ -19,6 +19,10 @@ Core's `POST /live/core-state` and `mem-read` report `halt_count` to callers wei
 
 ## Done when
 
-- [ ] `Validation` (or its timed variant) exposes the gate's halt count, unit-tested over `read_halted` for a running and an already-halted core.
-- [ ] A Core follow-up task (via `inbox/`) replaces `live::gate_halts` with that field.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `Validation` (or its timed variant) exposes the gate's halt count, unit-tested over `read_halted` for a running and an already-halted core.
+- [x] A Core follow-up task (via `inbox/`) replaces `live::gate_halts` with that field.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result
+
+`Validation.halts: u32` (decision 47, `validate-timing.md`); `hardware_id::read_counted`; `read_halted` generic over `IdCore`, tested with a stand-in core (running: 1, already halted: 0). `Validation` derives only `Serialize`, so old payloads are not an issue. Core follow-up: `inbox/core-use-validation-halts.md`. Hardware: none needed; the stand-in covers the counter, but a real G0 read reporting `halts == 1` is unverified on a board (debt for the Core follow-up's hardware leg).

@@ -85,7 +85,7 @@ serial/interface's guess-and-clear semantics (decisions 20, 27).
 
 **A signal mismatch is not written to the alert log** — an alert's shape is board-specific and a wire has none of them.
 
-A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, its own pass instant, beside unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` exposes it via `validate_role_timed`, populating `ValidateOkResponse.validated_at_utc_ms` from the returned `Validation` (`embarch-core` decision 50).
+A validate call previously carried only the enrolled record's `confirmed_at_utc_ms` — enrolment time, not this check's. `validate_serial_timed`/`validate_role_timed` add `validated_at_utc_ms`, its own pass instant, beside unchanged `validate_serial`/`validate_role` (decision 26). `embarch-core`'s `POST /validate` exposes it via `validate_role_timed`, populating `ValidateOkResponse.validated_at_utc_ms` from the returned `Validation` (`embarch-core` decision 50). `Validation.halts` says how many times the identity gate halted the core (0 if already halted or the family reads without halting), so Core need not infer it (decision 47).
 
 ## What each consumer owns now
 
