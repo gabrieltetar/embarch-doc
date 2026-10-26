@@ -1,6 +1,6 @@
 # 101 — Capture both PD stacks' consoles for a whole host study while its steps write to them
 
-**State:** claimed by agent/core/101-console-capture-during-host-study, 2026-10-26 09:03
+**State:** done, 2026-10-26 (code and docs; the CY4500 box is left open per the Dispatch note and filed as an inbox drop, the bench check is the debt below)
 **Reserve (2026-10-26 09:03 leg):** `open.md` **50 B left**, `spec.md` 474 B left, `decisions/probes.md` 1,025 B left, all three filed against `core/112` (blocked, `In flux: yes`). Do not grow `open.md` or `spec.md`; if you must, compact that file in this unit, carrying `core/112`'s `Must not delete:` list and closing only that file's item there.
 **Dispatch note:** two boxes below are not a worker's. The CY4500 decision needs the analyzer's capture format confirmed on the analyzer, which no worker can do: do not decide it by inference; drop an `inbox/` file for it (absolute path `/home/gabriel/Github/embarch/embarch-doc/inbox/`) and leave the box open. The bench check is a hardware debt for the supervisor: write it into this file. Close the task `done` when every other box is ticked.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — every exchange drops what the console printed since the last one (`discard_pending`, `embarch-core/src/exchange.rs:223`), and a listen lasts at most 10 s. The field scripts listened in 42 windows of 1.5 to 6 s. The 8-Hard-Reset count (56 s, two consoles) bypassed Core with two PowerShell readers, and 44 Bash calls opened COM ports directly
@@ -18,10 +18,25 @@ The field project had no scope, and the CY4500 analyzer is a Windows GUI that no
 
 ## Done when
 
-- [ ] A tapped and exchanged signal is opened once, and the exchange reply equals the tap bytes between the write and `until`.
-- [ ] Two direct console taps with exchanges on both run in one study. A test covers it with two virtual serial pairs.
-- [ ] Each stored line carries Core's receive time, on one monotonic clock across taps.
+- [x] A tapped and exchanged signal is opened once, and the exchange reply equals the tap bytes between the write and `until`.
+- [x] Two direct console taps with exchanges on both run in one study. A test covers it with two virtual serial pairs.
+- [x] Each stored line carries Core's receive time, on one monotonic clock across taps.
 - [ ] `decisions.md` records a decision on the CY4500. Either a `Prompt` asks the operator to save the analyzer's capture and Core attaches that file to the study result, or the analyzer is declared out of scope. The capture format is confirmed on the analyzer before either.
 - [ ] Bench check, run by the supervisor: 8 Hard Resets sent from `pd-bench` with both consoles tapped. The event counts match a direct read of the same ports.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Worker notes (2026-10-26)
+
+**Built (code branch `agent/core/101-console-capture-during-host-study`):** a host study's `Text` + `WholeStudy` taps are decision-92 captures started at submission and stopped after the teardown (`StudyTaps`, `src/host_study.rs`); `Capture` gained an optional sink; the sink writes `streams/<name>.txt` and `.arrival.csv` per line on one study-wide monotonic clock. `read_signal_tap` (bench studies) now splits at newlines too. Decision 98; decision 95's refusal lifted for those taps. Tests use in-process fake serial pairs (the crate's existing pattern), not pty/socat.
+
+**Box left open, not a worker's (Dispatch note):** the CY4500 decision. Dropped as an inbox file; nothing decided by inference. The `decisions.md` box above stays unticked on purpose.
+
+## Hardware-verification debt
+
+Run by the supervisor, on the PD bench, with a real `embarch-core` (scratch or deployed) and both consoles enrolled as direct signals:
+
+1. Submit a host study with two `Text`/`WholeStudy` taps (the PD partner's console and the DUT's) and 8 `Exchange` steps sending a Hard Reset from `pd-bench`, with `Wait`s between. Read the two consoles directly on the same ports in a second run (or via a separate listener on a tap-less study) and compare event counts: they must match, and every Hard Reset line must appear in the tap files between the steps.
+2. Confirm the CDC ACM console survives the Hard Reset with no `gaps` in `events.json`'s `streams`, and that `\n` terminates the line (assumed, decision 95).
+3. Confirm `arrival.csv` stamps order the two consoles' lines correctly against a known PD exchange.
+4. Native Windows build of `embarch-core` (not runnable from this worktree; the COM-port open path via the capture opener is the only new platform surface).

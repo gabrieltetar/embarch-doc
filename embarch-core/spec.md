@@ -65,7 +65,7 @@ Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gate
 | `token_store.rs` | resolves/generates/persists the machine-wide token file; `local_data_dir()` |
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
-| `host_study.rs` | `POST /host-studies`, `/study/{id}/cancel`: the `Exchange`/`Wait` executor and its teardown (decision 95) |
+| `host_study.rs` | `POST /host-studies`, `/study/{id}/cancel`: the `Exchange`/`Wait` executor, teardown, taps (95, 98) |
 | `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep. Holds no column knowledge |
 | `outpost_manifest.rs` | `ManifestSlot`: binds a flash's `outpost-manifest.json` to the DUT it flashed, checks the running firmware's build ID against it before rendering a trace, and refuses to render (never to warn) on a mismatch |
 | `outpost_load.rs` | Per-subject load shares and the coverage line over a rendered `*.trace.csv` (decision 62, suite decision 4) — the answer `GET /study/{id}/stream/{name}/load` serves. Consumes the CSV `outpost_manifest.rs` already produced; never touches the raw frames or the manifest. The decoded timeline it reduces from is not served (`/load/spans` retired, decision 91); `embarch-ui` keeps its own decode permanently |
