@@ -11,6 +11,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- A Data card's table is re-fetched when it loads, so a study opened mid-run no longer ends on the partial table; see [embarch-ui decision 64](../embarch-ui/decisions/live-study.md).
 - Desk Slack reply goes to the message it was drafted for, not what now sits at that list position; a message gone from the list is not sent to ([decision 63](../embarch-ui/decisions/shell.md)).
 - Topology: Validate no longer says every check passed over a warning or an empty bench; /api/enroll refuses a board with no chip itself, like the role route (ui decision 48).
 - Console: a Text tap that never sends a newline now publishes its partial line as cut lines at 8 KB instead of growing and re-sending it for the whole run (decision 32).

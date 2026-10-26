@@ -8,7 +8,7 @@
 
 ## Supervisor note, 2026-10-26 06:30 leg — the landing carries a schema bump, announced
 
-**Announced:** `#embarch-fleet` `ts` `1793017849.375049`, 2026-10-26 06:30 MDT, no `--action`. The 30-minute window runs from that `ts`; poll it with `fleet-read.py --thread 1793017849.375049` before dispatching. A cancel drops this note's plan (quote it here); silence for 30 minutes means go.
+**Announced:** `#embarch-fleet` `ts` `1793017849.375049`, 2026-10-26 06:30 MDT, no `--action`. The 30-minute window runs from that `ts`; poll it with `fleet-read.py --thread 1793017849.375049` before dispatching. A cancel drops this note's plan (quote it here); silence for 30 minutes means go. **Window closed with no reply at 07:01** (thread polled then, 0 actionable); the announcing leg ended at its unit cap before it could run this, so the next leg may dispatch it after one more poll of the thread.
 
 This is the unit where Core first accepts a `HostStudy`, and `embarch-study-designer` decisions 80 and 86 (`decisions/study.md`, `decisions/host-repeat.md`) put the `HOST_TYPE_SCHEMA_VERSION` bump in exactly that unit. The constant lives in `embarch-study-designer/src/schema_version.rs`, so **the worker does not make it** and must not touch that repo; it ships the Core half against 19. **The landing leg makes the bump itself**, 19 to 20 with the file's history comment and any test pinning 19, as a shared-crate commit landed in the same fold as this unit's Core merge, then re-runs the Core and api gates against it. No dev-bench wire bump (`embarch-host-study-proposal.md`: JSON only). `tasks/core/116` (per-pass line counts) and `tasks/core/101` build on this unit.
 
