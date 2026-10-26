@@ -22,14 +22,16 @@ spec.md:54: "A destructive edit that would break a saved study is refused, namin
 
 ## Done when
 
-- [ ] A test opens repo A, starts a waved-mismatch run of a saved study, switches to repo B (which holds a study with the same slug) before the write-back, and finds A's file updated and B's file byte-identical.
-- [ ] Loading a study whose `_embarch_ui_taps` does not parse either refuses with a message naming the file, or returns the taps recovered from `Study.streams`. In neither case does it return an empty tap list that Save would write.
-- [ ] Deleting an `.eap` file whose block parses but does not resolve is refused while a saved study names that block. A study file the scan cannot read blocks the delete even when no block in the file resolved.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+- [x] A test opens repo A, starts a waved-mismatch run of a saved study, switches to repo B (which holds a study with the same slug) before the write-back, and finds A's file updated and B's file byte-identical.
+- [x] Loading a study whose `_embarch_ui_taps` does not parse either refuses with a message naming the file, or returns the taps recovered from `Study.streams`. In neither case does it return an empty tap list that Save would write.
+- [x] Deleting an `.eap` file whose block parses but does not resolve is refused while a saved study names that block. A study file the scan cannot read blocks the delete even when no block in the file resolved.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
 
 **Dispatch note, 2026-10-26 (supersedes the line above):** `spec.md` is out of reserve since `ui/078`
 split it (8,986 / 10,240 B). `open.md` is in reserve at 4,366 / 5,120 B (754 B left, reserve line
 3,920 B) under `tasks/ui/088`, blocked `In flux: yes`. If your work adds to `open.md`, pay for it in
 the same unit: shorten or retire a bullet your fix answers, never a live question by attrition
 (`ui/088`'s rule), and leave the file no larger than you found it. If you cannot, say so here.
+
+**Done 2026-10-26.** Fixes in `src/study_designer.rs`: write-back takes the submit-time repo; `loaded_taps` refuses (400) an unparseable sidecar; `protocol_delete_scan` covers every declared block and the stem when none resolve. Four unit tests. `open.md` untouched (4,366 B). `spec.md` 8,986 -> 9021 B. No `status.d/` fragment: nothing suite-level made false.
