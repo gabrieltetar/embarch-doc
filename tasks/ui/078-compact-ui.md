@@ -1,6 +1,6 @@
 # 078 — Compact ui's spec.md
 
-**State:** claimed by agent/ui/078-compact-ui-spec, 2026-10-26 01:20 — unparked by the supervisor 2026-10-26: overdue since 2026-10-13 and the ledger's oldest payable entry (the five ahead of it are owner-only, `suite`-scope, or paid with nothing left to pay). The flux reason below is ui/077's single paragraph edit of 2026-09-29, four weeks settled; what it protected is on the `Must not delete` list, which is where that protection belongs.
+**State:** done, 2026-10-26 — spec.md 9,516 -> see Result.
 **Size debt due:** 2026-10-13 (two weeks; the file is 5 B inside reserve).
 **In flux:** no — as of 2026-10-26. The "In flux" section below is kept as the history of why it was parked; its one instruction (re-check the "role is a fixed slot" paragraph, never re-drop "served by the binary") still binds and is repeated under `Must not delete`.
 **Source:** tasks/ui/077 restored "served by the binary" in `embarch-ui/spec.md`'s
@@ -56,7 +56,13 @@ predecessor (ui/075 → the ui/077 restore) fixed.
 
 ## Done when
 
-- [ ] `embarch-ui/spec.md` back under the reserve threshold in
+- [x] `embarch-ui/spec.md` back under the reserve threshold in
       `scripts/check-doc-size.py`.
-- [ ] Every hunk quoted in the commit message per `DOC-COMPACTION-PASS.md`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Every hunk quoted in the commit message per `DOC-COMPACTION-PASS.md`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result, 2026-10-26
+
+`embarch-ui/spec.md` 9,516 -> 8,986 B (reserve line 9,040 B; PAID). Method: a split, not a squeeze. The `## Verification technique` section moved verbatim to the new `embarch-ui/spec/verification.md` (873 B), leaving a two-line pointer; nothing deleted, so nothing to quote beyond that. The "role is a fixed slot" paragraph and "served by the binary" were not touched. Gate green.
+
+Human question (can spec.md alone say what to work on today?): yes for shape, invariants and what is live; the only thing now one hop away is how the UI is verified (harness file names), which is a pointer, not a rule.
