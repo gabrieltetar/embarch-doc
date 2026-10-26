@@ -1,6 +1,6 @@
 # 109 — Call the study-designer record-check validation, and delegate step-name blanking to csv_cell_ok
 
-**State:** open
+**State:** claimed by agent/core/109-call-validate-record-checks, 2026-10-26 02:21
 **Source:** study-designer/072 (DeepSeek review findings 2 and 3), inbox drop `core-call-validate-record-checks-and-csv-cell-ok.md`
 **Scope:** core
 **Hardware:** none
@@ -14,6 +14,10 @@ study-designer/072 added, additively:
 - `RecordReport::all_verified()` is now false when `total == 0`. Core's log at `src/study.rs:2238` therefore takes the warn branch for an empty capture or empty magic; check the warn text says "no records found" rather than implying damage. (embarch-api `src/cli.rs:1835` prints "0 of 0 records verified" for the same case; that half is api's and out of scope here: if it reads badly, drop it in `inbox/` for api.)
 
 Line numbers are from the drop and may have moved.
+
+**Dispatch note, 2026-10-26:** no `embarch-core` doc is in reserve. study-designer is at `b19c841`
+(072 merged), so both functions exist on the path-dep sibling. The api half of the zero-record
+wording stays api's: drop it in `/home/gabriel/Github/embarch/embarch-doc/inbox/` if it reads badly.
 
 ## Why now
 
