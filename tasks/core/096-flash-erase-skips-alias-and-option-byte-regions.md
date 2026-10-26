@@ -1,6 +1,6 @@
 # 096 — Make `flash` with `erase: true` skip the alias and option-byte NVM regions, so it works on an STM32G0
 
-**State:** claimed by agent/core/096-flash-erase-skips-alias-regions, 2026-10-25 23:16
+**State:** done (2026-10-25, host-side; hardware-verification debts below)
 **Source:** field use on an STM32G0B1VE board, 2026-10-21 — a flash with `erase: true` answered `500` and wrote nothing, and was the only suite path to clear a stale NVS partition that stopped every image from booting
 **Scope:** core
 **Hardware:** verify-only
@@ -29,9 +29,17 @@ On 2026-10-21 an image of 504 KB, larger than the board's code region, overwrote
 
 ## Done when
 
-- [ ] A unit test on the region filter, fed the STM32G0B1VE memory map as probe-rs 0.31 declares it, keeps `0x08000000..0x08080000` and drops the `0x1fff7800..0x1fff7820` alias; a second case shows any `is_alias` region or one with `write: false` is dropped.
-- [ ] A test shows a region the flash algorithms cannot erase fails the request before any `flashing::erase` call runs.
-- [ ] The flash response lists the ranges erased; embarch-api's MCP text prints them.
+- [x] A unit test on the region filter, fed the STM32G0B1VE memory map as probe-rs 0.31 declares it, keeps `0x08000000..0x08080000` and drops the `0x1fff7800..0x1fff7820` alias; a second case shows any `is_alias` region or one with `write: false` is dropped.
+- [x] A test shows a region the flash algorithms cannot erase fails the request before any `flashing::erase` call runs.
+- [x] The flash response lists the ranges erased (`erased`); embarch-api's MCP text printing them is a separate repo: filed as `inbox/api-flash-print-erased-ranges.md`, not done here.
 - [ ] Bench check on an STM32G0: write a non-erased word in a partition the image does not cover, flash with `erase: true`, read that word back as `0xFFFFFFFF` with `mem-read`, and the image boots.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md` updated for what `erase` erases, `changelog.d/` fragment dropped; follow-up filed for embarch-api if its tool description needs the new behaviour.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md` updated for what `erase` erases, `changelog.d/` fragment dropped; follow-up filed for embarch-api if its tool description needs the new behaviour.
+
+## Hardware-verification debts
+
+- **Bench check on an STM32G0B1VE (owner, hardware):** write a non-erased word in a partition the image does not cover, `POST /flash` with `erase: true`, `mem-read` that word back as `0xFFFFFFFF`, confirm the response `erased` is `["0x08000000..0x08080000"]` and the image boots.
+- **Native Windows build of `embarch-core`** (owner, from the main checkout): not run here.
+- The algorithm check in `hardware::plan_erase` mirrors probe-rs 0.31's crate-private selector and was tested only on a synthetic map; the real G0 target description has not been fed through it.
+
+Shipped as decision 84 (`decisions/flashing.md`). Environment note: the code worktree's parent lacked an `embarch-smp` symlink (needed by Cargo); one was added at `.worktrees/embarch-core/embarch-smp`.
