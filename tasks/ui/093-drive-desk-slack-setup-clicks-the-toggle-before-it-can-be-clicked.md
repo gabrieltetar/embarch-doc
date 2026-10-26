@@ -10,6 +10,11 @@
 
 `fresh()` in `tests/browser/drive_desk_slack.py` reloads the page, waits up to 15 s for the mention count without checking that the wait succeeded, and then clicks `#desk-slack-toggle`. On this machine geckodriver answered that click with `400 element not interactable: Element <button id="desk-slack-toggle"> could not be scrolled into view`, which the script raises as an `HTTPError` and exits on, so the scenarios after it never run. The assertions that did run all passed, so this is the harness and not the fix. Two likely causes, neither confirmed: the Desk tab is not laid out yet when the count arrives, or a pushed view re-renders the bar between the check and the click. `ui/092` fixed the same shape in `drive_topology.py` by polling for the state it needs instead of reading after a fixed wait.
 
+**Also, from `ui/094`'s review (2026-10-26):** that unit moved this script onto `tests/browser/addr.py`
+(`EMBARCH_GECKO_PORT`/`EMBARCH_UI_PORT`; see `tests/browser/README.md`), and its docstring's start-up line
+(line 11 at `embarch-ui@954a24c`) came out as three lines run together, still naming the retired
+`WEBDRIVER`. Rewrite it to the README's recipe while you are in the file. Run it only on scratch ports.
+
 ## Why now
 
 The check is `ui/081`'s only evidence that a reply cannot go to the wrong Slack message, and a check that dies in setup two runs out of two here is evidence nobody can re-run.
