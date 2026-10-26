@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Fixed
+- A probe moving roles now reports the vacated role and keeps its board type; store writes are temp-file-and-rename, never partial. embarch-topology decisions 42, 43.
 ## 2026-09
 
 ### Added
