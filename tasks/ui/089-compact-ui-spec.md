@@ -1,6 +1,8 @@
 # 089 — `embarch-ui/spec.md` is back in reserve after `ui/084`
 
-**State:** open
+**State:** claimed by agent/ui/089-compact-ui-spec, 2026-10-26 07:43
+**Reserve (2026-10-26 leg):** besides the target, `embarch-ui/open.md` has 754 B left, parked under
+`ui/088`; leave it alone.
 **Source:** `ui/084`'s fold, 2026-10-26. The worker made room for its three new behaviours by dropping
 two clauses from the destructive-edit invariant; the supervisor restored "leaving the form filled" on
 the branch, and the reviewer then found the second, "a directory it cannot fully read is not
