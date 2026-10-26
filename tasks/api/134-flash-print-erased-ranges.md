@@ -1,6 +1,6 @@
 # 134 — embarch-api: print the erased ranges from `POST /flash`, and describe the new `erase` behaviour
 
-**State:** claimed by agent/api/134-flash-print-erased-ranges, 2026-10-26 00:39
+**State:** done, agent/api/134-flash-print-erased-ranges, 2026-10-26
 **Reserve, for the worker:** no `embarch-api` doc is in reserve today (`open.md` 3,780 / 5,120 B after `api/113`).
 **Source:** `core/096`, 2026-10-25 (embarch-core decision 84)
 **Scope:** api
@@ -15,5 +15,5 @@ Core's `POST /flash` response is now `{ flashed, chip, erased }`, `erased` a lis
 
 ## Done when
 
-- [ ] The MCP flash result text lists the erased ranges when `erased` is non-empty.
-- [ ] The `erase` parameter description matches Core decision 84.
+- [x] The MCP flash result text lists the erased ranges when `erased` is non-empty.
+- [x] The `erase` parameter description matches Core decision 84.
