@@ -16,3 +16,4 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Nothing can cheaply detect a caller writing a second predicate beside a call it never makes to this crate.** `api/038`'s mirror and `embarch-umbrella/src/token.rs`'s were both found by reading a call site, not by a check; a general detector would have to recognize duplicated *logic*, not a duplicated *file*, and no cheap static check does that. This is a standing limitation, not open work — both known instances are already closed (`api/038`, `umbrella/036`); nothing points at further work here.
 
+- **A direct route cannot declare an interface (decision 46).** A device with several serial interfaces under one serial is refused as `SignalAmbiguous`, so it cannot be a direct route. Adding the field is a cross-repo change (`embarch-api`, `embarch-ui`); filed as `suite-direct-route-declared-interface`.

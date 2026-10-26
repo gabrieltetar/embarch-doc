@@ -18,7 +18,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **A declared link serial or interface can also be *unset*** (`set-dev-bench-link --clear-serial`/`--clear-interface`): `NotFound` names which rule emptied the candidate list and routes to clearing it (decision 27).
 
-**A detected port says whether it was guessed** — the result carries how many candidates the lowest-interface rule chose among, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
+**A detected port says whether it was guessed** (dev-bench's link only: a direct signal whose declared serial matches several ports is refused as `SignalAmbiguous`, decision 46) — the result carries how many candidates the lowest-interface rule chose among, **so a caller reports "COM16, guessed among 2" rather than "COM16".**
 
 **The declared *interface* decides which of the two VCOMs is the console** — `COM16` and `COM17` differ in nothing else a detector can read, and it is wired to the **higher** one. Remove the declaration and resolution does not bail — it warns, sorts by interface, takes the lowest, and reports the wrong port **as a guess** (decision 20).
 

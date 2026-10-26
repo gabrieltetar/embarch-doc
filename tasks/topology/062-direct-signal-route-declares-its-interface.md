@@ -1,6 +1,6 @@
 # 062 — A direct signal route on a multi-interface USB device resolves to a declared interface or refuses by name, never a silent guess
 
-**State:** claimed by agent/topology/062-direct-signal-route-declares-its-interface, 2026-10-26 06:43
+**State:** open — declared interface on `Route::Direct` (box 1's first half) left to inbox drop `suite-direct-route-declared-interface`; Core caller reporting left to drop `core-exchange-names-signal-ambiguous`
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 1, 4 and 8), verified by Opus against embarch-topology@93a83d9c
 **Scope:** topology
 **Hardware:** none — `port::select` is pure over an enumerated port list, and every case below is a fixture of `SerialPortInfo` rows, which is how the existing `port.rs`/`signal.rs` tests are built. Nothing needs a board to finish. Whether a direct route on a two-interface device exists on this bench today is not known (`open.md`), and this task does not need it to.
@@ -41,10 +41,10 @@ A wrong pick here looks exactly like decision 20's expensive failure, a link tha
 
 ## Done when
 
-- [ ] Fixture tests over a two-interface device's port list: a direct route with a declared interface resolves to that interface. Without one, the route never reaches a Core caller as an ordinary port. Either it is refused with an error naming each candidate port and its interface plus the declaration that fixes it, or `guessed_among` is set and a follow-up drop makes every Core signal caller report it.
-- [ ] An ambiguous declared serial is reported with a reason distinct from "not enumerable", and Core's exchange port wait does not spend its budget on it. If that needs a Core change, file it as a separate `core` drop. A port that is absent is still waited for.
-- [ ] No message on a signal's resolution path recommends `set-dev-bench-link`.
-- [ ] Two same-VID ports that both report no USB serial are not treated as one device (fixture test), or a decision records why they are.
-- [ ] An `enrollment.toml` written before this change, with signal rows lacking any new key, loads and is written back without that key.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 18 amended or a new decision for what a direct route declares and what a match on several ports does), `changelog.d/` fragment dropped. Follow-up drops are filed for `embarch-api` (the `declare_signal` tool and CLI) and `embarch-ui` (the declare form, `topology.rs:1291`) if the route's shape changed.
+- [ ] (Partly: ambiguity is refused by name, fixture-tested; the declared-interface half is out of scope, handed to drop `suite-direct-route-declared-interface`.) Fixture tests over a two-interface device's port list: a direct route with a declared interface resolves to that interface. Without one, the route never reaches a Core caller as an ordinary port. Either it is refused with an error naming each candidate port and its interface plus the declaration that fixes it, or `guessed_among` is set and a follow-up drop makes every Core signal caller report it.
+- [x] An ambiguous declared serial is reported with a reason distinct from "not enumerable", and Core's exchange port wait does not spend its budget on it. If that needs a Core change, file it as a separate `core` drop. A port that is absent is still waited for. (Done: `SignalAmbiguous` is not a `SignalMismatch`, so Core's wait falls through with no Core change; Core-side reporting is the `core` drop.)
+- [x] No message on a signal's resolution path recommends `set-dev-bench-link`.
+- [x] Two same-VID ports that both report no USB serial are not treated as one device (fixture test), or a decision records why they are.
+- [x] (No new key was added, so nothing to migrate; existing `baud` round-trip test covers the row shape.) An `enrollment.toml` written before this change, with signal rows lacking any new key, loads and is written back without that key.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 18 amended or a new decision for what a direct route declares and what a match on several ports does), `changelog.d/` fragment dropped. (Decision 46 in links.md; route shape unchanged, so no api/ui drop beyond the suite one.) Follow-up drops are filed for `embarch-api` (the `declare_signal` tool and CLI) and `embarch-ui` (the declare form, `topology.rs:1291`) if the route's shape changed.
