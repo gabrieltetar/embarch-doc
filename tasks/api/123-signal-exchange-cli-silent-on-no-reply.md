@@ -1,6 +1,9 @@
 # 123 — Make `embarch-api signal-exchange` fail loudly when no reply came back
 
-**State:** open
+**State:** claimed by agent/api/123-signal-exchange-cli-silent-on-no-reply, 2026-10-26 00:58
+**Reserve, for the worker (2026-10-26):** no `embarch-api` doc is in reserve. `core/098` (Core's
+exchange answer gains wire fields) runs in parallel this leg and is not on `main`; build against
+the `ExchangeResponse` `embarch-core-client` has today and do not add its future fields.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 146 Bash calls ran `signal-exchange` (206 invocations in loops); 109 discarded stderr, 109 gave no `--until`, 65 stripped escape codes with `sed`, 7 used `--json`
 **Scope:** api
 **Hardware:** none
