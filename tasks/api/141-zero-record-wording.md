@@ -1,6 +1,9 @@
 # 141 — The CLI's "0 of 0 records verified" says nothing was found
 
-**State:** open
+**State:** claimed by agent/api/141-zero-record-wording, 2026-10-26 08:11
+**Reserve (2026-10-26 08:09 leg):** `embarch-api/decisions/client-crate.md` 707 B left (`api/140` filed),
+`embarch-api/open.md` 832 B left (`api/144` filed). If your unit pushes either further into reserve, say
+so in your report.
 **Source:** core/109 (inbox drop `api-zero-record-wording.md`), following study-designer/072
 **Scope:** api
 **Hardware:** none — a CLI print, testable on a fabricated report.
