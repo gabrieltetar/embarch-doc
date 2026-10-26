@@ -1,0 +1,41 @@
+# 061 — The topology CLI's Core guard probes the port Core really listens on, and the CLI agrees with Core about bench boards
+
+**State:** open
+**Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 5, 6 and 11), verified by Opus against embarch-topology@93a83d9c
+**Scope:** topology
+**Hardware:** none — These are argument handling, the reachability guard and help text, all testable before any probe is opened. If the CLI gains a bench-board `enroll`, its role check runs before the attach, and the attach path is unchanged.
+**Owner:** no
+
+## What
+
+Three gaps in `bin/main.rs`.
+
+**1. The guard checks only Core's default port.**
+- `refuse_if_core_reachable` (`bin/main.rs:205-222`) probes `resolve_software_topology(DEFAULT_CORE_PORT, None, None)`, and no mutating subcommand takes `--port`.
+- Core's own `run --port` (`embarch-core/src/main.rs:64`) can listen elsewhere. With Core on another port the guard finds nothing, and `enroll`, `unenroll`, `set-board`, `validate` and `set-dev-bench-link` run in-process beside a live Core. That is the second writer decision 28 exists to refuse.
+
+**2. The CLI and Core disagree about bench boards.**
+- `check_canonical_role` (`main.rs:177-185`) refuses the empty role, and no subcommand calls `hardware::unenroll_probe` (`src/hardware/mod.rs:213`).
+- So on the local-bootstrap machine where this CLI is allowed to write, a bench board (decision 41) can be neither enrolled nor retracted.
+- Core accepts role `""` when a name is given (`embarch-core/src/api.rs:961-985`) and retracts by probe at `DELETE /probes/by-serial/{serial}` (`api.rs:152`).
+
+**3. `status --host`'s help text is wrong.**
+- It says a declared host "skips auto-detection's WSL2/loopback candidates and probes only this one" (`main.rs:31-32`).
+- `software::candidates` always probes loopback first and the WSL2 gateway second, and its doc comment says that order is deliberate (`src/software.rs:96-135`). A Core on loopback therefore wins over the named host.
+
+One possible direction:
+- Let the guard probe the port the operator names, and say which port it probed.
+- Either give the CLI the bench-board path, or record that it has none. Decision 18 already records that cost for signals.
+- Correct the help text to the order `candidates` implements.
+
+## Why now
+
+The guard's hard-coded port is at `main.rs:209`. spec/storage-and-roles.md says `is_canonical_role` is applied "by `embarch-core`'s `POST /probes/enroll` and by this crate's own CLI", but the two now accept different role sets. Decision 35 states the check twice so that a local-bootstrap bench is not left unchecked, which makes the divergence a contract gap rather than a style point.
+
+## Done when
+
+- [ ] With a Core answering on a non-default port the operator names, every mutating subcommand refuses and names that Core, shown by a test against a local listener or the pure resolution.
+- [ ] The CLI and Core accept the same set of roles on enroll, or a numbered decision records the difference. If the CLI gains bench boards, an empty role without a name is refused the way Core refuses it, and retracting by probe serial works.
+- [ ] `embarch-topology status --help` describes the probe order `candidates` uses.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 28 for the guard's port; decision 41 or spec/storage-and-roles.md for the CLI's role set), `changelog.d/` fragment dropped.
