@@ -1,0 +1,1 @@
+| `core_state` / `core-state` — where a hung core is (DHCSR, PC samples, or one counted halt for registers), plus `found`/`left`/`halt_count` on `mem_read` | Shipped — **host-side only, Core's JSON mirrored from source, never observed** | unit | 83 |

@@ -19,6 +19,13 @@ The hang hunt that motivated Core's route took 17 external probe calls; without 
 
 ## Done when
 
-- [ ] `core_state` tool and CLI, with the `halt=true` description naming the halt and its count.
-- [ ] `mem_read` description updated; tests cover the new response fields passing through.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `core_state` tool and CLI, with the `halt=true` description naming the halt and its count.
+- [x] `mem_read` description updated; tests cover the new response fields passing through.
+- [ ] Gate green: see below; supervisor re-runs it.
+
+## Result (2026-10-26)
+
+- `core_state` tool, `core-state` subcommand (`--role --halt --samples`), `CoreClient::core_state` and `RunState`/`Dhcsr`/`CoreRegisters`/`Icsr`/`CoreStateResponse` in `embarch-core-client`. `MemReadResponse` gained `found`/`left`/`halt_count` as `Option` with `serde(default)` (older Core still parses). Documented in api decision 83 (amended), `tools-build-flash.md`, `api-310` feature row.
+- **embarch-ui check:** `grep -rn "MemRead\|mem_read" embarch-ui --include=*.rs` found nothing: ui neither constructs nor matches `MemReadResponse`. The change is additive; the supervisor still builds ui at landing.
+- **Hardware-verification debt:** Core's JSON is mirrored from `embarch-core/src/live.rs` and unit/mock tested; run `core_state` (default and `halt=true`) and `mem_read` against a live Core with a running STM32G0 and a debugger-halted core, per core decision 97's debts (1) and (2), to confirm the field names on the wire.
+- **Reserve spent:** none. `decisions/client-crate.md` and `open.md` untouched; the amendment went in `failure-reporting.md`.
