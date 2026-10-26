@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Changed
+- Compacted embarch-umbrella decisions/bind.md 11,555 -> 10,904 B (retired 22(b)/(c) and split history); decision 22's live reasoning untouched.
 ## 2026-09
 
 ### Added
