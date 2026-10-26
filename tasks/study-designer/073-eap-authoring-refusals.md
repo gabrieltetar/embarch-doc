@@ -1,6 +1,7 @@
 # 073 — The .eap parser refuses three authoring errors it now accepts in silence
 
-**State:** open
+**State:** claimed by agent/study-designer/073-eap-authoring-refusals, 2026-10-26 04:54
+**Dispatch note:** `open.md` is at 4,473/5,120 B (647 B left) and parked under `tasks/study-designer/026` (blocked, nothing payable): add nothing to it unless you also remove as much. `decisions/protocols.md` is 10,876/12,288 B and `decisions/gatt-extract.md` 11,053 B; if a new decision would push either into the last 10% (above 11,059 B), put it in a file with headroom instead. `interfaces/eap.md` is 8,368 B. This crate is shared: `embarch-core`, `embarch-api`, `embarch-ui` and `embarch-umbrella` path-depend on its main checkout, so a new error kind must not break an exhaustive `match` in any of them. If an existing public enum gains a variant, check those three repos with `grep` and say in your report what you found.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer findings 5, 6 and 9), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** none
