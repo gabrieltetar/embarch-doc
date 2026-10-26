@@ -1,6 +1,7 @@
 # 111 — Core calls `validate_serial_for_chip` so a probe moved to another chip family is refused before any attach
 
-**State:** open
+**State:** claimed by agent/core/111-validate-requested-chip-before-attach, 2026-10-26 04:11
+**Dispatch note (2026-10-26):** no `embarch-core` doc is in reserve. The worktree parent links `embarch-study-designer`, `embarch-topology` and `embarch-smp`. Topology's half is on `main` at `62c188d`. The native Windows build is the owner's debt, not your gate. `study-designer/075` runs beside you and may add a study-validation refusal Core links; gating that against Core is mine at landing, not yours.
 **Source:** `tasks/topology/059` (field use 2026-09-30: an STM32G0B1VE flash through a J-Link still enrolled on an nRF54L15 board was refused as a failed FICR read; six days of bypassing EmbArch). Topology shipped the half it owns (`embarch-topology` `62c188d`, topology decision 44). Filed from the worker's inbox drop `core-validate-requested-chip.md`, 2026-10-26.
 **Scope:** core
 **Hardware:** verify-only
