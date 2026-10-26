@@ -1,6 +1,6 @@
 # 135 — `serial_log` tells its caller when Core cut the capture short, and config.md stops calling `flash_format` optional for `zephyr-west`
 
-**State:** claimed by agent/api/135-serial-log-reports-truncation-and-config-md-requires-flash-format, 2026-10-26 05:14
+**State:** done — agent/api/135-serial-log-reports-truncation-and-config-md-requires-flash-format, 2026-10-26
 **Source:** DeepSeek V4 Pro suite review 2026-10-25 (cross-repo findings 1 and 7), verified by Opus against embarch-api@6d664853 and embarch-core@40a58ccb
 **Scope:** api
 **Hardware:** none — the change is the client struct, the CLI and the MCP tool, all tested against the mock Core, plus one doc cell.
@@ -28,10 +28,14 @@
 
 ## Done when
 
-- [ ] Against the mock Core, a `/serial-log` body with `truncated: true` reaches the MCP tool's JSON as `truncated: true`, and the CLI's human output carries a visible truncation marker. A test covers each.
-- [ ] A body with no `truncated` key still parses, and both surfaces report that this Core did not say, rather than `false` (decision 58's shape, with a test named for it).
-- [ ] The CLI's `--json` output carries the field.
-- [ ] The `serial_log` row in `interfaces/tools-build-flash.md` and the tool's own description say what `truncated` means.
-- [ ] `interfaces/config.md`'s `flash_format` row says it is required for every project.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Against the mock Core, a `/serial-log` body with `truncated: true` reaches the MCP tool's JSON as `truncated: true`, and the CLI's human output carries a visible truncation marker. A test covers each.
+- [x] A body with no `truncated` key still parses, and both surfaces report that this Core did not say, rather than `false` (decision 58's shape, with a test named for it).
+- [x] The CLI's `--json` output carries the field.
+- [x] The `serial_log` row in `interfaces/tools-build-flash.md` and the tool's own description say what `truncated` means.
+- [x] `interfaces/config.md`'s `flash_format` row says it is required for every project.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+`SerialLogResponse.truncated` is `Option<bool>` with `#[serde(default)]`; `SerialLogResponse::to_json` and `truncation_note` feed both the MCP tool and the CLI (`--json` carries `truncated` as true/false/null plus `truncation_note` unless plain false; human output appends a `[TRUNCATED ...]` or `[truncation unknown ...]` line). Tests: `tests/serial_log_truncation.rs`. The MCP tool is covered through `to_json` (no mock-Core harness drives the MCP server); its description now says what `truncated` means. `embarch-ui` does not read `SerialLogResponse` (grep of the sibling checkout found nothing; the change is additive anyway). No new decision: decision 58's rule applied. config.md and the tools-build-flash row updated. Hardware debt: none.

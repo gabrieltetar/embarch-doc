@@ -39,7 +39,7 @@ In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upw
 | `build_command` | array of strings | yes (static) | — | argv, no shell interposed |
 | `artifact_path` | path | yes (static) | — | Relative to the build directory, not to `source_path` alone |
 | `chip` | string | yes (static) | — | Opaque probe-rs target name |
-| `flash_format` | string | yes (static) | — | Opaque; Core parses it |
+| `flash_format` | string | **yes, every project** | — | Opaque; Core parses it. A bare `String` with no default, so a `zephyr-west` project that omits it fails config load with a missing-field error |
 | `base_address` | integer | no | none | Flash offset. **Required in practice for `flash_format = "bin"`**, which carries no offset of its own; ignored by Core for a self-locating format. Advice, not a check ([../decisions](../decisions/flash-address.md) 42) |
 | `build_timeout_secs` | integer | no | 300 | |
 | `env` | table string→string | no | empty | **Additive** over the inherited environment, not a replacement. PATH and toolchain setup stay with whatever launches this process |
