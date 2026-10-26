@@ -1,6 +1,6 @@
 # 064 — `decisions/link-declares.md` is in reserve after decision 42
 
-**State:** claimed by agent/topology/064-compact-topology, 2026-10-26 05:37
+**State:** done
 **Source:** `scripts/check-doc-size.py`, 2026-10-26, after `tasks/topology/063` added decision 42 (11,155 / 12,288 B, 1,133 B left).
 **Scope:** topology
 **Hardware:** none
@@ -23,5 +23,9 @@ Bring `link-declares.md` out of the reserve band. A verbatim split of decision 4
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` no longer lists the file in reserve.
-- [ ] Answer in the commit message: can `spec.md` alone answer what someone needs to work on this component today?
+- [x] `scripts/check-doc-size.py --pressure` no longer lists the file in reserve.
+- [x] Answer in the commit message: can `spec.md` alone answer what someone needs to work on this component today?
+
+## Result, 2026-10-26
+
+Decision 36 moved verbatim to `decisions/bootload-ports.md` (2,005 B); `link-declares.md` 11,155 -> 9,676 B. Index row added in `decisions.md`. Inbound link from `embarch-core/decisions/bootload.md` is not topology's to edit: dropped `inbox/core-repoint-topology-decision-36.md`. `spec.md` alone can answer what is needed to work on topology today: yes, it cites decision numbers for the why and none of its facts were moved or restated.
