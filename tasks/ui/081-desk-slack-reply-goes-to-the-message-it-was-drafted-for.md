@@ -1,10 +1,16 @@
 # 081 — A Slack reply from the Desk goes to the message it was drafted for, not whatever now sits at that index
 
-**State:** open
+**State:** claimed by agent/ui/081-desk-slack-reply-goes-to-the-message-it-was-drafted-for, 2026-10-26 06:01
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 2), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 06:01 leg
+
+**The browser check stubs the desk's Slack routes in the page**, so it needs no Slack, no connector and no real draft: a Draft click must never reach a real `claude -p`. Follow `tests/browser/drive_desk.py`'s scratch-desk pattern (scratch `EMBARCH_DESK_CONFIG_DIR`, `EMBARCH_DESK_DATA_DIR` and `CLAUDE_CONFIG_DIR`) or stub in the page. Run your own geckodriver on a scratch port via `WEBDRIVER` (not 4444, which may be someone else's), and the UI and any scratch desk on scratch ports (never `:4891`). **Doc reserve:** `embarch-ui/spec.md` 9,099 / 10,240 B (1,141 B left), filed under `tasks/ui/089` (open, not yours); `embarch-ui/open.md` 4,366 / 5,120 B (754 B left), parked under `tasks/ui/088`. A JS-only fix may need no `spec.md` line at all. If it needs one, keep it short, and do not remove anything to make room: `ui/089` owns that file's compaction.
+
+**Isolation, not optional.** No live Core (never the WSL2 gateway or `:4884`), no desk on `:4891`, no real serial ports or probes, no owner data or config dirs (`/var/lib/embarch`, `~/.config`, `%PROGRAMDATA%`, `~/.claude`). Never call the `mcp__embarch-api__*`, desk, Slack or Linear tools (they reach live services as the owner), never run `claude -p`, and never `pkill` by name; stop only PIDs you started.
 
 ## What
 
