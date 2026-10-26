@@ -11,6 +11,7 @@
 - `embarch-api/open.md` compacted 4714 to 3780 B: answered bullets deleted, their facts homed in `interfaces/config.md` and decision 70.
 
 ### Fixed
+- An older Core's exchange and flash replies no longer show fabricated written/bytes_read/port_lost/erased values: absent stays absent ([decision 58](../embarch-api/decisions/client-crate.md)).
 - `list_targets` accepts the shortened `<board>.dts` of a single-SoC board and errors with a per-board reason when every board is dropped, not `targets: []`. Decision 86.
 ## 2026-09
 
