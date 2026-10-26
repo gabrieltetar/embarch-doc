@@ -59,7 +59,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Artifact freshness check (mtime before and after) | Shipped | unit | §6 |
 | `target.json` beside each `zephyr-west` build directory — the resolved selection, so a listing stays attributable past its `-args<hash>` segment | Shipped — documented as truth since it was decided, **built 2026-09-05**; absent means unattributable, never orphaned | unit | 19 |
 | `build_dir_name` on every `list-targets` row (`zephyr-west`) — the identity `embarch-umbrella` decision 26 needs to prune a stale build directory | Shipped — the default-combination name only; `null` when the app's available snippets don't cover `default_snippets` | unit | 77 |
-| Per-project build concurrency lock | Shipped | n/a | §6 |
+| Per-project build concurrency lock | Shipped — now holds across processes (advisory file lock, unix tests only) | unit | 91 |
 | Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
 | `base_url = "auto"` — Core's address resolved per process at first use | Shipped — never against a real remote Core | local | §7 |
 | `base_address` as a per-project field — a config-driven flash path | Shipped | unit | 44 |

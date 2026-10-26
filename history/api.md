@@ -11,6 +11,7 @@
 - `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
 
 ### Changed
+- api: a build now waits for, and says it is waiting on, another process building the same project; one build per key across CLI, MCP and UI ([decision 91](../embarch-api/decisions/build.md))
 - bench_exchange places lines at Core's first-byte receive times (core 94) when sent, poll time otherwise; time_basis names the basis per signal; client fields are Option (api 89).
 - `status` reports `last_images` as null for a Core that predates it, distinct from `[]` (nothing flashed since start); decisions 58, 90.
 - serial_log and serial-log carry Core's truncated flag (true marked, absent from an older Core reported as unknown, never false); config.md says flash_format is required for every project.
