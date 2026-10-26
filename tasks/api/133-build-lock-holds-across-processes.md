@@ -1,6 +1,9 @@
 # 133 — Make "one build in flight per build directory" hold across processes, not only inside one
 
-**State:** open
+**State:** claimed by agent/api/133-build-lock-holds-across-processes, 2026-10-26 07:43
+**Reserve (2026-10-26 leg):** `embarch-api/decisions/client-crate.md` 707 B left (`api/140` filed),
+`embarch-api/open.md` 832 B left (`api/144` filed). Record the lock decision in the build topic file, not
+`client-crate.md`; if your unit pushes either file further into reserve, say so in your report.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-api finding 5), verified by Opus against embarch-api@6d664853
 **Scope:** api
 **Hardware:** none
