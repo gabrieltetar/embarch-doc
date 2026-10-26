@@ -1,6 +1,6 @@
 # 009 — embarch-umbrella's open.md and decisions/bind.md are in reserve
 
-**State:** claimed by agent/umbrella/009-compact-docs, 2026-10-26 00:56
+**State:** done — 2026-10-26, `decisions/bind.md` 11,555 -> 10,904 B (88.7%), out of reserve. Only the retired 22(b)/(c) entries and the split-history header were shortened; 22(a), every amendment and both losing arguments verbatim.
 **Source:** scripts/check-doc-size.py --pressure
 **Scope:** umbrella
 **Hardware:** none
