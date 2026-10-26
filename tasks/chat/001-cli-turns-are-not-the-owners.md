@@ -1,10 +1,20 @@
 # 001 — A message the CLI sends Claude is never an owner bubble
 
-**State:** open
+**State:** claimed by agent/chat/001-cli-turns-are-not-the-owners, 2026-10-25 23:14
 **Source:** owner, 2026-10-25 — a background agent's `<task-notification>` showed in a chat as a raw-XML message the owner appeared to have sent; wire shape recorded the same day on CLI 2.1.287
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-25 leg
+
+The fleet's first `chat` unit, so the worktree setup is new: `.worktrees/embarch-chat/` holds a
+symlink `embarch-doc` → the main `embarch-doc` checkout, so the `../embarch-doc/scripts/...`
+paths in this repo's `CLAUDE.md` resolve from your code worktree. Run `npm ci` there first; a
+fresh worktree has no `node_modules`. No `embarch-chat` doc is in its size reserve. This task
+lands **before** `tasks/chat/002` (both edit `foldUser`); 002 is not dispatched this leg.
+If `check-docs.py` is red only on `embarch-study-designer/open.md`, that is pre-existing on `main`
+and being paid by `study-designer/026` in parallel — not yours; everything else must be green.
 
 ## What
 
