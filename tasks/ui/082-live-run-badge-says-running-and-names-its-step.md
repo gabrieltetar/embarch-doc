@@ -36,8 +36,12 @@ Decision 20 (`decisions/study-designer.md`): "The run badge counts the step *now
 
 ## Done when
 
-- [ ] A unit test feeds a session the item sequence a live run produces (subscribe, a non-terminal status read, step completions, then completed). The status it serves reads `running`, with `total_steps` set, from the first item on, and `current_step` follows the steps.
-- [ ] A browser check against `stub_core.py` shows the badge as `running N/M` during a stubbed live run, and never `pending` after the first step.
-- [ ] A terminal status is still never un-said by a later non-terminal reading (decision 33).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+- [x] A unit test feeds a session the item sequence a live run produces (subscribe, a non-terminal status read, step completions, then completed). The status it serves reads `running`, with `total_steps` set, from the first item on, and `current_step` follows the steps.
+- [x] A browser check against `stub_core.py` shows the badge as `running N/M` during a stubbed live run, and never `pending` after the first step.
+- [x] A terminal status is still never un-said by a later non-terminal reading (decision 33).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+
+## Done
+
+Seeded status read in `follow` (broadcast), `promote_pending` on a completed step, `seed_status` never replaces a terminal. Unit tests in `src/live_study.rs`; `tests/browser/drive.py` asserts the badge sequence against `stub_core.py` (stub now delays the terminal frame 1.5 s). Hardware: none. Not run against a live Core.
