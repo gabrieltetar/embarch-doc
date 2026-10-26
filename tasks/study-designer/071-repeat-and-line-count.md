@@ -1,10 +1,18 @@
 # 071 — Repeat a block of host steps and count matching console lines per pass, with no verdict
 
-**State:** open
+**State:** claimed by agent/study-designer/071-repeat-and-line-count, 2026-10-26 06:00
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 34 of 96 logged bench tests repeated one action 2 to 30 times and reported a count ("8 Hard Resets: 7 rx errors + 3 overruns", "30 Get_Sink_Cap", "10 rounds each"). Every count was a `grep -c` over a raw console dump
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 06:00 leg
+
+**No schema bump.** Decision 80 (`embarch-doc/embarch-study-designer/decisions/study.md`) left `HOST_TYPE_SCHEMA_VERSION` at 19 because `HostStudy` crosses no hop yet. Checked at dispatch: nothing in `embarch-core`, `embarch-api` or `embarch-ui` references `HostStudy`. Adding `Repeat` and `LineCount` keeps that true, so move neither schema constant, and say so in the decision. This crate is a path dependency of all three consumers: re-grep them before you finish, and keep any change outside `host_study.rs` and `limits.rs` from breaking their build.
+
+**Doc reserve:** `embarch-study-designer/open.md` 4,473 / 5,120 B (647 B left), parked under `tasks/study-designer/026` (blocked; every bullet is a live question). Do not grow it. If a new open question must go there, compact the file in this unit per 026 without shortening any live question. The Core-renderer drop goes to `/home/gabriel/Github/embarch/embarch-doc/inbox/` by absolute path, full task format.
+
+**Isolation, not optional.** No live Core (never the WSL2 gateway or `:4884`), no desk on `:4891`, no real serial ports or probes, no owner data or config dirs (`/var/lib/embarch`, `~/.config`, `%PROGRAMDATA%`, `~/.claude`). Never call the `mcp__embarch-api__*`, desk, Slack or Linear tools (they reach live services as the owner), never run `claude -p`, and never `pkill` by name.
 
 ## What
 
