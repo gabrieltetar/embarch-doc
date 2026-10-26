@@ -1,6 +1,6 @@
 # 093 — `drive_desk_slack.py`'s setup clicks the Slack toggle before it can be clicked
 
-**State:** claimed by agent/ui/093-drive-desk-slack-setup-clicks-the-toggle-before-it-can-be-clicked, 2026-10-26 08:12
+**State:** done — worker, 2026-10-26, branch `agent/ui/093-drive-desk-slack-setup-clicks-the-toggle-before-it-can-be-clicked`. `fresh()` now polls (toggle displayed, or bar open; script errors mid-reload read as false) and raises a named setup FAIL; docstring start-up line rewritten. Three consecutive runs 8/8 on scratch ports (gecko 4940, UI 4941, desk 4942). No `open.md` write.
 **Reserve (2026-10-26 08:09 leg):** `embarch-ui/open.md` 754 B left (`ui/088`, blocked). A harness fix should
 not need it; if your unit writes there, say so in your report.
 **Source:** the 2026-10-26 06:01 leg, landing `ui/081` (`embarch-ui@35fa9da`). The worker reported 8/8; the supervisor's two re-runs on scratch ports (geckodriver 4933, UI 4898, stub desk 4996) passed every assertion they reached and then died in a scenario's *setup*: run 1 at scenario 2, run 2 at scenario 3.
@@ -23,6 +23,6 @@ The check is `ui/081`'s only evidence that a reply cannot go to the wrong Slack 
 
 ## Done when
 
-- [ ] `fresh()` waits until the toggle is displayed and clickable (or the bar is already open), and a wait that times out is reported as a named `FAIL`, not an uncaught `HTTPError`.
-- [ ] Three consecutive full runs on scratch ports pass every check.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `fresh()` waits until the toggle is displayed and clickable (or the bar is already open), and a wait that times out is reported as a named `FAIL`, not an uncaught `HTTPError`.
+- [x] Three consecutive full runs on scratch ports pass every check.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
