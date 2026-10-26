@@ -36,8 +36,14 @@ A fleet worker can only isolate itself from the owner's live UI through these va
 
 ## Done when
 
-- [ ] Every `tests/browser/drive*.py` takes both addresses from the one convention; none hardcodes them without an override.
-- [ ] `tests/browser/README.md` names the convention and the scratch-port recipe a worker uses.
-- [ ] A test or a check (a grep in `cargo test`, or a pytest-free script the gate can run) fails if a drive script hardcodes either address without the override.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment only if a reader-facing behaviour changed.
+- [x] Every `tests/browser/drive*.py` takes both addresses from the one convention; none hardcodes them without an override.
+- [x] `tests/browser/README.md` names the convention and the scratch-port recipe a worker uses.
+- [x] A test or a check (a grep in `cargo test`, or a pytest-free script the gate can run) fails if a drive script hardcodes either address without the override.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment only if a reader-facing behaviour changed.
+
+## Shipped
+
+`tests/browser/addr.py` is the one reader: `EMBARCH_GECKO_PORT` (default 4444) and `EMBARCH_UI_PORT` (default 4899, or a script's own where it starts the UI); all 15 `drive*.py` use it. Defaults kept; the retired names (`GECKO`, `UI`, `WEBDRIVER`, `ATLAS_UI_PORT`, `LINKS_UI_PORT`, `DESK_UI_PORT`) exit with an error (embarch-ui decision 65, `decisions/browser-drive.md`). `tests/browser/README.md` states it with a scratch-port recipe; `tests/drive_addresses.rs` is the guard and runs the helper with no browser.
+
+**Not verified:** no drive script was run end to end (no geckodriver or UI started); the change to each script is its address lines plus `import addr`, and all compile (`py_compile`).
