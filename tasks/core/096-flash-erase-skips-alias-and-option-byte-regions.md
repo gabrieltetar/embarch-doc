@@ -1,10 +1,21 @@
 # 096 — Make `flash` with `erase: true` skip the alias and option-byte NVM regions, so it works on an STM32G0
 
-**State:** open
+**State:** claimed by agent/core/096-flash-erase-skips-alias-regions, 2026-10-25 23:16
 **Source:** field use on an STM32G0B1VE board, 2026-10-21 — a flash with `erase: true` answered `500` and wrote nothing, and was the only suite path to clear a stale NVS partition that stopped every image from booting
 **Scope:** core
 **Hardware:** verify-only
 **Owner:** no
+
+## Dispatch note, 2026-10-25 leg
+
+**No `embarch-core` doc is in its size reserve** (`decisions/surfaces.md` is at 89.9%, just out).
+The bench check in `Done when` is a **hardware-verification debt**: write it into this file and
+ship the host-side half — never flash anything. The native Windows build is also a debt, owed by
+the owner, not a gate item. The `Done when` item about embarch-api's MCP text printing the erased
+ranges is in another repo: leave it unticked and drop an `inbox/api-*.md` (absolute path,
+`/home/gabriel/Github/embarch/embarch-doc/inbox/`) for it rather than reaching across. If
+`check-docs.py` is red only on `embarch-study-designer/open.md`, that is pre-existing on `main` and
+being paid by `study-designer/026` in parallel — not yours.
 
 ## What
 
