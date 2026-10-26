@@ -1,10 +1,22 @@
 # 100 — Capture a signal in the background while other hardware calls run
 
-**State:** open
+**State:** claimed by agent/core/100-capture-a-signal-in-the-background, 2026-10-26 05:14
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 69 hand-written PowerShell `System.IO.Ports.SerialPort` scripts in 18 sessions (1,510 s of tool time) read consoles around Core; after `signal_exchange` landed on 2026-10-06, 21 of them (1,237 s) still ran on the DUT and bench consoles, each one a listener on one console while `signal_exchange` drove the other, or a boot log held across a reset; a 20 s `serial_log` was refused at the 10 s cap
 **Scope:** core
 **Hardware:** verify-only — reclassified from `bench` on filing by the 2026-10-25 leg: the capture endpoint is host-side code a worker can build and test against a mock port; the two-console bench check is its hardware-verification debt, collected by a supervisor.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:14 leg
+
+**Scope this unit to the host-side half.** Routes, the port owner, the caps decision and tests against a mock or in-process fake port. Every bench line in Done-when (two consoles, flash and reset during a capture, a real CDC ACM re-enumeration) is a hardware-verification debt you write into this file, not something to attempt. If the shared port owner with study taps turns out to be a large refactor of its own, land the capture with the seam named and leave the sharing as an `open.md` item or an `inbox/` drop, rather than half-doing both.
+
+**Doc reserve in your scope:** `embarch-core/spec.md` 9,148 / 10,240 B (1,092 B left) and `embarch-core/open.md` 4,262 / 5,120 B (858 B left), both filed under `tasks/core/112`, which is blocked with `In flux: yes` about decision 89. Keep what you add to either small; if you need room, shorten text that is not on 112's `Must not delete:` list and that this change makes obsolete, and say what in your Result. `decisions/signal-exchange.md` is 9,635 / 12,288 B (about 1.4 KB before its reserve line). A capture decision of any size is better as a new topic file (for example `decisions/signal-capture.md`, listed in `decisions.md`) than pushing `signal-exchange.md` into reserve. If your work does leave a file in reserve with nothing filed against it, file `tasks/core/<NNN>-compact-core.md` in the same commit.
+
+**No wire-schema bump.** New routes are fine. If the design needs `host_type_schema_version` or `schema_version` to move, stop and report it; that is a §4 announcement, not a worker's call.
+
+**The client half** (MCP tools and CLI) is another scope: write it as a complete task file into `/home/gabriel/Github/embarch/embarch-doc/inbox/` by that absolute path, after checking whether `tasks/api/131` already covers it.
+
+**Isolation, not optional.** Never start the Core binary on its default port or data dir, never reach the live Core (the Windows service at the WSL2 gateway, `:4884`), never open a real serial port or a debug probe, never call the `mcp__embarch-api__*` or desk tools, never touch the desk on :4891, and never read or write the owner's data dirs. Tests own their own ports, temp dirs and fake ports. The last two legs each had a worker reach something live; do not be the third.
 
 ## What
 
