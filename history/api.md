@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `lease_take`/`lease_renew`/`lease_release`/`lease_show` and `EMBARCH_LEASE_TOKEN` sent on every Core call; `status` shows `lease` and `last_images` (decision 90).
 - `bench_exchange` / `bench-exchange`: one call runs console commands and returns every listened console as one filtered timeline; times are client-observed, see embarch-api decision 89.
 - api: `capture_start`/`capture_read`/`capture_stop` tools and `capture-*` CLI twins over Core's background signal capture ([tools-capture](../embarch-api/interfaces/tools-capture.md)).
 - `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
