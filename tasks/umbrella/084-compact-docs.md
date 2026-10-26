@@ -1,18 +1,31 @@
 # 084 — `embarch-umbrella/decisions/projects.md` is back in reserve
 
-**State:** blocked — see `**In flux:**` below. Filed by `umbrella/082`, which pushed the file from
-89.1% to 91.6% correcting and updating decision 26's `list-targets`/`build_dir_name` closure.
-`.claude/leg.md` marks a compaction task `blocked` when its flux answer is yes for every file on its
-`Compacts:` line, and that is the case here.
+**State:** claimed by agent/umbrella/084-compact-projects-md, 2026-10-26 02:20
 **Source:** `scripts/check-doc-size.py --pressure`, run by `umbrella/082`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/decisions/projects.md
-**In flux:** yes — decision 26 is explicitly "deferred by choice, not blocked": `--prune` itself is
-still undesigned, and the next unit that designs or builds it (folding in `target.json` for
-non-default combinations, per `embarch-api` decisions 69 and 77) rewrites this section again.
-Decisions 13, 17 and 41 in the same file are settled and not in flux, but decision 26 alone is over
-half the file's content and the one most likely to move next.
+**In flux:** no — for a verbatim split. Decision 26 is still "deferred by choice" (`--prune` is
+undesigned), so its *wording* must not be squeezed; but a verbatim move restates nothing, so the flux
+cannot forbid one (`.claude/leg.md`, split-first). Decisions 13, 17 and 41 are settled.
+
+## Dispatch note, 2026-10-26 leg — read this one first
+
+**Unparked by the overdue ledger** (due 2026-10-17; the entries ahead of it are owner-only or have
+nothing to pay). The file is 11,116 / 12,288 B, 57 B over its 11,059 B reserve line.
+
+**The seam is decision 26 itself.** The file is titled "Integrating a firmware repo" and settles what
+`init` derives (13, 17, 41); decision 26 is `study_results/` retention and build-directory pruning, a
+different question that is also the file's in-flux half. Preferred move: decision 26 **verbatim** into
+a new `embarch-umbrella/decisions/<name>.md` (name it for what it settles), routed from
+`decisions.md`'s group table, with every inbound link to `decisions/projects.md` that means decision 26
+repointed **inside `embarch-umbrella/`** (grep first; a link from another sub-project you may not edit
+goes to `inbox/` by absolute path, not fixed). The next unit that designs `--prune` then edits a file
+with headroom. If you find a reason the split is wrong, the fallback is shortening 13/17/41 wording only
+— never decision 26's — and say why in this file. `umbrella/079` is the precedent
+(`decisions/setup-reversal.md`).
+
+**Leave `open.md` alone**; it is `umbrella/090`'s, parked.
 **Unparks when:** decision 26's `--prune` is designed or built (closing the "deferred by choice"
 state one way or the other), or check 16 reports real disk pressure that forces the question sooner
 — either event rewrites the section this task would otherwise compact around.
