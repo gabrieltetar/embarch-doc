@@ -32,7 +32,13 @@ Without this the desk fix is half-effective: any dialog open still freezes hours
 
 ## Done when
 
-- [ ] Opening a tile, then Save/Polish/Add line/✓ without touching hours sends no `hours` key.
-- [ ] Editing hours sends the number; the dialog offers a way to send `"hours": null` and the tile returns to `computed_hours`.
-- [ ] A browser check against a scratch desk covers both.
-- [ ] Gate green; embarch-ui spec/decisions updated.
+- [x] Opening a tile, then Save/Polish/Add line/✓ without touching hours sends no `hours` key.
+- [x] Editing hours sends the number; the dialog offers a way to send `"hours": null` and the tile returns to `computed_hours`.
+- [x] A browser check against a scratch desk covers both.
+- [x] Gate green; embarch-ui spec/decisions updated.
+
+## Done
+
+Browser check (headless Firefox via geckodriver, scratch UI on :48901 against a python mock desk on :48911 applying desk decision 61 semantics, not the real desk): open+Save sent `{note}` only; typed 2 sent `hours:2`; untouched Save kept it; *Use computed* sent `hours:null` and the field returned to 1.5; typing after Use computed sent the number. Real desk: not run (needs the owner's rebuilt :4891 service) - verification debt, low.
+
+Build note: embarch-ui `cargo build` is red against topology HEAD (topology/063, `Upserted` re-export ungated); gate run in a scratch copy with topology at HEAD~1 (181+2+3 tests, clippy clean). Dropped `inbox/topology-software-feature-build-breaks.md`.
