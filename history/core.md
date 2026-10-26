@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Core: POST /live/core-state reads DHCSR and PC samples without halting, or registers under one halt; mem-read gains found/left/halt_count (decision 97).
 - Core runs host studies: `POST /host-studies` executes Exchange and Wait steps, teardown on every exit, `POST /study/{id}/cancel` (core decision 95).
 - Capture reads stamp each line with its receive time (`lines`, `started_utc_ms`); exchange replies carry `started_utc_ms`. Additive; decision 94.
 - Core gains `/lease`: one session holds the whole bench across calls, others get 409 by name; `GET /status` adds `lease` and `last_images` (decision 93).
