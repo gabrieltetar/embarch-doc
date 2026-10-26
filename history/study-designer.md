@@ -8,6 +8,7 @@
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
 
 ### Fixed
+- The .eap parser now refuses an out-of-range on_timeout/retry, a float write width and a repeat naming no struct, with the line (study-designer decision 84).
 - The `alloc`-only test cell compiles again: host_study's tests import `alloc::vec`, so CI's `cargo test --features alloc` step is green.
 - A Notify or Indicate row now carries its row timeout as the wait budget, and a 0 budget is refused (decision 83); it used to time out at once.
 - `OutpostManifest` now reads the schema-2 `devices` and `functions` tables, so GPIO trace rows are named in Core's CSV as in the reference decoder (study-designer decision 82).
