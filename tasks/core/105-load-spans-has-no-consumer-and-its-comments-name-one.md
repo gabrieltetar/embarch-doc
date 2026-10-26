@@ -1,6 +1,7 @@
 # 105 — `GET .../load/spans` has no consumer anywhere, and Core's own comments still name the one that decided against it
 
-**State:** open
+**State:** claimed by agent/core/105-load-spans-has-no-consumer-and-its-comments-name-one, 2026-10-26 04:55
+**Dispatch note:** `spec.md` (9,225/10,240 B, 1,015 B left), `open.md` (4,262/5,120 B, 858 B left) and `decisions/probes.md` are in reserve and parked under `tasks/core/112` (blocked, `In flux: yes`). If you add to `spec.md` or `open.md`, remove at least as much from the same file, keeping `core/112`'s `Must not delete:` list intact; a retirement should shrink them. `decisions/stream-index.md` (decisions 65 and 66) is 10,986/12,288 B, just under reserve: if your edit leaves it above 11,059 B, file `tasks/core/<next free NNN>-compact-core.md` in the same commit. `interfaces/streams.md` is 4,225 B. Write nothing in `embarch-api`, `embarch-ui` or `suite/`; drops and `status.d/` fragments only.
 **Source:** DeepSeek V4 Pro suite review 2026-10-25 (cross-repo finding 2), verified by Opus against embarch-core@40a58ccb and embarch-ui@aa5ffdaa (with embarch-api@6d664853 for the client crate)
 **Scope:** core
 **Hardware:** none
