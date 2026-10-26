@@ -21,8 +21,12 @@ Decision 45 (`decisions/topology-roles.md`): a study that still carries a board 
 
 ## Done when
 
-- [ ] Unit tests cover each branch of the board choice: role resolved and same as the study, role resolved and different, the study's variant or revision overridden, a role holding a board type absent from the catalog, an unreadable catalog, and an empty role. Each branch emits a line naming the study's board, the role's board and the one built.
-- [ ] The stored build log contains those lines and the flash and reset lines. A run whose flash fails has the failure in the stored log.
-- [ ] A browser check (`tests/browser/drive_build.py`) finds the board line in the builds source after a run.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/firmware-build.md` and `decisions/topology-roles.md`.
+- [x] Unit tests cover each branch of the board choice: role resolved and same as the study, role resolved and different, the study's variant or revision overridden, a role holding a board type absent from the catalog, an unreadable catalog, and an empty role. Each branch emits a line naming the study's board, the role's board and the one built.
+- [x] The stored build log contains those lines and the flash and reset lines. A run whose flash fails has the failure in the stored log.
+- [x] A browser check (`tests/browser/drive_build.py`) finds the board line in the builds source after a run.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`), so prefer `decisions/firmware-build.md` and `decisions/topology-roles.md`.
+
+## Result
+
+Decision 62 (`decisions/firmware-build.md`). `topology::role_target` now returns `Result<RoleTarget, RoleMiss>`; `firmware_build::choose_board` writes the line for every path; every `info` line is kept in the stored log with an `[embarch-ui] ` marker, and flash/reset lines and failures are appended after the build. File name and header stay the build's own verdict. Tests: 7 in `firmware_build.rs`, 1 in `topology.rs`. Browser: `drive_build.py` run against a debug binary, stub west, stub Core, all PASS, including the failed-flash line. `spec.md`/`open.md` untouched (reserve).
