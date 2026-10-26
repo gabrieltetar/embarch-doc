@@ -15,7 +15,7 @@ own natural seam, §§1-2 "what it is and what must always hold" vs this file's
 - **Capture** drains stdout/stderr in two concurrent tasks, as raw bytes not decoded text — draining one while the other fills its OS buffer hangs a child, and decoding per line rather than per stream means one non-UTF-8 byte costs one line, never the rest; a line needing lossy decoding is named in a summary marker, never silent ([decisions](../decisions/log-capture.md) 65).
 - **Truncation keeps the head *and* the tail** behind a marker naming how many bytes went and how many were kept at each end, **the cap bounding the retained total rather than each half** ([decisions](../decisions/log-capture.md) 18, numbers in §7). Under the cap, text is untouched and unmarked.
 - **Timeout kills the process group on unix, only the immediate child on Windows** ([decisions](../decisions/build.md) 75). A killed/timed-out build is reported **distinctly** from a nonzero exit, so a hang isn't misread as a code problem.
-- **One build in flight per project**, via a per-project async lock. Separate from Core's hardware lock: guards two calls stomping one output directory, not USB contention.
+- **One build in flight per lock key, across processes on one machine**, via an in-process mutex plus an OS advisory file lock in the temp dir ([decisions](../decisions/build.md) 91); a second caller waits and says another process holds the build. Separate from Core's hardware lock: guards two calls stomping one output directory, not USB contention.
 
 ## 4. Deployment and topology
 

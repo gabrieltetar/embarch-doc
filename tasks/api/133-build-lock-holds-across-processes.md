@@ -25,10 +25,10 @@ When this is done, the guard holds across processes on one machine. One directio
 
 ## Done when
 
-- [ ] A test starts two separate processes that build the same lock key, using a static project whose build command records its start and end. The two runs never overlap.
-- [ ] Builds with different lock keys still run in parallel.
-- [ ] A build process killed while holding the lock does not block the next build (test).
-- [ ] A caller that has to wait, or is refused, says so in its output or error, naming that another process holds the build.
-- [ ] No consumer of `embarch-firmware-build` (CLI, MCP, `embarch-ui`) needs a code change to get the cross-process guard. `embarch-ui` picks it up on its next rebuild.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A test starts two separate processes that build the same lock key, using a static project whose build command records its start and end. The two runs never overlap.
+- [x] Builds with different lock keys still run in parallel.
+- [x] A build process killed while holding the lock does not block the next build (test).
+- [x] A caller that has to wait, or is refused, says so in its output or error, naming that another process holds the build.
+- [x] No consumer of `embarch-firmware-build` (CLI, MCP, `embarch-ui`) needs a code change to get the cross-process guard. `embarch-ui` picks it up on its next rebuild.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

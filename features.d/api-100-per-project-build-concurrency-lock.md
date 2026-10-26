@@ -1,1 +1,1 @@
-| Per-project build concurrency lock | Shipped | n/a | §6 |
+| Per-project build concurrency lock | Shipped — now holds across processes (advisory file lock, unix tests only) | unit | 91 |
