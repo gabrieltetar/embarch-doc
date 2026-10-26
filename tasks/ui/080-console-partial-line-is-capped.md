@@ -1,6 +1,7 @@
 # 080 — A console's unfinished line is capped like a finished one, instead of growing for the rest of the run
 
-**State:** open
+**State:** claimed by agent/ui/080-console-partial-line-is-capped, 2026-10-26 04:55
+**Dispatch note:** the compaction tasks named under Done when are renumbered: `spec.md` (9,099/10,240 B, 1,141 B left) is filed under `tasks/ui/089` (open), and `open.md` (4,366/5,120 B, 754 B left) under `tasks/ui/088` (blocked). Put the change in `decisions/live-study.md` (8,985 B, decision 32) as the task says; add at most a phrase to `spec.md`. If a browser drive is run, it must stay isolated from the live desk the way `ui/091` made `drive_topology.py` isolated, and must never reach a live Core or the desk on :4891.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 5), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
