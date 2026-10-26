@@ -26,7 +26,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57 | 8.8 KB |
 | [What a role is made of](decisions/roles.md) | 75, 76, 83 | 4.1 KB |
 | [Bootloading over MCUboot serial recovery](decisions/bootload.md) | 77, 78 | 4.5 KB |
-| [Writing to a declared signal](decisions/signal-exchange.md) | 79 | 2.7 KB |
+| [Writing to a declared signal](decisions/signal-exchange.md) | 79, 85 | 9.1 KB |
 | [Reading a target's memory](decisions/live-read.md) | 81 | 2.1 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

@@ -1,6 +1,6 @@
 # 098 — Make a console exchange say what happened on the wire: nothing back, the write sent, the port lost, the marker line cut
 
-**State:** claimed by agent/core/098-exchange-says-what-happened-on-the-wire, 2026-10-26 00:58
+**State:** done — host-side half shipped 2026-10-26; the bench check is a hardware-verification debt (end of file)
 **Reserve, for the worker (2026-10-26):** no `embarch-core` doc file is in reserve, but decision 79
 (`decisions/signal-exchange.md`) is already 5,494 B against `DOC-BUDGET.md`'s 4 KB per-decision
 cap. Amend 79 only where its existing text becomes false; put the new reasoning (what the answer
@@ -21,10 +21,17 @@ The 10 empty replies had five causes, each found only by hand and by other tools
 
 ## Done when
 
-- [ ] A unit test on `exchange()`'s fake port reproduces each case and asserts the new fields: zero bytes (no echo); echo seen then silence; the write accepted then a read error (`BrokenPipe`), answered with `written: true`, `port_lost: true` and the bytes read so far.
-- [ ] The handler maps a read error after a successful write to a `200` with `port_lost`; a failure to open or write stays an error, and its text says nothing was written.
-- [ ] A unit test feeds `...\r\npd: o` then `k\r\n` in two reads with `until: "pd: "`; the reply ends with `pd: ok\r\n` and `until_seen` is true. A prompt with nothing after it returns after the quiet gap, not at the deadline.
-- [ ] Zero bytes back, or a port wait that expires, adds the port identity and, when the role has a probe, the `DHCSR` run state read through the guarded attach, with no halt; a test covers the "role has no probe" and "probe absent" branches.
+- [x] A unit test on `exchange()`'s fake port reproduces each case and asserts the new fields: zero bytes (no echo); echo seen then silence; the write accepted then a read error (`BrokenPipe`), answered with `written: true`, `port_lost: true` and the bytes read so far.
+- [x] The handler maps a read error after a successful write to a `200` with `port_lost`; a failure to open or write stays an error, and its text says nothing was written.
+- [x] A unit test feeds `...\r\npd: o` then `k\r\n` in two reads with `until: "pd: "`; the reply ends with `pd: ok\r\n` and `until_seen` is true. A prompt with nothing after it returns after the quiet gap, not at the deadline.
+- [x] Zero bytes back, or a port wait that expires, adds the port identity and, when the role has a probe, the `DHCSR` run state read through the guarded attach, with no halt; a test covers the "role has no probe" and "probe absent" branches.
 - [ ] Bench check: an exchange to a board held in reset, and to a board halted by a debugger, each name the state; a command that drops the CDC ACM port answers `port_lost` with its first output line.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 79 amended), `changelog.d/` fragment dropped; follow-ups filed for `embarch-api` (MCP text and CLI) and `embarch-atlas` (`shell`) to print the new fields.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 79 amended), `changelog.d/` fragment dropped; follow-ups filed for `embarch-api` (MCP text and CLI) and `embarch-atlas` (`shell`) to print the new fields.
+
+## Hardware-verification debt
+
+- [ ] Bench check (the unticked item above): on a real board, (1) an exchange to a board held in reset returns `core_state.s_reset_st` true and no bytes; (2) to a board halted by a debugger, `s_halt` true; (3) a command that drops the CDC ACM port answers `200` with `port_lost: true` and its first output line. Also confirm the guarded attach does not halt or disturb a running core and that the 40 ms `QUIET_GAP` is long enough for a real shell's verdict word after `pd: `.
+- [ ] The native Windows build of `embarch-core` was not run (not possible from a worktree); `read_dhcsr` uses only `core.read_word_32`, nothing platform-specific.
+
+Follow-ups dropped in `embarch-doc/inbox/`: `api-signal-exchange-prints-wire-fields.md`, `atlas-shell-prints-exchange-wire-fields.md`. Decision 85 added; 79 amended by pointer. The mid-line change alters the old `the_prompt_a_shell_prints_on_open...` test's no-echo half (a match on the early prompt now reads to that line's end).
