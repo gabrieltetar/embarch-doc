@@ -1,16 +1,15 @@
 # 079 — `embarch-umbrella/decisions/install.md` is in reserve
 
-**State:** blocked — see `**In flux:**` below.
+**State:** open
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/078`
 **Scope:** umbrella
 **Hardware:** none
 **Compacts:** embarch-umbrella/decisions/install.md
-**In flux:** yes — the sole file on the `Compacts:` line is in flux (per-file answer, and here
-there is only one file). See the "In flux" section for what is still moving.
-**Unparks when:** decision 28's Windows-side verification debt closes — a real Windows machine
-confirming the registry `PATH` write and a new shell picking it up — since that debt, once paid,
-adds a sentence to this file the way every other closed hardware debt in it already has (decision 3,
-21). Landing that is reason to re-read this field rather than to unpark on sight.
+**In flux:** no — re-read 2026-10-26 by the supervisor, unparking an overdue debt. Only decision
+28's verification paragraph is waiting on anything (a Windows run that would add one sentence);
+decisions 3, 4, 5, 14, 21, 25 and 54 are settled. `--decisions` shows eight decisions, none near
+the 4 KB per-decision cap, so `DOC-BUDGET.md`'s split-first rule applies to this file. **Leave
+decision 28 untouched**; the rest is payable. The old flux paragraph below is kept as history.
 
 **Size debt due:** 2026-10-17
 
@@ -27,6 +26,16 @@ is the wrong move when the room genuinely is not there (this file's own `tasks/R
 Not filed against `009`, which already carries `decisions/bind.md` under its own, unrelated
 check-17 history — mixing the two would put one compaction task in the position of naming a pass
 across two unrelated reserve episodes in two different files.
+
+## Dispatch note (2026-10-26)
+
+Reserve in `umbrella` at dispatch: `decisions/install.md` 217 B left (this task), and
+`decisions/projects.md` 1,172 B left (filed as `umbrella/084`, not this task: do not touch it). A
+verbatim split along a real seam (for example distribution, dry-run and uninstall, decisions 14, 21
+and 25, against service and install, 3, 4, 5, 28 and 54) and shortening the settled entries are
+both acceptable; pick per `DOC-COMPACTION.md` §2 and say why in the task. A new decisions file must
+be linked from `embarch-umbrella/decisions.md`'s routing, and every inbound `install.md#NN` link
+must still resolve (`check-decision-refs.py` is in the gate).
 
 ## What
 

@@ -1,6 +1,9 @@
 # 004 — `embarch-decision-reversals.md` and `suite/features.md` are in reserve
 
-**State:** blocked
+**State:** open — announced and parked 2026-10-26 01:40 MDT, `ts` `1793000429.737099`; the §4
+window closes 02:10. Plan announced: shorten both files under their reserve lines by wording only, no
+split and no new file, every `Must not delete:` item kept. A leg that finds this still `open` reads
+that thread (`fleet-read.py --thread 1793000429.737099`) and completes the window, never restarts it.
 **Source:** `scripts/check-doc-size.py` went RED during leg 013's `umbrella/007` fold — both
 files crossed their reserve lines inside that fold, one by a supervisor edit and one by an
 assembler run.
@@ -24,8 +27,9 @@ below, which stands. It had been left on the line wrapped in `~~…~~`; **that l
 `check-task-state.py` now fails on a struck-through entry, because leg 057's richer strike-through
 of the same shape stopped `check-doc-size.py` recognising the line at all and failed the gate.
 **Size debt due:** 2026-10-10
-**In flux:** yes — see "Why blocked". The three files are in flux for **different reasons**,
-and only one of them is the ordinary kind.
+**In flux:** no — re-read 2026-10-26: `embarch-decision-reversals.md` has had one edit since
+2026-09-25 (2026-10-23) and `suite/studies-guide.md` none, so neither is being actively rewritten.
+The per-file reasons in "Why blocked" below are kept as history.
 **Must not delete:** every reversal row's **shape number** and the citation that resolves it
 (the shape number is how a row is referred to from elsewhere, and rows are cited by number
 from `DOC-PROTOCOL.md` and from sub-project decisions); the "Review-driven reversals"
