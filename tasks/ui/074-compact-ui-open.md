@@ -1,6 +1,6 @@
 # 074 — `embarch-ui/open.md` is still in reserve after `ui/071`
 
-**State:** blocked
+**State:** claimed by agent/ui/074-compact-ui-open, 2026-10-26 00:38
 **Source:** `scripts/check-doc-size.py --pressure`, filed the moment `tasks/ui/071` closes (`done`
 tasks carry no debt forward, so its `Compacts:` line stops counting)
 **Scope:** ui
@@ -8,6 +8,17 @@ tasks carry no debt forward, so its `Compacts:` line stops counting)
 **Owner:** no
 **Compacts:** embarch-ui/open.md
 **Size debt due:** 2026-10-05
+**In flux:** no — for the pass this task now asks for. Unparked by the supervisor 2026-10-26 (overdue
+since 2026-10-05, the ledger's oldest payable entry; `api/113` was unparked the same way). The file
+is 5,117 / 5,120 B, **3 B left**: the owner's 2026-10-25 round added two bullets, so the next `ui`
+unit that needs a line here cannot write it. `DOC-BUDGET.md` names a role-capped 5 KB `open.md` as
+the case with no seam, so the remedy is not a split but **deleting answered questions** (a bullet
+whose answer is already recorded in a decision, `spec.md` or `history/`), and moving a settled half
+out to the decision that owns it before trimming the bullet to its open remainder — the `ui/071`
+pattern. No live bullet is tightened. The original park is kept below as "Why it was parked".
+**Reserve, for the worker:** `embarch-ui/open.md` 3 B left (this task); `embarch-ui/spec.md` 724 B
+left, parked on `tasks/ui/078` — leave `spec.md` alone unless a settled fact has to land there, and
+then check its size first.
 
 ## What
 
@@ -33,7 +44,7 @@ decision 34). Getting further out of reserve from here means one of:
 
 None of those is available yet, which is why this parks rather than dispatches work.
 
-## In flux: yes
+## Why it was parked (In flux: yes, superseded 2026-10-26)
 
 `open.md` gained two entries in `ui/070` and had two more retired/condensed in `ui/071` inside two
 weeks — it is one of this sub-project's most actively edited files, because every hardware
