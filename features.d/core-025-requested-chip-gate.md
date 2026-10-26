@@ -1,0 +1,1 @@
+| Requested-chip gate: `flash`/`reset`/mem-read refuse a chip differing from the probe's enrolled one (`409 chip-mismatch`) before any attach | Shipped — host-tested on the mapping only; never met a moved probe | host | 89 |

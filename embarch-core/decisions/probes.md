@@ -51,3 +51,12 @@ Not de-duplicated further into a single Core-side wrapper that hardcodes one ver
 ### 80 — Every probe-rs attach goes through topology's guarded attach
 
 `flash` and `reset` attached with `probe.attach(chip, …)` directly, so on an ARMv6 STM32 they ran probe-rs's sequence that read-modify-writes the target's RCC and DBGMCU while the core runs — garbage on a G0 sleeping without a DMA clock ([`embarch-topology`](../../embarch-topology/decisions.md) decision 39). Both now call `embarch_topology::hardware::attach::attach`, the same guarded attach validate and enroll use, so Core has one way to attach and it never writes a running target's clock enables.
+
+---
+
+### 89 — A requested chip that differs from the enrolled one is refused before any attach
+
+`flash`, `reset`, `live::run`'s memory read and `read_dhcsr` call `embarch_topology::hardware::validate_serial_for_chip(serial, chip)` ([`embarch-topology`](../../embarch-topology/decisions.md) decision 44) instead of `validate_serial`; the result was never used, so nothing else changed. A probe moved to a board of another family used to read as a failed FICR/identity read on the old chip's target description (an STM32G0B1VE flash through a J-Link still enrolled on an nRF54L15 board, 2026-09-30). Now topology raises `RequestedChipMismatch` before the probe is opened. `describe_topology_error` (flash, reset, mem-read) renders it as **`409` with topology's own `chip-mismatch: ...` text**, and the dev-bench handshake's `describe_gate_error` as the same text; it is neither `not_attached` nor `mismatch` and writes no alert. Case and whitespace are ignored; an empty chip on either side passes.
+
+**Assumed, not measured:** a project's `chip` and an enrolled `chip` spell the same, because enroll stores the chip the caller passed and later calls pass the project's. No normalisation lives in Core; a project spelling `nRF54L15` against an enrolled `nrf54l15_cpuapp` would be refused, and the refusal text names both. **Tested without a store:** topology's enrollment path is the fixed `/var/lib/embarch`, so the test builds an `EnrolledBoard`, runs `check_requested_chip` and the Core mapping; the attach-ordering half is topology's own tested guarantee.
+
