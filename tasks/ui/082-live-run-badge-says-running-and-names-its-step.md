@@ -1,10 +1,28 @@
 # 082 — A live run's badge says running and names its step, instead of "pending" for the whole run
 
-**State:** open
+**State:** claimed by agent/ui/082-live-run-badge-says-running-and-names-its-step, 2026-10-26 03:24
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 14), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 03:24
+
+**The sequencing below is satisfied.** `api/137` landed as `embarch-api` `7e6d88c` (decision 48
+amended): `follow_study` now ends with a typed `UnknownStudyError` on a 404 from its opening poll,
+and `interrupted` is terminal in `is_terminal_status`. Your worktree's parent links the main
+checkouts of `embarch-api` (at `7e6d88c`), `embarch-study-designer` and `embarch-topology`. So the
+badge must also render `interrupted` as a terminal state (not `running`, not `pending`), and
+decision 33's "a terminal status is never un-said" covers it. Never edit `embarch-api`; a change to
+`follow_study` itself is a drop by absolute path to `/home/gabriel/Github/embarch/embarch-doc/inbox/`.
+
+**Doc reserve in your scope:** `embarch-ui/spec.md` 9,099 / 10,240 B (1,141 B left, filed
+`tasks/ui/089`, open) and `embarch-ui/open.md` 4,366 / 5,120 B (754 B left, filed `tasks/ui/088`,
+blocked on `In flux: yes`). Both are already filed, so you owe a new compaction task only if you
+push some *other* file into reserve. Keep `spec.md` additions to a clause. If you touch `open.md`,
+do not grow it: remove a question your unit closes, honour `ui/088`'s `Must not delete:` list, and
+leave its other bullets alone. Use your own ports and target dir for `stub_core.py` and the UI
+binary; never touch the owner's running UI, the live Core or any hardware.
 
 ## What
 
