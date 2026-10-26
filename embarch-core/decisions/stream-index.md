@@ -35,7 +35,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **Stated, not measured** — citing `embarch-dev-bench` decision 24. No tap's capture changes.
 
-### 64 — `embarch-core` will serve the decoded per-lane spans decision 62 stopped short of, on a new sibling route; that this task decides, a follow-up builds
+### 64 — *(route retired by decision 91)* `embarch-core` will serve the decoded per-lane spans decision 62 stopped short of, on a new sibling route; that this task decides, a follow-up builds
 Decision 62 moved only the *aggregate* (`LoadSummary`). `outpost_load.rs` and `embarch-ui/src/trace.rs` each still independently build the full timeline beneath it — row decode, `dut_clock_health`, `stale_prefix_end`, the axis-tier choice, `Lane`/`Span`/`Gap` construction — `outpost_load.rs`'s own comments call several of these "ported verbatim" from `trace.rs`. `embarch-ui` decision 27 (`trace-view.md`) records that split staying until `embarch-core` closes it. `tasks/core/075` asked whether to.
 
 **Decision 18 does not stand in the way, read on its own text.** [`embarch-ui` decision 18](../../embarch-ui/decisions/trace-transfer.md) decides where *binning* runs and what crosses to the *browser*, not which server holds the decoded capture — [suite decision 4](../../suite/decisions.md) already read it the same way: *"What changes is which server holds the decoded view. The browser's contract is untouched."*
@@ -46,24 +46,18 @@ Decision 62 moved only the *aggregate* (`LoadSummary`). `outpost_load.rs` and `e
 
 **Corrected 2026-09-17 (`tasks/core/085`), reasoning in decision 66.** This entry's closing sentence originally read *"Serving spans is what closes the gap decision 4 opened and decision 62 left standing."* `tasks/ui/065` checked `/load/spans`'s served payload against `trace.rs` field-for-field and found it does not: both files still independently decode the CSV, because axis-health diagnostics and point events are excluded from this route and always will be (decision 66). Suite decision 4's *"exactly one implementation"* property is **not closed by this route and cannot be** — decision 66 is the record of why that is now a permanent, checked fact rather than a gap still closing.
 
-### 65 — `GET /study/{id}/stream/{name}/load/spans` serves decision 64's spans; the CSV half of its size argument is now measured, and holds
-Built by `tasks/core/076`. Additive: `/load` unchanged, still exactly `LoadSummary`.
+### 65 — *(retired)* `GET /study/{id}/stream/{name}/load/spans` serves decision 64's spans
+Built by `tasks/core/076`, retired by decision 91 with no consumer ever having called it. Its `SpansAnswer`, `spans_answer` and handler are gone; `decode_with_cap`, which `/load` needs, stays.
 
-**Shape.** `Lane`/`Span`/`Gap` are `pub`+`Serialize`. Response is `SpansAnswer`: `{unit, t_from, t_to, records_lost, rows, rows_dropped_by_cap, row_cap, rows_unparsed, gaps: [Gap], lanes: [Lane]}`. `t_from`/`t_to` are the window's absolute bounds — `LoadSummary::window_extent` only ever carried their difference.
+### 66 — *(retired)* `Gap` widens to full parity with `trace.rs`; axis-health diagnostics and point events stay out
+`tasks/core/085`, from `tasks/ui/065`'s field-for-field check of decision 65's payload. Its one lasting finding — `embarch-ui` keeps its own decode permanently, because point events and the row decode cannot leave `trace.rs` — is carried by decision 91. The `Gap` widening it made served only the retired route; the fields remain on `Gap`, computed, unserved.
 
-**One decode, two reductions.** The CSV-to-timeline body is a private `decode_with_cap`; `summarize` reduces its `Decoded` to `LoadSummary`, a new `spans_answer` reduces the same `Decoded` to `SpansAnswer` — no further computation. `study.rs`'s two handlers share one tap-resolution helper and differ only in which function gets the CSV.
+### 91 — `/load/spans` is retired: it never had a caller, and the one decision that meant to create one decided against it
+**The route.** `tasks/core/076` built it (decisions 64, 65) for `embarch-ui`'s Trace tab. `tasks/ui/065` then checked its payload against `trace.rs` and found `embarch-ui` can delete nothing, so decision 66 settled that the UI keeps its own decode permanently. That left the route with no caller: `embarch-core-client` has no method for it, `embarch-api` no tool, and `embarch-ui` calls only `/load`. Decision 64's own closing sentence had been corrected for this; two source comments had not.
 
-**The CSV half, measured.** No reference-shaped CSV (225,627 rows/112,804 spans/26 lanes, decision 18's 12.6 MB figure) exists to re-measure. Measurable instead: `embarch-core`'s own real-firmware fixture renders to **43,573 B / 831 rows — 52.367 B/row** [measured 2026-09-17]. Extrapolated to 225,627 rows: **≈11.8 MB** — order-of-magnitude only, direction of error not established: `rx_utc_ms` is empty throughout, row width spans 22–67 B within the fixture itself (~3x, 51.4 B mean), and the fixture's 4-lane/7-name profile is structurally unlike the reference's 26-lane/112,804-span one. **Holds: same order of magnitude as 12.6 MB regardless** — decision 64 stands; no response-shape change follows.
+**Retired, not kept for an agent.** No agent or other caller was ever named. `tasks/core/021` is the precedent: `GET /logs/stream` had no consumer anywhere and the UI decision meant to create one decided against it, so the route and the decision it carried (44) were retired. The same applies here to decisions 65 and 66.
 
-### 66 — `Gap` widens to full parity with `trace.rs`'s own shape; the axis-health diagnostics and point events decision 62 called chart geometry stay out, permanently
-`tasks/core/085`, from `tasks/ui/065`'s field-for-field check of decision 65's payload against `trace.rs`'s own `Lane`/`Span`/`Gap`/`TraceView`.
+**What stays.** `/load` is untouched and still serves `LoadSummary`. The permanent split decision 66 recorded stands: `outpost_load.rs` and `embarch-ui/src/trace.rs` are two implementations of the timeline arithmetic, and a change to `RecordKind`, a gap record's semantics or the five-lies rules is made in both. Suite decision 4 accepts that. The route count in `interfaces.md` and the auth sweep drops 33 to 32.
 
-**`Gap` widens.** `{from, to}` becomes `{from, to, records_lost, cycle_span, frame_index, row_index, unbounded_start}` — the same seven fields `trace.rs`'s own `Gap` carries, computed off the same `Row.a`/`Row.b`/`Row.frame_index` already read at the call site and the same per-frame `unbounded_start` rule already used for `from`/`to`. Mechanical: no new bookkeeping, matching Rust types (`u32`/`u32`/`u64`/`usize`/`bool`), so a caller merging both shapes never re-derives one.
+**If a caller appears later**, it is a new decision, scoped by that caller.
 
-**Axis-health diagnostics and point events stay out, permanently, not pending.** Two reasons:
-- **Already scoped out by name.** `frames`, `resolution_ms`, `dual_clock`, `unstamped_rows`, `undated_rows`, `dut_backsteps`, `dut_backstep_max_us`, `dut_step_max_us`, `dut_clock_refused`, `stale_prefix_rows`, `stale_prefix_step_us`, `out_of_order_rows` are all fields of `trace.rs`'s own `TraceView` struct — decision 62's exclusion of "`embarch-ui`'s `TraceView` payload shape" already names this exact set. Point events are excluded the same way `outpost_load.rs`'s own `Lane` doc comment already states: they and the browser-search indices `trace.rs`'s `Lane` carries "are chart concerns and stay there."
-- **Serving them would not close anything.** `tasks/ui/065` found that even the widened `Gap` above lets `embarch-ui` delete nothing: point events are built in `trace.rs`'s same row-iteration pass as `Lane`/`Span`/`Gap`, so as long as they stay excluded the row decode, `dut_clock_health` and `stale_prefix_end` all stay too. Serving the diagnostics alone would add a second source of the same facts beside code that has to stay regardless, not retire it — the partial swap `tasks/ui/065` considered and rejected.
-
-**So `embarch-ui` decision 27's split is not waiting on `embarch-core` — it is permanent**, and decision 64's closing sentence above is corrected to match. `tasks/ui/067` closes `embarch-ui/open.md`'s bullet on that basis.
-
----
