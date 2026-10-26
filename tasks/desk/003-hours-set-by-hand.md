@@ -1,10 +1,18 @@
 # 003 — A tile's hours count as set by hand only when the user set them
 
-**State:** open
+**State:** claimed by agent/desk/003-hours-set-by-hand, 2026-10-26 02:40
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk finding 1), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 leg
+
+Nothing in `embarch-desk/` docs is in reserve. The line numbers above were taken at `880d9707`;
+`desk/001` and `desk/002` have landed since, so re-locate before citing. The `embarch-ui` half is
+an inbox drop written by absolute path to `/home/gabriel/Github/embarch/embarch-doc/inbox/`, never
+an edit to `embarch-ui`. Not deployed: the desk service on :4891 is the owner's to rebuild; do not
+start, stop or touch it.
 
 ## What
 
