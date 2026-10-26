@@ -15,7 +15,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 82, 84 | 6.3 KB |
 | [Flashing backend selection and vendor-tool discovery](decisions/flash-backend.md) | 36, 49, 52, 54 | 9.5 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 33, 40, 45 | 6.3 KB |
-| [The study record, and reading it back](decisions/study-record.md) | 24, 41, 43, 69, 71 | 8.9 KB |
+| [The study record, and reading it back](decisions/study-record.md) | 24, 41, 43, 69, 71, 86 | 8.9 KB |
 | [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56 | 8.8 KB |
 | [The outpost mode pre-flight](decisions/outpost-preflight.md) | 74 | 4.6 KB |
 | [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39 | 5.8 KB |

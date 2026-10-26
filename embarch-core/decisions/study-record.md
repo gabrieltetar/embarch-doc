@@ -40,4 +40,7 @@ A missing job now falls through to `events.json`, with the status derived exactl
 
 *Found by* the browser harness driving the Live Study tab against a real Core, on a study that had outlived the process that ran it — which is every study on this bench.
 
+### 86 — `POST /study` refuses an empty record magic, and the step-name blank is the crate's rule
+`validate_study` calls `embarch_study_designer::validate_record_checks` beside `validate_taps` and returns its Display text as the `400` (study-designer decision 81). An empty magic matches at every offset, so a hand-written study declaring one was accepted and then "verified" nothing; the refusal guards nothing until Core calls it. Core's step-name blanking in the trace CSV now delegates to `csv_cell_ok` instead of testing comma and quote itself, so it also blanks CR/LF and the two renderers cannot drift. **The zero-record log is unchanged in branch, reworded in text:** `all_verified()` is now false when `total == 0`, so an empty capture takes the warn branch, and the warning says "no records found, or has records that do not verify" rather than implying damage. Test: `validate_study_rejects_an_empty_record_magic`.
+
 ---

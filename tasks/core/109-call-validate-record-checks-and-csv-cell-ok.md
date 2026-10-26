@@ -25,9 +25,13 @@ study-designer decision 81 (`embarch-study-designer/decisions/seals.md`) refuses
 
 ## Done when
 
-- [ ] `POST /study` refuses an empty magic with the named error, with a test.
-- [ ] Core's step-name blanking uses `csv_cell_ok`.
-- [ ] The empty-capture log wording is checked.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] `POST /study` refuses an empty magic with the named error, with a test.
+- [x] Core's step-name blanking uses `csv_cell_ok`.
+- [x] The empty-capture log wording is checked.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result
+
+Decision 86 in `embarch-core/decisions/study-record.md`. Gate green on Linux. **Debt:** native Windows build not run (host-side change only, no platform code). Zero-record wording: Core's warn text reworded; api `src/cli.rs` "0 of 0 records verified" not inspected here, left to api.
