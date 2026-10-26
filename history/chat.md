@@ -4,5 +4,8 @@
 
 ## 2026-10
 
+### Changed
+- Chat: a background agent's card shows the subagent's report (hand-back, else its last reply) instead of the launch reply; stylesheet cites decision 89 (embarch-chat decision 90).
+
 ### Fixed
 - A background task's notification shows as one line that opens its card, not as a message the owner sent; another session's message folds to its sender (embarch-chat 89).
