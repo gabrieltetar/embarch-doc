@@ -1,6 +1,11 @@
 # 103 — Read where a running or hung core is without resetting it, and report every halt a live read makes
 
-**State:** open
+**State:** claimed by agent/core/103-live-core-state-without-resetting-the-board, 2026-10-26 08:11
+**Reserve (2026-10-26 08:09 leg):** `embarch-core/open.md` **50 B left**, `spec.md` 474 B, `decisions/probes.md`
+1,025 B, all filed on `tasks/core/112`, which is `blocked` on `In flux: yes`. Put this unit's bench debts in
+this task file and in the decision you amend, not in `open.md`. If you must write to `open.md` or `spec.md`
+anyway, compact that file inside this unit first, keeping `core/112`'s `Must not delete:` list, and delete
+that file from `core/112`'s `Compacts:` line (say so in its body). `decisions/live-read.md` is 2,441 B.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — one hang hunt took 17 J-Link Commander, J-Link GDB server and probe-rs calls; the first one reset the board and lost the hang; 4 raw `mem_read`s of `SCB_ICSR` and 1 `halted: false` answer that meant the core was already stopped
 **Scope:** core
 **Hardware:** verify-only — reclassified from `bench` on filing by the 2026-10-25 leg: the route, its two modes and the `halt_count` reporting are host-side code a worker can build and unit-test; the two bench checks are its hardware-verification debt, collected by a supervisor.
