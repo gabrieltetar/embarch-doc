@@ -1,6 +1,6 @@
 # 073 — The .eap parser refuses three authoring errors it now accepts in silence
 
-**State:** claimed by agent/study-designer/073-eap-authoring-refusals, 2026-10-26 04:54
+**State:** done (decision 84); claimed by agent/study-designer/073-eap-authoring-refusals, 2026-10-26 04:54
 **Dispatch note:** `open.md` is at 4,473/5,120 B (647 B left) and parked under `tasks/study-designer/026` (blocked, nothing payable): add nothing to it unless you also remove as much. `decisions/protocols.md` is 10,876/12,288 B and `decisions/gatt-extract.md` 11,053 B; if a new decision would push either into the last 10% (above 11,059 B), put it in a file with headroom instead. `interfaces/eap.md` is 8,368 B. This crate is shared: `embarch-core`, `embarch-api`, `embarch-ui` and `embarch-umbrella` path-depend on its main checkout, so a new error kind must not break an exhaustive `match` in any of them. If an existing public enum gains a variant, check those three repos with `grep` and say in your report what you found.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer findings 5, 6 and 9), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
@@ -25,9 +25,9 @@ When done, each of these is a named authoring-time error with the manifest's lin
 
 ## Done when
 
-- [ ] An `on_timeout` value outside `u32` or a `retry` outside `u8`, negative values included, is refused with the line it is on. A test covers a negative value and an overflow for each.
-- [ ] A float width on any write field is refused at parse or validation with a named error. A test covers `f32le` in an `on_enter` write.
-- [ ] A `repeat` whose element names no struct in scope is refused with the line and the name. A test covers a misspelled struct name.
-- [ ] The worked protocols in `tests/` and `interfaces/eap.md` still parse unchanged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/eap.md` for the new errors), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] An `on_timeout` value outside `u32` or a `retry` outside `u8`, negative values included, is refused with the line it is on. A test covers a negative value and an overflow for each.
+- [x] A float width on any write field is refused at parse or validation with a named error. A test covers `f32le` in an `on_enter` write.
+- [x] A `repeat` whose element names no struct in scope is refused with the line and the name. A test covers a misspelled struct name.
+- [x] The worked protocols in `tests/` and `interfaces/eap.md` still parse unchanged.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (`interfaces/eap.md` for the new errors), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
