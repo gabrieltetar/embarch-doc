@@ -1,6 +1,6 @@
 # 084 — A saved study is never written into another repo, stripped of its taps, or orphaned by an `.eap` delete
 
-**State:** open
+**State:** claimed by agent/ui/084-saved-study-not-written-elsewhere, 2026-10-26 02:22
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 1, 9 and 11), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
@@ -27,3 +27,9 @@ spec.md:54: "A destructive edit that would break a saved study is refused, namin
 - [ ] Deleting an `.eap` file whose block parses but does not resolve is refused while a saved study names that block. A study file the scan cannot read blocks the delete even when no block in the file resolved.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` and `open.md` are in reserve with parked compaction debts (`tasks/ui/078`, `tasks/ui/074`).
+
+**Dispatch note, 2026-10-26 (supersedes the line above):** `spec.md` is out of reserve since `ui/078`
+split it (8,986 / 10,240 B). `open.md` is in reserve at 4,366 / 5,120 B (754 B left, reserve line
+3,920 B) under `tasks/ui/088`, blocked `In flux: yes`. If your work adds to `open.md`, pay for it in
+the same unit: shorten or retire a bullet your fix answers, never a live question by attrition
+(`ui/088`'s rule), and leave the file no larger than you found it. If you cannot, say so here.
