@@ -4,6 +4,9 @@
 
 ## 2026-10
 
+### Changed
+- `embarch-api/open.md` compacted 4714 to 3780 B: answered bullets deleted, their facts homed in `interfaces/config.md` and decision 70.
+
 ### Fixed
 - `list_targets` accepts the shortened `<board>.dts` of a single-SoC board and errors with a per-board reason when every board is dropped, not `targets: []`. Decision 86.
 ## 2026-09
