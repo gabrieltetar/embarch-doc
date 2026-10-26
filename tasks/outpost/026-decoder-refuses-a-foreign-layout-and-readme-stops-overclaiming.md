@@ -1,6 +1,7 @@
 # 026 — The reference decoder refuses a record layout it does not speak, and the README stops claiming more than the tests and measurements show
 
-**State:** open
+**State:** claimed by agent/outpost/026-decoder-refuses-foreign-layout, 2026-10-26 04:13
+**Dispatch note (2026-10-26):** no `embarch-outpost` doc is in reserve. Gate for this unit: `python3 tests/decoder_unit.py` and `python3 tests/cross_decoder.py` (say exactly what the latter needed and whether it ran), plus `check-client-names.py` and `check-docs.py`. The ztest suite and `native_sim_stream` need a Zephyr toolchain a worktree does not carry; if you change `assert_stream.py`, record that it was not run as a toolchain debt rather than claiming it green.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-outpost findings 2 and 5, plus the README half of finding 4), verified by Opus against embarch-outpost@2968f0c1
 **Scope:** outpost
 **Hardware:** none — host Python (`tests/decoder_unit.py`, stdlib only and already in CI) and prose.
