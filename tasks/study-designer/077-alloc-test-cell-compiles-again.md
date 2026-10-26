@@ -13,5 +13,5 @@
 
 ## Done when
 
-- [ ] `cargo test --no-default-features --features alloc` passes, and every other cell in `test.yml` still does.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment.
+- [x] `cargo test --no-default-features --features alloc` passes, and every other cell in `test.yml` still does.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment.
