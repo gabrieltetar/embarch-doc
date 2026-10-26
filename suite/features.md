@@ -77,6 +77,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `study_stream_load`/`study-stream-load` — an outpost capture's per-subject load shares and coverage line, reaching Core's `/stream/{name}/load` route (closes suite decision 4's agent-side half) | Shipped | unit (wire-shape, bearer-token sweep, CLI/MCP parity); hw only for a real capture | 3, 10 |
 | `bootload` / `build_and_bootload` — a signed MCUboot image to the DUT's own bootloader over USB, plus `declare_bootload_ports`/`show_bootload_ports`/`clear_bootload_ports`, each with a CLI twin | Shipped — **no real bootloader has answered it**: mock-HTTP and unit tested only, and no real sysbuild `domains.yaml` from the first DUT has been read | unit | 80 |
 | `capture_start` / `capture_read` / `capture_stop` — record one declared console in the background while driving another, each with a `capture-*` CLI twin | Shipped — mock-HTTP tested only; **no two-console bench run yet** | unit | 88 |
+| `bench_exchange` / `bench-exchange` — one call drives a console sequence, records other consoles, returns one filtered timeline (client-clock times), named snapshots from config | Shipped — mock-HTTP tested only; **no two-console bench run, no replay yet** | unit | 89 |
 
 ## embarch-dev-bench
 
