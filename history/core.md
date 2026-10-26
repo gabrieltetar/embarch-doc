@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Core gains `/lease`: one session holds the whole bench across calls, others get 409 by name; `GET /status` adds `lease` and `last_images` (decision 93).
 - Core: `/signals/{name}/capture` records a declared signal in the background, no `hw_lock`; exchanges on it use its port ([decision 92](../embarch-core/decisions/signal-capture.md)).
 - POST /probes/enroll adds displaced, vacated and vacated_kept when an enrol moves a role; absent otherwise (core decision 87).
 
