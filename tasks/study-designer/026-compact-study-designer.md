@@ -1,6 +1,6 @@
 # 026 — Compact `embarch-study-designer/open.md`
 
-**State:** claimed by agent/study-designer/026-compact-open-md, 2026-10-25 23:12
+**State:** done, 2026-10-25
 
 ## Dispatch note, 2026-10-25 leg — read this one first
 
@@ -169,3 +169,7 @@ unit). `changelog.d/study-designer-026-open-checked.decided.md` added.
 
 **Amendment, 2026-09-17 (`tasks/suite/045`).** `open.md` is now **5,447 / 5,120 B — 327 B OVER**, up from 4,662. Two changes, both structural rather than additive: the "Missing authoring paths" bullet moved to a new **Closed** section (the trigger it named fired and the path was built), and a new **Open** section carries one question — whether a saved study should be checked against the `.eap` file it was built from, with its trigger. The closed bullet is the compaction seam: a closed question in a file whose contract is unresolved-only either leaves or shrinks to its pointer.
 
+
+## Result, 2026-10-25 leg
+
+`embarch-study-designer/open.md`: **5,447 -> 4,473 B** (cap 5,120, under the 4,608 reserve floor). Removed the whole **Closed** section: the `Study.protocols` authoring-path question, closed by decision 75's `eap_repo`, the `RunProtocol` amendment in `decisions/authoring.md`, and `embarch-ui`'s `.eap` editor (`tasks/suite/045`, `tasks/ui/070`); what the manifest taught stays in `interfaces/eap.md`. No open bullet touched. Human question: yes, `spec.md` plus `decisions/` answer what someone needs to work on the crate today; `open.md` is a ledger of undecided things only, and the closed one was history the decisions already carry.

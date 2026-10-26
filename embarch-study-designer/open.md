@@ -19,12 +19,6 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 
 - **`repeat` (`count_from`), `bitpack`, `crc32` and `fixed`.** The bit-unpacker, the counted walker and the CRC check are **the render half, and are not written** — deliberately: a rendering built before any real capture exists would be tested against synthetic bytes, which is exactly what decision 48 removed post-hoc validation for. `render_layout` now refuses each by name (task 028) rather than a caller getting a silent gap or, for `fixed`, a flat integer with the scale dropped.
 
-## Closed
-
-- **~~`Study.protocols` has no path in the Study Designer UI.~~ Closed 2026-09-17** (`tasks/suite/045`, `tasks/ui/070`). The bullet said the builder emitted an empty list because the row type had no protocol variant, and that **inventing one ahead of the first real manifest would be designing against imagined authoring**. The trigger fired on 2026-08-27, when a real engineer drove a real DUT's Batch Data Service through 34 request/pump/consume cycles from a hand-authored manifest — resolved programmatically, exactly as this said was possible, but **built by a throwaway Rust program rather than by anything in the suite.** What that manifest taught is in [interfaces/eap.md](interfaces/eap.md).
-
-  What closed it: decision 75's `eap_repo` (the files on disk), the authoring decision's `RunProtocol` amendment (the row), and `embarch-ui`'s `.eap` editor dialog. `build_study` now derives the carried set from the rows rather than taking an authored list.
-
 ## Open
 
 - **A saved study is never checked against the `.eap` file it was built from.** A study carries a *resolved* `ProtocolDef` (decision 58), which is what makes it replay identically on a machine that is not its author's — and is also why editing the manifest afterwards changes nothing about studies already saved. That is correct, and it is also silent: the tab will happily offer a protocol whose text no longer matches what a saved study carries, with nothing anywhere saying the two have diverged.
