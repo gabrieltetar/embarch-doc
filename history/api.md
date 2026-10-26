@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- Flash results carry `erased`, the ranges Core blanked; the `erase` description now says it skips option bytes and never chip-erases (core decision 84).
 - `embarch-api/open.md` compacted 4714 to 3780 B: answered bullets deleted, their facts homed in `interfaces/config.md` and decision 70.
 
 ### Fixed
