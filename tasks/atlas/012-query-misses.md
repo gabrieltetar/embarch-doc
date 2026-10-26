@@ -1,0 +1,24 @@
+# 012 — Fix the lookup misses field sessions hit: part_card's board argument, CMSIS register names, undistilled sections, PDF paths
+
+**State:** open
+**Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 49 of 160 `part_card` calls (9 sessions) never reached the server because the model wrote `"board": }`; 5 `register` misses on CMSIS names such as `UCPD1.CFG1`; 9 `doc_section`/`doc_toc` misses, 5 on toc sections with no distillation and 4 on section numbers or titles the toc does not have; 3 of 208 PDF page reads went to guessed file paths
+**Scope:** atlas
+**Hardware:** none
+**Owner:** no
+
+## What
+
+Four small fixes, each from a measured miss. (1) `part_card`'s `board` parameter documents `""` as "all boards" (`embarch-atlas/src/embarch_atlas/mcp_server.py:48-50`); the model wrote `"board": }` instead, Claude Code rejected the call as invalid JSON, and 33 times the next call was the same failing call. Replace the empty-string sentinel with a value a model writes reliably (`"all"`), and make sure no tool documents `""` as a meaningful value. (2) Firmware names MCU registers by the CMSIS device header's struct members (`UCPD1->CFG1`, `RX_PAYSZ` in the Zephyr UCPD driver), while `register` matches SVD names (`UCPD_CFGR1`, `UCPD_RX_PAYSZR`) and misses (`query.py:556`). Alias each struct member to the SVD register at the same offset, read from the build's CMSIS header. (3) `doc_section` with a section id that `toc.json` has but no `s/` file answers "not found" (`query.py:305-307`); answer instead with the section's title and pages, "not distilled", and the next call (`find_text section=<id>`, or `doc_section tier=text page=<first>`). A reference-manual register section left to the SVD points to `register <PERIPH>.<REG>`; a `doc_toc under=` that matches nothing lists the nearest titles. (4) Cites give a doc id and a page (`ds13560@6 p102`), and the card's Source line gives a bare file name, so a session guessed the PDF path (`<fw>/embarch/hardware/ds13560.pdf`, `<fw>/embarch/atlas/docs/ina700@B/ina700.pdf`) and the `Read` failed. Put the source PDF's path, relative to the firmware repo, in the card's Source line and in `doc_section`'s `src:` line.
+
+## Why now
+
+The first fix alone recovers about a third of `part_card` calls. The other three each turn a dead end into the next call to make.
+
+## Done when
+
+- [ ] `part_card` takes `board="all"`; a test asserts that no MCP tool's documentation offers `""` as a value.
+- [ ] `register UCPD1.CFG1` answers with `UCPD_CFGR1`'s fields, from a synthetic CMSIS header and SVD fixture with a member renamed against the SVD.
+- [ ] `doc_section` on an undistilled toc section returns its title, pages and the next call; an RM register section points to `register`; `doc_toc under=` with no match lists nearest titles.
+- [ ] Cards and `doc_section`'s `src:` line name the source PDF path relative to the firmware repo.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

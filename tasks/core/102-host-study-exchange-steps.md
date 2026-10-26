@@ -1,0 +1,26 @@
+# 102 — Run host studies in Core: send-and-read steps against the PD bench and the DUT console
+
+**State:** open
+**Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the PD source sequence ran 4 times as a bash script (plus 7 runs of its scratch versions). The scripts made 441 shell exchanges across 2 consoles in 16 e-load runs, about 1.7 s per operation. 2 runs stopped on an empty console reply (2026-10-10)
+**Scope:** core
+**Hardware:** verify-only
+**Owner:** no
+
+## What
+
+Core runs a host-run study (study-designer task "host-study-model"), as `embarch-host-study-proposal.md` §Core describes. `POST /host-studies` takes the same `study_lock` as a bench study, validates the study against topology and runs the steps on one executor thread. It emits the existing `StepCompleted` per step. **`Exchange` runs the code path of `POST /signals/{name}/exchange`** (decision 79): write one line, then read until `until` or the timeout, with `match_after_echo` taken as declared. The reply is recorded raw, escape codes kept, capped and marked truncated. `Wait` sleeps. **Teardown runs on every exit:** after the last step, after a failing step, on a timeout and on a new `POST /study/{id}/cancel`. A step that cannot find its signal's port fails with the port names seen, like the exchange route's own 409.
+
+## Why now
+
+Each field script took its own bench lock and reimplemented abort and safe state. A run that dies part-way leaves the load sinking and the partner at 20 V. Two runs of the PD sequence were lost to an empty reply the script could not tell apart from a dropped command.
+
+## Done when
+
+- [ ] `POST /host-studies` accepts a valid host study and answers 409 while any study holds `study_lock`.
+- [ ] `Exchange` and `Wait` execute, and `GET /study/{id}/steps` returns each reply with its byte count and elapsed time.
+- [ ] **A zero-byte reply is reported as its own outcome detail**, separate from a reply that never showed `until` before the timeout.
+- [ ] Teardown runs after a failed step, after a timeout and after `POST /study/{id}/cancel`. Unit tests over a scripted fake port prove all three.
+- [ ] No step compares a value. Only "written", "marker seen" and "port present" decide the outcome.
+- [ ] Bench check, run by the supervisor: the PD source sequence as a host study against `pd-bench` gives the same contract lines as the bash run, and teardown leaves the partner at 5 V after a forced failure.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
