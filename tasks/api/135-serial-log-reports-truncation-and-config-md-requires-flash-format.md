@@ -1,10 +1,18 @@
 # 135 — `serial_log` tells its caller when Core cut the capture short, and config.md stops calling `flash_format` optional for `zephyr-west`
 
-**State:** open
+**State:** claimed by agent/api/135-serial-log-reports-truncation-and-config-md-requires-flash-format, 2026-10-26 05:14
 **Source:** DeepSeek V4 Pro suite review 2026-10-25 (cross-repo findings 1 and 7), verified by Opus against embarch-api@6d664853 and embarch-core@40a58ccb
 **Scope:** api
 **Hardware:** none — the change is the client struct, the CLI and the MCP tool, all tested against the mock Core, plus one doc cell.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:14 leg
+
+**Doc reserve in your scope:** `embarch-api/decisions/client-crate.md` is 11,581 / 12,288 B (707 B left), filed under `tasks/api/140` (open). Decision 58 already states the parse rule this task applies, so this should need no new decision there; if you do need one, put it in another topic file (`failure-reporting.md` or a new one listed in `decisions.md`), not `client-crate.md`. Nothing else in `embarch-api/` is in reserve; `interfaces/config.md` (9.8 K of 12 K) and `interfaces/tools-build-flash.md` have room.
+
+**Shared crate.** `embarch-core-client` is path-depended on by `embarch-ui`. Keep the `SerialLogResponse` change additive (`Option<bool>`, `#[serde(default)]`), so `embarch-ui` builds unchanged; say in your Result whether `embarch-ui` reads this struct anywhere.
+
+**Isolation, not optional.** Tests and any CLI or MCP run go against the crate's mock Core on a port your test owns. Never run the `embarch-api` binary with the owner's config or its default `auto` base-url discovery (that finds the live Core at the WSL2 gateway), never call the `mcp__embarch-api__*` or desk tools, never touch the desk on :4891, real serial ports or probes, and never read or write the owner's data dirs (`~/.config/embarch*`, `~/.local/share/embarch*`). The last two legs each had a worker reach something live; do not be the third.
 
 ## What
 
