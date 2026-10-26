@@ -1,6 +1,6 @@
 # 081 — A Slack reply from the Desk goes to the message it was drafted for, not whatever now sits at that index
 
-**State:** claimed by agent/ui/081-desk-slack-reply-goes-to-the-message-it-was-drafted-for, 2026-10-26 06:01
+**State:** done on agent/ui/081-desk-slack-reply-goes-to-the-message-it-was-drafted-for, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 2), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
@@ -22,8 +22,12 @@ This is the one finding in the review that sends something the user did not mean
 
 ## Done when
 
-- [ ] A browser check (`tests/browser/drive_desk.py`, or a sibling script) captures the page's own `/api/desk/slack/*` requests, so nothing reaches a real desk or Slack. It renders two Slack items, clicks Draft reply on the second, pushes a view that adds a new unread item at the top, then clicks Send. The captured reply request must carry the second message's account, channel and thread.
-- [ ] The same holds when an item is removed from the list or changes to read between Draft and Send.
-- [ ] A reply box whose message has left the list says so, and sends nothing.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A browser check (`tests/browser/drive_desk.py`, or a sibling script) captures the page's own `/api/desk/slack/*` requests, so nothing reaches a real desk or Slack. It renders two Slack items, clicks Draft reply on the second, pushes a view that adds a new unread item at the top, then clicks Send. The captured reply request must carry the second message's account, channel and thread.
+- [x] The same holds when an item is removed from the list or changes to read between Draft and Send.
+- [x] A reply box whose message has left the list says so, and sends nothing.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result
+
+`assets/desk.js`: Draft button carries `[account, channel, ts]`; the reply box keeps a copy; Send posts to the copy (embarch-ui decision 63). A box whose message left the list says so, disables Send and sends nothing. Browser check `tests/browser/drive_desk_slack.py` (stub desk on :4997, UI :4897, geckodriver :4931) covers new item on top, turned-read, second Draft on a shifted card, and message removed. Hardware: none; no debt.

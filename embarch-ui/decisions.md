@@ -11,7 +11,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/shape.md](decisions/shape.md) | 1, 2, 9 | One consolidated process, zero-build, the repo |
 | [decisions/launcher.md](decisions/launcher.md) | 3, 28 | The VS Code launcher: thin, sideload-only, one strategy behind a registry; Start focuses the window and tab already open, matched on the page title |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
-| [decisions/shell.md](decisions/shell.md) | 4, 46, 56, 57, 58, 59 | The shell's sections, fragment navigation and a link that selects what it names, and the open project as a shell control at the foot of the sidebar |
+| [decisions/shell.md](decisions/shell.md) | 4, 46, 56, 57, 58, 59, 63 | The shell's sections, fragment navigation and a link that selects what it names, and the open project as a shell control at the foot of the sidebar |
 | [decisions/design-system.md](decisions/design-system.md) | 8, 25, 42 | The visual design system settled against real mockups: the palette, the brand-vs-accent split, and the typefaces served by the binary rather than a CDN |
 | [decisions/debug-tab.md](decisions/debug-tab.md) | 7, 13 | Log streaming, and why `embarch-api`'s logs are a file instead |
 | [decisions/topology-tab.md](decisions/topology-tab.md) | 10 (routing), 43 | Signal routing: the one human surface for declaring a wire; and enrolling a board by dropping a probe onto the diagram, the Enroll tab folded in |
