@@ -1,6 +1,6 @@
 # 002 — A background Agent's card shows the subagent's report
 
-**State:** claimed by agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26 00:08
+**State:** done, agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26
 **Source:** owner, 2026-10-25 — a notification said "This agent's report was delivered to you as a message from <id> (its SubagentHandback call). Read it there; it is not repeated here", and the panel showed that report nowhere
 **Scope:** chat
 **Hardware:** none
@@ -23,10 +23,16 @@ The panel shows a notice that the report was delivered while hiding the report i
 
 ## Done when
 
-- [ ] The hand-back's live wire shape is recorded as a fixture with neutral prompts. If the CLI does not put it on the wire, the decision says so and says which source the card uses instead.
-- [ ] Wire test: the card's result is the report, and the launch reply no longer shows as the result.
-- [ ] Reload test from a transcript carrying the hand-back line: the same result.
-- [ ] Webview e2e: the card opens to the report.
-- [ ] Gate, the same list as `chat-cli-turns-are-not-the-owners`: `npm ci`, `npm run build`, `npm run typecheck`, `npm test`, `npm run test:webview`, `check-client-names.py --repo .`, `check-docs.py`, `check-ownership.py --scope chat`.
-- [ ] Decision in `embarch-chat/decisions/timeline.md`, `spec.md` updated, `changelog.d/` fragment with scope `chat`.
-- [ ] If both tasks are open, this one lands second. Both edit `foldUser`, and this one reads a line that one classifies.
+- [x] The hand-back's live wire shape is recorded as a fixture with neutral prompts. If the CLI does not put it on the wire, the decision says so and says which source the card uses instead.
+- [x] Wire test: the card's result is the report, and the launch reply no longer shows as the result.
+- [x] Reload test from a transcript carrying the hand-back line: the same result.
+- [x] Webview e2e: the card opens to the report.
+- [x] Gate, the same list as `chat-cli-turns-are-not-the-owners`: `npm ci`, `npm run build`, `npm run typecheck`, `npm test`, `npm run test:webview`, `check-client-names.py --repo .`, `check-docs.py`, `check-ownership.py --scope chat`.
+- [x] Decision in `embarch-chat/decisions/timeline.md`, `spec.md` updated, `changelog.d/` fragment with scope `chat`.
+- [x] If both tasks are open, this one lands second. Both edit `foldUser`, and this one reads a line that one classifies.
+
+## Result
+
+Decision 90. Hand-back **not recorded on the wire**: three recordings produced none, and a fourth (asking the subagent to call SubagentHandback) was refused by the auto-mode classifier and not retried. The wire test uses `notifyidle` (the subagent's last reply under `parent_tool_use_id`, the fallback); the hand-back tests use a line built from the transcript shape in the task. Webview e2e and reload test added. This landed after chat/001 (89), as required.
+
+**Debt (live-wire):** record a hand-back from a real session where a subagent calls SubagentHandback (an owner session with a worker agent definition; `--setting-sources ""` has none) and check `origin.from`/`body` and whether it arrives as `isMeta` on stdout; until then the primary source is assumed.

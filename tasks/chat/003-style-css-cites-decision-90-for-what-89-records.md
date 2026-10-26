@@ -1,6 +1,6 @@
 # 003 — A stylesheet comment cites a decision number chat has never issued, for the rows 89 records
 
-**State:** claimed by agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26 00:08 (folded into chat/002, as this task asks)
+**State:** done, agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26
 **Source:** `chat/001`'s reviewer, 2026-10-25 (below its bar, filed by the supervisor so it is not lost when the log folds).
 **Scope:** chat
 **Hardware:** none
@@ -23,5 +23,5 @@ dispatching it alone.
 
 ## Done when
 
-- [ ] The comment cites 89; no other reference to a nonexistent chat decision remains.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the npm bullet).
+- [x] The comment cites 89; no other reference to a nonexistent chat decision remains.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the npm bullet).

@@ -1,0 +1,1 @@
+| A background agent's card shows the subagent's report under a collapsed "Report", not the launch reply — from the hand-back line, else the subagent's last reply | Shipped, built and tested, not yet installed — **the hand-back was never seen on the live wire; only its transcript shape (CLI 2.1.287) and the last-reply fallback are recorded** | unit, local | 90 |
