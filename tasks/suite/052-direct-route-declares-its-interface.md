@@ -1,6 +1,6 @@
 # 052 — A direct signal route declares which serial interface carries it
 
-**State:** open — not announced; a `suite` task runs only after protocol §8's announcement and its 30-minute window
+**State:** open — announced 2026-10-26 08:09 MDT, `ts` `1793023741.728799` (no `--action`); the window closes 08:39. Poll `fleet-read.py --thread 1793023741.728799`; run it as a leg's last unit only if no objection has arrived by then
 **Source:** topology/062 (DeepSeek V4 Pro review 2026-10-25, topology findings 1, 4, 8); split off because it changes a public shape (protocol §8). Filed from `inbox/suite-direct-route-declared-interface.md` by the 2026-10-26 leg, in topology/062's fold.
 **Scope:** suite
 **Hardware:** none — fixture-testable; whether a two-interface direct device exists on this bench is unknown (`embarch-topology/open.md`)

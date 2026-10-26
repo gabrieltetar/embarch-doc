@@ -1,10 +1,22 @@
 # 116 — Render per-pass line counts for host studies from the raw tap bytes on disk
 
-**State:** blocked — waits on `tasks/core/102`, the unit where Core first accepts a `HostStudy` at all; this task's first half restates part of that one. Unparks when `core/102` lands; rewrite the first `Done when` box then to whatever `core/102` did not already ship.
+**State:** open — unparked by the 2026-10-26 08:09 leg: `core/102` landed (`embarch-core` decision 95) and shipped none of the first box. Read the 08:09 note below before starting.
 **Source:** study-designer/071 (decision 86 in `embarch-study-designer/decisions/host-repeat.md`): `Repeat` and `LineCount` types shipped in `embarch-study-designer`, validated, with no consumer yet. Field use on a USB PD charger board: 34 of 96 bench tests ended in a `grep -c` over a raw console dump. Filed from `inbox/core-host-study-line-count-render.md` by the 2026-10-26 leg.
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Supervisor note, 2026-10-26 08:09 leg — what `core/102` left, and a new dependency
+
+`core/102` shipped `POST /host-studies` and refuses `Repeat` and `line_counts` with a named `400` at
+submission (`embarch-core/decisions/host-study.md`, decision 95). So the first box below is whole.
+**A second dependency surfaced at unpark:** decision 95 also refuses a non-empty `streams` until
+`tasks/core/101` lands, and a `LineCount` counts lines of a named tap, so an accepted host study has
+nothing to count yet. If `core/101` has not landed when you start: ship box 1 (Core runs `Repeat`,
+writes markers) and the renderer with its canned two-tap test (boxes 3-4), keep `line_counts`
+refused at submission with the refusal naming `core/101`, and leave box 2 open with that reason.
+While in `decisions/host-study.md`, its "`HOST_TYPE_SCHEMA_VERSION` stays 19 on this branch" line is
+stale: the landing leg bumped it to 20 (`embarch-study-designer@302784c`).
 
 ## Supervisor note, 2026-10-26 leg — why blocked, and where the schema bump went
 
