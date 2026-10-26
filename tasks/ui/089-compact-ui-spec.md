@@ -34,6 +34,6 @@ section that belongs with one of them is the cheaper move than squeezing an inva
 
 ## Done when
 
-- [ ] `embarch-ui/spec.md` under the reserve line in `scripts/check-doc-size.py --pressure`.
-- [ ] Every cut quoted in the commit message; no invariant shortened by attrition.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/ui-*` fragment.
+- [x] `embarch-ui/spec.md` under the reserve line in `scripts/check-doc-size.py --pressure`.
+- [x] Every cut quoted in the commit message; no invariant shortened by attrition.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/ui-*` fragment.

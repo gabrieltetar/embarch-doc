@@ -2,9 +2,9 @@
 
 **Status:** active, 2026-09-29.
 
-Split verbatim from [../spec.md](../spec.md) (`tasks/ui/069`), when decision 44's roles/topology growth put that file back over its cap. Nothing below is reworded from the version that moved. What each tab does. Current truth: [../spec.md](../spec.md).
+Split verbatim from [../spec.md](../spec.md) (`tasks/ui/069`), when decision 44's roles/topology growth put that file back over its cap. Nothing below is reworded from the version that moved, except the opening paragraph, which carries the newer wording from `spec.md` (desk, not project; `tasks/ui/089`). What each tab does. Current truth: [../spec.md](../spec.md).
 
-One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open project is shell furniture, at the foot of the sidebar** (46): one firmware repo at a time, named there on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab, and may name what it shows — `#desk?item=`, `#live-study?study=`, `#topology?board=` mark it, then leave the address (58). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43), `#dashboard` is `#desk` (56).
+One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open desk is shell furniture, at the foot of the sidebar** (46, 57): one desk — and so one firmware repo — at a time, or a bare repo with no desk, named on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab, and may name what it shows — `#desk?item=`, `#live-study?study=`, `#topology?board=` mark it, then leave the address (58). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43), `#dashboard` is `#desk` (56). What each tab does: the table below.
 
 | Tab | What it does |
 |---|---|

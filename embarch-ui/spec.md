@@ -41,7 +41,7 @@ The launcher (`embarch-chat` decision 29) pre-flights the address, spawns/stops 
 
 ## The six tabs
 
-One persistent left sidebar, one top status bar, client-side navigation by URL fragment (`#topology`, `#live-study`). **The open desk is shell furniture, at the foot of the sidebar** (46, 57): one desk — and so one firmware repo — at a time, or a bare repo with no desk, named on every tab and changed from a dialog the Study Designer's own card also opens. A fragment names a tab, and may name what it shows — `#desk?item=`, `#live-study?study=`, `#topology?board=` mark it, then leave the address (58). **A retired fragment resolves to the tab that absorbed it**, never to the last one that browser had open: `#enroll` is `#topology` (43), `#dashboard` is `#desk` (56). What each tab does: [spec/tabs.md](spec/tabs.md).
+Navigation, the sidebar, the open desk as shell furniture and fragment routing (`#topology`, `#live-study`, retired `#enroll`, `#dashboard`; 43, 46, 56–58), and what each tab does: [spec/tabs.md](spec/tabs.md).
 
 ## Invariants
 
