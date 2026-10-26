@@ -1,0 +1,1 @@
+| `POST /live/core-state` — where a running or hung core is: `DHCSR` and `DWT_PCSR` samples without halting, or registers and `SCB_ICSR` under one counted halt | Shipped — **host-side only: logic proven over a scripted core; never run on a board (PC samples, found-halted case, `DWT_PCSR` presence unchecked), native Windows build unrun** | unit | 97 |

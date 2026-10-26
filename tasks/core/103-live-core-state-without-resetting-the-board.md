@@ -1,6 +1,6 @@
 # 103 — Read where a running or hung core is without resetting it, and report every halt a live read makes
 
-**State:** claimed by agent/core/103-live-core-state-without-resetting-the-board, 2026-10-26 08:11
+**State:** done — host side; the two bench boxes below are the hardware-verification debt
 **Reserve (2026-10-26 08:09 leg):** `embarch-core/open.md` **50 B left**, `spec.md` 474 B, `decisions/probes.md`
 1,025 B, all filed on `tasks/core/112`, which is `blocked` on `In flux: yes`. Put this unit's bench debts in
 this task file and in the decision you amend, not in `open.md`. If you must write to `open.md` or `spec.md`
@@ -21,9 +21,21 @@ On 2026-10-14 the DUT went silent after a USB PD message. J-Link Commander's STM
 
 ## Done when
 
-- [ ] Unit tests for request checks and for the response shape, including "already halted, left halted" and "running, halted, let run" with a halt count.
+- [x] Unit tests for request checks and for the response shape, including "already halted, left halted" and "running, halted, let run" with a halt count.
 - [ ] Bench: on a running STM32G0 the default mode returns PCs inside the image and leaves the core running with `halt_count` 0; with `halt=true` it returns registers and `halt_count` 1 plus the gate's.
 - [ ] Bench: on a core halted by a debugger, the answer says "found halted, left halted" and reads the registers without resuming it.
-- [ ] `mem-read`'s answer names the state found and the state left; the old `halted` field stays one release for compatibility and its doc says what it meant.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 81 amended), `changelog.d/` fragment dropped; follow-ups filed for the `embarch-api` tool and CLI and the atlas symbol decode.
+- [x] `mem-read`'s answer names the state found and the state left; the old `halted` field stays one release for compatibility and its doc says what it meant.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 81 amended), `changelog.d/` fragment dropped; follow-ups filed for the `embarch-api` tool and CLI and the atlas symbol decode.
+
+## Hardware-verification debt
+
+Run by a supervisor on the first DUT (an STM32G0 board), over a Core built from this branch, on a scratch instance:
+
+1. Running core: `POST /live/core-state {"role":"dut"}` returns `pc_samples` inside the flashed image, `left` `running`, `halt_count` 1 (the identity gate's halt; 0 on a non-G0 part). With `halt=true`: registers and `scb_icsr` returned, `halt_count` 2, `halted_us` in the low milliseconds, core running afterwards.
+2. Core halted by a debugger: both modes answer `found` and `left` `halted`, `halt_count` 0, registers read, and the debugger still sees the core halted. Also confirm `DWT_PCSR` (0xE000101C) exists on that part (`pc_note` is empty).
+3. `/live/mem-read` on the same board shows `found`/`left`/`halt_count` and the old `halted` unchanged.
+
+The native Windows build of `embarch-core` was not run (not the worker's to run).
+
+Drops: `inbox/topology-report-gate-halts.md`, `inbox/api-core-state-tool-and-cli.md`, `inbox/atlas-core-state-symbol-decode.md`. `open.md` and `spec.md` were not touched (reserve line); the debts live here and in decision 97.
