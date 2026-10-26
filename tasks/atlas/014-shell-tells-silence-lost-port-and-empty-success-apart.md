@@ -14,8 +14,11 @@
 
 A budget-setting command that prints nothing on success produced the 23 empty answers; the session could not tell success from a silent refusal and checked each with a status command (21 extra calls). The 2 false "did not run" answers came from a command that switches the DUT's USB device off; the session re-sent it.
 
+**Merged in 2026-10-26: `atlas/022`**, filed that morning from `core/098`'s inbox drop and a subset of this task, so it was folded here rather than queued twice. Core's exchange answer now carries the fields this task waited for (`embarch-core` decision 85): `written`, `port_lost`, `echo_seen`, `bytes_read`, and on a silent reply `port_identity` (VID, PID, product, serial) and `core_state` (DHCSR flags, or why it is unavailable). What 022 added beyond this task: a silent reply prints the echo verdict, the port's VID/PID/product and the core state; and a `500` from an open or write failure means nothing was written, so a resend is safe there and only there.
+
 ## Done when
 
+- [ ] A silent body (a fixture carrying `port_identity` and `core_state`) prints the echo verdict, the identity and the core state. (From `atlas/022`.)
 - [ ] Unit tests with a fake `embarch-api` reproduce: empty output with prompt seen (answer carries `retval`); zero bytes (no "longer timeout" advice); a `500` or `port_lost` after the write (answer says the command was sent and is not retried on another console).
 - [ ] `Console.run` falls through to the next console only when the failure happened before anything was written (port not enumerable, open failed), never after.
 - [ ] `retval` is skipped, and the answer says so, when the image has no `retval` command.
