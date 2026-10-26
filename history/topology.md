@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Validation gains halts: how many times the identity gate halted the core, so Core stops inferring it by chip prefix.
 - A direct signal route can declare its USB interface, so a device with several serial ports under one serial resolves to that port instead of being refused (decision 46; suite/052).
 - Probe moved to a board of another chip family is refused by name before any attach (validate_serial_for_chip, topology decision 44); Core wiring filed.
 
