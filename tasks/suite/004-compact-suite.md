@@ -1,9 +1,7 @@
 # 004 — `embarch-decision-reversals.md` and `suite/features.md` are in reserve
 
-**State:** open — announced and parked 2026-10-26 01:40 MDT, `ts` `1793000429.737099`; the §4
-window closes 02:10. Plan announced: shorten both files under their reserve lines by wording only, no
-split and no new file, every `Must not delete:` item kept. A leg that finds this still `open` reads
-that thread (`fleet-read.py --thread 1793000429.737099`) and completes the window, never restarts it.
+**State:** done 2026-10-26 — announced 01:40 MDT (`ts` `1793000429.737099`), no reply, run by the
+supervisor at 02:11 after the 30-minute window. See "## Done" at the end.
 **Source:** `scripts/check-doc-size.py` went RED during leg 013's `umbrella/007` fold — both
 files crossed their reserve lines inside that fold, one by a supervisor edit and one by an
 assembler run.
@@ -156,8 +154,8 @@ task is no longer a debt; it is the next thing that breaks.**
 
 ## Done when
 
-- [ ] `embarch-decision-reversals.md` is back under its 9,216 B reserve line, with every
-      shape number and citation still findable by search.
+- [x] `embarch-decision-reversals.md` is back under its reserve line (now 9,011 B, the 1.2 KB
+      floor), with every shape number and citation still findable by search.
 - [x] `suite/features.md` has an answer that is not "compact it": either the cap moves, the
       inventory splits, or the fragments shrink. **Whichever it is, it is a decision, and
       recording it is the point** — otherwise this task is refiled every few folds forever.
@@ -180,7 +178,32 @@ task is no longer a debt; it is the next thing that breaks.**
       which is precisely what `DOC-COMPACTION.md` §2's reserve exists to prevent. Found by
       `suite/005`'s reviewer, reviewing the supervisor's own diff. **This item is `scripts/`
       and therefore the owner's**, and it is what keeps `004` open and the filing alive.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered for whatever pass actually runs.
-- [ ] Gate green.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered for whatever pass actually runs.
+- [x] Gate green.
+
+The `suite/features.md` item above is left unticked because it is VOID (below), not paid.
 
 **`suite/features.md`'s item is VOID, 2026-09-07 — not paid, withdrawn.** That file no longer has a byte cap at all ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2): the 20 KB was documented as a backstop and had become the constraint, with the file at 20,444 of 20,480 B so that **every legitimate `features.d/` fragment breached it**. Three units had spent their reserve shaving Status-column rows, the third to clear 14 bytes. The real budget is the per-row 600 B `build_features.py` enforces. **Nothing about this file is owed any more**, and the 36-byte figure this task carried is no longer a debt. The other two items stand.
+
+## Done
+
+Run 2026-10-26 by the supervisor after the §4 window (`ts` `1793000429.737099`, no reply). Wording
+only, no split, no new file:
+
+- `embarch-decision-reversals.md` 9,633 → 9,004 B (87.9%): tightened sentences across the eleven
+  shapes and the review-driven bullets. Every shape number, every row number and every citation
+  kept; the one citation dropped was a duplicate (`umb` decision 17 was linked twice in one bullet,
+  and the more specific `decisions/projects.md` link stays). The review-driven section and its
+  "distinct from a fresh decision" framing stay.
+- `suite/studies-guide.md` 24,783 → 22,872 B (89.3%): §3a/§3b history compacted. Removed what
+  restated a later paragraph (the log-sink sentence after the truncation paragraph), the story of
+  how decision 45's "did not arrive" misreport happened (its guidance kept), the pre-decision-46
+  description of the address-path gate (the old-firmware tell kept), a stale pointer to the retired
+  `tasks/dev-bench/009`, and a list of client-firmware commands in the "DUT-side lore" sentence.
+  Also repaired a sentence that a decision-46 insertion had split in two ("three named advertisers…"
+  had been left lowercase after an inserted paragraph). §4's CLI-versus-no-CLI distinction and the
+  `Step::power_sample` clause with its decision 39 citation are unchanged.
+
+Human question (`DOC-COMPACTION-PASS.md`), adapted to a guide: can the guide alone still tell a
+study author what to do? Yes. Every instruction and every measured fact with its date stays; what
+went is how two since-fixed misreports used to look.
