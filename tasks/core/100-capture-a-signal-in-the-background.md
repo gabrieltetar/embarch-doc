@@ -1,6 +1,6 @@
 # 100 — Capture a signal in the background while other hardware calls run
 
-**State:** claimed by agent/core/100-capture-a-signal-in-the-background, 2026-10-26 05:14
+**State:** done (host-side half; hardware-verification debt below), agent/core/100-capture-a-signal-in-the-background, 2026-10-26
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 69 hand-written PowerShell `System.IO.Ports.SerialPort` scripts in 18 sessions (1,510 s of tool time) read consoles around Core; after `signal_exchange` landed on 2026-10-06, 21 of them (1,237 s) still ran on the DUT and bench consoles, each one a listener on one console while `signal_exchange` drove the other, or a boot log held across a reset; a 20 s `serial_log` was refused at the 10 s cap
 **Scope:** core
 **Hardware:** verify-only — reclassified from `bench` on filing by the 2026-10-25 leg: the capture endpoint is host-side code a worker can build and test against a mock port; the two-console bench check is its hardware-verification debt, collected by a supervisor.
@@ -28,11 +28,30 @@ The listeners were base64-encoded PowerShell, to survive WSL quoting, with escap
 
 ## Done when
 
-- [ ] Capture start, read-from-offset and stop exist on a declared signal; a second capture on the same signal is a `409` naming the first.
-- [ ] On the bench, with a capture running on one console, exchanges on the other console and a flash and reset of either board all succeed.
-- [ ] An exchange on the captured signal returns its reply, and the capture contains the same bytes.
-- [ ] A capture across a reset holds the boot lines on a UART bridge; across a CDC ACM re-enumeration it reopens and records a gap marker.
-- [ ] Duration and byte caps are named in a decision, and a capture is not bounded by the client's 15 s request timeout.
-- [ ] The client half (MCP tools and CLI subcommands) is filed as an `api` task.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Capture start, read-from-offset and stop exist on a declared signal; a second capture on the same signal is a `409` naming the first. (`capture.rs`, `api.rs`; unit-tested against scripted ports.)
+- [ ] On the bench, with a capture running on one console, exchanges on the other console and a flash and reset of either board all succeed. **Hardware-verification debt.**
+- [x] An exchange on the captured signal returns its reply, and the capture contains the same bytes. (Host side, scripted port; test `an_exchange_goes_through_the_capture_and_its_bytes_land_in_it`. Real-console check in the debt.)
+- [ ] A capture across a reset holds the boot lines on a UART bridge; across a CDC ACM re-enumeration it reopens and records a gap marker. Host side done against a scripted port (`a_lost_port_is_marked_and_reopened`); **real UART bridge and CDC ACM are hardware-verification debt.**
+- [x] Duration and byte caps are named in a decision (92), and a capture is not bounded by the client's 15 s request timeout (`POST` returns at once; only each `GET` is short).
+- [x] The client half is filed as an `api` task: `/home/gabriel/Github/embarch/embarch-doc/inbox/api-signal-capture-tools.md` (`tasks/api/131` is the higher-level `bench_exchange` built on this and does not cover the raw tools).
+- [x] Gate green (see Result).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `features.d/core-260-signal-capture.md` written.
+
+## Result
+
+Shipped `embarch-core/src/capture.rs` plus three routes and `AppState.captures`; `exchange::exchange_with` is `pub(crate)` and the response tail is `exchange::response`, shared. Decision 92 in `decisions/signal-capture.md`. No wire-schema change.
+
+**Not done, by the dispatch note:** one port owner shared with a study's signal tap. The seam is `AppState.tap_ports`: a capture claims its port there (so `/bootload` and a new capture refuse it) and refuses a port a tap holds, but a study that starts later on a captured signal is only refused by the OS. Recorded in `open.md` and decision 92, left to the console-capture-during-host-study task (`core/101`).
+
+**Docs shortened:** nothing; `spec.md` is 9,398 / 10,240 B and `open.md` 4,872 / 5,120 B (both already filed under `core/112`, which stays blocked).
+
+## Hardware-verification debt
+
+Bench: both consoles of the USB PD board, a Core on a scratch data dir and port.
+
+1. Declare the DUT and bench consoles as signals. `POST /signals/dut/capture {"max_s":60}`; while it runs, `POST /signals/bench/exchange` several times, `POST /flash` and `POST /reset` on either board. All succeed; `GET /signals/dut/capture?after=0` shows the DUT log.
+2. `POST /signals/bench/exchange` on the captured signal: reply returned and the same bytes in `GET`.
+3. UART bridge: arm a capture, `POST /reset`; the boot lines are in the capture with no gap.
+4. USB CDC ACM: arm a capture, reset or reflash the DUT; `state` goes `reopening`, then `running`, `gaps` has one entry, the text holds `[embarch: port lost]` and `[embarch: port reopened]`. Check the reopen finds the device under a changed COM name.
+5. A 120 s `max_s` capture read with `GET` polls over several minutes is not cut by a client timeout; `DELETE` returns the final text.
+6. Windows: a second open of the captured port (study tap) fails cleanly.

@@ -13,6 +13,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **Decision 89's requested-chip refusal has never met a moved probe.** Host-tested on the mapping only (the enrollment store is the fixed `/var/lib/embarch`, so no test enrolls). To verify: enrol a J-Link on one board, flash a project of another chip family through it, expect `409 chip-mismatch` and no attach. Also unmeasured: that a project's `chip` and an enrolled `chip` spell the same.
 
+- **Background capture (decision 92) has never met a port.** Tested against scripted ports only. Open on the bench: a capture on one console while exchanges run on the other and a flash and reset of either board; an exchange on the captured signal; a boot log across a UART-bridge reset; a CDC ACM re-enumeration reopening with a gap marker.
+
 ## Unverified diagnoses
 
 - **Whether probe-rs writes killed the nRF54L15 is evidence, not proof** (decision 36). One erase-and-program over J-Link recovered a board unresponsive across a whole session, but the counterfactual is not established: a full erase-and-reprogram may have cleared something else.
@@ -24,6 +26,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **A subject discriminator on `Alert`**, so a signal mismatch would reach `/alerts` (decision 30). Not-needed-*yet*, with a named trigger: nothing can raise one until a direct route is physically possible.
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
 - **A byte count alongside `GET /serial-log`'s `truncated: bool`** — rejected, not deferred (decision 58). Trigger: a caller that must act differently on 1 byte lost versus 900 KB.
+
+- **Capture and a study's signal tap are two port owners.** A capture refuses a port a tap holds; a study started later on a captured signal is not refused by name, only by the OS. One shared owner is the console-capture-during-host-study task's seam (decision 92).
 
 ## Structural limits
 
