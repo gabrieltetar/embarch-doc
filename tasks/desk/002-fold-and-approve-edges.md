@@ -1,6 +1,6 @@
 # 002 — Folding refuses an earlier or invalid day, ✓ keeps the folded lines, and a folded day reports what it carried
 
-**State:** done, agent/desk/002-fold-and-approve-edges, 2026-10-26
+**State:** done agent/desk/002-fold-and-approve-edges, 2026-10-26
 **Reserve, for the worker:** no `embarch-desk` doc is in reserve today.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk findings 2, 4 and 6), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
