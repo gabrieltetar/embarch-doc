@@ -1,6 +1,6 @@
 # 001 — Harvest entry reads and the assigned-issues list read past their first page
 
-**State:** open
+**State:** claimed by agent/desk/001-connector-reads-past-first-page, 2026-10-26 00:08
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk findings 5 and 8), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
 **Hardware:** none
