@@ -37,10 +37,16 @@ When this is done, a follow whose opening poll says the study does not exist end
 
 ## Done when
 
-- [ ] Against the mock Core, `study-status <unknown-id> --follow` with no `--follow-timeout` exits non-zero within a few seconds, and its message names the id as unknown. `--json` ends with a `summary` line saying the same.
-- [ ] Against the mock Core, following a study whose `GET /study/{id}` answers `interrupted` ends promptly and reports `interrupted` by name, not as `completed` or `failed`. Its exit code is documented in `interfaces/studies.md`.
-- [ ] `study_watch` on the same two inputs returns before `wait_secs` runs out. Its result says which case applied, and its description states what `complete` means for `interrupted`.
-- [ ] A non-404 failure of the opening poll, with a live stream open, still follows live as today. A running study that later completes or fails behaves as today. Existing follow tests stay green.
-- [ ] `study_status`'s tool description lists `interrupted`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 48 amended or a new decision for the 404 and `interrupted` rules), `changelog.d/` fragment dropped.
+- [x] Against the mock Core, `study-status <unknown-id> --follow` with no `--follow-timeout` exits non-zero within a few seconds, and its message names the id as unknown. `--json` ends with a `summary` line saying the same.
+- [x] Against the mock Core, following a study whose `GET /study/{id}` answers `interrupted` ends promptly and reports `interrupted` by name, not as `completed` or `failed`. Its exit code is documented in `interfaces/studies.md`.
+- [x] `study_watch` on the same two inputs returns before `wait_secs` runs out. Its result says which case applied, and its description states what `complete` means for `interrupted`.
+- [x] A non-404 failure of the opening poll, with a live stream open, still follows live as today. A running study that later completes or fails behaves as today. Existing follow tests stay green.
+- [x] `study_status`'s tool description lists `interrupted`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 48 amended or a new decision for the 404 and `interrupted` rules), `changelog.d/` fragment dropped.
+
+## Outcome, 2026-10-26
+
+Shipped: `UnknownStudyError` (typed 404 from `get_study_status`), `follow_study` fails on it even with a stream open, `is_terminal_status` includes `interrupted`. CLI: `interrupted` exits 1 (`--json` summary `status: "interrupted"`, `success: false`). `study_watch`: `complete: true`, `status: "interrupted"`, `note`. Decision 48 amended; `interfaces/studies.md` documents both. New tests in `tests/study_events_sse.rs` and `tests/study_follow_cli.rs`.
+
+**Gate caveat:** at embarch-topology `6732ad6` (main checkout) `cargo build` at the api root fails (`Upserted` gated under `hardware` but re-exported under `wire`); already filed as `inbox/topology-software-feature-build-breaks.md`. The gate was run with `"hardware"` temporarily added to core-client's topology features (reverted, not committed): build, test, clippy all green.
