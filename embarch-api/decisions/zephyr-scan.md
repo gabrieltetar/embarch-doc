@@ -28,3 +28,12 @@ Decision 12 never caches, reasoned as "already cheap enough", and **no bound was
 **Neither directory present is now its own error, kept apart from "found no apps".** `scan_apps` returns `Result<Vec<String>, ScanError>`: `Err(ScanError::NoAppDir)` when neither `app/` nor `apps/` exists at all, `Ok(vec![])` when one exists but holds no real (`CMakeLists.txt`-backed) app subdirectory. `scan`'s prior single-purpose `NotZephyrWest` unit struct became `ScanError`'s `NoBoardYml` variant to carry both cases through one type without a second error path threaded separately. Before this, both states produced the same empty `Vec<Target>` from `list_targets` — a caller had no way to tell "this doesn't look like a Zephyr/west project" from "it does, and it currently builds nothing".
 
 Surface text carried the same hardcoded assumption: `tools.rs`'s `list_targets` description said it "live-scans boards/ and app/", now "boards/ and app/ or apps/" — decision 44's lesson that a tool description is itself a claim a caller reads and trusts, not decoration.
+
+### 86 — The shortened `<board>.dts` is accepted for a single-SoC board, and "every board dropped" is an error that says why
+`dts_exists` looked only for `<board>_<soc>[_<cluster>][_<variant>].dts`, but Zephyr also accepts `<board>[_<cluster>][_<variant>].dts` when `board.yml` declares exactly one SoC (`dts.cmake`, `BOARD_<board>_SINGLE_SOC`), and most single-SoC boards use it. A field repo whose boards all did got `success: true, targets: []` from `list_targets` and never left `static`.
+
+**`dts_status` mirrors `dts.cmake`'s three outcomes.** Shortened name on a one-SoC board: accepted. On a multi-SoC board: dropped, naming the long file to use (Zephyr's `FATAL_ERROR`). Both names present on a one-SoC board: dropped as conflicting (Zephyr's "conflicting file names"). `revision_is_backed` also checks the shortened revision `.overlay`/`.defconfig` stem, for a single-SoC board only.
+
+**`scan` returns `ScanError::AllBoardsDropped(notes)` when `board.yml` files exist but no candidate has devicetree source.** One line per candidate: board, SoC, files looked for. One dropped board beside a live one stays a plain partial list, as decision 63 kept "found no apps" apart from `NoAppDir`; that, not "no targets", is what is refused.
+
+Measured against Zephyr's own `dts.cmake` source only, not a build; "single SoC" is `socs.len() == 1`.

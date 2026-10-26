@@ -1,6 +1,6 @@
 # 122 — zephyr-west discovery drops every single-SoC board whose devicetree is `<board>.dts`
 
-**State:** claimed by agent/api/122-zephyr-west-single-soc-dts, 2026-10-25 23:15
+**State:** done -- agent/api/122-zephyr-west-single-soc-dts, 2026-10-25
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — `list-targets` on the field repo with `discovery = "zephyr-west"` still answers `success: true, targets: []` (re-run 2026-10-20 on api `f82f8b6`), so the project never left `static`: 471 raw `west build` calls (about 3.0 h) went around EmbArch, against 26 EmbArch builds
 **Scope:** api
 **Hardware:** none
@@ -26,10 +26,10 @@ Decision 63 (`d6fec7a`, 2026-09-09) fixed the `apps/` half of this silent empty 
 
 ## Done when
 
-- [ ] A `board.yml` with one SoC and only `<board>.dts` yields its targets, built with `-b <board>/<soc>`; a fixture copies the layout of an upstream single-SoC board (`<board>.dts`, `<board>_defconfig`, `board.yml` with one `socs` entry and no `variants`).
-- [ ] A `board.yml` with two or more SoCs and a shortened `<board>.dts` yields no target from that file and says why, matching Zephyr's own `FATAL_ERROR`.
-- [ ] A board directory holding both `<board>.dts` and `<board>_<soc>.dts` is refused by name, matching Zephyr's "conflicting file names" error.
-- [ ] `revision_is_backed` also checks the shortened revision files Zephyr accepts for a single-SoC board, with a fixture.
-- [ ] `list_targets` on a repo whose boards are all dropped returns a per-board reason or an error, never `success: true` with a bare `targets: []`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A `board.yml` with one SoC and only `<board>.dts` yields its targets, built with `-b <board>/<soc>`; a fixture copies the layout of an upstream single-SoC board (`<board>.dts`, `<board>_defconfig`, `board.yml` with one `socs` entry and no `variants`).
+- [x] A `board.yml` with two or more SoCs and a shortened `<board>.dts` yields no target from that file and says why, matching Zephyr's own `FATAL_ERROR`.
+- [x] A board directory holding both `<board>.dts` and `<board>_<soc>.dts` is refused by name, matching Zephyr's "conflicting file names" error.
+- [x] `revision_is_backed` also checks the shortened revision files Zephyr accepts for a single-SoC board, with a fixture.
+- [x] `list_targets` on a repo whose boards are all dropped returns a per-board reason or an error, never `success: true` with a bare `targets: []`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
