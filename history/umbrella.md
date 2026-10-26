@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- Umbrella decisions 21 and 25 moved verbatim from `decisions/install.md` to `decisions/setup-reversal.md`; install.md 12,071 -> 9,660 B (78.6%).
 - Compacted embarch-umbrella decisions/bind.md 11,555 -> 10,904 B (retired 22(b)/(c) and split history); decision 22's live reasoning untouched.
 ## 2026-09
 
