@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). The cross-repo design it serves: [bootload-proposal.md](../bootload-proposal.md).
 
-**Built and tested against the reference and a simulator; no real bootloader has answered it yet.** Nothing in the suite links it yet: Core's `POST /bootload` is the first consumer, and it is not built.
+**Built and tested against the reference and a simulator; no real bootloader has answered it yet.** Core links it: `POST /bootload` is the built consumer, and Core's tests drive the whole flow against `sim`. An upload that stops making forward progress ends with an error naming the offsets it saw (decision 9).
 
 ## 1. What it is
 

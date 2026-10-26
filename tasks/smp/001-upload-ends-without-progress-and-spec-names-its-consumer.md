@@ -1,6 +1,6 @@
 # 001 — `Client::upload` ends when the offset stops progressing, not only when it stops moving, and the spec names Core as its consumer
 
-**State:** claimed by agent/smp/001-upload-ends-without-progress, 2026-10-26 02:39
+**State:** done 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-smp findings 1 and 2), verified by Opus against embarch-smp@92363628
 **Scope:** smp
 **Hardware:** none — a scripted server behind `Read + Write` covers every case, the same way the existing tests do.
@@ -30,9 +30,13 @@ Decision 9 (`decisions.md:38`) departed from the reference precisely so that "an
 
 ## Done when
 
-- [ ] A scripted server whose offset alternates between two values makes the upload fail, within a bound the test states, with an error naming the offsets.
-- [ ] A server that asks for offset 0 once and then completes still succeeds (`a_server_asking_for_offset_zero_again_gets_len_but_not_sha` passes), and all 18 reference uploads still send identical bytes.
-- [ ] `spec.md`'s status line names Core's `POST /bootload` as the built consumer, and decision 9's list of deviations states the new rule.
-- [ ] `cargo test --all-features` and `cargo clippy --all-targets -- -D warnings` are clean in embarch-smp, since the merge gate does not reach this repo yet (`embarch.md` §5).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A scripted server whose offset alternates between two values makes the upload fail, within a bound the test states, with an error naming the offsets.
+- [x] A server that asks for offset 0 once and then completes still succeeds (`a_server_asking_for_offset_zero_again_gets_len_but_not_sha` passes), and all 18 reference uploads still send identical bytes.
+- [x] `spec.md`'s status line names Core's `POST /bootload` as the built consumer, and decision 9's list of deviations states the new rule.
+- [x] `cargo test --all-features` and `cargo clippy --all-targets -- -D warnings` are clean in embarch-smp, since the merge gate does not reach this repo yet (`embarch.md` §5).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+`Client::upload` (`src/client.rs`) now tracks the highest offset reached, the replies since it rose, and restarts to offset 0. `max_stalls` (5) bounds all three; the error is the existing `Error::Upload(String)` naming the last ten offsets. Public API unchanged (no new variant or option); `embarch-core/src` references no `embarch_smp::Error` variant, so nothing there matches the enum. Tests: alternating 8/16 fails within 1 + 1 + max_stalls requests, a server that keeps returning to 0 fails, the offset-zero-once and stuck-offset tests and all reference uploads pass. Decision 9 reworded (no new number). No hardware debt.
