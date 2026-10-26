@@ -38,10 +38,16 @@ When this is done, no route attaches to a probe without holding `hw_lock`. Hello
 
 ## Done when
 
-- [ ] While another route holds `hw_lock`, neither `POST /study` nor `GET /dev-bench/hello` reaches the probe. Both answer the decision-14 `503` naming the holder, shown by a host test that holds the lock.
-- [ ] While hello holds the dev-bench link, `POST /study` is refused `409` naming it, and hello is still refused `409` while a study is in flight, as today.
-- [ ] A study with an outpost mode requirement still runs its pre-flight. The existing pre-flight and study tests pass unchanged.
-- [ ] `interfaces.md`'s lock list and decisions 4/14/15 (`decisions/platform.md`) name the locks that `POST /study`'s gate and `GET /dev-bench/hello` take.
-- [ ] A follow-up is filed for embarch-umbrella (an inbox drop) if doctor's check 13 needs to read hello's new `503`/`409` as "busy" rather than "broken".
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] While another route holds `hw_lock`, neither `POST /study` nor `GET /dev-bench/hello` reaches the probe. Both answer the decision-14 `503` naming the holder, shown by a host test that holds the lock.
+- [x] While hello holds the dev-bench link, `POST /study` is refused `409` naming it, and hello is still refused `409` while a study is in flight, as today.
+- [x] A study with an outpost mode requirement still runs its pre-flight. The existing pre-flight and study tests pass unchanged.
+- [x] `interfaces.md`'s lock list and decisions 4/14/15 (`decisions/platform.md`) name the locks that `POST /study`'s gate and `GET /dev-bench/hello` take.
+- [x] Follow-up: dropped `inbox/` for umbrella (check 13 now sees `503` from hello when hw_lock is held).
+- [x] Gate green (native Windows build not run: debt) (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result, 2026-10-26
+
+Built in `embarch-core/src/study.rs`: `enforce_dev_bench_gate(state, route)` takes `hw_lock` for the attach and drops it (pre-flight takes it later, no deadlock); hello holds `study_lock` as `GET /dev-bench/hello` via a drop guard. Three host tests added. Decision order: `study_lock` then `hw_lock`. No topology change needed.
+
+**Debts:** native Windows build not run (embarch-core debt, per gate). Hello's `503` path with port resolved is not tested end to end (needs a bench to resolve a port); the gate function is tested directly.
