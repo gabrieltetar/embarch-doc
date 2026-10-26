@@ -1,6 +1,6 @@
 # embarch-ui decisions: Roles hold two bindings, and a board is a type
 
-**Status:** active, 2026-09-20.
+**Status:** active, 2026-09-20; 61 added 2026-10-26.
 
 What a role *is* after decision 45 corrected the model decision 44 set up ([topology-boards.md](topology-boards.md)): two independent bindings — a probe and a board type — and a board that is a shape rather than a piece of hardware.
 
@@ -44,3 +44,11 @@ The dev-bench picker is a different list and deliberately not the catalog: the t
 
 **Driven in a real browser**, 47 checks: the roles table gone, the box titled by role with the board type under it and no chip, no status before a pass and a verdict on the box after one, the DUT picker reading the project catalog while the bench picker holds the suite's fixed pair, a board type set with no probe opened, a probe bound afterwards taking its chip from that type, a leftover role cleared from the report line that found it, and a role retracted from its own picker.
 
+
+### 61 — An enrol that moved a role says so, in Core's own sentence
+
+Re-enrolling the dev-bench probe as `dut` vacates `dev-bench`, and an enrol onto a role another probe held displaces that board; until now only a topology log line said so. `POST /api/enroll` now adds `moved_roles_note` to the body it returns, **the string `EnrollProbeResponse::moved_roles_note()` builds** (`embarch-api` decision 87), and the enrol dialog prints it under the "enrolled" line. Absent when nothing moved, so a plain enrol reads as before.
+
+*Rejected: composing the sentence in `app.js` from `displaced`/`vacated`.* That is a third wording beside the CLI's and the MCP tool's, and `vacated_kept` would be a rule to keep in step. The raw `displaced`/`vacated`/`vacated_kept` fields still pass through untouched.
+
+The dialog's auto-close after a successful enrol is 6 s rather than 0.7 s when there is a note (a sentence needs reading), and a pending close is cancelled when the dialog reopens, so a stale timer never shuts the next one. Checked in `drive_topology.py` against its own stub, which learned `displaced`/`vacated`/`vacated_kept`; Core was never reached.

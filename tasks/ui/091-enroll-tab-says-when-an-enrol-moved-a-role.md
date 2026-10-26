@@ -17,5 +17,9 @@ A user otherwise cannot tell a role moved; only a topology log line did.
 
 ## Done when
 
-- [ ] The Enroll tab names the vacated/displaced role after an enrol that moved one (browser check against `stub_core.py`, which must learn to return the fields).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); docs per `DOC-PROTOCOL.md`, `changelog.d/` fragment.
+- [x] The Enroll tab names the vacated/displaced role after an enrol that moved one (browser check against `drive_topology.py`'s own stub, which learned the fields; `stub_core.py` serves no enrol route).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); docs per `DOC-PROTOCOL.md`, `changelog.d/` fragment.
+
+## Result
+
+Embarch-ui decision 61. `/api/enroll` adds `moved_roles_note` (the mirror's own sentence); the dialog prints it and stays open 6 s. Browser check: `drive_topology.py`, isolated (scratch desk config, XDG dirs, desk port 4899 checked free, its own stub, never live Core). Pre-existing, untouched failures in that drive: `the sidebar is five tabs` and `and where it is under that` (sidebar now has more tabs); a third (`the box's title is the role...`) failed once and not on the rerun.
