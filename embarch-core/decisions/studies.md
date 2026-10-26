@@ -33,4 +33,8 @@ The deadline ignored the field while dev-bench honours it by sleeping *before* t
 
 *Consequences:* `suite/studies-guide.md` §3b's workaround paragraph — read the message as "a step timed out" and confirm against `events.json.partial` — is retired.
 
+### 90 — Study submission refuses a zero Notify/Indicate wait budget
+
+`POST /study` calls `Study::validate_wait_budgets()` (`embarch-study-designer` decision 83) inside `validate_study`, before the `steps_crc` check, and returns its Display text (step index and operation) as the existing 4xx. dev-bench reads a budget of 0 as a deadline already past, so the step would `TimedOut` at once; `build_study` can no longer emit one, but a hand-written or saved study can. Computed by the crate, not restated, so Core holds no second copy of the rule. Measured by a host-side test only; nothing was run on a board.
+
 ---
