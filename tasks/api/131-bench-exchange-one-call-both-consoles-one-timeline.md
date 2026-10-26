@@ -1,10 +1,22 @@
 # 131 — One call drives a console sequence and returns every listened console as one filtered timeline
 
-**State:** open
+**State:** claimed by agent/api/131-bench-exchange-one-call-both-consoles-one-timeline, 2026-10-26 05:59
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — console traffic was 434 calls and 2.0% of all context tokens: about 70 PowerShell `SerialPort` listeners, 101 calls through a sourced helper whose `with_log` ran a command on one console while recording the other, 33 hand-built `(sleep N; send) & capture` commands averaging 1.25 KB of command text, and 72 runs of 2 to 5 back-to-back status reads (180 calls)
 **Scope:** api
 **Hardware:** verify-only — reclassified from `bench` on filing by the 2026-10-25 leg: the tool, its filters and snapshots are client code testable against the mock Core; the two-console bench check and the replay are its hardware-verification debt. It builds on `tasks/core/100` (Core's background capture), so dispatch it after that lands.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:59 leg
+
+**Three facts the text below assumes and the code does not provide. Read them before designing.**
+
+- **Core's capture carries no per-line receive time.** `GET /signals/{name}/capture` (decision 92, `embarch-doc/embarch-core/decisions/signal-capture.md`; client type `SignalCaptureResponse` from `api/143`) returns a byte range with `offset`, `next_offset`, `elapsed_ms` and `gaps`, nothing per line. A merged timeline "on Core's receive clock" cannot be built from that. Never label a client-side time as Core's. Either stamp and order rows by what the client actually observes and say so in the answer and the decision, or ship the one-call sequence with per-signal sections and drop `/home/gabriel/Github/embarch/embarch-doc/inbox/core-capture-line-receive-times.md` (full task format, `tasks/README.md`) asking Core to stamp lines. Your call; record it as a decision. `tasks/core/101` stamps lines only inside a host-study tap, so it does not cover this.
+- **An exchange on a captured signal goes through the capture** (decision 92's tee paragraph): its reply bytes also land in that signal's capture. When a step writes to a signal in `listen`, the timeline must not show the reply twice.
+- **There is no "plain-replies item".** Nothing named `api-plain-console-replies` exists in `tasks/` or `inbox/`. Do not build escape stripping here: pass Core's text through, make the level floor and patterns work on text that still carries ANSI codes, and say so in the decision.
+
+**Reuse `api/143`'s client calls** (capture start/read/stop in `embarch-core-client`). That crate is a shared path dependency of `embarch-ui`: additive changes only, nothing renamed. **Doc reserve:** `embarch-api/decisions/client-crate.md` 11,581 / 12,288 B (707 B left), filed under `tasks/api/140` (open, not yours). A new decision goes in `decisions/tool-wrapping.md` or a new topic file, indexed in `decisions.md`. The two-console bench check and the replay are hardware-verification debts: write them in this file.
+
+**Isolation, not optional.** No live Core (never the WSL2 gateway or `:4884`), no desk on `:4891`, no real serial ports or probes, no owner data or config dirs (`/var/lib/embarch`, `~/.config`, `%PROGRAMDATA%`, `~/.claude`): the mock Core and any CLI run use scratch ports and a scratch token file. Never call the `mcp__embarch-api__*`, desk, Slack or Linear tools (they reach live services as the owner), never run `claude -p`, and never `pkill` by name; stop only PIDs you started.
 
 ## What
 
