@@ -1,6 +1,6 @@
 # 146 — `StatusResponse.last_images` is `Option<Vec<_>>`, so an old Core reads as unknown, not as nothing flashed
 
-**State:** claimed by agent/api/146-last-images-optional, 2026-10-26 07:07
+**State:** done on agent/api/146-last-images-optional, 2026-10-26
 **Source:** reviewer finding on api/145 (code `3625584`, doc `71db5e4d`), 2026-10-26. Filed from `inbox/api-last-images-option-per-decision-58.md` in api/145's fold.
 **Scope:** api
 **Hardware:** none
@@ -34,7 +34,7 @@ you started, by PID.
 
 ## Done when
 
-- [ ] `last_images` is `Option<Vec<FlashedImage>>`; a test parses an old-Core `/status` body and asserts `None`, and a body with `"last_images": []` asserts `Some(empty)`.
-- [ ] `status` output (MCP tool, CLI, `--json`) distinguishes the two.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), and `embarch-ui` still builds against the crate.
-- [ ] Decision 90 says which shape it is, `changelog.d/` fragment dropped.
+- [x] `last_images` is `Option<Vec<FlashedImage>>`; a test parses an old-Core `/status` body and asserts `None`, and a body with `"last_images": []` asserts `Some(empty)`.
+- [x] `status` output (MCP tool, CLI, `--json`) distinguishes the two.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), and `embarch-ui` still builds against the crate.
+- [x] Decision 90 says which shape it is, `changelog.d/` fragment dropped.
