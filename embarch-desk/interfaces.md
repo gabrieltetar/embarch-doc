@@ -9,10 +9,10 @@
 | Route | What |
 |---|---|
 | `POST /hook` | A hook's stdin JSON verbatim; returns `{context}` for SessionStart/UserPromptSubmit |
-| `GET /view` | Cards (visible work items with tiles, PRs, sessions, bench), Slack feed, connector status, ignore list |
+| `GET /view` | Cards (visible work items with tiles, PRs, sessions, bench), **`hand`** — every open tile not covered, on every desk but an archived card's, the viewed desk's first then oldest first, each with `item_id`, `key`, `item_title`, `desk`, `desk_id` (57; it replaced `elsewhere`) — Slack feed, connector status, ignore list. A tile carries `covered` and `folded_into`, and its `lines` include those of tiles folded into it (58) |
 | `POST /items`, `/items/{id}/pin`, `/archive`, `/link`, `/status`, `/launch`; `GET /items/{id}/states` | Create from issue key or title; pin; archive; link issue or repo; move Linear status; open in VS Code |
 | `GET /sessions/{sid}`, `POST /sessions/{sid}/assign`, `/line` | What a session is on; put it on an item (or untrack it); add a milestone line |
-| `PATCH /tiles/{item@date}`; `POST …/line`, `/polish`, `/approve`, `/discard` | Edit note, hours, Harvest target; Claude drafts note and target; ✓ to Harvest; ✕ |
+| `PATCH /tiles/{item@date}`; `POST …/line`, `/polish`, `/approve`, `/discard`, `/fold` | Edit note, hours, Harvest target; Claude drafts note and target; ✓ to Harvest; ✕; `{"into": <date>}` folds it into the item's open tile that day (58) |
 | `GET /harvest/targets`; `POST /slack/draft`, `/slack/reply` | Projects and tasks; a drafted reply; send an approved one |
 | `GET/POST /connectors`, `DELETE /connectors/{kind}/{label}`; `GET/PUT /ignore`; `POST /sync` | Accounts (labels only, never tokens); the ignore list; refresh now |
 | `GET /linear/issue/{key}`, `/linear/mine`; `POST /linear/search`, `/linear/status`; `POST /harvest/entries` | What the agent tools call |

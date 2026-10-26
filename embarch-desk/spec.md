@@ -4,13 +4,13 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25].
+**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk.
 
 ## 1. What it is
 
 **A work cockpit's backend: the work item, and the connectors that fill it.** A work item is an EmbArch object — usually one Linear issue — that joins the issue to its GitHub PRs, the Claude Code sessions that worked on it, its bench activity and its time ([decision 6](decisions.md)). None of the four services holds that join; the desk does.
 
-**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from `embarch-ui`'s Desk tab ([decision 10](decisions.md)).
+**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a row of cards under the Desk tab's Slack bar holding every desk's waiting tiles ([decisions 10, 57](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58).
 
 **Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85).
 
@@ -20,7 +20,8 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 2. Invariants
 
-- **A tile proposes only what Harvest doesn't already hold** for its item that day (41).
+- **A tile proposes only what Harvest doesn't already hold** for its item that day (41), and **one with nothing left to propose closes itself** unless its hours were set by hand — computed, so it opens again if the entries go (57).
+- **A folded tile carries only what it proposed**, and goes to history with its target, never before (58).
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
 - **A session with no work item is asked on every prompt until it answers** — a work item, an issue key, a new title, or "untracked" ([decision 7](decisions.md)). Time it ran up while being asked lands on the item it chooses.

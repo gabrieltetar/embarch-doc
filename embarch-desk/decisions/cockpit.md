@@ -1,6 +1,6 @@
 # embarch-desk decisions: What the desk is, and its time
 
-**Status:** active, 2026-10-23.
+**Status:** active, 2026-10-25.
 
 The work cockpit, the work item and its card, and how time is captured and sent.
 
@@ -17,8 +17,8 @@ Connectors are a plug-in point with a setup flow, nothing hardcoded to one perso
 ### 3 — The Dashboard tab becomes Desk, and its content is deleted
 Its stat cards, enrolled-boards table and alerts list all rendered from the snapshot Topology already draws better, and the alerts had moved behind *Validate topology* (`embarch-ui` decision 44). Old `#dashboard` links land on the Desk.
 
-### 4, 5 — One card per work item, its tile inside it; cards appear on activity and leave on archive
-A card carries the issue's status (a dropdown), PRs, sessions, bench activity, *Open in VS Code*, and its day tiles. Slack collapses to one bar. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** tiles as a strip across the top, and three columns.
+### 4, 5 — One card per work item; cards appear on activity and leave on archive
+A card carries the issue's status (a dropdown), PRs, sessions, bench activity and *Open in VS Code*. **Its day tiles were inside it until 2026-10-25**; they are in the hand now (57), and the card keeps a chip per waiting day that opens the tile. Slack collapses to one bar. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** three columns. Tiles as a strip across the top were rejected here too, until three days of use reversed it (57).
 
 ### 6 — The work item is an EmbArch object, usually one Linear issue
 It exists because none of the four services holds the join between an issue, its PRs, its sessions and its time. **It can start without an issue** — a call, a meeting, ad hoc support — and gain one later. **Rejected:** inferring the grouping afresh on every read, and a Linear issue as the only anchor (no home for a meeting).
@@ -35,7 +35,7 @@ Searched as `<KEY> type:pr involves:@me`, then **checked against title and branc
 ## Time
 
 ### 10 — Captured automatically, sent only on ✓
-One tile per work item per day: a small square with **✓ (to Harvest) and ✕ (discard) along its bottom edge** — the owner's own picture, kept literally. An unacted tile stays, dated, until the user acts. **✓ on a tile nobody has opened opens it** instead of sending a note and a project the user never saw.
+One tile per work item per day: a card in the hand (57) with **✓ (to Harvest) and ✕ (discard) along its bottom edge** — the owner's own picture, kept literally. An unacted tile stays, dated, until the user acts. **✓ on a tile nobody has opened opens it** instead of sending a note and a project the user never saw.
 
 ### 11 — Session-open time, idle included, parallel sessions in full
 **Over-capture, then cut**, in the owner's words: *"I always rather have agents generate too much content that I have to cut down than the opposite."* **Rejected:** time between prompts, Claude's busy time, last-prompt-wins and splitting overlap — each undercounts, and the tile is where cutting happens.
@@ -45,3 +45,11 @@ Repos and folders on it make no tile and are never asked. EmbArch's own repos go
 
 ### 13 — The note is written live and polished once
 **A hook only reports facts; it cannot write a sentence.** So commits become lines by themselves (22), the session's own Claude adds a line at a milestone with no commit, and **opening the tile runs one `claude -p`** that merges the lines into one note and **guesses the Harvest project and task** from the user's assignments and recent entries — no mapping step. **Rejected:** a Stop hook forcing a line every reply (noise, a turn each), the desk summarising transcripts (a call per tile, no live text).
+
+### 57 — The hand: every waiting tile as a card under the Slack bar, and a covered tile closes itself
+Decided with the owner on 2026-10-25, three days into real use: *"I regret the decision of having them inside the work card"* — the time to send was scattered across cards further down the page, and a desk switch hid the rest behind a strip. **The tiles leave the cards for one row under the Slack bar, picked like cards in a game's draft**: upright cards, the item's key and title, the hours large, the day, a live dot while a session still counts, ✓ ✕ along the bottom. **Every desk's tiles are in it**, this desk's first, then oldest first, another desk's tagged with its name; the strip of other desks' unsent tiles (40) is gone. An archived card's tiles stay out. A card is dealt in once, lifts under the pointer, flies to a "Sent today" count on ✓ and drops on ✕.
+
+**A tile Harvest already covers closes itself**: when the entries naming its issue that day hold at least the time it captured, and nobody set its hours by hand, it is out of the hand and does not keep its card on the desk. It is computed, never stored, so deleting those entries opens it again. The first such tile sat at 0h00 with ✓ and ✕, a question with no answer. This reverses 41's rejection of dropping a covered tile. **Rejected:** a fanned, overlapping hand (past five cards the numbers hide until hovered), a hand flanked by Harvest and discard piles to drag onto (drag on a trackpad, and twice the build), the open desk's tiles only, a covered tile kept greyed with only ✕.
+
+### 58 — A tile folds into a later one of its item
+A work item started late one day and carried on two days later left two tiles for one stretch of work; the owner wanted one entry. **`POST /tiles/{id}/fold` with `{"into": <date>}`** moves an open tile's time and lines into the same item's open tile on that date, and one Harvest entry dated that day carries both; the tile dialog offers *Fold into <day>* when a later tile of the item is in the hand. **What moves is what the tile proposed** — its own hours if the user set them, else the gap Harvest's entries that day left (41) — so no hour is sent twice; it freezes as the folded tile's `final_seconds`. The target shows the folded lines and the polish summarises them. **A folded tile goes to history with its target, never before**, since its seconds are part of the target's until the target freezes its own. There is no unfold. **Rejected:** re-dating the earlier day's spans (rewrites what happened), freezing the target's hours by hand (stops a live tile counting), discarding the earlier tile.

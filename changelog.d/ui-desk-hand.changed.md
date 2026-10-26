@@ -1,0 +1,1 @@
+The Desk tab deals waiting time tiles into a hand under the Slack bar; a work card keeps a chip per day (embarch-desk decision 57).
