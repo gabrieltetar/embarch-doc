@@ -1,10 +1,28 @@
 # 146 — `StatusResponse.last_images` is `Option<Vec<_>>`, so an old Core reads as unknown, not as nothing flashed
 
-**State:** open
+**State:** claimed by agent/api/146-last-images-optional, 2026-10-26 07:07
 **Source:** reviewer finding on api/145 (code `3625584`, doc `71db5e4d`), 2026-10-26. Filed from `inbox/api-last-images-option-per-decision-58.md` in api/145's fold.
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 07:07 leg
+
+**Shared crate.** `embarch-core-client` is path-depended on by `embarch-ui`; this change is a public field
+type change. `grep -rn last_images` in the `embarch-ui` main checkout (read only) found no use as of
+dispatch, so `ui` should still build, and the leg builds `embarch-ui` against the merge. Keep the change to
+that field and its readers; do not rename or reshape anything else in the crate.
+
+**Reserve.** `embarch-api/decisions/client-crate.md` is 11,581 / 12,288 B (707 B left, filed under
+`api/140`); `embarch-api/open.md` 4,297 / 5,120 B (823 B left, filed under `api/144`). Decision 90 lives in
+`decisions/lease.md`, which has room: record the shape there. If you must touch decision 58's "Applied"
+list in `client-crate.md`, one line, no more.
+
+**Isolation.** Do not reach the owner's live services. No live Core (no request to the Windows service
+or any running Core, no CLI or MCP call against one), no desk on `:4891`, no geckodriver on `:4444` and no
+UI on `:4899`, no real serial ports or debug probes, no owner data directories (any instance you start
+gets a fresh temp dir), and no MCP tools at all. Test against fixtures and stubs only. Kill only processes
+you started, by PID.
 
 ## What
 
