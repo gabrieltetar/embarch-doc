@@ -1,6 +1,6 @@
 # 002 — A background Agent's card shows the subagent's report
 
-**State:** open
+**State:** claimed by agent/chat/002-agent-card-shows-the-hand-back, 2026-10-26 00:08
 **Source:** owner, 2026-10-25 — a notification said "This agent's report was delivered to you as a message from <id> (its SubagentHandback call). Read it there; it is not repeated here", and the panel showed that report nowhere
 **Scope:** chat
 **Hardware:** none
