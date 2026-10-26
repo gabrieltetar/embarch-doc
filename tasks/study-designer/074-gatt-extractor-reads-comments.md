@@ -1,10 +1,18 @@
 # 074 — The GATT extractor ignores definitions inside C comments
 
-**State:** open
+**State:** claimed by agent/study-designer/074-gatt-extractor-reads-comments, 2026-10-26 05:14
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer finding 7), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 05:14 leg
+
+**Doc reserve in your scope:** `decisions/gatt-extract.md` is 11,053 / 12,288 B, **6 B under its reserve line**, so any addition puts it in reserve. Put a new decision in a new topic file listed in `decisions.md` (`decisions/protocol-exec.md` took the last one for the same reason), or, if it belongs in `gatt-extract.md`, file `tasks/study-designer/<NNN>-compact-study-designer.md` in the same commit. `open.md` is 4,473 / 5,120 B (647 B left) under `tasks/study-designer/026`, blocked; do not grow it unless you close something in it.
+
+**Shared crate, run every `test.yml` cell** (default, alloc, std, gatt-extract, eap-parse, study-ui, and the three clippy cells), not just the default one: the last leg's gate ran them all and found the alloc cell had been red on `main`.
+
+**Isolation:** host-side only; never call the `mcp__embarch-api__*` or desk tools, never touch the live Core, the desk on :4891 or the owner's data dirs. Fixtures, not a real firmware repo from this machine.
 
 ## What
 
