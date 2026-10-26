@@ -76,6 +76,7 @@ serial/interface's guess-and-clear semantics (decisions 20, 27).
 
 - **A role:** the enrolled probe is enumerated and its live identity still matches the recorded one; runs on every flash, reset and handshake.
 - **A same-chip link:** the board on the runtime link is the same silicon the JTAG probe verified, comparing its JTAG-read identity against its self-report. **An exact match settles it for any chip** — two mechanisms agreeing byte for byte on a factory-unique value is conclusive on its own. Two chip families additionally have a declared relation, for when the two mechanisms format that same value differently; every chip with neither an exact match nor a declared relation returns *undeclared*, never a pass.
+- **A requested chip:** `validate_serial_for_chip` compares the chip a caller asks for with the enrolled row's, by name and ignoring case, **before the probe is opened**; a differing chip is a `RequestedChipMismatch` naming the probe, the enrolled board and the re-enroll call, and equal names fall through to the identity checks unchanged (decision 44).
 - **A direct signal route:** the declared serial is enumerable. It **cannot** confirm the DUT's TX pin wire lands on that bridge.
 - **A signal Core may write** is `host-to-dut` or `bidirectional` on a direct route (`SignalLink::host_can_write`, decision 37); a signal may declare its own `baud`, else Core's default applies.
 - **An ID whose words are all the same** is retried once, then read with the core halted for microseconds, then a failed read, never a mismatch (decisions 38, 39). An STM32G0's UID is always read halted (decision 39).
@@ -88,19 +89,9 @@ A validate call previously carried only the enrolled record's `confirmed_at_utc_
 
 ## What each consumer owns now
 
-- **Probe selection is this crate's, not `embarch-core`'s.** `select_probe` (decision 32) is the
-  suite's one implementation of which attached debug probe a caller gets; `embarch-core::resolve_probe`
-  delegates to it rather than holding a copy, threading a caller `action` verb (`"enroll"`, `"flash"`,
-  `"reset"`, …) through for its error text. Three observable behaviours a caller can rely on
-  (decision 33): **zero probes attached** is checked first and always names the usbipd hint; **more
-  than one probe attached with no serial given** refuses, naming the count and every attached probe's
-  identifier and serial; **a given serial that matches nothing attached** refuses by name. Every error
-  string is part of the contract — see decision 33 for the exact wording of each.
-- **`embarch-core`** keeps the hardware I/O, calling the crate for which port or probe, and whether valid — no copy of that logic, and **no dev-bench port override env var.**
-- **`embarch-api`** links the crate **without the hardware feature** — only its `base_url = "auto"` branch calls it; the declared-address fast path does not.
-- **`embarch-umbrella`** does the same; its env module is **just "am I under WSL2"**, still needed standalone by its Windows-binary lookup.
-
-**Three features, and the middle one is new** (decision 31). `software` (default) is topology-class detection and Core-reachability probing, needing `reqwest`/`tokio`. `wire` is `serde` and nothing else: the hardware module's plain data types — `EnrolledBoard`, `Alert`, `DetectedPort`, `SignalLink`, `Route`, `SignalDirection` — with every function that reads a probe, enumerates a port or writes `enrollment.toml` compiled out. `hardware` is those functions, implies `wire`, and needs `probe-rs`/`serialport`; `embarch-core` is its only consumer.
+Moved to [spec/consumers.md](spec/consumers.md), 2026-10-26 (reserve split, `tasks/topology/060`) —
+probe selection is this crate's (decisions 32, 33), what Core, `embarch-api` and `embarch-umbrella`
+own, and the three features `software`, `wire` and `hardware` (decision 31).
 
 ## What a caller may assume across calls
 

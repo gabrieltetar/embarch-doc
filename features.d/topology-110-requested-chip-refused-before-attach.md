@@ -1,0 +1,1 @@
+| A probe moved to a board of another chip family is refused by name, before any attach, with the re-enroll fix named | Built host-side — `validate_serial_for_chip` and `check_requested_chip` in `embarch-topology`, unit-tested; **Core does not call it yet**, so a flash still reports the failed identity read (inbox drop for Core) | host | 44 |

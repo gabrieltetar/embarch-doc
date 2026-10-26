@@ -12,10 +12,10 @@ the supervisor, which did not write these bytes.
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-topology/decisions/enrollment.md, embarch-topology/spec.md
+**Compacts:** embarch-topology/decisions/enrollment.md
 **Size debt due:** 2026-11-01
-**In flux:** yes — both. `tasks/topology/059` (a probe moved to a board of another chip refused by
-name before any attach) changes what enrolment validation asserts, and `tasks/suite/046` (a bench
+**In flux:** yes — `decisions/enrollment.md` only. `tasks/topology/059` wrote decision 44 into
+`decisions/validation.md`, not this file, and split `spec.md` verbatim (below); `tasks/suite/046` (a bench
 board owns a signal and is read and validated by its probe) extends decision 41 itself. Squeezing
 either file now writes a clean statement of something two queued tasks are about to change.
 **Must not delete:** nothing specific is known to the filer, which did not write these bytes. Treat
@@ -51,3 +51,10 @@ moving a decision (`check-decision-refs.py`, and `tasks/umbrella/022` nearly mov
 - [ ] Any decision moved keeps its number, and every link to it resolves.
 - [ ] `DOC-COMPACTION-PASS.md`'s human question answered in the compactor's own words.
 - [ ] Gate green (`../../../embarch-fleet/gate.md`).
+
+## 2026-10-26, `topology/059`
+
+`spec.md` is paid: 059 wrote one bullet into it and moved "What each consumer owns now" verbatim to
+`spec/consumers.md` (now 81.7%); no measured STM32 identity fact moved or changed. Its item is closed
+and it is off `Compacts:`. `decisions/enrollment.md` was not written by 059 and is untouched; it
+stays parked on `suite/046` (decision 41).

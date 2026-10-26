@@ -22,8 +22,20 @@ The refusal pointed at the wrong cause, so sessions worked around EmbArch for a 
 
 ## Done when
 
-- [ ] A flash or reset whose requested chip differs from the probe's enrolled chip is refused before any attach, with text naming both chips, the enrolled board and the re-enroll call; unit test against a fixture enrollment.
-- [ ] Equal chip names behave as today, and the identity gate's mismatch and failed-read refusals are unchanged.
-- [ ] Every Core path that passes a requested chip into the gate (flash, reset, bootload) gets the same check.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A flash or reset whose requested chip differs from the probe's enrolled chip is refused before any attach, with text naming both chips, the enrolled board and the re-enroll call; unit test against a fixture enrollment.
+- [x] Equal chip names behave as today, and the identity gate's mismatch and failed-read refusals are unchanged.
+- [x] Every Core path that passes a requested chip into the gate (flash, reset, bootload) gets the same check. **Filed for Core**: `inbox/core-validate-requested-chip.md` (topology half is the additive `validate_serial_for_chip`).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+Topology half shipped, additive: `hardware::check_requested_chip(&EnrolledBoard, &str)` (pure) and
+`hardware::validate_serial_for_chip(serial, chip) -> Result<Validation>`, error type
+`RequestedChipMismatch` (downcastable). `validate_serial*` untouched. Decision 44 in
+`decisions/validation.md`; spec bullet; `spec.md` split verbatim to `spec/consumers.md` (060's
+spec item paid, 060 updated); `decisions/enrollment.md` not written, 060 stays parked on it.
+Chip names compare case-insensitively, empty on either side passes (assumed, not measured, that a
+project's chip and the enrolled chip spell alike; recorded in decision 44).
+**Hardware-verification debt:** none host-side; the real-probe behaviour (a moved J-Link refused
+with no attach) is only observable once Core calls the function.
