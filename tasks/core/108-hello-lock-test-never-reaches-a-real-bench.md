@@ -1,6 +1,6 @@
 # 108 — `core/104`'s hello lock test never reaches a real bench
 
-**State:** open
+**State:** claimed by agent/core/108-hello-lock-test-no-bench, 2026-10-26 01:45
 **Source:** the `core/104` reviewer's below-bar notes, 2026-10-26 (code `8e29f06`), filed by the supervisor because the first one is a host test that can touch hardware.
 **Scope:** core
 **Hardware:** none
