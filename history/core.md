@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Core runs host studies: `POST /host-studies` executes Exchange and Wait steps, teardown on every exit, `POST /study/{id}/cancel` (core decision 95).
 - Capture reads stamp each line with its receive time (`lines`, `started_utc_ms`); exchange replies carry `started_utc_ms`. Additive; decision 94.
 - Core gains `/lease`: one session holds the whole bench across calls, others get 409 by name; `GET /status` adds `lease` and `last_images` (decision 93).
 - Core: `/signals/{name}/capture` records a declared signal in the background, no `hw_lock`; exchanges on it use its port ([decision 92](../embarch-core/decisions/signal-capture.md)).

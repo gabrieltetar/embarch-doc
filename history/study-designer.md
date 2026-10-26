@@ -8,6 +8,9 @@
 - Host studies can `Repeat` steps (count or values, `{value}`) and declare `LineCount` views over a tap; counts are shown, never compared (decision 86).
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
 
+### Changed
+- `HOST_TYPE_SCHEMA_VERSION` is 20: Core now accepts a `HostStudy`, so an `embarch-api` built at 20 refuses a Core still at 19. Deploy Core first.
+
 ### Fixed
 - The GATT extractor strips C comments first: a commented-out service or `#define` no longer counts as live or ambiguous ([decision 85](../embarch-study-designer/decisions/gatt-extract-scan.md)).
 - The .eap parser now refuses an out-of-range on_timeout/retry, a float write width and a repeat naming no struct, with the line (study-designer decision 84).
