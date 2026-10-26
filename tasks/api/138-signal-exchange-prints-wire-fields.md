@@ -32,6 +32,10 @@ Core 098 stopped answering `500` for a command that ran; the api is the only rea
 
 ## Done when
 
-- [ ] `ExchangeResponse` in the client carries the new fields with serde defaults; a test parses an old-shape body and a new one.
-- [ ] MCP text and CLI print `port_lost`, `echo_seen`, and the silent-case identity and core state.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+- [x] `ExchangeResponse` in the client carries the new fields with serde defaults; a test parses an old-shape body and a new one.
+- [x] MCP text and CLI print `port_lost`, `echo_seen`, and the silent-case identity and core state.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `spec.md`/`decisions.md` updated, `changelog.d/` fragment dropped.
+
+## Result, 2026-10-26
+
+Decision 82 amended (`decisions/failure-reporting.md`): `port_lost` exits 5, silent stays 4. No struct-literal construction of `SignalExchangeResponse` in `embarch-ui` or `embarch-umbrella` (grep of `*.rs`, none at all). Not verified against a real Core. `decisions/client-crate.md` untouched, still 118 B from reserve.
