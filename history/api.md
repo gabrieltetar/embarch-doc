@@ -11,6 +11,7 @@
 - `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
 
 ### Changed
+- `status` reports `last_images` as null for a Core that predates it, distinct from `[]` (nothing flashed since start); decisions 58, 90.
 - serial_log and serial-log carry Core's truncated flag (true marked, absent from an older Core reported as unknown, never false); config.md says flash_format is required for every project.
 - `enroll-probe` (CLI and MCP) says when an enrol vacated or displaced a role; the client mirror carries `displaced`, `vacated`, `vacated_kept`.
 - api: signal_exchange and signal-exchange now report Core's wire fields (port_lost, echo, port identity, core state); port_lost exits 5; decision 82 amended.
