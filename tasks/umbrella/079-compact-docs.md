@@ -1,6 +1,6 @@
 # 079 — `embarch-umbrella/decisions/install.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/umbrella/079-compact-install-md, 2026-10-26 01:44
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/078`
 **Scope:** umbrella
 **Hardware:** none
