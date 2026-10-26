@@ -51,3 +51,17 @@ Every bound the crate declares, each marked `[measured <date>]` or `[assumed]`. 
 | `DEV_BENCH_MAX_PROTOCOLS_WIRE_LEN` | 3072 | `DBM_MAX_PROTOCOLS_WIRE_LEN` (`serial_protocol.h:113-129`), embarch-dev-bench decision 41 | **mirrors no crate constant at all**: the count caps multiply into ~7.4 KB for one `ProtocolDef`, against 398 bytes for the real BDS manifest. Measured by `crc::protocols_wire_len`, which encodes the **whole field, length prefix included** |
 
 Retired constants, kept here because a reader meeting the name in older code needs to know it went and why: ~~`MAX_RESULT_REF_LEN = 64`~~ and the original ~~`MAX_BATCH_SAMPLES`~~ role — `StepResult.power_samples_ref`/`waveform_ref`, retired 2026-08-25 with the fields (decision 39). ~~`MAX_GATT_ACTIVITY_RECORDS = 32`~~ — retired 2026-08-26 with the field it bounded (decision 54); it was what a capped in-memory copy of a streamed capture cost, and the stack-safety risk it carried went with it. ~~`MAX_STREAM_CHUNK_LEN`~~ — nothing left to bound once `StreamChunk` carried a `Sample` rather than an arbitrary byte buffer. ~~`MAX_VALIDATIONS_PER_STUDY = 64`~~ — retired with post-hoc validation (decision 48).
+
+## Host-run studies (decision 80)
+
+Host-only, never on the dev-bench wire; all **[assumed]**, from one 49-step field sequence.
+
+| Constant | Value | Bounds |
+|---|---|---|
+| `MAX_HOST_STEPS` | 128 | `HostStudy.steps` |
+| `MAX_HOST_TEARDOWN_STEPS` | 16 | `HostStudy.teardown` |
+| `MAX_HOST_NAME_LEN` | 96 | study and step names, bytes |
+| `MAX_HOST_LINE_LEN` | 256 | `Exchange.line`, `Instrument.line`, bytes |
+| `MAX_HOST_PROMPT_LEN` | 1024 | `Prompt.text`, bytes |
+| `MAX_HOST_REPLY_LEN` | 4096 | `HostStepResult.reply`, applied by Core |
+

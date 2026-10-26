@@ -14,7 +14,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Serialization, framing, and the link](decisions/wire.md) — two formats, COBS, an append-only enum | 3, 4, 10, 24, 25 |
 | [Schema versioning, handshake, clocks](decisions/versioning.md) — two constants, and where time comes from | 12, 30, 47, 72 |
 | [Integrity seals and pre-flight validation](decisions/seals.md) — three siblings, and what sits outside them | 17, 18, 26 |
-| [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51 |
+| [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51, 80 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39 |
 | [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53 |

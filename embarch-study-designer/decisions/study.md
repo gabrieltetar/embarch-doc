@@ -60,3 +60,16 @@ The intended shape, stated explicitly: a fuzzing driver runs entirely client-sid
 
 ---
 
+### 80 — Host-run studies: `HostStudy`, with a teardown that runs on every exit path, and a declared refusal marker
+
+Source: field use on a USB PD charger board (96 logged bench tests, none of them a study: every PD and e-load run was a bash script over `signal-exchange`). Shape from `embarch-host-study-proposal.md`; this entry records what the proposal left out.
+
+- **A separate type, JSON only, `alloc`-gated.** `HostStudy { name, steps, teardown, streams }`, `HostStep { name, action, timeout_ms, continue_on_fail, delay_before_ms }`, `HostAction { Exchange, Prompt, Instrument, Wait }`, `HostStepResult`. Never postcard, never sealed, never on the dev-bench wire, so decision 60 stands for bench studies. `streams` is `StreamTap`s whose source is `Signal`; validation refuses any other. Names (signals, instruments) are checked against topology by Core, not here.
+- **`teardown` runs on every exit path**: end of run, a step that fails without `continue_on_fail`, a timeout, a cancel. Every field script carried that by hand (load off, partner to 5 V, settings restored, even on Ctrl-C). It is validated exactly like `steps`; a failing teardown step is recorded and the rest still run, so `continue_on_fail` means nothing inside it.
+- **No step carries an expected value or a range.** The study philosophy (2026-09-25): a study collects, the engineer interprets. `deny_unknown_fields` on every host type enforces it, and a test adds `expect`, `min`, `max`, `expected_value` and `tolerance` to prove each is refused.
+- **`Exchange.refused_on: Option<String>` is allowed (settled).** The PD bench ends every command with `pd: ok` or `pd: error <reason>` (`embarch-dev-bench` decision 48). A refusal means the action was not carried out, which the philosophy already counts as a failure. The marker is matched as text in the reply; **no value in a reply is ever compared**. `until` stays the stop marker (`pd: `, matching both endings), so an error line ends the read instead of timing out. Absent means a reply never fails the step.
+- **Step caps are their own constants** (`limits`, all **assumed**, sized from one source sequence): `MAX_HOST_STEPS` 128 (the PD sequence is 49: 14 requests, 17 status reads, 18 waits), `MAX_HOST_TEARDOWN_STEPS` 16, plus name, line, prompt and reply byte caps. They are unrelated to 64 (`MAX_STEPS_PER_STUDY`) and 16 (`DBM_MAX_STEPS_PER_STUDY`).
+- **`HOST_TYPE_SCHEMA_VERSION` is not bumped here** (still 19). The types cross no hop yet, and a Core that advertised a bump without being able to accept `HostStudy` would be the drift decision 12 exists to refuse. The bump belongs to the Core unit that accepts them.
+
+The fixture `tests/fixtures/host_pd_source_sequence.json` (fixed 5/9/15/20 V, PPS 5 to 21 V at 1 A, back to 5 V, with a two-step teardown) validates in the crate's tests.
+

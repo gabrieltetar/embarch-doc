@@ -38,7 +38,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 |---|---|---|
 | *(default, `no_std`)* | the wire types, CRC sealing, canonical row rendering, tap validation | dev-bench firmware, and everyone |
 | `ffi` | the `extern "C"` surface plus a generated C header | dev-bench's staticlib |
-| `std` / `alloc` | heap-backed `steps` and result containers | the two host crates |
+| `std` / `alloc` | heap-backed `steps` and result containers; the host-run study types (`HostStudy`, decision 80, JSON only) | the two host crates |
 | `gatt-extract` | the repo-walking GATT extractor (needs `regex`, `ignore`) | an authoring-time binary |
 | `eap-parse` | the `.eap` parser and a host-side **reference** interpreter | authoring, and pinning the semantics C must match |
 | `study-ui` | table-authoring types, the study builder, and the custom-action registry | `embarch-ui` |
