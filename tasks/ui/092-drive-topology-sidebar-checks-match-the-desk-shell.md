@@ -23,5 +23,12 @@ Fix the checks to assert what the page is meant to show (decision text where one
 
 ## Done when
 
-- [ ] `drive_topology.py` passes end to end against a release build, isolated as it is now, twice in a row.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment if anything user-visible changed (likely none).
+- [x] `drive_topology.py` passes end to end against a release build, isolated as it is now, twice in a row.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment if anything user-visible changed (likely none).
+
+## Result, 2026-10-26
+
+- Sidebar check now asserts the six `data-tab` values in order; path check asserts the no-desk form `no desk \u00b7 /tmp`.
+- Third check (board labels): cause was a read of the diagram text right after fixed sleeps, before the roles and board catalog had drawn all four lines. It did not reproduce in two runs, so the cause is inferred from the code path, not observed. The read now polls (up to 10 s) until four labels are present. Not reproduced either way.
+- The drive takes `EMBARCH_GECKO_PORT` (default 4444), so it can run on a scratch geckodriver port. Passed twice in a row (78 checks each) on scratch ports 47311/47312/47313 against a release build, isolated as before.
+- No user-visible change: no changelog fragment.
