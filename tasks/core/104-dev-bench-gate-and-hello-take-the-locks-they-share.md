@@ -1,10 +1,25 @@
 # 104 — The dev-bench identity gate takes `hw_lock`, and `GET /dev-bench/hello` holds `study_lock` while it uses the link
 
-**State:** open
+**State:** claimed by agent/core/104-dev-bench-gate-and-hello-take-locks, 2026-10-26 01:20
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-core findings 2 and 7), verified by Opus against embarch-core@40a58ccb
 **Scope:** core
 **Hardware:** none — lock ordering is host-testable. The collision was found by reading the code; nobody has observed it on the bench.
 **Owner:** no
+
+## Dispatch note, 2026-10-26
+
+- **Line numbers above are from `40a58cc`**; `main` has moved since (core/096, 097, 098, 107 landed
+  in the last two hours, all in the signal-exchange and flash paths). Re-find each site by name.
+- **`embarch-topology` is a path dependency you read but may not edit.** If the gate's attach needs a
+  topology change to be lock-aware, stop and say so in the task file rather than reaching across.
+- **Doc reserve:** nothing in `embarch-core/` is in reserve. `decisions/platform.md` (decisions
+  4/14/15) is 5,927 B, plenty of room. `decisions/surfaces.md` is 11,042 B, **17 B under** its
+  11,059 B reserve line (its compaction task `core/091` was retired an hour ago for being under):
+  if you must touch it, any growth puts it back in reserve, and then you file
+  `tasks/core/<next NNN>-compact-core.md` in the same commit (`scripts/check-task-numbers.py --next
+  core`). `decisions/stream-index.md` is 10,986 B, same rule. `spec.md` is 8,937 B against a 9,216 B
+  reserve line.
+- **Native Windows build** is a debt you record, not a gate item you run (`embarch-fleet/gate.md`).
 
 ## What
 
