@@ -40,6 +40,8 @@ This crate's private `is_wsl2` ran its own rule — `/proc/version` containing "
 
 So: **every response field this crate deserializes that Core may not yet send is `Option<T>` with `#[serde(default)]`** — matching the existing fields in shape, not merely in having a default. `None` is never presented as a fabricated "validated at 1970" nor silently dropped: a reader is told in words that this Core did not report the value, which is a different fact from validating at an unknown time.
 
+**Applied `api/139`.** `SignalExchangeResponse`'s `bytes_read`/`echo_seen`/`written`/`port_lost` (`api/138`) had shipped as bare defaults, so an old Core's exchange showed `written: false`, the value decision 85 exists to stop being read as "safe to resend"; they are `Option` now, skipped when `None`. `FlashResponse.erased` is `Option<Vec<String>>` too, not recorded as an exception: an empty list on an old Core would read as "nothing erased" after `erase: true`, which is a claim Core never made; `Some(empty)` is Core saying so. Checked: `embarch-ui` and `embarch-umbrella` use none of these fields, so nothing there stops compiling.
+
 **The check, corrected `api/072`.** The frozen numbers 13/14 are retired: a plain `grep -c 'serde(default)'` counts prose quoting the attribute too, so it drifts as the file grows. The check that stays correct is anchored to the attribute's position: `grep -c '^\s*#\[serde(default)\]' crates/embarch-core-client/src/client.rs`.
 
 ### 66 — The crate lives inside `embarch-api`'s own tree, not a tenth repo, and `embarch-ui` path-depends across a repo boundary to reach it

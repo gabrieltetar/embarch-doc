@@ -18,7 +18,11 @@ The fields shipped an hour ago and nothing reads them yet except the CLI and MCP
 
 ## Done when
 
-- [ ] The four fields are `Option<_>` with `#[serde(default)]` (and skipped when `None` on serialize); the old-body test asserts `None`, not `false`/`0`.
-- [ ] `wire_notes` and `exchange_problem` say nothing false against an old body; a test covers an old-shape reply with text.
-- [ ] `FlashResponse.erased` is decided one way or the other, and the decision says which.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); decision 82's amendment and the `signal_exchange` row in `interfaces/tools-topology.md` updated; `changelog.d/` fragment dropped.
+- [x] The four fields are `Option<_>` with `#[serde(default)]` (and skipped when `None` on serialize); the old-body test asserts `None`, not `false`/`0`.
+- [x] `wire_notes` and `exchange_problem` say nothing false against an old body; a test covers an old-shape reply with text.
+- [x] `FlashResponse.erased` is decided one way or the other, and the decision says which.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); decision 82's amendment and the `signal_exchange` row in `interfaces/tools-topology.md` updated; `changelog.d/` fragment dropped.
+
+## Done
+
+All four exchange fields and `FlashResponse.erased` are `Option` (decision 58, applied paragraph). `embarch-ui`/`embarch-umbrella` grep: no use of `bytes_read`/`echo_seen`/`written`/`port_lost`/`erased` or the response types, so nothing there would stop compiling. Gate: build, test --workspace, clippy green. JSON flash output now has `"erased": null` for an old Core (not omitted).
