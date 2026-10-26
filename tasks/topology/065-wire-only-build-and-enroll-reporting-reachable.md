@@ -46,9 +46,13 @@ no consumer unit can pass the merge gate cleanly, and `tasks/core/110` is blocke
 
 ## Done when
 
-- [ ] `cargo build` and `cargo clippy --all-targets -- -D warnings` are green in `embarch-topology`
+- [x] `cargo build` and `cargo clippy --all-targets -- -D warnings` are green in `embarch-topology`
       for default features, `--all-features`, and `--no-default-features --features software,wire`.
-- [ ] `embarch_topology::hardware::enroll_reporting` exists, is documented, and is behind
+- [x] `embarch_topology::hardware::enroll_reporting` exists, is documented, and is behind
       `hardware`.
-- [ ] The `wire`-only build is named as a gate item where the next topology worker will read it.
-- [ ] Decision 42 still matches the code (amend only if it does not); `changelog.d/` fragment.
+- [x] The `wire`-only build is named as a gate item where the next topology worker will read it.
+- [x] Decision 42 still matches the code (amend only if it does not); `changelog.d/` fragment.
+
+## Log
+
+Code `7c1ef59`: `Upserted` re-export now `#[cfg(feature = "hardware")]`; `hardware::enroll_reporting` added; gate item written in Cargo.toml `[features]` comment. Decision 42 matches the code, not amended. Gate green for default, `--all-features`, `--no-default-features --features software,wire` (build, test, clippy).
