@@ -43,7 +43,13 @@ Finding 1's override behaviour (`desk-hours-set-by-hand`) interacts with the sec
 
 ## Done when
 
-- [ ] With a waiting tile from an earlier day and a Harvest entry for that day and item added after the day ended, the tile's proposed hours drop by that entry within one refresh interval, or ✓ refuses to send the stale amount. A test with a stubbed Harvest covers whichever is built.
-- [ ] Refreshing past days is bounded: one read per distinct waiting-tile day per interval, never one per tile. A test or a stated constant shows the bound.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (decision 41's fetch schedule; the spec §4 refresh constant if one is added), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] With a waiting tile from an earlier day and a Harvest entry for that day and item added after the day ended, the tile's proposed hours drop by that entry within one refresh interval, or ✓ refuses to send the stale amount. A test with a stubbed Harvest covers whichever is built.
+- [x] Refreshing past days is bounded: one read per distinct waiting-tile day per interval, never one per tile. A test or a stated constant shows the bound.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (decision 41's fetch schedule; the spec §4 refresh constant if one is added), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Done
+
+Both directions built (decision 62). Sync loop re-reads each earlier day with an open tile every 10 min (`past_days_due`, one read per distinct day, a failed day backs off). ✓ re-reads the tile's day first and, with a typed override, refuses once when the gap moved. Tests are pure-function (`past_days_due`, `gap_moved_under_override`): Harvest's base URL is a const, so no stubbed-HTTP test of the refresh itself.
+
+**Debt:** a ✓ against real Harvest with an entry added after the day ended has not run (owner deploys and runs).
