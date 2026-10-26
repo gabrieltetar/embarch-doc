@@ -23,6 +23,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **This crate never knowingly runs a tree-mutating `git` subcommand**, named directly or behind a shell/exec wrapper. "Reflash" means build and flash the tree **as it stands**, then verify — never "make my tree be that version". Enforced against the config file, not just this code.
 - **No inference presented as fact.** Anything about a DUT this crate can't observe is declared by the operator or reported unknown.
 - **Every JSON object either front-end emits carries `schema_version`**, stamped in one place rather than per emitter, and there is no `error_kind` ([decisions](decisions/surface.md) 24, 50).
+- **`bench_exchange` times are the client's, never Core's.** Core's capture stamps no per-line time, so a captured line carries the poll that first saw it and every answer says so ([decisions](decisions/bench-exchange.md) 89).
 - **A live event stream is an optimisation, never the source of truth.** Losing it falls back to polling and is reported, never fails a call. Core's `lagged` frame is a fact to relay, not an error ([decisions](decisions/core-link.md) 48).
 
 **§§3-7 — build orchestration, deployment and topology, modules, security, constants — moved verbatim to [spec/implementation.md](spec/implementation.md)** on 2026-09-29 under [DOC-COMPACTION.md](../DOC-COMPACTION.md) §2 (`tasks/api/083`); this file still answers what is true, that one answers how.

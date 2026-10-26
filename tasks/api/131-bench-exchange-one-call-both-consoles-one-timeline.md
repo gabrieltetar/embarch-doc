@@ -1,6 +1,6 @@
 # 131 — One call drives a console sequence and returns every listened console as one filtered timeline
 
-**State:** claimed by agent/api/131-bench-exchange-one-call-both-consoles-one-timeline, 2026-10-26 05:59
+**State:** done — host side shipped and mock-tested; the two-console bench check and the replay are hardware-verification debts below (also in `embarch-api/open.md`)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — console traffic was 434 calls and 2.0% of all context tokens: about 70 PowerShell `SerialPort` listeners, 101 calls through a sourced helper whose `with_log` ran a command on one console while recording the other, 33 hand-built `(sleep N; send) & capture` commands averaging 1.25 KB of command text, and 72 runs of 2 to 5 back-to-back status reads (180 calls)
 **Scope:** api
 **Hardware:** verify-only — reclassified from `bench` on filing by the 2026-10-25 leg: the tool, its filters and snapshots are client code testable against the mock Core; the two-console bench check and the replay are its hardware-verification debt. It builds on `tasks/core/100` (Core's background capture), so dispatch it after that lands.
@@ -28,10 +28,19 @@ The field sessions rebuilt this helper by hand in each bench session, and wrote 
 
 ## Done when
 
-- [ ] `bench_exchange` on MCP and CLI runs `steps` and `listen` in one Core request set and returns the merged timeline.
-- [ ] Include, exclude, level floor and line cap apply per signal; dropped-line counts appear in the answer.
-- [ ] Named snapshots in project config, validated against declared signals at load.
-- [ ] Bench check on two consoles: a command on one console and an expected log line on the other land in the right order with their receive times.
-- [ ] Replay: one recorded role-swap check (a command on the partner console, the DUT log recorded for 3 s, then both stacks' status: 3 to 4 helper calls and about 1.9 KB of output in the field) runs as one call; compare calls, command characters and result characters.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `bench_exchange` on MCP and CLI runs `steps` and `listen` in one Core request set and returns the merged timeline. (`src/bench_exchange.rs`; times are client-observed, decision 89; `tests/bench_exchange_cli.rs`.)
+- [x] Include, exclude, level floor and line cap apply per signal; dropped-line counts appear in the answer.
+- [x] Named snapshots in project config, validated against declared signals at load. (Shape validated at load; the declared-signal check runs at the start of each call, before any capture or write, because Core is not reachable at load. Decision 89.)
+- [ ] Bench check on two consoles: **hardware-verification debt**, below.
+- [ ] Replay: **hardware-verification debt**, below. Host-side measure: the whole replay is one CLI call of 281 characters (`--listen dut --tail-ms 3000`, a level-floor filter, three steps) in place of 3 to 4 helper calls; result characters need the real bench.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## What shipped
+
+`bench_exchange` / `bench-exchange`, decision 89 in `embarch-api/decisions/bench-exchange.md`. Core's capture has no per-line time, so rows carry client-observed times (a captured line is stamped by the poll that first saw it, within `poll_ms`, default 100) and every answer says so; the Core ask is `inbox/core-capture-line-receive-times.md`. A reply on a listened signal appears once (through its capture); no escape stripping, filters are substring and level-tag matches on text that keeps its ANSI codes. Snapshots: `[projects.snapshots.<name>]`. `embarch-core-client` is unchanged; `embarch-firmware-build`'s `ProjectConfig` gained an additive `snapshots` field. Filed `tasks/api/144` (open.md is in reserve).
+
+## Hardware-verification debts
+
+- **Two-console order check.** Needs: two declared direct signals on a real board pair (a bench console and a DUT console, both USB-UART), Core running. Run: `embarch-api bench-exchange --listen dut --poll-ms 50 --steps '[{"signal":"bench","write":"<a command that makes the DUT log a known line>","until":"uart:~$ "}]' --tail-ms 2000`. Expect the `bench>` row first, the DUT line after it with a time at most `poll_ms` later than the wire, the reply once, and `captures.dut.state` stopped. Also run it across a DUT reset (USB re-enumeration) and confirm the `[embarch: port lost]` marker rows and `gaps` appear, and that a second concurrent call is a clean 409.
+- **Replay.** One recorded role-swap check (command on the partner console, DUT log recorded 3 s, then both stacks' status) as one call; record calls, command characters (281 for the sketch above) and result characters against the field's 3 to 4 calls and about 1.9 KB.
