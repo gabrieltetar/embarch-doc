@@ -17,8 +17,12 @@ Host-driven transfers turn the echo off on purpose: a Zephyr shell takes 22 ms p
 
 ## Done when
 
-- [ ] `SignalExchangeParams` and the CLI take `match_after_echo`; a test shows it reaches Core's request body, and that leaving it out sends nothing, so Core's default holds.
-- [ ] The tool description names the echo-off case.
+- [x] `SignalExchangeParams` and the CLI take `match_after_echo`; a test shows it reaches Core's request body, and that leaving it out sends nothing, so Core's default holds.
+- [x] The tool description names the echo-off case.
 - [ ] Bench check: after `shell echo off`, an exchange with `until: ":~$ "` and `match_after_echo: false` returns at the prompt with `until_seen: true`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+Not run (no hardware). On a Zephyr USB CDC ACM shell declared as a direct bidirectional signal: send `shell echo off`, then `embarch-api signal-exchange --name <sig> --write help --until ':~$ ' --match-after-echo false` (or the MCP tool with `match_after_echo: false`). Expect it to return in tens of ms with `until_seen: true`; without the flag it should still run to timeout. Host side proven against a mock Core: the field reaches the body when given and is absent when omitted.
