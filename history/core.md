@@ -4,6 +4,9 @@
 
 ## 2026-10
 
+### Added
+- POST /probes/enroll adds displaced, vacated and vacated_kept when an enrol moves a role; absent otherwise (core decision 87).
+
 ### Changed
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
