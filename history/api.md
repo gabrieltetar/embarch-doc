@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Fixed
+- `list_targets` accepts the shortened `<board>.dts` of a single-SoC board and errors with a per-board reason when every board is dropped, not `targets: []`. Decision 86.
 ## 2026-09
 
 ### Added
