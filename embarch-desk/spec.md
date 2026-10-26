@@ -49,6 +49,8 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Cards shown | the open desk's (all, with none open): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
 | Refresh | connectors 5 min, issues 3 min, PRs 5 min, Slack 2 min, Slack window 3 days |
 | Reference index | 1,000 issues; 300 PRs per repo; each desk every 5 min, by its own task's pass every 30 s (56) |
+| Harvest entries read | 2,000 per account per call, paged by 100; `truncated` when cut [chosen] (59) |
+| Assigned issues read | 500 per workspace, paged by 50; `truncated` when cut [chosen] (59) |
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
 | Brief | 16,000 characters, about 4K tokens (48) |
 | Mailbox entry life | 10 min, as a launch claim (46) |

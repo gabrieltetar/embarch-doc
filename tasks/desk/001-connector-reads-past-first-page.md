@@ -23,8 +23,8 @@ When done, both reads return every result up to a stated cap, and say so when th
 
 ## Done when
 
-- [ ] `entries_between` against a stubbed Harvest returning three pages returns every entry from all three, and stops at the cap with a truncation flag the agent route passes on.
-- [ ] `my_issues` against a stubbed Linear returning two pages returns both, up to its cap.
-- [ ] Both caps are in spec.md §4's constants table.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] `entries_between` against a stubbed Harvest returning three pages returns every entry from all three, and stops at the cap with a truncation flag the agent route passes on.
+- [x] `my_issues` against a stubbed Linear returning two pages returns both, up to its cap.
+- [x] Both caps are in spec.md §4's constants table.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
