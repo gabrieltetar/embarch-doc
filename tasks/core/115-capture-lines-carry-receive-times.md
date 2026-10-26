@@ -1,10 +1,14 @@
 # 115 — Stamp each line of a signal capture with its receive time
 
-**State:** open
+**State:** claimed by agent/core/115-capture-lines-carry-receive-times, 2026-10-26 06:42
 **Source:** api/131 (decision 89 in `embarch-api/decisions/bench-exchange.md`): `bench_exchange` merges two consoles into one timeline, but `GET /signals/{name}/capture` carries a byte range with `offset`, `next_offset`, `elapsed_ms` and `gaps`, nothing per line, so the client can only stamp a line with the poll that first saw it (a ceiling, within its poll interval, default 100 ms). `tasks/core/101` stamps lines only inside a host-study tap, so it does not cover this. Filed from `inbox/core-capture-line-receive-times.md` by the 2026-10-26 leg.
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 06:42 leg
+
+**Doc reserve in your scope, all parked under `tasks/core/112` (blocked, `In flux: yes`):** `embarch-core/open.md` 5,070 / 5,120 B (**50 B left**), `embarch-core/spec.md` 9,638 / 10,240 B (602 B left), `embarch-core/decisions/probes.md` 11,263 / 12,288 B (1,025 B left). Decision 92 lives in `decisions/signal-capture.md` (4.3 KB, not in reserve): amend it there or add a new topic file. A blocked compaction task parks the pass, not the reserve, so **if you add bytes to `open.md` or `spec.md`, compact that file in this unit**: remove or shrink only what is closed or restated elsewhere, carry `core/112`'s `Must not delete:` list (decision 89's "assumed, not measured" spelling paragraph and the `409 chip-mismatch` wording; decision 80's ARMv6 RCC reasoning; decision 22's identity-gate relation), leave the decision-89 bullet alone, and say what you cut in your report. Prefer recording any open point inside the decision instead of `open.md`. The capture `GET` route's response is a wire shape `embarch-api`'s client decodes (`SignalCaptureResponse`, api decision 88): keep the change additive.
 
 ## What
 
