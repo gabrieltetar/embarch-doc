@@ -1,6 +1,38 @@
 # 026 — Compact `embarch-study-designer/open.md`
 
-**State:** blocked — leg 065, 2026-09-10
+**State:** claimed by agent/study-designer/026-compact-open-md, 2026-10-25 23:12
+
+## Dispatch note, 2026-10-25 leg — read this one first
+
+**Unparked: the condition in `## Blocked` below fired on 2026-09-17.** That section unparks "on
+any bullet in `open.md` getting a real answer". `suite/045` (owner commit `685b691c`) answered
+one: the "Missing authoring paths" bullet's trigger fired and the path was built, and the owner
+moved it into a new **Closed** section rather than deleting it. The same commit opened one new
+question (whether a saved study should be checked against the `.eap` it was built from). Net
+result: the file is **5,447 / 5,120 B — 327 B over its cap**, the debt was due 2026-10-04, and
+`check-doc-size.py` is now **red on `main`** for every unit in the suite. That is why this is the
+leg's first unit.
+
+**The seam is the Closed section, and the Amendment at the bottom of this file names it.** An
+`open.md` holds unresolved questions only. A closed one leaves, or shrinks to a one-line pointer
+at the decision that closed it (decision 75/76 or the authoring decision's RunProtocol amendment,
+whichever actually records the built path — check, do not guess). Do not shorten any still-open
+bullet's prose to make room; the previous worker's question-by-question read below still stands
+for those, and `Must not delete` is implicit in it: every open question keeps its trigger and its
+citation.
+
+**Targets.** Under the 5,120 B cap is the requirement (it turns `main` green). Under the
+4,608 B reserve floor is the goal; if the closed bullet alone cannot get there without touching a
+live question, stop at under-cap, leave this task `open` with the remaining reserve stated, and
+say so — that is an honest outcome, not a failure. Do not invent an answer to an open question.
+
+**Doc-only.** You have an `embarch-doc` worktree only; no code change is expected and none was
+created. Gate: `python3 scripts/check-docs.py` (all green once you are under cap),
+`check-ownership.py --scope study-designer`, a `changelog.d/study-designer-*` fragment only if the
+change is reader-facing (removing a closed question usually is not). Answer
+`DOC-COMPACTION-PASS.md`'s human question in your Result in your own words.
+
+**Nothing else in `embarch-study-designer/` is in reserve.**
 
 ## Dispatch note, leg 065
 
