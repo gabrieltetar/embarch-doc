@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- `embarch-ui/spec.md` back in reserve: the tab-navigation paragraph lives only in `spec/tabs.md` now, at its newer wording (ui/089).
 - Browser drive scripts read geckodriver/UI ports only via EMBARCH_GECKO_PORT / EMBARCH_UI_PORT (tests/browser/addr.py); old names error ([decision 65](../embarch-ui/decisions/browser-drive.md)).
 - `build_and_flash` now logs why it built the board it did on every path, and the stored build log keeps the version, board, flash and reset lines, including a flash failure.
 - The enrol dialog now says when an enrol vacated or displaced a role, in Core's own sentence ([decision 61](../embarch-ui/decisions/topology-roles.md)).
