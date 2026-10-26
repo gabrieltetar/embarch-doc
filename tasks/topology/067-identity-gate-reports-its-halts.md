@@ -1,6 +1,7 @@
 # 067 — Topology reports how many halts its identity gate made
 
-**State:** open
+**State:** claimed by agent/topology/067-identity-gate-reports-its-halts, 2026-10-26 09:03
+**Reserve (2026-10-26 09:03 leg):** `decisions/enrollment.md` 166 B left (`topology/060`, blocked, `In flux: yes`), `decisions/links.md` 182 B left (`topology/066`, open). Put a new decision in neither: a new topic file under `decisions/` is the expected move. If you spend either file's reserve anyway, compact it in this unit.
 **Source:** core/103 (decision 97): Core's `halt_count` includes the identity gate's halt, which Core can only infer by chip prefix `stm32g0` plus found-running, mirroring `hardware_id.rs` `read_halted` (`:126-131`, `:361-375`). Filed from `inbox/topology-report-gate-halts.md` by the 2026-10-26 08:09 leg, in core/103's fold.
 **Scope:** topology
 **Hardware:** none — unit-testable over `read_halted` with a stand-in core.
