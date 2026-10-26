@@ -1,10 +1,22 @@
 # 092 — doctor check 13 should read hello's 503/409 as busy, not broken
 
-**State:** open
+**State:** claimed by agent/umbrella/092-doctor-check-13-reads-hello-503-409-as-busy, 2026-10-26 03:24
 **Source:** core/104 (`agent/core/104-dev-bench-gate-and-hello-take-locks`), inbox drop `core-doctor-check-13-reads-hello-503-409-as-busy.md`
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 03:24
+
+`umbrella/091` has landed (`embarch-umbrella` `c75200d`): check 13 now has a `dirty-checkout` Warn
+arm (decision 19 amended), so you start on top of it and there is nothing to rebase. Read Core's
+side from `embarch-core/decisions/platform.md` decisions 4, 14 and 15 and from Core's own handler,
+not from this task's summary, and take the holder's name from the body Core actually sends; if the
+body shape is not stated anywhere you can cite, say so in your report rather than guess. Keep the
+`--json` keys stable; a new code for the busy verdict is fine if decision 19 names it. Nothing in
+`embarch-umbrella/` docs is in reserve. Your worktree's parent links the main checkouts of
+`embarch-topology`, `embarch-study-designer` and `embarch-api`. Never edit another repo, never run
+`embarch doctor` against the live Core or bench: test against a stub.
 
 ## What
 
