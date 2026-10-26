@@ -12,6 +12,8 @@ It compares the bench's reported firmware version, over a handshake-only endpoin
 
 **The configured path must name a path native to wherever `doctor` itself runs**, not a cross-filesystem view of one: Windows against a WSL2 checkout over a UNC path **spuriously reports the checkout as always-dirty, because Windows' git cannot read that repo's symlinks over that path.**
 
+**A dirty checkout is its own verdict, `dirty-checkout`, a Warn.** Local `X-dirty` against a bench flashed from clean `X` is not stale: the bench matches HEAD and the tree has uncommitted changes, and a rebuild would not clear it (dev-bench's CMake runs `git describe` only at configure time, so an unstaged edit triggers no reconfigure). The fix line is to commit or stash, or to rebuild with `west build -p always` if the edit is firmware under test. **Dirty against dirty on the same commit passes as `match`, and proves only that both were dirty there, not that the two diffs are the same.**
+
 ### 47 — No checkout configured is a fail, and an unresolvable id is not an ordinary mismatch
 
 `umbrella/034`'s bench run found decision 19's check silent by default: nothing in `setup` or `init` ever writes `dev_bench_repo_path`, so an unconfigured machine read a `Warn` that looked like background noise on every default install. **Promoted to `Fail`, naming `setup --dev-bench-repo <path>` as the fix.** This arm only runs once a bench has answered `/dev-bench/hello` — "no bench at all" is a separate, unaffected `Pass` — so nagging a benchless machine, the candidate direction's own worry, does not apply here.

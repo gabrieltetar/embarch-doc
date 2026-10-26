@@ -38,10 +38,16 @@ Four small defects. In each, what the operator is told contradicts the docs or t
 
 ## Done when
 
-- [ ] `setup --uninstall` exits non-zero when a step it attempted failed, and names each one. A run with nothing failed exits 0. Unit-tested over the step outcomes, with no service touched.
-- [ ] A check-1 manifest mismatch renders as Warn, code `manifest-mismatch`. `doctor`'s exit status for it is the same as for any other Warn.
-- [ ] Check 13, given a local `X-dirty` and a bench `X`, no longer emits `stale`. It emits its own code, and its fix would clear the result (unit test against a temp git repo, as the existing check-13 tests do). Dirty-against-dirty behaviour is stated in the decision.
-- [ ] Check 2's fix line for `wsl-host` and `remote` contains the same `--bind` value `setup` passes for that class. A test fails if the two diverge.
-- [ ] `--json` keeps its always-present `code`/`path` keys for every changed arm.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` and `interfaces/doctor-chain.md` updated, `changelog.d/` fragment dropped.
+- [x] `setup --uninstall` exits non-zero when a step it attempted failed, and names each one. A run with nothing failed exits 0. Unit-tested over the step outcomes, with no service touched.
+- [x] A check-1 manifest mismatch renders as Warn, code `manifest-mismatch`. `doctor`'s exit status for it is the same as for any other Warn.
+- [x] Check 13, given a local `X-dirty` and a bench `X`, no longer emits `stale`. It emits its own code, and its fix would clear the result (unit test against a temp git repo, as the existing check-13 tests do). Dirty-against-dirty behaviour is stated in the decision.
+- [x] Check 2's fix line for `wsl-host` and `remote` contains the same `--bind` value `setup` passes for that class. A test fails if the two diverge.
+- [x] `--json` keeps its always-present `code`/`path` keys for every changed arm.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` and `interfaces/doctor-chain.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+All four fixed in `embarch-umbrella` (`src/setup.rs`, `src/doctor.rs`). `setup`'s own failed-install arm now also exits 1. Check 13's dirty case is a Warn, code `dirty-checkout`; dirty-against-dirty stays `match` and decision 19 says what that proves. The `--bind` test calls the same `recommended_bind_address` `setup` uses.
+
+Gate note: `embarch-topology` main (`6732ad6`) does not build without `--features embarch-topology/hardware` (`Upserted` is cfg-gated but re-exported ungated in `hardware/mod.rs`), so the umbrella gate was run with that feature added; reported to inbox.
