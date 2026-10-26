@@ -1,10 +1,26 @@
 # 138 — Print the new `/signals/{name}/exchange` fields in the MCP `signal_exchange` text and the CLI
 
-**State:** open
+**State:** claimed by agent/api/138-signal-exchange-prints-wire-fields, 2026-10-26 01:20
 **Source:** embarch-core decision 85 (core task 098) — the exchange answer gained fields the api drops. Inbox drop `api-signal-exchange-prints-wire-fields.md`, filed 2026-10-26.
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26
+
+- **Read Core's side first:** `embarch-doc/embarch-core/decisions/signal-exchange.md` decision 85
+  (and 79 as amended) is the contract for every field named below; the Rust type is in
+  `embarch-core` (read-only for you; the main checkout is `/home/gabriel/Github/embarch/embarch-core`).
+  `api/123` (landed an hour ago) gave `signal-exchange` exit codes 3/4/5 in decision 82
+  (`decisions/failure-reporting.md`); keep those codes coherent with `port_lost` (decide and record
+  whether a `port_lost` reply changes the exit code, and say why).
+- **Shared crate.** `embarch-core-client` is path-depended on by `embarch-ui` and `embarch-umbrella`.
+  Keep the change additive with `#[serde(default)]`; grep those two repos for any struct-literal
+  construction of the response type and say in your report what you found (you may not edit them).
+- **Doc reserve:** nothing in `embarch-api/` is in reserve, but `decisions/client-crate.md` is
+  10,941 B (reserve line 11,059 B, 118 B away) and `decisions/zephyr.md` 10,812 B. If your work
+  pushes either into reserve, file `tasks/api/<next NNN>-compact-api.md` in the same commit
+  (`scripts/check-task-numbers.py --next api`), per `tasks/README.md`'s compaction shape.
 
 ## What
 
