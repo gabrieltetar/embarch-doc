@@ -1,6 +1,6 @@
 # 079 — `embarch-umbrella/decisions/install.md` is in reserve
 
-**State:** claimed by agent/umbrella/079-compact-install-md, 2026-10-26 01:44
+**State:** done 2026-10-26
 **Source:** scripts/check-doc-size.py --pressure, run by `umbrella/078`
 **Scope:** umbrella
 **Hardware:** none
@@ -63,9 +63,21 @@ decision 21's build history already do. That is new prose in this exact file, no
 
 ## Done when
 
-- [ ] `install.md` back under 90% of its 12,288 B cap, by shortening or moving, not by deleting a
+- [x] `install.md` back under 90% of its 12,288 B cap, by shortening or moving, not by deleting a
       live decision, its reversal condition, or a rejected-alternative clause.
-- [ ] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
-- [ ] No decision's number, claim, or reversal condition disappears — retire per `DOC-CONVENTIONS.md`
+- [x] `scripts/check-duplication.py embarch-umbrella` checked before any content is moved elsewhere.
+- [x] No decision's number, claim, or reversal condition disappears — retire per `DOC-CONVENTIONS.md`
       if one stops describing anything true; never delete outright.
-- [ ] Gate green, `changelog.d/umbrella-*` fragment dropped.
+- [x] Gate green, `changelog.d/umbrella-*` fragment dropped.
+
+## Outcome (2026-10-26)
+
+**Shipped:** verbatim split. Decisions 21 (`setup --dry-run`) and 25 (`setup --uninstall`) moved to new `decisions/setup-reversal.md`, linked from `decisions.md`; install.md now holds 3, 4, 5, 14, 28, 54. `--pressure` before: 12,071 B (98.2%), 217 B left. After: install.md 9,660 B (78.6%), setup-reversal.md 2,734 B. Nothing deleted, so no squeeze list is owed. Decision 28 untouched.
+
+**Why a split, not a shortening** (`DOC-COMPACTION.md` §2, `DOC-BUDGET.md` split-first): 21 and 25 are the real seam (what setup shows first, and how it is reversed), and no decision was near the 4 KB cap. Decision 14 was not moved because embarch-api and embarch-ui docs, outside this scope, cite `install.md` for it. No inbound link to 21 or 25 existed.
+
+**Duplication check:** `check-duplication.py embarch-umbrella` run before moving; nothing moved elsewhere.
+
+**Human question** (can `spec.md` alone answer what someone needs to work on this component today?): yes. Nothing in spec.md changed; no decision text was altered, only relocated within the same sub-project, and numbers resolve via the routing table.
+
+**In flux:** decision 28's Windows verification sentence will land in install.md, which now has ~2.6 KB of room for it.
