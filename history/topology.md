@@ -8,6 +8,7 @@
 - Probe moved to a board of another chip family is refused by name before any attach (validate_serial_for_chip, topology decision 44); Core wiring filed.
 
 ### Changed
+- Decision 36 (a DUT's bootload ports) moved verbatim to topology decisions/bootload-ports.md; link-declares.md out of reserve.
 - Topology CLI guard probes the port named by --core-port; enroll takes bench boards, unenroll takes --probe-serial (topology decision 45).
 
 ### Fixed
