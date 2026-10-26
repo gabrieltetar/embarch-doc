@@ -7,6 +7,9 @@
 ### Added
 - Probe moved to a board of another chip family is refused by name before any attach (validate_serial_for_chip, topology decision 44); Core wiring filed.
 
+### Changed
+- Topology CLI guard probes the port named by --core-port; enroll takes bench boards, unenroll takes --probe-serial (topology decision 45).
+
 ### Fixed
 - Fixed the wire-only build (Upserted re-export gated on hardware) and added hardware::enroll_reporting returning (EnrolledBoard, Upserted); wire-only build named a gate item.
 - A probe moving roles now reports the vacated role and keeps its board type; store writes are temp-file-and-rename, never partial. embarch-topology decisions 42, 43.
