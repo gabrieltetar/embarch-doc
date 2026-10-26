@@ -1,6 +1,6 @@
 # 062 — A direct signal route on a multi-interface USB device resolves to a declared interface or refuses by name, never a silent guess
 
-**State:** open
+**State:** claimed by agent/topology/062-direct-signal-route-declares-its-interface, 2026-10-26 06:43
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-topology findings 1, 4 and 8), verified by Opus against embarch-topology@93a83d9c
 **Scope:** topology
 **Hardware:** none — `port::select` is pure over an enumerated port list, and every case below is a fixture of `SerialPortInfo` rows, which is how the existing `port.rs`/`signal.rs` tests are built. Nothing needs a board to finish. Whether a direct route on a two-interface device exists on this bench today is not known (`open.md`), and this task does not need it to.
@@ -9,6 +9,12 @@
 ## Supervisor note, 2026-10-26 06:12 leg — not dispatched, and why
 
 "Breaks them on their next topology bump" (Two costs, below) understates it. `embarch-api` (through `embarch-core-client`), `embarch-core` and `embarch-ui` all path-depend on the `embarch-topology` checkout, so there is no bump: a field added to `Route::Direct` breaks `embarch-api` `src/tools.rs:1342` and `embarch-ui` `src/topology.rs` the moment it lands on `main`, and a new error variant breaks any exhaustive match in `embarch-core`. So the declared-interface half is a cross-repo change (protocol §8), not a worker's. The half that changes no public shape is a worker's: refuse an ambiguous declared-serial match by name with a reason other than "not enumerable", drop the `set-dev-bench-link` advice from the signal path, and stop treating two serial-less same-VID ports as one device. A dispatcher should either send a worker with that narrower scope and an explicit "change no pub type that `embarch-api`, `embarch-core` or `embarch-ui` construct or match", or split the declared-interface half into a `suite` task.
+
+## Dispatch note, 2026-10-26 06:43 leg — dispatched with the narrower scope
+
+**Your scope is the half that changes no public shape**, per the note above: (1) on the declared-serial path, a match on several ports is refused by name (each candidate port and its interface) instead of guessed, with a reason distinct from "not enumerable", and Core's exchange port wait must not spend its budget on it; (2) no message on a signal's resolution path recommends `set-dev-bench-link`; (3) two same-VID ports that both report no USB serial are not treated as one device, or a decision records why they are. **Change no public type that `embarch-api`, `embarch-core` or `embarch-ui` construct or match**: no new field on `Route::Direct`/`SignalRoute`, no new variant in an enum any of them matches exhaustively, no changed signature they call. A new public *type* (for example an ambiguity error distinct from `SignalMismatch`, so Core's `downcast_ref::<SignalMismatch>` wait does not catch it) is additive and allowed; grep all three consumers before relying on that, and name what you checked in your report. If (1) cannot be done without a breaking change, stop at what can and file the rest as a drop. **The declared interface on a direct route is out of scope** (a §8 cross-repo pass): leave its `Done when` box unticked and drop `/home/gabriel/Github/embarch/embarch-doc/inbox/suite-direct-route-declared-interface.md` for it, naming the consumer sites. If Core needs a change so the exchange wait stops on the new error, that is a separate `core` drop, as the task already says.
+
+**Doc reserve in your scope:** `embarch-topology/decisions/enrollment.md` 12,122 / 12,288 B (**166 B left**), parked under `tasks/topology/060` (blocked, `In flux: yes` for that file). Do not write into it; decision 18 lives in `decisions/links.md`, which is not in reserve, and so does `link-declares.md` (9,676 B). If your work pushes any other file into reserve, file `tasks/topology/<NNN>-compact-topology.md` in the same commit.
 
 ## What
 
