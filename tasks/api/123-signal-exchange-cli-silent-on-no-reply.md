@@ -19,8 +19,12 @@ Most field scripts (109 of 146 calls) wrapped the call as `signal-exchange ... 2
 
 ## Done when
 
-- [ ] A CLI test against the mock Core reproduces: `until` not seen with bytes, zero bytes, `truncated`; each exits with its documented code and stderr line, and a complete reply still exits 0 with stdout unchanged.
-- [ ] `--clean` output matches the atlas `clean()` on the same fixtures (echo found, echo missing, prompt at the end, cursor-move escapes).
-- [ ] `--json` output is unchanged apart from any new Core fields passed through.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A CLI test against the mock Core reproduces: `until` not seen with bytes, zero bytes, `truncated`; each exits with its documented code and stderr line, and a complete reply still exits 0 with stdout unchanged.
+- [x] `--clean` output matches the atlas `clean()` on the same fixtures (echo found, echo missing, prompt at the end, cursor-move escapes).
+- [x] `--json` output is unchanged apart from any new Core fields passed through.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done
+
+Exit codes 3 (until not seen), 4 (zero bytes), 5 (truncated) in `src/cli.rs`; `--clean` is a Rust port of the atlas `live.clean()` (same five fixtures, checked against the Python output). Tests: `tests/signal_exchange_cli.rs` (mock Core) and a unit test in `cli.rs`. Under `--json` the stdout is unchanged and the exit code and stderr line still apply. No `embarch-core-client` change. Doc: decision 82 amended, `interfaces/tools-topology.md`, `interfaces/tools.md`. `--clean` takes the prompt from `--until` (the atlas reads it from project config); with no `--until` no prompt is dropped. No new `features.d` row (no capability changed maturity).

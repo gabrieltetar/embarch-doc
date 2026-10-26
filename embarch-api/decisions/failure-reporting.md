@@ -30,3 +30,5 @@ Six `#[tool(description = ...)]` strings in `tools.rs` still cited the retired `
 
 **Amended 2026-10-06 (82):** `signal_exchange` and `signal-exchange` take `port_wait_ms` / `--port-wait-ms`, Core's wait for a console port that is gone after a reset (core decision 79, amended); the client adds it to the request's timeout so a long wait is not cut short by `serial_timeout`.
 
+**Amended 2026-10-26 (82):** the CLI no longer exits 0 on a reply that came back wrong. With `--until` never seen: exit 3; zero bytes: 4; `truncated`: 5; one stderr line each ("no `<until>` within N ms: M bytes read, echo seen/not seen"), the reply still on stdout. Without `--until` a deadline stop is normal and exits 0. Chosen because field scripts (109 of 146 calls) discarded stderr and could not tell an empty reply from a command with no output. `--clean` is a Rust port of the atlas `live.clean()`, pinned by the same fixtures; the exit codes are in `--help` and [tools-topology.md](../interfaces/tools-topology.md). This is the one place the CLI has more than one failure code, so decision 50's "single 1" holds for every other subcommand.
+
