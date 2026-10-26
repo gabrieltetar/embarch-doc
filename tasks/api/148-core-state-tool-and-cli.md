@@ -1,6 +1,7 @@
 # 148 — `core_state` MCP tool and CLI, and `mem_read` shows found/left/halt_count
 
-**State:** open
+**State:** claimed by agent/api/148-core-state-tool-and-cli, 2026-10-26 09:03
+**Reserve (2026-10-26 09:03 leg):** `decisions/client-crate.md` 707 B left (`api/140`, open), `open.md` 832 B left (`api/144`, open). If this unit spends either, it files nothing new: those tasks already carry the debt, but say in the task file how much you spent.
 **Source:** core/103 (decision 97): Core ships `POST /live/core-state {role, halt?, samples?}` and adds `found`, `left`, `halt_count` to `/live/mem-read`; the MCP `mem_read` tool returns Core's JSON raw (`embarch-api/src/tools.rs:1401-1414`) where `halted: false` read as "running". Filed from `inbox/api-core-state-tool-and-cli.md` by the 2026-10-26 08:09 leg, in core/103's fold.
 **Scope:** api
 **Hardware:** none — a client call and tool over a Core route, testable against a stub.
