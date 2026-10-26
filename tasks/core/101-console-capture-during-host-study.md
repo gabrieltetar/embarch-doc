@@ -1,6 +1,8 @@
 # 101 — Capture both PD stacks' consoles for a whole host study while its steps write to them
 
-**State:** open
+**State:** claimed by agent/core/101-console-capture-during-host-study, 2026-10-26 09:03
+**Reserve (2026-10-26 09:03 leg):** `open.md` **50 B left**, `spec.md` 474 B left, `decisions/probes.md` 1,025 B left, all three filed against `core/112` (blocked, `In flux: yes`). Do not grow `open.md` or `spec.md`; if you must, compact that file in this unit, carrying `core/112`'s `Must not delete:` list and closing only that file's item there.
+**Dispatch note:** two boxes below are not a worker's. The CY4500 decision needs the analyzer's capture format confirmed on the analyzer, which no worker can do: do not decide it by inference; drop an `inbox/` file for it (absolute path `/home/gabriel/Github/embarch/embarch-doc/inbox/`) and leave the box open. The bench check is a hardware debt for the supervisor: write it into this file. Close the task `done` when every other box is ticked.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — every exchange drops what the console printed since the last one (`discard_pending`, `embarch-core/src/exchange.rs:223`), and a listen lasts at most 10 s. The field scripts listened in 42 windows of 1.5 to 6 s. The 8-Hard-Reset count (56 s, two consoles) bypassed Core with two PowerShell readers, and 44 Bash calls opened COM ports directly
 **Scope:** core
 **Hardware:** verify-only
