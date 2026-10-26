@@ -1,6 +1,6 @@
 # 113 — `embarch-api/open.md` is in reserve after task 109's `build_dir_name` bullet
 
-**State:** claimed by agent/api/113-compact-api-open, 2026-10-26 00:07
+**State:** done — `agent/api/113-compact-api-open`, 2026-10-26
 **Source:** `api/109`'s new Structural-limits bullet (`build_dir_name` names only the default
 combination) put this file into its reserve band; `DOC-COMPACTION.md` §2
 **Scope:** api
@@ -40,8 +40,14 @@ by topic).
 
 ## Done when
 
-- [ ] `embarch-api/open.md` is back under its reserve band, its "must not delete" facts intact —
+- [x] `embarch-api/open.md` is back under its reserve band, its "must not delete" facts intact —
       a topical split (mirroring how `decisions/*.md` is organized) is one honest way to do it, not
       the only one.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment.
+
+## Result
+
+`open.md` 4714 -> 3780 B (floor 3891). Deleted five answered items; facts with no other home moved first: `init` never writes `serial_port` into decision 70 (`decisions/hardware-selection.md`); config fragments/hot-reload/no project-adding tool into `interfaces/config.md`; the inbound-trust bullet was already in `decisions/shape.md`, so `spec/implementation.md`'s pointer now targets that. "Owed decisions: none" removed (answered by decision 70). All three "Must not delete" items intact.
+
+**Human question** (`spec.md` alone answers what someone needs to work today?): yes. Nothing deleted was a live question; every cut either duplicated a decision or moved verbatim in substance to a file that loads with its topic.

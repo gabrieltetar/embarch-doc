@@ -13,22 +13,14 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`artifact_path_for_core` is still tolerated at load, and now only because configs on disk may still carry it.** `embarch-umbrella` stopped scaffolding it 2026-09-13, so the installed-base argument that earned the exception no longer has a writer behind it. **What closes this: one grep of the real configs** — none carrying the key means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`. Not checkable from inside the suite: [decisions](decisions/config-retirement.md) 64
 
-## Owed decisions
-
-None currently — the one open here (`list_serial_ports`, task `041`) is now [decisions/hardware-selection.md](decisions/hardware-selection.md) 70 (`tasks/api/063`).
-
 ## Structural limits
 
 - **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
-- **Inbound trust is "whoever can spawn the process"** ([spec.md](spec.md) §6) — fine while spawned interactively.
 - **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/study-reads.md) 39): a remote Core can't see local paths.
 - **`list-targets`' `build_dir_name` names only the default combination** ([decisions/target-json.md](decisions/target-json.md) 77) — a directory built with a non-default snippet selection or `extra_args` is exactly as current and gets no name here; only its own `target.json` (decision 69) can attribute it. Closes `embarch-umbrella` decision 26's stated ask for this repo; that decision's own `--prune` still has to fold `target.json` in for anything beyond the default build.
 
 ## Settled-deferred
 
 - **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
-- **Config fragments/`include`** (`[core]` is 3 lines) **and hot-reload** (loads once; an edit needs a reconnect).
 - **`serial_log` stays one-shot** — Core's endpoint is bounded; streaming needs Core to grow one, **not this crate's call**.
-- **`init` never writes `serial_port`** — deliberate, not unfinished: `embarch-umbrella` decision 55 says a port is OS-assigned and can renumber with no cable move, so scaffolding one would go stale on a schedule `init` can't predict. The remedy already ships: [`list_serial_ports`/`serial_log`](decisions/hardware-selection.md) 70 resolves a port per call.
-- **Adding projects stays manual TOML editing** — no mutation tool, the list barely churns; `zephyr-west` needs none for board, variant, revision, app.
 - **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit a paragraph from the reserve line, invisible to `check-doc-size.py` until crossed; the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which crossed.
