@@ -6,6 +6,9 @@
 
 ### Added
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
+
+### Fixed
+- Sample CSV rows blank a step name with a comma, quote or line break; build_study refuses one; an empty record-check magic is refused and zero records is never all_verified.
 ## 2026-09
 
 ### Added
