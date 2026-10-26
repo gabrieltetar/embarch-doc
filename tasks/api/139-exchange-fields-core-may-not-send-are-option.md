@@ -1,6 +1,6 @@
 # 139 — The exchange fields an older Core does not send are `Option`, per decision 58
 
-**State:** open
+**State:** claimed by agent/api/139-exchange-fields-option, 2026-10-26 01:45
 **Source:** the `api/138` reviewer's below-bar note, 2026-10-26, which the supervisor read as a real contradiction of decision 58 (`embarch-api/decisions/client-crate.md`) and filed rather than reverted.
 **Scope:** api
 **Hardware:** none
