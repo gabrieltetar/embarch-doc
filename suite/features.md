@@ -14,6 +14,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `GET /status` — connected probes, plus `study_designer_schema_version`, `core_version`, and `binary_sha256` (a cached self-hash) | Shipped | unit, hw | §4, 13, 68 |
 | `POST /flash` — flash from a local path | Shipped | hw | §4 |
+| Requested-chip gate: `flash`/`reset`/mem-read refuse a chip differing from the probe's enrolled one (`409 chip-mismatch`) before any attach | Shipped — host-tested on the mapping only; never met a moved probe | host | 89 |
 | `POST /reset` | Shipped | hw | §4 |
 | `GET /serial-log` — bounded capture | Shipped | hw | §4 |
 | `GET /dev-bench/port` — link auto-detection by vendor VID plus product/serial/interface, and its CLI | Shipped | hw | 21 |

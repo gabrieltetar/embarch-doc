@@ -11,6 +11,7 @@
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
 ### Fixed
+- `flash`, `reset` and memory reads refuse a requested chip that differs from the probe's enrolled chip with a 409 before any attach (decision 89).
 - Core: a failed raw or rendered append marks a stream tap truncated; arrival sidecars always stamp Core's clock and a Text tap's offsets are rebased after rotation (decision 88).
 - Core: POST /study refuses an empty record magic (decision 86); the trace CSV blanks a step name with CR/LF too, via the crate's csv_cell_ok.
 - Dev-bench identity gate now takes hw_lock; GET /dev-bench/hello holds study_lock during its handshake (409 vs POST /study).
