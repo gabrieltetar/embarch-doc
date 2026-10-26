@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `POST /host-studies` accepts `Text` signal taps: a tapped console opens once for the whole study, exchanges write through it, and each line is stored with Core's receive time. Decision 98.
 - Core: POST /live/core-state reads DHCSR and PC samples without halting, or registers under one halt; mem-read gains found/left/halt_count (decision 97).
 - Core runs host studies: `POST /host-studies` executes Exchange and Wait steps, teardown on every exit, `POST /study/{id}/cancel` (core decision 95).
 - Capture reads stamp each line with its receive time (`lines`, `started_utc_ms`); exchange replies carry `started_utc_ms`. Additive; decision 94.

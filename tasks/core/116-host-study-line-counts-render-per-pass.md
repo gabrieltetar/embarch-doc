@@ -1,6 +1,7 @@
 # 116 — Render per-pass line counts for host studies from the raw tap bytes on disk
 
 **State:** open — unparked by the 2026-10-26 08:09 leg: `core/102` landed (`embarch-core` decision 95) and shipped none of the first box. Read the 08:09 note below before starting.
+**Update, 2026-10-26 09:03 leg:** the `core/101` dependency the 08:09 note names **has landed** (`embarch-core@0ba23bf`, decision 98). A host study now accepts `Text` + `WholeStudy` direct-signal taps and writes `streams/<name>.txt` verbatim plus a per-line `.arrival.csv` on one study-wide clock, so the "if `core/101` has not landed" branch of that note no longer applies: box 2 is in scope. `line_counts` is still refused at submission until this task lifts it.
 **Source:** study-designer/071 (decision 86 in `embarch-study-designer/decisions/host-repeat.md`): `Repeat` and `LineCount` types shipped in `embarch-study-designer`, validated, with no consumer yet. Field use on a USB PD charger board: 34 of 96 bench tests ended in a `grep -c` over a raw console dump. Filed from `inbox/core-host-study-line-count-render.md` by the 2026-10-26 leg.
 **Scope:** core
 **Hardware:** none
