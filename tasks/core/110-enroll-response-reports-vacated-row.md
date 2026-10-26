@@ -1,13 +1,20 @@
 # 110 — Core's POST /probes/enroll reports the row a probe vacated
 
-**State:** open — reclaimed 2026-10-26: its first worker stopped on the topology gap below, which
-`topology/065` closed (`embarch-topology` `7c1ef59`, `hardware::enroll_reporting` now public). The
-`## Blocked` section is history; its "Ready to apply" paragraph is the plan. The worker's scratch
-patch is not in git, so rebuild the change from that paragraph.
+**State:** claimed by agent/core/110-enroll-response-reports-vacated-row, 2026-10-26 03:24
 **Source:** embarch-topology task 063 (decision 42), landed as topology `6732ad6`
 **Scope:** core
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, second dispatch (2026-10-26 03:24) — read this one first
+
+Reclaimed after its first worker stopped on the topology gap in `## Blocked` below, which
+`topology/065` closed: `embarch-topology` `7c1ef59` makes `hardware::enroll_reporting` public
+beside `hardware::enroll`, and gates the `Upserted` re-export on `hardware` (Core builds with that
+feature, so it sees both). The `## Blocked` section is history; its "Ready to apply" paragraph is
+the plan, and its wire check stands. That worker's scratch patch is not in git, so rebuild the
+change from that paragraph. Check that decision 87 is still the next free number in
+`embarch-core/decisions/` before using it. Everything in the note below still holds.
 
 ## Dispatch note, 2026-10-26 leg
 
