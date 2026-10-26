@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Changed
+- The reference decoder refuses a stream whose layout is not 3 and a layout-disagreeing manifest; README/Kconfig stop denying real-UART runs ([27](../embarch-outpost/decisions/layout.md)).
 ## 2026-09
 
 ### Added
