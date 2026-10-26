@@ -1,6 +1,7 @@
 # 083 — Live Study renders only the study and the project that are open now
 
-**State:** open
+**State:** claimed by agent/ui/083-live-study-renders-only-the-open-study-and-project, 2026-10-26 03:42
+**Doc reserve (dispatch, 2026-10-26):** `embarch-ui/spec.md` 9,099 / 10,240 B (1,141 B left, filed against `tasks/ui/089`, open) and `embarch-ui/open.md` 4,366 / 5,120 B (754 B left, filed against `tasks/ui/088`, blocked). The task's own pointers to `ui/078`/`ui/074` are stale; those two are the live filings. Prefer `decisions/live-study.md`, as the task says; if you must write either reserved file, keep it to a clause. `ui/082` (landed `5928bdb`) changed the same Live Study path: build on it.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 3 and 13), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
