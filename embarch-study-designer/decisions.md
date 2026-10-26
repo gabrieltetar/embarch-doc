@@ -19,6 +19,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows, vendor identities | 31, 32, 36, 41, 53, 83 |
 | [GATT extraction and naming](decisions/gatt-extract.md) — reading a repo, and naming a characteristic | 33, 56, 57, 78 |
+| [What the extractor reads](decisions/gatt-extract-scan.md) — comments are not definitions | 85 |
 | [BLE link control](decisions/ble.md) — naming the DUT, elevating, unbonding | 43, 44, 50 |
 | [What a study declares](decisions/declares.md) — firmware versions, and how each is verified | 40, 74 |
 | [What a study builds](decisions/builds.md) — a study's own build spec, and the outpost mode it requires | 77 |

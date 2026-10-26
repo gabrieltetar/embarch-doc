@@ -1,6 +1,6 @@
 # 074 — The GATT extractor ignores definitions inside C comments
 
-**State:** claimed by agent/study-designer/074-gatt-extractor-reads-comments, 2026-10-26 05:14
+**State:** done — agent/study-designer/074-gatt-extractor-reads-comments, 2026-10-26
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer finding 7), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** none
@@ -31,8 +31,8 @@ When done, the extractor reads each file as the compiler does with respect to co
 
 ## Done when
 
-- [ ] Fixture tests, each with a live definition plus a commented copy in `//` and in `/* */` form: a scalar constant resolves to the live value. A `_UUID_VAL` macro resolves. A commented-out `BT_GATT_SERVICE_DEFINE` block contributes no service. A comment mentioning the macro name with an unbalanced paren does not fail the scan.
-- [ ] A `//` or `/*` inside a string literal does not start a comment. A test covers it.
-- [ ] The existing extractor tests and the firmware test vectors pass unchanged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] Fixture tests, each with a live definition plus a commented copy in `//` and in `/* */` form: a scalar constant resolves to the live value. A `_UUID_VAL` macro resolves. A commented-out `BT_GATT_SERVICE_DEFINE` block contributes no service. A comment mentioning the macro name with an unbalanced paren does not fail the scan.
+- [x] A `//` or `/*` inside a string literal does not start a comment. A test covers it.
+- [x] The existing extractor tests and the firmware test vectors pass unchanged.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
