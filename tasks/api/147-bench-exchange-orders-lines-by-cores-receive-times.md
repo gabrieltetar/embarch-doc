@@ -1,6 +1,6 @@
 # 147 — `bench_exchange` orders its timeline by Core's per-line receive times when Core sends them
 
-**State:** claimed by agent/api/147-bench-exchange-core-rx-times, 2026-10-26 07:22
+**State:** done on agent/api/147-bench-exchange-core-rx-times, 2026-10-26
 **Source:** the 2026-10-26 leg, landing `core/115` (`embarch-core@731e875`, decision 94): capture `GET`/`DELETE` now return `started_utc_ms` and `lines: [{offset, rx_ms}]` (each line's first-byte time), and the exchange reply returns `started_utc_ms`. `embarch-api` decision 89 (`decisions/bench-exchange.md`) stamps each line with the client poll that first saw it because Core sent no per-line time; its own Least-sure line was whether 100 ms polling orders two consoles correctly.
 **Scope:** api
 **Hardware:** verify-only — host-testable against a scripted Core; the order check on two real consoles is the debt `api/131` already recorded.
@@ -33,7 +33,13 @@ Core is the only place the real arrival time exists, and it now serves it; until
 
 ## Done when
 
-- [ ] The client decodes the three new fields as optional; an old-Core body decodes to `None`, and a test proves it.
-- [ ] Against a scripted Core sending `lines`, two lines on two consoles 30 ms apart inside one poll window come out in wire order; against one that does not, the poll-time fallback still works and `time_basis` says so.
-- [ ] Decision 89 amended (or a new decision) for the new basis; gate green (`../../embarch-fleet/protocol.md` §10); `embarch-ui` still builds against the crate.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] The client decodes the three new fields as optional; an old-Core body decodes to `None`, and a test proves it.
+- [x] Against a scripted Core sending `lines`, two lines on two consoles 30 ms apart inside one poll window come out in wire order; against one that does not, the poll-time fallback still works and `time_basis` says so.
+- [x] Decision 89 amended (or a new decision) for the new basis; gate green (`../../embarch-fleet/protocol.md` §10); `embarch-ui` still builds against the crate.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+Client: `SignalCaptureResponse.started_utc_ms`/`lines` (`Option<Vec<CaptureLine>>`) and `SignalExchangeResponse.started_utc_ms`, all `Option`+`serde(default)`; test proves old-Core bodies read `None`. `bench_exchange` anchors Core's UTC clock at the earliest capture start, pairs `lines` entries with raw lines in order, places unlistened replies at `started_utc_ms` (never before their write), and `time_basis` is now built per signal. Decision 89 amended. `embarch-ui` constructs neither struct literally (grep), so the additive fields do not touch it; ui was not built here.
+
+**Hardware-verification debt:** none new; the two-real-consoles order check stays `api/131`'s debt, and the anchor error (one capture-start latency) and cross-capture wall-clock alignment (`embarch-core` 94, assumed) are unmeasured.

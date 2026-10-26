@@ -1,1 +1,1 @@
-| `bench_exchange` / `bench-exchange` — one call drives a console sequence, records other consoles, returns one filtered timeline (client-clock times), named snapshots from config | Shipped — mock-HTTP tested only; **no two-console bench run, no replay yet** | unit | 89 |
+| `bench_exchange` / `bench-exchange` — one call drives a console sequence, records other consoles, returns one filtered timeline (Core receive times when sent, else poll times), named snapshots from config | Shipped — mock-HTTP tested only; **no two-console bench run, no replay yet** | unit | 89 |
