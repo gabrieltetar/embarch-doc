@@ -10,7 +10,7 @@ Cite them as `embarch-desk decision N`.
 
 | Group | Decisions | What it settles |
 |---|---|---|
-| [decisions/cockpit.md](decisions/cockpit.md) | 1–13, 57, 58 | A work cockpit for any user; the Desk tab, cards and the work item; asking a session for its item; repos and PRs; time captured, sent on ✓, idle included, an ignore list, the note written live and polished once; the hand of waiting tiles, a covered tile closing itself, folding a tile into a later one |
+| [decisions/cockpit.md](decisions/cockpit.md) | 1–13, 57, 58, 60 | A work cockpit for any user; the Desk tab, cards and the work item; asking a session for its item; repos and PRs; time captured, sent on ✓, idle included, an ignore list, the note written live and polished once; the hand of waiting tiles, a covered tile closing itself, folding a tile into a later one |
 | [decisions/agents.md](decisions/agents.md) | 14–21, 29–32, 56, 59 | What each connector does, status moves vs approved prose, pasted tokens, where tokens live; the plugin, `claude -p` stripped, the desk's MCP server, v1 whole; the one access point to Linear and Harvest; the reference index `embarch-chat` mirrors; connector reads that page to a cap and say when it cut |
 | [decisions/built.md](decisions/built.md) | 22–28 | Commits and bench activity from PostToolUse, the 8-hour gap, one state file, *Open in VS Code*, branch claims, the systemd service, the UI proxy |
 | [decisions/desks.md](decisions/desks.md) | 33–42 | One desk per project, one open; Linear project or team, folders, the switch question, the bench, Harvest defaults, a standalone item's desk, the day list, Harvest's entries joined |

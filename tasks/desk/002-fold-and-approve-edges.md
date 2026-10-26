@@ -1,6 +1,6 @@
 # 002 — Folding refuses an earlier or invalid day, ✓ keeps the folded lines, and a folded day reports what it carried
 
-**State:** claimed by agent/desk/002-fold-and-approve-edges, 2026-10-26 00:40
+**State:** done, agent/desk/002-fold-and-approve-edges, 2026-10-26
 **Reserve, for the worker:** no `embarch-desk` doc is in reserve today.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk findings 2, 4 and 6), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
@@ -25,8 +25,12 @@ When done, the server refuses a fold the decision does not allow, the ✓ fallba
 
 ## Done when
 
-- [ ] Folding into a date earlier than or equal to the source, or into a string that is not `YYYY-MM-DD`, answers 400 and changes nothing. A tile id whose date part is not a date is refused by every tile route. Tests cover each.
-- [ ] ✓ on a fold target with an empty note sends a note containing the folded tiles' lines. A test covers a target with no lines of its own.
-- [ ] `GET /day` for a folded source day reports, for that row, the hours it carried into its target, and never a value with that day's Harvest hours subtracted twice. A test pins it with 3 h captured and 0.5 h logged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated (`interfaces.md` for the fold refusal), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] Folding into a date earlier than or equal to the source, or into a string that is not `YYYY-MM-DD`, answers 400 and changes nothing. A tile id whose date part is not a date is refused by every tile route. Tests cover each.
+- [x] ✓ on a fold target with an empty note sends a note containing the folded tiles' lines. A test covers a target with no lines of its own.
+- [x] `GET /day` for a folded source day reports, for that row, the hours it carried into its target, and never a value with that day's Harvest hours subtracted twice. A test pins it with 3 h captured and 0.5 h logged.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated (`interfaces.md` for the fold refusal), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Done
+
+Decision 60. Server: `store::is_date`, `fold_tile` refuses non-date or not-later `into`, `split_tile_id` refuses a non-date, `approve_fallback_note` includes folded lines, `tile_json` does not re-subtract Harvest on a Folded tile. Three tests in `server.rs`.
