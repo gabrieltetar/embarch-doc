@@ -19,7 +19,7 @@ Decision 46 refuses instead of guessing; the refusal must reach an agent legibly
 
 ## Done when
 
-- [ ] A test pins that `resolve_port_waiting` does not wait on `SignalAmbiguous`.
-- [ ] Each of the four callers reports it with its candidate ports.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A test pins that `resolve_port_waiting` does not wait on `SignalAmbiguous`.
+- [x] Each of the four callers reports it with its candidate ports.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

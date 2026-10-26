@@ -26,7 +26,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57, 87 | 8.8 KB |
 | [What a role is made of](decisions/roles.md) | 75, 76, 83 | 4.1 KB |
 | [Bootloading over MCUboot serial recovery](decisions/bootload.md) | 77, 78 | 4.5 KB |
-| [Writing to a declared signal](decisions/signal-exchange.md) | 79, 85 | 9.1 KB |
+| [Writing to a declared signal](decisions/signal-exchange.md) | 79, 85, 96 | 9.6 KB |
 | [Capturing a signal in the background](decisions/signal-capture.md) | 92, 94 | 5.7 KB |
 | [The bench lease](decisions/lease.md) | 93 | 5.5 KB |
 | [Reading a target's memory](decisions/live-read.md) | 81 | 2.1 KB |
