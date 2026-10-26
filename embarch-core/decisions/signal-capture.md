@@ -21,3 +21,15 @@ A USB PD test needs both consoles at once: the bench board driven one command at
 **Not done: one port owner with a study's signal tap.** The two are separate readers today. A capture refuses a port a tap holds, but a study that starts afterwards and names a captured signal is not refused by name; its open fails at the OS. Merging them is `open.md`'s item and the `core` task for console capture during a host study.
 
 **Rejected: `GET` as a long poll.** A wait on the request would put the client's timeout back in the loop; the caller polls with `after`.
+
+### 94 — A capture stamps each line with when its first byte was received, on a UTC clock an exchange reply shares
+
+`bench_exchange` merges two consoles into one timeline, and a capture's `GET` carried only a byte range, so the client stamped a line with the poll that first saw it, a ceiling within its poll interval. Core is where the bytes arrive, so it records the time (api decision 89, `tasks/core/115`).
+
+**Wire, additive.** `GET`/`DELETE /signals/{name}/capture` gain `started_utc_ms` (the capture's start, UTC ms since the Unix epoch) and `lines: [{offset, rx_ms}]`: one entry per line whose **first byte** lies in `[offset, next_offset)`, `offset` absolute in the capture's byte space (the same as `gaps`), `rx_ms` relative to `started_utc_ms`, ascending. `POST` answers the same shape with `lines: []`. `POST /signals/{name}/exchange` gains `started_utc_ms` beside `elapsed_ms`, so a reply spans `[started_utc_ms, started_utc_ms + elapsed_ms]` on the capture's clock. A client that ignores the fields is unaffected.
+
+**Stamped at the first byte, not the newline.** A line is entered when its first byte is appended, so a half-received line is already placed and a slow line carries when it began. Every line is stamped, including the `[embarch: port lost]` and `[embarch: port reopened]` markers; a line's offset is always a byte after a `\n` or 0, so offsets match `text` across a gap.
+
+**Resolution is the read, not the byte.** The time is the capture thread's clock when its `read()` returned the chunk, so lines in one chunk share a time and a line is placed within the port's read latency (a USB-UART bridge's 1 to 16 ms latency timer, assumed, not measured). `rx_ms` is a monotonic `Instant` offset; `started_utc_ms` is wall time sampled once, so within a capture times are exact to the millisecond and across captures they carry the wall clock's own error (assumed small on one host; not measured). Memory: 16 bytes per line, worst case one per byte of `max_bytes` (256 MB at the 16 MiB cap on an all-newline console); reasoned as acceptable, not measured.
+
+**Rejected: timing the newline.** It would order a long line by its end, which is not when its cause happened.

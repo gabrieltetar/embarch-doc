@@ -1,6 +1,6 @@
 # 115 — Stamp each line of a signal capture with its receive time
 
-**State:** claimed by agent/core/115-capture-lines-carry-receive-times, 2026-10-26 06:42
+**State:** done (agent/core/115-capture-lines-carry-receive-times), 2026-10-26
 **Source:** api/131 (decision 89 in `embarch-api/decisions/bench-exchange.md`): `bench_exchange` merges two consoles into one timeline, but `GET /signals/{name}/capture` carries a byte range with `offset`, `next_offset`, `elapsed_ms` and `gaps`, nothing per line, so the client can only stamp a line with the poll that first saw it (a ceiling, within its poll interval, default 100 ms). `tasks/core/101` stamps lines only inside a host-study tap, so it does not cover this. Filed from `inbox/core-capture-line-receive-times.md` by the 2026-10-26 leg.
 **Scope:** core
 **Hardware:** none
@@ -20,7 +20,13 @@ A capture (`embarch-core` decision 92) records, for each line it completes, the 
 
 ## Done when
 
-- [ ] A capture read returns per-line receive times on a clock the exchange reply (`elapsed_ms` start) can also be placed on.
-- [ ] Offsets in `lines` match `text` byte for byte, including across a `gaps` entry.
-- [ ] Test with a scripted port: two lines written 200 ms apart carry receive times 200 ms apart (within a stated tolerance).
-- [ ] `embarch-core` spec/decisions updated; gate green.
+- [x] A capture read returns per-line receive times on a clock the exchange reply (`elapsed_ms` start) can also be placed on.
+- [x] Offsets in `lines` match `text` byte for byte, including across a `gaps` entry.
+- [x] Test with a scripted port: two lines written 200 ms apart carry receive times 200 ms apart (within a stated tolerance).
+- [x] `embarch-core` spec/decisions updated; gate green.
+
+## Shipped
+
+Decision 94 (`embarch-core/decisions/signal-capture.md`). Capture `GET`/`DELETE` gain `started_utc_ms` and `lines: [{offset, rx_ms}]` (line first-byte times); exchange reply gains `started_utc_ms`. Test `lines_carry_receive_times_and_offsets_match_text_across_a_gap` (scripted port, 200 ms apart, tolerance 150..600 ms). No reserve file touched, nothing cut.
+
+**Debt:** no real port has produced these times; the read-latency and cross-capture wall-clock error are assumed. Native Windows build not run.
