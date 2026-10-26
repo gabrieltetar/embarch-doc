@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Fixed
+- Fixed the wire-only build (Upserted re-export gated on hardware) and added hardware::enroll_reporting returning (EnrolledBoard, Upserted); wire-only build named a gate item.
 - A probe moving roles now reports the vacated role and keeps its board type; store writes are temp-file-and-rename, never partial. embarch-topology decisions 42, 43.
 ## 2026-09
 

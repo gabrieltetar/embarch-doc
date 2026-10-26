@@ -1,6 +1,9 @@
 # 110 — Core's POST /probes/enroll reports the row a probe vacated
 
-**State:** claimed by agent/core/110-enroll-response-reports-vacated-row, 2026-10-26 02:57
+**State:** open — reclaimed 2026-10-26: its first worker stopped on the topology gap below, which
+`topology/065` closed (`embarch-topology` `7c1ef59`, `hardware::enroll_reporting` now public). The
+`## Blocked` section is history; its "Ready to apply" paragraph is the plan. The worker's scratch
+patch is not in git, so rebuild the change from that paragraph.
 **Source:** embarch-topology task 063 (decision 42), landed as topology `6732ad6`
 **Scope:** core
 **Hardware:** none
