@@ -1,6 +1,7 @@
 # 086 — The Time chart says when a sample strip or a mark lane is capped
 
-**State:** open
+**State:** claimed by agent/ui/086-time-chart-says-when-a-lane-is-capped, 2026-10-26 09:03
+**Reserve (2026-10-26 09:03 leg):** `open.md` 754 B left (`ui/088`, blocked, `In flux: yes`). `spec.md` is out of reserve since `ui/089`; the last box's `ui/078`/`ui/074` pointers are stale. Prefer `decisions/time-chart.md` or `spec/capture-rendering.md`; if you grow `open.md`, compact it in this unit.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui findings 6 and 15), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
