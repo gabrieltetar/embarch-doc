@@ -6,6 +6,9 @@
 
 ### Changed
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
+
+### Fixed
+- Saved-study write-back stays in the run's repo, an unreadable taps sidecar refuses the load, and .eap delete scans every declared block (ui/084).
 ## 2026-09
 
 ### Added
