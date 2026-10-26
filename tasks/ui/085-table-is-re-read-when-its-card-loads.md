@@ -1,10 +1,14 @@
 # 085 — A tap's table is re-read when its card loads, so the post-run re-read is not a frozen mid-run snapshot
 
-**State:** open
+**State:** claimed by agent/ui/085-table-is-re-read-when-its-card-loads, 2026-10-26 06:44
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-ui finding 7), verified by Opus against embarch-ui@aa5ffdaa
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 06:44 leg
+
+**Doc reserve in your scope** (the last `Done when` box names `tasks/ui/078`/`074`; both are retired, these are the live debts): `embarch-ui/spec.md` 9,099 / 10,240 B (1,141 B left, filed `tasks/ui/089`, open, `In flux: no`) and `embarch-ui/open.md` 4,366 / 5,120 B (754 B left, parked under `tasks/ui/088`, blocked). Both are filed, so you owe no new compaction task unless a third file enters reserve; if you add to `open.md`, keep it to a line, or compact that file in this unit without shortening any live question. Line numbers in `## What` are from `embarch-ui@aa5ffdaa`; re-find them. **Browser check:** start your own geckodriver and UI on scratch ports you pick (not 4444, 4898 or 4933; a geckodriver on 4444, PID 580339, is not the fleet's and must be left alone), drive against `stub_core.py` only, and stop what you started by PID.
 
 ## What
 
