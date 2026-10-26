@@ -1,6 +1,7 @@
 # 075 — A Notify or Indicate row built in the UI waits for its notification instead of timing out at once
 
-**State:** open
+**State:** claimed by agent/study-designer/075-notify-wait-budget, 2026-10-26 04:13
+**Dispatch note (2026-10-26):** `embarch-study-designer/open.md` is in reserve at 4,473 / 5,120 B (647 B left), filed against `tasks/study-designer/026` (blocked); put the meaning of the operation's `timeout_ms` in `interfaces/types.md` and a decision, not `open.md`. This is a shared crate that `embarch-core`, `embarch-api` and `embarch-ui` build against: keep its public API source-compatible. Before making `Notify`/`Indicate { timeout_ms: 0 }` a validation refusal, grep the sibling repos read-only for committed studies, fixtures or tests carrying one, and name every hit in this file; I run the consumers' tests against your branch before landing it.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-study-designer finding 1), verified by Opus against embarch-study-designer@b9a2d5df
 **Scope:** study-designer
 **Hardware:** verify-only
