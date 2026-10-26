@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- api: signal-exchange exits 3 (--until never seen), 4 (zero bytes) or 5 (truncated) with a stderr line; new --clean drops escapes, echo and prompt. Decision 82.
 - Flash results carry `erased`, the ranges Core blanked; the `erase` description now says it skips option bytes and never chip-erases (core decision 84).
 - `embarch-api/open.md` compacted 4714 to 3780 B: answered bullets deleted, their facts homed in `interfaces/config.md` and decision 70.
 
