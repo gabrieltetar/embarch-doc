@@ -1,6 +1,6 @@
 # 066 — `decisions/links.md` is in reserve
 
-**State:** blocked — until the `suite` drop `suite-direct-route-declared-interface` (filed by topology/062) lands, because it amends decision 46 in this same file.
+**State:** blocked — until `tasks/suite/052` (filed from topology/062's drop `suite-direct-route-declared-interface`) lands, because it amends decision 46 in this same file. A verbatim split needs no unpark.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/062` adding decision 46 (10,046 -> 12,121 / 12,288 B, 167 B left), 2026-10-26
 **Scope:** topology
 **Hardware:** none
