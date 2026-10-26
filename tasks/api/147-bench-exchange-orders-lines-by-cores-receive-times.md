@@ -1,10 +1,27 @@
 # 147 — `bench_exchange` orders its timeline by Core's per-line receive times when Core sends them
 
-**State:** open
+**State:** claimed by agent/api/147-bench-exchange-core-rx-times, 2026-10-26 07:22
 **Source:** the 2026-10-26 leg, landing `core/115` (`embarch-core@731e875`, decision 94): capture `GET`/`DELETE` now return `started_utc_ms` and `lines: [{offset, rx_ms}]` (each line's first-byte time), and the exchange reply returns `started_utc_ms`. `embarch-api` decision 89 (`decisions/bench-exchange.md`) stamps each line with the client poll that first saw it because Core sent no per-line time; its own Least-sure line was whether 100 ms polling orders two consoles correctly.
 **Scope:** api
 **Hardware:** verify-only — host-testable against a scripted Core; the order check on two real consoles is the debt `api/131` already recorded.
 **Owner:** no
+
+## Dispatch note, 2026-10-26 07:22 leg
+
+**Shared crate.** `embarch-core-client` is path-depended on by `embarch-ui`. Add the three fields as
+`Option` with `#[serde(default)]` (decision 58; `api/146` just applied the same rule to `last_images` at
+`embarch-api@903c76c`), change nothing else public, and grep the `embarch-ui` main checkout (read only)
+for `SignalCaptureResponse` and the exchange response type; the leg builds `ui` against the merge. Core's
+wire shape is `embarch-core` decision 94 (`embarch-doc/embarch-core/decisions/signal-capture.md`); read
+it, do not guess field names, and do not touch `embarch-core`.
+
+**Reserve.** `embarch-api/decisions/client-crate.md` 11,581 / 12,288 B (707 B left, filed under
+`api/140`) and `embarch-api/open.md` 4,297 / 5,120 B (823 B left, filed under `api/144`). Amend decision
+89 in `decisions/bench-exchange.md`, which has room; at most one line in `client-crate.md`.
+
+**Isolation.** Do not reach the owner's live services. No live Core (scripted/mock Core only), no desk on
+`:4891`, no geckodriver on `:4444` and no UI on `:4899`, no real serial ports or debug probes, no owner
+data directories (fresh temp dirs only), and no MCP tools at all. Kill only processes you started, by PID.
 
 ## What
 
