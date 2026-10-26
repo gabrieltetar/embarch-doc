@@ -18,6 +18,12 @@ The test landed an hour ago and runs in every `cargo test`; it is harmless only 
 
 ## Done when
 
-- [ ] No test in `embarch-core` calls `hello_handler` (or anything that resolves the dev-bench port or attaches a probe) on a path that can reach real hardware; the release-on-return property is still tested.
-- [ ] The `AppState` comment states the lock order.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped only if reader-facing.
+- [x] No test in `embarch-core` calls `hello_handler` (or anything that resolves the dev-bench port or attaches a probe) on a path that can reach real hardware; the release-on-return property is still tested.
+- [x] The `AppState` comment states the lock order.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped only if reader-facing.
+
+## Done
+
+`hello_handler` now delegates to `hello_with(state, resolve)` (`src/study.rs`), which takes the port resolver as a parameter; production passes `resolve_dev_bench_port`. The test passes a resolver that panics for the refused-409 case and one that returns an error for the free-link case (asserting the hold is `HELLO_HOLDER` while the resolver runs, `500` returned, hold `None` afterwards), so no test reaches USB enumeration, a probe or a port. `AppState` comment in `src/api.rs` states the `study_lock` then `hw_lock` order. No changelog fragment (not reader-facing). Code commit on `agent/core/108-hello-lock-test-no-bench`.
+
+Debt: native Windows build of `embarch-core` not run (owner's, per the standing rule); the change is a plain refactor with no platform code.
