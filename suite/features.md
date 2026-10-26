@@ -147,6 +147,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | DUT signal links and the dev-bench-bypass route | Shipped — declared, stored and resolved; **validation has no caller and no wire has been read** | unit, hw | 18 |
 | Live push of a mismatch alert | **Retired** — the durable log plus a fixed UI link replaced it | local | 19 |
 | `validate` reports when the live check ran, not just when the board was enrolled — **added as `validated_at_utc_ms`, `confirmed_at_utc_ms` unrenamed and unmoved** | Shipped — `embarch-topology`, `embarch-core`'s `/validate` and all three `embarch-api` mirrors (`embarch-core-client`, the MCP tool, the CLI) carry it; `embarch-umbrella`'s doctor and `embarch-ui`'s Topology tab still read the enrolment field only (`tasks/umbrella/041`, `tasks/ui/020`) | hw | 26 |
+| A probe moved to a board of another chip family is refused by name, before any attach, with the re-enroll fix named | Built host-side — `validate_serial_for_chip` and `check_requested_chip` in `embarch-topology`, unit-tested; **Core does not call it yet**, so a flash still reports the failed identity read (inbox drop for Core) | host | 44 |
 
 ## embarch-umbrella
 

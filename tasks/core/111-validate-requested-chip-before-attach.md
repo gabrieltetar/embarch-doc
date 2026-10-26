@@ -1,0 +1,24 @@
+# 111 — Core calls `validate_serial_for_chip` so a probe moved to another chip family is refused before any attach
+
+**State:** open
+**Source:** `tasks/topology/059` (field use 2026-09-30: an STM32G0B1VE flash through a J-Link still enrolled on an nRF54L15 board was refused as a failed FICR read; six days of bypassing EmbArch). Topology shipped the half it owns (`embarch-topology` `62c188d`, topology decision 44). Filed from the worker's inbox drop `core-validate-requested-chip.md`, 2026-10-26.
+**Scope:** core
+**Hardware:** verify-only
+**Owner:** no
+
+## What
+
+`embarch-topology` now exports `hardware::validate_serial_for_chip(serial, requested_chip) -> Result<Validation>` and the pure `hardware::check_requested_chip(&EnrolledBoard, &str)`. A differing chip (case-insensitive, whitespace-trimmed; empty either side passes) returns a downcastable `hardware::RequestedChipMismatch` before the probe is opened, naming the probe, enrolled role/bench board and chip, the requested chip and the re-enroll call. `validate_serial`/`validate_serial_timed` are unchanged.
+
+Core must call the new function wherever a project's `chip` reaches the gate: `embarch-core/src/hardware.rs:180` and `:391`, `live.rs:93` and `:141` (flash, reset, bootload paths). Use `.board` where the old `validate_serial` result was used. Map `RequestedChipMismatch` to its own refusal (not `"mismatch"`/`"not_attached"`; it is a caller-visible 4xx-style refusal carrying the Display text). Check that a project's `chip` string spells the same as an enrolled `chip` (e.g. `nRF54L15` vs a `_cpuapp` variant); normalise in Core if not (topology decision 44 records this as assumed).
+
+## Why now
+
+Until Core calls it, a moved probe still reads as a failed identity read. Any caller passing a requested chip should get the clear refusal.
+
+## Done when
+
+- [ ] All four call sites pass the project's chip through `validate_serial_for_chip`.
+- [ ] A test: probe enrolled with chip A, flash requested for chip B, refused with the topology text and no attach.
+- [ ] Equal-chip paths and the identity gate's refusals behave as before.
+- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
