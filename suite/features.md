@@ -120,6 +120,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The **outbound** half of the stream pipeline (send a string, confirm the reply) | Proposed — [proposal](../embarch-stream-pipeline-proposal.md) | n/a | — |
 | Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break; plus a guard that fails if a `release.yml` ever appears without `verify-version` | Shipped — green locally; **no staticlib cross-link exists to assert `ffi`**, and the release guard has met no real tag | local | 64, 65 |
 | A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped, **run on hardware** 2026-09-19: a saved study carrying both built, flashed, reset and ran; its declared flags were checked against the firmware's own header | hw | 77 |
+| A host study repeats a block of steps (count or a values sweep) and declares per-tap line counts, with pass markers in the result type; no expected value exists to compare against | Built, **types and validation only, host tests**; Core does not accept `HostStudy` or render counts yet | host | 86 |
 
 ## embarch-outpost
 

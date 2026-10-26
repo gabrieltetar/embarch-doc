@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Host studies can `Repeat` steps (count or values, `{value}`) and declare `LineCount` views over a tap; counts are shown, never compared (decision 86).
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
 
 ### Fixed
