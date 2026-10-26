@@ -1,10 +1,18 @@
 # 099 — A bench lease: one session holds the bench across calls, and other callers are refused by name
 
-**State:** open
+**State:** claimed by agent/core/099-bench-lease, 2026-10-26 06:00
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — two Claude sessions shared one DUT and one bench Nucleo from 2026-10-08; with no lease in Core they used a `mkdir` lock directory: 62 holds by 8 sessions (6.3 h held in all, the longest 1.4 h), one collision waited out in a shell `until mkdir` loop, and the rule had every session reflash its own image after taking the lock because it could not know what the other had left (80 flashes with an explicit image path from 2026-10-08 on)
 **Scope:** core
 **Hardware:** verify-only
 **Owner:** no
+
+## Dispatch note, 2026-10-26 06:00 leg
+
+**Doc reserve in your scope, all parked under `tasks/core/112`** (blocked, `In flux: yes` on decision 89): `embarch-core/open.md` 4,872 / 5,120 B (248 B left), `spec.md` 9,398 / 10,240 B (842 B left), `decisions/probes.md` 11,263 / 12,288 B (1,025 B left). Put the lease decision in a new topic file (for example `decisions/lease.md`), indexed in `decisions.md`; do not grow `probes.md`. If `spec.md` or `open.md` must grow past its cap, compact that file in this unit, keep every item on `core/112`'s `Must not delete:` list readable, and touch nothing about decision 89. If you clear a file's reserve, delete that file from `core/112`'s `Compacts:` line and say so in that task's body.
+
+**The route sweep is strict now** (decision 42, `decisions/route-sweep.md`, tightened by `core/114`): every new route sits on one `.route(` line, goes into `AUTH_CASES`, and moves `DOCUMENTED_ROUTE_COUNT`. Anything added to `GET /status` must be additive, because `embarch-api`'s client decodes it and is not yours to edit. "Every hardware route" includes `/live/mem-read` and the background capture (`/signals/{name}/capture`, decision 92, which never takes `hw_lock`): decide whether starting a capture is a hardware call under the lease, and record why. The client half is an inbox drop at `/home/gabriel/Github/embarch/embarch-doc/inbox/` (absolute path, full task format). Debts for this file: the native Windows build (the owner runs it) and a two-client check against an installed Core.
+
+**Isolation, not optional.** No live Core (never the WSL2 gateway or `:4884`), no desk on `:4891`, no real serial ports or probes, no owner data or config dirs (`/var/lib/embarch`, `~/.config`, `%PROGRAMDATA%`, `~/.claude`): any Core you start for a test runs on a scratch port with a scratch data dir and a scratch token. Never call the `mcp__embarch-api__*`, desk, Slack or Linear tools (they reach live services as the owner), never run `claude -p`, and never `pkill` by name; stop only PIDs you started.
 
 ## What
 
