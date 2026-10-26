@@ -87,7 +87,7 @@ setup and verification, off to the side and out of the runtime path entirely:
   |---|---|---|
   | `embarch-study-designer` | **yes** — `test.yml`, push + PR | yes |
   | `embarch-topology` | **yes** — `test.yml`, push + PR | yes |
-  | `embarch-smp` | **yes** — `test.yml`, push + PR | no — not in the fleet's repo set yet |
+  | `embarch-smp` | **yes** — `test.yml`, push + PR | yes, since `smp/001` (2026-10-26) |
   | `embarch-doc` | **yes** — `docs-ci.yml`, push to `main` + PR | yes (`check-docs.py`) |
   | `embarch-api`, `embarch-core`, `embarch-umbrella` | no — `release.yml` only, tag-triggered; `embarch-umbrella` also has a manual `assemble-suite.yml` | yes |
   | `embarch-ui` | no — no `.github` directory | yes |
