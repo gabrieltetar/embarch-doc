@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- doctor check 13 reads hello's 503/409 as `busy` (Warn, code `busy`, Core's body quoted), not a broken bench; see embarch-umbrella decision 19.
 - embarch-umbrella open.md compacted 4,048 -> 3,672 B; no item retired, hardware debts intact.
 - Split out decision 26 (verbatim) from projects.md into new prune-policy.md, which now carries the --prune deferral.
 - Umbrella decisions 21 and 25 moved verbatim from `decisions/install.md` to `decisions/setup-reversal.md`; install.md 12,071 -> 9,660 B (78.6%).
