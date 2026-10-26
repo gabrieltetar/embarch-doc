@@ -16,8 +16,16 @@ A host that pastes base64 chunks, configuration lines or long commands through t
 
 ## Done when
 
-- [ ] A unit test on `exchange()`'s fake port that accepts at most N bytes per write call, with a delay per call longer than 50 ms, receives the whole line in order.
-- [ ] A test where the fake port never accepts the rest fails the exchange by its deadline and reports the bytes written.
+- [x] A unit test on `exchange()`'s fake port that accepts at most N bytes per write call, with a delay per call longer than 50 ms, receives the whole line in order.
+- [x] A test where the fake port never accepts the rest fails the exchange by its deadline and reports the bytes written.
 - [ ] Bench check: a 960-character line to a Zephyr CDC ACM shell, sent through `POST /signals/{name}/exchange` with the shell echo on, arrives whole: the device's own byte count matches the line length.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md` updated (decision 79 amended for the write deadline), `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md` updated (decision 79 amended for the write deadline), `changelog.d/` fragment dropped.
+
+## Result
+
+Host half shipped in `embarch-core/src/exchange.rs`: `write_with_deadline` (retries throttled writes until `timeout_ms`, fails with bytes-taken count), `run` sets the port timeout to `timeout_ms` for the write then back to 50 ms. Tests: throttled fake (16 bytes/call, 60 ms stall per call) receives all 357 bytes in order; a fake that stops after 4 bytes fails by the deadline with "only 4 of 10 bytes". Decision 79 amended (`decisions/signal-exchange.md`).
+
+### Hardware-verification debt
+
+Not run (no hardware): on the STM32G0 Zephyr CDC ACM board, send a 960-character line through `POST /signals/{name}/exchange` with shell echo on and `timeout_ms` >= 2000; the device's own byte count must equal 960. Also confirm the Windows `serialport` write honours `set_timeout` mid-session. Native Windows build of `embarch-core` not run (owner's debt).
