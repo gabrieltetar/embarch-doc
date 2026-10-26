@@ -1,10 +1,23 @@
 # 004 — A waiting tile from an earlier day proposes its gap against that day's current Harvest entries
 
-**State:** open
+**State:** claimed by agent/desk/004-past-day-harvest-gap, 2026-10-26 03:24
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-desk finding 3), verified by Opus against embarch-desk@880d9707
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-26 03:24
+
+**"Finding 1" below has landed.** `desk/003` (`embarch-desk` `da354f8`, decision 61): ✓ writes
+`Tile.sent_hours` rather than `hours_override`, and `PATCH /tiles/{id}` with `"hours": null` clears
+a typed override. `ui/090` (`embarch-ui` `ca0caf8`) makes the Desk tab send `hours` only when a
+person typed them. So with no typed override, ✓ sends the computed gap, and the interaction the
+last paragraph of `## What` describes now applies only to a typed override: say in decision 41 (or
+a new decision) what ✓ does when the day's gap moved under a typed override. Line numbers below
+predate `desk/003`; re-find them. Nothing in `embarch-desk/` docs is in reserve.
+
+**Never touch the owner's desk service on :4891, its store, or the real Harvest or Linear APIs.**
+Stub Harvest in tests; use your own ports and target dir. The owner rebuilds and deploys the desk.
 
 ## What
 
