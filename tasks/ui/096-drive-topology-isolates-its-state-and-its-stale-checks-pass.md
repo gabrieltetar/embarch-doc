@@ -1,6 +1,6 @@
 # 096 — `drive_topology.py` stops writing the real recent-projects file, and its stale checks pass again
 
-**State:** open
+**State:** claimed by agent/ui/096-drive-topology-isolates-its-state, 2026-10-28 14:37
 **Source:** refill sweep, 2026-10-28 leg — `embarch-ui/open.md`: "`tests/browser/drive_topology.py`
 writes the real `~/.local/share/embarch/ui/recent-projects.json` without `EMBARCH_UI_STATE`; 3 of its
 checks are stale since the Atlas tab."
