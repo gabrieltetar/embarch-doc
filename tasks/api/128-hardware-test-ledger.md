@@ -1,6 +1,7 @@
 # 128 — Keep a hardware test ledger: what ran, on what, and what waits for which hardware
 
-**State:** open
+**State:** claimed by agent/api/128-hardware-test-ledger, 2026-10-28 16:32
+**Dispatch note (supervisor):** `embarch-api/open.md` is in reserve, 473 B left, filed against `tasks/api/144` (open). Keep this unit's open.md change to one short bullet (the ledger's bench debt) or none; if it would cross the cap, compact that file in this unit under `api/144`'s `Must not delete:` list and say so. The bench check in Done when is owed by a leg, not this worker: record it as a hardware-verification debt in this file.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the engineer asked for a test log and a pending list per hardware on 2026-10-12; both were kept by hand (log 55 calls / 30 writes, pending 38 / 20, test plan 80 / 42) across 5–6 sessions in 8 days, alongside a bench-state header restated in each session
 **Scope:** api
 **Hardware:** verify-only
