@@ -1,6 +1,7 @@
 # 100 — A host study's prompt opens a modal on the Live Study tab, answered there
 
-**State:** open
+**State:** claimed by agent/ui/100-host-study-prompt-modal, 2026-10-28 17:25
+**Reserve at dispatch (2026-10-28):** nothing in `embarch-ui` is in reserve. `embarch-ui/open.md` is 3,738/5,120 B, under `ui/088`'s 3,920 B floor since `ui/099` retired a bullet, so `check-doc-size.py --pressure` reports it PAID: close `tasks/ui/088` as done in this unit's doc branch (one line saying `ui/099` paid it). The note below predates that; still do not grow `open.md` past the floor.
 **Source:** `tasks/suite/048` (operator prompt step), whose Core and `embarch-api` halves landed 2026-10-28 as `embarch-core` decision 105 and `embarch-api` decision 99; the UI half is filed here, as `suite/046` filed `ui/098`. The proposal: [embarch-host-study-proposal.md](../../embarch-host-study-proposal.md), owner's choice 4.
 **Scope:** ui
 **Hardware:** none
