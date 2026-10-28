@@ -1,6 +1,6 @@
 # 098 — The Topology tab's signals table and dialog know only a role as a signal's origin
 
-**State:** claimed by agent/ui/098-signals-know-a-board-origin, 2026-10-28 15:36
+**State:** done
 **Source:** `tasks/suite/046`, landed 2026-10-28 by the supervisor: `embarch-topology` decision 48 lets a signal leave a role-less bench board (`SignalLink.origin_board`, its probe serial, with `origin_role` empty). The UI half was left out of that cross-repo pass.
 **Scope:** ui
 **Hardware:** none
@@ -21,7 +21,7 @@ The Core and api halves shipped together; the dialog's re-save is the one path t
 
 ## Done when
 
-- [ ] The signals table names a board origin by its bench board's name.
-- [ ] The dialog offers the enrolled bench boards beside the roles and sends `origin_board` for one; a board-origin signal re-saves unchanged.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] The signals table names a board origin by its bench board's name.
+- [x] The dialog offers the enrolled bench boards beside the roles and sends `origin_board` for one; a board-origin signal re-saves unchanged.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
