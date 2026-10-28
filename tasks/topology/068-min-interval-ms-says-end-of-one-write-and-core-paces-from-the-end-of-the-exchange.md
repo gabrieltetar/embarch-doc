@@ -1,6 +1,7 @@
 # 068 — `min_interval_ms` says "end of one write"; Core paces from the end of the whole exchange
 
-**State:** open
+**State:** claimed by agent/topology/068-min-interval-measurement-point, 2026-10-28 17:25
+**Reserve at dispatch (2026-10-28):** nothing in `embarch-topology` is in reserve.
 **Source:** `suite/049`'s fold (supervisor log, 2026-10-28 16:27, "Least sure about"), the reviewer's note: "pacing is measured from the end of a command's read, so it never undershoots, but topology's `min_interval_ms` doc comment says 'end of one write' (a one-line comment fix nobody has filed)".
 **Scope:** topology
 **Hardware:** none
