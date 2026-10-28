@@ -1,6 +1,6 @@
 # 116 — Render per-pass line counts for host studies from the raw tap bytes on disk
 
-**State:** claimed by agent/core/116-host-study-line-counts-render-per-pass, 2026-10-28 13:15
+**State:** done — host-side, 2026-10-28; hardware and native Windows debts below
 **Dispatch note, 2026-10-28 leg — reserve in `embarch-core`:** `open.md` 92 B left, `spec.md` 480 B left, `decisions/probes.md` 1,025 B left, all three parked under `tasks/core/112` (`blocked`, `In flux: yes`). If this unit writes into any of them, compact **that file** in this unit (a verbatim split by mission first, `DOC-COMPACTION.md` §2), carrying `core/112`'s `Must not delete:` list, and close only that file's item there (delete it from `core/112`'s `Compacts:` line and say so in its body). `decisions/host-study.md` (7,962 B) has room. Read the 08:09 note below before starting.
 **Update, 2026-10-26 09:03 leg:** the `core/101` dependency the 08:09 note names **has landed** (`embarch-core@0ba23bf`, decision 98). A host study now accepts `Text` + `WholeStudy` direct-signal taps and writes `streams/<name>.txt` verbatim plus a per-line `.arrival.csv` on one study-wide clock, so the "if `core/101` has not landed" branch of that note no longer applies: box 2 is in scope. `line_counts` is still refused at submission until this task lifts it.
 **Source:** study-designer/071 (decision 86 in `embarch-study-designer/decisions/host-repeat.md`): `Repeat` and `LineCount` types shipped in `embarch-study-designer`, validated, with no consumer yet. Field use on a USB PD charger board: 34 of 96 bench tests ended in a `grep -c` over a raw console dump. Filed from `inbox/core-host-study-line-count-render.md` by the 2026-10-26 leg.
@@ -36,8 +36,17 @@ The count script was one-off bash and could not be rerun with a corrected patter
 
 ## Done when
 
-- [ ] Core runs `Repeat` inside an accepted `HostStudy`, writing iteration markers into the run record.
-- [ ] The report view shows each `LineCount` per pass and total, from the raw tap files, rendered again on a finished run.
-- [ ] The fixture study renders its eight counts against a canned two-tap capture in a test.
-- [ ] A line spanning two records is counted once, not twice (split on newline across record boundaries).
-- [ ] Gate green.
+- [x] Core runs `Repeat` inside an accepted `HostStudy`, writing iteration markers into the run record.
+- [x] The report view shows each `LineCount` per pass and total, from the raw tap files, rendered again on a finished run.
+- [x] The fixture study renders its eight counts against a canned two-tap capture in a test.
+- [x] A line spanning two records is counted once, not twice (split on newline across record boundaries).
+- [x] Gate green.
+
+## Result
+
+Shipped host-side in `embarch-core` (decision 99). `Repeat` runs with markers and `{value}` substitution; `events.json` carries `iterations` and `repeats`; `GET`/`POST /study/{id}/line-counts` render per-pass and total counts from the raw tap files (a corrected pattern over a finished run, no bench). Fixture study: eight counts rendered over a canned two-tap capture; a line split across two records is counted once, placed by its first byte. `line_counts` and `Repeat` are no longer refused; `Prompt` and `Instrument` still are, also inside a `Repeat`. No reserve file was written (`open.md`, `spec.md`, `probes.md`), so `core/112` is unchanged; `decisions/host-study.md` took decision 99 and the stale "schema stays 19" sentence is gone.
+
+## Debts
+
+- **Hardware-verification debt:** run the fixture study (8 Hard Resets, then the PPS sweep) against the PD bench and compare the per-pass counts with a hand count of the console dump. Checks the assumption in decision 99 that a console's lines land in the pass that caused them (a late reply counts in the next pass), and the `Repeat` pacing on a real board.
+- **Toolchain debt:** native Windows build of `embarch-core` not run from this worktree (hidapi `build.rs` needs the host MSVC toolchain; Windows `cargo.exe` cannot resolve a worktree's symlinked path-deps). Run it from the main checkout after landing.

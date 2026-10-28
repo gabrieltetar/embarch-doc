@@ -30,6 +30,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Capturing a signal in the background](decisions/signal-capture.md) | 92, 94 | 5.7 KB |
 | [The bench lease](decisions/lease.md) | 93 | 5.5 KB |
 | [Reading a target's memory](decisions/live-read.md) | 81, 97 | 4.1 KB |
-| [Host-run studies](decisions/host-study.md) | 95, 98 | 8.0 KB |
+| [Host-run studies](decisions/host-study.md) | 95, 98, 99 | 8.0 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

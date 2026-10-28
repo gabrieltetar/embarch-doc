@@ -20,7 +20,7 @@ Field use on a USB PD charger board (2026-09-09 to 2026-10-20): the PD source se
 
 **Events.** The proposal says `StepCompleted` is reused; it is not. A bench `StepResult` has no reply field, so a host step is its own `HostStepCompleted {study_id, list, step_index, result, detail, started_utc_ms, ended_utc_ms, delay_before_ms}` on the same SSE channel.
 
-**Not executed, refused by name `400` at submission:** `Prompt` and `Instrument` (later units of the proposal), `Repeat` and `line_counts` (`core/116`). `streams` is accepted for a `Signal` tap of `Text` encoding and `WholeStudy` scope on a direct signal, and refused by name for any other ([98](#98--a-host-studys-signal-taps-are-captures-opened-once-for-the-whole-study)). **Not changed:** `HOST_TYPE_SCHEMA_VERSION` stays 19 on this branch; the landing leg bumps it to 20. No dev-bench wire change.
+**Not executed, refused by name `400` at submission:** `Prompt` and `Instrument` (later units of the proposal), also inside a `Repeat`. `Repeat` and `line_counts` run ([99](#99--repeat-runs-and-line-counts-are-rendered-from-the-raw-tap-files)). `streams` is accepted for a `Signal` tap of `Text` encoding and `WholeStudy` scope on a direct signal, and refused by name for any other ([98](#98--a-host-studys-signal-taps-are-captures-opened-once-for-the-whole-study)). No dev-bench wire change.
 
 **Measured vs assumed.** Every exit path is proven over a scripted fake port only. **Assumed:** the `\n` terminator against the PD bench, and teardown reaching a real partner after a forced failure (hardware debts, task `core/102`).
 
@@ -39,3 +39,13 @@ Field use (2026-09-09 to 2026-10-20): every exchange dropped what the console pr
 **Measured vs assumed.** Proven over in-process fake serial pairs only (two consoles, exchanges on both, nothing lost between steps, opened once, stamps on one clock). **Assumed:** the same on COM ports at the PD bench's rates, and that a tapped CDC ACM console survives a Hard Reset without a gap (hardware debt, task `core/101`).
 
 **The CY4500 analyzer (open, not decided here).** Whether a `Prompt` asks the operator to save the analyzer's capture and Core attaches it, or the analyzer is out of scope, needs the capture format confirmed on the analyzer. Not inferred; filed as an inbox drop.
+
+### 99 — `Repeat` runs, and `line_counts` are rendered from the raw tap files
+
+Field use: 34 of 96 bench tests ended in a `grep -c` over a console dump, one-off and not rerunnable with a corrected pattern.
+
+**`Repeat`.** A marker `IterationMarker` is recorded as each pass starts; `{value}` in an inner `Exchange.line` is the `values` entry or the 1-based pass number; each inner record carries `iteration` and `inner_index` (its `index` is the `Repeat`'s). An inner step's own `continue_on_fail` governs; a cancel is seen before each pass and inner step; `delay_before_ms` applies once. Teardown may hold a `Repeat` and never stops. A `Prompt` or `Instrument` inside one is refused as at top level. **One clock:** `StudyClock` (anchor plus monotonic time) stamps the markers, step times and every tap line, so a marker compares with a line directly. `events.json` gains `iterations` (the markers) and `repeats` (each `Repeat`'s span, which says where the last pass ends).
+
+**The view.** `GET /study/{id}/line-counts` counts each `LineCount` over `streams/<tap>.txt` split at newlines **after** the run, so a line that arrived in two records is one line, placed by the row holding its first byte. Per `Repeat`: a count per pass; plus the whole-run total, the tap's line count, and `outside_passes` (before pass 1, after the last pass, between repeats). A count is **shown, never compared**. The submitted study is kept as `study.json` so the view can be rendered later; `POST` of the same path takes `{line_counts: [...]}` to count a corrected pattern over the same finished run (nothing stored; `400` for an undeclared tap or a pattern that does not compile; `409` before the run ends). Both routes are lease-open: they read files and open no port.
+
+**Measured vs assumed.** The fixture study's eight counts are proven over a canned two-tap capture written through the real stream store. **Assumed:** a real console's lines land in the pass that caused them (a reply delayed past the pass's end counts in the next pass), which only the PD bench shows (hardware debt, task `core/116`).

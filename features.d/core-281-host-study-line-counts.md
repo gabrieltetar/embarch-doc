@@ -1,0 +1,1 @@
+| `Repeat` in a host study, and `GET/POST /study/{id}/line-counts` — pass markers on the tap clock; each `LineCount` counted per pass and in total from the raw tap files, never compared | Shipped — **host-side only: proven over a canned two-tap capture, not the PD bench; native Windows build unrun** | unit | 99 |
