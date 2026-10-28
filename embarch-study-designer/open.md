@@ -21,9 +21,7 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 
 ## Open
 
-- **A saved study is never checked against the `.eap` file it was built from.** A study carries a *resolved* `ProtocolDef` (decision 58), which is what makes it replay identically on a machine that is not its author's — and is also why editing the manifest afterwards changes nothing about studies already saved. That is correct, and it is also silent: the tab will happily offer a protocol whose text no longer matches what a saved study carries, with nothing anywhere saying the two have diverged.
-
-  The check is real and server-side — re-resolve the named protocol and compare `protocols_crc` — but it needs a decision about what to *do* with a divergence, and nothing has met one yet. **Trigger: the first time somebody edits a protocol a saved study already carries.**
+- **What to do with a protocol divergence** — the check exists (decision 87, `protocol_divergence`); showing it is `embarch-ui`'s, and nothing has met a real divergence yet.
 
 ## Scoped narrow on purpose
 

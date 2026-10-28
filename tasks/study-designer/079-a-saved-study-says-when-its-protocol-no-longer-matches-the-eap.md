@@ -1,6 +1,6 @@
 # 079 — A saved study can be told that its protocol no longer matches the `.eap` it names
 
-**State:** claimed by agent/study-designer/079-protocol-divergence-check, 2026-10-28 15:36
+**State:** done
 **Source:** the 2026-10-28 leg's refill sweep of `embarch-study-designer/open.md`: the bullet "A saved study is never checked against the `.eap` file it was built from", opened by the owner's `suite/045` commit (`685b691c`). `embarch-ui/open.md` carries the same bullet and says the check is this crate's, the UI's half only being where a divergence is shown.
 **Scope:** study-designer
 **Hardware:** none
@@ -22,9 +22,9 @@ Record it as a new decision in the topic file it belongs to (likely `decisions/p
 
 ## Done when
 
-- [ ] A public function (or method) answers unchanged / changed / gone per protocol for a saved study against a current protocol set, with unit tests for all three and for a study carrying no protocol.
-- [ ] Nothing stored in a study changes shape; every existing fixture and saved study still loads.
-- [ ] A numbered decision records the comparison and why it is structural rather than a pinned digest.
-- [ ] `open.md`'s bullet answered (pointer or removal); `embarch-ui/open.md` is the UI's and stays as it is.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), including `--features` cells the crate's CI runs.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A public function (or method) answers unchanged / changed / gone per protocol for a saved study against a current protocol set, with unit tests for all three and for a study carrying no protocol.
+- [x] Nothing stored in a study changes shape; every existing fixture and saved study still loads.
+- [x] A numbered decision records the comparison and why it is structural rather than a pinned digest.
+- [x] `open.md`'s bullet answered (pointer or removal); `embarch-ui/open.md` is the UI's and stays as it is.
+- [x] Gate green (`../../embarch-fleet/gate.md`), including `--features` cells the crate's CI runs.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

@@ -26,6 +26,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [What a study builds](decisions/builds.md) — a study's own build spec, and the outpost mode it requires | 77 |
 | [The GATT table a study declares](decisions/declared-gatt.md) — designed, never built | 45 |
 | [Protocol manifests](decisions/protocols.md) — an authored state machine, never inferred | 58, 59, 61, 75 |
+| [Protocol divergence](decisions/protocol-divergence.md) — a saved study checked against its `.eap` by comparing definitions, not a digest | 87 |
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, what it may report, and what the parser refuses | 60, 62, 84 |
 | [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library, one built-in vocabulary | 6, 34, 37, 38, 73 |
 | [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67, 69 |
