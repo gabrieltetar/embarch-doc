@@ -1,6 +1,7 @@
 # 066 — `decisions/links.md` is in reserve
 
-**State:** open — unparked 2026-10-26 by the leg that landed `suite/052`, which amended decision 46 in place (the "Deliberately not done" paragraph replaced by an "Amended 2026-10-26" one of about the same length; 12,121 to 12,106 B, still in reserve).
+**State:** claimed by agent/topology/066-compact-topology, 2026-10-28 13:27 — unparked 2026-10-26 by the leg that landed `suite/052`, which amended decision 46 in place (the "Deliberately not done" paragraph replaced by an "Amended 2026-10-26" one of about the same length; 12,121 to 12,106 B, still in reserve).
+**Dispatch note, 2026-10-28 leg — also pay `tasks/topology/060`'s one remaining file, by a verbatim split only.** `decisions/enrollment.md` is 12,122 / 12,288 B (166 B left), due **2026-11-01**, parked `In flux: yes` on `suite/046` extending decision 41. A verbatim split restates nothing, so that park does not forbid one (`060` says so itself): move decision 41 (or whichever seam `check-decision-refs.py` shows is cleanest) unchanged into its own topic file, fix every inbound link, and close `060` if both files are then out of reserve. **Do not shorten any text in `enrollment.md`** — the flux is real for squeezing. If no clean verbatim seam exists, leave `060` as it is and say why in it.
 **Source:** `scripts/check-doc-size.py`'s reserve floor, hit by `tasks/topology/062` adding decision 46 (10,046 -> 12,121 / 12,288 B, 167 B left), 2026-10-26
 **Scope:** topology
 **Hardware:** none
