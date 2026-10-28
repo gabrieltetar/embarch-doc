@@ -25,5 +25,6 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 ## Settled-deferred
 
 - **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
+- **`serial_log signal=` needs Core's half** (inbox `core-serial-log-resolves-a-declared-signal`); until it lands Core refuses it ([decisions](decisions/serial-log-signal.md) 94).
 - **`serial_log` stays one-shot** — Core's endpoint is bounded; streaming needs Core to grow one, **not this crate's call**.
 - **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit a paragraph from the reserve line, invisible to `check-doc-size.py` until crossed; the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which crossed.
