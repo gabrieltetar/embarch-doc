@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- Core: GET /serial-log takes signal= (resolved at request time, waits port_wait_ms, reads at the signal's baud); port= unchanged — decision 101.
 - A host study runs `Repeat` with per-pass markers; `GET/POST /study/{id}/line-counts` counts each `LineCount` per pass and in total from the raw tap files.
 - `POST /host-studies` accepts `Text` signal taps: a tapped console opens once for the whole study, exchanges write through it, and each line is stored with Core's receive time. Decision 98.
 - Core: POST /live/core-state reads DHCSR and PC samples without halting, or registers under one halt; mem-read gains found/left/halt_count (decision 97).
