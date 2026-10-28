@@ -1,6 +1,6 @@
 # 093 — `embarch setup` installs `embarch-desk`'s service and Claude plugin, which are run by hand today
 
-**State:** open
+**State:** claimed by agent/umbrella/093-setup-installs-the-desk, 2026-10-28 14:36
 **Source:** refill sweep, 2026-10-28 leg — `embarch-desk/open.md`: "Umbrella does not install it yet.
 `embarch-desk service install` and `claude plugin install embarch-desk@embarch` are run by hand;
 `embarch setup` should do both."
