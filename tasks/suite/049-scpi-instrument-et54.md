@@ -1,6 +1,6 @@
 # 049 — SCPI instruments: declare an ET54-series electronic load and drive it from Core, one-off and as a study step
 
-**State:** open — announced and parked 2026-10-28 15:33 (`ts` `1793223204.666079`), window closes 16:03; runs as a leg's last unit if the thread stays silent.
+**State:** claimed by agent/suite/049-scpi-instruments, 2026-10-28 16:04 — announced 15:33 (`ts` `1793223204.666079`); the window closed 16:03:24 with no reply (polled 16:03:34). Run by the supervisor (protocol §8).
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — an ET5410A+ was driven by a 14.8 KB bash wrapper that starts one PowerShell per command (about 1 s each). 16 logged runs sent 489 SCPI commands, 36 more ad-hoc Bash calls sent others, and a full reading (load plus two consoles) took about 4 s
 **Scope:** suite
 **Hardware:** verify-only
