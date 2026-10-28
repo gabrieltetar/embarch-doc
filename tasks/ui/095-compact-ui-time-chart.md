@@ -16,5 +16,9 @@ Compact decisions 34-37 and 66: shorten the *Consequences* paragraphs, keep ever
 
 ## Done when
 
-- [ ] `time-chart.md` at or under 10,500 B.
-- [ ] Gate green, `changelog.d/` fragment.
+- [x] `time-chart.md` at or under 10,500 B.
+- [x] Gate green, `changelog.d/` fragment.
+
+## Result
+
+Verbatim split (no cuts): decision 37 moved to `decisions/time-chart-live.md`; `time-chart.md` now 8,373 B (new file 3,504 B). Index rows updated. Nothing deleted, so no quoted-hunk list.
