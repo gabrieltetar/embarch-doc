@@ -14,6 +14,7 @@
 - `HOST_TYPE_SCHEMA_VERSION` is 20: Core now accepts a `HostStudy`, so an `embarch-api` built at 20 refuses a Core still at 19. Deploy Core first.
 
 ### Fixed
+- Eap divergence reports a pure reordering under the part that moved (source, frame, session variable, state), not under state; see decision 87.
 - The GATT extractor strips C comments first: a commented-out service or `#define` no longer counts as live or ambiguous ([decision 85](../embarch-study-designer/decisions/gatt-extract-scan.md)).
 - The .eap parser now refuses an out-of-range on_timeout/retry, a float write width and a repeat naming no struct, with the line (study-designer decision 84).
 - The `alloc`-only test cell compiles again: host_study's tests import `alloc::vec`, so CI's `cargo test --features alloc` step is green.
