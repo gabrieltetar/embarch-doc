@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `ledger-add`, `ledger-show`, `ledger-pending` (CLI and MCP): a per-project hardware test ledger with a computed pending-by-hardware view; `run-study --test` appends a row.
 - `embarch-api stack plan|fold|restack` folds review fixes into their commits by blame, backs up every branch, and restacks a PR stack with one atomic leased push.
 - api: serial_log takes signal (+port_wait_ms), the preferred form; Core resolves it; project/port stay the fallback (decision 94).
 - `embarch-api patches export|import|regroup`: one scratch tree for a west manifest's patch series; fixes fold by blame, regroup proves tree identity. Decision 92.

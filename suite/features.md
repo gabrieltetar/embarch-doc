@@ -64,6 +64,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Per-project build concurrency lock | Shipped — now holds across processes (advisory file lock, unix tests only) | unit | 91 |
 | Token discovery plus WSL2⟷Windows path translation | Shipped | local | 38 |
 | `base_url = "auto"` — Core's address resolved per process at first use | Shipped — never against a real remote Core | local | §7 |
+| `ledger_add` / `ledger_show` / `ledger_pending` — per-project hardware test ledger: test definitions, rows per run, bench header, a computed pending-by-missing-role view that flags unreachable commits and changed images; `run_study` appends a row | Shipped — **never run on a bench** | unit | 98 |
 | `base_address` as a per-project field — a config-driven flash path | Shipped | unit | 44 |
 | `[dev_bench]` board/chip/flash-format/artifact-path/base-address | Shipped | hw | 45 |
 | Rolling **per-user** logfile, surfaced in the UI's Debug tab | Shipped | unit | 43 |
