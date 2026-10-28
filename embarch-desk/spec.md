@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637); no entry has been sent with it yet.
+**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298).
 
 ## 1. What it is
 
@@ -21,6 +21,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 ## 2. Invariants
 
 - **A tile proposes only what Harvest doesn't already hold** for its item that day (41), and **one with nothing left to propose closes itself** unless a person typed its hours (`null` clears them; ✓'s own hours never count, 61) — computed, so it opens again if the entries go (57).
+- **Time after a ✓ comes back** as a continuation of its entry (64).
 - **A folded tile carries only what it proposed**, and goes to history with its target, never before (58). A fold goes only to a later real day; a folded row reports the hours it carried, and ✓ without a note sends the folded lines too (60).
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
@@ -53,6 +54,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Harvest entries read | 2,000 per account per call, paged by 100; `truncated` when cut [chosen] (59) |
 | Assigned issues read | 500 per workspace, paged by 50; `truncated` when cut [chosen] (59) |
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
+| Least time after a ✓ dealt as a continuation | 5 min [chosen] (64) |
 | Brief | 16,000 characters, about 4K tokens (48) |
 | Mailbox entry life | 10 min, as a launch claim (46) |
 | Memory note versions kept | 20 per file (52) |
