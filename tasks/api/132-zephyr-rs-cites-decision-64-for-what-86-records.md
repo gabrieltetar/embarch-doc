@@ -24,6 +24,6 @@ and passes. It is a comment-only change in one file.
 
 ## Done when
 
-- [ ] Every `decision 64` in `zephyr.rs` that means the single-SoC rules reads `decision 86`.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green (comments only, but run them).
-- [ ] Gate green (`../../../embarch-fleet/gate.md`). No changelog fragment: nothing reader-facing changes.
+- [x] Every `decision 64` in `zephyr.rs` that means the single-SoC rules reads `decision 86`.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green (comments only, but run them).
+- [x] Gate green (`../../../embarch-fleet/gate.md`). No changelog fragment: nothing reader-facing changes.
