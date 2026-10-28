@@ -41,3 +41,14 @@ Once the bench turned `CONFIG_LOG` on, a log line stopped being a rare diagnosti
 **Rejected, not deferred.** A caller needs no count to act on `truncated: true`: a shorter `duration_ms` or a larger `EMBARCH_SERIAL_LOG_MAX_BYTES` are both available from the boolean alone, and neither choice changes with the true loss. **Trigger:** a caller that must act differently on 1 byte lost versus 900 KB — and even then, a count needs the loop to keep draining past the cap, not just stop at it.
 
 ---
+
+### 101 — `GET /serial-log` resolves a declared signal (`tasks/core/120`; the Core half of `embarch-api` decision 94)
+
+A COM name goes stale on every re-enumeration of a USB CDC ACM console (a reset renames or drops it), so `serial_log` by `port` failed right after a reset while the signal path worked. `port` is now optional and `signal` and `port_wait_ms` are new: **exactly one of `port` / `signal`**, both or neither a `400` naming both, checked before `hw_lock` with the `duration_ms` cap and `port_wait_ms` above `exchange::MAX_TIMEOUT_MS`.
+
+With `signal`: `find_signal` (`404` naming it when undeclared), then **`409` for a `via-dev-bench` route or a pure `host-to-dut` direction** (a read needs `dut-to-host` or `bidirectional`; the message says so), then `409` when a capture is running on it (it owns the port; read the capture), then `exchange::resolve_port_waiting(name, port_wait_ms)` (decision 79; an ambiguity or a wait that ran out is `409` with the candidates, decision 96). The port opens at the **signal's own baud** (`signal_baud_for`, decision 37's `baud` or `EMBARCH_SIGNAL_BAUD`); `baud` is an override only when given, and the 115200 default applies to the `port` form alone. The response's `port` is the name actually opened. Same `hw_lock`, `duration_ms` cap, byte cap and `truncated` as the `port` form (decision 58).
+
+**Rejected: `via-dev-bench` in the `signal` form** — Core owns no read path on the relay.
+
+**Measured vs assumed.** Measured: unit tests for the both-or-neither check, the `port_wait_ms` cap, an undeclared signal, the direction and route refusals and the baud override. Assumed: the reset-survival itself. Hardware-verification debt on task 120: one `serial_log signal=` across a DUT reset on a CDC ACM console. The native Windows build was not run.
+
