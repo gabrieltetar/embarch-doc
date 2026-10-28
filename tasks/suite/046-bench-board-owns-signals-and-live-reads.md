@@ -1,6 +1,6 @@
 # 046 — A bench board can own a signal and be read and validated by its probe, not only flashed
 
-**State:** open — announced and parked 2026-10-28 14:33:53, `ts` `1793219633.062879`; the 30-minute window closes 15:03:53. A leg that finds this past the window with no objection in that thread runs it as its last unit; it does not restart the clock.
+**State:** claimed by agent/suite/046-bench-board-owns-signals, 2026-10-28 15:08 — announced 14:33:53 (`ts` `1793219633.062879`); the window closed 15:03:53 with no reply in the thread or the channel (polled 15:06:46), so the supervisor runs it as its leg's last unit.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the bench Nucleo was enrolled as a role-less bench board on 2026-10-09 (topology decision 41), but its console signal could only be declared from role `dev-bench`, which holds an nRF54L15 DK; two refusals on 2026-10-19 named that role, not the Nucleo, and when the bench firmware hung (2026-10-09) its program counter was read with the probe-rs CLI, since `mem_read` takes only a role
 **Scope:** suite
 **Hardware:** verify-only
