@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- A host study runs `Repeat` with per-pass markers; `GET/POST /study/{id}/line-counts` counts each `LineCount` per pass and in total from the raw tap files.
 - `POST /host-studies` accepts `Text` signal taps: a tapped console opens once for the whole study, exchanges write through it, and each line is stored with Core's receive time. Decision 98.
 - Core: POST /live/core-state reads DHCSR and PC samples without halting, or registers under one halt; mem-read gains found/left/halt_count (decision 97).
 - Core runs host studies: `POST /host-studies` executes Exchange and Wait steps, teardown on every exit, `POST /study/{id}/cancel` (core decision 95).
