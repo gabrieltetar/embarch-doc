@@ -77,6 +77,15 @@ entry and this becomes an ordinary verbatim split, or this task falls back to a 
   line. If the split argument above is accepted for this file, ask whether the same seam exists
   there before running two unrelated passes.
 
+## The lists have already stopped being exhaustive (2026-10-28)
+
+`user-guide.md` §7.1 still says "the whole surface, all 29 tools", and `embarch-api/src/tools.rs`
+now carries **54** `#[tool]` functions; the instrument, ledger, capture, lease, bootload and
+host-study tools (`run_host_study`, `answer_prompt`, added by `suite/048`) are on neither list.
+Nothing was added because the file has 655 B left, so the `Must not delete:` item about
+exhaustiveness is already violated by growth rather than by a cut. Whatever unparks this task
+inherits that, and the split it proposes is where the 25 missing names go.
+
 ## What leg 092 found, 2026-09-11
 
 Three things, and the first two mean **the fork this task recorded named the wrong blocker.**
