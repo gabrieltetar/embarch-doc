@@ -20,7 +20,7 @@ Field use on a USB PD charger board (2026-09-09 to 2026-10-20): the PD source se
 
 **Events.** The proposal says `StepCompleted` is reused; it is not. A bench `StepResult` has no reply field, so a host step is its own `HostStepCompleted {study_id, list, step_index, result, detail, started_utc_ms, ended_utc_ms, delay_before_ms}` on the same SSE channel.
 
-**Not executed, refused by name `400` at submission:** `Prompt` and `Instrument` (later units of the proposal), also inside a `Repeat`. `Repeat` and `line_counts` run ([99](#99--repeat-runs-and-line-counts-are-rendered-from-the-raw-tap-files)). `streams` is accepted for a `Signal` tap of `Text` encoding and `WholeStudy` scope on a direct signal, and refused by name for any other ([98](#98--a-host-studys-signal-taps-are-captures-opened-once-for-the-whole-study)). No dev-bench wire change.
+**Not executed, refused by name `400` at submission:** `Prompt` (a later unit of the proposal), also inside a `Repeat`. `Instrument` runs since [104](instruments.md). `Repeat` and `line_counts` run ([99](#99--repeat-runs-and-line-counts-are-rendered-from-the-raw-tap-files)). `streams` is accepted for a `Signal` tap of `Text` encoding and `WholeStudy` scope on a direct signal, and refused by name for any other ([98](#98--a-host-studys-signal-taps-are-captures-opened-once-for-the-whole-study)). No dev-bench wire change.
 
 **Measured vs assumed.** Every exit path is proven over a scripted fake port only. **Assumed:** the `\n` terminator against the PD bench, and teardown reaching a real partner after a forced failure (hardware debts, task `core/102`).
 

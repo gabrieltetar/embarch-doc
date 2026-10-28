@@ -1,6 +1,6 @@
 # Proposal: host-run studies, operator prompts, bench instruments and a USB PD bench
 
-**Status:** proposal, 2026-10-09.
+**Status:** proposal, 2026-10-09. Phase 2 (instruments) built 2026-10-28: [embarch-topology decision 49](embarch-topology/decisions/instruments.md), [embarch-core decision 104](embarch-core/decisions/instruments.md), [embarch-api decision 97](embarch-api/decisions/instruments.md); its bench check is owed.
 
 Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3).
 

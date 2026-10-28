@@ -63,6 +63,7 @@ Everything else is detected live. These cannot be:
 | **A link port's USB *interface*** | One probe can expose two VCOMs under one serial; **which one the console is wired to is a devicetree fact, not a USB one** |
 | **A DUT signal's route** | A wire between two headers is invisible to software |
 | **A DUT's bootload ports** (app and bootloader USB identities) | Zephyr's default VID:PID is shared by every board built from defaults (decision 36) |
+| **A bench instrument** (its USB identity and line facts: terminators, pacing, acknowledgements) | A USB-UART bridge's VID:PID is shared by every device built on it, and the line facts are learned on the bench (decision 49) |
 
 Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file (decision 23); a store predating later facts still loads.
 

@@ -1,6 +1,6 @@
 # 049 — SCPI instruments: declare an ET54-series electronic load and drive it from Core, one-off and as a study step
 
-**State:** claimed by agent/suite/049-scpi-instruments, 2026-10-28 16:04 — announced 15:33 (`ts` `1793223204.666079`); the window closed 16:03:24 with no reply (polled 16:03:34). Run by the supervisor (protocol §8).
+**State:** done 2026-10-28 by the supervisor, bench check owed (embarch-core decision 104) — announced 15:33 (`ts` `1793223204.666079`); the window closed 16:03:24 with no reply (polled 16:03:34). Run by the supervisor (protocol §8).
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — an ET5410A+ was driven by a 14.8 KB bash wrapper that starts one PowerShell per command (about 1 s each). 16 logged runs sent 489 SCPI commands, 36 more ad-hoc Bash calls sent others, and a full reading (load plus two consoles) took about 4 s
 **Scope:** suite
 **Hardware:** verify-only
@@ -24,10 +24,10 @@ The e-load campaign of 2026-10-13/14 (11 test cases) found the ET54 facts below 
 
 ## Done when
 
-- [ ] Topology: the table, validation (hex VID/PID, unique name) and a TOML round trip. An instrument is resolved by `UsbPortId`, and an ambiguous match is refused with every candidate named.
-- [ ] Core: the route with pacing, a flush line on open, configurable ack strings, and 409 while the port is held. Unit tests over a fake port cover poisoning, acks and pacing.
-- [ ] API: the four tools and their subcommands.
-- [ ] `HostAction::Instrument` executes in a host study (after the core task "host-study-exchange-steps").
-- [ ] Bench check, run by the supervisor on an ET5410A+: `*IDN?`, `MEAS1:ALL?`, `CH1:SW ON`/`OFF` read back and `LOAD1:ABNO?`. The time per command is recorded in the decision.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Topology: the table, validation (hex VID/PID, unique name) and a TOML round trip. An instrument is resolved by `UsbPortId`, and an ambiguous match is refused with every candidate named.
+- [x] Core: the route with pacing, a flush line on open, configurable ack strings, and 409 while the port is held. Unit tests over a fake port cover poisoning, acks and pacing.
+- [x] API: the four tools and their subcommands.
+- [x] `HostAction::Instrument` executes in a host study (after the core task "host-study-exchange-steps").
+- [ ] **Owed, not run (no instrument is declared, and the bench was unattached this leg):** bench check, run by the supervisor on an ET5410A+: `*IDN?`, `MEAS1:ALL?`, `CH1:SW ON`/`OFF` read back and `LOAD1:ABNO?`. The time per command is recorded in the decision.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

@@ -31,5 +31,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The bench lease](decisions/lease.md) | 93 | 5.5 KB |
 | [Reading a target's memory](decisions/live-read.md) | 81, 97 | 4.1 KB |
 | [Host-run studies](decisions/host-study.md) | 95, 98, 99 | 8.0 KB |
+| [Bench instruments](decisions/instruments.md) | 104 | 4.4 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

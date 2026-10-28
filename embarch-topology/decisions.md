@@ -18,6 +18,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/cli.md](decisions/cli.md) | 45 | The CLI's Core guard probes the port the operator names, and the CLI enrols and retracts bench boards the way Core does |
 | [decisions/link-declares.md](decisions/link-declares.md) | 20, 27, 42 | A role's declared link facts, the role a moving probe vacates, and what `NotFound` reports when they exclude everything |
 | [decisions/bootload-ports.md](decisions/bootload-ports.md) | 36 | A DUT's two declared bootload USB identities, in their own table |
+| [decisions/instruments.md](decisions/instruments.md) | 49 | A bench instrument's port identity and line facts, in their own table |
 | [decisions/validation.md](decisions/validation.md) | 21, 38, 39, 44 | What the live identity gate asserts about the silicon on a link, what it cannot, why an all-zero ID is a failed read, attaching without rewriting a running target's clocks, and refusing a requested chip that is not the enrolled one before any attach |
 | [decisions/validation-classifier.md](decisions/validation-classifier.md) | 25 | Which register pair a chip name resolves to, and the classifier both the gate and the flash path share |
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26, 47 | The `validate` call's own freshness timestamp, distinct from the enrolled record's, and the count of halts the identity gate made |
