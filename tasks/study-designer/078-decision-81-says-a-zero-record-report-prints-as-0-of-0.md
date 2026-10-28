@@ -1,6 +1,7 @@
 # 078 — Decision 81 says a zero-record report prints as "0 of 0", and its two consumers now say "no records found"
 
-**State:** open
+**State:** claimed by agent/study-designer/078-decision-81-zero-record-wording, 2026-10-28 13:28
+**Dispatch note, 2026-10-28 leg — reserve in `embarch-study-designer`:** `open.md` 647 B left, parked under `tasks/study-designer/026` (`blocked`, overdue since 2026-10-04). This task should not touch it; if it does, compact `open.md` in this unit carrying `026`'s `Must not delete:` list. `decisions/seals.md` (6,955 B) has room.
 **Source:** `api/141`'s reviewer, 2026-10-26 (below its bar; filed by the supervisor so it is not lost when the log folds).
 **Scope:** study-designer
 **Hardware:** none
