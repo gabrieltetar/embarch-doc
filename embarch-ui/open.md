@@ -24,6 +24,4 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **The `Debug` level's clamp note has never fired.** The level reaches the firmware and acts on it (decision 32). What did not fire is the clamp itself — `app/prj.conf` is `CONFIG_LOG_DEFAULT_LEVEL=4` with runtime filtering, so `Debug` is *reachable* and there is nothing to report; a deliberately quieter build is needed to see it.
 
-- **`tests/browser/drive_topology.py` writes the real `~/.local/share/embarch/ui/recent-projects.json`** without `EMBARCH_UI_STATE`; 3 of its checks are stale since the Atlas tab.
-
 - **A reload no longer re-marks what a link named** (58); his call.

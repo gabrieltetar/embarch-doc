@@ -1,6 +1,6 @@
 # 096 — `drive_topology.py` stops writing the real recent-projects file, and its stale checks pass again
 
-**State:** claimed by agent/ui/096-drive-topology-isolates-its-state, 2026-10-28 14:37
+**State:** done — drive_topology.py names EMBARCH_UI_STATE (real file mtime unchanged); 80/81 -> 81/81 checks pass
 **Source:** refill sweep, 2026-10-28 leg — `embarch-ui/open.md`: "`tests/browser/drive_topology.py`
 writes the real `~/.local/share/embarch/ui/recent-projects.json` without `EMBARCH_UI_STATE`; 3 of its
 checks are stale since the Atlas tab."
@@ -24,10 +24,14 @@ open.md bullet names both halves.
 
 ## Done when
 
-- [ ] `drive_topology.py` runs with an isolated state path and never touches the real
+- [x] `drive_topology.py` runs with an isolated state path and never touches the real
       `recent-projects.json` (check by mtime before and after a run).
-- [ ] Every check in it passes against a fresh build; the count before and after is in the task
+- [x] Every check in it passes against a fresh build; the count before and after is in the task
       file's close note.
-- [ ] The `open.md` bullet is removed (or narrowed to whatever is left), `changelog.d/` fragment
+- [x] The `open.md` bullet is removed (or narrowed to whatever is left), `changelog.d/` fragment
       dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Close note
+
+Checks before: 80 pass, 1 fail (the bench box's label: the box first draws the raw west qualifier and takes its label once `/api/topology/pickers` answers, decision 45; the wait loop accepted the raw one). After: 81/81. Only that one was still stale; the other two the bullet counted had already been fixed. Isolation: added `EMBARCH_UI_STATE` to the child env (XDG_DATA_HOME/HOME were already scratch). Real `recent-projects.json` mtime identical before/after. Observation (not changed): `loadRolePickers()` does not redraw the diagram, so the label lands on the next snapshot.
