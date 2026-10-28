@@ -1,10 +1,16 @@
 # 130 — Fold review fixes into their commits and restack a PR stack with one allowlistable command
 
-**State:** open
+**State:** claimed by agent/api/130-stack-fold-restack, 2026-10-28 15:35
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 20 of 25 auto-mode denials, in 14 sessions, hit rebase, cherry-pick, amend or force-push commands or notes describing them; a 229-line hand-kept fold map (76 calls) was discarded at the re-slice; 97 `fixup!`/`amend!` commits and 46 "folds into" commits; 17 one-off sequence-editor, message-fix and conflict scripts; fold mechanics were 6.7 % of cost and 4.4 active hours
 **Scope:** api
 **Hardware:** none
 **Owner:** no
+
+## Dispatch note, 2026-10-28 leg
+
+- **Reserve:** `embarch-api/open.md` is 4,674/5,120 B (446 B left), filed against `tasks/api/144` (open, no clock). Its bullet "`serial_log signal=` needs Core's half … until it lands Core refuses it" is **stale**: `core/120` landed Core's half (core decision 101). Delete that bullet in the same edit as anything you add there. If your work still leaves the file in reserve, `tasks/api/144` already records the debt; do not file another.
+- **Tree identity** in `stack fold` does not need `build --each --same-tree-as` (`tasks/api/127`, toolchain-gated and not built): compare `<tip>^{tree}` before and after with git directly, and say so in the decision.
+- New decisions go in a new `decisions/<topic>.md` rather than a file near its cap; check `scripts/check-doc-size.py --pressure` before you choose.
 
 ## What
 
