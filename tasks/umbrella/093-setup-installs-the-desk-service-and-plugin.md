@@ -1,6 +1,6 @@
 # 093 — `embarch setup` installs `embarch-desk`'s service and Claude plugin, which are run by hand today
 
-**State:** claimed by agent/umbrella/093-setup-installs-the-desk, 2026-10-28 14:36
+**State:** done — setup installs/uninstalls the desk service and plugin (decision 58); both commands mocked, real run is owner debt
 **Source:** refill sweep, 2026-10-28 leg — `embarch-desk/open.md`: "Umbrella does not install it yet.
 `embarch-desk service install` and `claude plugin install embarch-desk@embarch` are run by hand;
 `embarch setup` should do both."
@@ -26,10 +26,10 @@ see a desk that was never installed.
 
 ## Done when
 
-- [ ] `setup` runs both steps when `embarch-desk` is located and skips them by name when it is not; tested
+- [x] `setup` runs both steps when `embarch-desk` is located and skips them by name when it is not; tested
       with both commands mocked.
-- [ ] `setup --uninstall` reverses them, tested the same way.
-- [ ] An umbrella decision records it; `embarch-desk/open.md`'s bullet is a status fragment for the
+- [x] `setup --uninstall` reverses them, tested the same way.
+- [x] An umbrella decision records it; `embarch-desk/open.md`'s bullet is a status fragment for the
       supervisor (an `embarch-desk` doc is not an umbrella worker's to edit).
-- [ ] Gate green (`../../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.

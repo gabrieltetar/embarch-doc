@@ -33,3 +33,13 @@ being quietly ignored by it.
 ### 25 — `embarch setup --uninstall` reverses a machine setup
 
 `init --uninstall` already reversed a repo integration; **nothing symmetric existed for `setup` itself.** It stops and unregisters the Core service, removes the machine-wide token file (a fresh `setup` regenerates one, matching normal first-run behaviour), and — per decision 28 — **removes the canonical install directory and the real `PATH` additions**, where it originally only printed the line to remove. It does not touch a firmware repo's own integration; that stays `init --uninstall`'s job. **It exits `1` when any step it attempted failed, naming each in a final line** (so `setup --uninstall && …` stops with Core still installed); `setup` does the same when its own service install fails, per decision 7's "print the exact command, exit nonzero".
+
+### 58 — `setup` installs `embarch-desk`'s service and plugin when the desk is found, skips each by name when not, and `--uninstall` reverses both
+
+**Decided 2026-10-28**, `umbrella/093`. **Why:** both were hand steps in `embarch-desk`'s README that nothing reminded anyone of, and `doctor` cannot see a desk that was never installed.
+
+**Located** by `locate_desk`: `EMBARCH_DESK_BIN` (not existence-checked, like the other overrides), `PATH`, then the canonical install directory. **`SUITE_BINARIES` is unchanged**: the desk ships from its own repo, not the release archive, so `setup` does not copy it. **Two steps, run after Core's, each reported by name:** `embarch-desk service install` (the desk's systemd user unit; skipped off Linux) and `claude plugin install embarch-desk@embarch` (skipped when `claude` is not on `PATH`). **No desk found: both skipped, naming why, exit unaffected.** `--dry-run` prints "would run" and runs neither.
+
+**Failure:** a step that ran and failed is printed and makes `setup` exit `1`, but never stops the rest; the first does not gate the second. **The `embarch` marketplace is not added by `setup`**: its source is an `embarch-desk` checkout, a path `setup` would have to guess, so a failed plugin install prints the `claude plugin marketplace add "$PWD"` line from the README instead. **`--uninstall`** runs `embarch-desk service uninstall` **before** the install undo, because the unit names a binary that undo may delete, and `claude plugin uninstall` only when `claude plugin list` names the plugin, so a machine that never had it is not a failure.
+
+**Unmeasured:** neither command has run through `setup` on a real machine, and whether `claude plugin install` needs the marketplace already added was read from the README, not tried. *Rejected:* adding the desk to `SUITE_BINARIES` (no archive carries it); guessing the marketplace source.

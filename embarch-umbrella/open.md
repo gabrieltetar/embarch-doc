@@ -23,3 +23,5 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **macOS is unvalidated and has no machine to validate on.** Not blocking: a Mac-only engineer walks the guide once the primary topology is proven. **Gatekeeper may make "just download and run" false there**, the aarch64 build unsigned.
 
 - **Check 10 still spawns the MCP server in `doctor`'s own environment, not the agent CLI's** ([decision 40](decisions/mcp.md)) — registered `env` applies, but a server needing something only the CLI supplies fails here, works there. **That residual is unexercised**: the live run hit `not-registered` and `handshake-ok`, neither of them it.
+
+- **`setup`'s desk steps (decision 58) have never run for real.** Both commands are mocked in tests. **Owner debt:** one `embarch setup` on a machine with `embarch-desk` and `claude` confirming both steps report done (and that `claude plugin install embarch-desk@embarch` works with the marketplace added), then `setup --uninstall` removing both. Not to run against the live desk without meaning to: it restarts the service.
