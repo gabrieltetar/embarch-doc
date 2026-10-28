@@ -14,6 +14,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`artifact_path_for_core` is still tolerated at load, and now only because configs on disk may still carry it.** `embarch-umbrella` stopped scaffolding it 2026-09-13, so the installed-base argument that earned the exception no longer has a writer behind it. **What closes this: one grep of the real configs** — none carrying the key means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`. Not checkable from inside the suite: [decisions](decisions/config-retirement.md) 64
 - **The bench lease client has never met a real Core** ([decisions](decisions/lease.md) 90). Mock-tested only. A token taken through an MCP tool reaches no CLI or atlas subprocess until exported there, and nothing does that yet; the 900 s default TTL is assumed.
+- **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, no plain-diff entries, no merge-heavy fix history; the base revision is passed by hand.
 
 ## Structural limits
 

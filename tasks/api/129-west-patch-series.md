@@ -1,6 +1,6 @@
 # 129 — Round-trip a west manifest's Zephyr patch series through one scratch tree
 
-**State:** claimed by agent/api/129-west-patch-series, 2026-10-28 13:25
+**State:** done on agent/api/129-west-patch-series, 2026-10-28 — awaiting land
 **Dispatch note, 2026-10-28 leg — reserve in `embarch-api`:** `decisions/client-crate.md` 707 B left (filed: `tasks/api/140`), `open.md` 832 B left (filed: `tasks/api/144`). This task should need neither; put its decision in a topic file with room (or a new one) and keep `open.md` additions to a line, or compact that file in this unit and close its item in the filing task.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 32 scratch Zephyr worktrees (18 in one session), 8 hand-written regen, renumber and message scripts; about 20 manifest "Fix:" commits each split across 2–6 patch commits at curation; a 22→6 regroup by topic; patch regeneration 2.3 % of review-loop cost and 6 % in the manifest sessions
 **Scope:** api
@@ -17,9 +17,13 @@ Every review round that touched the carried Zephyr stack paid this cost again in
 
 ## Done when
 
-- [ ] On an unchanged 3-patch fixture series, an export/import round trip produces byte-identical patch files.
-- [ ] `patches.yml` sha256 fields are updated, and applying the series to a clean base gives the expected tree.
-- [ ] A fix commit touching two patches folds into both patch commits, and import rewrites both files.
-- [ ] `regroup` proves tree identity, renumbers files and `patches.yml`, and reports the message references it rewrote or could not rewrite.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] On an unchanged 3-patch fixture series, an export/import round trip produces byte-identical patch files.
+- [x] `patches.yml` sha256 fields are updated, and applying the series to a clean base gives the expected tree.
+- [x] A fix commit touching two patches folds into both patch commits, and import rewrites both files.
+- [x] `regroup` proves tree identity, renumbers files and `patches.yml`, and reports the message references it rewrote or could not rewrite.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Notes
+
+Decision 92 (`embarch-api/decisions/patches.md`). CLI only, no MCP tool. The base revision is passed with `--base`, not read from `west.yml`; plain-diff patch entries (no mbox header) are unsupported. Verified on a throwaway fixture only; no hardware or real west workspace touched. Not done here: a `west.yml`-aware `--base`, and an MCP twin.

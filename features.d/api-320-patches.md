@@ -1,0 +1,1 @@
+| `patches export/import/regroup` — a west manifest's patch series through one scratch tree (fix folding, regroup with tree-identity proof) | Shipped — **CLI only; verified on a 3-patch fixture, never a real `west patch` manifest** | unit | 92 |
