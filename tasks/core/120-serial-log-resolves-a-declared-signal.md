@@ -1,6 +1,6 @@
 # 120 — `GET /serial-log` resolves a declared signal (the Core half of api/125)
 
-**State:** open
+**State:** claimed by agent/core/120-serial-log-resolves-a-declared-signal, 2026-10-28 14:47
 **Source:** `tasks/api/125` (2026-10-28): `embarch-api` now sends `GET /serial-log?signal=<name>&duration_ms=..[&baud=..][&port_wait_ms=..]` and no `port`. Core's `SerialLogQuery` (`src/api.rs`) still requires `port`, so an unchanged Core answers 400 to the signal form. Field use on a USB PD board: `serial_log` on a CDC ACM console failed "cannot find the file specified" right after a reset while the signal path to the same console worked. Filed from the api/125 worker's inbox drop by the 2026-10-28 14:33 leg.
 **Scope:** core
 **Hardware:** verify-only
