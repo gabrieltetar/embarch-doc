@@ -1,6 +1,6 @@
 # 125 — `serial_log` reads a declared signal, not a COM name copied into project config
 
-**State:** open
+**State:** claimed by agent/api/125-serial-log-reads-a-declared-signal, 2026-10-28 14:36
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — on 2026-10-08 `serial_log` on the DUT console failed with "The system cannot find the file specified" just after a reset (COM8, a CDC ACM port re-enumerating) while the signal path to the same console worked; 5 `serial_log` calls named the bench's project only to reach the DUT's port; the field config hard-codes 5 COM names, with comments that they move when an adapter is replugged, and the DUT console moved twice (UART bridge, then CDC ACM, then UART bridge)
 **Scope:** api
 **Hardware:** verify-only
