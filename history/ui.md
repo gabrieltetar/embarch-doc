@@ -17,6 +17,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- Topology browser drive script now isolates the recent-projects file and passes all 81 checks.
 - The Time chart now says when a sample strip or live mark lane is capped, how many were not drawn and how far the strip reaches ([decision 66](../embarch-ui/decisions/time-chart.md)).
 - Desk Slack browser driver waits for the toggle and reports a setup timeout as a named FAIL, not a crash.
 - A Data card's table is re-fetched when it loads, so a study opened mid-run no longer ends on the partial table; see [embarch-ui decision 64](../embarch-ui/decisions/live-study.md).
