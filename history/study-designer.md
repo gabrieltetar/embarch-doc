@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- study-designer: protocol_divergence() says per protocol a saved study carries whether the .eap still resolves it unchanged, changed or gone (decision 87).
 - Host studies can `Repeat` steps (count or values, `{value}`) and declare `LineCount` views over a tap; counts are shown, never compared (decision 86).
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
 

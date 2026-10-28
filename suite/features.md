@@ -84,6 +84,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `lease_take`/`lease_renew`/`lease_release`/`lease_show` — hold the whole bench across calls; the token (`EMBARCH_LEASE_TOKEN`) is sent on every Core call, renewed by the MCP server, a refusal shown verbatim; `status` carries `last_images` | Shipped — mock-HTTP tested only; **no two-session run against a real Core** | unit | 90 |
 | `core_state` / `core-state` — where a hung core is (DHCSR, PC samples, or one counted halt for registers), plus `found`/`left`/`halt_count` on `mem_read` | Shipped — **host-side only, Core's JSON mirrored from source, never observed** | unit | 83 |
 | `patches export/import/regroup` — a west manifest's patch series through one scratch tree (fix folding, regroup with tree-identity proof) | Shipped — **CLI only; verified on a 3-patch fixture, never a real `west patch` manifest** | unit | 92 |
+| `stack plan/fold/restack` — review hunks folded into their commits by blame, backed-up autosquash with tree-identity proof, PR-stack restack with one atomic leased push | Shipped — **CLI only; verified on throwaway repos, never a real PR stack or forge** | unit | 96 |
 
 ## embarch-dev-bench
 
@@ -129,6 +130,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Feature-matrix CI — every feature cell built on every push, the two narrow ones with `cargo build` so dev-dependency feature unification cannot hide a break; plus a guard that fails if a `release.yml` ever appears without `verify-version` | Shipped — green locally; **no staticlib cross-link exists to assert `ffi`**, and the release guard has met no real tag | local | 64, 65 |
 | A study declares the DUT firmware it builds for itself and the outpost trace mode it needs — a selection resolved every time, never a pinned build id | Shipped, **run on hardware** 2026-09-19: a saved study carrying both built, flashed, reset and ran; its declared flags were checked against the firmware's own header | hw | 77 |
 | A host study repeats a block of steps (count or a values sweep) and declares per-tap line counts, with pass markers in the result type; no expected value exists to compare against | Built, **types and validation only, host tests**; Core does not accept `HostStudy` or render counts yet | host | 86 |
+| A saved study reports when a protocol it carries no longer matches its `.eap` (unchanged / changed / gone) | Shipped — advisory, crate API only; the UI shows nothing yet | host | 87 |
 
 ## embarch-outpost
 
