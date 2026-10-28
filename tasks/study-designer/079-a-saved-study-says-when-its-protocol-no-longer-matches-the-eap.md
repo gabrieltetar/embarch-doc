@@ -1,6 +1,6 @@
 # 079 — A saved study can be told that its protocol no longer matches the `.eap` it names
 
-**State:** open
+**State:** claimed by agent/study-designer/079-protocol-divergence-check, 2026-10-28 15:36
 **Source:** the 2026-10-28 leg's refill sweep of `embarch-study-designer/open.md`: the bullet "A saved study is never checked against the `.eap` file it was built from", opened by the owner's `suite/045` commit (`685b691c`). `embarch-ui/open.md` carries the same bullet and says the check is this crate's, the UI's half only being where a divergence is shown.
 **Scope:** study-designer
 **Hardware:** none
