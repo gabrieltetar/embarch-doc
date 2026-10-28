@@ -11,10 +11,10 @@ the supervisor, which did not write these bytes.
 **Owner:** no
 
 **Size debt due:** 2026-11-01
-**In flux:** yes — `decisions/enrollment.md` only. `tasks/topology/059` wrote decision 44 into
+**In flux:** no (closed 2026-10-28; was: yes — `decisions/enrollment.md` only. `tasks/topology/059` wrote decision 44 into
 `decisions/validation.md`, not this file, and split `spec.md` verbatim (below); `tasks/suite/046` (a bench
 board owns a signal and is read and validated by its probe) extends decision 41 itself. Squeezing
-either file now writes a clean statement of something two queued tasks are about to change.
+either file now writes a clean statement of something two queued tasks are about to change.)
 **Must not delete:** nothing specific is known to the filer, which did not write these bytes. Treat
 every measured fact in either file (in `spec.md`, the STM32 identity reads that decisions 37–39
 added: the halted UID read on ARMv6 parts, the all-zero ID, the guarded attach) as evidence, not
