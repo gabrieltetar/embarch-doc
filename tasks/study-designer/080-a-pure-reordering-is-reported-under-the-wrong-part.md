@@ -1,6 +1,7 @@
 # 080 — A pure reordering is reported under the wrong part
 
-**State:** open
+**State:** claimed by agent/study-designer/080-order-label, 2026-10-28 16:32
+**Dispatch note (supervisor):** no `embarch-study-designer` file is in the size reserve. This is a shared crate; the supervisor reads the diff before merging.
 **Source:** `study-designer/079`'s fold (supervisor log, 2026-10-28 15:48, "Least sure about"), the reviewer's note on decision 87: `compare()` files a pure reordering of sources, frames or session variables under part `state`, name `(order)`, so a UI showing it would mislabel which part moved.
 **Scope:** study-designer
 **Hardware:** none
