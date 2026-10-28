@@ -8,6 +8,7 @@
 - Topology tab: picking one of several ports under one USB serial declares its interface; validate fails a direct route those ports share with none declared (decision 10; suite/052).
 
 ### Changed
+- ui: the Topology signals table names a bench-board origin and the signal dialog can pick one, keeping it on re-save (decision 67).
 - Split embarch-ui decision 37 (Time chart live feed) verbatim out of decisions/time-chart.md into time-chart-live.md; the Time chart file is out of reserve (ui/095).
 - `embarch-ui/spec.md` back in reserve: the tab-navigation paragraph lives only in `spec/tabs.md` now, at its newer wording (ui/089).
 - Browser drive scripts read geckodriver/UI ports only via EMBARCH_GECKO_PORT / EMBARCH_UI_PORT (tests/browser/addr.py); old names error ([decision 65](../embarch-ui/decisions/browser-drive.md)).
