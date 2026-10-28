@@ -3,6 +3,10 @@
 **State:** open
 **Source:** leg 104, 2026-09-13, unit `dev-bench/028`. Hit live; the fold had to be finished by
 hand and the leg says so in its log entry and in the commit message (`embarch-doc` `9f6f567`).
+**Recurred 2026-10-28** (inbox drop, merged here rather than filed twice): folding `study-designer/078`,
+whose worker left its claim line, so the supervisor set `done` in the leg worktree; the log landed
+(`embarch-fleet@4a511bf`), `git rm` refused, the fold was finished by hand (`git rm -f`, `5efffa07`) and
+the remote agent branch was pruned by hand after an ancestry check. Second hit, same shape.
 **Scope:** doc
 **Hardware:** none
 **Owner:** required — the fix is one flag in `scripts/fold-commit.py`, a reserved path.
