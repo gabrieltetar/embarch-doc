@@ -1,0 +1,1 @@
+| `stack plan/fold/restack` — review hunks folded into their commits by blame, backed-up autosquash with tree-identity proof, PR-stack restack with one atomic leased push | Shipped — **CLI only; verified on throwaway repos, never a real PR stack or forge** | unit | 96 |

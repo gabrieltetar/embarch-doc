@@ -14,6 +14,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`artifact_path_for_core` is still tolerated at load, and now only because configs on disk may still carry it.** `embarch-umbrella` stopped scaffolding it 2026-09-13, so the installed-base argument that earned the exception no longer has a writer behind it. **What closes this: one grep of the real configs** — none carrying the key means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`. Not checkable from inside the suite: [decisions](decisions/config-retirement.md) 64
 - **The bench lease client has never met a real Core** ([decisions](decisions/lease.md) 90). Mock-tested only. A token taken through an MCP tool reaches no CLI or atlas subprocess until exported there, and nothing does that yet; the 900 s default TTL is assumed.
+- **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
 - **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, no plain-diff entries, no merge-heavy fix history; the base revision is passed by hand.
 
 ## Structural limits
@@ -25,6 +26,5 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 ## Settled-deferred
 
 - **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
-- **`serial_log signal=` needs Core's half** (inbox `core-serial-log-resolves-a-declared-signal`); until it lands Core refuses it ([decisions](decisions/serial-log-signal.md) 94).
 - **`serial_log` stays one-shot** — Core's endpoint is bounded; streaming needs Core to grow one, **not this crate's call**.
 - **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit a paragraph from the reserve line, invisible to `check-doc-size.py` until crossed; the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which crossed.

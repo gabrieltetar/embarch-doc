@@ -11,7 +11,7 @@ Current truth: [spec.md](../spec.md). Why: [decisions.md](../decisions.md).
 
 | Module | Owns |
 |---|---|
-| `main.rs` | clap CLI, config resolution, logging init, dispatch to the MCP server or `cli.rs` — and `versions`, answered *before* config resolution so a broken config cannot hide it (`patches` likewise: git only, `patches.rs`) |
+| `main.rs` | clap CLI, config resolution, logging init, dispatch to the MCP server or `cli.rs` — and `versions`, answered *before* config resolution so a broken config cannot hide it (`patches` and `stack` likewise: git only, `patches.rs`, `stack.rs`) |
 | `config.rs` | TOML schema, load, validation — unique names, path existence, discovery-branched required fields |
 | `zephyr.rs` | the live `boards/`/`app/`-or-`apps/` scan (decision 63), target cross-product, file-backing validation, build-dir and artifact-path assembly. **Pure filesystem and YAML reads — no `west`, no network** |
 | `resolve.rs` | the one place every front-end branches on `discovery`, turning a project plus a selection into a build plan and a chip |

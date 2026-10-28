@@ -4,7 +4,7 @@
 
 **One table, because these are two front-ends over one implementation** — not two surfaces to keep in sync. That premise held across a single file until this one crossed its size reserve; **split by section 2026-09-10** (`tasks/api/053`, a verbatim move, nothing restated) into the files linked below. The premise still applies across every one of them — it is a property of the crate's tools, not of any one doc file holding their description.
 
-**Naming differs by convention, and it is a real difference a user hits:** MCP tools are `snake_case`, CLI subcommands are `kebab-case` — `list_projects` over MCP, `embarch-api list-projects` on a terminal. Not a design choice so much as `clap` renaming variants and `rmcp` taking the Rust function name verbatim. The CLI is a **superset**: `versions` and `patches` (git-only, [decisions](../decisions/patches.md) 92) have no tool.
+**Naming differs by convention, and it is a real difference a user hits:** MCP tools are `snake_case`, CLI subcommands are `kebab-case` — `list_projects` over MCP, `embarch-api list-projects` on a terminal. Not a design choice so much as `clap` renaming variants and `rmcp` taking the Rust function name verbatim. The CLI is a **superset**: `versions`, `patches` (git-only, [decisions](../decisions/patches.md) 92) and `stack` ([interface](stack.md), [decisions](../decisions/stack.md) 96) have no tool.
 
 `P` below is the project-selection set: `board?`, `variant?`, `revision?`, `app?`, `snippets?`, `extra_args?` (CLI: `--board`, `--variant`, `--revision`, `--app`, repeatable `--snippet`/`--extra-arg`). Selection semantics: [config.md](config.md).
 

@@ -1,6 +1,6 @@
 # 130 — Fold review fixes into their commits and restack a PR stack with one allowlistable command
 
-**State:** claimed by agent/api/130-stack-fold-restack, 2026-10-28 15:35
+**State:** done 2026-10-28
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 20 of 25 auto-mode denials, in 14 sessions, hit rebase, cherry-pick, amend or force-push commands or notes describing them; a 229-line hand-kept fold map (76 calls) was discarded at the re-slice; 97 `fixup!`/`amend!` commits and 46 "folds into" commits; 17 one-off sequence-editor, message-fix and conflict scripts; fold mechanics were 6.7 % of cost and 4.4 active hours
 **Scope:** api
 **Hardware:** none
@@ -22,10 +22,10 @@ Folding was fast whenever it was allowed: five measured folds took 14–32 min e
 
 ## Done when
 
-- [ ] `stack plan` places hunks on a fixture repo with at least three commits, lists the hunks it cannot place, and writes the plan file.
-- [ ] `stack fold` creates the backups, folds `fixup!` and `amend!` commits, applies a curation file, proves tree identity, and never pushes.
-- [ ] `stack restack` on a 4-branch fixture stack updates every ref and pushes atomically with leases to a local bare remote. A remote ref moved by someone else aborts the whole push with nothing sent.
-- [ ] After a rebase merge of the bottom branch, `stack restack --onto origin/main` drops the landed commits by patch-id.
-- [ ] The user guide documents the single permission rule that allows the command family.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `stack plan` places hunks on a fixture repo with at least three commits, lists the hunks it cannot place, and writes the plan file.
+- [x] `stack fold` creates the backups, folds `fixup!` and `amend!` commits, applies a curation file, proves tree identity, and never pushes.
+- [x] `stack restack` on a 4-branch fixture stack updates every ref and pushes atomically with leases to a local bare remote. A remote ref moved by someone else aborts the whole push with nothing sent.
+- [x] After a rebase merge of the bottom branch, `stack restack --onto origin/main` drops the landed commits by patch-id.
+- [x] The single permission rule (`Bash(embarch-api stack:*)`) is documented in `embarch-api/interfaces/stack.md`; the user guide is suite-owned and in reserve, so `status.d/api-stack-user-guide.md` asks the supervisor to fold one paragraph into §6.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
