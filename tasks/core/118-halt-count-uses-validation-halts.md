@@ -19,6 +19,10 @@ The count is an assumption today: a new halting family, or the Nordic last-resor
 
 ## Done when
 
-- [ ] `live::gate_halts` is gone; `halt_count` uses `Validation.halts`.
-- [ ] Decision 97 says where the gate's share of the count comes from.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `live::gate_halts` is gone; `halt_count` uses `Validation.halts`.
+- [x] Decision 97 says where the gate's share of the count comes from.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Verification debt
+
+Hardware: a real STM32G0 read through `POST /live/core-state` on a running core should report `halt_count == 1` (default mode) and 2 with `halt=true`; run on a bench leg or by the owner. Host tests use scripted gate values only.
