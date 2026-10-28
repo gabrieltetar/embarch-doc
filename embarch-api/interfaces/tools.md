@@ -19,6 +19,7 @@
 - [Lease](tools-lease.md) — `lease_take`, `lease_renew`, `lease_release`, `lease_show`; and what `status` now carries
 - [Capture](tools-capture.md) — `capture_start`, `capture_read`, `capture_stop`, `bench_exchange`
 - [Instruments](tools-instruments.md) — `declare_instrument`, `list_instruments`, `remove_instrument`, `instrument_exchange`
+- [Ledger](tools-ledger.md) — `ledger_add`, `ledger_show`, `ledger_pending`, and `run_study`'s `test`
 
 ## Error handling
 

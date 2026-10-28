@@ -1,0 +1,1 @@
+| `ledger_add` / `ledger_show` / `ledger_pending` — per-project hardware test ledger: test definitions, rows per run, bench header, a computed pending-by-missing-role view that flags unreachable commits and changed images; `run_study` appends a row | Shipped — **never run on a bench** | unit | 98 |

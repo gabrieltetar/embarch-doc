@@ -1,6 +1,6 @@
 # 128 — Keep a hardware test ledger: what ran, on what, and what waits for which hardware
 
-**State:** claimed by agent/api/128-hardware-test-ledger, 2026-10-28 16:32
+**State:** done — agent/api/128-hardware-test-ledger, 2026-10-28
 **Dispatch note (supervisor):** `embarch-api/open.md` is in reserve, 473 B left, filed against `tasks/api/144` (open). Keep this unit's open.md change to one short bullet (the ledger's bench debt) or none; if it would cross the cap, compact that file in this unit under `api/144`'s `Must not delete:` list and say so. The bench check in Done when is owed by a leg, not this worker: record it as a hardware-verification debt in this file.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the engineer asked for a test log and a pending list per hardware on 2026-10-12; both were kept by hand (log 55 calls / 30 writes, pending 38 / 20, test plan 80 / 42) across 5–6 sessions in 8 days, alongside a bench-state header restated in each session
 **Scope:** api
@@ -17,10 +17,24 @@ In the field, the log and the pending-by-hardware list were the engineer's own r
 
 ## Done when
 
-- [ ] The ledger format is documented, with `ledger add/show/pending` CLI and MCP tools.
-- [ ] With a stub topology, the pending view groups tests by missing role, and attaching a role moves its tests to "runnable now".
-- [ ] A row whose commit is unreachable from its branch, or whose image hash changed, is flagged for rerun.
-- [ ] `run_study` appends a row on completion.
+- [x] The ledger format is documented, with `ledger add/show/pending` CLI and MCP tools.
+- [x] With a stub topology, the pending view groups tests by missing role, and attaching a role moves its tests to "runnable now".
+- [x] A row whose commit is unreachable from its branch, or whose image hash changed, is flagged for rerun.
+- [x] `run_study` appends a row on completion.
 - [ ] Verified once on a bench: a study run lands a row, and the pending view matches the attached roles.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+The one open box ("Verified once on a bench") is owed by a leg, not this worker. With a Core that has topology enrolled and a real `tests.toml`:
+
+1. In a project with `embarch/ledger/tests.toml` naming two tests (one needing `dut`, one needing an absent role), run `embarch-api ledger-pending` and confirm the first is `runnable_now`, the second under its missing role, and `attached_source` is `core`.
+2. `embarch-api run-study --study-file <any> --test <id>`; confirm `ledger` says `appended`, then `ledger-show` after the study ends shows a second row `pass`/`fail` for the same `study_id`.
+3. Rebase or amend the commit a pass row names; confirm `ledger-pending` lists it `commit-unreachable`.
+
+Needs: one board on the bench and a deployed Core (`embarch-api` binary rebuilt). Filed as `embarch-api/open.md`'s ledger bullet.
+
+## Notes
+
+Built and unit-tested (pending grouping, attach moves a test to runnable, unreachable commit against a real throwaway git repo, image hash change, verdict mapping). `run_study` appends `submitted` at submission and the row is closed on the next `ledger_show`/`ledger_pending`: decision 98 explains why not "on completion". Flat `ledger-*` names, not `ledger add`.
