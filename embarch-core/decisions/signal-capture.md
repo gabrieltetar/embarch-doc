@@ -18,7 +18,7 @@ A USB PD test needs both consoles at once: the bench board driven one command at
 
 **Reset and re-enumeration.** A UART bridge does not drop when its board resets, so the capture holds the boot lines ("arm, then reset") with no gap. A read error (a USB CDC ACM device re-enumerating) makes the capture `reopening`: it writes `[embarch: port lost]` into the byte stream, records a `gap` `{offset, lost_at_ms, reopened_at_ms}`, resolves the signal again every 250 ms, and on success writes `[embarch: port reopened]` and goes on.
 
-**Not done: one port owner with a study's signal tap.** The two are separate readers today. A capture refuses a port a tap holds, but a study that starts afterwards and names a captured signal is not refused by name; its open fails at the OS. Merging them is `open.md`'s item and the `core` task for console capture during a host study.
+**A study's signal tap stays a separate reader.** A capture refuses a port a tap holds, and a bench study that starts afterwards and names a captured signal is refused `409` by name at submission ([decision 102](#102--post-study-refuses-a-tap-on-a-captured-signal-at-submission-taskscore121), which also rejects sharing the capture's handle for a bench study). A host study's taps are captures (decision 98).
 
 **Rejected: `GET` as a long poll.** A wait on the request would put the client's timeout back in the loop; the caller polls with `after`.
 
