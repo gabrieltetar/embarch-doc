@@ -189,6 +189,8 @@ Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **
 
 **Failures print the full error chain**, not a summary line — **the actual cause is usually several lines down. Read the whole thing.**
 
+**Folding review fixes into their commits and restacking a PR stack** is `embarch-api stack plan|fold|restack`: git-only, no config. In auto mode allow it with one rule, `Bash(embarch-api stack:*)`, not `git rebase *` ([interfaces/stack.md](../embarch-api/interfaces/stack.md)).
+
 ## 7. Using it from Claude Code
 
 `embarch init` already registered the MCP server for this repo, at local scope — **nothing was written into the repo for your teammates to trip over.** Open Claude Code in the repo and the tools are there.

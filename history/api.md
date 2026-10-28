@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `embarch-api stack plan|fold|restack` folds review fixes into their commits by blame, backs up every branch, and restacks a PR stack with one atomic leased push.
 - api: serial_log takes signal (+port_wait_ms), the preferred form; Core resolves it; project/port stay the fallback (decision 94).
 - `embarch-api patches export|import|regroup`: one scratch tree for a west manifest's patch series; fixes fold by blame, regroup proves tree identity. Decision 92.
 - `core_state` tool and `core-state` subcommand over Core's POST /live/core-state; `mem_read` shows found/left/halt_count and marks `halted` deprecated (decision 83).
