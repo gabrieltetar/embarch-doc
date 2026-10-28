@@ -85,6 +85,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `core_state` / `core-state` — where a hung core is (DHCSR, PC samples, or one counted halt for registers), plus `found`/`left`/`halt_count` on `mem_read` | Shipped — **host-side only, Core's JSON mirrored from source, never observed** | unit | 83 |
 | `patches export/import/regroup` — a west manifest's patch series through one scratch tree (fix folding, regroup with tree-identity proof) | Shipped — **CLI only; verified on a 3-patch fixture, never a real `west patch` manifest** | unit | 92 |
 | `stack plan/fold/restack` — review hunks folded into their commits by blame, backed-up autosquash with tree-identity proof, PR-stack restack with one atomic leased push | Shipped — **CLI only; verified on throwaway repos, never a real PR stack or forge** | unit | 96 |
+| `declare_instrument` / `instrument_exchange` — an SCPI bench instrument declared with its line facts (preset `et54`), one command per exchange, an `Instrument` host-study step | Shipped — **never run against an instrument; Core not deployed** | unit | 97 |
 
 ## embarch-dev-bench
 

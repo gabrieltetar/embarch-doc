@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- SCPI bench instruments: declared with their line facts, one command per exchange, and an `Instrument` host-study step; an unacknowledged set fails (topology 49, core 104, api 97).
 - A role-less bench board owns signals (`origin_board`) and is read and validated by probe serial (topology 48, core 103, api 95).
 - Suite binaries' `--version` names their commit; install replaces a running binary; `doctor` check 18 flags an installed one behind its checkout. Umbrella decision 57.
 ## 2026-09
