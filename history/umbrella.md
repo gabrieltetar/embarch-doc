@@ -4,6 +4,9 @@
 
 ## 2026-10
 
+### Added
+- `embarch setup` installs embarch-desk's service and Claude plugin when the desk is found, skipping each by name when not; `--uninstall` reverses both (umbrella decision 58).
+
 ### Changed
 - doctor check 13 reads hello's 503/409 as `busy` (Warn, code `busy`, Core's body quoted), not a broken bench; see embarch-umbrella decision 19.
 - embarch-umbrella open.md compacted 4,048 -> 3,672 B; no item retired, hardware debts intact.
