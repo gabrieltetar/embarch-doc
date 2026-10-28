@@ -1,6 +1,6 @@
 # 080 — A pure reordering is reported under the wrong part
 
-**State:** claimed by agent/study-designer/080-order-label, 2026-10-28 16:32
+**State:** done 2026-10-28 (agent/study-designer/080-order-label)
 **Dispatch note (supervisor):** no `embarch-study-designer` file is in the size reserve. This is a shared crate; the supervisor reads the diff before merging.
 **Source:** `study-designer/079`'s fold (supervisor log, 2026-10-28 15:48, "Least sure about"), the reviewer's note on decision 87: `compare()` files a pure reordering of sources, frames or session variables under part `state`, name `(order)`, so a UI showing it would mislabel which part moved.
 **Scope:** study-designer
@@ -19,9 +19,9 @@ When this is done, an order-only difference names the part whose order changed (
 
 ## Done when
 
-- [ ] Reordering only the frames reports `frame` `(order)`; likewise for sources, session variables and states; tests for each.
-- [ ] Reordering two parts reports both.
-- [ ] A `ProtocolDef` differing only outside the four named lists is reported under a part that is not `state` (name the field if it can be named cheaply; otherwise a generic part), with a test.
-- [ ] `Difference::part`'s doc comment lists every value; decision 87 amended in place (its last sentence describes the old labelling), or a new decision if the change is larger than a correction.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), including every CI feature cell this crate runs.
-- [ ] `spec.md`/`decisions/`/`open.md` updated as needed, `changelog.d/` fragment dropped.
+- [x] Reordering only the frames reports `frame` `(order)`; likewise for sources, session variables and states; tests for each.
+- [x] Reordering two parts reports both.
+- [x] A `ProtocolDef` differing only outside the four named lists is reported under a part that is not `state` (name the field if it can be named cheaply; otherwise a generic part), with a test.
+- [x] `Difference::part`'s doc comment lists every value; decision 87 amended in place (its last sentence describes the old labelling), or a new decision if the change is larger than a correction.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), including every CI feature cell this crate runs.
+- [x] `spec.md`/`decisions/`/`open.md` updated as needed, `changelog.d/` fragment dropped.
