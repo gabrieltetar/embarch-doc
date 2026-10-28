@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `embarch-api patches export|import|regroup`: one scratch tree for a west manifest's patch series; fixes fold by blame, regroup proves tree identity. Decision 92.
 - `core_state` tool and `core-state` subcommand over Core's POST /live/core-state; `mem_read` shows found/left/halt_count and marks `halted` deprecated (decision 83).
 - declare_signal tool and declare-signal --interface take a direct route's USB interface, refused on a via-dev-bench route (embarch-topology decision 46; suite/052).
 - `lease_take`/`lease_renew`/`lease_release`/`lease_show` and `EMBARCH_LEASE_TOKEN` sent on every Core call; `status` shows `lease` and `last_images` (decision 90).

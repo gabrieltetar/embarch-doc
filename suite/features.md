@@ -83,6 +83,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `bench_exchange` / `bench-exchange` — one call drives a console sequence, records other consoles, returns one filtered timeline (Core receive times when sent, else poll times), named snapshots from config | Shipped — mock-HTTP tested only; **no two-console bench run, no replay yet** | unit | 89 |
 | `lease_take`/`lease_renew`/`lease_release`/`lease_show` — hold the whole bench across calls; the token (`EMBARCH_LEASE_TOKEN`) is sent on every Core call, renewed by the MCP server, a refusal shown verbatim; `status` carries `last_images` | Shipped — mock-HTTP tested only; **no two-session run against a real Core** | unit | 90 |
 | `core_state` / `core-state` — where a hung core is (DHCSR, PC samples, or one counted halt for registers), plus `found`/`left`/`halt_count` on `mem_read` | Shipped — **host-side only, Core's JSON mirrored from source, never observed** | unit | 83 |
+| `patches export/import/regroup` — a west manifest's patch series through one scratch tree (fix folding, regroup with tree-identity proof) | Shipped — **CLI only; verified on a 3-patch fixture, never a real `west patch` manifest** | unit | 92 |
 
 ## embarch-dev-bench
 
