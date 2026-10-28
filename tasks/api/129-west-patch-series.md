@@ -1,6 +1,7 @@
 # 129 — Round-trip a west manifest's Zephyr patch series through one scratch tree
 
-**State:** open
+**State:** claimed by agent/api/129-west-patch-series, 2026-10-28 13:25
+**Dispatch note, 2026-10-28 leg — reserve in `embarch-api`:** `decisions/client-crate.md` 707 B left (filed: `tasks/api/140`), `open.md` 832 B left (filed: `tasks/api/144`). This task should need neither; put its decision in a topic file with room (or a new one) and keep `open.md` additions to a line, or compact that file in this unit and close its item in the filing task.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 32 scratch Zephyr worktrees (18 in one session), 8 hand-written regen, renumber and message scripts; about 20 manifest "Fix:" commits each split across 2–6 patch commits at curation; a 22→6 regroup by topic; patch regeneration 2.3 % of review-loop cost and 6 % in the manifest sessions
 **Scope:** api
 **Hardware:** none
