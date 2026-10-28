@@ -6,26 +6,26 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Known wrong / unfinished
 
-- **A `[[projects]]` `board` is a hardware fact nothing compares against the hardware.** Derived from `build_info.yml`, it names the last build, not the board on the desk — a mismatched revision costs a day of bring-up, violating [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` stopped writing one unconfirmed (`embarch-umbrella` decision 41); older configs assert one, comparing to hardware is unbuilt.
-- **Windows never runs the smoke-harness tier.** `tests/smoke_harness.rs` ([decisions](decisions/smoke-harness.md) 30, `tasks/api/075`) is `#[cfg(unix)]` — its fixture's `build_command` is a POSIX shell one-liner, the same limit decision 46's four end-to-end tests already have. A Windows `cargo test` run reaches the mocked criteria in `tests/` ([decisions](decisions/tests.md) 46) only.
-- **`bootload` has never met a real bootloader** ([decisions](decisions/bootload.md) 80, 81). Unit- and mock-tested; the first DUT has MCUboot's partitions and no MCUboot yet, so neither a real sysbuild `domains.yaml` from it nor a real upload has been seen.
-- **`bench_exchange` has never met two real consoles** ([decisions](decisions/bench-exchange.md) 89). Mock-tested only; cross-console order is unmeasured: Core's receive times are used when sent (decision 89, `api/147`), poll-bounded otherwise.
-- **`study_watch` has met a real embarch-core; the rest has not.** Bench, leg 021: pushed live frames and `transport: polled` fallback both seen ([decisions](decisions/study-events.md) 48, 49). `study-status --follow`, drop path, `lagged`, reconnect: unexercised. Debt: `tasks/api/059-sse-client-remaining-observations.md`.
+- **A `[[projects]]` `board` is a hardware fact nothing checks against hardware.** From `build_info.yml`, it names the last build, not the desk's board; violates [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` no longer writes one (`embarch-umbrella` decision 41); older configs do.
+- **Windows never runs the smoke-harness tier.** `tests/smoke_harness.rs` ([decisions](decisions/smoke-harness.md) 30, `tasks/api/075`) is `#[cfg(unix)]` (POSIX-shell `build_command`). Windows reaches only the mocked criteria ([decisions](decisions/tests.md) 46).
+- **`bootload` has never met a real bootloader** ([decisions](decisions/bootload.md) 80, 81). Mock-tested; the first DUT has no MCUboot yet, so no real `domains.yaml` or upload seen.
+- **`bench_exchange` has never met two real consoles** ([decisions](decisions/bench-exchange.md) 89). Mock-tested; cross-console order unmeasured: Core's receive times when sent (`api/147`), else poll-bounded.
+- **`study_watch` has met a real embarch-core; the rest has not.** Leg 021: pushed frames and `polled` fallback seen ([decisions](decisions/study-events.md) 48, 49). Unexercised: `study-status --follow`, drop path, `lagged`, reconnect. Debt: `tasks/api/059-sse-client-remaining-observations.md`.
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
-- **`artifact_path_for_core` is still tolerated at load, and now only because configs on disk may still carry it.** `embarch-umbrella` stopped scaffolding it 2026-09-13, so the installed-base argument that earned the exception no longer has a writer behind it. **What closes this: one grep of the real configs** — none carrying the key means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`. Not checkable from inside the suite: [decisions](decisions/config-retirement.md) 64
-- **The test ledger has never met a bench** ([decisions](decisions/ledger.md) 98). Owed: a study run lands a row, and `ledger_pending` matches the attached roles.
-- **The bench lease client has never met a real Core** ([decisions](decisions/lease.md) 90). Mock-tested only. A token taken through an MCP tool reaches no CLI or atlas subprocess until exported there, and nothing does that yet; the 900 s default TTL is assumed.
+- **`artifact_path_for_core` is still tolerated at load.** `embarch-umbrella` stopped scaffolding it 2026-09-13. **Closes with one grep of the real configs** — none carrying it means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`; not checkable inside the suite: [decisions](decisions/config-retirement.md) 64
+- **The test ledger has never met a bench** ([decisions](decisions/ledger.md) 98). Owed: a study run lands a row; `ledger_pending` matches attached roles.
+- **The bench lease client has never met a real Core** ([decisions](decisions/lease.md) 90). Mock-tested. An MCP-taken token reaches no CLI or atlas subprocess until exported there; the 900 s default TTL is assumed.
 - **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
-- **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, no plain-diff entries, no merge-heavy fix history; the base revision is passed by hand.
+- **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
 
 ## Structural limits
 
-- **Nothing can read a firmware version off a DUT** — a declared version names the tree built, not a measurement.
+- **Nothing can read a firmware version off a DUT** — a declared version names the tree built.
 - **The artifact-transfer gap reaches the manifest too** ([decisions](decisions/study-reads.md) 39): a remote Core can't see local paths.
-- **`list-targets`' `build_dir_name` names only the default combination** ([decisions/target-json.md](decisions/target-json.md) 77) — a directory built with a non-default snippet selection or `extra_args` is exactly as current and gets no name here; only its own `target.json` (decision 69) can attribute it. Closes `embarch-umbrella` decision 26's stated ask for this repo; that decision's own `--prune` still has to fold `target.json` in for anything beyond the default build.
+- **`list-targets`' `build_dir_name` names only the default combination** ([decisions/target-json.md](decisions/target-json.md) 77) — a non-default snippet/`extra_args` build gets no name; only its `target.json` (decision 69) attributes it. `embarch-umbrella` decision 26's `--prune` must fold `target.json` in beyond the default build.
 
 ## Settled-deferred
 
-- **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting costs the common case for an uncommon message. Expected as a `doctor` check.
+- **PATH/toolchain preflight** — a build failure surfaces naturally; preflighting taxes the common case for an uncommon message. Expected as a `doctor` check.
 - **`serial_log` stays one-shot** — Core's endpoint is bounded; streaming needs Core to grow one, **not this crate's call**.
-- **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit a paragraph from the reserve line, invisible to `check-doc-size.py` until crossed; the wrong answer to the next entry is whichever file has room, not the one whose topic it is (leg 015, 96 B left). `tasks/api/*-compact-api.md` tracks which crossed.
+- **The decision corpus runs narrow across `api`** — several `decisions/*.md` sit near the reserve line; never file an entry in whichever file has room instead of its topic's. `tasks/api/*-compact-api.md` tracks which.
