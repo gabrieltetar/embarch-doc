@@ -10,6 +10,7 @@
 - Probe moved to a board of another chip family is refused by name before any attach (validate_serial_for_chip, topology decision 44); Core wiring filed.
 
 ### Changed
+- Topology: decisions 37/40 and 41/16 moved verbatim to links-direct.md and enrollment-bench.md; both files out of reserve.
 - topology: a direct signal whose declared USB serial matches several ports is refused as SignalAmbiguous, never guessed (decision 46).
 - Decision 36 (a DUT's bootload ports) moved verbatim to topology decisions/bootload-ports.md; link-declares.md out of reserve.
 - Topology CLI guard probes the port named by --core-port; enroll takes bench boards, unenroll takes --probe-serial (topology decision 45).
