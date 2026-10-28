@@ -20,5 +20,5 @@ history. If the crate does print it, say which and leave the decision true.
 
 ## Done when
 
-- [ ] Decision 81 no longer states a print the suite does not make, or a note says which crate path still makes it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Decision 81 no longer states a print the suite does not make, or a note says which crate path still makes it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
