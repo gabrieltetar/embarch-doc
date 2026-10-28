@@ -15,6 +15,7 @@
 - POST /probes/enroll adds displaced, vacated and vacated_kept when an enrol moves a role; absent otherwise (core decision 87).
 
 ### Changed
+- Core's live-read halt_count now takes the identity gate's share from topology's Validation.halts instead of inferring it by chip prefix (core decision 97).
 - Core refuses a submitted study whose Notify or Indicate step has a wait budget of 0, naming the step and operation, before any hardware is touched.
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
