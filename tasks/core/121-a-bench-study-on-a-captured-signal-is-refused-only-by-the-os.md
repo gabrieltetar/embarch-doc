@@ -1,6 +1,6 @@
 # 121 — A bench study whose tap names a captured signal is refused only by the OS
 
-**State:** claimed by agent/core/121-bench-study-refuses-captured-signal, 2026-10-28 15:00
+**State:** done — `POST /study` refuses a tap on a captured signal `409` before lock, flash and reset (core decision 102)
 **Reserve (supervisor, 2026-10-28):** `embarch-core/open.md` **92 B left**, `embarch-core/spec.md` 480 B left, `embarch-core/decisions/probes.md` 1,025 B left — all three parked under `core/112` (`blocked`, `In flux: yes`). Closing this task's `open.md` bullet frees room; if you add to `open.md` or `spec.md`, compact that file in this unit, carrying `core/112`'s `Must not delete:` list. Put your decision beside 92 (`decisions/signal-capture.md`) or 101 (`decisions/logging.md`), not `probes.md`. The supervisor is running `suite/046` in parallel (Core `study.rs` reset resolution, `live.rs`, the `/validate` route) and lands after you; take the next free core decision number and it will renumber its own.
 **Source:** `embarch-core/open.md` — "A bench study's signal tap is still a second port owner beside a capture (a host study's taps are captures, decision 98). A capture refuses a tap's port; a study started on a captured signal is refused only by the OS." Filed by the 2026-10-28 15:00 leg's refill sweep.
 **Scope:** core
@@ -31,8 +31,8 @@ and no owner.
 
 ## Done when
 
-- [ ] `POST /study` with a tap on a captured signal answers `409` naming the signal and the capture, before any flash or reset; a unit test drives it through the router with a registered capture.
-- [ ] A study whose taps name no captured signal is unaffected (existing tests stay green).
-- [ ] The open.md bullet is closed or narrowed to what is still true.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] `POST /study` with a tap on a captured signal answers `409` naming the signal and the capture, before any flash or reset; a unit test drives it through the router with a registered capture.
+- [x] A study whose taps name no captured signal is unaffected (existing tests stay green).
+- [x] The open.md bullet is closed or narrowed to what is still true.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.

@@ -33,3 +33,9 @@ A USB PD test needs both consoles at once: the bench board driven one command at
 **Resolution is the read, not the byte.** The time is the capture thread's clock when its `read()` returned the chunk, so lines in one chunk share a time and a line is placed within the port's read latency (a USB-UART bridge's 1 to 16 ms latency timer, assumed, not measured). `rx_ms` is a monotonic `Instant` offset; `started_utc_ms` is wall time sampled once, so within a capture times are exact to the millisecond and across captures they carry the wall clock's own error (assumed small on one host; not measured). Memory: 16 bytes per line, worst case one per byte of `max_bytes` (256 MB at the 16 MiB cap on an all-newline console); reasoned as acceptable, not measured.
 
 **Rejected: timing the newline.** It would order a long line by its end, which is not when its cause happened.
+
+### 102 — `POST /study` refuses a tap on a captured signal at submission (`tasks/core/121`)
+
+A study whose `StreamSource::Signal` tap names a signal a running capture holds is answered `409` naming the tap, the signal and the capture (stop it with `DELETE`, or read it with `GET /signals/{name}/capture`). It runs after `validate_study` and before the study lock, the identity gate, the flash and the reset, using the same `captures.running(name)` lookup `GET /serial-log` uses (decision 101); a signal with no running capture is untouched. Before this the OS refused the tap's port after the board was flashed and reset, with an error naming neither.
+
+**Rejected here, not deferred: reusing the capture's handle** the way a host study's taps do (decision 98). A bench study's tap opens and closes on `StreamScope` boundaries dev-bench announces mid-study, which a shared handle would have to follow; refusing is the whole change, reuse is a separate one. Proven over a scripted capture only (`start_fake`), never a real port.

@@ -29,7 +29,6 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **An HTTP surface, SSE stream, or `embarch-api` tool for `dev-bench.log`** (decision 37). Nothing has asked; this suite's posture is not to build machinery first.
 - **A byte count alongside `GET /serial-log`'s `truncated: bool`** — rejected, not deferred (decision 58). Trigger: a caller that must act differently on 1 byte lost versus 900 KB.
 
-- **A bench study's signal tap is still a second port owner beside a capture** (a host study's taps are captures, decision 98). A capture refuses a tap's port; a study started on a captured signal is refused only by the OS.
 
 ## Structural limits
 
