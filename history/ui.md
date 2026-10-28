@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- ui: a saved study that carries an out-of-date `.eap` protocol shows an advisory note in the Study Designer tab (changed/gone, with differences); it still runs as saved. ui decision 68.
 - Topology tab: picking one of several ports under one USB serial declares its interface; validate fails a direct route those ports share with none declared (decision 10; suite/052).
 
 ### Changed
