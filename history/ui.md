@@ -17,6 +17,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- The Topology tab redraws its diagram when the board-type pickers answer, so the bench box shows its label on first draw, not the raw qualifier.
 - Topology browser drive script now isolates the recent-projects file and passes all 81 checks.
 - The Time chart now says when a sample strip or live mark lane is capped, how many were not drawn and how far the strip reaches ([decision 66](../embarch-ui/decisions/time-chart.md)).
 - Desk Slack browser driver waits for the toggle and reports a setup timeout as a named FAIL, not a crash.
