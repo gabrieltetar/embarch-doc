@@ -20,7 +20,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **The stale-prefix drop has never met a real stale prefix** (decision 19): tested against crafted fixtures both ways, but the case it exists for — **18 records** a real capture opened with, buffered in the USB-UART bridge past `embarch-core`'s open-time purge — has not been replayed. **Hardware debt, the owner's session:** run a study, open its Trace tab, check the axis note reports a dropped prefix where the capture fell to ms. Until then, `STALE_PREFIX_MAX_ROWS` (512) is an assumption about a bridge FIFO nobody has measured.
 
-- **A saved study is never checked against the `.eap` file it was built from**, so the tab can offer a protocol whose text no longer matches what the study carries. The check is server-side, owned by `embarch-study-designer` — its [open.md](../embarch-study-designer/open.md) carries the question and trigger; this repo's half is only where a divergence would be *shown*. Named here so a reader does not conclude the silence is a design choice.
 
 - **The `Debug` level's clamp note has never fired.** The level reaches the firmware and acts on it (decision 32). What did not fire is the clamp itself — `app/prj.conf` is `CONFIG_LOG_DEFAULT_LEVEL=4` with runtime filtering, so `Debug` is *reachable* and there is nothing to report; a deliberately quieter build is needed to see it.
 

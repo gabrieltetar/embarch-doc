@@ -1,0 +1,1 @@
+| The Study Designer tab notes when a saved study carries a protocol its repo `.eap` no longer matches (changed or gone, with differences); advisory, the study still runs as saved | Shipped — route tests on fixture repos; note text not browser-driven | local | 68 |

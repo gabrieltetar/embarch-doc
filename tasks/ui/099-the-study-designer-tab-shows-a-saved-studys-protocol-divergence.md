@@ -1,6 +1,6 @@
 # 099 — The Study Designer tab shows when a saved study's protocol no longer matches its `.eap`
 
-**State:** claimed by agent/ui/099-show-protocol-divergence, 2026-10-28 16:32
+**State:** done on agent/ui/099-show-protocol-divergence, 2026-10-28
 **Dispatch note (supervisor):** `embarch-ui/open.md` is in reserve (935 B left); its compaction task `ui/088` is blocked on `In flux: yes`, so this unit must not grow that file: delete the bullet named below, and if you add anything, compact as you go. No other ui file is in reserve.
 **Source:** `embarch-ui/open.md` — "A saved study is never checked against the `.eap` file it was built from … this repo's half is only where a divergence would be *shown*"; and `embarch-study-designer/open.md` — "What to do with a protocol divergence — the check exists (decision 87, `protocol_divergence`); showing it is `embarch-ui`'s". The check landed as `study-designer/079` on 2026-10-28.
 **Scope:** ui
@@ -24,8 +24,12 @@ The check has no caller. Until something shows it, the study-designer half is a 
 
 ## Done when
 
-- [ ] A saved study whose protocol was edited shows the divergence note with its differences; one whose protocol is deleted or renamed shows `Gone`; an unchanged one shows nothing. Tested headless or by a route test against fixture `.eap` files.
-- [ ] The note states that the study still runs what it carries.
-- [ ] `open.md`'s bullet removed; a ui decision records where the check runs and what the user can do about a divergence.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions/`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] A saved study whose protocol was edited shows the divergence note with its differences; one whose protocol is deleted or renamed shows `Gone`; an unchanged one shows nothing. Tested headless or by a route test against fixture `.eap` files.
+- [x] The note states that the study still runs what it carries.
+- [x] `open.md`'s bullet removed; a ui decision records where the check runs and what the user can do about a divergence.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions/`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done
+
+Decision 68 (`decisions/study-designer.md`): divergence computed in the load and summary routes, shown as an advisory note, adopted by re-saving. Browser rendering of the note is text-guarded only (no JS engine); a headless-Firefox look is optional debt.
