@@ -12,7 +12,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Retired config keys and target selection](decisions/config-retirement.md) — the one target a `static` project has, and the general rule for a config key this crate stops reading | 53, 64 | 6.3 KB |
 | [How far the tests reach](decisions/tests.md) — the one-module `lib` target, where the bearer sweep's exhaustiveness comes from, and how the gate came to reach the shared client's own tests | 46, 54, 56 | 9.7 KB |
 | [The named smoke-harness tier](decisions/smoke-harness.md) — the live-run methodology's name and script, and its real bound under concurrent load | 30, 74 | 3.8 KB |
-| [The tool and CLI surface — JSON shape and versioning](decisions/surface.md) — JSON shape, watching a study live, what this binary says about itself | 16, 24, 50 | 4.9 KB |
+| [The tool and CLI surface — JSON shape and versioning](decisions/surface.md) — JSON shape, watching a study live, what this binary says about itself, and which commit it is | 16, 24, 50, 93 | 6.0 KB |
 | [How a failure is reported and attributed](decisions/failure-reporting.md) — how a tool description cites its own decision, and the parity rule extended to the signal/dev-bench-link writers and the live memory read | 57, 67, 82, 83 | 6.3 KB |
 | [`validate`'s `kind`-classification thread](decisions/validate-kind.md) — call sites branching on `kind`, the third `"unknown"` value for a `kind`-less Core, and the `not_attached` lead's wording | 71, 73, 76 | 6.8 KB |
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52, 88 | 8.2 KB |

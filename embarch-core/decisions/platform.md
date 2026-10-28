@@ -22,6 +22,9 @@ One code path registers `run` as a systemd unit, launchd job, or Windows Service
 
 *Rejected:* printing the command for a human to re-run elevated — a transcription-error opportunity, and it left updating an installed Core with no supported path at all.
 
+### 100 — `--version` names the commit Core was built from
+**Decided 2026-10-28**, suite task 047; the stamp and why are `embarch-umbrella` [decision 57](../../embarch-umbrella/decisions/build-identity.md). `embarch-core --version` prints `embarch-core <version> (commit <8 hex>[, dirty])`, still one line on stdout (`tests/version_stdout.rs` pins the commit). `/status`'s `core_version` stays `CARGO_PKG_VERSION` (decision 13): the commit is not added to the wire, because `binary_sha256` already identifies the bytes that answer. The service build on Windows is made from an rsync copy with no `.git`; `deploy-core` passes the Linux checkout's commit in, and a build made by hand there says `(commit unknown)`.
+
 ---
 
 

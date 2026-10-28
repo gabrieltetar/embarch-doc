@@ -1,0 +1,19 @@
+# embarch-umbrella decisions: Build identity — which commit a binary is, and replacing one that runs
+
+**Status:** active, 2026-10-28. Index: [../decisions.md](../decisions.md).
+
+### 57 — Every suite binary names the commit it was built from; install replaces a running binary by rename; `doctor` check 18 compares an installed binary with its checkout
+
+**Decided 2026-10-28**, suite task 047, a supervisor-run cross-repo pass (`embarch-api`, `embarch-core`, this repo), announced in #embarch-fleet (`ts` `1793216385.010889`) with no objection. **Why:** for two weeks of field use the MCP server ran an `embarch-api` built 2026-10-06 while `main` moved on; sessions called a debug build's CLI 138 times to get the newer behaviour, compared md5 sums by hand to learn which build was installed, and replacing the installed binary failed with "Text file busy". Every build printed `0.1.0`.
+
+**The stamp.** A `build.rs`, the same bytes in all three repos, sets `EMBARCH_BUILD_COMMIT` (full sha, or `unknown`), `EMBARCH_BUILD_DIRTY` (tracked files differ from `HEAD`), `EMBARCH_BUILD_SOURCE` (the crate's directory at build time) and the version line. `--version` prints `<name> <crate version> (commit <8 hex>)`, `, dirty` inside the parentheses when it is. git is asked only when the crate directory is the root of its own checkout, so a source copy without `.git` inside another repository says `unknown` rather than that repository's commit. **No dependency** (`vergen`, `built`): there is no crate all three already share, and the script is std only. A copy that drifts is found by comparing the three files; nothing checks it.
+
+**The crate version stays the first field after the name.** `manifest::version_from_output` now reads that field rather than the last, so checks 1 and 15 read the old and the new line alike. **An umbrella built before this reads a new binary's line as a manifest mismatch**: build and install them together.
+
+**`deploy-core` carries the stamp to Windows.** Its rsync excludes `.git`, so the service build would say `unknown`. It reads the Linux checkout's commit and dirty flag and passes `EMBARCH_BUILD_COMMIT`/`EMBARCH_BUILD_DIRTY` to `cargo.exe` through `WSLENV`, which the stamp prefers to git. Not yet run against the real service.
+
+**Install writes beside the destination and renames over it.** `install_binaries` copies to `.<name>.new-<pid>` in the destination directory, then renames. On Linux the rename replaces the directory entry and a running process keeps the file it started from (tested with a running copy); the old `std::fs::copy` opened the running file for writing and got `ETXTBSY`. **Windows is unchanged and untested here:** a running `.exe` cannot be replaced, the rename fails with access denied, and install names the file; stop the service or MCP client first.
+
+**Check 18** compares `embarch-api` (`--json versions`: `commit`, `dirty`, `source_dir`) and this binary (its compiled stamp) with the checkout each was built from. Pass when the commit is that checkout's `HEAD`; warn `behind-checkout` with the count when `HEAD` contains it; warn `not-in-checkout` when it does not; warn `no-build-identity` for an `embarch-api` that predates the stamp or says `unknown`; pass, informational, when the source directory is not a checkout on this machine (a release install). It never fails the run. The fix line says to rebuild and install, and that **a running MCP client keeps the binary it spawned until it reconnects**. `embarch-core` is not compared: its line names the commit for a person, nothing machine-readable carries it, and its `wsl-host` source is a copy.
+
+*Rejected: comparing file times*, which the field sessions did by hand — a rebuild of an old commit is newer and wrong. *Rejected: a hash*, which says two files differ, not which is older; check 15 keeps the hash for Core against the service.
