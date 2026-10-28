@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Added
+- Suite binaries' `--version` names their commit; install replaces a running binary; `doctor` check 18 flags an installed one behind its checkout. Umbrella decision 57.
 ## 2026-09
 
 ### Added
