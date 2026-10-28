@@ -1,6 +1,7 @@
 # 095 — `embarch-ui/decisions/time-chart.md` is in reserve at 11,554 B after `ui/086`
 
-**State:** open
+**State:** claimed by agent/ui/095-compact-ui-time-chart, 2026-10-28 13:48
+**Dispatch note (2026-10-28 13:48 leg):** ui reserve — this file (734 B left) and `open.md` 4,366/5,120 (754 B, parked under `tasks/ui/088`); leave `open.md` alone. A verbatim split of whole decisions into a new topic file is also a legal way to clear the line (`DOC-COMPACTION.md` §2) if shortening would cost a rule, number or reversal condition.
 **Source:** `ui/086` added decision 66 and left the file at 11,554 / 12,288 B (734 B left)
 **Scope:** ui
 **Hardware:** none
