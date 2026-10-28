@@ -1,6 +1,6 @@
 # 048 — Operator prompt step: a visible request to a person, answered from the UI or an MCP tool, with a deadline
 
-**State:** open
+**State:** open — announced and parked 2026-10-28 16:29 (`ts` `1793226580.382079`), window closes 16:59:40; runs as a leg's last unit if the thread stays silent.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the operator typed 25 confirmations into chat during one PD bench session (2026-10-09 to 10-14), 13 of them between 20:00 and 20:57 on 10-14 ("out", "in", "on", "done", "eload is OFF"). A latched e-load protection that only the front-panel ENT key clears aborted one run (2026-10-13 17:39)
 **Scope:** suite
 **Hardware:** verify-only
