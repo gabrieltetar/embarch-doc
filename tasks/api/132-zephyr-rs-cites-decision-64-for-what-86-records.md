@@ -1,6 +1,6 @@
 # 132 — `zephyr.rs` cites a retired-config decision for the single-SoC rules decision 86 records
 
-**State:** claimed by agent/api/132-zephyr-rs-cites-decision-64-for-what-86-records, 2026-10-28 13:47
+**State:** done — landed 2026-10-28 (embarch-api `744b94b`, embarch-doc `25f394d4`); the worker left the claim line, set at the fold
 **Dispatch note (2026-10-28 13:47 leg):** api reserve — `decisions/client-crate.md` 11,581/12,288 (707 B left, filed `api/140`), `open.md` 4,494/5,120 (626 B, filed `api/144`). Neither should need a write here; if one does and it crosses its line, file per `tasks/README.md`. `suite/047` runs after you in `embarch-api` (`--version`, `versions --json`, MCP `status`) — stay out of those.
 **Source:** `api/122`'s reviewer, 2026-10-25 (below its bar, filed by the supervisor so it is not lost when the log folds).
 **Scope:** api
