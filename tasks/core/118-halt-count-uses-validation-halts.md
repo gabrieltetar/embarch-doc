@@ -1,6 +1,6 @@
 # 118 — Core's `halt_count` uses `Validation.halts` instead of inferring the gate's halt
 
-**State:** claimed by agent/core/118-halt-count-uses-validation-halts, 2026-10-28 13:46
+**State:** done — landed 2026-10-28 (embarch-core `72bbd52`, embarch-doc `02869ae6`); the worker left the claim line, set at the fold
 **Dispatch note (2026-10-28 13:46 leg):** core reserve — `open.md` 5,028/5,120 (92 B left), `spec.md` 9,760/10,240 (480 B), `decisions/probes.md` 11,263/12,288 (1,025 B), all parked under `tasks/core/112` (`In flux: yes`). Decision 97 lives in `decisions/live-read.md`, which is not in reserve: amend it there. Do not add to `open.md` or `spec.md`; if you must, compact that file in this unit carrying `core/112`'s `Must not delete:` list. `suite/047` (installed binary names its commit) runs after you in `embarch-core` — stay out of `--version` and `/status`.
 **Source:** `topology/067` (topology decision 47, `embarch-topology@b4d1b0a`), box 2. Filed from `inbox/core-use-validation-halts.md` by the 2026-10-26 09:03 leg, in topology/067's fold.
 **Scope:** core
