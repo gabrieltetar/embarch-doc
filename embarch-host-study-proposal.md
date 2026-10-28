@@ -1,6 +1,6 @@
 # Proposal: host-run studies, operator prompts, bench instruments and a USB PD bench
 
-**Status:** proposal, 2026-10-09. Phase 2 (instruments) built 2026-10-28: [embarch-topology decision 49](embarch-topology/decisions/instruments.md), [embarch-core decision 104](embarch-core/decisions/instruments.md), [embarch-api decision 97](embarch-api/decisions/instruments.md); its bench check is owed.
+**Status:** proposal, 2026-10-09. Phase 2 (instruments) built 2026-10-28: [embarch-topology decision 49](embarch-topology/decisions/instruments.md), [embarch-core decision 104](embarch-core/decisions/instruments.md), [embarch-api decision 97](embarch-api/decisions/instruments.md); its bench check is owed. Phase 3's prompt built 2026-10-28 in Core and `embarch-api` ([embarch-core decision 105](embarch-core/decisions/host-prompt.md), [embarch-api decision 99](embarch-api/decisions/host-study.md)); the UI modal is `tasks/ui/100`.
 
 Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3).
 
@@ -69,6 +69,6 @@ Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api
 
 ## Open questions
 
-- Who may answer a prompt, and its default timeout.
+- ~~Who may answer a prompt, and its default timeout.~~ Answered by [embarch-core decision 105](embarch-core/decisions/host-prompt.md): anyone holding Core's token, from any surface, checked by prompt id (an agent relays a person, [embarch-api decision 99](embarch-api/decisions/host-study.md)); no default, the step's own `timeout_ms`, capped at one hour.
 - Whether a host study may also drive the dev bench later (mixed studies). Out of scope here.
 - A self-hosted workspace for `pd-bench/` once the USB-C fixes are upstream.

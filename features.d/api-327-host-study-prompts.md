@@ -1,0 +1,1 @@
+| `run_host_study` / `answer_prompt` — run a host study, relay a person's answer to its prompt (never the agent's own), `study_watch` returns early on a waiting prompt | Shipped — **mock-tested only; never run against a real Core** | unit | 99 |
