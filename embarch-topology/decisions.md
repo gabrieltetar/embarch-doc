@@ -23,6 +23,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/validate-timing.md](decisions/validate-timing.md) | 26, 47 | The `validate` call's own freshness timestamp, distinct from the enrolled record's, and the count of halts the identity gate made |
 | [decisions/links.md](decisions/links.md) | 18, 46 | The DUT signal link's declared route, and a declared serial matching several ports |
 | [decisions/links-direct.md](decisions/links-direct.md) | 37, 40 | Which signals Core may write, a signal's own line rate, and a direct signal's missing port |
+| [decisions/links-origin.md](decisions/links-origin.md) | 48 | A signal that leaves a role-less bench board, stored by its probe serial |
 | [decisions/links-port.md](decisions/links-port.md) | 17, 24 | A link's own declared port, distinct from its probe's, and detection's fourth answer |
 | [decisions/alerts.md](decisions/alerts.md) | 5, 12, 19, 34 | How a mismatch reaches a human, and the live-push mechanism that was retired |
 

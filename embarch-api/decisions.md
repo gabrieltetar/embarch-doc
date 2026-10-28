@@ -18,6 +18,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52, 88 | 8.2 KB |
 | [`bench_exchange`](decisions/bench-exchange.md) — one call runs a console sequence and returns every listened console as one filtered timeline; why its times are the client's, not Core's | 89 | 4.0 KB |
 | [`serial_log` reads a declared signal](decisions/serial-log-signal.md) — Core resolves the signal to the port's current name; this crate never does, and project/port stay the fallback | 94 | 2.4 KB |
+| [A bench board by its own name](decisions/bench-board-forms.md) — `origin_board` on `declare_signal`, `probe_serial` on `validate`, `mem_read` and `core_state`; an older Core caught by reading back | 95 | 2.1 KB |
 | [Hardware selection and identity](decisions/hardware-selection.md) — enrollment, mismatch alerts, the dev-bench identity cross-check, and why no tool here ever picks a physical board or port on a caller's behalf | 34, 35, 59, 60, 70, 84, 87 | 8.9 KB |
 | [Running a build](decisions/build.md) — the generic per-project command, and the unix-only process-tree kill, the cross-process build lock | 5, 75, 91 | 4.3 KB |
 | [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |

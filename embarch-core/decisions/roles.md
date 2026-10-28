@@ -31,3 +31,13 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **A bench board must carry a `name`, and a blank one is a `400`.** With no role, the name is the only thing a human reads to tell it apart from the roles' boards and from other bench boards. The check sits beside decision 75's, after `hw_lock` and before any attach.
 
 **`DELETE /probes/by-serial/{serial}` is a bench board's retraction**, because `DELETE /probes/enrolled/{role}` cannot name a board with no role. It retracts any row by probe and keeps the same posture: `hw_lock`, no probe opened, `204` or `404`.
+
+### 103 — A bench board's signal, live reads and validate reach it by its probe (`tasks/suite/046`)
+
+Decision 83 made a bench board flashable and resettable by probe; its console, a halted read and a validate still took only a role, so the first live session on one borrowed `dev-bench` for all three.
+
+**A reset or a core-state read resolved from a signal reaches the board the signal names.** The outpost pre-flight's reset (decision 74's header read) and an exchange's core-state answer (decision 85) find the board through `SignalLink::origin()` and `find_signal_origin_board` ([`embarch-topology` decision 48](../../embarch-topology/decisions/links-origin.md)): the role's board, or the bench board on the signal's probe. A refusal names the origin the signal declares, and a bench board by its enrolled name and probe, never by a role it does not hold. `POST /signals` passes `origin_board` through to topology, which resolves a name and answers the refusals as `400`.
+
+**`POST /live/mem-read` and `/live/core-state` take `probe_serial` as well as `role`; `POST /validate` takes exactly one of the two.** The live reads keep the DUT as their default when neither is named, so no caller changes. Naming both is a `400`, as is a validate naming neither, all before `hw_lock`. An unenrolled probe is a `404` like an unenrolled role. The identity gate is the probe's whichever way the board was named, because it always was: `live::with_core` validates by probe serial, and `/validate` by probe runs `validate_serial_timed`.
+
+**Rejected: accepting a bench board's name on the live routes.** The probe serial is what flash and reset already take for a bench board (decision 83), and a name lookup would be a second resolver beside topology's, for routes an agent calls with a serial in hand.

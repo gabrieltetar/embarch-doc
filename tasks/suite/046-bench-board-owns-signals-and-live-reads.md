@@ -1,6 +1,6 @@
 # 046 — A bench board can own a signal and be read and validated by its probe, not only flashed
 
-**State:** claimed by agent/suite/046-bench-board-owns-signals, 2026-10-28 15:08 — announced 14:33:53 (`ts` `1793219633.062879`); the window closed 15:03:53 with no reply in the thread or the channel (polled 15:06:46), so the supervisor runs it as its leg's last unit.
+**State:** done — topology decision 48 (`SignalLink.origin_board`), core decision 103 (signal-origin reset and core-state, `probe_serial` on live reads and validate), api decision 95 (`origin_board`, `probe_serial` on the tools and CLI). The UI half is `tasks/ui/098`. Hardware debt: one real run on a bench board (declare its console by name, `mem_read`/`validate` by probe), unrun.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the bench Nucleo was enrolled as a role-less bench board on 2026-10-09 (topology decision 41), but its console signal could only be declared from role `dev-bench`, which holds an nRF54L15 DK; two refusals on 2026-10-19 named that role, not the Nucleo, and when the bench firmware hung (2026-10-09) its program counter was read with the probe-rs CLI, since `mem_read` takes only a role
 **Scope:** suite
 **Hardware:** verify-only
@@ -16,9 +16,9 @@ Decision 41 made the bench board flashable, and the first live session on it the
 
 ## Done when
 
-- [ ] topology: a `SignalLink` can name a board as its origin; existing rows with `origin_role` load unchanged.
-- [ ] core: a reset resolved from a signal reaches the board it names, and refusals for a bench board's signal name that board.
-- [ ] core: mem-read and validate accept a probe serial, with the same identity gate as by role.
-- [ ] api: `declare_signal`, `mem_read` and `validate` (tools and subcommands) accept the board and probe-serial forms.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10) in each repo touched.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated in each repo touched, `changelog.d/` fragment dropped.
+- [x] topology: a `SignalLink` can name a board as its origin; existing rows with `origin_role` load unchanged.
+- [x] core: a reset resolved from a signal reaches the board it names, and refusals for a bench board's signal name that board.
+- [x] core: mem-read and validate accept a probe serial, with the same identity gate as by role.
+- [x] api: `declare_signal`, `mem_read` and `validate` (tools and subcommands) accept the board and probe-serial forms.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10) in each repo touched.
+- [x] `spec.md`/`decisions.md`/`open.md` updated in each repo touched, `changelog.d/` fragment dropped.

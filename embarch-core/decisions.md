@@ -24,7 +24,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58, 101 | 10.9 KB |
 | [Error and version surfaces](decisions/surfaces.md) | 12, 13, 55, 59, 67, 68 | 11.6 KB |
 | [The human enrollment surface](decisions/enrollment.md) | 25, 27, 28, 50, 54 (moved to 57), 57, 87 | 8.8 KB |
-| [What a role is made of](decisions/roles.md) | 75, 76, 83 | 4.1 KB |
+| [What a role is made of](decisions/roles.md) | 75, 76, 83, 103 | 6.7 KB |
 | [Bootloading over MCUboot serial recovery](decisions/bootload.md) | 77, 78 | 4.5 KB |
 | [Writing to a declared signal](decisions/signal-exchange.md) | 79, 85, 96 | 9.6 KB |
 | [Capturing a signal in the background](decisions/signal-capture.md) | 92, 94, 102 | 5.7 KB |
