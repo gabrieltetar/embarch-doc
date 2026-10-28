@@ -1,6 +1,6 @@
 # 068 — `min_interval_ms` says "end of one write"; Core paces from the end of the whole exchange
 
-**State:** claimed by agent/topology/068-min-interval-measurement-point, 2026-10-28 17:25
+**State:** done — agent/topology/068-min-interval-measurement-point, 2026-10-28
 **Reserve at dispatch (2026-10-28):** nothing in `embarch-topology` is in reserve.
 **Source:** `suite/049`'s fold (supervisor log, 2026-10-28 16:27, "Least sure about"), the reviewer's note: "pacing is measured from the end of a command's read, so it never undershoots, but topology's `min_interval_ms` doc comment says 'end of one write' (a one-line comment fix nobody has filed)".
 **Scope:** topology
@@ -19,7 +19,7 @@ A field whose doc misstates its measurement point is how a caller tunes `min_int
 
 ## Done when
 
-- [ ] `min_interval_ms`'s doc comment states the measurement point Core uses.
-- [ ] Decision 49 corrected in place if it states the old point.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), every CI cell (default, hardware, bin, software+wire).
-- [ ] `changelog.d/` fragment dropped, naming Core's comment as the remaining mismatch.
+- [x] `min_interval_ms`'s doc comment states the measurement point Core uses.
+- [x] Decision 49 corrected in place if it states the old point. (It does not state a measurement point; nothing to correct.)
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), every CI cell (default, hardware, bin, software+wire).
+- [x] `changelog.d/` fragment dropped, naming Core's comment as the remaining mismatch.
