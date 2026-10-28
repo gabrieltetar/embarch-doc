@@ -1,6 +1,7 @@
 # 099 — The Study Designer tab shows when a saved study's protocol no longer matches its `.eap`
 
-**State:** open
+**State:** claimed by agent/ui/099-show-protocol-divergence, 2026-10-28 16:32
+**Dispatch note (supervisor):** `embarch-ui/open.md` is in reserve (935 B left); its compaction task `ui/088` is blocked on `In flux: yes`, so this unit must not grow that file: delete the bullet named below, and if you add anything, compact as you go. No other ui file is in reserve.
 **Source:** `embarch-ui/open.md` — "A saved study is never checked against the `.eap` file it was built from … this repo's half is only where a divergence would be *shown*"; and `embarch-study-designer/open.md` — "What to do with a protocol divergence — the check exists (decision 87, `protocol_divergence`); showing it is `embarch-ui`'s". The check landed as `study-designer/079` on 2026-10-28.
 **Scope:** ui
 **Hardware:** none
