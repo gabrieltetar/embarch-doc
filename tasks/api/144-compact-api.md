@@ -1,6 +1,7 @@
 # 144 — Compact api's open.md
 
-**State:** open
+**State:** claimed by agent/api/144-compact-api-open, 2026-10-28 17:25
+**Reserve at dispatch (2026-10-28):** `embarch-api/open.md` 4,810/5,120 B, 310 B left (the file this task compacts; `api/128` added the ledger bench-debt bullet since filing). Nothing else in `embarch-api` is in reserve.
 **Source:** tasks/api/131 added the `bench_exchange` item to `embarch-api/open.md`, which took it to 4034/5120 B, inside `check-doc-size.py`'s reserve.
 **Scope:** api
 **Hardware:** none
