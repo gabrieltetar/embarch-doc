@@ -8,6 +8,7 @@
 - Topology tab: picking one of several ports under one USB serial declares its interface; validate fails a direct route those ports share with none declared (decision 10; suite/052).
 
 ### Changed
+- Split embarch-ui decision 37 (Time chart live feed) verbatim out of decisions/time-chart.md into time-chart-live.md; the Time chart file is out of reserve (ui/095).
 - `embarch-ui/spec.md` back in reserve: the tab-navigation paragraph lives only in `spec/tabs.md` now, at its newer wording (ui/089).
 - Browser drive scripts read geckodriver/UI ports only via EMBARCH_GECKO_PORT / EMBARCH_UI_PORT (tests/browser/addr.py); old names error ([decision 65](../embarch-ui/decisions/browser-drive.md)).
 - `build_and_flash` now logs why it built the board it did on every path, and the stored build log keeps the version, board, flash and reset lines, including a flash failure.
