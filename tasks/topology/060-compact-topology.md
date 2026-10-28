@@ -1,8 +1,6 @@
 # 060 — `decisions/enrollment.md` and `spec.md` are in reserve, and nothing filed the debt
 
-**State:** blocked — both files are about to be rewritten by queued work (see `In flux`). Unparks
-when `tasks/topology/059` lands, or is closed without touching either file; the clock below runs
-regardless, and a verbatim split needs no unpark at all.
+**State:** done — 2026-10-28, closed by `tasks/topology/066`'s leg (verbatim split of decision 41 and 16; see below).
 **Source:** `scripts/check-doc-size.py`, 2026-10-25. The owner's commits `bff9e91c`, `b93e48f7`,
 `689e726f` (decisions 37–39, 2026-10-06) and `b85b23be` (decision 41, bench boards, 2026-10-09)
 pushed both files into their reserve without a `Compacts:` line. The gate reported it only on
@@ -12,7 +10,6 @@ the supervisor, which did not write these bytes.
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-topology/decisions/enrollment.md
 **Size debt due:** 2026-11-01
 **In flux:** yes — `decisions/enrollment.md` only. `tasks/topology/059` wrote decision 44 into
 `decisions/validation.md`, not this file, and split `spec.md` verbatim (below); `tasks/suite/046` (a bench
@@ -46,11 +43,11 @@ moving a decision (`check-decision-refs.py`, and `tasks/umbrella/022` nearly mov
 
 ## Done when
 
-- [ ] Both files out of reserve (`scripts/check-doc-size.py --pressure`), or this task says per
+- [x] Both files out of reserve (`scripts/check-doc-size.py --pressure`), or this task says per
       file why not.
-- [ ] Any decision moved keeps its number, and every link to it resolves.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered in the compactor's own words.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`).
+- [x] Any decision moved keeps its number, and every link to it resolves.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered in the compactor's own words.
+- [x] Gate green (`../../../embarch-fleet/gate.md`).
 
 ## 2026-10-26, `topology/059`
 
@@ -58,3 +55,11 @@ moving a decision (`check-decision-refs.py`, and `tasks/umbrella/022` nearly mov
 `spec/consumers.md` (now 81.7%); no measured STM32 identity fact moved or changed. Its item is closed
 and it is off `Compacts:`. `decisions/enrollment.md` was not written by 059 and is untouched; it
 stays parked on `suite/046` (decision 41).
+
+## 2026-10-28, `topology/066`
+
+`decisions/enrollment.md` is out of reserve: 12,122 B -> 10,395 B. Decisions 41 and 16 moved verbatim
+to `decisions/enrollment-bench.md` (2,372 B); 41 keeps a pointer in `enrollment.md` because
+`embarch-core/decisions/roles.md` and `embarch-dev-bench/decisions/pd-bench.md` link that path for
+it. No text in `enrollment.md` was shortened, so the `suite/046` flux was not touched. `spec.md` was
+paid on 2026-10-26 (above). Human question: yes, `spec.md` still answers it; nothing in it moved.
