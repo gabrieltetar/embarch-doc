@@ -9,6 +9,7 @@
 - Study-designer gained the host-run study types (HostStudy with teardown, Exchange/Prompt/Instrument/Wait); JSON only, not yet accepted by Core (decision 80).
 
 ### Changed
+- Study-designer decision 81 no longer claims a "0 of 0" print; the crate prints nothing, consumers say "no records found".
 - `HOST_TYPE_SCHEMA_VERSION` is 20: Core now accepts a `HostStudy`, so an `embarch-api` built at 20 refuses a Core still at 19. Deploy Core first.
 
 ### Fixed
