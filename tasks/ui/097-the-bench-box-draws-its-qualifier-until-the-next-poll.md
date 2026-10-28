@@ -1,6 +1,7 @@
 # 097 — The Topology tab's bench box draws the raw board qualifier until the next poll
 
-**State:** open
+**State:** claimed by agent/ui/097-bench-box-label-on-first-draw, 2026-10-28 14:59
+**Reserve (supervisor, 2026-10-28):** `embarch-ui/open.md` 935 B left, parked under `ui/088` (`blocked`, `In flux: yes`). If this unit adds to `open.md`, compact it in the same unit, carrying `ui/088`'s `Must not delete:` list; otherwise leave it.
 **Source:** `ui/096`'s close note and its reviewer, 2026-10-28 leg. The worker found the bench box first
 draws the raw west qualifier and takes its label only on the next snapshot poll, because
 `loadRolePickers()` (`assets/app.js:6781`) does not redraw the diagram when `/api/topology/pickers`
