@@ -1,6 +1,7 @@
 # 005 — `/embarch-permissions` carries the agent guide's 54-tool split and cites its new home
 
-**State:** open
+**State:** claimed by agent/chat/005-embarch-permissions-carries-the-agent-guides-54-tool-split, 2026-10-29 15:07
+**Dispatch note (leg started 2026-10-29 15:03):** nothing in `embarch-chat/` is in doc-size reserve. The guide's lists were checked as sets against `embarch-api/src/tools.rs` at `0f1f0d4` (23 allow + 31 ask = 54); re-check them against `tools.rs` on today's `main` rather than copying. `suite/agent-guide.md` is the supervisor's file: if it is wrong, drop that in `/home/gabriel/Github/embarch/embarch-doc/inbox/`, do not edit it.
 **Source:** `tasks/suite/030`'s fold, 2026-10-29: `suite/user-guide.md` §7.1 moved to [suite/agent-guide.md](../../suite/agent-guide.md) §1.1 and its lists grew from 26 to all 54 `embarch-api` tools. `embarch-chat` [decisions/library.md](../../embarch-chat/decisions/library.md) says the command follows that page's rule and carries its lists dated.
 **Scope:** chat
 **Hardware:** none
