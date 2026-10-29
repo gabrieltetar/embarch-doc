@@ -1,6 +1,6 @@
 # 075 — `fold-commit.py` committed the log and then failed its own `git rm`, leaving the log-only commit it documents as impossible
 
-**State:** open
+**State:** done — (a) `git rm -f` (embarch-fleet `a071e40`); (b) the instance half is staged before the log commit, and (c) a re-run of the same command resumes a half-landed fold (`cc73d53`).
 **Source:** `dev-bench/034` (leg 131, 2026-09-17). Reproduced twice in one unit; recovered by hand.
 Filed from `inbox/` by leg 132.
 **Scope:** doc
@@ -59,16 +59,22 @@ the entry, or concluded the fold never happened.
 
 ## Done when
 
-- [ ] `git rm` of a `done` task file succeeds when the supervisor has just corrected its `State:`
+- [x] `git rm` of a `done` task file succeeds when the supervisor has just corrected its `State:`
       line — by `-f`, by staging first, or by refusing earlier with an instruction to stage.
-- [ ] Either the log commit genuinely happens after every path is settled, **or** `.claude/leg.md`'s
+- [x] Either the log commit genuinely happens after every path is settled, **or** `.claude/leg.md`'s
       sentence is corrected to say what the script actually does. Right now the doc and the script
       disagree and the doc is the one a supervisor trusts mid-fold.
-- [ ] The *"supervisor-log.md has no uncommitted change"* refusal says what to do about it. It is
+- [x] The *"supervisor-log.md has no uncommitted change"* refusal says what to do about it. It is
       accurate and it is a dead end as written: the recovery is "commit the instance side by hand
       with the same paths", and nothing says so.
-- [ ] Check whether `tasks/doc/050` and `tasks/doc/072` are the same underlying defect as (a) and
+- [x] Check whether `tasks/doc/050` and `tasks/doc/072` are the same underlying defect as (a) and
       should be merged rather than tracked three times.
+
+**Answers, 2026-10-29.** (a), `050`, `072` and `082`'s first half are one defect and one fix
+(`a071e40`); they were kept as four tasks only so each closes against the same commit. (b) The log
+commit now happens after the instance half is staged, so leg.md's sentence is true rather than
+corrected. (c) The refusal now distinguishes three states: this unit's log commit is the newest and
+unfolded (the re-run resumes it), already folded (says so), or neither (says how to finish by hand).
 
 ## Not yours
 
