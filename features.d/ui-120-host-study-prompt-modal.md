@@ -1,0 +1,1 @@
+| A host study's operator prompt opens a modal on any tab (text, countdown, Confirm/Cancel, sound and notification), answered as `ui`, and shown to a page opened mid-prompt | Shipped — **never rendered in a browser or met a live Core prompt**: unit and stub-Core route tests only | unit | 69 |

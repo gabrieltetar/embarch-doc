@@ -36,3 +36,4 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/atlas-tab.md](decisions/atlas-tab.md) | 52, 53, 54 | The Atlas tab: a stack map drawing the atlas's own `graph.json`, every part as a generic symbol with net and firmware names, citation tiers and on-demand page renders |
 | [decisions/live-study.md](decisions/live-study.md) | 31, 32, 33, 60, 64 | One tab that runs a study and reads one back: the server-side session rings, the console rule, what the browser is handed already decoded, a stale read never rendering under the open study, and a table re-fetched when its card loads |
 | [decisions/browser-drive.md](decisions/browser-drive.md) | 65 | The drive scripts' one address convention (`addr.py`), defaults kept, retired names refused |
+| [decisions/operator-prompt.md](decisions/operator-prompt.md) | 69 | A host study's operator prompt as a modal on any tab, and the UI polling Core to follow studies it did not start |

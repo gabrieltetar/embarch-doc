@@ -1,6 +1,6 @@
 # 100 — A host study's prompt opens a modal on the Live Study tab, answered there
 
-**State:** claimed by agent/ui/100-host-study-prompt-modal, 2026-10-28 21:55 — re-claimed for a resume: the 17:25 worker died with its leg at ~17:35 holding 612 uncommitted lines (5 files), committed by the next leg's recovery as `cc29076` on the code branch (unverified); the worktrees are kept and a fresh worker continues from it.
+**State:** done — modal, stream, answer route and the follow-by-polling choice shipped (decision 69).
 **Reserve at dispatch (2026-10-28):** nothing in `embarch-ui` is in reserve. `embarch-ui/open.md` is 3,738/5,120 B, under `ui/088`'s 3,920 B floor since `ui/099` retired a bullet, so `check-doc-size.py --pressure` reports it PAID: close `tasks/ui/088` as done in this unit's doc branch (one line saying `ui/099` paid it). The note below predates that; still do not grow `open.md` past the floor.
 **Source:** `tasks/suite/048` (operator prompt step), whose Core and `embarch-api` halves landed 2026-10-28 as `embarch-core` decision 105 and `embarch-api` decision 99; the UI half is filed here, as `suite/046` filed `ui/098`. The proposal: [embarch-host-study-proposal.md](../../embarch-host-study-proposal.md), owner's choice 4.
 **Scope:** ui
@@ -24,9 +24,9 @@ The field session this came from relayed 25 confirmations through a chat. Core a
 
 ## Done when
 
-- [ ] The modal: text, countdown, Confirm, Cancel, a sound or notification on open; closes on `PromptResolved`.
-- [ ] A mid-prompt reload shows the modal (snapshot carries `pending_prompt`).
-- [ ] Answering posts with `answered_by: "ui"`; a `409` is shown, not swallowed.
-- [ ] Tested headless against a stub Core (a route test for the answer route at least; a `tests/browser` drive if the modal's rendering can be reached).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions/` updated, `changelog.d/` fragment dropped.
+- [x] The modal: text, countdown, Confirm, Cancel, a sound or notification on open; closes on `PromptResolved`.
+- [x] A mid-prompt reload shows the modal (snapshot carries `pending_prompt`).
+- [x] Answering posts with `answered_by: "ui"`; a `409` is shown, not swallowed.
+- [x] Tested headless against a stub Core (route test; unit tests). **No `tests/browser` drive was written:** debt, extend `stub_core.py` with a prompting study and drive the modal.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions/` updated, `changelog.d/` fragment dropped.

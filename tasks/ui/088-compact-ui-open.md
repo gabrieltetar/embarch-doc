@@ -1,13 +1,13 @@
 # 088 — `embarch-ui/open.md` is in reserve at 4,366 B after `ui/074`
 
-**State:** blocked — every remaining bullet is a live question; unparks when a trigger fires (see Why)
+**State:** done — `ui/099` paid it: `open.md` is 3,738 B, under the 3,920 B floor.
 **Source:** `ui/074` closed with the file at 4,366 / 5,120 B (754 B left, floor 3,920 B)
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-ui/open.md
 **Size debt due:** 2026-11-26
-**In flux:** yes — this sub-project's most-edited file: each hardware session or Core endpoint fires or adds a trigger here.
+**In flux:** no — paid, nothing left to compact.
 
 ## What
 
