@@ -1,6 +1,6 @@
 # 041 — `fleet-hardware.py --refresh` crashes, so the bench buffer has been 79 hours stale and no leg can refresh it
 
-**State:** open
+**State:** done — the null-`measured` crash fixed (all three read sites guard None); a failed `--refresh` leaves a marker the plain form reports and exits 1 on; fleet 2aaded8. **Live confirmation owed**: the first `--refresh` against the real bench after landing (the first box), which this session was barred from running.
 **Source:** leg 081, 2026-09-11 — hit at step 0 while sizing the one `bench` task in the queue
 **Scope:** doc
 **Hardware:** none to fix. **Confirming the fix needs Core reachable and at least one board
@@ -54,9 +54,9 @@ caught in time.
 
 - [ ] `fleet-hardware.py --refresh` completes against the current bench and rewrites
       `/home/gabriel/Github/embarch/.fleet/hardware.json`.
-- [ ] A `measured` key that is absent **or null** is handled at every site that reads one, not only
+- [x] A `measured` key that is absent **or null** is handled at every site that reads one, not only
       this line — grep the file for `.get("measured"` before calling it fixed.
-- [ ] Consider whether a `--refresh` that fails should make the **plain** form refuse to print a
+- [x] Consider whether a `--refresh` that fails should make the **plain** form refuse to print a
       confident topology, or at minimum say "last refresh FAILED at <when>" rather than only
       "STALE". A stale buffer that knows it is stale is safe; one that cannot say why is the shape
       that misleads.
