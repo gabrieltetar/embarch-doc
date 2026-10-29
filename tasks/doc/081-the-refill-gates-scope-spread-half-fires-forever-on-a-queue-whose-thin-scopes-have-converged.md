@@ -1,6 +1,6 @@
 # 081 — The refill gate's scope-spread half fires forever on a queue whose thin scopes have converged
 
-**State:** open
+**State:** done — the gate is left as it is and `.claude/leg.md` says when a spread-only firing may be skipped: the newest `Spread sweep: nothing filed (<time>)` log line is newer than every source a sweep reads, checked with one `git log --since`. `--refill-owed` prints a `spread only` hint line; exit status unchanged. No per-scope flag: the three scopes found converged here had 53 tasks filed in the next six weeks. embarch-fleet `3bc39b7`.
 **Filed by:** leg 139, 2026-09-17, after running the sweep the gate demanded and finding **nothing
 to file** — which is the condition that makes this a defect rather than a slow day.
 **Source:** `scripts/queue-status.py --refill-owed`, this leg's own run, and the sweep it produced.
@@ -62,13 +62,13 @@ repos.
 
 ## Done when
 
-- [ ] Decided whether the scope-spread half should be suppressible — e.g. a scope marked
+- [x] Decided whether the scope-spread half should be suppressible — e.g. a scope marked
       *converged* in a file the gate reads, set by a leg that swept it and found nothing, cleared
       when anything new lands in that scope — or whether the honest answer is that it should stop
       firing once the depth half is satisfied and the wave is already scope-bound.
-- [ ] If the answer is "leave it", `.claude/leg.md` says so, so a leg can skip the sweep on the
+- [x] If the answer is "leave it", `.claude/leg.md` says so, so a leg can skip the sweep on the
       spread signal alone rather than re-deriving this every time.
-- [ ] Either way, **the converged-scope finding above is recorded somewhere a leg reads**, because
+- [x] Either way, **the converged-scope finding above is recorded somewhere a leg reads**, because
       it is the part that cost this leg real tokens to establish and that nothing currently carries.
 
 ## Not yours
@@ -76,3 +76,22 @@ repos.
 Everything that would fix this is in `scripts/` or `.claude/`. Do not edit either. A leg that reads
 this task may cite it in its log entry as the reason it did **not** sweep again; it may not change
 the gate.
+
+## Shipped
+
+**Leave the gate; make the skip a leg rule keyed on the sources.** Three forks were costed:
+
+- *Spread alone stops owing a sweep* — six lines in the script, but it discards a signal that
+  still pays: on 2026-10-28 a spread sweep filed `topology/068` "for scope spread".
+- *A per-scope "converged" flag* — a state file plus a set/clear rule. Measured against this
+  task's own finding, it would have gone wrong within days: `ui`, `topology` and
+  `study-designer`, converged on 2026-09-17, had 30, 10 and 13 tasks filed in the six weeks after.
+- **Taken:** a spread-only sweep that files nothing writes `Spread sweep: nothing filed (<time>)`
+  in its log entry; a later spread-only firing is skipped when
+  `git log --since=<that time>` over every `open.md`, `open/<topic>.md` and `design.md`, `embarch-token.md`,
+  `suite/roadmap.md` and `embarch-decision-reversals.md` is empty — i.e. a sweep would read what
+  the last one read. Zero new state; the handoff already carries the line.
+
+**Where the finding lives:** the class — and the evidence that convergence is a moment rather
+than a property — is in `.claude/leg.md` beside the spread half it qualifies. The dated per-scope
+list above is not copied there, because it stopped being true.
