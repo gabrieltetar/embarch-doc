@@ -188,6 +188,11 @@ DECISION_HEAD = re.compile(r"(?m)^(### .*)$")
 # role -> (cap in bytes, matcher on the repo-relative path)
 CAPS = [
     ("spec",        10 * KB, re.compile(r"^embarch-[a-z-]+/spec\.md$")),
+    # A spec split by mission keeps spec.md's cap per part: a topic file is still
+    # what an agent loads to work on the component, and no part may outweigh the
+    # file it came out of. Seven parts in four sub-projects sat in `legacy` at
+    # 25 KB before this; the largest is 6.6 KB (tasks/doc/078).
+    ("spec-group",  10 * KB, re.compile(r"^embarch-[a-z-]+/spec/[a-z-]+\.md$")),
     # A sub-project whose decisions outgrow one file splits them by mission into
     # decisions/<topic>.md, and decisions.md becomes the index (DOC-COMPACTION.md §3).
     ("decision-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/decisions/[a-z-]+\.md$")),

@@ -18,6 +18,7 @@ this is what counts as one.
 | Role | Cap | Path |
 |---|---|---|
 | Spec — what is true now | **10 KB** | `<sub-project>/spec.md` |
+| One spec group, where it outgrows a file | **10 KB** | `<sub-project>/spec/<topic>.md` |
 | Decisions — why | **25 KB** | `<sub-project>/decisions.md` |
 | One decision group, where they outgrow a file | **12 KB** | `<sub-project>/decisions/<topic>.md` |
 | Open questions | **5 KB** | `<sub-project>/open.md` |

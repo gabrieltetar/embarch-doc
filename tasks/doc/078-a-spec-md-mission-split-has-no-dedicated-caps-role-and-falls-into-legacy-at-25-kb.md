@@ -1,6 +1,6 @@
 # 078 — A `spec.md` mission split has no dedicated CAPS role; it falls into `legacy` at 25 KB
 
-**State:** open
+**State:** done — `spec-group` role, `embarch-*/spec/<topic>.md` at 10 KB (spec.md's own cap); DOC-BUDGET.md row, DOC-COMPACTION.md §3 sentence; seven parts move legacy 25K -> 10K, largest 6.6K (owner/doc-size, 2026-10-29)
 **Filed by:** leg 137, 2026-09-17, from `inbox/doc-spec-split-legacy-cap.md`, written by the
 `topology/057` worker as it landed the split that produced the first such file. Filed verbatim
 except for this header, the `**Owner:**` line below, and the note at the end. I re-checked the
