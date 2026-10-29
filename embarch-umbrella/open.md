@@ -10,7 +10,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Decision 26's `--prune` stays deferred by choice, not blocked.** Its prerequisite, `build_dir_name` on `list-targets`, shipped 2026-09-17 (`embarch-api` decision 77) for the *default* snippet/`extra_args` combination only; a non-default build still needs `target.json` (decision 69), so `--prune` needs both. Detail: [decision 26](decisions/prune-policy.md).
 
-- **Check 17's two Fail branches have never met a real narrow-bound Core** ([decision 22](decisions/bind.md)) — this bench registers `--bind 0.0.0.0`, and **the loopback hit discriminates nothing**, so a run seeing only it settles neither arm. The three-step protocol that settles them, and the `install --bind 0.0.0.0` assumption under *both* fix lines, is `tasks/umbrella/033`.
+- **Check 17 met a real narrow-bound Core 2026-10-29** ([decision 22](decisions/bind.md)): both fix lines name an `install` that refuses a registered service, and the stopped arm's detail is false — `tasks/umbrella/095`, Core's half `tasks/core/124`. **Unmeasured:** `bind-too-narrow`, which cannot fire from a NAT guest, from a mirrored-networking one; and whether `embarch setup` gets past an existing registration.
 
 - **`apply_plan` now clears `saved.host` on a non-`remote` `setup` conclusion** ([decision 51](decisions/sticky-host.md)), settling decision 48. Unit-tested. **Hardware debt:** confirm the state transition on a real machine (decision 51's three-step protocol).
 
