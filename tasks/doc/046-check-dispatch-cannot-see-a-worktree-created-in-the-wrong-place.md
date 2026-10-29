@@ -1,6 +1,6 @@
 # 046 — `check-dispatch.py` proves a worktree is absent and nothing proves it was then created *there*
 
-**State:** open
+**State:** done — both: `check-dispatch.py --created` is the post-condition, and `.claude/leg.md` carries the absolute `worktree add` and brackets it with the two runs (fleet `a78e4e0`, with `5a95406` from `tasks/doc/059`; owner/dispatch); lands by `deploy.py`
 **Source:** leg 095, 2026-09-12, first hand. All four of its units were dispatched to workers whose
 worktrees did not exist; all four workers correctly refused and stopped without touching anything,
 costing ~4 minutes and four spawns.
@@ -47,10 +47,17 @@ the same list re-run after creation answers it.
 
 ## Done when
 
-- `check-dispatch.py` grows a post-condition mode (a `--created` / `--verify` inversion: every named
+- [x] `check-dispatch.py` grows a post-condition mode (a `--created` / `--verify` inversion: every named
   path exists, is a registered worktree of the expected repo, and is on the expected branch), **or**
   `.claude/leg.md` carries the literal creation command with absolute target paths, or both.
-- If it is the script: a leg that skips the verification is no worse off than today, and a leg that
-  runs it cannot dispatch into a path that was never created.
-- The `git -C` + relative-path interaction is named explicitly wherever the fix lands, because the
-  exit code is 0 and the directory listing of the intended parent looks plausible.
+  **Both.** `--created` checks those three, plus that each path sits at
+  `<worktree_root>/<repo>/<slug>` and that the unit's worktrees share one `agent/<scope>/<slug>`
+  branch, and it resolves every relative Cargo path-dep from the worktree as cargo would — the check
+  `tasks/doc/037` asked for in place of a generated link table. A path that is missing is reported
+  with where the repo actually registered a worktree of that name.
+- [x] If it is the script: a leg that skips the verification is no worse off than today, and a leg that
+  runs it cannot dispatch into a path that was never created. Opt-in; exit 1 on any miss. Both modes
+  now also refuse a relative `--worktree`, which is how a check passes on paths never created.
+- [x] The `git -C` + relative-path interaction is named explicitly wherever the fix lands, because the
+  exit code is 0 and the directory listing of the intended parent looks plausible. In leg.md beside
+  the command, in the script's docstring, and in the refusal text itself.
