@@ -1,6 +1,6 @@
 # 041 — Consider a systematic completeness sweep, distinct from the existing correctness sweeps
 
-**State:** open
+**State:** done — decided no: a bullet in `SUITE-REVIEW-PASS.md` *What this pass deliberately does not solve* records why, `DOC-CONVENTIONS.md`'s citation census points at it (~27 M units a pass against seven free, low-severity finds and the `study-designer/056` risk), the report-where-tripped rule, and the reversal condition
 **Source:** `outpost/025`'s worker, 2026-09-16, dropped into `inbox/` at that unit's own instruction
 ("whether to spin up that sweep is not this unit's call") and filed here by the supervisor at that
 unit's fold. Not something an `outpost`-scoped worker may decide or act on itself.
@@ -45,11 +45,22 @@ is the `study-designer/056` defect created rather than found.
 
 Not prescribing a mechanism — designing one is the point.
 
-- [ ] A decision made, either way: is a systematic completeness sweep (source file implementation
+- [x] A decision made, either way: is a systematic completeness sweep (source file implementation
       against the decisions it plausibly embodies, per sub-project) worth commissioning as its own
       recurring pass alongside the existing number-correctness sweeps?
 - [ ] If yes: a scoping task filed. The mechanism is likely not mechanically checkable the way
       citation existence is — it needs a read of each source file against its sub-project's
       `decisions/` tree — so the scoping task has to say what bounds one pass.
-- [ ] If no: the reasoning recorded somewhere durable, so the next unit that reopens this question
+- [x] If no: the reasoning recorded somewhere durable, so the next unit that reopens this question
       does not start from zero.
+
+## Decided, 2026-10-29 (owner's session)
+
+**No recurring completeness sweep.** The fork, with the numbers:
+
+- **A recurring pass** reads each sub-project's source against its whole decisions tree: 7.2 MB of source and 1.2 MB of decisions across eleven sub-projects, one agent each at a field reviewer's ~2.5 M units, ~27 M units a pass before any fix.
+- **What it would find**, on the evidence so far: seven sites in three sub-projects (`outpost/025` 2, `topology/052` 2, `core/070` 3), every one found for free inside a number sweep, none a behaviour defect.
+- **What it risks**: a citation inferred for code the decision does not back — `study-designer/056`, created rather than found.
+
+**Chosen: a bullet, not a pass.** `SUITE-REVIEW-PASS.md` *What this pass deliberately does not solve* — the doc for the one sweep that reads every sub-project, so the record of a second one not run sits beside it: `check-decision-refs.py` checks one direction only; a gap is reported where it is tripped over, with the decision's sentence quoted beside the code, and a citation is added only where that sentence states what the code does. **Reversal condition** in the same bullet: a change that contradicts a decision lands because the code it touched did not cite it, or five gaps in one sub-project. `DOC-CONVENTIONS.md`'s citation census, which every citation-touching unit reads, carries a one-line pointer — that file had 106 B left before its reserve, so the reasoning could not live there. No scoping task filed.
+

@@ -39,7 +39,7 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 git grep -nIiE -B1 -A1 'decisions?([[:space:]]+[0-9]|[[:space:]]*$)|\.md#[0-9]' -- <paths>
 ```
 
-Each arm is a miss that cost a sweep: `-i` a sentence-initial `Decision 25's` (`tasks/doc/065`), `decisions?` a plural `decisions 27/29` (`069`), `$` a wrap that leaves the number on the next line and `-B1` one that leaves the sub-project on the line before (`071`, `074`), `\.md#` an anchor link. **It finds lines, and it is a floor**: count instances by reading (a list or range cites every number in it), and before cutting a fact grep its own words too — a citation can name a fact without its number. No script replaces it: `check-decision-refs.py` resolves a number, not the fact a citing sentence attributes to it, and matching one to the other is reading, not a regex.
+Each arm is a miss that cost a sweep: `-i` a sentence-initial `Decision 25's` (`tasks/doc/065`), `decisions?` a plural `decisions 27/29` (`069`), `$` a wrap that leaves the number on the next line and `-B1` one that leaves the sub-project on the line before (`071`, `074`), `\.md#` an anchor link. **It finds lines, and it is a floor**: count instances by reading (a list or range cites every number in it), and before cutting a fact grep its own words too — a citation can name a fact without its number. No script replaces it: `check-decision-refs.py` resolves a number, not the fact a citing sentence attributes to it, and matching one to the other is reading, not a regex. Uncited code: reported, not swept ([why](SUITE-REVIEW-PASS.md)).
 
 ## Retiring an entry
 
