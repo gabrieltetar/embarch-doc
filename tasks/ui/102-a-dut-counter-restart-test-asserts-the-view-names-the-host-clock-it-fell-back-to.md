@@ -1,6 +1,6 @@
 # 102 — A DUT-counter restart test asserts the view names the host clock it fell back to
 
-**State:** open
+**State:** claimed by agent/ui/102-a-dut-counter-restart-test-asserts-the-view-names-the-host-clock-it-fell-back-to, 2026-10-29 15:27
 **Source:** `tasks/outpost/018`'s Outcome, 2026-10-29 (its one unticked `Done when` box, re-homed here at its fold). `embarch-outpost` [decision 17](../../embarch-outpost/decisions/clocks.md): a backwards step longer than the whole capture means the DUT counter restarted, and **a host refuses the DUT clock, falls back to `rx_utc_ms`, and says so**. The worker found that arm lives in `embarch-ui/src/trace.rs` (and `embarch-core/src/outpost_load.rs`), not in the outpost decoder.
 **Scope:** ui
 **Hardware:** none — `trace.rs`'s own unit tests, against synthetic rows.
