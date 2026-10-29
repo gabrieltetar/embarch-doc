@@ -1,6 +1,10 @@
 # 015 — Say on every answer when the atlas is behind HEAD
 
-**State:** open
+**State:** claimed by agent/atlas/015-stale-signal, 2026-10-29 16:36
+**Dispatch note:** `atlas/012` (landed `197784a`, 2026-10-29) just added `pdf=<path>` to the `src:` line of
+`part_card` and every `doc_section` answer; your `stale=` goes on the same line, so build on that format rather than
+beside it. Line numbers below may predate four other landings today; read the code on `main`. No `embarch-atlas` doc
+is in size reserve; the design doc is `DESIGN.md` in the code repo.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the atlas was last bumped on 2026-10-08, about 100 commits followed on the firmware's branches, and 587 of 1,358 static answers (43%) came from that atlas with no stale mark in any answer, in the MAP or in `current.json`
 **Scope:** atlas
 **Hardware:** none
