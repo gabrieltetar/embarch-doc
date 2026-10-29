@@ -1,6 +1,6 @@
 # 012 — Fix the lookup misses field sessions hit: part_card's board argument, CMSIS register names, undistilled sections, PDF paths
 
-**State:** claimed by agent/atlas/012-query-misses, 2026-10-29 16:30
+**State:** done on agent/atlas/012-query-misses, 2026-10-29
 **Dispatch note:** line numbers below may predate `atlas/017`, `021`, `024` and `006` (all landed 2026-10-29); read the
 code on `main`. No `embarch-atlas` doc is in size reserve. The atlas's design doc is `DESIGN.md` in the code repo.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 49 of 160 `part_card` calls (9 sessions) never reached the server because the model wrote `"board": }`; 5 `register` misses on CMSIS names such as `UCPD1.CFG1`; 9 `doc_section`/`doc_toc` misses, 5 on toc sections with no distillation and 4 on section numbers or titles the toc does not have; 3 of 208 PDF page reads went to guessed file paths
@@ -18,9 +18,17 @@ The first fix alone recovers about a third of `part_card` calls. The other three
 
 ## Done when
 
-- [ ] `part_card` takes `board="all"`; a test asserts that no MCP tool's documentation offers `""` as a value.
-- [ ] `register UCPD1.CFG1` answers with `UCPD_CFGR1`'s fields, from a synthetic CMSIS header and SVD fixture with a member renamed against the SVD.
-- [ ] `doc_section` on an undistilled toc section returns its title, pages and the next call; an RM register section points to `register`; `doc_toc under=` with no match lists nearest titles.
-- [ ] Cards and `doc_section`'s `src:` line name the source PDF path relative to the firmware repo.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `part_card` takes `board="all"`; a test asserts that no MCP tool's documentation offers `""` as a value.
+- [x] `register UCPD1.CFG1` answers with `UCPD_CFGR1`'s fields, from a synthetic CMSIS header and SVD fixture with a member renamed against the SVD.
+- [x] `doc_section` on an undistilled toc section returns its title, pages and the next call; an RM register section points to `register`; `doc_toc under=` with no match lists nearest titles.
+- [x] Cards and `doc_section`'s `src:` line name the source PDF path relative to the firmware repo.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Notes (worker)
+
+- `atlas` has no `spec.md`/`decisions.md`/`open.md` in `embarch-doc`; the contract is the code repo's `DESIGN.md` ("Query surface"), which is updated.
+- `"all"` is the documented value; `""` (the CLI's bare `--board`, now `all`) is still accepted so no saved call breaks. `part_card` with no `board` still returns the card alone.
+- The CMSIS alias reads the header path `mcu vote --header` recorded in an RM doc's `vote*.json` (no new config). An atlas that never ran `vote` with a header, or whose header file moved, gets no alias and the old "not found". Offsets come from the `<TYPE>_TypeDef` layout (uint8/16/32/64, arrays, natural alignment); a typedef with a nested struct or union is skipped whole rather than guessed. Tested on synthetic header + SVD only, not a real vendor header.
+- `find_text` (named in the task) is not a tool in this repo, so "not distilled" answers point to `doc_section tier=text page=<first>` and a PDF Read only.
+- The PDF path comes from doc.json's `path` (relative to the atlas dir), shown relative to the firmware repo (`<atlas dir>/../..`), as `pdf=<path>` on the `src:` line of `part_card` and all `doc_section` answers. The card's own `Source:` line is LLM-written prose in `card.md`, left alone.
