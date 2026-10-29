@@ -13,10 +13,11 @@ Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api
 ## What the owner chose (2026-10-09)
 
 1. **A second study kind that Core executes itself: a host-run study.** It needs no dev bench and changes nothing on the dev-bench wire, so decision 60 stays true for bench studies. Mixing BLE steps with host steps is not in scope.
-2. **The PD partner is a PD bench:** a NUCLEO-G0B1RE with an X-NUCLEO-SNK1M1, running a Zephyr USB-C sink with a shell. It is reached as a declared `Direct` signal on its ST-LINK virtual COM port, so **no third role is added** ([embarch-topology](embarch-topology/decisions.md) decision 35 and [embarch-core](embarch-core/decisions.md) decision 75 stand). It is enrolled as a **bench board**, which holds no role ([embarch-topology](embarch-topology/decisions.md) decision 41). A project flashes it by its probe serial through the usual identity check.
+2. **The PD partner is a PD bench:** a NUCLEO-G0B1RE under a USB-C shield, running Zephyr's USB-C stack with a shell (two shields since, [below](#pd-bench-embarch-dev-bench)). It is reached as a declared `Direct` signal on its ST-LINK virtual COM port, so **no third role is added** ([embarch-topology](embarch-topology/decisions.md) decision 35 and [embarch-core](embarch-core/decisions.md) decision 75 stand). It is enrolled as a **bench board**, which holds no role ([embarch-topology](embarch-topology/decisions.md) decision 41). A project flashes it by its probe serial through the usual identity check.
 3. **Bench instruments are declared in topology**, first one an East Tester ET5410A+ electronic load speaking SCPI over a CH340 USB serial port.
 4. **An operator prompt is a host step**: a dialog in the UI, answerable from the UI or from an MCP tool, with the answer and who gave it recorded in the result.
-5. **The PD bench builds on Zephyr 4.4.2 plus the USB-C PD fixes that are not upstream yet**, the same stack as the DUT that prompted this. A bug common to both ends passes unseen, so key results still need a third-party partner.
+5. **The PD bench builds on Zephyr 4.4.2 plus the USB-C PD fixes that are not upstream yet.** It pins its own copy of those fixes (point 6), so it and the DUT's stack can drift apart. A bug common to both ends still passes unseen, so key results still need a third-party partner.
+6. **pd-bench gets its own west workspace in `embarch-dev-bench` (2026-10-20)**, pinning Zephyr v4.4.2 and carrying the six USB-C patches it needs until they land upstream, rather than waiting for upstream first. Being built by `tasks/dev-bench/036`; its decision joins [the PD bench decisions](embarch-dev-bench/decisions/pd-bench.md) when it lands.
 
 ## Shape
 
@@ -51,13 +52,11 @@ Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api
 
 ### PD bench (`embarch-dev-bench`)
 
-- A second app, `pd-bench/`. It does not speak the dev-bench wire; its console is a Zephyr shell.
-- NUCLEO-G0B1RE with an X-NUCLEO-SNK1M1:
-  - CC1 is PA8 and CC2 is PB15 (UCPD1).
-  - VBUS is sensed on PB1 (ADC1_IN9) through 200 k / 40 k.
-  - The TCPP01-M12 needs DB_OUT (PB6) and VCC_OUT (PC10) high.
-  - These pins come from ST's X-CUBE-TCPP example for the NUCLEO-G071RB, which has the same Nucleo-64 pinout.
-- Shell: `pd status` (contract, VBUS), `pd caps` (the partner's Source_Capabilities), `pd req <pos>` (a fixed PDO), `pd pps <pos> <mV> <mA>` (a PPS APDO), `pd max` (the default: the highest power).
+- A second app, `pd-bench/`. It does not speak the dev-bench wire; its console is a Zephyr shell ([embarch-dev-bench decision 48](embarch-dev-bench/decisions/pd-bench.md)).
+- A NUCLEO-G0B1RE under one of two shields, each a Zephyr shield picked with `-DSHIELD=` ([embarch-dev-bench decision 49](embarch-dev-bench/decisions/pd-bench.md)). Both use UCPD1, CC1 on PA8 and CC2 on PB15.
+  - **X-NUCLEO-SNK1M1**, a sink. The default build.
+  - **X-NUCLEO-DRP1M1**, dual role. It sources 5 V only, switched from its CN3 supply.
+- **The shell, its `pd: ok` / `pd: error` contract and each shield's pins are in [`pd-bench/README.md`](../embarch-dev-bench/pd-bench/README.md)**, the command reference. No list is copied here: the one that was went stale at five commands.
 - The SNK1M1's VBUS output feeds the load, so the PD bench plus the load is a scriptable PD/PPS sink.
 
 ## Phases
@@ -71,4 +70,3 @@ Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api
 
 - ~~Who may answer a prompt, and its default timeout.~~ Answered by [embarch-core decision 105](embarch-core/decisions/host-prompt.md): anyone holding Core's token, from any surface, checked by prompt id (an agent relays a person, [embarch-api decision 99](embarch-api/decisions/host-study.md)); no default, the step's own `timeout_ms`, capped at one hour.
 - Whether a host study may also drive the dev bench later (mixed studies). Out of scope here.
-- A self-hosted workspace for `pd-bench/` once the USB-C fixes are upstream.

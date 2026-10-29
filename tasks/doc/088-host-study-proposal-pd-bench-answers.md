@@ -1,6 +1,6 @@
 # 088 — Bring the host-study proposal's PD bench up to what it became: two shields, its own workspace, the README as its command reference
 
-**State:** open
+**State:** done — proposal: owner choice 6 (own workspace, 2026-10-20, cites `tasks/dev-bench/036` until its decision exists), point 5 drift, PD bench section to decision 49 + README; classified `fleet_writable` (fleet `f8c897d`); dev-bench spec/open already current
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the proposal still describes one shield and five `pd` commands while pd-bench has two shields (`embarch-dev-bench` decision 49) and seventeen commands, and its open question on a self-hosted workspace was answered by the owner on 2026-10-20
 **Scope:** doc
 **Hardware:** none
@@ -22,8 +22,8 @@ Phase 3 is the next consumer of this file. A phase-3 worker reading it today wou
 
 ## Done when
 
-- [ ] Open questions no longer asks for a self-hosted workspace. The owner's choice is recorded with its date, and points to the `embarch-dev-bench` decision that adds the workspace once that decision exists.
-- [ ] Point 5 says that pd-bench pins its own copy of the fixes, and keeps the common-bug caveat.
-- [ ] The PD bench section names both shields, cites decision 49, and points to `pd-bench/README.md` for the shell. It holds no command list.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Open questions no longer asks for a self-hosted workspace. The owner's choice is recorded with its date, and points to the `embarch-dev-bench` decision that adds the workspace once that decision exists.
+- [x] Point 5 says that pd-bench pins its own copy of the fixes, and keeps the common-bug caveat.
+- [x] The PD bench section names both shields, cites decision 49, and points to `pd-bench/README.md` for the shell. It holds no command list.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
