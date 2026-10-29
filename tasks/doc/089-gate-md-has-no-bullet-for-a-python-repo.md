@@ -1,6 +1,6 @@
 # 089 — `gate.md` has no bullet for a Python repo, and sixteen `atlas` tasks now sit in the queue
 
-**State:** open
+**State:** done — `gate.md` names the atlas gate (own `uv` venv, `.venv/bin/pytest -q`, client-name check); `leg.md` links `.atlas-local` and builds that venv; fleet 18cc37d.
 **Source:** the 2026-10-25 leg, filing the 2026-10-20 inbox batch: sixteen drops were scoped `atlas`, the first `atlas` tasks the queue has held (`tasks/atlas/001`–`016`).
 **Scope:** doc
 **Hardware:** none
@@ -18,5 +18,5 @@ When this is done, `gate.md` names the atlas gate the way it names the npm one, 
 
 ## Done when
 
-- [ ] `gate.md` has an atlas (Python) bullet naming the test command and the client-name check.
-- [ ] `.claude/leg.md` says what an `embarch-atlas` worktree needs for that command to run.
+- [x] `gate.md` has an atlas (Python) bullet naming the test command and the client-name check.
+- [x] `.claude/leg.md` says what an `embarch-atlas` worktree needs for that command to run.
