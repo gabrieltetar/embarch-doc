@@ -515,7 +515,12 @@ def reserve_state(base, reserve_pct):
     in_reserve, filed_clear = [], []
     for rel, size in docs():
         role, cap = role_and_cap(rel)
-        if cap is None:
+        # `history/*.md` has a cap and no reserve: `build_changelog.py` rolls it
+        # at the cap itself, and no worker may write it, so a filed compaction
+        # task is the wrong remedy for a file that pays its own debt. The first
+        # fold to push one into reserve went red and was paid by hand
+        # (tasks/doc/092). Over the cap still fails, in the main loop.
+        if cap is None or role == "history":
             continue
         limit = min(cap, base[rel]) if rel in base else cap
         if size > limit:

@@ -32,7 +32,7 @@ this is what counts as one.
 | A protocol doc | **12 KB** | `DOC-*.md` |
 | Reversals index | **10 KB** | `embarch-decision-reversals.md` |
 | Reversal range | **20 KB** | `reversals/rows-<a>-<b>.md` |
-| Assembled history | **20 KB** | `history/*.md`, rolled to `history/archive/` |
+| Assembled history — **no reserve**, it rolls itself | **20 KB** | `history/*.md`, rolled to `history/archive/` |
 
 **This table is `embarch-doc`'s corpus only.** The `embarch-fleet` repo — the fleet's own rules, which a leg never checks out — was covered by nothing until 2026-09-05, and its two design docs drifted to 32 KB while `risks.md` cited this section as the cap that had split it out. It now has its own ratchet, `embarch-fleet/scripts/check-fleet-doc-size.py`, run by that repo's `deploy.py`: same caps-plus-baseline mechanism, no reserve band, because the reserve exists to keep a *worker* from meeting a wall mid-edit and no worker ever writes those files.
 

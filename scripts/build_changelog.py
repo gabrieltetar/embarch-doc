@@ -35,7 +35,10 @@ still the right default for a human folding deliberately.
 Assembling groups each scope's fragments under a dated window heading in
 ``history/<scope>.md``, then deletes the consumed fragments. When a history file
 passes CAP_BYTES its oldest windows roll into ``history/archive/``, so no file
-in this repo ever stops being loadable.
+in this repo ever stops being loadable. A rolled window's relative links are
+re-based one directory deeper; ``scripts/test_build_changelog.py`` holds that.
+And because it rolls itself, a history file has no size reserve to file a debt
+against (``check-doc-size.py``, tasks/doc/092).
 
 Pure standard library.
 """
@@ -228,6 +231,29 @@ def assembled_problems() -> list[str]:
     return out
 
 
+# A markdown link target: `](target)`, no spaces, so a titled link is left alone.
+LINK_RE = re.compile(r"(\]\()([^)\s]+)(\))")
+
+
+def rebase_links(text: str, src: Path, dst: Path) -> str:
+    """Rewrite every relative link in `text` written from `src` to resolve from `dst`.
+
+    A fragment's links are relative to `history/`, so a window copied verbatim
+    into `history/archive/` points one directory short: `](../embarch-api/...)`
+    needs `../../`, a sibling `](core.md)` needs `../core.md`. The first real
+    roll did exactly that, 19 links red inside a fold that never meant to touch
+    the file (tasks/doc/092). URLs, `#anchors` and absolute paths are untouched.
+    """
+    def fix(m):
+        target = m.group(2)
+        if target.startswith(("#", "/")) or re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*:", target):
+            return m.group(0)
+        path, sep, frag = target.partition("#")
+        new = os.path.relpath(os.path.normpath(os.path.join(src, path)), dst)
+        return m.group(1) + new + sep + frag + m.group(3)
+    return LINK_RE.sub(fix, text)
+
+
 def roll_if_over_cap(path: Path, scope: str) -> str | None:
     """Move the oldest windows out until the file fits CAP_BYTES.
 
@@ -265,7 +291,8 @@ def roll_if_over_cap(path: Path, scope: str) -> str | None:
     dest.write_text(f"# {scope}: history {windows[-1]}..{windows[0]}\n\n"
                     f"**Status:** retired, {datetime.date.today()}. Rolled out of "
                     f"[../{scope}.md]({os.path.relpath(path, ARCHIVE)}) at the "
-                    f"{CAP_BYTES // 1024} KB cap.\n\n" + "".join(reversed(moved)),
+                    f"{CAP_BYTES // 1024} KB cap.\n\n"
+                    + rebase_links("".join(reversed(moved)), path.parent, ARCHIVE),
                     encoding="utf-8")
     path.write_text("".join([head] + blocks), encoding="utf-8")
     return str(dest.relative_to(REPO))

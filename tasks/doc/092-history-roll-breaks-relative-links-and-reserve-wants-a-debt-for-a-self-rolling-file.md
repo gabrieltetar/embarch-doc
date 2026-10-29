@@ -1,6 +1,6 @@
 # 092 — A history roll breaks every relative link it moves, and the reserve demands a debt for a file that rolls itself
 
-**State:** open
+**State:** done — `roll_if_over_cap` re-bases moved links (`rebase_links`, `scripts/test_build_changelog.py`); `history` role exempt from the reserve, DOC-BUDGET.md row says so; replaying the real 2026-10-26 roll writes the hand-fixed bytes (owner/doc-size, 2026-10-29)
 **Source:** the 2026-10-26 07:42 leg, folding `api/136`. The fold's `build_changelog.py --only` pushed
 `history/api.md` to 18,475 / 20,480 B (90.2%), and `check-doc-size.py` failed "1 file(s) in reserve with
 no debt filed". The supervisor paid it by calling `build_changelog.roll_if_over_cap` with the cap
@@ -28,6 +28,6 @@ Two defects, both met the first time any `history/<scope>.md` approached its cap
 
 ## Done when
 
-- [ ] A roll leaves `check-links.py` green, with a test that rolls a window holding a relative link.
-- [ ] A history file inside its reserve either fails nothing or rolls at assembly; the docs that state
+- [x] A roll leaves `check-links.py` green, with a test that rolls a window holding a relative link.
+- [x] A history file inside its reserve either fails nothing or rolls at assembly; the docs that state
       the cap (`DOC-BUDGET.md` row, the history header sentence) agree with what the code does.
