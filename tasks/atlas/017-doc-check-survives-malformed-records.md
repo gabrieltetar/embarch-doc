@@ -1,6 +1,6 @@
 # 017 — `doc check` reports a malformed record as a finding instead of crashing on it
 
-**State:** open
+**State:** claimed by agent/atlas/017-doc-check-survives-malformed-records, 2026-10-29 15:27
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas finding 2), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Checker logic over fixture records. `tests/datasheet_synth.py` and `tests/mutate_records.py` already build and mutate such records.
