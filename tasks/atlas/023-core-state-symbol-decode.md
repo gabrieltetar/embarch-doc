@@ -1,6 +1,6 @@
 # 023 — Atlas decodes `core-state` PCs into symbols against the board's ELF
 
-**State:** open
+**State:** claimed by agent/atlas/023-core-state-symbol-decode, 2026-10-29 17:15
 **Source:** core/103 (decision 97): `/live/core-state` returns raw `pc_samples` and `registers.pc`/`lr`; resolving them against the ELF the board runs (the `live_stacks` flash check) was deliberately left out of Core. Filed from `inbox/atlas-core-state-symbol-decode.md` by the 2026-10-26 08:09 leg, in core/103's fold.
 **Scope:** atlas
 **Hardware:** none — testable against a stub Core and a fixture ELF.
