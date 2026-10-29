@@ -29,6 +29,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- `ui` live-tail diff republishes a grown trailing line instead of dropping it, and no longer replays a sent line when the line repeats earlier — decision 70.
 - Desk tab: Start work says what happened on the card pressed, under its button; a pushed view no longer hides a failed start (it read as nothing at all).
 - The Topology tab redraws its diagram when the board-type pickers answer, so the bench box shows its label on first draw, not the raw qualifier.
 - Topology browser drive script now isolates the recent-projects file and passes all 81 checks.
