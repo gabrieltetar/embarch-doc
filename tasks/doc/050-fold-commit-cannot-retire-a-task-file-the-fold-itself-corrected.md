@@ -1,6 +1,6 @@
 # 050 — `fold-commit.py`'s `git rm` refuses a finished task file the fold itself modified, after the log commit has already landed
 
-**State:** open
+**State:** done — `fold-commit.py` removes a finished task file with `git rm -f`, so a fold that edited it (staged or not) retires it in one run; embarch-fleet `a071e40`. Checkboxes below are met.
 **Source:** leg 104, 2026-09-13, unit `dev-bench/028`. Hit live; the fold had to be finished by
 hand and the leg says so in its log entry and in the commit message (`embarch-doc` `9f6f567`).
 **Recurred 2026-10-28** (inbox drop, merged here rather than filed twice): folding `study-designer/078`,
@@ -89,6 +89,6 @@ offending token. That is a message improvement, not the defect.
 
 ## Done when
 
-- [ ] A fold whose unit's task file was modified in that same fold retires the file instead of
+- [x] A fold whose unit's task file was modified in that same fold retires the file instead of
       failing after the log commit has landed.
-- [ ] Gate green.
+- [x] Gate green.
