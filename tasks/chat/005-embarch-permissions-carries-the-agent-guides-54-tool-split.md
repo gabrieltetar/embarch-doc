@@ -17,6 +17,6 @@ The guide is the rule the command says it follows; until it matches, a user runn
 
 ## Done when
 
-- [ ] The command's allow and ask lists equal `agent-guide.md` §1.1's, re-dated.
-- [ ] The command cites `suite/agent-guide.md` §1.1.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10, the npm bullet); `changelog.d/` fragment.
+- [x] The command's allow and ask lists equal `agent-guide.md` §1.1's, re-dated.
+- [x] The command cites `suite/agent-guide.md` §1.1.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10, the npm bullet); `changelog.d/` fragment.
