@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- embarch-ui: `tests/browser/drive_prompt.py` renders the operator-prompt modal headless against a prompting host study in `stub_core.py` (decision 69).
 - A host study's operator prompt opens a modal on any tab with a countdown, Confirm and Cancel and a sound; the UI now follows studies started elsewhere.
 - ui: a saved study that carries an out-of-date `.eap` protocol shows an advisory note in the Study Designer tab (changed/gone, with differences); it still runs as saved. ui decision 68.
 - Topology tab: picking one of several ports under one USB serial declares its interface; validate fails a direct route those ports share with none declared (decision 10; suite/052).

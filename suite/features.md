@@ -215,7 +215,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The Study Designer tab notes when a saved study carries a protocol its repo `.eap` no longer matches (changed or gone, with differences); advisory, the study still runs as saved | Shipped — route tests on fixture repos; note text not browser-driven | local | 68 |
 | Windowed trace fetch — the Trace view asks the server for the window it draws, binned, rather than pulling a whole capture | Shipped — **the spans were the 13 MB, not part of it**; first paint 12.7 KB + 30.5 KB, a window 1–6 ms. Never driven against a live Core or a real DUT capture | local | 18 |
 | A capture that opens with pre-reset records loses the prefix, not its microsecond axis — the Trace view drops the stale leading run and says how many went | Shipped — **never met a real prefix**: crafted fixtures only, and the 18-record bridge-buffered case that motivates it has not been replayed | unit | 19 |
-| A host study's operator prompt opens a modal on any tab (text, countdown, Confirm/Cancel, sound and notification), answered as `ui`, and shown to a page opened mid-prompt | Shipped — **never rendered in a browser or met a live Core prompt**: unit and stub-Core route tests only | unit | 69 |
+| A host study's operator prompt opens a modal on any tab (text, countdown, Confirm/Cancel, sound and notification), answered as `ui`, and shown to a page opened mid-prompt | Shipped — rendered and driven in headless Firefox against a stub Core (`drive_prompt.py`); **never met a live Core prompt**, and the beep and notification are unmeasured | browser drive | 69 |
 
 ## embarch-desk
 
