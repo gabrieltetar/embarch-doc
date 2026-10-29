@@ -1,6 +1,6 @@
 # 102 — A DUT-counter restart test asserts the view names the host clock it fell back to
 
-**State:** claimed by agent/ui/102-a-dut-counter-restart-test-asserts-the-view-names-the-host-clock-it-fell-back-to, 2026-10-29 15:27
+**State:** done — no code change. Existing test `a_splice_that_is_not_a_leading_prefix_still_costs_the_dut_clock` (src/trace.rs) asserts the fallback names the host clock (`unit=="ms"`, `axis_clock=="host-arrival"`, `dut_clock_refused`), on both its refused-splice arms. Decision 17's "says so" is covered.
 **Source:** `tasks/outpost/018`'s Outcome, 2026-10-29 (its one unticked `Done when` box, re-homed here at its fold). `embarch-outpost` [decision 17](../../embarch-outpost/decisions/clocks.md): a backwards step longer than the whole capture means the DUT counter restarted, and **a host refuses the DUT clock, falls back to `rx_utc_ms`, and says so**. The worker found that arm lives in `embarch-ui/src/trace.rs` (and `embarch-core/src/outpost_load.rs`), not in the outpost decoder.
 **Scope:** ui
 **Hardware:** none — `trace.rs`'s own unit tests, against synthetic rows.
@@ -12,6 +12,6 @@
 
 ## Done when
 
-- [ ] Either an existing test is shown to assert the fallback names the host clock (cite it in the task's close), or a new one does.
-- [ ] If the view cannot say which clock it used, an `open.md` line names the gap against decision 17.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if code changed.
+- [x] Either an existing test is shown to assert the fallback names the host clock (cite it in the task's close), or a new one does.
+- [x] (n/a: the view names the clock) If the view cannot say which clock it used, an `open.md` line names the gap against decision 17.
+- [x] Gate (no code changed) green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if code changed.
