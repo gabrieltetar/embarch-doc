@@ -1,6 +1,6 @@
 # 006 — Make an external `reg_read` state the true cause: a missing I2C shell is not a NACK, another register's flag is not this one's
 
-**State:** claimed by agent/atlas/006-ext-reg-read-states-true-causes, 2026-10-29 16:16
+**State:** done on agent/atlas/006-ext-reg-read-states-true-causes, 2026-10-29
 **Dispatch note:** `atlas/021` (landed `05be6a5`/`af410ad`, 2026-10-29) rewrote the read-to-clear guard beside
 `_ext_effects`: `live.reads_clear` (true for `rclr`/"clear" only) now drives both guards, and `live.decode`'s
 field-reset handling was fixed forward in `af410ad`. The line numbers below predate that; read `live.py` on `main`
@@ -23,8 +23,14 @@ The prerequisite is paid as a build option every time (29 builds carried it, wit
 
 ## Done when
 
-- [ ] Unit test: a fake console answering `i2c: command not found` gives the "no I2C shell" answer with no "Nothing answered" and no `device list` call.
-- [ ] Unit test over the BQ25730 records: `ChargeOption0` is not guarded; `ProchotStatus` (which holds `STAT_COMP`) still is; `ChargerStatus`, `ChargeOption4`, INA700 `ALERT_DIAG` and TPS55288 `STATUS` keep their reasons.
-- [ ] A test runs the guard over every external part in the fixture atlases and pins the list of guarded registers, so a regex change shows its effect.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped.
+- [x] Unit test: a fake console answering `i2c: command not found` gives the "no I2C shell" answer with no "Nothing answered" and no `device list` call.
+- [x] Unit test over the BQ25730 records: `ChargeOption0` is not guarded; `ProchotStatus` (which holds `STAT_COMP`) still is; `ChargerStatus`, `ChargeOption4`, INA700 `ALERT_DIAG` and TPS55288 `STATUS` keep their reasons.
+- [x] A test runs the guard over every external part in the fixture atlases and pins the list of guarded registers, so a regex change shows its effect.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped.
+
+## Notes (worker)
+
+- The no-I2C-shell answer is read from the failed read's own `command not found` line, not from an up-front probe exchange: same answer, no `device list`, and no extra shell command on every read.
+- No BQ25730 records exist in any fixture atlas; the test uses a synthetic charger doc shaped like them (config bit naming `STAT_COMP (REG0x22)`), so the real records are unchecked here. INA700 / TPS55288 are likewise stand-ins (`ALERT_DIAG`, `STATUS`).
+- Foreign-name detection covers `REG0x..` references and underscore field/register names only, so a sentence naming a plain-word field (`AVG`) is still charged to its carrier.
