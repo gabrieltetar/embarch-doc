@@ -1,6 +1,6 @@
 # 054 — The leg number a leg writes into claims, task files and parked windows is self-assigned, and it has collided
 
-**State:** open
+**State:** done — option 1: `.claude/leg.md` says a leg has no number and to point at a unit, a log heading's `<yyyy-mm-dd HH:MM>` or a SHA (embarch-fleet `9cd022a`, rendered at deploy). Already the practice: 314 commit subjects named a `leg N` in September, none since 2026-09-20. No shared mechanism with `doc/079`: that one closed without a counter.
 **Source:** `inbox/doc-leg-number-is-self-assigned-and-collides.md`, dropped by the leg of
 2026-09-13 16:20 while writing its own claim commits. Filed by the leg of 2026-09-13 17:0x.
 **Scope:** doc
@@ -46,5 +46,5 @@ is that a successor reconstructs intent from what it reads.
 
 ## Done when
 
-- [ ] One of the three is chosen and written down where a leg reads it.
-- [ ] If the number stays, `.claude/leg.md` says how a leg is meant to derive it.
+- [x] One of the three is chosen and written down where a leg reads it.
+- [x] If the number stays, `.claude/leg.md` says how a leg is meant to derive it.
