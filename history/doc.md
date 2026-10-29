@@ -28,6 +28,9 @@
 - check-links.py looks a link into a sibling code repo up again where the main checkout lives, so a fresh doc worktree is no longer red on links nobody wrote.
 - collect-open-questions.py prints a wrapped open.md bullet whole instead of its first physical line.
 
+### Removed
+- The four root proposals keep only unbuilt design; built pieces are one-line pointers to the decisions that absorbed them ([embarch.md](../embarch.md) §6).
+
 ### Decided
 - A compaction task states the gate verdict, never a byte target; `check-doc-size.py --pressure` prints each file's exact out-of-reserve size, since the 1.2 KB floor governs below 12 KB.
 - A compaction task's Must not delete: list names a finding's receipt (symbol, path, confirmed-by sentence) with it; the hot/cold test otherwise drops it as cold.

@@ -8,19 +8,9 @@ Spans four repos plus the Study Designer tab, which is why it sits at this repo'
 
 ## What was accepted, and where it lives now
 
-The proposal's thesis was: **the suite is on its way to three near-identical capture pipelines that differ only in what the bytes mean — replace them with one, where the source, the sink and the decoding are declared parameters, and the firmware never interprets a payload.**
+The read direction — one inbound pipeline whose source, sink and decoding are declared, with a bench that interprets no payload — is built and lives in [embarch-study-designer](embarch-study-designer/decisions.md) decision 39, [embarch-core](embarch-core/decisions.md) decision 30, [embarch-dev-bench](embarch-dev-bench/decisions.md) decision 29, [embarch-api](embarch-api/decisions.md) decision 39, [embarch-ui](embarch-ui/decisions.md) decision 10 and reversals rows 17, 18 and 25 (the last two: what this file got wrong about it).
 
-The read direction of that is now the suite's design. Do not read it here; read it in the living docs: [embarch-study-designer](embarch-study-designer/decisions.md) decision 39 (the tap types), [embarch-core](embarch-core/decisions.md) decision 30 (storage, retention, the parameterised route), [embarch-dev-bench](embarch-dev-bench/decisions.md) decision 29 (the bench stops interpreting payloads; decision 22 superseded), [embarch-api](embarch-api/decisions.md) decision 39 (the tools), [embarch-ui](embarch-ui/decisions.md) decision 10, and reversals row 17.
-
-**Five things the accepted half got wrong here, worth keeping because each is a shape rather than a detail:**
-
-- **The schema bump this file wrote as 5 → 6 landed as 7 → 8**, because two unrelated decisions were implemented first and took the numbers. **A *derived* value recorded ahead of the work that derives it is a fact with a shelf life, unlike the decision it sits inside** (reversals row 18). It went stale twice more before the work shipped.
-- **The firmware half cost +654 bytes, not the shrink this file assumed.** The bench's decoder never walked the span a seal over it has to cover, so sealing needed a full variant walker (row 25).
-- **`DataChannel` did not collapse to one stream-named variant.** A stream-named source **carries no step index at all**, because a tap's scope is declared rather than per-step — this file kept the field alongside the new variant, **which would have asked authors for a field with no meaning.**
-- **A per-study stream index turned out to be *required*** for the deprecated aliases to work at all, because the handler serving one holds no study. And **a text-encoded tap gets one file rather than two**, since its decode is the identity: this file's proposed triple over-counts by one for that case.
-- **This file imagined reading a capture by naming it and said nothing about how a caller *learns* the names.** The listing tool that answers that turned out to be about `truncated` rather than the names — **a capture that lost data must not read as a whole one, and the three per-channel aliases structurally cannot say.**
-
-**Still not built from the accepted half:** dev-bench's payload-interpretation deletion — the piece this proposal opened with, **and the only one that removes the `f32` interpretation sitting in shipped firmware.**
+**Since then, two decisions reach into the half below.** `embarch-study-designer` decision 58 (an engineer-written protocol manifest that dev-bench executes) records itself as closing decision 39's write direction by a different route, an authored state machine rather than a generic write step; and decision 37 built a free-text payload path. Nothing in a task, an `open.md` or the roadmap asks for the generic send step any more.
 
 ## The proposal: an authored write step
 
@@ -60,9 +50,7 @@ It was also strictly larger. The interactive version dragged in **a cancel endpo
 
 ## Free text, and why it does not erode the never-infer rule
 
-The per-repo action registry is deliberately enumerated-values-only — a registered action's payload is named fields each with a small set of engineer-supplied label/value pairs, with **no free-text entry, precisely so nobody uses a value whose meaning nothing recorded.** A shell command is free text, so this wants a free-text field kind, **and that is worth stating carefully rather than slipping in.**
-
-**The line that rule actually draws is *who authored the bytes*, not *whether they were enumerated*.** Its own point is that this knowledge only ever comes from the engineer, explicit and unambiguous, and that the failure it exists to prevent is **this suite inferring what something does and presenting the inference as fact.** An engineer typing a command they know into a study they are authoring **is that knowledge arriving by the most direct route there is.**
+A one-off free-text payload is built: `RowAction::Raw`, [embarch-study-designer](embarch-study-designer/decisions.md) decision 37, which says why bytes an engineer typed are not an inference. **What stays proposed is a free-text field kind in the action registry** (decision 35 keeps it enumerated-values-only), so a shell command can persist as a preset.
 
 **What stays forbidden is unchanged:** a value this suite generates, guesses, defaults, or labels with an invented description. **No "suggested commands", no parsing the DUT's source for a shell command table, no help text this crate writes about what a command does.**
 

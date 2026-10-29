@@ -1,72 +1,28 @@
 # Proposal: host-run studies, operator prompts, bench instruments and a USB PD bench
 
-**Status:** proposal, 2026-10-09. Phase 2 (instruments) built 2026-10-28: [embarch-topology decision 49](embarch-topology/decisions/instruments.md), [embarch-core decision 104](embarch-core/decisions/instruments.md), [embarch-api decision 97](embarch-api/decisions/instruments.md); its bench check is owed. Phase 3's prompt built 2026-10-28 in Core and `embarch-api` ([embarch-core decision 105](embarch-core/decisions/host-prompt.md), [embarch-api decision 99](embarch-api/decisions/host-study.md)); the UI modal is `tasks/ui/100`.
+**Status:** proposal, 2026-10-09.
 
-Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3).
+Spans `embarch-topology`, `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). A USB Power Delivery DUT is tested with a PD partner, an electronic load and a person who plugs cables, none of which the dev bench can be; this is the study kind Core runs itself for that.
 
-## Why
+## What is built
 
-**A USB Power Delivery DUT is tested with three things the dev bench cannot be: a PD partner on the cable, an electronic load, and a person who plugs and unplugs cables.** The partner and the load are host-side serial devices (shell lines, SCPI lines); the person is a prompt. None of them needs a BLE counterpart.
+Phases 1 to 3, each in its own sub-project's docs:
 
-**Studies today are bench-executed.** Core sends `StudyStart` and nothing mid-study; dev-bench runs every step ([embarch-study-designer](embarch-study-designer/decisions.md) decision 60). A prompt, an SCPI query or a shell exchange is host work, so it cannot be a bench step without a mid-study Core→dev-bench message, which the stream-pipeline proposal already withdrew once.
+- **`embarch-study-designer`** — `HostStudy` and its four actions, the teardown and the refusal marker: [decision 80](embarch-study-designer/decisions/study.md).
+- **`embarch-core`** — `POST /host-studies` and its taps: [decisions 95, 98](embarch-core/decisions/host-study.md); instrument commands: [104](embarch-core/decisions/instruments.md); the prompt: [105](embarch-core/decisions/host-prompt.md).
+- **`embarch-topology`** — the `instruments` table: [decision 49](embarch-topology/decisions/instruments.md).
+- **`embarch-api`** — the instrument tools: [decision 97](embarch-api/decisions/instruments.md); `run_host_study` and `answer_prompt`: [99](embarch-api/decisions/host-study.md).
+- **`embarch-ui`** — the prompt modal: [decision 69](embarch-ui/decisions/operator-prompt.md).
+- **`embarch-dev-bench`** — the PD bench app and its two shields: [decisions 48, 49](embarch-dev-bench/decisions/pd-bench.md); its commands in [`pd-bench/README.md`](../embarch-dev-bench/pd-bench/README.md).
 
-## What the owner chose (2026-10-09)
+## What is left
 
-1. **A second study kind that Core executes itself: a host-run study.** It needs no dev bench and changes nothing on the dev-bench wire, so decision 60 stays true for bench studies. Mixing BLE steps with host steps is not in scope.
-2. **The PD partner is a PD bench:** a NUCLEO-G0B1RE under a USB-C shield, running Zephyr's USB-C stack with a shell (two shields since, [below](#pd-bench-embarch-dev-bench)). It is reached as a declared `Direct` signal on its ST-LINK virtual COM port, so **no third role is added** ([embarch-topology](embarch-topology/decisions.md) decision 35 and [embarch-core](embarch-core/decisions.md) decision 75 stand). It is enrolled as a **bench board**, which holds no role ([embarch-topology](embarch-topology/decisions.md) decision 41). A project flashes it by its probe serial through the usual identity check.
-3. **Bench instruments are declared in topology**, first one an East Tester ET5410A+ electronic load speaking SCPI over a CH340 USB serial port.
-4. **An operator prompt is a host step**: a dialog in the UI, answerable from the UI or from an MCP tool, with the answer and who gave it recorded in the result.
-5. **The PD bench builds on Zephyr 4.4.2 plus the USB-C PD fixes that are not upstream yet.** It pins its own copy of those fixes (point 6), so it and the DUT's stack can drift apart. A bug common to both ends still passes unseen, so key results still need a third-party partner.
-6. **pd-bench gets its own west workspace in `embarch-dev-bench` (2026-10-20)**, pinning Zephyr v4.4.2 and carrying the six USB-C patches it needs until they land upstream, rather than waiting for upstream first. Being built by `tasks/dev-bench/036`; its decision joins [the PD bench decisions](embarch-dev-bench/decisions/pd-bench.md) when it lands.
-
-## Shape
-
-### Study model (`embarch-study-designer`)
-
-- `HostStudy { name, steps: Vec<HostStep>, streams }`: streams are `Signal` taps only.
-- `HostStep { name, action: HostAction, timeout_ms, continue_on_fail, delay_before_ms }`.
-- `HostAction`:
-  - `Exchange { signal, line, until, match_after_echo }`: write one line to a declared writable signal and read until the marker or the timeout ([embarch-core](embarch-core/decisions.md) decision 79 semantics, with the echo rule declared rather than defaulted).
-  - `Prompt { text }`: block until an answer (`confirmed`, `cancelled`) or the timeout.
-  - `Instrument { instrument, command, query }`: one SCPI command, or a query whose reply is recorded.
-  - `Wait { ms }`.
-- `HostStepResult { step_name, outcome, reply, answered_by }`. The reply is raw text, capped and marked truncated rather than cut silently. **JSON only, never on the dev-bench wire**: a host-type schema bump, no wire bump.
-- **Numbers stay exact or absent:** v1 records SCPI replies as text. A declared numeric parse can come later.
-
-### Core
-
-- `POST /host-studies` takes the same `study_lock` as a bench study, validates, and runs the steps on one executor thread.
-- `StepCompleted` is reused. Two new events: `PromptPending { step_index, text, deadline }` and `PromptResolved { answer, answered_by }`. `POST /study/{id}/prompt` answers. A pending prompt is also readable on `GET /study/{id}`, because SSE has no replay.
-- **A signal that is both tapped and exchanged is opened once**, by its tap thread. The exchange writes through that thread and reads its reply from the same byte stream, since Windows allows one open per COM port.
-- An instrument port is opened per command, paced by its declared minimum interval (200 ms for the ET54 family), and refused while a tap or another exchange holds it.
-
-### Topology
-
-- A new `instruments` table in `enrollment.toml`, copying the `bootload_ports` pattern: `Instrument { name, protocol: scpi, port: UsbPortId { vid, pid, serial?, interface? }, baud, write_terminator, read_terminator, min_interval_ms }`.
-- **`UsbPortId` rather than a USB serial:** a CH340 reports none, and signals are identified by USB serial only.
-
-### API and UI
-
-- MCP tools, each with its CLI subcommand: `declare_instrument`, `list_instruments`, `remove_instrument`, `instrument_exchange` (one SCPI line, outside a study), `run_host_study`, `answer_prompt`. `study_watch` returns early on a pending prompt.
-- UI, Live Study tab: a modal prompt on the existing dialog pattern, with Confirm and Cancel. Host-study rows in the designer come later.
-
-### PD bench (`embarch-dev-bench`)
-
-- A second app, `pd-bench/`. It does not speak the dev-bench wire; its console is a Zephyr shell ([embarch-dev-bench decision 48](embarch-dev-bench/decisions/pd-bench.md)).
-- A NUCLEO-G0B1RE under one of two shields, each a Zephyr shield picked with `-DSHIELD=` ([embarch-dev-bench decision 49](embarch-dev-bench/decisions/pd-bench.md)). Both use UCPD1, CC1 on PA8 and CC2 on PB15.
-  - **X-NUCLEO-SNK1M1**, a sink. The default build.
-  - **X-NUCLEO-DRP1M1**, dual role. It sources 5 V only, switched from its CN3 supply.
-- **The shell, its `pd: ok` / `pd: error` contract and each shield's pins are in [`pd-bench/README.md`](../embarch-dev-bench/pd-bench/README.md)**, the command reference. No list is copied here: the one that was went stale at five commands.
-- The SNK1M1's VBUS output feeds the load, so the PD bench plus the load is a scriptable PD/PPS sink.
-
-## Phases
-
-1. **PD bench firmware.** Usable at once through `signal_exchange`.
-2. **Instruments:** the topology table, the Core route and the MCP tools. One-off SCPI is usable at once.
-3. **Host-run studies with the prompt:** study-designer, core, api and ui.
-4. **Fold:** decisions into each sub-project's docs; this file is deleted as it is absorbed.
+1. **pd-bench gets its own west workspace in `embarch-dev-bench` (owner's choice, 2026-10-20)**, pinning Zephyr v4.4.2 and carrying the six USB-C patches it needs until they land upstream, rather than waiting for upstream first. Being built by `tasks/dev-bench/036`; its decision joins [the PD bench decisions](embarch-dev-bench/decisions/pd-bench.md) when it lands.
+2. **A first host study on a real bench.** Topology decision 49 and core decision 98 each state what is unverified.
+3. **Numbers stay exact or absent:** v1 records an SCPI reply as text. A declared numeric parse can come later.
+4. **Host-study rows in the Study Designer tab** come later.
+5. **Fold:** this file is deleted as the rest is absorbed.
 
 ## Open questions
 
-- ~~Who may answer a prompt, and its default timeout.~~ Answered by [embarch-core decision 105](embarch-core/decisions/host-prompt.md): anyone holding Core's token, from any surface, checked by prompt id (an agent relays a person, [embarch-api decision 99](embarch-api/decisions/host-study.md)); no default, the step's own `timeout_ms`, capped at one hour.
 - Whether a host study may also drive the dev bench later (mixed studies). Out of scope here.

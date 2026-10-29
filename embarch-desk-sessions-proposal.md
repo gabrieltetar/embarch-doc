@@ -4,11 +4,7 @@
 
 Spans `embarch-desk`, `embarch-ui` and the `embarch-desk` Claude Code plugin, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Shaped with the owner in four rounds of questions on 2026-10-22.
 
-## Why
-
-Picking up an issue today is a run of hand steps — find it, make a clone or worktree on the right branch, move the issue, open VS Code, paste the issue into Claude — and once several chats run, nothing shows which is waiting on the owner. The owner wants to **pick an issue on the Desk and land in a ready VS Code session**, and to **see the live chats from the Desk and answer them**.
-
-**Built and folded** (`embarch-desk` decisions 43–45, 2026-10-22): the pick-up list, Start work, each card's live sessions with Answer and Jump, no always-on window. **What follows is still proposed.**
+**Built and folded** (`embarch-desk` decisions 43–45, 2026-10-22): picking an issue up from the Desk and the live sessions on its card. **What follows, finishing an issue, is still proposed.**
 
 ## Finishing an issue (owner's choice, 2026-10-22)
 
