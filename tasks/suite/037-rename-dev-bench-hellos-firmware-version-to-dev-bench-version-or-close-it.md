@@ -8,7 +8,8 @@ reply and **no objection from the owner**, and the 30 minutes had elapsed. So §
 satisfied and spent. What remains is the gate, and it is not a leg's to clear — see "Why leg 107
 announced it and then did not execute it" below, which is unchanged and still the whole story.
 **Unparks when:** the owner produces a native Windows build of `embarch-core`
-(`embarch-dev-workflow.md` §4a sync→build→deploy, outstanding as `tasks/core/015`) **and takes this
+(`embarch-dev-workflow.md` §4a sync→build→deploy, the standing owner-run debt `embarch-core/open.md`
+carries; its first record, core 015, retired by `suite/053` on 2026-10-29) **and takes this
 task in that same sitting** — or says explicitly that the rename may land gated on host checks
 alone. Either one is his; neither is a supervisor's to grant.
 **Why `blocked` and not `open`:** `open` was right while the clock was running, because a leg could
