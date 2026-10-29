@@ -409,6 +409,28 @@ def print_orphans(orphans):
           "  decision got under the cap since -- then its pin retired and the entry goes.")
 
 
+def decision_margin(rows):
+    """{sub-project: [(topic#N, bytes left, pinned)]} for every decision over its
+    limit or within DECISION_STEP of it, tightest first.
+
+    The decision-level counterpart of the file reserve, and deliberately only
+    PRINTED (tasks/doc/067): a reserve whose only remedy is a filed debt would
+    have filed 35 tasks on 2026-10-29 and more after every compaction, while a
+    margin read at dispatch is the moment it matters -- `ui/056` drafted an
+    addition 560 B past a decision's cap and learned it from the gate. It never
+    fails anything: a band that failed would be a 3,840 B cap under another name.
+    A pinned decision's limit is a wall (the gate fails past it); an unpinned
+    one's is the 4 KB cap, which only `--decisions` reports.
+    """
+    out = {}
+    for key, rel, head, size, limit, pin in rows:
+        if limit - size < DECISION_STEP:
+            num = re.match(r"[\d,\s]*", key.split("#", 1)[1]).group()
+            topic = Path(rel).stem + "#" + num.replace(" ", "").strip(",")
+            out.setdefault(rel.split("/")[0], []).append((topic, limit - size, pin))
+    return {s: sorted(v, key=lambda e: e[1]) for s, v in sorted(out.items())}
+
+
 def ratchet_to(size: int, cap: int, old: int) -> int:
     """Where a shrunk file's baseline lands. See RATCHET_STEP.
 
@@ -623,9 +645,13 @@ def main() -> int:
         # decisions in the suite: 14 breaches, 6 shown (tasks/doc/064). The
         # question is "what is over", and a pinned 8 KB entry outranking an
         # unpinned 4.2 KB one answered a different question.
+        # And every row within DECISION_STEP of its limit, marked `near`: the
+        # same rows `--pressure` prints by sub-project (tasks/doc/067).
         for key, rel, head, size, limit, pin in sorted(
-                (r for r in drows if r[3] > DECISION_CAP or r[5]), key=lambda r: -r[3]):
-            mark = "OVER" if size > limit else ("pin " if pin else "    ")
+                (r for r in drows if r[3] > DECISION_CAP or r[5]
+                 or r[4] - r[3] < DECISION_STEP), key=lambda r: -r[3]):
+            mark = ("OVER" if size > limit else "near" if limit - size < DECISION_STEP
+                    else "pin ")
             print(f"  {mark} {size:6} B  {key}")
         orphans = orphan_pins(drows, dbase)
         if orphans:
@@ -646,10 +672,20 @@ def main() -> int:
         # DOC-COMPACTION-PASS.md's "Failure modes" warns against compacting a
         # subsystem still in flux and nothing here can tell, so whoever spends it
         # writes the item and answers that question in it.
+        # Decision margin first, so every exit below carries it. A dispatch note
+        # names these the way it names a file's headroom (tasks/doc/067).
+        margin = decision_margin(decision_state()[2])
+        if margin:
+            print(f"decisions over or within {DECISION_STEP} B of their limit, by "
+                  f"sub-project (B left; negative is over). Name any a task will edit\n"
+                  f"in its dispatch note, as for a file in reserve:")
+            for sub, entries in margin.items():
+                print(f"  {sub:24} " + ", ".join(
+                    f"{t} {left}{' pin' if pin else ''}" for t, left, pin in entries))
+            print()
         in_reserve, filed_clear = reserve_state(base, args.reserve_pct)
         if not in_reserve and not filed_clear:
-            print(f"nothing is in reserve (the last "
-                  f"{100 - args.reserve_pct:g}% of any file's limit).")
+            print("no file is in reserve.")
             return 0
         unfiled = [r for r in in_reserve if not r[3]]
         for rel, size, limit, filed in sorted(

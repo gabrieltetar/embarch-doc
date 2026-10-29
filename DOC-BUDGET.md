@@ -130,3 +130,8 @@ essentially one decision in it, so a split cannot help, and every pass that
 tried was working on the wrong object. The per-decision view gives the right
 instruction: compact that entry, or make it two numbered decisions if it is
 really two arguments.
+
+**A decision gets a printed margin, not a reserve** (`tasks/doc/067`):
+`--pressure` lists each one over or within 256 B of its limit, for the dispatch
+note. A debt per thin decision would be 35 tasks today; failing would make a
+3,840 B cap.

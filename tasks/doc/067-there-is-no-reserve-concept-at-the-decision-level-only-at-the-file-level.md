@@ -1,6 +1,6 @@
 # 067 — the doc-size reserve exists for files and not for decisions, so a decision hits its cap with no warning
 
-**State:** open
+**State:** done — printed, not filed: `--pressure` opens with every decision over or within 256 B (`DECISION_STEP`) of its limit, by sub-project; `--decisions` marks the same rows `near`; one mechanism with 064's printer; DOC-BUDGET.md says why (owner/doc-size, 2026-10-29)
 **Source:** leg 120, 2026-09-16, folding `ui/056`. Not reported by any agent — found by calling
 `decision_state()` directly after that unit landed, and the numbers below are its output.
 **Scope:** doc
@@ -71,7 +71,7 @@ Two of this leg's own units ran straight into it and both had to be told the num
 
 ## Done when
 
-- [ ] Decision margin is visible somewhere a supervisor reads before dispatch, or a decision is
+- [x] Decision margin is visible somewhere a supervisor reads before dispatch, or a decision is
       recorded that it deliberately should not be.
-- [ ] The relationship to `tasks/doc/064` is settled — one mechanism or two.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] The relationship to `tasks/doc/064` is settled — one mechanism or two.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
