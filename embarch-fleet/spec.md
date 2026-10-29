@@ -37,6 +37,8 @@ The **queue** stays in this repo — `tasks/`, `inbox/`, `status.d/`, `changelog
 
 **The denylist the fleet checks against lives outside every repo.** `check-client-names.py` (2026-09-05) refuses a client's name in a tracked file's contents or path or in a branch's commit messages, reading its names from the fleet's state directory, and it never prints what it matched. **Since 2026-10-29 the pre-push hook also reads every commit a push sends** — messages, paths and blobs, where a commit straight to `main` was never read before — and the first leg after midnight runs `--suite --history` over every repo's whole history. It is the ninth check in the wrapper for this repo, and the merge gate runs it again per code repo — the wrapper reaches 1.19 MB of the suite's 5.9 MB, and the 2026-09-04 leak it exists to prevent a repeat of was mostly on the other side.
 
+**A pre-PR review loop is shipped beside the queue, not inside it.** `/review-loop` (2026-10-29) is a procedure the session that owns a branch runs — reviewers read one round each through one lens, round 1 the whole branch and every later round only the delta, against a context pack written once; the merge-time `embarch-reviewer` is unchanged. Its ledger lives in the project's ignored `embarch/` folder or inside `.git`, and its format and stop rule are documented once, in `scripts/review-loop.py`'s header in the framework repo.
+
 ## What it deliberately does not do
 
 - **It does not approve anything routine.** The supervisor is a full delegate; review is after the fact, in the log.
