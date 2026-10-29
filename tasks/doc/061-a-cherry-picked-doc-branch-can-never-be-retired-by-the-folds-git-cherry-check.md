@@ -1,6 +1,6 @@
 # 061 — A cherry-picked doc branch can never be retired by the fold's `git cherry` check
 
-**State:** open
+**State:** done — `fold-commit.py`'s prune proves a branch by patch-id and then file by file, so a conflicted cherry-pick is pruned at the next fold; `api/096`, `core/052` (and `core/081`) go at the first fold after this lands; embarch-fleet `45089bf`.
 **Source:** leg 115's step 0, 2026-09-14. Observed directly on `origin/main`, not inferred: three
 `agent/*` branches were still on `embarch-doc`'s remote at the top of the leg, and two of them can
 never be deleted by the mechanism that is supposed to delete them.
@@ -55,13 +55,16 @@ already landed rather than three units owed.
 
 ## Done when
 
-- [ ] `fold-commit.py`'s deletion check recognises a branch whose content is on `main` by a means
+- [x] `fold-commit.py`'s deletion check recognises a branch whose content is on `main` by a means
       that survives a conflicted cherry-pick — candidates, in the owner's judgement: an empty
       `git diff origin/main <branch> -- <the paths the fold staged>`, or the fold recording the
       branch name beside the merge SHA it produced and retiring by name.
 - [ ] The two currently stranded branches are deleted, or a deliberate decision is recorded that
       stranded branches are acceptable and step 0's scan must tolerate them.
-- [ ] If the answer is the second, `.claude/leg.md`'s "a pushed branch is a presence, and it can
+      **Pending the landing, not the code:** the first live fold after the fix lands deletes
+      them; on a mirror of `embarch-doc`, the new proof marks exactly `api/096`, `core/052` and
+      `core/081` landed and keeps `ui/059` (a blocked unit's, worth reusing per its task file).
+- [x] (n/a — the answer is the first.) If the answer is the second, `.claude/leg.md`'s "a pushed branch is a presence, and it can
       only have been produced by a worker that reached its own bookkeeping" is amended — it is that
       sentence this defect falsifies.
 
