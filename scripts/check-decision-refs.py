@@ -25,7 +25,7 @@ or in inline code, and otherwise falls back to the file's own sub-project. A
 named for a scope, belongs to that scope's sub-project (SCOPED_BY_NAME). The
 suite is a sub-project here too: `suite/decisions/`, cited `suite decision N`.
 
-Five outcomes, and four of them fail:
+Six outcomes, and five of them fail:
   * ERROR   -- a citation that names ONE topic file which does not define N.
                The one reference shape that names a file rather than a
                sub-project, and therefore the only one that can go stale while
@@ -48,6 +48,9 @@ Five outcomes, and four of them fail:
                anything outside `*.md` (source comments in the code repos).
   * ERROR   -- a `decisions/<topic>.md:<line>` citation outside tasks/ and
                inbox/ (tasks/doc/044). Stale with any edit above the line.
+  * ERROR   -- one number on two live headings in one sub-project's decisions
+               files (tasks/doc/033); see POINTER and HALF for the two repeats
+               that are not collisions.
   * ERROR   -- attributed by an explicit nearby path, number not defined there.
   * ERROR   -- number defined by NO sub-project anywhere. This is the genuinely
                dangling reference a renumber or a deletion leaves behind, and
@@ -308,6 +311,54 @@ def build_index():
     return index
 
 
+# A number is unique per sub-project (DOC-CONVENTIONS.md), and until
+# 2026-10-29 nothing checked it: resolving a citation is satisfied MORE easily
+# when two files define N. `outpost/015` landed a second `### 23` with the gate
+# 11/11 green (tasks/doc/033). Two repeats are legitimate, and both say so in
+# the heading itself, so no allowlist is needed:
+#   * a POINTER a move leaves behind -- the title or the line under it starts
+#     "moved" (`### 27, 28 — moved to [study-reads.md](...)`);
+#   * one decision SPLIT across files on purpose -- every heading for it names
+#     itself a "half" (`embarch-ui`'s `### 10 — Trace half: ...`).
+# The index table is deliberately not parsed: four layouts, ranges, "moved"
+# suffixes, and a number legitimately listed on a second row (`embarch-outpost`
+# 5) -- the headings are what the table summarises, so they are the test.
+POINTER = re.compile(r'^\W*moved\b', re.I)
+HALF = re.compile(r'\bhalf\b', re.I)
+
+
+def duplicate_numbers(files):
+    """[(sub, num, ['rel:line', ...])] for each number with two or more live
+    headings in one sub-project. `files` yields (rel, lines) for decisions files."""
+    seen = {}
+    for rel, lines in files:
+        for i, line in enumerate(lines):
+            m = DEF_HEAD.match(line)
+            if not m:
+                continue
+            title = line[m.end():]
+            under = next((l for l in lines[i + 1:] if l.strip()), '')
+            if POINTER.match(title) or POINTER.match(under):
+                continue
+            for n in re.findall(r'\d+', m.group(1)):
+                seen.setdefault((rel.split('/')[0], int(n)), []).append(
+                    (f'{rel}:{i + 1}', bool(HALF.search(title))))
+    return [(sub, n, [w for w, _ in hits])
+            for (sub, n), hits in sorted(seen.items())
+            if len(hits) > 1 and not all(half for _, half in hits)]
+
+
+def decisions_files():
+    """(rel, lines) for every `<sub>/decisions.md` and `<sub>/decisions/*.md`."""
+    for path in md_files():
+        rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
+        parts = rel.split('/')
+        if (len(parts) == 3 and parts[1] == 'decisions') or \
+                (len(parts) == 2 and parts[1] == 'decisions.md'):
+            with open(path, encoding='utf-8') as fh:
+                yield rel, fh.read().splitlines()
+
+
 def build_file_index():
     """`<sub>/decisions/<topic>.md` -> the set of numbers THAT FILE defines.
 
@@ -537,6 +588,22 @@ SELF_TEST_FILES = (
     ('embarch-umbrella/spec.md', 'per `embarch-core/decisions/enrollment.md` '
      + 'decision 25', [(25, True)]),
 )
+# tasks/doc/033: (rel, heading lines) per file -> duplicated (sub, num).
+SELF_TEST_UNIQUE = (
+    # outpost/015's collision: two unrelated live entries, one number.
+    ([('embarch-o/decisions/wire.md', ['### 23 — The header is the source']),
+      ('embarch-o/decisions/manifest.md', ['### 23 — Operator override'])],
+     [('embarch-o', 23)]),
+    # A pointer, by title or by the line under it, is not a second definition.
+    ([('embarch-p/decisions/old.md', ['### 27, 28 — moved to [new.md](new.md)',
+                                      '### 41 — Bench boards', '',
+                                      'Moved verbatim to [new.md](new.md).']),
+      ('embarch-p/decisions/new.md', ['### 27, 28 — Seals', '### 41 — Bench boards'])],
+     []),
+    # A deliberate split names each heading a half.
+    ([('embarch-u/decisions/a.md', ['### 10 — Trace half: a view']),
+      ('embarch-u/decisions/b.md', ['### 10 — Chart half: the chart'])], []),
+)
 SELF_TEST_LINES = (
     ('embarch-topology/decisions/enrollment.md', '`embarch-core/decisions/'
      'surfaces.md:30` repeats it verbatim', ['decisions/surfaces.md:30']),
@@ -567,6 +634,10 @@ def self_test():
         got = refused_line_cites(rel, line)
         if got != want:
             bad.append(f'  {line!r}: want {want}, got {got}')
+    for fixture, want in SELF_TEST_UNIQUE:
+        got = [(sub, n) for sub, n, _ in duplicate_numbers(fixture)]
+        if got != want:
+            bad.append(f'  {fixture[0][0]}: want {want}, got {got}')
     return bad
 
 
@@ -618,6 +689,7 @@ def main():
             print(f'      {excerpt}')
         print()
 
+    dups = duplicate_numbers(decisions_files())
     bad_rows, rows_checked, rows_defined = check_reversal_rows()
     file_index = build_file_index()
     bad_links, line_cites, links_checked = check_topic_links(file_index, index)
@@ -661,6 +733,17 @@ def main():
               'or drop the link and use the\nbare number.')
         print()
 
+    if dups:
+        print(f'{len(dups)} decision number(s) defined twice in one '
+              f'sub-project:\n')
+        for sub, num, where in dups:
+            print(f'  {sub} decision {num}: ' + ', '.join(where))
+        print('\nEvery citation of that number is now ambiguous, and neither '
+              'can move once one is\ncited. Renumber the newer one to the next '
+              'free number -- scan the headings, not\nthe index. A deliberate '
+              'split names each heading a half; a pointer left by a\nmove says '
+              '"moved" (DOC-CONVENTIONS.md).\n')
+
     if line_cites:
         print(f'{len(line_cites)} `:line` citation(s) of a decisions file '
               f'outside tasks/:\n')
@@ -688,7 +771,7 @@ def main():
               f'(--warnings to list).')
         return 1
 
-    if bad_rows or bad_links or line_cites:
+    if bad_rows or bad_links or line_cites or dups:
         return 1
 
     print(f'All {checked} decision references resolve. '
@@ -698,6 +781,8 @@ def main():
           f'index: {len(file_index)} topic files indexed).')
     print(f'All {rows_checked} reversal-row citations resolve '
           f'({rows_defined} rows defined).')
+    print(f'Every decision number is defined once per sub-project '
+          f'(pointers and halves aside).')
     return 0
 
 

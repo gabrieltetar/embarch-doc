@@ -1,6 +1,6 @@
 # Nothing in the gate checks that a decision number is unique within its sub-project, and the convention that says it must be is the one every worker reads
 
-**State:** open
+**State:** done — owner session, 2026-10-29, branch `owner/decision-refs`: `check-decision-refs.py` fails a number on two live headings in one sub-project; pointers and halves are read from the heading itself; see `## Closed`
 **Source:** supervisor, leg 061, 2026-09-09 — caught by hand while reading `outpost/015`'s diff before merging it
 **Scope:** doc
 **Hardware:** none
@@ -69,15 +69,15 @@ nowhere.** An agent reading that header has every reason to believe a collision 
 
 ## Done when
 
-- [ ] Something in `check-docs.py` fails a sub-project whose `decisions/` tree defines the same
+- [x] Something in `check-docs.py` fails a sub-project whose `decisions/` tree defines the same
       decision number twice. A `^### <digits>` scan per sub-project is sufficient; it does not need
       to understand the decisions.
-- [ ] It also catches the index form — a number appearing on two rows of `decisions.md`'s table —
+- [x] It also catches the index form — a number appearing on two rows of `decisions.md`'s table —
       or says explicitly why that is out of scope.
-- [ ] Whatever the check is, `decisions.md`'s boilerplate sentence names **it** rather than
+- [x] Whatever the check is, `decisions.md`'s boilerplate sentence names **it** rather than
       `check-decision-refs.py`, so the assertion and the enforcement are the same thing. If the
       decision is not to build the check, that sentence should stop claiming enforcement.
-- [ ] A worker's task template or `protocol.md` §5's worker contract tells a worker authoring a new
+- [x] A worker's task template or `protocol.md` §5's worker contract tells a worker authoring a new
       decision to take the next free number by scanning, not by reading the index — the index was
       accurate here and the worker still collided.
 
@@ -123,3 +123,34 @@ Whoever takes this should also decide whether the split convention deserves reco
 `DOC-CONVENTIONS.md`, since it currently exists only as three files that happen to follow it and one
 index that happens to qualify them. It is the thing the check has to be built around and it is
 written nowhere.
+
+## Closed
+
+**Not covered by `tasks/doc/060`/`070`'s indexing**, as the dispatch note wondered: both index
+into *sets*, so a second definition of a number vanishes into the first. The check is new.
+
+**A heading scan, with the two legitimate repeats read from the heading itself.** Scanned on
+2026-10-29, ten numbers sit on more than one heading, and none is a collision: `embarch-api`
+27, 28, 31, 33, 39, 40, 44 and `embarch-core` 54 leave a *pointer* behind a move (title starts
+"moved to"), `embarch-topology` 41 does the same in the line under its heading ("Moved verbatim
+to"), and `embarch-ui` 10 is the three-*half* split described above. So a repeat passes when every
+extra heading is a pointer, or when every heading names itself a half; anything else fails, with
+both locations and the fix. A scratch second `### 23` in `embarch-outpost/decisions/manifest.md` —
+`outpost/015` re-enacted — fails at once. No allowlist, and the ten pass without one.
+
+**The index form is out of scope, because the table is not a reliable witness.** The
+discriminator this file proposed was right for its example and does not generalise: the index
+tables come in four layouts, some carry ranges (`1–13`) and "… moved" suffixes, and
+`embarch-outpost`'s lists 5 on two rows (`transport.md` and `layout.md`) while only one file
+defines it. A table parser would need its own grammar and would still be checking a summary of
+the headings. The headings are the definitions, so they are the test.
+
+**The boilerplate needed no edit.** The check lives in `check-decision-refs.py`, which the five
+`decisions.md` files carrying the sentence already name — the assertion and the enforcement are now
+the same script.
+
+**The numbering instruction went to `DOC-CONVENTIONS.md`, not `protocol.md` §5.** The contract's
+rule 4 already says "number it per `DOC-CONVENTIONS.md`", and that doc now says to scan the
+headings, not the index, and states the pointer/half convention the check is built around — which
+this file asked to have written down. One edit in the doc a worker is sent to, rather than a
+second copy in an over-cap framework file (`protocol.md` is 27,237 B against a 25,600 B cap).
