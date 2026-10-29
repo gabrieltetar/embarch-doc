@@ -1,6 +1,6 @@
 # 021 — Read write-one-to-clear and an SVD's reset mask as stated: W1C is not read-to-clear, and an undefined reset bit is not 0
 
-**State:** claimed by agent/atlas/021-w1c-and-reset-mask-read-as-stated, 2026-10-29 16:02
+**State:** done — W1C no longer guards (MCU and external); SVD reset is null where resetValue/resetMask leave bits undefined, decode and vote skip them; full-mask records pinned byte-identical by a golden test
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 4 and 9), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — The guard, the SVD parse and the decode are all exercised against fixture SVDs, fixture part records and fake `mem-read` answers, as `tests/test_live.py` and `tests/test_svd.py` already do. The change is to what is refused and how a value is labelled, and no board is needed to prove either.
@@ -36,10 +36,10 @@ One possible direction:
 
 ## Done when
 
-- [ ] A field whose only clear semantics is W1C (SVD `oneToClear`, or a printed `R/W1C`) does not by itself guard its register, on either the MCU or the external path. A field with `readAction="clear"` (`rclr`) still does. Tests cover both.
-- [ ] A whole-peripheral `reg_read` over a fixture SVD with W1C status registers reads and decodes them.
-- [ ] A fixture SVD register whose `resetMask` leaves bits undefined yields records, and a `reg_read` decode, that claim no reset for those bits. A register with no `resetValue` anywhere yields no claimed reset. A test pins each.
-- [ ] `mcu vote` reports no "reset differs" on bits that the SVD leaves undefined.
-- [ ] The records `mcu svd` writes from an SVD with full masks and every `resetValue` given are byte-identical to today's.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" (the read-to-clear guard) updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+- [x] A field whose only clear semantics is W1C (SVD `oneToClear`, or a printed `R/W1C`) does not by itself guard its register, on either the MCU or the external path. A field with `readAction="clear"` (`rclr`) still does. Tests cover both.
+- [x] A whole-peripheral `reg_read` over a fixture SVD with W1C status registers reads and decodes them.
+- [x] A fixture SVD register whose `resetMask` leaves bits undefined yields records, and a `reg_read` decode, that claim no reset for those bits. A register with no `resetValue` anywhere yields no claimed reset. A test pins each.
+- [x] `mcu vote` reports no "reset differs" on bits that the SVD leaves undefined.
+- [x] The records `mcu svd` writes from an SVD with full masks and every `resetValue` given are byte-identical to today's.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" (the read-to-clear guard) updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
