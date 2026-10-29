@@ -1,6 +1,6 @@
 # 040 — `check-dispatch.py --allow-existing` is classifier-blocked, so the recovery path the guard names cannot be taken
 
-**State:** open
+**State:** done — the flag is deleted, not re-permitted; the refusal and `.claude/leg.md` name a recovery that needs no flag (commit, push, remove, re-dispatch onto the branch) (fleet `1aca63e`, owner/dispatch); lands by `deploy.py`
 **Source:** leg 074, 2026-09-10, hit live while dispatching `core/036` and `api/042`.
 **Scope:** doc
 **Hardware:** none
@@ -46,12 +46,23 @@ nothing, writes nothing and touches no git state.
 
 ## Done when
 
-- [ ] A supervisor can complete the recovery path `check-dispatch.py`'s own refusal text names,
+- [x] A supervisor can complete the recovery path `check-dispatch.py`'s own refusal text names,
       either because a permission rule permits the flag or because the flag is replaced by
-      something a rule can match.
-- [ ] If the answer is that the flag should stay unreachable, `check-dispatch.py`'s refusal text
+      something a rule can match. **Neither: the path no longer needs a flag.** Recovery is the
+      commands a leg already runs — commit the tree to its branch, push, `git worktree remove`,
+      re-run the plain check (it passes once the paths are gone), and for a resume `worktree add
+      <path> <branch>` without `-b`, then `--created` (`tasks/doc/046`). Walked end to end in a
+      scratch suite: a dirty "dead worker" tree is refused, then passes after those steps, and the
+      resumed tree carries the WIP commit. A permission rule for the flag was not written: that is
+      a route around the classifier, and the flag had no case it was needed for.
+- [x] If the answer is that the flag should stay unreachable, `check-dispatch.py`'s refusal text
       stops recommending it and says what to do instead — a guard that names an impossible remedy
-      is worse than one that names none.
-- [ ] Worth deciding alongside: whether the guard should accept the evidence directly, since
+      is worse than one that names none. Deleted outright, with `--settle` and the two-sample
+      activity test only it reached; the refusal says the route above, plus leg 074's own case
+      (worktrees made before the guard ran: clean, so remove, check, create again).
+- [x] Worth deciding alongside: whether the guard should accept the evidence directly, since
       "`git worktree add` succeeded for every path in this unit" is a strictly stronger statement
       than "these paths did not exist a moment ago" and is produced for free by the dispatch itself.
+      **It does, as `--created`, and as a second run rather than a replacement.** A leg that skips
+      creation and reuses a live worker's trees — leg 012 — passes any check of what exists, so
+      only the pre-check refuses it; `--created` then proves the creation went where it was asked.
