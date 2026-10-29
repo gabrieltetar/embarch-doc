@@ -1,6 +1,6 @@
 # 058 — A compaction task's `Done when` target is computed from a percentage the gate does not use
 
-**State:** open
+**State:** done — option 3: `tasks/README.md` rule (state the `--pressure` verdict, never bytes) and `--pressure` prints `out of reserve at <= N B`; three templates' "last 10%" now `max(1.2 KB, 10%)` (fleet f420d50; doc owner/doc-size, 2026-10-29)
 **Source:** `topology/043`, leg 112, 2026-09-13. The worker compacted `embarch-topology/spec.md` from
 9,825 B to 9,110 B, **met its task's stated target exactly**, protected everything on the
 `Must not delete:` list, wrote a clean `DOC-COMPACTION-PASS.md` answer — and the fold's
@@ -61,7 +61,7 @@ the task-authoring arithmetic, not the threshold.
 
 ## Done when
 
-- [ ] A compaction task can no longer state a target the gate disagrees with — by rule, by tooling,
+- [x] A compaction task can no longer state a target the gate disagrees with — by rule, by tooling,
       or both.
-- [ ] `tasks/README.md`'s compaction-task shape reflects whatever is chosen.
-- [ ] Gate green.
+- [x] `tasks/README.md`'s compaction-task shape reflects whatever is chosen.
+- [x] Gate green.

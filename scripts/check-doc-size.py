@@ -45,6 +45,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -468,6 +469,17 @@ def blocked_without_clock(in_reserve):
     return out
 
 
+def reserve_line(limit, reserve_pct=RESERVE_PCT):
+    """The size at which a file enters reserve. Below RESERVE_FLOOR / (1 -
+    RESERVE_PCT) -- 12,000 B -- the floor governs, not the percentage, which is
+    most of this corpus. A compaction task whose target was computed from "90%"
+    was 176 B optimistic for a 10 KB spec, and its worker stopped 70 B short with
+    every stated box ticked (tasks/doc/058). So `--pressure` prints the number
+    this returns, and a task states the gate's verdict rather than a byte count.
+    """
+    return limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
+
+
 def reserve_state(base, reserve_pct):
     """(in_reserve, filed_but_clear) -- both as (rel, size, limit, [items]).
 
@@ -490,8 +502,7 @@ def reserve_state(base, reserve_pct):
         # needs it, and it was the field that turned out to decide whether a park
         # absorbs (tasks/doc/030).
         filed = [(i, blocked, due) for i, paths, blocked, due in items if rel in paths]
-        headroom_line = limit - max(RESERVE_FLOOR, limit * (100.0 - reserve_pct) / 100.0)
-        if size >= headroom_line:
+        if size >= reserve_line(limit, reserve_pct):
             in_reserve.append((rel, size, limit, filed))
         elif filed:
             filed_clear.append((rel, size, limit, filed))
@@ -566,8 +577,7 @@ def main() -> int:
                 # Only live pressure belongs on a ledger. A filed path that is
                 # comfortably clear is a PAID item to close (--pressure says
                 # so), not a debt with a clock.
-                line = limit - max(RESERVE_FLOOR, limit * (100.0 - RESERVE_PCT) / 100.0)
-                if sz < line:
+                if sz < reserve_line(limit):
                     continue
                 entries.append((due, rel, f, sz, limit, blocked))
         if not entries:
@@ -650,8 +660,9 @@ def main() -> int:
                 mark = "PARKED "
             else:
                 mark = "filed  "
+            out_at = math.ceil(reserve_line(limit, args.reserve_pct)) - 1
             print(f"  {mark} {100.0 * size / limit:5.1f}%  {rel}  "
-                  f"{size}/{limit} B, {limit - size} B left")
+                  f"{size}/{limit} B, {limit - size} B left, out of reserve at <= {out_at} B")
             for i, b, d in filed:
                 print(f"           -> {i}{'   [BLOCKED]' if b else ''}"
                       f"{'   (no clock)' if b and not d else ''}")
