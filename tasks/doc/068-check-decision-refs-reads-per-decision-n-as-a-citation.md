@@ -1,6 +1,6 @@
 # 068 — `check-decision-refs.py` reads a per-decision byte cap as a decision citation
 
-**State:** open
+**State:** done — owner session, 2026-10-29, branch `owner/decision-refs`: the keyword must start a word, a thousands separator joins its number, and both shapes are self-test fixtures the gate runs every time; see `## Closed`
 **Source:** leg 122, 2026-09-16. Hit live: a supervisor-written task file
 (`tasks/ui/058`) described a byte budget as a *per-decision* cap followed by the
 number, and the claim commit `019181c` turned `check-decision-refs.py` red on `main`.
@@ -54,10 +54,33 @@ currently requires that, and `.claude/leg.md` is owner-reserved.
 
 ## Done when
 
-- [ ] A hyphenated compound ending in the keyword is no longer treated as a citation.
-- [ ] A test or fixture covering the reproduction above, so the shape cannot come back.
-- [ ] The comma-truncation behaviour checked too — a number scan that silently takes
+- [x] A hyphenated compound ending in the keyword is no longer treated as a citation.
+- [x] A test or fixture covering the reproduction above, so the shape cannot come back.
+- [x] The comma-truncation behaviour checked too — a number scan that silently takes
       the digits after a thousands separator will misreport other things as well.
-- [ ] Considered against `tasks/doc/055`'s open question about citation form generally,
+- [x] Considered against `tasks/doc/055`'s open question about citation form generally,
       rather than fixed in isolation.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed
+
+**Two causes, two one-line fixes.** `REF` now carries `(?<![\w-])` in front of the keyword,
+and `expand()` joins `\d{1,3}(,\d{3})+` with no space into one number before splitting a
+list, so the reproduction yields nothing and a plain `decision` followed by a four-digit size
+yields one number above `MAX_DECISION`, which is discarded. `decisions 2,3` — the one
+no-space list in the corpus, in `tasks/topology/052` — still reads as two numbers.
+
+**The fixture is a self-test the script runs before every scan**, not a tracked `.md`:
+the reproduction, each cause alone, and a no-space list. A regression fails the gate with
+the fixture named. Against the old `REF` all three misread fixtures fail, as they should.
+
+**On `main`: zero change.** 3,783 references, 1,732 ambiguous, the warning list identical
+line for line before and after — no live instance of either shape existed to clear.
+
+**Against `tasks/doc/055`:** that task settles the *relative path form* a source comment
+uses to reach `embarch-doc`. It does not change what a `decision N` token looks like, so
+the boundary is independent of its answer. Their one overlap, the `:line` suffix, is settled
+for decisions files inside this repo by `tasks/doc/044`.
+
+**Not done, as the task asked:** a supervisor's claim commit meeting the doc gate is
+`.claude/leg.md`'s, which is a template in the framework repo.

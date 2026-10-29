@@ -79,7 +79,17 @@ DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+(?:\s*,\s*\d+)*)\s+[-—]\s')
 
 # References: "decision 39", "decisions 31/32/33", "decisions 58-62",
 # optionally prefixed by a section marker that this convention no longer needs.
-REF = re.compile(r'decisions?\s+((?:\d+)(?:\s*[/,]\s*\d+|\s*[-–—]\s*\d+|\s+and\s+\d+)*)', re.I)
+# The keyword must start a word, and a hyphen does not start one
+# (tasks/doc/068): a byte budget called a per-<keyword> cap is an adjective,
+# and the number after it is a size. Without the guard that sentence, in a
+# supervisor's claim commit, turned the gate red on `main` for a whole leg.
+NUMS = r'(\d+(?:\s*[/,]\s*\d+|\s*[-–—]\s*\d+|\s+and\s+\d+)*)'
+REF = re.compile(r'(?<![\w-])decisions?\s+' + NUMS, re.I)
+# "4,096" is one number. Read as a list it yielded 4 and 96, and the second
+# is a real decision number in some sub-projects -- a size misreported as a
+# citation. A comma with exactly three digits after it and no space is a
+# thousands separator; a list is written "2, 3" or "2,3".
+THOUSANDS = re.compile(r'\b\d{1,3}(?:,\d{3})+(?!\d)')
 # A sub-project doc path, in a markdown link or in inline code -- both are used.
 # The topic-file arm was added 2026-09-09 (tasks/doc/027): a mission split moves
 # an entry between `decisions/<topic>.md` files, and until then a nearby
@@ -281,8 +291,10 @@ def check_topic_links(file_index):
 
 
 def expand(numbers_text):
-    """'31/32/33' -> [31,32,33]; '58-62' -> [58..62]; '39' -> [39]."""
-    text = numbers_text.strip()
+    """'31/32/33' -> [31,32,33]; '58-62' -> [58..62]; '39' -> [39];
+    '4,096' -> [4096], which MAX_DECISION then discards as a size."""
+    text = THOUSANDS.sub(lambda m: m.group(0).replace(',', ''),
+                         numbers_text.strip())
     dash = re.fullmatch(r'(\d+)\s*[-–—]\s*(\d+)', text)
     if dash:
         lo, hi = int(dash.group(1)), int(dash.group(2))
@@ -290,9 +302,80 @@ def expand(numbers_text):
     return [int(n) for n in re.findall(r'\d+', text)]
 
 
+def resolve_line(line, own, index, defined_anywhere):
+    """Every `decision N` on one line -> (num, target, verdict), verdict one of
+    'ok', 'warn', or the error text. Numbers above MAX_DECISION are dropped."""
+    out = []
+    for m in REF.finditer(line):
+        # Look back a short window only: these lines are whole
+        # paragraphs and routinely name several sub-projects.
+        window = line[max(0, m.start() - ATTRIB_WINDOW):m.start()]
+        explicit = None
+        canonical = CANONICAL.search(window)
+        if canonical and canonical.group(1) in index:
+            explicit = canonical.group(1)      # §7.3 form: trusted
+        else:
+            for hit in DOC_PATH.finditer(window):
+                if hit.group(1) in index:
+                    explicit = hit.group(1)
+        # Prefer the file's own sub-project when it defines the
+        # number: a paragraph naming another doc is not a
+        # reference to it. Only §7.3's form overrides that.
+        target = explicit or own
+        for num in expand(m.group(1)):
+            if num > MAX_DECISION:
+                continue      # a year or a version, not an entry
+            if target is not None and num in index.get(target, ()):
+                verdict = 'ok'
+            elif own is not None and num in index.get(own, ()):
+                verdict = 'ok'      # own sub-project defines it
+            elif num not in defined_anywhere:
+                verdict = 'defined by no sub-project'
+            elif explicit is not None:
+                verdict = f'not defined by {target}'
+            else:
+                verdict = 'warn'
+            out.append((num, target, verdict))
+    return out
+
+
+# Fixtures for the shapes this script has misread, run on every invocation so
+# a regression fails the gate rather than a reviewer. They live here, not in a
+# tracked .md, because a doc that spells a misread shape trips the very check
+# it describes (tasks/doc/068, tasks/doc/070). Synthetic index: `embarch-a`
+# defines 1-3, `embarch-b` defines 96.
+SELF_TEST = (
+    # tasks/doc/068's reproduction, then each of its two causes alone: a
+    # hyphenated compound is not a citation, and a thousands separator does
+    # not split one number into two.
+    ('embarch-a', 'the per-' + 'decision 4,096 B cap', []),
+    ('embarch-a', 'a per-' + 'decision 3 budget', []),
+    ('embarch-a', 'a ' + 'decision 4,096 bytes long', []),
+    ('embarch-a', 'decisions 2,3 and 1', [(2, 'ok'), (3, 'ok'), (1, 'ok')]),
+    ('embarch-a', 'embarch-b ' + 'decision 96', [(96, 'ok')]),
+)
+
+
+def self_test():
+    """A list of failure lines; empty when every fixture reads as recorded."""
+    index = {'embarch-a': {1, 2, 3}, 'embarch-b': {96}}
+    anywhere = set().union(*index.values())
+    bad = []
+    for own, line, want in SELF_TEST:
+        got = [(n, v) for n, _, v in resolve_line(line, own, index, anywhere)]
+        if got != want:
+            bad.append(f'  {line!r}: want {want}, got {got}')
+    return bad
+
+
 def main():
     verbose = '--verbose' in sys.argv
     show_warnings = '--warnings' in sys.argv
+    broken = self_test()
+    if broken:
+        print('check-decision-refs.py misreads its own fixtures:\n')
+        print('\n'.join(broken))
+        return 1
     index = build_index()
     defined_anywhere = set().union(*index.values()) if index else set()
     errors, warnings, checked = [], [], 0
@@ -304,39 +387,17 @@ def main():
             for lineno, line in enumerate(f, 1):
                 if 'decision' not in line.lower():
                     continue
-                for m in REF.finditer(line):
-                    # Look back a short window only: these lines are whole
-                    # paragraphs and routinely name several sub-projects.
-                    window = line[max(0, m.start() - ATTRIB_WINDOW):m.start()]
-                    explicit = None
-                    canonical = CANONICAL.search(window)
-                    if canonical and canonical.group(1) in index:
-                        explicit = canonical.group(1)      # §7.3 form: trusted
+                for num, target, verdict in resolve_line(
+                        line, own, index, defined_anywhere):
+                    checked += 1
+                    if verdict == 'ok':
+                        continue
+                    excerpt = line.strip()[:110]
+                    if verdict == 'warn':
+                        warnings.append((rel, lineno, own, num, excerpt))
                     else:
-                        for hit in DOC_PATH.finditer(window):
-                            if hit.group(1) in index:
-                                explicit = hit.group(1)
-                    # Prefer the file's own sub-project when it defines the
-                    # number: a paragraph naming another doc is not a
-                    # reference to it. Only §7.3's form overrides that.
-                    target = explicit or own
-                    for num in expand(m.group(1)):
-                        if num > MAX_DECISION:
-                            continue      # a year or a version, not an entry
-                        checked += 1
-                        if target is not None and num in index.get(target, ()):
-                            continue
-                        if own is not None and num in index.get(own, ()):
-                            continue      # own sub-project defines it
-                        excerpt = line.strip()[:110]
-                        if num not in defined_anywhere:
-                            errors.append((rel, lineno, target, num, excerpt,
-                                           'defined by no sub-project'))
-                        elif explicit is not None:
-                            errors.append((rel, lineno, target, num, excerpt,
-                                           f'not defined by {target}'))
-                        else:
-                            warnings.append((rel, lineno, own, num, excerpt))
+                        errors.append((rel, lineno, target, num, excerpt,
+                                       verdict))
 
     if verbose:
         print('Decision entries defined per sub-project:')
