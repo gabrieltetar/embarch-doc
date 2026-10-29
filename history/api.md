@@ -17,6 +17,7 @@
 - `signal_exchange` and `signal-exchange` take `match_after_echo` (CLI `--match-after-echo false`), so a console with echo off returns at its prompt instead of the timeout.
 
 ### Changed
+- embarch-api/open.md compacted 4810 B to 3905 B, out of reserve; all 11 known-wrong items and the settled-deferred reasons kept.
 - Compacted embarch-api/decisions/client-crate.md out of the size reserve (11581 to 10817 B); cold incident and provenance sentences cut, rules and reversal conditions kept.
 - CLI stream listing says "no records found" for a zero-record report, not "0 of 0 records verified"; see tasks/api/141.
 - api: a build now waits for, and says it is waiting on, another process building the same project; one build per key across CLI, MCP and UI ([decision 91](../embarch-api/decisions/build.md))
