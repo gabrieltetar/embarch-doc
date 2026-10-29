@@ -1,6 +1,6 @@
 # 006 — `/embarch-claude-md` cites a user-guide section that moved to the agent guide
 
-**State:** open
+**State:** claimed by agent/chat/006-embarch-claude-md-cites-the-moved-user-guide-section, 2026-10-29 15:50
 **Source:** reviewer of `chat/005` (doc fold of the leg started 2026-10-29 15:03): `plugin/commands/embarch-claude-md.md` line 9 reads "The block (suite/user-guide.md §7.1)"; `suite/030` moved user-guide §7/§7.1 verbatim to [suite/agent-guide.md](../../suite/agent-guide.md) §1/§1.1, leaving user-guide §7 a two-line forwarding pointer.
 **Scope:** chat
 **Hardware:** none
