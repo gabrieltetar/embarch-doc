@@ -1,6 +1,7 @@
 # 008 — Refuse to decode a live read taken from another chip, or from another board than the console
 
-**State:** open
+**State:** claimed by agent/atlas/008-live-refuses-another-chip, 2026-10-29 14:31
+**Dispatch note (2026-10-29):** the first `atlas` unit the fleet has run. `embarch-atlas` is a **public** repo: run `check_public.py` and `check-client-names.py --repo` before every commit, and write no client, project or product name (the task's own wording is already generic; keep it that way). Gate: `gate.md`'s Python bullet, in your worktree's own `.venv` (already made), never the main checkout's. No file in reserve for `atlas`.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the bench board's console was declared under role `dev-bench` while that role's probe belonged to another project's nRF54L15 DK; 1 `live_stacks` call paired an STM32G0 shell with the nRF54L15 probe
 **Scope:** atlas
 **Hardware:** none
