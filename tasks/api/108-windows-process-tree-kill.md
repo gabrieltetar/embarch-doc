@@ -1,7 +1,9 @@
 # 108 — Implement and verify a Windows process-tree kill for timed-out builds
 
-**State:** blocked — needs a Windows run of a timed-out forked build tree; code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
+**State:** blocked — code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
 2026-09-29
+**Unparks when:** a Windows run of a timed-out forked build tree — a Windows machine or CI runner;
+"Blocked" below says exactly what to run.
 **Source:** `tasks/api/107` — correcting `spec.md` §2's unqualified "timeout kills the process
 group" invariant surfaced that `src/build.rs`'s `#[cfg(not(unix))] kill_process_tree` kills only
 the immediate child, and `107` was explicitly told not to implement the fix (see its own "Not

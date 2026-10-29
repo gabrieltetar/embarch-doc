@@ -1,6 +1,7 @@
 # 112 — `embarch-core` probes.md, spec.md and open.md are in reserve after decision 89
 
-**State:** blocked — `In flux: yes`; unparks when `embarch-core/open.md`'s decision-89 bullet closes (a moved-probe hardware run) or the chip-spelling question is measured.
+**State:** blocked — `In flux: yes`.
+**Unparks when:** `embarch-core/open.md`'s decision-89 bullet closes (a moved-probe hardware run) or the chip-spelling question is measured.
 **Source:** `core/111` added decision 89 and crossed the reserve line on three files; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none

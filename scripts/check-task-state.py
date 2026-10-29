@@ -34,7 +34,7 @@ for the same reason `tasks/doc/028` says not to: every one of those instances
 was resolved by a judgement about what actually occurred, and a script that
 guessed would turn a loud wrong field into a quiet one.
 
-Six rules, and all of them fail the gate:
+Seven rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
      exactly -- no trailing comma, no `partially`, no `closed`. Prose follows
@@ -54,6 +54,8 @@ Six rules, and all of them fail the gate:
      against `check-ownership.py` itself -- `tasks/doc/029`. See the block
      above `check_scope_claims` for why the title and not the body. A path
      matches whole, never as the tail of a sibling repo's (`tasks/doc/053`).
+  7. **A `blocked` task carries an `**Unparks when:**` field, and every queue
+     path it names exists** -- `tasks/doc/032`. See `unpark_findings`.
 
 **Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
 where that got decided.** The holding position was that `.claude/leg.md` and
@@ -131,7 +133,7 @@ FLUX_LEGAL = ("yes", "no", "per")
 # path mentioned only on the `Compacts:` line is not the field saying which.
 NEXT_FIELD_RE = re.compile(
     r"^(?:\*\*(?:State|Source|Scope|Hardware|Owner|Compacts|Size debt due|"
-    r"Must not delete|Depends on|Blocks):\*\*|## )", re.M)
+    r"Must not delete|Depends on|Blocks|Unparks when):\*\*|## )", re.M)
 
 
 def flux_block(text: str) -> str:
@@ -294,6 +296,60 @@ def check_scope_claims(files: list[Path]) -> list[str]:
     return out
 
 
+# --- Rule 7: a park names what ends it, and what it names exists -------------
+#
+# `tasks/doc/032`: `.claude/leg.md` and `tasks/README.md` both required a
+# `blocked` task to name what unparks it, and nothing checked the name.
+# `tasks/api/026` waited on `tasks/api/001`, which never existed, while holding
+# the soonest-due debt in the ledger -- and the condition sat wherever each
+# filer put it: on the `State:` line, inside `In flux:`, in a section. So it is
+# a DECLARED field, like `Compacts:`, and only the field is read. Scanning a
+# body for task references was measured and is useless: it flagged 11 of 15
+# blocked tasks, nearly every hit a finished task cited as history, because a
+# task file is deleted at its fold.
+#
+# A condition need not be a task -- a date, a hardware run, the owner's word
+# are all legal. Only what is shaped like a queue path is checked: a ref that
+# does not resolve either never existed or has already landed, and both mean
+# the park cannot end the way it says.
+UNPARK_RE = re.compile(r"^\*\*Unparks when:\*\*", re.M)
+QUEUE_REF_RE = re.compile(r"(?<![\w./-])(?:tasks/)?([a-z][a-z-]*)/(\d{3})(?!\d)")
+
+
+def unpark_block(text: str) -> str | None:
+    """The field's text: its line and every continuation line, up to a blank
+    line, the next bold label, or a heading."""
+    m = UNPARK_RE.search(text)
+    if not m:
+        return None
+    out = []
+    for i, line in enumerate(text[m.start():].split("\n")):
+        if i and (not line.strip() or line.startswith(("**", "#"))):
+            break
+        out.append(line)
+    return "\n".join(out)
+
+
+def unpark_findings(text: str) -> str | None:
+    if token(STATE_RE.search(text).group(1)) != "blocked":
+        return None
+    block = unpark_block(text)
+    if block is None:
+        return ("`blocked` with no `**Unparks when:**` field\n    name what "
+                "returns it to `open` -- a task, a date, a hardware run, the "
+                "owner's word --\n    in that field rather than in prose on the `State:` line "
+                "or elsewhere (tasks/doc/032)")
+    scopes = {d.name for d in (REPO / "tasks").iterdir() if d.is_dir()}
+    dead = sorted({f"tasks/{s}/{n}" for s, n in QUEUE_REF_RE.findall(block)
+                   if s in scopes and not any((REPO / "tasks" / s).glob(f"{n}-*.md"))})
+    if dead:
+        return (f"`Unparks when:` names {', '.join(dead)}, which is not in the "
+                f"queue\n    it never existed or it has already landed; either "
+                f"way this park cannot end\n    the way it says (tasks/doc/032, "
+                f"`api/026`)")
+    return None
+
+
 def task_files() -> list[Path]:
     out = []
     for d in DIRS:
@@ -333,6 +389,9 @@ def main() -> int:
                 f"\n    every consumer reads `split()[0]`, so this file is "
                 f"whatever `{tok}` sorts into -- for `queue-status.py` that is "
                 f"`other`, i.e. not dispatchable")
+        why = unpark_findings(text)
+        if why:
+            fails.append(f"{rel}\n    {why}")
         # The `Compacts:` line is DATA, and a struck-off path must be removed
         # rather than annotated in place. Leg 057 struck one through with
         # `~~...~~` plus prose and `check-doc-size.py` stopped recognising the

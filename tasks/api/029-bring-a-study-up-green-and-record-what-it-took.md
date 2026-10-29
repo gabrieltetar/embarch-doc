@@ -1,11 +1,11 @@
 # Bring a study up green end to end, and record the sequence it actually took
 
 **State:** blocked — parked by the owner 2026-09-07: he is taking every bench and
-DUT-facing question himself once the fleet has run a while. **Unparked by him saying so**,
-and by nothing else — do not dispatch it, and do not read the queue's silence here as a
-reason to try the bench again.
+DUT-facing question himself once the fleet has run a while.
 The remaining step was already the owner's, not an agent's: see `## Progress 2026-09-06 —
 leg 025` at the bottom, where leg 025 established *why* rather than failing at it again.
+**Unparks when:** the owner says so, and nothing else — do not dispatch it, and do not read
+the queue's silence here as a reason to try the bench again.
 **Source:** owner's bench session 2026-09-06 — three other `bench` tasks depend on a study that runs; nothing records the bring-up sequence
 **Scope:** api
 **Hardware:** bench

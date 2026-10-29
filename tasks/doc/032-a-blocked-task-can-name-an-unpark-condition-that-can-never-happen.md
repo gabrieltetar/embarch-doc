@@ -1,6 +1,6 @@
 # 032 — a `blocked` task can name an unpark condition that can never happen, and the soonest debt in the ledger is one
 
-**State:** open
+**State:** done — shape 1 plus 2: an `**Unparks when:**` field (the spelling `suite/037` and `doc/077` already used), required on every `blocked` task by `check-task-state.py` rule 7, which resolves only the queue paths in it. The 12 blocked tasks on this tree carry it: 10 moved from their `State:` line or prose, `suite/023`'s `Unparked by:` renamed, `suite/037` already had it (`suite/030` was unparked to `open` before landing; `doc/022` is closed `done`). An `api/026`-shaped fixture fails. README, leg.md and worker template in embarch-fleet `83df4fb`, rendered at deploy.
 **Scope:** doc
 **Hardware:** none
 **Owner:** required — the fix is a field in `tasks/README.md` and a check in `scripts/`, both
@@ -72,12 +72,12 @@ correctly waiting on something that is not a task at all (`study-designer/006` o
 
 ## Done when
 
-- [ ] A `blocked` task's unpark condition is declared in a field, and a queue path it names that
+- [x] A `blocked` task's unpark condition is declared in a field, and a queue path it names that
       does not resolve fails the gate.
-- [ ] The 15 blocked tasks on `main` carry it, moved from wherever each states it today.
-- [ ] `tasks/README.md` (via the template) and `.claude/leg.md` say it, since both currently state
+- [x] The 15 blocked tasks on `main` carry it, moved from wherever each states it today.
+- [x] `tasks/README.md` (via the template) and `.claude/leg.md` say it, since both currently state
       the naming requirement as prose with no mechanism.
-- [ ] **Not this task:** re-judging `api/026`'s premise and splitting `core-link.md`. That is
+- [x] **Not this task:** re-judging `api/026`'s premise and splitting `core-link.md`. That is
       `tasks/api/035` and `tasks/api/026`, both `Owner: no` and dispatchable — this task must not
       do a worker's unit.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

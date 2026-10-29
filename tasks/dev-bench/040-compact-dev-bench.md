@@ -1,7 +1,8 @@
 # 040 — `spec.md` is in reserve after the PD bench decisions, and nothing filed the debt
 
 **State:** blocked — the PD bench section is about to be rewritten by four queued tasks (see `In
-flux`). Unparks when `tasks/dev-bench/036` (pd-bench's own west workspace) lands; the clock below
+flux`).
+**Unparks when:** `tasks/dev-bench/036` (pd-bench's own west workspace) lands; the clock below
 runs regardless, and a verbatim split needs no unpark at all.
 **Source:** `scripts/check-doc-size.py`, 2026-10-25. The owner's commits `a94e2c97` (decision 48,
 the PD bench, 2026-10-09) and `852d8855` (decision 49, the X-NUCLEO-DRP1M1, 2026-10-13) pushed

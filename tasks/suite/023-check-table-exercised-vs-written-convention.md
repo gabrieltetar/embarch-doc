@@ -183,7 +183,7 @@ produce is made and recorded above; `DOC-CONVENTIONS.md` is owner-reserved, so t
 carries it into the corpus cannot be made by a supervisor or a worker. Verified directly rather
 than inferred: `check-ownership.py --supervisor --stdin` on `DOC-CONVENTIONS.md` exits 1.
 
-**Unparked by:** the drafted paragraph in "The edit, drafted so the owner's commit is mechanical"
+**Unparks when:** the drafted paragraph in "The edit, drafted so the owner's commit is mechanical"
 landing in `DOC-CONVENTIONS.md`'s "Measured vs. assumed" section, or the owner deciding against it
 and saying so in one line here. Either closes this task; **it does not need a fresh §8 window**,
 because the window for the decision already ran and closed unanswered.

@@ -1,6 +1,7 @@
 # 028 — `embarch-outpost/spec.md` is in reserve
 
-**State:** blocked — `In flux: yes`; unparks when `tasks/outpost/027` and the layout-4 change in `open.md` have closed.
+**State:** blocked — `In flux: yes`.
+**Unparks when:** `tasks/outpost/027` and the layout-4 change in `open.md` have closed.
 **Source:** `outpost/026` added a sentence to spec.md and left it at 9,126 B of 10,240 B (89.1%); `DOC-COMPACTION.md` §2
 **Scope:** outpost
 **Hardware:** none

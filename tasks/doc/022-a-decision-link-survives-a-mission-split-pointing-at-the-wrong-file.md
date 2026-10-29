@@ -1,8 +1,9 @@
 # A `decision N` link survives a mission split still pointing at the file that no longer holds it
 
-**State:** blocked by agent/doc/022-decision-link-mission-split, 2026-09-08 — manual corpus
-sweep done; the check itself needs `scripts/` write, which no worker has (see `## Blocked`
-below and `inbox/022-b-decision-ref-check-needs-scripts-access.md`)
+**State:** done — closed by the owner's session, 2026-10-29: the check this waited for is
+`check-decision-refs.py`'s topic-file arm, landed as `tasks/doc/027` in `e0961dbd` (2026-09-09),
+and the same commit repointed `history/`'s 17 topic-file links at their indexes, which is box 3.
+The 11 topic-file links written into `history/` since all pass that check.
 **Source:** reviewer of `topology/010` (doc merge `3079d6c`), 2026-09-06. That unit moved
 `embarch-topology` decision 21 out of `decisions/enrollment.md` into a new
 `decisions/validation.md`. `history/topology.md` line 8 still reads
@@ -74,12 +75,12 @@ survived one `build_changelog.py --only` run, which is evidence and not a proof.
 - [x] `history/topology.md`'s decision 21 link resolves to the file that defines decision
       21. **Whether it stays that way after `build_changelog.py` runs is still open** —
       see above.
-- [ ] A check reports a `[decision N]`-plus-parenthesised-`<sub>/decisions/<topic>.md` link whose named
+- [x] A check reports a `[decision N]`-plus-parenthesised-`<sub>/decisions/<topic>.md` link whose named
       target file does not define N — either as a new rule in `check-decision-refs.py`
       (it already builds the per-file number index it would need) or in `check-links.py`.
       A link is the unambiguous case: unlike bare prose, it names one file.
       **Blocked for a `doc`-scope worker — see below.**
-- [ ] The rest of the corpus is swept once with that check. **Also blocked for this
+- [x] The rest of the corpus is swept once with that check. **Also blocked for this
       worker, for a second, independent reason:** `history/*.md` is not writable by *any*
       scope's worker (`check-ownership.py`'s allow-list has no `history/` entry for any
       scope, and this file's own "Already done by the supervisor" section already says so
