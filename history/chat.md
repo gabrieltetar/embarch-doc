@@ -11,6 +11,7 @@
 - embarch-chat folded into its own docs: spec, decisions 1-85 by topic, open, interfaces; what embarch-promptu became. [spec](../embarch-chat/spec.md)
 
 ### Changed
+- /embarch-permissions now carries the agent guide's full 54-tool allow/ask split (dated 2026-10-29) and cites suite/agent-guide.md §1.1.
 - A chat opens as an editor tab, not in the secondary sidebar, and what it opens goes into the chat's group as a tab beside it; `chatLocation: sidebar` restores the old layout (92).
 - The chat sits in a centred column, 80 % of a wide pane and never under 56rem, prose at 64rem; the gutter grows from 8 to 16 px; steps and thinking indent (91).
 - embarch-chat decisions 15, 16, 67, 68, 69, 74, 85 moved verbatim from decisions/timeline.md to decisions/readouts.md; timeline.md back under its cap.
