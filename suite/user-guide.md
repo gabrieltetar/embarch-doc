@@ -183,7 +183,7 @@ embarch-api serial-log my-firmware --duration-ms 5000
 
 Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **none** of the three these exit immediately with `no config path given`. **Prefer the upward search to exporting the variable** — an export makes the search unreachable, and no single `EMBARCH_API_CONFIG` value is ever right once you own a second firmware repo (`embarch-api` decision 25).
 
-**Note the naming split**: CLI subcommands are kebab-case, the MCP tools in §7 are snake_case — each front end follows its own convention, `--help` is authoritative, and `--json` works on all of them.
+**Note the naming split**: CLI subcommands are kebab-case, the MCP tools in [agent-guide.md](agent-guide.md) are snake_case — each front end follows its own convention, `--help` is authoritative, and `--json` works on all of them.
 
 **Why all three of build, flash and build-and-flash exist:** the combined one is what you want most of the time, and **it refuses to flash a stale or failed artifact** — but **iterating on compiler errors should not touch hardware every time**, and **re-flashing the same binary after a manual board reset should not rebuild.**
 
@@ -193,30 +193,7 @@ Outside a firmware repo, pass `--config` or export `EMBARCH_API_CONFIG`; with **
 
 ## 7. Using it from Claude Code
 
-`embarch init` already registered the MCP server for this repo, at local scope — **nothing was written into the repo for your teammates to trip over.** Open Claude Code in the repo and the tools are there.
-
-**You do not call them by name.** You say what you want:
-
-- *"Build this and flash it to the board."*
-- *"Flash it, then show me the serial log for the first 5 seconds after reset."*
-- *"This won't compile — build it and fix the errors."* ← **the one that pays for the whole setup**, because the agent sees the real compiler output and iterates without you relaying it.
-
-### 7.1 Which operations should need your approval
-
-**Reading and building are safe and frequent; anything that reaches a board — or rewrites what EmbArch remembers about one — should be a decision you make.** That is the whole surface, all 29 tools, split for `.claude/settings.local.json`:
-
-- **allow** — reads, and host-side builds that touch no hardware: `alerts`, `build`, `build_dev_bench`, `dev_bench_hello`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `serial_log`, `status`, `study_status`, `study_stream_data`, `study_watch`
-- **ask** — reaches a board, or writes what EmbArch has recorded about one: `build_and_flash`, `build_and_flash_dev_bench`, `declare_signal`, `dev_bench_link`, `enroll_probe`, `flash`, `flash_dev_bench`, `remove_signal`, `reset`, `reset_dev_bench`, `run_study`, `validate`
-
-**`run_study` is the one to be deliberate about**: with `reflash` it builds and flashes from your working tree *as it currently stands*, on both boards. `validate` only re-checks an enrolled board's identity, but it does attach to the probe, so it sits with the rest.
-
-If your `CLAUDE.md` tells the agent never to build firmware on its own — **a sensible rule when a stray `west build` can blow away a build tree** — note the exemption explicitly, or the agent will keep asking:
-
-```markdown
-Never build firmware or flash devices autonomously — ask me to run it.
-  Exception: builds routed through EmbArch's `build` tool, which uses its own
-  build directory and can't disturb my interactive build tree.
-```
+Moved to its own guide, [agent-guide.md](agent-guide.md), with what was §7.1: which MCP tools to allow and which should ask you first.
 
 ## 8. When something breaks
 

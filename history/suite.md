@@ -11,6 +11,7 @@
 - Suite binaries' `--version` names their commit; install replaces a running binary; `doctor` check 18 flags an installed one behind its checkout. Umbrella decision 57.
 
 ### Changed
+- The user guide's Claude Code section moved verbatim to [suite/agent-guide.md](../suite/agent-guide.md); its allow/ask split now names all 54 MCP tools.
 - The host-study proposal names both PD bench shields, cites the pd-bench README as its shell reference, and records the 2026-10-20 choice of its own west workspace.
 
 ### Removed

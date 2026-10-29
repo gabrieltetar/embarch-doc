@@ -24,4 +24,4 @@ A library entry's category is `category:` in its own frontmatter (none is Other)
 
 ### 39 — promptu's two install pieces became commands that apply them
 
-`/embarch-permissions` and `/embarch-claude-md` show what they would write into the open repo (`settings.local.json`, `CLAUDE.md`) and write it on a yes — never silent (`embarch-umbrella` decision 12). The rule the permission split follows is [suite/user-guide.md](../../suite/user-guide.md) §7.1's; the command carries its tool lists dated and checks them against the server's live tool list, a tool in neither going to ask. **Rejected:** leaving them to umbrella's `init`, template files copied by hand.
+`/embarch-permissions` and `/embarch-claude-md` show what they would write into the open repo (`settings.local.json`, `CLAUDE.md`) and write it on a yes — never silent (`embarch-umbrella` decision 12). The rule the permission split follows is [suite/agent-guide.md](../../suite/agent-guide.md) §1.1's; the command carries its tool lists dated and checks them against the server's live tool list, a tool in neither going to ask. **Rejected:** leaving them to umbrella's `init`, template files copied by hand.

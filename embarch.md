@@ -104,6 +104,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 | Doc | What it is |
 |---|---|
 | [suite/user-guide.md](suite/user-guide.md) | Getting started and day-to-day use, for an engineer new to EmbArch |
+| [suite/agent-guide.md](suite/agent-guide.md) | Driving EmbArch from Claude Code, and which of its MCP tools should ask you first |
 | [suite/studies-guide.md](suite/studies-guide.md) | Studies, the dev bench, and capturing a DUT trace |
 | [suite/features.md](suite/features.md) | Every feature and **how far it is actually verified** |
 | [suite/roadmap.md](suite/roadmap.md) | What shipped, what is in flight, what is deferred |
