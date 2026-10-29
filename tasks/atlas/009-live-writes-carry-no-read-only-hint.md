@@ -1,6 +1,7 @@
 # 009 — A live call that can change the board carries no read-only hint
 
-**State:** open
+**State:** claimed by agent/atlas/009-live-writes-carry-no-read-only-hint, 2026-10-29 15:07
+**Dispatch note (leg started 2026-10-29 15:03):** nothing in `embarch-doc/embarch-atlas/` is in doc-size reserve. The repo's own `DESIGN.md` is the contract until it moves (its `CLAUDE.md`). Gate: the worktree's own venv (`.venv/bin/pytest -q`), never the main checkout's; `test_public_guard` must run, not skip (the `.atlas-local` link is made beside your worktree). Invent part and chip names in tests — `test_public_guard` refuses real ones — and run `python3 ../embarch-fleet/scripts/check-client-names.py --repo .` before committing; there is no `check_public.py`. `atlas/008` just landed the chip-mismatch refusal in `live.py`: build on it. Set this file's `State:` to `done` when you close it.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — of 142 `shell` calls, sessions used it to switch a power path, set a port power budget 23 times and drive GPIO outputs, all through a tool that declares `readOnlyHint`; none ran in plan mode (all 142, and all 46 `reg_read` calls, ran in auto mode), so the hazard is latent, not observed
 **Scope:** atlas
 **Hardware:** none
