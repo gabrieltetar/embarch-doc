@@ -51,7 +51,8 @@ Six rules, and all of them fail the gate:
      parsed, so a paid file is deleted from it and accounted for in the body.
   6. **A task's TITLE names no path its `Scope:` may not write**, checked
      against `check-ownership.py` itself -- `tasks/doc/029`. See the block
-     above `check_scope_claims` for why the title and not the body.
+     above `check_scope_claims` for why the title and not the body. A path
+     matches whole, never as the tail of a sibling repo's (`tasks/doc/053`).
 
 **Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
 where that got decided.** The holding position was that `.claude/leg.md` and
@@ -94,6 +95,7 @@ Exit status: 0 all task files parse, 1 at least one does not.
 from __future__ import annotations
 
 import argparse
+import doctest
 import re
 import subprocess
 import sys
@@ -225,6 +227,32 @@ def unowned(scope: str, paths: list[str]) -> tuple[list[str], str | None]:
     return hit, None
 
 
+def names_in(title: str, cands: list[str]) -> list[str]:
+    """The tracked paths a title names, as whole paths.
+
+    A bare substring test read `embarch-core/README.md` -- another repo's
+    readme -- as naming this repo's root `README.md`, and failed a correctly
+    scoped readme-correction task for writing a file it never mentioned
+    (`tasks/doc/053`; `core/052`'s worker and leg 110 both hit it). So a
+    candidate matches only where no path character abuts it: not after `/`,
+    which is the sibling-repo case, nor inside a longer word or path. These
+    run on every invocation, so the gate cannot drift back to a substring:
+
+    >>> names_in("# 052 — `embarch-core/README.md` says Core binds 0.0.0.0", ["README.md"])
+    []
+    >>> names_in("# 001 — `README.md` lists the wrong sub-projects", ["README.md"])
+    ['README.md']
+    """
+    named, seen = [], ""
+    for q in cands:
+        if q in seen:
+            continue
+        if re.search(r"(?<![\w./-])" + re.escape(q) + r"(?![\w/-])", title):
+            named.append(q)
+            seen += q
+    return named
+
+
 def check_scope_claims(files: list[Path]) -> list[str]:
     cands = tracked_paths()
     by_scope: dict[str, dict[str, list[Path]]] = {}
@@ -236,13 +264,7 @@ def check_scope_claims(files: list[Path]) -> list[str]:
         owner = OWNER_RE.search(text)
         if owner and owner.group(1).lower().strip("*_`.,") == "required":
             continue
-        title = title_of(text)
-        named, seen = [], ""
-        for q in cands:
-            if q in title and q not in seen:
-                named.append(q)
-                seen += q
-        for q in named:
+        for q in names_in(title_of(text), cands):
             by_scope.setdefault(scope, {}).setdefault(q, []).append(p)
 
     out = []
@@ -358,6 +380,9 @@ def main() -> int:
                         f"is what tasks/doc/030 found on three of four tasks.")
 
     fails += check_scope_claims(task_files())
+    if doctest.testmod().failed:
+        fails.append("scripts/check-task-state.py\n    its own `names_in` examples "
+                     "fail (printed above) -- the title rule is broken")
 
     if args.list:
         for k, v in sorted(seen.items(), key=lambda kv: -kv[1]):

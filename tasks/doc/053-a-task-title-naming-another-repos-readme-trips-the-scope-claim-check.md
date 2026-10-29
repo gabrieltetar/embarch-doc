@@ -1,6 +1,6 @@
 # 053 — A task title naming another repo's root readme trips the scope-claim check, because the match is a bare substring
 
-**State:** open
+**State:** done — `check-task-state.py`'s new `names_in` matches a candidate only where no path character abuts it (never after `/`), with its two fixtures run as doctests on every invocation; `core/052`'s original title passes, a bare root `README.md` still fails for `core`, and no verdict changed across the 215 task and inbox files on `main`.
 **Source:** `inbox/doc-check-task-state-title-substring-false-positive.md`, filed by `core/052`'s
 worker; the same wall was hit independently by leg 110's supervisor, which worked around it by
 rewording its own task title (`5dcfc88`) rather than touching the script. Filed as a task by the leg of 2026-09-13 16:20.
@@ -36,10 +36,10 @@ that leg just wrote**, and that `check-task-state.py` is the sub-check that says
 
 ## Done when
 
-- [ ] The candidate match requires a path or word boundary — a candidate must not match when
+- [x] The candidate match requires a path or word boundary — a candidate must not match when
       immediately preceded by `/`, so a sibling repo's path no longer matches this repo's root file.
-- [ ] A regression case: a title naming another scope's readme passes for the scope that owns that
+- [x] A regression case: a title naming another scope's readme passes for the scope that owns that
       repo, and a title naming this repo's own root readme still fails for a non-`doc` scope.
-- [ ] `core/052`'s original title, or an equivalent fixture, passes.
-- [ ] `python3 scripts/check-docs.py` green.
-- [ ] `changelog.d/` fragment.
+- [x] `core/052`'s original title, or an equivalent fixture, passes.
+- [x] `python3 scripts/check-docs.py` green.
+- [x] `changelog.d/` fragment.
