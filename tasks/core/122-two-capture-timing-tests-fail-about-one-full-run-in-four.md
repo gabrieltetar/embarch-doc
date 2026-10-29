@@ -22,7 +22,11 @@ A supervisor re-runs the gate on every merge result and a red gate blocks a unit
 
 ## Done when
 
-- [ ] Both tests pass in 20 consecutive full `cargo test` runs.
-- [ ] No production code changed unless a test found a real race; if it did, that is a decision.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Both tests pass in 20 consecutive full `cargo test` runs.
+- [x] No production code changed unless a test found a real race; if it did, that is a decision.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+
+## Result
+
+20 consecutive full `cargo test` runs green (0 failures) on `agent/core/122-capture-timing-flakes`. `host_study.rs`: the sleeping feeder thread became a direct `dut.feed` plus `wait_for` on the tap's byte count. `capture.rs`: the `dt` window is `199..=10_000` ms (floor is the 200 ms sleep less 1 ms stamp truncation; ceiling is only a stall allowance). Test-only; no production change, no decision.
