@@ -1,6 +1,6 @@
 # 076 — Every leg writes a claim line `queue-status.py` cannot parse, so a live claim reports as `recoverable` with no branch
 
-**State:** open
+**State:** done — `.claude/leg.md` quotes the claim line at the claim step; `tasks/README.md` says the `claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>` prefix is the only parsed part and anything after it is prose (not a leg number: since `tasks/doc/054` a leg has none); the improvised form is deliberately not a second grammar. The gate that refuses a malformed claim is `tasks/doc/084`. embarch-fleet `56f35e5`.
 **Source:** leg 132, 2026-09-17. Found by running `queue-status.py` against this leg's own two live
 claims.
 **Scope:** doc
@@ -57,17 +57,33 @@ is self-assigned) — the `(leg NNN unit N)` suffix is where that self-assigned 
 
 ## Done when
 
-- [ ] A supervisor following `.claude/leg.md` alone writes a claim line `queue-status.py` parses —
+- [x] A supervisor following `.claude/leg.md` alone writes a claim line `queue-status.py` parses —
       by the template naming the format, or by the format being quoted where the claim step is.
-- [ ] Decided and recorded: is `(leg NNN unit N)` worth keeping as a **suffix** after the
+- [x] Decided and recorded: is `(leg NNN unit N)` worth keeping as a **suffix** after the
       documented prefix (leg 132 kept it, and it is useful for reading `git log`), or should it go?
       Either is fine; what is not fine is it replacing the parseable part.
-- [ ] Checked whether `queue-status.py` should *also* accept the improvised form, given how much of
+- [x] Checked whether `queue-status.py` should *also* accept the improvised form, given how much of
       the history is in it — or deliberately not, so the format stays single.
-- [ ] Checked against `tasks/doc/054` for whether these are one defect.
+- [x] Checked against `tasks/doc/054` for whether these are one defect.
 
 ## Not yours
 
 Do not retrofit older task files. The claims that matter are live ones, and a historical `done` task
 whose claim line was never parseable costs nothing. Leg 132 corrected only its own two in-flight
 claims and left `tasks/README.md` untouched.
+
+## Shipped
+
+- **Format quoted where a leg acts on it**: the claim step in `.claude/leg.md` now carries the
+  line verbatim, with the reason a different shape is dangerous.
+- **`(leg NNN unit N)` may follow the time as prose, never replace the prefix.** `tasks/README.md`
+  names the prefix as the only parsed part. Since `tasks/doc/054` (embarch-fleet `9cd022a`) a leg
+  has no number, so the README's example of a suffix is a window's `ts`, not a leg number.
+- **The improvised form is not accepted.** Measured: before 2026-09-18, 253 of 509 claim lines
+  used another shape and 146 of those named no branch anywhere, so a wider parser would have read
+  them as claimed with nothing to recover. Since 2026-09-18 it is 1 of 156 (a `suite` claim
+  written `claimed by the supervisor`). `queue-status.py`'s pattern now also requires the
+  `agent/` branch; over all 666 historic claim lines it accepts exactly the same 411.
+- **Not one defect with `tasks/doc/054`.** 054 is what the leg number *is*; this was the number
+  displacing the parsed prefix. With the prefix mandatory the number is unparsed prose, so 054's
+  choice could not break a claim; it has since dropped the number (embarch-fleet `9cd022a`).
