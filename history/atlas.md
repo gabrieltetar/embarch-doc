@@ -17,6 +17,7 @@
 - Atlas queries: find_fact shows the best 10 hits above 0.4x the top, names unmatched terms, narrows to a part the query names; register joins MSB/LSB pairs; doc_toc under= takes a title word.
 
 ### Fixed
+- atlas live reg_read refuses words from a chip that is not the atlas MCU; live_stacks says console and probe are different boards, not "another build" (DESIGN.md Live).
 - Atlas: find_fact also searches distilled prose (kind=prose); procedures make take-backs and silent wrong reads quirks and must-notes rule records.
 - Atlas: second-look verdicts carried under the checked-field key now count as current instead of being re-queued.
 
