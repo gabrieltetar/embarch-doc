@@ -1,6 +1,6 @@
 # 024 — `save_records` writes a non-object JSONL line back as it was, not as `{}`
 
-**State:** claimed by agent/atlas/024-save-records-keeps-a-non-object-line-as-written, 2026-10-29 15:50
+**State:** done — `records.RawLine` carries a non-object line through load/check/save unchanged; `V:` names file:line; test added.
 **Source:** reviewer of `atlas/017` (fold of the leg started 2026-10-29 15:24), confirming the worker's own stated limitation: `common.read_jsonl` can yield a JSON line that is not an object; `run_check` now replaces it with `{}` in memory so the check no longer raises, and `records.save_records` (`src/embarch_atlas/records.py:171`) rewrites a whole file whenever any record in the run changes prov, which persists that `{}` over the original line.
 **Scope:** atlas
 **Hardware:** none — fixture records only.
@@ -16,6 +16,6 @@ A record file line that parses as JSON but is not an object (a list, a number, a
 
 ## Done when
 
-- [ ] A fixture record file holding one non-object line among valid records: after `doc check` changes another record's prov in that file, the non-object line is unchanged on disk and its position kept.
-- [ ] The line is reported as a `V:` issue naming file and line number.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `DESIGN.md` updated if the `doc check` row needs it; `changelog.d/` fragment dropped.
+- [x] A fixture record file holding one non-object line among valid records: after `doc check` changes another record's prov in that file, the non-object line is unchanged on disk and its position kept.
+- [x] The line is reported as a `V:` issue naming file and line number.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `DESIGN.md` updated if the `doc check` row needs it; `changelog.d/` fragment dropped.
