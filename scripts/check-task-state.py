@@ -37,9 +37,9 @@ guessed would turn a loud wrong field into a quiet one.
 Nine rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
-     exactly -- no trailing comma, no `partially`, no `closed`. Prose follows
-     after a dash, comma or parenthesis and is never inspected. It is
-     mechanical, it has no policy in it, and it had three live victims.
+     exactly -- no trailing comma, no emphasis, no `partially`, no `closed`.
+     Prose follows after a dash, comma or parenthesis and is never inspected.
+     It is mechanical, it has no policy in it, and it had three live victims.
   2. **`In flux:` token zero is `yes`, `no` or `per`** -- the third being
      `per file`, for a task naming several docs whose answers differ.
   3. **`In flux: yes` implies `blocked`** (`.claude/leg.md`), *unless the task
@@ -157,10 +157,12 @@ def flux_block(text: str) -> str:
 def token(raw: str) -> str:
     """Token zero, the way every consumer reads it: `raw.split()[0]`.
 
-    Markdown emphasis is stripped first and nothing else is. A state written
-    `**open**` reads as `**open**` to `queue-status.py` and is a bug, but it is
-    a bug about emphasis rather than about vocabulary, so it is reported with
-    the real name rather than as an unknown word.
+    Markdown emphasis is stripped first and nothing else is, so a state written
+    `**open**` is judged on the word rather than reported as an unknown one.
+    It still fails, in `main()`: `queue-status.py` strips emphasis the same way
+    (`tasks/doc/039`), but `fold-commit.py`'s retirement match and
+    `check-doc-size.py`'s `done`/`blocked` read the bare word, so `**done**`
+    would never be retired. One rule here covers every reader of this field.
     """
     parts = raw.split()
     return parts[0].strip("*_`") if parts else ""
@@ -400,6 +402,12 @@ def main() -> int:
                 f"\n    every consumer reads `split()[0]`, so this file is "
                 f"whatever `{tok}` sorts into -- for `queue-status.py` that is "
                 f"`other`, i.e. not dispatchable")
+        elif raw.split()[0] != tok:
+            fails.append(
+                f"{rel}\n    state token {raw.split()[0]!r} carries emphasis\n"
+                f"    `fold-commit.py` and `check-doc-size.py` match the bare "
+                f"word, so write `{tok}` and put any\n    emphasis in the prose "
+                f"after it (tasks/doc/039)")
         n_state = len(STATE_RE.findall(FENCE_RE.sub("", text)))
         if n_state > 1:
             fails.append(

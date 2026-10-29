@@ -1,6 +1,6 @@
 # 039 — `Owner: **required**` parses as not-required, so an owner-only task is offered to a worker
 
-**State:** open
+**State:** done — `queue-status.py` reads `Hardware:`, `Scope:` and `Owner:` through one helper that strips leading emphasis, and state token zero the way `check-task-state.py`'s `token()` does; the gate now refuses an emphasised state token, the one field `fold-commit.py` matches bare. Live queue: `tasks/outpost/018` (`Hardware: **none**`, gated as `required` since 2026-09-12) becomes dispatchable, 23 to 24. embarch-fleet `b4e1d63`.
 **Source:** leg 074's own queue read, 2026-09-10. Found while selecting, not by a check.
 **Scope:** doc
 **Hardware:** none
@@ -57,10 +57,23 @@ check rather than three is the owner's call and the interesting half of this tas
 
 ## Done when
 
-- [ ] `queue-status.py` classifies `tasks/doc/038` as `owner-only`, whether or not its value stays
+- [x] `queue-status.py` classifies `tasks/doc/038` as `owner-only`, whether or not its value stays
       bolded.
-- [ ] A decision on the general shape: either a single normalising helper every field-reading
+- [x] A decision on the general shape: either a single normalising helper every field-reading
       script shares, or a `check-task-state.py` arm that rejects a `**Field:**` line whose *value*
       carries emphasis, or an explicit note that three instances did not clear the bar for one.
-- [ ] If the choice is to normalise rather than reject, `tasks/doc/038`'s bolding is left alone —
+- [x] If the choice is to normalise rather than reject, `tasks/doc/038`'s bolding is left alone —
       it is legitimate Markdown and the script is what was wrong.
+
+## Shipped
+
+**Normalise in the reader; refuse only on `State:`.** Measured over the whole task history: 21
+emphasised field values were written (6 `Owner`, 3 `Hardware`, 12 `In flux`) and every one meant
+the bare word, so rejecting them would have refused ordinary Markdown 21 times to protect nothing.
+`State:` is the exception because two readers outside `queue-status.py` match it bare
+(`fold-commit.py` retires on `done`, `check-doc-size.py` reads `done`/`blocked`) and it has never
+once been emphasised — one gate rule covers both at no cost. Shown against the 2026-09-11 queue
+(`7a2c68f8^`): `doc/038`, `doc/042` and `umbrella/033` all move to `owner-only`. `doc/038`'s own
+bolding was already removed by hand in `7a2c68f8`; it is not restored. Not extended to
+`supervisor-log.md`'s fields or `Compacts:` — the other two instances were fixed where found, and
+neither reads through `queue-status.py`.
