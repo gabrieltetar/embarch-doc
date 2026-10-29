@@ -1,6 +1,6 @@
 # doc — A refused `fold-commit.py` does not stop the push chained behind it, and two legs in a row pushed a worker commit before its fold
 
-**State:** open
+**State:** done — leg.md now says never to pipe `fold-commit.py` and to chain the push and `leg-fold` only behind an unpiped run; embarch-fleet `59f23ed`.
 **Filed by:** the supervisor leg that ran `study-designer/032`, `core/046`, `api/111` and
 `umbrella/089` on 2026-09-28, from its own `core/046` fold.
 **Source:** `supervisor-log.md`'s `dev-bench/014` entry (2026-09-28 16:48) and `core/046` entry
@@ -32,7 +32,14 @@ one on a denylisted name in the log — would push anyway.
   behind it.
 - `fleet-tick.py leg-fold` refuses unless the newest instance commit is a fold commit.
 
+## Chosen fix, 2026-10-29
+
+The second candidate, a rule: `.claude/leg.md` names the shape where the invocation is shown. The
+first would not have closed it — with the push inside the script, the same pipe still ticks — and
+the third adds a gate to `fleet-tick.py` for a shape one sentence names. The output is a few
+lines, so nothing needs tailing.
+
 ## Done when
 
-- [ ] A refused fold cannot be followed by a push or a `leg-fold` tick from the same command, by
+- [x] A refused fold cannot be followed by a push or a `leg-fold` tick from the same command, by
       construction or by a rule a leg reads.
