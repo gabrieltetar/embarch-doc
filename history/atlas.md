@@ -20,6 +20,7 @@
 - Atlas queries: find_fact shows the best 10 hits above 0.4x the top, names unmatched terms, narrows to a part the query names; register joins MSB/LSB pairs; doc_toc under= takes a title word.
 
 ### Fixed
+- atlas: a declared board with no netlist is a stale reason, MAP line and join log; config quotes a failed Kconfig extraction and `kconfig-extract` recovers it without a rebuild (DESIGN.md).
 - atlas: every lookup takes offset (function, q --offset, MCP), so a cut answer's next= can always be followed; a test walks TOOLS (DESIGN.md Query surface).
 - Atlas lookups: part_card board="all", register by CMSIS member name, undistilled sections answer with the next call, and src lines carry the PDF path. See embarch-atlas DESIGN.md.
 - Atlas `reg_read` on an external part: a missing I2C shell says "build CONFIG_I2C_SHELL=y", and a clear-on-read sentence naming another register guards that one, quoting the sentence.
