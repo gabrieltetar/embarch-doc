@@ -47,6 +47,20 @@ for this check sets `fetch-depth: 0` precisely so it is not skipped there.
 safe to issue per scope -- max(ever issued, on disk) + 1 -- and a failure names
 it too. Reading the directory is what both colliding filers did.
 
+**`--next` reads every live view, not just this checkout** (`tasks/doc/079`).
+A worker allocates in a worktree branched at dispatch; the supervisor's refill
+allocates in the leg worktree, which moves as the leg commits. Each answered
+from its own tree and both were right about it, so legs 137 and 138 each
+issued one `core` number twice and caught it only at the fold -- the second
+time the fix was a supervisor squashing a worker's commits to get past the
+reissue check. Every one of those trees is a registered worktree of this repo,
+sharing one ref store, so `--next` also takes the max over every worktree's
+`tasks/` on disk (uncommitted included -- a worker's tree is uncommitted for its
+whole run) and every ref's history. Only the moment of two `--next` calls is
+left, seconds rather than a unit. An abandoned branch can burn a number here,
+which costs a gap and nothing else; the GATE still reads `HEAD` only, for the
+reason above.
+
 Usage:
   scripts/check-task-numbers.py             gate
   scripts/check-task-numbers.py --next      next free NNN, every scope
@@ -103,6 +117,31 @@ def history_tasks():
     return ever, None
 
 
+def live_tasks():
+    """{scope: {NNN, ...}} from every registered worktree's `tasks/` on disk
+    and every ref's history -- what `--next` must not hand out again."""
+    seen = collections.defaultdict(set)
+    try:
+        wts = subprocess.run(('git', '-C', REPO_ROOT, 'worktree', 'list', '--porcelain'),
+                             capture_output=True, text=True, check=True).stdout
+        hist = subprocess.run(('git', '-C', REPO_ROOT, 'log', '--all', '--pretty=format:',
+                               '--name-only', '--', 'tasks/'),
+                              capture_output=True, text=True, check=True).stdout
+    except (OSError, subprocess.CalledProcessError):
+        return seen
+    rels = set(hist.split('\n'))
+    for line in wts.splitlines():
+        if line.startswith('worktree '):
+            root = line[len('worktree '):]
+            for path in glob.glob(os.path.join(root, 'tasks', '*', '*.md')):
+                rels.add(os.path.relpath(path, root).replace(os.sep, '/'))
+    for rel in rels:
+        m = TASK_RE.match(rel)
+        if m:
+            seen[m.group(1)].add(m.group(2))
+    return seen
+
+
 def next_free(tree, ever):
     """{scope: NNN} -- one past the highest number ever issued or on disk."""
     nxt = {}
@@ -116,7 +155,8 @@ def main():
     args = sys.argv[1:]
     tree, malformed = tree_tasks()
     ever, skipped = history_tasks()
-    nxt = next_free(tree, ever)
+    live = live_tasks()
+    nxt = next_free(tree, {s: set(ever.get(s, ())) | live[s] for s in set(ever) | set(live)})
 
     if args and args[0] == '--next':
         scopes = args[1:] or sorted(nxt)

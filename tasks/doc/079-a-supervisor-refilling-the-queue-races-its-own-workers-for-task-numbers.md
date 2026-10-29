@@ -1,6 +1,6 @@
 # 079 — A supervisor refilling the queue races its own workers for task numbers
 
-**State:** open
+**State:** done — a fourth shape, (2) over the actors' own trees: `--next` takes the max over every registered worktree's `tasks/` (uncommitted included) and every ref's history, so both leg 137 and 138 shapes now get the next number (simulated: `078` → `079` in each direction). The gate still reads `HEAD` only. Recorded in `tasks/README.md`'s NNN bullet, leg.md's drain and the worker's debt step (embarch-fleet `da18110`).
 **Filed by:** leg 138, 2026-09-17, at `core/080`'s fold — **the second occurrence in two legs**, which
 is the condition leg 137's own log entry named for filing it: *"the structural fact is that a
 supervisor refilling the queue mid-leg races its own workers for numbers, and nothing warns either
@@ -60,11 +60,11 @@ that keeps two actors from silently overwriting each other's queue entries.
 
 ## Done when
 
-- [ ] The owner has picked one of the three shapes above, or a fourth, and it is recorded where the
+- [x] The owner has picked one of the three shapes above, or a fourth, and it is recorded where the
       claim/filing protocol lives (`tasks/README.md` for what an actor writes,
       `embarch-fleet/protocol.md` §5 or `.claude/leg.md` for who assigns and when).
-- [ ] If the fix is mechanical, `scripts/check-task-numbers.py` and whatever a worker is told to run
+- [x] If the fix is mechanical, `scripts/check-task-numbers.py` and whatever a worker is told to run
       agree about which view of `main` is authoritative.
-- [ ] Either instance's hand-renumber is no longer necessary for the next occurrence, or the
+- [x] Either instance's hand-renumber is no longer necessary for the next occurrence, or the
       decision explicitly accepts the hand-renumber as the cost and says so, so this does not get
       re-filed a third time.
