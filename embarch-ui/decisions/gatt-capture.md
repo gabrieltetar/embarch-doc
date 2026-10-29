@@ -8,7 +8,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ### 15 — GATT capture is authored here: a per-characteristic tap, a decoder from the firmware repo, and a transcript nobody has to remember
 
-The UI half of [embarch-study-designer](../../embarch-study-designer/decisions/gatt.md) decisions 52–55, raised by the repo owner authoring a real study here and finding monitor-everything was the only monitor available.
+The UI half of [embarch-study-designer](../../embarch-study-designer/decisions.md) decisions 52–55, raised by the repo owner authoring a real study here and finding monitor-everything was the only monitor available.
 
 Three surfaces. A **selective monitor row** renders a checkbox per notify/indicate-capable characteristic — never a free-text UUID list, since the point is picking from what discovery actually found, and **the service UUID comes from the same entry the checkbox was rendered from, so a row's two UUIDs cannot disagree.** A **GATT notify tap** gives one characteristic its own file, its decoder dropdown populated from the firmware repo's own struct declarations, with raw bytes selectable and the honest default. And **taps became a tagged union** rather than one struct with optional fields — "no signal" and "no characteristic" are **different authoring mistakes with different fixes**, and an untagged shape makes them the same one.
 

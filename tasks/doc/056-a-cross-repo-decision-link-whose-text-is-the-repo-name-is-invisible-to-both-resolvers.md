@@ -1,6 +1,6 @@
 # 056 — A cross-repo decision link whose text is the repo name is invisible to both of `check-decision-refs.py`'s resolvers
 
-**State:** open
+**State:** done — owner session, 2026-10-29, branch `owner/decision-refs`: option 1 — the number beside a topic-file link is checked against that file; 12 stale citations in 7 files found and repointed at their index; see `## Closed`
 **Source:** `ui/049`'s worker, 2026-09-13, which found a live instance while re-deriving a decision
 body for its own sweep. Filed by the leg of 2026-09-13 20:0x. **Not a duplicate of
 `tasks/doc/044`** — that one is about a *verbatim mission split* moving a decision out from under a
@@ -63,9 +63,36 @@ Whoever does this should say which and why, because they are not equivalent.
 
 ## Done when
 
-- [ ] A link of this shape pointing at a decisions file that does not define the cited decision
+- [x] A link of this shape pointing at a decisions file that does not define the cited decision
       fails the gate.
-- [ ] The whole suite is swept once for existing instances — this is the first one found, by
+- [x] The whole suite is swept once for existing instances — this is the first one found, by
       accident, and nothing suggests it is the only one.
-- [ ] `check-decision-refs.py`'s own header records the gap it now closes and the ones it still
+- [x] `check-decision-refs.py`'s own header records the gap it now closes and the ones it still
       leaves.
+
+## Closed
+
+**Option 1, because option 2 is a 125-link sweep and option 1 found the defects.** Measured on
+2026-10-29: 719 links point at an indexed topic file, 125 of them across sub-projects (29 from
+`history/`). Refusing those outright would have turned 125 correct links red to catch the 12 wrong
+ones. Checking the number against the file turns exactly the 12 red. `DOC-CONVENTIONS.md`'s
+link-the-index rule stands as the preference; the check enforces correctness, not the preference.
+
+**The shapes now read**, beside the existing `[decision N](<topic>)`: a link followed by
+`decision N` (`'s` allowed between), and a link followed by a bare number when the link text itself
+says *decision* — `[decisions](<topic>) 62`, the form `embarch-api` uses throughout. A bare number
+after any other link is not read: that is just a number following a link. The href is resolved from
+any relative form, so a decisions file citing its sibling as `core-link.md` is seen too. Fenced
+blocks are skipped, which is why the example quoted in `## What` above passes.
+
+**The sweep — 12 stale citations, 8 lines, 7 files, all green on `main` before this:**
+`embarch-glossary.md` ×2 (40 → `declares.md`, not `versioning.md`), `history/outpost.md` (22 →
+`testing.md`), the `history/archive/` api window (19 → `target-json.md`),
+`embarch-ui/decisions/gatt-capture.md` (52, 54, 55 — only 53 is in `gatt.md`),
+`embarch-ui/decisions/study-designer.md` (44, 45 — the same file as this task's example, a few
+entries further down), `embarch-api/spec.md` and `embarch-api/interfaces/studies.md` (48, 49 →
+`study-events.md`). Each was repointed at its sub-project's `decisions.md`, which needs no routing
+lookup and survives the next split. 244 citations of a topic file are now checked, up from 87.
+
+**Still not seen**, and recorded in the script header: a number near a topic path in prose that
+is not adjacent to it, and anything outside `*.md`.

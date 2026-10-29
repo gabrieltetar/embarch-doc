@@ -34,7 +34,7 @@
 - outpost README Status no longer calls overhead "uncharacterised"; states the measured 1.6%/78.1% pair, spec.md §4.
 - Source-comment citations repointed from the deleted design.md to decisions.md, interfaces/wire.md, interfaces/integration.md, spec.md §4.
 - `tests/vocab_check.py` diffs record kinds and header flags against `src/outpost_priv.h`; see decisions/wire.md decision 23.
-- `run-all.sh` runs `cross_decoder.py` above the `WEST` guard now; a skip is restated in the exit summary ([decisions/module.md](../embarch-outpost/decisions/module.md) decision 22).
+- `run-all.sh` runs `cross_decoder.py` above the `WEST` guard now; a skip is restated in the exit summary ([decisions](../embarch-outpost/decisions.md) decision 22).
 - wire.md now matches the firmware: `cycles_per_sec` in the header, kinds 9/10 and flag BIT(6); integration.md lists every Kconfig symbol.
 - embarch-outpost decision 16 still concluded Phase E needed a wire; it needed the right board target.
 - `embarch-outpost` §1/§2 still described record layout 2 ("frame resolution, not cycle resolution") after layout 3 restored the DUT clock; `spec.md` now reflects the current state.

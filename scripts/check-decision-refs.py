@@ -26,17 +26,23 @@ named for a scope, belongs to that scope's sub-project (SCOPED_BY_NAME). The
 suite is a sub-project here too: `suite/decisions/`, cited `suite decision N`.
 
 Four outcomes, and three of them fail:
-  * ERROR   -- a `[decision N](<sub>/decisions/<topic>.md)` LINK whose target
-               file does not define N. The one reference shape that names a
-               file rather than a sub-project, and therefore the only one that
-               can go stale while still resolving: a mission split moves an
-               entry between topic files without renumbering it, so the old
-               path keeps working and names the wrong file. `check-links.py`
-               sees a path that exists; nothing saw what was in it, and
-               `topology/010` produced exactly this on 2026-09-06 (decision 21,
-               `enrollment.md` -> `validation.md`). DOC-CONVENTIONS.md's fix is
-               to link `<sub>/decisions.md`, the routing table a splitter
-               maintains. Added 2026-09-09, tasks/doc/027.
+  * ERROR   -- a citation that names ONE topic file which does not define N.
+               The one reference shape that names a file rather than a
+               sub-project, and therefore the only one that can go stale while
+               still resolving: a mission split moves an entry between topic
+               files without renumbering it, so the old path keeps working and
+               names the wrong file. `check-links.py` sees a path that exists;
+               nothing saw what was in it, and `topology/010` produced exactly
+               this on 2026-09-06 (decision 21, `enrollment.md` ->
+               `validation.md`). DOC-CONVENTIONS.md's fix is to link
+               `<sub>/decisions.md`, the routing table a splitter maintains.
+               Added 2026-09-09 for `[decision N](<topic>)` (tasks/doc/027);
+               since 2026-10-29 also the number beside the link --
+               `[embarch-x](<topic>) decision N`, `[decisions](<topic>) N` -- and
+               any relative href, which found 12 stale citations green on main
+               (tasks/doc/056). NOT seen: a number cited near a topic path in
+               prose that is not adjacent to it, and anything outside `*.md`
+               (source comments in the code repos).
   * ERROR   -- attributed by an explicit nearby path, number not defined there.
   * ERROR   -- number defined by NO sub-project anywhere. This is the genuinely
                dangling reference a renumber or a deletion leaves behind, and
@@ -118,14 +124,24 @@ DOC_PATH = re.compile(r'([a-z0-9-]+)/(?:(?:design|decisions)\.md'
 # the only one that can go stale while still resolving -- which is exactly what
 # neither gate could see. `check-links.py` validates that the path exists;
 # nothing checked what the file at the end of it DEFINES.
-# The `(?:.../)?` prefix is OPTIONAL, and that is not cosmetic: the commonest
-# form of this link is written from inside the sub-project itself, as a bare
-# `decisions/<topic>.md`, and a pattern requiring a path segment in front of it
-# misses every one of them -- which is most of the corpus's instances and the
-# exact case DOC-CONVENTIONS.md's own worked example uses.
-TOPIC_LINK = re.compile(
-    r'\[([^\]]*?)\]\(((?:[^)\s]+/)?decisions/[a-z0-9-]+\.md)\)')
+# The href pattern is ANY `.md`, judged only once it resolves to an indexed
+# topic file, and that is not cosmetic. The commonest form is written from
+# inside the sub-project as a bare `decisions/<topic>.md`; a decisions file
+# citing its sibling writes just `core-link.md`, and a pattern requiring
+# `decisions/` in the href missed every one of those (tasks/doc/044:
+# `embarch-api/decisions/tests.md` cited decision 55 that way, stale and green).
+TOPIC_LINK = re.compile(r'\[([^\]]*?)\]\(([^)\s#]+\.md)(?:#[^)\s]*)?\)')
 TOPIC_REL = re.compile(r'([a-z0-9-]+)/decisions/([a-z0-9-]+)\.md$')
+# The number may sit OUTSIDE the link (tasks/doc/056). The link text names the
+# repo or the topic and the sentence carries the number:
+#   [embarch-study-designer](…/decisions/versioning.md) decision 40
+#   ([decisions](…/decisions/core-link.md) 62)
+# The first needs the keyword after the link. The second -- a bare number --
+# counts only when the link text itself says "decision", which is the one way
+# an author writes it; anything else is a number that merely follows a link.
+AFTER_KW = re.compile(r"(?:'s)?\s*decisions?\s+" + NUMS, re.I)
+AFTER_BARE = re.compile(r'\s*' + NUMS)
+FENCE = re.compile(r'^\s*(?:```|~~~)')
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
@@ -286,8 +302,30 @@ def build_file_index():
     return index
 
 
+def named_files(rel, line, file_index):
+    """(num, target) for every number a citation on this line places in ONE
+    topic file (see TOPIC_LINK and AFTER_KW). Numbers above MAX_DECISION kept;
+    the caller skips them."""
+    out = []
+    for m in TOPIC_LINK.finditer(line):
+        text, href = m.group(1), m.group(2)
+        target = os.path.normpath(
+            os.path.join(os.path.dirname(rel), href)).replace(os.sep, '/')
+        if target not in file_index:
+            continue      # not an indexed topic file; check-links owns it
+        ref = REF.search(text)
+        after = line[m.end():]
+        if not ref:
+            ref = AFTER_KW.match(after)
+        if not ref and 'decision' in text.lower():
+            ref = AFTER_BARE.match(after)
+        if ref:
+            out += [(num, target) for num in expand(ref.group(1))]
+    return out
+
+
 def check_topic_links(file_index):
-    """(rel, lineno, num, href, defining, excerpt) per stale topic-file link.
+    """(rel, lineno, num, href, defining, excerpt) per stale topic-file citation.
 
     A mission split moves an entry between a sub-project's decision files
     without renumbering it (DOC-CONVENTIONS.md), so the OLD path keeps
@@ -296,38 +334,36 @@ def check_topic_links(file_index):
     `enrollment.md` -> `validation.md` and a `history/topology.md` link went on
     pointing at `enrollment.md`.
 
-    Only a link whose target is a topic file this repo actually indexes is
+    Only a citation whose target is a topic file this repo actually indexes is
     judged. A number the sub-project does not define at all is the existing
-    check's business, not this one -- reported there, once.
+    check's business, not this one -- reported there, once. Fenced blocks are
+    skipped: a task quoting the defective shape is reporting it, not making it.
     """
     bad, checked = [], 0
     for path in md_files():
         rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
         with open(path, encoding='utf-8') as fh:
             lines = fh.read().splitlines()
+        fenced = False
         for lineno, line in enumerate(lines, 1):
-            if 'decision' not in line.lower():
+            if FENCE.match(line):
+                fenced = not fenced
                 continue
-            for m in TOPIC_LINK.finditer(line):
-                text, href = m.group(1), m.group(2)
-                ref = REF.search(text)
-                if not ref:
-                    continue      # a link to a topic file, citing no number
-                target = os.path.normpath(
-                    os.path.join(os.path.dirname(rel), href)).replace(os.sep, '/')
-                if target not in file_index:
-                    continue      # not an indexed topic file; check-links owns it
-                hit = TOPIC_REL.search(target)
+            if fenced or 'decision' not in line.lower():
+                continue
+            for num, target in named_files(rel, line, file_index):
+                if num > MAX_DECISION:
+                    continue
                 checked += 1
-                for num in expand(ref.group(1)):
-                    if num > MAX_DECISION or num in file_index[target]:
-                        continue
-                    # Where in that sub-project it actually lives, if anywhere.
-                    defining = sorted(
-                        f for f, nums in file_index.items()
-                        if num in nums and f.split('/')[0] == hit.group(1))
-                    bad.append((rel, lineno, num, target, defining,
-                                line.strip()[:110]))
+                if num in file_index[target]:
+                    continue
+                # Where in that sub-project it actually lives, if anywhere.
+                sub = TOPIC_REL.search(target).group(1)
+                defining = sorted(
+                    f for f, nums in file_index.items()
+                    if num in nums and f.split('/')[0] == sub)
+                bad.append((rel, lineno, num, target, defining,
+                            line.strip()[:110]))
     return bad, checked
 
 
@@ -410,13 +446,34 @@ SELF_TEST = (
 )
 
 
+# Citations that name ONE topic file: (citing file, line, [(num, held?)]).
+# Synthetic topic files: embarch-a/decisions/x.md holds 1, y.md holds 2 and 3.
+SELF_TEST_FILES = (
+    # tasks/doc/056: the link text is the repo, the number follows the link.
+    ('embarch-b/decisions/z.md', 'surface for [embarch-a]'
+     '(../../embarch-a/decisions/x.md) ' + 'decision 2.', [(2, False)]),
+    ('history/a.md', '([decisions](../embarch-a/decisions/x.md) 3).',
+     [(3, False)]),
+    ('history/a.md', '[decisions](../embarch-a/decisions/y.md) 3', [(3, True)]),
+    # A bare number after a link whose text does not say "decision" is not one.
+    ('embarch-b/spec.md', '[x](../embarch-a/decisions/x.md) 3 times', []),
+    # A sibling href, written from inside decisions/, is resolved too.
+    ('embarch-a/decisions/y.md', '[' + 'decision 1](x.md)', [(1, True)]),
+)
+
+
 def self_test():
     """A list of failure lines; empty when every fixture reads as recorded."""
     index = {'embarch-a': {1, 2, 3}, 'embarch-b': {96}, 'suite': {4}}
     anywhere = set().union(*index.values())
+    files = {'embarch-a/decisions/x.md': {1}, 'embarch-a/decisions/y.md': {2, 3}}
     bad = []
     for own, line, want in SELF_TEST:
         got = [(n, v) for n, _, v in resolve_line(line, own, index, anywhere)]
+        if got != want:
+            bad.append(f'  {line!r}: want {want}, got {got}')
+    for rel, line, want in SELF_TEST_FILES:
+        got = [(n, n in files[t]) for n, t in named_files(rel, line, files)]
         if got != want:
             bad.append(f'  {line!r}: want {want}, got {got}')
     return bad
@@ -497,8 +554,8 @@ def main():
         print()
 
     if bad_links:
-        print(f'{len(bad_links)} `[decision N]` link(s) pointing at a topic '
-              f'file that does not define N:\n')
+        print(f'{len(bad_links)} citation(s) naming a topic file that does '
+              f'not define the number:\n')
         for rel, lineno, num, target, defining, excerpt in bad_links:
             where = ', '.join(defining) if defining else 'nowhere in that sub-project'
             print(f'  {rel}:{lineno} decision {num} -> {target}')
@@ -535,7 +592,7 @@ def main():
 
     print(f'All {checked} decision references resolve. '
           f'{len(warnings)} ambiguous (--warnings to list), not an error.')
-    print(f'All {links_checked} `[decision N]` topic-file link(s) name the '
+    print(f'All {links_checked} citation(s) naming a topic file name the '
           f'file that defines the number\n  (DOC-CONVENTIONS.md prefers the '
           f'index: {len(file_index)} topic files indexed).')
     print(f'All {rows_checked} reversal-row citations resolve '

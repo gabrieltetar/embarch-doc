@@ -26,7 +26,7 @@ The human surface for [embarch-study-designer](../../embarch-study-designer/deci
 
 ### 12 — A security level in the step table, and a declared-GATT picker
 
-The human surface for [embarch-study-designer](../../embarch-study-designer/decisions/gatt.md) decisions 44 and 45.
+The human surface for [embarch-study-designer](../../embarch-study-designer/decisions.md) decisions 44 and 45.
 
 **Security is an ordinary step**, authored like any other, its level a four-option select carrying **one line of what each means in practice** rather than the bare Zephyr constant — "encrypted, authenticated (LESC)" is what an engineer picks by. *Not* a hidden toggle on the connect step and *not* something the UI inserts on the author's behalf: **the whole argument for a separate action is that a failed elevation must be legible as itself.**
 
