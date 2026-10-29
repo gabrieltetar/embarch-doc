@@ -207,8 +207,12 @@ def tracked_paths() -> list[str]:
 
 def unowned(scope: str, paths: list[str]) -> tuple[list[str], str | None]:
     """(paths this scope may not write, or a refusal message from the checker)."""
+    # `--repo`, or the checker derives its scope list from whatever cwd this
+    # gate was run in, and from a code repo every scope came back unknown --
+    # twelve false reds (tasks/doc/036).
     r = subprocess.run(
-        [sys.executable, str(OWNERSHIP), "--scope", scope, "--stdin"],
+        [sys.executable, str(OWNERSHIP), "--scope", scope, "--stdin",
+         "--repo", str(REPO)],
         input="\n".join(paths), capture_output=True, text=True)
     if r.returncode == 0:
         return [], None

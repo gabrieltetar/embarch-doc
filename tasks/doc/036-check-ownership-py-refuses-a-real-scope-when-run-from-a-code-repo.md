@@ -1,6 +1,6 @@
 # 036 — `check-ownership.py` refuses a real scope, by name, when its cwd is a code repo
 
-**State:** open
+**State:** done — `check-ownership.py` takes its scope list from `fleet.toml`'s `doc_repo` when the repo it checks has no `embarch-*/` directory, and a real scope diffed in a code repo without `--code-repo` exits 2 naming that flag; `check-task-state.py` passes `--repo`, which took it from 12 false reds to 0 run from a foreign cwd. `doc/035` gets the same rule, not done here. embarch-fleet `75e8c66`.
 **Source:** leg 070's supervisor, 2026-09-10, running `tasks/dev-bench/008` as a `toolchain` unit
 with its own hands. Hit while trying to gate the code half.
 **Scope:** doc
@@ -44,8 +44,8 @@ not.
 
 ## Done when
 
-- [ ] `check-ownership.py --scope <any real sub-project>` works regardless of cwd, or fails saying
+- [x] `check-ownership.py --scope <any real sub-project>` works regardless of cwd, or fails saying
       *what* it could not find rather than asserting the scope does not exist.
-- [ ] The same question asked of `queue-status.py` (`tasks/doc/035`) — one fix or two, but decided
+- [x] The same question asked of `queue-status.py` (`tasks/doc/035`) — one fix or two, but decided
       together rather than twice.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
