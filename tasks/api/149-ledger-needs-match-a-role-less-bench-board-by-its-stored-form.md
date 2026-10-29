@@ -1,6 +1,6 @@
 # 149 — The test ledger's `needs` matches a role-less bench board by a form nobody confirmed
 
-**State:** claimed by agent/api/149-ledger-role-less-board-needs, 2026-10-28 22:16
+**State:** done — agent/api/149-ledger-role-less-board-needs, 2026-10-28
 **Reserve (dispatch note, 2026-10-28):** no `embarch-api` file is in reserve (`check-doc-size.py --pressure`). If this unit pushes one past 90% of its cap, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** `api/128`'s fold (supervisor log, 2026-10-28 16:43, "Least sure about"): "how a role-less bench board (topology decision 48) counts toward a test's `needs`; the worker assumed by role and by board name and could not confirm the stored form."
 **Scope:** api
@@ -17,7 +17,7 @@ The ledger exists to say which tests the bench on the desk can run; a need that 
 
 ## Done when
 
-- [ ] Board and instrument needs matched against the stored forms in `embarch-topology`'s types, with unit tests for attached and absent.
-- [ ] Decision 98 states the confirmed form in place.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Board and instrument needs matched against the stored forms in `embarch-topology`'s types, with unit tests for attached and absent.
+- [x] Decision 98 states the confirmed form in place.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
