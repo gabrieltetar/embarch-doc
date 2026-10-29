@@ -18,6 +18,7 @@
 - Atlas queries: find_fact shows the best 10 hits above 0.4x the top, names unmatched terms, narrows to a part the query names; register joins MSB/LSB pairs; doc_toc under= takes a title word.
 
 ### Fixed
+- Atlas `reg_read` on an external part: a missing I2C shell says "build CONFIG_I2C_SHELL=y", and a clear-on-read sentence naming another register guards that one, quoting the sentence.
 - Atlas: a W1C field no longer guards its register against reg_read; an SVD reset is null where resetValue or resetMask leaves bits undefined, and vote and the decode skip them.
 - Atlas: save_records writes a non-object record-file line back as it was; doc check reports it as V: by file and line.
 - doc check validates the schema first: a record of the wrong shape gets a V: line and stays llm-unverified instead of crashing the run.
