@@ -1,6 +1,7 @@
 # 011 — Answer protocol questions: what a role must support, and what a state does
 
-**State:** open
+**State:** blocked
+**Unparks when:** `tasks/atlas/016` lands the `standard` kind this task builds on
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — about 605 spec lookups outside the atlas were state-machine questions, 105 distinct Policy Engine and Protocol Layer state names were grepped 327 times, 44 lookups named the applicability tables (USB PD R3.2 Tables 7.4-7.7), and a review round corrected two responders a commit called Required that Table 7.4 lists as Recommended
 **Scope:** atlas
 **Hardware:** none
@@ -23,3 +24,7 @@ R3.2 chapter 9 (State Machine Diagrams, pp 255-393, a third of the spec) has no 
 - [ ] Synthetic fixture tests: a two-table applicability spec, and an invented four-state machine with one timer and one message trigger.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Blocked
+
+Parked by the supervisor on 2026-10-29, not by a worker: the task says it builds on the `standard` kind `tasks/atlas/016` lands, and that task waits on the owner's review. Back to `open` when 016 is done.

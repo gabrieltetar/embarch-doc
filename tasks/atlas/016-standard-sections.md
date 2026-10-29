@@ -1,6 +1,7 @@
 # 016 — Land the standard document kind, and pick a standard's sections to distil from what sessions read
 
-**State:** open
+**State:** blocked
+**Unparks when:** the owner's word — he has reviewed the uncommitted 2026-10-08 `standard` design in `/home/gabriel/Github/embarch/embarch-atlas-wt` (this task's first Done-when box), or said a worker may land it as written
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the USB PD R3.2 spec (418 pages) was filed as `other`, distilled by hand as a datasheet into 119 records citing 35 pages, and sessions then read 348 distinct pages of it outside the atlas; the design for a `standard` kind written on 2026-10-08 is still uncommitted in `embarch-atlas-wt`
 **Scope:** atlas
 **Hardware:** none
@@ -24,3 +25,7 @@ The procedure exists only as uncommitted text, so the next standard a project ad
 - [ ] A standard's card lists its distilled sections and names `find_text` for the rest.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Blocked
+
+Parked by the supervisor on 2026-10-29, not by a worker. The task opens with the owner reviewing the 2026-10-08 design, which no agent can do for him, and three legs in a row left it `open` while calling it owner-gated in their log entries. Left `open`, `queue-status.py` counted it, and `atlas/004` and `011` behind it, as dispatchable work no leg would take, so the relay kept spawning legs into a queue it could not drain and never reached the dream that asks him. `embarch-atlas-wt` still held the uncommitted `DESIGN.md`, both `SKILL.md` changes and `standard-procedure.md` on 2026-10-29. Back to `open` the moment he answers.

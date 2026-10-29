@@ -1,6 +1,7 @@
 # 004 — Check firmware configuration against a standard's requirements
 
-**State:** open
+**State:** blocked
+**Unparks when:** `tasks/atlas/016` lands the `standard` kind this task's `requirement` records belong to
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 564 spec lookups outside the atlas came within three calls of a devicetree or Kconfig read by the same agent, and the engineer's curation notes list about 50 commit-message corrections from the review rounds, about half of them a USB PD rule restated wrongly (a timer value, a Required or Recommended level, which PDOs a power rule allows at a given PDP)
 **Scope:** atlas
 **Hardware:** none
@@ -23,3 +24,7 @@ In the field this cross-check ran by hand in every review round, and the errors 
 - [ ] Synthetic tests: a fixture devicetree whose PDO set breaks an invented power rule and one that passes; a guard that skips the rule when its Kconfig symbol is off.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Blocked
+
+Parked by the supervisor on 2026-10-29, not by a worker: the `requirement` records of a standard this checks against come from the `standard` kind `tasks/atlas/016` lands, and that task waits on the owner's review. Back to `open` when 016 is done.
