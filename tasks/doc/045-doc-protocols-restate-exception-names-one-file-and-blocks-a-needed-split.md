@@ -1,6 +1,8 @@
 # 045 — `DOC-PROTOCOL.md`'s link-don't-restate exception names one file, and that is what blocks `suite/user-guide.md`'s split
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29: shape 2 taken. DOC-PROTOCOL.md §3 names the property
+(a guide written for a reader not already inside the project; today user-guide and studies-guide),
+§5's exception points at it, §2's sketch says `guides`; `tasks/suite/030` unparked.
 **Source:** `tasks/suite/030`, leg 092, 2026-09-11 — found while running that task's announcement
 window and attempting its squeeze fork.
 **Scope:** doc

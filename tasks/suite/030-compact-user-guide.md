@@ -1,10 +1,13 @@
 # 030 — `suite/user-guide.md` is 556 bytes from its cap, and the thing that filled it is the part that has to keep growing
 
-**State:** blocked — on `DOC-PROTOCOL.md`, which is owner-reserved. Leg 092 ran the window
-(`ts` `1789187481.992469`, announced by leg 091, no objection) and **attempted the squeeze fork; it
-does not reach the floor.** See "What leg 092 found" below. Unparks when the owner either extends
-`DOC-PROTOCOL.md`'s link-don't-restate exception to a second suite guide (`tasks/doc/045`), or says
-to squeeze against the `Must not delete:` list anyway and accept the loss.
+**State:** open — unparked 2026-10-29 by `tasks/doc/045`: **the split fork is now available.**
+`DOC-PROTOCOL.md` §3 exempts any guide written for a reader not already inside the project from
+§5's link-don't-restate rule, by that property rather than by filename, so a `suite/agent-guide.md`
+carrying §7/§7.1's tool lists is covered. The live `§7.1` citation is now
+`embarch-chat/decisions/library.md` (`embarch-promptu/design.md` no longer exists): repoint it in the
+split's own commit. Leg 092 ran the window (`ts` `1789187481.992469`, announced by leg 091, no
+objection) and **attempted the squeeze fork; it does not reach the floor** — see "What leg 092
+found" below.
 **Source:** `tasks/suite/022`'s own fold, leg 085, 2026-09-11. Split out of `tasks/suite/004`,
 which carried this file alongside two others on one `Compacts:` line and one shared date;
 `user-guide.md` is now urgent and the other two are not, so it gets its own clock.
