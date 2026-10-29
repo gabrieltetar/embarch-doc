@@ -15,6 +15,7 @@
 - Compacted embarch-umbrella decisions/bind.md 11,555 -> 10,904 B (retired 22(b)/(c) and split history); decision 22's live reasoning untouched.
 
 ### Fixed
+- Check 17 fix lines now say `install` rewrites a registered service (Core 106); `bound-narrow` says "stopped and bound narrow" when stopped ([decision 22](../embarch-umbrella/decisions/bind.md)).
 - umbrella: `setup --uninstall` exits 1 on a failed step; check 1 mismatch warns; check 13 dirty checkout is `dirty-checkout`, not stale; check 2 fix carries `--bind`.
 ## 2026-09
 

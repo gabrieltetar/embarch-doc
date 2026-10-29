@@ -10,7 +10,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Decision 26's `--prune` stays deferred by choice, not blocked.** Its prerequisite, `build_dir_name` on `list-targets` (`embarch-api` decision 77), covers the *default* build only; a non-default one needs `target.json` (decision 69). Detail: [decision 26](decisions/prune-policy.md).
 
-- **Check 17's reworded fix lines and stopped arm are unverified live** (decision 22, `umbrella/095`). **Hardware debt, owner-run** (reinstalls the service): with Core 106 deployed, register `--bind 127.0.0.1`, stop it, run `doctor` in the guest: `bound-narrow` says "stopped and bound narrow"; the printed `install --bind 0.0.0.0` then widens it. `bind-too-narrow` is unmeasured from a mirrored guest.
+- **Check 17's reworded fix lines and stopped arm are unverified live** (decision 22, `umbrella/095`). **Hardware debt, owner-run** (reinstalls the service): with Core 106 deployed, register `--bind 127.0.0.1`, stop it, run `doctor` in the guest: `bound-narrow` says "stopped and bound narrow"; the printed `install --bind 0.0.0.0` then widens it. `bind-too-narrow` is unmeasured from a mirrored guest, and whether `embarch setup` gets past an existing registration.
 
 - **`apply_plan` now clears `saved.host` on a non-`remote` `setup` conclusion** ([decision 51](decisions/sticky-host.md)), settling decision 48. Unit-tested. **Hardware debt:** confirm the state transition on a real machine (decision 51's three-step protocol).
 
@@ -24,4 +24,4 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Check 10 still spawns the MCP server in `doctor`'s own environment, not the agent CLI's** ([decision 40](decisions/mcp.md)) — registered `env` applies, but a server needing something only the CLI supplies fails here, works there. **That residual is unexercised**: the live run hit `not-registered` and `handshake-ok`, neither of them it.
 
-- **`setup`'s desk steps (decision 58) have never run for real.** Both commands are mocked in tests. **Owner debt:** one `embarch setup` on a machine with `embarch-desk` and `claude` confirming both steps report done (and that `claude plugin install embarch-desk@embarch` works with the marketplace added), then `setup --uninstall` removing both.
+- **`setup`'s desk steps (decision 58) have never run for real.** Both commands are mocked in tests. **Owner debt:** one `embarch setup` on a machine with `embarch-desk` and `claude` confirming both steps report done (and that `claude plugin install embarch-desk@embarch` works with the marketplace added), then `setup --uninstall` removing both. Not to run against the live desk without meaning to: it restarts the service.
