@@ -25,3 +25,7 @@ It costs one extra word in a read that already halts the core, and today the onl
 ## Hardware-verification debt
 
 The "Bench check" item is not ticked (verify-only). Needs: a halted-read `reg_read TIM1` (or any peripheral the running image leaves clock-gated) on a real STM32 board through embarch-core. The answer must say `clock off (RCC.APBENR2.TIM1EN = 0)` and print no `*`/"at reset" markers; then a peripheral the image enables must say `clock on`. Also confirm the RCC word rides in the same halted read. Host-side test used a fake mem-read; the `<PERIPH>EN` rule was checked against names only, with no vendor SVD in the tests (the "every peripheral" test runs over a synthetic STM32-style name list).
+
+## Real-SVD check (supervisor correction)
+
+Run once against a public STM32 vendor SVD (a small-MCU series, 56 peripherals; the part is not named here because the public-name guard denies it) with `EMBARCH_ATLAS_REAL_SVD=<file> pytest tests/test_live.py`: 50 peripherals map to an enable field, `EXTI`/`IWDG`/`RCC` have none by design, and `COMP`, `DMAMUX` and `TAMP` stay unknown because no RCC field names them. `RTC` maps to `RTCAPBEN` (not `RTCEN`, which gates only the RTC clock source); `DAC`, `FDCAN1/2` and `HDMI_CEC` map through the exceptions table. The `<PERIPH>EN` rule and the tables were checked against that one SVD and nothing else; the synthetic-list test stays.
