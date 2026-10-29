@@ -1,6 +1,6 @@
 # 085 — A doc link into a code repo is red in every worktree and green in the owner's checkout
 
-**State:** open
+**State:** done — option 2: `check-links.py` looks a sibling-repo target up again where the main checkout lives (doc, this commit); leg.md step 0's paragraph says what its one link is still for (fleet `1f6c6f5`, owner/dispatch)
 **Source:** leg of 2026-09-28, step 0 — the baseline gate on a fresh leg worktree, before any unit.
 **Scope:** doc
 **Hardware:** none — one template line in `.claude/leg.md` step 0, or one rule in `check-links.py`.
@@ -39,9 +39,17 @@ doc gate red until someone noticed it was not the unit's.
 
 ## Done when
 
-- [ ] Either `.claude/leg.md` step 0 links every sibling repo beside the leg and worker doc
+- [x] Either `.claude/leg.md` step 0 links every sibling repo beside the leg and worker doc
       worktrees (the `embarch-fleet` line, generalised), **or** `check-links.py` resolves a
       `../../../embarch-<repo>/` link against the suite root rather than the worktree's parent,
       **or** DOC-PROTOCOL/DOC-CONVENTIONS says a doc cites code by a code span rather than a
-      relative link — whichever the owner prefers.
-- [ ] `check-docs.py` is green from a fresh `.worktrees/embarch-doc/<name>/` with no hand-made link.
+      relative link — whichever the owner prefers. **The second**, as a fallback: a target missing
+      beside the tree is looked up under the main checkout's parent. The first drifts with every
+      new code repo (a second link, into `embarch-dev-bench`, appeared 2026-10-13 and was linked by
+      hand on 10-25); the third forbids links the owner writes on purpose. `embarch-fleet` is
+      excluded from the fallback so a worktree missing step 0's link stays red — without it
+      `check-docs.py` skips two checks quietly.
+- [x] `check-docs.py` is green from a fresh `.worktrees/embarch-doc/<name>/` with no hand-made link.
+      Measured in a scratch suite (clones, its own `.worktrees/`): a fresh doc worktree with only step
+      0's `embarch-fleet` link went from 2 broken links (`embarch-ui`, `embarch-dev-bench`) to 11/11
+      green; with no link at all, from 50 broken to the 48 framework links, by design.

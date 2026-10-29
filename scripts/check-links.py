@@ -56,6 +56,24 @@ guessing wrong here silently drops a real link from coverage — the failure
 this check exists to prevent. Nothing in the corpus needs it. If that changes,
 the fix is a parser, not a heuristic.
 
+**A link out of this repo into a sibling resolves against the suite the repo
+really lives in** (2026-10-29, tasks/doc/085). DOC-PROTOCOL.md §2 makes every
+sub-project a sibling of this repo, so `../../../embarch-ui/tests/element_ids.rs`
+is a real file from the owner's checkout. From a worktree under
+`.worktrees/embarch-doc/<name>/` the same link lands beside the worktree, where
+nothing is, and the gate went red on every leg and every worker before anyone
+wrote a byte -- green for the owner, red for everyone else, which is the kind of
+red a supervisor learns to discount. So a target that is missing beside the tree
+being checked is looked up again under the directory the MAIN checkout sits in
+(`git rev-parse --git-common-dir`), which is where the owner's link pointed. A
+target missing there too is still broken. Two cases never get the second look:
+a link into this repo by name, which must resolve in the tree being checked, and
+**`embarch-fleet`**, which step 0 of `.claude/leg.md` links beside every doc
+worktree -- without that link `check-docs.py` SKIPS the two framework checks
+quietly, so its absence has to stay loud here. The second instance of this
+shape (`embarch-dev-bench/decisions/pd-bench.md`, 2026-10-13) was linked by hand
+in `.worktrees/` twelve days later; nothing would have caught the third.
+
 Usage: scripts/check-links.py   (run from anywhere; paths are repo-relative)
 Exit status: 0 if every relative link outside inbox/ resolves, 1 otherwise.
 
@@ -67,9 +85,41 @@ dangling cross-references to a "Next"/"Later" bucket that didn't exist yet).
 """
 import os
 import re
+import subprocess
 import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PARENT = os.path.dirname(REPO_ROOT)
+# The framework repo: linked beside every doc worktree by leg.md step 0, and
+# never re-rooted, so a worktree missing that link stays red (see header).
+FRAMEWORK = 'embarch-fleet'
+
+
+def main_checkout():
+    """The main checkout this tree belongs to: itself, or a worktree's origin."""
+    r = subprocess.run(['git', '-C', REPO_ROOT, 'rev-parse', '--path-format=absolute',
+                        '--git-common-dir'], capture_output=True, text=True)
+    if r.returncode != 0:
+        return REPO_ROOT
+    return os.path.dirname(os.path.normpath(r.stdout.strip()))
+
+
+MAIN = main_checkout()
+SUITE = os.path.dirname(MAIN)
+
+
+def in_suite(resolved):
+    """`resolved` re-rooted from this tree's parent onto the suite's, for a
+    sibling-repo target that is missing beside the tree being checked."""
+    if SUITE == PARENT or resolved.startswith(REPO_ROOT + os.sep):
+        return resolved
+    rel = os.path.relpath(resolved, PARENT)
+    first = rel.split(os.sep)[0]
+    if first in (os.pardir, FRAMEWORK, os.path.basename(MAIN)):
+        return resolved
+    return os.path.join(SUITE, rel)
+
+
 # Gitignored staging directory; its findings warn rather than fail (see header).
 # The exemption is exactly .gitignore's `inbox/*.md` MINUS its `!inbox/README.md`
 # negation: that README is committed, is rendered from a framework template, and
@@ -174,6 +224,8 @@ def main():
             if not file_part:
                 continue
             resolved = os.path.normpath(os.path.join(os.path.dirname(path), file_part))
+            if not os.path.exists(resolved):
+                resolved = in_suite(resolved)
             if not os.path.exists(resolved):
                 missing.append((os.path.relpath(path, REPO_ROOT), target))
             elif frag and resolved.endswith('.md') and frag not in anchors_of(resolved):
