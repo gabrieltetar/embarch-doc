@@ -20,6 +20,7 @@
 - POST /probes/enroll adds displaced, vacated and vacated_kept when an enrol moves a role; absent otherwise (core decision 87).
 
 ### Changed
+- Windows `install` over a registered service rewrites it in place, keeps its `Environment`, and applies the restart policy via `sc failure` ([decision 106](../embarch-core/decisions/platform.md)).
 - Instrument pacing comments in embarch-core now say it runs from the end of the previous exchange, matching topology's field doc; `mark_sent` is `mark_exchanged`. No behaviour change.
 - Core: POST /study answers 409 up front for a tap on a captured signal, instead of an OS port error after flash (core decision 102).
 - Core's live-read halt_count now takes the identity gate's share from topology's Validation.halts instead of inferring it by chip prefix (core decision 97).
