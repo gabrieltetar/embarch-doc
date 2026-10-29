@@ -1,6 +1,6 @@
 # 083 — `check-task-state.py` cannot close a compaction task paid as a ride-along without falsifying its `In flux:` answer
 
-**State:** open
+**State:** done — `check-task-state.py` exempts `done` from `In flux: yes` ⇒ `blocked` as it exempts `Owner: required`; `tasks/README.md`'s `In flux:` bullet and `.claude/leg.md`'s ride-along paragraph say to close `done` with the answer as written (embarch-fleet `3029c78`, rendered at deploy). `core/079` was retired at `e47dd9a6`, so its flip survives only in history; leg 140's `ui/066` close "discharged" its answer because that flux had genuinely ended (`core/085` resolved), so a true `no` needs no rule — it is not a route for a debt paid while the flux is live, which is the case this fixes.
 **Source:** leg 141, 2026-09-17, hit while closing `tasks/core/079-compact-core.md` after
 `core/078` paid its debt inside its own unit. Found by the gate refusing the fold, not by reading
 the script.
@@ -57,14 +57,14 @@ rather than overriding it"*, which may be a third, better workaround nobody wrot
 
 ## Done when
 
-- [ ] Either `check-task-state.py` exempts `done` from the `In flux: yes` ⇒ `blocked` rule the way
+- [x] Either `check-task-state.py` exempts `done` from the `In flux: yes` ⇒ `blocked` rule the way
       it exempts `Owner: required`, or `tasks/README.md` states the sanctioned way to close a
       compaction task whose flux answer was honestly `yes` when the debt was paid — and
       `.claude/leg.md`'s ride-along paragraph points at it, since that paragraph is what creates the
       state.
-- [ ] `tasks/core/079`'s flipped field is reconciled with whatever is decided — either restored to
+- [x] `tasks/core/079`'s flipped field is reconciled with whatever is decided — either restored to
       `yes` once the check allows it, or its block-quoted original is blessed as the pattern.
-- [ ] Check what leg 140 did to close `tasks/ui/066` (`embarch-doc@3e7e15cf`, entry in
+- [x] Check what leg 140 did to close `tasks/ui/066` (`embarch-doc@3e7e15cf`, entry in
       `embarch-fleet/supervisor-log.md`) and fold that in; if it found a cleaner route, this task is
       a documentation fix rather than a script one.
-- [ ] Gate green.
+- [x] Gate green.

@@ -43,7 +43,8 @@ Six rules, and all of them fail the gate:
   2. **`In flux:` token zero is `yes`, `no` or `per`** -- the third being
      `per file`, for a task naming several docs whose answers differ.
   3. **`In flux: yes` implies `blocked`** (`.claude/leg.md`), *unless the task
-     is `Owner: required`*, which already makes it undispatchable.
+     is `Owner: required` or `done`*, either of which already makes it
+     undispatchable.
   4. **`In flux: per` names every path on the `Compacts:` line** inside the
      `In flux:` block itself, so "per file" cannot be an answer that declines
      to say which file.
@@ -86,6 +87,11 @@ and **the field was wrong.**
     `blocked` would protect nothing and would hide the debt from the one actor
     who can pay it. `DOC-PROTOCOL.md` and `DOC-COMPACTION.md` are reserved
     forever, so this case recurs by construction.
+  * **`done` is exempt for the same reason** (`tasks/doc/083`). A ride-along
+    pays a parked debt *while* the flux answer is honestly `yes` -- that is the
+    whole case for it -- so refusing `done` left two closes to choose from: a
+    false `no` (`core/079`, leg 141) or a `blocked` task with a paid debt whose
+    due date would take a later leg's first unit. Nothing dispatches `done`.
 
 Usage:
     scripts/check-task-state.py            check tasks/ and inbox/
@@ -354,7 +360,7 @@ def main() -> int:
                     f"{', '.join(FLUX_LEGAL)}\n    `per` is `per file`, for a "
                     f"task whose docs do not share one answer -- see this "
                     f"script's header")
-            elif answer == "yes" and tok != "blocked" and not owner_req:
+            elif answer == "yes" and tok not in ("blocked", "done") and not owner_req:
                 fails.append(
                     f"{rel}\n    `In flux: yes` but state is {tok!r}\n"
                     f"    every file on the `Compacts:` line is in flux, so "
