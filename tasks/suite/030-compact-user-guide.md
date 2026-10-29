@@ -1,6 +1,6 @@
 # 030 — `suite/user-guide.md` is 556 bytes from its cap, and the thing that filled it is the part that has to keep growing
 
-**State:** open — unparked 2026-10-29 by `tasks/doc/045`: **the split fork is now available.**
+**State:** open — announced 2026-10-29 14:28:47 (`ts` `1793305727.873799`) for the split fork; the 30-minute window closes 14:58:47. Unparked 2026-10-29 by `tasks/doc/045`: **the split fork is now available.**
 `DOC-PROTOCOL.md` §3 exempts any guide written for a reader not already inside the project from
 §5's link-don't-restate rule, by that property rather than by filename, so a `suite/agent-guide.md`
 carrying §7/§7.1's tool lists is covered. The live `§7.1` citation is now
