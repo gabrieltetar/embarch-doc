@@ -17,6 +17,7 @@
 - Atlas: live `shell` and external `reg_read` over the board shell; new `bus` record (byte order, address windows).
 
 ### Changed
+- atlas: `reg_read` reads the RCC enable bit with the peripheral and says "clock off" instead of decoding zeros as reset values, or says the clock is unknown (DESIGN.md Live).
 - Atlas: a bump's second look batches facts whose checked fields changed, and compares cond, condition and width; see DESIGN.md Caching.
 - atlas: the live shell tells a silent console, a lost port and an empty success (with its retval) apart, never resends after a write, and the CLI exits non-zero on failure (DESIGN.md Live).
 - atlas live: shell runs only [live] read_only commands, new shell_run and reg_read_clear carry no readOnlyHint; reg_read refuses allow_clear (embarch-atlas DESIGN.md MCP server)
