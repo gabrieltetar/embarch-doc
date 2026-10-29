@@ -1,6 +1,6 @@
 # 043 — `queue-status.py` counts `suite/` tasks in `dispatchable`, the one number that sizes a wave of workers
 
-**State:** open
+**State:** done — `queue-status.py` puts an open `suite` task in its own bucket, listed and counted on a `suite` line, out of `dispatchable` and the refill gate exactly as `bench` is. On the queue as filed (`b286e89f`): dispatchable 13 to 1, and `LOW QUEUE` prints. embarch-fleet `31f4846`.
 **Source:** leg 085, 2026-09-11, step 0. Found while sizing a wave of 6 against a queue that
 reported `dispatchable: 12` and could feed exactly **one** worker.
 **Scope:** doc
@@ -77,3 +77,15 @@ Do **not** hide `suite/` tasks or drop them from the listing — they are real, 
 supervisor needs to see them to pick one to announce. This is about which bucket they are totalled
 into, nothing else. The same applies to `owner-only`, which is already listed separately and
 already excluded.
+
+## Shipped
+
+As suggested, and nothing hidden: the suite tasks still list, one per line, marked as the
+supervisor's own. `--json` gains a `suite` key. **The `12 → 13` on claiming was `tasks/doc/076`**:
+the snapshot's one remaining dispatchable task is `api/067`, live and claimed, read as
+`recoverable` because its claim line did not parse — not a property of `suite`.
+
+**The listener's count moves with it.** Its cron block runs `--count` and was left alone, so no
+re-arm is owed; a suite-only queue now reads 0 there, which still spawns a leg unless a dream is
+under 6 hours old. So `.claude/leg.md` now says an open suite task is no reason to dream, and the
+script's `NOTHING DISPATCHABLE` line says so whenever suite tasks are listed.
