@@ -1,6 +1,6 @@
 # 020 — A bump's second look batches every changed fact, and compares every value the reader is asked for
 
-**State:** claimed by agent/atlas/020-second-look-batches-and-compares-what-changed, 2026-10-29 17:08
+**State:** done
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 3 and 15), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Both halves are queue and comparison logic over records and readings, testable with fixture queues and fixture readings the way `tests/test_update.py` and `tests/test_secondlook.py` already do. No board, no build, no LLM.
@@ -32,10 +32,17 @@ One possible direction:
 
 ## Done when
 
-- [ ] An item that the previous atlas's queue held under a different checked key is in the new atlas's batches and counted as changed, both through `update` and through `second-look queue --diff-from`. An item with the same id and key stays backlog. One fixture test covers both items.
-- [ ] A limit or timing reading whose `cond` means something other than the first pass's is not `confirmed`. A reading that words the same condition differently is. The same holds for a strap's `condition`. Fixture tests cover each case.
-- [ ] A register reading whose `width` differs from the first pass's is a conflict.
-- [ ] Whether the stricter compare re-opens verdicts already frozen under the current key is decided and stated in DESIGN.md "Caching", for example by a `CHECKED_VERSION` bump or deliberately not.
-- [ ] `tasks/atlas/001` edits the same `update.py` lines for the backlog (`second-look queue --used`). Whichever lands second rebases onto the other, and neither undoes the `(id, key)` split.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` updated (the `update` and `second-look` rows, and "Caching"; embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+- [x] An item that the previous atlas's queue held under a different checked key is in the new atlas's batches and counted as changed, both through `update` and through `second-look queue --diff-from`. An item with the same id and key stays backlog. One fixture test covers both items.
+- [x] A limit or timing reading whose `cond` means something other than the first pass's is not `confirmed`. A reading that words the same condition differently is. The same holds for a strap's `condition`. Fixture tests cover each case.
+- [x] A register reading whose `width` differs from the first pass's is a conflict.
+- [x] Whether the stricter compare re-opens verdicts already frozen under the current key is decided and stated in DESIGN.md "Caching", for example by a `CHECKED_VERSION` bump or deliberately not.
+- [x] `tasks/atlas/001` edits the same `update.py` lines for the backlog (`second-look queue --used`). Whichever lands second rebases onto the other, and neither undoes the `(id, key)` split.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` updated (the `update` and `second-look` rows, and "Caching"; embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+
+## What shipped
+
+- `secondlook.owed_by` returns `(id, key)` pairs; `is_owed` and `split_diff` tell backlog from diff by pair, used by both `update.second_look_diff` and `second-look queue --diff-from`. A queue written before keys existed owes by id alone. `update` and `--diff-from` now say how many items are changed under a new key. Test: `test_a_changed_fact_that_keeps_its_id_is_batched_not_backlog`.
+- `compare_one` compares a limit or timing's `cond` and a strap's `condition` by meaning with `text_value_verdict`: reworded is confirmed, clearly different is a conflict, an ambiguous overlap is unresolved, a reader that states none is silent. A register's `width` is compared numerically, a difference is a conflict. Limit: a condition differing only in one side's extra quantity with otherwise shared words is not caught.
+- Caching decision, in DESIGN.md: no `CHECKED_VERSION` bump. Frozen verdicts stay (a bump re-reads every fact in every atlas); a full re-look is a deliberate bump.
+- `tasks/atlas/001` is toolchain-gated and not running, so nothing to rebase onto; the `(id, key)` split lives in `split_diff`, one call, which 001's `--used` backlog can reuse or leave alone.
