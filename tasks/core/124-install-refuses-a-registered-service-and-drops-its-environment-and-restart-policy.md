@@ -1,6 +1,7 @@
 # 124 — `install` refuses a registered service, and a reinstall drops its environment and restart policy
 
-**State:** open
+**State:** claimed by agent/core/124-install-over-a-registered-service, 2026-10-29 14:30
+**Reserve (dispatch note, 2026-10-29):** `embarch-core/open.md` 4,804/5,120 B (316 B left, out of reserve at <= 3,919 B) and `embarch-core/spec.md` 9,778/10,240 B (462 B left) are in reserve, both filed only against `tasks/core/112`, which is `blocked` on `In flux: yes` about decision 89. Your debt line goes into `open.md`: **compact `open.md` as part of this unit** to pay for it, carrying `core/112`'s `Must not delete:` list (decision 89's spelling paragraph and `409 chip-mismatch` wording, decision 80's ARMv6 RCC reasoning, decision 22's identity-gate relation). If `open.md` ends out of reserve, delete it from `core/112`'s `Compacts:` line and say so in that task's body; otherwise leave it filed. Touch `spec.md` only if you must, and then cut what you add. `tasks/umbrella/095` is sequenced after this task and waits on item 1's decision.
 **Source:** `embarch-umbrella` [decision 22](../../embarch-umbrella/decisions/bind.md)'s 2026-10-29 measurement (`tasks/umbrella/033`, run by the owner's session against the live Core service)
 **Scope:** core
 **Hardware:** verify-only
