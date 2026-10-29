@@ -1,7 +1,6 @@
 # 094 — `embarch-umbrella/open.md` is inside its reserve floor
 
-**State:** blocked — `In flux: yes`.
-**Unparks when:** the open.md debts named on In flux close (verification legs for checks 13, 15, 17, 5, decisions 51 and 58)
+**State:** done — compacted in `umbrella/095`'s branch: `open.md` 3,740 B, clear of its reserve floor.
 **Source:** `umbrella/093`, 2026-10-28. Its owner-debt bullet for decision 58 took `open.md` to 4,098 B of 5,120 B, 80% of cap, 1,022 B left.
 **Scope:** umbrella
 **Hardware:** none
@@ -18,5 +17,5 @@
 
 ## Done when
 
-- [ ] `open.md` is clear of its reserve floor, every `Must not delete:` item still readable.
-- [ ] `changelog.d/` fragment. Gate green.
+- [x] `open.md` is clear of its reserve floor, every `Must not delete:` item still readable.
+- [x] `changelog.d/` fragment. Gate green.
