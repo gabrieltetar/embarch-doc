@@ -1,6 +1,7 @@
 # 059 — `diff_new_lines` can republish an already-sent line: decide, then record
 
-**State:** claimed by agent/ui/059-diff-new-lines-publishes-the-grown-line, 2026-10-29 16:17
+**State:** done 2026-10-29 (agent/ui/059-diff-new-lines-publishes-the-grown-line). Fixed per "Leg 123's refusal": return from k-1 on strict extension, k on equality; decision 70; five tests (plain growth, steady state, repeat, repeat+new line, growth across two polls) in `src/logs.rs`. Decision 13 shrunk to a pointer with every fact kept in 70.
+**Was:** claimed by agent/ui/059-diff-new-lines-publishes-the-grown-line, 2026-10-29 16:17
 **Unparked 2026-10-29 16:17 (the leg after `suite/055`'s fold):** the `Unparks when:` below is this task's own fix,
 not an outside event, so the park could only end by dispatching it. **Fresh branches from `origin/main`** in both
 repos under the new name above, not the old one: the old doc branch carries a stale copy of this file and both old
@@ -142,13 +143,13 @@ the last four edits to this entry cut something they should not have while makin
 
 ## Done when
 
-- [ ] A reasoned choice between fixing and accepting, stated in the commit message.
-- [ ] If fixed: a test that fails against the current `diff_new_lines` and passes after.
-- [ ] If accepted: the tolerance stated in `embarch-ui/decisions/debug-tab.md` (new
+- [x] A reasoned choice between fixing and accepting, stated in the commit message.
+- [x] If fixed: a test that fails against the current `diff_new_lines` and passes after.
+- [x] If accepted: the tolerance stated in `embarch-ui/decisions/debug-tab.md` (new
       decision if decision 13 has no room), plus a test pinning the current behaviour.
-- [ ] `cargo test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `cargo test` / `clippy --all-targets -- -D warnings` green in `embarch-ui`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
 
 ## Not yours
 
