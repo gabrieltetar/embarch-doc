@@ -1,6 +1,6 @@
 # 007 — Search a document's page text from the atlas, with page and section cites
 
-**State:** claimed by agent/atlas/007-find-text, 2026-10-29 16:39
+**State:** done
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 3,332 calls (3,278 shell commands, mostly `grep` and `sed -n`, and 54 `Read`s) against `pdftotext` dumps of the 418-page USB PD R3.2 spec, 16.5 M result characters, 94% of them from 122 subagents in 6 sessions, against 121 atlas calls on the same document over the same weeks
 **Scope:** atlas
 **Hardware:** none
@@ -19,10 +19,18 @@ The spec was distilled on 2026-10-08 (119 records citing 35 pages), and the fiel
 
 ## Done when
 
-- [ ] `find_text` answers with `src: <doc> text-layer, <n> pages` and one block per hit: `p<N> §<id> <title> [s/<file> | not distilled]`, the matching line, and its context lines.
-- [ ] Synthetic fixture test (an invented 3-page document with a toc): a plain-word hit, a regex hit, a hit in an undistilled section, `section=` narrowing, and a budget cut that continues with `next=`.
-- [ ] On a 400-page document, a symbol, a state name and a table title each answer in under 0.5 s.
-- [ ] The usage log records `{doc, section, page, tool}` per answer and is never read back into an answer.
-- [ ] `atlas-use` SKILL.md, the MAP protocol line (`mapgen.py`) and DESIGN.md "Query surface" name `find_text` as the step after `find_fact`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `find_text` answers with `src: <doc> text-layer, <n> pages` and one block per hit: `p<N> §<id> <title> [s/<file> | not distilled]`, the matching line, and its context lines.
+- [x] Synthetic fixture test (an invented 3-page document with a toc): a plain-word hit, a regex hit, a hit in an undistilled section, `section=` narrowing, and a budget cut that continues with `next=`.
+- [x] On a 400-page document, a symbol, a state name and a table title each answer in under 0.5 s.
+- [x] The usage log records `{doc, section, page, tool}` per answer and is never read back into an answer.
+- [x] `atlas-use` SKILL.md, the MAP protocol line (`mapgen.py`) and DESIGN.md "Query surface" name `find_text` as the step after `find_fact`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result (2026-10-29)
+
+Built `find_text` (`query.py`, MCP tool, `embarch-atlas q find-text`; the lookups are now thirteen). Hints in `doc_section` (undistilled and not-found answers) and `doc_toc` (not-found) now name `find_text`. Usage log: `<atlas dir>/usage.jsonl`, write-only.
+
+Timing on a synthetic 400-page text layer (55 lines/page, tests/test_query.py): symbol 0.014 s, state name 0.011 s, table title 0.011 s (budget 0.5 s). No real document was used or committed.
+
+Notes: the "spec.md/decisions.md/open.md" box is met by DESIGN.md "Query surface" (atlas keeps its design in the code repo; `embarch-doc/embarch-atlas/` holds only design.md and research/). A page shared by two sections is credited to the deepest, latest-starting toc section, because toc.json carries pages, not lines. The MCP tool keeps `read_only_hint` although it appends to the usage log (local bookkeeping, changes no answer).
