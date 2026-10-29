@@ -1,6 +1,6 @@
 # 082 — `fold-commit.py` cannot fold a unit whose own task file it must both modify and remove
 
-**State:** open
+**State:** done — `git rm -f` (embarch-fleet `a071e40`), staging before the log commit and resume on re-run (`cc73d53`), and leg.md's rule that the unit's own task file always goes in `--path` (`fc605c4`).
 **Filed by:** leg 139, 2026-09-17, after hitting it **twice in one leg** — `api/109` and
 `suite/044` — and completing both folds by hand.
 **Source:** `scripts/fold-commit.py`, observed directly.
@@ -43,7 +43,7 @@ message. That works and it is a deviation from *"`fold-commit.py` … is the onl
 **It does not fire** when the worker marked the task `done` on its branch and the supervisor merged
 that, which is the common path — which is exactly why this has gone unnoticed.
 
-## Workaround that works today, for whoever hits it before it is fixed
+## Workaround (obsolete since the fix — put the task file in `--path`)
 
 `git add` the task file yourself, leave it **out** of `--path`, and let the staged change ride along
 — `fold-commit.py` stages by explicit path but commits what is staged. Leg 139 did not discover this
@@ -59,11 +59,11 @@ folds — which works exactly as long as the supervisor doing it is careful.
 
 ## Done when
 
-- [ ] `fold-commit.py` either stages a `done` task file's modifications before removing it
+- [x] `fold-commit.py` either stages a `done` task file's modifications before removing it
       (`git rm --cached` plus the working-tree delete, or `git add` then `git rm -f`), or refuses
       **before** committing the log so a retry is possible.
-- [ ] A fold that fails after the log commit has a supported way to finish — a `--log-already-written`
+- [x] A fold that fails after the log commit has a supported way to finish — a `--log-already-written`
       path, or the retry refusal reworded to say what to do rather than only what happened.
-- [ ] `.claude/leg.md` says whether a unit's own task file belongs in `--path` at all. Leg 139 put it
+- [x] `.claude/leg.md` says whether a unit's own task file belongs in `--path` at all. Leg 139 put it
       in for two units and left it out for two, with no rule either way, and the two that included it
       are exactly the two that failed.
