@@ -1,6 +1,15 @@
 # 059 — `diff_new_lines` can republish an already-sent line: decide, then record
 
-**State:** blocked — leg 123 refused the merge on a supervisor diff read. The worker's fix
+**State:** claimed by agent/ui/059-diff-new-lines-publishes-the-grown-line, 2026-10-29 16:17
+**Unparked 2026-10-29 16:17 (the leg after `suite/055`'s fold):** the `Unparks when:` below is this task's own fix,
+not an outside event, so the park could only end by dispatching it. **Fresh branches from `origin/main`** in both
+repos under the new name above, not the old one: the old doc branch carries a stale copy of this file and both old
+branches sit on a base two months back. Take the code from `21a48de` (`embarch-ui`, branch
+`agent/ui/059-diff-new-lines-republish`) and the decision text from `ec150926` (its `embarch-doc` tip), then fix the
+index as specified below. **Reserve:** `embarch-ui` decision 13 (`decisions/debug-tab.md`) has **0 B** left on
+`main`; do not write into it — the new behaviour gets its own numbered decision, numbered from `main` today. The
+old branches stay where they are; they are not yours to delete.
+**Was:** blocked — leg 123 refused the merge on a supervisor diff read. The worker's fix
 trades the duplicate for a **permanently dropped line remainder**, which inverts decision 13's own
 stated preference. The branches are pushed and are worth
 reusing, not redoing: `agent/ui/059-diff-new-lines-republish` in `embarch-ui` (code `21a48de`) and
