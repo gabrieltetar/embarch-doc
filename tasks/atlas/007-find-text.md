@@ -5,6 +5,9 @@
 **Scope:** atlas
 **Hardware:** none
 **Owner:** no
+**Also owed (from `atlas/012`, landed 2026-10-29):** `doc_section`'s "not distilled" answers and `doc_toc`'s
+nearest-title answers point to `doc_section tier=text page=<first>` and a PDF Read only, because `find_text` did not
+exist yet. When it lands, add `find_text <doc> ... section=<id>` to those next-call hints (`query.py`), with a test.
 
 ## What
 
