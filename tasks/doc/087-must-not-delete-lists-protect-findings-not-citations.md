@@ -1,6 +1,10 @@
 # doc/087 — `Must not delete:` lists protect findings but not their citations
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29: the field's definition in the tasks README template
+(`embarch-fleet` `028a120`, `templates/protocol/tasks.README.md`; rendered at the owner's deploy)
+now says to name a finding's receipt — symbol, path, "confirmed by reading X" sentence — with it,
+because the hot/cold test classes evidence as cold. Put there rather than in DOC-COMPACTION-PASS.md:
+the filer writes the list, and the filer reads the template.
 **Source:** `tasks/core/089`, 2026-09-29. Compacting `embarch-core/decisions/surfaces.md`
 under `tasks/core/079`'s `Must not delete:` list (itself carried forward by
 `core/078`'s ride-along compaction) preserved every protected finding in decision
