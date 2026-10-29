@@ -1,6 +1,6 @@
 # 025 — The clock-gate word never tips a `reg_read` into refusal, and matches only an enable register
 
-**State:** open
+**State:** claimed by agent/atlas/025-clock-gate-word-never-tips-a-read-into-refusal, 2026-10-29 17:48
 **Source:** `atlas/013`'s review (2026-10-29 fold of `atlas/013`, code `0f68b0a`): two residuals the reviewer named and judged minor, filed rather than left in the log
 **Scope:** atlas
 **Hardware:** none — both halves are planning and lookup logic over SVD records, testable with the fixture SVDs and the fake `mem-read` `tests/test_live.py` already uses.
