@@ -1,6 +1,6 @@
 # 034 — a size debt on an `open.md` full of still-live questions has no payable form, and five are now parked that way
 
-**State:** open
+**State:** done — no cap raise and no third ledger state: DOC-BUDGET.md says a full `open.md` is an ordinary debt paid by a split into `open/<topic>.md` (doc/062's role) and a decision is filed by subject, never by room; the five tasks were all retired by events (owner/doc-size, 2026-10-29)
 **Source:** leg 065's supervisor, 2026-09-10, from the outcome of `study-designer/026` (doc merge
 `02775af`). Filed rather than fixed because `DOC-BUDGET.md` is owner-reserved
 (`protocol.md` §3), and this is a question about what that file's role caps should say.
@@ -71,12 +71,12 @@ reserved, so no leg can act on this.
 
 ## Done when
 
-- [ ] `DOC-BUDGET.md` either changes the `open.md` role cap or states explicitly that a full
+- [x] `DOC-BUDGET.md` either changes the `open.md` role cap or states explicitly that a full
       `open.md` of live questions is an accepted state and how the size ledger should record it.
-- [ ] `tasks/study-designer/026`, `api/026`, `dev-bench/012`, `umbrella/038` and `core/022` are
+- [x] `tasks/study-designer/026`, `api/026`, `dev-bench/012`, `umbrella/038` and `core/022` are
       reconciled against whatever that says — several of them should probably be closed rather
       than carrying a clock nobody can answer.
-- [ ] The decision-placement-by-byte-count pattern (`api/055`, `api/048`, and the two before them)
+- [x] The decision-placement-by-byte-count pattern (`api/055`, `api/048`, and the two before them)
       is either accepted in writing or given a rule.
 
 ## Filed from `inbox/` by leg 066, 2026-09-10
