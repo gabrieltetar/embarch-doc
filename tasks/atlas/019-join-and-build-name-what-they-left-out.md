@@ -1,6 +1,6 @@
 # 019 — An atlas says when a declared board or its Kconfig extraction is missing, and a missing kconfig.json can be filled without a full rebuild
 
-**State:** open
+**State:** claimed by agent/atlas/019-join-and-build-name-what-they-left-out, 2026-10-29 16:52
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 10 and 11), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Fixture atlases with a stamp and some netlists. The Kconfig half is testable by making the extraction fail under monkeypatch. Proving the properties needs no west build.
