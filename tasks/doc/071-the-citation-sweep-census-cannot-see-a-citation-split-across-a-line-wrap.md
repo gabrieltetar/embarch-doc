@@ -1,6 +1,12 @@
 # 071 — Citation census: `grep` also misses a citation split across a line wrap
 
-**State:** open — drained from `inbox/` by leg 126 at `core/068`'s fold, 2026-09-16.
+**State:** done — owner/conventions, 2026-10-29, fixed with `tasks/doc/065` and `069` as one instruction in
+DOC-CONVENTIONS.md: the census's `[[:space:]]*$` arm catches a wrap that leaves the number on the
+next line, `-B1` one that leaves the sub-project on the line before. **Wrap-aware re-censuses have
+run for seven scopes** (core/069, api/106, umbrella/074, topology/052, ui/063, dev-bench/034,
+study-designer/061+064). **Outpost never had one**; it has exactly one wrapped site today,
+`tests/run-all.sh:40-41` (`decision` / `23`) — an outpost follow-up, not filed (brief). Drained from
+`inbox/` by leg 126 at `core/068`'s fold, 2026-09-16.
 **Source:** `core/068` (2026-09-16), rechecking the 11 plural-citation lines `core/058`/`066`/`067`
 missed. Re-censusing `embarch-core` with the corrected plural pattern (`[Dd]ecisions [0-9]`)
 reproduced exactly the filed 11 lines — but a further check, `grep -rlIE

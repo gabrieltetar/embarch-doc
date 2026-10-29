@@ -1,6 +1,12 @@
 # 065 — the canonical "grep for inbound citations" instruction is case-sensitive, and that is how the fourth claim-loss landed
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29, fixed with `tasks/doc/069` and `071` as one instruction:
+DOC-CONVENTIONS.md *Referring to a decision* now holds the one copy of the citation census
+(`git grep -nIiE -B1 -A1`, case-insensitive, plural, wrap and `.md#N` arms, each tied to the miss it
+closes; "a floor: read, and grep a cut fact's own words"), and DOC-COMPACTION-PASS.md's procedure
+points at it before any cut. **Mechanical check: decided against** — `check-decision-refs.py`
+resolves numbers, the gate checks a tree rather than a diff, and matching a deleted fact to the
+sentences relying on it is a reading, not a regex; recorded in the same paragraph.
 **Source:** `inbox/doc-citation-sweeps-are-case-sensitive.md`, filed by leg 119 while folding
 `ui/055`, drained by leg 120.
 **Scope:** doc

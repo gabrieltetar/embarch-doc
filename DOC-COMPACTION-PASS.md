@@ -6,7 +6,7 @@ That file is the invariant and the four-file shape — which of the four a doc i
 
 ## Procedure
 
-Working tree clean and pushed first — **git is where everything you delete goes.** Snapshot `collect-open-questions.py` before and after.
+Working tree clean and pushed first — **git is where everything you delete goes.** Snapshot `collect-open-questions.py` before and after. **Before cutting a fact, census its citations** by [DOC-CONVENTIONS.md](DOC-CONVENTIONS.md)'s method (*Referring to a decision*): the gate resolves a cited number, not a cited fact, which is how `ui/055` cut a vertex count that a line beside its own grep hit still cited.
 
 `scripts/check-duplication.py` first: the cheapest bytes are a claim held in two of the four files, which is a §3 error rather than a cold sentence. Then **read the whole doc**, because **the merges that matter are between paragraphs 200 lines apart.** Then **write `spec.md` from scratch, to its cap** — not by deleting from the old doc, **because compaction by deletion preserves the old doc's shape, which is the problem** — and check the old one afterwards for facts you missed. Then `decisions.md` (§5, and the hot/cold test below), then `open.md`.
 

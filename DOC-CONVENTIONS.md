@@ -33,6 +33,14 @@ Number-first headings, one level below their topical group: `### 20, 21, 25, 27 
 - **A number an insertion renumbered.** Two entries looked deleted while other docs cited them (`embarch-api` 31, `embarch-umbrella` 27). Neither was: **a commit inserted a decision in the middle and renumbered the entry below it**, so every reference to the old number silently pointed elsewhere. **This is why a number is permanent here** (DOC-COMPACTION.md §5); both entries own both numbers.
 - **A reversal row cited and gone.** It resolves `reversals ... row N` against the union of `reversals/rows-*.md`: 47 rows were once deleted along with a `## Changelog` heading they sat below, and **fifteen citations went on pointing at them with nothing to notice.**
 
+**Finding citations by hand — before cutting a fact, or auditing a repo — is one census, and this is its only copy:**
+
+```sh
+git grep -nIiE -B1 -A1 'decisions?([[:space:]]+[0-9]|[[:space:]]*$)|\.md#[0-9]' -- <paths>
+```
+
+Each arm is a miss that cost a sweep: `-i` a sentence-initial `Decision 25's` (`tasks/doc/065`), `decisions?` a plural `decisions 27/29` (`069`), `$` a wrap that leaves the number on the next line and `-B1` one that leaves the sub-project on the line before (`071`, `074`), `\.md#` an anchor link. **It finds lines, and it is a floor**: count instances by reading (a list or range cites every number in it), and before cutting a fact grep its own words too — a citation can name a fact without its number. No script replaces it: `check-decision-refs.py` resolves a number, not the fact a citing sentence attributes to it, and matching one to the other is reading, not a regex.
+
 ## Retiring an entry
 
 A decision that stops describing anything true is **retired, not deleted** — a one-line tombstone naming what it said and what replaced it:

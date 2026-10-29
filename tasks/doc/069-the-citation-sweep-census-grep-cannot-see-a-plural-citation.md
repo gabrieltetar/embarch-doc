@@ -1,6 +1,12 @@
 # 069 — the citation-sweep census grep cannot see a plural citation, and every task in the chain carries it
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29, fixed with `tasks/doc/065` and `071` as one instruction in
+DOC-CONVENTIONS.md (the census's `decisions?` arm). **Corpus re-check, measured rather than re-run:**
+six scopes got a plural re-check after this was filed (core/068, api/104, umbrella/073, ui/061,
+topology/050, outpost/024) and study-designer's chain was plural-aware from 059 with whole-repo
+greps at 064/065. **The one residue is dev-bench**: `app/src/main.c` and `app/src/serial_protocol.h`
+were swept by `dev-bench/031` with the singular-only pattern, carry 19 plural lines today
+(8 + 11), and no plural re-check of them is recorded — a dev-bench follow-up, not filed (brief).
 **Source:** `inbox/citation-census-grep-cannot-see-a-plural-citation.md`, filed by leg 124's
 supervisor, 2026-09-16, after two independent confirmations in one leg. Drained by leg 125.
 **Scope:** doc
