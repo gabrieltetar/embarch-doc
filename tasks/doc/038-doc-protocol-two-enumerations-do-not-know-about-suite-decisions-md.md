@@ -1,6 +1,8 @@
 # 038 — `DOC-PROTOCOL.md`'s two enumerations of the suite-level docs do not know `suite/decisions.md` exists
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29: DOC-PROTOCOL.md §2's sketch and §3's suite-level list name
+`suite/decisions.md`, and §3 ratifies what belongs in it (a call binding more than one sub-project that
+none of them owns; a process rule goes in the reserved docs); its header now points there.
 **Source:** `tasks/suite/008`, executed by the supervisor on leg 073, 2026-09-10. That task created
 `suite/decisions.md` and explicitly required the supervisor to stop if the new doc could not be
 introduced **without** amending `DOC-PROTOCOL.md` or `DOC-COMPACTION.md`. It could — neither needs

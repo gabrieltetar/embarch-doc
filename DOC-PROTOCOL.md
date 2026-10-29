@@ -25,7 +25,7 @@ embarch/
     ├── DOC-PROTOCOL.md      this file
     ├── DOC-COMPACTION.md    sizes, file split, how a doc shrinks
     ├── <sub-project>/       spec.md, decisions.md, open.md, [interfaces.md]
-    ├── suite/               overview, index, roadmap, features, glossary, user-guide
+    ├── suite/               overview, index, decisions, roadmap, features, glossary, user-guide
     ├── embarch-decision-reversals.md
     ├── changelog.d/         one-line history fragments
     ├── features.d/          one fragment per feature-inventory row
@@ -42,7 +42,7 @@ Suite-level docs are mid-migration into `suite/`; several still sit at the root.
 Three tiers, and one non-tier:
 
 - **A sub-project** (`<sub-project>/`) is **four capped files** — `spec.md`, `decisions.md`, `open.md`, and `interfaces.md` only where the reference doesn't fit; each splits into `<topic>/` files by mission when it outgrows one. What each holds, and the caps: [DOC-COMPACTION.md](DOC-COMPACTION.md) §2–3. Every sub-project, existing or planned, gets a directory.
-- **Suite-level** docs cover what spans more than one sub-project: the overview and index, the roadmap, the feature inventory, the glossary, [embarch-token.md](embarch-token.md), [embarch-dev-workflow.md](embarch-dev-workflow.md), [embarch-decision-reversals.md](embarch-decision-reversals.md), and [suite/user-guide.md](suite/user-guide.md) — the one doc written for a reader not already inside the project, and therefore the one place §5's link-don't-restate rule does not apply.
+- **Suite-level** docs cover what spans more than one sub-project: the overview and index, the roadmap, the feature inventory, the glossary, [suite/decisions.md](suite/decisions.md), [embarch-token.md](embarch-token.md), [embarch-dev-workflow.md](embarch-dev-workflow.md), [embarch-decision-reversals.md](embarch-decision-reversals.md), and [suite/user-guide.md](suite/user-guide.md) — the one doc written for a reader not already inside the project, and therefore the one place §5's link-don't-restate rule does not apply. **`suite/decisions.md` takes a call that binds more than one sub-project and that none of them owns**; a development-process rule goes in this file, the workflow or the protocol instead.
 - **A proposal** (`*-proposal.md`, 15 KB) is a cross-repo design awaiting acceptance. **The policy: if it is not fully closed, it is still open** — its `Status:` stays `proposal`, never `accepted` or `half-accepted`, because **a doc marked half-done reads as done to everyone who didn't write it.** Delete it only when fully absorbed. **An accepted piece is deleted from it, not restated**, or the proposal becomes a second source of truth — as in [embarch-stream-pipeline-proposal.md](embarch-stream-pipeline-proposal.md), inbound half folded into five docs, outbound half still proposed.
 - **A milestone doc is not a tier.** While a milestone runs, `<sub-project>/milestone-N.md` holds the execution plan. Once it ships, it **folds into the four files and is deleted** ([DOC-COMPACTION.md](DOC-COMPACTION.md) §3) — git holds it, and a completed plan left intact competes with `spec.md` for the reader who wants current truth.
 
