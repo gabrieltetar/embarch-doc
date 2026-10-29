@@ -1,6 +1,6 @@
 # 014 — Make the live `shell` tell a silent console, a lost port and an empty success apart
 
-**State:** claimed by agent/atlas/014-shell-tells-silence-lost-port-and-empty-success-apart, 2026-10-29 16:58
+**State:** done
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 23 of 142 `shell` answers were empty, 21 of them followed by a second command only to see whether the first took; 2 said "did not run" for a command that ran
 **Scope:** atlas
 **Hardware:** verify-only
@@ -18,11 +18,21 @@ A budget-setting command that prints nothing on success produced the 23 empty an
 
 ## Done when
 
-- [ ] A silent body (a fixture carrying `port_identity` and `core_state`) prints the echo verdict, the identity and the core state. (From `atlas/022`.)
-- [ ] Unit tests with a fake `embarch-api` reproduce: empty output with prompt seen (answer carries `retval`); zero bytes (no "longer timeout" advice); a `500` or `port_lost` after the write (answer says the command was sent and is not retried on another console).
-- [ ] `Console.run` falls through to the next console only when the failure happened before anything was written (port not enumerable, open failed), never after.
-- [ ] `retval` is skipped, and the answer says so, when the image has no `retval` command.
-- [ ] The CLI verbs exit non-zero when the answer is "did not run", "nothing came back" or "port lost".
-- [ ] Bench check: a command that prints nothing returns `0` and a refused one its error code.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped. Uses Core's new exchange fields when present (filed as `core-exchange-says-what-happened-on-the-wire`), and works without them from `text` and `until_seen`.
+- [x] A silent body (a fixture carrying `port_identity` and `core_state`) prints the echo verdict, the identity and the core state. (From `atlas/022`.)
+- [x] Unit tests with a fake `embarch-api` reproduce: empty output with prompt seen (answer carries `retval`); zero bytes (no "longer timeout" advice); a `500` or `port_lost` after the write (answer says the command was sent and is not retried on another console).
+- [x] `Console.run` falls through to the next console only when the failure happened before anything was written (port not enumerable, open failed), never after.
+- [x] `retval` is skipped, and the answer says so, when the image has no `retval` command.
+- [x] The CLI verbs exit non-zero when the answer is "did not run", "nothing came back" or "port lost".
+- [ ] Bench check (hardware-verification debt, below): a command that prints nothing returns `0` and a refused one its error code.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped. Uses Core's new exchange fields when present (filed as `core-exchange-says-what-happened-on-the-wire`), and works without them from `text` and `until_seen`.
+
+## Result
+
+`live.shell_status` gives five answers (output; empty success with `retval`; did not run; nothing came back, with echo verdict, port identity and core state; port lost / may have run), shared by `shell`, `shell_run` and the CLI, which exits 0/1/2/3. `Console.exchange` falls through only on an error text provably before the write (`nothing was written`, `signal-mismatch`, unknown or non-writable signal, embarch-api absent); anything else raises with `may_have_written`, and an unknown counts as "may have written" (also for an older Core without the wire fields). `retval` is skipped when the pinned build's kconfig.json lacks or unsets `CONFIG_SHELL_CMDS_RETURN_VALUE`; with no kconfig.json it is asked and a `command not found` reply is read. `live reg-read` and `live stacks` also exit 1 on a failed read. 9 new tests in `tests/test_live.py` over a scripted fake `embarch-api`. DESIGN.md "Live" updated; its CLI table gained the missing `kconfig-extract <atlas>` row (carried from atlas/019).
+
+Deviation: a command that returned nonzero still exits 0 (it ran and answered); the task lists only the three failure answers. The error-text classification is a heuristic because embarch-api forwards no HTTP status.
+
+## Hardware-verification debt
+
+Bench check, on the dev bench with a DUT console declared: `embarch-atlas live shell <a command that prints nothing, e.g. a budget-set>` should print "printed nothing and returned 0" and exit 0; a refused value should print its error code (nonzero) with exit 0; with the DUT unpowered or the port held in reset, `live shell ping` should exit 2 with the port identity and core state; a command that drops the CDC ACM port should exit 3 and not be re-sent on a second console. Needs a Core with embarch-core decision 85 deployed and an image with `CONFIG_SHELL_CMDS_RETURN_VALUE=y`.
