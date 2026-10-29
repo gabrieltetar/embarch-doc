@@ -1,6 +1,9 @@
 # 049 — `collect-open-questions.py` drops every continuation line of a wrapped bullet, and says it collected "in full"
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29: fix (1) taken. The collector joins a bullet's
+continuation lines (up to the next heading, top-level `- ` or blank line), so the header's "in full"
+is true. Measured on this tree: 1 wrapped bullet of 127 collected (still `embarch-core/open.md`'s
+Espressif one); before/after diff is exactly that one line, count unchanged.
 **Source:** leg 104, 2026-09-13, refill sweep. Found by reading the collector's output beside the
 file it had just read.
 **Scope:** doc

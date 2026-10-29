@@ -30,7 +30,12 @@ Two rules, by filename:
                contains "open question" (case-insensitive -- headings vary:
                "Open questions / future work", "Open questions").
 
-Bullets are grouped by doc.
+Bullets are grouped by doc. A bullet is its first line plus every following
+non-blank line up to the next heading or top-level `- `, joined with spaces:
+ordinary Markdown wraps a long bullet, and until 2026-10-29 this printed only
+the first physical line -- embarch-core/open.md's Espressif bullet came out
+ending on the word "Decision", under a header promising "in full"
+(tasks/doc/049).
 
 This is a reporting tool, not a CI gate — unlike check-links.py/
 check-staleness.py, an "open question" existing isn't a failure, so this
@@ -81,8 +86,13 @@ def extract_open_questions(path):
     bullets = []
     in_section = whole_file
     section_level = None
+    continuing = False
     for line in lines:
         heading_match = HEADING_RE.match(line)
+        if continuing and line.strip() and not heading_match and not BULLET_RE.match(line):
+            bullets[-1] += ' ' + line.strip()
+            continue
+        continuing = False
         if heading_match:
             if whole_file:
                 continue
@@ -99,6 +109,7 @@ def extract_open_questions(path):
             bullet_match = BULLET_RE.match(line)
             if bullet_match:
                 bullets.append(bullet_match.group(1).strip())
+                continuing = True
     return bullets
 
 
