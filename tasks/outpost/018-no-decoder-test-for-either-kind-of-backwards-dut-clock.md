@@ -1,6 +1,7 @@
 # 018 — The host decoder has no test for either kind of backwards DUT clock, and only one of the two is a defect
 
-**State:** open
+**State:** claimed by agent/outpost/018-backwards-dut-clock-decoder-tests, 2026-10-29 14:31
+**Reserve (dispatch note, 2026-10-29):** `embarch-outpost/spec.md` is 9,126/10,240 B (1,114 B left, out of reserve at <= 9,039 B), filed only against `tasks/outpost/028`, `blocked` on `In flux: yes`: if you write to it, cut what you add (carry `outpost/028`'s `Must not delete:` list). Per-decision caps: `decisions/clocks.md` decision 17 has **26 B** left and `testing` decision 26 has 55 B, so an amendment to either must cut what it adds or file a debt. This task is also a candidate in `tasks/suite/055`'s triage; dispatching it settles that.
 **Source:** `embarch-outpost/open.md` — "**The DUT's clock can go backwards for two unrelated
 reasons**, and only one is a defect. … a real capture showed one such step of **13 µs**, and a host
 **must tolerate it** … A step longer than the whole capture means the counter *restarted*, and the
