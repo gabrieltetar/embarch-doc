@@ -1,6 +1,7 @@
 # 149 — The test ledger's `needs` matches a role-less bench board by a form nobody confirmed
 
-**State:** open
+**State:** claimed by agent/api/149-ledger-role-less-board-needs, 2026-10-28 22:16
+**Reserve (dispatch note, 2026-10-28):** no `embarch-api` file is in reserve (`check-doc-size.py --pressure`). If this unit pushes one past 90% of its cap, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 **Source:** `api/128`'s fold (supervisor log, 2026-10-28 16:43, "Least sure about"): "how a role-less bench board (topology decision 48) counts toward a test's `needs`; the worker assumed by role and by board name and could not confirm the stored form."
 **Scope:** api
 **Hardware:** none
