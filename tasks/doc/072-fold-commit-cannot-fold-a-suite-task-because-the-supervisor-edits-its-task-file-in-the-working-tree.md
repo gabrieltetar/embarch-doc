@@ -1,6 +1,6 @@
 # 072 — `fold-commit.py` cannot fold a `suite/` task, because the supervisor edits that task file in its own working tree
 
-**State:** open
+**State:** done — fixed by `doc/050`'s `git rm -f` (embarch-fleet `a071e40`): a `suite` task edited unstaged, or staged first, folds in one run; the `git add` workaround below is obsolete.
 **Source:** leg 127, 2026-09-16, hit live while folding `suite/040`. Reproduced by the failure
 itself, not inferred.
 **Scope:** doc
@@ -88,8 +88,8 @@ presumably been absorbed by hand before now without anyone filing it.
 
 ## Done when
 
-- [ ] Folding a `suite/` task the supervisor executed and edited in its own tree completes in one
+- [x] Folding a `suite/` task the supervisor executed and edited in its own tree completes in one
       `fold-commit.py` invocation, with no hand-written commit and no half-landed log entry.
-- [ ] Whatever the fix is, it cannot stage a path outside the `--path` list — that refusal is why
+- [x] Whatever the fix is, it cannot stage a path outside the `--path` list — that refusal is why
       `--only` and explicit paths exist at all (legs 004, 005 and 016).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
