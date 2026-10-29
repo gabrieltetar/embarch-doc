@@ -1,6 +1,6 @@
 # 013 — Make `reg_read` say when a peripheral's clock is off instead of decoding zeros as "at reset"
 
-**State:** open
+**State:** claimed by agent/atlas/013-reg-read-says-when-the-clock-is-off, 2026-10-29 17:22
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 3 times a session read the RCC enable register by hand next to a peripheral read (`VREFBUF` with `RCC.APBENR2`, `SYSCFG.CFGR1` after `RCC.APBENR2`, raw `mem_read` of `RCC_APBENR1`/`AHBENR`) to know whether the peripheral's words meant anything
 **Scope:** atlas
 **Hardware:** verify-only
