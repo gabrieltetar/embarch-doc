@@ -17,7 +17,13 @@ The field operator who asked for this needs to see it from across the bench; a m
 
 ## Done when
 
-- [ ] `stub_core.py` serves a prompting host study; `drive_prompt.py` covers the six behaviours above and passes headless.
-- [ ] Any rendering bug it finds is fixed in this unit, and decision 69's "Not measured" sentence is updated to say what is now measured.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped; the `features.d/ui-120-host-study-prompt-modal.md` row's "never rendered" status updated.
+- [x] `stub_core.py` serves a prompting host study; `drive_prompt.py` covers the six behaviours above and passes headless.
+- [x] Any rendering bug it finds is fixed in this unit, and decision 69's "Not measured" sentence is updated to say what is now measured.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped; the `features.d/ui-120-host-study-prompt-modal.md` row's "never rendered" status updated.
+
+## Outcome
+
+`stub_core.py` gained a prompting host study (`POST /_stub/prompt/{start,resolve,conflict,answers,reset}`, unauthenticated control surface; the study is absent from `/studies` until `start`, so no other drive changes). `drive_prompt.py` passes all six behaviours headless (ports 4611-4613, own target dir). No rendering bug found; decision 69 and the feature row updated. The stub's `list` value first read `"steps"` and the UI silently dropped the prompt: `HostList` serialises capitalised (`Steps`).
+
+**Debt (not hardware):** no live Core prompt has been seen; beep and desktop notification not exercised headless. `window.__errs` is read like the other drives, but this page installs no handler for it, so that check is weak.
