@@ -1,6 +1,6 @@
 # 005 — Pick the console the running image uses, not the one a declaration last pointed at
 
-**State:** claimed by agent/atlas/005-console-follows-the-running-image, 2026-10-29 17:43
+**State:** done
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — one console signal re-declared by hand twice (USB CDC ACM, then a USB-UART bridge); on 2026-10-20 it still pointed at the bridge while the flashed image had its shell on USB: 2 empty replies, then a rebuild and a second 30 s flash
 **Scope:** atlas
 **Hardware:** verify-only
@@ -16,9 +16,19 @@ The live-module plan (decision 5, 2026-10-06) said Core would use "whichever the
 
 ## Done when
 
-- [ ] Unit test: two consoles declared, the bridge's exchange returns zero bytes and the CDC one answers; `Console` uses the CDC one and names it. A second test: the bridge returns its echo and an error line; `Console` stops there.
-- [ ] Unit test: with `[live] consoles` and a known build whose `zephyr,shell-uart` is the CDC node, the bridge is never opened.
-- [ ] A build whose chosen shell UART maps to no declared signal answers "the image's shell is on `<node>`; no signal is declared for it" instead of trying the others.
+- [x] Unit test: two consoles declared, the bridge's exchange returns zero bytes and the CDC one answers; `Console` uses the CDC one and names it. A second test: the bridge returns its echo and an error line; `Console` stops there.
+- [x] Unit test: with `[live] consoles` and a known build whose `zephyr,shell-uart` is the CDC node, the bridge is never opened.
+- [x] A build whose chosen shell UART maps to no declared signal answers "the image's shell is on `<node>`; no signal is declared for it" instead of trying the others.
 - [ ] Bench check: flash an image with the shell on USB while both signals are declared; `shell kernel uptime` answers through the CDC signal with no re-declaration.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" and the `atlas.toml` section updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" and the `atlas.toml` section updated, `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+The "Bench check" box stays open. On the board with the shell on USB and both signals declared (bridge and CDC ACM), with `[live] consoles` mapping the CDC node and the bridge's node to their signals and the flashed build pinned: run `embarch-atlas live shell "kernel uptime"`. Expected: an `Uptime: ...` answer whose `src:` line says `signal <the CDC signal>` and `the image's shell is on <cdc node> (... flash matches the ELF ...)`, with no re-declaration. Then remove `[live] consoles` and repeat: the bridge stays silent and the `src:` line says no byte came back from it, so the CDC one was tried.
+
+## Notes
+
+- `Console` gained `build=`; only `live_stacks` passes it (`shell` has no build argument). The flash check runs only when `[live] consoles` is set, so a repo without it pays nothing.
+- Fall-through now also happens on a reply with zero bytes (no text, no `port_lost`), per the task; the DESIGN fall-through paragraph was reworded to match.
+- Line numbers in the task text were stale; the code is in `live.py` (`Console`, `_shell_node`, `_console_signal`).
