@@ -1,6 +1,6 @@
 # 044 — A verbatim split is the one move `check-decision-refs.py` structurally cannot see, and it broke six citations in one leg
 
-**State:** open
+**State:** done — owner session, 2026-10-29, branch `owner/decision-refs`: inline-code and paren shapes judged against the named file outside `tasks/`/`history/`, a `:line` suffix refused outside `tasks/`; four of the six fixtures fail, the two task-file ones are exempt by design; see `## Closed`
 **Source:** leg 085, 2026-09-11. Both of that leg's two units hit it, independently, and in both
 cases the **gate was green with the citations wrong** — they were caught only because a reviewer
 was spawned and told to sweep for them by hand.
@@ -68,11 +68,48 @@ and every instance found in this leg was repaired by replacing it with a number.
 
 ## Done when
 
-- [ ] A citation naming a decisions file that does not hold the cited number fails the gate.
-- [ ] The six citations above would each have failed it before they were repaired (use them as the
-      fixture — they are recorded here with their old text).
-- [ ] Cross-repo citations are covered, since two of the six were cross-repo and a sub-project
+- [x] A citation naming a decisions file that does not hold the cited number fails the gate.
+- [x] The six citations above would each have failed it before they were repaired (use them as the
+      fixture — they are recorded here with their old text). **Four of six** — the two in `tasks/`
+      are exempt by design; see below.
+- [x] Cross-repo citations are covered, since two of the six were cross-repo and a sub-project
       worker cannot see those.
-- [ ] Whether `path:line` citations into decisions files stay legal is decided either way and
+- [x] Whether `path:line` citations into decisions files stay legal is decided either way and
       written down.
-- [ ] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment. Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed
+
+**The candidate direction, without the index.** Each sub-project's `decisions.md` table was not
+needed: the script already built a number→file map from the headings themselves (`tasks/doc/027`),
+which is the ground truth the table summarises. What was missing was the *shapes* that name a
+file. `tasks/doc/056` added the link shapes; this adds the rest:
+
+- **A topic path in inline code with the number beside it** — `decision N` right after the code
+  span, or `decision N (` right before it. A bare `decisions/<topic>.md` belongs to the sub-project
+  the sentence names just before it (`embarch-core` decision 57 (…)), else the citing file's own.
+- **Any relative href**, so a decisions file citing its sibling as `core-link.md` is resolved —
+  two of the six were exactly that, and the old pattern required `decisions/` in the href.
+- **A `:line` suffix on a decisions file is refused outside `tasks/` and `inbox/`.** Zero such
+  citations exist outside `tasks/` today, so nothing turned red. Inside `tasks/` there are 36, all
+  evidence of what a file said on the day the task was filed — legal, because rewriting evidence
+  is worse than a stale line number in a record.
+
+**Why inline code is not read in `tasks/` and `history/`.** Run there, it flagged 12 lines: a
+`history/core.md` entry narrating a renumber (the case `DOC-CONVENTIONS.md` says to keep), a task
+quoting the bad citation it reports, a task's own title, and nine stale pointers — every one in a
+`done` task. A backticked path in a record is usually the subject of a sentence about the past. A
+link is a pointer, so links stay judged everywhere.
+
+**The fixtures, as self-tests the gate runs** (old text, synthetic index mirroring both splits):
+`history/api.md` (62), `embarch-api/decisions/tests.md` (55), `embarch-api/decisions/hardware-selection.md`
+(58) and `embarch-topology/decisions/enrollment.md` (the `:line` one) all fail. `tasks/topology/011`
+(a `:line` in a task) and `tasks/umbrella/045` (inline code in a task) pass by design; the second is
+also a fixture in a current-truth doc, where it fails. Against the logic before `tasks/doc/056`
+every one of them produced no finding at all.
+
+**On `main`:** green before and after. Citations naming a topic file now checked: 87 → 257 across
+this change and `tasks/doc/056`. **Not covered**, and recorded in the script header: a number near a
+topic path that is not adjacent to it, `decision N in` a backticked path, and anything outside
+`*.md`. `DOC-COMPACTION.md` §2 needed no change — the split stays preferred, and the gate now sees
+what it breaks.

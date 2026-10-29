@@ -25,7 +25,7 @@ or in inline code, and otherwise falls back to the file's own sub-project. A
 named for a scope, belongs to that scope's sub-project (SCOPED_BY_NAME). The
 suite is a sub-project here too: `suite/decisions/`, cited `suite decision N`.
 
-Four outcomes, and three of them fail:
+Five outcomes, and four of them fail:
   * ERROR   -- a citation that names ONE topic file which does not define N.
                The one reference shape that names a file rather than a
                sub-project, and therefore the only one that can go stale while
@@ -40,9 +40,14 @@ Four outcomes, and three of them fail:
                since 2026-10-29 also the number beside the link --
                `[embarch-x](<topic>) decision N`, `[decisions](<topic>) N` -- and
                any relative href, which found 12 stale citations green on main
-               (tasks/doc/056). NOT seen: a number cited near a topic path in
-               prose that is not adjacent to it, and anything outside `*.md`
-               (source comments in the code repos).
+               (tasks/doc/056); and a topic path in inline code with the number
+               just after it or just before it in parens, outside tasks/ and
+               history/ (tasks/doc/044, CODE_TOPIC_SKIP says why). NOT seen: a
+               number near a topic path that is not adjacent to it, "decision N
+               in `<topic>`", a backticked path in a task or history entry, and
+               anything outside `*.md` (source comments in the code repos).
+  * ERROR   -- a `decisions/<topic>.md:<line>` citation outside tasks/ and
+               inbox/ (tasks/doc/044). Stale with any edit above the line.
   * ERROR   -- attributed by an explicit nearby path, number not defined there.
   * ERROR   -- number defined by NO sub-project anywhere. This is the genuinely
                dangling reference a renumber or a deletion leaves behind, and
@@ -142,6 +147,30 @@ TOPIC_REL = re.compile(r'([a-z0-9-]+)/decisions/([a-z0-9-]+)\.md$')
 AFTER_KW = re.compile(r"(?:'s)?\s*decisions?\s+" + NUMS, re.I)
 AFTER_BARE = re.compile(r'\s*' + NUMS)
 FENCE = re.compile(r'^\s*(?:```|~~~)')
+# The same two placements with a path in inline code instead of a link
+# (tasks/doc/044), plus the one where the path is a parenthesis right after
+# the number -- `embarch-core` decision 57 (`decisions/surfaces.md`), which a
+# split broke in `tasks/umbrella/045`. A bare `decisions/<topic>.md` belongs to
+# the sub-project the sentence names (CANONICAL just before it), else to the
+# citing file's own. "decision N in `<topic>`" and "decision N, `<topic>`" are
+# deliberately NOT read: in this corpus they are mostly narration of where a
+# decision WAS, which DOC-CONVENTIONS.md says to keep.
+# Nor are these code shapes read in tasks/ or history/ (CODE_TOPIC_SKIP). Run
+# there on 2026-10-29 they flagged 12 lines: a history entry narrating a
+# renumber, a task QUOTING the bad citation it reports, a task's own title,
+# and nine stale pointers in done tasks. A backticked path in a record is
+# usually the subject of a sentence about the past; a link is a pointer, so
+# links are judged everywhere.
+CODE_TOPIC = re.compile(r'`((?:[^`\s]*/)?decisions/[a-z0-9-]+\.md)`')
+CODE_TOPIC_SKIP = ('tasks/', 'history/')
+BARE_TOPIC = re.compile(r'(?:\.\./)*decisions/([a-z0-9-]+)\.md')
+BEFORE_PAREN = re.compile(r'(?<![\w-])decisions?\s+' + NUMS + r'\s*\(\s*$', re.I)
+# A `:line` suffix on a decisions file (tasks/doc/044) is stale after any edit
+# above that line, and a verbatim split moves the entry out from under it.
+# Refused outside tasks/ and inbox/, where a path:line is dated evidence of
+# what a file said when the task was filed. Cite the number instead.
+LINE_CITE = re.compile(r'decisions/[a-z0-9-]+\.md:\d+')
+LINE_CITE_OK = ('tasks/', 'inbox/')
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
@@ -302,30 +331,56 @@ def build_file_index():
     return index
 
 
-def named_files(rel, line, file_index):
+def named_files(rel, line, file_index, own=None):
     """(num, target) for every number a citation on this line places in ONE
-    topic file (see TOPIC_LINK and AFTER_KW). Numbers above MAX_DECISION kept;
-    the caller skips them."""
+    topic file (TOPIC_LINK, AFTER_KW, CODE_TOPIC). Numbers above MAX_DECISION
+    kept; the caller skips them."""
     out = []
+
+    def code_target(path, at):
+        hit = TOPIC_REL.search(path)
+        if hit and f'{hit.group(1)}/decisions/{hit.group(2)}.md' in file_index:
+            return f'{hit.group(1)}/decisions/{hit.group(2)}.md'
+        bare = BARE_TOPIC.fullmatch(path)
+        if not bare:
+            return None
+        named = CANONICAL.search(line[max(0, at - ATTRIB_WINDOW):at])
+        sub = named.group(1).lower() if named else own
+        return f'{sub}/decisions/{bare.group(1)}.md'
+
+    spans = []      # (start, end, target, link text or None)
     for m in TOPIC_LINK.finditer(line):
-        text, href = m.group(1), m.group(2)
-        target = os.path.normpath(
-            os.path.join(os.path.dirname(rel), href)).replace(os.sep, '/')
+        target = os.path.normpath(os.path.join(
+            os.path.dirname(rel), m.group(2))).replace(os.sep, '/')
+        spans.append((m.start(), m.end(), target, m.group(1)))
+    for m in CODE_TOPIC.finditer('' if rel.startswith(CODE_TOPIC_SKIP) else line):
+        pre = BEFORE_PAREN.search(line[:m.start()])
+        spans.append((m.start(), m.end(),
+                      code_target(m.group(1), pre.start() if pre else m.start()),
+                      None))
+    for start, end, target, text in spans:
         if target not in file_index:
             continue      # not an indexed topic file; check-links owns it
-        ref = REF.search(text)
-        after = line[m.end():]
-        if not ref:
-            ref = AFTER_KW.match(after)
-        if not ref and 'decision' in text.lower():
+        after = line[end:]
+        ref = (text is not None and REF.search(text)) or AFTER_KW.match(after)
+        if not ref and text is not None and 'decision' in text.lower():
             ref = AFTER_BARE.match(after)
+        if not ref:
+            ref = BEFORE_PAREN.search(line[:start])
         if ref:
             out += [(num, target) for num in expand(ref.group(1))]
     return out
 
 
-def check_topic_links(file_index):
-    """(rel, lineno, num, href, defining, excerpt) per stale topic-file citation.
+def refused_line_cites(rel, line):
+    """Every `decisions/<topic>.md:<line>` on this line, unless rel is a
+    task or a drop (LINE_CITE_OK)."""
+    return [] if rel.startswith(LINE_CITE_OK) else LINE_CITE.findall(line)
+
+
+def check_topic_links(file_index, index):
+    """(rel, lineno, num, href, defining, excerpt) per stale topic-file
+    citation, and (rel, lineno, cite, excerpt) per refused `:line` suffix.
 
     A mission split moves an entry between a sub-project's decision files
     without renumbering it (DOC-CONVENTIONS.md), so the OLD path keeps
@@ -339,9 +394,10 @@ def check_topic_links(file_index):
     check's business, not this one -- reported there, once. Fenced blocks are
     skipped: a task quoting the defective shape is reporting it, not making it.
     """
-    bad, checked = [], 0
+    bad, line_cites, checked = [], [], 0
     for path in md_files():
         rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, '/')
+        own = subproject_of(path, index)
         with open(path, encoding='utf-8') as fh:
             lines = fh.read().splitlines()
         fenced = False
@@ -349,9 +405,13 @@ def check_topic_links(file_index):
             if FENCE.match(line):
                 fenced = not fenced
                 continue
-            if fenced or 'decision' not in line.lower():
+            if fenced:
                 continue
-            for num, target in named_files(rel, line, file_index):
+            line_cites += [(rel, lineno, c, line.strip()[:110])
+                           for c in refused_line_cites(rel, line)]
+            if 'decision' not in line.lower():
+                continue
+            for num, target in named_files(rel, line, file_index, own):
                 if num > MAX_DECISION:
                     continue
                 checked += 1
@@ -364,7 +424,7 @@ def check_topic_links(file_index):
                     if num in nums and f.split('/')[0] == sub)
                 bad.append((rel, lineno, num, target, defining,
                             line.strip()[:110]))
-    return bad, checked
+    return bad, line_cites, checked
 
 
 def expand(numbers_text):
@@ -459,6 +519,29 @@ SELF_TEST_FILES = (
     ('embarch-b/spec.md', '[x](../embarch-a/decisions/x.md) 3 times', []),
     # A sibling href, written from inside decisions/, is resolved too.
     ('embarch-a/decisions/y.md', '[' + 'decision 1](x.md)', [(1, True)]),
+    # tasks/doc/044's six, in their text from before the repair (api/067 and
+    # core/041 splits: 55, 58, 62 left core-link.md; 25, 57 left surfaces.md).
+    # The two path:line ones are under SELF_TEST_LINES.
+    ('history/api.md', 'own narrower rule ([decisions]'
+     '(../embarch-api/decisions/core-link.md) 62).', [(62, False)]),
+    ('embarch-api/decisions/tests.md', '[' + 'Decision 55](core-link.md) folded'
+     ' those nine into one funnel', [(55, False)]),
+    ('embarch-api/decisions/hardware-selection.md', 'failure [core-link]'
+     '(core-link.md) ' + 'decision 58 was written an hour earlier', [(58, False)]),
+    # The sixth was a done task's Source line; tasks/ is CODE_TOPIC_SKIP, so
+    # the same words are read only in a current-truth doc.
+    ('tasks/umbrella/045.md', '**Source:** `tasks/core/027`, `embarch-core` '
+     + 'decision 57 (`decisions/surfaces.md`)', []),
+    ('embarch-umbrella/spec.md', 'Source: `embarch-core` '
+     + 'decision 57 (`decisions/surfaces.md`)', [(57, False)]),
+    ('embarch-umbrella/spec.md', 'per `embarch-core/decisions/enrollment.md` '
+     + 'decision 25', [(25, True)]),
+)
+SELF_TEST_LINES = (
+    ('embarch-topology/decisions/enrollment.md', '`embarch-core/decisions/'
+     'surfaces.md:30` repeats it verbatim', ['decisions/surfaces.md:30']),
+    ('tasks/topology/011.md', '(this one; `embarch-core/decisions/'
+     'surfaces.md:30`)', []),
 )
 
 
@@ -466,7 +549,11 @@ def self_test():
     """A list of failure lines; empty when every fixture reads as recorded."""
     index = {'embarch-a': {1, 2, 3}, 'embarch-b': {96}, 'suite': {4}}
     anywhere = set().union(*index.values())
-    files = {'embarch-a/decisions/x.md': {1}, 'embarch-a/decisions/y.md': {2, 3}}
+    files = {'embarch-a/decisions/x.md': {1}, 'embarch-a/decisions/y.md': {2, 3},
+             'embarch-api/decisions/core-link.md': {11, 14},
+             'embarch-api/decisions/client-crate.md': {55, 58, 62},
+             'embarch-core/decisions/surfaces.md': {30},
+             'embarch-core/decisions/enrollment.md': {25, 57}}
     bad = []
     for own, line, want in SELF_TEST:
         got = [(n, v) for n, _, v in resolve_line(line, own, index, anywhere)]
@@ -474,6 +561,10 @@ def self_test():
             bad.append(f'  {line!r}: want {want}, got {got}')
     for rel, line, want in SELF_TEST_FILES:
         got = [(n, n in files[t]) for n, t in named_files(rel, line, files)]
+        if got != want:
+            bad.append(f'  {line!r}: want {want}, got {got}')
+    for rel, line, want in SELF_TEST_LINES:
+        got = refused_line_cites(rel, line)
         if got != want:
             bad.append(f'  {line!r}: want {want}, got {got}')
     return bad
@@ -529,7 +620,7 @@ def main():
 
     bad_rows, rows_checked, rows_defined = check_reversal_rows()
     file_index = build_file_index()
-    bad_links, links_checked = check_topic_links(file_index)
+    bad_links, line_cites, links_checked = check_topic_links(file_index, index)
 
     # inbox/ drops warn; everything else fails. Split BEFORE any exit decision.
     drop_errors = [e for e in errors if is_drop(e[0])]
@@ -570,6 +661,16 @@ def main():
               'or drop the link and use the\nbare number.')
         print()
 
+    if line_cites:
+        print(f'{len(line_cites)} `:line` citation(s) of a decisions file '
+              f'outside tasks/:\n')
+        for rel, lineno, cite, excerpt in line_cites:
+            print(f'  {rel}:{lineno} {cite}')
+            print(f'      {excerpt}')
+        print('\nA line number goes stale with any edit above it, and a split '
+              'moves the entry out\nfrom under it (tasks/doc/044). Cite the '
+              'decision number instead.\n')
+
     if bad_rows:
         print(f'{len(bad_rows)} citation(s) of a reversal row no range file '
               f'defines (of {rows_defined} rows present):\n')
@@ -587,7 +688,7 @@ def main():
               f'(--warnings to list).')
         return 1
 
-    if bad_rows or bad_links:
+    if bad_rows or bad_links or line_cites:
         return 1
 
     print(f'All {checked} decision references resolve. '
