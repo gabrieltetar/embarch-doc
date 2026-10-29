@@ -1,6 +1,6 @@
 # 063 — `/mnt/c/.../embarch-core` is a stale rsync deploy target, and it reads as a checkout
 
-**State:** open
+**State:** done — option 2: one bullet in the worker definition (fleet `69aa3fb`) names `{{FLEET_ROOT}}/<repo>` as where to verify and `/mnt/c/` as never a checkout; §4a already said so (`706e603f`)
 **Source:** `tasks/topology/045` (leg 116, 2026-09-16). That worker was verifying a cross-repo claim
 in `embarch-topology/src/hardware/validate.rs` — that `embarch-core`'s `resolve_probe` delegates to
 `select_probe` with *"no selection-rule copy remains in either crate"* (`embarch-core` decision 61).
@@ -61,6 +61,6 @@ probably not, but the pick is the owner's.
 
 ## Done when
 
-- [ ] A worker reaching for `embarch-core` to verify a cross-repo claim is told, by something it will
+- [x] A worker reaching for `embarch-core` to verify a cross-repo claim is told, by something it will
       actually read, which path is the checkout.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
