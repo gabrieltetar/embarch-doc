@@ -1,6 +1,6 @@
 # 006 — `/embarch-claude-md` cites a user-guide section that moved to the agent guide
 
-**State:** claimed by agent/chat/006-embarch-claude-md-cites-the-moved-user-guide-section, 2026-10-29 15:50
+**State:** done — command now cites agent-guide.md §1.1; block text verified equal to the guide's.
 **Source:** reviewer of `chat/005` (doc fold of the leg started 2026-10-29 15:03): `plugin/commands/embarch-claude-md.md` line 9 reads "The block (suite/user-guide.md §7.1)"; `suite/030` moved user-guide §7/§7.1 verbatim to [suite/agent-guide.md](../../suite/agent-guide.md) §1/§1.1, leaving user-guide §7 a two-line forwarding pointer.
 **Scope:** chat
 **Hardware:** none
@@ -16,5 +16,5 @@ The citation lands on a forwarding line rather than the block; `embarch-chat` de
 
 ## Done when
 
-- [ ] The command cites the `agent-guide.md` section that holds the block, and its block matches that section's.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10, the npm bullet); `changelog.d/` fragment.
+- [x] The command cites the `agent-guide.md` section that holds the block, and its block matches that section's.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10, the npm bullet); `changelog.d/` fragment.
