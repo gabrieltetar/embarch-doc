@@ -1,6 +1,7 @@
 # 101 — Drive the operator-prompt modal in a headless browser against a stub Core
 
-**State:** open
+**State:** claimed by agent/ui/101-prompt-modal-headless-drive, 2026-10-28 22:17
+**Reserve (dispatch note, 2026-10-28):** no `embarch-ui` file is in reserve (`check-doc-size.py --pressure`). If this unit pushes one past 90% of its cap, file `tasks/ui/<NNN>-compact-ui.md` in the same commit.
 **Source:** `tasks/ui/100`'s debt (landed 2026-10-28, ui decision 69): "No `tests/browser` drive was written: extend `stub_core.py` with a prompting study and drive the modal." The feature row says the modal has never been rendered in a browser.
 **Scope:** ui
 **Hardware:** none
