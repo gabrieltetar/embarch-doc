@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Added
+- `embarch-atlas live core-state` / `core_state`: DHCSR and ICSR by bit name, PC samples, PC and LR as functions and lines, named only when the flash matches the ELF; else refused.
 - atlas: find_text searches a document's page text layer; each hit cites its page and section and says if it is distilled (DESIGN.md Query surface).
 - Every atlas lookup's `src:` line now carries `stale=<reasons> (HEAD <sha>)` when the atlas is behind HEAD; the MAP's RM chapters follow `join`; `mcp` runs `status` at start.
 - Atlas config and dt_node: a Kconfig symbol and why it has its value, a DT node with each property's source line; pinned build or a named build dir (read only).
