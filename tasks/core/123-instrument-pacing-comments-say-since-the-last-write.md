@@ -1,6 +1,7 @@
 # 123 — Core's instrument pacing comments say "since the last write"; pacing runs from the end of the exchange
 
-**State:** open
+**State:** claimed by agent/core/123-pacing-comments-end-of-exchange, 2026-10-28 22:17
+**Reserve (dispatch note, 2026-10-28):** `embarch-core/open.md` (316 B left), `spec.md` (462 B) and `decisions/probes.md` (1,025 B) are in reserve, parked under `tasks/core/112` (blocked, in flux). This task should need none of them; if it must touch one, it spends no bytes there (a net-zero or shrinking edit), and it never compacts what `core/112`'s `Must not delete:` names.
 **Source:** `tasks/topology/068` (landed 2026-10-28): its changelog fragment names Core's `pace_left` comment as the remaining mismatch with `Instrument::min_interval_ms`'s now-corrected doc comment (`embarch-topology` decision 49).
 **Scope:** core
 **Hardware:** none
