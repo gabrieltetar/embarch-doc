@@ -1,6 +1,6 @@
 # 090 — `.claude/leg.md`'s worktree link table omits `embarch-smp` for `embarch-core`
 
-**State:** open
+**State:** done — already fixed by `tasks/doc/037`'s table pass (fleet `039bd66`, owner/dispatch): the `embarch-core` row lists `embarch-smp`, and the count sentence says six
 **Source:** `core/096`'s worker, 2026-10-25: a fresh `embarch-core` worktree failed `cargo build` until the worker symlinked `embarch-smp` into the worktree's parent itself.
 **Scope:** doc
 **Hardware:** none
@@ -28,4 +28,5 @@ worktree builds anyway; the table is still wrong.
 
 ## Done when
 
-- [ ] The `embarch-core` row lists `embarch-smp`; the count sentence matches the table.
+- [x] The `embarch-core` row lists `embarch-smp`; the count sentence matches the table. It says
+      six, not four: the same pass found `outpost` and `dev-bench` read siblings too.
