@@ -2,6 +2,7 @@
 
 **State:** claimed by agent/atlas/008-live-refuses-another-chip, 2026-10-29 14:31
 **Dispatch note (2026-10-29):** the first `atlas` unit the fleet has run. `embarch-atlas` is a **public** repo: run `check_public.py` and `check-client-names.py --repo` before every commit, and write no client, project or product name (the task's own wording is already generic; keep it that way). Gate: `gate.md`'s Python bullet, in your worktree's own `.venv` (already made), never the main checkout's. No file in reserve for `atlas`.
+**Result (2026-10-29):** `live.py` gained `atlas_chip`, `same_chip` (case/punctuation-insensitive, one name a prefix of the other), `chip_refusal`, `ChipMismatch`; `reg_read` refuses, `image_check` raises, `live_stacks` says different boards. Chip names in tests are invented (the denylist rejects real part names). Atlas with no SVD device compares nothing. MAP.md MCU line not used as a second source.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the bench board's console was declared under role `dev-bench` while that role's probe belonged to another project's nRF54L15 DK; 1 `live_stacks` call paired an STM32G0 shell with the nRF54L15 probe
 **Scope:** atlas
 **Hardware:** none
@@ -17,8 +18,8 @@ Bench boards hold no role since topology decision 41 (`93a83d9`), and a signal n
 
 ## Done when
 
-- [ ] Unit test with a fake `mem-read` answer whose `chip` is `nRF54L15`: `reg_read RCC.APBENR1` refuses and names both chips; the same answer with the atlas's chip decodes as today.
-- [ ] Unit test: `live_stacks` with a mismatched chip says the console and the probe are different boards, and does not say "another build".
-- [ ] The chip comparison tolerates package and suffix variants (`STM32G0B1VE` against `stm32g0b1`), with a test.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped; the signal-names-a-board fix itself is `suite-bench-board-owns-signals-and-live-reads`.
+- [x] Unit test with a fake `mem-read` answer whose `chip` is `nRF54L15`: `reg_read RCC.APBENR1` refuses and names both chips; the same answer with the atlas's chip decodes as today.
+- [x] Unit test: `live_stacks` with a mismatched chip says the console and the probe are different boards, and does not say "another build".
+- [x] The chip comparison tolerates package and suffix variants (`STM32G0B1VE` against `stm32g0b1`), with a test.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" updated, `changelog.d/` fragment dropped; the signal-names-a-board fix itself is `suite-bench-board-owns-signals-and-live-reads`.
