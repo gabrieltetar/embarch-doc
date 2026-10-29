@@ -5,6 +5,7 @@
 ## 2026-10
 
 ### Changed
+- embarch-chat decisions 15, 16, 67, 68, 69, 74, 85 moved verbatim from decisions/timeline.md to decisions/readouts.md; timeline.md back under its cap.
 - Chat: a background agent's card shows the subagent's report (hand-back, else its last reply) instead of the launch reply; stylesheet cites decision 89 (embarch-chat decision 90).
 
 ### Fixed
