@@ -1,6 +1,10 @@
 # 006 — Make an external `reg_read` state the true cause: a missing I2C shell is not a NACK, another register's flag is not this one's
 
-**State:** open
+**State:** claimed by agent/atlas/006-ext-reg-read-states-true-causes, 2026-10-29 16:16
+**Dispatch note:** `atlas/021` (landed `05be6a5`/`af410ad`, 2026-10-29) rewrote the read-to-clear guard beside
+`_ext_effects`: `live.reads_clear` (true for `rclr`/"clear" only) now drives both guards, and `live.decode`'s
+field-reset handling was fixed forward in `af410ad`. The line numbers below predate that; read `live.py` on `main`
+and keep both of 021's guards and its tests green. No `embarch-atlas` doc is in size reserve.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 29 builds in 20 sessions carried an extra conf only to get `CONFIG_I2C_SHELL` and friends into the image; 1 config register refused and then reported as "cleared by the read" when nothing was cleared
 **Scope:** atlas
 **Hardware:** none
