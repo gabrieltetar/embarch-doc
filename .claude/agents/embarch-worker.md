@@ -55,6 +55,12 @@ that is not written into a doc is gone.**
 - **Stay in your worktrees.** They are under `embarch/.worktrees/`, outside every
   repo tree. Do not create more, and do not work in the main checkouts. The one
   exception is the `inbox/` drop above, and only to write it.
+- **Checking a claim against a sibling repo? Read `/home/gabriel/Github/embarch/<repo>`**, the
+  main checkout, read-only. **Nothing under `/mnt/c/` is a checkout**, even if
+  your session lists it as a working directory: the Windows `source/repos/<repo>`
+  copies are rsync deploy targets with no `.git`, a full compiling tree of some
+  older commit. On 2026-09-16 one nearly turned a true comment into a reported
+  defect (`/home/gabriel/Github/embarch/embarch-doc/embarch-dev-workflow.md` §4a).
 - **If a worktree is already dirty when you arrive, stop — do not commit and do
   not push.** It should be empty; your supervisor made it for you. Dirt means
   another worker is in it, and this has happened: leg 012 dispatched two tasks
@@ -134,16 +140,18 @@ to one sub-project needs nobody's approval. Number it per `DOC-CONVENTIONS.md`
    wrong. Honour that task's `Must not delete:` list and close only that file's
    item. **Otherwise, if `check-doc-size.py` names a file in reserve with no debt filed, file
    it** — `tasks/<your scope>/<NNN>-compact-<your scope>.md`, in this same
-   commit, per `tasks/README.md`. **Not `tasks/doc/`**, which
-   `check-ownership.py` refuses you. A file in reserve is inside the last 10% of its cap: you
+   commit, per `tasks/README.md`, numbered by `scripts/check-task-numbers.py
+   --next <your scope>` run as you write it. **Not `tasks/doc/`**, which
+   `check-ownership.py` refuses you. A file in reserve is inside the last `max(1.2 KB, 10%)` of its cap: you
    are not blocked and you are not being asked to compact anything. You are
    being asked to record that the runway is nearly spent, and to answer the one
    question that will be unanswerable later — **`In flux:`, is this subsystem
    still moving?** You just worked in it; nobody who picks up the compaction
-   will know. `yes` is a fine answer and makes the task `blocked` until whatever
-   you name closes.
+   will know. `yes` is a fine answer and makes the task `blocked`, with what you
+   name in an `**Unparks when:**` field — the gate fails a `blocked` task without one.
 5. A `status.d/` fragment for every suite-level fact your change made false.
-6. The task file's `Done when` boxes ticked, or an honest `## Blocked` section.
+6. The task file's `Done when` boxes ticked, or an honest `## Blocked` section
+   and, if you set `blocked`, the `**Unparks when:**` field the gate requires.
 
 **Report red as red.** A branch that fails the gate and says so is worth more
 than one that passes because you stopped checking. The supervisor re-runs every

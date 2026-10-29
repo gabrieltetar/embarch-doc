@@ -18,7 +18,13 @@ The work queue background agents pull from. One file per task, committed to
   task is `git rm`'d, so the highest number on disk is not the highest ever
   issued — and reading the directory is exactly how the owner and leg 018
   both allocated `tasks/doc/015` an hour apart on 2026-09-06, with all nine
-  checks green on the result.
+  checks green on the result. **Nor just your own checkout: run `--next` as you
+  write the file.** It reads every registered worktree's `tasks/`, uncommitted
+  files included, and every ref's history — because a worker filing a debt
+  mid-unit and a leg refilling the same scope each asked their own tree, and
+  legs 137 and 138 each issued one `core` number twice (`tasks/doc/079`). Its
+  answer is never one the gate would refuse; the gate reads only this branch's
+  history and stays the backstop for two calls in the same seconds.
 - **slug** — short, hyphenated.
 
 ## File format
@@ -49,6 +55,14 @@ task the supervisor invented; that is allowed, and it says so here.
       dropped, `status.d/` fragment for anything suite-level it made false.
 ```
 
+**Cite a shared method; never copy it into the task.** A procedure that more
+than one scope's tasks run — `DOC-CONVENTIONS.md`'s citation census is the
+standing one — is named by its home, so a fix lands there once for every chain.
+Its home is reserved, so whoever finds it wrong drops that in `inbox/` rather
+than patching the next task. Copied forward instead, one census pattern was
+fixed inside two scopes' chains and carried broken through sixteen units of a
+third (`tasks/doc/074`).
+
 ## States
 
 `open` → `claimed` → `done`, or → `blocked`.
@@ -56,7 +70,10 @@ task the supervisor invented; that is allowed, and it says so here.
 **Those four words, and one of them is the first word on the line.** Everything
 after it is prose for a human and no script reads it; token zero is what every
 consumer reads, by `raw.split()[0]`, and it must match exactly — no trailing
-comma, no `partially`, no `closed`. `check-task-state.py` enforces it, and it
+comma, no `**emphasis**`, no `partially`, no `closed`. (`Hardware:`, `Scope:`
+and `Owner:` may be bolded: `queue-status.py` reads past emphasis on those,
+`tasks/doc/039`. `State:` may not, because `fold-commit.py` retires a task by
+matching the bare `done`.) `check-task-state.py` enforces it, and it
 exists because the field was prose all the way down until 2026-09-09 and three
 things had already gone wrong on `main`:
 
@@ -79,6 +96,19 @@ after token zero** — that is what the rest of the line is for.
 
 - **claimed** — the claim line becomes
   `**State:** claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>`.
+  **That prefix is parsed, and only that prefix**: the branch is the handle a
+  recovery needs, and the time is the 4-hour backstop below. Anything after
+  the time is prose — a window's `ts`, a note — and is welcome there (not a
+  leg number: a leg has none, `tasks/doc/054`). Anything *instead of* the
+  prefix is not: `queue-status.py` reads such a claim
+  as abandoned, with no branch, and a successor leg would re-dispatch the live
+  task (`tasks/doc/076`) — so `check-task-state.py` fails it at the claim
+  commit, by asking `queue-status.py` rather than keeping a second copy of the
+  pattern (`tasks/doc/084`). The improvised `claimed (leg NNN unit N)` is
+  deliberately not accepted as a second form: 253 of the 509 claims written
+  before 2026-09-18 used some variant of it, and 146 of those named no branch
+  anywhere, so a wider reader would have had nothing to recover. Since then,
+  1 of 156.
   Claiming is a commit to `main` by the supervisor **before** dispatch, not by
   the worker after it starts. Two supervisors cannot both claim; one supervisor
   is what this relies on.
@@ -136,7 +166,13 @@ after token zero** — that is what the rest of the line is for.
   cannot settle — a supervisor that is alive but wedged — where a claim older
   than 4 hours is reclaimed the same way.
 - **blocked** — the worker appends a `## Blocked` section saying what it found
-  and exits. State returns to `open` only when whatever it named is resolved.
+  and exits. State returns to `open` only when whatever it named is resolved,
+  and **what it names goes in an `**Unparks when:**` field**: a task, a date, a
+  hardware run, the owner's word. `check-task-state.py` fails a `blocked` task
+  without one, and one naming a `tasks/<scope>/<NNN>` that is not in the queue —
+  `api/026` held the soonest-due debt in the ledger while waiting on a task that
+  never existed (`tasks/doc/032`). Only the field is read: a body cites finished
+  tasks as history, and a task file is deleted at its fold.
 - **done** — the worker ticks its `Done when` boxes and appends what shipped;
   the **supervisor deletes the file in the fold**, so a landed task leaves the
   queue in the same commit that folds its fragments. Git holds it, and a
@@ -265,7 +301,7 @@ already-filed title does not rename the file; say so in the file.
 
 ## Compaction tasks
 
-A doc within the last 10% of its size cap is **in reserve**
+A doc within the last `max(1.2 KB, 10%)` of its size cap is **in reserve**
 (`scripts/check-doc-size.py`). The reserve is writable and the gate still
 passes, but the file must be named by an open task here, and **the commit that
 spends the reserve is the one that files it** — see `DOC-COMPACTION.md` §2. The
@@ -292,11 +328,18 @@ script can make, recorded by the only actor with the context to make them:**
 ```markdown
 **Compacts:** embarch-core/spec.md, embarch-core/open.md
 **Size debt due:** 2026-09-16       <!-- set once, from the day the debt opens -->
-**In flux:** no                    <!-- one answer per file; all-yes → State: blocked + what unparks it -->
+**In flux:** no                    <!-- one answer per file; all-yes → State: blocked + Unparks when: -->
 **Must not delete:** the 18-stale-records candidate fix in open.md; decision 36's
 probe-rs counterfactual, which is evidence and not proof and reads as proof once
 shortened.
 ```
+
+**Each is a field at a line start, and the task has one `**State:**` line.**
+Leg 133 shipped both other shapes green: an `In flux` answer written as a
+`## In flux: yes` heading on a task left `open`, and a second `State: blocked`
+line at the foot under a first that said `open`. The worker filing a debt
+mid-unit never reads this file, so `check-task-state.py` refuses both at its own
+gate rather than the supervisor repairing them at the fold (`tasks/doc/077`).
 
 - **`Compacts:`** is what `check-doc-size.py` matches on. It matches this field
   and nothing else: a path merely *mentioned* in a task body made five of one
@@ -315,7 +358,7 @@ shortened.
   about a file already struck off their own `Compacts:` line, and one had it
   backwards). **Yes is a legitimate and cheap answer** — when it is yes for
   *every* file, set `**State:** blocked` and name the milestone that unparks
-  it, because `blocked` means nothing here can be done. Mixed stays `open` and
+  it in `**Unparks when:**`, because `blocked` means nothing here can be done. Mixed stays `open` and
   the dispatch note says which file to leave alone; `Owner: required` is exempt
   from the state rule entirely, since ownership already keeps agents off it and
   `blocked` would only hide the debt from the one actor who can pay it.
@@ -327,7 +370,12 @@ shortened.
   96-byte remainder pushed an `embarch-api` decision into the wrong topic file
   rather than refusing it. So a parked file's compaction **rides in the unit
   that next writes it**, same commit, carrying this task's `Must not delete:`
-  list and closing only that file's item. `DOC-COMPACTION.md` §2 is the rule;
+  list and closing only that file's item. **When that was the last file, the
+  task closes `done` with its `yes` left as written** — the debt was paid while
+  the answer was honestly yes, which is the point of riding along, and
+  `check-task-state.py` exempts `done` as it does `Owner: required`, since
+  nothing dispatches either. Never flip the answer to pass the gate
+  (`tasks/doc/083`). `DOC-COMPACTION.md` §2 is the rule;
   a mission split is the cheaper move where the file holds more than one.
 - **`Size debt due:`** is what stops a park absorbing, and it is why the state
   rule above costs what it used to cost. A leg spends its first unit on the
@@ -339,12 +387,23 @@ shortened.
   measured reasoning.
 - **`Must not delete:`** is what the filer knows and the eventual compactor will
   not. Anything: a failure signature, a rejected alternative, a measurement that
-  reads as an assumption once its date goes.
+  reads as an assumption once its date goes. **Name a finding's receipt with
+  it** — the symbol, path or "confirmed by reading X" sentence a later reader
+  needs to re-establish it — because `DOC-COMPACTION-PASS.md`'s hot/cold test
+  classes evidence as cold, so a compactor following it keeps the conclusion and
+  drops the receipt (`tasks/core/089` lost four that way).
 
 **`Done when` carries `DOC-COMPACTION-PASS.md`'s human question**, answered in the
 compactor's own words in the commit message: *can `spec.md` alone answer what
 someone needs to work on this component today?* No script answers it and the
 gate does not either.
+
+**`Done when` states the gate's verdict, never a byte target**:
+`scripts/check-doc-size.py --pressure` shows the file `PAID` or not at all. Below
+a 12,000 B cap the 1.2 KB floor sets the line, not the 10%, so a target worked
+out from a percentage stops a worker short — `topology/043` met its own exactly
+and was 70 B over the line (`tasks/doc/058`). `--pressure` prints each file's
+line if a number is wanted.
 
 When the paths are reserved — `DOC-PROTOCOL.md` and `DOC-COMPACTION.md` are the
 standing case — the task still lives here, because `inbox/` is not committed and

@@ -34,7 +34,27 @@ a stop, a budget HOLD, or a queue with nothing dispatchable left.
 handing it your newest `/home/gabriel/Github/embarch/embarch-fleet/supervisor-log.md` entries. So your exit is a handoff,
 not an ending, and the entries you leave are the only thing that crosses it.
 
+**A leg has no number.** Nothing assigns one, and when legs picked their own by
+reading a predecessor's, two different legs both called themselves 108 and one
+task carried two numbers for one leg (`tasks/doc/054`). When you must point at a
+leg — a task's `Source:`, a parked announcement, a log entry — point at what a
+reader can look up: a unit (`core/078`'s fold), a log heading's
+`<yyyy-mm-dd HH:MM>`, which `fold-commit.py` stamps from the clock, or a SHA.
+
 ## Before anything else: three steps
+
+**First of all, take the leg lock: `scripts/fleet-tick.py leg-start --wait`.**
+Exit 0: it is yours. Exit 1: another leg is live, and it says when that leg last
+ticked. **Then do nothing else** — no recovery, no worktree, no claim, no other
+`fleet-tick.py` label — and run it again until it exits 0. Do not exit instead:
+your exit wakes the listener, which would spawn another leg into the same
+refusal. On 2026-09-12 a leg spawned over a live one ran step 0's recovery
+against it, landing three units the live leg had claimed and resetting its leg
+worktree under an uncommitted fold, because everything on disk reads the same
+for a live leg and a killed one (`tasks/doc/048`). The lock tells them apart by
+freshness. **`scripts/fleet-tick.py leg-end` is then your last command on every
+exit** — a normal end, a stop, a HOLD, a dream. A leg that forgets it idles the
+next one for up to 30 minutes.
 
 0. **Refresh, then recover.** *Refresh first, and do not skip it because the
    session "already knows" the repo.* `git pull --rebase` every repo this leg may
@@ -97,10 +117,12 @@ not an ending, and the entries you leave are the only thing that crosses it.
    before you dispatch. `git push origin HEAD:main` each time. A non-fast-forward
    means something else moved `main`: fetch and rebase, never force.
 
-   **The symlink is what makes the gate pass in a worktree.** Every cross-repo
-   link in the instance resolves to `<worktree parent>/embarch-fleet`, which
-   does not exist until you make it; without it `check-links.py` reports seven
-   broken links nobody wrote.
+   **The symlink is what makes the gate pass in a worktree.** Every link into
+   the framework resolves to `<worktree parent>/embarch-fleet`, which does not
+   exist until you make it; without it `check-links.py` reports all of them
+   broken (48 on 2026-10-29) and `check-docs.py` skips its two framework checks.
+   A link into a *code* repo needs no link of its own: `check-links.py` looks a
+   sibling up again where the main checkout lives (`tasks/doc/085`).
 
    **`inbox/` is the exception, and it is not optional.** Drops are gitignored,
    so they exist only in the main checkout and your worktree cannot see them.
@@ -114,12 +136,12 @@ not an ending, and the entries you leave are the only thing that crosses it.
    nowhere else. See `/home/gabriel/Github/embarch/embarch-fleet/ops.md` §3.
 
 1. Confirm no other supervisor is running (`/home/gabriel/Github/embarch/embarch-fleet/ops.md` §1 —
-   a second one would double-fold `status.d/`). **`ListAgents` is the
-   listener's check and you do not have it** — leg 029 spent three
-   `ToolSearch` calls discovering that before falling back. Yours is the
-   evidence on disk: a registered `leg` worktree with commits on it, a live
-   `agent/*` branch, or a `**State:** claimed` task. If one is, stop and say
-   so.
+   a second one would double-fold `status.d/`). **`leg-start` exiting 0 is
+   that confirmation, and it ran before step 0 on purpose.** `ListAgents` is the
+   listener's check and you do not have it — leg 029 spent three `ToolSearch`
+   calls discovering that. The evidence on disk this step used to read — a
+   `leg` worktree, an `agent/*` branch, a `claimed` task — is what step 0's
+   recovery clears after a killed leg, so it could never tell a live one apart.
 2. Run `scripts/usage-budget.py --suggest`. Exit `1` (HOLD) means **do not
    start** — report the numbers and the reset time and stop; the listener will
    not respawn you into a HOLD. Exit `2` (DEGRADED) is the normal case on this
@@ -199,7 +221,9 @@ in a normal leg, and a wide wave is not a reason to do it less carefully.
   live Core. You run unattended; `embarch-dev-workflow.md` §5's autonomy was
   granted to an attended session.
 - **A worker gets one task, in one repo, on one branch.** Never dispatch a
-  `suite/` task to a worker — you execute those yourself (§8), and only after
+  `suite/` task to a worker — `queue-status.py` lists them under `suite` and
+  keeps them out of `dispatchable` for the reason it keeps bench tasks out
+  (`tasks/doc/043`). You execute those yourself (§8), and only after
   **announcing and parking** it: `scripts/fleet-post.py` saying in one sentence
   what you are about to do and why, with the repos and the paths in `--detail`;
   it prints the message `ts`, which you record in the task file. **No
@@ -231,7 +255,7 @@ in a normal leg, and a wide wave is not a reason to do it less carefully.
   mid-fold on 2026-09-03 by a command containing both shapes.
 - **Record a tick at every dispatch and every fold** — `scripts/fleet-tick.py
   leg-dispatch` right after you spawn a worker, `scripts/fleet-tick.py leg-fold`
-  right after `fold-commit.py` returns, and `scripts/fleet-tick.py leg-step0`
+  right after `fold-commit.py` succeeds, and `scripts/fleet-tick.py leg-step0`
   once when you finish step 0, before your first dispatch. One command each: it
   touches the mtime the watchdog reads and appends one labelled line to
   `/home/gabriel/Github/embarch/.fleet/tick.log`, which is how a gap gets measured afterwards instead
@@ -239,7 +263,7 @@ in a normal leg, and a wide wave is not a reason to do it less carefully.
   while you run you are its only writer.** The listener's cron is dark for your
   whole life (see the stop-channel rule below), so the watchdog window
   (`.claude/commands/fleet-watch.md`) reads that mtime and nothing else: fresh
-  means the fleet made progress, and stale by 35 minutes means it unlatches the
+  means the fleet made progress, and stale by 50 minutes means it unlatches the
   pump and alerts. Forget it and a healthy leg gets declared wedged — which is
   what happened on 2026-09-06, when `tick` still meant "the listener ticked" and
   a leg that landed 4/4 units was alerted on at 14:37 and had its relay cut. It
@@ -333,7 +357,8 @@ and sits in `inbox/` forever. That is exactly the state this queue was in on
 **Then sweep the sources when the queue is below its low-water mark — not when
 it is empty.** Run `scripts/queue-status.py --refill-owed --wave <your wave
 size>`, and do not hand-count `State:` lines. **Exit 0 means sweep now; exit 1
-means skip straight to selecting.** It implies `--tasks-only`, because you have
+means skip straight to selecting; exit 2 means it found no `tasks/` at all** and
+names the paths it tried — an error, never an empty queue. It implies `--tasks-only`, because you have
 just drained `inbox/` and a drop must not still count as "there is already work".
 **Run it after step 0, never before** — recovery has already reclaimed stale
 claims to `open` by then, which is exactly why you do *not* pass
@@ -359,13 +384,36 @@ the queue looks. When it says your scopes are thin, sweep *for scope spread*:
 one more task in a scope you already have a worker in buys nothing. That
 collision cost 9% of the same run.
 
+**A spread-only firing may be skipped, on one condition** (`tasks/doc/081`).
+Filing raises a count, so the depth half quiets itself; nothing raises spread
+once the thin scopes have converged — every open question in them
+hardware-gated, parked with its reason written down, or closed as not-work — and
+then every leg sweeps the same files to file nothing. So when the gate adds
+`spread only`, find the newest `Spread sweep: nothing filed` line in
+`/home/gabriel/Github/embarch/embarch-fleet/supervisor-log.md` and run, in your worktree:
+
+```sh
+git log --oneline --since='<yyyy-mm-dd HH:MM of that line>' -- '*open.md' '*/open/*.md' '*design.md' embarch-token.md suite/roadmap.md embarch-decision-reversals.md
+```
+
+Empty means a sweep would read exactly what that one read: skip it and say so
+in your entry. Anything listed, or no such line, means sweep. **When a
+spread-only sweep of yours files nothing, write `Spread sweep: nothing filed
+(<yyyy-mm-dd HH:MM>)` in your log entry** — that line is the whole mechanism.
+It is deliberately not a standing per-scope "converged" flag: the three scopes
+leg 139 found converged on 2026-09-17 (`ui`, `topology`, `study-designer`) had
+53 tasks filed in the six weeks after. Convergence is a moment, and a source
+changing is what ends it.
+
 Relay its `LOW QUEUE` line if the plain form prints one; a thin queue is the
 owner's cue to top it up, and he should hear it before it reaches zero:
 
 - **The drain, in detail** (`inbox/README.md`). Each file there is a complete task
   written by another thread or by a worker, minus its number. For each: validate
-  it parses, re-check its `Hardware:` claim yourself, assign the next free `NNN`
-  for its scope, move it into `tasks/<scope>/`, and delete the drop. A file that
+  it parses, re-check its `Hardware:` claim yourself, number it from
+  `scripts/check-task-numbers.py --next <scope>` as you write it — which sees
+  your workers' trees, so a refill cannot take a number a worker just did —
+  move it into `tasks/<scope>/`, and delete the drop. A file that
   does not parse stays in `inbox/` and is named in your log entry — never delete
   someone's request silently. **Announce in `#embarch-fleet` what you took from
   the inbox before dispatching any of it**, naming the file and what you will do,
@@ -386,8 +434,19 @@ owner's cue to top it up, and he should hear it before it reaches zero:
   line, so the post is worthless to the fleet without it. Do not pick one yourself,
   do not invent work to fill a slot, and **do not write a dreamt item into the
   queue** — an empty queue is the one moment the fleet genuinely does not know
-  what is worth doing, which is why it asks instead of guessing. The pump stays
+  what is worth doing, which is why it asks instead of guessing. **An open
+  `suite` task is not an empty queue**: zero dispatchable means zero for a
+  worker, and the suite task is yours to announce. The pump stays
   latched on; the listener will not respawn you into another dream for 6 hours.
+
+  **Confirm the zero before you post it.** A dream both pages the owner and
+  forfeits the leg, so it never rests on one reading: run
+  `scripts/queue-status.py --root /home/gabriel/Github/embarch/.worktrees/embarch-doc/leg` and
+  check that its listing names the task files `ls tasks/*/` shows you. On
+  2026-09-10 a leg read `0 dispatchable` off a 38-task queue because the script
+  had resolved the wrong checkout (`tasks/doc/035`). That path now errors
+  instead, but the check is one command and a false dream ends a leg that had
+  work.
 
 ### Bench units come first, and they are yours
 
@@ -480,6 +539,16 @@ unrelated work.
 **Select and set up.** At most one task per sub-project, from `Hardware: none`
 and `verify-only` tasks only. Claim it — commit the state line before dispatch,
 which is what stops a double-dispatch and what tells the listener a leg is live.
+**The line is exactly**
+`**State:** claimed by agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>` — the
+branch you are about to create and the wall clock. Anything you want to add —
+the unit it serves, a window's `ts` — goes *after* the time, where nothing reads
+it.
+Any other shape reads to `queue-status.py` as an abandoned claim with no branch,
+which advertises a live worker's task to the next leg as free to re-dispatch.
+Until 2026-09-18 half of all claims improvised a shape like
+`claimed (leg NNN unit N)`, because this step never quoted the format
+(`tasks/doc/076`).
 
 **One claim commit per task, and push it before you branch.** A reclaim then
 reverts exactly one task, and the listener sees each claim as it happens.
@@ -500,13 +569,27 @@ through.
 Create branch `agent/<sub-project>/<NNN-slug>` and a worktree **in both
 its code repo and `embarch-doc`** (§5.1 — almost every task changes both, and
 they must land together). Worktrees go under
-`embarch/.worktrees/<repo>/<NNN-slug>/`, outside every repo tree — never inside
+`/home/gabriel/Github/embarch/.worktrees/<repo>/<NNN-slug>/`, outside every repo tree — never inside
 `.claude/worktrees/`, which is how a repo-walking scan ends up reading three
-copies of the same source (`embarch-study-designer` decision 57).
+copies of the same source (`embarch-study-designer` decision 57). Once per repo,
+same branch name in both, **with the target path absolute**:
+
+```sh
+git -C /home/gabriel/Github/embarch/<repo> fetch -q origin
+git -C /home/gabriel/Github/embarch/<repo> worktree add -q -b agent/<sub-project>/<NNN-slug> /home/gabriel/Github/embarch/.worktrees/<repo>/<NNN-slug> origin/main
+```
+
+**`git -C` changes directory before it reads a single argument**, so a relative
+`.worktrees/<repo>/<slug>` resolves against the repo's own root: the worktree
+lands at `<repo>/.worktrees/<repo>/<slug>`, *inside* the repo, `worktree add`
+exits 0, and the intended parent still looks right in an `ls` because the
+symlinks were written absolute and went where they were meant to — beside
+nothing. Legs 095 and 114 did this to twelve worktrees between them
+(`tasks/doc/046`, `059`).
 
 **Check the doc-size reserve before you dispatch, not after the worker reports.**
 Run `scripts/check-doc-size.py --pressure` once per leg and keep the list. A file
-in reserve is inside the last 10% of its cap — **still writable, and the gate
+in reserve is inside the last `max(1.2 KB, 10%)` of its cap — **still writable, and the gate
 still passes**, which is the point: a cap used to be a wall a worker met only
 when its edit was refused, and that converted unrelated work into a compaction
 task mid-flight. Now it is a debt.
@@ -516,7 +599,8 @@ task file naming each file and its headroom, so it plans instead of discovering.
 And tell it the rule it owes: **if its work spends the reserve — pushes a file
 into it, or leaves one there that nothing has filed — it files
 `tasks/<its own scope>/<NNN>-compact-<its own scope>.md` in the same commit.**
-`tasks/README.md` has the shape — and note the path changed on 2026-09-05: it
+`tasks/README.md` has the shape, and the worker's own gate refuses a debt filed
+without its `In flux:` field or with two `State:` lines — and note the path changed on 2026-09-05: it
 used to say `tasks/doc/`, which `check-ownership.py` refuses to every worker
 (`tasks/doc/004`). `tasks/doc/` is yours and the owner's. It is not the worker's job to *do* the compaction; it is its job to
 record the debt while it still holds the one piece of context nobody else will
@@ -527,7 +611,7 @@ Whoever runs one answers `DOC-COMPACTION-PASS.md`'s human question in your log e
 its own words: *can `spec.md` alone answer what someone needs to work on this
 component today?* No script answers it and the gate does not either. **Never
 dispatch one whose `In flux:` field says yes** — that task should be `blocked`
-and naming what unparks it, and if it is `open` and says yes, the filer got it
+with an `**Unparks when:**` field, and if it is `open` and says yes, the filer got it
 wrong; fix the state rather than sending a worker.
 
 **`In flux:` is answered PER FILE, and that is what makes the rule above safe**
@@ -561,7 +645,10 @@ the four live violations were exactly that. So:
 you are dispatching *into* is in reserve and its compaction task is blocked on
 `In flux: yes`, say so in the task file and **tell that worker to compact that
 file as part of its own unit**, carrying the parked task's `Must not delete:`
-list and closing only that file's item. It is the actor making the flux, so it is
+list and closing only that file's item. If that was its last file, close the task
+`done` at the fold and leave `In flux: yes` as written: `check-task-state.py`
+exempts `done`, and a flipped answer is a false field (`tasks/doc/083`,
+`/home/gabriel/Github/embarch/embarch-doc/tasks/README.md`). It is the actor making the flux, so it is
 the only one who can shorten what it is rewriting without writing a clean
 statement of something about to be wrong. Left alone this ends one of two ways
 and both are silent: the worker meets the cap mid-flight, or — as `embarch-api`
@@ -580,19 +667,27 @@ outright.** `Cargo.toml` names `../embarch-study-designer` and
 `../../../embarch-topology`; from `.worktrees/<repo>/<slug>/` those resolve to
 nothing. After creating a code worktree, symlink into the worktree's **parent**,
 pointing at the main checkout — `ln -sfn /home/gabriel/Github/embarch/<sibling>
-/home/gabriel/Github/embarch/.worktrees/<repo>/<sibling>`.
+/home/gabriel/Github/embarch/.worktrees/<repo>/<sibling>`. That parent is the same
+`/home/gabriel/Github/embarch/.worktrees/<repo>` the `worktree add` above wrote into, and both are
+absolute, which is the only thing that keeps the links beside the worktree.
 
 **Link every sibling in the dependency *closure*, not the ones the crate's own
-`Cargo.toml` names.** That is the whole table, and it is short because only three
-repos are ever a link target:
+`Cargo.toml` names.** That is the whole table, re-derived from every manifest in
+the suite on 2026-10-29 after it had drifted twice (`tasks/doc/037`, `090`). Six
+repos are a link target, and three rows are not `cargo` at all — `outpost`'s is
+a test and `dev-bench`'s a firmware build, each reading a sibling by relative
+path, and `atlas`'s is not a repo (below):
 
 | worktree repo | link into its parent |
 |---|---|
 | `embarch-api` | `embarch-study-designer`, `embarch-topology` |
-| `embarch-core` | `embarch-study-designer`, `embarch-topology` |
+| `embarch-core` | `embarch-study-designer`, `embarch-topology`, `embarch-smp` |
 | `embarch-ui` | `embarch-study-designer`, `embarch-api`, **`embarch-topology`** |
-| `embarch-umbrella` | `embarch-topology`, `embarch-study-designer` |
-| `embarch-topology`, `embarch-study-designer`, `embarch-outpost`, `embarch-dev-bench` | none |
+| `embarch-umbrella` | `embarch-topology`, `embarch-study-designer`, `embarch-api` |
+| `embarch-outpost` | `embarch-core`, `embarch-ui` — `tests/cross_decoder.py`'s fixtures; it skips without them |
+| `embarch-dev-bench` | `embarch-study-designer` — a west build only (`app/CMakeLists.txt`) |
+| `embarch-atlas` | `.atlas-local`, the public-name denylist |
+| `embarch-topology`, `embarch-study-designer`, `embarch-smp`, `embarch-desk`, `embarch-chat` | none |
 
 The bolded one is the trap. `embarch-ui`'s manifest names only
 `embarch-study-designer` and `embarch-api/crates/embarch-core-client`, and
@@ -604,18 +699,35 @@ worktree rather than a missing link. Leg 009 did this to **both** its `ui` and
 `api` workers; batch 001's api worker hit the direct version of it. Each time the
 worker diagnosed it and made the symlink itself, which is a worker doing setup.
 
-If a `cargo build` in a fresh worktree still fails on a path that is not in this
-table, the table is out of date rather than the build: **the source of truth is
-`grep -rn 'path *= *"\.\.' --include=Cargo.toml embarch-*/`** in the suite root,
-run against the main checkouts. Say so in your log entry.
+**`embarch-atlas` is Python: it links one thing and needs a venv of its own.**
+Link the public-name denylist into its parent — `ln -sfn /home/gabriel/Github/embarch/.atlas-local
+/home/gabriel/Github/embarch/.worktrees/embarch-atlas/.atlas-local` — because its `test_public_guard`
+looks for `.atlas-local/` beside the repo and **skips** without it, which reads
+as green. Then, in the worktree, `uv venv -q && uv pip install -q -e
+'.[dev,tokens,mcp]'`: under ten seconds, nearly all of it hard-linked from uv's
+cache. **Never hand it the main checkout's `.venv`**: that install is editable
+and resolves to the main checkout's `src/`, so its `pytest` run in a worktree
+tests `main`, not the branch. The gate is `/home/gabriel/Github/embarch/embarch-fleet/gate.md`'s Python bullet.
 
-**Before you spawn, run `scripts/check-dispatch.py --worktree <each of this
-unit's worktrees>`.** It refuses if they already exist, because a fresh dispatch
-*creates* them — finding them is evidence a worker holds this task, not a state
-to reuse. Leg 012 reused them and ran **both** of its first two tasks twice,
-concurrently, in the same trees; `umbrella/012`'s second worker committed and
-pushed and the first force-pushed over it, and the only reason nothing was lost
-is that the two trees happened to be identical.
+**`scripts/check-dispatch.py` brackets the creation: once before, once after,
+both with every one of this unit's worktree paths, absolute.** Before the
+`worktree add`, `--worktree <path>` for each. It refuses if they already exist,
+because a fresh dispatch *creates* them — finding them is evidence a worker holds
+this task, not a state to reuse. Leg 012 reused them and ran **both** of its
+first two tasks twice, concurrently, in the same trees; `umbrella/012`'s second
+worker committed and pushed and the first force-pushed over it, and the only
+reason nothing was lost is that the two trees happened to be identical.
+
+**After the links and before you spawn, the same command with `--created`.** The
+first run proves the paths were free; this one proves the dispatch put a
+worktree at each — registered to its repo, on the unit's one branch — and
+resolves every relative Cargo path-dep from it the way cargo does, printing the
+`ln` for any that does not. Legs 095 and 114 passed the first run and then
+created twelve worktrees somewhere else, and a link missing from the table above
+failed four workers' first build (leg 009, batch 001, `tasks/doc/090`). **When
+`--created` names a link the table lacks, the table is out of date, not the
+build:** make the link and say so in your log entry. It reads Cargo only, so the
+table's non-cargo rows stay the table's job.
 
 **And never conclude a worker died from repo state.** That leg checked
 `git status` and the branch's commit count in all four worktrees — clean, zero
@@ -652,7 +764,13 @@ a worker's own twenty — run `git ls-remote --heads <remote> 'agent/*'` in both
 repos for each worker you dispatched, once, before doing anything else. A branch
 with commits is a finished worker: land it. No branch is a worker still running:
 `scripts/fleet-tick.py leg-waiting` so the watchdog knows the fleet is alive,
-and keep waiting. Only then recover per §3 and re-run the guard with `--allow-existing`.
+and keep waiting. Only then recover per §3, and **never by handing a tree to a
+new worker**: commit what it holds to its branch, push, `git worktree remove`
+it, and re-run the guard unchanged — it passes once the paths are gone. A
+resume is then an ordinary dispatch onto that branch (`worktree add <path>
+<branch>`, no `-b`) checked with `--created`. The guard had an
+`--allow-existing` until 2026-10-29; the auto-mode classifier refused it, and
+this route never needed it (`tasks/doc/040`).
 
 **Dispatch.** One background `embarch-worker` agent per task, launched without
 blocking on the previous one. Give each: its task file path, **both** worktree
@@ -664,11 +782,13 @@ is exactly the moment the watchdog needs on the clock.
 
 **Land, as each reports.** Re-run the gate yourself on the merge result, not on
 the branch (§10): the repo's `cargo build` / `test` / `clippy --all-targets --
--D warnings`, plus a native Windows build where `embarch-core` is involved, plus
+-D warnings` (a shared crate once per feature set its consumers build it with;
+an npm or Python repo its own bullet — both in `gate.md`), plus a native
+Windows build where `embarch-core` is involved, plus
 `python3 scripts/check-docs.py` in `embarch-doc` — **the wrapper, never a count
 or a list of your own**, which said "six" here while it ran eight — plus
 `scripts/check-ownership.py --scope <sub-project>` on **both** of the worker's
-branches, plus `scripts/check-client-names.py --repo <code worktree>` on the
+branches (`--code-repo` on the code one), plus `scripts/check-client-names.py --repo <code worktree>` on the
 code repo, which `check-docs.py` does not reach. **Do not trust a worker's
 report of green.** Run the checks and the merge as one script — pre-merge
 ownership, then `--ff-only`, then the full gate on the merge result, with an
@@ -680,7 +800,14 @@ when it touches a shared crate (`embarch-study-designer`, `embarch-topology`,
 `embarch-core-client`), a wire type, or retires a decision — those only;
 everything else merges on green. Merge order: shared crates, then consumers, then
 `embarch-doc`; oldest branch first within a tier. Rebase the remaining branches
-after each merge. **Record both merge SHAs per unit** — there is no merge commit
+after each merge, **each in its own unit worktree, where that branch is already
+checked out** — `git -C /home/gabriel/Github/embarch/.worktrees/<repo>/<NNN-slug> rebase origin/main`
+— or as a `git cherry-pick` in your leg worktree. **Never `git rebase <upstream>
+<branch>` in a repo checkout:** it checks `<branch>` out where it runs, a
+remote-tracking one as a detached HEAD, and run in `/home/gabriel/Github/embarch/embarch-doc` it detached the
+owner's checkout with nothing printed that reads as a warning (leg 110,
+`tasks/doc/057`). Should it happen, `git -C <repo> checkout main` undoes it; only
+HEAD moved. **Record both merge SHAs per unit** — there is no merge commit
 and no surviving branch name, so the SHA is the only handle a revert has. Delete
 a worker's worktrees once its branches have landed or been abandoned — but
 **move any `inbox/` drop out of its doc worktree into `/home/gabriel/Github/embarch/embarch-doc/inbox/`
@@ -688,10 +815,18 @@ first**, or you delete it. Drops are gitignored, so one written relatively by a
 worker exists only in that worktree; a worker is told to write them absolutely,
 and this is the backstop for the one that does not. Cheap to check, total to
 lose — leg 055 found one on 2026-09-08 only by going looking. **You do
-not delete the pushed branches** — `fold-commit.py` does it, and only once
-`git cherry` proves them already on `origin/main`, so it is normally a fold
-behind. Do not "help" by deleting one by hand: before the push, the remote
-branch is the remote's only copy of that unit.
+not delete the pushed branches, or the local ones `git worktree remove` leaves
+behind** — `fold-commit.py` does both, and only once their content is
+provably on `origin/main`, so it is normally a fold behind.
+The proof is patch-id first and then file by file, so a branch you rebased or
+cherry-picked through a conflict is pruned like any other; you need not
+force-push it. Do not "help" by deleting one by hand: before the push, the
+remote branch is the remote's only copy of that unit. **It never prunes a
+branch whose task on `origin/main` reads anything but `done`**, so a branch you
+parked for a resume (commit, push, `git worktree remove`, above) survives the
+folds in between, even empty. A branch the fold cannot prove — a blocked
+unit's, or one whose files `main` has edited since — stays, and deleting it is
+the owner's call, never yours.
 
 **Spawn a reviewer the moment a unit's branches are merged. It never blocks the
 merge; it is the last thing the fold waits for.** One background
@@ -739,6 +874,16 @@ If it dies, or a `fleet stop` arrives while you are waiting, the line says
 form and never write "pending":** `grep '^\*\*Reviewer:'` is the tally, a fourth
 form breaks it, and a `pending` nobody resolves is silent — the `umbrella/004`
 entry says exactly this about a fourth form and it was right.
+
+**When its notification is late, read its verdict file — never its transcript.**
+A reviewer's last act is one line in `/home/gabriel/Github/embarch/.fleet/reviews/<scope>-<NNN>`,
+findings or none, saying what your `**Reviewer:**` line should say. **That file
+existing means the reviewer finished** — the reviewer's version of a pushed
+branch, and positive-only for the same reason: a completion notification has
+gone astray at least twice (`tasks/doc/042`), and the only line left was a
+`skipped` that recorded a finished, clean review as a missing one. Present: copy its line.
+Absent: it is still running, so keep waiting. Delete the file once the entry is
+written.
 
 **A reviewer does not count against the worker wave.** It reads a diff for
 about ninety seconds; a worker runs for twenty minutes. Counting them equally
@@ -818,16 +963,32 @@ scripts/fold-commit.py --unit <scope>/<NNN> -m "<subject>" \
     --path <each path this unit touched>
 ```
 
+**Never pipe it.** Its output is a few lines, so there is nothing to `tail`,
+and a pipe hands `&&` the pipe's last exit status instead of the script's:
+`fold-commit.py ... | tail -5 && git push origin HEAD:main && ... leg-fold`
+pushed a worker's merge ahead of its fold and ticked a fold that never happened,
+in two consecutive legs (`dev-bench/014`, `core/046`, 2026-09-28), while the
+script had refused correctly both times. Run it bare, read what it printed, and
+chain the push and the `leg-fold` tick only behind an unpiped
+`fold-commit.py ... &&`.
+
 Run it **from your leg worktree**: it stages in whichever instance checkout you
 are standing in, falling back to `fleet.toml`'s `doc_repo` only when you are
-nowhere near one, and `--doc-repo` overrides both. A completed task file you
-removed with `git rm` is already staged and needs no special handling — the
-script settles every path *before* it commits the log, so a bad path list now
-costs nothing instead of leaving a log-only commit to undo by hand.
+nowhere near one, and `--doc-repo` overrides both. **The unit's own task file
+always goes in `--path`**, in whatever state you left it — edited and unstaged,
+`git add`ed, `git rm`'d, or untouched from the worker's branch. The script
+retires it when it reads `done` (`git rm -f`, so your own edit to it — a `suite`
+task's `done`, a worker's `closed` corrected — never blocks the fold), and
+commits your edit when it reads `blocked`. Left out, a `done` file is not
+retired at all. The script stages every path *before* it commits the log, so a
+bad path list costs nothing instead of leaving a log-only commit to undo by hand.
 
 It refuses unless the log's newest entry names *this* unit, stages by explicit
 path, and commits the log first — so the orderings a kill can leave are "nothing"
 or "an entry for a fold that did not happen", never "a fold nobody logged".
+**If a fold dies between its two commits, re-run the same command**: it finds
+its own log commit, lands the instance half against it, and says so. Never
+hand-write the instance commit while that works.
 **Never `git add -A`**: you fold in a checkout the owner also uses, and legs 004
 and 005 both swept his own `changelog.d` fragments into their folds that way. **A unit has failed if it leaves a fragment unfolded, and equally if
 it lands without its log entry** (§9, §11). You are the only actor touching
@@ -862,6 +1023,15 @@ what a four-unit bound exists to prevent. Then `python3 scripts/fold-day.py
 --roll` if `--status` says the file is over the line. Both land in that unit's
 own `fold-commit.py` commit, like everything else.
 
+**The same unit runs `python3 scripts/check-client-names.py --suite --history`**
+once — every repo's whole history against the client denylist, ~25 s
+[2026-10-29]. The pre-push hook reads what each push sends; this finds what it
+cannot, a name added to the denylist after the push that carried it. **A red is
+not yours to fix**: a name in pushed history means rewriting public `main`,
+which is the owner's. Put each red repo and the entry numbers it names in that
+unit's log entry and your final message — never an excerpt line — and carry on.
+It is not an alert: `/home/gabriel/Github/embarch/embarch-fleet/ops.md` §3's set is closed.
+
 **Then check your own hands**, once, before you exit:
 `git diff --name-only <leg-start-sha>...HEAD | python3
 scripts/check-ownership.py --supervisor --stdin`. **Red now means one of two
@@ -872,8 +1042,8 @@ classifies, which is a fact about the repo rather than about your diff. The
 second is usually a [DOC-COMPACTION.md](../DOC-COMPACTION.md) split: a doc
 that appears from one carries its old file's rules and none of its old file's
 protection. **Classifying it is the owner's call, not yours** — the lists live
-in `scripts/`. Name the file in your final message and carry on; do not guess a
-classification and do not edit the script.
+in `fleet.toml`. Name the file in your final message and carry on; do not guess a
+classification and do not edit the lists.
 
 ## Ending the leg
 
@@ -884,8 +1054,10 @@ fleet repo normally — **then remove your own leg worktree** — `git worktree 
 because something is uncommitted, say what in your final message rather than
 forcing it. An unpushed fold is the one thing the next leg cannot recover from
 a clean tree. Post a two-line close to
-`#embarch-fleet` — units done, what is left dispatchable — and exit. **Do not
-push a notification for an ordinary leg end**; the relay ends legs constantly.
+`#embarch-fleet` — units done, what is left dispatchable — then run
+`scripts/fleet-tick.py leg-end`, so the next leg does not wait on your lock, and
+exit. **Do not push a notification for an ordinary leg end**; the relay ends legs
+constantly.
 
 Your final message is read by the listener and relayed, so it carries: units run,
 branches landed **with their SHAs**, tasks blocked and why, any suite-wide design
