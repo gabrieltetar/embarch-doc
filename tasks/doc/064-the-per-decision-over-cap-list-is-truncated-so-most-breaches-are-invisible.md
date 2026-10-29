@@ -1,6 +1,6 @@
 # 064 — `check-doc-size.py --decisions` truncates its over-cap list, so most breaches are invisible
 
-**State:** open
+**State:** done — `--decisions` prints every over-cap and pinned row, never the 20 largest; 14 breaches shown where 6 were (owner/doc-size, 2026-10-29)
 **Source:** leg 118, 2026-09-16, while landing the four tasks leg 117 filed off its own per-decision
 census. `umbrella/068`'s worker found a **sixth** unpinned over-cap decision
 (`embarch-umbrella/decisions/mirrors.md#16`, 4,347 B, over cap since before 2026-09-13) that the
@@ -74,8 +74,8 @@ move, and every task this leg dispatched said so to its worker.
 
 ## Done when
 
-- [ ] `check-doc-size.py --decisions` lists every unpinned over-cap decision, whatever its rank by
+- [x] `check-doc-size.py --decisions` lists every unpinned over-cap decision, whatever its rank by
       size.
-- [ ] Re-running the census twice in a row, with a fix landed in between, does not reveal entries
+- [x] Re-running the census twice in a row, with a fix landed in between, does not reveal entries
       that were over cap the whole time.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

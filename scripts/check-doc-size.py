@@ -560,8 +560,16 @@ def main() -> int:
             DECISION_BASELINE.write_text(json.dumps(dict(sorted(dbase.items())), indent=2) + "\n")
             print(f"\nwrote {DECISION_BASELINE.relative_to(REPO)}: {len(dbase)} pinned")
             return 0
-        print(f"{len(drows)} decisions; cap {DECISION_CAP} B, {len(dbase)} pinned over it\n")
-        for key, rel, head, size, limit, pin in sorted(drows, key=lambda r: -r[3])[:20]:
+        print(f"{len(drows)} decisions; cap {DECISION_CAP} B, {len(dbase)} pinned, "
+              f"{len(dover)} over it unpinned\n")
+        # EVERY row that is over the cap or pinned, never the N largest. This was
+        # `[:20]` over all rows by size, so the 27 pinned entries filled the list
+        # and an unpinned breach printed only if it was one of the twenty largest
+        # decisions in the suite: 14 breaches, 6 shown (tasks/doc/064). The
+        # question is "what is over", and a pinned 8 KB entry outranking an
+        # unpinned 4.2 KB one answered a different question.
+        for key, rel, head, size, limit, pin in sorted(
+                (r for r in drows if r[3] > DECISION_CAP or r[5]), key=lambda r: -r[3]):
             mark = "OVER" if size > limit else ("pin " if pin else "    ")
             print(f"  {mark} {size:6} B  {key}")
         biggest_share = max(
@@ -765,8 +773,8 @@ def main() -> int:
         for rel, role, size, limit, cap, due in sorted(tolerated, key=lambda t: t[5]):
             print(f"  due {due.isoformat()}  {rel}  {size - limit} B over")
     if dover:
-        print(f"{len(dover)} decision(s) over the {DECISION_CAP} B cap and not yet pinned "
-              f"(--adopt-decisions to seed).")
+        print(f"{len(dover)} decision(s) over the {DECISION_CAP} B cap and unpinned; "
+              f"`--decisions` lists every one. Pinning one is not a fix.")
     return 0
 
 
