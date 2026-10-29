@@ -1,6 +1,10 @@
 # 055 — Settle which relative form a sibling repo's source comment uses to cite embarch-doc
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29, settled with `tasks/ui/038` as one rule in
+DOC-CONVENTIONS.md *Referring to a decision*: a cited file is written from the suite root
+(`embarch-doc/<path>`, 41 of 74 sites today), no `:line` suffix (decision number or section instead;
+a retired decision's number still resolves), and the 28 `../` and 10 `:line` sites are fixed when
+next edited, not swept.
 **Source:** `inbox/doc-settle-cross-repo-citation-form.md`, dropped by `tasks/umbrella/062`'s
 worker (four more shallow `../embarch-doc` sites), which itself followed `tasks/umbrella/061`.
 Both units found the depth defect and were explicitly told not to touch citation *form*; this is

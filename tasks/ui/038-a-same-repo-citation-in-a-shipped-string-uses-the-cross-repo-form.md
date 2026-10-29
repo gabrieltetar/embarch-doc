@@ -1,6 +1,10 @@
 # 038 — DOC-CONVENTIONS.md says nothing about a citation in a shipped, rendered string
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29, settled with `tasks/doc/055` as one rule in
+DOC-CONVENTIONS.md *Referring to a decision*: a shipped string names the sub-project even for its
+own decision (`embarch-ui decision 11`), never a path; a source comment cites its own bare. No
+embarch-ui change is needed: both `ui/032` strings were since removed (`d29fc75`, `6196261`), and
+embarch-ui renders no decision citation today.
 **Source:** `inbox/ui-032-citation-form.md` — an `embarch-reviewer` finding on `ui/032`, refused by
 leg 085 and left standing; filed as a task by leg 096, 2026-09-12, unchanged below this header.
 **Scope:** ui
