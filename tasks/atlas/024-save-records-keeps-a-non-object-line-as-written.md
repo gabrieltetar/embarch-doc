@@ -1,6 +1,6 @@
 # 024 — `save_records` writes a non-object JSONL line back as it was, not as `{}`
 
-**State:** open
+**State:** claimed by agent/atlas/024-save-records-keeps-a-non-object-line-as-written, 2026-10-29 15:50
 **Source:** reviewer of `atlas/017` (fold of the leg started 2026-10-29 15:24), confirming the worker's own stated limitation: `common.read_jsonl` can yield a JSON line that is not an object; `run_check` now replaces it with `{}` in memory so the check no longer raises, and `records.save_records` (`src/embarch_atlas/records.py:171`) rewrites a whole file whenever any record in the run changes prov, which persists that `{}` over the original line.
 **Scope:** atlas
 **Hardware:** none — fixture records only.
