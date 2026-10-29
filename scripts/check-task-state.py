@@ -34,7 +34,7 @@ for the same reason `tasks/doc/028` says not to: every one of those instances
 was resolved by a judgement about what actually occurred, and a script that
 guessed would turn a loud wrong field into a quiet one.
 
-Seven rules, and all of them fail the gate:
+Nine rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
      exactly -- no trailing comma, no `partially`, no `closed`. Prose follows
@@ -56,6 +56,14 @@ Seven rules, and all of them fail the gate:
      matches whole, never as the tail of a sibling repo's (`tasks/doc/053`).
   7. **A `blocked` task carries an `**Unparks when:**` field, and every queue
      path it names exists** -- `tasks/doc/032`. See `unpark_findings`.
+  8. **One `**State:**` line**, outside fenced examples. A second is an
+     instruction nobody applied, read as `open` by the first-match consumers
+     and as itself by a grep for the last (`topology/057`, leg 133).
+  9. **A compaction task not yet `done` has an `**In flux:**` FIELD** -- a
+     `## In flux` heading is prose to every reader that decides dispatch
+     (`umbrella/077`, leg 133). Rules 8 and 9 are `tasks/doc/077`: the worker
+     filing a debt mid-unit is the only actor who can answer flux and never
+     reads `tasks/README.md`, so its own gate is where it meets the shape.
 
 **Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
 where that got decided.** The holding position was that `.claude/leg.md` and
@@ -350,6 +358,9 @@ def unpark_findings(text: str) -> str | None:
     return None
 
 
+FENCE_RE = re.compile(r"^```.*?^```", re.M | re.S)
+
+
 def task_files() -> list[Path]:
     out = []
     for d in DIRS:
@@ -389,6 +400,21 @@ def main() -> int:
                 f"\n    every consumer reads `split()[0]`, so this file is "
                 f"whatever `{tok}` sorts into -- for `queue-status.py` that is "
                 f"`other`, i.e. not dispatchable")
+        n_state = len(STATE_RE.findall(FENCE_RE.sub("", text)))
+        if n_state > 1:
+            fails.append(
+                f"{rel}\n    {n_state} `**State:**` lines -- consumers read the "
+                f"first and a grep for the last disagrees\n    keep one, at the "
+                f"top; a later one is an instruction to apply there "
+                f"(tasks/doc/077)")
+        if (tok != "done" and COMPACTS_RE.search(text)
+                and not IN_FLUX_RE.search(text)):
+            fails.append(
+                f"{rel}\n    a compaction task with no `**In flux:**` field at a "
+                f"line start\n    a `## In flux` heading is prose; the fields are "
+                f"`Compacts:`, `Size debt due:`,\n    `In flux:` (all-yes means "
+                f"`blocked` + `Unparks when:`), `Must not delete:` -- "
+                f"tasks/README.md (tasks/doc/077)")
         why = unpark_findings(text)
         if why:
             fails.append(f"{rel}\n    {why}")

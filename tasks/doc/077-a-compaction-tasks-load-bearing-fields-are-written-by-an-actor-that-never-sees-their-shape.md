@@ -1,6 +1,6 @@
 # 077 — a compaction task's load-bearing fields are written by an actor that never sees their shape
 
-**State:** open
+**State:** done — option 2: `check-task-state.py` rule 8 (one `State:` line outside fenced examples) and rule 9 (a compaction task not yet `done` has an `In flux:` field), so the filer meets the shape at its own gate. Both worker-filed originals fail; both corrected files pass 8 and 9, and rule 7 (`doc/032`) flags each for its park, `umbrella/077`'s for waiting on `umbrella/037`, retired ten days earlier. README and leg.md in embarch-fleet `3cba24b`.
 **Source:** `inbox/workers-file-compaction-tasks-that-no-consumer-can-read.md`, filed by the leg 133
 supervisor while landing three units that each spent doc-size reserve. Not a worker's report — each
 worker believed it had filed correctly.
@@ -69,6 +69,6 @@ never sees the shape.**
 
 ## Done when
 
-- [ ] One of the three above (or something better) is chosen and applied.
-- [ ] If it is option 2, the check is added and both of leg 133's corrected files still pass.
-- [ ] `tasks/README.md` and `.claude/leg.md` agree on the field list, whichever way it lands.
+- [x] One of the three above (or something better) is chosen and applied.
+- [x] If it is option 2, the check is added and both of leg 133's corrected files still pass.
+- [x] `tasks/README.md` and `.claude/leg.md` agree on the field list, whichever way it lands.
