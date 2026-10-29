@@ -1,6 +1,6 @@
 # 018 — Every lookup whose answer can be cut takes the `offset` its truncation line asks for
 
-**State:** claimed by agent/atlas/018-every-cut-answer-takes-offset, 2026-10-29 16:45
+**State:** done
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas finding 5), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Query functions over fixture atlases, as `tests/test_query.py` already pages `doc_section`.
@@ -22,9 +22,17 @@ Several queued tasks change these same signatures: `tasks/atlas/012` (`part_card
 
 ## Done when
 
-- [ ] Every lookup that `_cap` can cut accepts `offset` on its MCP tool and its `embarch-atlas q` verb.
-- [ ] For each of those lookups, a fixture answer larger than the budget, followed through `next=` until no truncation line remains, reproduces the uncut answer exactly once, with no line lost or repeated.
-- [ ] A test fails if any tool's answer offers an offset that its MCP signature does not take.
-- [ ] `atlas-use` SKILL.md says how to continue a cut answer, if it does not already.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Query surface" updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+- [x] Every lookup that `_cap` can cut accepts `offset` on its MCP tool and its `embarch-atlas q` verb.
+- [x] For each of those lookups, a fixture answer larger than the budget, followed through `next=` until no truncation line remains, reproduces the uncut answer exactly once, with no line lost or repeated.
+- [x] A test fails if any tool's answer offers an offset that its MCP signature does not take.
+- [x] `atlas-use` SKILL.md says how to continue a cut answer, if it does not already.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Query surface" updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+
+## Result (2026-10-29)
+
+Re-derived from the code on this branch (`query.TOOLS`, thirteen lookups at `17880f2`): `doc_section`, `find_text`, `net_trace` and `mismatch_report` already took `offset`; this unit added it, on the function, the `q` verb (`--offset`) and the MCP tool, to the other nine: `part_card`, `doc_toc`, `find_fact`, `register`, `pin_trace`, `config`, `dt_node`, `footprint`, `stacks`. The `register` pair (`_MSB`/`_LSB`) path and `doc_toc`'s three cut points and `doc_section`'s section listing also pass it through.
+
+Deviations: none from the task's intent. The "test fails if a tool offers an offset it does not take" is `test_every_tool_that_offers_an_offset_takes_one`: it walks every key of `query.TOOLS`, asserts each has a budget (so each can be cut), and checks the function signature, the MCP input schema and the `q` verb's flags. Page-by-page exactness is tested per tool with a 2-token budget (`tests/paging_synth.py`), the build tools and `net_trace` in their own fixture files. Offsets count characters (not bytes), so a cut never splits a multi-byte character; each page repeats the `src:` header; the bodies concatenate to the uncut body (DESIGN.md "Query surface").
+
+No hardware debt. `atlas-use` SKILL.md and the MCP server's instructions now say how to continue a cut answer.
