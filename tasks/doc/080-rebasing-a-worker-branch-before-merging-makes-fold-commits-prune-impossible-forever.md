@@ -1,6 +1,6 @@
 # 080 — Rebasing a worker branch before merging makes `fold-commit.py`'s prune impossible forever
 
-**State:** open
+**State:** done — closed against `doc/061`'s content proof (embarch-fleet `45089bf`) and `doc/075`'s resume (`cc73d53`), which ends the hand-committed folds that skipped the prune; no force-push rule needed.
 **Filed by:** leg 138, 2026-09-17, at the end of the leg, after hitting it twice in one leg and
 finding three older instances already sitting on the remote.
 **Source:** `.claude/leg.md` — *"You do not delete the pushed branches — `fold-commit.py` does it,
@@ -97,12 +97,26 @@ tells it to land them.
 Twice in one leg, three older instances found sitting there, and the failure mode interacts with the
 one signal a leg is allowed to use to decide a worker has finished.
 
+**Resolved, 2026-10-29.** Both halves of the diagnosis above were right. The prune is evaluated
+against `origin/main` before the leg pushes, so a unit's own branches always go one fold later —
+by design, and `core/085`'s would have gone at the next fold, except that the next fold was
+`api/109`'s, hand-committed (`082`), so the prune never ran. And a rebase or cherry-pick that
+conflicted changes the patch-id, which `git cherry` cannot see past (`061`). The first is now
+closed by `075`'s resume (no fold has a reason to finish outside the script); the second by
+`061`'s file-by-file proof. leg.md now says a rebased branch needs no force-push, and that a branch
+the fold cannot prove is the owner's to delete — which reconciles the rule.
+
 ## Done when
 
-- [ ] Either `fold-commit.py` prunes a branch whose *content* is on `origin/main` regardless of SHA
+- [x] Either `fold-commit.py` prunes a branch whose *content* is on `origin/main` regardless of SHA
       (patch-id or tree comparison), or `.claude/leg.md` says explicitly that a supervisor
       force-pushes a branch it rebased, before merging it — which is what the one pruned branch of
       the three actually did.
-- [ ] The rule's current wording is reconciled either way: a leg cannot both be forbidden from
+- [x] The rule's current wording is reconciled either way: a leg cannot both be forbidden from
       deleting a pushed branch and be the only actor able to clean one up.
 - [ ] The five stale branches named above are gone, or a decision records why they stay.
+      **State on 2026-10-29** (`git ls-remote`): `core/085` and `api/109` are already gone. `api/096`
+      and `core/052` are still on `embarch-doc`'s remote, and the new proof marks both landed, so the
+      first fold after the fix lands deletes them (with `core/081`, a later one of the same shape).
+      `ui/059`'s two stay, by decision: a blocked unit whose task file says its branches are worth
+      reusing, and the proof correctly cannot call them landed.
