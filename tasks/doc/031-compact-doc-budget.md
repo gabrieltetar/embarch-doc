@@ -1,6 +1,6 @@
 # 031 — `DOC-BUDGET.md` crossed into reserve, and it had 5 bytes before it did
 
-**State:** open
+**State:** done — squeezed, not split: 12,279 -> 9,571 B, out of reserve by 1,488 B; every `Must not delete:` item survives (owner/doc-size, 2026-10-29)
 **Scope:** doc
 **Hardware:** none
 **Owner:** required — `DOC-BUDGET.md` is on `fleet.toml`'s `reserved` list and is *"the one a
@@ -45,14 +45,14 @@ the rule without the reason it is bounded.
 
 ## Done when
 
-- [ ] `DOC-BUDGET.md` is out of reserve — by the split above, another seam argued in its place, or
+- [x] `DOC-BUDGET.md` is out of reserve — by the split above, another seam argued in its place, or
       a deliberate cap raise with the reason recorded. **The owner's call either way**, since
       `DOC-PROTOCOL.md` reserves structural decisions about the corpus.
-- [ ] `DOC-COMPACTION.md` §2's pointer and every `§2` reference elsewhere still resolve (there were
+- [x] `DOC-COMPACTION.md` §2's pointer and every `§2` reference elsewhere still resolve (there were
       twelve when this file was split out); `scripts/check-links.py` and
       `scripts/check-decision-refs.py` green.
-- [ ] The human question answered in the commit message, in the compactor's own words
+- [x] The human question answered in the commit message, in the compactor's own words
       (`DOC-COMPACTION-PASS.md`): can this file alone answer what a doc may weigh and what counts
       as a debt?
-- [ ] The `Must not delete:` list above survives, or each dropped item is named and argued.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] The `Must not delete:` list above survives, or each dropped item is named and argued.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
