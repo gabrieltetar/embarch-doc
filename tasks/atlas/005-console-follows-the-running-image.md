@@ -1,6 +1,6 @@
 # 005 — Pick the console the running image uses, not the one a declaration last pointed at
 
-**State:** open
+**State:** claimed by agent/atlas/005-console-follows-the-running-image, 2026-10-29 17:43
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — one console signal re-declared by hand twice (USB CDC ACM, then a USB-UART bridge); on 2026-10-20 it still pointed at the bridge while the flashed image had its shell on USB: 2 empty replies, then a rebuild and a second 30 s flash
 **Scope:** atlas
 **Hardware:** verify-only
