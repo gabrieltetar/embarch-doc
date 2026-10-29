@@ -1,6 +1,7 @@
 # 095 — Check 17's fix lines name an `install` that refuses a registered service
 
-**State:** open
+**State:** claimed by agent/umbrella/095-check-17s-fix-lines-name-an-install-that-refuses-a-registered-service, 2026-10-29 15:06
+**Dispatch note (leg started 2026-10-29 15:03):** `core/124` landed core decision 106: on Windows `embarch-core install` over a registered service now **rewrites it in place** (stop, rewrite `ImagePath` with the new `--bind`, merge `Environment`, failure actions, start), so item 1's first branch applies — the fix line stays and names the Core version/decision that does it. **Reserve:** `embarch-umbrella/open.md` is 4,136 / 5,120 B, in reserve (out at ≤ 3,919 B), parked under `tasks/umbrella/094` (blocked, `In flux: yes`). Your hardware-debt line goes into that file, so **compact `open.md` as part of this unit** — check 17's own verification bullet is likely the one `umbrella/033` settled — carrying 094's `Must not delete:` list; if `open.md` ends clear of its reserve, close 094 `done` in your branch and leave its `In flux:` as written. `decisions/bind.md` is 11,022 B against an 11,059 B reserve line: an amendment to decision 22 must cut what it adds, or file `tasks/umbrella/<NNN>-compact-umbrella.md`. Decisions within 256 B of their limit in this sub-project: prune-policy#26, deploy#32, mirrors#20, probe-vendors#49, sticky-host#48, budgets#44.
 **Source:** [decision 22](../../embarch-umbrella/decisions/bind.md)'s 2026-10-29 measurement (`tasks/umbrella/033`, run by the owner's session against the live Core service)
 **Scope:** umbrella
 **Hardware:** verify-only
