@@ -1,6 +1,6 @@
 # 004 — `embarch-chat/decisions/timeline.md` is over its cap: split it by mission, verbatim
 
-**State:** open
+**State:** claimed by agent/chat/004-split-timeline, 2026-10-28 22:17
 **Source:** `chat/002` added decision 90 and left the file at 12,144 B of 12,288 B; `DOC-COMPACTION.md` §2. Decisions 92–93 (owner's session, 2026-10-26) then took it to 13,806 B, 1,518 B **over** the cap.
 **Scope:** chat
 **Hardware:** none
