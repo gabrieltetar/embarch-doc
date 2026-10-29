@@ -63,6 +63,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # behind is answered by the pending-deploy latch and `deploy.py --dry-run`;
 # neither is a gate, and it is not this file's question.
 #
+# check-tool-index.py (2026-10-29, tasks/doc/051) is the one check that reads a
+# sibling CODE repo, `../embarch-api`, and it skips -- passing, silently --
+# where that checkout is absent, as the two framework checks do.
+#
 # check-client-names.py is the ninth, added 2026-09-05. It runs on ONE repo, this
 # one, and the supervisor runs it again per code repo in the merge gate
 # (`embarch-fleet/protocol.md` §10) -- 80% of the suite's bytes are in repos that
@@ -73,6 +77,7 @@ CHECKS = (
     ("check-links.py", []),
     ("check-staleness.py", []),
     ("check-decision-refs.py", []),
+    ("check-tool-index.py", []),
     ("check-doc-conventions.py", []),
     ("check-doc-size.py", []),
     ("check-task-numbers.py", []),
