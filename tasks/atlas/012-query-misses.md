@@ -1,6 +1,8 @@
 # 012 — Fix the lookup misses field sessions hit: part_card's board argument, CMSIS register names, undistilled sections, PDF paths
 
-**State:** open
+**State:** claimed by agent/atlas/012-query-misses, 2026-10-29 16:30
+**Dispatch note:** line numbers below may predate `atlas/017`, `021`, `024` and `006` (all landed 2026-10-29); read the
+code on `main`. No `embarch-atlas` doc is in size reserve. The atlas's design doc is `DESIGN.md` in the code repo.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 49 of 160 `part_card` calls (9 sessions) never reached the server because the model wrote `"board": }`; 5 `register` misses on CMSIS names such as `UCPD1.CFG1`; 9 `doc_section`/`doc_toc` misses, 5 on toc sections with no distillation and 4 on section numbers or titles the toc does not have; 3 of 208 PDF page reads went to guessed file paths
 **Scope:** atlas
 **Hardware:** none
