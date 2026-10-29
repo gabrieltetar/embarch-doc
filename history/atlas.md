@@ -14,6 +14,7 @@
 - Atlas: live `shell` and external `reg_read` over the board shell; new `bus` record (byte order, address windows).
 
 ### Changed
+- atlas live: shell runs only [live] read_only commands, new shell_run and reg_read_clear carry no readOnlyHint; reg_read refuses allow_clear (embarch-atlas DESIGN.md MCP server)
 - Atlas queries: find_fact shows the best 10 hits above 0.4x the top, names unmatched terms, narrows to a part the query names; register joins MSB/LSB pairs; doc_toc under= takes a title word.
 
 ### Fixed
