@@ -1,6 +1,6 @@
 # 042 — A reviewer that finished and never notified has no legal way to be collected
 
-**State:** open — filed from `inbox/` by leg 084, 2026-09-11, unchanged apart from this line and the number.
+**State:** done — direction 3: a reviewer's last act is one line in `<state_dir>/reviews/<scope>-<NNN>`, which `leg.md` reads when the notification is late, never the transcript; the three forms are unchanged; fleet 0ddb18a. Filed from `inbox/` by leg 084, 2026-09-11.
 **Source:** leg 083's supervisor, 2026-09-11, during `ui/026`. Observed, not reasoned about.
 **Scope:** doc
 **Hardware:** none
