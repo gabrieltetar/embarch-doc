@@ -1,6 +1,6 @@
 # `.claude/leg.md`'s worktree link table omits `embarch-api` for `embarch-umbrella`
 
-**State:** open
+**State:** done — the template's link table re-derived from every manifest in the suite, umbrella row gains `embarch-api` (fleet `039bd66`, owner/dispatch); lands by `deploy.py`
 **Source:** supervisor leg 072, landing `umbrella/049` on 2026-09-10
 **Scope:** doc
 **Hardware:** none — a documentation/template fix plus, optionally, a check.
@@ -37,11 +37,19 @@ exists because this has already cost two legs.
 
 ## Done when
 
-- [ ] `embarch-umbrella`'s row in the template's table reads
-      `embarch-topology`, `embarch-study-designer`, **`embarch-api`**.
+- [x] `embarch-umbrella`'s row in the template's table reads
+      `embarch-topology`, `embarch-study-designer`, `embarch-api` — unbolded, because the table's
+      bold means "transitive, not in the crate's own manifest" and this one is in it.
 - [ ] Landed through `embarch-fleet/scripts/deploy.py` (not `install.py` by hand), so the instance
-      gate stays green.
-- [ ] Consider whether the table should be generated from
+      gate stays green. **The owner's session, at landing.**
+- [x] Consider whether the table should be generated from
       `grep -rn 'path *= *"\.\.' --include=Cargo.toml embarch-*/` rather than hand-kept — the
       file already names that grep as the source of truth when the table is wrong, which is an
       admission the table drifts.
+      **Considered, not generated.** A rendered table would make `install.py` read sibling repos,
+      which are not render inputs and sit outside the SHA `deploy.py --queue` pins — a queued
+      deploy could then render something nobody committed. The drift is caught instead where it
+      bites: `tasks/doc/046`'s `check-dispatch.py --created` resolves every relative Cargo
+      path-dep from the worktree as created. The re-derivation also found what a Cargo grep
+      cannot: `embarch-outpost`'s cross-decoder test and `embarch-dev-bench`'s CMake read siblings
+      too, so the table carries both, and `embarch-core` gains `embarch-smp` (`tasks/doc/090`).
