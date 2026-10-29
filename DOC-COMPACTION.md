@@ -27,6 +27,11 @@ reserve, the debt ledger and the per-decision cap. Split out 2026-09-07 rather
 than squeezed, under this file's own rule; every `§2` reference elsewhere still
 points here.
 
+**A split that moves a pinned decision orphans its pin**, which is keyed
+`<file>#<number>`. The gate prints a `NOTE:` naming where the decision went; the
+owner re-keys the pin in `scripts/decision-size-baseline.json`, or drops it if
+the decision has got under the cap since.
+
 ## 3. Four files per sub-project
 
 Split by *when a reader needs it*, so the default load is small:

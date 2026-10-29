@@ -35,6 +35,8 @@ Usage:
   scripts/check-doc-size.py --update     re-baseline anything now smaller
   scripts/check-doc-size.py --report     show the whole corpus against caps
   scripts/check-doc-size.py --pressure   what is in reserve, filed and unfiled
+  scripts/check-doc-size.py --decisions  every decision over the 4 KB cap or pinned,
+                                         and every pin a split orphaned
 Exit status: 0 if nothing exceeds min(cap, baseline) and every file in reserve
 is filed against, 1 otherwise.
 """
@@ -372,6 +374,40 @@ def decision_state():
     return fails, over_unpinned, rows, base
 
 
+def orphan_pins(rows, base):
+    """Pins whose `<file>#<number>` key matches no decision, each with where a
+    decision of that number now sits in the same sub-project.
+
+    A verbatim split moves a decision without changing its number or a byte of
+    it, so the key stops matching and the decision reappears as an unpinned
+    breach, indistinguishable from one nobody ever pinned (tasks/doc/052). Not
+    a failure: the actor doing the split cannot write the ledger, so failing
+    would block every such fold on an owner act. Loud instead, in every gate run.
+
+    Keying by sub-project and number would make this impossible by construction,
+    and is refused while numbers are not unique per sub-project: 8 were not on
+    2026-10-29, `embarch-ui` #10 in three files, two of them pinned
+    (tasks/doc/033).
+    """
+    out = []
+    for key in sorted(set(base) - {r[0] for r in rows}):
+        sub, num = key.split("/")[0], key.split("#", 1)[1]
+        now = [(k, s) for k, rel, _, s, _, _ in rows
+               if rel.split("/")[0] == sub and k.split("#", 1)[1] == num]
+        out.append((key, base[key], now))
+    return out
+
+
+def print_orphans(orphans):
+    print(f"NOTE: {len(orphans)} decision pin(s) match no decision -- a split moved it, "
+          "or it was retired:")
+    for key, pinned, now in orphans:
+        where = ", ".join(f"now {k}, {s} B" for k, s in now) or "no decision has that number"
+        print(f"  {key} (pinned {pinned} B) -> {where}")
+    print("  Re-key the pin in scripts/decision-size-baseline.json (owner only), unless the\n"
+          "  decision got under the cap since -- then its pin retired and the entry goes.")
+
+
 def ratchet_to(size: int, cap: int, old: int) -> int:
     """Where a shrunk file's baseline lands. See RATCHET_STEP.
 
@@ -581,6 +617,10 @@ def main() -> int:
                 (r for r in drows if r[3] > DECISION_CAP or r[5]), key=lambda r: -r[3]):
             mark = "OVER" if size > limit else ("pin " if pin else "    ")
             print(f"  {mark} {size:6} B  {key}")
+        orphans = orphan_pins(drows, dbase)
+        if orphans:
+            print()
+            print_orphans(orphans)
         biggest_share = max(
             ((size, rel, key) for key, rel, head, size, limit, pin in drows), default=None)
         if biggest_share:
@@ -784,6 +824,9 @@ def main() -> int:
     if dover:
         print(f"{len(dover)} decision(s) over the {DECISION_CAP} B cap and unpinned; "
               f"`--decisions` lists every one. Pinning one is not a fix.")
+    orphans = orphan_pins(drows, dbase)
+    if orphans:
+        print_orphans(orphans)
     return 0
 
 

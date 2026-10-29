@@ -1,12 +1,10 @@
 {
-  "embarch-api/decisions/build.md#19": 5632,
   "embarch-api/decisions/tests.md#56": 4864,
   "embarch-dev-bench/decisions/ble.md#34, 37": 5376,
   "embarch-dev-bench/decisions/logging.md#38": 4352,
   "embarch-dev-bench/decisions/logging.md#39": 5888,
   "embarch-dev-bench/decisions/protocols.md#41": 5888,
   "embarch-outpost/decisions/manifest.md#9": 4608,
-  "embarch-outpost/decisions/module.md#22": 4352,
   "embarch-outpost/decisions/wire.md#23": 4352,
   "embarch-study-designer/decisions/ble.md#44": 4352,
   "embarch-study-designer/decisions/declares.md#40": 4608,
@@ -24,6 +22,5 @@
   "embarch-umbrella/decisions/bind.md#22": 10752,
   "embarch-umbrella/decisions/budgets.md#44": 5120,
   "embarch-umbrella/decisions/deploy.md#32": 5376,
-  "embarch-umbrella/decisions/doctor.md#42": 5376,
-  "embarch-umbrella/decisions/projects.md#26": 4352
+  "embarch-umbrella/decisions/prune-policy.md#26": 4352
 }

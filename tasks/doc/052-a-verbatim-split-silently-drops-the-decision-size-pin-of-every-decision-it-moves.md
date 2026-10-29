@@ -1,6 +1,6 @@
 # 052 — A verbatim split silently drops the decision-size pin of every decision it moves
 
-**State:** open
+**State:** done — orphaned pins are a gate `NOTE:` naming where the decision went (option 2; option 1 refused, 8 numbers duplicate within a sub-project); `doctor.md#42` dropped not re-keyed, it reached 4,019 B on 2026-09-16 and regrew; `projects.md#26` re-keyed to `prune-policy.md#26` at 4,352 B; two more retired pins dropped (owner/doc-size, 2026-10-29)
 **Source:** `inbox/doc-reseed-locate-api-decision-42-pin.md`, filed by the worker on
 `agent/umbrella/059-split-locate-api-doc`, 2026-09-13, and drained into this file by the supervisor
 (leg 108) in `umbrella/059`'s fold. **Generalised on the way in** — the drop asked for one key to be
