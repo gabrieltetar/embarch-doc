@@ -1,6 +1,6 @@
 # 096 — `install::tests::install_binaries_replaces_a_binary_that_is_running` failed once under a parallel `cargo test`
 
-**State:** claimed by agent/umbrella/096-install-replaces-running-binary-test-flakes, 2026-10-29 15:27
+**State:** done — reproduced 1 in 80 parallel runs: the test's own `spawn` of the just-copied binary hit ETXTBSY (a sibling test's fork held the copy's write fd); spawn now retries; 150 runs clean
 **Source:** `umbrella/095`'s worker, leg started 2026-10-29 15:03 (log entry `2026-10-29 15:13 — umbrella/095`): the test failed once in a parallel `cargo test` run in its worktree, then passed on the next two runs (258/258); the supervisor's own gate run passed. One observation, not a measured rate. Filed from `inbox/umbrella-install-replaces-running-binary-test-flakes.md`.
 **Scope:** umbrella
 **Hardware:** none
@@ -16,5 +16,5 @@ A flaky test in a gate the fleet re-runs on every umbrella unit will eventually 
 
 ## Done when
 
-- [ ] The test's failure mode is identified and fixed, or a loop of parallel runs (say 50) shows no failure and that is recorded.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if code changed.
+- [x] The test's failure mode is identified and fixed, or a loop of parallel runs (say 50) shows no failure and that is recorded.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment if code changed.
