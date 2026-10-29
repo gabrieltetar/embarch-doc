@@ -34,7 +34,7 @@ Split by *when a reader needs it*, so the default load is small:
 - **`spec.md` (10 KB)** — what is true now, and nothing about how it got that way. Purpose in three sentences; the invariants as a list; the interfaces (endpoints, types, actions, wire shapes) or a pointer to `interfaces.md`; the constants table with `[measured <date>]`/`[assumed]` on each; **what this component deliberately does not do**; pointers out. **This is what an agent loads to work on the component, usually the only file.**
 - **`decisions.md` (25 KB)** — why, one entry per decision (§5). Loaded when someone asks "why is it like this" or is about to change it.
   **Where they do not fit one file, split them by mission** into `decisions/<topic>.md` (12 KB each), leaving `decisions.md` as a ~2 KB index: mission → file → the decision numbers in it. **A session is usually there for one mission**, and a component owning several distinct jobs will not compress into 25 KB **without cutting the rejected alternatives the budget exists to protect.** **Do not split preemptively: one `decisions.md` is better while it fits.**
-- **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. `collect-open-questions.py` reads these.
+- **`open.md` (5 KB)** — unresolved questions and known limitations, each with what would unblock it. Splits by mission into `open/<topic>.md` (5 KB each) the way decisions do; `collect-open-questions.py` reads both.
 - **`interfaces.md` (15 KB)** — only where the reference doesn't fit in `spec.md`, splitting into `interfaces/<topic>.md` the way decisions do. Not preemptively.
 
 A milestone doc is not on this list: a shipped one folds into the four and is deleted.

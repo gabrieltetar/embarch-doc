@@ -193,6 +193,10 @@ CAPS = [
     ("decision-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/decisions/[a-z-]+\.md$")),
     ("decisions",   25 * KB, re.compile(r"^embarch-[a-z-]+/decisions\.md$")),
     ("open",         5 * KB, re.compile(r"^embarch-[a-z-]+/open\.md$")),
+    # Open questions split by mission the same way, at open.md's own cap: the
+    # reason one open.md is small holds per mission. Without this a split fell
+    # into `legacy` at 25 KB, so squeezing live questions was forced (tasks/doc/062).
+    ("open-group",   5 * KB, re.compile(r"^embarch-[a-z-]+/open/[a-z-]+\.md$")),
     # An interface reference that outgrows one file splits the same way decisions do.
     ("interface-group", 12 * KB, re.compile(r"^embarch-[a-z-]+/interfaces/[a-z-]+\.md$")),
     ("interfaces",  15 * KB, re.compile(r"^embarch-[a-z-]+/interfaces\.md$")),

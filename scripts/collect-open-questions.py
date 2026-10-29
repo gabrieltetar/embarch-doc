@@ -55,7 +55,10 @@ def find_design_docs(root):
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = [d for d in dirnames if d != '.git']
         for name in filenames:
-            if name in ('open.md', 'design.md'):
+            # open/<topic>.md is open.md split by mission (DOC-BUDGET.md's
+            # caps table); a split must not drop its questions from this index.
+            if name in ('open.md', 'design.md') or (
+                    os.path.basename(dirpath) == 'open' and name.endswith('.md')):
                 docs.append(os.path.join(dirpath, name))
     for extra in ('embarch-token.md',):
         path = os.path.join(root, extra)
@@ -73,7 +76,8 @@ def extract_open_questions(path):
     with open(path, encoding='utf-8') as f:
         lines = f.readlines()
 
-    whole_file = os.path.basename(path) == 'open.md'
+    whole_file = (os.path.basename(path) == 'open.md'
+                  or os.path.basename(os.path.dirname(path)) == 'open')
     bullets = []
     in_section = whole_file
     section_level = None

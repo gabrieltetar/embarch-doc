@@ -1,6 +1,6 @@
 # 062 — Give `open.md` a mission-split role in `check-doc-size.py`
 
-**State:** open
+**State:** done — `open-group` role, `embarch-*/open/<topic>.md` at 5 KB; DOC-BUDGET.md row, DOC-COMPACTION.md §3 bullet, collector reads the split (owner/doc-size, 2026-10-29)
 **Source:** `inbox/` drop written by `tasks/ui/053-compact-ui.md`'s worker mid-task, 2026-09-14;
 filed here by leg 115 in `ui/053`'s own fold. The body below is the worker's own text, unedited
 except for this line and the title. **Leg 115 re-checked the `Hardware:` claim independently** — a
@@ -42,7 +42,7 @@ time, squeezing stops being defensible and there still won't be anywhere for the
 
 ## Done when
 
-- [ ] `check-doc-size.py`'s `CAPS` recognizes a split-by-mission shape for `open.md`, at some cap.
-- [ ] `DOC-BUDGET.md` §3 documents the convention, matching how `decisions.md`/`interfaces.md` are
+- [x] `check-doc-size.py`'s `CAPS` recognizes a split-by-mission shape for `open.md`, at some cap.
+- [x] `DOC-BUDGET.md` §3 documents the convention, matching how `decisions.md`/`interfaces.md` are
       described.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

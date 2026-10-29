@@ -21,6 +21,7 @@ this is what counts as one.
 | Decisions — why | **25 KB** | `<sub-project>/decisions.md` |
 | One decision group, where they outgrow a file | **12 KB** | `<sub-project>/decisions/<topic>.md` |
 | Open questions | **5 KB** | `<sub-project>/open.md` |
+| One open-questions group, where they outgrow a file | **5 KB** | `<sub-project>/open/<topic>.md` |
 | Interface reference, only where big | **15 KB** | `<sub-project>/interfaces.md` |
 | One interface group, where they outgrow a file | **12 KB** | `<sub-project>/interfaces/<topic>.md` |
 | Suite-level doc | **10 KB** | `suite/*.md` |
@@ -48,7 +49,7 @@ this is what counts as one.
 
 So when a file is in reserve and its task is `blocked` on `In flux: yes`, **the compaction rides in the unit that is about to write that file** — same actor, same commit, carrying the parked task's `Must not delete:` list and closing only that file's item. That actor is the one *making* the flux, so it is the only one who can shorten a paragraph without writing a clean statement of something about to be wrong.
 
-**A SPLIT IS THE DEFAULT REMEDY and squeezing is the exception** — reversed 2026-09-07 from "splitting is the other move". A split by mission (§3) moves entries **verbatim**, so it restates nothing, the in-flux objection cannot apply, and no argument is shortened to pay for a new one. Squeezing pays for a new argument out of old reasoning and fails in a way nothing catches: the reader never learns what was cut. So a task filed by the reserve **proposes a split first**, and compacts only where there is no seam — one mission, or a role cap on a single file as a 5 KB `open.md` is — where it says so and **deletes an answered question** rather than tightening a live one. Check a seam's inbound links before cutting (`tasks/umbrella/022` nearly moved the wrong decision), and run `scripts/check-duplication.py <sub-project>` first: two files in reserve side by side are often one re-arguing what the other owns.
+**A SPLIT IS THE DEFAULT REMEDY and squeezing is the exception** — reversed 2026-09-07 from "splitting is the other move". A split by mission (§3) moves entries **verbatim**, so it restates nothing, the in-flux objection cannot apply, and no argument is shortened to pay for a new one. Squeezing pays for a new argument out of old reasoning and fails in a way nothing catches: the reader never learns what was cut. So a task filed by the reserve **proposes a split first**, and compacts only where there is no seam — one mission — where it says so and **deletes an answered question** rather than tightening a live one. Check a seam's inbound links before cutting (`tasks/umbrella/022` nearly moved the wrong decision), and run `scripts/check-duplication.py <sub-project>` first: two files in reserve side by side are often one re-arguing what the other owns.
 
 **The worked example is how this rule was written.** One new rule pushed `embarch-fleet/ops.md` 1.2 KB past its ratchet; four squeeze passes went into paying for it, the last nearly deleting evidence for a question the fleet has not answered; the split that replaced them took one move and lowered that file's baseline by 2,553 B for good.
 
