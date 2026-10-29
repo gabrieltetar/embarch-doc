@@ -1,6 +1,6 @@
 # 057 — "Rebase the remaining branches" does not say where, and the obvious place detaches the owner's checkout
 
-**State:** open
+**State:** done — `.claude/leg.md`'s landing section says a remaining branch is rebased in its own unit worktree or cherry-picked in the leg worktree, never in a repo checkout, with the recovery command (fleet `39759ed`, owner/dispatch); lands by `deploy.py`
 **Source:** `inbox/leg-md-rebase-instruction-detaches-the-owners-checkout.md`, dropped by the
 supervisor of leg 110 on 2026-09-13 after doing it and catching it. Filed as a task by leg 111's
 inbox drain; the drop is deleted.
@@ -72,8 +72,12 @@ only HEAD moved.
 
 ## Done when
 
-- [ ] `.claude/leg.md`'s landing section says which working tree a rebase happens in (owner's
+- [x] `.claude/leg.md`'s landing section says which working tree a rebase happens in (owner's
       edit, in `../../embarch-fleet/scripts/install.py`'s template, rendered by `deploy.py`).
-- [ ] Optionally, `../../embarch-fleet/ops.md` §3's recovery table carries the "HEAD moved, branch
-      unharmed" row and its one-command recovery.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      The unit's own worktree, where its branch is already checked out, or a cherry-pick in the leg
+      worktree — never a repo checkout. Reproduced first: `git rebase origin/main origin/agent/x/1`
+      exits 0 and leaves the checkout on a detached HEAD.
+- [x] Optionally, `../../embarch-fleet/ops.md` §3's recovery table carries the "HEAD moved, branch
+      unharmed" row and its one-command recovery. **Not taken:** that table is what a *kill* leaves
+      behind, which this is not; the recovery rides in the same leg.md sentence instead.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
