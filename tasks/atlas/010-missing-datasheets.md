@@ -1,6 +1,6 @@
 # 010 — Record the engineer's answers to missing.md, with generic cards for jellybean parts
 
-**State:** open
+**State:** claimed by agent/atlas/010-missing-datasheets, 2026-10-29 17:32
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 27 part numbers on the boards have no document; 133 of 170 `net_trace` answers named at least one part whose pin roles are unknown, and the walk from the board's two main rails stops at a MOSFET or a buck with no datasheet; sessions fetched missing datasheets from vendor sites instead
 **Scope:** atlas
 **Hardware:** none
