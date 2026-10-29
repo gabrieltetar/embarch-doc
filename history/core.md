@@ -22,6 +22,7 @@
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
 ### Fixed
+- Two capture-timing tests (capture lines, two tapped consoles) no longer flake under a full parallel run: they wait on the byte count, not a sleep.
 - Core's exchange, capture, study and pre-flight name every candidate port when a signal's declared serial is ambiguous (409 on HTTP); the wait never retries it (decision 96).
 - Capture routes now sit under the bearer-token sweep; a bare .route( line fails the scan (core decision 42).
 - `flash`, `reset` and memory reads refuse a requested chip that differs from the probe's enrolled chip with a 409 before any attach (decision 89).
