@@ -1,6 +1,6 @@
 # 096 — `install::tests::install_binaries_replaces_a_binary_that_is_running` failed once under a parallel `cargo test`
 
-**State:** open
+**State:** claimed by agent/umbrella/096-install-replaces-running-binary-test-flakes, 2026-10-29 15:27
 **Source:** `umbrella/095`'s worker, leg started 2026-10-29 15:03 (log entry `2026-10-29 15:13 — umbrella/095`): the test failed once in a parallel `cargo test` run in its worktree, then passed on the next two runs (258/258); the supervisor's own gate run passed. One observation, not a measured rate. Filed from `inbox/umbrella-install-replaces-running-binary-test-flakes.md`.
 **Scope:** umbrella
 **Hardware:** none
