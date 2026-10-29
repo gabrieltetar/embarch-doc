@@ -18,6 +18,7 @@
 - Chat: a background agent's card shows the subagent's report (hand-back, else its last reply) instead of the launch reply; stylesheet cites decision 89 (embarch-chat decision 90).
 
 ### Fixed
+- /embarch-claude-md now cites suite/agent-guide.md §1.1 (where the block moved from user-guide §7.1); block text unchanged.
 - Decision 41's idle close no longer rests on a 5-minute prompt cache: replies write the 1-hour cache (69); reversal row 115.
 - File links in replies open: bare names, `~/`, paths from a folder above, `#L42-L51`; a choice when several match, a message when none does (93).
 - A background task's notification shows as one line that opens its card, not as a message the owner sent; another session's message folds to its sender (embarch-chat 89).
