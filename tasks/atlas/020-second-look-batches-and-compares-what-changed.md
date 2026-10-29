@@ -1,6 +1,6 @@
 # 020 — A bump's second look batches every changed fact, and compares every value the reader is asked for
 
-**State:** open
+**State:** claimed by agent/atlas/020-second-look-batches-and-compares-what-changed, 2026-10-29 17:08
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 3 and 15), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Both halves are queue and comparison logic over records and readings, testable with fixture queues and fixture readings the way `tests/test_update.py` and `tests/test_secondlook.py` already do. No board, no build, no LLM.
