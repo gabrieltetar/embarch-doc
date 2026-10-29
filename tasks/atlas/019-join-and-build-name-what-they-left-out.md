@@ -1,6 +1,6 @@
 # 019 — An atlas says when a declared board or its Kconfig extraction is missing, and a missing kconfig.json can be filled without a full rebuild
 
-**State:** claimed by agent/atlas/019-join-and-build-name-what-they-left-out, 2026-10-29 16:52
+**State:** done
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 10 and 11), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Fixture atlases with a stamp and some netlists. The Kconfig half is testable by making the extraction fail under monkeypatch. Proving the properties needs no west build.
@@ -32,8 +32,8 @@ One possible direction:
 
 ## Done when
 
-- [ ] A fixture join with `schematic_boards = ["A", "B"]` and only A's netlist names B as missing in the join's log, and in the MAP or `status` output. A test covers it.
-- [ ] Whether `update` stops for a declared board that has no netlist is decided, written in DESIGN.md "When `update` stops", and pinned by a test.
-- [ ] An atlas whose stamp records `kconfig: not extracted: <reason>` answers `config` with that reason and a recovery that works for that atlas. A test uses a stamp carrying the failure string.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
+- [x] A fixture join with `schematic_boards = ["A", "B"]` and only A's netlist names B as missing in the join's log, and in the MAP or `status` output. A test covers it.
+- [x] Whether `update` stops for a declared board that has no netlist is decided, written in DESIGN.md "When `update` stops", and pinned by a test.
+- [x] An atlas whose stamp records `kconfig: not extracted: <reason>` answers `config` with that reason and a recovery that works for that atlas. A test uses a stamp carrying the failure string.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` updated (embarch-atlas has no `spec.md`, so DESIGN.md is its contract). `changelog.d/` fragment dropped.
