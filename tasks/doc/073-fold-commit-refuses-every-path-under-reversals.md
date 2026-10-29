@@ -1,6 +1,6 @@
 # 073 — `fold-commit.py` refuses every path under `reversals/`, so a suite unit that touches one cannot fold
 
-**State:** open
+**State:** done — `reversals/` added to `fold-commit.py`'s stageable list beside its parent; no other split directory is in the same position; embarch-fleet `4b69a73`.
 **Source:** `suite/042` (leg 130, 2026-09-16). The unit added reversals row 110 and extended
 `reversals/rows-93-109.md` to `rows-93-110.md`. `fold-commit.py` refused the fold with **5 path(s)
 outside what a unit's fold may stage**, naming every `reversals/*.md` path including the rename's
@@ -48,17 +48,25 @@ separate one — not this fold"*), which is what made this recoverable.
 
 ## Done when
 
-- [ ] `reversals/` is either added to `fold-commit.py`'s stageable list or deliberately excluded with
+- [x] `reversals/` is either added to `fold-commit.py`'s stageable list or deliberately excluded with
       a stated reason — **the choice is the owner's**, since it is the same question as whether a
       `suite` unit may fold a shared suite-level doc at all.
-- [ ] If it is added, check whether any other DOC-COMPACTION split directory is in the same position
+- [x] If it is added, check whether any other DOC-COMPACTION split directory is in the same position
       (`reversals/` is the one leg 130 hit; `log-archive/` and any future split are worth a look).
-- [ ] If it is excluded, say so somewhere a supervisor reads **before** it starts a `suite` unit —
+- [x] (n/a — added.) If it is excluded, say so somewhere a supervisor reads **before** it starts a `suite` unit —
       `tasks/README.md` or `.claude/leg.md` — so the next one plans two commits rather than
       discovering them.
-- [ ] Consider whether the same list should be checked **up front**, when `--path` is parsed, rather
+- [x] Consider whether the same list should be checked **up front**, when `--path` is parsed, rather
       than after the unit's edits are on disk. The script already settles paths before committing the
       log, which is what kept this cheap; the gap is that nothing warns earlier than that.
+
+**Answers, 2026-10-29.** Added, because a split carries its parent's rules and the parent was
+already stageable. Other splits: none outside the list — sub-project topic splits sit under
+`embarch-*/`, `history/archive/` under `history/`; `log-archive/` lives in the fleet repo and rides
+the log commit, which no path list governs. Up front: the list is already the script's first
+check, at argument parsing, before the entry, the stamp or any staging. A refusal arriving after the
+unit's edits exist is inherent to a fold — the edits are its input — so the fix is a complete list,
+and the script now says a new split directory joins it in the same edit.
 
 ## Not yours
 
