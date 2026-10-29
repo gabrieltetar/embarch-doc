@@ -20,7 +20,10 @@ Attribution is a heuristic, and this repo writes one paragraph per line, so
 "somewhere on the same line" is far too coarse -- a paragraph routinely names
 three sub-projects. So attribution looks backwards a short window (ATTRIB_WINDOW
 chars) from the reference for a `<sub-project>/design.md`-shaped path, in a link
-or in inline code, and otherwise falls back to the file's own sub-project.
+or in inline code, and otherwise falls back to the file's own sub-project. A
+`tasks/<scope>/` file, and a `history/`, `changelog.d/` or `features.d/` file
+named for a scope, belongs to that scope's sub-project (SCOPED_BY_NAME). The
+suite is a sub-project here too: `suite/decisions/`, cited `suite decision N`.
 
 Four outcomes, and three of them fail:
   * ERROR   -- a `[decision N](<sub>/decisions/<topic>.md)` LINK whose target
@@ -42,7 +45,11 @@ Four outcomes, and three of them fail:
                some other one, with no path nearby to say which. That is
                ambiguous prose, not a broken reference: DOC-CONVENTIONS.md's
                canonical `<sub-project> decision N` form is the fix. Reported,
-               does not fail.
+               does not fail. What is left in it (205 on 2026-10-29, down from
+               1,732 before SCOPED_BY_NAME, tasks/doc/060) is root docs, scopes
+               with no decisions of their own (`doc`, `fleet`), and a bare
+               number crossing into another sub-project -- the last kind is the
+               one worth reading.
 
 Entry definitions come from a sub-project's `design.md` decisions section (the
 `## N. ...decision...` heading up to the next `## `, so an ordinary numbered
@@ -75,7 +82,14 @@ DEF_LIST = re.compile(r'^(\d+)\.\s+(?:~~)?\*\*')
 # An entry may own several numbers when decisions were merged under a byte
 # budget (DOC-COMPACTION.md §5): '### 20, 21, 25, 27 — Streaming capture'.
 # Every listed number stays resolvable, so every reference keeps working.
-DEF_HEAD = re.compile(r'^#{3,4}\s+(\d+(?:\s*,\s*\d+)*)\s+[-—]\s')
+# `##` counts too (tasks/doc/060, 070): `suite/decisions/<topic>.md` heads its
+# entries one level below the file's own title, so until 2026-10-29 the suite
+# defined nothing here and every suite citation was unchecked or, named by its
+# path, a false red. This pattern is only tried inside a decisions file or a
+# design.md's decisions section -- where a `## ` line is a section boundary and
+# is consumed before it gets here -- and on 2026-10-29 the only `## N — ` lines
+# in any decisions file were the suite's four.
+DEF_HEAD = re.compile(r'^#{2,4}\s+(\d+(?:\s*,\s*\d+)*)\s+[-—]\s')
 
 # References: "decision 39", "decisions 31/32/33", "decisions 58-62",
 # optionally prefixed by a section marker that this convention no longer needs.
@@ -173,7 +187,11 @@ def check_reversal_rows():
 ATTRIB_WINDOW = 44
 # DOC-CONVENTIONS.md's canonical cross-project form, which IS unambiguous:
 # "embarch-study-designer decision 39". Attribution from this is trusted.
-CANONICAL = re.compile(r'\b(embarch-[a-z0-9-]+)\W{1,3}$')
+# "suite decision 4" is the same form for the suite (tasks/doc/060): all 40
+# such citations on 2026-10-29 named 1-4, so none turned red when it began
+# counting -- and without it, one written inside `embarch-ui/` resolved
+# silently against embarch-ui's OWN decision 4.
+CANONICAL = re.compile(r'\b(embarch-[a-z0-9-]+|[Ss]uite)\W{1,3}$')
 # Above this, a "decision" number is a year or a version, not an entry.
 MAX_DECISION = 400
 
@@ -186,11 +204,34 @@ def md_files():
                 yield os.path.join(dirpath, name)
 
 
-def subproject_of(path):
-    """The sub-project directory a file belongs to, or None for root docs."""
-    rel = os.path.relpath(path, REPO_ROOT)
-    parts = rel.split(os.sep)
-    return parts[0] if len(parts) > 1 else None
+# Files that belong to a scope by NAME rather than by directory (tasks/doc/060):
+# `tasks/<scope>/*.md`, and `history/`, `changelog.d/`, `features.d/` files
+# named `<scope>.md` or `<scope>-*.md`. A bare `decision N` in one means that
+# scope's, exactly as it does in `<sub>/spec.md`. Until 2026-10-29 they fell
+# back to their directory, which defines nothing, so every reference in them to
+# a real decision was "ambiguous": 1,506 of the 1,732 reported, burying the
+# ~200 that really are.
+SCOPED_BY_NAME = ('history', 'changelog.d', 'features.d')
+
+
+def subproject_of(path, index=()):
+    """The sub-project a file's bare `decision N` means: its top directory, or
+    the scope its name carries under tasks/ and SCOPED_BY_NAME. None for a
+    root doc."""
+    parts = os.path.relpath(path, REPO_ROOT).split(os.sep)
+    if len(parts) == 1:
+        return None
+    named = None
+    if parts[0] == 'tasks' and len(parts) == 3:
+        named = next((s for s in ('embarch-' + parts[1], parts[1])
+                      if s in index), None)
+    elif parts[0] in SCOPED_BY_NAME:
+        for sub in sorted(index, key=len, reverse=True):   # dev-bench > dev
+            scope = sub[len('embarch-'):] if sub.startswith('embarch-') else sub
+            if parts[-1].startswith((scope + '.', scope + '-')):
+                named = sub
+                break
+    return named or parts[0]
 
 
 def build_index():
@@ -310,24 +351,28 @@ def resolve_line(line, own, index, defined_anywhere):
         # Look back a short window only: these lines are whole
         # paragraphs and routinely name several sub-projects.
         window = line[max(0, m.start() - ATTRIB_WINDOW):m.start()]
-        explicit = None
+        explicit, trusted = None, False
         canonical = CANONICAL.search(window)
-        if canonical and canonical.group(1) in index:
-            explicit = canonical.group(1)      # §7.3 form: trusted
+        if canonical and canonical.group(1).lower() in index:
+            explicit = canonical.group(1).lower()      # §7.3 form: trusted
+            trusted = True
         else:
             for hit in DOC_PATH.finditer(window):
                 if hit.group(1) in index:
                     explicit = hit.group(1)
         # Prefer the file's own sub-project when it defines the
         # number: a paragraph naming another doc is not a
-        # reference to it. Only §7.3's form overrides that.
+        # reference to it. Only §7.3's form overrides that -- and until
+        # 2026-10-29 it did not: "embarch-b decision 2" inside embarch-a passed
+        # on embarch-a's own 2. No such citation existed when this was
+        # enforced; every sub-project defines 1-4, so suite citations need it.
         target = explicit or own
         for num in expand(m.group(1)):
             if num > MAX_DECISION:
                 continue      # a year or a version, not an entry
             if target is not None and num in index.get(target, ()):
                 verdict = 'ok'
-            elif own is not None and num in index.get(own, ()):
+            elif not trusted and own is not None and num in index.get(own, ()):
                 verdict = 'ok'      # own sub-project defines it
             elif num not in defined_anywhere:
                 verdict = 'defined by no sub-project'
@@ -343,7 +388,7 @@ def resolve_line(line, own, index, defined_anywhere):
 # a regression fails the gate rather than a reviewer. They live here, not in a
 # tracked .md, because a doc that spells a misread shape trips the very check
 # it describes (tasks/doc/068, tasks/doc/070). Synthetic index: `embarch-a`
-# defines 1-3, `embarch-b` defines 96.
+# defines 1-3, `embarch-b` defines 96, `suite` defines 4.
 SELF_TEST = (
     # tasks/doc/068's reproduction, then each of its two causes alone: a
     # hyphenated compound is not a citation, and a thousands separator does
@@ -353,12 +398,18 @@ SELF_TEST = (
     ('embarch-a', 'a ' + 'decision 4,096 bytes long', []),
     ('embarch-a', 'decisions 2,3 and 1', [(2, 'ok'), (3, 'ok'), (1, 'ok')]),
     ('embarch-a', 'embarch-b ' + 'decision 96', [(96, 'ok')]),
+    ('embarch-a', 'embarch-b ' + 'decision 2', [(2, 'not defined by embarch-b')]),
+    # tasks/doc/060: "suite decision N" names the suite, so inside a
+    # sub-project that also defines N it is not resolved against its own...
+    ('embarch-a', 'per [Suite ' + 'decision 4](../../suite/decisions.md)',
+     [(4, 'ok')]),
+    ('embarch-a', 'suite ' + 'decision 2', [(2, 'not defined by suite')]),
 )
 
 
 def self_test():
     """A list of failure lines; empty when every fixture reads as recorded."""
-    index = {'embarch-a': {1, 2, 3}, 'embarch-b': {96}}
+    index = {'embarch-a': {1, 2, 3}, 'embarch-b': {96}, 'suite': {4}}
     anywhere = set().union(*index.values())
     bad = []
     for own, line, want in SELF_TEST:
@@ -381,7 +432,7 @@ def main():
     errors, warnings, checked = [], [], 0
 
     for path in md_files():
-        own = subproject_of(path)
+        own = subproject_of(path, index)
         rel = os.path.relpath(path, REPO_ROOT)
         with open(path, encoding='utf-8') as f:
             for lineno, line in enumerate(f, 1):

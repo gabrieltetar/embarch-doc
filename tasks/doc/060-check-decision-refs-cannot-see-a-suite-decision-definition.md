@@ -1,6 +1,6 @@
 # 060 — `check-decision-refs.py` cannot see a `suite` decision's definition, so 877 references go unchecked
 
-**State:** open
+**State:** done — owner session, 2026-10-29, branch `owner/decision-refs`: `DEF_HEAD` reads `##`, `suite decision N` is a trusted form, and scope-named files resolve against their scope; ambiguous 1,732 → 205; see `## Closed`
 **Source:** `outpost/022`'s worker, 2026-09-14, which hit it while writing its own report and
 **deliberately did not file it** — it judged a formatting quirk with no observed false negative not
 worth a drop. Leg 114 verified the mechanism and disagrees about the size, so it is filed here rather
@@ -59,8 +59,36 @@ outside the resolver's sight.
 
 ## Done when
 
-- [ ] A reference that names a `suite` decision resolves to its definition, or the reason it cannot
+- [x] A reference that names a `suite` decision resolves to its definition, or the reason it cannot
       is written down where the next sweeper will find it.
-- [ ] The `ambiguous` count is either brought down or explained — 877 unchecked references reported
+- [x] The `ambiguous` count is either brought down or explained — 877 unchecked references reported
       as "not an error" is the part that hides the problem.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Closed
+
+**The regex, not a reheading.** Widening `DEF_HEAD` to `#{2,4}` is one character, and the
+watch-for above does not bite: the pattern is only tried inside a decisions file or a `design.md`
+decisions section, where a `## ` line is consumed as a section boundary first. Measured on
+2026-10-29, the only `## N — ` lines in any decisions file in the repo were the suite's four.
+Reheading would have been five heading edits in three suite files plus a convention sentence, and
+would leave the next `##` writer exactly where the suite was. `DOC-CONVENTIONS.md` now says both
+levels parse and which tree uses which. `--verbose` lists `suite 4 entries (1..4)`.
+
+**Indexing alone was not enough.** Every sub-project defines decisions 1–4, so a bare
+`suite decision 4` written inside `embarch-core/` resolved against Core's *own* 4 and passed
+whatever it said. `CANONICAL` now accepts `suite`/`Suite` as well as `embarch-*`, and the trusted
+form no longer falls back to the citing file's own number — which the code's comment always
+claimed and the code never did (`embarch-b decision 2` inside `embarch-a` passed on `embarch-a`'s
+own 2). All 40 `suite decision N` citations name 1–4, and **no canonical citation anywhere names a
+number its project lacks**, so the stricter rule turned nothing red.
+
+**The ambiguous count: 1,732 → 205, and what is left is now worth reading.** 1,506 of the 1,732
+were in `tasks/<scope>/`, `history/<scope>.md`, `changelog.d/<scope>-*` and `features.d/<scope>-*`,
+which fell back to a directory that defines nothing. They now resolve against their scope's
+sub-project, as a bare number in `<sub>/spec.md` always has. The remainder is root docs, the `doc`
+and `fleet` scopes (no decisions of their own), and bare numbers crossing into another sub-project.
+No warning moved into the error bucket; the script header records the split.
+
+**Diff on `main`:** 0 errors before and after; 1,529 references left the ambiguous bucket and none
+entered it, other than this branch's own `tasks/doc/068` note.
