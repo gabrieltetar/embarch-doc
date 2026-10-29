@@ -1,6 +1,12 @@
 # 074 — A method fix found in one scope's audit chain has no path to another's
 
-**State:** open
+**State:** done — owner/conventions, 2026-10-29: the first candidate, kept light. The census has one
+copy, in DOC-CONVENTIONS.md (`tasks/doc/065`/`069`/`071`), and the tasks README template
+(`embarch-fleet` `8254eed`, rendered at the owner's deploy) says to cite a shared method rather than
+copy it, and that whoever finds it wrong drops it in `inbox/` — its home is reserved, so the existing
+drop rule is the channel. No worker-contract change, no check. **Other chains checked**: no task
+that is not `done` carries a census pattern on `main` at `3675ab72` except this one and
+065/069/071; every scope's sweep chain is closed.
 **Source:** `study-designer/060`'s reviewer, leg 131, 2026-09-17. Filed by the supervisor at that
 unit's fold — the reviewer declined to drop it in `inbox/` because no locked decision is
 contradicted by it, which is the right read of its charter and is also why it would otherwise have
