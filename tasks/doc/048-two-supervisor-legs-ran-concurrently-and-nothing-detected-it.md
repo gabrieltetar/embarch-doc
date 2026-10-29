@@ -1,6 +1,6 @@
 # 048 — Two supervisor legs ran concurrently, took the same three units, and nothing detected it
 
-**State:** open
+**State:** done — a leg lock taken before step 0 (`fleet-tick.py leg-start`/`leg-end`, live while its holder ticked within 30 min; a refused leg waits rather than exits); arming clears it; the listener-side cause named below, not fixed; fleet 89bdc71.
 **Filed:** from `inbox/` by leg 096, 2026-09-12, unchanged apart from this line and the number.
 **Source:** leg 084, 2026-09-12 ~01:32–02:05, observed first-hand. Leg 084 and leg 085 were alive at
 the same time; leg 084 stood down when it worked out what was happening.
@@ -60,8 +60,18 @@ worker first; the worker correctly denied it and listed exactly what it had push
 
 ## Done when
 
-- [ ] A second supervisor cannot start while one is live, or cannot silently take a live leg's
+- [x] A second supervisor cannot start while one is live, or cannot silently take a live leg's
       claimed units if it does.
-- [ ] The check is one a leg can actually run — `ListAgents` is not available to it.
-- [ ] Whatever causes the listener to spawn a second leg over a live one is named, even if the fix
+- [x] The check is one a leg can actually run — `ListAgents` is not available to it.
+- [x] Whatever causes the listener to spawn a second leg over a live one is named, even if the fix
       is elsewhere.
+
+## Cause, as far as it can be named (2026-10-29)
+
+`tick.log` has five `listener` ticks between 01:34:36 and 01:40:30, four of them
+off the `3-59/10` cron slots, so wakes rather than the heartbeat, and leg 085's
+`leg-step0` 41 s after the fifth. STEP 2's only liveness check is `ListAgents`,
+read by the listener model on every re-entry. Either it did not list leg 084, or
+that tick acted on a misdelivered completion as if it were the leg's. The
+listener transcripts that would decide it are gone (the oldest left is
+2026-09-29). The leg-side lock does not depend on which: it holds either way.
