@@ -1,6 +1,6 @@
 # 066 — every unit leaks its local branches into the owner's checkout, and 112 have accumulated
 
-**State:** open
+**State:** done — `fold-commit.py` deletes a landed unit's local `agent/*` branches with its pushed ones, on the same content proof, and never one whose task is unfinished on `origin/main` (`39d1590`); the 567-branch pile (565 provable) is swept by each repo's next fold; embarch-fleet `72711ac`.
 **Source:** `inbox/doc-every-unit-leaks-two-local-branches-forever.md`, filed by leg 119 during
 end-of-leg cleanup, drained by leg 120. Not reported by any agent — found by looking at `git branch`
 in the owner's checkout; the numbers below are `git branch` output, not an impression.
@@ -77,8 +77,13 @@ is provably redundant. Worth fixing anyway for two reasons:
 
 ## Done when
 
-- [ ] The leg procedure or the fold deletes a unit's local branches, or a decision is recorded that
+- [x] The leg procedure or the fold deletes a unit's local branches, or a decision is recorded that
       it deliberately should not.
 - [ ] The existing accumulation is either swept or explicitly left, with the count recorded.
-- [ ] Read against `tasks/doc/061`, which is the same root cause from the remote side.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+      **Counted 2026-10-29, swept at landing:** 567 local `agent/*` branches — `embarch-doc` 297,
+      `core` 56, `api` 55, `ui` 45, `study-designer` 36, `umbrella` 30, `topology` 27, `dev-bench` 9,
+      `outpost` 6, `desk` 4, `chat` 1, `smp` 1. 565 are provably on `origin/main`; the first fold in
+      each repo after the fix lands deletes them (17 s for the doc repo, once, on a mirror). The two
+      kept are `ui/059`'s, a blocked unit whose task file says its branches are worth reusing.
+- [x] Read against `tasks/doc/061`, which is the same root cause from the remote side.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
