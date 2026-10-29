@@ -1,6 +1,6 @@
 # 014 — Make the live `shell` tell a silent console, a lost port and an empty success apart
 
-**State:** open
+**State:** claimed by agent/atlas/014-shell-tells-silence-lost-port-and-empty-success-apart, 2026-10-29 16:58
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 23 of 142 `shell` answers were empty, 21 of them followed by a second command only to see whether the first took; 2 said "did not run" for a command that ran
 **Scope:** atlas
 **Hardware:** verify-only
