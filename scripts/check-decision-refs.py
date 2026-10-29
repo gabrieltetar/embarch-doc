@@ -404,6 +404,9 @@ SELF_TEST = (
     ('embarch-a', 'per [Suite ' + 'decision 4](../../suite/decisions.md)',
      [(4, 'ok')]),
     ('embarch-a', 'suite ' + 'decision 2', [(2, 'not defined by suite')]),
+    # ...and tasks/doc/070: naming the suite's topic file is not a false red.
+    ('embarch-a', 'the `suite/decisions/placement.md` ' + 'decision 4',
+     [(4, 'ok')]),
 )
 
 
