@@ -1,6 +1,6 @@
 # 018 — Every lookup whose answer can be cut takes the `offset` its truncation line asks for
 
-**State:** open
+**State:** claimed by agent/atlas/018-every-cut-answer-takes-offset, 2026-10-29 16:45
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas finding 5), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Query functions over fixture atlases, as `tests/test_query.py` already pages `doc_section`.
