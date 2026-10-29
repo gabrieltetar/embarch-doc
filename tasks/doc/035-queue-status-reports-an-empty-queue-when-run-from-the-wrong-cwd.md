@@ -1,6 +1,6 @@
 # 035 — `queue-status.py` reports a completely empty queue, silently, when its cwd is outside the instance
 
-**State:** open
+**State:** done — `queue-status.py` defaults its root to the cwd's checkout only if it has a `tasks/`, else `fleet.toml`'s `doc_repo`, and exits 2 naming every path tried when neither has one; from `embarch-fleet` it went from `0 dispatchable` to 23 on the live queue. Audit: no other script a leg calls roots itself from the cwd. `leg.md` names exit 2 and has a leg confirm a zero with an explicit `--root` before it dreams. embarch-fleet `c040973`.
 **Source:** leg 065's supervisor, 2026-09-10. Hit at step 0 of that leg and again at its close;
 diagnosed the second time.
 **Scope:** doc
@@ -57,12 +57,12 @@ Both are in `scripts/`, so no leg can make either change.
 
 ## Done when
 
-- [ ] `queue-status.py` run from any cwd either returns the true count or fails with the path it
+- [x] `queue-status.py` run from any cwd either returns the true count or fails with the path it
       tried — never `0 dispatchable` for a populated queue.
-- [ ] The same check is applied to any other fleet script that defaults a root from cwd
+- [x] The same check is applied to any other fleet script that defaults a root from cwd
       (`check-doc-size.py` and `collect-open-questions.py` are the ones a leg calls most; I did not
       audit them).
-- [ ] `.claude/leg.md`'s dream instruction says explicitly that a zero from `queue-status.py` must
+- [x] `.claude/leg.md`'s dream instruction says explicitly that a zero from `queue-status.py` must
       be confirmed against a second reading before a dream is posted — the dream is the one action
       in a leg that both notifies the owner and forfeits the leg.
 
