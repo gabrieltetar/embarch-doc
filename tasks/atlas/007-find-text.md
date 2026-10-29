@@ -1,6 +1,6 @@
 # 007 — Search a document's page text from the atlas, with page and section cites
 
-**State:** open
+**State:** claimed by agent/atlas/007-find-text, 2026-10-29 16:39
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 3,332 calls (3,278 shell commands, mostly `grep` and `sed -n`, and 54 `Read`s) against `pdftotext` dumps of the 418-page USB PD R3.2 spec, 16.5 M result characters, 94% of them from 122 subagents in 6 sessions, against 121 atlas calls on the same document over the same weeks
 **Scope:** atlas
 **Hardware:** none
