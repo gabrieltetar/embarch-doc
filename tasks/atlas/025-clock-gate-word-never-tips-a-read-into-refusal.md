@@ -1,6 +1,6 @@
 # 025 — The clock-gate word never tips a `reg_read` into refusal, and matches only an enable register
 
-**State:** claimed by agent/atlas/025-clock-gate-word-never-tips-a-read-into-refusal, 2026-10-29 17:48
+**State:** done
 **Source:** `atlas/013`'s review (2026-10-29 fold of `atlas/013`, code `0f68b0a`): two residuals the reviewer named and judged minor, filed rather than left in the log
 **Scope:** atlas
 **Hardware:** none — both halves are planning and lookup logic over SVD records, testable with the fixture SVDs and the fake `mem-read` `tests/test_live.py` already uses.
@@ -19,8 +19,8 @@ Both are cheap while `atlas/013` is fresh, and the second is the one that would 
 
 ## Done when
 
-- [ ] A fixture peripheral that fills `MAX_RANGES` (or `MAX_WORDS`) exactly still reads, and its answer says the clock state is unknown because the read had no room for the enable word.
-- [ ] A fixture SVD with a `<PERIPH>EN`-named field in a non-enable RCC register does not report it as the clock state.
-- [ ] The opt-in `EMBARCH_ATLAS_REAL_SVD` test still passes against the vendor SVD `atlas/013` used (`/home/gabriel/STMicroelectronics/STM32Cube/STM32CubeProgrammer/SVD/`, read-only; never name the part in the repo).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` "Live" clock-gate bullet updated, `changelog.d/` fragment dropped.
+- [x] A fixture peripheral that fills `MAX_RANGES` (or `MAX_WORDS`) exactly still reads, and its answer says the clock state is unknown because the read had no room for the enable word.
+- [x] A fixture SVD with a `<PERIPH>EN`-named field in a non-enable RCC register does not report it as the clock state.
+- [x] The opt-in `EMBARCH_ATLAS_REAL_SVD` test still passes against the vendor SVD `atlas/013` used (`/home/gabriel/STMicroelectronics/STM32Cube/STM32CubeProgrammer/SVD/`, read-only; never name the part in the repo).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` "Live" clock-gate bullet updated, `changelog.d/` fragment dropped.
