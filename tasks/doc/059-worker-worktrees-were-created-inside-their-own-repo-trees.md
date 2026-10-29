@@ -1,6 +1,6 @@
 # 059 — Worker worktrees were created inside their own repo trees, not outside them
 
-**State:** open
+**State:** done — `.claude/leg.md` now carries the literal `worktree add` with an absolute `{{WORKTREE_ROOT}}` target and names the `git -C` trap (fleet `5a95406`, owner/dispatch); lands by `deploy.py`
 **Source:** `core/061`'s worker, 2026-09-13, as an `inbox/` drop; filed here by leg 114 in the same
 leg that caused it. The body below is the worker's own text, unaltered, plus the supervisor's answer
 to its last `Done when` box — see **What actually happened** at the end.
@@ -48,11 +48,18 @@ create the symlinks, a false-red gate that looks like a code problem and isn't).
 
 ## Done when
 
-- [ ] The worktree-creation step (wherever in `embarch-fleet/scripts/` it lives) is confirmed to
+- [x] The worktree-creation step (wherever in `embarch-fleet/scripts/` it lives) is confirmed to
       place both worktrees at `embarch/.worktrees/<repo>/<NNN-slug>/`, outside every repo tree, and
       whatever produced the nested path for `core/061`/`061`'s doc pair is fixed or explained.
-- [ ] The sibling path-dep symlink step is confirmed to run against wherever the worktree actually
-      ends up, not a fixed "outside" location assumed to be beside it.
+      **No script creates them; `.claude/leg.md` now gives the command itself**, target written as
+      `{{WORKTREE_ROOT}}/<repo>/<NNN-slug>` (absolute once rendered), with the `git -C` trap named
+      beside it. Reproduced before writing it: `git -C r worktree add -b b .worktrees/r/1-a HEAD`
+      exits 0 and creates `r/.worktrees/r/1-a`.
+- [x] The sibling path-dep symlink step is confirmed to run against wherever the worktree actually
+      ends up, not a fixed "outside" location assumed to be beside it. **By construction now**: both
+      commands are absolute from the same `{{WORKTREE_ROOT}}/<repo>`, and leg.md says so. The
+      mechanical half — every Cargo path-dep resolving from the worktree as created — is
+      `tasks/doc/046`'s `check-dispatch.py --created`.
 - [x] Say whether `core/061`'s nesting was a one-off (e.g. a stale script version at dispatch time)
       or reflects the current state of `embarch-fleet/scripts/` — if the latter, every leg since is
       affected. **Answered below.**
