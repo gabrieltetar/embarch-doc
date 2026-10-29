@@ -4,6 +4,9 @@
 
 ## 2026-10
 
+### Added
+- Outpost decoder test pins a 13 us backwards DUT-clock step as tolerated and reported; the restart arm lives in ui/core.
+
 ### Changed
 - The reference decoder refuses a stream whose layout is not 3 and a layout-disagreeing manifest; README/Kconfig stop denying real-UART runs ([27](../embarch-outpost/decisions/layout.md)).
 ## 2026-09
