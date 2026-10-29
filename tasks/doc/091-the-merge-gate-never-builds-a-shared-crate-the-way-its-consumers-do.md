@@ -1,6 +1,6 @@
 # 091 — The merge gate never builds a shared crate the way its consumers do
 
-**State:** open
+**State:** done — `gate.md` gates a shared crate once per feature set its consumers' manifests name (one grep, no list); replayed `topology/063`, which that set catches; fleet 19b61cd.
 **Source:** the 2026-10-26 03:00 leg, `topology/065`. `topology/063` landed green on its own gate
 (default features and `--all-features`) and broke every consumer that builds topology with
 `default-features = false, features = ["software", "wire"]`: `embarch-api`'s
@@ -29,4 +29,4 @@ against the merge result, which catches every such case without a list.
 
 ## Done when
 
-- [ ] `gate.md` says how a shared-crate unit's gate covers the feature sets its consumers use.
+- [x] `gate.md` says how a shared-crate unit's gate covers the feature sets its consumers use.
