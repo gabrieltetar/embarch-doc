@@ -1,6 +1,6 @@
 # 017 — `doc check` reports a malformed record as a finding instead of crashing on it
 
-**State:** claimed by agent/atlas/017-doc-check-survives-malformed-records, 2026-10-29 15:27
+**State:** done — run_check validates every record first; a schema-invalid one gets V: lines, stays llm-unverified and skips the other checks; tests in tests/test_check.py; DESIGN.md doc check row
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas finding 2), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — Checker logic over fixture records. `tests/datasheet_synth.py` and `tests/mutate_records.py` already build and mutate such records.
@@ -31,7 +31,7 @@ DESIGN.md principle 4: "Nothing is deleted for failing a check. A failing fact i
 
 ## Done when
 
-- [ ] `doc check` on a fixture document holding one record of each malformed shape above exits through its normal report and writes checks.json. Each malformed record carries a `V:` issue naming its id and field. Every well-formed record's results are identical to a run without the malformed ones.
-- [ ] A test generates, for each schema-typed field that a check dereferences, a record with that field of the wrong type or length, and asserts that `run_check` does not raise.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `DESIGN.md` (the `doc check` row, or the checks section of the translate-docs procedure it points to) says that a schema-invalid record is reported and not run through the other checks. `changelog.d/` fragment dropped.
+- [x] `doc check` on a fixture document holding one record of each malformed shape above exits through its normal report and writes checks.json. Each malformed record carries a `V:` issue naming its id and field. Every well-formed record's results are identical to a run without the malformed ones.
+- [x] A test generates, for each schema-typed field that a check dereferences, a record with that field of the wrong type or length, and asserts that `run_check` does not raise.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `DESIGN.md` (the `doc check` row, or the checks section of the translate-docs procedure it points to) says that a schema-invalid record is reported and not run through the other checks. `changelog.d/` fragment dropped.
