@@ -1,6 +1,6 @@
 # 021 — Read write-one-to-clear and an SVD's reset mask as stated: W1C is not read-to-clear, and an undefined reset bit is not 0
 
-**State:** open
+**State:** claimed by agent/atlas/021-w1c-and-reset-mask-read-as-stated, 2026-10-29 16:02
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-atlas findings 4 and 9), verified by Opus against embarch-atlas@0cf93cec
 **Scope:** atlas
 **Hardware:** none — The guard, the SVD parse and the decode are all exercised against fixture SVDs, fixture part records and fake `mem-read` answers, as `tests/test_live.py` and `tests/test_svd.py` already do. The change is to what is refused and how a value is labelled, and no board is needed to prove either.
