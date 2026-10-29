@@ -17,7 +17,7 @@ Two descriptions of one interval, in the two crates a reader checks, disagree; t
 
 ## Done when
 
-- [ ] `last_sent`, `pace_left` (and `mark_sent`) describe the end of the previous exchange, matching topology's field doc.
-- [ ] Decision 104 corrected in place if it states the old point; no behaviour change.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `last_sent`, `pace_left` (and `mark_sent`) describe the end of the previous exchange, matching topology's field doc.
+- [x] Decision 104 corrected in place if it states the old point; no behaviour change.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
