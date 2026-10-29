@@ -1,6 +1,6 @@
 # 015 — Say on every answer when the atlas is behind HEAD
 
-**State:** claimed by agent/atlas/015-stale-signal, 2026-10-29 16:36
+**State:** done — agent/atlas/015-stale-signal, 2026-10-29
 **Dispatch note:** `atlas/012` (landed `197784a`, 2026-10-29) just added `pdf=<path>` to the `src:` line of
 `part_card` and every `doc_section` answer; your `stale=` goes on the same line, so build on that format rather than
 beside it. Line numbers below may predate four other landings today; read the code on `main`. No `embarch-atlas` doc
@@ -20,9 +20,20 @@ Sessions on branches answered hardware and configuration questions from a twelve
 
 ## Done when
 
-- [ ] Every lookup's `src:` line names the staleness reasons when there are any; a test moves a fixture repo one commit past its atlas and sees the mark, then rebuilds and sees it go.
-- [ ] Per-call cost with an unchanged HEAD is under 5 ms (measured in the test).
-- [ ] The MCP server runs the `status` check at start; `current_atlas()` does not take a `current.json` whose commit is not HEAD.
-- [ ] After `update`, and after `build` + `join`, the MAP lists the RM chapters of the worklist that applies; a test covers both paths.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Every lookup's `src:` line names the staleness reasons when there are any; a test moves a fixture repo one commit past its atlas and sees the mark, then rebuilds and sees it go.
+- [x] Per-call cost with an unchanged HEAD is under 5 ms (measured in the test).
+- [x] The MCP server runs the `status` check at start; `current_atlas()` does not take a `current.json` whose commit is not HEAD.
+- [x] After `update`, and after `build` + `join`, the MAP lists the RM chapters of the worklist that applies; a test covers both paths.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Done
+
+`stale.py` (new) computes `project.atlas_state` per call, cached on the mtime of `.git/HEAD`, its ref and
+`packed-refs` plus the stat of stamp, manifest and board PDFs; `query._stamped` appends `stale=<reasons> (HEAD <sha12>)`
+to the `src:` line of all twelve lookups (after `pdf=`). `current_atlas` rejects a `current.json` whose commit is not
+HEAD. `mcp` runs `project.status` at start. `join.run` writes the RM worklist (`update.rm_todo`) before rendering the
+MAP, which fixes `update` and hand-run `build` + `join` alike. Tests: `tests/test_stale.py` (5). Measured: well under
+1 ms per call with an unchanged HEAD (bound asserted at 5 ms); zero git calls while HEAD stands still. Not done:
+`reg_read`/live tools carry no `stale=` (they read the board, not the atlas). Docs live in the code repo's
+`DESIGN.md` (no `spec.md`/`decisions.md`/`open.md` exist for atlas yet).
