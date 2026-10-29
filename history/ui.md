@@ -5,12 +5,20 @@
 ## 2026-10
 
 ### Added
+- A link into the page selects what it names: `#desk?item=`, `#live-study?study=`, `#topology?board=` (decision 58, amending 31). Deployed 2026-10-25.
+- Atlas tab: the open project's `embarch-atlas` graph as a stack map, every part a generic symbol with net and firmware names, citations to page and code line (decisions 52-54).
+- Desk tab: a + continuation card for time after a ✓, its dialog adding to the sent entry (embarch-desk decision 64).
+- The validate pass and dashboard show a bench board by name instead of as a leftover role (decision 55).
 - embarch-ui: `tests/browser/drive_prompt.py` renders the operator-prompt modal headless against a prompting host study in `stub_core.py` (decision 69).
 - A host study's operator prompt opens a modal on any tab with a countdown, Confirm and Cancel and a sound; the UI now follows studies started elsewhere.
 - ui: a saved study that carries an out-of-date `.eap` protocol shows an advisory note in the Study Designer tab (changed/gone, with differences); it still runs as saved. ui decision 68.
 - Topology tab: picking one of several ports under one USB serial declares its interface; validate fails a direct route those ports share with none declared (decision 10; suite/052).
 
 ### Changed
+- The Dashboard tab is gone; the Desk replaces it (decision 56), backed by the new embarch-desk.
+- The Desk tab deals waiting time tiles into a hand under the Slack bar; a work card keeps a chip per day (embarch-desk decision 57).
+- The VS Code launcher ships inside embarch-chat's extension (embarch-chat decision 29); vscode-extension/ is the old copy.
+- The open project became the open desk; opening one proposes its saved bench (decision 57).
 - ui: the Topology signals table names a bench-board origin and the signal dialog can pick one, keeping it on re-save (decision 67).
 - Split embarch-ui decision 37 (Time chart live feed) verbatim out of decisions/time-chart.md into time-chart-live.md; the Time chart file is out of reserve (ui/095).
 - `embarch-ui/spec.md` back in reserve: the tab-navigation paragraph lives only in `spec/tabs.md` now, at its newer wording (ui/089).
@@ -21,6 +29,7 @@
 - embarch-ui open.md compacted 5,117 to 4,366 B: settled halves removed (already in decisions 21, 34, 37, 38), Debug-level hardware result moved into decision 32.
 
 ### Fixed
+- Desk tab: Start work says what happened on the card pressed, under its button; a pushed view no longer hides a failed start (it read as nothing at all).
 - The Topology tab redraws its diagram when the board-type pickers answer, so the bench box shows its label on first draw, not the raw qualifier.
 - Topology browser drive script now isolates the recent-projects file and passes all 81 checks.
 - The Time chart now says when a sample strip or live mark lane is capped, how many were not drawn and how far the strip reaches ([decision 66](../embarch-ui/decisions/time-chart.md)).
@@ -35,12 +44,37 @@
 ## 2026-09
 
 ### Added
+- A Live Study tab runs a study, watches every step, console line and sample land live, and opens any past study.
+- A `--brand` token carries the logo red on the wordmark and header glyph; the accent stays cyan because the mark and `--danger` are the same colour ([decision 25](../embarch-ui/decisions.md)).
+- Build and flash the DUT from the Study Designer, watch the build as a phase of the run, read past build logs in Debug (decisions 38-40).
+- One Time chart above the trace: every stream a study produced on one axis, with unplaceable marks counted rather than guessed at.
+- The Static firmware analysis panel names any properties alias read as a union of `#if` branches, so a properties byte no build compiles is visible as one.
+- The Study Designer authors protocols, record framing and the dev-bench log level, edits actions and payload layouts, and runs a saved study as it is on disk.
+- The Time chart is fed live: marks placed once against a growing axis, pending ones counted at its leading edge.
+- The VS Code launcher survives no server update; vscode-extension/reinstall.sh rebuilds and sideloads it without vsce.
+- The mark is a standalone SVG too — `embarch-ui/assets/brand/embarch-mark.svg`, traced from the GIMP master with its dark outline — and the UI serves it at `/favicon.svg`.
+- The served UI has a favicon and the VS Code launcher has an icon, both from the GIMP master in `embarch-ui/assets/brand/`.
+- `tests/browser/` drives the running UI in headless Firefox against a stub embarch-core; it found a real defect on its first run.
 - Measured the trace handler's in-process request cost (decode + JSON encode) at 250k/500k/1M rows; Core-fetch portion still unmeasured — `embarch-ui/open.md`.
 - `tests/element_ids.rs` fails on a duplicate or dangling element id in index.html/app.js — `embarch-ui/decisions/wiring.md` decision 24.
 - The Trace view drops a stale pre-reset leading prefix and keeps the DUT clock for the rest, in place of refusing that clock for the whole capture. embarch-ui decision 19.
 - The Trace view asks for the window it draws, binned server-side, not a 13 MB capture: [decision 18](../embarch-ui/decisions.md).
 
 ### Changed
+- A board type's row lists the revisions, variants and apps this repo builds it for, and the DUT is picked as one real combination ([decision 47](../embarch-ui/decisions/topology-boards.md)).
+- A dev-bench board shows as "Nordic nRF54L15 DK", not as its west qualifier; the qualifier stays on the tooltip and on the wire.
+- A role holds a probe and a board type as separate bindings; the roles table folds into the diagram and a run builds for the board in the DUT role.
+- IBM Plex is served from `/fonts/` out of the binary, not Google: an offline bench fell back to Segoe UI silently, taking the trace gutter's px-per-char constant (4.5% wrong, fixed) with it.
+- One title per tab: the `<h1>` and subtitle each tab opened with are gone — the topbar already named it, from the nav item. Debug keeps its per-source line, now under the chips.
+- Start focuses the browser window and tab already open instead of stacking a duplicate, matching the page on its new `EmbArch` title ([ui decision 28](../embarch-ui/decisions/launcher.md)).
+- Study Designer: build options behind a button, static firmware analysis on demand, one "Define the wire" panel, and New study no longer leaves the last study's settings behind.
+- The Enroll tab is gone: a probe is dropped onto the Topology tab's own diagram to enrol it (embarch-ui decision 43).
+- The Topology tab: a role is a fixed slot and a board is a name, with a project board catalog, saved benches and a validate pass replacing the alert list.
+- The cross-clock projection, the stale-prefix drop and the trace row decoder are one implementation each, extracted from `project_steps`.
+- The favicon and the VS Code extension icon are rasterised from `embarch-mark.svg` rather than downscaled from the GIMP master, so the mark has one source and the icons cannot drift.
+- The open project moved to the foot of the sidebar, where every tab names it and one picker changes it ([decision 46](../embarch-ui/decisions/shell.md)).
+- The sidebar header glyph is the EA mark, traced from the GIMP master to theme-bound SVG fills by `embarch-ui/assets/brand/trace_mark.py`.
+- embarch-ui/spec.md rewritten to its cap: 12.2K to 10.6K, the size debt down from 2048 B to 681 B.
 - `embarch-ui/spec.md` squeezed 9,275 B to 9,031 B (88.2%), clear of the reserve line.
 - embarch-ui decisions now link embarch-study-designer's decisions.md index, not a topic file, so a future split can't stale them.
 - `decisions/shape.md` split its launcher decisions (3, 28) into `decisions/launcher.md`; `spec.md` split its tab table into `spec/tabs.md`. Both out of reserve.
@@ -62,6 +96,14 @@
 - embarch-ui compacted to spec/decisions/open, 92 KB to 68 KB across 12 files; design.md deleted.
 
 ### Fixed
+- A failed build's banner quotes the compiler's first error instead of "west exited Some(1)" (decision 38).
+- A study declaring no outpost trace draws its live Time chart on Core's own clock instead of waiting for a trace that is not coming.
+- Every Data-card plot was drawn against dev-bench uptime, not Core's clock; `time_column` now prefers `core_rx_utc_ms` and the routes name the clock.
+- The Build card now finds the open repo's own `embarch/embarch.toml`; without it a real launch left the card inert (decision 38).
+- The Live Study tab's saved-study picker reads `GET /api/study-designer/studies`' own bare-array shape.
+- The chip a catalog row does not state is resolved from the scan's SoC, so setting a role's board stops failing (decision 48).
+- `reinstall.sh` packages every compiled module into the `.vsix`, not just `extension.js` — a second module used to install as a `require()` that throws at activation.
+- `seal_crc` seals `protocols_crc` as well as the other two; a protocol-carrying study would have been 400ed by Core's third seal check.
 - spec.md's dev-bench-picker invariant again names it "served by the binary", dropped by an unaccounted-for squeeze.
 - `study_designer.rs` fixed a wrong embarch-study-designer decision citation for the service-names split.
 - Fixed study_designer.rs's decisions-34/36/54/55 claim: family membership, not identical origin.
@@ -93,6 +135,12 @@
 - embarch-ui/spec.md: the Debug tab polls Core's /logs/recent (it never subscribes to /logs/stream), and embarch-topology is linked transitively, software-only.
 - The study run badge names the step now running, not the count finished — Core's `current_step` is the index of the last step that finished (ui decision 20).
 - The Trace view counts the rows its decoder refused — truncated or malformed — instead of claiming "every row in the capture": embarch-ui/decisions/trace-view.md, decision 10.
+
+### Removed
+- Forty explanation paragraphs leave every tab; a path or a state is the only note under a title (decision 50).
+- The Study Designer's two **Static GATT extractor** text boxes go: one extractor ships, so it runs against whatever repo is open and the panel keeps only **Run GATT extractor** (decision 51).
+- The Trace tab is gone: its chart is a card on Live Study, and the `#trace?study=…&tap=…` fragment goes with it.
+- The catalog's Apps column and the combination picker's app list and qualifier suffix are gone (decision 49).
 
 ### Decided
 - Decision 27's split with `embarch-core` is permanent, not pending — `embarch-core` decision 66 answered the widening question `open.md` and `trace-view.md` were still waiting on.

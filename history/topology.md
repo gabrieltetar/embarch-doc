@@ -5,6 +5,8 @@
 ## 2026-10
 
 ### Added
+- A bench board: enrolled with no role (`NO_ROLE`), keyed by its probe, retracted by `remove_by_probe` (decision 41).
+- Topology: a direct host-to-dut or bidirectional signal is writable by Core, and a signal declares its own baud (decision 37).
 - Validation gains halts: how many times the identity gate halted the core, so Core stops inferring it by chip prefix.
 - A direct signal route can declare its USB interface, so a device with several serial ports under one serial resolves to that port instead of being refused (decision 46; suite/052).
 - Probe moved to a board of another chip family is refused by name before any attach (validate_serial_for_chip, topology decision 44); Core wiring filed.
@@ -17,17 +19,24 @@
 - Topology CLI guard probes the port named by --core-port; enroll takes bench boards, unenroll takes --probe-serial (topology decision 45).
 
 ### Fixed
+- Topology: a direct signal's missing port names the visible ports instead of dev-bench link advice.
+- Topology: an ID whose words are all the same (zeros, ones, or one stale bus value) is retried once, then a failed read, never a board mismatch (decision 38).
+- Topology: attaching to an ARMv6 STM32 never read-modify-writes a running target's RCC or DBGMCU; the ID read falls back to a halted read (decision 39).
 - Fixed the wire-only build (Upserted re-export gated on hardware) and added hardware::enroll_reporting returning (EnrolledBoard, Upserted); wire-only build named a gate item.
 - A probe moving roles now reports the vacated role and keeps its board type; store writes are temp-file-and-rename, never partial. embarch-topology decisions 42, 43.
 ## 2026-09
 
 ### Added
+- A DUT's two bootload ports — application and bootloader USB identities — declared in their own enrollment table; an overlapping pair is refused. Decision 36.
+- STM32G0 hardware-ID readback (96-bit `UID_BASE` triple), so an STM32 board can be enrolled and pass the identity gate.
 - `Alert` and `DetectedPort` gain `PartialEq`, plus a `wire`-only test module so the deserialization contract is exercised without `hardware`.
 - A `wire` feature carrying the hardware wire types without `probe-rs` or `serialport`, so a consumer that cannot link a probe can name the types Core serves instead of mirroring them (decision 31).
 - spec.md states what a caller may hold across calls (per-operation only, no cache) — decision 29.
 - `validate()` adds `validated_at_utc_ms` alongside the enrolled record's own `confirmed_at_utc_ms` (decision 26).
 
 ### Changed
+- A role can hold a board type with no probe: the probe half of an enrolment row is optional, and `set_role_board` writes the other half without attaching.
+- Roles close to dut/dev-bench on the write path, a board's `name` is its own field, and `remove_by_role` retracts one.
 - `spec.md`'s "Storage and roles" moved verbatim to `spec/storage-and-roles.md`, paying its reserve debt.
 - `validate_known_timed`'s five mid-attach failures now `raise`/log too, not just not-attached/mismatch — decision 34.
 - Decisions 20 and 21 compacted under the 4,096 B per-decision cap; nothing cut duplicates or thins the safety claims.

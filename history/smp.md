@@ -6,3 +6,9 @@
 
 ### Fixed
 - `embarch-smp` upload now fails with the offsets named when the server's offset moves without progress (8, 16, 8, 16 ...) or keeps restarting at 0, not only when it stands still.
+
+## 2026-09
+
+### Added
+- New sub-project, repo created: a Rust port of smpclient, [spec](../embarch-smp/spec.md).
+- Ported smpclient 7.3.0: framing, four commands, MCUboot image parse, a simulated serial-recovery bootloader; byte-identical on 18 recorded uploads. [spec](../embarch-smp/spec.md)

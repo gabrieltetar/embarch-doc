@@ -1,1 +1,0 @@
-- A compaction squeeze quotes every deleted hunk verbatim and the reviewer counts them: [DOC-COMPACTION-PASS.md](../DOC-COMPACTION-PASS.md). A squeeze cannot classify its own cuts.

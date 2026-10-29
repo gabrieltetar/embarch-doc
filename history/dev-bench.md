@@ -2,12 +2,18 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-10
+
+### Added
+- `pd-bench/` on the X-NUCLEO-DRP1M1: dual role, 5 V source from CN3, PR_Swap, scripted Request answers (decision 49).
+- `pd-bench/`: a USB PD sink on a NUCLEO-G0B1RE + X-NUCLEO-SNK1M1, scripted over its shell (decision 48).
 ## 2026-09
 
 ### Added
 - The advertiser census now logs Manufacturer Specific Data (company ID + up to 4 payload bytes, capped visibly) alongside name and address (decision 44).
 
 ### Changed
+- dev-bench's two toolchain-blocked tasks are dispatchable to the supervisor now, and outpost was never blocked — it needs two env vars, not a workspace.
 - `decisions/link.md` split verbatim, out of reserve: 30/35 (frame/step ceilings) moved to new `decisions/link-limits.md`.
 - `spec.md` and `open.md` squeezed clear of reserve, no content dropped; `decisions/ble.md`'s split (leg 050) already closed.
 - dev-bench/034: wrapped citation census, 23 lines/39 instances, 0 wrong, 2 labels fixed, 1 false sentence fixed.

@@ -21,9 +21,13 @@
 - A Notify or Indicate row now carries its row timeout as the wait budget, and a 0 budget is refused (decision 83); it used to time out at once.
 - `OutpostManifest` now reads the schema-2 `devices` and `functions` tables, so GPIO trace rows are named in Core's CSV as in the reference decoder (study-designer decision 82).
 - Sample CSV rows blank a step name with a comma, quote or line break; build_study refuses one; an empty record-check magic is refused and zero records is never all_verified.
+
 ## 2026-09
 
 ### Added
+- A firmware repo's `embarch/protocols/*.eap` files are scanned, resolved and written through `eap_repo`, and a `RunProtocol` row names one; `build_study` derives what a study carries from its rows.
+- A study can declare the DUT firmware it builds for itself and the outpost trace mode it needs (decision 77).
+- Three advisory dev-bench capacities, plus `protocols_wire_len` to measure the one that mirrors no crate constant.
 - study-designer: interfaces/types.md now states Uuid's raw-array Serialize form and where hyphenated text is produced/consumed.
 - `BleAddress`'s doc comment now states display order, most-significant first, for both kinds — [interfaces/types.md](../embarch-study-designer/interfaces/types.md).
 - First CI for the suite's most depended-on crate: six feature cells per push, the narrow two as `cargo build` since `cargo test` cannot see them ([64](../embarch-study-designer/decisions/ci.md)).
@@ -48,6 +52,7 @@
 - `embarch-study-designer`'s 232 KB became spec.md, open.md, five `interfaces/` files and sixteen `decisions/<mission>.md` — 175 KB, all 62 decision numbers intact, no file over 12.2 KB.
 
 ### Fixed
+- A `#define`d properties macro with two definitions under a `#if` resolves to the union of its branches, named in the scan report, instead of blanking the whole table (decision 78).
 - outside-src citation sweep (tools/, tests/, .cargo): 27 checked, 3 wrong numbers fixed, 0 false sentences.
 - src/ citation sweep closed: 516 instances checked chain-wide, 22 wrong numbers, 7 false sentences; this unit fixed 4 same-shape 57->56 mislabels in gatt_names.rs/vendor.rs.
 - registry.rs citation sweep: 9 checked, 0 wrong numbers, 1 false sentence (StreamCapture wrongly attributed to decision 35, repointed to 39).

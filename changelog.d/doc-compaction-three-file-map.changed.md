@@ -1,1 +1,0 @@
-- `DOC-COMPACTION.md` stops calling itself the budget: it is the invariant, [DOC-BUDGET.md](../DOC-BUDGET.md) the weights, [DOC-COMPACTION-PASS.md](../DOC-COMPACTION-PASS.md) the procedure.

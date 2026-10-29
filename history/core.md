@@ -5,6 +5,10 @@
 ## 2026-10
 
 ### Added
+- Core: POST /signals/{name}/exchange writes one line to a writable signal and returns the reply under hw_lock; taps use the signal's own baud (decision 79).
+- Core: `POST /live/mem-read` reads ranges of a role's target memory under one halt, behind the identity gate.
+- Core: `port_wait_ms` on the signal exchange waits for a USB console that is re-enumerating after a reset.
+- `POST /probes/enroll` without a role enrolls a named bench board; `DELETE /probes/by-serial/{serial}` retracts one (decision 83).
 - Core: GET /serial-log takes signal= (resolved at request time, waits port_wait_ms, reads at the signal's baud); port= unchanged — decision 101.
 - A host study runs `Repeat` with per-pass markers; `GET/POST /study/{id}/line-counts` counts each `LineCount` per pass and in total from the raw tap files.
 - `POST /host-studies` accepts `Text` signal taps: a tapped console opens once for the whole study, exchanges write through it, and each line is stored with Core's receive time. Decision 98.
@@ -23,6 +27,9 @@
 - Core: a signal exchange reports bytes_read, echo_seen, written, port_lost (a 200, not a 500), port identity and DHCSR core state when silent, and reads a mid-line marker to line end (decision 85).
 
 ### Fixed
+- Core: a signal exchange matches `until` only after the command's echo, so a shell's prompt on port open no longer ends the read early (decision 79).
+- Core: flash and reset attach through topology's guarded attach, so they never rewrite a running STM32's clock enables (decision 80).
+- `POST /flash` resets the core after the download, so a flashed STM32G0 runs its new image instead of staying halted in the flash algorithm (decision 82).
 - Two capture-timing tests (capture lines, two tapped consoles) no longer flake under a full parallel run: they wait on the byte count, not a sleep.
 - Core's exchange, capture, study and pre-flight name every candidate port when a signal's declared serial is ambiguous (409 on HTTP); the wait never retries it (decision 96).
 - Capture routes now sit under the bearer-token sweep; a bare .route( line fails the scan (core decision 42).
@@ -39,6 +46,15 @@
 ## 2026-09
 
 ### Added
+- A `Text` tap keeps an arrival sidecar keyed by byte offset, served at `/stream/{name}/arrivals`: a console is placeable after the run.
+- A `Text` tap's chunks are pushed live on `/study/{id}/events` as `StreamText`, verbatim; `Raw` taps push nothing.
+- A declared outpost mode is checked against the DUT's own header frame before step 1; a mismatch is a 412 (decision 74).
+- Core decodes each outpost frame as it arrives and pushes its rows — `embarch-outpost` decision 10's live half, reversals row 112.
+- `DELETE /probes/enrolled/{role}` retracts a role; `POST /probes/enroll` takes a board `name` and refuses a role outside the fixed pair.
+- `GET /studies` lists every study still on disk, newest first — a past run is reachable without having kept its id.
+- `POST /bootload`: a signed image into the DUT's MCUboot serial-recovery bootloader over USB, and `/bootload/ports` to declare its two identities. Simulator-tested only. Decisions 77, 78.
+- `PUT /probes/enrolled/{role}/board` declares a role's board type without opening a probe; `/validate` answers 404 when a role has none bound.
+- `stm32g0b1xx` → `STM32G0B1VE` in Core's SoC→chip table — first ST part, and first key that names a SoC series rather than one variant.
 - GET /status now serves binary_sha256, a cached SHA-256 of the running Core binary, closing umbrella check 15's same-version blind spot (decision 67, 68).
 - `GET /study/{id}/stream/{name}/load/spans` serves the decoded per-lane spans `/load` reduces and discards.
 - `GET /study/{id}/streams` gains `source_deferred`: a `PowerFrontEnd` tap now says why it captured nothing, distinct from a mis-named signal.
@@ -49,6 +65,8 @@
 - `GET /status` now serves `core_version`, compiled in from `CARGO_PKG_VERSION`; no `contract_version` beside it (decision 13).
 
 ### Changed
+- `StepCompleted` carries its own three stamps and `SampleBatch`/`GattTranscript`/`StreamText` carry `core_rx_utc_ms`.
+- `embarch-core/decisions/studies.md` split by mission: reading a study back now lives in `decisions/study-record.md`.
 - `decisions/streams.md` split: 70/72/73 (pushing a tap live) moved verbatim to `decisions/streams-live.md`.
 - Core's `/stream/{name}/arrivals`, `/load` and `/load/spans` rows moved verbatim from `interfaces/studies.md` into new `interfaces/streams.md`.
 - `embarch-core/decisions/handshake.md` split by mission: the outpost mode pre-flight now lives in `decisions/outpost-preflight.md`.
@@ -78,6 +96,8 @@
 - `embarch-core`'s decisions split by mission into seven `decisions/<topic>.md` files (largest 7.7 KB) with `decisions.md` as a 1.6 KB index; all 40 numbers still resolve.
 
 ### Fixed
+- `/stream/{name}/arrivals` tells a tap that needs no sidecar from a study captured before Core kept one.
+- `GET /study/{id}` serves a study the registry has forgotten from disk — its taps' byte counts and provenance were unreachable after a restart.
 - Decision 59's four evidence citations restored (`decisions/surfaces.md`), lost in an earlier squeeze.
 - core: tasks/core/076's Resolved section no longer restates decision 65's retracted "likely-low" claim.
 - Decision 36 now cites a real test for the `nrfutil` erase-mode claim, not just `jlink`'s.

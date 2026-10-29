@@ -5,6 +5,11 @@
 ## 2026-10
 
 ### Added
+- A call naming no project, or naming desk, builds the open desk's firmware repo (decision 85).
+- API: `mem_read` tool and `mem-read` subcommand over Core's live memory read; ranges as `ADDRESS[:WORDS]`.
+- API: `signal_exchange` / `signal-exchange` take `port_wait_ms` / `--port-wait-ms`.
+- API: signal_exchange tool and signal-exchange subcommand, and baud on declare_signal (decision 82).
+- `enroll_probe` without `role` enrolls a bench board; `unenroll_probe` takes `probe_serial` (decision 84).
 - `ledger-add`, `ledger-show`, `ledger-pending` (CLI and MCP): a per-project hardware test ledger with a computed pending-by-hardware view; `run-study --test` appends a row.
 - `embarch-api stack plan|fold|restack` folds review fixes into their commits by blame, backs up every branch, and restacks a PR stack with one atomic leased push.
 - api: serial_log takes signal (+port_wait_ms), the preferred form; Core resolves it; project/port stay the fallback (decision 94).
@@ -36,3 +41,18 @@
 - `study-status --follow` and `study_watch` now end on an unknown study id (error naming it) or an `interrupted` study (own outcome, CLI exit 1) instead of waiting forever.
 - An older Core's exchange and flash replies no longer show fabricated written/bytes_read/port_lost/erased values: absent stays absent ([decision 58](../embarch-api/decisions/client-crate.md)).
 - `list_targets` accepts the shortened `<board>.dts` of a single-SoC board and errors with a per-board reason when every board is dropped, not `targets: []`. Decision 86.
+## 2026-09
+
+### Added
+- A follow renders `StreamText` chunks: one line each on the CLI, counted per tap as `text_chunks` in `study_watch`.
+- The shared client mirrors `OutpostRows` and the new event stamps, as `#[serde(default)]` so an older Core still decodes.
+- `CoreClient::list_studies()` reads Core's new `GET /studies` — a past study is reachable without its id.
+- `bootload`, `build_and_bootload` and three bootload-port tools, each with a CLI twin; `[projects.bootload]` config; sysbuild-aware signed-image lookup. Decisions 80, 81.
+- `set-role-board` (CLI and MCP) declares which board type is in a role, over Core's new no-attach route.
+- `unenroll-probe` (CLI and MCP) retracts a role; `enroll-probe` gains `--name` for the board it is enrolling.
+
+### Changed
+- `config`/`zephyr`/`resolve`/`build`/`json_out` move to a shared `embarch-firmware-build` crate `embarch-ui` can reach too (decision 78).
+
+### Fixed
+- Snippet lists keep the order west applies them in; sorting made two different images share one build directory (decision 21).

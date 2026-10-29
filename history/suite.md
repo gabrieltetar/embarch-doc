@@ -9,9 +9,20 @@
 - SCPI bench instruments: declared with their line facts, one command per exchange, and an `Instrument` host-study step; an unacknowledged set fails (topology 49, core 104, api 97).
 - A role-less bench board owns signals (`origin_board`) and is read and validated by probe serial (topology 48, core 103, api 95).
 - Suite binaries' `--version` names their commit; install replaces a running binary; `doctor` check 18 flags an installed one behind its checkout. Umbrella decision 57.
+
+### Changed
+- The host-study proposal names both PD bench shields, cites the pd-bench README as its shell reference, and records the 2026-10-20 choice of its own west workspace.
+
+### Removed
+- The three embarch-chat proposals and embarch-promptu/ are deleted, absorbed into embarch-chat/ and embarch-desk/.
+
+### Decided
+- proposal: embarch-desk, connectors, work items and self-tracking time
+- proposal: host-run studies, operator prompts, SCPI instruments and a USB PD bench
 ## 2026-09
 
 ### Added
+- Validated on a real nff_dev@7: a study built its own firmware, and a wrong outpost-mode declaration was refused before step 1.
 - Reversals row 111: a 2026-09-02 compaction dropped core decision 32's two correction paragraphs, and the wrong framing stood 15 days.
 - Reversals row 110: umbrella's sibling-lookup-instead-of-PATH assumption, overturned by a real wsl-host onboarding run (umb 3 → 28).
 - `embarch-outpost` gets host-only CI on push and PR; what it deliberately does not cover: [suite/decisions.md](../suite/decisions.md) 2.
@@ -32,6 +43,7 @@
 - suite/features.md pared back to pointers: every row kept, the cells that restated an owning decision cut.
 
 ### Fixed
+- A denylist entry added 2026-09-22 found 27 client-name hits across six repos; all scrubbed to neutral stand-ins. Three landed commit messages still carry it and need a history rewrite.
 - `embarch-ui` and `embarch-umbrella`'s `CLAUDE.md` now name their interfaces doc, per [DOC-PROTOCOL.md](../DOC-PROTOCOL.md) §5.
 - Reversals row 105 now names both refuted hypotheses and how each was refuted, which a compaction had left nowhere in the corpus.
 - A hand-author gets a named worked study file and the externally-tagged `action` shape; the fixture no longer carries `validations`, retired at schema v11.
@@ -45,6 +57,7 @@
 - 22 shipped milestone docs and implementation guides, 334 KB. Two open items they alone recorded moved to their design docs' open questions first; 122 dangling file references became milestone names.
 
 ### Decided
+- Proposed bootloading a DUT through MCUboot serial recovery over USB CDC ACM: [bootload-proposal.md](../bootload-proposal.md).
 - Suite decision 4 claims one implementation of the outpost's **reduced** answer, not of the whole timeline — that has two, and `embarch-core` decision 66 makes the split permanent.
 - An outpost capture's load shares and coverage line are computed once, in `embarch-core` — on both paths and in the archive. [suite decision 4](../suite/decisions.md); the code move is queued.
 - `rx_utc_ms` keeps its name in both homes and each now says which clock it is — a trace's is Core's epoch, a study's is bench uptime ([suite decision 3](../suite/decisions.md)).

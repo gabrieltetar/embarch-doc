@@ -1,1 +1,0 @@
-Waiting tiles left the work cards for the hand, a row of cards under the Slack bar for every desk; a covered tile closes itself; a tile folds into a later one (decisions 57, 58).
