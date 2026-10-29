@@ -21,8 +21,12 @@ The file is over its cap, so the next decision filed under this mission has nowh
 
 ## Done when
 
-- [ ] `timeline.md` below the reserve line; the moved decisions byte-identical in their new file.
-- [ ] `decisions.md`'s index table updated; every link to a moved decision resolves.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`python3 scripts/check-docs.py`; no code changes, so no npm gate unless the worker touches `embarch-chat`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `timeline.md` below the reserve line; the moved decisions byte-identical in their new file.
+- [x] `decisions.md`'s index table updated; every link to a moved decision resolves.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`python3 scripts/check-docs.py`; no code changes, so no npm gate unless the worker touches `embarch-chat`).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+Split by mission, verbatim: 15, 16, 67, 68, 69, 74, 85 moved to `decisions/readouts.md`; timeline.md 13,806 B to ~10.4 KB, readouts.md ~3.7 KB. 89, 90 untouched. No code change.
