@@ -1,6 +1,6 @@
 # 084 — A claim line can be green to `check-task-state.py` and unparseable to `queue-status.py` at the same time
 
-**State:** open
+**State:** done — direction (a): `check-task-state.py` rule 10 fails a `claimed` line that `queue-status.py` cannot read, asked of that script's `--json` `unparsed_claims` rather than restated, so the two hold one grammar; `queue-status.py` also prints an `UNREADABLE CLAIM` line naming each. Leg 142's own `umbrella/086` claim and leg 085's `api/067` are both named when replayed. embarch-fleet `1559600`.
 **Source:** leg 142, 2026-09-17, found by the supervisor against **its own four claim commits**.
 Not a worker report and not a reviewer finding — it surfaced because I happened to run
 `queue-status.py` while one of my own claims was still live.
@@ -53,23 +53,38 @@ wrapped bullet"* — the same class, a producer and a consumer disagreeing with 
 
 ## Done when
 
-- [ ] Decide which side moves. Two real options and they are not equivalent:
+- [x] Decide which side moves. Two real options and they are not equivalent:
       **(a)** `check-task-state.py` gains a check that a `claimed` line also carries a parseable
       branch and timestamp, so a malformed claim fails the gate at the claim commit — the point
       where it is free to fix; or **(b)** `queue-status.py` widens its parser to accept what legs
       actually write. **(a) is the safer direction**: a claim that `queue-status.py` cannot read is
       not merely cosmetic, and widening the reader makes the two scripts agree by lowering the
       standard rather than by meeting it.
-- [ ] Whichever is chosen, `tasks/README.md`'s documented shape and the checker agree afterwards,
+- [x] Whichever is chosen, `tasks/README.md`'s documented shape and the checker agree afterwards,
       and a deliberately malformed claim line is shown to fail.
-- [ ] Consider whether `queue-status.py` should say something louder than a parenthetical when it
+- [x] Consider whether `queue-status.py` should say something louder than a parenthetical when it
       demotes a `claimed` task to `recoverable`. It is currently one line in a long listing, and a
       supervisor scanning for its own task will read the word `recoverable` as being about some
       other leg's leftovers.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 
 ## Not this task
 
 - **Do not change how `check-task-state.py` reads token zero.** That narrowness is deliberate and
   `tasks/README.md` explains why at length. Whatever is added is *in addition to* token zero, not
   instead of it.
+
+## Shipped
+
+- **(a), the gate.** Rule 10 in `check-task-state.py` runs `queue-status.py --json --root <repo>`
+  and fails every path in its new `unparsed_claims` key: one pattern, owned by the reader, asked
+  rather than copied — the shape rule 6 already uses for `check-ownership.py`. Token zero is read
+  exactly as before; this is in addition. If the framework is missing or older than this key,
+  the rule is skipped with a `NOTE:` line, as `check-docs.py` skips a framework check.
+- **Shown failing**: a probe file carrying leg 142's shape, and one carrying
+  `claimed (leg 132 unit 1)`, each fail with the line quoted; the documented shape with
+  `(leg 132 unit 2)` after the time passes.
+- **Louder**: the plain listing now ends with `UNREADABLE CLAIM -- N claimed task(s)…` and the
+  line of each, after the per-task `recoverable … branch None` it already printed.
+- **One grammar**: `tasks/README.md` names the parsed prefix and says the gate enforces it
+  (`tasks/doc/076` shipped the leg-side half).

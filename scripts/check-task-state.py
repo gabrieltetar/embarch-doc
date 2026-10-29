@@ -34,7 +34,7 @@ for the same reason `tasks/doc/028` says not to: every one of those instances
 was resolved by a judgement about what actually occurred, and a script that
 guessed would turn a loud wrong field into a quiet one.
 
-Nine rules, and all of them fail the gate:
+Ten rules, and all of them fail the gate:
 
   1. **`**State:**` token zero is one of `open`, `claimed`, `done`, `blocked`**,
      exactly -- no trailing comma, no emphasis, no `partially`, no `closed`.
@@ -64,6 +64,9 @@ Nine rules, and all of them fail the gate:
      (`umbrella/077`, leg 133). Rules 8 and 9 are `tasks/doc/077`: the worker
      filing a debt mid-unit is the only actor who can answer flux and never
      reads `tasks/README.md`, so its own gate is where it meets the shape.
+ 10. **A `claimed` line parses to the reader that acts on it** -- the
+     branch and the time `queue-status.py` reads, asked of that script
+     itself. See the block above `check_claims`.
 
 **Rule 3 warned rather than failed until 2026-09-09, and `tasks/doc/030` is
 where that got decided.** The holding position was that `.claude/leg.md` and
@@ -112,6 +115,7 @@ from __future__ import annotations
 
 import argparse
 import doctest
+import json
 import re
 import subprocess
 import sys
@@ -363,6 +367,44 @@ def unpark_findings(text: str) -> str | None:
 FENCE_RE = re.compile(r"^```.*?^```", re.M | re.S)
 
 
+# --- Rule 10: a claim line the queue reader can read --------------------------
+#
+# `tasks/doc/084`: leg 142 wrote four claims as `claimed 2026-09-17 leg 142
+# unit 1 -- <branch>`. Rule 1 passed them, correctly -- token zero is `claimed`
+# -- and `check-docs.py` went green four times, while `queue-status.py` read
+# each as `recoverable`, branch None: a live worker's task advertised to any
+# successor leg as free to re-dispatch. Two scripts disagreed about one line
+# and nothing sat between them. **The grammar is asked of `queue-status.py`
+# (`--json`'s `unparsed_claims`), never restated here**, for the reason rule 6
+# asks `check-ownership.py`: two parsers a checker holds equal are still two.
+# If that script cannot answer -- the framework missing, or older than this
+# rule -- the rule is skipped with a NOTE, the way `check-docs.py` skips a
+# framework check rather than turning a missing checkout red.
+QUEUE_STATUS = REPO / "scripts" / "queue-status.py"
+
+
+def check_claims() -> tuple[list[str], str | None]:
+    """(one failure per unreadable claim, or a NOTE if the reader was silent)."""
+    r = subprocess.run(
+        [sys.executable, str(QUEUE_STATUS), "--json", "--root", str(REPO)],
+        capture_output=True, text=True)
+    try:
+        bad = json.loads(r.stdout).get("unparsed_claims")
+    except ValueError:
+        why = (r.stderr or r.stdout or "no output").strip().split("\n")[-1][:100]
+        return [], (f"NOTE: claim lines not checked -- queue-status.py did not "
+                    f"answer (exit {r.returncode}): {why}")
+    if bad is None:
+        return [], ("NOTE: claim lines not checked -- this queue-status.py "
+                    "predates `unparsed_claims` (tasks/doc/084)")
+    return [f"{Path(c['path']).resolve().relative_to(REPO)}\n    claim line "
+            f"does not parse: {c['line'][:80]}\n    `queue-status.py` reads it "
+            f"as recoverable with no branch -- a live worker's task\n    "
+            f"advertised as free. Write `**State:** claimed by "
+            f"agent/<scope>/<NNN-slug>, <yyyy-mm-dd HH:MM>`\n    and put anything "
+            f"else after the time (tasks/doc/084)." for c in bad], None
+
+
 def task_files() -> list[Path]:
     out = []
     for d in DIRS:
@@ -482,6 +524,8 @@ def main() -> int:
     if doctest.testmod().failed:
         fails.append("scripts/check-task-state.py\n    its own `names_in` examples "
                      "fail (printed above) -- the title rule is broken")
+    claim_fails, claim_note = check_claims()
+    fails += claim_fails
 
     if args.list:
         for k, v in sorted(seen.items(), key=lambda kv: -kv[1]):
@@ -506,10 +550,13 @@ def main() -> int:
               "answers, and which paths a scope may name; prose goes after token\n"
               "zero, never in it.")
         return 1
+    if claim_note:
+        print(claim_note)
     n = len(task_files())
     print(f"OK: all {n} task file(s) carry one of {', '.join(LEGAL)} at "
-          f"token zero,\n    a legal `In flux:` answer, and a title naming no "
-          f"path their scope cannot write.")
+          f"token zero,\n    a legal `In flux:` answer, a title naming no "
+          f"path their scope cannot write" + ("." if claim_note else
+          ",\n    and no claim line `queue-status.py` cannot read."))
     return 0
 
 
