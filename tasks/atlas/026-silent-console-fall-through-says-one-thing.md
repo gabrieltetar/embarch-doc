@@ -1,6 +1,6 @@
 # 026 — DESIGN.md states one rule for a silent console reply, and an older Core's silence follows it
 
-**State:** open
+**State:** claimed by agent/atlas/026-silent-console-fall-through-says-one-thing, 2026-10-29 17:55
 **Source:** `atlas/005`'s review (2026-10-29 fold of `atlas/005`, code `b1d4e6e`): the reviewer found no contradiction of a standing rule, and named two residuals as the owner's to weigh
 **Scope:** atlas
 **Hardware:** none — both halves are `Console.exchange` logic and DESIGN.md wording, testable with the fake `call_api` `tests/test_live.py` already uses.
