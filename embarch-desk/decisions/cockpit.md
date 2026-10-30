@@ -9,7 +9,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 ## What the desk is
 
 ### 1 — A work cockpit, not a hardware page
-One page for the user's day across clients: the issues on their plate, PRs waiting, Slack mentions, the time running. EmbArch's hardware work is one source inside it (22), not the frame around it. **Why:** the owner was asking a Claude Code session, by hand, to read a Linear issue and to log Harvest time — manual calls the suite could make itself.
+One page for the user's day across clients: the issues on their plate, PRs waiting, Slack mentions (off the tab since 65), the time running. EmbArch's hardware work is one source inside it (22), not the frame around it. **Why:** the owner was asking a Claude Code session, by hand, to read a Linear issue and to log Harvest time — manual calls the suite could make itself.
 
 ### 2 — For any EmbArch user
 Connectors are a plug-in point with a setup flow, nothing hardcoded to one person's accounts. **Rejected:** a single-user tool, which would have let tokens and workspace names creep into code.
@@ -18,7 +18,7 @@ Connectors are a plug-in point with a setup flow, nothing hardcoded to one perso
 Its stat cards, enrolled-boards table and alerts list all rendered from the snapshot Topology already draws better, and the alerts had moved behind *Validate topology* (`embarch-ui` decision 44). Old `#dashboard` links land on the Desk.
 
 ### 4, 5 — One card per work item; cards appear on activity and leave on archive
-A card carries the issue's status (a dropdown), PRs, sessions, bench activity and *Open in VS Code*. **Its day tiles were inside it until 2026-10-25**; they are in the hand now (57), and the card keeps a chip per waiting day that opens the tile. Slack collapses to one bar. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** three columns. Tiles as a strip across the top were rejected here too, until three days of use reversed it (57).
+A card carries the issue's status (a dropdown), PRs, sessions, bench activity and *Open in VS Code*. **Its day tiles were inside it until 2026-10-25**; they are in the hand now (57), and the card keeps a chip per waiting day that opens the tile. Slack collapsed to one bar, gone since 65. A card appears when pinned, active within the window, or holding an open tile with time — and **leaves only when the user archives it**, never on issue close or a quiet spell. **Rejected:** three columns. Tiles as a strip across the top were rejected here too, until three days of use reversed it (57).
 
 ### 6 — The work item is an EmbArch object, usually one Linear issue
 It exists because none of the four services holds the join between an issue, its PRs, its sessions and its time. **It can start without an issue** — a call, a meeting, ad hoc support — and gain one later. **Rejected:** inferring the grouping afresh on every read, and a Linear issue as the only anchor (no home for a meeting).
@@ -31,6 +31,9 @@ The working directory of a session already on it; else the linked PR's GitHub re
 
 ### 9 — PRs attach by issue key, read-only
 Searched as `<KEY> type:pr involves:@me`, then **checked against title and branch on word boundaries**, because search matches `ABC-12` inside `ABC-123`. Their state only — **CI was shown until 2026-10-22, when the owner asked for it gone**, and the desk stopped fetching check runs with it; no review list, no merge in v1.
+
+### 65 — The Desk tab draws no Slack bar; its spot waits for a Promptu section
+Decided by the owner on 2026-10-29: the Slack bar and its feed leave the Desk tab, and the place the bar held stays empty for a Promptu section, a later change. **Only the tab changed**: the desk still reads Slack and serves the feed in `GET /view` and the `/slack` routes, which nothing calls now, and the Connectors panel still takes a Slack token. Amends 1, 4–5 and 57; retires `embarch-ui` decision 63, the bar's reply identity.
 
 ## Time
 
@@ -46,8 +49,8 @@ Repos and folders on it make no tile and are never asked. EmbArch's own repos go
 ### 13 — The note is written live and polished once
 **A hook only reports facts; it cannot write a sentence.** So commits become lines by themselves (22), the session's own Claude adds a line at a milestone with no commit, and **opening the tile runs one `claude -p`** that merges the lines into one note and **guesses the Harvest project and task** from the user's assignments and recent entries — no mapping step. **Rejected:** a Stop hook forcing a line every reply (noise, a turn each), the desk summarising transcripts (a call per tile, no live text).
 
-### 57 — The hand: every waiting tile as a card under the Slack bar, and a covered tile closes itself
-Decided with the owner on 2026-10-25, three days into real use: *"I regret the decision of having them inside the work card"* — the time to send was scattered across cards further down the page, and a desk switch hid the rest behind a strip. **The tiles leave the cards for one row under the Slack bar, picked like cards in a game's draft**: upright cards, the item's key and title, the hours large, the day, a live dot while a session still counts, ✓ ✕ along the bottom. **Every desk's tiles are in it**, this desk's first, then oldest first, another desk's tagged with its name; the strip of other desks' unsent tiles (40) is gone. An archived card's tiles stay out. A card is dealt in once, lifts under the pointer, flies to a "Sent today" count on ✓ and drops on ✕.
+### 57 — The hand: every waiting tile as a card at the head of the desk, and a covered tile closes itself
+Decided with the owner on 2026-10-25, three days into real use: *"I regret the decision of having them inside the work card"* — the time to send was scattered across cards further down the page, and a desk switch hid the rest behind a strip. **The tiles leave the cards for one row at the head of the desk** (under the Slack bar until 65), **picked like cards in a game's draft**: upright cards, the item's key and title, the hours large, the day, a live dot while a session still counts, ✓ ✕ along the bottom. **Every desk's tiles are in it**, this desk's first, then oldest first, another desk's tagged with its name; the strip of other desks' unsent tiles (40) is gone. An archived card's tiles stay out. A card is dealt in once, lifts under the pointer, flies to a "Sent today" count on ✓ and drops on ✕.
 
 **A tile Harvest already covers closes itself**: when the entries naming its issue that day hold at least the time it captured, and nobody set its hours by hand, it is out of the hand and does not keep its card on the desk. It is computed, never stored, so deleting those entries opens it again. The first such tile sat at 0h00 with ✓ and ✕, a question with no answer. This reverses 41's rejection of dropping a covered tile. **Rejected:** a fanned, overlapping hand (past five cards the numbers hide until hovered), a hand flanked by Harvest and discard piles to drag onto (drag on a trackpad, and twice the build), the open desk's tiles only, a covered tile kept greyed with only ✕.
 

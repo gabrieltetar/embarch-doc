@@ -9,10 +9,10 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 ## Writes and connectors
 
 ### 14 — What each connector does in v1
-Linear: the card's issue and its status. GitHub: PRs and their state. Slack: every @mention and DM in every connected workspace, unread first, the fleet's own pages included, with **replies drafted by Claude and sent only as approved**. Harvest: the tiles. Any number of accounts per service.
+Linear: the card's issue and its status. GitHub: PRs and their state. Slack: every @mention and DM in every connected workspace, unread first, the fleet's own pages included, with **replies drafted by Claude and sent only as approved** — still read and served, though since 2026-10-29 no surface shows it (65). Harvest: the tiles. Any number of accounts per service.
 
 ### 15 — Status moves go through; prose is approved
-An issue's state, ✓ and ✕ happen on the click. A tile's note and a Slack reply are shown in an editable box and sent as the user left them — the reply route takes its text from the request, never from a stored draft.
+An issue's state, ✓ and ✕ happen on the click. A tile's note is shown in an editable box and sent as the user left it, as a Slack reply was while the Desk tab drew one (65) — the reply route takes its text from the request, never from a stored draft.
 
 ### 16 — Pasted tokens in v1; OAuth deferred
 GitHub reuses the `gh` login; Linear takes a personal API key per workspace; Harvest a personal access token. **Slack has no personal token**, so the user makes an app in their own workspace from the shipped `slack-manifest.json` and pastes its user token — no distribution, no redirect. In a workspace that has the fleet's Slack app, that app can gain the user scopes instead; **its reinstall rotates the fleet's incoming webhook**, which then answers `no_service` while paging nobody, so the alert URL moves in the same sitting and `fleet-slack-doctor.py` runs after. **OAuth was the v1 choice for a few hours and was reversed** because it buys onboarding polish for users who do not exist yet, at the cost of four registrations EmbArch must own and three catches found in the services' docs (2026-10-22, never tried): a distributed Slack app must use HTTPS redirects, Harvest has no PKCE and an undocumented implicit-grant lifetime, and a Linear app must be made public. A pasted token is checked against its service before it is kept.
