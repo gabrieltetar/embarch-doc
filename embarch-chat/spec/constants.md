@@ -22,7 +22,8 @@ Split verbatim from [../spec.md](../spec.md) §4 on 2026-10-30, under [DOC-COMPA
 | Send held for cards | up to 4.5 s, drafts of six words or more (26) |
 | Terminal context | last 100 lines (58) |
 | Paste marked as pasted | over 800 characters or 2 line breaks (56) |
-| The Usage icon | amber from 70 % of either window, red from 90 % or at a limit (99) |
+| The Usage icon | amber from 70 % of either window, red from 90 % or at a limit; a window past its reset counts as reset (99) |
+| Promptu's hold on a chat's process | while its page shows, up to 10 min after the run's last step (96) |
 | Not responding | 60 s without a CLI line while a turn runs (68) |
 | Transcripts | Claude Code's 30 days (12) |
 | Long chat | 60 turns, 600 steps: a delta 3.5 ms p50, frame p95 17 ms [measured 2026-10-23] (85) |

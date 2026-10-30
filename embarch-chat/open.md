@@ -11,7 +11,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Waiting on the owner
 
-- **Promptu in the chat (94–99) waits for review and install.** Four forks wait for his pick in `embarch-promptu`'s docs/forks.md: P12 (one pass per task start), P15 (smaller choices), and for the Usage icon P16 (its place) and P17 (no reading before a chat's first reply; keeping the last one across windows is the recommendation).
+- **Promptu in the chat (94–99) waits for review round 3 and install.** Forks waiting for his pick in `embarch-promptu`'s docs/forks.md: P12 (one pass per task start), P15 (smaller choices), P18 (a run its chat's process closes under) and P19 (an emptied single-select pre-fill); P16 and P17 are decided (94, 99).
 
 - **A send before the cards arrive is held** up to 4.5 s for a draft of six words or more, Enter again sending at once (decision 26). Built so; whether it stays is his call.
 - **No row is focused when a 💡 or 📚 menu opens** (decision 86), where IntelliSense focuses the first, so Enter still sends until ↑/↓ move in. Built so, and recommended; his call.
