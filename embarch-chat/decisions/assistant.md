@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-The Haiku assistant at the input: quick replies, ghost text, cards and the desk's references in them, when it runs and what it sees. Where its 💡 sits beside the library's 📚 is decision 38 ([library.md](library.md)).
+The Haiku assistant at the input: quick replies, ghost text, cards and the desk's references in them, when it runs and what it sees, and what it left to Promptu (97). Where its 💡 sits is decision 94 ([shape.md](shape.md)).
 
 **What it rests on [measured 2026-10-22]:** Haiku thinks by default here — 5–9 s for a one-line completion. With thinking off (`--max-thinking-tokens 0`), stripped (`--tools ""`, `--strict-mcp-config`, `--setting-sources ""`), unsaved (`--no-session-persistence`, which leaves no transcript in the owner's history) and streamed (`--include-partial-messages`), a `claude -p` call is ready in 0.37 s, sends its first token at 0.86 s and finishes at 1.07 s (three runs alike), for $0.0016 with a one-line context. `--prompt-suggestions` gives the CLI's own guess at the next prompt; the `get_context_usage` control request gives a chat's tokens by category.
 
@@ -16,13 +16,17 @@ The owner's most-sent messages are one word (14). **Rejected:** a fixed row of c
 
 The completion shows in grey and Tab takes it; cards suggest or warn, behind a 💡 (38). **Rejected:** a one-line note under the box (became the cards), a tighten-the-draft button.
 
-### 28 — Cards for missing context and prompt improvements
+### 28 — Cards for missing context and prompt improvements (retired 2026-10-30, see decision 97)
 
-What Claude will need and the draft lacks (which board, issue, file), and how the prompt could be better put. **Rejected:** a library entry that fits, a heads-up that auto mode will flash, push or move an issue, a warning that another thread is on it.
+What Claude will need and the draft lacks, and how the prompt could be better put. Removed: Promptu's questions do that job now; the 💡 keeps references and context handling.
 
 ### 36 — And a card for context handling
 
 Haiku judges whether the prompt calls for a **background agent**, **compacting first**, or **a handoff to a fresh chat**, so it also sees the chat's context usage (27). Like every card it only edits the draft (37): the background-agent card adds an instruction to run the work as a background subagent and report back; **the compact card adds a first line, `/compact focus on: <what the draft is about>`** — Claude cannot run `/compact` itself — and on Enter the panel sends that line, waits for the compaction to finish, then sends the rest — or, if the owner stops the compaction or it fails, marks the rest not sent and puts it back in the draft; **the handoff card turns the draft into a request that this chat write a handoff** for a fresh chat (its model has the whole context), and the chips after that turn offer **"Fresh chat with this handoff"** — a new chat on the same work item that starts with it, the old one left readable. **Rejected:** the draft replaced by `/compact` and restored after; no compact card (the header's button only); copying a handoff by hand, or a fresh chat opened unasked; a button starting a new chat or agent itself (cards never act outside the draft); Haiku writing the handoff (it sees 1–3K tokens); a `/handoff` library entry run by hand.
+
+### 97 — The 💡 splits with Promptu: 28's cards go, the handoff card opens the handoff pattern's dialog
+
+Decided by the owner, 2026-10-29 and 30 (`embarch-promptu` decision 16; SYNTHESIS §5.3). **What a prompt lacks and how it could be put better is Promptu's** (95, 96), so decision 28's missing-context and improvement cards are gone: the cards call asks Haiku for context handling (36) and, with the desk's references, reference cards (88) — the `References` submenu, its bracketed question when no line fits included — and any card of 28's kinds an answer still holds is dropped. **The handoff card (36) opens the `handoff` pattern's dialog** on the draft while Promptu is on, with no preview in the draft, so one implementation writes handoffs; its prompt still marks the next message as a handoff request, so the turn offers "Fresh chat with this handoff". With Promptu off or absent the card edits the draft as 36 has it. The background-agent and compact cards, ghost text, reply chips and naming are unchanged; the linker stays as 88 has it (`embarch-promptu` build step 5 extends it). **Rejected:** keeping 28's cards beside Promptu's questions (two answers to one gap); a handoff template of the chat's own.
 
 ### 37 — A card is an edit to the draft, previewed in place
 

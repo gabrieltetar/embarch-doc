@@ -20,7 +20,7 @@ Generic entries in a plugin in the `embarch-chat` repo (`plugin/`, the repo root
 
 ### 38 — Entries sit behind a 📚 by the input, Haiku's cards behind a 💡 beside it, one submenu per category each
 
-A library entry's category is `category:` in its own frontmatter (none is Other); a click puts `/<name> ` at the head of the draft, as the session knows it (`/embarch-chat:<name>` for the plugin's), and `/` completes them too. The 💡 is VS Code's Quick Fix bulb: missing context, improvements, context handling, lit with a count when Haiku has something ([assistant.md](assistant.md)). **Rejected:** one bulb holding both; the library inside the 💡 with Haiku as a dot; cards stacked above the input; a `/` list plus a pinned row; a toolbar of every entry; the `/` list only; a folder per category (`/bench:flash-log` names), Haiku grouping them (stored somewhere new, and drifts).
+*Amended by 94: both sit in the rail on the chat's left edge now, and decision 28's cards went to Promptu (97).* A library entry's category is `category:` in its own frontmatter (none is Other); a click puts `/<name> ` at the head of the draft, as the session knows it (`/embarch-chat:<name>` for the plugin's), and `/` completes them too. The 💡 is VS Code's Quick Fix bulb: missing context, improvements, context handling, lit with a count when Haiku has something ([assistant.md](assistant.md)). **Rejected:** one bulb holding both; the library inside the 💡 with Haiku as a dot; cards stacked above the input; a `/` list plus a pinned row; a toolbar of every entry; the `/` list only; a folder per category (`/bench:flash-log` names), Haiku grouping them (stored somewhere new, and drifts).
 
 ### 39 — promptu's two install pieces became commands that apply them
 

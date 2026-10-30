@@ -1,6 +1,6 @@
 # embarch-chat: open
 
-**Status:** active, 2026-10-23.
+**Status:** active, 2026-10-30.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -11,12 +11,16 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Waiting on the owner
 
+- **Promptu in the chat (94–98) waits for review and install**, and its design forks for his pick: `embarch-promptu`'s docs/forks.md, step 3 (the rail's icons and where they sit, a forced pattern mid-task, Start work's fallback, how the bench tools are detected, the handoff card's fresh-chat chip, Esc's partial answers, the pass's key).
+
 - **A send before the cards arrive is held** up to 4.5 s for a draft of six words or more, Enter again sending at once (decision 26). Built so; whether it stays is his call.
 - **No row is focused when a 💡 or 📚 menu opens** (decision 86), where IntelliSense focuses the first, so Enter still sends until ↑/↓ move in. Built so, and recommended; his call.
 - **"PR 7" with no `#` names a PR in a draft but not in Claude's prose** (decision 88): the draft matcher takes it in the chat's own repo, a prose link needs `PR #7`. Whether the two should agree is his call.
 - **A reference carries its title into the draft, clipped at 90 characters** (decision 88). Whether 90 is the length he wants is his call.
 
 ## Not yet seen
+
+- **Promptu in the owner's window** (94–98): built and tested against a fake `promptu`, the real CLI offline, a scratch desk and headless Firefox; never run in VS Code, against the real Sonnet pass, or from a real Start work.
 
 - **Remote Control from the phone** (decision 83): `/remote-control` links a chat in 0.25 s and prompts are still asked in the panel, but nobody has answered one from the phone side.
 - **Decisions 86–88 in the owner's window**: d998b2f installed 2026-10-25 17:08 by `./reinstall.sh` (the package's `dist` matches by md5), live only after his window reload; not yet confirmed.
