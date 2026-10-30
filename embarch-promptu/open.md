@@ -10,8 +10,8 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **Parts of Claude Code's hook contract are unmeasured** (contract §3.9): the PostToolUse orphan warning has not run in a real session; whether Edit and MultiEdit get the same move-and-stamp as Write; whether Claude Code loosens `old_string` matching before an Edit (if so, that edit goes unchecked, never wrongly refused); a subagent's write; `autoMemoryDirectory` read from project and local settings, and the managed-settings path. Each needs one real session or a read of Claude Code's docs.
 - **A shell write into a memory folder is unseen** (`>`, `sed -i`, `mv`). `promptu memory check` and the menu's flags show its result afterwards.
 - **No feature-inventory row**: `scripts/build_features.py` has no `promptu` section, so a `features.d/promptu-*` fragment fails its check until one is added.
-- **Step 2 is committed, not installed.** Review round 1 found 17 (1 high, 9 medium, 7 low), all fixed; rounds 2 and 3 come next. Until then the installed plugin is still 0.1.0 and has no `/promptu`.
-- **One step 2 fork waits for the owner** in the repo's `docs/forks.md`: S8, the order of the always-asked bench questions (S1–S7 became decisions 22–28).
+- **Step 2 is committed, not installed.** Review round 1 found 17 (1 high, 9 medium, 7 low) and round 2 found 2 (1 medium, 1 low), all fixed; round 3 comes next. Until then the installed plugin is still 0.1.0 and has no `/promptu`.
+- **No step 2 fork is open**: S1–S8 became decisions 22–28 and 31.
 - **The weekly sheet without the Desk** (decision 30) is decided, not built: build step 4.
 - **The skill has not run in a real session.** Unverified: that Claude Code lists it as `/promptu` and not only `/embarch-promptu:promptu`; what AskUserQuestion returns on Esc (the skill treats no answers as Esc); that `$ARGUMENTS` keeps line breaks. `prep`, `next` and `render` ran end to end against the real model once [2026-10-29].
 - **"Where it's used" is still empty**: footers are written now, but `promptu memory` does not scan transcripts for them yet (contract §5 `used`).
