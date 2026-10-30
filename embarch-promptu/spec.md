@@ -1,6 +1,6 @@
 # embarch-promptu: spec
 
-**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) is built and tested, committed locally in its repo, not reviewed and not installed; steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
+**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) is built and tested, committed locally in its repo, review round 1 of 3 fixed, not installed; steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md), and the repo's own [docs/contract.md](../../embarch-promptu/docs/contract.md), the interface every build step shares.
 
@@ -14,14 +14,14 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **`promptu hook`** (decisions 5–7), run by the plugin's PreToolUse and PostToolUse hooks. A Write, Edit or MultiEdit into an auto-memory folder is checked as the file the write would leave, on what the write touches: T1–T7 on a topic file, I1–I5 on the index, and O1 (orphaned topic files) after an index write. **Warn mode** is the default: the write goes ahead and Claude is told what to fix. **Block mode** refuses a write with an error (exit 2); `off` checks nothing. Set in `~/.config/embarch-promptu/config.toml`.
 - **`promptu memory [--json]`** (decision 8): the memory that loads in a folder, by scope (user, auto, project), then domain, then kind, each entry with its 6-hex memory id, age and stale flags.
 - **`promptu memory check [<path>...]`**: the same checks on files as they stand; exit 1 on an error.
-- **The plugin** `embarch-promptu` 0.1.0 with the two hooks. It validates and installs into a scratch Claude Code config; it is installed nowhere for real, and where it will be listed is open.
+- **The plugin** `embarch-promptu` 0.1.0 with the two hooks. It validates and installs into a scratch Claude Code config; it is installed nowhere for real, and will be listed in the `embarch` marketplace once that has moved to `embarch-umbrella` (decision 20).
 
 ## 3. Invariants
 
 - **No model call and no network** in the hook, the checks or the inventory.
 - **The hook fails open**: bad input, an unreadable file, an edit that would not apply, a panic, all exit 0 with nothing printed. It never answers with a `permissionDecision`, so Claude Code's own permission flow is untouched.
 - **It checks only what a write touches**: a topic file's labels whenever the file is written; an index line only when the write adds or changes it, so a legacy long line never blocks an unrelated write.
-- **A field counts at either level**, the top level or under `metadata:`: on a Write into a memory folder Claude Code moves every key but `name` and `description` under `metadata:` and restamps `node_type`, `originSessionId` and `modified` [measured 2026-10-29, Claude Code 2.1.287]. T7 (a dropped field) ignores the level and those three.
+- **A field counts at either level**, the top level or under `metadata:`: on a Write into a memory folder Claude Code moves every key but `name` and `description` under `metadata:` and restamps `node_type`, `originSessionId` and `modified` [measured 2026-10-29, Claude Code 2.1.287]. T7 (a dropped field) ignores the level and those three (decision 18).
 - **The memory folder is found as Claude Code finds it**: keyed on the main checkout, so a linked worktree shares it, with Claude Code's folder-name rule and its overrides; a `source:` path resolves against the checkout the folder's name encodes.
 - **Frontmatter is read as Claude Code reads it**, with its lenient second pass, so a file Claude Code accepts is never called broken.
 - **Public repo**: fixtures and examples are invented; nothing from the owner's memory or transcripts.
@@ -43,7 +43,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **See a shell write** into a memory folder (`>`, `sed -i`, `mv`): only Write, Edit and MultiEdit pass through it.
 - **Cover subagent memory** or the personal memory folder: auto memory only.
 - **Show startup cost** in the inventory (decision 8).
-- **Install itself**, or decide a design fork: those wait for the owner (`docs/forks.md` in the repo).
+- **Install itself**, or decide a design fork: those wait for the owner (`docs/forks.md` in the repo; four answered as decisions 18–21).
 
 ## 6. Pointers
 
