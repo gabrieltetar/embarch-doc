@@ -14,5 +14,5 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **No step 2 fork is open**: S1–S8 became decisions 22–28 and 31.
 - **The weekly sheet without the Desk** (decision 30) is decided, not built: build step 4.
 - **The skill has not run in a real session.** Unverified: that Claude Code lists it as `/promptu` and not only `/embarch-promptu:promptu`; what AskUserQuestion returns on Esc (the skill treats no answers as Esc); that `$ARGUMENTS` keeps line breaks. `prep`, `next` and `render` ran end to end against the real model once [2026-10-29].
-- **"Where it's used" is still empty**: footers are written now, but `promptu memory` does not scan transcripts for them yet (contract §5 `used`).
+- **Where a memory is used is untested on real transcripts**: built and tested on invented ones (decision 33); a run in the terminal that was cancelled at "send as is" counts, and a removed worktree's runs are lost. A cold-cache scan time is not measured.
 - **`promptu week --pack` is not stubbed**: SYNTHESIS put a stub in step 2; it belongs with step 4's loop.
