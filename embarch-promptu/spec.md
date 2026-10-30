@@ -1,6 +1,6 @@
 # embarch-promptu: spec
 
-**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) is built and tested, committed locally in its repo, review rounds 1 and 2 of 3 fixed, not installed; steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
+**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) passed its three review rounds (round 3 found nothing), is pushed, and is installed on the owner's machine in warn mode — the `promptu` binary in `~/.local/share/embarch/bin/`, the plugin from the `embarch` marketplace in `embarch-umbrella` (decision 20); steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md), and the repo's own [docs/contract.md](../../embarch-promptu/docs/contract.md), the interface every build step shares.
 
