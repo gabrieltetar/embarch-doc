@@ -19,7 +19,7 @@
 | `POST /drafts`, `PATCH /drafts/{id}`, `POST /drafts/{id}/send`, `/discard`; `POST /timer/start`, `/timer/stop` | Agents' comment and issue drafts, sent only from the tab; the manual timer |
 | `GET/POST /desks`, `DELETE /desks/{id}`; `GET/POST /open`; `GET /day/{date}`; `GET /linear/projects`, `/github/repos` | Desks and the open one (`none` closes it); a day's work grouped by desk, Harvest's entries merged in (41); the form's choices |
 | `PATCH`/`DELETE /harvest/entry/{account}/{id}` | The user's edit or delete of an entry already in Harvest, from the day list |
-| `GET /pickup`; `POST /items/{id}/start` | The user's open issues in the desk with no card; Start work (43) |
+| `GET /pickup`; `POST /items/{id}/start` | The user's open issues in the desk with no card; Start work (43): `{worktree, branch, how, moved_to, warnings, folder_uri}` plus `mailbox_id` (chat setting on) or `claude_uri` and `starter` — `promptu` when it typed `/promptu --item <wNN> Work on KEY — title`, `summarize` for the old starter (67) |
 
 ### Added for `embarch-chat`
 
@@ -33,7 +33,7 @@ Every route takes the desk's bearer token. Additions only; nothing above changed
 | `GET /mailbox?folder=<absolute path>` | `{"entries":[…]}`, the pending entries for that folder |
 | `POST /mailbox/{id}/take` | The entry, once; `409` after |
 | `POST /items/{id}/start` | With the chat setting on, leaves a `start` entry for the worktree and answers without the Claude Code prompt link (43) |
-| `GET`/`PUT /settings` | `{"chat_panel": bool}`, **off by default**: Start work opens Claude Code's panel unless it is on (`embarch-chat` decision 4) |
+| `GET`/`PUT /settings` | `{"chat_panel": bool, "promptu": bool}`. `chat_panel`, **off by default**: Start work opens Claude Code's panel unless it is on (`embarch-chat` decision 4). `promptu`, **on by default**: with the chat setting off, Start work types `/promptu …` when Promptu is installed (67). A PUT changes only the fields it names |
 | `GET /items/{id}/brief` | The pull (48): issue (title, state, description head, latest comments), PRs, sessions, notes (each memory note's newest state, the latest lines), bench — newest first, capped at 16,000 characters |
 | `GET /items/{id}/notes` | Every note, newest first (53) |
 | `GET /view`, per session | `state` (`busy`, `waiting`, `idle`, `ended`), `waiting_for`, `last_ms`, `cwd`, `client`; **a card keeps its ended `embarch-chat` sessions**, so Open chat can resume one (47) |
