@@ -8,7 +8,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 
 | Group | Decisions | What it settles |
 |---|---|---|
-| [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 4, 6, 23, 29, 17, 92, 21, 52, 53, 91, 54 | A VS Code panel replacing Claude Code's, what `embarch-promptu` became, the launcher moved in, shipped whole; the layout, a chat as a tab, Preact, the typeface, the palette, the column, the mark |
+| [decisions/shape.md](decisions/shape.md) | 1, 2, 3, 4, 6, 23, 29, 17, 92, 21, 52, 53, 91, 54 | A VS Code panel replacing Claude Code's, what `embarch-promptu` became until the owner revived it, the launcher moved in, shipped whole; the layout, a chat as a tab, Preact, the typeface, the palette, the column, the mark |
 | [decisions/sessions.md](decisions/sessions.md) | 5, 31, 35, 80, 41, 30, 22, 12, 75, 48, 63 | One `claude` per chat owned by its window, foreign threads read-only, waiting and unread, the idle close, which `claude`, nothing new stored, names, what a workspace cannot change, what a reload restores |
 | [decisions/desk.md](decisions/desk.md) | 9, 10, 11, 18, 20, 84; 32, 33, 40, 42–47, 49 moved | The window's desk's threads, a chat on its item before it starts, Start work into a chat, the header, reaching the desk, Keep; the desk's side, now `embarch-desk` decisions 46–55 |
 | [decisions/timeline.md](decisions/timeline.md) | 8, 50, 87, 51, 89, 90, 76, 79, 62, 93 | Day-one parity, steps and folded runs, what a step touched as a link, turns, what the CLI sends Claude as a row, a background agent's report, compactions, answered questions, tool output in a tab, file links |

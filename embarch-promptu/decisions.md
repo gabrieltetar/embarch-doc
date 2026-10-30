@@ -1,0 +1,68 @@
+# embarch-promptu: decisions
+
+**Status:** active, 2026-10-29.
+
+Why Promptu is shaped this way. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md).
+
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). 1–17 are the design the owner approved on 2026-10-29, after a research pass over published prompting practice, prior tools and his own sessions; they hold from build step 1 on, and the step that builds each one may refine it here. Cite them as `embarch-promptu decision N`. Choices the design leaves open are in the repo's `docs/forks.md` until the owner picks.
+
+## What Promptu is
+
+### 1 — Its own sub-project again, as a plugin plus a CLI
+Decided by the owner on 2026-10-29, so Promptu can be used without `embarch-chat`. **This reverses `embarch-chat` decision 6**, where `embarch-promptu` became `embarch-chat`. It ships as one Claude Code plugin, `embarch-promptu@embarch`, and a `promptu` CLI that prints its data as JSON; it works in the terminal and in Claude Code's panel, and `embarch-chat` finds it installed and draws its menus. Promptu owns two things: memory organisation and prompt patterns. `embarch-chat` keeps the 📚 library and the 💡 assistant. **Rejected:** staying inside `embarch-chat`, which tied both to one UI.
+
+### 2 — Rust, one binary
+Like `embarch-desk`: the hook runs on every file write in every session, and a Rust hook call costs about a millisecond [measured 2026-10-29]. **Rejected:** TypeScript (shares code with the chat, pays Node's start on every write), Python (fastest to write, tens of milliseconds a call [assumed]).
+
+### 3 — Five build steps, each usable alone; built by agents under a contract
+1 memory · 2 `/promptu` in the terminal · 3 Start work, the chat's dialog and rail · 4 the weekly loop and the Desk section · 5 the 💡 linker's new kinds. Background agents build each step in their own worktree, the contract (`docs/contract.md`) first, then three independent review rounds; nothing is installed before review passes. **A design fork goes to the owner's ranked list (`docs/forks.md`) and runs on its most reversible default; an agent never decides one.**
+
+## Memory
+
+### 4 — Two labels: a kind beside Claude Code's `type`, and a domain
+`kind` is one of `preference` · `rule` · `trap` · `reference` · `status`, and must match Claude Code's `type` (user · feedback · feedback · reference · project). A `status` carries `review-by` at most 90 days ahead: stale status is the memory most likely to mislead. A `reference` carries `source` (a repo path, an absolute path, a URL or a commit), a `trap` when there is one. The domain is the `## ` header the index line sits under; the headers are the domain list, and the owner adds them, never a tool write. Index lines stay within 150 characters and state the fact, because a later pass reads only the index. **Read at either level**, top or `metadata:`, since Claude Code moves the keys (decision 5). **Rejected:** replacing `type` (fights Claude Code's own instructions), mapping `type` alone (cannot tell a trap from a rule or status from a reference), a domain field per file.
+
+### 5 — A hook checks every memory write, with no model
+A PreToolUse hook on Write, Edit and MultiEdit into an auto-memory folder runs T1–T7 on a topic file and I1–I5 on the index, **on what the write touches**, and fails open; a PostToolUse warning names orphaned topic files. Claude keeps writing memories freely. **Why a hook:** in a four-run test, one model dropped a field it had not written when it rewrote a memory, and no model added `kind` unprompted; a rule that must hold goes in a hook. T7, a dropped field, compares fields at either level and skips the three Claude Code stamps itself, because Claude Code moves every key but `name` and `description` under `metadata:` on a write [measured 2026-10-29]. **Rejected:** a model judging each write (cost and latency on every write), checking whole files on every write (old long lines would block unrelated writes).
+
+### 6 — Warn first; block after relabelling
+`memory_hook = "warn" | "block" | "off"` in `~/.config/embarch-promptu/config.toml`, warn by default. Warn lets the write through and tells Claude what to fix (`additionalContext`); block refuses a write with an error (exit 2, the reason on stderr). Existing memories are relabelled first, from a ✓/✕ sheet applied with backups, then the owner turns block on. **Neither mode answers with a permission decision**: an `allow` would skip the user's own prompt. **Rejected:** blocking from the first day, when most index lines were over 150 characters.
+
+### 7 — The hook lives in the Promptu plugin
+The owner's split puts memory organisation in Promptu. **Rejected:** `embarch-desk`'s hook binary, which already sees every tool call but owns time and work items, not memory.
+
+### 8 — The memory menu, v1
+`promptu memory --json` feeds it; the terminal prints the same view. Entries grouped by scope (user, each project's auto memory, its `CLAUDE.md` files), then domain, then kind; **stale** flags for a past `review-by`, a `source` path that is gone, and a missing label; **where an entry is used**, from the footers that name it (decision 13). The only action is open to edit. **Rejected:** showing each memory's startup cost.
+
+## Prompt patterns
+
+### 9 — Prompt-first, and render, don't rewrite
+The owner types a rough prompt, or desk Start work hands Promptu the issue. One stripped Sonnet `claude -p` picks the pattern and fills what the prompt, the work item, memory and last time's answers already say; a dialog asks only what is missing, costliest gap first; the prompt lands in the draft and is never sent. **His words go verbatim under Goal and no model rephrases them**: it keeps his ownership, makes his edits measurable, and lets the chat's form render with no model. The prompt has six headed sections (Goal · Context · Read first · Done when · Constraints · Who does it), only those with content. Esc keeps the answers and turns the rest into assumptions Claude must state. **Rejected:** a rewrite call after the quiz, Haiku for the pass, a UserPromptSubmit hook (it can neither ask nor rewrite), no model (a regex picker scored under half right on hand-labelled asks).
+
+### 10 — Fill rules
+Bench state (board, what is attached, instruments, the gate) is asked on every run, and only the prompt itself may pre-select an answer: what is plugged in changes daily. A fill whose evidence quote is not found in its claimed source is dropped and asked instead. Every question has a recommended option with a one-line why, and one key takes them all; **no recommended option proceeds on a design fork by itself.**
+
+### 11 — A pattern is one Markdown file, in one public, generic set
+The frontmatter is the quiz (questions with a header of at most 12 characters, 2–4 options, a recommendation, `required`, `always_ask`, allowed `sources`, `when`, the friction gap it closes, a why); the body is a logic-less Mustache template; `_<id>.md` is a fragment other patterns include. **No local overlay:** anything specific to the owner comes from memory and the desk at run time. The first set is 11 patterns and 2 fragments (implement an issue, review loop, draft a message, relay a colleague's ask, design shaping, address PR comments, research and explain, debug a failure, handoff, bench session, delegate to agents; house rules, bench state); five candidates wait. Every pattern commit passes the client-name and public denylist checks.
+
+### 12 — Paging in the terminal
+`/promptu` is a skill with `disable-model-invocation: true`. AskUserQuestion takes four questions a call, so a page holds three plus a "Rest" control (keep going, or take the rest as recommended), and the last page four; `/promptu --rec` takes every recommendation.
+
+### 13 — The footer is the only record
+The rendered prompt ends with one line, `— promptu <pattern>@<version> asked=… filled=… skipped=… assume=…`, about 40–60 tokens; a memory fill names its entry as `memory.<id>`, **the first six hex digits of the SHA-1 of the topic file's name**. Nothing else is stored. **Rejected:** a separate run log, the file stem as the id (up to 40 characters).
+
+## Learning
+
+### 14 — A weekly ✓/✕ sheet, drafted locally
+A systemd user timer runs a stripped Opus `claude -p` every Wednesday at 08:00 (`Persistent=true`), about $1.5–3 a week [assumed]. Its inputs: friction in sessions, his edits, skipped and overridden questions, prompts no pattern matched, outcomes, and a quarterly or new-model refresh of published practice. **Every event becomes a proposal**; a specific fact becomes a memory entry, so patterns stay generic. He approves the sheet in a Promptu section of the Desk tab, the spot `embarch-desk` decision 65 kept, hidden while it has nothing open. **The ping is the Desk section alone**: no Slack message, since the desk's Slack connector is gone (`embarch-desk` decision 66). **Rejected:** 👍/👎 clicks and memory corrections as inputs, cloud routines (the data stays local), the fleet, a session cron (it skips while the session is busy).
+
+### 15 — Success after four weeks
+Reported on each sheet: corrections per prompt at or below 0.10 against non-Promptu sessions as a control, redirected messages per task start down about 30%, at least 90% of pre-filled answers kept, at least 85% of picked patterns kept, questions per run falling, and a one-key "better · same · worse" line.
+
+## The chat and the desk
+
+### 16 — Start work runs the pass on the issue; the rail; the linker
+From step 3, desk Start work runs the pass on the issue itself and leaves the improved start prompt in the draft, replacing today's read-and-summarize starter. `embarch-chat` gains a left rail, folded like VS Code's activity bar, holding Memory, Promptu, 📚 and 💡. The 💡 becomes the reference linker, gaining datasheet and spec sections through the atlas, instruments, captures and traces, Linear projects and docs, branches and worktrees, Kconfig symbols and devicetree nodes; Promptu owns missing context and improvement. **A reply inside a running task is never touched.**
+
+### 17 — The owner's `CLAUDE.md` carries the rules
+The memory rule went live on 2026-10-29. With step 2 come rules on design forks (interactive work waits for his pick), asking, web research in his own wording, and ignoring the footer. **Rejected:** "take the recommendation and proceed" as a standing rule.

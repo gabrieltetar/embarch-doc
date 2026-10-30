@@ -71,7 +71,7 @@ Three pieces landed alongside it, none optional: the **dev-bench bypass** became
 ## Next
 
 - **A real `.eap` protocol run on real hardware.** The mechanism shipped, and it closes the *authoring* half of the blocker milestone 5 named: **an engineer can now state a DUT's protocol instead of the tool guessing it.** The bench's real-time interpreter is built and pinned against the reference one by a literal frame carrying the worked protocol; Core gained the third pre-flight seal alongside it. **What is left is the one thing milestone 5 always named: a real engineer authoring a real manifest for a real DUT.** Nothing has executed one against a radio yet, so **expect the first real run to find something in the BLE half** — discovery, three concurrent subscriptions, and the notification queue under a real chunk burst are the parts no host test reaches. Also owed: a Core redeploy and a bench reflash **in the same sitting**, since the wire moved ([dev-workflow](../embarch-dev-workflow.md) §4a).
-- **`embarch-chat`** — the owner's Claude chat in VS Code, what `embarch-promptu` became. Deployed; [open](../embarch-chat/open.md).
+- **`embarch-chat`** — the owner's Claude chat in VS Code. Deployed; [open](../embarch-chat/open.md).
 
 ## Later
 

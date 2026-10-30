@@ -24,9 +24,9 @@ It knows its **work item** and starts briefed; it carries the owner's **prompt l
 
 Start work kept opening the Claude Code panel (`embarch-desk` decision 43) until this existed. The desk's chat setting, `chat_panel`, **off by default**, decides which panel Start work opens; it is on since the deploy of 2026-10-23.
 
-### 6 — `embarch-promptu` became `embarch-chat`
+### 6 — `embarch-promptu` became `embarch-chat` (reversed by the owner, 2026-10-29)
 
-One new repo for the extension and the library, the sub-project count unchanged; promptu's three planned pieces — a permission split, a `CLAUDE.md` fragment, a build → flash → serial log → diagnose loop — are library entries (39, and the `build-flash-verify` skill). Its two deferred questions are answered: the packaging is a Claude Code plugin (13), the repo its own. Decision 1 sets `embarch-ui` decision 3's "no webview" aside for this extension only. **Rejected:** inside `embarch-desk` or `embarch-ui`'s launcher (wrong repo's concern), a sub-project beside promptu.
+One new repo for the extension and the library, the sub-project count unchanged; promptu's three planned pieces — a permission split, a `CLAUDE.md` fragment, a build → flash → serial log → diagnose loop — are library entries (39, and the `build-flash-verify` skill). Its two deferred questions are answered: the packaging is a Claude Code plugin (13), the repo its own. Decision 1 sets `embarch-ui` decision 3's "no webview" aside for this extension only. **Rejected:** inside `embarch-desk` or `embarch-ui`'s launcher (wrong repo's concern), a sub-project beside promptu. **Reversed by the owner on 2026-10-29:** `embarch-promptu` is its own sub-project again, a plugin and a CLI for memory checks and prompt patterns that people can use without this extension, which draws its menus in a rail (`embarch-promptu` decision 1). The library and its three pieces stay here.
 
 ### 29 — `embarch-ui`'s launcher moved into this extension
 
