@@ -4,12 +4,15 @@
 
 Why Promptu is shaped this way. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). 1–17 are the design the owner approved on 2026-10-29, after a research pass over published prompting practice, prior tools and his own sessions; they hold from build step 1 on, and the step that builds each one may refine it here. 18–21 are his answers the same evening to four forks step 1 raised. Cite them as `embarch-promptu decision N`. 22–24 are his answers to build step 2's measurement and its first forks. Choices the design leaves open are in the repo's `docs/forks.md` until the owner picks: F1–F4 (18–21) and S1–S3 (22–24) are decided; F5–F10 and S4–S8 are open.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). 1–17 are the design the owner approved on 2026-10-29, after a research pass over published prompting practice, prior tools and his own sessions; they hold from build step 1 on, and the step that builds each one may refine it here. 18–21 are his answers the same evening to four forks step 1 raised. Cite them as `embarch-promptu decision N`. 22–24 are his answers to build step 2's measurement and its first forks, 25–28 his answers to its later forks, and 29–30 his requirement that Promptu work without the rest of EmbArch. Choices the design leaves open are in the repo's `docs/forks.md` until the owner picks: F1–F4 (18–21) and S1–S7 (22–28) are decided; F5–F10 and S8 are open.
 
 ## What Promptu is
 
 ### 1 — Its own sub-project again, as a plugin plus a CLI
 Decided by the owner on 2026-10-29, so Promptu can be used without `embarch-chat`. **This reverses `embarch-chat` decision 6**, where `embarch-promptu` became `embarch-chat`. It ships as one Claude Code plugin, `embarch-promptu@embarch`, and a `promptu` CLI that prints its data as JSON; it works in the terminal and in Claude Code's panel, and `embarch-chat` finds it installed and draws its menus. Promptu owns two things: memory organisation and prompt patterns. `embarch-chat` keeps the 📚 library and the 💡 assistant. **Rejected:** staying inside `embarch-chat`, which tied both to one UI.
+
+### 29 — Promptu works with or without the rest of EmbArch
+Decided by the owner on 2026-10-29. Promptu stands alone: the binary and the plugin need nothing else from the suite, and the README and spec describe standalone use first, EmbArch as the optional integration. **Detection is automatic with a config override**: the `/promptu` skill checks which EmbArch parts its session has, the desk (`desk_work_item`) and the bench tools (`embarch-api`), and passes them as `prep --have`; an `[embarch]` table in Promptu's `config.toml` forces each to `on` or `off`, `auto` by default. **What needs a missing part is hidden and a generic fallback stays**: a pattern marks such a question or option `requires: desk` or `requires: embarch-api`; without the part it is not shown, filled or rendered, a hidden recommendation gives way to the first option that shows (bench-session's "flash through EmbArch" gives way to "the project's own tooling"), and lint checks every `requires` and that each question keeps 2–4 options without EmbArch. **Install alone** with `cargo install --git …` or a release binary in `~/.local/bin`; inside the suite the binary stays in `~/.local/share/embarch/bin`. **Rejected:** requiring the desk for `/promptu`, and per-user pattern variants.
 
 ### 2 — Rust, one binary
 Like `embarch-desk`: the hook runs on every file write in every session, and a Rust hook call costs about a millisecond [measured 2026-10-29]. **Rejected:** TypeScript (shares code with the chat, pays Node's start on every write), Python (fastest to write, tens of milliseconds a call [assumed]).
@@ -63,16 +66,31 @@ Decided by the owner on 2026-10-29 (fork S2). A reply to a review comment on a p
 ### 24 — A pasted brief is checked for its gaps, not rewritten
 Decided by the owner on 2026-10-29 (fork S3). When the prompt is a brief already written for an agent (headed sections, an order of work, a definition of done), the pass runs the pattern of the work it describes, treats the brief as evidence that pre-fills what it answers, and asks only its open required and always-asked questions. **The brief's text stays verbatim**; only the answers to those questions are added after it, under the six headings, and the footer says `mode=brief`. The pass flags a brief, and `prep` also recognises one without the model. **Why:** seven of the owner's sixteen "handoff" asks were such briefs being run, and the measurement's first draw wrapped two of them in a full template. **Rejected:** wrapping a brief in its pattern's template (it rewrites what is written), and sending it as is (its gaps go unasked).
 
+### 25 — A skipped house-rules question adds nothing
+Decided by the owner on 2026-10-29 (fork S4). When the pass judges the house rules not relevant, the question is skipped and the prompt gains no constraint: the fragment's `default` is `[]`, where it used to take the including pattern's recommendation ("work in another checkout", "only I open pull requests"). Asked or filled, the rules render as before. **Why:** a constraint nobody chose and the pass saw no reason for should not appear. **Rejected:** the recommendation as the default.
+
+### 26 — The desk work item reaches the terminal through the desk's MCP tool
+Decided by the owner on 2026-10-29 (fork S5). The `/promptu` skill calls the desk's `desk_work_item` when the session has the desk, and passes the item to `prep --desk <file>`; **the CLI makes no network calls**. **Rejected:** `prep` calling the desk's `GET /items/{id}/brief` itself.
+
+### 27 — Last answers live in a state file
+Decided by the owner on 2026-10-29 (fork S6). `render` keeps each pattern's latest answers per project in `~/.local/state/embarch-promptu/last/<project>.json`, the `last` source of the next run; it holds the answers, not the run (13). **Rejected:** deriving them from the transcripts' newest footer, which holds only `other` for a typed answer and is lost when a draft is edited or the footer deleted.
+
+### 28 — A bare pasted question is a colleague relay
+Decided by the owner on 2026-10-29 (fork S7). `colleague-relay` gained an invented example of a question pasted with no speaker named, and its description names the case, since the measurement's pass picked "none" for one at every effort. **Rejected:** leaving it to the chip row.
+
 ### 12 — Paging in the terminal
 `/promptu` is a skill with `disable-model-invocation: true`. AskUserQuestion takes four questions a call, so a page holds three plus a "Rest" control (keep going, or take the rest as recommended), and the last page four; `/promptu --rec` takes every recommendation.
 
 ### 13 — The footer is the only record
-The rendered prompt ends with one line, `— promptu <pattern>@<version> asked=… filled=… skipped=… assume=…`, about 40–60 tokens; a memory fill names its entry as `memory.<id>`, **the first six hex digits of the SHA-1 of the topic file's name**. Nothing else is stored. **Rejected:** a separate run log, the file stem as the id (up to 40 characters).
+The footer is the only record of what a run asked and filled; the answers alone are kept per project for next time (27). The rendered prompt ends with one line, `— promptu <pattern>@<version> asked=… filled=… skipped=… assume=…`, about 40–60 tokens; a memory fill names its entry as `memory.<id>`, **the first six hex digits of the SHA-1 of the topic file's name**. Nothing else is stored. **Rejected:** a separate run log, the file stem as the id (up to 40 characters).
 
 ## Learning
 
 ### 14 — A weekly ✓/✕ sheet, drafted locally
 A systemd user timer runs a stripped Opus `claude -p` every Wednesday at 08:00 (`Persistent=true`), about $1.5–3 a week [assumed]. Its inputs: friction in sessions, his edits, skipped and overridden questions, prompts no pattern matched, outcomes, and a quarterly or new-model refresh of published practice. **Every event becomes a proposal**; a specific fact becomes a memory entry, so patterns stay generic. He approves the sheet in a Promptu section of the Desk tab, the spot `embarch-desk` decision 65 kept, hidden while it has nothing open. **The ping is the Desk section alone**: no Slack message, since the desk's Slack connector is gone (`embarch-desk` decision 66). **Rejected:** 👍/👎 clicks and memory corrections as inputs, cloud routines (the data stays local), the fleet, a session cron (it skips while the session is busy).
+
+### 30 — The weekly sheet works without the Desk
+Decided by the owner on 2026-10-29; **not built** (build step 4). Without the Desk, the weekly ✓/✕ sheet is a Markdown file applied with `promptu week apply`, and a `/promptu:review` skill walks it in the terminal. With the Desk present, its Promptu section shows the same sheet (14). **Rejected:** a sheet only the Desk can show.
 
 ### 15 — Success after four weeks
 Reported on each sheet: corrections per prompt at or below 0.10 against non-Promptu sessions as a control, redirected messages per task start down about 30%, at least 90% of pre-filled answers kept, at least 85% of picked patterns kept, questions per run falling, and a one-key "better · same · worse" line.
