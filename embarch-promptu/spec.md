@@ -1,6 +1,6 @@
 # embarch-promptu: spec
 
-**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) is built and tested, committed locally in its repo, review round 1 of 3 fixed, not installed; steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
+**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) is built and tested, committed locally in its repo, review rounds 1 and 2 of 3 fixed, not installed; steps 2–5 are designed ([decisions.md](decisions.md)) and not started.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md), and the repo's own [docs/contract.md](../../embarch-promptu/docs/contract.md), the interface every build step shares.
 
