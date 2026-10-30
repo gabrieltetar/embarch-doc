@@ -1,6 +1,6 @@
 # embarch-promptu: open
 
-**Status:** active, 2026-10-29.
+**Status:** active, 2026-10-30.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -15,4 +15,5 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **The weekly sheet without the Desk** (decision 30) is decided, not built: build step 4.
 - **The skill has not run in a real session.** Unverified: that Claude Code lists it as `/promptu` and not only `/embarch-promptu:promptu`; what AskUserQuestion returns on Esc (the skill treats no answers as Esc); that `$ARGUMENTS` keeps line breaks. `prep`, `next` and `render` ran end to end against the real model once [2026-10-29].
 - **Where a memory is used is untested on real transcripts**: built and tested on invented ones (decision 33); a run in the terminal that was cancelled at "send as is" counts, and a removed worktree's runs are lost. A cold-cache scan time is not measured.
+- **Step 3 waits for review and install**, and its design forks for the owner's pick: `docs/forks.md`, step 3 (P1–P15). Nothing of it has run in the owner's VS Code, against the real Sonnet pass from the chat, or from a real Start work; Claude Code taking `/promptu --item …` from the desk's `vscode://` link is untested.
 - **`promptu week --pack` is not stubbed**: SYNTHESIS put a stub in step 2; it belongs with step 4's loop.

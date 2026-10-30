@@ -1,6 +1,6 @@
 # embarch-promptu: spec
 
-**Status:** active, 2026-10-29. In progress: build step 1 of 5 (memory) passed its three review rounds, is pushed, and is installed on the owner's machine in warn mode — the `promptu` binary in `~/.local/share/embarch/bin/`, the plugin from the `embarch` marketplace in `embarch-umbrella` (decision 20). Build step 2 (the terminal pass, `/promptu`) passed its three review rounds and is committed locally in `embarch-promptu`, not pushed or installed. Step 3's CLI side (decisions 32–33; [interfaces.md](interfaces.md)) is committed locally, not installed; 4–5 are designed and not started.
+**Status:** active, 2026-10-30. In progress: build step 1 of 5 (memory) passed its three review rounds, is pushed, and is installed on the owner's machine in warn mode — the `promptu` binary in `~/.local/share/embarch/bin/`, the plugin from the `embarch` marketplace in `embarch-umbrella` (decision 20). Build step 2 (the terminal pass, `/promptu`) passed its three review rounds and is committed locally in `embarch-promptu`, not pushed or installed. **Build step 3** (§2c) is built and committed locally in `embarch-promptu`, `embarch-chat` and `embarch-desk`, not reviewed or installed; its forks wait for the owner in `docs/forks.md`. Steps 4–5 are designed and not started.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md), and the repo's own [docs/contract.md](../../embarch-promptu/docs/contract.md), the interface every build step shares.
 
@@ -24,6 +24,12 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **`promptu next`** records a page of answers and re-plans; **`promptu render`** writes the six-section prompt with the owner's words verbatim under Goal, stated assumptions for what Esc left open, and the footer (decision 13). It keeps each pattern's last answers per project and the draft under `~/.local/state/embarch-promptu/`.
 - **The patterns**: 11 and 2 fragments in the repo's `patterns/`, embedded in the binary (decisions 11, 23). **`promptu lint`** checks them against the schema and AskUserQuestion's limits and renders every example; the tests pin each render.
 
+## 2c. Build step 3 (built, not installed)
+
+- **The CLI** (decisions 32–33): `promptu patterns`, "where it's used" in `promptu memory`, `prep --start`, the skill's `--item`.
+- **`embarch-chat`** (its 94–98): a rail with Memory, Promptu, 📚 and 💡; at a task start Enter runs the pass in a dialog, the prompt lands in the draft, unsent; Start work runs it on the issue; the Memory menu.
+- **`embarch-desk`** (its 67): chat setting off, Start work types `/promptu --item <wNN> Work on KEY — title`.
+
 ## 3. Invariants
 
 - **No model call and no network** in the hook, the checks or the inventory. The pass is the only model call, and `lint`, `next` and `render` are model-free and deterministic.
@@ -41,16 +47,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 4. Constants
 
-| Constant | Value |
-|---|---|
-| Hook call, release build, through `sh -c` as Claude Code runs it | p50 0.9–1.0 ms, p95 under 1.4 ms [measured 2026-10-29, WSL2, 300 calls per case] |
-| Hook timeout in `hooks.json` | 5 s |
-| Index line limit | 150 characters |
-| `review-by` horizon | after today, at most 90 days |
-| Memory id | first 6 hex digits of the SHA-1 of the topic file's name |
-| The pass, Sonnet 5.5 at effort medium | wall p50 3.9 s, p95 7.3 s; 18 of 20 picks right; about $0.02 a run [measured 2026-10-29, 23 of the owner's prompts]; timeout 15 s |
-| `promptu render` / `prep` without the model, release build | p50 3.1 ms / 7.2 ms; the hook unchanged at p50 0.66 ms [measured 2026-10-29, WSL2] |
-| A dialog page | at most 4 questions: 3 plus "Rest" while more remain |
+The hook's and the pass's speed, the limits and the ids: [spec/constants.md](spec/constants.md).
 
 ## 5. What it deliberately does not do
 
@@ -65,4 +62,4 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 ## 6. Pointers
 
 - The repo: [README](../../embarch-promptu/README.md), [docs/contract.md](../../embarch-promptu/docs/contract.md), [docs/forks.md](../../embarch-promptu/docs/forks.md).
-- `embarch-chat` decision 6, which this sub-project's revival amends; `embarch-desk` decisions 65 and 66, the Desk spot step 4 fills.
+- `embarch-chat` decision 6, which this sub-project's revival amends, and 94–98, the chat side of step 3; `embarch-desk` decisions 65 and 66, the Desk spot step 4 fills, and 67, its Start work starter.
