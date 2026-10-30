@@ -27,8 +27,9 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | Command | What | Contract |
 |---|---|---|
 | `promptu patterns [--json]` | The task patterns, name order: name, version, summary, description, `signals.desk`; for the chat's Promptu card | §7.9 |
-| `promptu memory [--json] [--no-used]` | Now with each entry's `used` (the footers of the last 30 days that filled a question from it) and `used_claude_md`; `--no-used` skips reading the transcripts | §5 |
+| `promptu memory [--json] [--no-used]` | Now with each entry's `used` (the footers of the last 30 days, in prompts the owner sent, that filled a question from it — decision 33) and `used_claude_md`; `--no-used` skips reading the transcripts | §5 |
 | `promptu prep --start` | A desk Start work run: never a `signals.desk: never` pattern, the `default` one when there is no pick; output `start` and `pattern.start_default` | §7.8 |
+| `prep` / `next` `filled[]` | A fill a page does not ask carries `ask`, `picked`, `other` and `changed`, so a dialog changes it in place; the change is an answer, `!` in the footer (decision 38) | §7.8 |
 
 ## The hook
 

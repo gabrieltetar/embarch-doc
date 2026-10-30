@@ -61,7 +61,7 @@ Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the 
 
 ## The `embarch` plugin marketplace
 
-This repo also holds the suite's Claude Code plugin marketplace, `.claude-plugin/marketplace.json`, named `embarch`: `embarch-desk`, `embarch-promptu` and `embarch-chat`, each a `git-subdir` source (`url` + `path: plugin`), so each plugin installs from its own repo's pushed `plugin/` — a `github` source with `path` installed the whole repo instead [measured on Claude Code 2.1.287, 2026-10-29] ([`embarch-promptu` decision 20](../embarch-promptu/decisions.md)). It moved here from `embarch-desk` on 2026-10-29. `setup` installs `embarch-desk@embarch` but does not add the marketplace (58).
+This repo also holds the suite's Claude Code plugin marketplace, `.claude-plugin/marketplace.json`, named `embarch`: `embarch-desk`, `embarch-promptu` and `embarch-chat`, each a `git-subdir` source (`url` + `path: plugin`), so each plugin installs from its own repo's pushed `plugin/` — a `github` source with `path` installed the whole repo instead [measured on Claude Code 2.1.287, 2026-10-29] ([`embarch-promptu` decision 20](../embarch-promptu/decisions/what.md)). It moved here from `embarch-desk` on 2026-10-29. `setup` installs `embarch-desk@embarch` but does not add the marketplace (58).
 
 ## The `doctor` chain
 
