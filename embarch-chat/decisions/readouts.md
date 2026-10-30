@@ -1,8 +1,8 @@
 # embarch-chat decisions: Readouts and results
 
-**Status:** active, 2026-10-23.
+**Status:** active, 2026-10-30.
 
-What the chat reads out beside the conversation: time, the cache line and the usage limit, copying and export, how a long chat stays fast, bench results as cards and atlas citations as links.
+What the chat reads out beside the conversation: time, the cache line and the plan's usage, copying and export, how a long chat stays fast, bench results as cards and atlas citations as links.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -14,9 +14,13 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 "Warm, about N min left", "likely expired", or not covering the compacted conversation, with the lifetime read from each reply: every recorded reply writes the **1-hour** cache [measured], so 41's first reason — Claude's default 5-minute lifetime — was out of date; the 5-minute idle close stands on the process cost alone, since the cache lives on the server. **Rejected:** a permanent footer icon, assuming 5 minutes.
 
-### 67 — The account's usage limit is a banner above the status line
+### 67 — The account's usage limit is a banner above the status line (retired 2026-10-30, see decision 99)
 
-From `rate_limit_event`, by Claude Code's rules: nothing below 70 %, then percent used and the reset, then the limit hit and "wrapping up"; × hides it until the numbers change. **Rejected:** always showing the weekly percent, toasts.
+From `rate_limit_event`: nothing below 70 %, then the percent and the reset, then the limit hit. Retired at the owner's word: the rail's Usage icon shows the plan's usage instead, from the same event.
+
+### 99 — A Usage icon in the rail: the plan's 5-hour session and week, amber from 70 %, red from 90 %
+
+The owner's feature, 2026-10-30, replacing 67's banner at his word. **The rail (94) carries a Usage icon (📊)** showing the Claude plan's usage: the 5-hour session's and the week's share used, each with when it resets. **The source is 67's**: the `rate_limit_event` a chat's CLI sends with a turn when the account's limit changes, and on a process's first turn at least; Claude Code 2.1.287 carries both windows there as `unifiedWindows.five_hour` and `.seven_day`, `{utilization, resetsAt}` — an `@internal` field [measured 2026-10-30 from its bundle; the recorded sessions carry it] — and without it the icon reads the one limit the event names. The reading is the account's, so the host keeps the newest any of the window's chats heard and hands it to every page; no chat keeps a copy. **The icon lights amber from 70 % of either window and red from 90 % or when a limit is hit**; hover opens a card, as Promptu's (95): each window's share, a bar, and the reset as "in 3h (14:05)", how old the reading is, the limit hit or a turn finishing past it. **Gaps, the owner's to pick:** nothing shows until a chat of the window has had a reply, and the icon's place in the rail (`embarch-promptu` docs/forks.md P16–P17). **Rejected:** a new source of the chat's own for the numbers; the banner beside the icon.
 
 ### 74 — Each reply copies whole; `/export` is Claude Code's own text
 

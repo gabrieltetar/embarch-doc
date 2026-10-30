@@ -73,5 +73,6 @@ What the host hands a chat's webview from the desk and the chat's folder; the we
 | Message | What |
 |---|---|
 | `{t:"refs", refs}` | The window's desk's reference index, `{issues, prs}` whole, each time it changes; `null` with none (88) |
+| `{t:"usage", usage}` | The plan's usage, the window's newest reading from any chat's `rate_limit_event` (`unifiedWindows`); `null` before one (99) |
 | `{t:"promptuState"}`, `{t:"promptu", view}`, `{t:"promptuResult"}`, `{t:"promptuMemory"}` | Promptu's card, a chat's dialog as `prep`/`next` printed it, how a run ended (the prompt, or one line and Start work's starter), the Memory menu's data; the brief itself never (95, 96, 98) |
 | `githubRepo` in each snapshot's view | The chat's folder's GitHub repo, `owner/repo`, from its git config on disk — regular files of 64 KB or less, a FIFO, a device or a larger file read as none — github.com only, picked as `gh` picks one with no terminal: the remote `gh repo set-default` marked, else upstream, github, origin; `null` with none. Used for a prose or draft `PR #N` only, never for a step (88) |
