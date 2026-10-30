@@ -12,6 +12,16 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | `promptu memory [--json]` | The memory that loads in the current folder: scope → domain → kind, ids, ages, stale flags | §5 |
 | `promptu memory check [<path>...] [--json]` | The T and I checks on files as they stand; exit 1 on an error, 2 on a bad path | §4 |
 
+## Commands (build step 2)
+
+| Command | What | Contract |
+|---|---|---|
+| `promptu prep [--pattern <id>\|none] [--rec] [--desk <file>] [--offline]` | The rough prompt on stdin: picks the pattern, fills what the sources say, plans the dialog pages | §7.8 |
+| `promptu next <run>` | A page of answers on stdin; prints the pages left | §8.2 |
+| `promptu render <run> [--rest recommended\|assume] [--text]` | The prompt and its footer | §8.3 |
+| `promptu lint [<path>...] [--json] [--show]` | Pattern files against the schema and AskUserQuestion's limits; renders every example | §7.7 |
+| `/promptu [pattern=<id>] [--rec] <rough prompt>` | The plugin's skill: runs the three commands and the dialogs, then "send as is / edit" | §7.8, §8 |
+
 ## The hook
 
 - **Registered** by the plugin's `hooks/hooks.json` on PreToolUse and PostToolUse, matcher `Write|Edit|MultiEdit`, command `promptu hook` found on `PATH`, timeout 5 s (contract §3.1).
@@ -25,8 +35,9 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 |---|---|---|---|
 | Memory labels (`kind`, `type`, `review-by`, `source`, domains) | Claude, under the `CLAUDE.md` rule | the hook, the inventory | §2 |
 | The footer, `— promptu <pattern>@<version> …`, and the 6-hex memory id | `promptu render` (step 2) | the memory menu's "used", the weekly loop | §6 |
-| `promptu prep` JSON | step 2 | the `/promptu` skill, the chat's dialog | §7, sketch |
-| `promptu render` input and output | step 2 | the skill, the chat | §8, sketch |
+| Pattern files (`patterns/*.md`) | the repo; the weekly loop's approved changes (step 4) | `prep`, `lint`, `render` | §7.1 |
+| `promptu prep` and `next` JSON | step 2 | the `/promptu` skill, the chat's dialog (step 3) | §7.8, §8.2 |
+| `promptu render` input and output | step 2 | the skill, the chat | §8 |
 | `promptu desk --json` | step 4 | the desk's `GET /promptu` | §9, sketch |
 | `sheet.json` | the weekly drafter, step 4 | the Desk section | §10, sketch |
 
@@ -36,6 +47,8 @@ What a later step may change, and what it may not: contract §11.
 
 | Path | What |
 |---|---|
-| `~/.config/embarch-promptu/config.toml` | The machine's settings; step 1 reads `memory_hook` |
+| `~/.config/embarch-promptu/config.toml` | The machine's settings: `memory_hook`; `pass_effort`, `pass_model`, `pass_timeout_s`, `voice_skill`, `memory_claude_md_sections` (contract §7.6) |
+| `~/.local/state/embarch-promptu/` | Runs between `prep` and `render`, each project's last answers, drafts (contract §7.5) |
 | `<memory base>/projects/<folder>/memory/` | Claude Code's auto-memory folder, located as contract §1.2 says |
-| `plugin/` in the repo | The `embarch-promptu` plugin: `.claude-plugin/plugin.json`, `hooks/hooks.json` |
+| `plugin/` in the repo | The `embarch-promptu` plugin: `.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/promptu/SKILL.md` |
+| `patterns/` in the repo | The pattern set, embedded in the binary; `PROMPTU_PATTERNS` reads a folder instead |
