@@ -14,7 +14,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **`promptu hook`** (decisions 5–7), run by the plugin's PreToolUse and PostToolUse hooks. A Write, Edit or MultiEdit into an auto-memory folder is checked as the file the write would leave, on what the write touches: T1–T7 on a topic file, I1–I5 on the index, and O1 (orphaned topic files) after an index write. **Warn mode** is the default: the write goes ahead and Claude is told what to fix. **Block mode** refuses a write with an error (exit 2); `off` checks nothing. Set in `~/.config/embarch-promptu/config.toml`.
 - **`promptu memory [--json]`** (decision 8): the memory that loads in a folder, by scope (user, auto, project), then domain, then kind, each entry with its 6-hex memory id, age and stale flags.
 - **`promptu memory check [<path>...]`**: the same checks on files as they stand; exit 1 on an error.
-- **The plugin** `embarch-promptu` 0.1.0 with the two hooks. It validates and installs into a scratch Claude Code config; it is installed nowhere for real, and will be listed in the `embarch` marketplace once that has moved to `embarch-umbrella` (decision 20).
+- **The plugin** `embarch-promptu` 0.1.0 with the two hooks. It validates and installs into a scratch Claude Code config; it is installed nowhere for real, and is listed in the `embarch` marketplace, now in `embarch-umbrella` (decision 20).
 
 ## 3. Invariants
 

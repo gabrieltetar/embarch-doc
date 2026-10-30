@@ -8,7 +8,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **No draft has been sent and no tile has reached Harvest**; the comment, issue and status mutations were checked only with invalid ids, the reads against the real accounts [measured 2026-10-22].
 - **The polish prompt has never run against real Harvest targets.** Whether Claude picks the right project and task from assignments and recent entries is unmeasured.
 - **Is 8 hours the right gap?** ([decision 23](decisions.md)) A guess; a week of real tiles says whether overnight sessions leak in or long afternoons drop out.
-- **`embarch setup` installs it, and has never run for real** ([`embarch-umbrella` decision 58](../embarch-umbrella/decisions/setup-reversal.md)): the service and the plugin, both mocked in tests. Adding the `embarch` marketplace stays by hand.
+- **`embarch setup` installs it, and has never run for real** ([`embarch-umbrella` decision 58](../embarch-umbrella/decisions/setup-reversal.md)): the service and the plugin, both mocked in tests. Adding the `embarch` marketplace, now in `embarch-umbrella` (`embarch-promptu` decision 20), stays by hand.
 - **If OAuth returns (v2):** what is Harvest's real implicit-grant `expires_in`? A probe script was written and never run.
 - **"Is the bench busy?" sees studies only.** The bench proposal names a study Core lists as running; a flash or bootload in progress is not in that list ([decision 37](decisions.md)).
 - **A repo with several `embarch-api` projects** answers an unnamed build with the list (`embarch-api` decision 85). Whether a desk should name its default build project is unasked.

@@ -59,6 +59,10 @@ Not:
 
 Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the message on stderr (or folded into the JSON object under `--json`), `2` a malformed invocation.
 
+## The `embarch` plugin marketplace
+
+This repo also holds the suite's Claude Code plugin marketplace, `.claude-plugin/marketplace.json`, named `embarch`: `embarch-desk`, `embarch-promptu` and `embarch-chat`, each a `github` source with `path: plugin`, so each plugin installs from its own repo's pushed `plugin/` ([`embarch-promptu` decision 20](../embarch-promptu/decisions.md)). It moved here from `embarch-desk` on 2026-10-29. `setup` installs `embarch-desk@embarch` but does not add the marketplace (58).
+
 ## The `doctor` chain
 
 An ordered chain of eighteen checks; each emits pass/warn/fail plus a concrete fix line. A

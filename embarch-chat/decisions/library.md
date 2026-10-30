@@ -12,7 +12,7 @@ A `.md` file with frontmatter: it works in the terminal, the official panel and 
 
 ### 13 — The library is two folders
 
-Generic entries in a plugin in the `embarch-chat` repo (`plugin/`, the repo root its marketplace); **an entry naming a client, a client project or a client internal in `~/.claude/commands`, never in a repo**. Both become buttons. The extension ships a copy of the plugin for the 📚, but a chat runs an entry only once the plugin is installed in Claude Code; until then a started chat shows its entries greyed. **Rejected:** the public plugin only, the open firmware repo's commands too (the client team's, not the owner's).
+Generic entries in a plugin in the `embarch-chat` repo (`plugin/`, the repo root its own marketplace; the suite's `embarch` marketplace in `embarch-umbrella` lists it too, `embarch-promptu` decision 20); **an entry naming a client, a client project or a client internal in `~/.claude/commands`, never in a repo**. Both become buttons. The extension ships a copy of the plugin for the 📚, but a chat runs an entry only once the plugin is installed in Claude Code; until then a started chat shows its entries greyed. **Rejected:** the public plugin only, the open firmware repo's commands too (the client team's, not the owner's).
 
 ### 14 — It is seeded from the owner's past prompts, and the owner cuts
 
