@@ -33,7 +33,7 @@ The working directory of a session already on it; else the linked PR's GitHub re
 Searched as `<KEY> type:pr involves:@me`, then **checked against title and branch on word boundaries**, because search matches `ABC-12` inside `ABC-123`. Their state only — **CI was shown until 2026-10-22, when the owner asked for it gone**, and the desk stopped fetching check runs with it; no review list, no merge in v1.
 
 ### 65 — The Desk tab draws no Slack bar; its spot waits for a Promptu section
-Decided by the owner on 2026-10-29: the Slack bar and its feed leave the Desk tab, and the place the bar held stays empty for a Promptu section, a later change. **Only the tab changed**: the desk still reads Slack and serves the feed in `GET /view` and the `/slack` routes, which nothing calls now, and the Connectors panel still takes a Slack token. Amends 1, 4–5 and 57; retires `embarch-ui` decision 63, the bar's reply identity.
+Decided by the owner on 2026-10-29: the Slack bar and its feed leave the Desk tab, and the place the bar held stays empty for a Promptu section, a later change. The desk's own Slack side went the same day (66). Amends 1, 4–5 and 57; retires `embarch-ui` decision 63, the bar's reply identity.
 
 ## Time
 

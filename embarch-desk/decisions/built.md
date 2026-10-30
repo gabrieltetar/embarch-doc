@@ -25,4 +25,4 @@ The card records "the next session in this repo is this item" for 10 minutes, th
 On the owner's machine that is WSL, not a Windows service beside Core: it runs `claude -p` and resolves repo paths locally, and the browser reaches it through `embarch-ui`. The unit carries the installing shell's `PATH`, because a user service starts without the user's own bins and the desk runs `claude`, `gh`, `git` and `wslpath`. **Rejected:** a Windows service (every polish call and path crosses the boundary; deploys need UAC), hosting inside `embarch-ui` (sessions lost while the UI is closed), a spool file ingested later (no live tiles).
 
 ### 28 — The browser reaches the desk only through `embarch-ui`
-`/api/desk/{*rest}` is forwarded with the desk token added server-side. The token never enters the page, so no other site open in the browser can make the desk post to Slack or Harvest as the user.
+`/api/desk/{*rest}` is forwarded with the desk token added server-side. The token never enters the page, so no other site open in the browser can make the desk write to Linear or Harvest as the user.

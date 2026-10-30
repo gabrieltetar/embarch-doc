@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest, GitHub and Slack connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298).
+**Built and running on the owner's machine, with Linear, Harvest and GitHub connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298). **65–66 (no Slack) are not deployed.**
 
 ## 1. What it is
 
@@ -27,7 +27,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
 - **A session with no work item is asked on every prompt until it answers** — a work item, an issue key, a new title, or "untracked" ([decision 7](decisions.md)). Time it ran up while being asked lands on the item it chooses.
 - **No agent tool approves, discards, archives, sends a draft or logs time.** ✓, ✕, archive and Send exist only as HTTP routes the Desk tab calls.
-- **Prose is never sent unseen.** A tile's note and a Slack reply are drafted by Claude and sent only as the user left them; status moves (an issue's state, ✓, ✕) go straight through ([decision 15](decisions.md)).
+- **Prose is never sent unseen.** A tile's note is drafted by Claude and sent only as the user left it; status moves (an issue's state, ✓, ✕) go straight through ([decision 15](decisions.md)).
 - **No token or connector data reaches a repo.** Tokens live in `~/.config/embarch-desk/connectors.toml`, state in `~/.local/share/embarch-desk/`, both owner-only.
 - **A hook never fails a session**: no desk, a slow desk or a bad event all exit 0 silently.
 - **The open desk scopes what is shown and where agents point, never what is tracked**: a session's time lands on the desk whose repo it is in (36).
@@ -48,7 +48,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Gap that ends a span | 8 h [assumed] |
 | Launch claim window | 10 min |
 | Cards shown | the open desk's (all, with none open): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
-| Refresh | connectors 5 min, issues 3 min, PRs 5 min, Slack 2 min, Slack window 3 days |
+| Refresh | connectors 5 min, issues 3 min, PRs 5 min |
 | Harvest entries | today every 2 min; a day with a waiting tile 10 min [chosen] and again at ✓ (62) |
 | Reference index | 1,000 issues; 300 PRs per repo; each desk every 5 min, by its own task's pass every 30 s (56) |
 | Harvest entries read | 2,000 per account per call, paged by 100; `truncated` when cut [chosen] (59) |

@@ -221,7 +221,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 
 | Feature | Status | Verified | Decision |
 |---|---|---|---|
-| Work items joining a Linear issue to its PRs, Claude Code sessions, bench activity and time; day tiles sent to Harvest on a ✓ — the Desk tab | Shipped v1 — **no real Linear, Harvest or Slack account connected yet; one real headless session through the plugin** | unit, local | 6, 10, 13 |
+| Work items joining a Linear issue to its PRs, Claude Code sessions, bench activity and time; day tiles sent to Harvest on a ✓ — the Desk tab | Shipped v1 — **Linear, Harvest and GitHub connected [measured 2026-10-22]; one real headless session through the plugin** | unit, local | 6, 10, 13 |
 | Claude Code plugin: hooks turn session time, commits and `embarch-api` bench calls into tile data; MCP tools put a session on a work item and add a line | Shipped, installed on the owner's machine | local | 18, 20, 22 |
 | Desks: one per project (Linear project or team, Harvest project and task, GitHub repos, firmware repos, saved bench), one open suite-wide; the day list of today's work | Shipped — **first desk open on the owner's machine; bench proposal names running studies only** | unit, local | 33, 36, 40 |
 | `embarch-chat`'s side: a mailbox VS Code windows poll for Start work and Open chat, one line per session on the Desk, the work item's notes with memory files captured, `desk_work_item`'s brief | Shipped, deployed | unit, local | 46, 48, 52 |
