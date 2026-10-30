@@ -47,6 +47,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Memory id | first 6 hex digits of the SHA-1 of the topic file's name |
 | The pass, Sonnet 5.5 at effort medium, one call at a time | wall p50 3.9 s, p95 7.3 s; 18 of 20 picks right against hand labels; about $0.02 a run with a new prompt, $0.06 after an hour idle [measured 2026-10-29, 23 of the owner's prompts] |
 | The pass's timeout | 15 s, then the keyword pick |
+| `promptu render` / `prep` without the model, release build | p50 3.1 ms / 7.2 ms; the hook unchanged at p50 0.66 ms [measured 2026-10-29, WSL2] |
 | A dialog page | at most 4 questions: 3 plus "Rest" while more remain |
 | Copies of the owner's memory after relabelling, `memory check` | the relabelled projects: 0 errors; the three not relabelled: 41 errors in 18 files [measured 2026-10-29] |
 
