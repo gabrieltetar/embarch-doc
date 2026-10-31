@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest and GitHub connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298). **65–66 (no Slack) and 67 are not deployed.**
+**Built and running on the owner's machine, with Linear, Harvest and GitHub connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298). **65–68 are deployed** since 2026-10-31 16:04 (122cd64).
 
 ## 1. What it is
 
@@ -38,7 +38,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 3. Interfaces
 
-**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens; a CLI. The reference, `embarch-chat`'s additions included: [interfaces.md](interfaces.md).
+**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `/oauth/linear/callback`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens or Linear's MCP sign-in (68); a CLI. The reference, `embarch-chat`'s additions included: [interfaces.md](interfaces.md).
 
 ## 4. Constants
 
@@ -64,7 +64,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 5. What it deliberately does not do
 
-- **No OAuth in v1** — tokens only ([decision 16](decisions.md)); EmbArch owns no app registration.
+- **No OAuth but Linear's MCP sign-in (68)** — tokens otherwise ([decision 16](decisions.md)); EmbArch owns no app registration.
 - **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
 - **No in-desk Linear comments, issue creation, PR review or merge** (v2), **and no Claude chat panel of its own**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
 - **No second machine**: one desk service, one state file, the machine with the bench.

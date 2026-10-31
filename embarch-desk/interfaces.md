@@ -4,7 +4,7 @@
 
 ## HTTP
 
-**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health`:
+**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `GET /oauth/linear/callback`:
 
 | Route | What |
 |---|---|
@@ -15,6 +15,7 @@
 | `PATCH /tiles/{item@date}`; `POST …/line`, `/polish`, `/approve`, `/discard`, `/fold` | Edit note, hours (`null` clears a typed override back to computed, 61), Harvest target; Claude drafts note and target; ✓ to Harvest, linked to the item's Linear issue (63); ✕; `{"into": <date>}` folds it into the item's open tile that day (58); 400 if `into` is not a real date later than the tile's, and every tile route 400s on an id whose date is not `YYYY-MM-DD` (60). On a continuation (64) the note and hours PATCH its own fields and the target stays the entry's, Polish drafts the whole entry's note, ✓ updates the entry to its hours plus the continuation's (answering `entry_hours`), ✕ drops only the time since |
 | `GET /harvest/targets` | Projects and tasks |
 | `GET/POST /connectors`, `DELETE /connectors/{kind}/{label}`; `GET/PUT /ignore`; `POST /sync` | Accounts (labels only, never tokens); the ignore list; refresh now |
+| `POST /linear/signin`, `GET /linear/signin/{state}`; `GET /oauth/linear/callback` | A Linear sign-in through Linear's MCP server (68): `{"label"}` → `{"url","state"}`, the link for the browser; then `{"status","label","detail"}`, `status` `waiting`, `ok` (the account's check) or `failed`, 404 after 10 min. The callback is where Linear sends the browser back, **without the bearer**: a state the desk handed out, used once, keeps the account and answers a small page |
 | `GET /linear/issue/{key}`, `/linear/mine`; `POST /linear/search`, `/linear/status`; `POST /harvest/entries` | What the agent tools call; `/linear/mine` and `/harvest/entries` carry `truncated` when their cap cut the read (59) |
 | `POST /drafts`, `PATCH /drafts/{id}`, `POST /drafts/{id}/send`, `/discard`; `POST /timer/start`, `/timer/stop` | Agents' comment and issue drafts, sent only from the tab; the manual timer |
 | `GET/POST /desks`, `DELETE /desks/{id}`; `GET/POST /open`; `GET /day/{date}`; `GET /linear/projects`, `/github/repos` | Desks and the open one (`none` closes it); a day's work grouped by desk, Harvest's entries merged in (41); the form's choices |
@@ -51,6 +52,6 @@ Every route takes the desk's bearer token. Additions only; nothing above changed
 
 ## Connectors and CLI
 
-**Connectors** (pasted tokens, [decision 16](decisions.md)): Linear personal API key per workspace (GraphQL); Harvest personal access token (REST v2, every account it reaches); GitHub token or the user's `gh` login (REST; PR search by key, within the desk's repos when it names some). A kind is `linear`, `harvest` or `github`; a `[[slack]]` table saved before decision 66 still loads, is never read and is written back on save.
+**Connectors** (pasted tokens, [decision 16](decisions.md)): Linear personal API key per workspace (GraphQL), or, for a workspace that gives no key, a sign-in through Linear's MCP server whose account keeps `[linear.mcp]` (`client_id`, `refresh_token`, `expires_ms`) and is answered through the server's tools (68); Harvest personal access token (REST v2, every account it reaches); GitHub token or the user's `gh` login (REST; PR search by key, within the desk's repos when it names some). A kind is `linear`, `harvest` or `github`; a `[[slack]]` table saved before decision 66 still loads, is never read and is written back on save.
 
-**CLI:** `serve`, `hook`, `mcp`, `service install|uninstall|status` (a systemd user unit), `connect <kind> <label>` (token on stdin), `disconnect`, `ignore list|add|remove`, `desks`, `open <desk|none>`, `status`.
+**CLI:** `serve`, `hook`, `mcp`, `service install|uninstall|status` (a systemd user unit), `connect <kind> <label>` (token on stdin; `connect linear <label> --mcp` prints the sign-in link instead and waits for the browser), `disconnect`, `ignore list|add|remove`, `desks`, `open <desk|none>`, `status`.

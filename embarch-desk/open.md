@@ -4,7 +4,8 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
-- **One client's own Linear workspace still goes through its hosted connector** ([decision 32](decisions.md)), until that client gets a desk with its key; then the connector is removed.
+- **One client's own Linear workspace still goes through its hosted connector** ([decision 32](decisions.md)). Its desk exists, with no key to be had: it signs in through Linear's MCP server (68), and the hosted connector goes once that sign-in has run for real.
+- **Linear through its MCP server is checked only by a probe and unit tests** (68): no desk sign-in has completed. `save_issue`'s and `save_comment`'s answers are read for a key and a link without ever having been seen, and whether a tool call needs `initialize` first is untested. The first status move, comment and issue on that desk settle it. How long the refresh token lives is unknown; the connector check renews the day-long token, so it never sits idle.
 - **No draft has been sent and no tile has reached Harvest**; the comment, issue and status mutations were checked only with invalid ids, the reads against the real accounts [measured 2026-10-22].
 - **The polish prompt has never run against real Harvest targets.** Whether Claude picks the right project and task from assignments and recent entries is unmeasured.
 - **Is 8 hours the right gap?** ([decision 23](decisions.md)) A guess; a week of real tiles says whether overnight sessions leak in or long afternoons drop out.
