@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-20. Repo: [gabrieltetar/embarch-ui](https://github.com/gabrieltetar/embarch-ui).
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md). What a capture means once it reaches the browser: [spec/capture-rendering.md](spec/capture-rendering.md). What each tab does: [spec/tabs.md](spec/tabs.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md). What a capture means once it reaches the browser: [spec/capture-rendering.md](spec/capture-rendering.md). What each tab does: [spec/tabs.md](spec/tabs.md). The bench editor's model, files and canvas: [spec/bench.md](spec/bench.md).
 
 ## What it is
 

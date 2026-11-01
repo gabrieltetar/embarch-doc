@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-13.
 
-Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
+Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md). The bench editor's: [open/bench.md](open/bench.md).
 
 - **Whether `embarch-ui` belongs in the suite release archive is undecided** — [`embarch-umbrella`](../embarch-umbrella/decisions/install.md) decision 14's and the suite's. `assemble-suite.yml` ships three binaries, not this one, so a fresh `embarch setup` can't author or read back a trace. **Trigger:** first non-owner engineer walks the studies guide end to end.
 

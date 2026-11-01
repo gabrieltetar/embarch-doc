@@ -127,7 +127,7 @@ Two things have to be true first, **in the UI or, since
 [`embarch-api` decision 67](../embarch-api/decisions.md), from a terminal**:
 `declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`, each also an MCP tool.
 
-**1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software, so it can only be stated.** In the **Topology** tab, declare a signal: give it a name (that is what a study taps it by) and pick a route.
+**1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software, so it can only be stated.** In the **Topology** tab, open **Signals** and declare a signal: give it a name (that is what a study taps it by) and pick a route.
 
 - **direct** — straight to a serial port on the machine running Core, **bypassing the bench.** You pick the port from a list **Core itself enumerates, because a port on *your* machine is not necessarily a port on Core's.** This is what the outpost uses today, **for a hardware reason rather than a preference: the bench has no spare pins for it yet.**
 - **via dev-bench** — the signal terminates on bench pins and the bench relays it. **Nothing here has the pins yet, but declaring it is a one-field change when it does, and no saved study has to be rewritten — a study names the *signal*, never the cable.**
