@@ -1,6 +1,6 @@
 # embarch-chat decisions: Answering the CLI
 
-**Status:** active, 2026-10-23.
+**Status:** active, 2026-11-01.
 
 What the panel declares in `initialize`, how it answers the CLI's requests — permissions, plans, rules, dialogs, elicitations — and the controls it drives: background tasks, rewind and fork, MCP servers, effort, Remote Control.
 
@@ -52,4 +52,8 @@ The levels the model takes, and the Ultracode switch where the CLI offers it. It
 
 ### 83 — `/remote-control` bridges a chat to claude.ai/code
 
-A footer pill shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the CLI starts by itself (Claude Code's `remoteControlAtStartup`) shows the same pill and Claude Code's disclosure once, as a note, but holds no process: only a bridge the owner turned on from the panel outlives the idle close. **Rejected:** an always-shown pill, closing the process under a live bridge.
+A footer pill shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the CLI starts by itself (Claude Code's `remoteControlAtStartup`) shows the same pill and Claude Code's disclosure once, as a note, and holds the process only while the chat is open (100). **Rejected:** an always-shown pill, closing the process under a live bridge.
+
+### 100 — An open chat keeps its self-started bridge, so the phone reaches it
+
+With `remoteControlAtStartup` on, every chat's process bridges to claude.ai/code as it starts, but under 83 that bridge held nothing: five quiet minutes (41) and the chat left the phone. Now it holds the process while the chat is open — a tab, shown or not, or with `chatLocation` = `sidebar` the sidebar's chat — and a chat whose tab closes goes at its idle close as before, checked again within 30 s. Asked for by the owner on 2026-11-01, to reach his open chats from Claude Code on his phone. About 300 MB a held process [measured: 294 and 341 MB]. It keeps a bridge; it starts none: a chat whose process already closed, or one brought back by a reload (63), is reachable again only after its next message. **Rejected:** a longer `idleMinutes` (holds every chat, open or not), holding every bridged chat (83's reason: a closed chat would keep its process for good), Claude Code's server mode `claude remote-control` (its sessions are not chats: no work item, not in the panel).

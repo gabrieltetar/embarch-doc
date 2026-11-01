@@ -1,6 +1,6 @@
 # embarch-chat: open
 
-**Status:** active, 2026-10-30.
+**Status:** active, 2026-11-01.
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md).
 
@@ -23,7 +23,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **The Usage icon against a real account** (99): read from the recorded sessions' shape and Claude Code 2.1.287's bundle; `unifiedWindows` is an `@internal` field of the CLI's, so a later version may drop it (the icon then reads the one limit an event names).
 - **Promptu in the owner's window** (94–98): built and tested against a fake `promptu`, the real CLI offline, a scratch desk and headless Firefox; never run in VS Code, against the real Sonnet pass, or from a real Start work.
 
-- **Remote Control from the phone** (decision 83): `/remote-control` links a chat in 0.25 s and prompts are still asked in the panel, but nobody has answered one from the phone side.
+- **Remote Control from the phone** (decisions 83, 100): `/remote-control` links a chat in 0.25 s and prompts are still asked in the panel, but nobody has answered one from the phone side, nor seen whether a prompt sent from there shows in the panel.
 - **Decisions 86–88 in the owner's window**: d998b2f installed 2026-10-25 17:08 by `./reinstall.sh` (the package's `dist` matches by md5), live only after his window reload; not yet confirmed.
 - **A reference card against the live desk's real index** (decision 88): the desk serves it since 2026-10-25 17:07 (178 issues, 48 PRs) [measured], but no card has been seen in real use; measured only against a synthetic index, with real Haiku.
 - **Slack's `app_redirect` link** (decision 87), for a channel a step names with no permalink, is untested.
