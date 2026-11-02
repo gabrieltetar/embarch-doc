@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-01; 94 added 2026-11-02.
 
-The Topology tab as a canvas drawing a saved bench as the hardware — phase 2 of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md), read-only until phase 3 — and the full-screen layout it brought; the old diagram deleted in phase 4 and its jobs done on the canvas (94). What it draws from: [bench-model.md](bench-model.md) (71, 72). Editing on it: [bench-editing.md](bench-editing.md) (80–86). Making a bench live from it: [bench-live.md](bench-live.md) (90–93). The old diagram it replaced: [topology-tab.md](topology-tab.md) (10, 43).
+The Topology tab as a canvas drawing a saved bench as the hardware — phase 2 of the bench editor, read-only until phase 3 — and the full-screen layout it brought; the old diagram deleted in phase 4 and its jobs done on the canvas (94). What it draws from: [bench-model.md](bench-model.md) (71, 72). Editing on it: [bench-editing.md](bench-editing.md) (80–86). Making a bench live from it: [bench-live.md](bench-live.md) (90–93). The old diagram it replaced: [topology-tab.md](topology-tab.md) (10, 43).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench.md](../spec/bench.md).
 

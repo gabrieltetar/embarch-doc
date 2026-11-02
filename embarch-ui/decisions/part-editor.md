@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-01.
 
-A repo's part templates edited in the UI — phase 3 of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md). What a template is and what the vocabulary serves: [bench-model.md](bench-model.md) (71, 88). Editing a bench on the canvas: [bench-editing.md](bench-editing.md) (80–86).
+A repo's part templates edited in the UI — phase 3 of the bench editor. What a template is and what the vocabulary serves: [bench-model.md](bench-model.md) (71, 88). Editing a bench on the canvas: [bench-editing.md](bench-editing.md) (80–86).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-editing.md](../spec/bench-editing.md).
 

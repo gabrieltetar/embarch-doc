@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-28.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). HTTP surface: [../interfaces/host-studies.md](../interfaces/host-studies.md). Siblings: [host-study.md](host-study.md) (decisions 95, 98, 99, the executor this extends). Design of record: [the proposal](../../embarch-host-study-proposal.md), owner's choice 4.
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). HTTP surface: [../interfaces/host-studies.md](../interfaces/host-studies.md). Siblings: [host-study.md](host-study.md) (decisions 95, 98, 99, the executor this extends). Design of record: [the proposal](../../embarch-host-study-proposal.md), owner's choice 4. Who resolves 107's name: `embarch-ui` decision 99.
 
 ### 105 — A `Prompt` step waits for a person's answer, relayed by any surface and checked by prompt id, until its own deadline
 
@@ -20,3 +20,13 @@ Field use on a USB PD charger board (2026-10-09 to 10-14): the operator typed 25
 **Why one slot polled, not a channel.** The pending prompt and its answer live in one mutex slot that the executor looks at every 20 ms, the cancel poll's period. The executor clears the slot under the same lock as its last look, so an answer either lands before the clear and counts, or finds no prompt and is refused. None is accepted and then lost.
 
 **Measured vs assumed.** Every exit path is proven over the scripted backend, and the wait and the answer route over the real slot across two threads. **Not run:** a prompt answered on a real bench, by any surface. The UI's modal is `tasks/ui/100`.
+
+### 107 — A prompt's `bench_config` is forwarded as the study wrote it, and Core resolves nothing
+
+`embarch-study-designer` decision 88 lets a `Prompt` name a bench configuration. **Core knows no bench**: configs are the UI's record of the live bench. It checks the name against nothing and refuses none; a name the live bench lacks is the showing surface's case, where a person picks a config or goes on with the text (owner, 2026-11-01).
+
+- **Where it goes.** `PendingPrompt.bench_config`, so `PromptPending` (flat) and `pending_prompt` carry it, and the step's record beside `prompt_id`, `prompt_deadline_utc_ms` and `answered_by`: `events.json` and the steps rows (which until now dropped all four) say which config was confirmed, by which surface and when. Absent when `None`, so a prompt naming none publishes the bytes it did.
+- **Not on `PromptResolved`**, which the prompt id ties to it, **or `HostStepCompleted`**, which carries no prompt id but follows the prompt in order at the same `(list, step_index)`.
+- *Rejected:* resolving it here, which needs the UI's bench file and would fail a study that only needed a person to re-cable.
+
+**Measured vs assumed.** Proven over the scripted backend, the real backend's slot and event, and the steps route. **Not run:** on a real bench.

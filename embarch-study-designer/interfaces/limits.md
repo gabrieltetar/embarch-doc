@@ -60,7 +60,7 @@ Host-only, never on the dev-bench wire; all **[assumed]**, from one 49-step fiel
 |---|---|---|
 | `MAX_HOST_STEPS` | 128 | `HostStudy.steps` |
 | `MAX_HOST_TEARDOWN_STEPS` | 16 | `HostStudy.teardown` |
-| `MAX_HOST_NAME_LEN` | 96 | study and step names, bytes |
+| `MAX_HOST_NAME_LEN` | 96 | study and step names, `Prompt.bench_config` (decision 88), bytes |
 | `MAX_HOST_LINE_LEN` | 256 | `Exchange.line`, `Instrument.line`, bytes |
 | `MAX_HOST_PROMPT_LEN` | 1024 | `Prompt.text`, bytes |
 | `MAX_HOST_REPLY_LEN` | 4096 | `HostStepResult.reply`, applied by Core |

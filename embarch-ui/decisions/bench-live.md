@@ -1,8 +1,8 @@
 # embarch-ui decisions: Making a bench live
 
-**Status:** active, 2026-11-02.
+**Status:** active, 2026-11-02; 93 amended by 98 the same day.
 
-A saved bench applied to Core from the Topology tab's canvas — phase 4 of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md): what a bench declares and proposes, what it leaves for a human to retract, which bench is live, and when a save declares again. The old diagram it replaced, and what the canvas does in its place: [bench-canvas.md](bench-canvas.md) (94). The apply path it extends: [saved-benches.md](saved-benches.md) (44, 75). The file it reads: [bench-model.md](bench-model.md) (71, 72).
+A saved bench applied to Core from the Topology tab's canvas — phase 4 of the bench editor: what a bench declares and proposes, what it leaves for a human to retract, which bench is live, and when a save declares again. The old diagram it replaced, and what the canvas does in its place: [bench-canvas.md](bench-canvas.md) (94). The apply path it extends: [saved-benches.md](saved-benches.md) (44, 75). The file it reads: [bench-model.md](bench-model.md) (71, 72). Recording another config of the live bench, phase 5: [bench-configs.md](bench-configs.md) (98).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-live.md](../spec/bench-live.md).
 
@@ -44,9 +44,9 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-live.md
 
 ### 93 — A save of the live bench writes through, and only Make live takes the machine
 
-**Write-through after an explicit Save of the live bench** (owner, 2026-11-01; Save is explicit, 80), so Core follows the file it was told. **Every call says which it is** (coordinator decision): `write_through` is required: `false` only from the buttons that make a bench live — Make live, Make *config* live, Save and make live — which take the machine; `true` from every re-apply — after a Save, after a Confirm, and Declare again — which is refused while the bench is not this repo's live one (`not-live`), another repo holds the machine (`superseded`) or the live config is gone (`config-missing`). **A write-through names the record's config** (`config-differs` otherwise): changing config is an explicit make-live.
+**Write-through after an explicit Save of the live bench** (owner, 2026-11-01; Save is explicit, 80), so Core follows the file it was told. **Every call says which it is** (coordinator decision): `write_through` is required: `false` only from the buttons that make a bench live — Make live and Save and make live — which take the machine; `true` from every re-apply — after a Save, after a Confirm, and Declare again — which is refused while the bench is not this repo's live one (`not-live`), another repo holds the machine (`superseded`) or the live config is gone (`config-missing`). **A write-through names the record's config** (`config-differs` otherwise): changing config is recorded, never declared (98, amending this entry: it was an explicit make-live).
 
-**A confirmed proposal re-applies the live bench** (coordinator decision): that declares the dev-bench link the deferred row waited on, with no second click. **Switching config tabs never calls Core** (owner): a tab is a view, the live config's tab is marked, and making another live is a button.
+**A confirmed proposal re-applies the live bench** (coordinator decision): that declares the dev-bench link the deferred row waited on, with no second click. **Switching config tabs never calls Core** (owner): a tab is a view, the live config's tab is marked, and making another live is a button that records it (98).
 
 **A refused write-through is said, and stays said.** The bar shows a re-apply's outcome as a button — `declared · 2 proposals · 1 failed` — opening its report, and a refusal as a lasting `saved, not declared` naming why, until a declare lands. **The report opens only after an explicit make-live, where the human still is, and focuses itself, never a button**: one Space must not confirm an enrolment nobody chose. Its buttons wait while a write is on its way and act only while it is the live bench's report; a read of the record never cancels a write, and an answer landing after a project switch is dropped.
 
