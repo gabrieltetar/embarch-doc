@@ -36,7 +36,7 @@ Under `/api/live/` and `/api/studies/`. `502` + the error for a Core hop, `400` 
 
 ## The Topology tab's own routes
 
-The proxies to Core, the project catalog and saved benches, the bench editor's `/api/bench/*`, and the bench canvas's asset and events: [interfaces/topology.md](interfaces/topology.md).
+The proxies to Core, the project catalog and saved benches, the bench editor's `/api/bench/*`, and its two assets and their events: [interfaces/topology.md](interfaces/topology.md).
 
 ## What the Study Designer is served
 

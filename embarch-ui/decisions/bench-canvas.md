@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-01.
 
-The Topology tab as a read-only canvas drawing a saved bench as the hardware — phase 2 of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md) — and the full-screen layout it brought. What it draws from: [bench-model.md](bench-model.md) (71, 72). The old diagram it will replace: [topology-tab.md](topology-tab.md) (10, 43).
+The Topology tab as a canvas drawing a saved bench as the hardware — phase 2 of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md), read-only until phase 3 — and the full-screen layout it brought. What it draws from: [bench-model.md](bench-model.md) (71, 72). Editing on it: [bench-editing.md](bench-editing.md) (80–86). The old diagram it will replace: [topology-tab.md](topology-tab.md) (10, 43).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench.md](../spec/bench.md).
 
@@ -26,11 +26,11 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench.md](../
 
 **Verdicts come only from a Validate pass**, which `app.js` sends as an event after a pass and whenever one is dropped: under the part holding a role, or a bench board's part by its probe serial (55), and gone when that role's binding changes.
 
-**A snapshot only toggles classes.** The canvas is rebuilt by a load, a hover, a selection, a config tab or a Validate pass, never by the poll. Decision 43 had to restore a hover after every five-second rebuild; here there is no rebuild to restore after. Every listener lives on the `<svg>`, hover and selection are state re-applied on each rebuild, `bench.js` holds no interval, and the snapshot reaches it as a document event from `app.js` rather than a second stream (6).
+**A snapshot only toggles classes.** The canvas is rebuilt by a load, a hover, a selection, a config tab, a Validate pass or an edit, never by the poll. Decision 43 had to restore a hover after every five-second rebuild; here there is no rebuild to restore after. Every listener lives on the `<svg>`, hover and selection are state re-applied on each rebuild, `bench.js` holds no interval, and the snapshot reaches it as a document event from `app.js` rather than a second stream (6).
 
 ### 78 — The Topology tab is the canvas, full screen, and every other card is a panel over it
 
-**The owner's layout (2026-11-01)**: the canvas fills the tab with no page scroll, so the wheel zooms the bench and never fights the page for it. A bar on top holds the bench picker, the bench's path, **Validate topology** and four panel buttons — Signals, Board types, Saved benches, Old diagram. Validate's report is a fifth panel, and once a pass has run a Report button reopens it without a new pass, since it holds the only control that clears a leftover role (45). **The canvas replaces the diagram for every bench** (owner); until the editor can enrol (phase 4), the old diagram, its probe pool and its drop targets (43) live in their panel.
+**The owner's layout (2026-11-01)**: the canvas fills the tab with no page scroll, so the wheel zooms the bench and never fights the page for it. A bar on top holds the bench picker, the bench's path, **Validate topology** and four panel buttons — Signals, Board types, Saved benches, Old diagram. Validate's report is a fifth panel, and once a pass has run a Report button reopens it without a new pass, since it holds the only control that clears a leftover role (45); phase 3 added the editor's controls and a Checks panel (80, 81). **The canvas replaces the diagram for every bench** (owner); until the editor can enrol (phase 4), the old diagram, its probe pool and its drop targets (43) live in their panel.
 
 **One panel at a time, anchored under the bar, scrolling inside itself.** Its button, Esc or a press outside closes it — outside meaning not a panel, a panel button, Validate, or a dialog, since the signal, board and enrol dialogs open over their panel and must not close it. **Esc closes the topmost thing**: a Topology dialog first, the way its Cancel does, leaving the panel open. Opening a panel moves focus to its first control; closing it with focus inside returns focus to the button that opened it.
 

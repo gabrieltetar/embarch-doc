@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-01.
 
-What is true now of the bench editor's built half: the model, its files and routes (phase 1) and the read-only canvas the Topology tab now is (phase 2) of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md), whose phases 3–5 (editing, making a bench live, a study naming a config) are still proposed. Why: decisions 71–79 ([../decisions.md](../decisions.md)). Routes and events: [../interfaces/topology.md](../interfaces/topology.md). Unresolved: [../open/bench.md](../open/bench.md). What the tab shows: [tabs.md](tabs.md).
+What is true now of the bench editor's model, its files and routes (phase 1) and the canvas the Topology tab now is (phase 2) of [embarch-bench-editor-proposal.md](../../embarch-bench-editor-proposal.md), whose phases 4–5 (making a bench live, a study naming a config) are still proposed. Editing it, phase 3: [bench-editing.md](bench-editing.md). Why: decisions 71–79 ([../decisions.md](../decisions.md)). Routes and events: [../interfaces/topology.md](../interfaces/topology.md). Unresolved: [../open/bench.md](../open/bench.md). What the tab shows: [tabs.md](tabs.md).
 
 ## The model
 
@@ -14,7 +14,7 @@ What is true now of the bench editor's built half: the model, its files and rout
 
 ## The canvas
 
-The Topology tab is the canvas, full screen (78): the bench picked in its bar, drawn read-only as the hardware (76) with a live glow and Validate's verdicts (77). It edits nothing: a bench with parts is changed by hand in its file, and the Saved benches panel still saves the old shape from the live bench, refusing a file with parts (74).
+The Topology tab is the canvas, full screen (78): the bench picked in its bar, drawn as the hardware (76) with a live glow and Validate's verdicts (77), and edited there ([bench-editing.md](bench-editing.md)). The Saved benches panel still saves the old shape from the live bench, refusing a file with parts (74).
 
 ## Invariants
 
@@ -26,8 +26,8 @@ The Topology tab is the canvas, full screen (78): the bench picked in its bar, d
 - **Reading never rewrites.** A legacy file is written in the new shape only when it is saved (73).
 - **A save names the `version` it read and never renames**; nothing is written outside the repo, through a link, or before its bytes read back as what was saved (74).
 - **A save refuses only what makes a file unreadable or ambiguous** — a cap, two parts under one id, a `usb` key that is no connector, two configs under one name, a name with no letter or digit. A broken rule is a finding, so a bench that breaks one still saves (72).
-- **A snapshot only toggles classes on the canvas, never rebuilds it.** A load, a hover, a selection, a config tab or a Validate pass rebuilds it, so a selection or a hover survives the poll (77).
+- **A snapshot only toggles classes on the canvas, never rebuilds it.** A load, a hover, a selection, a config tab, a Validate pass or an edit rebuilds it, so a selection or a hover survives the poll (77).
 - **The glow means a bound probe or serial port is enumerated now, and is not a verdict.** A serial-less `{vid, pid}` binding glows only when exactly one enumerated port matches; two is ambiguous and nothing glows. **Core unreachable, or a snapshot carrying `serial_ports_error`, makes port glows unknown and says so in words**, never the dark of nothing plugged in; probe glows follow only whether Core answered (77).
-- **Verdicts are drawn only from a Validate pass**, under the part holding the role or a bench board's part by its probe serial, and dropped when that role's binding changes (45, 77).
+- **Verdicts are drawn only from a Validate pass**, under the part holding the role or a bench board's part by its probe serial, and dropped when that role's binding changes (45, 77) or an edit moves it off the part they were placed on (85).
 - **`bench.js` holds no interval**; `drive_bench.py` checks it.
 - **What cannot be resolved is drawn, never dropped**: a part whose template is missing or unreadable, a connector a cable names that its template lacks, a second part under one id (76).

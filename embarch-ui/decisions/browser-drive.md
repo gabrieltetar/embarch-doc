@@ -1,6 +1,6 @@
 # embarch-ui decisions: The browser drive scripts
 
-**Status:** active, 2026-10-26; 79 added 2026-11-01.
+**Status:** active, 2026-10-26; 79 and 89 added 2026-11-01.
 
 How `tests/browser/drive*.py` find geckodriver and the UI. How to run them: `tests/browser/README.md` in the code repo. Index: [../decisions.md](../decisions.md).
 
@@ -9,3 +9,6 @@ Five scripts hardcoded 4444 and 4899 with no override, and others read one of `G
 
 ### 79 — The bench drive serves fixtures through a proxy in front of the real binary, and its built-in catalog is generated from the build
 `drive_bench.py` has to drive the real `bench.js` glowing from the real binary's snapshot, so a stub UI would test the wrong thing. **A proxy sits in front of the running binary** instead: it answers `/api/bench/*` from two fixtures — `409` in the contract's words while the UI has no project open — passes everything else, `/events` included, through to the UI and its stub Core, and puts an error listener at the top of the page so an error during load is caught too. It takes four ports, `EMBARCH_UI_PORT` and the three after it (desk, proxy, stub Core), from `addr.py` (65). **`tests/fixtures/bench/catalog.json` is generated, not written**: the vocabulary and the built-in catalog exactly as the build serves them, a `cargo test` that fails when they differ, and `EMBARCH_REGEN_FIXTURES=1 cargo test` to rewrite it. The first version drove a hand-written catalog, and a fixture that drifts from the contract tests the page against JSON no server sends. `fixture.json`'s repo templates and benches are held to the real types by the same test file, except one template outside this build's vocabulary and one bench no save would write, both on purpose. `drive_topology.py` now opens each card's panel before touching it, the way a human has to (78).
+
+### 89 — The editing drives run the real bench routes on a scratch repo and read back what was written
+An editing drive's subject is what the server wrote, which a fixture proxy (79) cannot hold. **`drive_bench_edit.py` and `drive_bench_parts.py` start the real binary over a scratch firmware repo** — `embarch/topologies/` and `embarch/parts/` written by the script, the UI pointed at it by `[study_designer] firmware_repo_path`, and for `drive_bench_edit.py` a stub Core serving the tray's probes and ports — and check the TOML on disk after every save. Their proxy passes every request through, puts the error listener at the top of the page so an error during load is caught, and in `drive_bench_edit.py` holds a `PUT` for 1.5 s, so a leave asked during a save in flight is tested. `drive_bench_parts.py` compares every refusal the dialog shows with the same request made outside the browser, so verbatim is checked, not assumed. Each takes four ports from `addr.py` (65). Not measured: either drive against a real bench.
