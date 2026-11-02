@@ -1,6 +1,6 @@
 # embarch-ui decisions: The browser drive scripts
 
-**Status:** active, 2026-10-26; 79 and 89 added 2026-11-01.
+**Status:** active, 2026-10-26; 79 and 89 added 2026-11-01, 95 on 2026-11-02.
 
 How `tests/browser/drive*.py` find geckodriver and the UI. How to run them: `tests/browser/README.md` in the code repo. Index: [../decisions.md](../decisions.md).
 
@@ -12,3 +12,6 @@ Five scripts hardcoded 4444 and 4899 with no override, and others read one of `G
 
 ### 89 — The editing drives run the real bench routes on a scratch repo and read back what was written
 An editing drive's subject is what the server wrote, which a fixture proxy (79) cannot hold. **`drive_bench_edit.py` and `drive_bench_parts.py` start the real binary over a scratch firmware repo** — `embarch/topologies/` and `embarch/parts/` written by the script, the UI pointed at it by `[study_designer] firmware_repo_path`, and for `drive_bench_edit.py` a stub Core serving the tray's probes and ports — and check the TOML on disk after every save. Their proxy passes every request through, puts the error listener at the top of the page so an error during load is caught, and in `drive_bench_edit.py` holds a `PUT` for 1.5 s, so a leave asked during a save in flight is tested. `drive_bench_parts.py` compares every refusal the dialog shows with the same request made outside the browser, so verbatim is checked, not assumed. Each takes four ports from `addr.py` (65). Not measured: either drive against a real bench.
+
+### 95 — The live drive stubs the live routes in its proxy, with a mode that passes them to the binary, and the topology drive moved onto the canvas
+`drive_bench_live.py` has to reach states a real apply will not produce on demand — a record superseded by another repo, a read of it landing during a write, a make-live applied with no record written — so **its proxy answers the four live routes from a stub** in the shapes [../interfaces/topology.md](../interfaces/topology.md) gives, while the bench routes are the real binary's over a scratch repo (89) and `/api/enroll` reaches a stub Core. **`EMBARCH_LIVE_REAL=1` passes the live routes through to the binary** over a stub Core that records every write, and runs a flow whose checks hold against the real apply: the report's rows, each Confirm's fields as sent, a role's Retract reaching Core. Without it, a stub that drifted from the binary would test the page against JSON no server sends (79's lesson); with only it, the races go unchecked. Four ports from `addr.py` (65). **`drive_topology.py` was rewritten against the canvas** (94), on a private temp repo: the role parts, the inspector's board type and *Build as*, a probe dropped from the tray, Validate's verdicts on the parts, and Saved benches' Open declaring nothing. Not measured: either drive against a real bench or the deployed Core.

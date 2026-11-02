@@ -1,6 +1,6 @@
 # embarch-ui decisions: Retracting and saved benches
 
-**Status:** active, 2026-09-20; 73–75 added 2026-11-01.
+**Status:** active, 2026-09-20; 73–75 added 2026-11-01; 44 and 75 amended 2026-11-02.
 
 Part of decision 44 — the counterpart enrolling never had, and a saved bench
 that proposes rather than enrols. Split out of
@@ -23,6 +23,8 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 *Rejected: applying the enrolments directly.* A file on disk is not evidence about what is plugged in, and a load that enrolled from one would be the stale-declared-state failure [`embarch-topology`](../../embarch-topology/spec.md) exists to prevent, rebuilt inside the UI. A proposal carries three facts and decides on none of them: whether the role already holds that probe, whether the probe is attached at all, and which board would be displaced.
 
 **dev-bench's link is deferred rather than skipped.** Core amends it onto the dev-bench enrolment row, so it is refused while that role is empty — the state a fresh load is usually in. The apply report says so in words, and the link is declared with the enrolment when the proposal is confirmed; a silent skip would leave a bench half-loaded with nothing on screen about it.
+
+**Amended 2026-11-02 (phase 4):** the page no longer loads a bench this way. Saved benches' Open puts it on the canvas, and Make live there keeps this split, its declarations applied and its enrolments proposed, while this route stays for API callers (90).
 
 **A file name is derived from the name, never taken from it**: lowercase, every other run of characters collapsed to one hyphen, so `../../etc/passwd` slugs to `etc-passwd` and a saved bench cannot address anything outside `embarch/topologies/`.
 
@@ -50,6 +52,6 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 `POST /api/topology/profiles/{slug}/apply` reads either shape. **The chip is looked up once per role and used for both halves** — the board write and the enrolment proposal the browser confirms with it — as the role picker does (48, "looked up, never typed"): for `dev-bench` the supported pair's own chip first, then the catalog row's, then the scan's SoC through Core's `/resolve-chip`. The enrol and role-board routes take the same lookup when no chip is stated. A recorded chip is the fallback, under 73's rule. **A lookup that fails says which step failed** — the catalog unreadable, no row, no scan, no single SoC, Core refusing — because each has a different fix.
 
-**A role whose probe is a separate pod is reached over its SWD lead**: a part binding no probe takes the probe of the part at the far end of an SWD cable, bench-level or in any config. **Leads that reach different probes in different configs are not guessed between** — which config is live is phase 4's record — and the row names each probe and where it was reached.
+**A role whose probe is a separate pod is reached over its SWD lead**: a part binding no probe takes the probe of the part at the far end of an SWD cable, bench-level or in any config. **Leads that reach different probes in different configs are not guessed between** — which config is live is phase 4's record — and the row names each probe and where it was reached. Making a bench live reads the live config's leads alone (90).
 
 **Never a silent skip, and never a proposal that can only fail.** A role with no probe, leads to two probes, or no chip to attach as gets a row saying why instead of a proposal. The dev-bench link's row is worded after the proposals are decided, so "declared with its enrolment" appears only when that enrolment is proposed; otherwise it says to enrol dev-bench and apply again.

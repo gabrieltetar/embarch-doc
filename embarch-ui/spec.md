@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-20. Repo: [gabrieltetar/embarch-ui](https://github.com/gabrieltetar/embarch-ui).
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md). What a capture means once it reaches the browser: [spec/capture-rendering.md](spec/capture-rendering.md). What each tab does: [spec/tabs.md](spec/tabs.md). The bench editor's model, files and canvas: [spec/bench.md](spec/bench.md); editing a bench: [spec/bench-editing.md](spec/bench-editing.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md). What a capture means once it reaches the browser: [spec/capture-rendering.md](spec/capture-rendering.md). What each tab does: [spec/tabs.md](spec/tabs.md). The bench editor's model, files and canvas: [spec/bench.md](spec/bench.md); editing a bench: [spec/bench-editing.md](spec/bench-editing.md); making one live: [spec/bench-live.md](spec/bench-live.md).
 
 ## What it is
 
@@ -59,7 +59,7 @@ Navigation, the sidebar, the open desk as shell furniture and fragment routing (
 - **The Atlas tab draws what the atlas wrote and decides nothing** (52): no Core call, no write but a page-render cache (54); vocabulary, clusters and positions come from `graph.json`.
 - **A page explains nothing it can show** (50): under a title, a path or state is the only note.
 - **A diagram status is written only by a Validate pass**, keyed by role and dropped when that role's bindings change: a badge moving on the five-second poll would claim a check nobody ran.
-- **Loading a saved bench never touches hardware** (44): `embarch/topologies/<slug>.toml`'s signals and dev-bench link are re-declared, and each enrolment is *proposed* for a human to confirm through the ordinary enroll — a file on disk is not evidence about what is plugged in.
+- **Making a bench live never enrols** (44, 90): `embarch/topologies/<slug>.toml`'s declarations are applied, and each enrolment is *proposed* for a human to confirm through the ordinary enroll — a file is not evidence about what is plugged in.
 - **A signal origin is a role or a bench board** (67): the table shows a board by its enrolled name; the dialog picks either, sends one, and a board-origin signal re-saves on its board.
 - **Validate topology says what it checked and what it cannot.** A role is a live hardware-ID re-read; one missing either binding is *empty*, not failed; **a guessed dev-bench port is a warning, never a pass**; a signal route is checked only as far as declared, and says so. Core's reason is verbatim; a leftover role's finding carries the only control that clears it.
 - **A study stores no board, variant or revision** (45): a run builds for the board type in the **DUT role**, read at the moment it runs, so a saved study follows the bench. It is not silently reinterpreted — the override is announced on the build log.

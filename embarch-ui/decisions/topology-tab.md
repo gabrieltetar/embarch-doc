@@ -1,6 +1,6 @@
 # embarch-ui decisions: The Topology tab and signal routing
 
-**Status:** active, 2026-09-02.
+**Status:** active, 2026-09-02; 10 and 43 amended 2026-11-02.
 
 The one declaration a human makes about wiring. The trace half of decision 10 is in [trace-view.md](trace-view.md).
 
@@ -19,6 +19,8 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **`GET /signals` had to exist too** — nothing had called the list function over HTTP, and the tab must list before it can change — and so did `GET /serial-ports`: the dev-bench port route answers a different question and VID-gates to do it, **which would hide exactly the bridge a direct route names.**
 
 **The diagram's geometry is the requirement.** Every declared signal gets a lane *below* the three nodes: a direct line runs the full width, under the bench box, and back up into "this machine"; a bench-mediated one stops at the bench. Drawn at the nodes' own y, a bench-mediated edge **ran straight through both boxes it connected.**
+
+**Amended 2026-11-02:** the lane geometry went with the old diagram in phase 4 (94); the carrier rule, table and dialog stand.
 
 **An empty signal list and an unanswerable one are different states** ([reversals](../../embarch-decision-reversals.md) row 46: the live Core answered `404`, and an empty list would have been **a false statement about the wiring**). The snapshot carries an error field per read, set only when Core itself answered, so it never duplicates the unreachable banner.
 
@@ -41,6 +43,8 @@ So the drop target is the diagram. Each role box is one `<g>`, rect and both lab
 **Re-enrolling an occupied role is the migration path, not an error** — the same shape as re-declaring a signal to move its route (decision 10) — so an occupied box opens the ordinary dialog, chip pre-filled from the enrolment being replaced and naming what it displaces, so a mis-drop shows before the button rather than after the row is gone. *Rejected: refusing the drop and asking for an unenroll first* — safest, and this UI has no unenroll control to send anyone to.
 
 **`#enroll` still lands on Topology** — a retired fragment resolves to its new home, not to `null`; falling through would put a typed, bookmarked or agent-relayed link on whichever tab that browser last had open. **The `?role=` pre-fill was deleted**: inherited from Core's retired `/enroll` page, its target no longer exists, and a grep of all eight repos found only the code reading it — **nothing in the suite had ever emitted one.**
+
+**Amended 2026-11-02:** the boxes, pool and dialog went with the old diagram in phase 4; the three properties above hold for the tray's drop targets alone (94).
 
 **Driven in a real browser before it was believed**: `tests/browser/drive_topology.py`, eighteen checks against a stub Core serving an occupied role, an empty one and a board enrolled as `sniffer`, including a click on a box's text label and the highlight surviving a poll. The retired tab's rebuild-skip carried over unchanged with the probe pool, which is what keeps a 5 s re-poll from dropping a selection mid-drag.
 

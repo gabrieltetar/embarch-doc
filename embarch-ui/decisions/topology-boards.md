@@ -1,6 +1,6 @@
 # embarch-ui decisions: Boards, roles and the validate pass
 
-**Status:** active, 2026-09-20.
+**Status:** active, 2026-09-20; 47 amended 2026-11-02.
 
 Why a role stopped being a board's name, and the surfaces that followed: the project catalog and the validate pass. **Decision 45 corrected two things about the model this entry set up** and is in [topology-roles.md](topology-roles.md): a probe is not an attribute of a board, and a board is a *type* rather than a unit of hardware. The tab's other half — signal routing (10) and enrolling by dropping a probe on the diagram (43) — is in [topology-tab.md](topology-tab.md). Retracting a role and saved benches are in [saved-benches.md](saved-benches.md).
 
@@ -53,6 +53,8 @@ So the row is now the board type, its **revisions**, its **variants**, and the *
 **One gesture, two owners, and the order is fixed.** Confirming the picker writes the board type to Core (`PUT /probes/enrolled/{role}/board`) and *then* the combination to `embarch/boards.toml`. Which board type is in a role is Core's fact; which combination of it this repo builds is the project's, and **Core is never told about a revision**. Writing the file first would leave a catalog pinned for a role Core then refused. A board type outside the catalog — a dev-bench type, a name from another project — pins nothing and says nothing: both are states already rendered honestly elsewhere, and neither is a reason to fail a write to Core that has already happened.
 
 **A dev-bench board is offered no combination at all**, for the reason decision 45 already gives: a bench is a piece of the suite, not a project's board, so it has no catalog row to pin one on.
+
+**Amended 2026-11-02 (phase 4):** the picker left with the old diagram (94). The board type is the inspector's, sent to Core on make-live; the combination is its *Build as*, written to `embarch/boards.toml` alone (86).
 
 ### A dev-bench board type is shown by its label, never by its qualifier
 

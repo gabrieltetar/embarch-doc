@@ -1,6 +1,6 @@
 # embarch-ui decisions: Roles hold two bindings, and a board is a type
 
-**Status:** active, 2026-09-20; 61 added 2026-10-26.
+**Status:** active, 2026-09-20; 61 added 2026-10-26; 45 and 61 amended 2026-11-02.
 
 What a role *is* after decision 45 corrected the model decision 44 set up ([topology-boards.md](topology-boards.md)): two independent bindings — a probe and a board type — and a board that is a shape rather than a piece of hardware.
 
@@ -30,6 +30,8 @@ A table of two roles next to a picture of the same two roles was the same redund
 
 **Retracting had to find a new home**, and the two cases are different. A canonical role is retracted from the picker that sets it. A **leftover role is in neither box** — it is a row from before the vocabulary closed — so its only control is on the validate line that finds it. Without that, the fold would have re-opened exactly the gap decision 44 closed: a row the only surface that can see it cannot clear.
 
+**Amended 2026-11-02 (phase 4):** the box, its board picker and the retract on it went with the old diagram (94). A role part on the canvas carries both bindings, its verdict under it (77, 85); a canonical role is retracted as a leftover from the live report (91), and a leftover role still from the Validate line.
+
 ### The catalog is scanned, and the file wins
 
 A board type is a west target, and the repo already knows which ones it builds for — so **Rescan** merges the scan into `embarch/boards.toml` and a hand-written entry is never overwritten. **A rescan can only add.** A board type in the file that the scan does not find is *kept and counted*, never deleted: a repo builds for boards on branches that are not checked out, and a catalog that silently shrank when someone switched branches would be worse than one that is occasionally generous.
@@ -52,3 +54,5 @@ Re-enrolling the dev-bench probe as `dut` vacates `dev-bench`, and an enrol onto
 *Rejected: composing the sentence in `app.js` from `displaced`/`vacated`.* That is a third wording beside the CLI's and the MCP tool's, and `vacated_kept` would be a rule to keep in step. The raw `displaced`/`vacated`/`vacated_kept` fields still pass through untouched.
 
 The dialog's auto-close after a successful enrol is 6 s rather than 0.7 s when there is a note (a sentence needs reading), and a pending close is cancelled when the dialog reopens, so a stale timer never shuts the next one. Checked in `drive_topology.py` against its own stub, which learned `displaced`/`vacated`/`vacated_kept`; Core was never reached.
+
+**Amended 2026-11-02 (phase 4):** the enrol dialog is deleted (94); the same note is said on the live report when its Confirm enrols (90), and `drive_bench_live.py` checks it.
