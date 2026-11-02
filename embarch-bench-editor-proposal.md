@@ -48,7 +48,7 @@ Spans `embarch-ui` (almost all of it), `embarch-study-designer` and `embarch-cor
 
 **This is the one piece that is not UI-only.** `embarch-study-designer` decision 80 puts `deny_unknown_fields` on every host type, so the field is a type change and a `HOST_TYPE_SCHEMA_VERSION` bump; Core forwards it on `PromptPending` and resolves nothing. *Rejected: a name convention inside `text`*, which a typo breaks silently.
 
-**It is decision 10's indirection, not a breach of it.** A study names what the bench must look like, never which cables do it. **Renaming or deleting a config a study names is refused `409`, naming the studies**; a file the scan cannot read is unscannable, never "no references".
+**It is decision 10's indirection, not a breach of it.** A study names what the bench must look like, never which cables do it. **Renaming or deleting a config is never refused; a name is resolved when a study needs it** (owner, 2026-11-01, replacing a `409` that would have had to scan for every study naming the config, when host studies are not saved in a repo at all). A `Prompt` step whose config the live bench lacks says so and offers the bench's configs to pick, or the step's text alone; a prompt waits for a person anyway. A saved study that names a missing config asks for a new one when it is opened, and keeps the answer; an inline study keeps it for that run.
 
 ## Decisions it touches
 
@@ -65,8 +65,4 @@ In phase 4: `renderTopologyDiagram`, `roleNode`, `signalEdges`, the lane and cen
 2. ~~A read-only canvas~~ — built, as the whole Topology tab rather than beside the old diagram (`embarch-ui` decision 78).
 3. **Editing**: the parts bin, both gestures, refusals and warnings drawn, stacking, the tray, the part editor, save. The live bench writes through.
 4. **Making a bench live**: the extended apply, proposals, the retract report. The old diagram is deleted.
-5. **Config slots**, then `bench_config` and the modal's drawing with the rename/delete refusal.
-
-## Open questions
-
-- **Where do host studies live in a repo?** None is saved in one today; the rename/delete scan must find a config a study names. Phase 5 needs the answer.
+5. **Config slots**, then `bench_config`, the modal's drawing and its pick when the named config is missing.
