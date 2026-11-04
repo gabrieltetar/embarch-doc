@@ -38,7 +38,7 @@ What the supervisor read at the split, to be checked against `src/tabs.rs` rathe
 
 ## Done when
 
-- [ ] `embarch-ui/interfaces.md`'s manifest section says `icon` is required and what happens to a tab without one, checked against `src/tabs.rs`.
-- [ ] `embarch-ui/spec/tabs.md` does not disagree with it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped. No `status.d/` fragment unless a suite-level fact moved.
+- [x] `embarch-ui/interfaces.md`'s manifest section says `icon` is required and what happens to a tab without one, checked against `src/tabs.rs`.
+- [x] `embarch-ui/spec/tabs.md` does not disagree with it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped. No `status.d/` fragment unless a suite-level fact moved.

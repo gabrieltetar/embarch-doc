@@ -105,6 +105,8 @@ url = "http://127.0.0.1:4000"  # http, a literal loopback address and a port, no
 token_file = "~/.config/svc/token"  # absolute, or under ~/; read on every call
 ```
 
+`label`, `icon` and `panel` are required, and `icon` must name an `.svg`. A manifest missing one, or with a bad one, leaves that tab off the page with `tab <id> is left out: <error>` in the UI's log; the other tabs still work.
+
 File names are relative, with no `..`, in letters, digits and `._-/`. Every route answers only this UI's own page (`same_origin`), and each answers `404` for a tab the config does not name.
 
 | Route | What it does |
