@@ -21,7 +21,7 @@ So this directory is **one file on purpose**. `decisions.md`, `open.md` and `int
 
 | Window | What it is | Hands |
 |---|---|---|
-| **Listener** | Armed with `/fleet start`. Reads **#embarch-fleet**, spawns agents, and reads exactly one thing itself — the dispatchable count, because the heartbeat needs a predicate | None. It never does work |
+| **Listener** | Armed with `/fleet start`, which also starts the pump, or `/fleet arm`, which does not. Reads **#embarch-fleet**, spawns agents, and reads exactly one thing itself — the dispatchable count, because the heartbeat needs a predicate | None. It never does work |
 | **Legs** | One `embarch-supervisor` at a time, four units each, spawned by the listener while the pump latch is on. Each leg's death spawns the next until `fleet stop` | Everything except a standing rule |
 | **The owner's** | An ordinary session. Standing rules, `scripts/`, `.claude/`, hardware, and drops into `inbox/` | Everything |
 
