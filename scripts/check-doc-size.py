@@ -23,7 +23,7 @@ The cap is a wall, and a wall is discovered by the worker whose edit it
 refuses -- which converts unrelated work into a compaction task mid-flight. So
 above the cap there is a RESERVE: the last RESERVE_PCT..100% of a file's limit.
 A file in reserve is still writable, and the gate still passes, but it must be
-named by an open item in ``tasks/`` or ``inbox/``. **The debt is filed by
+named by an open item in ``tasks/``. **The debt is filed by
 whoever spends the reserve**, in the same commit, because that actor is the only
 one who knows the thing no script can decide -- whether the subsystem is still
 in flux (DOC-COMPACTION-PASS.md, "Failure modes"), which is when compaction writes a clean
@@ -135,11 +135,10 @@ RESERVE_PCT = 90.0
 # new reasoning. DOC-COMPACTION.md §2 carries the rule that follows from it.
 RESERVE_FLOOR = 1200
 
-# Where a filed debt lives. `tasks/doc/` for a doc the fleet may write,
-# `inbox/` for one reserved to the owner -- DOC-PROTOCOL.md and DOC-COMPACTION.md
-# are the case that forced this: no agent can compact them, so a wall there can
-# only ever be taken down in the owner's own session, and nothing said so.
-DEBT_DIRS = ("tasks", "inbox")
+# Where a filed debt lives. A doc reserved to the owner -- DOC-PROTOCOL.md and
+# DOC-COMPACTION.md are the case that forced this -- gets a task marked
+# `**Owner:** required`, as no agent can compact it.
+DEBT_DIRS = ("tasks",)
 # Matching `done` alone is sufficient ONLY because `check-task-state.py` (added
 # 2026-09-09) fails the gate on any state token outside the four in
 # tasks/README.md. Until then it was not: five tasks on `main` said `closed`,

@@ -23,13 +23,15 @@ So this directory is **one file on purpose**. `decisions.md`, `open.md` and `int
 |---|---|---|
 | **Listener** | Armed with `/fleet start`, which also starts the pump, or `/fleet arm`, which does not. Reads **#embarch-fleet**, spawns agents, and reads exactly one thing itself — the dispatchable count, because the heartbeat needs a predicate | None. It never does work |
 | **Legs** | One `embarch-supervisor` at a time, four units each, spawned by the listener while the pump latch is on. Each leg's death spawns the next until `fleet stop` | Everything except a standing rule |
-| **The owner's** | An ordinary session. Standing rules, `scripts/`, `.claude/`, hardware, and drops into `inbox/` | Everything |
+| **The owner's** | An ordinary session. Standing rules, `scripts/`, `.claude/`, and hardware | Everything |
 
 **There is no route from Slack to a standing rule**, for anyone, the owner included: the listener cannot write those paths and neither can any agent it spawns. The answer to a rule change asked for in the channel is "open your own window".
 
 ## What lives where
 
-The **queue** stays in this repo — `tasks/`, `inbox/`, `status.d/`, `changelog.d/` — because the claim commit on this repo's `main` is the interlock, and the queue is a view of docs that live here. The framework repo ships their *protocol*; this repo holds their *contents*.
+The **queue** stays in this repo — `tasks/`, `status.d/`, `changelog.d/` — because the claim commit on this repo's `main` is the interlock, and the queue is a view of docs that live here. The framework repo ships their *protocol*; this repo holds their *contents*.
+
+**New work enters as a Linear issue** in the owner's own workspace. A supervisor splits an issue in Fleet Ready into task files written for public reading, lists their paths on it, and moves it to Done when the last one closes. Fleet sessions stay off the dev desk's session list: arming hides the listener's session, and its agents share that session.
 
 `supervisor-log.md` runs the other way: it is the fleet's own output, so it lives in the framework repo even though a leg writes it. That makes a unit's fold two commits in two repos, which reopens a window the protocol closed by making it one — so `scripts/fold-commit.py` commits both or neither.
 
@@ -48,4 +50,4 @@ The **queue** stays in this repo — `tasks/`, `inbox/`, `status.d/`, `changelog
 
 ## Pointers out
 
-[README.md](../../embarch-fleet/README.md) is the entry point and says what each file is. Then [protocol.md](../../embarch-fleet/protocol.md) for the design, [ops.md](../../embarch-fleet/ops.md) for running it, [risks.md](../../embarch-fleet/risks.md) for what each choice traded away — in that order. [DEVELOPING.md](../../embarch-fleet/DEVELOPING.md) is how to change any of it. The queue's own protocols are [tasks/README.md](../tasks/README.md) and [inbox/README.md](../inbox/README.md), generated from the same templates.
+[README.md](../../embarch-fleet/README.md) is the entry point and says what each file is. Then [protocol.md](../../embarch-fleet/protocol.md) for the design, [ops.md](../../embarch-fleet/ops.md) for running it, [risks.md](../../embarch-fleet/risks.md) for what each choice traded away — in that order. [DEVELOPING.md](../../embarch-fleet/DEVELOPING.md) is how to change any of it. The queue's own protocol is [tasks/README.md](../tasks/README.md), generated from the same templates.

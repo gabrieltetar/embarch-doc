@@ -17,8 +17,7 @@ before deciding whether to block a task, not the first red.
 A check that passes prints nothing here -- with one exception. A line starting
 `NOTE:` in a PASSING check's output is surfaced along with its indented detail
 lines (2026-09-06, tasks/doc/015). That exists so a finding a check deliberately
-demoted from error to warning -- today, anything in a gitignored `inbox/` drop --
-is still *seen*, rather than swallowed by the wrapper on the strength of an rc 0.
+demoted from error to warning is still *seen*, rather than swallowed by the wrapper on the strength of an rc 0.
 A warning nobody prints is a warning nobody has.
 
 Usage:

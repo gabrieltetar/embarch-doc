@@ -107,7 +107,7 @@ and **the field was wrong.**
     due date would take a later leg's first unit. Nothing dispatches `done`.
 
 Usage:
-    scripts/check-task-state.py            check tasks/ and inbox/
+    scripts/check-task-state.py            check tasks/
     scripts/check-task-state.py --list     print every state token in use
 Exit status: 0 all task files parse, 1 at least one does not.
 """
@@ -127,10 +127,7 @@ REPO = Path(__file__).resolve().parent.parent
 # `claimed` at token zero, which is exactly why token zero is what is checked.
 LEGAL = ("open", "claimed", "done", "blocked")
 
-# `inbox/` drops carry the same format minus the number (inbox/README.md), and
-# a drop is always `open` -- but it is checked here rather than exempted,
-# because a malformed drop becomes a malformed task the moment it is promoted.
-DIRS = ("tasks", "inbox")
+DIRS = ("tasks",)
 
 STATE_RE = re.compile(r"^\*\*State:\*\*\s*(.+?)\s*$", re.M)
 IN_FLUX_RE = re.compile(r"^\*\*In flux:\*\*\s*(\S+)", re.M)
@@ -144,7 +141,7 @@ FLUX_LEGAL = ("yes", "no", "per")
 # The block matters because rule 4 is about what the block itself names -- a
 # path mentioned only on the `Compacts:` line is not the field saying which.
 NEXT_FIELD_RE = re.compile(
-    r"^(?:\*\*(?:State|Source|Scope|Hardware|Owner|Compacts|Size debt due|"
+    r"^(?:\*\*(?:State|Source|Issue|Scope|Hardware|Owner|Compacts|Size debt due|"
     r"Must not delete|Depends on|Blocks|Unparks when):\*\*|## )", re.M)
 
 

@@ -33,8 +33,8 @@ Not *is it true* — the pass will find many true and worthless things. A findin
 
 **The run is uncapped** (decided 2026-09-06): a pass is *meant* to generate a lot of work and the queue is meant to hold it. Two consequences are accepted rather than solved:
 
-- **A large drop suppresses refill.** [The protocol](../embarch-fleet/protocol.md) §4 fires refill only when the queue is *below* its low-water mark, so the fleet's own roadmap/`open.md` sweep stops until the findings drain.
-- **Rank does not survive into the queue.** §6 step 2 selects by scope diversity, with no ordering rule and no priority field, so drops are worked in effectively arbitrary order. **The ranking lives in the report and nowhere else.**
+- **A large batch marked Fleet Ready suppresses refill.** [The protocol](../embarch-fleet/protocol.md) §4 fires refill only when the queue is *below* its low-water mark, so the fleet's own roadmap/`open.md` sweep stops until those tasks close. Findings start in Backlog, so the owner decides how large.
+- **Rank does not survive into the queue.** §6 step 2 selects by scope diversity, with no ordering rule and no priority field, so findings are worked in effectively arbitrary order. **The ranking lives in the report and nowhere else.**
 
 ## 4. The seven dimensions
 
@@ -62,22 +62,22 @@ Six named hunts and one open one. Each hunter reads **the whole corpus** and loo
 
 - **The pump must be stopped.** A leg's tree is up to three units stale and *nothing errors* — `embarch-reviewer` names this as its central hazard. Check `../.fleet/pump` and the tick file's age; if the fleet is live, stop it and say so before starting.
 - **Working tree clean and pulled**, in every repo the pass will read.
-- **Read the queue first**, every open `tasks/**` file. **A finding already queued is not dropped again** — the report names the task covering it. Not a ledger, and no contradiction with §8's accepted churn, which is about findings *you declined*.
+- **Read the queue first**, every open `tasks/**` file. **A finding already queued is not filed again** — the report names the task covering it. Not a ledger, and no contradiction with §8's accepted churn, which is about findings *you declined*.
 - **Run the read-only tools rather than re-deriving them**: `scripts/check-duplication.py` (a DRY signal that already exists), `collect-open-questions.py`, `queue-status.py`.
 
-**Then:** fan out seven hunters → synthesize → write the report → write the drops.
+**Then:** fan out seven hunters → synthesize → write the report → file the issues.
 
-**A drop is a complete task file** in [inbox/README.md](inbox/README.md)'s format — no number, `Hardware:` an honest claim about *the fix*, a `Done when` checking the property rather than an implementation. **It carries the flaw plus one proposed direction**, leaving the worker room to design within its own sub-project ([the protocol](../embarch-fleet/protocol.md) §5.4). **A finding spanning two or more sub-projects is `Scope: suite`** — §8 there makes it the supervisor's own, never dispatched. The fleet already draws that line; this pass uses it rather than inventing one.
+**A finding is a Linear issue, filed in Backlog with `scripts/fleet-linear.py file --from audit`, whose body is a complete task** in [tasks/README.md](tasks/README.md)'s format — no number, `Hardware:` an honest claim about *the fix*, a `Done when` checking the property rather than an implementation. **It carries the flaw plus one proposed direction**, leaving the worker room to design within its own sub-project ([the protocol](../embarch-fleet/protocol.md) §5.4). **A finding spanning two or more sub-projects is `Scope: suite`** — §8 there makes it the supervisor's own, never dispatched. The fleet already draws that line; this pass uses it rather than inventing one.
 
 **The report is uncommitted**, `.claude/suite-review-<yyyy-mm-dd>.md`, as its 2026-08-15 ancestor was: regenerable, so durability buys nothing and a stale findings file reads as current truth to whoever opens it next.
 
 ## 7. The gate
 
-**Mechanical: none, and that is honest** — the pass writes only to `inbox/` and an ignored file, so `check-docs.py` has nothing to say about it. What replaces a gate is the report's shape: every finding names its beneficiary, its count (§2), the files it rests on, and whether it was code-confirmed.
+**Mechanical: none, and that is honest** — the pass writes only Linear issues and an ignored file, so `check-docs.py` has nothing to say about it. What replaces a gate is the report's shape: every finding names its beneficiary, its count (§2), the files it rests on, and whether it was code-confirmed.
 
 **Human, one question, asked honestly:**
 
-> **Of what this run dropped, how much would you have wanted done anyway?**
+> **Of what this run filed, how much would you have wanted done anyway?**
 
 **Mostly yes → the pass is working. Mostly no → the bar drifted**, and the next run's instruction is to raise it, not to find more.
 
@@ -86,7 +86,7 @@ Six named hunts and one open one. Each hunter reads **the whole corpus** and loo
 - **Churn.** Run N+1 re-finds what you declined in run N. Accepted (2026-09-06); the alternatives were a declined-findings ledger — a second place design rationale lives, which [DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3 treats as the characteristic failure — or an obligation to record every declined finding in a `decisions.md`. **The free mitigation should still be used: a finding contradicting a rejection already recorded in a `decisions.md` is not a finding, and if the rejection is not written down, *that* is the finding.**
 - **Ordering.** §3.
 - **Completeness: code that implements a decision without citing it.** Not swept for, by this pass or any other (decided 2026-10-29, `tasks/suite/041`). `check-decision-refs.py` checks that a cited number resolves; nothing checks the other direction, and `outpost/025`'s two, `topology/052`'s two and `core/070`'s three were invisible to every gate. A recurring pass would read each sub-project's source against its whole decisions tree: ~7.2 MB of source and 1.2 MB of decisions across eleven sub-projects [measured 2026-10-29], eleven agents at a field reviewer's ~2.5 M units [measured, `tasks/suite/051`], ~27 M units a pass. Every gap so far turned up for free inside a number sweep, none was a behaviour defect, and the pass's own failure is worse than the gap: a citation inferred for code the decision does not back, real, on-topic and wrong (`study-designer/056`). **So a gap is reported where it is tripped over** — in the unit's report or an `inbox/` drop, the decision's sentence quoted beside the code — and a citation is added only where that sentence states what the code does. **Reversal condition:** a change that contradicts a decision lands because the code it touched did not cite it, or five gaps in one sub-project.
-- **The fleet's own rules.** In scope to *read*, never to file: `check-ownership.py` refuses `fleet` as a worker scope and `tasks/fleet/` is reserved, so a finding there **cannot become a queue task at all.** It goes in the report's owner-only section and never into `inbox/` — which is what keeps *"a supervisor that can edit its own constraints has none"* true rather than nearly true. Same for every path in `fleet.toml`'s `reserved` list.
+- **The fleet's own rules.** In scope to *read*, never to file: `check-ownership.py` refuses `fleet` as a worker scope and `tasks/fleet/` is reserved, so a finding there **cannot become a queue task at all.** It goes in the report's owner-only section and never into Linear — which is what keeps *"a supervisor that can edit its own constraints has none"* true rather than nearly true. Same for every path in `fleet.toml`'s `reserved` list.
 
 ## 9. Failure modes
 
@@ -95,11 +95,11 @@ Six named hunts and one open one. Each hunter reads **the whole corpus** and loo
 - **Mistaking a decision for a flaw.** Single-engineer scope, no `rustfmt` gate, umbrella out of the runtime path, the dev-bench bypass — deliberate, documented, and all look like flaws from outside.
 - **Reading a stale tree.** §6's first preflight. **The staleness is invisible**: the file is there, it parses, it is merely a version old.
 - **Inventing a DUT or firmware fact.** [embarch.md](embarch.md) §5 — every hardware-specific meaning is engineer-declared. A hunter that infers one has produced a false finding with a real-looking citation.
-- **Two hunters, one finding.** Dimensions 3 and 5 overlap by construction. A run that drops both spellings skipped synthesis.
+- **Two hunters, one finding.** Dimensions 3 and 5 overlap by construction. A run that files both spellings skipped synthesis.
 
 ## 10. What the pass must never do
 
-- **Never write outside `inbox/` and the ignored report.** Not a doc, not a task file, not code. Same rule as `embarch-reviewer`, same reason: nothing mechanical stops it, this instruction does.
+- **Never write anything but those issues and the ignored report.** Not a doc, not a task file, not code. Same rule as `embarch-reviewer`, same reason: nothing mechanical stops it, this instruction does.
 - **Never touch hardware.** No build, no flash, no study, no board. It reads.
 - **Never file a finding about the fleet's own rules or any reserved path.** §8.
-- **Never let a hunter drop its own findings.** They go to synthesis first, or the dedupe and the ranking do not exist.
+- **Never let a hunter file its own findings.** They go to synthesis first, or the dedupe and the ranking do not exist.

@@ -46,8 +46,8 @@ Six outcomes, and five of them fail:
                number near a topic path that is not adjacent to it, "decision N
                in `<topic>`", a backticked path in a task or history entry, and
                anything outside `*.md` (source comments in the code repos).
-  * ERROR   -- a `decisions/<topic>.md:<line>` citation outside tasks/ and
-               inbox/ (tasks/doc/044). Stale with any edit above the line.
+  * ERROR   -- a `decisions/<topic>.md:<line>` citation outside tasks/
+               (tasks/doc/044). Stale with any edit above the line.
   * ERROR   -- one number on two live headings in one sub-project's decisions
                files (tasks/doc/033); see POINTER and HALF for the two repeats
                that are not collisions.
@@ -71,16 +71,8 @@ list elsewhere in that doc cannot invent an entry) and, where the extraction of
 DOC-PROTOCOL.md §3 has happened, from the whole of its `decisions.md` -- or,
 where those outgrew one file, from every `decisions/<topic>.md` under it.
 
-Findings in `inbox/*.md` are WARNINGS, never failures (2026-09-06,
-tasks/doc/015), for the same reason and on the same rule as check-links.py --
-read that file's header for the argument. The shape this script sees is the
-second and third of the three: a drop cites the decision number it is itself
-*proposing*, or one that exists on a commit the owner's checkout has not
-pulled. Both are correct-by-construction in a drop and both are errors the
-moment the drain makes it a committed `tasks/` file.
-
 Usage: scripts/check-decision-refs.py [--verbose] [--warnings]
-Exit status: 0 if no errors outside inbox/, 1 otherwise.
+Exit status: 0 if no errors, 1 otherwise.
 """
 import glob
 import os
@@ -170,23 +162,13 @@ BARE_TOPIC = re.compile(r'(?:\.\./)*decisions/([a-z0-9-]+)\.md')
 BEFORE_PAREN = re.compile(r'(?<![\w-])decisions?\s+' + NUMS + r'\s*\(\s*$', re.I)
 # A `:line` suffix on a decisions file (tasks/doc/044) is stale after any edit
 # above that line, and a verbatim split moves the entry out from under it.
-# Refused outside tasks/ and inbox/, where a path:line is dated evidence of
+# Refused outside tasks/, where a path:line is dated evidence of
 # what a file said when the task was filed. Cite the number instead.
 LINE_CITE = re.compile(r'decisions/[a-z0-9-]+\.md:\d+')
-LINE_CITE_OK = ('tasks/', 'inbox/')
+LINE_CITE_OK = ('tasks/',)
 SECTION_HEAD = re.compile(r'^##\s')
 DECISIONS_HEAD = re.compile(r'^##\s+\d+[a-z]?\.\s.*decision', re.I)
 SKIP_DIRS = {'.git', '.github', 'scripts', '.claude'}
-# Gitignored staging directory. Scanned, but its findings warn rather than fail;
-# `inbox/README.md` is committed (.gitignore negates it) so it is NOT exempt.
-INBOX = 'inbox/'
-
-
-def is_drop(rel):
-    """True for a gitignored inbox drop; False for inbox/README.md and all else."""
-    rel = rel.replace(os.sep, '/')
-    return rel.startswith(INBOX) and os.path.basename(rel) != 'README.md'
-
 # A reversal row is cited as "reversals.md ... row 86" / "rows 83-85". The rows
 # live in reversals/rows-<a>-<b>.md and a row number is a permanent identity, so
 # a citation resolves against the union of every range file -- not against a
@@ -693,28 +675,6 @@ def main():
     bad_rows, rows_checked, rows_defined = check_reversal_rows()
     file_index = build_file_index()
     bad_links, line_cites, links_checked = check_topic_links(file_index, index)
-
-    # inbox/ drops warn; everything else fails. Split BEFORE any exit decision.
-    drop_errors = [e for e in errors if is_drop(e[0])]
-    errors = [e for e in errors if not is_drop(e[0])]
-    drop_rows = [r for r in bad_rows if is_drop(r[0])]
-    bad_rows = [r for r in bad_rows if not is_drop(r[0])]
-    drop_links = [b for b in bad_links if is_drop(b[0])]
-    bad_links = [b for b in bad_links if not is_drop(b[0])]
-
-    if drop_errors or drop_rows or drop_links:
-        # NOTE: is the marker check-docs.py surfaces on an otherwise-green run.
-        print(f'NOTE: {len(drop_errors) + len(drop_rows) + len(drop_links)} '
-              f'unresolved citation(s) in gitignored inbox/ drops -- warnings, '
-              f'not failures; the drain re-checks them as errors.')
-        for rel, lineno, target, num, excerpt, why in drop_errors:
-            print(f'  (inbox) {rel}:{lineno} decision {num} -- {why}')
-        for rel, lineno, num, excerpt in drop_rows:
-            print(f'  (inbox) {rel}:{lineno} reversals row {num} -- not defined')
-        for rel, lineno, num, target, defining, excerpt in drop_links:
-            print(f'  (inbox) {rel}:{lineno} decision {num} -- {target} does '
-                  f'not define it')
-        print()
 
     if bad_links:
         print(f'{len(bad_links)} citation(s) naming a topic file that does '

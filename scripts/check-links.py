@@ -12,31 +12,13 @@ filename was ever validated. That is reversals row 50's shape -- a bounded
 check that cannot report the thing it does not look at. A fragment resolves
 against an explicit `<a id="...">` or a GitHub-style heading slug.
 
-Findings in `inbox/*.md` are WARNINGS, never failures (2026-09-06,
-tasks/doc/015). Drops are gitignored, so they exist only in the owner's main
-checkout and never in a leg's worktree -- the same pending drop makes the
-owner's gate red while every worker's is green. And a drop legitimately does
-not resolve: it is written at the depth of the file it will *become*, and it
-cites the decision or the commit it is *proposing*. Three shapes seen, all
-correct-by-construction: a relative link written from the drop's future home;
-a decision number the drop itself proposes; and a citation of a decision that
-does exist but on a commit the owner's checkout has not pulled yet -- that
-last one self-heals on `git pull` and is why "just drain promptly" was
-rejected as the fix.
-
-The hard catch is the drain, not this run: a drained drop stops being
-`inbox/` and becomes a committed `tasks/<scope>/NNN-*.md`, at which point
-every finding here is an error again. That is not theoretical -- it is how
-`tasks/api/023` was caught (tasks/doc/018). So a malformed drop is still
-refused, one step later, by the actor who moved it.
-
 Link syntax inside fenced code blocks and inline code spans is IGNORED
 (2026-09-06, tasks/doc/018), the way a renderer ignores it. Before this, a doc
 that explained a convention by quoting an example reference was reported as a
 broken link, because the example resolved relative to the doc *explaining* it
 rather than the doc that would carry it. The cheapest response — delete the
-example — makes the doc worse, and `DOC-CONVENTIONS.md` and the `tasks/` and
-`inbox/` READMEs are exactly the docs that want one. It had already cost a leg
+example — makes the doc worse, and `DOC-CONVENTIONS.md` and the `tasks/`
+README are exactly the docs that want one. It had already cost a leg
 directly: `tasks/api/023` failed this check at its own claim commit, before
 its worker changed anything.
 
@@ -75,7 +57,7 @@ shape (`embarch-dev-bench/decisions/pd-bench.md`, 2026-10-13) was linked by hand
 in `.worktrees/` twelve days later; nothing would have caught the third.
 
 Usage: scripts/check-links.py   (run from anywhere; paths are repo-relative)
-Exit status: 0 if every relative link outside inbox/ resolves, 1 otherwise.
+Exit status: 0 if every relative link resolves, 1 otherwise.
 
 This exists because embarch-doc is a web of cross-linked docs
 (DOC-PROTOCOL.md §5's "link, don't restate" rule) — a renamed or moved file
@@ -121,18 +103,6 @@ def in_suite(resolved):
 
 
 # Gitignored staging directory; its findings warn rather than fail (see header).
-# The exemption is exactly .gitignore's `inbox/*.md` MINUS its `!inbox/README.md`
-# negation: that README is committed, is rendered from a framework template, and
-# is a doc like any other -- exempting the whole directory would stop checking it.
-INBOX = 'inbox/'
-
-
-def is_drop(rel):
-    """True for a gitignored inbox drop; False for inbox/README.md and all else."""
-    rel = rel.replace(os.sep, '/')
-    return rel.startswith(INBOX) and os.path.basename(rel) != 'README.md'
-
-
 LINK_RE = re.compile(r'\[[^\]]*\]\(([^)]+)\)')
 # An opening or closing fence: three or more backticks or tildes, optionally
 # indented. The info string after an opener is ignored.
@@ -232,24 +202,13 @@ def main():
                 missing.append((os.path.relpath(path, REPO_ROOT),
                                 f"{target}  (file exists; nothing named '{frag}' in it)"))
 
-    hard = [f for f in missing if not is_drop(f[0])]
-    soft = [f for f in missing if is_drop(f[0])]
-
-    if soft:
-        # NOTE: is the marker check-docs.py surfaces on an otherwise-green run.
-        print(f"NOTE: {len(soft)} unresolved link(s) in gitignored inbox/ drops "
-              f"-- warnings, not failures; the drain re-checks them as errors.")
-        for src, target in soft:
-            print(f"  (inbox) {src} -> {target}")
-        print()
-
-    if hard:
-        print(f"Found {len(hard)} broken relative link(s):\n")
-        for src, target in hard:
+    if missing:
+        print(f"Found {len(missing)} broken relative link(s):\n")
+        for src, target in missing:
             print(f"  {src} -> {target}")
         return 1
 
-    print("All relative links resolve (inbox/ drops excepted).")
+    print("All relative links resolve.")
     return 0
 
 
