@@ -79,3 +79,36 @@ Both registries' `save` rewrite the whole TOML through `to_string_pretty`, so **
 ## The Atlas tab's own routes
 
 Under `/api/atlas`, all `GET`, files only: [interfaces/atlas.md](interfaces/atlas.md).
+
+## Tab folders
+
+Why it is this way: [decision 100](decisions/tab-folders.md). In the file `EMBARCH_UI_CONFIG` names, which the launcher sets from its config path setting:
+
+```toml
+[[tabs]]
+id = "mine"                 # lowercase letters, digits, dashes; not a built-in tab's id
+folder = "~/path/to/folder" # absolute, or under ~/
+```
+
+The folder holds `tab.toml`, whose unknown keys are errors:
+
+```toml
+label = "Mine"
+icon = "icon.svg"       # inlined in the nav item, so `currentColor` follows the theme
+panel = "panel.html"    # the inside of the tab's <section class="tab-panel">
+scripts = ["tab.js"]    # optional; loaded after the built-in scripts, in this order
+styles = ["tab.css"]    # optional
+
+[[backends]]            # optional, and any number
+name = "svc"            # lowercase letters, digits, dashes
+url = "http://127.0.0.1:4000"  # http, a literal loopback address and a port, nothing else
+token_file = "~/.config/svc/token"  # absolute, or under ~/; read on every call
+```
+
+File names are relative, with no `..`, in letters, digits and `._-/`. Every route answers only this UI's own page (`same_origin`), and each answers `404` for a tab the config does not name.
+
+| Route | What it does |
+|---|---|
+| `GET /tab/<id>/<file>` | A file from the folder, with an `ETag`. `403` for a path outside it, a symlink out included. |
+| `ANY /api/tab/<id>/<backend>/<rest>` | One call to the backend: method, undecoded path, query, body and `Content-Type`, plus `Authorization: Bearer` with the token. The answer's status, `Content-Type` and body come back; a redirect is not followed. `503` for a manifest that fails its checks, a token that cannot be read, or nothing listening. |
+| `GET /api/tab-events/<id>/<backend>/<path>` | SSE. Polls that path with the token every 10 s while the page listens: `view` with the body, or `view-error` with why there is none. |

@@ -41,7 +41,7 @@ The launcher (`embarch-chat` decision 29) pre-flights the address, spawns/stops 
 
 ## The six tabs
 
-Navigation, the sidebar, the open desk as shell furniture and fragment routing (`#topology`, `#live-study`, retired `#enroll`, `#dashboard`; 43, 46, 56–58), and what each tab does: [spec/tabs.md](spec/tabs.md).
+Plus any from a tab folder (100). Navigation, the sidebar, the open desk as shell furniture and fragment routing (`#topology`, `#live-study`, retired `#enroll`, `#dashboard`; 43, 46, 56–58), and what each tab does: [spec/tabs.md](spec/tabs.md).
 
 ## Invariants
 
@@ -64,6 +64,7 @@ Navigation, the sidebar, the open desk as shell furniture and fragment routing (
 - **Validate topology says what it checked and what it cannot.** A role is a live hardware-ID re-read; one missing either binding is *empty*, not failed; **a guessed dev-bench port is a warning, never a pass**; a signal route is checked only as far as declared, and says so. Core's reason is verbatim; a leftover role's finding carries the only control that clears it.
 - **A study stores no board, variant or revision** (45): a run builds for the board type in the **DUT role**, read at the moment it runs, so a saved study follows the bench. It is not silently reinterpreted — the override is announced on the build log.
 - **Unreadable renders as unreadable, not as a mismatch or empty list.** A bench not plugged in has no version to disagree with; a Core answering `404` to the signals route has not said there are no signals.
+- **A tab comes only from the user's own config** (100): its script runs on this origin with everything the page can do. Its backends are loopback and their tokens never enter the page ([spec/tabs.md](spec/tabs.md#tab-folders)).
 
 ## Verification technique
 

@@ -14,3 +14,11 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 | **Live Study** | Runs a saved study and watches it land, or opens a past one and reads it back. Stacked cards: run/open with the studies list, the **build card** where this run builds its own firmware, status, steps filling in live, the event feed, one console per `Text` tap, the **Time chart** (every stream on one axis), the trace chart, and one data card per tap. **A host study's operator prompt opens a modal on whichever tab is open** (69): text, countdown, Confirm/Cancel, a sound and a notification, closed by whoever answers first; a step naming a bench config draws the change on the live bench, and Confirm marks that config live once the answer is sent (99) |
 | **Atlas** | The open project's hardware atlas as one map (52): modules, MCU peripherals and pins, and every part on every board as a generic schematic symbol, each pin labelled with its net and the firmware's name for it (53). Picks an atlas, walks the problems, opens each claim's source down to the page or the code line (54). Read-only |
 | **Debug** | Three sources: two live tails — Core and `embarch-api`'s rolling file, both reaching the browser as this UI's own `lines` SSE event — and **builds**, stored rather than tailed: every firmware build this UI ran, picked from a list (39) |
+
+## Tab folders
+
+**The user's own config can add a tab** (100): `[[tabs]]` names an id and a folder, and the folder holds `tab.toml` and the tab's files, none of them in this binary. The nav item goes straight after Desk's and the panel joins the others, so a tab opens by click and by `#<id>` like a built-in one. The folder is read per request, so an edit shows on a reload.
+
+**A tab's script runs on this UI's own origin and can call everything the page can.** That is acceptable only because a tab comes from the user's own config file, and nothing a page or a request can do adds one. Name only a folder you trust as you trust this binary.
+
+A tab's calls go through this server to the loopback services its manifest names, with the token added there and kept out of the page. A tab that cannot be read is left off the page and logged, and the rest still work. With no tab configured, the page is the built-in one, byte for byte. Manifest and routes: [../interfaces.md](../interfaces.md#tab-folders).
