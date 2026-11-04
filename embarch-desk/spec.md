@@ -12,6 +12,8 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a row of cards at the head of the Desk tab holding every desk's waiting tiles ([decisions 10, 57](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
 
+**A suite desk** (decision 70) works on repos that sit side by side: Start work makes a folder per issue holding worktrees for the issue's repo and the docs, and symlinks for the rest, so sibling paths build as they do in the main clones.
+
 **Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85).
 
 **The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump. It also holds each desk's **reference index** (56) — every issue in its Linear scope, archived included, and every PR in its repos — which the chat mirrors from `GET /refs`.
@@ -33,7 +35,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **The open desk scopes what is shown and where agents point, never what is tracked**: a session's time lands on the desk whose repo it is in (36).
 - **Switching desks touches no hardware**; the bench is proposed in the UI and loaded on a click (37).
 - **The session decides a note's item, never the file's name** (52); a note held before the session has an item lands once it gets one.
-- **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode.
+- **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode. An `open` entry carries no prompt at all (70).
 - **`GET /refs` answers from memory**: only the index's own task fetches, so no request waits on Linear or GitHub (56).
 
 ## 3. Interfaces

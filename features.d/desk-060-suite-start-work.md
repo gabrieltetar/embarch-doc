@@ -1,0 +1,1 @@
+| Start work for a suite: a folder per issue with worktrees for the issue's repo and the docs, and symlinks for the other clones; a tool to add a repo; a chat opened with no item | Shipped, deployed to the dev desk 2026-11-04 | unit, and live against Linear on the dev desk; the chat's take of an open entry is covered by the desk side only until the chat is reinstalled | 70 |
