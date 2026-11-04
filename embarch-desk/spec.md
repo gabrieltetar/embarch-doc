@@ -54,7 +54,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Harvest entries | today every 2 min; a day with a waiting tile 10 min [chosen] and again at ✓ (62) |
 | Reference index | 1,000 issues; 300 PRs per repo; each desk every 5 min, by its own task's pass every 30 s (56) |
 | Harvest entries read | 2,000 per account per call, paged by 100; `truncated` when cut [chosen] (59) |
-| Assigned issues read | 500 per workspace, paged by 50; `truncated` when cut [chosen] (59) |
+| Open issues read, assigned or all | 500 per workspace, paged by 50; `truncated` when cut [chosen] (59, 71) |
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
 | Least time after a ✓ dealt as a continuation | 5 min [chosen] (64) |
 | Brief | 16,000 characters, about 4K tokens (48) |
