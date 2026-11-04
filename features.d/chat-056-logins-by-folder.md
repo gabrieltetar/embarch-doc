@@ -1,0 +1,1 @@
+| Two Claude logins at once: machine settings give a folder its login and desk, a status-bar picker changes the login for new chats, and a chat keeps its login for life | Shipped, installed 2026-11-03 | Real chats in one window of each kind, 2026-11-03; a token refresh was not observed | embarch-chat decision 101 |
