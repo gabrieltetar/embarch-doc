@@ -24,6 +24,7 @@ Core owns all direct hardware access — `probe-rs` and `serialport` live exclus
 - **No inference presented as fact.** Anything about a DUT this crate can't observe is declared by the operator or reported unknown.
 - **Every JSON object either front-end emits carries `schema_version`**, stamped in one place rather than per emitter, and there is no `error_kind` ([decisions](decisions/surface.md) 24, 50).
 - **The bench lease token rides every Core call, from `EMBARCH_LEASE_TOKEN` or the process's own lease, and a refusal is Core's text verbatim** ([decisions](decisions/lease.md) 90).
+- **A session with `EMBARCH_REQUIRE_LEASE` in its environment is refused a hardware route while no lease is live**, before the route is called; with one live, Core decides by the token ([decisions](decisions/lease.md) 101).
 - **`bench_exchange` times are Core's receive times when Core sends them, else the poll that first saw the line.** Every answer says which, per signal (`time_basis`) ([decisions](decisions/bench-exchange.md) 89).
 - **The hardware test ledger is plain files under a project's `embarch/ledger/`, and the pending view is computed, never stored** ([decisions](decisions/ledger.md) 98). `run_study` appends a `submitted` row; reading the ledger closes it from Core's study result.
 - **A live event stream is an optimisation, never the source of truth.** Losing it falls back to polling and is reported, never fails a call. Core's `lagged` frame is a fact to relay, not an error ([decisions](decisions.md) 48).

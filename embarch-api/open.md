@@ -14,7 +14,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`artifact_path_for_core` is still tolerated at load.** `embarch-umbrella` stopped scaffolding it 2026-09-13. **Closes with one grep of the real configs** — none carrying it means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`; not checkable inside the suite: [decisions](decisions/config-retirement.md) 64
 - **The test ledger has never met a bench** ([decisions](decisions/ledger.md) 98). Owed: a study run lands a row; `ledger_pending` matches attached roles.
-- **The bench lease client has never met a real Core** ([decisions](decisions/lease.md) 90). Mock-tested. An MCP-taken token reaches no CLI or atlas subprocess until exported there; the 900 s default TTL is assumed.
+- **The bench lease client has met only a board-less dev Core** ([decisions](decisions/lease.md) 90, 101). An MCP-taken token reaches no CLI or atlas subprocess until exported there; the 900 s default TTL is assumed.
 - **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
 - **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
 
