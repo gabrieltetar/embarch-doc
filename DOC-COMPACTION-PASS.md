@@ -10,7 +10,7 @@ Working tree clean and pushed first — **git is where everything you delete goe
 
 `scripts/check-duplication.py` first: the cheapest bytes are a claim held in two of the four files, which is a §3 error rather than a cold sentence. Then **read the whole doc**, because **the merges that matter are between paragraphs 200 lines apart.** Then **write `spec.md` from scratch, to its cap** — not by deleting from the old doc, **because compaction by deletion preserves the old doc's shape, which is the problem** — and check the old one afterwards for facts you missed. Then `decisions.md` (§5, and the hot/cold test below), then `open.md`.
 
-**Delete the old files and fix every inbound link in the same commit**: this repo commits straight to `main` and **must not be left broken in between.** One sub-project per commit, with a `changelog.d/` fragment.
+**Delete the old files and fix every inbound link in the same commit**: `main` **must not be left broken in between.** One sub-project per commit, with a `changelog.d/` fragment.
 
 ## The gate
 

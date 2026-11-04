@@ -23,5 +23,5 @@ Four things reach this suite from outside the terminal. They are easy to confuse
 
 Cloud sessions suit exactly the work needing no local anything: **doc work in `embarch-doc`** (the six checks are pure Python, so a cloud environment can verify its own work completely), the **pure-Rust crates** `embarch-study-designer` and `embarch-topology`, and **investigation in any repo**. They are useless for the firmware repos and anything hardware-gated, which is most of what blocks this suite — the same boundary that keeps the fleet local, not a gap to close.
 
-**They investigate; they do not land**, because their natural output is a pull request and [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's standing rule is no branches and no PRs. Cloud work comes home: read, diagnose, draft, report in the thread; a leg files it as a task.
+**They investigate; they do not land**, because their natural output is a pull request and [embarch-dev-workflow.md](embarch-dev-workflow.md) §6's standing rule is no PRs. Cloud work comes home: read, diagnose, draft, report in the thread; a leg files it as a task.
 

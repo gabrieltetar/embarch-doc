@@ -78,9 +78,9 @@ decision, feature, or status change happens here — §4 says when, §5 says how
 history goes in a changelog.d/ fragment rather than into a doc.
 
 ## Git
-Work directly on `main` — no feature branches, no PRs (2026-08-25). Overrides the
-general "branch before committing to the default branch" default, for this suite only;
-ends when the repo owner explicitly says so. See ../embarch-doc/embarch-dev-workflow.md §6.
+Work on a branch, land when the owner asks — no PRs (2026-11-03). One branch name
+across every repo the change touches, pushed; land on `main` only when the repo owner
+asks, by rebase and fast-forward. See ../embarch-doc/embarch-dev-workflow.md §6.
 ```
 
 This is what makes §4–5 happen without re-explaining it: `CLAUDE.md` loads every session and points here. **A new repo needs both sections, and it is worth checking an existing one has them** — one sub-project ran for five days with no `CLAUDE.md` at all, so nothing there pointed at its own design doc, and nothing here had ever checked.
