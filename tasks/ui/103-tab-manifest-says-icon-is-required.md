@@ -1,6 +1,6 @@
 # 103 — A tab manifest says `icon` is required
 
-**State:** open
+**State:** claimed by agent/ui/103-tab-manifest-says-icon-is-required, 2026-11-04 15:56
 **Source:** Linear issue EMB-8, filed by the fleet: check that the tab folder docs say a manifest must name an icon
 **Issue:** EMB-8
 **Scope:** ui
