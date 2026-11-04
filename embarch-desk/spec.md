@@ -67,7 +67,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **No OAuth but Linear's MCP sign-in (68)** — tokens otherwise ([decision 16](decisions.md)); EmbArch owns no app registration.
 - **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
 - **No in-desk Linear comments, issue creation, PR review or merge** (v2), **and no Claude chat panel of its own**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
-- **No second machine**: one desk service, one state file, the machine with the bench.
+- **No second machine**: one desk service per instance, one state file each, the machine with the bench. A second instance (69) is a personal desk beside the work one, not a second machine.
 - **No two desks open at once** (33) — later.
 - **No archive or approve for agents.**
 

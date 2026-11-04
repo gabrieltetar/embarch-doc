@@ -26,3 +26,7 @@ On the owner's machine that is WSL, not a Windows service beside Core: it runs `
 
 ### 28 — The browser reaches the desk only through `embarch-ui`
 `/api/desk/{*rest}` is forwarded with the desk token added server-side. The token never enters the page, so no other site open in the browser can make the desk write to Linear or Harvest as the user.
+
+### 69 — A second desk runs as a named instance, with time and draft-only writes switchable
+`embarch-desk service install --instance NAME --port N` writes `embarch-desk-NAME.service`: the same binary with its own port, config and data folders, its own `CLAUDE_CONFIG_DIR` and `GH_CONFIG_DIR`, and its settings stated in the unit (`EMBARCH_DESK_TIME`, `EMBARCH_DESK_DIRECT_WRITES`, applied at each start). Two settings are new, and both leave a desk without them as it was: **`time`** (on) — off captures no spans, so no tiles, hand or timer, and the timer route refuses; **`direct_writes`** (off) — on makes the agent issue and comment tools send at once, where the rule "no agent tool sends a draft" otherwise holds. The owner's personal dev desk (4892) runs with time off and direct writes on; the work desk runs neither change. **Rejected:** a separate binary or fork (two codebases for one join), a Harvest-less flag per desk (a desk's Harvest binding is already optional).
+
