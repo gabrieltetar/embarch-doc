@@ -37,7 +37,7 @@
 - **`Filed by`** — `owner`, `session`, `worker`, `reviewer`, `audit` or `decision`. It replaces the old *"Filed by the fleet (…)"* footer, and `fleet-linear.py file` writes it from `--from` when the body leaves it out.
 - **`Done when`** — at least one `- [ ]` item, each checkable by reading code or running something.
 
-**Where a section names code, it names it exactly:** `` `embarch-desk/src/linear.rs` `gql_detail` ``, one location per line, with the line's role after a dash. **Put file names and code in backticks:** Linear turns a bare `store.rs` into a link to `http://store.rs`.
+**Where a section names code, it names it exactly:** `` `embarch-desk/src/linear.rs` `gql_detail` ``, one location per line, with the line's role after a dash. **Put file names and code in backticks, and name a domain in words:** Linear turns a bare `store.rs` into a link to `http://store.rs`, and links a domain such as Claude's web app even inside backticks [measured 2026-11-05, EMB-11].
 
 **Size is not capped at filing.** The supervisor splits an issue into task files when it takes it ([the protocol](../embarch-fleet/protocol.md) §4), and sends back one it cannot state a `Done when` for. A filer writes the issue as big as the problem.
 
