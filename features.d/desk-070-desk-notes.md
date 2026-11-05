@@ -1,0 +1,1 @@
+| Desk notes: standing working agreements on a whole desk, from the Desk tab or an agent's tool, heard by every session in its repos at its start; never a tile line, never Harvest | Built on branch `desk-notes`, not deployed | unit | 74 |
