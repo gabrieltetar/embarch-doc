@@ -1,6 +1,6 @@
 # 030 — `codecheck` reads only the driver sources the build compiled
 
-**State:** open
+**State:** claimed by agent/atlas/030-codecheck-reads-only-compiled-driver-sources, 2026-11-06 13:02
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-51
 **Scope:** atlas
