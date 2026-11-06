@@ -1,6 +1,6 @@
 # 037 — `second-look` reads a high-impedance strap as floating, not VDD
 
-**State:** claimed by agent/atlas/037-second-look-reads-high-impedance-as-floating, 2026-11-06 13:29
+**State:** done
 **Source:** a reviewer's finding on `atlas/033`, filed to Fleet Ready
 **Issue:** EMB-80
 **Scope:** atlas
@@ -19,14 +19,18 @@ The strap rule landed on 2026-11-06 to stop false conflicts on wording; the revi
 
 ## Done when
 
-- [ ] A strap read as "floating" by one pass and "high-impedance" by the other is not `conflict` (unit test).
-- [ ] "open-drain" in a condition names no pin state (unit test).
-- [ ] A negated state ("not floating") is not counted as that state (unit test).
-- [ ] "SEL = GND" against "SEL = VDD" is still `conflict` (the existing test passes).
-- [ ] `DESIGN.md`'s compare paragraph says the new rule if it lists the pin-state words.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] A strap read as "floating" by one pass and "high-impedance" by the other is not `conflict` (unit test).
+- [x] "open-drain" in a condition names no pin state (unit test).
+- [x] A negated state ("not floating") is not counted as that state (unit test).
+- [x] "SEL = GND" against "SEL = VDD" is still `conflict` (the existing test passes).
+- [x] `DESIGN.md`'s compare paragraph says the new rule if it lists the pin-state words.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
 
 ## Notes for the worker
 
 Fixture part and strap names must be generic: `test_public_guard` rejects real part names. Do not bump `CHECKED_VERSION`; `DESIGN.md` names a deliberate bump as the route for re-checking frozen rounds.
+
+## Done
+
+`pin_states` now rewrites high-impedance/hi-z/high-Z to floating, drops open-drain/collector, and drops a negated word before tokenizing. Unit tests cover each box; the DESIGN.md box was ticked on reading (paragraph edited). "GND or VDD" matching "VDD" (set intersection) is unchanged, not required by Done-when.
