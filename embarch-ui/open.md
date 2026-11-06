@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-13.
 
-Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md). The bench editor's: [open/bench.md](open/bench.md); making a bench live, its configs and a prompt naming one: [open/bench-live.md](open/bench-live.md).
+Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md). The bench editor's: [open/bench.md](open/bench.md); trace and live-study checks: [open/trace.md](open/trace.md); making a bench live, its configs and a prompt naming one: [open/bench-live.md](open/bench-live.md).
 
 - **Nothing installs `embarch-ui.service` but a hand-run `embarch-ui service install`** (decision 101). `embarch-umbrella`'s `setup` runs the desk's own `service install` and not this one, so a fresh machine has no UI until someone runs it. **Trigger:** the release-archive question below is settled, or a second machine needs the UI.
 
@@ -12,17 +12,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **A flash or a reset that fails mid-run has never been watched.** Only unit-tested are the two steps after a build failure — a `POST /flash` Core refuses, and a reset that does not take. Both would surface as a `failed` frame at phase `build` with a Core error in it, and neither has been seen. **Trigger:** unplug the DUT's probe between build finish and flash start, the cheap way to produce the first one.
 
-- **A trace's placement has never been checked against a power capture** (decision 34). No study on Core's disk carries a `Samples` tap, so the sample strip and struct lane are covered by unit tests only, and outpost wire constants stay unmeasured defaults. **Still unrun:** the same placement check against a real power capture, once one exists.
-
-- **The end-to-end `/study/{id}/streams` cost over real HTTP is still unmeasured.** The row cap's in-process cost is measured (decision 21); not covered are the three awaited Core calls (`study_streams`, `get_study_stream`, `study_steps`) `decode_trace` makes before `parse` runs. Re-measure against a live Core before calling the in-process number the whole cost.
-
 - **A signal mismatch has nowhere durable to land**, so a declared-but-wrong signal shows up in the Topology tab or nowhere. Closed upstream as not-needed-yet; two-part trigger: half fired (declarable through this tab), half not (no wire, no bridge). Carried by the row's own carrier cell, not the alert list.
-
-- **The live Time chart has never been driven by a trace.** Only the no-trace half has run (decision 37). **The traced half is unrun** — the `outpost` signal's declared route is `direct/port_serial=5` and no such device is present, so nothing has exercised `LiveAxis`'s anchor path, the epoch bump on a late header, or the non-monotone refusal against a real clock. **Trigger:** the outpost bridge attached and the signal re-declared against it. Unparks `tasks/core/093`.
-
-- **The stale-prefix drop has never met a real stale prefix** (decision 19): tested against crafted fixtures both ways, but the case it exists for — **18 records** a real capture opened with, buffered in the USB-UART bridge past `embarch-core`'s open-time purge — has not been replayed. **Hardware debt, the owner's session:** run a study, open its Trace tab, check the axis note reports a dropped prefix where the capture fell to ms. Until then, `STALE_PREFIX_MAX_ROWS` (512) is an assumption about a bridge FIFO nobody has measured.
-
-
-- **The `Debug` level's clamp note has never fired.** The level reaches the firmware and acts on it (decision 32). What did not fire is the clamp itself — `app/prj.conf` is `CONFIG_LOG_DEFAULT_LEVEL=4` with runtime filtering, so `Debug` is *reachable* and there is nothing to report; a deliberately quieter build is needed to see it.
 
 - **A reload no longer re-marks what a link named** (58); his call.
