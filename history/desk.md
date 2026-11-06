@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-10-26. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Changed
+- embarch-desk spec.md: status paragraph's per-decision deploy history folded into one line; out of reserve.
 ## 2026-10
 
 ### Added
