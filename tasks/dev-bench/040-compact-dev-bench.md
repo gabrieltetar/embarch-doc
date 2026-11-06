@@ -1,9 +1,8 @@
 # 040 — `spec.md` is in reserve after the PD bench decisions, and nothing filed the debt
 
-**State:** blocked — the PD bench section is about to be rewritten by four queued tasks (see `In
-flux`).
-**Unparks when:** `tasks/dev-bench/036` (pd-bench's own west workspace) lands; the clock below
-runs regardless, and a verbatim split needs no unpark at all.
+**State:** claimed by agent/dev-bench/040-compact-dev-bench, 2026-11-06 12:29 — reopened as the
+size ledger's first unit: overdue since 2026-11-01, and the remedy is a verbatim split, which this
+file always said needs no unpark.
 **Source:** `scripts/check-doc-size.py`, 2026-10-25. The owner's commits `a94e2c97` (decision 48,
 the PD bench, 2026-10-09) and `852d8855` (decision 49, the X-NUCLEO-DRP1M1, 2026-10-13) pushed
 `spec.md` into its reserve without a `Compacts:` line. The gate reported it only on 2026-10-25,
@@ -15,9 +14,13 @@ supervisor, which did not write these bytes.
 
 **Compacts:** embarch-dev-bench/spec.md
 **Size debt due:** 2026-11-01
-**In flux:** yes — `tasks/dev-bench/036`–`039` all change what `spec.md` says about the PD bench:
-its own west workspace and patch set (036, which retires decision 48's "it builds outside
-`workspaces/`"), a build gate (037), its shell contract (038) and the DRP1M1 sink path (039).
+**In flux:** no, for the remedy this task now takes. `tasks/dev-bench/036`–`039` all change what
+`spec.md` says about the PD bench: its own west workspace and patch set (036, which retires
+decision 48's "it builds outside `workspaces/`"), a build gate (037), its shell contract (038) and
+the DRP1M1 sink path (039). That text is two places only — §1's "A second app, `pd-bench/`"
+paragraph and §2's `pd-bench/` layout row — and this task leaves both word for word. What it moves
+is a settled section, verbatim, so it restates nothing (`DOC-BUDGET.md`'s split-first rule; the
+same reading reopened `chat/004` on 2026-10-28).
 **Must not delete:** nothing specific is known to the filer, which did not write these bytes. The
 DRP1M1 sink-path observation in `tasks/dev-bench/039` (CN2 near 2.3 V under a 9 V contract) is
 an open measurement; if `spec.md` states the README's "load on CN2" advice, it is the claim that
@@ -35,10 +38,17 @@ every unit in the suite until this was filed.
 
 ## The move
 
-**A verbatim split first** (`DOC-BUDGET.md`). The PD bench is a second app with its own shell,
-shields and (after 036) its own workspace, which is a mission seam: moving its section to a file of
-its own under `embarch-dev-bench/` pays the debt without shortening the main app's spec. Whoever
-next writes `spec.md` in a unit does this in the same commit and closes this task.
+**A verbatim split first** (`DOC-BUDGET.md`). The filer expected a PD bench section to move, but
+`spec.md` holds only one paragraph and one layout row about it, which is too little to pay 593 B
+and is the in-flux text besides. So move a **settled** section instead, verbatim (no rewording, no
+trimming), into `embarch-dev-bench/spec/<topic>.md` — the shape `embarch-ui/spec/` and
+`embarch-api/spec/` already use — and leave a one-line pointer in `spec.md` where it was. §5
+"Constants and budgets" (the table and the SRAM paragraph under it) is the obvious candidate: it is
+a reference table with its own provenance column, and §4 cites it only by number. §4 "Link and
+threading contracts" is the alternative. Pick by inbound links: find every link into the moved
+section across the suite and repoint it, including `#5-constants-and-budgets`-style anchors and
+cross-repo citations of `spec.md §5`. **Leave §1's `pd-bench/` paragraph and §2's `pd-bench/` row
+exactly as they are.**
 
 ## Done when
 
