@@ -1,6 +1,6 @@
 # 104 — `embarch-ui/spec.md` and `open.md` are in reserve after decision 101
 
-**State:** open
+**State:** claimed by agent/ui/104-compact-ui, 2026-11-06 12:35
 **Source:** EMB-63 added decision 101's service sentence to `spec.md` (9,265 / 10,240 B) and the unit-install bullet to `open.md` (4,226 / 5,120 B)
 **Scope:** ui
 **Hardware:** none
