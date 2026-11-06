@@ -1,6 +1,6 @@
 # 031 — `codecheck` does not take a bit-offset define for a register address
 
-**State:** claimed by agent/atlas/031-codecheck-offset-define-is-not-a-register, 2026-11-06 13:06
+**State:** done
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-52
 **Scope:** atlas
@@ -19,9 +19,13 @@ Two false findings on one small driver, both against a register the driver never
 
 ## Done when
 
-- [ ] `BQ2518X_SYS_REG_CTRL_OFFSET` is not listed as register 0x05 (unit test on a source excerpt shaped like the driver's).
-- [ ] `BQ2518X_DEVICE_ID_MSK` and `BQ2518X_SHIP_RST_EN_RST_SHIP_MSK` raise no `reg-field-in-other-register` or `reg-mask-vs-field` against 0x05.
-- [ ] A real register define whose name ends in a different token is still found.
-- [ ] Any design doc that states the classify or association rule says the new one.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `BQ2518X_SYS_REG_CTRL_OFFSET` is not listed as register 0x05 (unit test on a source excerpt shaped like the driver's).
+- [x] `BQ2518X_DEVICE_ID_MSK` and `BQ2518X_SHIP_RST_EN_RST_SHIP_MSK` raise no `reg-field-in-other-register` or `reg-mask-vs-field` against 0x05.
+- [x] A real register define whose name ends in a different token is still found.
+- [x] Any design doc that states the classify or association rule says the new one.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+`ENCODING_TOKENS` in `codecheck.py` gained `OFFSET` and `OFS`, so a `REG_`-named define ending in one classifies as `encoding`, not `register`; with no phantom register, the masks that followed it have no positional association to it. Prefix and access-site association were already preferred over position in `_assoc0`. No design doc states the classify rule, so none changed. Tested at the `classify` level (`test_offset_define_is_not_a_register_address`); no end-to-end driver excerpt was run.
