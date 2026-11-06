@@ -12,6 +12,8 @@
 
 Not verified: why. The wake was a leg's completion notification rather than the cron, five seconds before the spawn. One reading consistent with that: the pump section ("a leg's death wakes this window and the next leg is spawned") states the relay without the gate, and a completion wake followed it rather than STEP 2. The previous dream (2026-10-28 22:32) was followed by ten cron ticks and no spawn, so the gate has held at least once.
 
+**Seen again 2026-11-06, the same shape.** The leg that landed `atlas/035` posted a dream at 13:42 (`ts` `1793997725.841939`, `crystal_ball` on it), ran `leg-end` at 13:42:58; the listener woke at 13:43:16 and a leg started at 13:43:26. That leg's step 0 read Fleet Ready empty, `queue-status.py` 0 dispatchable on `main` at `47562d21`, no reply in the dream thread, and `fleet-read.py`'s `markers:` showing `crystal_ball` 2 minutes old. It ended after step 0, posted no second dream, and added only this paragraph. Two of two observed post-dream relays spawned an empty leg on a completion wake, so the "one reading" above is now the likely one. On 2026-10-29 the empty leg's own death (18:06:56) was followed by a listener tick at 18:07:26 and no spawn, so the chain stopped at one empty leg; the cost per dream is one step 0, not an unbounded chain.
+
 Possible fix, the owner's to choose: move the spawn predicate into a script the listener runs and obeys by exit code (count and marker age together), the same move `fleet-read.py` made for the message gate, so a prose gate cannot be skipped on one path and honoured on another.
 
 ## Done when
