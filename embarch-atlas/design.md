@@ -6,7 +6,7 @@ Placeholder — this doc becomes the source of truth once `embarch-atlas` design
 
 ## Which image the build describes
 
-`embarch-atlas build` pins an atlas to one image's `edt.pickle` and `.config`. Under a multi-image sysbuild (application plus MCUboot) that is the application's, chosen by `domains.yaml` `default:`, else by the app directory's name, else the build fails naming the pickles it found. `build` and the Kconfig extraction choose through one function (`kconfig.image_dir`), so the two never describe different images. The detail is in the repo's `DESIGN.md`.
+`embarch-atlas build` pins an atlas to one image's `edt.pickle` and `.config`. Under a multi-image sysbuild (application plus MCUboot) that is the application's, chosen by `domains.yaml` `default:`, else by the app directory's name, else the build fails naming the pickles it found. `build` and the Kconfig extraction choose through one function (`kconfig.image_dir`), so the two never describe different images. A build dir the caller names (`config --build`, `dt_node`) passes the app the atlas was built for, read from the atlas stamp, so it picks the same image `build` did. The detail is in the repo's `DESIGN.md`.
 
 ## Which families' pin use `join` decodes
 
