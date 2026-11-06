@@ -1,6 +1,6 @@
 # 035 — A `join` test runs a Nordic project end to end
 
-**State:** claimed by agent/atlas/035-a-join-test-runs-a-nordic-project-end-to-end, 2026-11-06 13:37
+**State:** done
 **Source:** a reviewer's finding on `atlas/029`, filed to Fleet Ready
 **Issue:** EMB-78
 **Scope:** atlas
@@ -19,12 +19,16 @@ The fix landed on 2026-11-06 with this one criterion resting on reading; a fixtu
 
 ## Done when
 
-- [ ] A `join` test on a synthetic Nordic project asserts the pin map's DT column is filled for pins used in devicetree.
-- [ ] The same test asserts the pin-level checks report a non-zero "ran".
-- [ ] The STM32 fixtures are unchanged.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped. If the test finds a real defect, fix it in the same unit and say so in `decisions.md` only if the fix is a design choice.
+- [x] A `join` test on a synthetic Nordic project asserts the pin map's DT column is filled for pins used in devicetree.
+- [x] The same test asserts the pin-level checks report a non-zero "ran".
+- [x] The STM32 fixtures are unchanged.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped. If the test finds a real defect, fix it in the same unit and say so in `decisions.md` only if the fix is a design choice.
 
 ## Notes for the worker
 
 The fixture's part and board names must be generic: `test_public_guard` rejects real part names.
+
+## Done
+
+`tests/test_join_nordic.py` builds a synthetic Nordic project (generic MCU0 netlist with `P0.04`, `P0.5/AIN2`, `P1.02`, `P1.03`, `P1.10`, a Nordic `dt.json`) and runs `join.run`. It asserts pins.json's DT column is filled for the four DT-used pins (and empty for the test-point-only one), that the symbol's `P0.5` resolves to port `P0.05`, `pin_checks_no_input` is None, and "DT pin reaches the board" and "connected pin has a DT use" report `ran > 0`. Mutation check: reverting the Nordic branch of `mcu_port` makes the test fail. No defect found; no source change. STM32 fixtures untouched (the new file imports their helpers). Nothing ticked on reading.
