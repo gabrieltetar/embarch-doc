@@ -1,6 +1,6 @@
 # 033 — `second-look compare` does not call agreeing strap readings a conflict over wording
 
-**State:** open
+**State:** claimed by agent/atlas/033-second-look-strap-wording-is-not-a-conflict, 2026-11-06 13:10
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-55
 **Scope:** atlas
