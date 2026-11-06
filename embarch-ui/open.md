@@ -4,6 +4,8 @@
 
 Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decisions.md). The bench editor's: [open/bench.md](open/bench.md); making a bench live, its configs and a prompt naming one: [open/bench-live.md](open/bench-live.md).
 
+- **Nothing installs `embarch-ui.service` but a hand-run `embarch-ui service install`** (decision 101). `embarch-umbrella`'s `setup` runs the desk's own `service install` and not this one, so a fresh machine has no UI until someone runs it. **Trigger:** the release-archive question below is settled, or a second machine needs the UI.
+
 - **Whether `embarch-ui` belongs in the suite release archive is undecided** — [`embarch-umbrella`](../embarch-umbrella/decisions/install.md) decision 14's and the suite's. `assemble-suite.yml` ships three binaries, not this one, so a fresh `embarch setup` can't author or read back a trace. **Trigger:** first non-owner engineer walks the studies guide end to end.
 
 - **The run dialog does not read a *stored* study's build spec.** It knows the step table's Build card and says so; a run-only file's spec is in the file, and the dialog names which case it is, not the wrong study's build. **Trigger:** running a saved study with a build spec from the Live Study tab and wanting to see what it will flash before it does. Decision 38.

@@ -23,16 +23,13 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.attachOpenFile` | `true` | The open file goes with each message; off, a file goes only with selected lines (60) |
 | `embarchChat.attachSelection` | `true` | The selected lines go with each message; off, `@` still inserts them (60) |
 | `embarchChat.promptuPath` | `promptu` | Promptu's CLI, on PATH by default; not found, the Promptu icon stays dark and Enter sends as before (95, 96) |
-| `embarchUi.binaryPath` | `embarch-ui` | The binary the launcher starts (29) |
-| `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui` serves; also the Desk link, bench-card links and a step's card, study and board links (87) |
-| `embarchUi.configPath` | empty | An `embarch-ui` TOML config, as `EMBARCH_UI_CONFIG` |
-| `embarchUi.autoStart` | `false` | Start `embarch-ui` with VS Code, stop it on close |
+| `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui.service` serves, for the launcher's probe (102); also the Desk link, bench-card links and a step's card, study and board links (87) |
 
 ## Views, commands and keys
 
 **Views:** an activity-bar container, *EmbArch Chat*, holding the **Threads** webview; each chat opens as an editor tab, and what it opens goes into that tab's group (92); with `chatLocation` = `sidebar`, a secondary-sidebar container holds the **Chat** webview and any chat also opens as a tab (17). Status bar, right: **EmbArch** (new chat, 54) and **N waiting** (35).
 
-**Commands** (`embarchChat.*`): New Chat, Open Chat in Editor, Open the Oldest Waiting Chat, Refresh Threads, Show Log, Mark as Unread, Rename Chat, Focus Chat Input, Leave Chat Input, Insert @-Mention of the Selection, Reopen Closed Chat Tab; in a pending diff tab Accept the Kept Changes, Reject the Change, Reject or Keep This Change (64); on a plan tab Add Comment, Remove Comment, Send the Comments and Keep Planning (77). `embarchUi.*`: EmbArch UI: Start, Stop, Open in Browser.
+**Commands** (`embarchChat.*`): New Chat, Open Chat in Editor, Open the Oldest Waiting Chat, Refresh Threads, Show Log, Mark as Unread, Rename Chat, Focus Chat Input, Leave Chat Input, Insert @-Mention of the Selection, Reopen Closed Chat Tab; in a pending diff tab Accept the Kept Changes, Reject the Change, Reject or Keep This Change (64); on a plan tab Add Comment, Remove Comment, Send the Comments and Keep Planning (77). `embarchUi.*`: EmbArch UI: Start, Stop, Restart, Open in Browser, each driving `embarch-ui.service` (102).
 
 **Keys** (59): Ctrl+Alt+Esc focuses the input from an editor (with lines selected, as an @-mention) and again leaves it; Alt+Shift+K inserts `@path#L10-24` at the input's caret; Ctrl+Shift+T reopens the last closed chat tab when a chat tab was the last closed, else VS Code's own reopen.
 

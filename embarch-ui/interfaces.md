@@ -82,7 +82,7 @@ Under `/api/atlas`, all `GET`, files only: [interfaces/atlas.md](interfaces/atla
 
 ## Tab folders
 
-Why it is this way: [decision 100](decisions/tab-folders.md). In the file `EMBARCH_UI_CONFIG` names, which the launcher sets from its config path setting:
+Why it is this way: [decision 100](decisions/tab-folders.md). In the file `EMBARCH_UI_CONFIG` names, which `embarch-ui.service` carries from the shell that installed it (101):
 
 ```toml
 [[tabs]]

@@ -6,7 +6,6 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Not done
 
-- **`embarch-ui` still carries its own `vscode-extension/`**, the launcher's old copy (decision 29). Both register the `EmbArch UI:` commands, so this extension leaves them to the old one while both are installed. Removing the old copy from `embarch-ui` finishes the move.
 - **The library has not been seeded** (decision 14): the plugin holds promptu's three pieces and `~/.claude/commands` is empty [measured 2026-10-23]. The `claude -p` grouping pass over past prompts, then the owner's ✓/✕, is what fills it.
 
 ## Waiting on the owner

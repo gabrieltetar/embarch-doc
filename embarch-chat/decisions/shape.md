@@ -1,6 +1,6 @@
 # embarch-chat decisions: What it is, where it lives, how it looks
 
-**Status:** active, 2026-10-23.
+**Status:** active, 2026-10-23; 29 amended by 102 on 2026-11-05.
 
 The ask, the panel it replaces, the repo it lives in, how it shipped, and its look. **The ask, in the owner's words:** "its own Claude Code chat basically, with improvements tailored to my needs" — so that a chat can be started, seen and answered from EmbArch itself instead of handing off to claude.ai (`embarch-desk` decision 44).
 
@@ -30,7 +30,11 @@ One new repo for the extension and the library, the sub-project count unchanged;
 
 ### 29 — `embarch-ui`'s launcher moved into this extension
 
-One sideloaded extension, so the silent drop a VS Code server update causes costs one reinstall (`./reinstall.sh`). 436 lines moved once: the same `EmbArch UI:` commands and `embarchUi.*` settings, **left to the standalone launcher while both are installed**, which the log says. `embarch-ui`'s own `vscode-extension/` is still in that repo ([open.md](../open.md)). **Rejected:** two extensions, and one script reaching across both repos.
+One sideloaded extension, so the silent drop a VS Code server update causes costs one reinstall (`./reinstall.sh`). 436 lines moved once: the same `EmbArch UI:` commands and `embarchUi.*` settings, **left to the standalone launcher while both are installed**, which the log says. `embarch-ui`'s own `vscode-extension/` was deleted with 102. **Rejected:** two extensions, and one script reaching across both repos.
+
+### 102 — The launcher drives `embarch-ui.service` and spawns nothing
+
+Amends 29. `embarch-ui` runs as a systemd user service (`embarch-ui` decision 101, the owner's call on 2026-11-05), so the launcher reads the unit's state, refreshed every 5 s, and starts, stops and restarts it through `systemctl --user`; **Restart is a new command**. It never spawns the binary, even with no unit installed: the status bar says `(not installed)` and Start names `embarch-ui service install`. Closing a window stops nothing. `embarchUi.binaryPath`, `configPath` and `autoStart` are gone, the binary and its config being the unit's; `host` and `port` stay for the probe and the URL. The check that leaves the commands to a still-installed standalone launcher stays: deleting its source uninstalls nothing.
 
 ### 23 — It ships whole
 

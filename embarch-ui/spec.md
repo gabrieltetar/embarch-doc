@@ -35,7 +35,7 @@ embarch-ui (one Rust binary, axum, zero-build)
         and nothing else under /logs. Which UI route reaches which: interfaces.md.
 ```
 
-The launcher (`embarch-chat` decision 29) pre-flights the address, spawns/stops the binary, and shows the page in the system browser, focusing the open window and tab (28). It renders nothing itself.
+It runs as the systemd user service `embarch-ui.service`, one per machine with or without a VS Code window, written by `embarch-ui service install` and binding its address before anything else starts (101). The launcher (`embarch-chat` decisions 29, 102) reads that unit, starts, stops and restarts it through `systemctl --user`, and shows the page in the system browser, focusing the open window and tab (28). It renders nothing itself.
 
 **The `hardware` feature is the one it must never link:** a board read done in-process would enumerate whichever machine `embarch-ui` runs on, not Core's.
 
