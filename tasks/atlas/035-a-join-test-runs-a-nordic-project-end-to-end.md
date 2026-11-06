@@ -1,6 +1,6 @@
 # 035 — A `join` test runs a Nordic project end to end
 
-**State:** open
+**State:** claimed by agent/atlas/035-a-join-test-runs-a-nordic-project-end-to-end, 2026-11-06 13:37
 **Source:** a reviewer's finding on `atlas/029`, filed to Fleet Ready
 **Issue:** EMB-78
 **Scope:** atlas
