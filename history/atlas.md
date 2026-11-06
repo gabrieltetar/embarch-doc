@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Fixed
+- A named build dir (config --build, dt_node) picks its sysbuild image by the atlas's app, as atlas build does; no more error on a tree without a domains.yaml default.
 - Atlas: a proposed DT-limit mapping must match the property's quantity and role, else it is listed as mapping uncertain, not compared (EMB-53).
 - `second-look compare` no longer calls agreeing strap readings a conflict over wording: strap conditions compare by pin state, and the reader states only the pin state.
 - `codecheck` no longer reads `*_OFFSET` / `*_OFS` defines as register addresses, so masks stop being tied to a phantom register by position.
