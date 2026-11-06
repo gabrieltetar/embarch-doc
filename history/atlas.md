@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Fixed
+- codecheck keeps a hex-addressed *_OFFSET/*_OFS register define as a register; only a decimal or expression bit offset is encoding, so its address is still compared.
 - second-look reads high-impedance, hi-z and high-Z as a floating strap, open-drain as no pin state, and drops a negated state, so wording no longer freezes a false conflict.
 - A named build dir (config --build, dt_node) picks its sysbuild image by the atlas's app, as atlas build does; no more error on a tree without a domains.yaml default.
 - Atlas: a proposed DT-limit mapping must match the property's quantity and role, else it is listed as mapping uncertain, not compared (EMB-53).
