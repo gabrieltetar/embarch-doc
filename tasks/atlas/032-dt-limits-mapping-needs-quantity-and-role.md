@@ -1,6 +1,6 @@
 # 032 — a DT-limits mapping by name needs a matching quantity and role
 
-**State:** open
+**State:** claimed by agent/atlas/032-dt-limits-mapping-needs-quantity-and-role, 2026-11-06 13:14
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-53
 **Scope:** atlas
