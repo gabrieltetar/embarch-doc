@@ -1,6 +1,6 @@
 # 036 — `codecheck` keeps a hex-addressed register whose name ends in OFFSET
 
-**State:** open
+**State:** claimed by agent/atlas/036-codecheck-keeps-a-hex-addressed-offset-register, 2026-11-06 13:32
 **Source:** a reviewer's finding on `atlas/031`, filed to Fleet Ready
 **Issue:** EMB-79
 **Scope:** atlas
