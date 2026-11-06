@@ -1,8 +1,6 @@
 # 040 — `spec.md` is in reserve after the PD bench decisions, and nothing filed the debt
 
-**State:** claimed by agent/dev-bench/040-compact-dev-bench, 2026-11-06 12:29 — reopened as the
-size ledger's first unit: overdue since 2026-11-01, and the remedy is a verbatim split, which this
-file always said needs no unpark.
+**State:** done
 **Source:** `scripts/check-doc-size.py`, 2026-10-25. The owner's commits `a94e2c97` (decision 48,
 the PD bench, 2026-10-09) and `852d8855` (decision 49, the X-NUCLEO-DRP1M1, 2026-10-13) pushed
 `spec.md` into its reserve without a `Compacts:` line. The gate reported it only on 2026-10-25,
@@ -52,7 +50,15 @@ exactly as they are.**
 
 ## Done when
 
-- [ ] `spec.md` out of reserve (`scripts/check-doc-size.py --pressure`), or this task says why not.
-- [ ] Every link into a moved section resolves.
-- [ ] `DOC-COMPACTION-PASS.md`'s human question answered in the compactor's own words.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`).
+- [x] `spec.md` out of reserve (`scripts/check-doc-size.py --pressure`), or this task says why not.
+- [x] Every link into a moved section resolves.
+- [x] `DOC-COMPACTION-PASS.md`'s human question answered in the compactor's own words.
+- [x] Gate green (`../../../embarch-fleet/gate.md`).
+
+## Outcome (2026-11-06)
+
+Moved §5 "Constants and budgets" (table and SRAM paragraph) verbatim to `embarch-dev-bench/spec/constants.md` (about 2.9 KB, with a short provenance header; the one edit inside the text is the `open.md` link path, now `../open.md`). `spec.md` is 7,151 B, out of reserve (<= 9,039); `--pressure` reports it PAID. §1's `pd-bench/` paragraph and §2's `pd-bench/` row are untouched. The §5 heading stays in `spec.md` with a one-line pointer, so "spec §5" citations still resolve.
+
+**Inbound links.** Only citations: `embarch-dev-bench/open.md` line 23 ("spec §5") and `history/dev-bench.md` line 40 ("spec.md §5", history, not edited). Both still resolve to the §5 pointer; `open.md` is deliberately not edited because a longer citation pushed it (3,916 / 5,120 B) into reserve. No `#5-constants-and-budgets` anchors exist anywhere. Other sub-projects: none cite dev-bench's §5 (`embarch-core/interfaces.md` "spec §5's values" is Core's own spec; `.../plan 044` is a task file). Code repo: `app/src/scan_seen_mfg.h` cites "spec.md" without a section, and `README.md` links only §2; no code change, no code commits. Note: the moved table's "§4" refs (rx ring row) mean `spec.md` §4, left verbatim.
+
+**Human question (can spec.md alone answer what someone needs to work on this component today?).** Mostly yes: what the rig is, repo layout, invariants and the link/threading contracts are all in `spec.md`. For a concrete number (a frame cap, a stack size, the SRAM budget) the reader now follows one link to `spec/constants.md`, which is the right trade: it is a lookup table, not orientation. The PD bench paragraph is thin and in flux (tasks 036-039); that, not this split, is the gap.
