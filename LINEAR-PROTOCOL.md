@@ -33,7 +33,7 @@
 
 - **`Type`** — one of §3's six.
 - **`Scope`** — the sub-project without `embarch-` (`desk`, `atlas`, `ui`, `doc` for embarch-doc), or `suite` for one change that must land across several repos at once, which the supervisor runs itself ([the protocol](../embarch-fleet/protocol.md) §8). A repo scope matches the issue's Project, `embarch-<scope>`.
-- **`Hardware`** — `none`, `verify-only`, `bench` or `required`: an honest claim about **the fix**, with [tasks/README.md](tasks/README.md)'s meanings.
+- **`Hardware`** — `none`, `verify-only`, `bench`, `toolchain` or `required`: an honest claim about **the fix**, with [tasks/README.md](tasks/README.md)'s meanings. Anything only the owner can do — a phone, a bench, a login — is `required`.
 - **`Filed by`** — `owner`, `session`, `worker`, `reviewer`, `audit` or `decision`. It replaces the old *"Filed by the fleet (…)"* footer, and `fleet-linear.py file` writes it from `--from` when the body leaves it out.
 - **`Done when`** — at least one `- [ ]` item, each checkable by reading code or running something.
 
@@ -90,3 +90,15 @@ Each type's sections sit between the fields and `## Done when`, as `##` headers.
 - **Everything reaches `EMB` through the desk** that `fleet.toml`'s `[linear]` names, never the claude.ai Linear connector or the work desk: a fleet agent and an interactive session alike use `scripts/fleet-linear.py` — `file`, `rewrite`, `comment`, and the fleet's own `filed`, `send-back`, `finish`. An interactive session files with `--from session`, or `--from owner` for the owner's own notes.
 - **The desk's draft tools** (`linear_draft_issue`, `linear_draft_comment`, `linear_draft_edit`, `embarch-desk` decisions 30 and 75) are the route on any other desk; the shapes here apply to whatever they send to `EMB`.
 - **The owner typing in Linear** follows the same shapes; `fleet-linear.py lint` finds what drifted.
+
+## 6. Who works an issue
+
+**The status is the lane; no label or field says it** (owner's call, 2026-11-05). Every issue starts in Backlog, and the owner moves it on:
+
+| Lane | Statuses | Who moves it |
+|---|---|---|
+| The fleet | Backlog → **Fleet Ready** → Fleet Working → Done | the owner marks it ready; `filed` and `finish` move the rest |
+| The owner's window | Backlog → **Todo** → In Progress → In Review → Done | the owner picks it; the desk's Start work moves it to In Progress |
+
+**Three fields make an issue the owner's, whatever its status:** `Scope: fleet` (reserved; `check-ownership.py` refuses it as a worker scope), `Hardware: required` (the owner's hands), `Type: decision` (the owner's call). `fleet-linear.py ready` moves such an issue out of Fleet Ready to Todo with a **Sent back** comment naming the field, unless a task on `main` already names it. So a field set honestly at filing is the guard, and anything that needs the owner — a phone, a bench, a choice — says `required` or `decision` rather than prose. Until a leg runs `ready`, the listener's count still includes such an issue: one leg may start and find nothing.
+
