@@ -1,6 +1,6 @@
 # 029 — `atlas join` decodes devicetree pin use on Nordic nRF targets
 
-**State:** open
+**State:** claimed by agent/atlas/029-join-decodes-nordic-devicetree-pin-use, 2026-11-06 12:37
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-50
 **Scope:** atlas
