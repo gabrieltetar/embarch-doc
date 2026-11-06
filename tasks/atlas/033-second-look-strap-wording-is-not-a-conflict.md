@@ -1,6 +1,6 @@
 # 033 — `second-look compare` does not call agreeing strap readings a conflict over wording
 
-**State:** claimed by agent/atlas/033-second-look-strap-wording-is-not-a-conflict, 2026-11-06 13:10
+**State:** done
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-55
 **Scope:** atlas
@@ -19,9 +19,13 @@ A frozen false conflict is never revisited, so each round that runs under the cu
 
 ## Done when
 
-- [ ] A strap reading with an equal address value and a differently worded `condition` is `confirmed`, or flagged "wording differs", and is not `conflict` (unit tests on both examples above).
-- [ ] A strap reading with different address values is still `conflict`.
-- [ ] The reader prompt tells the reader to state only the pin state in `condition`.
-- [ ] Any design doc that states the strap compare rule says the new one.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] A strap reading with an equal address value and a differently worded `condition` is `confirmed`, or flagged "wording differs", and is not `conflict` (unit tests on both examples above).
+- [x] A strap reading with different address values is still `conflict`.
+- [x] The reader prompt tells the reader to state only the pin state in `condition`.
+- [x] Any design doc that states the strap compare rule says the new one.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+Strap conditions now compare by named pin state (`pin_states`, `_strap_condition` in `secondlook.py`). An address strap with an agreeing value and no common named state is `unresolved` ("values agree, wording differs"), not `conflict`; the two examples (fixed, GND) are `confirmed`. Mode straps keep the old word-overlap rule. Tests in `tests/test_secondlook.py` cover each box; the design-doc box is `DESIGN.md` in the code repo (no doc-repo text states the rule). Gate run results below in the report.
