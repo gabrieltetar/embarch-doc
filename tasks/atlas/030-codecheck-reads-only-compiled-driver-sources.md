@@ -1,6 +1,6 @@
 # 030 — `codecheck` reads only the driver sources the build compiled
 
-**State:** claimed by agent/atlas/030-codecheck-reads-only-compiled-driver-sources, 2026-11-06 13:02
+**State:** done
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-51
 **Scope:** atlas
@@ -19,9 +19,9 @@ A candidate list that is 80% noise teaches the reader to skip it, which is the f
 
 ## Done when
 
-- [ ] Constants from a driver file that is not in `compile_commands.json` and not included by a compiled file are not compared (unit test with a two-driver directory and a one-entry compile database).
-- [ ] A header the compiled driver includes is still read.
-- [ ] A `*_UA`, `*_UV`, `*_MV`, `*_MAX_*` or `*_STEP_*` constant is not reported as a register address.
-- [ ] The module docstring and any design doc that states the scan rule say the new one.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Constants from a driver file that is not in `compile_commands.json` and not included by a compiled file are not compared (unit test with a two-driver directory and a one-entry compile database).
+- [x] A header the compiled driver includes is still read.
+- [x] A `*_UA`, `*_UV`, `*_MV`, `*_MAX_*` or `*_STEP_*` constant is not reported as a register address.
+- [x] The module docstring and any design doc that states the scan rule say the new one.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
