@@ -1,6 +1,6 @@
 # 027 — `atlas build` picks the application image of a multi-image sysbuild
 
-**State:** open
+**State:** claimed by agent/atlas/027-build-picks-the-app-image-of-a-multi-image-sysbuild, 2026-11-06 12:30
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-49
 **Scope:** atlas
