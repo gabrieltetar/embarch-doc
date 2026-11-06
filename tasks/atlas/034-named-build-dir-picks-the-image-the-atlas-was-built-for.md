@@ -1,6 +1,6 @@
 # 034 — A named build directory picks its sysbuild image the way `atlas build` does
 
-**State:** open
+**State:** claimed by agent/atlas/034-named-build-dir-picks-the-image-the-atlas-was-built-for, 2026-11-06 13:20
 **Source:** a reviewer's finding on `atlas/027`, filed to Fleet Ready
 **Issue:** EMB-77
 **Scope:** atlas
