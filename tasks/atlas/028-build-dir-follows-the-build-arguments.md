@@ -1,6 +1,6 @@
 # 028 — `atlas build` does not reuse a build directory after its arguments change
 
-**State:** claimed by agent/atlas/028-build-dir-follows-the-build-arguments, 2026-11-06 12:50
+**State:** done
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-54
 **Scope:** atlas
@@ -19,8 +19,12 @@ A target's `extra_args` change is an ordinary edit, and the failure it causes re
 
 ## Done when
 
-- [ ] Changing a target's `extra_args` between `--sysbuild` and `--no-sysbuild` and rebuilding at the same commit succeeds without a manual delete (unit test on the directory key or the pristine flag).
-- [ ] A rebuild with unchanged arguments still reuses its build directory.
-- [ ] Any doc that names the `.work/build-<target>-<commit12>` layout says the new key.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Changing a target's `extra_args` between `--sysbuild` and `--no-sysbuild` and rebuilding at the same commit succeeds without a manual delete (unit test on the directory key or the pristine flag).
+- [x] A rebuild with unchanged arguments still reuses its build directory.
+- [x] Any doc that names the `.work/build-<target>-<commit12>` layout says the new key.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+Chose the directory key over `-p always`: `build-<target>-<commit12>-<args8>`, `args8` = sha256[:8] of board, app and extra_args (`build_dir_name`, `build.py`). An unchanged rebuild reuses its dir and incremental cache; a changed list never meets the old cache. The log shares the key. `kconfig-extract` reads the dir from the stamp, so existing atlases are unaffected. Documented in `embarch-atlas/DESIGN.md`.
