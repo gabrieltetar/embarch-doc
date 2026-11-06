@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Fixed
+- Atlas: a proposed DT-limit mapping must match the property's quantity and role, else it is listed as mapping uncertain, not compared (EMB-53).
 - `second-look compare` no longer calls agreeing strap readings a conflict over wording: strap conditions compare by pin state, and the reader states only the pin state.
 - `codecheck` no longer reads `*_OFFSET` / `*_OFS` defines as register addresses, so masks stop being tied to a phantom register by position.
 - codecheck reads only the driver sources the build compiled plus their quoted includes, and skips `*_UA`/`*_MV`/`*_MAX_*`/`*_STEP_*` constants as register addresses (atlas 030).
