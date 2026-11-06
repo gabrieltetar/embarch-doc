@@ -233,6 +233,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch-chat`'s side: a mailbox VS Code windows poll for Start work and Open chat, one line per session on the Desk, the work item's notes with memory files captured, `desk_work_item`'s brief | Shipped, deployed | unit, local | 46, 48, 52 |
 | Reference index for `embarch-chat`: every issue in a desk's Linear scope, archived included, and every PR in its repos, refreshed on its own task and served from memory as `GET /refs` | Shipped, deployed 2026-10-25 — live on the open desk, 178 issues and 48 PRs | unit, local | 56 |
 | Start work for a suite: a folder per issue with worktrees for the issue's repo and the docs, and symlinks for the other clones; a tool to add a repo; a chat opened with no item | Shipped, deployed to the dev desk 2026-11-04 | unit, and live against Linear on the dev desk; the chat's take of an open entry is covered by the desk side only until the chat is reinstalled | 70 |
+| Desk notes: standing working agreements on a whole desk, from the Desk tab or an agent's tool, heard by every session in its repos at its start; never a tile line, never Harvest | Built on branch `desk-notes`, not deployed | unit | 74 |
 
 ## embarch-chat
 
