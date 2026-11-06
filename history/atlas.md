@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Fixed
+- second-look reads high-impedance, hi-z and high-Z as a floating strap, open-drain as no pin state, and drops a negated state, so wording no longer freezes a false conflict.
 - A named build dir (config --build, dt_node) picks its sysbuild image by the atlas's app, as atlas build does; no more error on a tree without a domains.yaml default.
 - Atlas: a proposed DT-limit mapping must match the property's quantity and role, else it is listed as mapping uncertain, not compared (EMB-53).
 - `second-look compare` no longer calls agreeing strap readings a conflict over wording: strap conditions compare by pin state, and the reader states only the pin state.
