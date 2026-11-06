@@ -1,6 +1,6 @@
 # 037 — `second-look` reads a high-impedance strap as floating, not VDD
 
-**State:** open
+**State:** claimed by agent/atlas/037-second-look-reads-high-impedance-as-floating, 2026-11-06 13:29
 **Source:** a reviewer's finding on `atlas/033`, filed to Fleet Ready
 **Issue:** EMB-80
 **Scope:** atlas
