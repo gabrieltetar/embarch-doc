@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Changed
+- atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
+
 ### Fixed
 - codecheck keeps a hex-addressed *_OFFSET/*_OFS register define as a register; only a decimal or expression bit offset is encoding, so its address is still compared.
 - second-look reads high-impedance, hi-z and high-Z as a floating strap, open-drain as no pin state, and drops a negated state, so wording no longer freezes a false conflict.
