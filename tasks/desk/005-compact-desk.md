@@ -1,6 +1,6 @@
 # 005 — `embarch-desk/spec.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/desk/005-compact-desk, 2026-11-06 12:51
 **Source:** decision 68 (Linear through its MCP server) added the callback's bearer exception and the sign-in to §3 and §5, leaving spec.md at 9,110 B of 10,240 B (89.0%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
