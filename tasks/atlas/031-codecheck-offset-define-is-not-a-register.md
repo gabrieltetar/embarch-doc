@@ -1,6 +1,6 @@
 # 031 — `codecheck` does not take a bit-offset define for a register address
 
-**State:** open
+**State:** claimed by agent/atlas/031-codecheck-offset-define-is-not-a-register, 2026-11-06 13:06
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-52
 **Scope:** atlas
