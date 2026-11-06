@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- embarch-ui: spec.md and open.md compacted by moving role/catalog invariants and trace open items to spec/roles.md and open/trace.md.
 - A tab.toml must name label, icon (an .svg) and panel; a tab missing one is left off the page and logged.
 ## 2026-10
 
