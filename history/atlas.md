@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-10-29. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Fixed
+- atlas build pins a multi-image sysbuild atlas to the application image, picked by domains.yaml default, else the app directory name.
 ## 2026-10
 
 ### Added
