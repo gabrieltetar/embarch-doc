@@ -1,6 +1,6 @@
 # 005 — `embarch-desk/spec.md` is in reserve
 
-**State:** claimed by agent/desk/005-compact-desk, 2026-11-06 12:51
+**State:** done
 **Source:** decision 68 (Linear through its MCP server) added the callback's bearer exception and the sign-in to §3 and §5, leaving spec.md at 9,110 B of 10,240 B (89.0%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
@@ -24,3 +24,7 @@
 - [ ] `scripts/check-doc-size.py --pressure` no longer lists `spec.md`.
 - [ ] Every `Must not delete:` item is still readable.
 - [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result
+
+Status paragraph's per-decision deploy history (56–68) folded into one line of what is deployed; spec.md 9,764 B to under 9,039 B. Every `Must not delete:` item untouched. Human question (DOC-COMPACTION-PASS.md): yes, spec.md alone answers what someone needs to work on this component today; deploy dates and SHAs per decision are in git and `changelog.d/`. Code repo: no change, no commits.

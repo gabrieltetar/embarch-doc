@@ -4,7 +4,7 @@
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Every route, tool, connector and command: [interfaces.md](interfaces.md).
 
-**Built and running on the owner's machine, with Linear, Harvest and GitHub connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven end to end against a scratch desk (29 browser checks) and once through a real headless Claude Code session; the Linear and Harvest reads ran against the real accounts, every write mutation was checked only with invalid ids; no tile has reached Harvest and no draft has been sent. **`embarch-chat`'s side** — the mailbox, a line per session, the work item's notes — is deployed since 2026-10-23 (d9a8efc). **The reference index (56) is deployed** since 2026-10-25 17:07 (9d43fe4), live on the open desk with 178 issues and 48 PRs [measured 2026-10-25]. **The hand and folding (57, 58) are deployed** since 2026-10-25 18:33 (desk 880d970, `embarch-ui` aa5ffda); the first fold joined an earlier day's 1h46 to the day's tile on the owner's desk. **59–62 are deployed** since 2026-10-26 13:47 (32c51e3), with the service unit now quoting its PATH, so the service sees the Windows folders with a space in them. **63 is deployed** since 2026-10-26 14:24 (9b93637). **64 is deployed** since 2026-10-28 13:19 (e367298). **65–68 are deployed** since 2026-10-31 16:04 (122cd64).
+**Built and running on the owner's machine, with Linear, Harvest and GitHub connected [measured 2026-10-22] and the first desk open — the owner's current project.** Driven on a scratch desk (29 browser checks) and once through a real headless Claude Code session; reads ran against the real accounts, write mutations only with invalid ids; no tile has reached Harvest and no draft has been sent. **Deployed** through decision 68 (since 2026-10-31, 122cd64), `embarch-chat`'s mailbox side included; the reference index (56) holds 178 issues and 48 PRs on the open desk [measured 2026-10-25]. Deploys: `changelog.d/`.
 
 ## 1. What it is
 
@@ -14,11 +14,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **A suite desk** (decision 70) works on repos that sit side by side: Start work makes a folder per issue holding worktrees for the issue's repo and the docs, and symlinks for the rest, so sibling paths build as they do in the main clones.
 
-**Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub repos, firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85). A desk keeps **standing notes**, which every session in its repos hears at its start (74).
+**Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub and firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85). A desk keeps **standing notes**, which every session in its repos hears at its start (74).
 
 **The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump. It also holds each desk's **reference index** (56) — every issue in its Linear scope, archived included, and every PR in its repos — which the chat mirrors from `GET /refs`.
 
-**One binary, three roles:** `embarch-desk serve` (the always-on service), `embarch-desk hook` (what every hook runs) and `embarch-desk mcp` (the agent-facing tools). Its UI is `embarch-ui`'s Desk tab, which reaches it through a server-side proxy.
+**One binary, three roles:** `embarch-desk serve` (the always-on service), `embarch-desk hook` (what every hook runs) and `embarch-desk mcp` (the agent-facing tools). Its UI is `embarch-ui`'s Desk tab, via a server-side proxy.
 
 ## 2. Invariants
 
@@ -41,7 +41,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 3. Interfaces
 
-**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `/oauth/linear/callback`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens or Linear's MCP sign-in (68); a CLI. The reference, `embarch-chat`'s additions included: [interfaces.md](interfaces.md).
+**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `/oauth/linear/callback`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens or Linear's MCP sign-in (68); a CLI. Reference: [interfaces.md](interfaces.md).
 
 ## 4. Constants
 
@@ -69,11 +69,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 - **No OAuth but Linear's MCP sign-in (68)** — tokens otherwise ([decision 16](decisions.md)); EmbArch owns no app registration.
 - **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
-- **No in-desk Linear comments, issue creation, PR review or merge** (v2), **and no Claude chat panel of its own**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
-- **No second machine**: one desk service per instance, one state file each, the machine with the bench. A second instance (69) is a personal desk beside the work one, not a second machine.
+- **No in-desk Linear comments, issue creation, PR review or merge** (v2), **no Claude chat panel**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
+- **No second machine**: one desk service and state file per instance, on the bench's machine. A second instance (69) is a personal desk beside the work one, not a second machine.
 - **No two desks open at once** (33) — later.
 - **No archive or approve for agents.**
 
 ## 6. Pointers
 
-The repo: [gabrieltetar/embarch-desk](https://github.com/gabrieltetar/embarch-desk), checked out as `../embarch-desk`. The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The chat: [embarch-chat](../embarch-chat/spec.md). The browser drive: `embarch-ui/tests/browser/drive_desk.py`.
+The repo: [gabrieltetar/embarch-desk](https://github.com/gabrieltetar/embarch-desk), at `../embarch-desk`. The tab: [embarch-ui](../embarch-ui/spec.md) Desk. The chat: [embarch-chat](../embarch-chat/spec.md). Browser drive: `embarch-ui/tests/browser/drive_desk.py`.
