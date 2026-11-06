@@ -1,6 +1,6 @@
 # 028 — `atlas build` does not reuse a build directory after its arguments change
 
-**State:** open
+**State:** claimed by agent/atlas/028-build-dir-follows-the-build-arguments, 2026-11-06 12:50
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-54
 **Scope:** atlas
