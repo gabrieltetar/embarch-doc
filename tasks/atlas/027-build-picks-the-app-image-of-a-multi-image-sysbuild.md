@@ -1,6 +1,6 @@
 # 027 — `atlas build` picks the application image of a multi-image sysbuild
 
-**State:** claimed by agent/atlas/027-build-picks-the-app-image-of-a-multi-image-sysbuild, 2026-11-06 12:30
+**State:** done (token zero)
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-49
 **Scope:** atlas
@@ -19,10 +19,10 @@ Sysbuild with MCUboot is the usual nRF Connect SDK and Zephyr product build. The
 
 ## Done when
 
-- [ ] `embarch-atlas build` on a two-image sysbuild target writes an atlas pinned to the application image (unit test on a synthetic build tree with `domains.yaml` and two pickles).
-- [ ] A single-image build, sysbuild or not, builds as before.
-- [ ] When no image can be chosen, the error names the pickles it found.
-- [ ] `kconfig.py` reads `.config` from the same image the build chose.
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` say how the image is chosen, where they describe the build directory.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `embarch-atlas build` on a two-image sysbuild target writes an atlas pinned to the application image (unit test on a synthetic build tree with `domains.yaml` and two pickles).
+- [x] A single-image build, sysbuild or not, builds as before.
+- [x] When no image can be chosen, the error names the pickles it found.
+- [x] `kconfig.py` reads `.config` from the same image the build chose.
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` say how the image is chosen, where they describe the build directory.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
