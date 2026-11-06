@@ -32,7 +32,7 @@
 ```
 
 - **`Type`** — one of §3's six.
-- **`Scope`** — the sub-project without `embarch-` (`desk`, `atlas`, `ui`, `doc` for embarch-doc), or `suite` for one change that must land across several repos at once, which the supervisor runs itself ([the protocol](../embarch-fleet/protocol.md) §8). A repo scope matches the issue's Project, `embarch-<scope>`.
+- **`Scope`** — the sub-project without `embarch-` (`desk`, `atlas`, `ui`, `doc` for embarch-doc), or `suite` for one change that must land across several repos at once, which the supervisor runs itself ([the protocol](../embarch-fleet/protocol.md) §8). Any other clone in the suite root is a scope too, such as `private`; the fleet never works one. A repo scope matches the issue's Project, `embarch-<scope>`.
 - **`Hardware`** — `none`, `verify-only`, `bench`, `toolchain` or `required`: an honest claim about **the fix**, with [tasks/README.md](tasks/README.md)'s meanings. Anything only the owner can do — a phone, a bench, a login — is `required`.
 - **`Filed by`** — `owner`, `session`, `worker`, `reviewer`, `audit` or `decision`. It replaces the old *"Filed by the fleet (…)"* footer, and `fleet-linear.py file` writes it from `--from` when the body leaves it out.
 - **`Done when`** — at least one `- [ ]` item, each checkable by reading code or running something.
@@ -100,5 +100,5 @@ Each type's sections sit between the fields and `## Done when`, as `##` headers.
 | The fleet | Backlog → **Fleet Ready** → Fleet Working → Done | the owner marks it ready; `filed` and `finish` move the rest |
 | The owner's window | Backlog → **Todo** → In Progress → In Review → Done | the owner picks it; the desk's Start work moves it to In Progress |
 
-**Three fields make an issue the owner's, whatever its status:** `Scope: fleet` (reserved; `check-ownership.py` refuses it as a worker scope), `Hardware: required` (the owner's hands), `Type: decision` (the owner's call). `fleet-linear.py ready` moves such an issue out of Fleet Ready to Todo with a **Sent back** comment naming the field, unless a task on `main` already names it. So a field set honestly at filing is the guard, and anything that needs the owner — a phone, a bench, a choice — says `required` or `decision` rather than prose. Until a leg runs `ready`, the listener's count still includes such an issue: one leg may start and find nothing.
+**Three fields make an issue the owner's, whatever its status:** a `Scope` the fleet does not work — `fleet` (reserved; `check-ownership.py` refuses it as a worker scope) or a clone with no directory here, such as `private` — `Hardware: required` (the owner's hands), and `Type: decision` (the owner's call). `fleet-linear.py ready` moves such an issue out of Fleet Ready to Todo with a **Sent back** comment naming the field, unless a task on `main` already names it. So a field set honestly at filing is the guard, and anything that needs the owner — a phone, a bench, a choice — says `required` or `decision` rather than prose. Until a leg runs `ready`, the listener's count still includes such an issue: one leg may start and find nothing.
 
