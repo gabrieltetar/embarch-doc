@@ -1,6 +1,6 @@
 # 032 — a DT-limits mapping by name needs a matching quantity and role
 
-**State:** claimed by agent/atlas/032-dt-limits-mapping-needs-quantity-and-role, 2026-11-06 13:14
+**State:** done
 **Source:** a worker's finding, filed to Fleet Ready
 **Issue:** EMB-53
 **Scope:** atlas
@@ -19,9 +19,13 @@ A `dt-limit-outside-ec` reads as "this board is configured outside the part's ra
 
 ## Done when
 
-- [ ] `battery-discharge-current-limit-milliamp` is not compared with `IBAT_SHIP`, and `re-charge-threshold-millivolt` is not compared with `VREG_RANGE` (unit test with both records).
-- [ ] A mapping that fails the quantity or role test is shown as "mapping uncertain", not as `dt-limit-outside-ec`.
-- [ ] A declared mapping in `boards/bindings.json` `prop_limits` is still compared as before.
-- [ ] The module docstring and any design doc that states the mapping rule say the new one.
-- [ ] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] `battery-discharge-current-limit-milliamp` is not compared with `IBAT_SHIP`, and `re-charge-threshold-millivolt` is not compared with `VREG_RANGE` (unit test with both records).
+- [x] A mapping that fails the quantity or role test is shown as "mapping uncertain", not as `dt-limit-outside-ec`.
+- [x] A declared mapping in `boards/bindings.json` `prop_limits` is still compared as before.
+- [x] The module docstring and any design doc that states the mapping rule say the new one.
+- [x] Gate green (`../../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+`role_conflict` in `src/embarch_atlas/limits.py` runs after a name score reaches `THRESHOLD`: a record stated in a state the property does not name (ship, shutdown, standby, sleep, quiescent, leakage), or an offset against an absolute value (or the reverse), goes to `uncertain`, status `mapping-uncertain`, folded as "DT limits: mapping uncertain", never compared. `re-charge` now reads as the word `recharge`. Declared mappings do not pass through it. Tests in `tests/test_limits.py` (three new) exercise criteria 1-3; the docstring and `DESIGN.md` line 655 carry the rule (criterion 4, read, not tested). The test records are generic equivalents (a ship-mode current row and a threshold-range row), not the real part's.
