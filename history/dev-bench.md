@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- dev-bench composes the no-name-match census fail_reason outside the BT file, so ztests now pin its byte budget and both markers ([decision 52](../embarch-dev-bench/decisions/scanning.md)).
 - Constants and budgets table moved verbatim to [spec/constants.md](../embarch-dev-bench/spec/constants.md); spec.md out of its size reserve.
 
 ### Fixed
