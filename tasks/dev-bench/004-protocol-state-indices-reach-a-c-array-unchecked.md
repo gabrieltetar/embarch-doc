@@ -1,6 +1,6 @@
 # Bound a protocol's `goto_state`/`otherwise` before it indexes `def->states[]`
 
-**State:** open
+**State:** claimed by agent/dev-bench/004-protocol-state-indices-reach-a-c-array-unchecked, 2026-11-07 10:29 (toolchain unit, the leg's own hands)
 **Source:** owner's repo survey, 2026-09-06 — `decisions/protocols.md` §41 states this rule; it is implemented for one index of three
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board. Reclassified from `required` 2026-09-06 (`tasks/doc/020`): the supervisor runs it in the **main checkout**, serialized like a `bench` task.
