@@ -1,6 +1,6 @@
 # Reject an impossible length prefix in `pc_skip_len_prefixed` instead of wrapping past it
 
-**State:** open
+**State:** claimed by agent/dev-bench/003-pc-skip-len-prefixed-wraps-past-its-own-bounds-check, 2026-11-07 10:20 (toolchain unit, the leg's own hands)
 **Source:** owner's repo survey, 2026-09-06 — the one bounds check in a file that states this exact property, written in wrapping arithmetic
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board. Reclassified from `required` 2026-09-06 (`tasks/doc/020`): the supervisor runs it in the **main checkout**, serialized like a `bench` task.
