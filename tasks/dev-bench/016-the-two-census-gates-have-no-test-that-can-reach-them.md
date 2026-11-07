@@ -1,6 +1,6 @@
 # 016 — the two census gates `008` fixed have no test that can reach them
 
-**State:** claimed by agent/dev-bench/016-the-two-census-gates-have-no-test-that-can-reach-them, 2026-11-07 10:46 (toolchain unit, the leg's own hands)
+**State:** done
 **Source:** `tasks/dev-bench/008`, closed by the supervisor itself, leg 070, 2026-09-10. Its third
 `Done when` box could not be ticked and this task carries it.
 **Scope:** dev-bench
@@ -51,7 +51,26 @@ times; the third time is the one nobody checks.
 
 ## Done when
 
-- [ ] Either the two gates have ztest coverage over a mixed named/nameless set on both filter
+- [x] Either the two gates have ztest coverage over a mixed named/nameless set on both filter
       paths, or a decision records that they will not and says what checks them instead.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/dev-bench-*` fragment if
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10), `changelog.d/dev-bench-*` fragment if
       anything reader-facing changed.
+
+## Done (2026-11-07, the leg's own hands)
+
+**Extracted, decision 52** (`decisions/scanning.md`). `scan_seen_names_fail_reason()` in
+`scan_seen_names.c` now composes the whole `no name match` `fail_reason` from the advertiser
+count, a name per advertiser (through a `scan_seen_name_fn`, so the BT-typed census stays in
+`ble_bridge_real.c`) and the overflow flag. The prefix, separator, markers and the new
+`SCAN_SEEN_FAIL_REASON_FIXED_LEN` moved to `scan_seen_names.h`; `ble_bridge_real.c` keeps two
+`BUILD_ASSERT`s (room for prefix plus both markers in 64 bytes, and `SCAN_SEEN_MAX <= 999`) and
+calls the helper. `scan_seen_names_summary()` and `scan_seen_named_count()` are gone, folded into
+the helper with their behaviour kept: the same 22-byte name budget, 8 bytes when `(census full)`
+is reserved, nameless entries counted and not listed, no separator when nothing is named.
+
+Seven new ztests in `app/tests/scan_seen_names`, against the real `OUTCOME_MAX_FAIL_REASON_LEN`:
+12/12. The other three suites green, the `native_sim` app and the nRF54L15DK image build (the
+latter is what compiles `ble_bridge_real.c`). **What the box's "both filter paths" cannot get
+from a test:** the address-filter path produces no `fail_reason`, only the `report_scan_seen()`
+call, which is BT calls; decision 52 says so. Bench debt unchanged from `008`: a real failed
+name-filtered and address-filtered `BleConnect` each.
