@@ -16,7 +16,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Addressing and scan-time discovery](decisions/scanning.md) — the bench's own address, GATT UUID byte order, name filtering, the advertiser census | 17, 23, 31, 32, 44, 45, 46 | 9.1 KB |
 | [Dispatching a study](decisions/dispatch.md) — steps, discovery, monitoring windows | 14, 21, 22, 27, 28 | 8.7 KB |
 | [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed | 29, 40, 42 | 7.8 KB |
-| [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter | 41 | 5.8 KB |
+| [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter, and the indices it checks | 41, 50 | 7.0 KB |
 | [Logging](decisions/logging.md) — a framed log backend, and per-study verbosity | 38, 39 | 10.1 KB |
 | [The PD bench](decisions/pd-bench.md) — a USB PD partner scripted over its shell, a second app beside the BLE bench, on a sink or a dual-role shield | 48, 49 | 3.4 KB |
 | [Documentation conventions](decisions/conventions.md) — citing a decision, and what a bare section number into a deleted `design.md` becomes | 47 | 4.1 KB |

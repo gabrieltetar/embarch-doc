@@ -1,6 +1,6 @@
 # Bound a protocol's `goto_state`/`otherwise` before it indexes `def->states[]`
 
-**State:** claimed by agent/dev-bench/004-protocol-state-indices-reach-a-c-array-unchecked, 2026-11-07 10:29 (toolchain unit, the leg's own hands)
+**State:** done
 **Source:** owner's repo survey, 2026-09-06 — `decisions/protocols.md` §41 states this rule; it is implemented for one index of three
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board. Reclassified from `required` 2026-09-06 (`tasks/doc/020`): the supervisor runs it in the **main checkout**, serialized like a `bench` task.
@@ -61,13 +61,32 @@ has no Zephyr tree to build against and a `west` binary alone buys nothing.
 
 ## Done when
 
-- [ ] A `.eap` protocol whose `when … goto`, `otherwise`, or `on_timeout.goto` names a state
+- [x] A `.eap` protocol whose `when … goto`, `otherwise`, or `on_timeout.goto` names a state
       `>= states_len` is refused or fails by name, never indexed.
-- [ ] An out-of-range `remember` var fails the run rather than being silently dropped.
-- [ ] Three new ZTESTs in `app/tests/serial_protocol/src/main.c` cover each index, mirroring
+- [x] An out-of-range `remember` var fails the run rather than being silently dropped.
+- [x] Three new ZTESTs in `app/tests/serial_protocol/src/main.c` cover each index, mirroring
       `test_an_out_of_range_entry_state_is_refused`.
-- [ ] The existing 50+ tests still pass under `west twister -p native_sim -T ../../app/tests`.
-- [ ] `spec.md`'s invariant list and `decisions/protocols.md` say which mechanism was chosen
+- [x] The existing 50+ tests still pass under `west twister -p native_sim -T ../../app/tests`
+      (met suite by suite, not by `twister`, which cannot start: see Done).
+- [x] `spec.md`'s invariant list and `decisions/protocols.md` say which mechanism was chosen
       (decode-time refusal vs run-time failure).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Done (2026-11-07, the leg's own hands)
+
+**Run-time failure, not decode-time refusal** — decision 50 in `decisions/protocols.md` says why:
+a `StudyStart` the decoder refuses is dropped without a word on the link today, while a failed
+run reaches Core as a named `Fail`. `eap_interp.c` checks the target before each of the three
+`run->state =` assignments and a `remember`'s variable before its value is evaluated; on a bad
+index the run ends as `Fail` without moving, so `final_state` names the state whose entry was
+bad. The two reasons are `EAP_FAIL_NO_SUCH_STATE` and `EAP_FAIL_NO_SUCH_VARIABLE` in
+`eap_interp.h`. Operand indices (`EAP_OP_SESSION`, `FIELD`, `SPAN_LEN`) were already bounded.
+
+Four ztests, not three — one per state index plus the `remember` — each breaking one index of
+the worked protocol to `states_len` (or `session_len`) and driving the machine to the move that
+reads it. With the interpreter change reverted all four fail (59 of 63); with it, 63 of 63.
+`twister` cannot start in the fleet venv (no `natsort`), so each suite ran on its own from the
+main checkout's `workspaces/native_sim`: `serial_protocol` 63/63, `dev_bench_log` 15/15,
+`scan_seen_mfg` 7/7, `scan_seen_names` 5/5. The nRF54L15DK image builds; the ESP32-C5 image was
+not attempted (no `esptool` in the fleet venv, `EMB-83`).
