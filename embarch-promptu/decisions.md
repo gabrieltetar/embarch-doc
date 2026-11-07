@@ -12,6 +12,6 @@ The entries live in one file per mission:
 |---|---|---|
 | [decisions/what.md](decisions/what.md) | 1, 29, 2, 3, 20 | What Promptu is and owns, what it stands beside, and how it ships. |
 | [decisions/memory.md](decisions/memory.md) | 4, 5, 6, 18, 21, 7, 8 | The labels, the hook and its checks, the inventory the memory menu draws. |
-| [decisions/patterns.md](decisions/patterns.md) | 9, 22, 10, 11, 23, 24, 25, 26, 27, 28, 31, 12, 13 | The pass, the guard, the patterns and their questions, paging, the footer. |
+| [decisions/patterns.md](decisions/patterns.md) | 9, 22, 10, 11, 23, 24, 25, 26, 27, 28, 31, 12, 13, 41 | The pass, the guard, the patterns and their questions, paging, the footer, planning for high-context work. |
 | [decisions/learning.md](decisions/learning.md) | 14, 30, 15 | The weekly sheet and what it learns from. |
 | [decisions/chat.md](decisions/chat.md) | 16, 17, 19, 32, 33, 34, 35, 36, 37, 38, 39, 40 | Promptu in `embarch-chat` and on desk Start work: step 3, and the owner's answers to its forks. |
