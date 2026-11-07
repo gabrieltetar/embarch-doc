@@ -1,6 +1,6 @@
 # 016 — the two census gates `008` fixed have no test that can reach them
 
-**State:** open
+**State:** claimed by agent/dev-bench/016-the-two-census-gates-have-no-test-that-can-reach-them, 2026-11-07 10:46 (toolchain unit, the leg's own hands)
 **Source:** `tasks/dev-bench/008`, closed by the supervisor itself, leg 070, 2026-09-10. Its third
 `Done when` box could not be ticked and this task carries it.
 **Scope:** dev-bench
