@@ -33,3 +33,5 @@ Until this pass **nothing had ever executed a `.eap` file except the crate's own
 **Checked at the move, not refused at decode.** The run ends as `Fail` with `protocol goto names no state` or `protocol remember names no session variable`, without moving, so `final_state` names the state whose entry was bad. A decode-time refusal was the alternative and is the weaker one today: a `StudyStart` the decoder refuses is dropped without a word on the link, where a failed run reaches Core as a named outcome. The cost is that a bad index on a branch the run never takes is never reported, which Core's validation already covers.
 
 **A bad `remember` fails before its value is evaluated**, so it fails whether or not that frame's operands resolve: the manifest is wrong either way.
+
+**Amendment, decision 51, the same day:** a decode refusal is now named in a `LogLine`, so silence no longer separates the two. The check stays at the move because it sits beside the subscript it protects, holding for any definition, decoded or built in a test, and its `Fail` lands on the step that ran.

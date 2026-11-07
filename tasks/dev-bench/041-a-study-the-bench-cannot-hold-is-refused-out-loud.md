@@ -1,6 +1,6 @@
 # 041 — A StudyStart over one of the bench's capacity limits is dropped without a word
 
-**State:** claimed by agent/dev-bench/041-a-study-the-bench-cannot-hold-is-refused-out-loud, 2026-11-07 10:37 (toolchain unit, the leg's own hands)
+**State:** done
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 7 and 11), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board, built in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it).
@@ -32,10 +32,37 @@ Decision 35's own amendment admits it: "17–64-step studies the host accepts ar
 
 ## Done when
 
-- [ ] A `StudyStart` that exceeds any one of the bench's decode-time caps produces a LogLine on the link naming that cap, the value received and the limit. Steps, taps, protocols, monitor targets, each `.eap` count and the protocol span are each covered.
-- [ ] A malformed frame (bad COBS, a truncated body) still resyncs and does not produce a per-frame log line.
-- [ ] `native_sim` ztests cover at least the step cap, one `.eap` cap and the span cap, each asserting the refusal's name, beside the existing refusal tests.
-- [ ] The nRF54L15DK overlay's comments name VCOM1 for `uart20` and do not contradict decision 43.
-- [ ] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The `app/tests/serial_protocol` suite passes. To run it: `W=/home/gabriel/Github/embarch/.west-venv/bin/west`, `cd /home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim`, `$W build -b native_sim -d <scratch> /home/gabriel/Github/embarch/embarch-dev-bench/app/tests/serial_protocol`, then `<scratch>/zephyr/zephyr.exe`. Its exit status is the result.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. Decision 35's amendment in `decisions/link-limits.md` stops saying "silently". `spec.md` is already inside its reserve.
+- [x] A `StudyStart` that exceeds any one of the bench's decode-time caps produces a LogLine on the link naming that cap, the value received and the limit. Steps, taps, protocols, monitor targets, each `.eap` count and the protocol span are each covered.
+- [x] A malformed frame (bad COBS, a truncated body) still resyncs and does not produce a per-frame log line.
+- [x] `native_sim` ztests cover at least the step cap, one `.eap` cap and the span cap, each asserting the refusal's name, beside the existing refusal tests.
+- [x] The nRF54L15DK overlay's comments name VCOM1 for `uart20` and do not contradict decision 43.
+- [ ] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` **(built)** and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif` **(not built: the fleet venv has no `esptool`, which Zephyr's Espressif SoC CMake requires at configure time; owed, `EMB-83`)**. The `app/tests/serial_protocol` suite passes **(65/65)**. To run it: `W=/home/gabriel/Github/embarch/.west-venv/bin/west`, `cd /home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim`, `$W build -b native_sim -d <scratch> /home/gabriel/Github/embarch/embarch-dev-bench/app/tests/serial_protocol`, then `<scratch>/zephyr/zephyr.exe`. Its exit status is the result.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. Decision 35's amendment in `decisions/link-limits.md` stops saying "silently". `spec.md` is already inside its reserve.
+
+## Done (2026-11-07, the leg's own hands)
+
+Shape, recorded as decision 51 in `decisions/link-limits.md`: `dbm_decode_frame` returns
+`DBM_DECODE_OVER_CAP` (-2) for a well-formed `StudyStart` over a cap, and the new
+`dbm_decode_frame_why` also fills a `struct dbm_decode_refusal { cap, value, limit }`. Every cap
+site calls `refuse_over_cap`, which records into a pointer scoped to one decode call and still
+returns -1, so no propagation site changed. `receive_message` sends `StudyStart refused: <value>
+<cap> over the bench cap of <limit>` as a `LogLine`; -1 stays a silent resync. Sites covered:
+steps, monitor targets, taps, protocols, the protocol byte span, and the `.eap` counts (write
+fields, remembers, guards, event arms, select bytes, frame fields, frame spans, sources, frames,
+session variables, states). A wire string longer than its buffer (`pc_read_str`) is still plain
+-1.
+
+Tests: `test_a_study_over_the_step_cap_is_refused_by_name` and
+`test_a_malformed_study_start_names_no_cap` are new; the event-arm, protocol-count and byte-span
+refusal tests now assert the cap's name, value and limit. 65/65; the other three suites green;
+the nRF54L15DK image and the `native_sim` app build. No revert check: the old decoder has no
+`dbm_decode_frame_why` and never returned -2, so these tests cannot compile against it.
+
+Decision 50 (from `dev-bench/004`, the same day) argued run-time failure partly because a decode
+refusal was silent; it carries an amendment saying what is left of that argument now, and
+`eap_interp.c`'s comment was changed to match.
+
+The overlay now says `uart20` is VCOM1, USB interface 2, citing decision 43. It no longer names
+a VCOM for `uart30`: decision 43 records only `uart20`'s, and the old "VCOM1" for `uart30`
+contradicted it.

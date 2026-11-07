@@ -54,7 +54,7 @@ Each workspace's manifest lives in a `manifest/` subdirectory, not at the worksp
 - **A `Hello` is a hard reset**, and it waits for its own disconnect, not just requesting one.
 - **A named thing missing fails the step; an unnamed thing missing is skipped.** A selective monitor target or an `.eap` source the DUT does not have fails, naming which. The subscribe-to-everything walk logs and skips, because nothing there was named.
 - **Loss is counted and reported, never silent.** Dropped transcript entries, notifications and log records, RX overruns, and an oversized inbound frame all produce a `LogLine`.
-- **A capacity limit refuses, never truncates.** An oversized `StudyStart`, or a manifest over the wire-length cap, is rejected by name.
+- **A capacity limit refuses, never truncates.** An oversized `StudyStart`, or a manifest over the wire-length cap, is rejected by name: a `LogLine` names the cap, the value and the limit (decision 51). A malformed frame is a silent resync.
 - **A length prefix is bounded by the bytes left, before any arithmetic.** Decoding treats the link as crafted input: a length the frame cannot hold refuses the frame, and no varint near 2^64 can wrap the cursor backwards (`pc_skip_len_prefixed`).
 - **A manifest index the run cannot follow fails the run by name.** A `goto` naming no state, or a `remember` naming no session variable, ends the `RunProtocol` step as `Fail` in the state that named it (decision 50), never a raw array subscript.
 - **The bench never manufactures a claim.** No hardware ID without `hwinfo`, no `captured_data` on a stub, no protocol outcome for a run that did not happen.
