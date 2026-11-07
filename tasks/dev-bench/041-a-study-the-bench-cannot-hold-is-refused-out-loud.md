@@ -1,6 +1,6 @@
 # 041 — A StudyStart over one of the bench's capacity limits is dropped without a word
 
-**State:** open
+**State:** claimed by agent/dev-bench/041-a-study-the-bench-cannot-hold-is-refused-out-loud, 2026-11-07 10:37 (toolchain unit, the leg's own hands)
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 7 and 11), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board, built in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it).
