@@ -1,6 +1,6 @@
 # Reject an impossible length prefix in `pc_skip_len_prefixed` instead of wrapping past it
 
-**State:** claimed by agent/dev-bench/003-pc-skip-len-prefixed-wraps-past-its-own-bounds-check, 2026-11-07 10:20 (toolchain unit, the leg's own hands)
+**State:** done
 **Source:** owner's repo survey, 2026-09-06 — the one bounds check in a file that states this exact property, written in wrapping arithmetic
 **Scope:** dev-bench
 **Hardware:** toolchain — host-side C plus `native_sim` ztests, no board. Reclassified from `required` 2026-09-06 (`tasks/doc/020`): the supervisor runs it in the **main checkout**, serialized like a `bench` task.
@@ -55,11 +55,35 @@ has no Zephyr tree to build against and a `west` binary alone buys nothing.
 
 ## Done when
 
-- [ ] A frame carrying a length prefix of ~2^64 (and one of ~2^60 at the `elem_size = 16` site) is
+- [x] A frame carrying a length prefix of ~2^64 (and one of ~2^60 at the `elem_size = 16` site) is
       refused by `dbm_decode_frame`.
-- [ ] `*pos` is never assigned a value less than its entry value on any path.
-- [ ] Two new ZTESTs pin both, and the existing suite passes under
-      `west twister -p native_sim -T ../../app/tests`.
-- [ ] No constant or capacity limit changes.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
+- [x] `*pos` is never assigned a value less than its entry value on any path.
+- [x] Two new ZTESTs pin both, and the existing suite passes under
+      `west twister -p native_sim -T ../../app/tests` (met suite by suite, not by `twister`,
+      which could not start: see Done).
+- [x] No constant or capacity limit changes.
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Done (2026-11-07, the leg's own hands)
+
+Hardening, not a bug anyone hit. `pc_skip_len_prefixed` now refuses `len > (in_len - *pos) /
+elem_size` before any arithmetic, so neither the multiply, the `(size_t)` narrowing (32 bits on
+`native_sim` and both bench targets) nor the add can wrap. The only change to `*pos` is an add
+after that check. The other length-derived cursor sites in `serial_protocol.c` already bound
+`len` against a small cap first; none changed.
+
+`test_a_length_prefix_near_2_64_is_refused_not_wrapped` (a protocol name of 2^64 - 1) and
+`test_a_uuid_count_near_2_60_is_refused_not_wrapped` (a `BleAdvertise` `service_uuids` count of
+2^60) are laid out so the wrapped walk lands on well-formed bytes: with the fix reverted both
+decode to 0 and fail, 57 of 59; with it, 59 of 59.
+
+**`west twister` did not run**: the fleet venv lacks twister's Python requirements (`natsort`).
+Each of the four suites under `app/tests` was built and run on its own instead, from the main
+checkout's `workspaces/native_sim` against this branch's worktree: `serial_protocol` 59/59,
+`dev_bench_log` 15/15, `scan_seen_mfg` 7/7, `scan_seen_names` 5/5. The worktree's `app/` built
+for `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic`. The ESP32-C5 image did not configure:
+Zephyr's Espressif SoC CMake wants `esptool` on `PATH` and the fleet venv has none.
+
+Docs: one invariant line in `embarch-dev-bench/spec.md` §3; no decision entry, since the choice
+has no alternative worth recording.

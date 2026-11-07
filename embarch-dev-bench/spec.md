@@ -55,6 +55,7 @@ Each workspace's manifest lives in a `manifest/` subdirectory, not at the worksp
 - **A named thing missing fails the step; an unnamed thing missing is skipped.** A selective monitor target or an `.eap` source the DUT does not have fails, naming which. The subscribe-to-everything walk logs and skips, because nothing there was named.
 - **Loss is counted and reported, never silent.** Dropped transcript entries, notifications and log records, RX overruns, and an oversized inbound frame all produce a `LogLine`.
 - **A capacity limit refuses, never truncates.** An oversized `StudyStart`, or a manifest over the wire-length cap, is rejected by name.
+- **A length prefix is bounded by the bytes left, before any arithmetic.** Decoding treats the link as crafted input: a length the frame cannot hold refuses the frame, and no varint near 2^64 can wrap the cursor backwards (`pc_skip_len_prefixed`).
 - **The bench never manufactures a claim.** No hardware ID without `hwinfo`, no `captured_data` on a stub, no protocol outcome for a run that did not happen.
 - **Application code calls only portable Zephyr APIs** (`bt_*`, `gpio_*`, `adc_*`), never anything vendor-proprietary.
 
