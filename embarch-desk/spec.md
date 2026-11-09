@@ -10,7 +10,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **A work cockpit's backend: the work item, and the connectors that fill it.** A work item is an EmbArch object — usually one Linear issue — that joins the issue to its GitHub PRs, the Claude Code sessions that worked on it, its bench activity and its time ([decision 6](decisions.md)). None of the four services holds that join; the desk does.
 
-**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a row of cards at the head of the Desk tab holding every desk's waiting tiles ([decisions 10, 57](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
+**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a card row atop the Desk tab: every desk's waiting tiles, past weeks' behind a button ([decisions 10, 57, 76](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
 
 **A suite desk** (decision 70) works on repos that sit side by side: Start work makes a folder per issue holding worktrees for the issue's repo and the docs, and symlinks for the rest, so sibling paths build as they do in the main clones.
 
