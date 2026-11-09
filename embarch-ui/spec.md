@@ -41,7 +41,7 @@ It runs as the systemd user service `embarch-ui.service`, one per machine with o
 
 ## The six tabs
 
-Plus any from a tab folder (100). Navigation, the sidebar, the open desk as shell furniture and fragment routing (`#topology`, `#live-study`, retired `#enroll`, `#dashboard`; 43, 46, 56–58), and what each tab does: [spec/tabs.md](spec/tabs.md).
+Plus any from a tab folder (100). Navigation, the sidebar, the UI's desk as shell furniture and fragment routing (`#topology`, `#live-study`, retired `#enroll`, `#dashboard`; 43, 46, 56–58), and what each tab does: [spec/tabs.md](spec/tabs.md).
 
 ## Invariants
 

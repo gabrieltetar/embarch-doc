@@ -14,7 +14,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **A suite desk** (decision 70) works on repos that sit side by side: Start work makes a folder per issue holding worktrees for the issue's repo and the docs, and symlinks for the rest, so sibling paths build as they do in the main clones.
 
-**Desks** (decisions 33–40): one per project — a Linear project or team, a Harvest project and task, GitHub and firmware repos, a saved bench — and **one open suite-wide**, published as `~/.local/share/embarch-desk/open-desk.json` for `embarch-api` and `embarch-ui` to read. The UI's open project became the open desk (`embarch-ui` decision 57); calls naming no project build the desk's repo (`embarch-api` decision 85). A desk keeps **standing notes**, which every session in its repos hears at its start (74).
+**Desks** (decisions 33–40, 77): one per project — a Linear project or team, a Harvest project and task, GitHub and firmware repos, a saved bench. **Each session works on its own desk**, its folder's else its work item's: its agents' Linear scope and `embarch-api`'s default build follow it (`embarch-api` decision 85), whatever the UI shows. **The UI selects one desk**, which picks only the Desk tab's cards and the repo its tabs open (`embarch-ui` decision 57). Every desk is published as `~/.local/share/embarch-desk/desks.json` for `embarch-api` to read while the service is stopped. A desk keeps **standing notes**, which every session in its repos hears at its start (74).
 
 **The work item gathers the work's knowledge** (decisions 48–55): sessions write notes unasked, a tile line being a note of kind `done`; the hook turns every memory file a session writes into a note on its item; `desk_work_item` returns the whole brief, and a day's notes are what the tile's note summarises. **For `embarch-chat`** (46, 47) the desk is a mailbox each VS Code window polls, and the Desk shows each session as one line with Open chat or Jump. It also holds each desk's **reference index** (56) — every issue in its Linear scope, archived included, and every PR in its repos — which the chat mirrors from `GET /refs`.
 
@@ -33,7 +33,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **Prose is never sent unseen.** A tile's note is drafted by Claude and sent only as the user left it; status moves (an issue's state, ✓, ✕) go straight through ([decision 15](decisions.md)).
 - **No token or connector data reaches a repo.** Tokens live in `~/.config/embarch-desk/connectors.toml`, state in `~/.local/share/embarch-desk/`, both owner-only.
 - **A hook never fails a session**: no desk, a slow desk or a bad event all exit 0 silently.
-- **The open desk scopes what is shown and where agents point, never what is tracked**: a session's time lands on the desk whose repo it is in (36).
+- **A session's own desk scopes its agents and its default build, the UI's desk only what the UI shows, and neither what is tracked**: a session's time lands on the desk whose repo it is in (36, 77).
 - **Switching desks touches no hardware**; the bench is proposed in the UI and loaded on a click (37).
 - **The session decides a note's item, never the file's name** (52); a note held before the session has an item lands once it gets one.
 - **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode. An `open` entry carries no prompt at all (70).
@@ -50,7 +50,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 | Port | 4891, `EMBARCH_DESK_PORT` |
 | Gap that ends a span | 8 h [assumed] |
 | Launch claim window | 10 min |
-| Cards shown | the open desk's (all, with none open): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
+| Cards shown | the UI's desk's (every desk's, with none selected): pinned, active within 7 days (`EMBARCH_DESK_WINDOW_DAYS`), or holding an open tile with time |
 | Refresh | connectors 5 min, issues 3 min, PRs 5 min |
 | Harvest entries | today every 2 min; a day with a waiting tile 10 min [chosen] and again at ✓ (62) |
 | Reference index | 1,000 issues; 300 PRs per repo; each desk every 5 min, by its own task's pass every 30 s (56) |
@@ -71,7 +71,6 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **No time source but Claude Code sessions and the manual timer** — not VS Code focus, git, Slack or the bench.
 - **No in-desk Linear comments, issue creation, PR review or merge** (v2), **no Claude chat panel**: that is `embarch-chat`, a VS Code extension running its own `claude` processes (`embarch-chat` decision 5).
 - **No second machine**: one desk service and state file per instance, on the bench's machine. A second instance (69) is a personal desk beside the work one, not a second machine.
-- **No two desks open at once** (33) — later.
 - **No archive or approve for agents.**
 
 ## 6. Pointers
