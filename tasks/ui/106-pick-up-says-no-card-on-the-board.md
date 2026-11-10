@@ -1,6 +1,6 @@
 # 106 — The Desk tab's Pick up list says "no card on the board"
 
-**State:** claimed by agent/ui/106-pick-up-says-no-card-on-the-board, 2026-11-09 22:03
+**State:** done ( agent/ui/106-pick-up-says-no-card-on-the-board, 2026-11-09)
 **Source:** Linear issue EMB-115, filed by a worker
 **Issue:** EMB-115
 **Scope:** ui
@@ -28,6 +28,6 @@ The list's own title contradicts what it shows.
 
 ## Done when
 
-- [ ] The Pick up title and empty note say "no card on the board", or words to that effect.
-- [ ] No other Desk tab text says Pick up lists only issues with no card.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] The Pick up title and empty note say "no card on the board", or words to that effect.
+- [x] No other Desk tab text says Pick up lists only issues with no card.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
