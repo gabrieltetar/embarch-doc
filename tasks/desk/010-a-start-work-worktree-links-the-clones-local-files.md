@@ -31,8 +31,8 @@ A session in a Start work worktree has no hardware map and no MCP config, and no
 
 ## Done when
 
-- [ ] A new worktree has `embarch/`, `CLAUDE.local.md` and `.mcp.json` linked from the main clone when the main clone has them, and nothing when it does not.
-- [ ] `info/exclude` lists `embarch` without a trailing slash, since a symlink is not a directory to git.
-- [ ] The links are made before `start_work` returns.
-- [ ] Tests in `src/worktree.rs` cover a clone with and without the files.
-- [ ] Decision 43 amended or `spec.md` updated to say what a worktree is given; gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] A new worktree has `embarch/`, `CLAUDE.local.md` and `.mcp.json` linked from the main clone when the main clone has them, and nothing when it does not.
+- [x] `info/exclude` lists `embarch` without a trailing slash, since a symlink is not a directory to git.
+- [x] The links are made before `start_work` returns.
+- [x] Tests in `src/worktree.rs` cover a clone with and without the files.
+- [x] Decision 43 amended or `spec.md` updated to say what a worktree is given; gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
