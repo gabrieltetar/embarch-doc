@@ -65,3 +65,11 @@ Raised by the repo owner authoring a real study: **monitor-everything was the on
 - **`validate_wait_budgets` is opt-in.** Nothing in this crate calls it on submit; `embarch-core`'s submission validation must, which is an inbox drop to that scope. Until then a hand-written 0 still reaches dev-bench and times out, as before.
 - Measured, not assumed: dev-bench behaviour read from `ble_bridge_real.c` (`await_notification`, `deadline_from`); not run on a board (hardware-verification debt in the task).
 
+
+### 89 — A one-shot monitor inside an open window is refused when the study is built
+
+**Settled 2026-11-10** (`tasks/study-designer/082`). `embarch-dev-bench` decision 55 fails a `GattMonitorAll`/`GattMonitorSelected` step at run time while a `GattMonitorStart`/`GattMonitorSelectedStart` window is open; the crate accepted the study, so the author learned it from a failed step on a board.
+
+- **The bracket is static.** Walking `steps` in order, a window opens at a Start, closes at the next `GattMonitorStop`, and a second Start replaces the open one. `continue_on_fail` does not change it. A `Stop` with no open window stays legal (decision 36).
+- **`Study::validate_monitor_windows()`** returns `MonitorWindowError { step, opened_by }` (step indices), opt-in like `validate_wait_budgets` (decision 83). `build_study` refuses the same table as `BuildStudyError::OneShotInOpenMonitorWindow`, naming both rows.
+- **Core's pre-flight does not call it yet.** That is a one-line change in `embarch-core`, filed separately; until then a hand-written study still reaches the bench and fails there.

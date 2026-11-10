@@ -1,6 +1,6 @@
 # 082 — A one-shot monitor inside an open window is refused when the study is built
 
-**State:** claimed by agent/study-designer/082-a-one-shot-monitor-inside-an-open-window-is-refused-when-the-study-is-built, 2026-11-10 04:30
+**State:** done
 **Source:** `embarch-dev-bench` decision 55 (`tasks/dev-bench/042`, landed 2026-11-10), which refuses the step at run time
 **Issue:** EMB-131
 **Scope:** study-designer
@@ -28,8 +28,8 @@ The run-time refusal landed today. A refusal at authoring time costs nothing at 
 
 ## Done when
 
-- [ ] A study with a `GattMonitorAll` or `GattMonitorSelected` step between a `GattMonitorStart`/`GattMonitorSelectedStart` and its `GattMonitorStop` is refused by the new method, naming both steps, with a test.
-- [ ] A one-shot before the `Start`, after the `Stop`, or in a study with no window still validates, with tests; so does a `Stop` with no open window.
-- [ ] `build_study` refuses the bracketed one-shot, with a test.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green, including `--no-default-features` if the crate's CI builds it that way.
-- [ ] A new numbered decision in `embarch-study-designer` records the rule and points at dev-bench decision 55; `interfaces/types.md`'s monitor rows say a one-shot inside an open window is refused; `changelog.d/` fragment dropped.
+- [x] A study with a `GattMonitorAll` or `GattMonitorSelected` step between a `GattMonitorStart`/`GattMonitorSelectedStart` and its `GattMonitorStop` is refused by the new method, naming both steps, with a test.
+- [x] A one-shot before the `Start`, after the `Stop`, or in a study with no window still validates, with tests; so does a `Stop` with no open window.
+- [x] `build_study` refuses the bracketed one-shot, with a test.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green, including `--no-default-features` if the crate's CI builds it that way.
+- [x] A new numbered decision in `embarch-study-designer` records the rule and points at dev-bench decision 55; `interfaces/types.md`'s monitor rows say a one-shot inside an open window is refused; `changelog.d/` fragment dropped.
