@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas record schema gains a `variant` kind: one record per orderable part, with `mpn` and `options`; it validates, renders in facts.txt and the datasheet procedure says when to write one.
 - embarch-atlas init now writes a placeholder MAP.md saying no atlas is built yet and naming /atlas-translate-docs then /atlas-build; the first join replaces it.
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
