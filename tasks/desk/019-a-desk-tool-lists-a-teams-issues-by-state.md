@@ -1,6 +1,6 @@
 # 019 — A desk tool lists a team's issues in a named state
 
-**State:** claimed by agent/desk/019-a-desk-tool-lists-a-teams-issues-by-state, 2026-11-10 02:54
+**State:** done
 **Source:** Linear issue EMB-11
 **Issue:** EMB-11
 **Scope:** desk
@@ -39,8 +39,8 @@ A fleet leg, an audit or a session reading a queue is otherwise tempted to use t
 
 ## Done when
 
-- [ ] A desk MCP tool lists a named team's issues in a named state, in any connected workspace, and reports when its cap cut the list.
-- [ ] Both backends have a test, the cap's cut included.
-- [ ] `plugin/skills/desk/SKILL.md` says agents do not fall back to the connector for what the desk lacks.
-- [ ] A new `embarch-desk` decision records the tool, and `interfaces.md` lists any new route.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] A desk MCP tool lists a named team's issues in a named state, in any connected workspace, and reports when its cap cut the list.
+- [x] Both backends have a test, the cap's cut included.
+- [x] `plugin/skills/desk/SKILL.md` says agents do not fall back to the connector for what the desk lacks.
+- [x] A new `embarch-desk` decision records the tool, and `interfaces.md` lists any new route.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
