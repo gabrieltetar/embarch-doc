@@ -9,6 +9,7 @@
 - Constants and budgets table moved verbatim to [spec/constants.md](../embarch-dev-bench/spec/constants.md); spec.md out of its size reserve.
 
 ### Fixed
+- An open monitor window keeps its subscriptions and labels through the steps inside it, and a protocol run inside one no longer times out (dev-bench decision 55).
 - A monitor step no longer passes when its subscriptions failed or the link dropped; each failed subscription is named in the transcript (dev-bench decision 54).
 - The GATT transcript keeps notifications up to the full 244-byte payload, records each connect and disconnect (HCI reason in `att_status`), and names each cause of loss (decision 53).
 - dev-bench names a StudyStart it refuses for a capacity cap in a LogLine (cap, value, limit) instead of going quiet ([decision 51](../embarch-dev-bench/decisions/link-limits.md)).
