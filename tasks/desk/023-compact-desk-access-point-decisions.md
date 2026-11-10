@@ -1,6 +1,6 @@
 # 023 — `embarch-desk/decisions/access-point.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/desk/023-compact-desk-access-point-decisions, 2026-11-10 03:39
 **Source:** `desk/021` added decision 81 and left the file at 11,206 B of 12,288 B (91.2%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
