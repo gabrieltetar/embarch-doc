@@ -1,6 +1,6 @@
 # 008 — A foreign issue key names the desk that holds it
 
-**State:** claimed by agent/desk/008-a-foreign-issue-key-names-the-desk-that-holds-it, 2026-11-09 19:47
+**State:** done (2026-11-09); no new decision, 77 amended in place; hardware none
 **Source:** Linear issue EMB-9, filed by a session
 **Issue:** EMB-9
 **Scope:** desk
@@ -32,7 +32,7 @@ Decision 29 makes the desk the agents' one access point to Linear, so its errors
 
 ## Done when
 
-- [ ] A key whose team is bound to another desk names that desk and its folder in the error.
-- [ ] A key whose team no connected workspace has says so, without naming a desk.
-- [ ] A test covers both messages.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` `interfaces.md` updated where it lists the error, `changelog.d/` fragment dropped.
+- [x] A key whose team is bound to another desk names that desk and its folder in the error.
+- [x] A key whose team no connected workspace has says so, without naming a desk.
+- [x] A test covers both messages.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` `interfaces.md` updated where it lists the error, `changelog.d/` fragment dropped.
