@@ -1,6 +1,6 @@
 # 046 — Check K reads side-by-side MIN/TYP/MAX groups and a lone TYP column
 
-**State:** claimed by agent/atlas/046-check-k-reads-side-by-side-groups-and-a-lone-typ, 2026-11-09 21:05
+**State:** done
 **Source:** Linear issue EMB-35, filed by a session
 **Issue:** EMB-35
 **Scope:** atlas
@@ -32,6 +32,10 @@ False K failures make `doc check` exit 1 on a correct distillation, which trains
 
 ## Done when
 
-- [ ] A synthetic page with two side-by-side MIN/TYP/MAX groups yields no K disagreement for records that match their cells, and still yields one for a record that does not.
-- [ ] A page with a lone TYP column is read by K, or reported as a K warning, never as `disagree`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated where it describes check K; `changelog.d/` fragment dropped.
+- [x] A synthetic page with two side-by-side MIN/TYP/MAX groups yields no K disagreement for records that match their cells, and still yields one for a record that does not.
+- [x] A page with a lone TYP column is read by K, or reported as a K warning, never as `disagree`.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated where it describes check K; `changelog.d/` fragment dropped.
+
+## Result
+
+`DocText.columns` now builds a list of groups per header band (`_hdr_groups`: a repeated key starts the next group; a lone MIN/TYP/MAX word beside a UNIT header is a group) and reads each in `_read_group`, limited to its own x-range; the record is held to the group whose cells agree with the most of its numbers. DESIGN.md has no check-K text, so the `check.py` module docstring (K line) was amended instead. Tests: `test_k_reads_each_side_by_side_group`, `test_k_reads_a_lone_typ_column`. Gate: 668 passed, 3 skipped (the three real-workspace env-var tests; `test_public_guard` ran).
