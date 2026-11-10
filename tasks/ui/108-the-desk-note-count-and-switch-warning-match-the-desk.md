@@ -1,6 +1,6 @@
 # 108 — The Desk tab's note count matches the desk's, and its switch warning stays until it is answered
 
-**State:** open
+**State:** claimed by agent/ui/108-the-desk-note-count-and-switch-warning-match-the-desk, 2026-11-09 22:57
 **Source:** Linear issue EMB-48, filed by an audit (points 4 and 5; points 1 to 3 are `tasks/desk/017`)
 **Issue:** EMB-48
 **Scope:** ui
