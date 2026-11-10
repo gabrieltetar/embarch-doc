@@ -1,6 +1,6 @@
 # 042 — An open monitor window is broken by the steps that run inside it
 
-**State:** claimed by agent/dev-bench/042-an-open-monitor-window-survives-the-steps-inside-it, 2026-11-10 04:19 (toolchain, supervisor's own hands)
+**State:** done 2026-11-10 04:26, by the supervisor's own hands (toolchain lane); decision 55
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 3, 4 and 12), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/ble_bridge_real.c`, built and tested in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). The window's behaviour across steps can only be observed against a real BLE peer, so the unit leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7).
@@ -34,11 +34,17 @@ The crate allows any step inside a window, and stimulating the DUT from inside o
 
 ## Done when
 
-- [ ] A one-shot monitor step run while a window is open leaves the host's subscription list intact, and the window still captures afterwards. If the chosen behaviour is a refusal, the step fails naming the open window.
-- [ ] A notification arriving on an open window is labelled with the characteristic it was subscribed under, including while a later step re-runs discovery and after one that failed partway.
-- [ ] `ble_bridge_reset` never leaves a struct zeroed while a CCC write that uses it can still be answered.
-- [ ] A `DataExchange` subscribe or a `RunProtocol` source on a characteristic an open window already holds does not wait for a callback Zephyr never makes.
-- [ ] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The `app/tests/serial_protocol` suite passes on `native_sim`. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`'s build sections.
-- [ ] The hardware-verification debt names which of the cases above were exercised against a real DUT.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. Decision 28 (`decisions/dispatch.md`) states what a window does with a monitor step inside it. `spec.md` and `open.md` are already inside their reserve.
+- [x] A one-shot monitor step run while a window is open leaves the host's subscription list intact, and the window still captures afterwards. If the chosen behaviour is a refusal, the step fails naming the open window.
+- [x] A notification arriving on an open window is labelled with the characteristic it was subscribed under, including while a later step re-runs discovery and after one that failed partway.
+- [x] `ble_bridge_reset` never leaves a struct zeroed while a CCC write that uses it can still be answered.
+- [x] A `DataExchange` subscribe or a `RunProtocol` source on a characteristic an open window already holds does not wait for a callback Zephyr never makes.
+- [x] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The `app/tests/serial_protocol` suite passes on `native_sim`. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`'s build sections.
+- [x] The hardware-verification debt names which of the cases above were exercised against a real DUT.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. Decision 28 (`decisions/dispatch.md`) states what a window does with a monitor step inside it. `spec.md` and `open.md` are already inside their reserve.
+
+## Result
+
+Decision 55, and decision 28 amended to say what a window does with a monitor step inside it. Both now live in a new `decisions/monitoring.md` with 54: 28 and 54 moved there verbatim from `dispatch.md`, which had 186 B left before its reserve. The chosen behaviour for case 1 is a refusal: `a monitor window is open; Stop it before this step`. Case 2: labels copied per slot at subscribe time (`monitor_subscribe_label`, +960 B RAM on each board; `flat_characteristic_index` and `uuids_for_flat_index` removed). Case 3: `ble_bridge_reset` forgets `subscribe_params.value_handle` instead of zeroing the struct. Case 4: `subscription_covers` mirrors Zephyr's rule over the bridge's own subscriptions, and a covered subscribe counts as subscribed without waiting; `monitor_holds` keeps a handle a monitor subscription holds to one transcript row (DataExchange `notify_cb`, the protocol dequeue, and the protocol overflow's `drop_sink`). Built: nRF54L15 (RAM 156,440 to 157,400 B), ESP32-C5 (`sram0_0_seg` 332,400 to 333,360 B, 88.10%), `serial_protocol` 67/67 on `native_sim`.
+
+**Hardware-verification debt: none of the four cases ran against a DUT.** Owed on the bench (DK plus a BLE peer): a one-shot monitor inside an open window (refused, window still capturing after); a `GattDiscover` and a `RunProtocol` inside an open window, the window's rows still labelled; a `RunProtocol` inside an unfiltered window completing instead of timing out, each frame one transcript row; a `DataExchange` notify on a characteristic the window holds; `Hello` during a live `DataExchange` subscription.
