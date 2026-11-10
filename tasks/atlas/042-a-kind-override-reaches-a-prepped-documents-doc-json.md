@@ -1,6 +1,6 @@
 # 042 — A kind override reaches a prepped document's doc.json
 
-**State:** open
+**State:** claimed by agent/atlas/042-a-kind-override-reaches-a-prepped-documents-doc-json, 2026-11-09 20:17
 **Source:** Linear issue EMB-31, filed by a session
 **Issue:** EMB-31
 **Scope:** atlas
@@ -23,6 +23,11 @@ Filed from distilling real documents: an override looked applied and was not.
 - `src/embarch_atlas/pdftext.py` `prep` — the only writer of `doc.json`'s `kind`
 - `src/embarch_atlas/query.py` `Atlas.find_doc` — a reader
 - `src/embarch_atlas/answers.py` `record_document` — the override, keyed by `sha256[:12]`
+
+## Dispatch notes
+
+- No `embarch-atlas` doc is in reserve and none is near a decision limit (`check-doc-size.py --pressure`, 2026-11-09 20:16).
+- This leg runs in burndown: no new numbered decision. If the fix needs one, stop and say so in this file rather than writing it.
 
 ## Done when
 
