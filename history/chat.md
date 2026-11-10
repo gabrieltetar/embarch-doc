@@ -20,6 +20,7 @@
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 
 ### Fixed
+- The host test no longer expects a cards call without the desk's references (decision 97); it failed against any fresh desk binary.
 - Decision 103's as-built and rejected prose no longer names the deleted freshChat or 36's chip (chat/022).
 - Host tests drove a chat whose process env was taken at creation: five set FAKE_CLAUDE_* after; they now set it first. All 60 pass on a main-built desk (stale-binary theory was wrong).
 - The chat page never scrolls sideways: code, diffs, tables and compaction summaries wrap, and a tool name or key truncates with an ellipsis (EMB-57).
