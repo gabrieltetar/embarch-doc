@@ -17,6 +17,9 @@
 - dev-bench names a StudyStart it refuses for a capacity cap in a LogLine (cap, value, limit) instead of going quiet ([decision 51](../embarch-dev-bench/decisions/link-limits.md)).
 - dev-bench fails a protocol run by name when a goto names no state or a remember names no variable, instead of indexing past the array ([decision 50](../embarch-dev-bench/decisions/protocols.md)).
 - dev-bench refuses a length prefix the frame cannot hold instead of wrapping its decode cursor backwards ([spec](../embarch-dev-bench/spec.md) §3).
+
+### Removed
+- The bench refuses the retired stream-capture GATT kind and its sinkless capture path is gone; every GATT operation value comes from the crate; decision 56.
 ## 2026-10
 
 ### Added
