@@ -1,6 +1,6 @@
 # 009 — The start hook takes the work item from the prompt before it asks
 
-**State:** open
+**State:** claimed by agent/desk/009-the-start-hook-takes-the-item-from-the-prompt, 2026-11-09 20:04
 **Source:** Linear issue EMB-16, filed by a session
 **Issue:** EMB-16
 **Scope:** desk
