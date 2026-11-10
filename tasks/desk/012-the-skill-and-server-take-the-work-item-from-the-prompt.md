@@ -1,6 +1,6 @@
 # 012 — The desk skill and the server instructions take the work item from the prompt first
 
-**State:** open
+**State:** claimed by agent/desk/012-the-skill-and-server-take-the-work-item-from-the-prompt, 2026-11-09 20:34
 **Source:** Linear issue EMB-105, filed by a reviewer of `tasks/desk/009`
 **Issue:** EMB-105
 **Scope:** desk
