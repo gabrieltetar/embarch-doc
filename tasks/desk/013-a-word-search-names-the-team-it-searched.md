@@ -1,6 +1,6 @@
 # 013 — A `linear_search` word query names the project or team it searched
 
-**State:** claimed by agent/desk/013-a-word-search-names-the-team-it-searched, 2026-11-09 20:58
+**State:** done
 **Source:** Linear issue EMB-12, filed by a session
 **Issue:** EMB-12
 **Scope:** desk
@@ -31,7 +31,11 @@ A title search for another team's issue silently finds nothing, and the caller r
 
 ## Done when
 
-- [ ] A word query's answer names the team or project it searched, including on a team-bound desk; a test covers the team-bound case.
-- [ ] A key query still resolves an issue of any connected team.
-- [ ] The tool description says a word query searches the desk's scope and the answer names it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated if they describe the answer's fields; `changelog.d/` fragment dropped.
+- [x] A word query's answer names the team or project it searched, including on a team-bound desk; a test covers the team-bound case.
+- [x] A key query still resolves an issue of any connected team.
+- [x] The tool description says a word query searches the desk's scope and the answer names it.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated if they describe the answer's fields; `changelog.d/` fragment dropped.
+
+## Done
+
+`LinearBinding::scope_label` (src/store.rs) is the project name, else `team <KEY>`; `/linear/search` and `/pickup` use it. Tool description updated. Key queries untouched. Test covers the team-bound label (unit, not the HTTP handler, which needs live Linear). `/linear/mine` and `/linear/open` still return the bare project name (empty for a team desk) and are not changed here.
