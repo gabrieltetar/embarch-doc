@@ -1,6 +1,6 @@
 # 013 — A `linear_search` word query names the project or team it searched
 
-**State:** open
+**State:** claimed by agent/desk/013-a-word-search-names-the-team-it-searched, 2026-11-09 20:58
 **Source:** Linear issue EMB-12, filed by a session
 **Issue:** EMB-12
 **Scope:** desk
