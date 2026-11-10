@@ -1,16 +1,13 @@
 # 017 — `tx_scratch` reserves ~15.7 KB for a `dbm_study_start` the bench can never transmit
 
-**State:** open
+**State:** claimed by agent/dev-bench/017-tx-scratch-reserves-space-for-a-message-it-can-never-send, 2026-11-10 06:00
 **Source:** `embarch-dev-bench/open.md:38` — "the single largest remaining lever on ESP32-C5 SRAM";
 decision 38 explains why the buffer is sized by its largest member today. Surfaced by leg 076's
 refill sweep.
 **Scope:** dev-bench
-**Hardware:** required — **and it is a toolchain, not a board.** No board is needed, but the
-evidence this task turns on (a `native_sim` test run and the ESP32-C5 build's size report) cannot be
-produced from the fleet's environment at all: there is no `west` and no `ZEPHYR_BASE`, which is the
-same standing debt that gates every other `embarch-dev-bench` task in the queue. Dispatch it from a
-session that has the Zephyr toolchain. Filed `open` rather than `blocked` because nothing needs
-unblocking — only the environment has to be right.
+**Hardware:** toolchain — reclassified from `required` on 2026-11-10: this field already said "a
+toolchain, not a board", and the fleet has had a `west` since (`tasks/README.md`, Hardware field).
+Build from the worktree against the main checkout's `workspaces/*` with the fleet's `west`.
 **Owner:** no
 
 ## What
