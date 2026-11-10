@@ -1,6 +1,6 @@
 # 125 — Core's pre-flight refuses a one-shot monitor inside an open window
 
-**State:** claimed by agent/core/125-pre-flight-refuses-a-one-shot-monitor-inside-an-open-window, 2026-11-10 04:46
+**State:** done
 **Source:** `tasks/study-designer/082` (landed 2026-11-10, `embarch-study-designer` `6874b81`), which added the check this calls
 **Issue:** EMB-131
 **Scope:** core
@@ -21,7 +21,11 @@ The crate half landed today. Until Core calls it, a submitted study with the mis
 
 ## Done when
 
-- [ ] `validate_study` refuses a study with a one-shot monitor step inside an open window, returning the crate's message, with a test beside the existing wait-budget one.
-- [ ] A study with the one-shot outside every window still passes pre-flight, with a test.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green, and the native Windows build if this repo's gate asks for one (`../../embarch-fleet/gate.md`).
-- [ ] The decision that records Core's pre-flight checks says this one runs too; `changelog.d/` fragment dropped.
+- [x] `validate_study` refuses a study with a one-shot monitor step inside an open window, returning the crate's message, with a test beside the existing wait-budget one.
+- [x] A study with the one-shot outside every window still passes pre-flight, with a test.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green, and the native Windows build if this repo's gate asks for one (`../../embarch-fleet/gate.md`).
+- [x] The decision that records Core's pre-flight checks says this one runs too; `changelog.d/` fragment dropped.
+
+## Debt
+
+Native Windows build not run (recorded debt per `embarch-fleet/gate.md`); the change is one host-independent call into the crate and a test, no platform code.

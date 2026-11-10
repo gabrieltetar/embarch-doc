@@ -37,4 +37,6 @@ The deadline ignored the field while dev-bench honours it by sleeping *before* t
 
 `POST /study` calls `Study::validate_wait_budgets()` (`embarch-study-designer` decision 83) inside `validate_study`, before the `steps_crc` check, and returns its Display text (step index and operation) as the existing 4xx. dev-bench reads a budget of 0 as a deadline already past, so the step would `TimedOut` at once; `build_study` can no longer emit one, but a hand-written or saved study can. Computed by the crate, not restated, so Core holds no second copy of the rule. Measured by a host-side test only; nothing was run on a board.
 
+**The same pre-flight also calls `Study::validate_monitor_windows()`** (`embarch-study-designer` decision 89), right after the wait-budget check: a `GattMonitorAll`/`GattMonitorSelected` step inside a window a `GattMonitorStart`/`GattMonitorSelectedStart` opened and no `GattMonitorStop` closed is refused with the crate's message naming both steps, instead of costing a bench run to find out (dev-bench decision 55 refuses it at run time). Same rule: computed by the crate, never restated. A one-shot outside every window passes. Host-side tests only.
+
 ---
