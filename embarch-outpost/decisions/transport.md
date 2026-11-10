@@ -18,7 +18,7 @@ The ring is a bounded multi-producer queue: **a producer reserves a slot with a 
 
 **A polling fallback exists** for a port whose driver has no async support — **present so such a port still produces a stream, not because it is fine.**
 
-### 5 — Overflow policy: drop, count, and emit an explicit gap record. Never block, never overwrite
+### 5 — Overflow policy: drop, count, and emit an explicit gap record. Never overwrite; blocks only by opt-in (28)
 
 When the ring is full the record is dropped and a counter increments; **the next frame opens with a gap record naming how many were lost.** **A host renders the gap as a gap** — a labelled band — **rather than drawing a continuous, plausible, wrong picture across it.**
 
@@ -43,3 +43,11 @@ If the ring holds less than a batch's worth, **sleep once, then send whatever is
 **The wait does not affect burst tolerance; the ring does.** During a burst the pending count is far above the target, **so the drain thread never sleeps and its throughput is identical to no wait at all.** What bounds a burst is the drain thread's **peak** throughput against the ring's depth — **and average capacity is never the constraint: a quarter-busy link still lost thousands of records to bursts, and quadrupling the ring absorbed nearly all of them.** So: **the ring is the burst knob, the wait is the latency knob, and the record's size is the throughput knob.**
 
 *Rejected: a smaller batch size to get finer frames.* **A live idea while the frame was the instrument's resolution, and the per-record clock inverted it: frame size no longer affects resolution at all, so smaller frames buy nothing and cost framing overhead. Bigger is strictly better on this wire**, up to the latency the wait already bounds.
+
+### 28 — Blocking overflow sleeps where a thread can, and the ring's floor is 320 bytes
+
+Amends decision 5: "never block" holds by default only. `OVERFLOW_BLOCK=y` looped on `k_yield()`, **which reaches only equal or higher priority, and the drain thread runs at 10**, so a producer on a full ring spun forever and the drain thread never made room. It now `k_sleep()`s 1 ms and retries. **It still drops, counted, where waiting is impossible:** ISR, pre-kernel, idle, interrupts locked, the drain thread itself. `BIT(5)` stays: it says the run could block.
+
+*Rejected: removing the mode*: a run that must lose nothing has no other way to say so. **[Measured on native_sim only: 8 rings of records from a priority-1 producer, none dropped, 0.16 s.]**
+
+**`RING_BYTES` starts at 320, not 256.** Below it the 16-slot floor allocated 320 B past the budget; a `BUILD_ASSERT` now holds slots × 20 B under the setting.

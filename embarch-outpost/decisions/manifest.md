@@ -40,3 +40,7 @@ Decision 9's manifest mismatch and decision 18's unverified join are the suite's
 **Neither refusal's default behavior changes.** Both flags are opt-in; the unconditional language in decision 9 and decision 18 describes what happens with neither flag set, which is every invocation that does not name one. An override is visible in the command that produced the render, not hidden inside it: **the two flags are the entire mechanism, and there is no third way to reach either bypass.**
 
 **Rejected: folding the override into the manifest or arrival-CSV format itself** — a flag that survives in a file survives past the operator who set it, which is exactly the silent-staleness failure decision 9 exists to close. The override has to cost a keystroke every time or it stops being a considered exception.
+
+### 29 — The build ID keeps the marker-list hash whole and cuts the describes instead
+
+Refines decision 9's verification half. The ID was `<app describe>+op<module describe>+m<hash>` cut from the right to `BUILD_ID_MAX` (16 to 128), so **the hash, the one part that changes when a marker is renamed in a dirty tree, was the first thing lost**: at 64 once the app describe passed about 40 characters, always near 16. The ten-character tail `+m<hash>` is now kept and the describes are cut to fit; the minimum 16 leaves six for them. `cmake/outpost_compose_build_id.cmake` does it, `tests/build_id_compose.cmake` pins it with 60-character describes at 16, 64 and 128. A `BUILD_ID_MAX` below 10 is refused at configure time (the Kconfig range already forbids it).

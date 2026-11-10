@@ -10,7 +10,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **The first EmbArch component that ships inside the thing under test.** Every other sub-project observes a DUT from outside. The outpost is a small Zephyr module an engineer compiles into their *own* DUT firmware for debug builds, emitting a running account of what the MCU is doing — which thread ran, in what order, when it was in interrupt context, and whatever application spans the engineer marked — out a dedicated TX-only UART, recorded and rendered host-side.
 
-**The question it answers is the one no external instrument here can:** *the study passed, but what was the CPU doing while it did?*
+**The question no external instrument here can answer:** *the study passed, but what was the CPU doing while it did?*
 
 **Not a violation of the no-inference rule**, which forbids any component presenting an inference about what a specific piece of hardware or firmware does as established fact. The engineer compiles the outpost in, chooses what to mark, and ships a build-time manifest declaring what every ID means. **Nothing here reads a DUT's source and guesses.**
 
@@ -21,7 +21,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **Zephyr only.** No vendor-neutral porting layer is being designed up front.
 - **No power, no pin sampling, no stimulus.** The outpost observes its own MCU. A GPIO record names the *handler* that ran, never a pin's level.
 
-**It is not** a production feature, a logging library (a DUT console is a legitimate *second* signal under the same routing model, not this one), or a replacement for a debugger or an ETM probe. It is deliberately the wire-thin version: one UART pin, no probe bandwidth, no vendor tool.
+**It is not** a production feature, a logging library (a DUT console is a legitimate *second* signal, not this one), or a debugger or ETM replacement. It is the wire-thin version: one UART pin, no probe bandwidth, no vendor tool.
 
 ## 2. Architecture
 
@@ -56,9 +56,9 @@ Three properties carry the design:
 
 - **The emit path takes no lock and reads no locked clock.** It writes one ring slot and returns. A trace whose cost is a latency floor on unrelated interrupts distorts exactly the thing it measures.
 - **No strings on the wire, ever**, except two in the header frame once a second. IDs are resolved through the manifest.
-- **Overflow drops, counts, and says so** — never blocks, never overwrites. The host renders a gap **as a gap** rather than drawing a continuous, plausible, wrong picture across it.
+- **Overflow drops, counts, and says so** — never overwrites, and blocks only by opt-in, where the caller can sleep (decision 28). The host renders a gap **as a gap** rather than drawing a continuous, plausible, wrong picture across it.
 - **A mismatched manifest refuses to render the names**, keeping the capture — a manifest from another build would silently relabel every marker, readable and entirely wrong. This holds over every row, including pre-header ones: the decoder reads the whole stream first, so an unnamed row still gets a correct `us` once any header is seen. `--allow-build-id-mismatch` renders anyway (decision 24). The same holds for a manifest whose `record_layout_version` disagrees with the header; a stream whose header layout is not the decoder's (3) is refused outright, no rows and no override (decision 27).
-- **A join that cannot be verified stamps nothing.** A trace shifted by three frames is readable, wrong, and indistinguishable from a correct one. `scripts/decode_outpost.py` checks this: each frame's actual delimiter-separated chunk length against the arrival CSV's `frame_bytes` for that index, refusing every `rx_utc_ms` stamp in the capture on the first disagreement and naming its index on stderr — `--allow-unverified-join` stamps anyway, mirroring `--allow-build-id-mismatch`'s posture toward decision 9 (decision 24 records both overrides). An arrival CSV whose `frame_bytes` column is missing or short (an older, two-column file) degrades to the unverified join rather than refusing to read the file.
+- **A join that cannot be verified stamps nothing.** A trace shifted by three frames is readable, wrong, and indistinguishable from a correct one. `scripts/decode_outpost.py` checks this: each frame's actual delimiter-separated chunk length against the arrival CSV's `frame_bytes` for that index, refusing every `rx_utc_ms` stamp in the capture on the first disagreement and naming its index on stderr — `--allow-unverified-join` stamps anyway, mirroring `--allow-build-id-mismatch`'s posture toward decision 9 (decision 24 records both overrides). An arrival CSV whose `frame_bytes` column is missing or short (an older two-column file) degrades to the unverified join rather than refusing to read the file.
 - **Nothing interpolates, on any clock.** Even spacing inside a frame would look better and be fabricated.
 - **Every board-specific fact is declared in the DUT's own repo, never here** — which UART, which pins, what baud, how big the ring is. Why the module may not hold an opinion about any of them: [decisions/module.md](decisions/module.md) decision 1.
 - **What the firmware chose is on the wire, not inferred from what is missing.** Which hook families are compiled in, and whether the outpost excluded itself, are header flags — because **an absence of records is indistinguishable from an idle subject.**
@@ -78,7 +78,7 @@ All on a quiet `dut_dev@7` nRF54L15 at 460800 baud.
 
 The ring is the burst knob, the fill wait is the latency knob, and the record's size is the throughput knob (decisions/transport.md decision 20) — only the third is still unturned ([open.md](open.md)).
 
-Every Kconfig symbol, its default, and the measurement that set it — the ring's, the fill wait's and self-exclusion's included: [interfaces/integration.md](interfaces/integration.md).
+Every Kconfig symbol, default and measurement: [interfaces/integration.md](interfaces/integration.md).
 
 ## 5. Host-side outputs
 

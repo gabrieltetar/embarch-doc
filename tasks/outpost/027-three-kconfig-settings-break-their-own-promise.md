@@ -1,6 +1,6 @@
 # 027 — Three values the outpost's Kconfig accepts break the promise their option exists for
 
-**State:** claimed by agent/outpost/027-three-kconfig-settings-break-their-own-promise, 2026-11-10 05:01
+**State:** done 0
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-outpost findings 1, 3 and 6), verified by Opus against embarch-outpost@2968f0c1
 **Scope:** outpost
 **Hardware:** none — reclassified back from `toolchain` by the supervisor on 2026-11-10, which is `tasks/README.md`'s rule for this repo: `tests/run-all.sh` ran every leg green (unit 6/6 and 9/9, module-off, the end-to-end stream) from a bare `git archive` copy of `main`, with only `WEST=/home/gabriel/Github/embarch/.west-venv/bin/west`, `ZEPHYR_BASE=/home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim/zephyr` (Zephyr 4.4.0, only read) and `/home/gabriel/Github/embarch/.west-venv/bin` prepended to `PATH`. Builds land in `tests/build/`, inside the worktree; the Zephyr tree stayed clean.
@@ -24,10 +24,10 @@ When done, each of the three either keeps its promise at every value its range a
 
 ## Done when
 
-- [ ] A native_sim test with `OVERFLOW_BLOCK=y`: a thread at a priority numerically below the drain thread's emits into a full ring and returns in bounded time with its record in the ring. If the mode is removed instead, its header flag bit is documented as retired in `interfaces/wire.md`.
-- [ ] `spec.md`, decision 5 and `interfaces/integration.md` agree on whether the module can block, and on which contexts still drop.
-- [ ] No value in `RING_BYTES`' range gives `slots × OUTPOST_SLOT_BYTES > CONFIG_EMBARCH_OUTPOST_RING_BYTES`, and a build at the range minimum proves it.
-- [ ] With both describes 60 characters long and `BUILD_ID_MAX` at its range minimum, two marker lists that differ in one name produce different build IDs, or the build fails and says why.
-- [ ] `tests/run-all.sh` passes every leg.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A native_sim test with `OVERFLOW_BLOCK=y`: a thread at a priority numerically below the drain thread's emits into a full ring and returns in bounded time with its record in the ring. If the mode is removed instead, its header flag bit is documented as retired in `interfaces/wire.md`.
+- [x] `spec.md`, decision 5 and `interfaces/integration.md` agree on whether the module can block, and on which contexts still drop.
+- [x] No value in `RING_BYTES`' range gives `slots × OUTPOST_SLOT_BYTES > CONFIG_EMBARCH_OUTPOST_RING_BYTES`, and a build at the range minimum proves it.
+- [x] With both describes 60 characters long and `BUILD_ID_MAX` at its range minimum, two marker lists that differ in one name produce different build IDs, or the build fails and says why.
+- [x] `tests/run-all.sh` passes every leg.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
