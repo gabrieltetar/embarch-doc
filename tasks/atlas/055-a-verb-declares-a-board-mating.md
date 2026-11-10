@@ -1,6 +1,6 @@
 # 055 — A verb records an engineer-declared board-to-board mating
 
-**State:** open
+**State:** claimed by agent/atlas/055-a-verb-declares-a-board-mating, 2026-11-10 02:10
 **Source:** Linear issue EMB-26, filed by a session
 **Issue:** EMB-26
 **Scope:** atlas
