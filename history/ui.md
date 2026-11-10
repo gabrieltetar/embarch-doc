@@ -11,6 +11,7 @@
 - A tab.toml must name label, icon (an .svg) and panel; a tab missing one is left off the page and logged.
 
 ### Fixed
+- The Desk tab counts a note as the desk does (U+0085 trimmed, U+FEFF kept), and its desk-switch warning survives typing and says "nothing was added" only after an Add.
 - The Desk tab's Pick up title and empty note say "no card on the board": the list also shows an issue whose card the view window hides (EMB-115).
 ## 2026-10
 
