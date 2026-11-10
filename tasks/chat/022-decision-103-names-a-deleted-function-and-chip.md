@@ -1,6 +1,6 @@
 # 022 — Decision 103's as-built prose names a deleted function and chip
 
-**State:** open
+**State:** claimed by agent/chat/022-decision-103-names-a-deleted-function-and-chip, 2026-11-10 02:10
 **Source:** Linear issue EMB-125, filed by the reviewer of `chat/018`
 **Issue:** EMB-125
 **Scope:** chat
