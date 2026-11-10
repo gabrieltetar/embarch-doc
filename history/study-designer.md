@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Fixed
+- study-designer: `GattTranscriptEntry::att_status` doc comment names its per-kind meanings (ATT error, properties byte, HCI disconnect reason) instead of calling it always an ATT error code.
 ## 2026-10
 
 ### Added
