@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Changed
+- Outpost decisions 5/28 now in decisions/overflow.md and 24 in decisions/override.md, moved verbatim out of reserve in transport.md and manifest.md.
+
 ### Fixed
 - Outpost: OVERFLOW_BLOCK now sleeps so the drain thread runs, RING_BYTES starts at 320, the build ID keeps its marker hash at any BUILD_ID_MAX (decisions 28, 29).
 ## 2026-10
