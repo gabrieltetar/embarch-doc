@@ -14,19 +14,18 @@ Nothing built or tested a single feature cell of the most depended-on crate in t
 
 | Cell | Why it is its own cell |
 |---|---|
-| default (no features) | dev-bench firmware's `no_std`, allocator-free shape (decisions 5, 15, 46). The one that must never break. |
+| default (no features) | The crate's `no_std`, allocator-free shape (decisions 5, 15, 46). The one that must never break, though no consumer links it since dev-bench stopped (decision 7). |
 | `alloc` alone | The cell that was broken and unseen. Its own step with its own name, permanently. |
 | `std` | Implies `alloc`; what `embarch-core`/`embarch-api`/`embarch-ui` get. |
 | `gatt-extract`, `study-ui`, `eap-parse` | Each is `std`-only, off by default, and pulls its own dependencies (`regex`/`serde_json`/`ignore`, `toml`), so each rots independently. Run separately so one feature's compile error is not reported as another's. |
-| `ffi` | Below. |
 
 **The load-bearing half is that `default` and `alloc` are checked with `cargo build`, not `cargo test`.** This crate's only dev-dependency is `serde_json`, which pulls `serde` with `std`; edition 2021 means resolver v2, and resolver v2 unifies dev-dependency features into the library whenever it builds a target needing dev-deps — which `cargo test` always does. Measured with `cargo tree -f "{p} {f}"`: for the `default` cell `serde_core` is `result` with `-e normal` and `result,std` with `-e normal,dev`; for `std` both columns read `alloc,result,std`. So on the two narrow cells `cargo test` compiles a *different library than any consumer links*.
 
 **Verified rather than reasoned**: reintroducing the bug on a scratch copy, `cargo build --no-default-features --features alloc` fails with 16 errors while `cargo test --no-default-features --features alloc` passes 9/9. A matrix copied verbatim from `embarch-topology`'s all-`cargo test` shape would have been a step that cannot fail for the reason it was added — worse than an absent one, because it reads as coverage. The `std` and tool cells keep `cargo test` alone, since a `build` twin there is measurably the same build.
 
-**`ffi` is a `build` with a stated ceiling, and the workflow says so in its own comment.** A host `cargo build --features ffi` does type-check `src/ffi.rs`'s `extern "C"` surface (decisions 7, 23) against the rest of the crate in dev-bench's real `no_std`, no-alloc configuration, which is a real regression class. It does **not** prove what dev-bench needs: that the crate links as a `--crate-type staticlib` on a cross target with a panic handler and `panic = "abort"`. That build root does not exist yet, and adding a cross-compile step before the toolchain does would be the same fake-coverage mistake in a different place.
+**The `ffi` cell is gone with the surface it checked (2026-11-10, decision 7).** It was a `cargo build --features ffi` with a stated ceiling: it type-checked `src/ffi.rs` on the host and never proved the staticlib cross-link dev-bench actually performed. The surface, the feature and the cross-link are all retired, so there is nothing left for a cell to check.
 
-Clippy `-D warnings` runs on `--all-features` (the widest set, and the only configuration asserting the tool features do not collide) and again on `default` and `alloc`, because a `no_std` build's lints are not a subset of a `std` build's. `--locked` throughout is honest here: `Cargo.lock` is committed, this crate being the FFI build root (decision 23).
+Clippy `-D warnings` runs on `--all-features` (the widest set, and the only configuration asserting the tool features do not collide) and again on `default` and `alloc`, because a `no_std` build's lints are not a subset of a `std` build's. `--locked` throughout is honest here: `Cargo.lock` is committed.
 
 **Every step was run locally before the workflow was pushed, and all fourteen were green** — no cell was red on arrival.
 

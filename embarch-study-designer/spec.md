@@ -11,15 +11,15 @@ A shared `#![no_std]` Rust library defining what a **study** of a DUT is, and th
 **Not a service** — a data-types-and-tools library. It defines *what* gets sent, not the plumbing that sends it. It ships two authoring-time binaries behind feature flags (a GATT-config extractor, and previously a UI server since retired to `embarch-ui`), and neither is a service.
 
 ```
-                    embarch-study-designer (#![no_std], compiled in by all three)
+                    embarch-study-designer (#![no_std]; linked by two, read by dev-bench's build)
                                        |
       embarch-api  ------HTTP+JSON---->  embarch-core  ---serial, COBS+postcard--->  embarch-dev-bench
-      (MCP + CLI)                        (bridges the two)                          (C, via FFI staticlib)
+      (MCP + CLI)                        (bridges the two)                          (C, hand-written codec)
                                                                                              |
                                                                                         DUT (BLE)
 ```
 
-Three consumers in two languages: two Cargo dependents, and dev-bench through a cross-compiled FFI staticlib with a generated C header. **Anything every consumer must agree on byte-for-byte or column-for-column belongs here**; anything hop-specific stays out.
+Three consumers in two languages: two Cargo dependents, and dev-bench, which links no Rust: its C codec is hand-written and pinned by the cross-side byte tests, and its build reads the schema version, limits and wire enum values from this crate's source (decision 7). **Anything every consumer must agree on byte-for-byte or column-for-column belongs here**; anything hop-specific stays out.
 
 ## 2. Invariants
 
@@ -36,8 +36,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 
 | Feature | Brings | Who uses it |
 |---|---|---|
-| *(default, `no_std`)* | the wire types, CRC sealing, canonical row rendering, tap validation | dev-bench firmware, and everyone |
-| `ffi` | the `extern "C"` surface plus a generated C header | dev-bench's staticlib |
+| *(default, `no_std`)* | the wire types, CRC sealing, canonical row rendering, tap validation | everyone (no firmware links it today) |
 | `std` / `alloc` | heap-backed `steps` and result containers; the host-run study types (`HostStudy`, decision 80; `Repeat` and `LineCount`, decision 86; a prompt's `bench_config`, decision 88; JSON only). `std` also pulls `regex` to compile a count pattern | the two host crates |
 | `gatt-extract` | the repo-walking GATT extractor (needs `regex`, `ignore`) | an authoring-time binary |
 | `eap-parse` | the `.eap` parser and a host-side **reference** interpreter | authoring, and pinning the semantics C must match |
@@ -47,7 +46,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench through a 
 
 **The custom-action registry** (`ActionRegistry`/`StructRegistry`, `std`-only, behind `study-ui`) reads and writes `<firmware_repo_root>/embarch/study-actions.toml` — engineer-authored names and literal byte choices for a DUT's custom GATT actions, never linked into dev-bench or the plain Cargo-dependency use of `embarch-core`/`embarch-api`. Format, `validate`'s refusals, and why: [decisions/registry.md](decisions/registry.md).
 
-**The FFI boundary is panic-safe by construction:** `panic = "abort"` plus an explicit status code on every exported function, rather than `catch_unwind`, which needs `std`. Board→target-triple selection lives in dev-bench's CMake, and the soft-float variant is mandatory on Cortex-M33 here — a hard-float staticlib fails to link the moment any path touches an `f32`, which includes a field inside `Sample` and not just the exposed signatures.
+**No `extern "C"` surface:** the FFI staticlib and its `ffi` feature were retired on 2026-11-10 (decisions 7, 23), since its only live call was the schema version.
 
 ## 4. Result storage
 
@@ -62,7 +61,7 @@ Core writes `study_results/<study_id>/`, and this crate owns every **row shape**
 
 **`embarch-api`** is the authoring and submission surface: it fills the seals, validates capacities before the HTTP call, sequences an optional reflash, and exposes every capability as both an MCP tool and a CLI subcommand.
 
-**`embarch-dev-bench`** links the staticlib and executes: it verifies `steps_crc` before step 0, decodes one step at a time from the retained span, opens declared taps from their scope, forwards arrival-stamped bytes **interpreting nothing**, and runs a `.eap` state machine against the live DUT.
+**`embarch-dev-bench`** executes, in its own C: it verifies `steps_crc` before step 0, decodes one step at a time from the retained span, opens declared taps from their scope, forwards arrival-stamped bytes **interpreting nothing**, and runs a `.eap` state machine against the live DUT.
 
 ## 6. Constants
 

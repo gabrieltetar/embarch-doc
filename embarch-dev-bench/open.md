@@ -37,4 +37,3 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 - **`tx_scratch` holds a `struct dbm_study_start` it can never contain**, ~15.7 KB (decision 38) — Core is the only sender of a `StudyStart`. Reclaiming it with a TX-only message type is **the single largest remaining lever on ESP32-C5 SRAM.**
 - **Detecting "the bench isn't actually connected"** — unplugged, wrong port — is `embarch-core`'s responsibility, not this firmware's.
-- **Only a build that links the real staticlib exercises the FFI schema-version call.** `native_sim` links no crate to compare against, so decision 20's fix closes the *wrong number*, not the blind spot itself.

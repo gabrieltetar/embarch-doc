@@ -1,6 +1,6 @@
 # 032 — Retire the FFI staticlib itself: the toolchain-gated half of `suite/014`
 
-**State:** claimed by agent/suite/032-retire-the-ffi-staticlib-itself-the-toolchain-gated-half-of-014, 2026-11-10 05:45, window closed with no reply
+**State:** done
 **Source:** split out of `tasks/suite/014` by leg 093, 2026-09-11, which took the doc-and-citation
 half and **could not safely take this one unattended**. See "Why this is split" below — the reason
 is a build coupling, not a scoping preference.
@@ -68,12 +68,13 @@ still describes an FFI bridge, because there still is one.
 
 ## Done when
 
-- [ ] `essd_study_decode_and_verify` and `essd_study_decode_full` are gone from every repo.
-- [ ] No board build invokes `cargo rustc --crate-type staticlib`; `study_ffi_schema_version` is
+- [x] `essd_study_decode_and_verify` and `essd_study_decode_full` are gone from every repo.
+- [x] No board build invokes `cargo rustc --crate-type staticlib`; `study_ffi_schema_version` is
       served from the configure-time constant read on **every** workspace, not just `native_sim`.
 - [ ] A real dev-bench board workspace builds and flashes, and `main.c:1091`'s schema check still
-      reports the same number it did before.
-- [ ] `embarch-study-designer` `cargo build`/`test`/`clippy --all-targets -- -D warnings` green with
+      reports the same number it did before. **Built, not flashed:** both board images build and
+      report 15 as before; neither bench role was attached, so the flash is a hardware debt in the log.
+- [x] `embarch-study-designer` `cargo build`/`test`/`clippy --all-targets -- -D warnings` green with
       the `ffi` feature and `src/ffi.rs` removed, and the CI matrix updated to match.
-- [ ] Decision 7 is rewritten to describe the boundary that actually exists once this lands.
-- [ ] Gate green; `changelog.d/` fragments for both repos.
+- [x] Decision 7 is rewritten to describe the boundary that actually exists once this lands.
+- [x] Gate green; `changelog.d/` fragments for both repos.
