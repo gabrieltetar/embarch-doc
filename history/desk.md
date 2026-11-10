@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Desk: a session on no work item takes an issue key from its opening prompt or a handoff before asking ([decision 7](../embarch-desk/decisions/cockpit.md)).
 - An issue key no workspace has now says why: its team's desk and folder, or that no connected workspace has the team (embarch-desk decision 77).
 - `linear_get_issue` returns comments_total and a note when comments were cut, and a `skip` parameter reads older ones, on both account types (desk decision 59).
 - embarch-desk docs split: the hand (57-76) and day-tile decisions (62-64) to topic files, chat routes to interfaces/, spec constants continued; nothing reworded.
