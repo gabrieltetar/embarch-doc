@@ -1,6 +1,6 @@
 # 108 — The Desk tab's note count matches the desk's, and its switch warning stays until it is answered
 
-**State:** claimed by agent/ui/108-the-desk-note-count-and-switch-warning-match-the-desk, 2026-11-09 22:57
+**State:** done
 **Source:** Linear issue EMB-48, filed by an audit (points 4 and 5; points 1 to 3 are `tasks/desk/017`)
 **Issue:** EMB-48
 **Scope:** ui
@@ -33,6 +33,10 @@ Filed by an audit; both are small and in one file.
 
 ## Done when
 
-- [ ] A note containing U+FEFF or U+0085 shows the same count in the Desk tab as the desk computes.
-- [ ] Typing in the add box does not clear the desk-switch warning, and the warning only says nothing was added after an Add attempt.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] A note containing U+FEFF or U+0085 shows the same count in the Desk tab as the desk computes.
+- [x] Typing in the add box does not clear the desk-switch warning, and the warning only says nothing was added after an Add attempt.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+None for hardware. The webview e2e (`tests/browser/drive_desk.py`, needs geckodriver) gained a U+FEFF/U+0085 count check and was not run here; the existing desk-switch check (Add says "nothing was added") is unchanged.
