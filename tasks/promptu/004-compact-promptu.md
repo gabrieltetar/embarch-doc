@@ -1,6 +1,6 @@
 # 004 — `embarch-promptu` spec.md is in reserve after decision 41's build
 
-**State:** done, 2026-11-10 (split verbatim by mission: §2b and §2c to `embarch-promptu/spec/build-steps.md`; `spec.md` 9,563 to 6,949 B, out of reserve)
+**State:** done
 **Source:** `promptu/002` added the context-planning bullet to `spec.md` and crossed the reserve line; `DOC-COMPACTION.md` §2
 **Scope:** promptu
 **Hardware:** none
@@ -20,6 +20,8 @@ The seam worth checking first (your call): §2b and §2c, the build steps that a
 ## What
 
 `spec.md` 9,563/10,240 B; out of reserve at <= 9,039 B.
+
+**Shipped 2026-11-10:** §2b and §2c moved verbatim to `embarch-promptu/spec/build-steps.md`; `spec.md` is now 6,949 B, with a pointer at §2b.
 
 ## Why now
 
