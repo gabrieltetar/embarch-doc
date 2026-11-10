@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- A Desk tab session row whose folder was deleted says "folder gone" where its Jump or Open chat button was, instead of losing the button silently.
 - embarch-ui's README points at embarch-chat's launcher and describes its status bar states.
 - embarch-ui: spec.md and open.md compacted by moving role/catalog invariants and trace open items to spec/roles.md and open/trace.md.
 - A tab.toml must name label, icon (an .svg) and panel; a tab missing one is left off the page and logged.
