@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- tx_scratch holds only what the bench sends: ESP32-C5 sram0_0_seg 333,360 to 308,432 B, nRF54L15DK RAM 157,384 to 132,464 B; decision 57.
 - The bench's link-level wire enums are read from the crate at configure time too, and a drift fails the build (dev-bench decision 56).
 - The bench's copies of the crate's limits and `.eap` wire enums are read from the crate at configure time, and a drift fails the build (dev-bench decision 56).
 - dev-bench composes the no-name-match census fail_reason outside the BT file, so ztests now pin its byte budget and both markers ([decision 52](../embarch-dev-bench/decisions/scanning.md)).
