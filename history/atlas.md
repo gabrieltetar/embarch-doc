@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas: a target can state no_board = true, so an atlas is built from the schematic and datasheets before any Zephyr board exists; build-dependent outputs are named absent.
 - Atlas: declare-pin-name records names for pins the schematic PDF left unnamed (pin_names.json overlay); every pin name carries its source; schematic reports the pins still unnamed.
 - `part_card` (board MPN, refs and nets) and `mismatch_report` (checks needing no build; the rest under Not run) answer from netlists, BOM and coverage before the first atlas; DESIGN.md.
 - Live `reg_read` of a banked register on a paged part: a `bus` `bank_select` field, and `allow_bank_select` (CLI, MCP `reg_read_bank`) selects the bank, reads, restores the previous page; DESIGN.md.
