@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas: declare-pin-name records names for pins the schematic PDF left unnamed (pin_names.json overlay); every pin name carries its source; schematic reports the pins still unnamed.
 - `part_card` (board MPN, refs and nets) and `mismatch_report` (checks needing no build; the rest under Not run) answer from netlists, BOM and coverage before the first atlas; DESIGN.md.
 - Live `reg_read` of a banked register on a paged part: a `bus` `bank_select` field, and `allow_bank_select` (CLI, MCP `reg_read_bank`) selects the bank, reads, restores the previous page; DESIGN.md.
 - embarch-atlas gains `declare-interface`: it records an engineer-declared board-to-board mating (rule or pin map, note) in boards/system.json, and refuses refs and rules the atlas cannot read.
