@@ -1,0 +1,1 @@
+| An agent hands its chat to a fresh session in the same panel: `handoff(prompt)` on the panel's own MCP server, as an editable card (Continue / Stay), immediate, or off | Built, not installed — **not seen in a live panel or with a real `claude` calling the tool** | unit | 103 |

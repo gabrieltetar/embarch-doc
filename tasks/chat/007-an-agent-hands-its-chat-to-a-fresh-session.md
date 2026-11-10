@@ -1,6 +1,6 @@
 # 007 — An agent hands its chat over to a fresh session in the same panel
 
-**State:** claimed by agent/chat/007-an-agent-hands-its-chat-to-a-fresh-session, 2026-11-09 17:30
+**State:** done — handoff tool built (card, immediate, off), unit-tested; live panel unverified
 **Source:** Linear issue EMB-61, filed by the owner; the design is `embarch-chat` decision 103 (owner, 2026-11-07)
 **Issue:** EMB-61
 **Scope:** chat
@@ -40,9 +40,19 @@ Decision 103 is decided and not built. `embarch-promptu` decision 41 (EMB-65, `t
 
 ## Done when
 
-- [ ] An agent's `handoff(prompt)` shows a card by default; Continue ends the old process, starts a fresh one in the same panel with the prompt as its first message, and the timeline keeps the old history above a divider.
-- [ ] Stay answers the tool call and the agent carries on.
-- [ ] With the setting `immediate`, the same happens without the card; with `off`, no tool is declared.
-- [ ] The fresh session has the old chat's mode, model, effort and desk work item.
-- [ ] `embarch-chat/spec.md` describes the handoff, and decision 103 drops its "not built".
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] An agent's `handoff(prompt)` shows a card by default; Continue ends the old process, starts a fresh one in the same panel with the prompt as its first message, and the timeline keeps the old history above a divider.
+- [x] Stay answers the tool call and the agent carries on.
+- [x] With the setting `immediate`, the same happens without the card; with `off`, no tool is declared.
+- [x] The fresh session has the old chat's mode, model, effort and desk work item.
+- [x] `embarch-chat/spec.md` describes the handoff, and decision 103 drops its "not built".
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Built
+
+`handoff(prompt)` on the panel's MCP server (`src/handoff.ts`, `src/hostHooks.ts`), declared unless `embarchChat.handoff` is `off`. `Chat.handoff` / `decideHandoff` / `carryInto` (`src/wire/chat.ts`), a `handoff` pending form and `carryTimeline` (`src/wire/reducer.ts`), `handoffChat` + `ChatPanels.retarget` (`src/extension.ts`, `src/views/views.ts`), the card and divider in the webview. Tests: `test/wire.test.mjs` (five `handoff` tests).
+
+## Hardware-verification / live debt
+
+Nothing here touches hardware. **Not verified:** a real `claude` calling `mcp__embarch-chat__handoff` (no recorded fixture; the wire tests call the tool through `mcpServer` directly), and the tab/sidebar re-pointing in a real VS Code window. To run: install the build, ask Claude in a chat to call the handoff tool, check card -> Continue -> same tab, divider, fresh session on the same item in the same mode.
+
+Known limit: after a window reload the fresh chat shows only its own transcript (the copied history lived in memory only).
