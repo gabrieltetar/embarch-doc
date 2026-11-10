@@ -1,6 +1,6 @@
 # 021 — A desk tool reads an issue's images and files
 
-**State:** open
+**State:** claimed by agent/desk/021-a-desk-tool-reads-an-issues-images-and-files, 2026-11-10 03:23
 **Source:** Linear issue EMB-14
 **Issue:** EMB-14
 **Scope:** desk
