@@ -35,7 +35,11 @@ The owner asked for it, and `tasks/chat/014` (one-row input) assumes the 💬 ha
 
 ## Done when
 
-- [ ] The 💬 is on the rail and gone from the input's bar; asking, Esc and the disabled state behave as before.
-- [ ] Decision 94 lists it among the rail's entries, and `interfaces.md` and the comment in `composer.tsx` that place it "beside the 📚" are corrected.
-- [ ] The e2e tests find it on the rail.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] The 💬 is on the rail and gone from the input's bar; asking, Esc and the disabled state behave as before.
+- [x] Decision 94 lists it among the rail's entries, and `interfaces.md` and the comment in `composer.tsx` that place it "beside the 📚" are corrected.
+- [x] The e2e tests find it on the rail.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+
+## Result
+
+The 💬 is a sixth rail entry (last, "Side question", one-path SVG speech bubble in `currentColor`, `aria-pressed`); `.assist-slot` and its CSS are gone. `RailEntry` gained a `pressed` prop. Decision 94 amended in place (no new decision); `interfaces.md` and the `composer.tsx` comment corrected; e2e tests find it on the rail (icon count 5 to 6, the bottom-of-rail check now looks at the 💬). **spec.md was edited and compacted to 9,037 B** (the Status line's install history), chat/019's Must-not-delete items untouched: the supervisor can close chat/019 and unpark chat/014 at the fold.
