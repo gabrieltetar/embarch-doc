@@ -1,6 +1,6 @@
 # 009 — The start hook takes the work item from the prompt before it asks
 
-**State:** claimed by agent/desk/009-the-start-hook-takes-the-item-from-the-prompt, 2026-11-09 20:04
+**State:** done
 **Source:** Linear issue EMB-16, filed by a session
 **Issue:** EMB-16
 **Scope:** desk
@@ -31,7 +31,7 @@ A prompt that already names the issue, or a handoff that decides it, still gets 
 
 ## Done when
 
-- [ ] A session whose first prompt names an issue key ends on that item without the user being asked (a test drives the route you chose).
-- [ ] A session with no key in the prompt or a handoff is still asked.
-- [ ] Decision 7 amended; `spec.md` or `interfaces.md` updated where they quote the hook's behaviour.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] A session whose first prompt names an issue key ends on that item without the user being asked (a test drives the route you chose).
+- [x] A session with no key in the prompt or a handoff is still asked.
+- [x] Decision 7 amended; `spec.md` or `interfaces.md` updated where they quote the hook's behaviour.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
