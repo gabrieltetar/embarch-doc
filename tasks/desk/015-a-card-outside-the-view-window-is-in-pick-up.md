@@ -1,6 +1,6 @@
 # 015 — An issue whose card the view window hides is listed in Pick up
 
-**State:** open
+**State:** claimed by agent/desk/015-a-card-outside-the-view-window-is-in-pick-up, 2026-11-09 21:23
 **Source:** Linear issue EMB-72, filed by a session
 **Issue:** EMB-72
 **Scope:** desk
