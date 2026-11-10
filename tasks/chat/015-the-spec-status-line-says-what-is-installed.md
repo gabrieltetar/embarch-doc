@@ -1,6 +1,6 @@
 # 015 — `embarch-chat`'s spec status line says decisions 94–100 are installed
 
-**State:** open
+**State:** claimed by agent/chat/015-the-spec-status-line-says-what-is-installed, 2026-11-10 01:28
 **Source:** Linear issue EMB-68, filed by a session
 **Issue:** EMB-68
 **Scope:** chat
@@ -25,6 +25,7 @@ The status line reads older than what runs, so a reader plans against a stale pi
 - **Whether decision 100 has been reviewed is the owner's to say, and nobody has said it.** Do not mark it reviewed. Say it is not recorded as reviewed, and drop an `open.md` question if none exists.
 - `main` has moved since that measurement (`bce5ac7`, the launcher rework). Write the status as of what `main` holds now, citing the measurement as a dated fact, not as a claim about today's install.
 - Edit the line; do not append another status line.
+- **Doc-size reserve:** `embarch-chat/spec.md` is 9,034 B of 10,240, 5 B under its reserve line (in reserve above 9,039 B). Aim to leave it no longer than it is: the status line can drop what it now says twice. If it ends above 9,039 B, file `tasks/chat/<NNN>-compact-chat-spec.md` in the same commit per `tasks/README.md` (with its `In flux:` field), and say so in your report.
 
 ## Done when
 
