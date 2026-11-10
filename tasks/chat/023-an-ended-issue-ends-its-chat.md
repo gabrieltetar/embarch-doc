@@ -1,6 +1,6 @@
 # 023 — An ended issue ends its chat
 
-**State:** done, 2026-11-10 — branch agent/chat/023-an-ended-issue-ends-its-chat
+**State:** done — 2026-11-10, branch agent/chat/023-an-ended-issue-ends-its-chat
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** chat
