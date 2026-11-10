@@ -1,6 +1,6 @@
 # 105 — `embarch-ui`'s READMEs point at the launcher inside `embarch-chat`
 
-**State:** open
+**State:** claimed by agent/ui/105-the-readmes-point-at-the-chats-launcher, 2026-11-09 17:31
 **Source:** Linear issue EMB-69, filed by a session
 **Issue:** EMB-69
 **Scope:** ui
