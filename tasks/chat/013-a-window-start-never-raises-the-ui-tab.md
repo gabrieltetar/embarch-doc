@@ -28,9 +28,13 @@ The owner asked for it: every window start or reload brings the tab to the front
 - No `embarch-chat` doc is in reserve at the split. At dispatch (2026-11-09 22:02) `embarch-chat/spec.md` is 9,034 B, 5 B under its reserve line (9,039 B): an edit there that grows it puts it in reserve and owes `tasks/chat/<NNN>-compact-chat.md` in the same commit.
 - Burndown is on: no new numbered decision. Amending one in place is fine; if the change needs a new one, write its proposed text under `## Owed decision` in this file and the supervisor files it.
 
+## Finding: already true on main
+
+The premise was stale. `bce5ac7` (decision 102, `decisions/shape.md`) removed `embarchUi.autoStart` and the activation-time start: `activateLauncher` only reads the unit's state (`void refresh()`), and `reveal()` is reached only from the Start command and the status-bar click. No `autoStart` setting exists in `package.json`, so there is no description to fix. The only remaining mention is a hostile-settings fixture in `test/settings.test.mjs`, which pins that a repo's settings are ignored. Nothing in `src/` changed; one regression test was added (`test/host.test.mjs`, "window start opens no browser tab"). If the owner still saw a tab raised on window start, the cause is something else (another window's Start, or the old standalone launcher still installed) and needs a fresh report.
+
 ## Done when
 
-- [ ] With `autoStart` on, starting or reloading a window starts the UI if needed and changes no browser tab.
-- [ ] The Start command and the status-bar item still open or focus it.
-- [ ] The setting's description says what it does.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped.
+- [x] With `autoStart` on, starting or reloading a window starts the UI if needed and changes no browser tab. (No `autoStart` any more; activation starts nothing and opens nothing. Test added.)
+- [x] The Start command and the status-bar item still open or focus it. (Unchanged: both run `start()` -> `reveal()`.)
+- [x] The setting's description says what it does. (Setting no longer exists.)
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped. (Docs needed no change; `npm test` has 5 failures that fail identically without my change.)
