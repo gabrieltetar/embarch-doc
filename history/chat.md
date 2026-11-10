@@ -13,6 +13,9 @@
 - The side-question 💬 moves from the input's bar to the chat rail: same enable rule, toggle and Esc (chat 94, 57).
 - The chat passes its context usage to Promptu's pass, so it can plan work that outgrows one window (chat decision 96).
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
+
+### Fixed
+- A chat whose folder was deleted now says the folder no longer exists, instead of "claude not found" (EMB-75).
 ## 2026-10
 
 ### Added
