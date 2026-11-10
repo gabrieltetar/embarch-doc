@@ -1,6 +1,6 @@
 # 026 — The issue's folder goes once no window shows it
 
-**State:** claimed by agent/desk/026-the-issues-folder-goes-once-no-window-shows-it, 2026-11-10 06:25 — 025 landed (desk `9a32975`), its checks are `closeout::check` in `src/closeout.rs`, decision 83
+**State:** done on agent/desk/026-the-issues-folder-goes-once-no-window-shows-it, 2026-11-10; claimed 06:25 — 025 landed (desk `9a32975`), its checks are `closeout::check` in `src/closeout.rs`, decision 83
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** desk
@@ -42,10 +42,18 @@ EMB-73. Landing keeps the folder, so today nothing ever removes it.
 
 ## Done when
 
-- [ ] After an `end`, once no poll for the folder has arrived for the grace, the worktrees are removed, their local branches deleted and the folder gone; a test with a symlinked sibling in the folder shows the symlink's target untouched.
-- [ ] Canceled also deletes the branches on the remote; a test against a temporary bare remote covers it, and a branch the remote lacks.
-- [ ] With uncommitted files at removal time, nothing is removed and an `unfinished` names the repo and reason.
-- [ ] A desk that has just started does not read every folder as windowless; a test covers it.
-- [ ] With the chat setting off, nothing is removed and the close-out says why.
-- [ ] `embarch-desk` decisions, `spec.md`, `spec/constants.md` and `interfaces.md` updated.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] After an `end`, once no poll for the folder has arrived for the grace, the worktrees are removed, their local branches deleted and the folder gone; a test with a symlinked sibling in the folder shows the symlink's target untouched.
+- [x] Canceled also deletes the branches on the remote; a test against a temporary bare remote covers it, and a branch the remote lacks.
+- [x] With uncommitted files at removal time, nothing is removed and an `unfinished` names the repo and reason.
+- [x] A desk that has just started does not read every folder as windowless; a test covers it.
+- [x] With the chat setting off, nothing is removed and the close-out says why.
+- [x] `embarch-desk` decisions, `spec.md`, `spec/constants.md` and `interfaces.md` updated.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## Done
+
+Decision **84**, a new one beside 83 (83 is the chat contract and stays whole), in `embarch-desk/decisions/closeout.md`; decision 83 was first moved there verbatim out of `sessions.md` (diff-checked), a pointer stub left. Code: `closeout::remove` (plans every worktree first, remote branches first for Canceled, then `git worktree remove`, `branch -D`, `remove_dir_all` which does not follow symlinks), `removal_pass` in `server.rs` (every 30 s with the reference index), poll times in `Cache.polled` recorded by `GET /mailbox`, `Cache.started_ms` set in `main.rs`, `close_out.removal {state, why}`. Grace 180 s [chosen] in `spec/constants.md`. The "decision 77" comments in `closeout.rs`, `server.rs` and `store.rs` now cite 83. `linear.rs:192` still says 77, and correctly: that is the per-session desk decision.
+
+Spec.md is still in reserve (9,440 of 10,240 B), so `tasks/desk/027` stays blocked and open for it only.
+
+**Hardware-verification debt:** none (Hardware: none). **Unverified:** that the chat polls while its window is open and idle (its side, `tasks/chat/023`); a real `.dev-worktrees/` folder was never touched, only temporary repos.

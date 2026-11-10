@@ -1,0 +1,1 @@
+| A closed-out suite issue's folder (worktrees, local branches, the remote's on Canceled) is removed once no chat window has polled for it for 180 s; checks re-run first, symlink targets untouched | Built on a branch, not deployed; temporary git repos, remote and suite root in tests | unit | 84 |

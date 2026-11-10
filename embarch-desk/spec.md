@@ -40,7 +40,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **A session's own desk scopes its agents and its default build, the UI's desk only what the UI shows, and neither what is tracked**: a session's time lands on the desk whose repo it is in (36, 77).
 - **Switching desks touches no hardware**; the bench is proposed in the UI and loaded on a click (37).
 - **The session decides a note's item, never the file's name** (52); a note held before the session has an item lands once it gets one.
-- **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode. An `open` entry carries no prompt at all (70). So are `end` and `unfinished` (83): an issue moved to Done or Canceled, in a suite with its folder, runs the close-out checks and tells the window; the desk removes nothing here.
+- **A `start` mailbox entry is written only by Start work, server-side** (46): no caller supplies a prompt that a window would run in auto mode. An `open` entry carries no prompt at all (70). So are `end` and `unfinished` (83): an issue moved to Done or Canceled, in a suite with its folder, runs the close-out checks and tells the window; once no window polls for its folder for 180 s (never counted from before the desk's start, never with `settings.chat_panel` off) the checks run again and the desk removes the worktrees, their branches (the remote's too on Canceled) and the folder, symlinks unfollowed (84).
 - **`GET /refs` answers from memory**: only the index's own task fetches, so no request waits on Linear or GitHub (56).
 
 ## 3. Interfaces

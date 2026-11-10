@@ -12,6 +12,7 @@
 | Least time after a ✓ dealt as a continuation | 5 min [chosen] (64) |
 | Brief | 16,000 characters, about 4K tokens (48) |
 | Mailbox entry life | 10 min, as a launch claim (46); an `end` or `unfinished` waits for its window or folder, and once taken is kept 10 min (83) [chosen] |
+| A folder has no window | no `GET /mailbox?folder=` poll for it for 180 s, three of the chat's 60 s back-off, counted from the later of the last poll and the desk's start [chosen] (84) |
 | Memory note versions kept | 20 per file (52) |
 | Notes, worst case | 8.2 MB of state, 20 ms a write [measured 2026-10-23] (55) |
 | Polish model | `sonnet`, `EMBARCH_DESK_MODEL` |
