@@ -14,6 +14,7 @@
 - embarch-desk: desk_add_line takes an optional item (issue key or item id) to note a different work item than the session's own; an unknown one errors and writes nothing (decision 78).
 
 ### Changed
+- embarch-desk spec.md out of reserve: suite-desk and worktree paragraphs moved verbatim to spec/suite-desk.md (8,882 of 10,240 B).
 - embarch-desk decisions 38, 40 and 41 moved verbatim from decisions/desks.md to decisions/day-list.md; desks.md is out of reserve.
 - Desk decisions 79 and 81 moved verbatim from decisions/access-point.md to decisions/linear-reads.md; no wording changed.
 - Desk: a session row in /view and the session list says its folder is missing (folder_missing) and carries no folder_uri when its cwd is gone.
