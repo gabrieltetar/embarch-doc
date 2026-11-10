@@ -28,7 +28,8 @@ A false "covered" is silent: the missing datasheet is never asked for.
 ## Dispatch notes
 
 - **Synthetic PDFs only.** The fixture: a datasheet for part A whose page 2 mentions part B's full MPN, a BOM containing both, then `inventory` and `missing`.
-- `atlas/047` (the kind classifier) edits `inventory.py` too; whichever lands second rebases. Do not do 047's work here.
+- `atlas/047` (the kind classifier) landed first (embarch-atlas `df232e9`); read `main` as it is.
+- While in `DESIGN.md`, fix one stale word 047 left in the `appnote` bullet under "Kinds": "only a title saying reference manual comes first" is no longer the only case, since a user's guide that is a reference manual is now tested first too (047's reviewer).
 - No `embarch-atlas` doc in `embarch-doc` is in reserve at the split.
 
 ## Done when
