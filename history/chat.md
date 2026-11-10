@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-10-25. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Added
+- Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 ## 2026-10
 
 ### Added

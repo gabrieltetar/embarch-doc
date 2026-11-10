@@ -1,7 +1,6 @@
 # 002 — The pass plans for work that will outgrow one context window
 
-**State:** blocked — the handoff way must name a tool that exists.
-**Unparks when:** tasks/chat/007 lands
+**State:** open — unparked 2026-11-09 by `chat/007`'s fold: the `handoff(prompt)` tool exists (embarch-chat `f823dc8`, decision 103), served on the panel's MCP server as `mcp__embarch-chat__handoff` while `embarchChat.handoff` is not `off`.
 **Source:** Linear issue EMB-65, filed by the owner; the design is `embarch-promptu` decision 41 (owner, 2026-11-07)
 **Issue:** EMB-65
 **Scope:** promptu
