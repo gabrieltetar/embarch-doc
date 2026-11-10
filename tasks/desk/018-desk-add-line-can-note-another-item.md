@@ -1,6 +1,6 @@
 # 018 — `desk_add_line` can put a note on another work item
 
-**State:** claimed by agent/desk/018-desk-add-line-can-note-another-item, 2026-11-10 02:49
+**State:** done
 **Source:** Linear issue EMB-82
 **Issue:** EMB-82
 **Scope:** desk
@@ -41,10 +41,10 @@ The owner filed it: a chat working on one issue that finds something about anoth
 
 ## Done when
 
-- [ ] `desk_add_line` with `item` set to another item's issue key files the note on that item's tile for today, carrying the calling session's id.
-- [ ] `desk_add_line` without `item` behaves as before, the held line included.
-- [ ] An unknown `item` returns an error naming it and writes nothing.
-- [ ] The tool's description says when to set `item`.
-- [ ] `interfaces.md` and a new `embarch-desk` decision describe the field.
-- [ ] Each of the first three has a test.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] `desk_add_line` with `item` set to another item's issue key files the note on that item's tile for today, carrying the calling session's id.
+- [x] `desk_add_line` without `item` behaves as before, the held line included.
+- [x] An unknown `item` returns an error naming it and writes nothing.
+- [x] The tool's description says when to set `item`.
+- [x] `interfaces.md` and a new `embarch-desk` decision describe the field.
+- [x] Each of the first three has a test.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
