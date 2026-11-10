@@ -1,6 +1,6 @@
 # 038 — A spaced minus and a thousands separator parse as one number
 
-**State:** open
+**State:** claimed by agent/atlas/038-a-spaced-minus-and-a-thousands-separator-parse-as-one-number, 2026-11-09 17:52
 **Source:** Linear issue EMB-36, filed by a session
 **Issue:** EMB-36
 **Scope:** atlas
