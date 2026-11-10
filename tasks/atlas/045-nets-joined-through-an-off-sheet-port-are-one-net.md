@@ -1,6 +1,6 @@
 # 045 — Nets joined through an off-sheet port are one net in the netlist
 
-**State:** open
+**State:** claimed by agent/atlas/045-nets-joined-through-an-off-sheet-port-are-one-net, 2026-11-09 20:58
 **Source:** Linear issue EMB-24, filed by a session
 **Issue:** EMB-24
 **Scope:** atlas
