@@ -1,9 +1,9 @@
 # 035 — `protocols_crc_valid` is computed and never checked
 
-**State:** open
+**State:** claimed by agent/dev-bench/035-protocols-crc-valid-is-never-checked, 2026-11-10 06:05
 **Source:** `embarch-study-designer/interfaces/seals.md:26` — every seal is checked independently at both hops
 **Scope:** dev-bench
-**Hardware:** bench
+**Hardware:** toolchain — reclassified from `bench` on 2026-11-10: every `Done when` item is a ztest or a build, and no step needs a board. Build from the worktree against the main checkout's `workspaces/*` with the fleet's `west`; a run against Core on the bench is a hardware debt, not a box.
 **Owner:** no
 
 ## What
