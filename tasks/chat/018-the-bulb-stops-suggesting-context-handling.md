@@ -1,6 +1,6 @@
 # 018 — The chat's 💡 stops suggesting compact, handoff and background agents
 
-**State:** claimed by agent/chat/018-the-bulb-stops-suggesting-context-handling, 2026-11-10 01:41 — unparked 2026-11-09 by `chat/017`'s fold: Promptu's pass now owns the judgement, and a run from the chat passes its context usage (`prep --context-usage`, embarch-chat `a46c5ac`; `embarch-chat` decision 96).
+**State:** done
 **Source:** Linear issue EMB-66, filed by the owner — owner's call on 2026-11-05
 **Issue:** EMB-66
 **Scope:** chat
@@ -32,6 +32,10 @@ One place decides how high-context work is carried, so two suggestions never dis
 
 ## Done when
 
-- [ ] The 💡 never offers a background, compact or handoff card, and its other cards still work.
-- [ ] Decisions 36 and 97 are amended.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] The 💡 never offers a background, compact or handoff card, and its other cards still work.
+- [x] Decisions 36 and 97 are amended.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+
+## Result
+
+The 💡's cards call asks Haiku for desk references only (none, no call); the context card kinds, the handoff request, the "Fresh chat with this handoff" chip, `freshChat`, and the Promptu `handoff` origin are gone. Kept: `splitCompact` and `sendAfterCompact` (a typed `/compact` first line still sends first) and the agent's own handoff (103). Decisions 36 and 97 amended in place; spec line 20 shortened. `spec.md` 9,011 B, `decisions/assistant.md` 9,346 B. Webview e2e lost the compact-card, handoff-card and chip checks and gained one asserting a context answer from Haiku yields no card.

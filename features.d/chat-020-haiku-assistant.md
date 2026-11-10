@@ -1,1 +1,1 @@
-| Haiku assistant at the input: ghost text, 💡 cards that only edit the draft, reply chips after each turn, a name for each new chat | Shipped, deployed — **holding a send for the cards awaits the owner's call** | unit, local | 19, 26, 37 |
+| Haiku assistant at the input: ghost text, 💡 reference cards that only edit the draft (context handling is Promptu's), reply chips after each turn, a name for each new chat | Shipped, deployed — **holding a send for the cards awaits the owner's call** | unit, local | 19, 26, 36, 37, 97 |
