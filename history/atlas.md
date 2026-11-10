@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Live `reg_read` of a banked register on a paged part: a `bus` `bank_select` field, and `allow_bank_select` (CLI, MCP `reg_read_bank`) selects the bank, reads, restores the previous page; DESIGN.md.
 - embarch-atlas gains `declare-interface`: it records an engineer-declared board-to-board mating (rule or pin map, note) in boards/system.json, and refuses refs and rules the atlas cannot read.
 - embarch-atlas register records take an optional `bank`; check G, codecheck RegMap and `live` read `REG@bank` key on (bank, addr). A register with no bank behaves as before. See DESIGN.md.
 - embarch-atlas record schema gains a `variant` kind: one record per orderable part, with `mpn` and `options`; it validates, renders in facts.txt and the datasheet procedure says when to write one.
