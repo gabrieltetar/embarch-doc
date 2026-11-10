@@ -1,6 +1,6 @@
 # 059 — A pin record can state its package
 
-**State:** claimed by agent/atlas/059-a-pin-record-can-state-its-package, 2026-11-10 02:37
+**State:** done (2026-11-10)
 **Source:** Linear issue EMB-45
 **Issue:** EMB-45
 **Scope:** atlas
@@ -37,9 +37,9 @@ The join can name the wrong signal on any part with two pinouts, and nothing say
 
 ## Done when
 
-- [ ] A `pin` record can state its package, and the schema accepts it.
-- [ ] With two pin records for one number on different packages and the board part's package declared in `bindings.json`, the join resolves the one for that package.
-- [ ] With the same records and no declared package, the join reports the pin as ambiguous instead of taking the first.
-- [ ] A part with a single pinout and no `package` on its records resolves as before.
-- [ ] `DESIGN.md` describes the field, the `bindings.json` key and the lookup rule.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A `pin` record can state its package, and the schema accepts it.
+- [x] With two pin records for one number on different packages and the board part's package declared in `bindings.json`, the join resolves the one for that package.
+- [x] With the same records and no declared package, the join reports the pin as ambiguous instead of taking the first.
+- [x] A part with a single pinout and no `package` on its records resolves as before.
+- [x] `DESIGN.md` describes the field, the `bindings.json` key and the lookup rule.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
