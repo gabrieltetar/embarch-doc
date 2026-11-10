@@ -1,6 +1,6 @@
 # 020 — Two chat decisions still put the notice line and the thumbnails under the input
 
-**State:** open
+**State:** claimed by agent/chat/020-two-decisions-put-the-notice-and-thumbnails-under-the-input, 2026-11-09 23:07
 **Source:** Linear issue EMB-119, filed by the reviewer of `chat/014`
 **Issue:** EMB-119
 **Scope:** chat
