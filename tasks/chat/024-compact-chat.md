@@ -1,6 +1,6 @@
 # 024 — `embarch-chat/spec.md` is in reserve
 
-**State:** open — unparked by the supervisor 2026-11-10 as a verbatim split; see the update below
+**State:** claimed by agent/chat/024-compact-chat, 2026-11-10 13:19
 **Source:** `chat/023` added a spec line for an ended issue's chat and left spec.md at 9,373 of 10,240 B.
 **Scope:** chat
 **Hardware:** none
