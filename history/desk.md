@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Desk decisions 29-32, 56, 59 split out of agents.md into decisions/access-point.md; no wording changed.
 - Desk: a session on no work item takes an issue key from its opening prompt or a handoff before asking ([decision 7](../embarch-desk/decisions/cockpit.md)).
 - An issue key no workspace has now says why: its team's desk and folder, or that no connected workspace has the team (embarch-desk decision 77).
 - `linear_get_issue` returns comments_total and a note when comments were cut, and a `skip` parameter reads older ones, on both account types (desk decision 59).
