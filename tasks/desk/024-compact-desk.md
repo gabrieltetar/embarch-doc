@@ -1,6 +1,6 @@
 # 024 — `embarch-desk/decisions/desks.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/desk/024-compact-desk, 2026-11-10 03:42
 **Source:** `desk/022` added decision 82 and left the file at 11,066 B of 12,288 B (90.1%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
