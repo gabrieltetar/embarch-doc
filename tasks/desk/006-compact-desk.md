@@ -1,6 +1,6 @@
 # 006 — four `embarch-desk` docs are in reserve after decisions 76 and 77
 
-**State:** open
+**State:** claimed by agent/desk/006-compact-desk, 2026-11-09 17:29
 **Source:** decision 76 (the hand shows this week's tiles) crossed the reserve line on `cockpit.md`; decision 77 (each session works on its own desk, EMB-94) crossed it on `decisions/desks.md`, `interfaces.md` and `spec.md`; `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
