@@ -1,0 +1,1 @@
+| `linear_get_file`: an agent reads an image or file a Linear issue lists (upload links in its text, attachment records) through the desk; only a listed link is fetched, images come back as images | Built on a branch, not deployed; fetch paths unit-tested, upload-host credentials assumed, no live workspace | unit | 81 |

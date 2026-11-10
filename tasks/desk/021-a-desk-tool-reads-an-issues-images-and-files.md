@@ -1,6 +1,6 @@
 # 021 — A desk tool reads an issue's images and files
 
-**State:** claimed by agent/desk/021-a-desk-tool-reads-an-issues-images-and-files, 2026-11-10 03:23
+**State:** done
 **Source:** Linear issue EMB-14
 **Issue:** EMB-14
 **Scope:** desk
@@ -41,9 +41,17 @@ EMB-14: an issue whose ask is partly in a screenshot is read incompletely by eve
 
 ## Done when
 
-- [ ] `linear_get_issue` lists the issue's upload links and attachment records, each with where it was found.
-- [ ] A desk MCP tool returns an image or file the issue lists, given the issue key and the link, and refuses a link the issue does not list.
-- [ ] Images come back as image content, text as text, other files as a path under the desk's data folder; over the cap is a refusal naming the size.
-- [ ] Each backend has a test, the refusal of an unlisted link included; a backend that cannot fetch says so.
-- [ ] A new `embarch-desk` decision records the tool, and `interfaces.md` lists any new route.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] `linear_get_issue` lists the issue's upload links and attachment records, each with where it was found.
+- [x] A desk MCP tool returns an image or file the issue lists, given the issue key and the link, and refuses a link the issue does not list.
+- [x] Images come back as image content, text as text, other files as a path under the desk's data folder; over the cap is a refusal naming the size.
+- [x] Each backend has a test, the refusal of an unlisted link included; a backend that cannot fetch says so.
+- [x] A new `embarch-desk` decision records the tool, and `interfaces.md` lists any new route.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## What landed
+
+`embarch-desk` decision 81 (`decisions/access-point.md`): `linear_get_issue` gains `files` (`{url, title, found}`); new tool `linear_get_file(key, url)` over `POST /linear/issue/{key}/file`, new module `src/files.rs`. Picks: 10 MiB cap; text over 200 KB is written to a file, not returned; files go under `<data>/linear-files/<KEY>/`; the credential is sent only to `uploads.linear.app` and only `https` public hosts are fetched; the file list covers all comments read (500 cap), not only the 25 returned. API-key backend fetches with the bare key; the MCP backend fetches with its bearer, then falls back to the server's `extract_images`. Tests are pure plus one loopback download; no fake of either backend's HTTP exists, so the fetch calls themselves are not exercised.
+
+**Debt (live workspace, not hardware):** nothing was run against a real Linear workspace. Unmeasured: the upload host accepts the bare key and the MCP bearer; `extract_images` takes `markdown`; the MCP `get_issue` returns `attachments` unasked. Verify with one issue holding an image, a PDF and an attachment, on each backend.
+
+**Stale in `LINEAR-PROTOCOL.md` §1 (the owner's file, not edited):** "(the desk cannot read attachments)". It now can: `linear_get_issue` lists an issue's `files` and `linear_get_file` reads them, so a screenshot in an issue is readable by an agent; a reference to a screenshot is still worse than words in the body, but the parenthetical is false.
