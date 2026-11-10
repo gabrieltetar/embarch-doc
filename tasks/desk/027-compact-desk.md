@@ -1,6 +1,6 @@
 # 027 — `embarch-desk/spec.md` is in reserve
 
-**State:** claimed by agent/desk/027-compact-desk, 2026-11-10 12:53
+**State:** done
 **Source:** `desk/025` added decision 83 and left sessions.md at 12,177 of 12,288 B and spec.md at 9,197 of 10,240 B.
 **Scope:** desk
 **Hardware:** none
@@ -25,6 +25,10 @@ Compact or split `spec.md` once the close-out settles.
 
 ## Done when
 
-- [ ] `spec.md` is clear of reserve, or a successor re-files with a concrete plan.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md` is clear of reserve, or a successor re-files with a concrete plan.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Shipped
+
+Verbatim split by mission: the suite-desk, west-module and login-flag paragraphs (decisions 70, 80, 82) moved to `embarch-desk/spec/suite-desk.md`; spec.md keeps a one-line pointer. spec.md 9,440 -> 8,882 B, out of reserve. Decision 83's contract stays in spec.md §2 and `decisions/closeout.md`; decision 80's Unverified note untouched.

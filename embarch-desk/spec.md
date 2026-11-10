@@ -12,11 +12,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a card row atop the Desk tab: every desk's waiting tiles, past weeks' behind a button ([decisions 10, 57, 76](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
 
-**A suite desk** (decision 70) works on repos that sit side by side: Start work makes a folder per issue holding worktrees for the issue's repo and the docs, and symlinks for the rest, so sibling paths build as they do in the main clones.
-
-**A worktree of a west project builds its own module** (decision 80): Start work writes `ZEPHYR_MODULES` — the workspace's Zephyr modules with the main clone swapped for the worktree — into the worktree's `.claude/settings.local.json` `env`; outside a west workspace nothing is written, and a missing `west` or a module with no `name:` is a warning in its answer.
-
-**A folder whose login lacks `embarch-api` is flagged** (decision 82): `GET /desks` marks it and a session starting there is told the user-scope `claude mcp add` command; the desk only reads `.claude.json`.
+**Suite desks and worktrees** (decisions 70, 80, 82): Start work makes a folder per issue with worktrees and symlinks, writes `ZEPHYR_MODULES` for west projects, and `GET /desks` flags a login lacking `embarch-api`: [spec/suite-desk.md](spec/suite-desk.md).
 
 **Desks** (decisions 33–40, 77): one per project — a Linear project or team, a Harvest project and task, GitHub and firmware repos, a saved bench. **Each session works on its own desk**, its folder's else its work item's: its agents' Linear scope and `embarch-api`'s default build follow it (`embarch-api` decision 85), whatever the UI shows. **The UI selects one desk**, which picks only the Desk tab's cards and the repo its tabs open (`embarch-ui` decision 57). Every desk is published as `~/.local/share/embarch-desk/desks.json` for `embarch-api` to read while the service is stopped. A desk keeps **standing notes**, which every session in its repos hears at its start (74).
 
