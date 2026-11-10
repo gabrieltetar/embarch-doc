@@ -1,6 +1,6 @@
 # 041 — Check S reads a dimension cell as one value
 
-**State:** claimed by agent/atlas/041-check-s-reads-a-dimension-cell-as-one-value, 2026-11-09 20:03
+**State:** done
 **Source:** Linear issue EMB-37, filed by a session
 **Issue:** EMB-37
 **Scope:** atlas
@@ -23,7 +23,7 @@ Filed from distilling a real datasheet, where a package dimension failed the che
 
 ## Done when
 
-- [ ] A cell like `1.5 × 2.0` is not reported by S; a cell like `1.0 2.0` still is.
-- [ ] A test in `tests/test_check.py` covers both, from a pipe table with header `| Param | Sym | Min | Typ | Max |`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` updated if it describes the packed-cell rule, `changelog.d/` fragment dropped.
+- [x] A cell like `1.5 × 2.0` is not reported by S; a cell like `1.0 2.0` still is.
+- [x] A test in `tests/test_check.py` covers both, from a pipe table with header `| Param | Sym | Min | Typ | Max |`.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` (does not describe the packed-cell rule, so no change) updated if it describes the packed-cell rule, `changelog.d/` fragment dropped.
