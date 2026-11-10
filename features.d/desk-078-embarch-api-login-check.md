@@ -1,0 +1,1 @@
+| The desk reports a desk folder whose Claude Code login has no `embarch-api` MCP server (in `GET /desks` and at session start) with the user-scope `claude mcp add` command; read-only, never writes `.claude.json` | Built on a branch, not deployed; temporary `.claude.json` files in tests | unit | 82 |

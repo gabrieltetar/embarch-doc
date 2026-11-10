@@ -1,6 +1,6 @@
 # 022 — The desk says when a repo has no `embarch-api` in its login
 
-**State:** claimed by agent/desk/022-the-desk-says-when-a-repo-has-no-embarch-api-in-its-login, 2026-11-10 03:30
+**State:** done
 **Source:** Linear issue EMB-17
 **Issue:** EMB-17
 **Scope:** desk
@@ -40,8 +40,15 @@ EMB-17: a new client repo opened in the work login has no `embarch-api` tools, a
 
 ## Done when
 
-- [ ] A desk folder whose login has no `embarch-api` at user scope, in its `projects` entry or in its `.mcp.json` is marked as such in the desk's answer, with the command to register it.
-- [ ] A session starting in such a folder is told once, with the same command.
-- [ ] The desk never writes `.claude.json`; a test covers each of the three places that count as registered, and the missing case.
-- [ ] A new `embarch-desk` decision records the check and why the desk does not register the server itself; `interfaces.md` lists any new field.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] A desk folder whose login has no `embarch-api` at user scope, in its `projects` entry or in its `.mcp.json` is marked as such in the desk's answer, with the command to register it.
+- [x] A session starting in such a folder is told once, with the same command.
+- [x] The desk never writes `.claude.json`; a test covers each of the three places that count as registered, and the missing case.
+- [x] A new `embarch-desk` decision records the check and why the desk does not register the server itself; `interfaces.md` lists any new field.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## What landed
+
+- `src/mcpreg.rs` (new): reads the instance's login `.claude.json` and the folder's `.mcp.json`; user scope, the folder's `projects` entry or `.mcp.json` count. Builds the user-scope `claude mcp add` command (flags confirmed with `claude mcp add --help`), binary and config copied from an existing entry in this, the default or a sibling `~/.claude*` login, else two placeholders.
+- `GET /desks`: each desk gains `embarch_api` per folder. SessionStart in a desk's folder appends the paragraph after the standing notes. `App.login` is injected so tests never touch the real files.
+- Decision 82 in `decisions/desks.md`. Picks where the task left a choice: the command is prefixed with `CLAUDE_CONFIG_DIR=<dir>` when the instance sets it; `desks.json` carries no field; every desk is told, not only embarch-api users; no parent-folder search. `embarch setup` registering the server is out of scope.
+- Tests: all three registered places, the missing case, another login not counting, no write, the route and the hook.
