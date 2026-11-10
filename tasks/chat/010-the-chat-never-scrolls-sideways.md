@@ -1,6 +1,6 @@
 # 010 — The chat never shows a horizontal scroll bar
 
-**State:** claimed by agent/chat/010-the-chat-never-scrolls-sideways, 2026-11-09 21:19
+**State:** done
 **Source:** Linear issue EMB-57, filed by the owner
 **Issue:** EMB-57
 **Scope:** chat
@@ -35,6 +35,12 @@ The owner asked for it. No decision covers horizontal scrolling; decision 91 is 
 
 ## Done when
 
-- [ ] With a 400-character unbroken line in a code block, a diff, a table cell, a tool name and a message, no element in the chat page has `scrollWidth > clientWidth`.
-- [ ] An e2e test asserts it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped.
+- [x] With a 400-character unbroken line in a code block, a diff, a table cell, a tool name and a message, no element in the chat page has `scrollWidth > clientWidth`.
+- [x] An e2e test asserts it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped.
+
+## Owed decision
+
+Burndown mode forbids a new numbered decision, so this is proposed for the owner to file (neighbour: decision 91, which places the vertical bar).
+
+**No element of the chat page scrolls sideways.** Long text wraps (`pre-wrap` plus `overflow-wrap: anywhere`) in code blocks, diffs, tables, the compaction summary and a message's context rows; a flex-row child that cannot wrap (a tool's name, status, subject key, run count) shrinks and truncates with an ellipsis. Only the vertical bar remains (91). Reason: a sideways bar on the timeline or on a block inside it hides the rest of a row and fights the vertical one. Asserted by the `nothing in the chat scrolls sideways` e2e check.
