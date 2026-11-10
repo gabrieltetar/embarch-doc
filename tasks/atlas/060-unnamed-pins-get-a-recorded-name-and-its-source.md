@@ -1,6 +1,6 @@
 # 060 — A pin the netlist left unnamed can be given a name, and every name says where it came from
 
-**State:** open
+**State:** claimed by agent/atlas/060-unnamed-pins-get-a-recorded-name-and-its-source, 2026-11-10 02:49
 **Source:** Linear issue EMB-25
 **Issue:** EMB-25
 **Scope:** atlas
