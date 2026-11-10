@@ -1,6 +1,6 @@
 # 042 — A kind override reaches a prepped document's doc.json
 
-**State:** done, agent/atlas/042-a-kind-override-reaches-a-prepped-documents-doc-json, 2026-11-09
+**State:** claimed by agent/atlas/042-a-kind-override-reaches-a-prepped-documents-doc-json, 2026-11-09 20:17
 **Source:** Linear issue EMB-31, filed by a session
 **Issue:** EMB-31
 **Scope:** atlas
