@@ -1,6 +1,6 @@
 # 105 — `embarch-ui`'s READMEs point at the launcher inside `embarch-chat`
 
-**State:** claimed by agent/ui/105-the-readmes-point-at-the-chats-launcher, 2026-11-09 17:31
+**State:** done — README points at the chat's launcher and describes its status bar states
 **Source:** Linear issue EMB-69, filed by a session
 **Issue:** EMB-69
 **Scope:** ui
@@ -30,6 +30,10 @@ A reader following the README installs a launcher that no longer runs.
 
 ## Done when
 
-- [ ] Neither README tells a reader to install `vscode-extension/`; both point at `embarch-chat`'s launcher.
-- [ ] The status bar is described with its three states.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] Neither README tells a reader to install `vscode-extension/`; both point at `embarch-chat`'s launcher.
+- [x] The status bar is described with its three states.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+
+## Outcome
+
+By dispatch, `main` had already deleted `vscode-extension/` and rewritten the README's sketch and launcher paragraph to point at `embarch-chat`. Remaining fix: the launcher section now names the four commands and the status bar states. `embarch-chat`'s `launcher.ts` shows a fourth state, `embarch-ui (not installed)`, beyond the three this task names; the README lists it too. `spec.md` unaffected.
