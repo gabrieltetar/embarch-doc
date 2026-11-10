@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Fixed
+- Outpost: OVERFLOW_BLOCK now sleeps so the drain thread runs, RING_BYTES starts at 320, the build ID keeps its marker hash at any BUILD_ID_MAX (decisions 28, 29).
 ## 2026-10
 
 ### Added
