@@ -45,9 +45,15 @@ Today nothing sizes a task: the pass picks a pattern, fills questions and marks 
 
 ## Done when
 
-- [ ] For a rough prompt whose work will run at high context, Promptu's output names one of the four ways and how to apply it; for a small task it adds nothing.
-- [ ] The pass accepts the chat's context usage as an input, documented in `docs/contract.md`, and works without it.
-- [ ] The footer carries `way=<name>` when a way is picked.
-- [ ] A golden test per way, and one for the small task.
-- [ ] `embarch-promptu/spec.md` describes it, and decision 41 drops its "not built" for the Promptu side.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] For a rough prompt whose work will run at high context, Promptu's output names one of the four ways and how to apply it; for a small task it adds nothing.
+- [x] The pass accepts the chat's context usage as an input, documented in `docs/contract.md`, and works without it.
+- [x] The footer carries `way=<name>` when a way is picked.
+- [x] A golden test per way, and one for the small task.
+- [x] `embarch-promptu/spec.md` describes it, and decision 41 drops its "not built" for the Promptu side.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+
+## Done
+
+Built in embarch-promptu: `prep --context-usage <0-100>` (contract §7.10; a `<context_usage>` block only when given), the pass's `way` (`workers`, `handoff`, `compactions`, `decimation`, or null) guarded and rendered as one `Context plan` line in Who does it, footer `way=<name>`. Goldens in `tests/golden-way/` (one per way plus the small task). No pattern changed, so no version bump. No features.d row: `features.d` has no promptu scope. `tasks/chat/017` can unpark: pass `--context-usage <percent>` to `promptu prep`.
+
+No hardware; no withheld decision.
