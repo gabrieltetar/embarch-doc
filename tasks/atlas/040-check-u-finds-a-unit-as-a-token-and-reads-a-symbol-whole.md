@@ -1,6 +1,6 @@
 # 040 — Check U finds a unit as a token and reads a symbol whole
 
-**State:** claimed by agent/atlas/040-check-u-finds-a-unit-as-a-token-and-reads-a-symbol-whole, 2026-11-09 19:46
+**State:** done 2026-11-09. The font case (µ/Ω printed as `m`/`W`) was not confirmed and no fixture shows it: left out of scope.
 **Source:** Linear issue EMB-41, filed by a session
 **Issue:** EMB-41
 **Scope:** atlas
@@ -34,8 +34,8 @@ Filed from distilling a real datasheet. A false pass on U is the worse half: it 
 
 ## Done when
 
-- [ ] A record with unit `µA` on a page that has `guaranteed` and no `µA` fails U.
-- [ ] A record with symbol `LoadReg` and unit `A` or `V` is not reported by U for its symbol.
-- [ ] Units already on a page as `µA`, `uA` or `ohm` still pass; tests in `tests/test_check.py` cover all of these.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` updated where it describes check U, `changelog.d/` fragment dropped.
+- [x] A record with unit `µA` on a page that has `guaranteed` and no `µA` fails U.
+- [x] A record with symbol `LoadReg` and unit `A` or `V` is not reported by U for its symbol.
+- [x] Units already on a page as `µA`, `uA` or `ohm` still pass; tests in `tests/test_check.py` cover all of these.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` updated where it describes check U, `changelog.d/` fragment dropped.
