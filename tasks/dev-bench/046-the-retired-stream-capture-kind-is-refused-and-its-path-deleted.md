@@ -1,6 +1,6 @@
 # 046 — The retired stream-capture GATT kind is refused, and its capture path is deleted
 
-**State:** claimed by agent/dev-bench/046-the-retired-stream-capture-kind-is-refused-and-its-path-deleted, 2026-11-10 05:16
+**State:** done
 **Source:** `dev-bench/045` (landed 2026-11-10, `embarch-dev-bench` `3daa719`), which derived every other `GattOperation` value from the crate and left this one typed by hand because the decoder still has an arm for it
 **Issue:** EMB-133
 **Scope:** dev-bench
@@ -27,8 +27,8 @@ A decoder arm for a kind nothing can send is a slot a future crate variant could
 
 ## Done when
 
-- [ ] A `StudyStart` carrying `GattOperation` kind 5 is refused by the decoder the way any unknown kind is, with a `serial_protocol` ztest.
-- [ ] No `STREAM_CAPTURE` or stream-handler code is left in `app/src/`, and both C GATT operation enums take every value from `crate_limits.h`.
-- [ ] Both bench images (`nrf54l15dk/nrf54l15/cpuapp`, `esp32c5_devkitc/esp32c5/hpcore`) and the `native_sim` app build, and the `native_sim` ztest suites pass.
-- [ ] Decision 56 no longer describes a hand-typed 5.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] A `StudyStart` carrying `GattOperation` kind 5 is refused by the decoder the way any unknown kind is, with a `serial_protocol` ztest.
+- [x] No `STREAM_CAPTURE` or stream-handler code is left in `app/src/`, and both C GATT operation enums take every value from `crate_limits.h`.
+- [x] Both bench images (`nrf54l15dk/nrf54l15/cpuapp`, `esp32c5_devkitc/esp32c5/hpcore`) and the `native_sim` app build, and the `native_sim` ztest suites pass.
+- [x] Decision 56 no longer describes a hand-typed 5.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
