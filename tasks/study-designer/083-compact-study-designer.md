@@ -1,6 +1,6 @@
 # 083 — `embarch-study-designer` GATT decisions and types.md are in reserve after decision 89
 
-**State:** open
+**State:** claimed by agent/study-designer/083-compact-study-designer, 2026-11-10 04:47
 **Source:** `study-designer/082` added decision 89 to `decisions/gatt.md` and a sentence to `interfaces/types.md`; `DOC-COMPACTION.md` §2
 **Scope:** study-designer
 **Hardware:** none
