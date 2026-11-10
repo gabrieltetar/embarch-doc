@@ -1,6 +1,6 @@
 # 016 — A chat whose folder was deleted says the folder is missing, not "claude not found"
 
-**State:** open
+**State:** claimed by agent/chat/016-a-deleted-chat-folder-is-named-as-missing, 2026-11-09 20:57
 **Source:** Linear issue EMB-75, filed by a session
 **Issue:** EMB-75
 **Scope:** chat
