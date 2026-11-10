@@ -19,6 +19,15 @@
 
 `check-doc-size.py` fails on a file in reserve with no task naming it; this is that filing.
 
+## 2026-11-09 dispatch note
+
+Decision 77 has landed since this was filed: `embarch-desk` `0c44f9d` and `embarch-doc` `5b8d8362` are both on `origin/main`. The `In flux:` field is left as written, and it does not stop this unit, because `DOC-BUDGET.md` makes a split the default remedy and a verbatim split restates nothing. So:
+
+- **`decisions/desks.md`, `interfaces.md`, `spec.md`: split only.** Move whole decisions or sections verbatim to a topic file (`decisions/<topic>.md`, `spec/<topic>.md`, or an `interfaces/` file if the repo already uses one) and leave a pointer. Reword nothing in them; decision 77 is hours old.
+- **`decisions/cockpit.md`: split first; squeeze only where there is no seam**, and then per `DOC-COMPACTION-PASS.md` (every deleted hunk quoted in the commit message).
+- Check a seam's inbound links before cutting, and run `scripts/check-duplication.py desk` first.
+- Fourteen `embarch-desk` issues are waiting in Fleet Ready. Leave each file with room, not just under its line.
+
 ## Done when
 
 - [ ] All four files are clear of their reserve line.
