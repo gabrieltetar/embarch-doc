@@ -1,6 +1,6 @@
 # 051 — `doc check` reports a cite of a page outside the document
 
-**State:** open
+**State:** claimed by agent/atlas/051-doc-check-refuses-a-cite-outside-the-document, 2026-11-10 01:20
 **Source:** Linear issue EMB-120, filed by the supervisor landing `atlas/050`
 **Issue:** EMB-120
 **Scope:** atlas
