@@ -12,6 +12,7 @@
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
 ### Changed
+- The atlas-use skill now knows the no-atlas placeholder MAP: step 1 says no atlas is built, names /atlas-translate-docs then /atlas-build, and stops; a test keeps skill and placeholder aligned.
 - atlas doc check fails a record or prose cite of a page outside 1..pages, naming the unit and the page (P:).
 - atlas check K reads two side-by-side MIN/TYP/MAX groups per header and a lone TYP column; a table it cannot read stays a K warning, not a disagree (atlas 046).
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
