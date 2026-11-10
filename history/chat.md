@@ -10,6 +10,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- Chat spec §2's library, assistant, Promptu and reference-index bullets split verbatim into spec/input.md.
 - Chat's spec status line says decisions 94–100 are installed (measured 2026-11-05), and decision 100 is not recorded as reviewed.
 - Chat decisions 56 and the Promptu one now put the notice line and thumbnails above the input, as the composer renders them.
 - The chat's input is one row: mode, model, MCP and Remote pills left of the box, Send or Stop an icon on its right; nothing under the box.
