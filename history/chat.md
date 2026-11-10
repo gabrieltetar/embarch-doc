@@ -15,6 +15,7 @@
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 
 ### Fixed
+- The chat page never scrolls sideways: code, diffs, tables and compaction summaries wrap, and a tool name or key truncates with an ellipsis (EMB-57).
 - A chat whose folder was deleted now says the folder no longer exists, instead of "claude not found" (EMB-75).
 ## 2026-10
 
