@@ -1,6 +1,6 @@
 # 062 — The atlas follows the worktree a session runs in
 
-**State:** claimed by agent/atlas/062-the-atlas-follows-the-worktree-a-session-runs-in, 2026-11-10 03:15
+**State:** done
 **Source:** Linear issue EMB-19 ("The atlas `fw` path resolves to the worktree")
 **Issue:** EMB-19
 **Scope:** atlas
@@ -41,8 +41,12 @@ EMB-19: in a Start work worktree the atlas answers about the main clone's commit
 
 ## Done when
 
-- [ ] Run from a linked worktree of the configured `fw` repo, `fw` resolves to that worktree; from the main clone or elsewhere, unchanged. A test covers both with a real temporary git worktree.
-- [ ] `build`'s worktree folder keeps the configured repo's basename when `fw` is a linked worktree, with a test.
-- [ ] `status` names the worktree when one was used.
-- [ ] `DESIGN.md` says how `fw` is resolved and what a build from a worktree does to the shared atlas folder.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] Run from a linked worktree of the configured `fw` repo, `fw` resolves to that worktree; from the main clone or elsewhere, unchanged. A test covers both with a real temporary git worktree.
+- [x] `build`'s worktree folder keeps the configured repo's basename when `fw` is a linked worktree, with a test.
+- [x] `status` names the worktree when one was used.
+- [x] `DESIGN.md` says how `fw` is resolved and what a build from a worktree does to the shared atlas folder.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## What landed
+
+`project.resolve_fw` (env `EMBARCH_ATLAS_FW` wins, else the git worktree of the configured repo the cwd is in, else the configured `fw`); `fw_dir` goes through it, so `status`, staleness, inventory, live and `build` follow. `status` prints and returns the worktree (`fw_is_worktree`, `fw_configured`). `build` keeps the configured repo's basename, excludes the main clone from the west modules, and treats both checkouts as leak sources. Override choice: an environment variable only, no `--fw` form. DESIGN.md "Which `fw` a process uses" also states the shared-atlas-folder effect. No hardware debt: nothing ran a real west build.
