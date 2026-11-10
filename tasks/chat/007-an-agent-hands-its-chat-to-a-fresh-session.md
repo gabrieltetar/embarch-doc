@@ -1,6 +1,6 @@
 # 007 — An agent hands its chat over to a fresh session in the same panel
 
-**State:** open
+**State:** claimed by agent/chat/007-an-agent-hands-its-chat-to-a-fresh-session, 2026-11-09 17:30
 **Source:** Linear issue EMB-61, filed by the owner; the design is `embarch-chat` decision 103 (owner, 2026-11-07)
 **Issue:** EMB-61
 **Scope:** chat
