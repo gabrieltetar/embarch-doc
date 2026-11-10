@@ -1,6 +1,6 @@
 # 045 — The link-level wire enums take their values from the crate
 
-**State:** open
+**State:** claimed by agent/dev-bench/045-link-level-wire-enums-take-their-values-from-the-crate, 2026-11-10 04:48 (toolchain, supervisor's own hands)
 **Source:** `dev-bench/010` (landed 2026-11-10, `embarch-dev-bench` `759c402`), whose decision 56 covered the `.eap` enums only and says so
 **Issue:** EMB-132
 **Scope:** dev-bench
