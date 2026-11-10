@@ -1,11 +1,13 @@
 # 038 — A spaced minus and a thousands separator parse as one number
 
-**State:** claimed by agent/atlas/038-a-spaced-minus-and-a-thousands-separator-parse-as-one-number, 2026-11-09 17:52
+**State:** done on agent/atlas/038-a-spaced-minus-and-a-thousands-separator-parse-as-one-number, 2026-11-09
 **Source:** Linear issue EMB-36, filed by a session
 **Issue:** EMB-36
 **Scope:** atlas
 **Hardware:** none
 **Owner:** no
+
+**Note:** a space thousands separator is read only after one or two leading digits (`12 000`); `355 505` is two table columns (the synthetic datasheet fixture has such a row). A list bullet `- 38 C` is stripped before reading. A spaced minus after a digit, `%` or bracket stays a range or subtraction.
 
 ## What
 
@@ -30,8 +32,8 @@ Filed from distilling a real datasheet: a negative limit written with a space af
 
 ## Done when
 
-- [ ] The command above prints `[-0.3] [1000.0]`.
-- [ ] A hyphen between two numbers (`10-90%`, `3..23`) and `±X` parse as before.
-- [ ] Tests in `tests/test_check.py` cover the spaced minus, a comma and a space thousands separator, and the unchanged cases.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` updated where it describes number parsing, `changelog.d/` fragment dropped.
+- [x] The command above prints `[-0.3] [1000.0]`.
+- [x] A hyphen between two numbers (`10-90%`, `3..23`) and `±X` parse as before.
+- [x] Tests in `tests/test_check.py` cover the spaced minus, a comma and a space thousands separator, and the unchanged cases.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` updated where it describes number parsing, `changelog.d/` fragment dropped.
