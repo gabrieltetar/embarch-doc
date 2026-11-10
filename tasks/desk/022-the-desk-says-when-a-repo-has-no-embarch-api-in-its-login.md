@@ -1,6 +1,6 @@
 # 022 — The desk says when a repo has no `embarch-api` in its login
 
-**State:** open
+**State:** claimed by agent/desk/022-the-desk-says-when-a-repo-has-no-embarch-api-in-its-login, 2026-11-10 03:30
 **Source:** Linear issue EMB-17
 **Issue:** EMB-17
 **Scope:** desk
@@ -35,7 +35,7 @@ EMB-17: a new client repo opened in the work login has no `embarch-api` tools, a
 
 - Normal mode: a new numbered `embarch-desk` decision is expected. Number it per `DOC-CONVENTIONS.md`; check `main` before you commit, since `desk/020` and `desk/021` land before you.
 - Tests use temporary `.claude.json` files; never read or write the real ones.
-- No `embarch-desk` doc in `embarch-doc` is in doc-size reserve at the split.
+- Doc-size reserve at dispatch: `embarch-desk/decisions/access-point.md` is at 91.2% (1082 B left), already filed as `tasks/desk/023`. Put the new decision in `decisions/desks.md`, not there. Decisions 80 and 81 landed this leg, so the next number is 82 unless `main` says otherwise.
 - Edit files with your Edit and Write tools, not inline Python or shell redirects.
 
 ## Done when
