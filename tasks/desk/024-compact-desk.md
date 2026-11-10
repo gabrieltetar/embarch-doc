@@ -1,6 +1,7 @@
 # 024 — `embarch-desk/decisions/desks.md` is in reserve
 
-**State:** claimed by agent/desk/024-compact-desk, 2026-11-10 03:42
+**State:** done
+**Result:** decisions 38, 40, 41 split verbatim into decisions/day-list.md; desks.md 11,066 -> 9,424 B (76.7%).
 **Source:** `desk/022` added decision 82 and left the file at 11,066 B of 12,288 B (90.1%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
@@ -21,6 +22,6 @@
 
 ## Done when
 
-- [ ] `desks.md` is clear of reserve.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `desks.md` is clear of reserve.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
