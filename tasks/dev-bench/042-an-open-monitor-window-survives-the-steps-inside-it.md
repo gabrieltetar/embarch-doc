@@ -1,6 +1,6 @@
 # 042 — An open monitor window is broken by the steps that run inside it
 
-**State:** open
+**State:** claimed by agent/dev-bench/042-an-open-monitor-window-survives-the-steps-inside-it, 2026-11-10 04:19 (toolchain, supervisor's own hands)
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 3, 4 and 12), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/ble_bridge_real.c`, built and tested in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). The window's behaviour across steps can only be observed against a real BLE peer, so the unit leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7).
