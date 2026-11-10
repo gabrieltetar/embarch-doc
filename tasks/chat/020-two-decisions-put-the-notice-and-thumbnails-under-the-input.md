@@ -1,6 +1,6 @@
 # 020 — Two chat decisions still put the notice line and the thumbnails under the input
 
-**State:** claimed by agent/chat/020-two-decisions-put-the-notice-and-thumbnails-under-the-input, 2026-11-09 23:07
+**State:** done
 **Source:** Linear issue EMB-119, filed by the reviewer of `chat/014`
 **Issue:** EMB-119
 **Scope:** chat
@@ -34,6 +34,6 @@ The decisions describe a layout the composer no longer has, so a reader plans ag
 
 ## Done when
 
-- [ ] Decision 56 and the Promptu decision say where the thumbnails and the notice line render, and match the composer.
-- [ ] No other `embarch-chat` doc says the input has anything under it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] Decision 56 and the Promptu decision say where the thumbnails and the notice line render, and match the composer.
+- [x] No other `embarch-chat` doc says the input has anything under it.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.

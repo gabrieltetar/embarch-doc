@@ -10,7 +10,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 Typing is Claude Code's own rule: a non-blank draft changed in the last 1.5 s; sending or clearing the draft, or leaving the input, ends it. Meanwhile the card is one muted line with Show; once forward it stays forward. A card never takes focus or moves the input. A draft sent while a card waits is queued, and the CLI delivers it after the answer, in the same turn [measured]. **Rejected:** the card replacing the input (Claude Code's layout), a sent draft becoming the card's answer, Claude Code's 500 ms key lock (these cards have no key shortcuts and never take focus).
 
-### 56 — A pasted image is a thumbnail under the input and sends, alone if need be
+### 56 — A pasted image is a thumbnail above the input and sends, alone if need be
 
 8's "later" half. Raw image bytes WSL's clipboard hands over as text are refused with a notice. A paste over 800 characters or 2 line breaks goes in `inline_pastes` for the CLI to mark, and the echoed `<pasted_content>` is matched so it shows once [measured]. Invisible characters are stripped from pastes and drafts, with a notice. **Rejected:** raw clipboard text as-is, paste tags of the panel's own.
 
