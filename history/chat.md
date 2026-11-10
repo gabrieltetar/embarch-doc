@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The chat's Memory menu shows when a periodic memory pass last ran and is due (a dot on its icon), and a click starts it in a new chat; three machine settings name it (embarch-chat decision 98).
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
