@@ -1,6 +1,6 @@
 # 050 — `doc freeze` reports the document's real page count
 
-**State:** open
+**State:** claimed by agent/atlas/050-doc-freeze-reports-the-document-s-real-page-count, 2026-11-09 22:57
 **Source:** Linear issue EMB-40, filed by a session
 **Issue:** EMB-40
 **Scope:** atlas
