@@ -1,6 +1,6 @@
 # 001 — A header-less `MEMORY.md` tells the writer it may add the first domain header
 
-**State:** open
+**State:** claimed by agent/promptu/001-a-header-less-memory-index-may-take-its-first-header, 2026-11-09 17:30
 **Source:** Linear issue EMB-20, filed by a session
 **Issue:** EMB-20
 **Scope:** promptu
