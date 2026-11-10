@@ -1,6 +1,6 @@
 # 106 — The Desk tab's Pick up list says "no card on the board"
 
-**State:** open
+**State:** claimed by agent/ui/106-pick-up-says-no-card-on-the-board, 2026-11-09 22:03
 **Source:** Linear issue EMB-115, filed by a worker
 **Issue:** EMB-115
 **Scope:** ui
