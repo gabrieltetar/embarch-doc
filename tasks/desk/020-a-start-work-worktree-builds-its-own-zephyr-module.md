@@ -1,6 +1,6 @@
 # 020 — A Start work worktree builds its own Zephyr module
 
-**State:** open
+**State:** claimed by agent/desk/020-a-start-work-worktree-builds-its-own-zephyr-module, 2026-11-10 03:15
 **Source:** Linear issue EMB-19; `embarch-desk/open.md`, last item ("A worktree of a repo built inside a west workspace")
 **Issue:** EMB-19
 **Scope:** desk
