@@ -1,6 +1,6 @@
 # 043 — The renderer reads "Note N:" footnotes
 
-**State:** claimed by agent/atlas/043-the-renderer-reads-note-n-footnotes, 2026-11-09 20:34
+**State:** done
 **Source:** Linear issue EMB-39, filed by a session
 **Issue:** EMB-39
 **Scope:** atlas
@@ -25,7 +25,7 @@ Filed from distilling a real datasheet whose footnotes use that form.
 
 ## Done when
 
-- [ ] A page with `Note 1: text` yields the footnote text in the rendered table's notes and the citing row's Note column.
-- [ ] The `24.` and `(1)` forms still render; a test in `tests/test_render.py` covers all three.
-- [ ] A line that merely starts with the word `Note` and no number is not read as a footnote.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it lists the footnote forms; `changelog.d/` fragment dropped.
+- [x] A page with `Note 1: text` yields the footnote text in the rendered table's notes and the citing row's Note column.
+- [x] The `24.` and `(1)` forms still render; a test in `tests/test_render.py` covers all three.
+- [x] A line that merely starts with the word `Note` and no number is not read as a footnote.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it lists the footnote forms; `changelog.d/` fragment dropped.
