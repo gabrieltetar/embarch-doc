@@ -1,6 +1,6 @@
 # 107 — A Desk tab session row whose folder is gone says so
 
-**State:** open
+**State:** claimed by agent/ui/107-a-session-whose-folder-is-gone-says-so-on-the-desk-tab, 2026-11-09 22:26
 **Source:** Linear issue EMB-117, filed by a worker
 **Issue:** EMB-117
 **Scope:** ui
