@@ -1,6 +1,6 @@
 # 044 — A page cite naming another document is checked against that document
 
-**State:** open
+**State:** claimed by agent/atlas/044-a-cite-of-another-document-is-checked-there, 2026-11-09 20:38
 **Source:** Linear issue EMB-44, filed by a session
 **Issue:** EMB-44
 **Scope:** atlas
