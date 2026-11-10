@@ -8,6 +8,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- Atlas reads `- 0.3` as -0.3 and `1,000` / `12 000` as one number in checks N, C, M and K; `355 505` stays two columns.
 - codecheck keeps a hex-addressed *_OFFSET/*_OFS register define as a register; only a decimal or expression bit offset is encoding, so its address is still compared.
 - second-look reads high-impedance, hi-z and high-Z as a floating strap, open-drain as no pin state, and drops a negated state, so wording no longer freezes a false conflict.
 - A named build dir (config --build, dt_node) picks its sysbuild image by the atlas's app, as atlas build does; no more error on a tree without a domains.yaml default.
