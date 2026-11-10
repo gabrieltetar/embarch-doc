@@ -1,6 +1,6 @@
 # 049 — A document's own header names its revision and number, and `doc check` says when K could not run
 
-**State:** open
+**State:** claimed by agent/atlas/049-a-document-s-own-header-names-its-revision-and-number, 2026-11-09 22:26
 **Source:** Linear issue EMB-42, filed by a session
 **Issue:** EMB-42
 **Scope:** atlas
