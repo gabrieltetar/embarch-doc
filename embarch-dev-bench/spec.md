@@ -29,6 +29,7 @@ app/                              shared C source, vendor-agnostic
 │   ├── eap.h / eap_interp.[ch]   .eap wire types / semantics, no radio in it
 │   ├── dev_bench_log.c           a Zephyr log backend emitting LogLines
 │   └── study_ffi_{stub,real}.c   fixed decode results / the real staticlib
+├── cmake/                        crate_limits.h, read from the crate at configure time
 ├── tests/{serial_protocol,dev_bench_log}/     ztest, run on native_sim
 ├── boards/                       per-board overlays and .conf fragments
 └── CMakeLists.txt                referenced by every workspace, never copied

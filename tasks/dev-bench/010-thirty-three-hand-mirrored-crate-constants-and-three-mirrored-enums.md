@@ -1,6 +1,6 @@
 # 010 — 33 `embarch-study-designer` constants and three wire enums are hand-typed in dev-bench's C headers, and the deriving mechanism already exists in the same CMakeLists for exactly one of them
 
-**State:** claimed by agent/dev-bench/010-thirty-three-hand-mirrored-crate-constants-and-three-mirrored-enums, 2026-11-10 04:31 (toolchain, supervisor's own hands)
+**State:** done 2026-11-10, by the supervisor's own hands (toolchain lane); decision 56
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** dev-bench
 **Hardware:** toolchain — the change is CMake and headers, and this repo's Zephyr tree is gitignored, so a worker's worktree cannot build it (`tasks/README.md`, Hardware field). In the main checkout the `app/tests/serial_protocol` ztest suite builds for `native_sim` in about a minute.
@@ -59,15 +59,19 @@ but never compares a `#define` against a `const`.
 
 ## Done when
 
-- [ ] Every `/* mirrors limits::X */` in `app/src/` is either derived from the crate at build time
+- [x] Every `/* mirrors limits::X */` in `app/src/` is either derived from the crate at build time
       or fails the build when it disagrees — or is relabelled as a deliberate fork with its
       reason.
-- [ ] `ScalarType`, `Operand` and the operator kinds cannot renumber on one side without the other
+- [x] `ScalarType`, `Operand` and the operator kinds cannot renumber on one side without the other
       side failing.
-- [ ] The three deliberate forks are still forks, and still say so.
-- [ ] `app/tests/serial_protocol` ztest suite green on `native_sim`; `serial_protocol.h:21-25`'s
+- [x] The three deliberate forks are still forks, and still say so.
+- [x] `app/tests/serial_protocol` ztest suite green on `native_sim`; `serial_protocol.h:21-25`'s
       promise is either kept or withdrawn.
-- [ ] Gate green; `changelog.d/dev-bench-*` fragment.
+- [x] Gate green; `changelog.d/dev-bench-*` fragment.
+
+## Result
+
+Decision 56 (`decisions/platform.md`). `app/cmake/gen_crate_limits.py`, run at configure time by `app/cmake/crate_limits.cmake` (included by `app/CMakeLists.txt` and all four test projects), writes `crate_limits.h` from the crate's `src/limits.rs`, `src/decoder.rs` and `src/eap.rs`. Every hand-typed crate bound in `serial_protocol.h`, `ble_bridge.h`, `study_ffi.h` and `eap.h` is now `CRATE_<NAME>`; the six `.eap` enums (`ScalarType`, `Operand`, `Expr`, `CompareOp`, `StateKind`, `TerminalOutcome`) take their values from the crate's declaration order and assert its variant count. Forks kept: `DBM_MAX_STEPS_PER_STUDY`, `EAP_MAX_EVENT_ARMS_PER_STATE` (asserted at or below the crate's and equal to its advisory `DEV_BENCH_*` copies), `DBM_MAX_STREAM_CHUNK_BYTES` (existing assert), and `DBM_MAX_PROTOCOLS_WIRE_LEN` asserted equal to its advisory copy. No value changed: both board images are the same size as before (nRF RAM 157,400 B, ESP32-C5 `sram0_0_seg` 333,360 B). `serial_protocol` 67/67, `dev_bench_log` 15/15, `scan_seen_mfg` 7/7, `scan_seen_names` 12/12, the `native_sim` app builds. Checked against a modified copy of the crate: an inserted `ScalarType` variant and a changed advisory cap each fail the compile on their assert, and an unreadable const stops the generator naming it. No hardware debt: build-time only.
 
 **Read before dispatching:** the four `study_ffi.h` constants in this count may disappear entirely
 with the `suite-retire-the-ffi-staticlib…` drop in this batch. That leaves 33 in the other three
