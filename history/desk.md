@@ -11,6 +11,9 @@
 - `linear_get_issue` returns comments_total and a note when comments were cut, and a `skip` parameter reads older ones, on both account types (desk decision 59).
 - embarch-desk docs split: the hand (57-76) and day-tile decisions (62-64) to topic files, chat routes to interfaces/, spec constants continued; nothing reworded.
 - embarch-desk spec.md: status paragraph's per-decision deploy history folded into one line; out of reserve.
+
+### Fixed
+- Start work links the main clone's untracked embarch/, CLAUDE.local.md and .mcp.json into the new worktree, so the session loads the atlas and MCP servers.
 ## 2026-10
 
 ### Added
