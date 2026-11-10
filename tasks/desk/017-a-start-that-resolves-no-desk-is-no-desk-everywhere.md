@@ -1,6 +1,6 @@
 # 017 — A start that resolves no desk is no desk everywhere, one start names one desk, and a shrinking note edit is accepted
 
-**State:** open
+**State:** claimed by agent/desk/017-a-start-that-resolves-no-desk-is-no-desk-everywhere, 2026-11-09 22:26
 **Source:** Linear issue EMB-48, filed by an audit (points 1 to 3; points 4 and 5 are `tasks/ui/108`)
 **Issue:** EMB-48
 **Scope:** desk
