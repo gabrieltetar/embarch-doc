@@ -1,6 +1,6 @@
 # 053 — A `variant` record kind lists a part's orderable variants
 
-**State:** open
+**State:** claimed by agent/atlas/053-a-variant-record-kind-lists-orderable-parts, 2026-11-10 01:45
 **Source:** Linear issue EMB-47, filed by a session
 **Issue:** EMB-47
 **Scope:** atlas
