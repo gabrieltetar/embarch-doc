@@ -1,6 +1,6 @@
 # 009 — The chat rail's icons are one-colour SVGs, not colour emoji
 
-**State:** open
+**State:** claimed by agent/chat/009-the-rail-icons-are-one-colour, 2026-11-09 17:52
 **Source:** Linear issue EMB-56, filed by the owner — the owner changing his own earlier pick
 **Issue:** EMB-56
 **Scope:** chat
