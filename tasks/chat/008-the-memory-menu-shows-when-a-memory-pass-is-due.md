@@ -1,6 +1,6 @@
 # 008 — The Memory menu shows when a memory pass is due, and starts one
 
-**State:** open
+**State:** claimed by agent/chat/008-the-memory-menu-shows-when-a-memory-pass-is-due, 2026-11-09 20:03
 **Source:** Linear issue EMB-86, filed by the owner
 **Issue:** EMB-86
 **Scope:** chat
