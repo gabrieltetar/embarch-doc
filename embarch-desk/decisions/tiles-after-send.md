@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-28. Split out of [desks.md](desks.md) on 2026-11-09, verbatim, when that file reached its reserve line.
 
-A waiting tile's earlier day re-read, ✓'s entry linking its Linear issue, and time after a ✓ continuing the same entry. Desk-shaped decisions around them: [desks.md](desks.md) (41 is where Harvest's entries join the day).
+A waiting tile's earlier day re-read, ✓'s entry linking its Linear issue, and time after a ✓ continuing the same entry. Desk-shaped decisions around them: [desks.md](desks.md); 41, where Harvest's entries join the day, is in [day-list.md](day-list.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
