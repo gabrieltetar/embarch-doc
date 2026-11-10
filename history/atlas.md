@@ -11,6 +11,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- A page cite naming another document (`other-doc p.7`, a conflict row's Sources) is checked against that document's page by `doc check` M, not this one's.
 - A `missing --kind` or `--confirm reference-manual` override now also rewrites the kind in an already-prepped document's doc.json (EMB-31).
 - Check S no longer flags a `×`-joined dimension cell (`1.5 × 2.0`) as packed values; `1.0 2.0` is still flagged (EMB-37).
 - Check U finds a unit on the cited page as a token, not a substring, and no longer reads a CamelCase symbol like LoadReg as an inductance.
