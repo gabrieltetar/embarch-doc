@@ -1,6 +1,6 @@
 # 060 — A pin the netlist left unnamed can be given a name, and every name says where it came from
 
-**State:** claimed by agent/atlas/060-unnamed-pins-get-a-recorded-name-and-its-source, 2026-11-10 02:49
+**State:** done
 **Source:** Linear issue EMB-25
 **Issue:** EMB-25
 **Scope:** atlas
@@ -40,9 +40,9 @@ Add both halves, **with this direction (decided at the split):**
 
 ## Done when
 
-- [ ] A documented step records names for pins the netlist left unnamed, keyed by board, ref and pin, through a verb that refuses an unknown board, ref or pin.
-- [ ] Every pin name in `netlist.json`, or the merged view later steps read, says whether it came from the PDF's text or from the overlay, with the overlay's provenance.
-- [ ] A re-run of `schematic` keeps the overlay's names, and `join` reads them.
-- [ ] `embarch-atlas schematic` reports how many pins on 3-plus-pin parts are still unnamed.
-- [ ] `DESIGN.md` describes the overlay, the verb and the provenance.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A documented step records names for pins the netlist left unnamed, keyed by board, ref and pin, through a verb that refuses an unknown board, ref or pin.
+- [x] Every pin name in `netlist.json`, or the merged view later steps read, says whether it came from the PDF's text or from the overlay, with the overlay's provenance.
+- [x] A re-run of `schematic` keeps the overlay's names, and `join` reads them.
+- [x] `embarch-atlas schematic` reports how many pins on 3-plus-pin parts are still unnamed.
+- [x] `DESIGN.md` describes the overlay, the verb and the provenance.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
