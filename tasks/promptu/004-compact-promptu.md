@@ -1,6 +1,6 @@
 # 004 — `embarch-promptu` spec.md is in reserve after decision 41's build
 
-**State:** open — unparked by the supervisor 2026-11-10 as a verbatim split; see the update below
+**State:** claimed by agent/promptu/004-compact-promptu, 2026-11-10 12:53
 **Source:** `promptu/002` added the context-planning bullet to `spec.md` and crossed the reserve line; `DOC-COMPACTION.md` §2
 **Scope:** promptu
 **Hardware:** none
