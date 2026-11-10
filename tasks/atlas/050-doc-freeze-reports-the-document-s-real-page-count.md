@@ -1,6 +1,6 @@
 # 050 — `doc freeze` reports the document's real page count
 
-**State:** claimed by agent/atlas/050-doc-freeze-reports-the-document-s-real-page-count, 2026-11-09 22:57
+**State:** done
 **Source:** Linear issue EMB-40, filed by a session
 **Issue:** EMB-40
 **Scope:** atlas
@@ -36,6 +36,18 @@ A count that is wrong on one document makes every count it prints suspect.
 
 ## Done when
 
-- [ ] The cause is named in the task file, then fixed with a test in `tests/test_freeze.py`, or filed as a `bug` if the fix belongs elsewhere.
-- [ ] `doc freeze` prints a page count no larger than the document's page count on a synthetic document that reproduces the extra page.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] The cause is named in the task file, then fixed with a test in `tests/test_freeze.py`, or filed as a `bug` if the fix belongs elsewhere.
+- [x] `doc freeze` prints a page count no larger than the document's page count on a synthetic document that reproduces the extra page.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+**Cause (reproduced on a synthetic document):** `freeze` built `page_sha` from every page any unit cites, with no check against `1..pages`. A unit citing `p.0` or a page past the end therefore added a page outside the document, and `cmd_freeze` printed `len(page_sha)` as the page count. A unit citing nothing is not the cause (it gets exactly `1..pages`), and `pages` in `doc.json` was not at fault in the synthetic case.
+
+**Fix** (`src/embarch_atlas/freeze.py`): `page_sha` now holds only pages in `1..pages`, so the printed count never exceeds the document's. An out-of-range cite is not dropped silently: it stays in the unit's `pages` (its key reads `missing`, so correcting the cite thaws the unit), is recorded in the entry as `out_of_range` and `doc freeze` prints a warning naming the unit and page on stderr. `thaw_check` compares a missing frozen page as `missing`. Test: `test_page_count_is_never_more_than_the_document_s_pages` in `tests/test_freeze.py`. `DESIGN.md` does not state the count; no decision added.
+
+**Not done:** refusing the cite at `doc check` (where the record fault belongs) is not implemented here.
+
+## Debts
+
+- **Real-file verification owed.** The real datasheet that showed P one over the PDF's page count was not available. Run `embarch-atlas doc freeze <doc_id>` on it: if it now prints the PDF's page count and a `warning: ... cites page ...` line, the cause was an out-of-range cite. If it still prints one too many with no warning, `pages` in `doc.json` (`pdftext.prep`, `doc.page_count`) is itself high and this is a separate bug.
