@@ -10,7 +10,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Waiting on the owner
 
-- **Promptu in the chat (94–99) waits for install.** Three review rounds are done. Forks waiting for his pick in `embarch-promptu`'s docs/forks.md: P12 (one pass per task start) and P15 (smaller choices); P16–P19 are decided (94, 96, 99).
+- **Promptu in the chat (94–99) is installed** (spec status); three review rounds are done. **Decision 100 is not recorded as reviewed**: whether it was is his to say. Forks waiting for his pick in `embarch-promptu`'s docs/forks.md: P12 (one pass per task start) and P15 (smaller choices); P16–P19 are decided (94, 96, 99).
 
 - **A send before the cards arrive is held** up to 4.5 s for a draft of six words or more, Enter again sending at once (decision 26). Built so; whether it stays is his call.
 - **No row is focused when a 💡 or 📚 menu opens** (decision 86), where IntelliSense focuses the first, so Enter still sends until ↑/↓ move in. Built so, and recommended; his call.

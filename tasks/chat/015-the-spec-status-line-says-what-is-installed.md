@@ -1,6 +1,6 @@
 # 015 — `embarch-chat`'s spec status line says decisions 94–100 are installed
 
-**State:** claimed by agent/chat/015-the-spec-status-line-says-what-is-installed, 2026-11-10 01:28
+**State:** done
 **Source:** Linear issue EMB-68, filed by a session
 **Issue:** EMB-68
 **Scope:** chat
@@ -29,6 +29,6 @@ The status line reads older than what runs, so a reader plans against a stale pi
 
 ## Done when
 
-- [ ] The status line says decisions 94–100 are installed, with the build they came from and the date that was measured.
-- [ ] It says whether decision 100 is recorded as reviewed.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] The status line says decisions 94–100 are installed, with the build they came from and the date that was measured.
+- [x] It says whether decision 100 is recorded as reviewed.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
