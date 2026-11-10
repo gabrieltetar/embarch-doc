@@ -1,6 +1,6 @@
 # 062 — The atlas follows the worktree a session runs in
 
-**State:** open
+**State:** claimed by agent/atlas/062-the-atlas-follows-the-worktree-a-session-runs-in, 2026-11-10 03:15
 **Source:** Linear issue EMB-19 ("The atlas `fw` path resolves to the worktree")
 **Issue:** EMB-19
 **Scope:** atlas
