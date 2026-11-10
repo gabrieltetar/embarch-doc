@@ -16,6 +16,7 @@
 - embarch-desk spec.md: status paragraph's per-decision deploy history folded into one line; out of reserve.
 
 ### Fixed
+- Pick up now lists an open issue whose card the view window has hidden, and Add card on it puts the card back on the board.
 - Start work links the main clone's untracked embarch/, CLAUDE.local.md and .mcp.json into the new worktree, so the session loads the atlas and MCP servers.
 ## 2026-10
 
