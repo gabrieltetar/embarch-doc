@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- The bench's copies of the crate's limits and `.eap` wire enums are read from the crate at configure time, and a drift fails the build (dev-bench decision 56).
 - dev-bench composes the no-name-match census fail_reason outside the BT file, so ztests now pin its byte budget and both markers ([decision 52](../embarch-dev-bench/decisions/scanning.md)).
 - Constants and budgets table moved verbatim to [spec/constants.md](../embarch-dev-bench/spec/constants.md); spec.md out of its size reserve.
 
