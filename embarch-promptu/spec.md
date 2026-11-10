@@ -28,7 +28,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 ## 2c. Build step 3 (built, not installed)
 
 - **The CLI** (decisions 32–33): `promptu patterns`, "where it's used" in `promptu memory`, `prep --start`, the skill's `--item`.
-- **`embarch-chat`** (its 94–98): a rail with Memory, Promptu, 📚 and 💡; at a task start Enter runs the pass in a dialog, the prompt lands in the draft, unsent; Start work runs it on the issue; the Memory menu.
+- **`embarch-chat`** (its 94–98): a rail: Memory, Promptu, Library, Suggestions; at a task start Enter runs the pass in a dialog, the prompt lands in the draft, unsent; Start work runs it on the issue; Memory menu.
 - **`embarch-desk`** (its 67): chat setting off, Start work types `/promptu --item <wNN> Work on KEY — title`.
 
 ## 3. Invariants

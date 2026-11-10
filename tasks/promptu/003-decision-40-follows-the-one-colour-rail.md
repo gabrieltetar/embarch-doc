@@ -1,6 +1,6 @@
 # 003 — `embarch-promptu` decision 40 follows the chat rail's one-colour icons
 
-**State:** claimed by agent/promptu/003-decision-40-follows-the-one-colour-rail, 2026-11-09 19:48 — unparked 2026-11-09 by `chat/009`'s fold: the rail draws one-colour SVGs in `currentColor` (embarch-chat `468547a`), and `embarch-chat` decision 94 now says so and names this task for the promptu side.
+**State:** done — 2026-11-09: decision 40 amended in place (one-colour SVGs, placement kept); `spec.md` line 31 no longer names the emoji (1 B smaller).
 **Source:** Linear issue EMB-56, filed by the owner — the owner changing his own earlier pick
 **Issue:** EMB-56
 **Scope:** promptu
@@ -28,6 +28,6 @@ EMB-56's last `Done when` asks for both decisions amended. A decision that names
 
 ## Done when
 
-- [ ] Decision 40 describes the rail's icons as `embarch-chat` decision 94 now does.
-- [ ] No `embarch-promptu` doc names the rail's emoji as current.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] Decision 40 describes the rail's icons as `embarch-chat` decision 94 now does.
+- [x] No `embarch-promptu` doc names the rail's emoji as current.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.

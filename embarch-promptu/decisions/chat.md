@@ -39,5 +39,5 @@ Decided by the owner on 2026-10-30 (forks P8 = a, P13 = b), for `embarch-chat` d
 ### 39 — The handoff card keeps the "Fresh chat with this handoff" chip
 Decided by the owner on 2026-10-30 (fork P9 = a), for `embarch-chat` decisions 36 and 97. The prompt the handoff pattern writes still marks its message as a handoff request, so the turn that answers it offers a fresh chat with the brief. **Rejected:** leaving it to the pattern's `save_to`.
 
-### 40 — The rail's icons are emoji at the bottom, beside the input
-Decided by the owner on 2026-10-30 (fork P14 = a), for `embarch-chat` decision 94: 🧠 Memory, ✨ Promptu, 📚 and 💡, at the bottom of the rail beside the input they work on. The Usage icon (chat 99) sits alone at the top: his answer to fork P16 the same day, recorded in chat 94. **Rejected:** the top, as VS Code's activity bar; codicons.
+### 40 — The rail's icons sit at the bottom, beside the input, as one-colour SVGs
+Decided by the owner on 2026-10-30 (fork P14 = a), for `embarch-chat` decision 94: Memory, Promptu, Library and Suggestions at the bottom of the rail beside the input they work on. The Usage icon (chat 99) sits alone at the top: his answer to fork P16 the same day, recorded in chat 94. **Amended 2026-11-09 (EMB-56):** the icons were colour emoji; the owner changed them to one-colour inline SVGs in `currentColor`, as chat 94 now records. The bottom placement stands. **Rejected:** the top, as VS Code's activity bar; codicons; colour emoji.
