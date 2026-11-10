@@ -1,6 +1,6 @@
 # 043 — The renderer reads "Note N:" footnotes
 
-**State:** open
+**State:** claimed by agent/atlas/043-the-renderer-reads-note-n-footnotes, 2026-11-09 20:34
 **Source:** Linear issue EMB-39, filed by a session
 **Issue:** EMB-39
 **Scope:** atlas
