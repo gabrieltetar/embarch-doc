@@ -1,6 +1,6 @@
 # 081 — The `att_status` doc comment says it is always an ATT error code
 
-**State:** open
+**State:** claimed by agent/study-designer/081-att-status-doc-comment-names-per-kind-meaning, 2026-11-10 03:58
 **Source:** the reviewer of `dev-bench/044` (2026-11-10), which started emitting disconnected transcript rows with the HCI reason in this byte (`embarch-dev-bench` decision 53)
 **Issue:** EMB-130
 **Scope:** study-designer
