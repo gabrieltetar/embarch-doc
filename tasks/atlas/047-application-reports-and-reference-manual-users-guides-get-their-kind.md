@@ -1,6 +1,6 @@
 # 047 — An application report is an appnote, and a user's guide that is a reference manual is a reference manual
 
-**State:** open
+**State:** claimed by agent/atlas/047-application-reports-and-reference-manual-users-guides-get-their-kind, 2026-11-09 21:19
 **Source:** Linear issue EMB-29, filed by a session
 **Issue:** EMB-29
 **Scope:** atlas
