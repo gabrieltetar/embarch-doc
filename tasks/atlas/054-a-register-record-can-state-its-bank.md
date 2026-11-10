@@ -1,6 +1,6 @@
 # 054 — A register record can state its bank, and lookups key on bank and address
 
-**State:** claimed by agent/atlas/054-a-register-record-can-state-its-bank, 2026-11-10 01:49
+**State:** done
 **Source:** Linear issue EMB-46, filed by a session
 **Issue:** EMB-46
 **Scope:** atlas
@@ -36,7 +36,17 @@ Every paged-register part fails check G with false duplicates, and an address al
 
 ## Done when
 
-- [ ] `register` records can state a `bank` and the schema accepts it.
-- [ ] Check G reports no duplicate for two registers at one address on different banks, and still reports one on the same bank (tests for both).
-- [ ] `codecheck` and the live module pick a register by bank and address; a register with no `bank` resolves as before.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] `register` records can state a `bank` and the schema accepts it.
+- [x] Check G reports no duplicate for two registers at one address on different banks, and still reports one on the same bank (tests for both).
+- [x] `codecheck` and the live module pick a register by bank and address; a register with no `bank` resolves as before.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Outcome
+
+- `bank` (string or non-negative integer) is optional on `register` records: schema `propertyNames` and `properties`, `FACT_KEYS`, DESIGN.md `register` row.
+- **A field has no `bank` of its own; it inherits its register's through `reg`.** Stated in the schema, DESIGN.md's `field` row and `RegMap`'s docstring.
+- Check G (`_structure`) keys on `(bank, addr)`; the message names the bank when there is one. Tests in `tests/test_check.py`.
+- `RegMap` keeps `regs_in`/`fields_in` keyed `(bank, addr)`; `regs_at`/`fields_at` stay the default view (main map's register, else the first bank), so every existing caller and an unbanked register resolve as before. `reg/width/reset/fields(a, bank=None)` reach a banked one. **Driver constants carry no bank, so codecheck itself still resolves them in the default view**; teaching it which bank a driver is in is not done.
+- `live`: `<label>.<REG>@<bank>` picks the record on that bank (`_ext_regs`); an unbanked name resolves as before, and a name on several banks with none on the main map errors naming the banks. `_ext_effects` keys `REG0x..` references on the register's own bank.
+- Page-select write is out of scope and filed as EMB-124.
+- No decision authored (burndown). Gate: pytest 690 passed, 3 expected skips.
