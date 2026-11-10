@@ -8,6 +8,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- The chat passes its context usage to Promptu's pass, so it can plan work that outgrows one window (chat decision 96).
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 ## 2026-10
 

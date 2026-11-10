@@ -1,7 +1,7 @@
 # 004 — `embarch-promptu` spec.md is in reserve after decision 41's build
 
 **State:** blocked — `In flux: yes`.
-**Unparks when:** `tasks/chat/017` lands (the chat passes its context usage) and build step 4 (the weekly sheet, decision 30) is built or dropped.
+**Unparks when:** build step 4 (the weekly sheet, decision 30) is built or dropped. The other half, the chat passing its context usage, landed 2026-11-09 as `chat/017` (embarch-chat `a46c5ac`).
 **Source:** `promptu/002` added the context-planning bullet to `spec.md` and crossed the reserve line; `DOC-COMPACTION.md` §2
 **Scope:** promptu
 **Hardware:** none
@@ -9,7 +9,7 @@
 
 **Compacts:** embarch-promptu/spec.md
 **Size debt due:** 2026-11-23
-**In flux:** yes — the chat's half of decision 41 (`tasks/chat/017`) and build step 4 still change what `spec.md` says it builds.
+**In flux:** yes — build step 4 still changes what `spec.md` says it builds; the chat's half of decision 41 landed 2026-11-09.
 **Must not delete:** the invariants in §3 and the "deliberately does not do" list in §5.
 
 ## What

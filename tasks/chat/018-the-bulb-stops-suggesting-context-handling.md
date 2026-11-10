@@ -1,7 +1,6 @@
 # 018 — The chat's 💡 stops suggesting compact, handoff and background agents
 
-**State:** blocked — Promptu must own the judgement before the bulb gives it up.
-**Unparks when:** tasks/chat/017 lands
+**State:** open — unparked 2026-11-09 by `chat/017`'s fold: Promptu's pass now owns the judgement, and a run from the chat passes its context usage (`prep --context-usage`, embarch-chat `a46c5ac`; `embarch-chat` decision 96).
 **Source:** Linear issue EMB-66, filed by the owner — owner's call on 2026-11-05
 **Issue:** EMB-66
 **Scope:** chat
