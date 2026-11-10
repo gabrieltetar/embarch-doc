@@ -1,6 +1,6 @@
 # 052 — A session before the first atlas is told there is no atlas yet
 
-**State:** claimed by agent/atlas/052-a-session-before-the-first-atlas-is-told-there-is-none, 2026-11-10 01:41
+**State:** done
 **Source:** Linear issue EMB-22, filed by a session
 **Issue:** EMB-22
 **Scope:** atlas
@@ -35,7 +35,11 @@ The window between `init` and a first atlas is exactly when a session most needs
 
 ## Done when
 
-- [ ] After `embarch-atlas init` and before any `join`, the file `CLAUDE.local.md` imports exists and tells the session no atlas is built yet and which skill to run.
-- [ ] The first `join` replaces it with the real map, byte-stable as before, and `mark_map` / `stale.py` read the placeholder as no atlas.
-- [ ] A test covers `init`, then the map's content, then a `join` replacing it; `DESIGN.md` says so.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] After `embarch-atlas init` and before any `join`, the file `CLAUDE.local.md` imports exists and tells the session no atlas is built yet and which skill to run.
+- [x] The first `join` replaces it with the real map, byte-stable as before, and `mark_map` / `stale.py` read the placeholder as no atlas.
+- [x] A test covers `init`, then the map's content, then a `join` replacing it; `DESIGN.md` says so.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Outcome
+
+`project.init` writes `<atlas_dir>/MAP.md` (`NO_ATLAS_MAP`, first line `# No hardware atlas is built yet`) when none exists, never over a real map. `mark_map` already returned on any first line that is not an atlas header (`MAP_HEAD`), so it and `stale.py` (which never read MAP.md) needed no change; a test pins it. `join` -> `mapgen.update_current` already `copyfile`s over MAP.md, so no change there; tested. `DESIGN.md` "How a session sees the atlas" amended in place. No readers of MAP.md's first line besides `mark_map` (grepped src, skills). Note: a first `join` of an atlas that is not at HEAD leaves the placeholder, correctly. 685 passed, 3 skipped.
