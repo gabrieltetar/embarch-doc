@@ -1,6 +1,6 @@
 # 045 — Nets joined through an off-sheet port are one net in the netlist
 
-**State:** claimed by agent/atlas/045-nets-joined-through-an-off-sheet-port-are-one-net, 2026-11-09 20:58
+**State:** done (agent/atlas/045, 2026-11-09)
 **Source:** Linear issue EMB-24, filed by a session
 **Issue:** EMB-24
 **Scope:** atlas
@@ -33,7 +33,14 @@ Filed as the most serious gap found in the schematic parse: every tool that read
 
 ## Done when
 
-- [ ] A synthetic two-sheet fixture whose nets are joined only through an off-sheet port of the same name, under different net names, yields one net with both sheets' pins in `boards/<label>/netlist.json`.
-- [ ] A port with no partner on another sheet is listed in the netlist's `issues`.
-- [ ] `net_trace` on that fixture shows the pins from both sheets.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` says how nets join; `changelog.d/` fragment dropped.
+- [x] A synthetic two-sheet fixture whose nets are joined only through an off-sheet port of the same name, under different net names, yields one net with both sheets' pins in `boards/<label>/netlist.json`.
+- [x] A port with no partner on another sheet is listed in the netlist's `issues`.
+- [x] `net_trace` on that fixture shows the pins from both sheets.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` says how nets join; `changelog.d/` fragment dropped.
+
+## Notes
+
+- Joined net takes the first non-auto-named name in natural order (else the first); the rest are `aliases` on the net. Stated in `DESIGN.md` ("How nets join").
+- Port names come from each net's `Ports > <title>` outline children (`port_names`). Whether a real export titles those with the port name, as the synthetic fixtures do, is unverified against a real PDF.
+- An unpartnered port is one whose name is on no other sheet's port/sheet-level port list and is no other sheet's net name (so a hierarchy sheet entry on the parent counts as a partner when it is a net there).
+- `geom.py` has the same gap in kind: it compares per sheet and per name and never joins across a port. Left as is; a joined net's `crosscheck` mark is the picked name's sheet net only (stated in DESIGN.md).
