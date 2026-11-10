@@ -1,6 +1,6 @@
 # 017 — A start that resolves no desk is no desk everywhere, one start names one desk, and a shrinking note edit is accepted
 
-**State:** claimed by agent/desk/017-a-start-that-resolves-no-desk-is-no-desk-everywhere, 2026-11-09 22:26
+**State:** done
 **Source:** Linear issue EMB-48, filed by an audit (points 1 to 3; points 4 and 5 are `tasks/ui/108`)
 **Issue:** EMB-48
 **Scope:** desk
@@ -37,8 +37,12 @@ Filed by an audit; points 1 and 2 let a session hear or use the wrong desk.
 
 ## Done when
 
-- [ ] A session that starts in desk A's repo and resumes in a folder with no desk is given no desk by `notes_desk`, `GET /sessions/{sid}`, `desk_work_item` and `desk_add_desk_note` alike.
-- [ ] One start block lists only the cards of the desk it names in the switch question and the notes.
-- [ ] On a desk over the 4,000 cap, an edit that does not raise a note's cost is accepted, and one that raises it is refused.
-- [ ] Each of the three has a test.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] A session that starts in desk A's repo and resumes in a folder with no desk is given no desk by `notes_desk`, `GET /sessions/{sid}`, `desk_work_item` and `desk_add_desk_note` alike.
+- [x] One start block lists only the cards of the desk it names in the switch question and the notes.
+- [x] On a desk over the 4,000 cap, an edit that does not raise a note's cost is accepted, and one that raises it is refused.
+- [x] Each of the three has a test.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+`Session.start_cwd` (serde default) records the start's folder; `notes_desk` falls back through it. `ask_text` takes the start's cwd and scopes cards by `session_desk`. `check_desk_note` accepts an edit that does not raise the note's cost. There is no `switch_text` in `events.rs`; the desk-naming parts are the notes. Decision 74's text is in `decisions/desks.md`, amended in place.
