@@ -1,6 +1,6 @@
 # 061 — An atlas for a target whose PCB has no Zephyr board yet
 
-**State:** open
+**State:** claimed by agent/atlas/061-an-atlas-for-a-target-with-no-zephyr-board-yet, 2026-11-10 02:57
 **Source:** Linear issue EMB-21
 **Issue:** EMB-21
 **Scope:** atlas
