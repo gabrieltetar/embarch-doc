@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-desk gains linear_list_issues, which lists a team's issues in a named state in any connected workspace; agents never fall back to Claude's Linear connector (decision 79).
 - embarch-desk: desk_add_line takes an optional item (issue key or item id) to note a different work item than the session's own; an unknown one errors and writes nothing (decision 78).
 
 ### Changed

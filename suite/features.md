@@ -234,6 +234,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Reference index for `embarch-chat`: every issue in a desk's Linear scope, archived included, and every PR in its repos, refreshed on its own task and served from memory as `GET /refs` | Shipped, deployed 2026-10-25 — live on the open desk, 178 issues and 48 PRs | unit, local | 56 |
 | Start work for a suite: a folder per issue with worktrees for the issue's repo and the docs, and symlinks for the other clones; a tool to add a repo; a chat opened with no item | Shipped, deployed to the dev desk 2026-11-04 | unit, and live against Linear on the dev desk; the chat's take of an open entry is covered by the desk side only until the chat is reinstalled | 70 |
 | Desk notes: standing working agreements on a whole desk, from the Desk tab or an agent's tool, heard by every session in its repos at its start; never a tile line, never Harvest | Built on branch `desk-notes`, not deployed | unit | 74 |
+| `linear_list_issues`: an agent lists a team's Linear issues in a named state (a queue such as "Fleet Ready"), in any connected workspace, with the cap's cut reported | Built on a branch, not deployed; backends filtered by unit test only, no live workspace | unit | 79 |
 
 ## embarch-chat
 
