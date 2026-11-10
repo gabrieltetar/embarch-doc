@@ -33,7 +33,7 @@ A chat whose landing deleted its own folder could not be reached, and nothing on
 
 ## Done when
 
-- [ ] With a session's `cwd` deleted, its rows in the view and the session list say the folder is missing and carry no `folder_uri`; a test covers it.
-- [ ] A row whose folder exists is unchanged.
-- [ ] `interfaces.md` states the field; decision 71 says when a row carries the link.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] With a session's `cwd` deleted, its rows in the view and the session list say the folder is missing and carry no `folder_uri`; a test covers it.
+- [x] A row whose folder exists is unchanged.
+- [x] `interfaces.md` states the field; decision 71 says when a row carries the link.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
