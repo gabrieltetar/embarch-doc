@@ -1,6 +1,6 @@
 # 024 — `embarch-chat/spec.md` is in reserve
 
-**State:** claimed by agent/chat/024-compact-chat, 2026-11-10 13:19
+**State:** done (2026-11-10)
 **Source:** `chat/023` added a spec line for an ended issue's chat and left spec.md at 9,373 of 10,240 B.
 **Scope:** chat
 **Hardware:** none
@@ -25,8 +25,12 @@ Split `spec.md` by mission, verbatim, so it leaves reserve.
 
 ## Done when
 
-- [ ] `spec.md` is clear of reserve (`scripts/check-doc-size.py --pressure` shows it not at all), or a successor re-files with a concrete plan.
-- [ ] Moved text matches the original apart from headers and pointer lines.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md` is clear of reserve (`scripts/check-doc-size.py --pressure` shows it not at all), or a successor re-files with a concrete plan.
+- [x] Moved text matches the original apart from headers and pointer lines.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Shipped
+
+Bullets 'library', 'Haiku assistant', 'Promptu', 'reference index' of spec.md §2 moved verbatim to embarch-chat/spec/input.md (1,998 B); one pointer bullet left. spec.md 9,373 -> 8,077 B.

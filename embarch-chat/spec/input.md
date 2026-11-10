@@ -1,0 +1,10 @@
+# embarch-chat spec: the input and the library
+
+**Status:** active, 2026-11-10.
+
+Split verbatim from [../spec.md](../spec.md) §2 on 2026-11-10, under [DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2: `spec.md` had 867 bytes before its reserve. These four bullets (the library, the Haiku assistant, Promptu, the desk's reference index) are what the chat offers at the input; they are unchanged. Current truth: [../spec.md](../spec.md). Why: [../decisions.md](../decisions.md).
+
+- **The library** is two folders: this repo's `plugin/` (a Claude Code plugin: `/embarch-permissions`, `/embarch-claude-md`, the `build-flash-verify` skill) and `~/.claude/commands` for anything naming a client, as 📚 buttons by `category:` (13, 38, 39).
+- **The Haiku assistant**, for the chat on screen only: ghost text, 💡 cards that edit the draft, reply chips, a name for each new chat — one stripped, unsaved `claude -p` per call (19, 24–27, 34, 36, 37). The 💡 and 📚 menus go by keyboard as IntelliSense does, and a preview never moves the menu under the pointer (86).
+- **Promptu** (decisions 94–98, the `embarch-promptu` CLI): a rail on the left edge holds Usage (99) at the top, Memory, Promptu, Library, Suggestions and the 💬 side question (57) at the bottom, each a one-colour SVG. At a task start, or on Start work (11), Enter runs `promptu prep` and a dialog over the chat asks what is missing; the prompt lands in the draft, never sent. The Memory menu draws `promptu memory --json`, and with three machine settings (`embarchChat.memoryPass.*`: stamp file, interval in days, command) it carries a periodic-pass line (last date, due) that starts a chat with the command, the icon dotted while due (98); the 💡 keeps references only (97).
+- **The desk's reference index is mirrored** from `GET /refs` (88): the cards call carries the issues and PRs the draft matches locally, so a vague "the widget PR" becomes the PR itself, and a key or PR in Claude's prose the index knows is a link.
