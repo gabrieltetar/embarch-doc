@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas gains `declare-interface`: it records an engineer-declared board-to-board mating (rule or pin map, note) in boards/system.json, and refuses refs and rules the atlas cannot read.
 - embarch-atlas register records take an optional `bank`; check G, codecheck RegMap and `live` read `REG@bank` key on (bank, addr). A register with no bank behaves as before. See DESIGN.md.
 - embarch-atlas record schema gains a `variant` kind: one record per orderable part, with `mpn` and `options`; it validates, renders in facts.txt and the datasheet procedure says when to write one.
 - embarch-atlas init now writes a placeholder MAP.md saying no atlas is built yet and naming /atlas-translate-docs then /atlas-build; the first join replaces it.
