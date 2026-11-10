@@ -1,6 +1,6 @@
 # 058 — part_card and mismatch_report answer before an atlas exists
 
-**State:** open
+**State:** claimed by agent/atlas/058-part-card-and-mismatch-report-answer-before-an-atlas-exists, 2026-11-10 02:29
 **Source:** Linear issue EMB-23
 **Issue:** EMB-23
 **Scope:** atlas
