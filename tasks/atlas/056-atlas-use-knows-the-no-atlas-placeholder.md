@@ -1,6 +1,6 @@
 # 056 — The atlas-use skill knows the no-atlas placeholder
 
-**State:** claimed by agent/atlas/056-atlas-use-knows-the-no-atlas-placeholder, 2026-11-10 02:15
+**State:** done
 **Source:** Linear issue EMB-123, filed by the reviewer of `atlas/052`
 **Issue:** EMB-123
 **Scope:** atlas
@@ -31,6 +31,6 @@ A session between `init` and the first atlas is told by the skill to read cards 
 
 ## Done when
 
-- [ ] The `atlas-use` skill's step 1 says what to do when `MAP.md` is the no-atlas placeholder, and stops there.
-- [ ] The skill and the placeholder name the same next steps, with a test.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] The `atlas-use` skill's step 1 says what to do when `MAP.md` is the no-atlas placeholder, and stops there.
+- [x] The skill and the placeholder name the same next steps, with a test.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
