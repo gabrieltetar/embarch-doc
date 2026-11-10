@@ -1,6 +1,6 @@
 # 061 — An atlas for a target whose PCB has no Zephyr board yet
 
-**State:** claimed by agent/atlas/061-an-atlas-for-a-target-with-no-zephyr-board-yet, 2026-11-10 02:57
+**State:** done
 **Source:** Linear issue EMB-21
 **Issue:** EMB-21
 **Scope:** atlas
@@ -43,8 +43,16 @@ Bring-up of a new board is the moment the atlas has most to answer and the one m
 
 ## Done when
 
-- [ ] A project with schematics and datasheets, whose target states it has no Zephyr board, produces an atlas without `build` failing, and a target with a missing `board` still fails as before.
-- [ ] `status` and `MAP.md` name each output absent because there is no build.
-- [ ] A build-dependent query on that atlas says the target has no board yet.
-- [ ] `DESIGN.md` states the rule, principle 6 included.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A project with schematics and datasheets, whose target states it has no Zephyr board, produces an atlas without `build` failing, and a target with a missing `board` still fails as before.
+- [x] `status` and `MAP.md` name each output absent because there is no build.
+- [x] A build-dependent query on that atlas says the target has no board yet.
+- [x] `DESIGN.md` states the rule, principle 6 included.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+- Opt-in: `no_board = true` on the `[[targets]]` entry in `atlas.toml`, or `build --no-board` for one run. A missing `board` still fails naming `--board`; `no_board` with a `board` is refused.
+- `build` writes only the stamp (`board: null`, `build: {built: false, reason, fw, west_topdir}`); `join`, `update`, `status`, `MAP.md`, `stale=` and the lookups read it through `common.no_build`. Lists of absent and reduced outputs are `common.NO_BUILD_ABSENT` / `NO_BUILD_DEGRADED`, also written into `DESIGN.md`.
+- A normal `build` for the same target and commit supersedes the no-board atlas; staleness says the target now names a board.
+- `features.d/`: no row, since `atlas` has no section in the feature inventory.
+- Hardware verification debt: none. Unverified on a real project: the stamp's recorded west project list when a workspace is configured (best effort; a failure is a warning).
