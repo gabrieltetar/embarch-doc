@@ -9,6 +9,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- Chat decisions 56 and the Promptu one now put the notice line and thumbnails above the input, as the composer renders them.
 - The chat's input is one row: mode, model, MCP and Remote pills left of the box, Send or Stop an icon on its right; nothing under the box.
 - A test pins that a window start never calls openExternal; the launcher has no autoStart since decision 102 and shows the UI only on an explicit action.
 - Chat: an Edit or Write in the timeline is one line (file, +N −M) until clicked; a permission card keeps its diff open (decision 8).
