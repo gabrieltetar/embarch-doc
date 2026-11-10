@@ -1,6 +1,6 @@
 # 125 — Core's pre-flight refuses a one-shot monitor inside an open window
 
-**State:** open
+**State:** claimed by agent/core/125-pre-flight-refuses-a-one-shot-monitor-inside-an-open-window, 2026-11-10 04:46
 **Source:** `tasks/study-designer/082` (landed 2026-11-10, `embarch-study-designer` `6874b81`), which added the check this calls
 **Issue:** EMB-131
 **Scope:** core
