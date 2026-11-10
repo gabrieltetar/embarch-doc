@@ -1,6 +1,6 @@
 # 014 — The chat input is one row, its pills left of the box and Send an icon on its right
 
-**State:** claimed by agent/chat/014-the-input-is-one-row, 2026-11-09 22:26 — unparked 2026-11-09 by `chat/012`'s fold: the 💬 is a rail entry and gone from the input's bar (embarch-chat `9fd3f0b`). `embarch-chat/spec.md` is then 9,037 B, two bytes under its reserve line, so a spec edit here likely puts it back in reserve and owes a compaction filing.
+**State:** done
 **Source:** Linear issue EMB-60, filed by the owner
 **Issue:** EMB-60
 **Scope:** chat
@@ -27,8 +27,8 @@ The owner asked for it. The 💬 moves to the rail in `tasks/chat/012`, which is
 
 ## Done when
 
-- [ ] The input is one row in the order above, at a narrow (400 px) and a wide pane.
-- [ ] Send, Queue, Ask and Stop are icon buttons with titles, and keyboard send works as before.
-- [ ] The pills' popovers open fully inside the pane.
-- [ ] Decisions 81–83 and the comment in `footer.tsx` describe the new place; the e2e tests pass on the new layout.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] The input is one row in the order above, at a narrow (400 px) and a wide pane.
+- [x] Send, Queue, Ask and Stop are icon buttons with titles, and keyboard send works as before.
+- [x] The pills' popovers open fully inside the pane.
+- [x] Decisions 81–83 and the comment in `footer.tsx` describe the new place; the e2e tests pass on the new layout.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.

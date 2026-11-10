@@ -44,7 +44,7 @@ Each shell, Monitor or subagent with its output tail (read every second while it
 
 ### 81 — The MCP pill is Claude Code's `/mcp`
 
-Each server with its state and error, and Reconnect, Disable and Enable for this chat's process; `/mcp` opens it. Reconnect starts the server again [measured: new pid], so a rebuilt `embarch-api` binary is picked up without ending the chat. The window's own server (65) lists with no actions — the CLI refuses to reconnect it. **Rejected:** ending the chat to pick up a rebuild, the CLI's text `/mcp`.
+The pill sits in the input's one row, with the mode menu, the model pill and Remote, left of the box; Send is an icon on its right (EMB-60). Each server with its state and error, and Reconnect, Disable and Enable for this chat's process; `/mcp` opens it. Reconnect starts the server again [measured: new pid], so a rebuilt `embarch-api` binary is picked up without ending the chat. The window's own server (65) lists with no actions — the CLI refuses to reconnect it. **Rejected:** ending the chat to pick up a rebuild, the CLI's text `/mcp`.
 
 ### 82 — Effort is per chat, in Claude Code's model pill
 
@@ -52,7 +52,7 @@ The levels the model takes, and the Ultracode switch where the CLI offers it. It
 
 ### 83 — `/remote-control` bridges a chat to claude.ai/code
 
-A footer pill shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the CLI starts by itself (Claude Code's `remoteControlAtStartup`) shows the same pill and Claude Code's disclosure once, as a note, and holds the process only while the chat is open (100). **Rejected:** an always-shown pill, closing the process under a live bridge.
+A pill in the input's row shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the CLI starts by itself (Claude Code's `remoteControlAtStartup`) shows the same pill and Claude Code's disclosure once, as a note, and holds the process only while the chat is open (100). **Rejected:** an always-shown pill, closing the process under a live bridge.
 
 ### 100 — An open chat keeps its self-started bridge, so the phone reaches it
 
