@@ -1,6 +1,6 @@
 # 032 — Retire the FFI staticlib itself: the toolchain-gated half of `suite/014`
 
-**State:** open
+**State:** claimed by agent/suite/032-retire-the-ffi-staticlib-itself-the-toolchain-gated-half-of-014, 2026-11-10 05:45, window closed with no reply
 **Source:** split out of `tasks/suite/014` by leg 093, 2026-09-11, which took the doc-and-citation
 half and **could not safely take this one unattended**. See "Why this is split" below — the reason
 is a build coupling, not a scoping preference.
