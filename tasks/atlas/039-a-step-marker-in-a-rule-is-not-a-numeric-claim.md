@@ -1,6 +1,6 @@
 # 039 — A step marker in a rule is not a numeric claim
 
-**State:** claimed by agent/atlas/039-a-step-marker-in-a-rule-is-not-a-numeric-claim, 2026-11-09 19:24
+**State:** done on agent/atlas/039-a-step-marker-in-a-rule-is-not-a-numeric-claim, 2026-11-09
 **Source:** Linear issue EMB-38, filed by a session
 **Issue:** EMB-38
 **Scope:** atlas
@@ -30,8 +30,8 @@ Filed from distilling a real document: numbered steps in a rule were reported as
 
 ## Done when
 
-- [ ] The command above prints no claim for `(1)` and `(2)`.
-- [ ] A footnote reference such as `fn 13`, a bit range `[7:5]` and a real number in parentheses, `(5 V)`, behave as before.
-- [ ] Tests in `tests/test_check.py` cover the markers and the three unchanged cases.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` updated where it lists what is not a claim, `changelog.d/` fragment dropped.
+- [x] The command above prints no claim for `(1)` and `(2)`.
+- [x] A footnote reference such as `fn 13`, a bit range `[7:5]` and a real number in parentheses, `(5 V)`, behave as before.
+- [x] Tests in `tests/test_check.py` cover the markers and the three unchanged cases.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` updated where it lists what is not a claim, `changelog.d/` fragment dropped.
