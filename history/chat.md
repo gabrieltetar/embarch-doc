@@ -22,6 +22,9 @@
 - Host tests drove a chat whose process env was taken at creation: five set FAKE_CLAUDE_* after; they now set it first. All 60 pass on a main-built desk (stale-binary theory was wrong).
 - The chat page never scrolls sideways: code, diffs, tables and compaction summaries wrap, and a tool name or key truncates with an ellipsis (EMB-57).
 - A chat whose folder was deleted now says the folder no longer exists, instead of "claude not found" (EMB-75).
+
+### Removed
+- The chat's 💡 no longer offers background, compact or handoff cards, nor the fresh-chat chip; Promptu's planning owns high-context work (chat decisions 36, 97).
 ## 2026-10
 
 ### Added
