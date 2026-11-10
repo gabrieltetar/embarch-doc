@@ -1,6 +1,6 @@
 # 016 — A session whose folder no longer exists says so, and carries no folder link
 
-**State:** open
+**State:** claimed by agent/desk/016-a-session-whose-folder-is-gone-says-so, 2026-11-09 22:03
 **Source:** Linear issue EMB-76, filed by a session
 **Issue:** EMB-76
 **Scope:** desk
