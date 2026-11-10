@@ -32,5 +32,5 @@ The reviewer of `chat/018` found it; 103's prose now points at code that does no
 
 ## Done when
 
-- [ ] Decision 103 no longer names `freshChat` or "36's chip" as live things, and its decision text is unchanged.
-- [ ] Gate green (`python3 scripts/check-docs.py`, `check-ownership.py --scope chat`); `changelog.d/` fragment dropped.
+- [x] Decision 103 no longer names `freshChat` or "36's chip" as live things, and its decision text is unchanged.
+- [x] Gate green (`python3 scripts/check-docs.py`, `check-ownership.py --scope chat`); `changelog.d/` fragment dropped.
