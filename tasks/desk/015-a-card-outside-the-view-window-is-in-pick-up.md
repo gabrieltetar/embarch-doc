@@ -1,6 +1,6 @@
 # 015 — An issue whose card the view window hides is listed in Pick up
 
-**State:** claimed by agent/desk/015-a-card-outside-the-view-window-is-in-pick-up, 2026-11-09 21:23
+**State:** done
 **Source:** Linear issue EMB-72, filed by a session
 **Issue:** EMB-72
 **Scope:** desk
@@ -32,6 +32,6 @@ The owner could not find an issue on the Desk tab to start work on it.
 
 ## Done when
 
-- [ ] An open, assigned issue whose card is outside the view window is listed in Pick up, and Start work or Add card on that row puts its card back on the board.
-- [ ] A `cargo test` covers `/pickup` with a card outside the window.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated; `changelog.d/` fragment dropped.
+- [x] An open, assigned issue whose card is outside the view window is listed in Pick up, and Start work or Add card on that row puts its card back on the board.
+- [x] A `cargo test` covers `/pickup` with a card outside the window.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated; `changelog.d/` fragment dropped.
