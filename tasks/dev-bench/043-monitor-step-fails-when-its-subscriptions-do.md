@@ -1,6 +1,6 @@
 # 043 — A monitor step passes when its subscriptions failed or the link dropped mid-walk
 
-**State:** open
+**State:** claimed by agent/dev-bench/043-monitor-step-fails-when-its-subscriptions-do, 2026-11-10 04:03 (toolchain, supervisor's own hands)
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 1 and 8), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/ble_bridge_real.c`, built and tested in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). The changed paths run only against a real BLE peer, and no native_sim test reaches `ble_bridge_real.c`, so the unit leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7) rather than claiming a bench result.
