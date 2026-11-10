@@ -28,6 +28,12 @@
 
 ## Done when
 
-- [ ] The file is clear of its reserve line.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] The file is clear of its reserve line.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result
+
+Decisions 29–32, 56 and 59 moved verbatim into `embarch-desk/decisions/access-point.md` (6,373 B); `decisions/agents.md` is now 5,455 B (was 11,455). `decisions.md`'s index has a row per file. `history/desk.md` line 33 still links decision 59 to `agents.md` (not desk-owned; left for the fold). Decision 59's caps, its "assumed, not measured" sentence and its Rejected list moved unedited.
+
+**DOC-COMPACTION-PASS question: can `spec.md` alone answer what someone needs to work on this component today?** Not tested by this pass: the split touched decisions only and restated nothing, so spec.md was neither read for gaps nor changed. Unverified.
