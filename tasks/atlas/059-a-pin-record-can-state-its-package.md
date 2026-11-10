@@ -1,6 +1,6 @@
 # 059 — A pin record can state its package
 
-**State:** open
+**State:** claimed by agent/atlas/059-a-pin-record-can-state-its-package, 2026-11-10 02:37
 **Source:** Linear issue EMB-45
 **Issue:** EMB-45
 **Scope:** atlas
