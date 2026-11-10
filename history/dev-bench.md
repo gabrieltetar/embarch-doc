@@ -9,6 +9,7 @@
 - Constants and budgets table moved verbatim to [spec/constants.md](../embarch-dev-bench/spec/constants.md); spec.md out of its size reserve.
 
 ### Fixed
+- A monitor step no longer passes when its subscriptions failed or the link dropped; each failed subscription is named in the transcript (dev-bench decision 54).
 - The GATT transcript keeps notifications up to the full 244-byte payload, records each connect and disconnect (HCI reason in `att_status`), and names each cause of loss (decision 53).
 - dev-bench names a StudyStart it refuses for a capacity cap in a LogLine (cap, value, limit) instead of going quiet ([decision 51](../embarch-dev-bench/decisions/link-limits.md)).
 - dev-bench fails a protocol run by name when a goto names no state or a remember names no variable, instead of indexing past the array ([decision 50](../embarch-dev-bench/decisions/protocols.md)).
