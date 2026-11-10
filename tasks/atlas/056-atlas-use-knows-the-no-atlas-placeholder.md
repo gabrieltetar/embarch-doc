@@ -1,6 +1,6 @@
 # 056 — The atlas-use skill knows the no-atlas placeholder
 
-**State:** open
+**State:** claimed by agent/atlas/056-atlas-use-knows-the-no-atlas-placeholder, 2026-11-10 02:15
 **Source:** Linear issue EMB-123, filed by the reviewer of `atlas/052`
 **Issue:** EMB-123
 **Scope:** atlas
