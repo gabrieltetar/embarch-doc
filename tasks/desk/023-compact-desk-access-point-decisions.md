@@ -1,6 +1,7 @@
 # 023 — `embarch-desk/decisions/access-point.md` is in reserve
 
-**State:** claimed by agent/desk/023-compact-desk-access-point-decisions, 2026-11-10 03:39
+**State:** done
+**Result:** 79 and 81 split verbatim into `decisions/linear-reads.md`; `access-point.md` 11,206 → 6,477 B
 **Source:** `desk/021` added decision 81 and left the file at 11,206 B of 12,288 B (91.2%); `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
@@ -21,6 +22,6 @@
 
 ## Done when
 
-- [ ] `access-point.md` is clear of reserve.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `access-point.md` is clear of reserve.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
