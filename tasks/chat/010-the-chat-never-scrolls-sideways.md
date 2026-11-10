@@ -1,6 +1,6 @@
 # 010 — The chat never shows a horizontal scroll bar
 
-**State:** open
+**State:** claimed by agent/chat/010-the-chat-never-scrolls-sideways, 2026-11-09 21:19
 **Source:** Linear issue EMB-57, filed by the owner
 **Issue:** EMB-57
 **Scope:** chat
