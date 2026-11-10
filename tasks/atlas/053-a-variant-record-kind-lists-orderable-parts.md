@@ -1,6 +1,6 @@
 # 053 — A `variant` record kind lists a part's orderable variants
 
-**State:** claimed by agent/atlas/053-a-variant-record-kind-lists-orderable-parts, 2026-11-10 01:45
+**State:** done
 **Source:** Linear issue EMB-47, filed by a session
 **Issue:** EMB-47
 **Scope:** atlas
@@ -34,7 +34,11 @@ A reader or agent asking which orderable part has which output voltage, package 
 
 ## Done when
 
-- [ ] `variant` is in `KINDS`, in the schema's `kind` enum, and has its own property block.
-- [ ] The datasheet procedure says when to write a `variant`.
-- [ ] A `variant` record validates and renders in `facts.txt`, with a test.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] `variant` is in `KINDS`, in the schema's `kind` enum, and has its own property block.
+- [x] The datasheet procedure says when to write a `variant`.
+- [x] A `variant` record validates and renders in `facts.txt`, with a test.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Done
+
+`variant` added to `KINDS`, `FACT_KEYS`, the schema's `kind` enum (own `$defs/variant`: `mpn` string, `options` object of name to string/number/boolean, at least one), `render.RENDERERS` (`t_variant`) and the datasheet procedure (id row and kind bullet). `DESIGN.md` record-kind table row says when a `variant` is written instead of a `rule` or `quirk`. The mini-validator now honours `minProperties`. Test: `test_variant_validates_renders_and_refuses_a_bare_record`, and `variant` is in `GOOD`. `secondlook.py` has no per-kind entry for it (falls back to the generic re-read); not needed here.
