@@ -1,6 +1,7 @@
 # 081 — The `att_status` doc comment says it is always an ATT error code
 
-**State:** claimed by agent/study-designer/081-att-status-doc-comment-names-per-kind-meaning, 2026-11-10 03:58
+**State:** done
+**Result:** `att_status` doc comment now names the three per-kind meanings and points at `interfaces/gatt-types.md`; comment only.
 **Source:** the reviewer of `dev-bench/044` (2026-11-10), which started emitting disconnected transcript rows with the HCI reason in this byte (`embarch-dev-bench` decision 53)
 **Issue:** EMB-130
 **Scope:** study-designer
@@ -15,6 +16,6 @@ Make the doc comment say the byte's meaning depends on the event kind, naming th
 
 ## Done when
 
-- [ ] The doc comment on `att_status` in `embarch-study-designer/src/gatt.rs` names the per-kind meanings or points at `interfaces/gatt-types.md`, and no longer says it is always an ATT error code.
-- [ ] `cargo build`, `cargo test` and `cargo clippy --all-targets -- -D warnings` green in the crate, per `../../embarch-fleet/gate.md`.
-- [ ] `changelog.d/` fragment dropped; `interfaces/gatt-types.md` still agrees with the comment.
+- [x] The doc comment on `att_status` in `embarch-study-designer/src/gatt.rs` names the per-kind meanings or points at `interfaces/gatt-types.md`, and no longer says it is always an ATT error code.
+- [x] `cargo build`, `cargo test` and `cargo clippy --all-targets -- -D warnings` green in the crate, per `../../embarch-fleet/gate.md`.
+- [x] `changelog.d/` fragment dropped; `interfaces/gatt-types.md` still agrees with the comment.
