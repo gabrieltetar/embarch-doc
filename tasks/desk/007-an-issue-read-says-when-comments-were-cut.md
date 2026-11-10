@@ -1,6 +1,6 @@
 # 007 — An issue read says when comments were cut, and the rest can be read
 
-**State:** open
+**State:** claimed by agent/desk/007-an-issue-read-says-when-comments-were-cut, 2026-11-09 17:52
 **Source:** Linear issue EMB-13, filed by a session
 **Issue:** EMB-13
 **Scope:** desk
@@ -24,6 +24,10 @@ A decision recorded in a comment the cap cut is missed with nothing to say it wa
 - `src/mcp.rs` `linear_get_issue` — the tool and its description
 - `plugin/skills/desk/SKILL.md` — "latest comments"
 - `embarch-doc/embarch-desk/decisions/agents.md` decision 59 — paged reads say when the cap cut
+
+## Dispatch notes
+
+- No `embarch-desk` doc is in reserve at dispatch, but `embarch-desk/spec.md` is about 660 B above its reserve line. If your edit pushes it in, file `tasks/desk/<NNN>-compact-desk.md` in the same commit (`tasks/README.md`, Compaction tasks).
 
 ## Done when
 
