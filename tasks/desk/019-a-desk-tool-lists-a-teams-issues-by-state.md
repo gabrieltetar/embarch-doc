@@ -1,6 +1,6 @@
 # 019 — A desk tool lists a team's issues in a named state
 
-**State:** open
+**State:** claimed by agent/desk/019-a-desk-tool-lists-a-teams-issues-by-state, 2026-11-10 02:54
 **Source:** Linear issue EMB-11
 **Issue:** EMB-11
 **Scope:** desk
