@@ -1,6 +1,6 @@
 # 008 — The Memory menu shows when a memory pass is due, and starts one
 
-**State:** claimed by agent/chat/008-the-memory-menu-shows-when-a-memory-pass-is-due, 2026-11-09 20:03
+**State:** done
 **Source:** Linear issue EMB-86, filed by the owner
 **Issue:** EMB-86
 **Scope:** chat
@@ -37,7 +37,11 @@ A missed pass leaves two Claude logins' memories drifting apart for another week
 
 ## Done when
 
-- [ ] With the three settings set, the Memory menu shows the last pass's date and the 🧠 icon is marked once the interval has passed; with them unset, nothing shows.
-- [ ] A click starts a new chat in the window's folder with the command as its first message.
-- [ ] Decision 98 is amended to say so, and `embarch-chat/spec.md` describes it.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] With the three settings set, the Memory menu shows the last pass's date and the 🧠 icon is marked once the interval has passed; with them unset, nothing shows.
+- [x] A click starts a new chat in the window's folder with the command as its first message.
+- [x] Decision 98 is amended to say so, and `embarch-chat/spec.md` describes it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Hardware-verification debt
+
+None. A live window still needs to confirm: with the three settings set, the dot and the line show and a click opens a chat whose first message is the command (host tests are skipped here without a live `claude`).
