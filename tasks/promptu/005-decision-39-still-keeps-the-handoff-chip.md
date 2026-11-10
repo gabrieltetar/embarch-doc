@@ -1,6 +1,6 @@
 # 005 — Decision 39 still keeps the handoff chip the chat removed
 
-**State:** open
+**State:** claimed by agent/promptu/005-decision-39-still-keeps-the-handoff-chip, 2026-11-10 02:10
 **Source:** Linear issue EMB-125, filed by the reviewer of `chat/018`
 **Issue:** EMB-125
 **Scope:** promptu
