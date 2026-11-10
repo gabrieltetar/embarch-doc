@@ -1,6 +1,6 @@
 # 026 — The issue's folder goes once no window shows it
 
-**State:** open — `tasks/desk/025` landed (desk `9a32975`): its checks are `closeout::check(dir, outcome)` in `src/closeout.rs`, and its decision is 83
+**State:** claimed by agent/desk/026-the-issues-folder-goes-once-no-window-shows-it, 2026-11-10 06:25 — 025 landed (desk `9a32975`), its checks are `closeout::check` in `src/closeout.rs`, decision 83
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** desk
