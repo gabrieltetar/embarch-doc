@@ -1,6 +1,6 @@
 # 083 — `embarch-study-designer` GATT decisions and types.md are in reserve after decision 89
 
-**State:** claimed by agent/study-designer/083-compact-study-designer, 2026-11-10 04:47
+**State:** done
 **Source:** `study-designer/082` added decision 89 to `decisions/gatt.md` and a sentence to `interfaces/types.md`; `DOC-COMPACTION.md` §2
 **Scope:** study-designer
 **Hardware:** none
@@ -21,7 +21,13 @@
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` shows both files `PAID` or not at all.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `scripts/check-doc-size.py --pressure` shows both files `PAID` or not at all.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Outcome
+
+- `gatt.md` 12,048 -> 10,012 B: decision 41 moved verbatim (11 lines out, 11 in) to `decisions/vendor-identities.md` (2,386 B incl. header); pointer line left; `decisions.md` index row split. Decisions 53 and 83 untouched.
+- `types.md` 11,154 -> 10,950 B: trimmed the `BleAddress` dated history and the `Uuid` derive detail. Dev-bench 54/55 pointers untouched.
+- Human question: yes for orientation. `spec.md` (8.1 KB) states what the crate is, its invariants, the feature/target split, result storage, the three consumers and where the constants live, each with a pointer to the owning doc. What it lacks is current work: that is in `open.md`.
