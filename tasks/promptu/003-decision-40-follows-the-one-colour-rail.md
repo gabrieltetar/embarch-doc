@@ -1,7 +1,6 @@
 # 003 — `embarch-promptu` decision 40 follows the chat rail's one-colour icons
 
-**State:** blocked — it amends a decision to match a change in another repo.
-**Unparks when:** tasks/chat/009 lands
+**State:** open — unparked 2026-11-09 by `chat/009`'s fold: the rail draws one-colour SVGs in `currentColor` (embarch-chat `468547a`), and `embarch-chat` decision 94 now says so and names this task for the promptu side.
 **Source:** Linear issue EMB-56, filed by the owner — the owner changing his own earlier pick
 **Issue:** EMB-56
 **Scope:** promptu

@@ -6,6 +6,9 @@
 
 ### Added
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
+
+### Changed
+- Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 ## 2026-10
 
 ### Added
