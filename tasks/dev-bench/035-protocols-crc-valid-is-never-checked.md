@@ -1,6 +1,6 @@
 # 035 — `protocols_crc_valid` is computed and never checked
 
-**State:** claimed by agent/dev-bench/035-protocols-crc-valid-is-never-checked, 2026-11-10 06:05
+**State:** done
 **Source:** `embarch-study-designer/interfaces/seals.md:26` — every seal is checked independently at both hops
 **Scope:** dev-bench
 **Hardware:** toolchain — reclassified from `bench` on 2026-11-10: every `Done when` item is a ztest or a build, and no step needs a board. Build from the worktree against the main checkout's `workspaces/*` with the fleet's `west`; a run against Core on the bench is a hardware debt, not a box.
@@ -33,10 +33,10 @@ three lines of C.
 
 ## Done when
 
-- [ ] `dbm_decode_frame`/the `StudyStart` handler refuses a `protocols_crc`
+- [x] `dbm_decode_frame`/the `StudyStart` handler refuses a `protocols_crc`
       mismatch, naming the seal.
-- [ ] A ztest covers a study with a deliberately wrong `protocols_crc`, beside
+- [x] A ztest covers a study with a deliberately wrong `protocols_crc`, beside
       the two that already cover the other seals.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `embarch-dev-bench/decisions/protocols.md` notes
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment; `embarch-dev-bench/decisions/protocols.md` notes
       the third gate if it says anything about the other two.
