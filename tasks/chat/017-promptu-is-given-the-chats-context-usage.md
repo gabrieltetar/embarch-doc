@@ -1,6 +1,6 @@
 # 017 — The chat gives Promptu's pass its context usage
 
-**State:** claimed by agent/chat/017-promptu-is-given-the-chats-context-usage, 2026-11-09 19:47 — unparked 2026-11-09 by `promptu/002`'s fold: the input is `promptu prep --context-usage <0-100>`, defined in `embarch-promptu` `docs/contract.md` §7.10 (embarch-promptu `95f0d69`); without it the pass judges from the text alone.
+**State:** done — `beginPromptu` passes the chat's context usage as `prep --context-usage` (contract §7.10); decision 96 amended in place. `tasks/chat/018` unparks in the fold.
 **Source:** Linear issue EMB-65, filed by the owner; `embarch-promptu` decision 41 (owner, 2026-11-07)
 **Issue:** EMB-65
 **Scope:** chat
@@ -34,7 +34,7 @@ This is the chat half of EMB-65. Today `beginPromptu` passes only the rough text
 
 ## Done when
 
-- [ ] A Promptu run started from the chat receives the chat's context usage, as the contract defines it.
-- [ ] A test covers the value reaching the run's options.
-- [ ] `embarch-chat`'s docs say what is passed, and its decisions name `embarch-promptu` decision 41 where they describe `beginPromptu`.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] A Promptu run started from the chat receives the chat's context usage, as the contract defines it.
+- [x] A test covers the value reaching the run's options.
+- [x] `embarch-chat`'s docs say what is passed, and its decisions name `embarch-promptu` decision 41 where they describe `beginPromptu`.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
