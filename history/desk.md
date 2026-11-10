@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- embarch-desk docs split: the hand (57-76) and day-tile decisions (62-64) to topic files, chat routes to interfaces/, spec constants continued; nothing reworded.
 - embarch-desk spec.md: status paragraph's per-decision deploy history folded into one line; out of reserve.
 ## 2026-10
 
