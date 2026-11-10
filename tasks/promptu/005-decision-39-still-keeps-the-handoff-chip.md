@@ -32,5 +32,5 @@ A reader of Promptu's decisions is told a chip exists that the code deleted.
 
 ## Done when
 
-- [ ] Decision 39 is amended or retired so it no longer contradicts `embarch-chat` decisions 36 and 97.
-- [ ] Gate green (`python3 scripts/check-docs.py`, `check-ownership.py --scope promptu`); `changelog.d/` fragment dropped.
+- [x] Decision 39 is amended or retired so it no longer contradicts `embarch-chat` decisions 36 and 97.
+- [x] Gate green (`python3 scripts/check-docs.py`, `check-ownership.py --scope promptu`); `changelog.d/` fragment dropped.
