@@ -1,6 +1,6 @@
 # 001 — A header-less `MEMORY.md` tells the writer it may add the first domain header
 
-**State:** claimed by agent/promptu/001-a-header-less-memory-index-may-take-its-first-header, 2026-11-09 17:30
+**State:** done — I2 on a header-less index says the first header may be added in the same write
 **Source:** Linear issue EMB-20, filed by a session
 **Issue:** EMB-20
 **Scope:** promptu
@@ -33,6 +33,6 @@ To reproduce: write a line to a `MEMORY.md` with no `## ` header, through the Wr
 
 ## Done when
 
-- [ ] I2 on an index with no header tells the writer it may add a first `## <domain>` header in the same write.
-- [ ] A test covers the message for a header-less index.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
+- [x] I2 on an index with no header tells the writer it may add a first `## <domain>` header in the same write.
+- [x] A test covers the message for a header-less index.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped.
