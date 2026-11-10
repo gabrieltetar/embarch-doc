@@ -1,6 +1,6 @@
 # 048 — A part named in passing on another part's datasheet is not covered by it
 
-**State:** open
+**State:** claimed by agent/atlas/048-a-part-named-in-passing-is-not-covered, 2026-11-09 22:02
 **Source:** Linear issue EMB-30, filed by a session
 **Issue:** EMB-30
 **Scope:** atlas
