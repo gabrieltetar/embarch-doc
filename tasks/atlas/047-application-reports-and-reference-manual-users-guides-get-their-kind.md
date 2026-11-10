@@ -1,6 +1,6 @@
 # 047 — An application report is an appnote, and a user's guide that is a reference manual is a reference manual
 
-**State:** claimed by agent/atlas/047-application-reports-and-reference-manual-users-guides-get-their-kind, 2026-11-09 21:19
+**State:** done
 **Source:** Linear issue EMB-29, filed by a session
 **Issue:** EMB-29
 **Scope:** atlas
@@ -31,7 +31,7 @@ Both misses need a hand `--kind` today (`embarch-atlas missing --kind <file> <ki
 
 ## Done when
 
-- [ ] A synthetic "Application Report" is typed `appnote`.
-- [ ] A synthetic "User's Guide" that identifies itself as a reference manual is typed `reference-manual`, and a plain user's guide stays `appnote`.
-- [ ] The rules are in `DESIGN.md` and `tests/test_inventory.py` covers both.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A synthetic "Application Report" is typed `appnote`.
+- [x] A synthetic "User's Guide" that identifies itself as a reference manual is typed `reference-manual`, and a plain user's guide stays `appnote`.
+- [x] The rules are in `DESIGN.md` and `tests/test_inventory.py` covers both.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
