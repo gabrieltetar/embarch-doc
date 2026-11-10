@@ -12,6 +12,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- A part named only on page 2 or later of another part's datasheet is now proposed, not covered: part tokens and the `exact` rung read the title and page 1 (see DESIGN.md Covered, proposed, missing).
 - Atlas inventory: an "Application Report" is an appnote, and a user's guide titled as a reference manual is typed reference-manual (DESIGN.md Kinds).
 - Nets that meet through the same off-sheet port are one board net in `netlist.json` (aliases kept); an unpartnered port goes to issues (DESIGN.md).
 - A page cite naming another document (`other-doc p.7`, a conflict row's Sources) is checked against that document's page by `doc check` M, not this one's.
