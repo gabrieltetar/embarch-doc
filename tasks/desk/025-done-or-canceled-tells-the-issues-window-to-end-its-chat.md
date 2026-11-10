@@ -1,6 +1,6 @@
 # 025 — Done or Canceled tells the issue's window to end its chat
 
-**State:** claimed by agent/desk/025-done-or-canceled-tells-the-issues-window-to-end-its-chat, 2026-11-10 06:16
+**State:** done — decision 83; the chat half is tasks/chat/023, the folder removal tasks/desk/026
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** desk
@@ -54,10 +54,14 @@ EMB-73: a landing that deleted the folder under a live chat left the chat unreac
 
 ## Done when
 
-- [ ] Moving an issue with a `.dev-worktrees/<key>/` folder to Done or Canceled through `/linear/status` posts an `end` for that folder when every check passes, and an `unfinished` naming each failing repo and reason when one fails; a test covers each, and uncommitted files and (for Done) a branch not on `origin/main` each produce a blocker.
-- [ ] A move made in Linear itself does the same on the reference index's next refresh, once per move.
-- [ ] `POST /mailbox` refuses `end` and `unfinished`.
-- [ ] `POST /items/{id}/finish` re-runs the checks and posts a fresh `end` or `unfinished`, answering as the contract says.
-- [ ] The desk's answer for the item carries its close-out outcome and blockers, and `interfaces.md` lists the field, the two kinds and the route.
-- [ ] A new `embarch-desk` decision records the triggers, the checks and the contract; `spec.md` updated.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] Moving an issue with a `.dev-worktrees/<key>/` folder to Done or Canceled through `/linear/status` posts an `end` for that folder when every check passes, and an `unfinished` naming each failing repo and reason when one fails; a test covers each, and uncommitted files and (for Done) a branch not on `origin/main` each produce a blocker.
+- [x] A move made in Linear itself does the same on the reference index's next refresh, once per move.
+- [x] `POST /mailbox` refuses `end` and `unfinished`.
+- [x] `POST /items/{id}/finish` re-runs the checks and posts a fresh `end` or `unfinished`, answering as the contract says.
+- [x] The desk's answer for the item carries its close-out outcome and blockers, and `interfaces.md` lists the field, the two kinds and the route.
+- [x] A new `embarch-desk` decision records the triggers, the checks and the contract; `spec.md` updated.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+Built as written; the contract held without change. `end`/`unfinished` are `MailboxEntry` kinds (`src/store.rs`), the checks are `closeout::check` (`src/closeout.rs`) for `tasks/desk/026` to call, the triggers are `note_state` (status route) and `close_out_pass` (after the reference index's refresh) in `src/server.rs`. Added beyond the task text: `RefIssue.state_type` (omitted from `/refs` when empty, so that shape is unchanged) and a patch of the index's row on a desk-made move; both explained in decision 83. Not verified: the MCP connector's state types (it gives none, so a pass re-reads the issue), and the chat side. Hardware: none.

@@ -26,7 +26,7 @@
 
 ### Added for `embarch-chat`
 
-The route table moved verbatim to [interfaces/chat-routes.md](interfaces/chat-routes.md): every route takes the desk's bearer token; additions only; `?desk=` takes a desk's id or its name.
+The route table moved verbatim to [interfaces/chat-routes.md](interfaces/chat-routes.md): every route takes the desk's bearer token; additions only; `?desk=` takes a desk's id or its name. **Close-out** (83): the mailbox kinds `end` and `unfinished`, written only by the desk; `POST /items/{id}/finish`; and `close_out` on each card of `GET /view` and in `work_item` of `GET /sessions/{sid}`, `{outcome, blockers:[{repo,reason}]}` or null, which the Work tab reads for its Finish button.
 
 **The caller's desk** (77). The desk's client (MCP server, hook, CLI) sends `x-embarch-session: <CLAUDE_CODE_SESSION_ID>` and `x-embarch-cwd: <its folder>` on every call when it runs inside a Claude Code session; `embarch-api` sends both on `GET /desks`. `/linear/mine`, `/linear/open`, `/linear/search`, `/pickup`, a new issue's default team and Project on `/drafts` (a `session_id` in the body stands in for the header) and `GET /desks`' `session` follow that session's desk: its folder's, else its work item's, else none, which is unscoped. A call with no session header works on the UI's desk. **`desks.json`** beside the state holds `{"desks": [...]}`, every desk, rewritten on start and on every desk saved or deleted; the old `open-desk.json` is deleted on start.
 

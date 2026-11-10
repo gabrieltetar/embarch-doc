@@ -11,7 +11,7 @@
 | Acted-on tiles archived to `history/YYYY-MM.jsonl` | after 7 days |
 | Least time after a ✓ dealt as a continuation | 5 min [chosen] (64) |
 | Brief | 16,000 characters, about 4K tokens (48) |
-| Mailbox entry life | 10 min, as a launch claim (46) |
+| Mailbox entry life | 10 min, as a launch claim (46); an `end` or `unfinished` waits for its window or folder, and once taken is kept 10 min (83) [chosen] |
 | Memory note versions kept | 20 per file (52) |
 | Notes, worst case | 8.2 MB of state, 20 ms a write [measured 2026-10-23] (55) |
 | Polish model | `sonnet`, `EMBARCH_DESK_MODEL` |

@@ -1,0 +1,1 @@
+| Done or Canceled on a suite issue runs close-out checks (uncommitted files; branch on `origin/main` for Done) and leaves `end` or `unfinished` for the issue's chat window; Finish re-runs them | Built on a branch, not deployed; temporary git repos in tests, the chat half lands in parallel | unit | 83 |
