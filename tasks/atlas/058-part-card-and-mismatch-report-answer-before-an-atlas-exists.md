@@ -37,8 +37,17 @@ An engineer or agent planning drivers before the first build has the netlists an
 
 ## Done when
 
-- [ ] With netlists and a manifest but no atlas, `q part_card <board MPN>` returns the card, and `board=all` lists the refs and nets.
-- [ ] With the same inputs `q mismatch_report` returns the checks that need no build and a "Not run" list naming each check skipped and what it lacked.
-- [ ] Both answers start with a `src:` line saying what they were read from; with an atlas present nothing changes.
-- [ ] `DESIGN.md` states which lookups answer before an atlas exists, and from what.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] With netlists and a manifest but no atlas, `q part_card <board MPN>` returns the card, and `board=all` lists the refs and nets.
+- [x] With the same inputs `q mismatch_report` returns the checks that need no build and a "Not run" list naming each check skipped and what it lacked.
+- [x] Both answers start with a `src:` line saying what they were read from; with an atlas present nothing changes.
+- [x] `DESIGN.md` states which lookups answer before an atlas exists, and from what.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Done
+
+`Atlas.part_docs()` (query.py) makes the part-to-document join from the netlists and `Coverage.part_docs` when no atlas exists; `part_card` answers a board MPN, `board=` lists refs and nets, and a covered-but-undistilled MPN names the covering file. `mismatch.run_netlist_only(J)` runs `run(..., netlist_only=True)` in memory, writing nothing.
+
+- **Runs without a build:** net name agrees across a board connector, DNI parts on MCU paths, pull rail vs MCU I/O supply, MCU symbol pin name vs datasheet, far-end output level vs MCU pin tolerance (when pin records exist), driver claims vs datasheet (conflict records).
+- **Not run (`mismatch.NEEDS_BUILD`, each with what it lacked):** every DT check (pinctrl, polarity, pull, reaches the board, DT use, one owner, binding, driver in the build, EXTI, I2C x4, resistor values, DT comments), open-drain far-end pull (the pull may be a DT flag), reg-* (driver sources), dt-limit-* (devicetree), second look (kept in an atlas).
+- `src:` with no atlas: `boards/<labels> netlist.json + BOM + coverage + distillations, no atlas (...)` for the report; `<doc> card ... (no atlas built: ...)` for the card. With an atlas both are unchanged.
+- Also: DESIGN.md's no-hint sentence now names `reg_read_bank`.
