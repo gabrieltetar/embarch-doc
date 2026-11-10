@@ -1,6 +1,6 @@
 # 025 — A chat host test fails on `main` whenever the desk binary is set
 
-**State:** open
+**State:** claimed by agent/chat/025-a-host-test-fails-whenever-the-desk-binary-is-set, 2026-11-10 12:53
 **Source:** EMB-134, filed while gating `chat/023` on its merge result, 2026-11-10
 **Issue:** EMB-134
 **Scope:** chat
