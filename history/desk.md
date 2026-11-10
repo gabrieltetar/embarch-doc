@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- desk: `/linear/mine` and `/linear/open` answer `scope` as `team <KEY>` on a team-bound desk, as `/linear/search` does.
 - A `linear_search` word query's answer names the project or team it searched, for a team-bound desk too ([interfaces](../embarch-desk/interfaces.md)).
 - The desk skill, the server instructions and both no-item tool replies take a connected team's key from the prompt or a handoff before asking, as the start hook does (decision 7).
 - Desk decisions 29-32, 56, 59 split out of agents.md into decisions/access-point.md; no wording changed.
