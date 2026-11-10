@@ -1,7 +1,6 @@
 # 026 — The issue's folder goes once no window shows it
 
-**State:** blocked — it builds on `tasks/desk/025`'s checks and close-out record; the leg that folds 025 sets this `open`
-**Unparks when:** tasks/desk/025 lands
+**State:** open — `tasks/desk/025` landed (desk `9a32975`): its checks are `closeout::check(dir, outcome)` in `src/closeout.rs`, and its decision is 83
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** desk
@@ -35,7 +34,8 @@ EMB-73. Landing keeps the folder, so today nothing ever removes it.
 ## Dispatch notes
 
 - Normal mode: a new numbered `embarch-desk` decision, or an extension of 025's if it reads as one decision; your call, and say which.
-- No `embarch-desk` doc in `embarch-doc` is in doc-size reserve at the split.
+- **Two `embarch-desk` docs are in reserve after 025** (`tasks/desk/027`, blocked on `In flux: yes`): `decisions/sessions.md` 12,177 of 12,288 B (111 B left) and `spec.md` 9,197 of 10,240 B. You are the actor making the flux, so this is yours: **before extending decision 83, move it verbatim out of `sessions.md` into a new topic file under `decisions/`** (pointer stub and index row, per `DOC-COMPACTION.md` §2's split-first rule; a verbatim split restates nothing). Then extend it there, or add your own decision beside it. Carry 027's `Must not delete:` list (decision 83's contract with the chat; decision 80's **Unverified** note). If `sessions.md` is then out of reserve, delete it from 027's `Compacts:` line and say so in 027's body; keep `spec.md` under its cap and leave 027 open for it if it is still in reserve.
+- 025's reviewer noted that code comments in `src/closeout.rs` and `src/server.rs` cite "decision 77" for the close-out; it is 83 (77 is the per-session desk decision). Fix them while you are in those files.
 - Tests use temporary git repos, a temporary bare remote and a temporary suite root; never the real `.dev-worktrees/`, a real remote or the real desk config.
 - Do not edit `embarch-chat` or anything outside `embarch-desk` and `embarch-doc/embarch-desk/`.
 - Edit files with your Edit and Write tools, not inline Python or shell redirects.
