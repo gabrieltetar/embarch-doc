@@ -1,6 +1,6 @@
 # 014 — My issues and open issues name the team a team-bound desk filtered on
 
-**State:** claimed by agent/desk/014-my-issues-and-open-issues-name-their-scope, 2026-11-09 21:19
+**State:** done
 **Source:** Linear issue EMB-111, filed by a worker while landing `desk/013`
 **Issue:** EMB-111
 **Scope:** desk
@@ -31,6 +31,6 @@ Today both routes build `scope` from `project_name` alone. On a desk bound to a 
 
 ## Done when
 
-- [ ] `/linear/mine` and `/linear/open` answer `scope` as `team <KEY>` on a team-bound desk and as the project name on a project-bound one.
-- [ ] A `cargo test` covers the team-bound case for at least one of them.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `interfaces.md` updated; `changelog.d/` fragment dropped.
+- [x] `/linear/mine` and `/linear/open` answer `scope` as `team <KEY>` on a team-bound desk and as the project name on a project-bound one.
+- [x] A `cargo test` covers the team-bound case for at least one of them.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `interfaces.md` updated; `changelog.d/` fragment dropped.
