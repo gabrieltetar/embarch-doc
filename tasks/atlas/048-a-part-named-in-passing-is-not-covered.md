@@ -1,6 +1,6 @@
 # 048 — A part named in passing on another part's datasheet is not covered by it
 
-**State:** claimed by agent/atlas/048-a-part-named-in-passing-is-not-covered, 2026-11-09 22:02
+**State:** done
 **Source:** Linear issue EMB-30, filed by a session
 **Issue:** EMB-30
 **Scope:** atlas
@@ -34,7 +34,7 @@ A false "covered" is silent: the missing datasheet is never asked for.
 
 ## Done when
 
-- [ ] In that fixture, B is proposed or missing, not covered, and A's file is not its covering document.
-- [ ] A datasheet that names its own part on page 1 or in its title still covers it.
-- [ ] `DESIGN.md` "Covered, proposed, missing" states the rule and `tests/test_matching.py` covers it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] In that fixture, B is proposed or missing, not covered, and A's file is not its covering document.
+- [x] A datasheet that names its own part on page 1 or in its title still covers it.
+- [x] `DESIGN.md` "Covered, proposed, missing" states the rule and `tests/test_matching.py` covers it.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
