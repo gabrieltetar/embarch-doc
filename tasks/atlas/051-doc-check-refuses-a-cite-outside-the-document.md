@@ -1,6 +1,6 @@
 # 051 — `doc check` reports a cite of a page outside the document
 
-**State:** claimed by agent/atlas/051-doc-check-refuses-a-cite-outside-the-document, 2026-11-10 01:20
+**State:** done
 **Source:** Linear issue EMB-120, filed by the supervisor landing `atlas/050`
 **Issue:** EMB-120
 **Scope:** atlas
@@ -34,6 +34,10 @@ An out-of-range cite can never match a real page, so its unit's key reads `missi
 
 ## Done when
 
-- [ ] `doc check` reports a unit that cites a page outside `1..pages`, naming the unit and the page.
-- [ ] A test covers a cite of page 0 and one past the end.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] `doc check` reports a unit that cites a page outside `1..pages`, naming the unit and the page.
+- [x] A test covers a cite of page 0 and one past the end.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Outcome
+
+`doc check` now fails a cite outside `1..pages` as `P:`. **Failure, not warning**: `check.py` already fails a quote cited on the wrong page (A `wrong-page`) and an unanchored prose number (M), and an out-of-range cite can never anchor anything. A record is `failed` with `P: cites page N, outside 1-n`; a card.md / s/*.md cite is listed in `checks.json` `P` and printed as `P <file>: ...`; either makes exit 1. Shared test: `check.out_of_range`, which `freeze` now uses too. A record cite of page 0 is already refused by the schema (`V:`), so page 0 is covered by prose in the test and `out_of_range` unit assertions. A non-PDF source (`pages` 0) is skipped. DESIGN.md `doc check` row amended in place.
