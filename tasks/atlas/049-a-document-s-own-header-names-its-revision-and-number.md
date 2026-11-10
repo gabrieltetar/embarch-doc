@@ -1,6 +1,6 @@
 # 049 — A document's own header names its revision and number, and `doc check` says when K could not run
 
-**State:** claimed by agent/atlas/049-a-document-s-own-header-names-its-revision-and-number, 2026-11-09 22:26
+**State:** done
 **Source:** Linear issue EMB-42, filed by a session
 **Issue:** EMB-42
 **Scope:** atlas
@@ -36,6 +36,10 @@ A document's own header is the best evidence of its identity, and a check that s
 
 ## Done when
 
-- [ ] A first page printing `REV. A` and `DOC NO. 001` gives rev `A` and doc_no `001` in the manifest and in `doc.json`; a test in `tests/test_inventory.py` covers it.
-- [ ] On a document with no MIN/TYP/MAX header, `doc check` states that K did not run, instead of showing no K line.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A first page printing `REV. A` and `DOC NO. 001` gives rev `A` and doc_no `001` in the manifest and in `doc.json`; a test in `tests/test_inventory.py` covers it.
+- [x] On a document with no MIN/TYP/MAX header, `doc check` states that K did not run, instead of showing no K line.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Debts
+
+- A real header of this form has not been read: only synthetic PDFs were used. Run `atlas inventory` and `doc prep` on the real battery-cell datasheet and confirm rev `A` / doc_no `001`.
