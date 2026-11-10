@@ -8,6 +8,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- Check S no longer flags a `×`-joined dimension cell (`1.5 × 2.0`) as packed values; `1.0 2.0` is still flagged (EMB-37).
 - Check U finds a unit on the cited page as a token, not a substring, and no longer reads a CamelCase symbol like LoadReg as an inductance.
 - Check M no longer reads a parenthesised step marker `(1)`, `(2)` as a number to anchor; `(5 V)` still counts.
 - Atlas reads `- 0.3` as -0.3 and `1,000` / `12 000` as one number in checks N, C, M and K; `355 505` stays two columns.
