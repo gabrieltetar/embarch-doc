@@ -9,6 +9,7 @@ is a build coupling, not a scoping preference.
 fleet can build the board workspaces this change alters. The change cannot be verified where it is
 made, which is exactly the condition this field exists for.
 **Owner:** no
+**Announced:** `#embarch-fleet` `ts` `1794312920.762869`, 2026-11-10 05:15, by the leg that split `dev-bench/046`. The window closes at 05:45 with no objection; until then the task stays `open` and parked. A leg that finds this line with the window closed and no reply in that thread may run it without re-announcing.
 
 ## Why this is split, and why the halves are not independently landable
 
