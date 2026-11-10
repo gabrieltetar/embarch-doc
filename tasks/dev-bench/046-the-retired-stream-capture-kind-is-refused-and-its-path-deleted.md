@@ -1,6 +1,6 @@
 # 046 — The retired stream-capture GATT kind is refused, and its capture path is deleted
 
-**State:** open
+**State:** claimed by agent/dev-bench/046-the-retired-stream-capture-kind-is-refused-and-its-path-deleted, 2026-11-10 05:16
 **Source:** `dev-bench/045` (landed 2026-11-10, `embarch-dev-bench` `3daa719`), which derived every other `GattOperation` value from the crate and left this one typed by hand because the decoder still has an arm for it
 **Issue:** EMB-133
 **Scope:** dev-bench
