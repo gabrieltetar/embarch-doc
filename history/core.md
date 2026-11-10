@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Core's study pre-flight now refuses a one-shot monitor step inside an open monitor window, with the crate's message (core decision 90).
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
 ## 2026-10
 

@@ -62,4 +62,4 @@ Raised by the repo owner authoring a real study: **monitor-everything was the on
 
 - **The bracket is static.** Walking `steps` in order, a window opens at a Start, closes at the next `GattMonitorStop`, and a second Start replaces the open one. `continue_on_fail` does not change it. A `Stop` with no open window stays legal (decision 36).
 - **`Study::validate_monitor_windows()`** returns `MonitorWindowError { step, opened_by }` (step indices), opt-in like `validate_wait_budgets` (decision 83). `build_study` refuses the same table as `BuildStudyError::OneShotInOpenMonitorWindow`, naming both rows.
-- **Core's pre-flight does not call it yet.** That is a one-line change in `embarch-core`, filed separately; until then a hand-written study still reaches the bench and fails there.
+- **Core's pre-flight calls it too** (`embarch-core` decision 90), so a hand-written study is refused before dispatch rather than at the bench.
