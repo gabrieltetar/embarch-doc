@@ -1,6 +1,6 @@
 # 040 — Check U finds a unit as a token and reads a symbol whole
 
-**State:** open
+**State:** claimed by agent/atlas/040-check-u-finds-a-unit-as-a-token-and-reads-a-symbol-whole, 2026-11-09 19:46
 **Source:** Linear issue EMB-41, filed by a session
 **Issue:** EMB-41
 **Scope:** atlas
@@ -25,6 +25,12 @@ Filed from distilling a real datasheet. A false pass on U is the worse half: it 
 - `src/embarch_atlas/check.py` `record_checks` — the `U` block, `on_page`
 - `src/embarch_atlas/check.py` `_unit_forms` — the spellings tried
 - `src/embarch_atlas/check.py` `check_unit` — symbol to dimension, `SYM_DIM`, `PARAM_DIM`
+
+## Dispatch notes
+
+- **Burndown leg: no new numbered decision.** Refining an existing `DESIGN.md` decision in place is fine; if the fix needs a new one, stop and say so in this file.
+- No `embarch-atlas` doc is in its size reserve.
+- Close by rewriting the `State:` line so `done` (or `blocked`) is its first word with nothing glued to it — `done,` and a left-over `claimed` are both refused by `check-task-state.py`.
 
 ## Done when
 
