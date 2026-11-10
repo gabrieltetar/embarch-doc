@@ -31,7 +31,11 @@ A decision recorded in a comment the cap cut is missed with nothing to say it wa
 
 ## Done when
 
-- [ ] An issue with more than 25 comments returns a total and says some were not returned, on both account types.
-- [ ] A caller can read the older comments through the desk (a parameter on `linear_get_issue`, or a second tool; your call, recorded in `decisions/` if it is a new choice).
-- [ ] Tests cover the cut and the uncut answer.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` `interfaces.md` updated for the changed answer, `changelog.d/` fragment dropped.
+- [x] An issue with more than 25 comments returns a total and says some were not returned, on both account types.
+- [x] A caller can read the older comments through the desk (a parameter on `linear_get_issue`, or a second tool; your call, recorded in `decisions/` if it is a new choice).
+- [x] Tests cover the cut and the uncut answer.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` `interfaces.md` updated for the changed answer, `changelog.d/` fragment dropped.
+
+## Notes
+
+Parameter (`skip`) chosen over a second tool; recorded as an amendment to decision 59 (burndown, no new decision). Which end each path keeps is **assumed** newest-first (the code already reversed both) and not measured against live Linear: **verify on a thread of more than 25 comments on each account type.** Total counts up to 500 comments, then is a lower bound.
