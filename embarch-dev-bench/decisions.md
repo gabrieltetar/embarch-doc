@@ -14,7 +14,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Frame and step ceilings](decisions/link-limits.md) — the inbound-path FIFO ceiling, the local step-cap divergence, and a cap refusal said out loud | 30, 35, 51 | 6.0 KB |
 | [BLE pairing and security](decisions/ble.md) — connection-count enforcement, hard-reset teardown, pairing, security elevation | 11, 15, 33, 34, 37 | 7.8 KB |
 | [Addressing and scan-time discovery](decisions/scanning.md) — the bench's own address, GATT UUID byte order, name filtering, the advertiser census and its tested `fail_reason` | 17, 23, 31, 32, 44, 45, 46, 52 | 10.8 KB |
-| [Dispatching a study](decisions/dispatch.md) — steps, discovery, the monitor actions arriving | 14, 21, 22, 27 | 6.3 KB |
+| [Dispatching a study](decisions/dispatch.md) — steps, discovery, the monitor actions arriving, the TX buffer holding only what the bench sends | 14, 21, 22, 27, 57 | 7.3 KB |
 | [Monitoring windows](decisions/monitoring.md) — a window that spans steps, a subscription that did not land, and the steps inside an open window | 28, 54, 55 | 7.1 KB |
 | [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed, a record that holds a full-MTU transcript entry and connection rows | 29, 40, 42, 53 | 10.0 KB |
 | [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter, and the indices it checks | 41, 50 | 7.3 KB |

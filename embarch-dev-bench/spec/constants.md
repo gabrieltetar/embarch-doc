@@ -23,4 +23,4 @@ Split verbatim from [../spec.md](../spec.md) §5 (`tasks/dev-bench/040`), when t
 | `CONFIG_LOG_BUFFER_SIZE` | 1 KB | [measured] a `Debug` burst overruns it and says so (`N record(s) dropped`) |
 | disconnect wait | 2 s | [assumed] far longer than a local disconnect needs; timing out leaves the prior behaviour |
 
-**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **88.10%** [measured, dev-bench tasks 042 and 010] of 378,384 B, including 960 B for decision 55's copied monitor labels, and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](../open.md)). The nRF54L15DK is far roomier: FLASH 19.19%, RAM 60.04% of 256 KB [measured, dev-bench tasks 042 and 010].
+**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **81.51%** [measured, dev-bench/017] of 378,384 B, including 960 B for decision 55's copied monitor labels, after decision 57 took `StudyStart` out of `tx_scratch`. The nRF54L15DK is far roomier: FLASH 19.04%, RAM 50.53% of 256 KB [measured, dev-bench/017].

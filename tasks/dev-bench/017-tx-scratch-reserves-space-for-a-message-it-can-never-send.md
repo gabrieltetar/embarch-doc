@@ -1,6 +1,6 @@
 # 017 — `tx_scratch` reserves ~15.7 KB for a `dbm_study_start` the bench can never transmit
 
-**State:** claimed by agent/dev-bench/017-tx-scratch-reserves-space-for-a-message-it-can-never-send, 2026-11-10 06:00
+**State:** done
 **Source:** `embarch-dev-bench/open.md:38` — "the single largest remaining lever on ESP32-C5 SRAM";
 decision 38 explains why the buffer is sized by its largest member today. Surfaced by leg 076's
 refill sweep.
@@ -31,17 +31,18 @@ something else grows into the room it was hiding.
 
 ## Done when
 
-- [ ] A TX-only message type excludes `StudyStart` (and any other RX-only variant) from the union
+- [x] A TX-only message type excludes `StudyStart` (and any other RX-only variant) from the union
       `tx_scratch` is sized by.
-- [ ] The ESP32-C5 build's SRAM figure is captured before and after and **both numbers are in the
+- [x] The ESP32-C5 build's SRAM figure is captured before and after and **both numbers are in the
       `changelog.d` fragment**, not just the delta.
-- [ ] Existing bench tests pass on `native_sim`.
-- [ ] Decision 38 is superseded, saying what the sizing rule is now.
-- [ ] Re-confirming a real study still runs on the bench board is a **separate** debt — record it in
+- [x] Existing bench tests pass on `native_sim`.
+- [x] Decision 38 is superseded, saying what the sizing rule is now. **Extended, not superseded:**
+      nothing in 38 became false (it sized the RX buffer); decision 57 applies its rule to TX.
+- [x] Re-confirming a real study still runs on the bench board is a **separate** debt (logged) — record it in
       the log entry rather than claiming it done. The evidence this task requires is the
       `native_sim` run and the size report, both of which need the Zephyr toolchain named above.
-- [ ] `embarch-dev-bench/open.md` is at 4,782/5,120 B and `spec.md` at 9,460/10,240 B — **both in
+- [x] `embarch-dev-bench/open.md` is at 4,782/5,120 B and `spec.md` at 9,460/10,240 B — **both in
       reserve**, with `tasks/dev-bench/012-compact-dev-bench.md` parked against them. Do not file a
       second compaction task for either.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment; `status.d/` fragment for anything suite-level this makes false.

@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-How a `Study` becomes executed steps, the discovery and monitoring actions, and the first SRAM overflow they cost. The capture window, the second overflow, and what a monitor subscription that failed means (28, 54, 55) are in [monitoring.md](monitoring.md).
+How a `Study` becomes executed steps, the discovery and monitoring actions, the first SRAM overflow they cost, and the outbound buffer sized by what the bench sends (57). The capture window, the second overflow, and what a monitor subscription that failed means (28, 54, 55) are in [monitoring.md](monitoring.md).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -29,3 +29,8 @@ The decode layer gained a tagged union covering all five action kinds, so dispat
 **A real gap folded back rather than worked around:** the milestone plan named the *FFI* decode surface as the thing needing extension. It didn't — that surface decodes a `Study`, not the `StudyStart` this firmware receives, and dispatch has never called it, so extending it would have been real tested work that dispatch still would not exercise. The extension actually needed was the hand-written decode. **Left exactly as it was rather than extended for symmetry with no caller.**
 
 *Unresolved:* a real flake rate on the connect-and-discover path — of four attempts, two failed before a clean result, and successful runs reported different live service counts for the identical build, suggesting the wildcard walk's completion is timing-sensitive against this DUT. Not root-caused; would need BLE-stack-level tracing.
+
+### 57 — The shared `tx_scratch` holds only what the bench sends
+Decision 27's one shared outbound buffer was a `struct dev_bench_message`, whose union is sized by `StudyStart`, a message only Core sends. It is now a `struct dev_bench_tx_message`, whose union lists the seven variants the bench sends from the same macro the full type uses, so the two cannot disagree. `dbm_encode_tx_frame` encodes it into a staging buffer sized by `DBM_MAX_OUTBOUND_RAW_LEN`; `dbm_encode_frame` keeps `StudyStart`'s bound for the round-trip tests and is no longer linked into the firmware. Both dispatch to one encoder per variant, and a ztest holds them to the same bytes. This is decision 38's RX finding applied to TX: size the application's buffers by what crosses the link, and leave the general codec general.
+
+**Measured** (`dev-bench/017`): ESP32-C5 `sram0_0_seg` 333,360 to 308,432 B (88.10% to 81.51%); nRF54L15DK RAM 157,384 to 132,464 B (60.04% to 50.53%). About 15.7 KB is the buffer; the rest is the encoder's staging buffer.
