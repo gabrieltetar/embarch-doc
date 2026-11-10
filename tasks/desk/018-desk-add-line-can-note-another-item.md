@@ -1,6 +1,6 @@
 # 018 — `desk_add_line` can put a note on another work item
 
-**State:** open
+**State:** claimed by agent/desk/018-desk-add-line-can-note-another-item, 2026-11-10 02:49
 **Source:** Linear issue EMB-82
 **Issue:** EMB-82
 **Scope:** desk
