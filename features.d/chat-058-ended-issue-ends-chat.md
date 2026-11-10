@@ -1,0 +1,1 @@
+| A Done or Canceled issue ends its chat: the message on top, one Close window button, input closed for good across a reload; an unfinished issue lists its blockers with Finish | Shipped host-side against the desk's contract; waits on `embarch-desk` 025 to send it | unit | 104 |

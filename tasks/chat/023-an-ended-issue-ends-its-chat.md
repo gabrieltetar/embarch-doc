@@ -1,6 +1,6 @@
 # 023 — An ended issue ends its chat
 
-**State:** claimed by agent/chat/023-an-ended-issue-ends-its-chat, 2026-11-10 06:16
+**State:** done, 2026-11-10 — branch agent/chat/023-an-ended-issue-ends-its-chat
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** chat
@@ -53,9 +53,19 @@ EMB-73: a landing that deleted the folder under a live chat left the chat unreac
 
 ## Done when
 
-- [ ] An `end` shows the exact message for its outcome on top of the issue's chat, with one Close window button, and the input closes; a test covers done and canceled.
-- [ ] With a turn running, the message and the closed input wait for the turn to end; a test covers it.
-- [ ] After a window reload the chat is still ended and does not resume its session; a second `end` changes nothing.
-- [ ] An `unfinished` shows each blocker and a Finish button that calls `POST /items/{item_id}/finish`, and the chat stays live; a test covers it.
-- [ ] A new `embarch-chat` decision records the behaviour; `interfaces.md` lists the two kinds and the route; `spec.md` updated.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the npm bullet); `changelog.d/` fragment dropped.
+- [x] An `end` shows the exact message for its outcome on top of the issue's chat, with one Close window button, and the input closes; a test covers done and canceled.
+- [x] With a turn running, the message and the closed input wait for the turn to end; a test covers it.
+- [x] After a window reload the chat is still ended and does not resume its session; a second `end` changes nothing.
+- [x] An `unfinished` shows each blocker and a Finish button that calls `POST /items/{item_id}/finish`, and the chat stays live; a test covers it.
+- [x] A new `embarch-chat` decision records the behaviour; `interfaces.md` lists the two kinds and the route; `spec.md` updated.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the npm bullet); `changelog.d/` fragment dropped.
+
+## Done
+
+`embarch-chat` decision 104 (decisions/desk.md). Contract implemented as written, no change to it. Choices the task left open: with no page showing the issue's chat, the window **opens the issue's newest chat** (this window's, else the desk's newest thread on the item, read-only); with none at all it shows the same text and button as a VS Code notification. An `unfinished` is kept across a reload like an `end`; an `unfinished` after an `end` changes nothing.
+
+Tests: `test/ending.test.mjs` (unit, no desk), two checks in `test/host.test.mjs` (a stand-in for the desk's side in front of the scratch desk, because the scratch desk binary predates `outcome` and `blockers` and drops them from a seeded entry), two in `test/webview.e2e.mjs`. The turn-running hold is covered by the unit test only: the host tests' fake `claude` replays a whole turn at once.
+
+**Not mine, found:** `host.test.mjs` "the page asks for ghost text and cards" fails on `main` too (checked by stashing this branch): the cards call does not run. Unrelated to this task.
+
+**Hardware-verification debt:** none. **Live-desk debt:** nothing sends `end`/`unfinished` until `tasks/desk/025` lands; then one end-to-end run against a real desk and a real VS Code window (Close window closes it; the folder goes only through 026).
