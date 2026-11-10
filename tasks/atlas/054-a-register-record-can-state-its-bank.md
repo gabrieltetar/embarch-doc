@@ -1,6 +1,6 @@
 # 054 — A register record can state its bank, and lookups key on bank and address
 
-**State:** open
+**State:** claimed by agent/atlas/054-a-register-record-can-state-its-bank, 2026-11-10 01:49
 **Source:** Linear issue EMB-46, filed by a session
 **Issue:** EMB-46
 **Scope:** atlas
