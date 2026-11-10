@@ -33,7 +33,13 @@ A live read of a paged part's banked register returns a value from the wrong pag
 
 ## Done when
 
-- [ ] A record states how a bank is selected on the part, in the schema and `DESIGN.md`.
-- [ ] `ext_reg_read` selects the bank, reads and restores the previous page, behind an explicit opt-in, with tests against the fake shell (opt-in absent, present, read failing).
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A record states how a bank is selected on the part, in the schema and `DESIGN.md`.
+- [x] `ext_reg_read` selects the bank, reads and restores the previous page, behind an explicit opt-in, with tests against the fake shell (opt-in absent, present, read failing).
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
 - [ ] Verified on a board with a paged part (debt, recorded at the fold).
+
+## Done
+
+`bus.bank_select` = `{reg, values: {<bank>: <value>}}` (schema, `records.py`, DESIGN.md in place). Opt-in `allow_bank_select` (CLI `--allow-bank-select`; MCP `reg_read_bank`, a write tool). Sequence: `read_byte` of the select register (previous page, once), `write_byte` bank value, reads, `write_byte` previous page back, in every exit path. Tests in `tests/test_live.py` against the fake shell (extended with `write_byte` and `_fail`).
+
+**Hardware-verification debt:** run `embarch-atlas live reg-read <label>.<REG>@<bank> --allow-bank-select` on a board with a paged I2C part whose `bus` record states `bank_select`; confirm the value is from the bank and the page register reads its old value afterwards. Assumes an 8-bit, readable select register.
