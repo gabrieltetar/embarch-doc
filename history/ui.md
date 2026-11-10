@@ -8,6 +8,9 @@
 - embarch-ui's README points at embarch-chat's launcher and describes its status bar states.
 - embarch-ui: spec.md and open.md compacted by moving role/catalog invariants and trace open items to spec/roles.md and open/trace.md.
 - A tab.toml must name label, icon (an .svg) and panel; a tab missing one is left off the page and logged.
+
+### Fixed
+- The Desk tab's Pick up title and empty note say "no card on the board": the list also shows an issue whose card the view window hides (EMB-115).
 ## 2026-10
 
 ### Added
