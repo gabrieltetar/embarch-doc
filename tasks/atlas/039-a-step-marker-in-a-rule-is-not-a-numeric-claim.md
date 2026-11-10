@@ -1,6 +1,6 @@
 # 039 — A step marker in a rule is not a numeric claim
 
-**State:** open
+**State:** claimed by agent/atlas/039-a-step-marker-in-a-rule-is-not-a-numeric-claim, 2026-11-09 19:24
 **Source:** Linear issue EMB-38, filed by a session
 **Issue:** EMB-38
 **Scope:** atlas
