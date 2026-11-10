@@ -1,7 +1,6 @@
 # 027 — `embarch-desk/spec.md` is in reserve
 
-**State:** blocked — `In flux: yes`.
-**Unparks when:** `tasks/chat/023` lands, the close-out's last half (the folder removal landed 2026-11-10, desk `1997108`, decision 84 in the same spec paragraph).
+**State:** open — the close-out is whole: desk `9a32975` and `1997108`, chat `9162e45` all landed 2026-11-10
 **Source:** `desk/025` added decision 83 and left sessions.md at 12,177 of 12,288 B and spec.md at 9,197 of 10,240 B.
 **Scope:** desk
 **Hardware:** none
@@ -9,7 +8,7 @@
 
 **Compacts:** embarch-desk/spec.md
 **Size debt due:** 2026-11-17
-**In flux:** yes. The close-out is two-thirds built (026 removes the folder, the chat's 023 acts on the entries); compacting decision 83 first would restate what 026 amends.
+**In flux:** no. All three halves of the close-out landed 2026-11-10; a live run is still owed, and a change it forces would amend decisions 83 and 84 in `decisions/closeout.md`, not `spec.md`'s paragraph wholesale.
 **Must not delete:** decision 83's contract with the chat (the `end` and `unfinished` fields, no expiry on the launch clock, `/items/{id}/finish`), and decision 80's **Unverified** note.
 
 ## Update (desk/026, 2026-11-10)

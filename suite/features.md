@@ -253,6 +253,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A background agent's card shows the subagent's report under a collapsed "Report", not the launch reply — from the hand-back line, else the subagent's last reply | Shipped, installed 2026-10-26 — **the hand-back was never seen on the live wire; only its transcript shape (CLI 2.1.287) and the last-reply fallback are recorded** | unit, local | 90 |
 | Two Claude logins at once: machine settings give a folder its login and desk, a status-bar picker changes the login for new chats, and a chat keeps its login for life | Shipped, installed 2026-11-03 | live on real chats in both kinds of window; a token refresh not observed | 101 |
 | An agent hands its chat to a fresh session in the same panel: `handoff(prompt)` on the panel's own MCP server, as an editable card (Continue / Stay), immediate, or off | Built, not installed — **not seen in a live panel or with a real `claude` calling the tool** | unit | 103 |
+| A Done or Canceled issue ends its chat: the message on top, one Close window button, input closed for good across a reload; an unfinished issue lists its blockers with Finish | Shipped host-side against the desk's contract; waits on `embarch-desk` 025 to send it | unit | 104 |
 
 ## Not yet a sub-project
 

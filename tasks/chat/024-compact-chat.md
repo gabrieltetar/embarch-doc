@@ -1,7 +1,7 @@
 # 024 — `embarch-chat/spec.md` is in reserve
 
 **State:** blocked — `In flux: yes`.
-**Unparks when:** `tasks/desk/025` and `tasks/desk/026` have landed and the chat's side of an ended issue has run once against a real desk.
+**Unparks when:** the owner's word that an ended issue's chat has run once against a real desk and window (both desk halves landed 2026-11-10, desk `9a32975` and `1997108`), or the due date, whichever comes first.
 **Source:** `chat/023` added a spec line for an ended issue's chat and left spec.md at 9,373 of 10,240 B.
 **Scope:** chat
 **Hardware:** none
