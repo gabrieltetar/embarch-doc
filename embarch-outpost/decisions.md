@@ -13,10 +13,12 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [What gets traced](decisions/tracing.md) — kernel hooks, GPIO dispatch, and keeping itself out of its own trace | 2, 19, 25 |
 | [Manual markers](decisions/markers.md) — build-registered IDs, and the manifest table that keeps getting deleted | 6 |
 | [Naming what the wire reports](decisions/naming.md) — a pointer and a vector number become names | 7, 8 |
-| [The transport](decisions/transport.md) — a lock-free ring, overflow, and the drain loop's fixed point | 3, 5, 20, 28 |
+| [The transport](decisions/transport.md) — a lock-free ring and the drain loop's fixed point | 3, 20 |
+| [Overflow](decisions/overflow.md) — drop, count, say so, and block only by opt-in | 5, 28 |
 | [The record layout](decisions/layout.md) — three layouts in three days, and what each traded | 5 |
 | [Two clocks](decisions/clocks.md) — which measures, which places, and a join that refuses | 17, 18 |
-| [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable, and an operator's override for both post-hoc refusals | 9, 24, 29 |
+| [The manifest](decisions/manifest.md) — what makes IDs on the wire acceptable, and how the build ID is cut | 9, 29 |
+| [The operator's override](decisions/override.md) — one explicit flag past either post-hoc refusal | 24 |
 | [Capture and routing](decisions/capture.md) — study-scoped, post-hoc, carrier as a bench fact | 10, 11, 12, 13 |
 | [The bench](decisions/hardware.md) — the first consumer, and the wire that turned out not to exist | 15, 16 |
 | [One wire vocabulary](decisions/wire.md) — one definition, and a check over the other three copies | 23 |

@@ -1,6 +1,6 @@
 # 029 — `embarch-outpost/decisions/transport.md` and `decisions/manifest.md` are in reserve
 
-**State:** claimed by agent/outpost/029-compact-outpost, 2026-11-10 12:53
+**State:** done
 **Source:** `outpost/027` added decisions 28 and 29 and left transport.md at 7,908 of 8,192 B and manifest.md at 7,350 of 8,192 B.
 **Scope:** outpost
 **Hardware:** none
@@ -30,8 +30,16 @@ Split the two decision files by mission, verbatim, so both leave reserve.
 
 ## Done when
 
-- [ ] Both files are clear of reserve, or a successor re-files with a concrete plan.
-- [ ] Removed lines match added lines apart from headers, pointer lines and index rows.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Both files are clear of reserve, or a successor re-files with a concrete plan.
+- [x] Removed lines match added lines apart from headers, pointer lines and index rows.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Shipped
+
+Verbatim split by mission. Decisions 5 and 28 moved to `decisions/overflow.md` (transport.md 7,908 -> 5,402 B), decision 24 to `decisions/override.md` (manifest.md 7,350 -> 5,666 B); both leave reserve. One-line pointers stay where each left, the index row is split in `decisions.md`, and the one inbound link to 24 (`decisions/clocks.md`) now points at `override.md`. Other inbound links (spec.md line 79 -> decision 20, wire.md and open.md -> decision 9, glossary) still land on a decision that did not move. No code comment cites a moved decision by file (`grep` over `embarch-outpost`, read-only). `check-duplication.py outpost` clean beforehand.
+
+How the verbatim claim was checked: `git diff -U0` shows removed lines match the moved bodies; `comm -13` of the sorted unique lines of the old files against the two new files leaves only the new file headers, intro and index lines. The only edits to moved-adjacent text are the pointer lines, the "decision 24" sentence at the end of decision 9 (now links `override.md`) and the link in clocks.md. Must-not-delete items intact: decision 9 whole in manifest.md; decision 28's measured-on-native_sim-only note in overflow.md.
+
+spec.md question: it answers current behaviour and how to work on the component; why a rule holds is in decisions/, reached by the index.
