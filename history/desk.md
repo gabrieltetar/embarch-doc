@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The desk flags a folder whose Claude login lacks `embarch-api` and tells its session the `claude mcp add` command; it never writes `.claude.json` ([82](../embarch-desk/decisions/desks.md)).
 - embarch-desk reads an issue's images and files: `linear_get_issue` lists them under `files`, `linear_get_file` fetches one it lists (EMB-14, decision 81).
 - Start work in a west workspace sets ZEPHYR_MODULES in the worktree's local settings, so a build there reads the worktree's module files, not the main clone's (embarch-desk 80).
 - embarch-desk gains linear_list_issues, which lists a team's issues in a named state in any connected workspace; agents never fall back to Claude's Linear connector (decision 79).
