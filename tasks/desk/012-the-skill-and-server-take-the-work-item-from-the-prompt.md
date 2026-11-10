@@ -1,6 +1,6 @@
 # 012 — The desk skill and the server instructions take the work item from the prompt first
 
-**State:** claimed by agent/desk/012-the-skill-and-server-take-the-work-item-from-the-prompt, 2026-11-09 20:34
+**State:** done
 **Source:** Linear issue EMB-105, filed by a reviewer of `tasks/desk/009`
 **Issue:** EMB-105
 **Scope:** desk
@@ -35,6 +35,6 @@ A session reads the skill and the server instructions as well as the hook, so it
 
 ## Done when
 
-- [ ] The skill's work-item step, the server instructions and both tool replies say a key in the prompt or a handoff is taken before the user is asked.
-- [ ] None of them tells a session to ask when a valid key is already present.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated if they quote the old wording; `changelog.d/` fragment dropped.
+- [x] The skill's work-item step, the server instructions and both tool replies say a key in the prompt or a handoff is taken before the user is asked.
+- [x] None of them tells a session to ask when a valid key is already present.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `embarch-desk` docs updated if they quote the old wording; `changelog.d/` fragment dropped.
