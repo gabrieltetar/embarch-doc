@@ -1,6 +1,6 @@
 # 082 — A one-shot monitor inside an open window is refused when the study is built
 
-**State:** open
+**State:** claimed by agent/study-designer/082-a-one-shot-monitor-inside-an-open-window-is-refused-when-the-study-is-built, 2026-11-10 04:30
 **Source:** `embarch-dev-bench` decision 55 (`tasks/dev-bench/042`, landed 2026-11-10), which refuses the step at run time
 **Issue:** EMB-131
 **Scope:** study-designer
