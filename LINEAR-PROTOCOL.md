@@ -1,6 +1,6 @@
 # embarch-doc: Linear issues and comments
 
-**Status:** active, 2026-11-05. The shapes every issue and comment in the EmbArch Linear workspace (team `EMB`) takes, whoever writes it: the owner, an interactive session, a fleet leg, a worker, a reviewer, an audit. `scripts/fleet-linear.py` in the framework repo enforces it: `file` and `rewrite` refuse a body that breaks §2–3, and `lint` checks every open issue. A client's workspace is not covered; text going there follows the `gabriel-voice` skill alone.
+**Status:** active, 2026-11-05. The shapes every issue and comment in the EmbArch Linear workspace (team `EMB`) takes, whoever writes it: the owner, an interactive session, a fleet leg, a worker, a reviewer, an audit. `scripts/fleet-linear.py` in the framework repo enforces it: `file` and `rewrite` refuse a body that breaks §2–3, and `lint` checks every open issue. **Nothing it sends names a client** (owner's call, 2026-11-10): every issue, edit and comment is read against the client-name denylist first, since the fleet copies an issue into public task files, and a hit or a dark denylist sends nothing. A client's workspace is not covered; text going there follows the `gabriel-voice` skill alone.
 
 ## 1. Three rules behind every shape
 
