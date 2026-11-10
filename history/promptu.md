@@ -8,5 +8,6 @@
 - Promptu's pass accepts the chat's context usage (prep --context-usage) and names a way in Who does it for high-context work, footer way=; see contract §7.10.
 
 ### Changed
+- Promptu decision 39 retired: the chat's handoff card and chip are gone (embarch-chat 36, 97).
 - Promptu decision 40 amended: the rail's icons are one-colour SVGs, not emoji, following chat 94 (EMB-56).
 - promptu I2 on a header-less MEMORY.md now says the first `## <domain>` header may be added in the same write (decision 21).
