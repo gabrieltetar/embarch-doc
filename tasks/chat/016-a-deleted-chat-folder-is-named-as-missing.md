@@ -1,6 +1,6 @@
 # 016 — A chat whose folder was deleted says the folder is missing, not "claude not found"
 
-**State:** claimed by agent/chat/016-a-deleted-chat-folder-is-named-as-missing, 2026-11-09 20:57
+**State:** done
 **Source:** Linear issue EMB-75, filed by a session
 **Issue:** EMB-75
 **Scope:** chat
@@ -31,6 +31,6 @@ Found while tracing a chat that could not be answered after its landing deleted 
 
 ## Done when
 
-- [ ] With the chat's folder deleted, sending a message shows an error naming the missing folder, not `claude not found`.
-- [ ] A test covers a resume into a folder that no longer exists.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated where they describe the error, `changelog.d/` fragment dropped.
+- [x] With the chat's folder deleted, sending a message shows an error naming the missing folder, not `claude not found`.
+- [x] A test covers a resume into a folder that no longer exists.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated where they describe the error, `changelog.d/` fragment dropped.
