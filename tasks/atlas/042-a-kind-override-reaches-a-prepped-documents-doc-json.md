@@ -1,6 +1,6 @@
 # 042 — A kind override reaches a prepped document's doc.json
 
-**State:** claimed by agent/atlas/042-a-kind-override-reaches-a-prepped-documents-doc-json, 2026-11-09 20:17
+**State:** done, agent/atlas/042-a-kind-override-reaches-a-prepped-documents-doc-json, 2026-11-09
 **Source:** Linear issue EMB-31, filed by a session
 **Issue:** EMB-31
 **Scope:** atlas
@@ -31,7 +31,7 @@ Filed from distilling real documents: an override looked applied and was not.
 
 ## Done when
 
-- [ ] After `missing --kind` on a prepped document, `doc.json`'s `kind` equals the manifest's, or the command prints that `doc prep` is needed and for which document.
-- [ ] The same for `missing --confirm reference-manual`.
-- [ ] A test in `tests/test_matching.py` or `tests/test_inventory.py` covers the prepped and the not-yet-prepped case, on a synthetic PDF.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it describes the override; `changelog.d/` fragment dropped.
+- [x] After `missing --kind` on a prepped document, `doc.json`'s `kind` equals the manifest's, or the command prints that `doc prep` is needed and for which document.
+- [x] The same for `missing --confirm reference-manual`.
+- [x] A test in `tests/test_matching.py` or `tests/test_inventory.py` covers the prepped and the not-yet-prepped case, on a synthetic PDF.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it describes the override; `changelog.d/` fragment dropped.
