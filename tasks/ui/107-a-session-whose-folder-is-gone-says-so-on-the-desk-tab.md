@@ -1,6 +1,6 @@
 # 107 — A Desk tab session row whose folder is gone says so
 
-**State:** claimed by agent/ui/107-a-session-whose-folder-is-gone-says-so-on-the-desk-tab, 2026-11-09 22:26
+**State:** done
 **Source:** Linear issue EMB-117, filed by a worker
 **Issue:** EMB-117
 **Scope:** ui
@@ -28,6 +28,6 @@ A user looking for a chat whose folder a landing deleted sees the row lose its b
 
 ## Done when
 
-- [ ] A session row whose `folder_missing` is true says its folder is gone where its Jump or chat button would be.
-- [ ] A row whose folder exists is unchanged.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] A session row whose `folder_missing` is true says its folder is gone where its Jump or chat button would be.
+- [x] A row whose folder exists is unchanged.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
