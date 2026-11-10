@@ -1,6 +1,6 @@
 # 021 — Six chat host tests fail against the local desk binary, and the gate skips them
 
-**State:** claimed by agent/chat/021-six-host-tests-fail-against-the-local-desk-binary, 2026-11-09 22:58
+**State:** done
 **Source:** Linear issue EMB-118, filed by the worker on `chat/013`
 **Issue:** EMB-118
 **Scope:** chat
@@ -32,8 +32,14 @@ A test the gate never runs protects nothing, and five units of chat work have la
 - Whether the fleet's chat gate should run these with a desk binary is a gate rule, and `gate.md` is not yours; if you think it should, say so in your report, not in a doc.
 - Burndown is on: no new numbered decision.
 
+## Cause
+
+Not the desk, and not a stale binary for five of the six. Against the `main`-built desk (`4b83b5e`) the first run was 55 pass, 5 fail (Start work with Promptu passed: the one the older desk binary broke). The five are one test-side fault: a chat's process environment is taken when the chat is created (`ChatManager.create` calls `env: s.env?.()`; a reload restores the same way), but each test started its chat on `basic` or `deny` and **then** set `process.env.FAKE_CLAUDE_FIXTURE` (or `FAKE_CLAUDE_INPUT_LOG`) for the real recording. The fake CLI therefore replayed the wrong session and the expected prompt never came (the 5 s timeouts). Fixed in `test/host.test.mjs` only: `startUntracked` takes an absolute recording path, and the five tests name their recording there (hunks, planauto, permdest, the slow start); the reload-queue test sets its input log before `reload`. Result: 60 pass, 0 fail with `EMBARCH_DESK_BIN` set; `npm test` 261 pass, 76 skipped without it. No desk bug to file.
+
+Suggestion for the supervisor, not a doc edit: `gate.md` runs chat's `npm test` without `EMBARCH_DESK_BIN`, so these 60 skip. A desk binary built outside every tree (as for this task) would let the gate run them.
+
 ## Done when
 
-- [ ] The cause is named in this file, then fixed or filed as a bug.
-- [ ] `test/host.test.mjs` passes against a desk built from `main`, or each test still failing names the filed bug that owns it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] The cause is named in this file, then fixed or filed as a bug.
+- [x] `test/host.test.mjs` passes against a desk built from `main`, or each test still failing names the filed bug that owns it.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
