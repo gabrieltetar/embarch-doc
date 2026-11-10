@@ -1,6 +1,6 @@
 # 011 — An Edit or Write diff in the timeline is one line until opened
 
-**State:** claimed by agent/chat/011-the-inline-diff-is-one-line-until-opened, 2026-11-09 20:34
+**State:** done
 **Source:** Linear issue EMB-58, filed by the owner
 **Issue:** EMB-58
 **Scope:** chat
@@ -31,7 +31,11 @@ The owner asked for it.
 
 ## Done when
 
-- [ ] An Edit or Write in the timeline shows one line with the file and `+N −M`, and expands in place on click.
-- [ ] A permission card for an Edit or Write still shows its diff open.
-- [ ] An e2e test covers both.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped.
+- [x] An Edit or Write in the timeline shows one line with the file and `+N −M`, and expands in place on click.
+- [x] A permission card for an Edit or Write still shows its diff open.
+- [x] An e2e test covers both.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `embarch-chat` docs updated, `changelog.d/` fragment dropped.
+
+## Notes
+
+Done: `ToolViewInner` no longer opens an Edit/Write row by default; the permission card's `DiffView` is unchanged. Decision 8 amended (no new decision). e2e "Edit and Write show diffs" covers closed, open, closed again; the card test (decision 64) covers the card staying open. One unrelated flake seen once ("a long chat sticks to the bottom") and green on 3 reruns.

@@ -8,7 +8,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 ### 8 — Day one matched Claude Code's panel: approve, stop and stream; diffs; @-file mentions
 
-Permission prompts, Stop, streamed text, the mode switch. **Claude's questions and a plan's approval count as approve** — on the wire both are permission requests — and show as forms, with options and previews or the plan. An Edit or Write shows as a diff and opens VS Code's diff editor on a click. @ completes a workspace path, with the selected lines, and the CLI inlines it. **Also day one:** a context meter in the header with a Compact button, and a subagent's steps nested under its call. What this left for later — pasted images and rewind — followed (56, 73).
+Permission prompts, Stop, streamed text, the mode switch. **Claude's questions and a plan's approval count as approve** — on the wire both are permission requests — and show as forms, with options and previews or the plan. An Edit or Write shows as a diff and opens VS Code's diff editor on a click; **in the timeline it is one line — the file and `+N −M` — until a click opens it in place and a second closes it (EMB-58, amended), while a permission card keeps its diff open for the decision**. @ completes a workspace path, with the selected lines, and the CLI inlines it. **Also day one:** a context meter in the header with a Compact button, and a subagent's steps nested under its call. What this left for later — pasted images and rewind — followed (56, 73).
 
 ### 50 — A step says what the agent is doing, and quiet steps fold
 
