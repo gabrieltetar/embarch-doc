@@ -1,6 +1,6 @@
 # 011 — An Edit or Write diff in the timeline is one line until opened
 
-**State:** open
+**State:** claimed by agent/chat/011-the-inline-diff-is-one-line-until-opened, 2026-11-09 20:34
 **Source:** Linear issue EMB-58, filed by the owner
 **Issue:** EMB-58
 **Scope:** chat
