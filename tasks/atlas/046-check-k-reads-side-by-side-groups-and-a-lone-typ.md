@@ -1,6 +1,6 @@
 # 046 — Check K reads side-by-side MIN/TYP/MAX groups and a lone TYP column
 
-**State:** open
+**State:** claimed by agent/atlas/046-check-k-reads-side-by-side-groups-and-a-lone-typ, 2026-11-09 21:05
 **Source:** Linear issue EMB-35, filed by a session
 **Issue:** EMB-35
 **Scope:** atlas
