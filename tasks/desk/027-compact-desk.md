@@ -1,7 +1,7 @@
 # 027 — `embarch-desk/spec.md` is in reserve
 
 **State:** blocked — `In flux: yes`.
-**Unparks when:** `tasks/desk/026` has landed (it did the removal, decision 84, in the same spec paragraph) and the owner confirms the close-out stopped moving, i.e. the chat's `tasks/chat/023` has landed too.
+**Unparks when:** `tasks/chat/023` lands, the close-out's last half (`desk/026` landed 2026-11-10, desk `1997108`, with decision 84 in the same spec paragraph).
 **Source:** `desk/025` added decision 83 and left sessions.md at 12,177 of 12,288 B and spec.md at 9,197 of 10,240 B.
 **Scope:** desk
 **Hardware:** none

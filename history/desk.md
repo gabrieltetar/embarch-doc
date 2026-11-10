@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-desk removes a Done or Canceled issue's folder, worktrees and branches once no chat window polls for it (embarch-desk decision 84).
 - embarch-desk: an issue moved to Done or Canceled leaves `end` or `unfinished` for its window; `POST /items/{id}/finish`, `close_out` on cards ([decision 83](../embarch-desk/decisions/sessions.md)).
 - The desk flags a folder whose Claude login lacks `embarch-api` and tells its session the `claude mcp add` command; it never writes `.claude.json` ([82](../embarch-desk/decisions/desks.md)).
 - embarch-desk reads an issue's images and files: `linear_get_issue` lists them under `files`, `linear_get_file` fetches one it lists (EMB-14, decision 81).
