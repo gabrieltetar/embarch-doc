@@ -1,6 +1,6 @@
 # 017 — The chat gives Promptu's pass its context usage
 
-**State:** open — unparked 2026-11-09 by `promptu/002`'s fold: the input is `promptu prep --context-usage <0-100>`, defined in `embarch-promptu` `docs/contract.md` §7.10 (embarch-promptu `95f0d69`); without it the pass judges from the text alone.
+**State:** claimed by agent/chat/017-promptu-is-given-the-chats-context-usage, 2026-11-09 19:47 — unparked 2026-11-09 by `promptu/002`'s fold: the input is `promptu prep --context-usage <0-100>`, defined in `embarch-promptu` `docs/contract.md` §7.10 (embarch-promptu `95f0d69`); without it the pass judges from the text alone.
 **Source:** Linear issue EMB-65, filed by the owner; `embarch-promptu` decision 41 (owner, 2026-11-07)
 **Issue:** EMB-65
 **Scope:** chat
@@ -28,6 +28,9 @@ This is the chat half of EMB-65. Today `beginPromptu` passes only the rough text
 
 - **`embarch-promptu` is not yours.** If the contract does not fit what the chat can pass, report that; do not change Promptu.
 - When this lands, `tasks/chat/018` unparks: the folding supervisor sets it `open` in the same fold.
+- **Burndown leg: no new numbered decision.** Amending an existing `embarch-chat` decision in place is fine; if the work needs a new one, stop and say so in this file.
+- No `embarch-chat` doc is in its size reserve.
+- Close by rewriting the `State:` line so `done` (or `blocked`) is its first word with nothing glued to it — `done,` and a left-over `claimed` are both refused by `check-task-state.py`.
 
 ## Done when
 
