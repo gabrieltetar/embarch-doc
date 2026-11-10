@@ -1,6 +1,6 @@
 # 029 — `embarch-outpost/decisions/transport.md` and `decisions/manifest.md` are in reserve
 
-**State:** open — unparked by the supervisor 2026-11-10 as a verbatim split; see the update below
+**State:** claimed by agent/outpost/029-compact-outpost, 2026-11-10 12:53
 **Source:** `outpost/027` added decisions 28 and 29 and left transport.md at 7,908 of 8,192 B and manifest.md at 7,350 of 8,192 B.
 **Scope:** outpost
 **Hardware:** none
