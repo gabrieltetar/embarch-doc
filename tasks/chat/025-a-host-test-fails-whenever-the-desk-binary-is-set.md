@@ -1,6 +1,6 @@
 # 025 — A chat host test fails on `main` whenever the desk binary is set
 
-**State:** claimed by agent/chat/025-a-host-test-fails-whenever-the-desk-binary-is-set, 2026-11-10 12:53
+**State:** done
 **Source:** EMB-134, filed while gating `chat/023` on its merge result, 2026-11-10
 **Issue:** EMB-134
 **Scope:** chat
@@ -55,8 +55,14 @@ variable is set is one nobody sees until it hides a second failure.
 
 ## Done when
 
-- [ ] The cause is named in this file, and the host suite passes against a
+- [x] The cause is named in this file, and the host suite passes against a
       desk built from `main`, or an issue is filed for what fails and named here.
-- [ ] If the cause was in the chat, the fix ships with the test that shows it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DESK_BIN` set
+- [x] If the cause was in the chat, the fix ships with the test that shows it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DESK_BIN` set
       to the fresh build for the `npm test` run.
+
+## Closing
+
+**Cause: the test regressed, not the binary.** Against a desk built fresh from `main` (1997108) the failure is the same. Decision 97 made the cards call conditional on the desk's references; in `test/host.test.mjs` this window gets none, so no cards call is made, yet the test still asserted `calls().some(task === "cards")`. The old binary was not at fault. Fixed by asserting the opposite (no cards call without references), matching `assistant.test.mjs`'s 97 test. With the fresh desk: `host.test.mjs` 61/61, `npm test` 339 pass, 0 fail, 3 skipped.
+
+**Debt:** `npm run test:webview` could not run: port 4989 was already in use (EADDRINUSE; another process held it, and I did not kill it). It fails identically with my change stashed, so it is environmental. Needs one run on a free port.
