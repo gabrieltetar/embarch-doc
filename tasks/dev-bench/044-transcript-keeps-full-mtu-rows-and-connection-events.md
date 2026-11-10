@@ -1,6 +1,6 @@
 # 044 — The GATT transcript drops every notification over ~213 bytes and never records a connect or disconnect
 
-**State:** open
+**State:** claimed by agent/dev-bench/044-transcript-keeps-full-mtu-rows-and-connection-events, 2026-11-10 03:45 — toolchain, the leg's own hands
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 2 and 5), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/main.c`, `app/src/serial_protocol.h` and `app/src/ble_bridge_real.c`, plus a `native_sim` ztest, built in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). Seeing connection rows in a real study needs the bench, so that half leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7).
