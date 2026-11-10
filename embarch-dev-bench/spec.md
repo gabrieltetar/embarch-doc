@@ -52,7 +52,7 @@ Each workspace's manifest lives in a `manifest/` subdirectory, not at the worksp
 - **One DUT connection at a time**, enforced in firmware, not the controller's link budget.
 - **Bonds are RAM-only**, cleared on `Hello` *and* explicitly at study end, so every study pairs from scratch and behaves like the first.
 - **A `Hello` is a hard reset**, and it waits for its own disconnect, not just requesting one.
-- **A named thing missing fails the step; an unnamed thing missing is skipped.** A selective monitor target or an `.eap` source the DUT does not have fails, naming which. The subscribe-to-everything walk logs and skips, because nothing there was named.
+- **A named thing missing fails the step; an unnamed thing missing is skipped.** A selective monitor target or an `.eap` source the DUT does not have, or whose subscription did not land, fails, naming which. The subscribe-to-everything walk logs and skips each characteristic it could not subscribe, because nothing there was named, and fails only when it subscribed to nothing (decision 54).
 - **Loss is counted and reported, never silent.** Dropped transcript entries, notifications and log records, RX overruns, and an oversized inbound frame all produce a `LogLine`.
 - **A capacity limit refuses, never truncates.** An oversized `StudyStart`, or a manifest over the wire-length cap, is rejected by name: a `LogLine` names the cap, the value and the limit (decision 51). A malformed frame is a silent resync.
 - **A length prefix is bounded by the bytes left, before any arithmetic.** Decoding treats the link as crafted input: a length the frame cannot hold refuses the frame, and no varint near 2^64 can wrap the cursor backwards (`pc_skip_len_prefixed`).

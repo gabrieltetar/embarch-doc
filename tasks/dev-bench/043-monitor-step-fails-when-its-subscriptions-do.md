@@ -1,6 +1,6 @@
 # 043 — A monitor step passes when its subscriptions failed or the link dropped mid-walk
 
-**State:** claimed by agent/dev-bench/043-monitor-step-fails-when-its-subscriptions-do, 2026-11-10 04:03 (toolchain, supervisor's own hands)
+**State:** done 2026-11-10 04:15, by the supervisor's own hands (toolchain lane); decision 54
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 1 and 8), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/ble_bridge_real.c`, built and tested in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). The changed paths run only against a real BLE peer, and no native_sim test reaches `ble_bridge_real.c`, so the unit leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7) rather than claiming a bench result.
@@ -37,13 +37,19 @@ The monitor family exists to refuse a capture that passes empty. The comment on 
 
 ## Done when
 
-- [ ] A characteristic whose CCC write is answered with an ATT error, or whose CCC Zephyr cannot find, is never reported `SUBSCRIBED` and never counted as subscribed. The transcript names which case it was.
-- [ ] A missing CCC costs that one characteristic, not the rest of the step budget.
-- [ ] A Selected monitor step fails, naming the target, when a target's subscription did not land, whatever the reason.
-- [ ] A disconnect at any point in a monitor step, the subscribe walk included, makes the step report `Disconnected`. No monitor step passes after one.
-- [ ] No path in `ble_bridge_real.c` calls `bt_gatt_subscribe`/`bt_gatt_unsubscribe` with a NULL connection. Decision 28's "window flag cleared on disconnect" is true in code, or the decision is amended to say what happens instead.
-- [ ] A protocol source with no CCC fails its step by name instead of timing out.
-- [ ] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The `app/tests/serial_protocol` suite passes on `native_sim`. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`'s build sections.
-- [ ] The hardware-verification debt says which of the cases above were exercised against a real DUT and which were not.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` (9,632 of 10,240 B) and `open.md` (3,916 of 5,120 B) are already inside their reserve, so a new decision goes in `decisions/dispatch.md` or `decisions/capture.md`.
+- [x] A characteristic whose CCC write is answered with an ATT error, or whose CCC Zephyr cannot find, is never reported `SUBSCRIBED` and never counted as subscribed. The transcript names which case it was.
+- [x] A missing CCC costs that one characteristic, not the rest of the step budget.
+- [x] A Selected monitor step fails, naming the target, when a target's subscription did not land, whatever the reason.
+- [x] A disconnect at any point in a monitor step, the subscribe walk included, makes the step report `Disconnected`. No monitor step passes after one.
+- [x] No path in `ble_bridge_real.c` calls `bt_gatt_subscribe`/`bt_gatt_unsubscribe` with a NULL connection. Decision 28's "window flag cleared on disconnect" is true in code, or the decision is amended to say what happens instead.
+- [x] A protocol source with no CCC fails its step by name instead of timing out.
+- [x] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The `app/tests/serial_protocol` suite passes on `native_sim`. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`'s build sections.
+- [x] The hardware-verification debt says which of the cases above were exercised against a real DUT and which were not.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` (9,632 of 10,240 B) and `open.md` (3,916 of 5,120 B) are already inside their reserve, so a new decision goes in `decisions/dispatch.md` or `decisions/capture.md`.
+
+## Result
+
+Decision 54 (`decisions/dispatch.md`), decision 28 amended. A shared `subscribe_and_wait` gives the monitor walk and the protocol subscribe one verdict per subscription; the notify NULL arms wake the wait only for the params it waits on (`ccc_waiting`), and so does `subscribe_cb`. An unfiltered walk that subscribed to nothing fails. Monitor and protocol subscriptions are `VOLATILE`; a window whose link dropped is closed by its `Stop` as `Disconnected`, with no GATT call. Built: nRF54L15 (RAM 156,432 to 156,440 B), ESP32-C5 (`sram0_0_seg` 332,400 B, unchanged), `serial_protocol` 67/67 on `native_sim`.
+
+**Hardware-verification debt: none of the cases above ran against a DUT.** Owed on the bench (DK plus a BLE peer): a CCC write the peer refuses, a notifying characteristic with no CCC, a disconnect during the subscribe walk and one inside an open window then its `Stop`, a `RunProtocol` source with no CCC, and an unfiltered monitor against a peer with nothing that notifies.
