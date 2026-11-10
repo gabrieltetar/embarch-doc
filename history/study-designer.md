@@ -10,6 +10,9 @@
 
 ### Fixed
 - study-designer: `GattTranscriptEntry::att_status` doc comment names its per-kind meanings (ATT error, properties byte, HCI disconnect reason) instead of calling it always an ATT error code.
+
+### Removed
+- The `ffi` feature, `src/ffi.rs` and its CI cell are gone: dev-bench firmware links no Rust; decisions 7, 23, 64.
 ## 2026-10
 
 ### Added

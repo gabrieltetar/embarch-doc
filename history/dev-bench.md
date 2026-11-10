@@ -19,6 +19,7 @@
 - dev-bench refuses a length prefix the frame cannot hold instead of wrapping its decode cursor backwards ([spec](../embarch-dev-bench/spec.md) §3).
 
 ### Removed
+- Board builds no longer cross-compile or link the Rust staticlib; every board reads the wire schema version from the crate at configure time; decisions 8, 20.
 - The bench refuses the retired stream-capture GATT kind and its sinkless capture path is gone; every GATT operation value comes from the crate; decision 56.
 ## 2026-10
 
