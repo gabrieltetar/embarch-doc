@@ -1,6 +1,6 @@
 # 021 — Six chat host tests fail against the local desk binary, and the gate skips them
 
-**State:** open
+**State:** claimed by agent/chat/021-six-host-tests-fail-against-the-local-desk-binary, 2026-11-09 22:58
 **Source:** Linear issue EMB-118, filed by the worker on `chat/013`
 **Issue:** EMB-118
 **Scope:** chat
