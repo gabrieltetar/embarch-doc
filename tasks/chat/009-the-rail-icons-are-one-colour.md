@@ -1,6 +1,6 @@
 # 009 — The chat rail's icons are one-colour SVGs, not colour emoji
 
-**State:** claimed by agent/chat/009-the-rail-icons-are-one-colour, 2026-11-09 19:24
+**State:** done, agent/chat/009-the-rail-icons-are-one-colour, 2026-11-09
 **Source:** Linear issue EMB-56, filed by the owner — the owner changing his own earlier pick
 **Issue:** EMB-56
 **Scope:** chat
@@ -33,7 +33,7 @@ Decision 94 and `embarch-promptu` decision 40 record the emoji as the owner's pi
 
 ## Done when
 
-- [ ] No rail entry renders an emoji; each is an SVG in `currentColor`, readable in a light and a dark theme.
-- [ ] Lit and unlit states stay distinguishable without CSS filters.
-- [ ] Decision 94 is amended, and `embarch-chat/spec.md` and `interfaces.md` no longer name the emoji.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] No rail entry renders an emoji; each is an SVG in `currentColor`, readable in a light and a dark theme.
+- [x] Lit and unlit states stay distinguishable without CSS filters.
+- [x] Decision 94 is amended, and `embarch-chat/spec.md` and `interfaces.md` no longer name the emoji.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
