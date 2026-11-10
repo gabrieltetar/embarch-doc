@@ -12,6 +12,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- `embarch-atlas doc freeze` counts only pages inside the document, and warns on a unit citing a page outside 1..pages instead of counting it.
 - A page-one `REV. A` / `DOC NO. 001` header now gives the manifest and doc.json their rev and number, and `doc check` says "K did not run" when no table has a MIN/TYP/MAX header (atlas 049).
 - A part named only on page 2 or later of another part's datasheet is now proposed, not covered: part tokens and the `exact` rung read the title and page 1 (see DESIGN.md Covered, proposed, missing).
 - Atlas inventory: an "Application Report" is an appnote, and a user's guide titled as a reference manual is typed reference-manual (DESIGN.md Kinds).
