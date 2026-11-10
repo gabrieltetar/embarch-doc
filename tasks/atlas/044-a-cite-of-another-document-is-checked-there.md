@@ -1,6 +1,6 @@
 # 044 — A page cite naming another document is checked against that document
 
-**State:** claimed by agent/atlas/044-a-cite-of-another-document-is-checked-there, 2026-11-09 20:38
+**State:** done (agent/atlas/044, 2026-11-09)
 **Source:** Linear issue EMB-44, filed by a session
 **Issue:** EMB-44
 **Scope:** atlas
@@ -30,6 +30,6 @@ Filed from distilling two documents where one's section carried a conflict row c
 
 ## Done when
 
-- [ ] A conflict row citing `<other-doc> p.N` has its numbers anchored on the other document's page N and does not fail M.
-- [ ] A number on neither document's cited page still fails; a test in `tests/test_check.py` covers both, on synthetic documents.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated where it describes check M; `changelog.d/` fragment dropped.
+- [x] A conflict row citing `<other-doc> p.N` has its numbers anchored on the other document's page N and does not fail M.
+- [x] A number on neither document's cited page still fails; a test in `tests/test_check.py` covers both, on synthetic documents.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated where it describes check M; `changelog.d/` fragment dropped.
