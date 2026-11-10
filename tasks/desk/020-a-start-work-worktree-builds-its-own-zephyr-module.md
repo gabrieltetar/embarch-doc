@@ -1,6 +1,6 @@
 # 020 — A Start work worktree builds its own Zephyr module
 
-**State:** claimed by agent/desk/020-a-start-work-worktree-builds-its-own-zephyr-module, 2026-11-10 03:15
+**State:** done
 **Source:** Linear issue EMB-19; `embarch-desk/open.md`, last item ("A worktree of a repo built inside a west workspace")
 **Issue:** EMB-19
 **Scope:** desk
@@ -42,9 +42,17 @@ EMB-19: a driver or board edit in a Start work worktree has no effect on its bui
 
 ## Done when
 
-- [ ] Start work on a repo that west lists as a project writes `ZEPHYR_MODULES` (the workspace's module list with the main clone swapped for the worktree) into the worktree's `.claude/settings.local.json` `env`, merging, and git-excludes it; a repo outside a west workspace gets nothing.
-- [ ] A module with no `name:` gets a warning in Start work's answer, and the decision says what is written then.
-- [ ] Tests cover the swap, the merge into an existing file, the no-workspace case and the missing-`west` warning.
-- [ ] `open.md`'s worktree-in-a-west-workspace item is answered and removed; a new `embarch-desk` decision records the mechanism.
-- [ ] Hardware-verification debt recorded here: a board-file edit in a real Start work worktree, `west build` there, and the build reading the worktree's file.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+- [x] Start work on a repo that west lists as a project writes `ZEPHYR_MODULES` (the workspace's module list with the main clone swapped for the worktree) into the worktree's `.claude/settings.local.json` `env`, merging, and git-excludes it; a repo outside a west workspace gets nothing.
+- [x] A module with no `name:` gets a warning in Start work's answer, and the decision says what is written then.
+- [x] Tests cover the swap, the merge into an existing file, the no-workspace case and the missing-`west` warning.
+- [x] `open.md`'s worktree-in-a-west-workspace item is answered and removed; a new `embarch-desk` decision records the mechanism.
+- [x] Hardware-verification debt recorded here: a board-file edit in a real Start work worktree, `west build` there, and the build reading the worktree's file.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Rust bullet); `changelog.d/` fragment dropped.
+
+## What landed
+
+`embarch-desk` decision 80 (`decisions/sessions.md`). `src/worktree.rs` `set_zephyr_modules` runs `west list -f '{abspath}'` in the main clone, keeps the Zephyr modules (those with `zephyr/module.yml` or `zephyr/CMakeLists.txt`, so `zephyr` itself drops out), swaps the clone for the worktree and writes `ZEPHYR_MODULES` into the worktree's `.claude/settings.local.json` `env` (merged, git-excluded); `start_work` adds its warnings to the answer. `zephyr_get` reading the environment was confirmed in `extensions.cmake`. Picks: a module with no `name:` **warns and still writes**; a missing or failing `west` is a warning. `open.md`'s item is answered and removed. `embarch-api`'s `build` tool was not checked from a worktree session; nothing filed.
+
+## Hardware-verification debt
+
+Nothing ran a real `west build` or a real Claude Code session. Needs, on a west workspace with a bench: Start work on an issue for the firmware repo; confirm the worktree's `settings.local.json` has `ZEPHYR_MODULES`; edit a board file in the worktree; run `west build` from a session there and confirm the build reads the worktree's file (and not the main clone's). Also unverified: that Claude Code applies a settings `env` to its Bash commands (the task's stop condition; not checkable from here).

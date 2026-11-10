@@ -1,0 +1,1 @@
+| Start work on a west project writes `ZEPHYR_MODULES` (the workspace's modules, the main clone swapped for the worktree) into the worktree's local settings, so a build there reads the worktree's drivers and board files | Built on a branch, not deployed; stand-in `west` in tests, no real build | unit | 80 |
