@@ -1,6 +1,6 @@
 # 052 — A session before the first atlas is told there is no atlas yet
 
-**State:** open
+**State:** claimed by agent/atlas/052-a-session-before-the-first-atlas-is-told-there-is-none, 2026-11-10 01:41
 **Source:** Linear issue EMB-22, filed by a session
 **Issue:** EMB-22
 **Scope:** atlas
