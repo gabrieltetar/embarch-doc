@@ -1,6 +1,6 @@
 # 018 — The chat's 💡 stops suggesting compact, handoff and background agents
 
-**State:** open — unparked 2026-11-09 by `chat/017`'s fold: Promptu's pass now owns the judgement, and a run from the chat passes its context usage (`prep --context-usage`, embarch-chat `a46c5ac`; `embarch-chat` decision 96).
+**State:** claimed by agent/chat/018-the-bulb-stops-suggesting-context-handling, 2026-11-10 01:41 — unparked 2026-11-09 by `chat/017`'s fold: Promptu's pass now owns the judgement, and a run from the chat passes its context usage (`prep --context-usage`, embarch-chat `a46c5ac`; `embarch-chat` decision 96).
 **Source:** Linear issue EMB-66, filed by the owner — owner's call on 2026-11-05
 **Issue:** EMB-66
 **Scope:** chat
@@ -26,6 +26,9 @@ One place decides how high-context work is carried, so two suggestions never dis
 ## Dispatch notes
 
 - `handoffRequest` and `extractHandoff` may still be used by the agent's own handoff (`tasks/chat/007`, decision 103). Remove only what the bulb alone uses.
+- Burndown is on: no new numbered decision. Amend 36 and 97 in place (both in `decisions/assistant.md`, 9,848 of 12,288 B).
+- Doc-size: `embarch-chat/spec.md` is 9,027 B, 12 B under its reserve line (9,039). Edit, do not append; if your change still pushes it into reserve, file `tasks/chat/<NNN>-compact-chat-spec.md` in the same commit (`tasks/README.md` has the shape). Decision 96 (`decisions/promptu.md`) is 204 B under its per-decision limit; leave it alone unless this task needs it.
+- Gate: `npm ci`, `build`, `typecheck`, `test`, `test:webview`. If you add or change a webview check, its own PASS line must be in the output.
 
 ## Done when
 
