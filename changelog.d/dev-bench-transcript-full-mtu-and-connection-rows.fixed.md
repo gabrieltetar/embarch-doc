@@ -1,1 +1,1 @@
-The GATT transcript keeps notifications up to the full 244-byte ATT payload (a stream record now holds the whole encoded entry, 293 B), records every connect and disconnect with the HCI reason in `att_status`, and its end-of-study loss line names each cause; the bond-clear disconnect at study end now lands before the taps close (decision 53).
+The GATT transcript keeps notifications up to the full 244-byte payload, records each connect and disconnect (HCI reason in `att_status`), and names each cause of loss (decision 53).
