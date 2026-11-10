@@ -1,6 +1,6 @@
 # 055 — A verb records an engineer-declared board-to-board mating
 
-**State:** claimed by agent/atlas/055-a-verb-declares-a-board-mating, 2026-11-10 02:10
+**State:** done on agent/atlas/055-a-verb-declares-a-board-mating, 2026-11-10
 **Source:** Linear issue EMB-26, filed by a session
 **Issue:** EMB-26
 **Scope:** atlas
@@ -34,7 +34,11 @@ A hand edit of JSON is error-prone and leaves no trace of who declared what, and
 
 ## Done when
 
-- [ ] A verb writes an engineer-declared board-to-board entry (rule or pin map, with a note) into `boards/system.json` without disturbing other entries, with a test.
-- [ ] `embarch-atlas interfaces` run afterwards keeps it and scores it as it does a hand-written one.
-- [ ] The two skills name the verb instead of describing a file edit.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A verb writes an engineer-declared board-to-board entry (rule or pin map, with a note) into `boards/system.json` without disturbing other entries, with a test.
+- [x] `embarch-atlas interfaces` run afterwards keeps it and scores it as it does a hand-written one.
+- [x] The two skills name the verb instead of describing a file edit.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+`embarch-atlas declare-interface <board>:<ref> <board>:<ref> (--rule | --pin-map) [--prov] [--note]` added in `interfaces.py`. Promoting an existing proposal by id was **not** done (the declare path covers the need; a promote is a separate verb). Hardware debt: none.
