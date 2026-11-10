@@ -1,6 +1,6 @@
 # 027 — `embarch-desk/spec.md` is in reserve
 
-**State:** open — the close-out is whole: desk `9a32975` and `1997108`, chat `9162e45` all landed 2026-11-10
+**State:** claimed by agent/desk/027-compact-desk, 2026-11-10 12:53
 **Source:** `desk/025` added decision 83 and left sessions.md at 12,177 of 12,288 B and spec.md at 9,197 of 10,240 B.
 **Scope:** desk
 **Hardware:** none
