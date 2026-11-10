@@ -1,6 +1,6 @@
 # 014 — The chat input is one row, its pills left of the box and Send an icon on its right
 
-**State:** open — unparked 2026-11-09 by `chat/012`'s fold: the 💬 is a rail entry and gone from the input's bar (embarch-chat `9fd3f0b`). `embarch-chat/spec.md` is then 9,037 B, two bytes under its reserve line, so a spec edit here likely puts it back in reserve and owes a compaction filing.
+**State:** claimed by agent/chat/014-the-input-is-one-row, 2026-11-09 22:26 — unparked 2026-11-09 by `chat/012`'s fold: the 💬 is a rail entry and gone from the input's bar (embarch-chat `9fd3f0b`). `embarch-chat/spec.md` is then 9,037 B, two bytes under its reserve line, so a spec edit here likely puts it back in reserve and owes a compaction filing.
 **Source:** Linear issue EMB-60, filed by the owner
 **Issue:** EMB-60
 **Scope:** chat
