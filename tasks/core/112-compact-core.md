@@ -1,6 +1,6 @@
 # 112 — `embarch-core` probes.md, spec.md and open.md are in reserve after decision 89
 
-**State:** claimed by agent/core/112-compact-core, 2026-11-09 20:01
+**State:** done — verbatim split: chip mapping (8/34, 80, 89) to decisions/chip-mapping.md; spec §4 module table to interfaces/modules.md
 **Source:** `core/111` added decision 89 and crossed the reserve line on three files; `DOC-COMPACTION.md` §2
 **Scope:** core
 **Hardware:** none
@@ -31,6 +31,6 @@
 
 ## Done when
 
-- [ ] Each file is clear of its reserve line, or a successor confirms `In flux: no` and compacts.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Each file is clear of its reserve line, or a successor confirms `In flux: no` and compacts.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).

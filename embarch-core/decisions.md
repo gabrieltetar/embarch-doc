@@ -11,7 +11,8 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Platform, process, and locking](decisions/platform.md) | 1, 2, 3, 4, 7, 14, 15, 17, 100, 106 | 8.9 KB |
 | [Auth, binding, and configuration](decisions/auth.md) | 5, 6, 11, 53 | 3.8 KB |
 | [The route sweep](decisions/route-sweep.md) | 42, 46, 60 | 8.9 KB |
-| [Probes, board identity, and chip mapping](decisions/probes.md) | 8, 9, 22, 23, 26, 34, 61, 80, 89 | 10.9 KB |
+| [Probes and board identity](decisions/probes.md) | 9, 22, 23, 26, 61 | 7.2 KB |
+| [Chip mapping and attach guards](decisions/chip-mapping.md) | 8, 34, 80, 89 | 4.6 KB |
 | [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 82, 84 | 6.3 KB |
 | [Flashing backend selection and vendor-tool discovery](decisions/flash-backend.md) | 36, 49, 52, 54 | 9.5 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 33, 40, 45, 90 | 6.7 KB |
