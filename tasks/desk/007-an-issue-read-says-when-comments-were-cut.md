@@ -1,6 +1,6 @@
 # 007 — An issue read says when comments were cut, and the rest can be read
 
-**State:** open
+**State:** claimed by agent/desk/007-an-issue-read-says-when-comments-were-cut, 2026-11-09 19:24
 **Source:** Linear issue EMB-13, filed by a session
 **Issue:** EMB-13
 **Scope:** desk
