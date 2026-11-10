@@ -1,10 +1,12 @@
 # 027 — Three values the outpost's Kconfig accepts break the promise their option exists for
 
-**State:** open
+**State:** claimed by agent/outpost/027-three-kconfig-settings-break-their-own-promise, 2026-11-10 05:01
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-outpost findings 1, 3 and 6), verified by Opus against embarch-outpost@2968f0c1
 **Scope:** outpost
-**Hardware:** toolchain — reclassified from `none` by the supervisor at filing (2026-10-26): every Done-when item is a `native_sim` or minimum-range build, and the Zephyr tree it needs is one no worktree carries and this suite has never used for outpost. As drafted: all three reproduce on `native_sim` or at configure time; the scheduling rule behind the first is the kernel's, not a SoC's. `tests/run-all.sh` needs `WEST=/home/gabriel/Github/embarch/.west-venv/bin/west` and a `ZEPHYR_BASE` (a Zephyr 4.4 tree with `native_sim`; the dev-bench `native_sim` workspace's `zephyr/` is one, not yet used for this suite).
+**Hardware:** none — reclassified back from `toolchain` by the supervisor on 2026-11-10, which is `tasks/README.md`'s rule for this repo: `tests/run-all.sh` ran every leg green (unit 6/6 and 9/9, module-off, the end-to-end stream) from a bare `git archive` copy of `main`, with only `WEST=/home/gabriel/Github/embarch/.west-venv/bin/west`, `ZEPHYR_BASE=/home/gabriel/Github/embarch/embarch-dev-bench/workspaces/native_sim/zephyr` (Zephyr 4.4.0, only read) and `/home/gabriel/Github/embarch/.west-venv/bin` prepended to `PATH`. Builds land in `tests/build/`, inside the worktree; the Zephyr tree stayed clean.
 **Owner:** no
+
+**Dispatch note (2026-11-10):** `embarch-outpost/spec.md` is in reserve (9,126 of 10,240 B, out of reserve at 9,039 B), and its compaction (`tasks/outpost/028`) is parked partly on this task. Edit `spec.md` only as far as this task needs, and compact it in the same unit if you can without touching the wire section that `open.md`'s layout-4 change will move; keep 028's `Must not delete:` items (the manifest-refusal and unverified-join bullets in §3 with their decision pointers 9, 18, 24, 27, and the measured 1.6% vs 78.1% overhead figures in §4). Decision 9 (`decisions/manifest.md`) has 27 B left before its per-decision limit: if (3) needs it to say more, put the new rule in a new decision that cites 9.
 
 ## What
 
