@@ -1,6 +1,6 @@
 # 057 — A live read selects a register's bank before reading it
 
-**State:** open
+**State:** claimed by agent/atlas/057-a-live-read-selects-a-registers-bank-first, 2026-11-10 02:22
 **Source:** Linear issue EMB-124, filed by the `atlas/054` worker
 **Issue:** EMB-124
 **Scope:** atlas
