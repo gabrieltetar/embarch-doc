@@ -1,6 +1,6 @@
 # 010 — 33 `embarch-study-designer` constants and three wire enums are hand-typed in dev-bench's C headers, and the deriving mechanism already exists in the same CMakeLists for exactly one of them
 
-**State:** open
+**State:** claimed by agent/dev-bench/010-thirty-three-hand-mirrored-crate-constants-and-three-mirrored-enums, 2026-11-10 04:31 (toolchain, supervisor's own hands)
 **Source:** suite review pass 2026-09-06, dimension 2 (DRY across modules). Code-confirmed.
 **Scope:** dev-bench
 **Hardware:** toolchain — the change is CMake and headers, and this repo's Zephyr tree is gitignored, so a worker's worktree cannot build it (`tasks/README.md`, Hardware field). In the main checkout the `app/tests/serial_protocol` ztest suite builds for `native_sim` in about a minute.
