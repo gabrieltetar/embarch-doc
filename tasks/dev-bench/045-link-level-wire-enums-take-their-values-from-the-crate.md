@@ -1,6 +1,6 @@
 # 045 — The link-level wire enums take their values from the crate
 
-**State:** claimed by agent/dev-bench/045-link-level-wire-enums-take-their-values-from-the-crate, 2026-11-10 04:48 (toolchain, supervisor's own hands)
+**State:** done
 **Source:** `dev-bench/010` (landed 2026-11-10, `embarch-dev-bench` `759c402`), whose decision 56 covered the `.eap` enums only and says so
 **Issue:** EMB-132
 **Scope:** dev-bench
@@ -21,7 +21,13 @@ Decision 56 landed today and names this as what it did not cover. These are the 
 
 ## Done when
 
-- [ ] Every C enum in `app/src/serial_protocol.h` and `app/src/ble_bridge.h` whose values are a Rust enum's postcard index takes them from `crate_limits.h` and asserts the variant count; any that cannot is named in the decision with the reason.
-- [ ] Both bench images (`nrf54l15dk/nrf54l15/cpuapp`, `esp32c5_devkitc/esp32c5/hpcore`) and the `native_sim` app build, and `app/tests/serial_protocol` passes on `native_sim`.
-- [ ] Decision 56's "Not covered" sentence is removed or narrowed to what is left.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] Every C enum in `app/src/serial_protocol.h` and `app/src/ble_bridge.h` whose values are a Rust enum's postcard index takes them from `crate_limits.h` and asserts the variant count; any that cannot is named in the decision with the reason.
+- [x] Both bench images (`nrf54l15dk/nrf54l15/cpuapp`, `esp32c5_devkitc/esp32c5/hpcore`) and the `native_sim` app build, and `app/tests/serial_protocol` passes on `native_sim`.
+- [x] Decision 56's "Not covered" sentence is removed or narrowed to what is left.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Outcome
+
+Twelve enums added to `gen_crate_limits.py`'s `ENUMS`, their six source files to `crate_limits.cmake`'s inputs. Derived, each with a `_COUNT` assert: `dbm_tag`, `dbm_action_tag`, `dbm_gatt_op_kind` and `gatt_operation_kind`, `dbm_security_level` and `ble_security_level`, both GATT direction and event-kind pairs, `dbm_unit`, both stream tags, and the `DBM_LOG_LEVEL_*` defines. Three needed their own reading, recorded in decision 56: `GattOperation`'s retired `StreamCapture` stays a hand-typed 5; the log levels are also asserted equal to Zephyr's `LOG_LEVEL_*` in `dev_bench_log.c`; `BleRole` and `BleAddressKind` are bytes compared in `main.c` and the decoder, now against the crate's value instead of a literal. Not derived because they are bench-internal and mapped, not cast: `ble_role`, `ble_address_kind`, `action_kind`, `outcome_kind`.
+
+Built with the fleet's `west`, from the main checkout's workspaces against this worktree: `serial_protocol` 67/67, `dev_bench_log` 15/15, `scan_seen_mfg` 7/7, `scan_seen_names` 12/12 on `native_sim`; the `native_sim` app, `nrf54l15dk/nrf54l15/cpuapp` (RAM 157,400 B) and `esp32c5_devkitc/esp32c5/hpcore` (`sram0_0_seg` 333,360 B) all clean, sizes unchanged, so no value moved. The ESP32-C5 build needs the venv's `bin/` on `PATH` for `esptool`. Drift checked against altered copies of the crate: an inserted `Action` variant stops the compile on its `_COUNT` assert, and swapping `DevBenchLogLevel`'s `Error` and `Warn` stops it on the Zephyr-severity asserts.

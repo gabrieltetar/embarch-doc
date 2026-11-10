@@ -8,7 +8,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Platform and build system](decisions/platform.md) — one RTOS, west workspaces, the Rust staticlib, crate limits read at configure time | 1, 2, 3, 5, 8, 9, 16, 20, 56 | 8.8 KB |
+| [Platform and build system](decisions/platform.md) — one RTOS, west workspaces, the Rust staticlib, crate limits and wire enums read at configure time | 1, 2, 3, 5, 8, 9, 16, 20, 56 | 9.6 KB |
 | [Boards](decisions/boards.md) — which board is the bench, and why it changed twice | 4, 10, 24, 26, 43 | 6.7 KB |
 | [The Core link](decisions/link.md) — the serial hop, detection, flashing, the handshake | 6, 7, 12, 13, 18, 19, 25, 36 | 7.3 KB |
 | [Frame and step ceilings](decisions/link-limits.md) — the inbound-path FIFO ceiling, the local step-cap divergence, and a cap refusal said out loud | 30, 35, 51 | 6.0 KB |
