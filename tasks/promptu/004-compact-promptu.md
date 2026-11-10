@@ -1,6 +1,6 @@
 # 004 — `embarch-promptu` spec.md is in reserve after decision 41's build
 
-**State:** claimed by agent/promptu/004-compact-promptu, 2026-11-10 12:53
+**State:** done, 2026-11-10 (split verbatim by mission: §2b and §2c to `embarch-promptu/spec/build-steps.md`; `spec.md` 9,563 to 6,949 B, out of reserve)
 **Source:** `promptu/002` added the context-planning bullet to `spec.md` and crossed the reserve line; `DOC-COMPACTION.md` §2
 **Scope:** promptu
 **Hardware:** none
@@ -27,8 +27,8 @@ The seam worth checking first (your call): §2b and §2c, the build steps that a
 
 ## Done when
 
-- [ ] `spec.md` is clear of its reserve line, or a successor re-files with a concrete plan.
-- [ ] Moved text matches the original apart from headers and pointer lines.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md` is clear of its reserve line, or a successor re-files with a concrete plan.
+- [x] Moved text matches the original apart from headers and pointer lines.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Can `spec.md` alone answer what someone needs to work on this component today? Answered in the commit message.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
