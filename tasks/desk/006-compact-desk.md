@@ -1,6 +1,6 @@
 # 006 — four `embarch-desk` docs are in reserve after decisions 76 and 77
 
-**State:** claimed by agent/desk/006-compact-desk, 2026-11-09 17:29
+**State:** done — all four files clear, by verbatim splits only
 **Source:** decision 76 (the hand shows this week's tiles) crossed the reserve line on `cockpit.md`; decision 77 (each session works on its own desk, EMB-94) crossed it on `decisions/desks.md`, `interfaces.md` and `spec.md`; `DOC-COMPACTION.md` §2
 **Scope:** desk
 **Hardware:** none
@@ -30,6 +30,6 @@ Decision 77 has landed since this was filed: `embarch-desk` `0c44f9d` and `embar
 
 ## Done when
 
-- [ ] All four files are clear of their reserve line.
-- [ ] Every `Must not delete:` item is still readable.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] All four files are clear of their reserve line.
+- [x] Every `Must not delete:` item is still readable.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
