@@ -1,6 +1,6 @@
 # 025 — Done or Canceled tells the issue's window to end its chat
 
-**State:** open
+**State:** claimed by agent/desk/025-done-or-canceled-tells-the-issues-window-to-end-its-chat, 2026-11-10 06:16
 **Source:** Linear issue EMB-73
 **Issue:** EMB-73
 **Scope:** desk
