@@ -4,5 +4,8 @@
 
 ## 2026-11
 
+### Added
+- Promptu's pass accepts the chat's context usage (prep --context-usage) and names a way in Who does it for high-context work, footer way=; see contract §7.10.
+
 ### Changed
 - promptu I2 on a header-less MEMORY.md now says the first `## <domain>` header may be added in the same write (decision 21).

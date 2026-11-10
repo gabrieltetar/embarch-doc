@@ -1,7 +1,6 @@
 # 017 — The chat gives Promptu's pass its context usage
 
-**State:** blocked — the input it passes is defined on the Promptu side first.
-**Unparks when:** tasks/promptu/002 lands
+**State:** open — unparked 2026-11-09 by `promptu/002`'s fold: the input is `promptu prep --context-usage <0-100>`, defined in `embarch-promptu` `docs/contract.md` §7.10 (embarch-promptu `95f0d69`); without it the pass judges from the text alone.
 **Source:** Linear issue EMB-65, filed by the owner; `embarch-promptu` decision 41 (owner, 2026-11-07)
 **Issue:** EMB-65
 **Scope:** chat
