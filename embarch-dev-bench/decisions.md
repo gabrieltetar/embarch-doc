@@ -12,10 +12,10 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Boards](decisions/boards.md) — which board is the bench, and why it changed twice | 4, 10, 24, 26, 43 | 6.7 KB |
 | [The Core link](decisions/link.md) — the serial hop, detection, flashing, the handshake | 6, 7, 12, 13, 18, 19, 25, 36 | 7.3 KB |
 | [Frame and step ceilings](decisions/link-limits.md) — the inbound-path FIFO ceiling, the local step-cap divergence, and a cap refusal said out loud | 30, 35, 51 | 6.0 KB |
-| [BLE pairing and security](decisions/ble.md) — connection-count enforcement, hard-reset teardown, pairing, security elevation | 11, 15, 33, 34, 37 | 7.7 KB |
+| [BLE pairing and security](decisions/ble.md) — connection-count enforcement, hard-reset teardown, pairing, security elevation | 11, 15, 33, 34, 37 | 7.8 KB |
 | [Addressing and scan-time discovery](decisions/scanning.md) — the bench's own address, GATT UUID byte order, name filtering, the advertiser census and its tested `fail_reason` | 17, 23, 31, 32, 44, 45, 46, 52 | 10.8 KB |
 | [Dispatching a study](decisions/dispatch.md) — steps, discovery, monitoring windows | 14, 21, 22, 27, 28 | 8.7 KB |
-| [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed | 29, 40, 42 | 7.8 KB |
+| [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed, a record that holds a full-MTU transcript entry and connection rows | 29, 40, 42, 53 | 10.0 KB |
 | [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter, and the indices it checks | 41, 50 | 7.3 KB |
 | [Logging](decisions/logging.md) — a framed log backend, and per-study verbosity | 38, 39 | 10.1 KB |
 | [The PD bench](decisions/pd-bench.md) — a USB PD partner scripted over its shell, a second app beside the BLE bench, on a sink or a dual-role shield | 48, 49 | 3.4 KB |

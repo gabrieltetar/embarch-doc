@@ -1,6 +1,8 @@
 # 044 — The GATT transcript drops every notification over ~213 bytes and never records a connect or disconnect
 
-**State:** claimed by agent/dev-bench/044-transcript-keeps-full-mtu-rows-and-connection-events, 2026-11-10 03:45 — toolchain, the leg's own hands
+**State:** done
+**Result:** decision 53. A stream record holds the worst-case encoded entry (293 B); the loss line names each cause; connects and disconnects are `Local` rows with the HCI reason in `att_status`; the bond clear runs before the drain, which waits on a handled count. Run by the leg's own hands, built from this worktree against the main checkout's workspaces.
+**Hardware debt:** nothing here ran against a real DUT. Owed on the bench: a notification of 211 to 244 bytes reaching the transcript tap; a `Connected` row and a `Disconnected` row with its reason in a real study's `gatt.csv`; and the bond-clear disconnect as the transcript's last row, before its `StreamClose`.
 **Source:** DeepSeek V4 Pro review 2026-10-25 (embarch-dev-bench findings 2 and 5), verified by Opus against embarch-dev-bench@52822069
 **Scope:** dev-bench
 **Hardware:** toolchain — C in `app/src/main.c`, `app/src/serial_protocol.h` and `app/src/ble_bridge_real.c`, plus a `native_sim` ztest, built in the **main checkout** (this repo's Zephyr trees are gitignored, so a worktree cannot build it). Seeing connection rows in a real study needs the bench, so that half leaves a hardware-verification debt (`../../embarch-fleet/protocol.md` §7).
@@ -27,11 +29,11 @@ Both board fragments set `CONFIG_BT_L2CAP_TX_MTU=247` specifically so that a ful
 
 ## Done when
 
-- [ ] A notification with a 244 B payload and both UUIDs reaches the transcript tap. A `native_sim` ztest encodes such an entry into the buffer the TX thread actually uses, not a larger stand-in, and asserts that it fits.
-- [ ] The end-of-study loss line names the cause of each drop it counts, so queue-full and does-not-fit are not merged into one.
-- [ ] Every connect and every disconnect the bridge sees produces a transcript row, and a disconnect row carries its HCI reason.
-- [ ] The bond-clear disconnect at study end is in the transcript, or decision 37 and the comment at `main.c:1502-1511` stop saying it is.
-- [ ] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The ESP32-C5's SRAM figure in spec §5 is re-measured if the record size moved. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`.
-- [ ] The `app/tests/serial_protocol` suite passes on `native_sim`. Core's and the crate's pinned frames still match if the record shape changed; it should not need to.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. `spec.md` (9,632 of 10,240 B) is already inside its reserve, so new reasoning goes in `decisions/capture.md` or `decisions/ble.md`.
+- [x] A notification with a 244 B payload and both UUIDs reaches the transcript tap. A `native_sim` ztest encodes such an entry into the buffer the TX thread actually uses, not a larger stand-in, and asserts that it fits. (`test_a_full_mtu_transcript_entry_fits_a_stream_record`; on the bench: the hardware debt above.)
+- [x] The end-of-study loss line names the cause of each drop it counts, so queue-full and does-not-fit are not merged into one.
+- [x] Every connect and every disconnect the bridge sees produces a transcript row, and a disconnect row carries its HCI reason. (In `att_status`; a failed connection attempt is not a row, decision 53.)
+- [x] The bond-clear disconnect at study end is in the transcript, or decision 37 and the comment at `main.c:1502-1511` stop saying it is. (In the transcript: the bond clear now runs before the drain and the tap close.)
+- [x] Both bench images build: `nrf54l15dk/nrf54l15/cpuapp` from `workspaces/nordic` and `esp32c5_devkitc/esp32c5/hpcore` from `workspaces/espressif`. The ESP32-C5's SRAM figure in spec §5 is re-measured if the record size moved. Run with `/home/gabriel/Github/embarch/.west-venv/bin/west` from the main checkout's workspace directories, per `README.md`. (ESP32-C5 sram0_0_seg 332,384 → 332,400 B, 87.85%; nRF RAM 156,416 → 156,432 B.)
+- [x] The `app/tests/serial_protocol` suite passes on `native_sim`. Core's and the crate's pinned frames still match if the record shape changed; it should not need to. (67 of 67; the record's wire shape did not change. `dev_bench_log`, `scan_seen_mfg` and `scan_seen_names` also pass, run one by one: `twister` lacks `natsort`.)
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false. (No suite-level fact changed.) `spec.md` (9,632 of 10,240 B) is already inside its reserve, so new reasoning goes in `decisions/capture.md` or `decisions/ble.md`.

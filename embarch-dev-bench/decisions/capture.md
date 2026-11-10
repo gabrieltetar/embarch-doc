@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-The generic byte-forwarding pipeline, notify-tap routing, and the tap that was never closed.
+The generic byte-forwarding pipeline, notify-tap routing, the tap that was never closed, and the transcript rows that never arrived.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -36,3 +36,11 @@ So a whole-study tap was **never closed, never sent a close message, and never d
 **Measured, not predicted.** The same drain study run twice minutes apart, differing only in its transcript tap's scope: a step-window scope dropped 16 entries and reported `truncated: true`; a whole-study scope dropped **31** and reported `false`. **The run that lost twice as much is the run that claimed to be complete** — and that study's three most load-bearing taps were all whole-study, so all three flags were unfalsifiable at once, while an investigation into whether a capture had a gap rested on them.
 
 The fix makes end-of-study closing its own concern rather than a step index chosen to fall outside every window. **The predicate is left exactly as it was** — it is correct, and special-casing the end of a study inside it would desync the two ends of the link for no gain. The generalisable half: **a mechanism that reports loss only on a transition needs the transition to be guaranteed, and "no scope covers step N+1" was a guarantee nobody had checked against every scope variant.**
+
+### 53 — A stream record holds a full-MTU transcript entry, and connects and disconnects are rows
+The transcript TX thread encodes each entry into a stream record's `bytes`, which was 256 bytes, sized against the payload. The entry's envelope (uptime varint, direction, kind, two optional UUIDs, status, length) is up to 49 bytes more, so **every notification over about 210 bytes failed to encode and was dropped**, against the 244 the transcript promises, and the end-of-study line called the loss "queue full". A comment said it could not happen; the wire test encoded into a larger stand-in buffer. Found by review, not on the bench (`tasks/dev-bench/044`).
+
+- **The record is defined from what it must hold.** `DBM_MAX_STREAM_CHUNK_BYTES` is `DBM_MAX_TRANSCRIPT_RECORD_LEN`, the exact worst-case encoded entry (293 B), still a fork under the crate's 512 and asserted against it. A `native_sim` test encodes the worst case into a real record and pins the length. It costs no SRAM: the record lives only in the `tx_scratch` union, which `StudyStart` sizes (+16 B on each board, for the counters below).
+- **The loss line names each cause**: queue full, and did not fit a record.
+- **A connect and a disconnect are rows**, `Local`, emitted from the bridge's connection callbacks before they wake anything. **The disconnect's HCI reason rides in `att_status`**, the entry's one status byte, which the crate already reads per event kind; a new field would be a schema bump for one byte. A failed connection attempt is not a row; its step reports it.
+- **Decision 37's order is now the code's.** The end of a study cleared the bond *after* closing the taps, so the bond-clear disconnect could never reach Core. It now clears first, and the drain waits until every queued entry has been handled rather than for the queue to read empty, because the queue is empty the moment the TX thread takes the last entry, and closing the taps then drops it at the tap-open check.

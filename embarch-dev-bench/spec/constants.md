@@ -12,6 +12,7 @@ Split verbatim from [../spec.md](../spec.md) §5 (`tasks/dev-bench/040`), when t
 | `DBM_MAX_INBOUND_FRAME_LEN` | 12,507 B | [computed from `serial_protocol.h`] Core sends only `Hello` and `StudyStart`; sized to `StudyStart`, which gained `DBM_MAX_PROTOCOLS_WIRE_LEN` at schema v15 (decision 41) |
 | `DBM_MAX_OUTBOUND_FRAME_LEN` | 3,082 B | [measured] `StepResult`'s bound — the largest message dev-bench can produce |
 | `DBM_MAX_TRANSCRIPT_PAYLOAD_LEN` | 244 B | one full 247-byte ATT MTU minus the 3-byte ATT header |
+| `DBM_MAX_STREAM_CHUNK_BYTES` | 293 B | [computed from `serial_protocol.h`] the worst-case encoded transcript entry, 244 B plus a 49-byte envelope; the crate allows 512 (decision 53) |
 | `DBM_MAX_EVENT_ARMS_PER_STATE` | 2 | [measured] the crate allows 4; an arm is the heaviest thing a state holds and 4 costs ~9 KB more, and both worked protocols use one |
 | `DBM_MAX_PROTOCOLS_WIRE_LEN` | 3 KB | [measured] a byte cap over the whole span; the eleven count ceilings multiply to a bound nothing would send (decision 41) |
 | `SCAN_SEEN_MAX` | 256 | [measured] 12 advertisers seen in three minutes at the bench; costs ~9 KB of static RAM |
@@ -22,4 +23,4 @@ Split verbatim from [../spec.md](../spec.md) §5 (`tasks/dev-bench/040`), when t
 | `CONFIG_LOG_BUFFER_SIZE` | 1 KB | [measured] a `Debug` burst overruns it and says so (`N record(s) dropped`) |
 | disconnect wait | 2 s | [assumed] far longer than a local disconnect needs; timing out leaves the prior behaviour |
 
-**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **87.83%** [measured, dev-bench task 013] of 378,384 B, and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](../open.md)). The nRF54L15DK is far roomier: FLASH 18.97%, RAM 58.57% of 256 KB.
+**SRAM is the binding constraint on the ESP32-C5** and has overflowed three times; it now sits at **87.85%** [measured, dev-bench task 044] of 378,384 B, and the largest remaining lever on it is `tx_scratch`'s dead `StudyStart` member ([open.md](../open.md)). The nRF54L15DK is far roomier: FLASH 19.08%, RAM 59.67% of 256 KB [measured, dev-bench task 044].
