@@ -2,6 +2,7 @@
 
 **State:** blocked
 **Unparks when:** the owner's word — he has reviewed the uncommitted 2026-10-08 `standard` design in `/home/gabriel/Github/embarch/embarch-atlas-wt` (this task's first Done-when box), or said a worker may land it as written
+**Owner's word, 2026-11-10, given directly in his interactive session:** a worker may land the 2026-10-08 `standard` design in `embarch-atlas-wt` as written. That meets the unpark condition above and stands in for this task's first Done-when box (the owner's review).
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — the USB PD R3.2 spec (418 pages) was filed as `other`, distilled by hand as a datasheet into 119 records citing 35 pages, and sessions then read 348 distinct pages of it outside the atlas; the design for a `standard` kind written on 2026-10-08 is still uncommitted in `embarch-atlas-wt`
 **Scope:** atlas
 **Hardware:** none
