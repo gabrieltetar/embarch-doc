@@ -1,6 +1,6 @@
 # 036 — Give pd-bench its own west workspace that pins Zephyr v4.4.2 and carries its six USB-C patches
 
-**State:** open
+**State:** claimed by agent/dev-bench/036-pd-bench-own-west-manifest, 2026-11-10 22:12 (worker thread dispatched by the owner's session, no supervisor)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — pd-bench builds only from a client's west workspace because it needs that workspace's patched USB-C stack (decision 48, "It builds outside `workspaces/`"); the owner decided 2026-10-20 that it gets its own manifest here, carrying the patches until they land upstream
 **Scope:** dev-bench
 **Hardware:** toolchain
