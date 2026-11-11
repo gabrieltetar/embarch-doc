@@ -1,7 +1,6 @@
 # 108 — Implement and verify a Windows process-tree kill for timed-out builds
 
-**State:** blocked — code half done (see "Blocked"), worked by agent/api/108-windows-tree-kill,
-2026-09-29
+**State:** claimed by agent/api/108-windows-tree-kill, 2026-11-10 22:11 — the owner's session dispatched the Windows verification to a worker; code half landed on `main` as cfa8197
 **Unparks when:** a Windows run of a timed-out forked build tree — a Windows machine or CI runner;
 "Blocked" below says exactly what to run.
 **Source:** `tasks/api/107` — correcting `spec.md` §2's unqualified "timeout kills the process
