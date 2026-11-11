@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Added
+- pd-bench builds from its own `workspaces/pd-bench/`: Zephyr v4.4.2 plus six carried USB-C patches applied by `west patch` (dev-bench decision 58).
+
 ### Changed
 - tx_scratch holds only what the bench sends: ESP32-C5 sram0_0_seg 333,360 to 308,432 B, nRF54L15DK RAM 157,384 to 132,464 B; decision 57.
 - The bench's link-level wire enums are read from the crate at configure time too, and a drift fails the build (dev-bench decision 56).
