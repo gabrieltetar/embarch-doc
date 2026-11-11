@@ -1,7 +1,6 @@
 # 001 — Bump the atlas when HEAD moves, without a session ritual
 
-**State:** blocked — everything but the owner's answer shipped on agent/atlas/001-bump-on-head (both repos, pushed 2026-11-10, not landed)
-**Unparks when:** the owner's word on whether an explicit user request may invoke the atlas-* skills
+**State:** done
 **Owner's word, 2026-11-10, given directly in his interactive session:** allow model invocation. Drop `disable-model-invocation: true` from the three atlas skills that build or update an atlas, so "update the atlas" said in a session starts one. He accepted the trade-off that the flag is all-or-nothing, so a session may also start one on its own judgement.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — six bumps between 2026-10-05 and 2026-10-08 took 59 lifecycle CLI runs and 14 `--help` lookups, and one of them was finished from Python by hand after reading `update.py`; no bump in the twelve days after; the second-look queue has owed about 1,980 items against 545-570 verdicts since 2026-10-05, and blind readers ran once (11 agents, 2026-10-06)
 **Scope:** atlas
@@ -22,7 +21,7 @@ The bump itself is now cheap. What remains is that someone has to remember to ru
 - [x] A bump that stops or fails leaves its reason where the stale line and `src:` show it.
 - [x] A west workspace not at the manifest's revisions stops the bump with that reason before building.
 - [x] `second-look queue --used` batches from a fixture usage log, or `decisions.md` records that the backlog stays manual.
-- [ ] The owner's answer on model invocation of the atlas-* skills is in DESIGN.md.
+- [x] The owner's answer on model invocation of the atlas-* skills is in DESIGN.md.
 - [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
 
@@ -40,6 +39,8 @@ Shipped on `agent/atlas/001-bump-on-head` (embarch-atlas 67cec65; this branch ca
 - **Choice made here**: the burst test's target has no Zephyr board (`no_board = true`), so the "build" it runs is the stamp-only build and the join is real; the west path is covered by the drift test's fake `west`. No real west workspace bump was run.
 - **Unverified**: a bump on a real west workspace from a hook, and a rebase of many commits (the in-progress check reads `git rev-parse --git-path rebase-merge` and friends, tested only by construction).
 
-## Blocked
+## Blocked (history)
 
 One box needs the owner, and no agent can ask him: **may an explicit user request ("update the atlas") invoke the atlas-* skills**, which are `disable-model-invocation: true` today, so a session asked to update follows the skill by hand? His answer goes into DESIGN.md "The skills" (and, if yes, the three SKILL.md frontmatters). The bump on HEAD moves makes the question less pressing but does not answer it.
+
+Unparked by the owner's word above. Shipped on the same branch (embarch-atlas 0fc13a2): `atlas-translate-docs`, `atlas-build` and `atlas-update` no longer carry `disable-model-invocation: true`; DESIGN.md "The skills" and `install.py`'s docstring say a session may invoke any atlas skill, and that the flag being all-or-nothing means it may also do so on its own judgement. Gate re-run: pytest 739 passed, 3 skipped; check-docs, client-names and ownership green on both branches.
