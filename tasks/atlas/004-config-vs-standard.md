@@ -1,7 +1,6 @@
 # 004 — Check firmware configuration against a standard's requirements
 
-**State:** blocked
-**Unparks when:** `tasks/atlas/016` lands the `standard` kind this task's `requirement` records belong to
+**State:** claimed by agent/atlas/004-config-vs-standard, 2026-11-10 23:40 (tasks/atlas/016 is done on agent/atlas/016-standard-sections; this code branch is cut from it and lands after it)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 564 spec lookups outside the atlas came within three calls of a devicetree or Kconfig read by the same agent, and the engineer's curation notes list about 50 commit-message corrections from the review rounds, about half of them a USB PD rule restated wrongly (a timer value, a Required or Recommended level, which PDOs a power rule allows at a given PDP)
 **Scope:** atlas
 **Hardware:** none
