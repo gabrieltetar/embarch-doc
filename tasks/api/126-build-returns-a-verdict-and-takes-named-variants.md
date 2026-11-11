@@ -1,6 +1,6 @@
 # 126 — `build` returns a verdict, not the log, and builds named variants in their own dirs
 
-**State:** open
+**State:** claimed by agent/api/126-build-returns-a-verdict-and-takes-named-variants, 2026-11-10 22:24 — dispatched by the owner's session
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 897 build calls: 537 raw `west build`, 127 `twister`, 155 through wrapper scripts written in 12 sessions, 3 through the MCP tool; the two successful MCP builds returned 26.9 KB and 19.9 KB, the hand-filtered Bash builds a median 389 characters; 256 builds carried `-D` or `EXTRA_CONF_FILE` (53 combinations), which a static project's `build` refuses
 **Scope:** api
 **Hardware:** toolchain
