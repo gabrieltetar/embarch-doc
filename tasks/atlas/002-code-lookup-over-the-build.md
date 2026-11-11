@@ -2,6 +2,7 @@
 
 **State:** blocked — seven of eight boxes shipped on agent/atlas/002-code-lookup-over-the-build (pushed, not landed); the replay target of half the calls is missed, measured (see Result)
 **Unparks when:** the owner's word on the replay box: widen `code` (`vs=<build>`, `match=`) to chase the target, or accept the measured miss and close
+**Owner's word, 2026-11-10, given directly in his interactive session:** chase the target. Add both `code <symbol> vs=<build>` (a definition's diff between two builds) and a `match=` filter inside a definition on this branch, then re-run the replay before closing.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 12,738 `grep`/`sed -n`/`Read` calls on C sources (4,824 Zephyr, 7,914 application and driver) were 42% of all context tokens and returned 67 MB; 1,364 `sed -n` ranges came on the call right after a `grep -n` on the same file; the USB-C stack (`subsys/usb/usb_c`, the UCPD TCPC driver, their headers, `lib/smf`) took 3,350 of the Zephyr reads and was re-read from scratch by 203 separate agents
 **Scope:** atlas
 **Hardware:** toolchain
