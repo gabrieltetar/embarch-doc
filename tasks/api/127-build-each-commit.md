@@ -1,6 +1,6 @@
 # 127 — Build every commit of a range in each configuration, and prove a rewrite kept the tree
 
-**State:** open
+**State:** claimed by agent/api/127-build-each-commit, 2026-11-10 22:52 — dispatched by the owner's session; stacked on agent/api/126-build-returns-a-verdict-and-takes-named-variants
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 74 per-commit build runs in 15 sessions through about 12 hand-written build scripts (`percommit.sh` written in 4 sessions); re-verification was 6.4 % of review-loop cost and 7.2 active hours; two "byte-identical" checks on 2026-10-07 were invalid because a worktree build used the main checkout's module
 **Scope:** api
 **Hardware:** toolchain
