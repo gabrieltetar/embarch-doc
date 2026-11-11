@@ -5,7 +5,7 @@
 **Scope:** dev-bench
 **Hardware:** toolchain
 **Owner:** no
-**Unparks when:** the owner's word on installing Zephyr's `scripts/requirements-run-test.txt` into the fleet venv
+**Unparks when:** the owner's word on installing Zephyr's `scripts/requirements-build-test.txt` into the fleet venv (`requirements-run-test.txt` is in since 2026-11-10)
 
 ## What
 
@@ -41,7 +41,9 @@ The patch set and the pin are about to change hands: they are leaving the client
 
 ## Blocked
 
-**Only the twister run is left, and it waits on the owner.** The fleet venv (`/home/gabriel/Github/embarch/.west-venv`) lacks `natsort` and `tabulate` from Zephyr's `scripts/requirements-run-test.txt`, so `west twister` dies on import. This task says to ask the owner before installing them, and this worker had no owner to ask, so nothing was installed and no other venv was borrowed. The first two `Done when` boxes stay open. Once the owner says yes, the remainder takes about 5 minutes, from `workspaces/pd-bench/` in a checkout of this branch: install the requirements, run `west twister -T pd-bench -p nucleo_g0b1re` (expect 2 of 2 built, the `native_sim` suite filtered out) and `west twister -T pd-bench/tests/logic -p native_sim`, then tick both boxes and set `done`.
+**2026-11-10, second run: twister is still red, now on `junitparser`.** The owner's session installed `scripts/requirements-run-test.txt` into the fleet venv, and `natsort` and `tabulate` now import. Both passes were then run from `workspaces/pd-bench/` in this branch's worktree, and both died on import before building anything: `west twister -T pd-bench -p nucleo_g0b1re` and `west twister -T pd-bench/tests/logic -p native_sim` each end in `ModuleNotFoundError: No module named 'junitparser'`, raised by `scripts/pylib/twister/twisterlib/harness.py` line 21, whose line 23 imports `pytest` too. Both come from Zephyr's `scripts/requirements-build-test.txt` (colorama, ply, gcovr, coverage, pytest, mypy, junitparser, python-dotenv). The fleet venv lacks junitparser, pytest, mypy, gcovr and coverage from that file, so twister needs it as well as the run-test file. Nothing was installed by this worker. After that install, the same two commands finish the task.
+
+**First run, before the run-test install:** the fleet venv (`/home/gabriel/Github/embarch/.west-venv`) lacks `natsort` and `tabulate` from Zephyr's `scripts/requirements-run-test.txt`, so `west twister` dies on import. This task says to ask the owner before installing them, and this worker had no owner to ask, so nothing was installed and no other venv was borrowed. The first two `Done when` boxes stay open. Once the owner says yes, the remainder takes about 5 minutes, from `workspaces/pd-bench/` in a checkout of this branch: install the requirements, run `west twister -T pd-bench -p nucleo_g0b1re` (expect 2 of 2 built, the `native_sim` suite filtered out) and `west twister -T pd-bench/tests/logic -p native_sim`, then tick both boxes and set `done`.
 
 What stands in for twister until then, measured 2026-11-10 from a fresh `west init -l manifest && west update && west patch apply` in the branch worktree's `workspaces/pd-bench/`:
 
