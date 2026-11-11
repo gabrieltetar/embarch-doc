@@ -95,4 +95,6 @@ question.
 - [x] `release.yml` left alone: its Windows job still only builds. The verification is a one-time
       manual run plus a test that runs wherever `cargo test` runs on Windows; decision 75 says so.
 - [x] Changelog fragment `changelog.d/api-windows-tree-kill-verified.changed.md`.
-- [x] Gate green (`../../embarch-fleet/protocol.md` §10) — see the report.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10): Linux `cargo build`, `cargo test`,
+      `cargo clippy --all-targets -- -D warnings`; `check-client-names.py` and
+      `check-ownership.py --scope api` on both branches; `check-docs.py` 12 of 12.
