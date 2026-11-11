@@ -25,3 +25,9 @@ Originally motivated by an assumption that the two day-one projects used differe
 - **Scope is one machine and one temp dir.** A WSL process and a native Windows process do not share `/tmp`, and a different `TMPDIR` or user gets a different lock; keys are not path-qualified, so two checkouts of one project name serialize (conservative). Tests are unix-only; the Windows arm compiles by the same std call but has [assumed] behavior, never run.
 Tests: `crates/embarch-firmware-build/tests/cross_process_lock.rs` (two re-executed processes, parallel keys, killed holder).
 
+
+### 103 — Named build variants, each in its own directory, for both discovery kinds
+`[projects.build_variants.<name>]` declares `extra_conf_files`, `overlays` and `defines`, passed after `west build`'s `--`. A `zephyr-west` variant builds in `<build_dir_root>/<target dir>.<name>`; a `static` one in `<build cwd>/build-<name>`, which needs a plain `west build` argv (no `-d`, no `--`) and an artifact under `build/` — refused at load otherwise, never spliced into a shell command. `default` names the build with none.
+- **Incremental by default.** Wiped (`-p always`) only when asked or when `target.json` shows other variant settings, since CMake keeps a dropped `-D`. A matching cache gets no CMake arguments, so west does not reconfigure [measured 2026-11-10: 0.5 s against 6.8 s pristine, sample app].
+- **`vs`** reads the other build's record before building, so naming the same variant compares against its previous build.
+- **Not on `Selection`**: `embarch-ui` builds that struct field by field. **Not `pristine` on a `static` default build**: its argv is the operator's.

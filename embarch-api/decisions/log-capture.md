@@ -23,3 +23,9 @@ This is a decision about how the drain reads a child stream, upstream of and ort
 
 *Rejected: decoding the whole buffer lossily.* That would substitute replacement characters wherever they fall across the entire log rather than isolating the cost to the one line that actually failed to decode, leaving a reader no way to tell how much of the log was affected.
 *Rejected: failing the build on bad bytes.* A non-UTF-8 byte in a child process's stdout or stderr is not evidence the build itself failed, and turning a decode failure into a build failure would report the wrong result for a reason that has nothing to do with the build.
+
+### 102 — `build` answers with a verdict, and the whole log stays on disk
+`build` and `build_and_flash` answer with what the log says, not the log: exit code, timeout, seconds, distinct warnings with the first ten as `file:line: message`, the first error with the lines that belong to it and the cascade dropped (compiler, Kconfig, CMake, devicetree, `dtc`, linker), the last linker memory table, artifact path and freshness, `log_path`, and ztest/twister results one line per case with the first failing assertion. Both pipes go to one untruncated log in read order, `embarch-build.log` beside `target.json`, or under `<temp>/embarch-build-logs/` for a plan naming no directory. `verbose` keeps the old answer. A build that relinked nothing reuses the previous record's memory, flagged.
+- **Why**: field sessions filtered `west build` by hand; one MCP answer was 26.9 KB. A sample replay answered 630 B against 15.7 KB verbose [measured 2026-11-10].
+- **Read by line shape, no regex crate**: a missed shape costs a field, never a build verdict — exit code and freshness still decide.
+- **`schema_version` 2**: dropping `stdout`/`stderr` from the default is a removal (decision 24).

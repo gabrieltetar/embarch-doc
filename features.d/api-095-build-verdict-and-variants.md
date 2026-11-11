@@ -1,0 +1,1 @@
+| `build` verdict and named build variants — the answer is warnings, first error, FLASH/RAM and `log_path`, not the log; `[projects.build_variants]` build incrementally in their own directories, `vs` gives the memory change | Shipped — **one real sample build pair and one real ztest run; twister and sysbuild logs fixture-tested only** | unit | 102, 103 |

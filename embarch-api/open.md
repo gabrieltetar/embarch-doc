@@ -16,6 +16,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **The test ledger has never met a bench** ([decisions](decisions/ledger.md) 98). Owed: a study run lands a row; `ledger_pending` matches attached roles.
 - **The bench lease client has met only a board-less dev Core** ([decisions](decisions/lease.md) 90, 101). An MCP-taken token reaches no CLI or atlas subprocess until exported there; the 900 s default TTL is assumed.
 - **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
+- **The build verdict has read one real Zephyr build and one real ztest run** ([decisions](decisions.md) 102, 103): a sample app and its variant on a Cortex-M3 board, a ztest sample on native_sim. Unmet: real twister output (fixture-tested), a sysbuild log (the last memory table wins), a field variant pair.
 - **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
 
 ## Structural limits

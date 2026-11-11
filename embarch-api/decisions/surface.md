@@ -10,7 +10,7 @@ Core's error code passed through verbatim on a Core-originated failure, one of a
 ### 24 — `schema_version` on every `--json` object
 It is there **from the start rather than after a consumer depends on an unversioned shape** — an anticipated UI is exactly the external reader that would otherwise have no way to detect a breaking change. Bumped by hand only on a rename, removal or retype; adding a field is not, since a reader that ignores unknown fields is unaffected.
 
-- **`1` means "the shape as of 2026-09-03"**, not "unchanged since the beginning". The surface moved repeatedly while unversioned and no honest earlier number exists, so the counter starts where the guarantee starts.
+- **`1` means "the shape as of 2026-09-03"**, not "unchanged since the beginning". The surface moved repeatedly while unversioned and no honest earlier number exists, so the counter starts where the guarantee starts. **`2` (2026-11-10)**: `build`'s default answer dropped `stdout`/`stderr` (decision 102).
 - **It is this crate's own counter and leans on nothing Core serves.** Core's `/status` carries `core_version` and `study_designer_schema_version` and deliberately **no** contract version — and an upstream number would be the wrong one anyway: this versions *this crate's* `--json` shape, which moves without Core moving.
 - **Every NDJSON line of `study-status --follow` carries it too**, not only that stream's `summary` — stronger than this entry's "the `--json` object", and decision 47's own argument: a reader of a live feed has to know the shape from the first record.
 

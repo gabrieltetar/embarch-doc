@@ -23,8 +23,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Host-run studies and operator prompts](decisions/host-study.md) — `run_host_study`, `answer_prompt` that relays a person and never answers itself, a watch that stops for a waiting prompt, a prompt's `bench_config` shown and never resolved | 99, 100 | 4.0 KB |
 | [A bench board by its own name](decisions/bench-board-forms.md) — `origin_board` on `declare_signal`, `probe_serial` on `validate`, `mem_read` and `core_state`; an older Core caught by reading back | 95 | 2.1 KB |
 | [Hardware selection and identity](decisions/hardware-selection.md) — enrollment, mismatch alerts, the dev-bench identity cross-check, and why no tool here ever picks a physical board or port on a caller's behalf | 34, 35, 59, 60, 70, 84, 87 | 8.9 KB |
-| [Running a build](decisions/build.md) — the generic per-project command, the process-tree kill on timeout, the cross-process build lock | 5, 75, 91 | 4.8 KB |
-| [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, and how the drain reads a child stream | 18, 65 | 3.9 KB |
+| [Running a build](decisions/build.md) — the generic per-project command, the process-tree kill on timeout, the cross-process build lock, named build variants | 5, 75, 91, 103 | 5.9 KB |
+| [What a build log keeps](decisions/log-capture.md) — what a truncated log keeps, how the drain reads a child stream, and the verdict a build answers with | 18, 65, 102 | 5.2 KB |
 | [`target.json` provenance](decisions/target-json.md) — the readable build-dir prefix, the descriptor file, the crate-owned hash, and `build_dir_name` on every `list-targets` row | 19, 69, 77 | 8.6 KB |
 | [Bootloading](decisions/bootload.md) — `bootload`/`build_and_bootload` as their own tools, the `[projects.bootload]` DUT facts, and where the signed image is found | 80, 81 | 3.3 KB |
 | [The flash offset a `bin` needs](decisions/flash-address.md) — `base_address` as config, not a per-call parameter | 42 | 1.7 KB |
