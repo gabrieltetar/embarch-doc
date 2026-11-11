@@ -1,7 +1,6 @@
 # 011 — Answer protocol questions: what a role must support, and what a state does
 
-**State:** blocked
-**Unparks when:** `tasks/atlas/016` lands the `standard` kind this task builds on
+**State:** claimed by agent/atlas/011-protocol-records, 2026-11-10 23:40 (tasks/atlas/016 is done on agent/atlas/016-standard-sections; this code branch is cut from it and lands after it)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — about 605 spec lookups outside the atlas were state-machine questions, 105 distinct Policy Engine and Protocol Layer state names were grepped 327 times, 44 lookups named the applicability tables (USB PD R3.2 Tables 7.4-7.7), and a review round corrected two responders a commit called Required that Table 7.4 lists as Recommended
 **Scope:** atlas
 **Hardware:** none
