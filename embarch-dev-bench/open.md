@@ -33,6 +33,11 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **Cross-vendor Zephyr-revision reconciliation** (decision 3) — could two vendor families share one workspace? The per-family layout works; nothing forces it.
 - **[Boreas](https://github.com/intercreate/boreas) as a future ESP-IDF path.** Rejected for standing the ESP32-C5 up (decision 26); worth separate consideration.
 
+## Carried, not upstream
+
+- **pd-bench's six USB-C patches are carried, not upstream** (decision 58), so every pin move re-applies them. Closes when a release holds all six and `workspaces/pd-bench/` needs no `patches.yml`.
+- **Which copy of a patch leads, and how a fix reaches the other, waits on the owner.** The workspace they came from is on v4.5.0 now, and its copies differ.
+
 ## Structural
 
 - **Detecting "the bench isn't actually connected"** — unplugged, wrong port — is `embarch-core`'s responsibility, not this firmware's.

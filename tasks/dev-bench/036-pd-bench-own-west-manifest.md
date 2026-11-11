@@ -1,6 +1,6 @@
 # 036 — Give pd-bench its own west workspace that pins Zephyr v4.4.2 and carries its six USB-C patches
 
-**State:** claimed by agent/dev-bench/036-pd-bench-own-west-manifest, 2026-11-10 22:12 (worker thread dispatched by the owner's session, no supervisor)
+**State:** done — agent/dev-bench/036-pd-bench-own-west-manifest in embarch-dev-bench and embarch-doc, 2026-11-10; the decision is 58, not 50, because 50 was already taken
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — pd-bench builds only from a client's west workspace because it needs that workspace's patched USB-C stack (decision 48, "It builds outside `workspaces/`"); the owner decided 2026-10-20 that it gets its own manifest here, carrying the patches until they land upstream
 **Scope:** dev-bench
 **Hardware:** toolchain
@@ -29,29 +29,29 @@ pd-bench is the PD partner for host-run studies (`embarch-host-study-proposal.md
 
 ## Done when
 
-- [ ] `workspaces/pd-bench/manifest/west.yml` pins `zephyr` at `v4.4.2` from `zephyrproject-rtos`, with `west-commands: scripts/west-commands.yml` and `import: name-allowlist: [cmsis_6, hal_stm32]`. A header comment says why, in the voice of the other three manifests.
-- [ ] `workspaces/pd-bench/pd-bench` is a symlink to `../../pd-bench`, as `app` is in the other workspaces.
-- [ ] `manifest/zephyr/patches.yml` lists the six in the order above. Each entry has `path`, `sha256sum`, `module: zephyr`, `upstreamable`, `merge-status` and `apply-command: git apply`; the backport also has `merge-pr`, `merge-commit` and `merge-date`. Each `comments:` says what the patch fixes for pd-bench and when to drop it.
-- [ ] **No client name lands.** Two of the source patches name the client's product once each, in commit-message prose: the R3.2 stack patch's Power Role Swap part and the DMA patch's "Seen with DMA on..." paragraph. Reword both before the first commit, then recompute their `sha256sum`s. Run `check-client-names.py --repo embarch-dev-bench` green before committing. This repo works on `main`, and the checker scans only the commit messages on a branch since its merge-base.
-- [ ] From a fresh `west init -l manifest && west update && west patch apply` in `workspaces/pd-bench/`, both builds succeed with no warnings, and `CONFIG_USBC_TCPC_STM32_DMA=y` in both `.config`s:
+- [x] `workspaces/pd-bench/manifest/west.yml` pins `zephyr` at `v4.4.2` from `zephyrproject-rtos`, with `west-commands: scripts/west-commands.yml` and `import: name-allowlist: [cmsis_6, hal_stm32]`. A header comment says why, in the voice of the other three manifests.
+- [x] `workspaces/pd-bench/pd-bench` is a symlink to `../../pd-bench`, as `app` is in the other workspaces.
+- [x] `manifest/zephyr/patches.yml` lists the six in the order above. Each entry has `path`, `sha256sum`, `module: zephyr`, `upstreamable`, `merge-status` and `apply-command: git apply`; the backport also has `merge-pr`, `merge-commit` and `merge-date`. Each `comments:` says what the patch fixes for pd-bench and when to drop it.
+- [x] **No client name lands.** Two of the source patches name the client's product once each, in commit-message prose: the R3.2 stack patch's Power Role Swap part and the DMA patch's "Seen with DMA on..." paragraph. Reword both before the first commit, then recompute their `sha256sum`s. Run `check-client-names.py --repo embarch-dev-bench` green before committing. This repo works on `main`, and the checker scans only the commit messages on a branch since its merge-base.
+- [x] From a fresh `west init -l manifest && west update && west patch apply` in `workspaces/pd-bench/`, both builds succeed with no warnings, and `CONFIG_USBC_TCPC_STM32_DMA=y` in both `.config`s:
   - `west build -b nucleo_g0b1re -d build/pd-bench pd-bench`
   - `west build -b nucleo_g0b1re -d build/pd-bench-drp pd-bench -- -DSHIELD=x_nucleo_drp1m1`
 
   Reference, measured 2026-10-20: SNK1M1 128,368 B flash and 19,720 B RAM; DRP1M1 147,860 B and 21,648 B.
-- [ ] `pd-bench/README.md` "Build and flash" describes this workspace instead of "a west workspace that has them". It gives one `embarch-api` `[[projects]]` block per shield: `build_command` is the workspace's `west build ... -s pd-bench` (plus `-DSHIELD=x_nucleo_drp1m1` for the DRP1M1), `chip = "STM32G0B1VE"`, `flash_format = "hex"`, `serial_baud = 115200` and `probe_serial = "<ST-LINK serial>"`. It keeps the note that the ST-LINK mass-storage drive refuses this image (it reports 32 KB). The repo README lists the new workspace.
-- [ ] The repo README's License section says the carried patches modify Apache-2.0 Zephyr sources and keep that license.
-- [ ] Decision 50, in `decisions/pd-bench.md`, supersedes decision 48's "It builds outside `workspaces/`". It records:
+- [x] `pd-bench/README.md` "Build and flash" describes this workspace instead of "a west workspace that has them". It gives one `embarch-api` `[[projects]]` block per shield: `build_command` is the workspace's `west build ... -s pd-bench` (plus `-DSHIELD=x_nucleo_drp1m1` for the DRP1M1), `chip = "STM32G0B1VE"`, `flash_format = "hex"`, `serial_baud = 115200` and `probe_serial = "<ST-LINK serial>"`. It keeps the note that the ST-LINK mass-storage drive refuses this image (it reports 32 KB). The repo README lists the new workspace.
+- [x] The repo README's License section says the carried patches modify Apache-2.0 Zephyr sources and keep that license.
+- [x] Decision 50, in `decisions/pd-bench.md`, supersedes decision 48's "It builds outside `workspaces/`". It records:
   - the pin and why v4.4.2;
   - the six patches and the four left out;
   - the drop rule: a patch leaves when the pin moves to a release that contains it. The backport goes after 8a87e3bde92d, and the prescaler part of patch 2 goes after 9719cc9cbe4f.
-- [ ] **Ask the owner, do not pick:** which copy of a patch leads when it changes (this repo's or the one it came from), and how a fix reaches the other copy. Until it is answered, it is an `open.md` item.
-- [ ] Run where (measured 2026-10-20):
+- [x] **Ask the owner, do not pick:** which copy of a patch leads when it changes (this repo's or the one it came from), and how a fix reaches the other copy. Until it is answered, it is an `open.md` item.
+- [x] Run where (measured 2026-10-20):
   - west: `/home/gabriel/Github/embarch/.west-venv/bin/west` (v1.5.0). The system CMake 3.28.3 is enough, because v4.4.2 asks for 3.20.
   - SDK: `/home/gabriel/zephyr-sdk-1.0.0` (arm-zephyr-eabi).
   - Directory: `/home/gabriel/Github/embarch/embarch-dev-bench/workspaces/pd-bench`, in the main checkout. A worktree carries no Zephyr.
   - The first `west update` fetches Zephyr, hal_stm32 and cmsis_6: allow 10 to 20 minutes.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped. `spec.md` §1 and §2 stop saying pd-bench is "built from a workspace with the patched USB-C stack". `open.md` gains "the USB-C patch set is carried, not upstream", with what closes it.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped. `spec.md` §1 and §2 stop saying pd-bench is "built from a workspace with the patched USB-C stack". `open.md` gains "the USB-C patch set is carried, not upstream", with what closes it.
 
 ## Evidence
 
@@ -88,3 +88,14 @@ Upstream status comes from each patch's header and its `patches.yml` entry only.
 - **Two patch messages name the client's product.** The denylist check hits the R3.2 stack patch once (its Power Role Swap part, a sentence about a PPC) and the DMA patch once (its "Seen with DMA on..." paragraph). Both are prose in the commit message, not code. Reword both before committing them, then recompute each `sha256sum`.
 - The `patches.yml` entries themselves scan clean.
 - The patches modify Apache-2.0 Zephyr sources. The repo is MIT, so the README's License section has to say that the patches keep Zephyr's license.
+
+## What shipped (2026-11-10)
+
+- **embarch-dev-bench** `agent/dev-bench/036-pd-bench-own-west-manifest`: `workspaces/pd-bench/` (manifest, `pd-bench` symlink, `manifest/zephyr/patches.yml` and the six patches), `pd-bench/README.md` "Build and flash" with one `[[projects]]` block per shield, and the repo README's workspace list and License section.
+- **The decision is 58, not 50.** Decision 50 is `.eap` index checking (`decisions/protocols.md`), so this task's draft number was stale when filed. 58 was the next free heading.
+- **Patch files are named for their topic, without the source workspace's numbers** (`local/ucpd-stm32-dma.patch`), per the owner's west-patch rule that `patches.yml` order is the apply order. Each entry also carries `author`, `email` and `date`, which Zephyr's patch schema requires.
+- **Source of the six:** the source workspace's last commit on v4.4.2. Its copies there are byte-identical across every v4.4.2 commit from 2026-10-19 on. Two messages were reworded (the R3.2 Power Role Swap sentence and the DMA "Seen with DMA on..." line); no code line changed, and the two `sha256sum`s were recomputed. `check-client-names.py --repo` was green before the first commit.
+- **Measured 2026-11-10**, fresh `west init -l manifest && west update && west patch apply` (2 minutes, not 10 to 20) in a new `workspaces/pd-bench/` inside the branch's worktree, not in the main checkout: the dispatch said to build in a fresh directory and never `west update` an existing workspace. "6 patches applied successfully". Both builds pass with no compiler warnings; the only CMake warning is Zephyr's notice that `__ASSERT()` is enabled, which `prj.conf` sets on purpose. `CONFIG_USBC_TCPC_STM32_DMA=y` in both `.config`s. SNK1M1 128,736 B flash, 19,720 B RAM; DRP1M1 148,252 B flash, 21,648 B RAM. RAM matches the 2026-10-20 reference. Flash is 368 B and 392 B over it. The images hold 52 and 55 source paths as `WEST_TOPDIR/zephyr/...`, and 7 B more per path (`zephyr/`) than a west-less export's `ZEPHYR_BASE/...` would give 364 B and 385 B. That is the likely cause, not a proven one.
+- **The patch-copy question is asked in the worker's report**, and is an `open.md` item until the owner answers. The source workspace has since moved to Zephyr v4.5.0, dropped the backport, and its other five copies differ from these.
+- **Gate:** `check-docs.py` all 12 green on the doc branch; `check-client-names.py --repo` and `check-ownership.py --scope dev-bench --code-repo` green on the code branch. Not in any gate: the `app/` ztest suite, because nothing under `app/` changed.
+- A `status.d/` fragment asks for `embarch-host-study-proposal.md`'s "What is left" item 1 to go and its dev-bench bullet to cite decision 58.

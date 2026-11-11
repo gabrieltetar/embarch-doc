@@ -1,0 +1,3 @@
+**Target:** embarch-host-study-proposal.md — "What is built", the `embarch-dev-bench` bullet, and "What is left" item 1
+**Was:** "the PD bench app and its two shields: decisions 48, 49" and "1. **pd-bench gets its own west workspace in `embarch-dev-bench` (owner's choice, 2026-10-20)** ... Being built by `tasks/dev-bench/036`; its decision joins the PD bench decisions when it lands."
+**Now:** pd-bench's own workspace is built: `embarch-dev-bench` decision 58, `workspaces/pd-bench/`, Zephyr v4.4.2 plus six carried patches. The `embarch-dev-bench` bullet cites decisions 48, 49, 58, and item 1 leaves "What is left" (an accepted piece is deleted, DOC-PROTOCOL.md §3).

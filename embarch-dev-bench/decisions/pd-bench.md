@@ -12,7 +12,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **It shares nothing with `app/` and does not speak the wire.** A sink has no `Study` to run, and a shell is enough for a host that sends one command and waits for one marker. Every `pd` command ends with `pd: ok` or `pd: error <reason>`. That marker means queued, never accepted, and the contract is read back with `pd status`. The command-by-command contract lives in [`pd-bench/README.md`](../../../embarch-dev-bench/pd-bench/README.md).
 
-**It builds outside `workspaces/`.** It needs the USB-C PD stack fixes that are not upstream yet, so it builds from a west workspace that carries them. A bug common to that stack and the DUT's passes unseen, which is why key results still need a third-party partner.
+**It needs USB-C PD stack fixes that are not upstream yet**, and builds from `workspaces/pd-bench/`, which carries them (decision 58). A bug common to that stack and the DUT's passes unseen, which is why key results still need a third-party partner.
 
 **It is enrolled as a bench board** ([`embarch-topology` decision 41](../../embarch-topology/decisions/enrollment.md)). That lets it be flashed by probe serial without taking `dev-bench` from the nRF54L15DK.
 
@@ -24,3 +24,12 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **What the stack cannot do stays out of the shell:** it answers PR_Swap only with Accept or Reject (no Wait), has no Try.SRC or Try.SNK, and has no DPM request for Source_Info, Revision, Source_Cap_Extended, Manufacturer_Info or Battery_Cap.
 
+### 58 — pd-bench builds from its own workspace: Zephyr v4.4.2 plus six carried USB-C patches
+
+**`workspaces/pd-bench/` pins Zephyr v4.4.2 and applies six patches with `west patch`** (`manifest/zephyr/patches.yml`), so a clone of this repo alone builds both shields. v4.4.2 because every patch was written against it and applies there cleanly. It imports only `cmsis_6` and `hal_stm32`, and is named for the app, not a vendor family (decision 2), because its Zephyr is patched.
+
+**The six, in apply order:** the PDO enum bitfield backport, the STM32 UCPD fixes (shared IRQ, prescaler shift, RX overrun), VCONN `-ENOTSUP`, the USB PD R3.2 stack patch (the one pd-bench cannot build without), UCPD Messages by DMA, and UCPD late TXMSGDISC. Each of the last two needs the UCPD patch before it.
+
+**Four the source workspace carries are left out**, because pd-bench uses none: the two dead-battery backports (the Nucleo never boots from VBUS), the UDC shared-IRQ fix (no USB device stack) and the Discover Identity responder (no identity callback).
+
+**A patch leaves when the pin moves to a release that contains it:** the backport after 8a87e3bde92d, the prescaler part of the UCPD fixes after 9719cc9cbe4f. Building from the workspace the patches came from, as decision 48 had it, left nobody else able to build pd-bench, the fleet included.
