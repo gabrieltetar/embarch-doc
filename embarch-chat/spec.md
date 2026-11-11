@@ -27,6 +27,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **The webview never holds the desk token**, and the desk client calls loopback only (20, 48).
 - **Nothing a workspace controls redirects the panel**: every setting is machine-scoped, and an untrusted workspace does not run it (48).
 - **A chat keeps the login it was created under**; a window's login and desk come from machine settings by folder, and its picker moves only the login (101).
+- **A due login is refreshed by one process alone**: a chat's process waits for its warm-up and Haiku starts nothing meanwhile; a turn the CLI's refresh lock still ended goes again once (105).
 - **Only the owner's own pick untracks a chat**; a resume never sends `untracked` (48).
 - **A chat is on its work item before `claude` starts** (10).
 - **Nothing new is stored**: the transcript is Claude's, session → item the desk's, a name Claude's own `rename_session` or `custom-title` (12, 75).
