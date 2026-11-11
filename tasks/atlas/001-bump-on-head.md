@@ -1,6 +1,6 @@
 # 001 — Bump the atlas when HEAD moves, without a session ritual
 
-**State:** open
+**State:** claimed by agent/atlas/001-bump-on-head, 2026-11-10 22:12 (worker dispatched by the owner session)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — six bumps between 2026-10-05 and 2026-10-08 took 59 lifecycle CLI runs and 14 `--help` lookups, and one of them was finished from Python by hand after reading `update.py`; no bump in the twelve days after; the second-look queue has owed about 1,980 items against 545-570 verdicts since 2026-10-05, and blind readers ran once (11 agents, 2026-10-06)
 **Scope:** atlas
 **Hardware:** toolchain
