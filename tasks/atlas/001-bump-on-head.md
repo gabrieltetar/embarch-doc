@@ -1,6 +1,7 @@
 # 001 — Bump the atlas when HEAD moves, without a session ritual
 
-**State:** claimed by agent/atlas/001-bump-on-head, 2026-11-10 22:12 (worker dispatched by the owner session)
+**State:** blocked — everything but the owner's answer shipped on agent/atlas/001-bump-on-head (both repos, pushed 2026-11-10, not landed)
+**Unparks when:** the owner's word on whether an explicit user request may invoke the atlas-* skills
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — six bumps between 2026-10-05 and 2026-10-08 took 59 lifecycle CLI runs and 14 `--help` lookups, and one of them was finished from Python by hand after reading `update.py`; no bump in the twelve days after; the second-look queue has owed about 1,980 items against 545-570 verdicts since 2026-10-05, and blind readers ran once (11 agents, 2026-10-06)
 **Scope:** atlas
 **Hardware:** toolchain
@@ -16,10 +17,28 @@ The bump itself is now cheap. What remains is that someone has to remember to ru
 
 ## Done when
 
-- [ ] `hook install` and `hook uninstall` exist; a test on a fixture repo with a fake build command shows one bump after a burst of HEAD moves, a lock that refuses a second concurrent bump, and the previous atlas current until the new one joined.
-- [ ] A bump that stops or fails leaves its reason where the stale line and `src:` show it.
-- [ ] A west workspace not at the manifest's revisions stops the bump with that reason before building.
-- [ ] `second-look queue --used` batches from a fixture usage log, or `decisions.md` records that the backlog stays manual.
+- [x] `hook install` and `hook uninstall` exist; a test on a fixture repo with a fake build command shows one bump after a burst of HEAD moves, a lock that refuses a second concurrent bump, and the previous atlas current until the new one joined.
+- [x] A bump that stops or fails leaves its reason where the stale line and `src:` show it.
+- [x] A west workspace not at the manifest's revisions stops the bump with that reason before building.
+- [x] `second-look queue --used` batches from a fixture usage log, or `decisions.md` records that the backlog stays manual.
 - [ ] The owner's answer on model invocation of the atlas-* skills is in DESIGN.md.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Result
+
+Shipped on `agent/atlas/001-bump-on-head` (embarch-atlas 67cec65; this branch carries the doc half). The atlas has no `spec.md`/`decisions.md`/`open.md`: its contract is the repo's `DESIGN.md` ("Bumping when HEAD moves", "When `update` stops", "How a session sees the atlas", the layout and the CLI table), plus a short note in `embarch-atlas/design.md` here and `changelog.d/atlas-bump-on-head.added.md`. No `features.d/` row: atlas has no section in the feature inventory.
+
+- **Hooks** (`bump.py`): `hook install <target>... [--debounce S]` writes a marked block into `post-commit`, `post-checkout` (skipped for a file checkout), `post-merge` and `post-rewrite` in the hooks dir git resolves; a hook that is not ours keeps its text and gets the block appended; `hook uninstall` removes the block and deletes a hook that held nothing else. The block writes `bump/moved` and starts `hook run` detached unless `bump/worker.pid` is live. `init` offers it.
+- **Worker**: waits until HEAD has been quiet `--debounce` seconds (default 10) and no rebase, merge, cherry-pick, revert or bisect is in progress, then runs `update` per target under the bump lock, logging to `bump/log`, then `status`. `bump/handled` records the last move bumped, so the extra workers a burst starts before the first writes its pid exit with nothing to do (a first test run showed five bumps for five commits without it). It drops `GIT_DIR`-style variables a hook's environment carries.
+- **Lock and state**: every `update` takes `bump/update.lock` (exit 3 with the running bump named when held) and records running/ok/stopped/failed and the reason in `bump/state.json`. `project.atlas_state` turns a running, stopped or failed bump to HEAD into a stale reason, so the MAP's `> **Stale:**` line and every `src:` say why; `stale.py` keys its cache on the state file too.
+- **Previous atlas current until joined**: an atlas whose bump is running and whose MAP.md is not written yet (`bump.joining`) is neither a `current.json` match (`status` lists it as `joining`) nor the lookups' fallback.
+- **West workspace**: `update.workspace_drift` stops a bump before building when a cloned project's HEAD is not its manifest revision (a SHA or tag resolved in its clone; a branch compared with `manifest-rev`) or its clone lacks the revision. An uncloned project is listed, not a stop (a manifest can name projects the build never uses). The manifest compared is the one west reads (the manifest repo's working tree), not the bumped commit's `west.yml`.
+- **Second look from use**: `find_fact` and `register` append the record ids they return to `usage.jsonl`, `part_card` the pages its card cites; `second-look queue <atlas> --used <log> [--top N]` batches only the queued facts those answers returned, most used first.
+- **Tests** (`tests/test_bump.py`, 8): real git hooks on a fixture repo, five commits in a row are one bump of the last commit (stragglers waited out); the lock refuses a second bump and a second worker; at the moment the new atlas's join starts, `current_atlas` is still the previous one and the MAP line says a bump is running; a stopped and a failed bump each reach the MAP line and `src:`; a fake `west` with a module off its manifest SHA stops the bump before `run_build`, a tag revision passes, an uncloned project is listed; lookups log ids and card pages; `--used` batches from a fixture log. Gate: 739 passed, 3 skipped (no real west workspace), `test_public_guard` ran.
+- **Choice made here**: the burst test's target has no Zephyr board (`no_board = true`), so the "build" it runs is the stamp-only build and the join is real; the west path is covered by the drift test's fake `west`. No real west workspace bump was run.
+- **Unverified**: a bump on a real west workspace from a hook, and a rebase of many commits (the in-progress check reads `git rev-parse --git-path rebase-merge` and friends, tested only by construction).
+
+## Blocked
+
+One box needs the owner, and no agent can ask him: **may an explicit user request ("update the atlas") invoke the atlas-* skills**, which are `disable-model-invocation: true` today, so a session asked to update follows the skill by hand? His answer goes into DESIGN.md "The skills" (and, if yes, the three SKILL.md frontmatters). The bump on HEAD moves makes the question less pressing but does not answer it.
