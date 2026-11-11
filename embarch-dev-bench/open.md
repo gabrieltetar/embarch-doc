@@ -17,6 +17,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 - **Bond clearing has never been observed firing on real hardware.** Decision 11's clearing step is reasoned, not observed — an attempt to verify it stopped before connecting; the owner accepted the risk instead. **Still not an observation.**
 - **The fatal-error path is designed and untested.** No fault has been induced to watch a Zephyr fatal dump reach Core through the synchronous fatal-path sink (spec §4).
 - **Nothing has been validated against a DUT with no input/output capability.** Against such a peer, Just Works is forced, L4 unreachable, and the security step should `Fail` reporting the level reached (decisions 34, 37) — untested, because the bench's real DUT requires and supplies L4.
+- **pd-bench's USB-C stack never runs off-hardware**: Zephyr v4.4.2 has no TCPC emulator, so only `pd_logic.c` is tested (decision 59).
 
 ## Unmeasured
 
@@ -35,7 +36,7 @@ What is unresolved, and what would close it. Current truth: [spec.md](spec.md). 
 
 ## Carried, not upstream
 
-- **pd-bench's six USB-C patches are carried, not upstream** (decision 58), so every pin move re-applies them. Closes when a release holds all six and `workspaces/pd-bench/` needs no `patches.yml`.
+- **pd-bench's six USB-C patches are carried, not upstream** (decision 58). Closes when a release holds all six.
 - **Which copy of a patch leads, and how a fix reaches the other, waits on the owner.** The workspace they came from is on v4.5.0 now, and its copies differ.
 
 ## Structural

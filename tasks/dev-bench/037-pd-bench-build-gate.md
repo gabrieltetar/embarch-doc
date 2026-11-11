@@ -1,10 +1,11 @@
 # 037 — Give pd-bench a twister build-only gate for both shields and a native_sim test of its pure logic
 
-**State:** claimed by agent/dev-bench/037-pd-bench-build-gate, 2026-11-10 22:19 (worker thread dispatched by the owner's session, no supervisor; branched from agent/dev-bench/036-pd-bench-own-west-manifest)
+**State:** blocked — agent/dev-bench/037-pd-bench-build-gate in embarch-dev-bench and embarch-doc, branched from agent/dev-bench/036-pd-bench-own-west-manifest and landing after it; everything but the twister run is done
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — eight pd-bench commits landed on `main` with no build anyone but their author could repeat; decision 9 records that nothing mechanical checks a change to this repo before it lands
 **Scope:** dev-bench
 **Hardware:** toolchain
 **Owner:** no
+**Unparks when:** the owner's word on installing Zephyr's `scripts/requirements-run-test.txt` into the fleet venv
 
 ## What
 
@@ -24,8 +25,8 @@ The patch set and the pin are about to change hands: they are leaving the client
 
 - [ ] `pd-bench/sample.yaml` has the two scenarios with `build_only: true`, `platform_allow: nucleo_g0b1re` and `integration_platforms: [nucleo_g0b1re]`. `west twister -T pd-bench -p nucleo_g0b1re` from `workspaces/pd-bench/` reports 2 of 2 built.
 - [ ] The fleet venv can run twister. Today it lacks Zephyr's `scripts/requirements-run-test.txt`: `natsort` is missing, so twister dies on import. Installing those requirements into `/home/gabriel/Github/embarch/.west-venv` is a change outside every repo, so ask the owner first and record that it was done. The same gap affects `app/tests` under the documented `west twister` line.
-- [ ] The pure helpers live in `pd-bench/src/pd_logic.{c,h}`, with no shell, kernel or device calls. `main.c` calls them, and its behaviour is unchanged. Both shield builds still pass and the image sizes move by under 1 %.
-- [ ] `pd-bench/tests/logic/` is a ztest suite on `native_sim` covering:
+- [x] The pure helpers live in `pd-bench/src/pd_logic.{c,h}`, with no shell, kernel or device calls. `main.c` calls them, and its behaviour is unchanged. Both shield builds still pass and the image sizes move by under 1 %.
+- [x] `pd-bench/tests/logic/` is a ztest suite on `native_sim` covering:
   - fixed and PPS RDO encoding;
   - `pd srccaps` accepting `5000:1500`;
   - refusing a first PDO that is not 5000 mV, a falling voltage, a voltage not in `source-pdos`, and a current above the devicetree's;
@@ -33,7 +34,27 @@ The patch set and the pin are about to change hands: they are leaving the client
   - a Request above its PDO's current refused.
 
   It builds from `workspaces/pd-bench/` and passes.
-- [ ] `pd-bench/README.md` gains a short "Tests" section with the two commands.
-- [ ] `open.md` says the USB-C stack is not exercised off-hardware, because upstream has no TCPC emulator.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+- [x] `pd-bench/README.md` gains a short "Tests" section with the two commands.
+- [x] `open.md` says the USB-C stack is not exercised off-hardware, because upstream has no TCPC emulator.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
+
+## Blocked
+
+**Only the twister run is left, and it waits on the owner.** The fleet venv (`/home/gabriel/Github/embarch/.west-venv`) lacks `natsort` and `tabulate` from Zephyr's `scripts/requirements-run-test.txt`, so `west twister` dies on import. This task says to ask the owner before installing them, and this worker had no owner to ask, so nothing was installed and no other venv was borrowed. The first two `Done when` boxes stay open. Once the owner says yes, the remainder takes about 5 minutes, from `workspaces/pd-bench/` in a checkout of this branch: install the requirements, run `west twister -T pd-bench -p nucleo_g0b1re` (expect 2 of 2 built, the `native_sim` suite filtered out) and `west twister -T pd-bench/tests/logic -p native_sim`, then tick both boxes and set `done`.
+
+What stands in for twister until then, measured 2026-11-10 from a fresh `west init -l manifest && west update && west patch apply` in the branch worktree's `workspaces/pd-bench/`:
+
+- Both `sample.yaml` and `tests/logic/testcase.yaml` validate against twister's own `testsuite-schema.yaml`, loaded through `scripts/pylib/twister/scl.py`.
+- `west build` of both scenarios with `-DCONFIG_COMPILER_WARNINGS_AS_ERRORS=y`, the setting twister builds with by default: both pass, 0 warnings.
+- `west build -b native_sim -s pd-bench/tests/logic`, then `zephyr.exe`: 13 of 13 pass.
+
+## What shipped (2026-11-10)
+
+- **embarch-dev-bench** `agent/dev-bench/037-pd-bench-build-gate`, one commit on top of 036's: `pd-bench/src/pd_logic.{c,h}`, `main.c` calling them, `pd-bench/sample.yaml`, `pd-bench/tests/logic/`, and a "Tests" section in `pd-bench/README.md`.
+- **What moved:** the PDO classifiers, the fixed and PPS RDO builders, `pd max`, the choice check against the caps, the source's Request check, the shell's number parser and the `pd srccaps` rules. `main.c` prints every message as before: a refused `pd srccaps` PDO comes back as a reason code, and `main.c` turns it into the same text. The public names are PascalCase (`PdLogicRdoFixed`), per the owner's Zephyr rules, although `tcpp03.h` and `app/` use snake_case. The moved literals got names in `pd_logic.h`.
+- **Sizes against 036's builds:** SNK1M1 128,736 B to 128,856 B flash (+0.09 %), DRP1M1 148,252 B to 148,904 B (+0.44 %), RAM unchanged. `CONFIG_USBC_TCPC_STM32_DMA=y` in both.
+- **The suite, 13 tests:** fixed and PPS RDO encoding, checked against the USB PD R3.2 field layout rather than the unions; the classifiers; `pd max` capping at 3 A and breaking ties to the lower voltage; a choice checked against the caps; a Request above its PDO's current refused; `pd srccaps` accepting `5000:1500` and refusing a first PDO not at 5000 mV, a falling voltage, a voltage not in `source-pdos`, a current above the devicetree's, and malformed text.
+- **Found: the carried R3.2 patch's `usbc_pd.h` is not self-contained.** It adds `__packed` structs without `#include <zephyr/toolchain.h>`. The ARM builds never saw it, because other includes come first, but `pd_logic.c` alone on `native_sim` failed to compile on it. `pd_logic.h` includes `toolchain.h` first, with a comment. Fixing the patch itself waits on the owner's "which copy leads" question (`open.md`).
+- Decision 59, `spec.md` §2, the `open.md` bullet and a changelog fragment. The 036 `open.md` bullet on the carried patches was shortened to keep the file out of its reserve.
+- **Gate:** `check-docs.py` 12 of 12 green on the doc branch; `check-client-names.py --repo` and `check-ownership.py --scope dev-bench --code-repo` green on the code branch.

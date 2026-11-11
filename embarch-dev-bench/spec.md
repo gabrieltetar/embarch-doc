@@ -36,6 +36,9 @@ app/                              shared C source, vendor-agnostic
 
 pd-bench/                         the USB PD partner (decision 48): its own
                                   app, shell only
+├── src/pd_logic.[ch]             PDO/RDO arithmetic and shell rules, no kernel in it
+├── tests/logic/                  ztest on native_sim, against pd_logic.c (decision 59)
+└── sample.yaml                   twister, build only, both shields
 
 workspaces/                       one west topdir per vendor family, and pd-bench's
 ├── nordic/        NCS v3.4.0 + SoftDevice Controller — the current bench

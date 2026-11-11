@@ -33,3 +33,9 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **Four the source workspace carries are left out**, because pd-bench uses none: the two dead-battery backports (the Nucleo never boots from VBUS), the UDC shared-IRQ fix (no USB device stack) and the Discover Identity responder (no identity callback).
 
 **A patch leaves when the pin moves to a release that contains it:** the backport after 8a87e3bde92d, the prescaler part of the UCPD fixes after 9719cc9cbe4f. Building from the workspace the patches came from, as decision 48 had it, left nobody else able to build pd-bench, the fleet included.
+
+### 59 — pd-bench is checked by a build-only twister run and a native_sim test of its pure logic, never by running its stack
+
+**`pd-bench/sample.yaml` builds both shields under twister, build only, and `pd-bench/tests/logic` runs a ztest suite on `native_sim` against `src/pd_logic.c`**: the PDO classifiers, the RDO builders, the `pd max` choice, a choice checked against the caps, the source's Request check and the `pd srccaps` rules. That file makes no shell, kernel or device call, which is what lets it run off-hardware. `main.c` keeps the locking, the stack callbacks and every line the shell prints.
+
+**The USB-C stack does not run off-hardware**: Zephyr v4.4.2 has no TCPC emulator (`drivers/usb_c/tcpc/` holds fusb307, ps8xxx, rt1715, tcpci and two UCPD drivers), and writing one is out of scope. The build check is what catches a patch update or a pin move (decision 58) breaking the build. Neither check is in the fleet's gate (decision 9).
