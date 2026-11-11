@@ -1,6 +1,6 @@
 # 003 — `config` and `dt_node` take a list of names and a second build to compare
 
-**State:** open
+**State:** claimed by agent/atlas/003-config-takes-a-list-and-a-second-build, 2026-11-10 22:20 (worker dispatched by the owner session)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 516 `grep`s of a build's `zephyr/.config` or `zephyr.dts`, 193 of them after `config`/`dt_node` landed on 2026-10-06 (77 atlas build-query calls in the same span); a `.config` grep checked a median of 4 symbols at once, 27 were `diff <(grep … a/.config) <(grep … b/.config)`, and 4 of 67 `config`/`dt_node` calls named a build other than the pinned one
 **Scope:** atlas
 **Hardware:** toolchain
