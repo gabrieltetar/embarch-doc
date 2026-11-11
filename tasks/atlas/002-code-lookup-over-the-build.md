@@ -1,6 +1,6 @@
 # 002 — Look up a symbol or a state machine in the sources a build compiled
 
-**State:** open
+**State:** claimed by agent/atlas/002-code-lookup-over-the-build, 2026-11-10 22:20 (worker dispatched by the owner session)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 12,738 `grep`/`sed -n`/`Read` calls on C sources (4,824 Zephyr, 7,914 application and driver) were 42% of all context tokens and returned 67 MB; 1,364 `sed -n` ranges came on the call right after a `grep -n` on the same file; the USB-C stack (`subsys/usb/usb_c`, the UCPD TCPC driver, their headers, `lib/smf`) took 3,350 of the Zephyr reads and was re-read from scratch by 203 separate agents
 **Scope:** atlas
 **Hardware:** toolchain
