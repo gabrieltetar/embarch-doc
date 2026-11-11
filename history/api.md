@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Added
+- build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
+
 ### Changed
 - Windows tree kill on a timed-out build verified on Windows; decision 75 drops its unix-only qualifier ([decisions/build.md](../embarch-api/decisions/build.md)).
 ## 2026-10
