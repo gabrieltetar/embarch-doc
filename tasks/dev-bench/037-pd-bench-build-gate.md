@@ -1,6 +1,6 @@
 # 037 — Give pd-bench a twister build-only gate for both shields and a native_sim test of its pure logic
 
-**State:** open
+**State:** claimed by agent/dev-bench/037-pd-bench-build-gate, 2026-11-10 22:19 (worker thread dispatched by the owner's session, no supervisor; branched from agent/dev-bench/036-pd-bench-own-west-manifest)
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — eight pd-bench commits landed on `main` with no build anyone but their author could repeat; decision 9 records that nothing mechanical checks a change to this repo before it lands
 **Scope:** dev-bench
 **Hardware:** toolchain
