@@ -53,11 +53,13 @@ outright; the real-time half stands and is decision 48's subject.
 
 A dangling reference then lands on an explanation instead of a gap, which is what keeps *Referring to a decision*'s never-reused promise cheap.
 
-## Measured vs. assumed constants
+## Measured vs. assumed
 
 Every load-bearing constant says which it is, inline: `460800 baud [measured 2026-08-30, DK VCOM1 over the bridge]`, `250 ms step timeout [assumed]`.
 
 The bracket earns its place on an **inventoried** constant — one in a table or declared list, where provenance would otherwise be vague. It does **not** earn its place where prose already derives a constant precisely ("244, one full 247-byte ATT MTU minus the 3-byte ATT header"): a bracket there is noise. A sweep found only **five** sites repo-wide, not the dozens the rule's wording implied. So: mark an inventory, leave good prose alone, and mark the rest as each doc reaches a compaction pass.
+
+**The same bracket applies to an inventoried *arm*, not only an inventoried constant.** A row in a check or capability table that names several branches says which have **run** and which were only written: `measured` cites a live run, prose alone means reasoned but not observed. [embarch-umbrella/interfaces/doctor-chain.md](embarch-umbrella/interfaces/doctor-chain.md) is the worked instance. This marks the table; it does **not** replace the `open.md` bullet, which is where the fact and its closing trigger live. Apply it as each doc reaches a compaction pass, not as a sweep.
 
 ## `open.md` needs no "Open questions" heading
 
