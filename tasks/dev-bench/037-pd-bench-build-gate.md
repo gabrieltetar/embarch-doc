@@ -1,11 +1,10 @@
 # 037 — Give pd-bench a twister build-only gate for both shields and a native_sim test of its pure logic
 
-**State:** blocked — agent/dev-bench/037-pd-bench-build-gate in embarch-dev-bench and embarch-doc, branched from agent/dev-bench/036-pd-bench-own-west-manifest and landing after it; everything but the twister run is done
+**State:** done — agent/dev-bench/037-pd-bench-build-gate in embarch-dev-bench and embarch-doc, branched from agent/dev-bench/036-pd-bench-own-west-manifest and landing after it; both twister passes green 2026-11-10
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — eight pd-bench commits landed on `main` with no build anyone but their author could repeat; decision 9 records that nothing mechanical checks a change to this repo before it lands
 **Scope:** dev-bench
 **Hardware:** toolchain
 **Owner:** no
-**Unparks when:** the owner's word on installing Zephyr's `scripts/requirements-build-test.txt` into the fleet venv (`requirements-run-test.txt` is in since 2026-11-10)
 
 ## What
 
@@ -23,7 +22,7 @@ The patch set and the pin are about to change hands: they are leaving the client
 
 ## Done when
 
-- [ ] `pd-bench/sample.yaml` has the two scenarios with `build_only: true`, `platform_allow: nucleo_g0b1re` and `integration_platforms: [nucleo_g0b1re]`. `west twister -T pd-bench -p nucleo_g0b1re` from `workspaces/pd-bench/` reports 2 of 2 built.
+- [x] `pd-bench/sample.yaml` has the two scenarios with `build_only: true`, `platform_allow: nucleo_g0b1re` and `integration_platforms: [nucleo_g0b1re]`. `west twister -T pd-bench -p nucleo_g0b1re` from `workspaces/pd-bench/` reports 2 of 2 built.
 - [ ] The fleet venv can run twister. Today it lacks Zephyr's `scripts/requirements-run-test.txt`: `natsort` is missing, so twister dies on import. Installing those requirements into `/home/gabriel/Github/embarch/.west-venv` is a change outside every repo, so ask the owner first and record that it was done. The same gap affects `app/tests` under the documented `west twister` line.
 - [x] The pure helpers live in `pd-bench/src/pd_logic.{c,h}`, with no shell, kernel or device calls. `main.c` calls them, and its behaviour is unchanged. Both shield builds still pass and the image sizes move by under 1 %.
 - [x] `pd-bench/tests/logic/` is a ztest suite on `native_sim` covering:
@@ -39,13 +38,18 @@ The patch set and the pin are about to change hands: they are leaving the client
 - [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
 
-## Blocked
+## Twister
+
+**2026-11-10, third run: both passes green.** The owner's session installed Zephyr's `scripts/requirements-run-test.txt` and `scripts/requirements-build-test.txt` into the fleet venv (`/home/gabriel/Github/embarch/.west-venv`); this worker installed nothing. From `workspaces/pd-bench/` in this branch's worktree:
+
+- `west twister -T pd-bench -p nucleo_g0b1re`: 3 scenarios selected, 1 filtered (`pd_bench.logic`, by its `platform_allow`), 2 built (not run), 0 failed, "with no warnings".
+- `west twister -T pd-bench/tests/logic -p native_sim`: 1 of 1 configuration passed, 13 of 13 test cases passed, "with no warnings".
 
 **2026-11-10, second run: twister is still red, now on `junitparser`.** The owner's session installed `scripts/requirements-run-test.txt` into the fleet venv, and `natsort` and `tabulate` now import. Both passes were then run from `workspaces/pd-bench/` in this branch's worktree, and both died on import before building anything: `west twister -T pd-bench -p nucleo_g0b1re` and `west twister -T pd-bench/tests/logic -p native_sim` each end in `ModuleNotFoundError: No module named 'junitparser'`, raised by `scripts/pylib/twister/twisterlib/harness.py` line 21, whose line 23 imports `pytest` too. Both come from Zephyr's `scripts/requirements-build-test.txt` (colorama, ply, gcovr, coverage, pytest, mypy, junitparser, python-dotenv). The fleet venv lacks junitparser, pytest, mypy, gcovr and coverage from that file, so twister needs it as well as the run-test file. Nothing was installed by this worker. After that install, the same two commands finish the task.
 
 **First run, before the run-test install:** the fleet venv (`/home/gabriel/Github/embarch/.west-venv`) lacks `natsort` and `tabulate` from Zephyr's `scripts/requirements-run-test.txt`, so `west twister` dies on import. This task says to ask the owner before installing them, and this worker had no owner to ask, so nothing was installed and no other venv was borrowed. The first two `Done when` boxes stay open. Once the owner says yes, the remainder takes about 5 minutes, from `workspaces/pd-bench/` in a checkout of this branch: install the requirements, run `west twister -T pd-bench -p nucleo_g0b1re` (expect 2 of 2 built, the `native_sim` suite filtered out) and `west twister -T pd-bench/tests/logic -p native_sim`, then tick both boxes and set `done`.
 
-What stands in for twister until then, measured 2026-11-10 from a fresh `west init -l manifest && west update && west patch apply` in the branch worktree's `workspaces/pd-bench/`:
+What stood in for twister before the third run, measured 2026-11-10 from a fresh `west init -l manifest && west update && west patch apply` in the branch worktree's `workspaces/pd-bench/`:
 
 - Both `sample.yaml` and `tests/logic/testcase.yaml` validate against twister's own `testsuite-schema.yaml`, loaded through `scripts/pylib/twister/scl.py`.
 - `west build` of both scenarios with `-DCONFIG_COMPILER_WARNINGS_AS_ERRORS=y`, the setting twister builds with by default: both pass, 0 warnings.
