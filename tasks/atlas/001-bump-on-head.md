@@ -2,6 +2,7 @@
 
 **State:** blocked — everything but the owner's answer shipped on agent/atlas/001-bump-on-head (both repos, pushed 2026-11-10, not landed)
 **Unparks when:** the owner's word on whether an explicit user request may invoke the atlas-* skills
+**Owner's word, 2026-11-10, given directly in his interactive session:** allow model invocation. Drop `disable-model-invocation: true` from the three atlas skills that build or update an atlas, so "update the atlas" said in a session starts one. He accepted the trade-off that the flag is all-or-nothing, so a session may also start one on its own judgement.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — six bumps between 2026-10-05 and 2026-10-08 took 59 lifecycle CLI runs and 14 `--help` lookups, and one of them was finished from Python by hand after reading `update.py`; no bump in the twelve days after; the second-look queue has owed about 1,980 items against 545-570 verdicts since 2026-10-05, and blind readers ran once (11 agents, 2026-10-06)
 **Scope:** atlas
 **Hardware:** toolchain
