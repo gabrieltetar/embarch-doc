@@ -17,6 +17,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **The bench lease client has met only a board-less dev Core** ([decisions](decisions/lease.md) 90, 101). An MCP-taken token reaches no CLI or atlas subprocess until exported there; the 900 s default TTL is assumed.
 - **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
 - **The build verdict has read one real Zephyr build and one real ztest run** ([decisions](decisions.md) 102, 103): a sample app and its variant on a Cortex-M3 board, a ztest sample on native_sim. Unmet: real twister output (fixture-tested), a sysbuild log (the last memory table wins), a field variant pair.
+- **`build --each` has met one fixture workspace** ([decisions](decisions.md) 104): a T2 module on Zephyr 4.4. Unmet: a sysbuild build (its `app_version.h` sits elsewhere and stays stale), a commit id computed at CMake configure time (stale too), a module that is not the manifest repo.
 - **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
 
 ## Structural limits

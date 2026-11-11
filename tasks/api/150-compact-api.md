@@ -1,7 +1,7 @@
 # 150 — Split api's open.md by mission
 
 **State:** open
-**Reserve at filing (2026-11-10):** `embarch-api/open.md` 4,227/5,120 B, 893 B left. `api/126` spent it on the build-verdict verification bullet; the file had been 14 B under the reserve line.
+**Reserve at filing (2026-11-10):** `embarch-api/open.md` 4,227/5,120 B, 893 B left; `api/127` then took it to 4,502 B with the `build --each` bullet. `api/126` spent it first on the build-verdict verification bullet; the file had been 14 B under the reserve line.
 **Source:** `tasks/api/126` (build verdict and named variants), per `DOC-BUDGET.md`'s reserve rule: the actor that spends the reserve files the debt.
 **Scope:** api
 **Hardware:** none

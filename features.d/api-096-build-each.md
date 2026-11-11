@@ -1,0 +1,1 @@
+| `build --each` / `build_each` — every commit of a range in every build variant, each from its own module checkout substituted for the workspace module; new warnings, FLASH/RAM deltas, headroom; `--same-tree-as` | Shipped — **one real fixture workspace (a board-only commit built with its board); sysbuild and configure-time commit ids not handled** | unit | 104 |

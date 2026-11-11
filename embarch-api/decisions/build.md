@@ -31,3 +31,9 @@ Tests: `crates/embarch-firmware-build/tests/cross_process_lock.rs` (two re-execu
 - **Incremental by default.** Wiped (`-p always`) only when asked or when `target.json` shows other variant settings, since CMake keeps a dropped `-D`. A matching cache gets no CMake arguments, so west does not reconfigure [measured 2026-11-10: 0.5 s against 6.8 s pristine, sample app].
 - **`vs`** reads the other build's record before building, so naming the same variant compares against its previous build.
 - **Not on `Selection`**: `embarch-ui` builds that struct field by field. **Not `pristine` on a `static` default build**: its argv is the operator's.
+
+### 104 — `build --each` builds a range from each commit's own module, never from the workspace's
+Every commit of `<base>..<tip>` builds in every variant from a detached checkout kept inside the west workspace (`<topdir>/.embarch-build-each/`): a `git clone --shared` of the project's repository that only this tool moves, never the engineer's tree. West still lists the workspace's own module, so each build also gets `-DEXTRA_ZEPHYR_MODULES=<checkout>`; Zephyr keys modules by name and reads that list last, so the checkout replaces the workspace module's boards and drivers. Without it a commit changing only a board file built the workspace's board [measured 2026-11-10: 9,376 B against 14,344 B with it].
+- **Incremental across commits**: one checkout path and one directory per variant. `app_version.h` is removed before each build; Zephyr regenerates it only when VERSION or its own git index changes, so the next commit kept the last one's id.
+- **`--same-tree-as`** compares trees by git, then builds the reference in the same directories and allows only hex runs that are each commit's own id.
+- **Not a `git worktree` beside the repo**: it moves the engineer's repository's state, and still builds the workspace module.
