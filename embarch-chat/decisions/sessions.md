@@ -28,7 +28,7 @@ It closes 5 minutes after the later of the last input and the last reply, unless
 
 ### 30 — The panel runs the `claude` on `PATH`
 
-As the desk and terminals do, overridable in a setting; **outside the versions a panel release was tested with (2.1.287–2.1.308) it warns in one line and keeps working**. **Rejected:** refusing to start chats on an untested version (a CLI auto-update could lock the owner out), no guard; the official extension's bundled binary (2.1.308 when this was built), whose path changes with every extension update.
+As the desk and terminals do, overridable in a setting; **outside the versions a panel release was tested with (2.1.287–2.1.322) it warns in one line and keeps working**. **Rejected:** refusing to start chats on an untested version (a CLI auto-update could lock the owner out), no guard; the official extension's bundled binary (2.1.308 when this was built), whose path changes with every extension update.
 
 ### 22 — A new chat starts in auto mode on the owner's default model
 
