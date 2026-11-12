@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas `config` takes several names or `*` patterns, one line each; `config` and `dt_node` take `vs=<build dir | pinned>` and list only the differences, both sides and their sources.
 - Atlas: a target can state no_board = true, so an atlas is built from the schematic and datasheets before any Zephyr board exists; build-dependent outputs are named absent.
 - Atlas: declare-pin-name records names for pins the schematic PDF left unnamed (pin_names.json overlay); every pin name carries its source; schematic reports the pins still unnamed.
 - `part_card` (board MPN, refs and nets) and `mismatch_report` (checks needing no build; the rest under Not run) answer from netlists, BOM and coverage before the first atlas; DESIGN.md.
