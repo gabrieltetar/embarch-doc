@@ -33,3 +33,7 @@ Opt-in: `embarch-atlas hook install <target>` writes `post-commit`, `post-checko
 ## Standards and specifications
 
 A `standard` (a bus, protocol or power specification, an IEC/IEEE/JEDEC standard) binds a role, not a part: the join never ties it to a board part, and MAP.md lists it under "Other documents". It is distilled lazily, as the reference manual is: only the sections in its `worklist.json` (`embarch-atlas doc sections <doc> --add <sec> --why <text>`), chosen by the engineer or from measured use (`doc sections --suggest` ranks the sections sessions' `find_text` and `doc_section tier=text` lookups landed in). A frozen section is never redone. Check W holds a requirement's modality to the normative keyword in its quote. Detail: the repo's `DESIGN.md`, "Standards and specifications".
+
+## Protocol records
+
+A standard's applicability tables are one `applicability` record per cell (item, role, condition, initiator or responder, the level as printed), and a state machine written one subsection per state is `state` and `transition` records checked against its state diagram. The `applies` lookup answers what a role must support, and `transitions` what a state does and which states react to a message or timer; the same kinds fit a datasheet's state machine. The fields, checks L and E, and both lookups are in the repo's `DESIGN.md`.
