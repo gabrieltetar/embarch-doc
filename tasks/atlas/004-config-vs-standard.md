@@ -41,6 +41,8 @@ Choices made without the owner: a `dt` selector matches exactly (path, label, al
 
 Not verified: the PDO bit layout is written from the public USB PD layout as remembered, with no spec PDF in reach (no web, no client material); the tests prove the decode is self-consistent, not that it matches the spec. Check it against the standard's PDO tables once they are distilled. Not built: the numbers inside a fw_check expression are not anchored to the page, and rule 4 of the worked example (a Kconfig role against the sequences applicability records make Normative) waits for those records (tasks/atlas/011); both are in DESIGN.md Not yet built.
 
+Follow-up filed by the owner, 2026-11-11: **EMB-159**, check the PDO/APDO decode against the standard's PDO tables once the standard is distilled in an atlas.
+
 ## Blocked (history)
 
 Parked by the supervisor on 2026-10-29, not by a worker: the `requirement` records of a standard this checks against come from the `standard` kind `tasks/atlas/016` lands, and that task waits on the owner's review. Back to `open` when 016 is done.
