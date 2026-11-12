@@ -38,7 +38,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
 | [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 2.7 KB |
 | [What a study reads back](decisions/study-reads.md) — seals, schemas, the manifest, and the stream tools that replaced three fixed-channel aliases | 27, 28, 31, 33, 39 | 6.2 KB |
-| [What a study flashes first](decisions/study-reflash.md) — reflash sequencing, three gaps in `run_study`'s own contract, and a bench version Core did not report | 40, 44, 105 | 7.6 KB |
+| [What a study flashes first](decisions/study-reflash.md) — reflash sequencing, three gaps in `run_study`'s own contract, and a bench version Core did not report | 40, 44, 105 | 7.8 KB |
 | [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, no longer constants, and the one route whose timeout is stated rather than inherited | 32, 45, 68 | 5.0 KB |
 | [The patch-series round trip](decisions/patches.md) — `patches export/import/regroup`: one scratch tree, fixes folded by blame, regroup proved by tree id | 92 | 3.6 KB |
 | [The review-fold and restack family](decisions/stack.md) — `stack plan/fold/restack`: fixups by blame, backed-up autosquash, atomic leased restack, tree identity by git | 96 | 4.9 KB |

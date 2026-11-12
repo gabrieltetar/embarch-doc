@@ -129,9 +129,10 @@ pushed, none landed:
 - **`embarch-core` `c0d2a7e`** — `HelloAckInfo.firmware_version` → `dev_bench_version`, so the
   route, the gate and `Provenance` read one name; the wire `HelloAck` is untouched. A test pins the
   response's key set. Decision 108.
-- **`embarch-api` `8067c4f`** (on `origin/main` `d36be9e`, which carries api/126 and api/127) —
+- **`embarch-api` `ceae118`** (on `origin/main` `d36be9e`, which carries api/126 and api/127) —
   `HelloAckResponse.dev_bench_version: Option<String>`, `#[serde(default)]`, no alias;
   `render_hello_ack`, `dev-bench-hello --json` and `run_study`'s gate follow it. Decision 105.
+  `8067c4f` is the rename; `ceae118` is the owner's 2026-11-11 call on the gate, below.
 - **`embarch-ui` `2e16164`** — one helper feeds both bench-state reads; absence is a reason, shown
   as unavailable. Builds only against the `embarch-api` branch.
 - **`embarch-umbrella` `47feb0f`** — check 13 reads `dev_bench_version`; absence is a `Warn` naming
@@ -140,15 +141,16 @@ pushed, none landed:
   umbrella 19, the doctor-chain row and the message-rendering reference; the Core and api interface
   rows; a Core `open.md` bullet for the undeployed rename, which put that file in reserve, so `tasks/core/126` files the debt; five `changelog.d/` fragments.
 
-**The absent-field decision (api 105): an unreported bench version satisfies nothing but `any`.** A
-pinned `requires.dev_bench_version` is refused before the DUT is built or flashed;
-`allow_version_mismatch` lets it through as it does a mismatch, recording `dev_bench_version: null`,
-because Core still gates the bench from its own handshake on submit.
+**The absent-field decision (api 105), as the owner set it on 2026-11-11: an unreported bench
+version is always refused.** A pinned `requires.dev_bench_version` is refused before the DUT is
+built or flashed, and `allow_version_mismatch` does not let it through; a bench requirement of
+`any` is the one way to run against an older Core. The branch first let the override through
+(`8067c4f`); `ceae118` replaced that, with its tests.
 
 **Gate** [2026-11-10]: `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings` green
 in `embarch-core`, `embarch-api` (after the rebase onto `d36be9e`), `embarch-ui` and
 `embarch-umbrella`, the last two built against the `embarch-api` branch through a symlink farm in
-`/tmp`; `check-client-names.py --repo` clean on all four; `scripts/check-docs.py` all 12 green on this branch [2026-11-11]. Nothing on any `origin/main` moved between the build and the doc commit, so the Windows build still matches the SHAs above.
+`/tmp`; `check-client-names.py --repo` clean on all four; `scripts/check-docs.py` all 12 green on this branch [2026-11-11]. Nothing on any `origin/main` moved between the build and the doc commit, so the Windows build still matches the SHAs above. **Re-run for `ceae118`** [2026-11-11]: `embarch-api` build, 401 tests and clippy green, client names clean (one run met a timing failure in `tests/lease_client.rs`, unrelated, green on three reruns and the next full run); `embarch-ui` and `embarch-umbrella` are untouched by it, since it changes the binary and not `embarch-core-client`.
 Native Windows build: the header.
 
 **Land in this order**, shared crate before its consumer: `embarch-core`, `embarch-api`,
