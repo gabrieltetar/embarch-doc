@@ -10,6 +10,7 @@ run, **build only, no deploy**, in a scratch copy on the Windows side, then the 
 build. That is the "native build … and takes this task in that same sitting" the park named, with
 the deploy step of `embarch-dev-workflow.md` §4a left out on purpose. The installed Core service and
 its Windows-side source copy were not touched.
+**Owner's word, 2026-11-11, given directly in his interactive session:** (1) embarch-umbrella lands with core, api and ui. (2) When Core sends no `dev_bench_version`, the reflash gate **always refuses** a study that pins a bench version, and `allow_version_mismatch` does **not** let it through; the only way to run such a study against an old Core is a bench requirement of `any`. This replaces the override behaviour first built on this branch. (3) After landing, Core is deployed per `embarch-dev-workflow.md` §4a and the API is rebuilt.
 **Source:** split out of `suite/036` by leg 105, 2026-09-13, when that task's documentation half
 landed (`embarch-doc` `6f369d3`, `embarch-api` `72e8b12` + `265c8ff`). **This is the half it could
 not take**, because leg 105's announcement window covered documenting the field and this is a
