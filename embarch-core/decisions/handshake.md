@@ -18,6 +18,13 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **Core does not orchestrate the reflash** — that needs a build, which is `embarch-api`'s job. Flashed-this-run is structurally unreachable from Core alone, since `/flash` and `/study` are separate calls with nothing linking them, and the alternative would be a persisted "last thing I flashed" record. A study submitted straight to Core with a stale bench is still rejected.
 
+### 108 — `GET /dev-bench/hello` serves the bench's build as `dev_bench_version`
+The route served `HelloAck.firmware_version` under that name, and on a `Study` that name is `requires.firmware_version`, the **DUT's**; the field the value is compared against is `requires.dev_bench_version`. A caller matching name to name pinned a DUT requirement to the bench's build, and decision 31's gate compares `requires.firmware_version` only when a run supplies `flashed_firmware_version`, so in the ordinary run the wrong value was accepted and recorded as `Declared` (`embarch-study-designer` decision 74, which left this route open). **Renamed to `dev_bench_version`** (`tasks/suite/037`), on decision 47's precedent for `hardware_id` on this same route. The number of spellings does not change: the wire keeps `firmware_version` and the `Study` keeps `dev_bench_version`. What moves is where the two meet — once, inside Core, where `HelloAckInfo` is built, instead of in every caller.
+
+**Only the HTTP name moves.** Renaming the wire field is a schema bump that reflashes every bench, which decision 74 rejected on cost.
+
+**The rename is safe only because of what a caller does against an older Core**, which sends no `dev_bench_version`: `embarch-core-client` reads it as `Option` and does not alias the old key, and `embarch-api`'s reflash gate refuses a pinned requirement when it is absent (`embarch-api` decision 105); `embarch-ui` and `embarch-umbrella`'s doctor check 13 report it as unknown. None of them reads a missing value as a match. *Rejected:* serving both names for a release — two names for one field, live, which decision 56 declined for `hardware_id`.
+
 ---
 
 

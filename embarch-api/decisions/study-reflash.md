@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-11.
 
-Reflash sequencing, and three gaps in `run_study`'s own contract.
+Reflash sequencing, three gaps in `run_study`'s own contract, and what its gate does with a bench version Core did not report.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The other half
 of this split, reads: [study-reads.md](study-reads.md).
@@ -30,3 +30,10 @@ Not design questions — the surface having been extended past the code that imp
 **(b) Resealing recomputed two of the study's three seals.** The third is a deliberate sibling, checked independently so a mismatch names which third is corrupt, and Core validates all three — but the reseal helper overwrote the first two, and the tool description and CLI help both said "both seals". **Every study to date had an empty protocol list, whose CRC is stable, so nothing noticed**; a study carrying a real protocol is rejected unless its author computed the third seal by hand. Fixed. **The regression test asserts against a non-empty list deliberately:** the empty-list CRC is 0, so a protocol-free study cannot distinguish "recomputed to 0" from "never written" — which is precisely how every existing test passed against a function that never touched the field.
 
 **(c) `snippets` was accepted and silently ignored for a project with an explicit build command**, returning success having produced an image whose config said the corresponding option was not set. The CLI help already says snippets are only meaningful for a Zephyr-discovery project, and **that is documentation rather than a gate**. **Closed by [decision 51](zephyr.md): reject** — and the same check covers `board`/`variant`/`revision`/`app`/`extra_args`, discarded identically.
+
+### 105 — The bench's build is `dev_bench_version`: optional, never aliased, and its absence satisfies nothing
+`embarch-core` decision 108 renamed `GET /dev-bench/hello`'s `firmware_version` to `dev_bench_version`, the `Study` field it is compared against (`tasks/suite/037`). `HelloAckResponse` follows it as **`Option<String>` with `#[serde(default)]`**, under [client-crate](client-crate.md) decision 58: the installed Core is older than the rename until it is redeployed, a bare `String` would fail every `dev_bench_hello` against it, and a defaulted `String` would hand the gate an empty version — a real check turned vacuous.
+
+**Not aliased to `firmware_version`**, the call decision 60 made for `hardware_id`: on a `Study` that name is the DUT's, and a client that accepted it here would carry the collision the rename ended. Against an older Core the field is `None` and every reader says so in words: `dev_bench_hello` renders "this Core did not send this field", `dev-bench-hello --json` carries `dev_bench_version: null`, `embarch-ui` shows the bench's build as unavailable.
+
+**The gate treats an unreported version as unsatisfied, never as matching.** A pinned `requires.dev_bench_version` is refused before the DUT is built or flashed, naming the Core as the cause and its deploy as the fix. `allow_version_mismatch` lets it through exactly as it lets a mismatch through, and the outcome records `dev_bench_version: null`; that is safe to honour because Core reads the bench off its own handshake on submit and records any override itself (decision 40). *Rejected:* refusing even under the override, which would leave a bench on a stale Core no path but `any` for a study its human has already chosen to run.

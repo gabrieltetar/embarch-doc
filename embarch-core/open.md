@@ -16,6 +16,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 - **Background capture (decision 92) has never met a port.** Scripted ports only. Open: a capture while exchanges, flashes and resets run on either board; a boot log across a bridge reset; a CDC ACM re-enumeration reopening with a gap marker.
 
 - **The bench lease (decision 93) has never met an installed Core or a second client.** Router-tested only; the two-client check and native Windows build are the owner's.
+
+- **Decision 108's rename has not reached the installed service.** Built natively on Windows in a scratch copy on 2026-11-10, never deployed, so the bench's Core still serves `firmware_version`, and a caller built after the rename reports the bench's build as unknown against it. Owner-run: deploy (`embarch-dev-workflow.md` §4a), then `embarch-api dev-bench-hello` prints `dev_bench_version`.
 ## Unverified diagnoses
 
 - **Whether probe-rs writes killed the nRF54L15 is evidence, not proof** (decision 36): a J-Link erase-and-program recovered the board, but a full reprogram may have cleared something else.

@@ -36,7 +36,7 @@ what "escapes stripped" means here. Applied at every site found by re-grepping t
 than trusting an earlier comment: check 1's `--version` output (`check_binaries`, including the
 values `manifest_mismatches` echoes into a mismatch message), check 4's and check 12's HTTP
 response bodies, and the two `/dev-bench/hello` failure-body sites that feed checks 11 and 13 —
-plus check 13's own `unexpected /dev-bench/hello response` arm, which echoes the full raw body and
+plus check 13's own arm for a body with no `dev_bench_version`, which echoes the full raw body and
 was not named by the reading `031`'s task file started from.
 
 **`embarch-core`'s stdout half is a separate, already-landed decision** (`tasks/core/015`,
