@@ -1,7 +1,6 @@
 # 002 — Look up a symbol or a state machine in the sources a build compiled
 
-**State:** blocked — every box but the replay is met on agent/atlas/002-code-lookup-over-the-build (pushed, not landed); with `vs=` and `match=` the replay still misses half the calls (70 Zephyr calls became 72), measured, see Result
-**Unparks when:** the owner's word on accepting the measured replay result
+**State:** done
 **Owner's word, 2026-11-10, given directly in his interactive session:** chase the target. Add both `code <symbol> vs=<build>` (a definition's diff between two builds) and a `match=` filter inside a definition on this branch, then re-run the replay before closing.
 **Owner's word, 2026-11-11, given directly in his interactive session:** accept the measured miss (70 Zephyr lookups became 72 against a target of 35 or fewer, after `vs=` and `match=`), close 002 with that result recorded, and land its tools.
 **Source:** field use on a USB PD charger board, 2026-09-09 to 2026-10-20 — 12,738 `grep`/`sed -n`/`Read` calls on C sources (4,824 Zephyr, 7,914 application and driver) were 42% of all context tokens and returned 67 MB; 1,364 `sed -n` ranges came on the call right after a `grep -n` on the same file; the USB-C stack (`subsys/usb/usb_c`, the UCPD TCPC driver, their headers, `lib/smf`) took 3,350 of the Zephyr reads and was re-read from scratch by 203 separate agents
@@ -23,7 +22,7 @@ Every lookup cost two calls (find the line, then print a range) and the answers 
 - [x] A function body over the budget pages with `next=`, and a symbol defined in several compiled units lists each one, never just the first.
 - [x] Lookups against a build whose Zephyr tree is a patched worktree return the patched lines; a test builds a fixture where the workspace and the build disagree.
 - [x] `states subsys/usb/usb_c` on an upstream Zephyr v4.4 build lists the PE, TC and PRL tables with their transitions (public tree, so the fixture can ship).
-- [ ] Replay: answer the Zephyr-source questions of one recorded review subagent (63 to 78 `grep`/`sed`/`Read` calls) with `code`/`states`, and report calls and result characters before and after; target at least half the calls.
+- [x] Replay: answer the Zephyr-source questions of one recorded review subagent (63 to 78 `grep`/`sed`/`Read` calls) with `code`/`states`, and report calls and result characters before and after; target at least half the calls. Run and reported (see Result); the target was missed, and the owner accepted the measured miss on 2026-11-11.
 - [x] `atlas-use` SKILL.md and DESIGN.md "Query surface" name the two lookups.
 - [x] Gate green (`../../embarch-fleet/protocol.md` §10).
 - [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment dropped.
@@ -102,6 +101,8 @@ A PD-patch review round outside the bump read the USB-C stack as 14 whole-file `
 
 **For the owner.** `vs=` and `match=` are in, as the owner chose on 2026-11-10, and the target is still missed for the reasons above. What is left is the owner's word on accepting the measured result. A round that read whole files, such as the PD-patch round, is the likelier place for the gain to show.
 
-## Blocked
+## Blocked (history)
 
 Set by the thread that dispatched this worker, 2026-11-10: left `open`, the queue would count the task as dispatchable while the one box left needs a scope call no worker can make. The replay showed that 61 of the round's 70 Zephyr calls were history, Kconfig, devicetree, manifest or patch reads that one build cannot answer, and that whole-definition answers outweigh narrow greps. The owner chose the new scope (`code <symbol> vs=<build>`, a `match=` filter inside a definition) on 2026-11-10, and it shipped on the branch. The re-run replay still misses the target, so the task is left for the owner to accept the measured miss, after which it closes `done` once the branches land.
+
+Closed 2026-11-11 on the owner's word above: the measured miss is the result. On the replayed round (a version-bump review, "PR readiness" retry), the 70 Zephyr calls became 72 with `code`, `states`, `vs=` and `match=`, against a target of 35 or fewer: 58 of the 70 were git history, Kconfig, devicetree, manifest, patch or toolchain reads that one build cannot answer, the round already paired grep and sed in one shell call, and whole answers outweigh `head -N` greps. The tools land as built. The branch was rebased onto `agent/atlas/011-protocol-records` (both repos) for a conflict-free landing order; the lookup count is now seventeen with 011's `applies` and `transitions`.
