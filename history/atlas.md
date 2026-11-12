@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas: `hook install <target>` bumps the atlas after HEAD moves; a stopped or failed bump says why on the stale line and src:; `second-look queue --used`. embarch-atlas DESIGN.md.
 - Atlas `config` takes several names or `*` patterns, one line each; `config` and `dt_node` take `vs=<build dir | pinned>` and list only the differences, both sides and their sources.
 - Atlas: a target can state no_board = true, so an atlas is built from the schematic and datasheets before any Zephyr board exists; build-dependent outputs are named absent.
 - Atlas: declare-pin-name records names for pins the schematic PDF left unnamed (pin_names.json overlay); every pin name carries its source; schematic reports the pins still unnamed.
@@ -46,6 +47,9 @@
 - Atlas build directory is keyed on the build arguments too, so changing a target's extra_args (sysbuild or not) no longer fails in CMake on a stale cache.
 - atlas `join` decodes devicetree pin use on Nordic nRF (psels, nordic,nrf-gpio), folds nrfx-only nodes out of dt-no-driver, and says when a family has no decoder: [design](../embarch-atlas/design.md)
 - atlas build pins a multi-image sysbuild atlas to the application image, picked by domains.yaml default, else the app directory name.
+
+### Decided
+- Atlas: a session may invoke the skills that build or update an atlas (disable-model-invocation dropped, owner 2026-11-10). embarch-atlas DESIGN.md "The skills".
 ## 2026-10
 
 ### Added
