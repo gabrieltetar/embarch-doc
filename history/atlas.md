@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas: a `standard` document kind, `doc sections` (a worklist with --add/--why and --suggest from lookups), check W on modality, and the card's section list. embarch-atlas DESIGN.md.
 - Atlas: `hook install <target>` bumps the atlas after HEAD moves; a stopped or failed bump says why on the stale line and src:; `second-look queue --used`. embarch-atlas DESIGN.md.
 - Atlas `config` takes several names or `*` patterns, one line each; `config` and `dt_node` take `vs=<build dir | pinned>` and list only the differences, both sides and their sources.
 - Atlas: a target can state no_board = true, so an atlas is built from the schematic and datasheets before any Zephyr board exists; build-dependent outputs are named absent.
