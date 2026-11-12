@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas reads a standard's applicability tables and state machines as records (checks L, E): `applies` and `transitions` lookups. See embarch-atlas DESIGN.md.
 - atlas join checks the build's devicetree and Kconfig against a standard's requirements (fw_check), each failure a config-vs-standard candidate citing page and line (DESIGN.md).
 - Atlas: a `standard` document kind, `doc sections` (a worklist with --add/--why and --suggest from lookups), check W on modality, and the card's section list. embarch-atlas DESIGN.md.
 - Atlas: `hook install <target>` bumps the atlas after HEAD moves; a stopped or failed bump says why on the stale line and src:; `second-look queue --used`. embarch-atlas DESIGN.md.
