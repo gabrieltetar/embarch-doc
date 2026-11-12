@@ -26,9 +26,12 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **Decisions 86–88 in the owner's window**: d998b2f installed 2026-10-25 17:08 by `./reinstall.sh` (the package's `dist` matches by md5), live only after his window reload; not yet confirmed.
 - **A reference card against the live desk's real index** (decision 88): the desk serves it since 2026-10-25 17:07 (178 issues, 48 PRs) [measured], but no card has been seen in real use; measured only against a synthetic index, with real Haiku.
 - **Slack's `app_redirect` link** (decision 87), for a channel a step names with no permalink, is untested.
+- **One pick for every panel** (106): tested against a fake CLI and, for the wrapper, in a scratch home; not installed, never seen in a window, a Claude Code panel's resume included.
 
 ## Structural limits
 
 - **A change dropped in a per-change diff is not reported to the CLI** (decision 64): the permission answer has no field for it, so Claude learns of it only by reading the file.
 - **An MCP call cannot move to the background** (decision 70): the CLI never registers one as a foreground task, so a long `embarch-api` flash holds its turn.
 - **The activity-bar count appears only once the list has been opened** (decision 35): VS Code builds a view lazily. The status-bar count always shows.
+- **A new Claude Code panel session's login is recorded at its first resume, not at its start** (106): the panel gives the wrapper no session id for a new session. Until then it is on the window's pick, so a pick changed before that first resume moves it.
+- **Two windows on one folder share one pick** (106): the wrapper follows the window last picked or focused, and the other window's item can say otherwise until it is focused.

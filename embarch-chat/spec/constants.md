@@ -26,6 +26,8 @@ Split verbatim from [../spec.md](../spec.md) §4 on 2026-10-30, under [DOC-COMPA
 | Promptu's hold on a chat's process | while its page shows, up to 10 min after the run's last step (96) |
 | Not responding | 60 s without a CLI line while a turn runs (68) |
 | Transcripts | Claude Code's 30 days (12) |
+| Chats in the login file | 3,000, the oldest dropped first (106) |
+| A login's files polled | every 2 s, for the login item's account (106) |
 | Long chat | 60 turns, 600 steps: a delta 3.5 ms p50, frame p95 17 ms [measured 2026-10-23] (85) |
 | The rail | 30 px folded, 140 px under the pointer (94) |
 | Promptu's commands' time limits | `prep` 40 s (the pass's own is 15 s), `next` and `render` 10 s, `memory` 20 s [assumed] (96, 98) |

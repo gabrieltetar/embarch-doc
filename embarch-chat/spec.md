@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-11-01. **Decisions 94–100 installed** (67 retired): measured 2026-11-05, the installed `dist/extension.js` is md5-identical to the clone's, built 2026-11-04 02:10 after `2b04ff5`; install time unrecorded. Decision 100 is not recorded as reviewed. Deployed from a local `.vsix`: decisions 1–49 (with `embarch-desk` d9a8efc, `embarch-ui` 2e73649, the desk's chat setting on) and **50–85 on 2026-10-23** (embarch-chat b6996cc). **Decisions 86–88 installed 2026-10-25** (embarch-chat d998b2f, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8), **89–91 2026-10-26** (0f8d613; 91's column 0067fcf), **92–93** the same day (c973aec); 50–88 each after three review rounds. The repo has a public GitHub remote, and `main` is pushed.
+**Status:** active, 2026-11-01. **Decisions 94–100 installed** (67 retired): measured 2026-11-05, the installed `dist/extension.js` is md5-identical to the clone's, built 2026-11-04 02:10 after `2b04ff5`; install time unrecorded. Decision 100 is not recorded as reviewed. Deployed from a local `.vsix`: decisions 1–49 (with `embarch-desk` d9a8efc, `embarch-ui` 2e73649, the desk's chat setting on) and **50–85 on 2026-10-23** (embarch-chat b6996cc). **Decisions 86–88 installed 2026-10-25** (embarch-chat d998b2f, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8), **89–91 2026-10-26** (0f8d613; 91's column 0067fcf), **92–93** the same day (c973aec); 50–88 each after three review rounds. **Decision 106 built 2026-11-11 (EMB-161), not installed.** The repo has a public GitHub remote, and `main` is pushed.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md). Constants: [spec/constants.md](spec/constants.md). The input's library, assistant and Promptu: [spec/input.md](spec/input.md).
 
@@ -19,6 +19,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **The library, the Haiku assistant, Promptu and the desk's reference index** (what the chat offers at the input): [spec/input.md](spec/input.md).
 - **A step names what it touched** — the connector's glyph, then the issue, PR, channel, card, board or study as a link — and a folded run lists them (87). **Bench results become cards** from the `embarch-api` tool result already in the stream, and **atlas citations become links** into the repo's `embarch/atlas` (15, 16).
 - **What the CLI sends Claude is not the owner's** (89): a `user` line whose `origin.kind` is not `human` is no bubble — a background task's end is a one-line row (`Agent "…" completed`) that opens its card, one that ends while idle gets its row ahead of the turn the CLI starts, another session's message folds to `Message from <name>`; a reload brings the same rows back from the transcript's `queued_command`.
+- **One pick decides a window's login for every panel in it** (101, 106): the window mirrors its pick and each chat's login into a file a `claude` wrapper reads, so Claude Code's panel starts on the same login, and a chat resumed in either panel runs on the login it started on. The status item names the account in the login's folder and warns while two logins hold one.
 - **An agent can hand its chat to a fresh session** (103): `handoff(prompt)`, a tool of the panel's own MCP server, shows a card with the prompt editable and Continue or Stay (`embarchChat.handoff`: `card`, `immediate`, `off`). Continue starts a new session on the same work item in the same panel, in the chat's mode, model and effort, the old history above a divider; Stay answers the tool and the agent carries on.
 - **A background agent's card shows its report** (90): the hand-back the CLI sends Claude, else the subagent's last reply, under a collapsed "Report"; never the launch reply. The hand-back is not yet seen on the wire.
 
@@ -26,11 +27,11 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 - **The webview never holds the desk token**, and the desk client calls loopback only (20, 48).
 - **Nothing a workspace controls redirects the panel**: every setting is machine-scoped, and an untrusted workspace does not run it (48).
-- **A chat keeps the login it was created under**; a window's login and desk come from machine settings by folder, and its picker moves only the login (101).
+- **A chat keeps the login it started on**, across idle closes and resumes, here or in Claude Code's panel; a window's login and desk come from machine settings by folder, and its picker moves only the login (101, 106).
 - **A due login is refreshed by one process alone**: a chat's process waits for its warm-up and Haiku starts nothing meanwhile; a turn the CLI's refresh lock still ended goes again once (105).
 - **Only the owner's own pick untracks a chat**; a resume never sends `untracked` (48).
 - **A chat is on its work item before `claude` starts** (10).
-- **Nothing new is stored**: the transcript is Claude's, session → item the desk's, a name Claude's own `rename_session` or `custom-title` (12, 75).
+- **Nothing new is stored**: the transcript is Claude's, session → item the desk's, a name Claude's own `rename_session` or `custom-title` (12, 75). The one exception is session → login, beside the window's pick, for the wrapper (106).
 - **Nothing reruns by itself**: after a reload, an interrupted step reruns only on Continue (63).
 - **Promptu never sends and never blocks sending**: its prompt goes to the draft; a failure is one line and the draft as typed (96).
 - **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached, and that row's preview is what shows (86).
@@ -49,7 +50,7 @@ Idle close, the column, timings, caps and the tested `claude` range: [spec/const
 - **No Marketplace listing**: an internal `.vsix`, sideloaded by `./reinstall.sh`, which a VS Code server update drops silently.
 - **No hosting outside the window**: no desk-side or daemon process runs chats, and no window takes over another's (5, 31).
 - **No toasts**: waits are a count, unread a dot that joins no count (35, 80).
-- **No store of its own** — no chat index, no bookmarks (12, 84).
+- **No store of its own** — no chat index, no bookmarks (12, 84); the login file holds logins only (106).
 - **No client-named library entry in a repo** (13).
 - **No automatic rerun** of an interrupted step (63).
 

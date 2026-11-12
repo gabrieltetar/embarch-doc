@@ -1,0 +1,1 @@
+| One pick decides a window's login for EmbArch Chat and Claude Code's panel, through a file a `claude` wrapper reads; the login item names the account and warns while two logins hold one; a resumed chat keeps the login it started on | Built, not installed — **not seen in a window or with a real panel resume** | unit | 106 |
