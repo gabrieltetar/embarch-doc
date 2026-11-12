@@ -13,6 +13,9 @@
 
 ### Removed
 - The `ffi` feature, `src/ffi.rs` and its CI cell are gone: dev-bench firmware links no Rust; decisions 7, 23, 64.
+
+### Decided
+- Decision 74's open HTTP question is closed by embarch-core decision 108: the route renames to `dev_bench_version`, the wire does not.
 ## 2026-10
 
 ### Added

@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Changed
+- doctor check 13 reads `dev_bench_version`; a Core older than embarch-core decision 108 is a warn that compares nothing (19).
 ## 2026-10
 
 ### Added

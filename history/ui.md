@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- The Study Designer reads the bench's build from `dev_bench_version`; against a Core that does not send it, the build shows as unavailable.
 - A Desk tab session row whose folder was deleted says "folder gone" where its Jump or Open chat button was, instead of losing the button silently.
 - embarch-ui's README points at embarch-chat's launcher and describes its status bar states.
 - embarch-ui: spec.md and open.md compacted by moving role/catalog invariants and trace open items to spec/roles.md and open/trace.md.
