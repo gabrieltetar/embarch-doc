@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-The input: cards that arrive while the owner types, pasted images and long pastes, side questions, a terminal's output, the keys and the menus' keys, the editor's selection, and a message sent while Claude works.
+The input: cards that arrive while the owner types, pasted images and long pastes, side questions, a terminal's output, the keys and the menus' keys, the editor's selection, a message sent while Claude works, and the settings checked before the first.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -37,3 +37,7 @@ As Claude Code's `<ide_selection>` / `<ide_opened_file>` blocks: a chip with ×,
 ### 72 — A message sent while Claude works waits above the input until Claude takes it in
 
 Then it joins the timeline there. It can be cancelled back to the draft, or sent now: foreground steps go to the background first, else the turn stops — the CLI's own `send_now` killed a foreground Bash on 2.1.287 [measured], against its changelog, and a canary test fails once a re-recording shows the CLI moving the step itself. While a card waits there is no Send now (55). **Rejected:** the message in the timeline at send time, `send_now` alone.
+
+### 107 — A gear at the rail's foot holds the mode, the model, Remote Control and MCP, open on a new chat
+
+The owner's call, 2026-11-11 (EMB-164). What sat left of the input's box (EMB-60) is a menu the gear opens beside the rail, as Memory's opens (98): the permission mode, the model with its effort and Ultracode (82), Remote Control (83, 100) and, in a chat this window runs, the MCP servers (81). The input's row is the box and Send. **A chat with no message whose claude has not started opens with it shown**: the owner checks the model, the effort and Remote Control before the first message. The draft keeps the keys, and the menu stands on the input's row so the draft stays in sight; the first message, Esc or a click elsewhere closes it, a pick does not, and `/mcp` opens it. **The gear shows what the menu hides**: on the rail's hover its name is the mode and the model ("Auto · Opus · high"), Plan tints it in the accent and Ask in the waiting colour, and a red dot marks a failed server or a failed Remote Control. A server waiting on a sign-in marks nothing: a claude.ai connector never signed in to waits for good [measured 2026-11-12: 10 of 21 servers on the owner's login]. Before the chat's claude runs, its lists come from the login's probe (108). **Rejected:** the mode staying in the row; the menu closed on a new chat; a mark for every server not connected.

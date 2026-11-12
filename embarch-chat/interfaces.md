@@ -16,6 +16,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.deskUrl` | `http://127.0.0.1:4891` | The desk; `127.0.0.1`, `::1` or `localhost` only, else nothing is sent |
 | `embarchChat.deskTokenPath` | `~/.config/embarch-desk/desk-token` | The desk's bearer token |
 | `embarchChat.assistant` | `true` | The Haiku assistant: ghost text, cards, chips, naming. Off, the instant prefix match and the CLI's own suggestion remain |
+| `embarchChat.startupProbe` | `true` | One short `claude` per login and folder fills a chat's settings menu before its first message (108). Off, they show once the chat's own runs |
 | `embarchChat.showMessageTimestamps` | `false` | A time to the second over each message, a date line where the day changes (68) |
 | `embarchChat.autosave` | `true` | Save an open file's unsaved changes before Claude reads, edits or writes it (61) |
 | `embarchChat.continueAfterReload` | `true` | A chat cut off by a reload offers Continue, never by itself (63) |
@@ -34,7 +35,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 
 **Keys** (59): Ctrl+Alt+Esc focuses the input from an editor (with lines selected, as an @-mention) and again leaves it; Alt+Shift+K inserts `@path#L10-24` at the input's caret; Ctrl+Shift+T reopens the last closed chat tab when a chat tab was the last closed, else VS Code's own reopen.
 
-**The rail** (94): Usage alone at the top (99), then Memory, Promptu, Library, Suggestions and the 💬 side question at the bottom of the left edge, each a one-colour SVG in `currentColor`; Usage's and Promptu's cards on hover (95, 99). **In the input:** `/` completes the session's commands and the library, `@` workspace paths and terminals; with Promptu's icon lit Enter runs the pass, and in its dialog Enter answers a page, Ctrl+Enter accepts every recommendation, Esc stops with the rest as assumptions (96); while the 💡 or 📚 shows, ↑/↓ focus a row, ←/→ change category, Enter or Tab picks the focused row, Esc closes (86); `/btw <question>` asks aside (57), as does the 💬 mode on the rail; `/rewind` and Esc twice (73), `/copy [N]` and `/export` (74), `/mcp` (81), `/remote-control` (83).
+**The rail** (94): Usage alone at the top (99), then Memory, Promptu, Library, Suggestions, the 💬 side question and the settings gear (107) at the bottom of the left edge, each a one-colour SVG in `currentColor`; Usage's and Promptu's cards on hover (95, 99). **In the input:** `/` completes the session's commands and the library, `@` workspace paths and terminals; with Promptu's icon lit Enter runs the pass, and in its dialog Enter answers a page, Ctrl+Enter accepts every recommendation, Esc stops with the rest as assumptions (96); while the 💡 or 📚 shows, ↑/↓ focus a row, ←/→ change category, Enter or Tab picks the focused row, Esc closes (86); `/btw <question>` asks aside (57), as does the 💬 mode on the rail; `/rewind` and Esc twice (73), `/copy [N]` and `/export` (74), `/mcp` opens the settings menu (81, 107), `/remote-control` (83).
 
 ## How a chat runs `claude`
 
