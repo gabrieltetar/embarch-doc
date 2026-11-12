@@ -52,7 +52,7 @@ The levels the model takes, and the Ultracode switch where the CLI offers it. It
 
 ### 83 — `/remote-control` bridges a chat to claude.ai/code
 
-A pill in the input's row shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; the phone side not yet seen]. A bridge the panel starts at startup for Claude Code's `remoteControlAtStartup` (100) shows the same pill, and Claude Code's disclosure once, as a note, when its default rather than the owner's setting turned it on; it holds the process only while the chat is open. **Rejected:** an always-shown pill, closing the process under a live bridge.
+A pill in the input's row shows connecting, on (opens the session) or failed until dismissed, and while it is on the process outlives the idle close (41) [measured: link in 0.25 s, works before the first message, prompts still asked in the panel; on the phone 2026-11-11, by the owner]. A bridge the panel starts at startup for Claude Code's `remoteControlAtStartup` (100) shows the same pill, and Claude Code's disclosure once, as a note, when its default rather than the owner's setting turned it on; it holds the process only while the chat is open. **Rejected:** an always-shown pill, closing the process under a live bridge.
 
 ### 100 — The panel bridges each chat at startup, and an open chat keeps it, so the phone reaches it
 
