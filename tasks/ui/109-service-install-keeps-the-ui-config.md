@@ -1,6 +1,6 @@
 # 109 — `service install` keeps the UI's config when the shell does not set `EMBARCH_UI_CONFIG`
 
-**State:** claimed by agent/ui/109-service-install-keeps-the-ui-config, 2026-11-12 19:33
+**State:** done on agent/ui/109-service-install-keeps-the-ui-config, 2026-11-12
 **Source:** EMB-140, found deploying the UI as a user service (EMB-63) on a bench machine
 **Issue:** EMB-140
 **Scope:** ui
@@ -52,9 +52,17 @@ every reinstall from a session shell drops the config with no warning.
 
 ## Done when
 
-- [ ] `service install` from a shell without `EMBARCH_UI_CONFIG` produces a UI
+- [x] `service install` from a shell without `EMBARCH_UI_CONFIG` produces a UI
       that still loads its config, or the command says it will not.
-- [ ] A test covers the unset case.
-- [ ] The comments that name the extension or `embarchUi.configPath` as the
+- [x] A test covers the unset case.
+- [x] The comments that name the extension or `embarchUi.configPath` as the
       variable's source are corrected.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), and a deploy debt written here.
+- [x] Gate green (`../../embarch-fleet/gate.md`), and a deploy debt written here.
+
+## Done
+
+Chose the default path ([decision 102](../../embarch-ui/decisions/ui-config.md), new file `decisions/ui-config.md`, since `launcher.md` had 22 B): `load()` reads `embarch-ui/config.toml` under `$XDG_CONFIG_HOME` / `~/.config` (`%APPDATA%` on Windows) when the variable is unset and the file exists; neither means today's zero-config default. The unit is not given the path, but `service install` now prints which config it will read, or that there is none. Corrected the comment in `firmware_build.rs` and `load()`'s doc; no sample config file exists in the repo, so none to fix.
+
+## Deploy debt
+
+Owner: `cargo build` in the main `embarch-ui` checkout after landing, then `systemctl --user restart embarch-ui` (or re-run `service install`). Put the config at `~/.config/embarch-ui/config.toml` (or keep `EMBARCH_UI_CONFIG` exported when installing) and confirm the tabs load. The Windows `%APPDATA%` path is written, not run.

@@ -82,7 +82,7 @@ Under `/api/atlas`, all `GET`, files only: [interfaces/atlas.md](interfaces/atla
 
 ## Tab folders
 
-Why it is this way: [decision 100](decisions/tab-folders.md). In the file `EMBARCH_UI_CONFIG` names, which `embarch-ui.service` carries from the shell that installed it (101):
+Why it is this way: [decision 100](decisions/tab-folders.md). In the config file: the path `EMBARCH_UI_CONFIG` names (which `embarch-ui.service` carries from the shell that installed it, 101), else `embarch-ui/config.toml` under the user's config directory (`$XDG_CONFIG_HOME` or `~/.config`; `%APPDATA%` on Windows) when it exists, else none (102):
 
 ```toml
 [[tabs]]
