@@ -1,6 +1,6 @@
 # 126 — `embarch-core/open.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/core/126-compact-core, 2026-11-13 13:48
 **Source:** `tasks/suite/037` added the bullet saying decision 108's rename has not reached the installed service, and left `open.md` at 4,314 of 5,120 B. It sat at 3,918 B before, one byte under the reserve line, so any new bullet would have spent it. `DOC-COMPACTION.md` §2.
 **Scope:** core
 **Hardware:** none
