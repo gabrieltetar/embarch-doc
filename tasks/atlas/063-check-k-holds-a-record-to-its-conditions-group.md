@@ -1,6 +1,6 @@
 # 063 — Check K holds a record to the group its condition names
 
-**State:** open
+**State:** claimed by agent/atlas/063-check-k-holds-a-record-to-its-conditions-group, 2026-11-12 20:09
 **Source:** EMB-113, filed while reviewing `atlas/046` (EMB-35) after it landed
 **Issue:** EMB-113
 **Scope:** atlas
