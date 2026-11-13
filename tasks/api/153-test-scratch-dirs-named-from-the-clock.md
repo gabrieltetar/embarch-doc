@@ -1,6 +1,6 @@
 # 153 — Test scratch directories named from the clock can collide
 
-**State:** open
+**State:** claimed by agent/api/153-test-scratch-dirs-named-from-the-clock, 2026-11-13 13:34
 **Source:** EMB-169, filed by the `api/151` worker on 2026-11-12, after `tests/lease_client.rs` was fixed
 **Issue:** EMB-169
 **Scope:** api
