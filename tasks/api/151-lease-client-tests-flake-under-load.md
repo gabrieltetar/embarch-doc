@@ -50,6 +50,29 @@ out in the same edit. Decisions near their own limit: `ledger` (98) 15 B,
 harness should need no new decision; if the lease client itself changes,
 decision 101 is in `decisions/lease.md`.
 
+## Cause (found)
+
+Neither hypothesis. `cli_in_session()` in `tests/lease_client.rs` named its
+scratch directory `embarch-api-lease-<pid>-<SystemTime nanos>`. Tests run as
+threads of one process, and two that read the clock in the same tick got the
+same directory: the second `api.toml` overwrote the first, so one CLI child
+connected to the other test's mock (one request too many there, none in its
+own, `/status` 0), and the first test to finish deleted the shared directory,
+which also gave "Error reading the log directory/files: No such file" and
+empty stdout. Reproduced by logging each child's status, stderr and base URL:
+a child's `/lease` connect went to port 41769 while its own mock was 43857.
+It also explains the three symptoms seen (3 requests; `/status` 0; empty
+stdout), and is why no leaked child or recording race was needed.
+
+**Fix:** a process-wide `AtomicUsize` counter replaces the clock in the name.
+Five other test files use the same clock pattern: filed as EMB-169.
+
+**Load:** 12 to 16 copies of the test binary at once (a Python script outside
+the tree, each running the binary 25 times back to back, so 12 to 16 x 19 tests
+and their CLI children in parallel on 14 cores), plus a `cargo build --release`
+into a scratch target dir for the first 5 minutes. Before the fix: 3 failures
+in 360 runs, plus 2 in 450 earlier. After: 0 in 700 (300 + 400).
+
 ## Why now
 
 A gate test that fails one run in some is a red every lander has to judge by
@@ -57,9 +80,9 @@ hand, and the judgement on 2026-11-10 ("a flake") rests on one red and one green
 
 ## Done when
 
-- [ ] The cause of the two failures is named in this file.
-- [ ] It is fixed, with the test or harness change that shows it, or filed as a
+- [x] The cause of the two failures is named in this file.
+- [x] It is fixed, with the test or harness change that shows it, or filed as a
       `bug` naming the fix's location.
-- [ ] `cargo test --test lease_client` passes 50 runs in a row under CPU load,
+- [x] `cargo test --test lease_client` passes 50 runs in a row under CPU load,
       and this file says how the load was made.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] Gate green (`../../embarch-fleet/gate.md`).
