@@ -1,6 +1,6 @@
 # 047 — The carried R3.2 patch's `usbc_pd.h` compiles as a file's first include
 
-**State:** open
+**State:** claimed by agent/dev-bench/047-usbc-pd-header-compiles-on-its-own, 2026-11-13 13:51 (toolchain unit, run by the leg itself)
 **Source:** EMB-147, found by `tasks/dev-bench/037` splitting pd-bench's pure logic into `pd_logic.c` and testing it on `native_sim`, 2026-11-10
 **Issue:** EMB-147
 **Scope:** dev-bench
