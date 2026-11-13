@@ -1,6 +1,6 @@
 # 028 — A line body the desk cannot honour is refused, and a session can take back its own line
 
-**State:** open
+**State:** claimed by agent/desk/028-a-line-body-with-an-unknown-field-is-refused, 2026-11-12 19:33
 **Source:** EMB-141, found adding a todo for another item from a session, 2026-11-10
 **Issue:** EMB-141
 **Scope:** desk
