@@ -1,6 +1,6 @@
 # 151 — Two `lease_client` tests fail once under load, then pass
 
-**State:** open
+**State:** claimed by agent/api/151-lease-client-tests-flake-under-load, 2026-11-12 19:33
 **Source:** EMB-155, filed while landing `api/108` on 2026-11-10: the first gate run on the merge result was red on two tests the change could not reach
 **Issue:** EMB-155
 **Scope:** api
