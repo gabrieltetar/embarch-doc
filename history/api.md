@@ -13,6 +13,7 @@
 - Windows tree kill on a timed-out build verified on Windows; decision 75 drops its unix-only qualifier ([decisions/build.md](../embarch-api/decisions/build.md)).
 
 ### Fixed
+- embarch-api tests: the binary-spawning tests strip `EMBARCH_REQUIRE_LEASE`, so `cargo test --manifest-path` from the suite root no longer fails 20 tests.
 - lease_client tests no longer flake: two tests in one clock tick shared a scratch dir; a counter names it now (api task 151).
 ## 2026-10
 
