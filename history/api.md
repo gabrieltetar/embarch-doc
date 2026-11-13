@@ -11,6 +11,9 @@
 ### Changed
 - `dev_bench_hello` and `dev-bench-hello --json` carry `dev_bench_version`; `run_study` refuses a pinned bench version Core did not report (105).
 - Windows tree kill on a timed-out build verified on Windows; decision 75 drops its unix-only qualifier ([decisions/build.md](../embarch-api/decisions/build.md)).
+
+### Fixed
+- lease_client tests no longer flake: two tests in one clock tick shared a scratch dir; a counter names it now (api task 151).
 ## 2026-10
 
 ### Added
