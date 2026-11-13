@@ -1,6 +1,6 @@
 # 109 — `service install` keeps the UI's config when the shell does not set `EMBARCH_UI_CONFIG`
 
-**State:** open
+**State:** claimed by agent/ui/109-service-install-keeps-the-ui-config, 2026-11-12 19:33
 **Source:** EMB-140, found deploying the UI as a user service (EMB-63) on a bench machine
 **Issue:** EMB-140
 **Scope:** ui
