@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Core open.md: never-exercised bullets split out to open/never-exercised.md, verbatim.
 - `GET /dev-bench/hello` serves the bench's build as `dev_bench_version`, not `firmware_version`, the DUT's name on a Study; the wire `HelloAck` is unchanged (108).
 - Core's study pre-flight now refuses a one-shot monitor step inside an open monitor window, with the crate's message (core decision 90).
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
