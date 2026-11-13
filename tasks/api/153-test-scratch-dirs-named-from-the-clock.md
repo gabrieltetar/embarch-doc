@@ -1,6 +1,6 @@
 # 153 — Test scratch directories named from the clock can collide
 
-**State:** claimed by agent/api/153-test-scratch-dirs-named-from-the-clock, 2026-11-13 13:34
+**State:** done
 **Source:** EMB-169, filed by the `api/151` worker on 2026-11-12, after `tests/lease_client.rs` was fixed
 **Issue:** EMB-169
 **Scope:** api
@@ -47,8 +47,28 @@ and the fleet re-runs the gate on every unit it lands.
 
 ## Done when
 
-- [ ] No test file names a scratch directory from the clock alone.
-- [ ] Each changed file passes 50 runs under CPU load (parallel batches, as
+- [x] No test file names a scratch directory from the clock alone.
+- [x] Each changed file passes 50 runs under CPU load (parallel batches, as
       `api/151` did, are acceptable), with the numbers in this file.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
+
+## Outcome
+
+`api/152` had landed. Added `support::unique_dir(tag)` in `tests/support/mod.rs`
+(process id plus a process-wide `AtomicUsize`, not the clock); all ten files
+that named a directory from the clock now call it: the five the issue named
+and the five the grep found (`dev_bench_hello_success`, `json_surface`,
+`run_study_unreported_bench`, `smoke_harness`, `study_follow_cli`). All ten
+named a directory; none was left. `json_surface`, `build_verdict` and
+`build_each` gained `mod support;`. The same pattern in the unit-test helper
+in `src/main.rs` (it cannot reach `tests/support`) got an inline counter.
+
+Left alone: directories named from the process id plus a fixed tag
+(`patches_cli`, `stack_cli`, `core_client_http`, `src/ledger.rs`, ...). They
+are not clock-named, and collide only if one tag is used twice in a process.
+`build_capture` and `lease_client` already used counters.
+
+**Load runs.** Each of the ten changed test files: 50 runs (5 parallel batches
+x 10 runs, 14 `yes` CPU burners on 14 cores, `EMBARCH_REQUIRE_LEASE=1`
+exported): 500 runs, 0 failures. Gate green: build, test, clippy `-D warnings`.
