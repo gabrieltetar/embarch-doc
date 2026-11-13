@@ -1,6 +1,6 @@
 # 064 — `freeze.py` files a page cite that names another document under that document
 
-**State:** claimed by agent/atlas/064-freeze-files-a-cross-document-cite-under-its-own-document, 2026-11-13 13:27
+**State:** done
 **Source:** EMB-109, filed while relaying a burndown leg's report, 2026-11-09
 **Issue:** EMB-109
 **Scope:** atlas
@@ -39,8 +39,8 @@ pages a unit really rests on.
 
 ## Done when
 
-- [ ] A cite naming another document does not add a page to the citing
+- [x] A cite naming another document does not add a page to the citing
       document's frozen set.
-- [ ] A test covers one same-document cite and one cross-document cite.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet:
+- [x] A test covers one same-document cite and one cross-document cite.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet:
       `test_public_guard` ran, not skipped).

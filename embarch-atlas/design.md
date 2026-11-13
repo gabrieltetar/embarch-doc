@@ -37,3 +37,7 @@ A `standard` (a bus, protocol or power specification, an IEC/IEEE/JEDEC standard
 ## Protocol records
 
 A standard's applicability tables are one `applicability` record per cell (item, role, condition, initiator or responder, the level as printed), and a state machine written one subsection per state is `state` and `transition` records checked against its state diagram. The `applies` lookup answers what a role must support, and `transitions` what a state does and which states react to a message or timer; the same kinds fit a datasheet's state machine. The fields, checks L and E, and both lookups are in the repo's `DESIGN.md`.
+
+## A cite of another document rests no frozen unit
+
+`doc freeze` keys a unit on the pages it cites in its own document. A cite that names another document (`other-doc p.7`) is left out of those pages, by the same test check M uses to tell the two apart (`check.split_cites`, `find_sibling`); a unit that cites only other documents rests on every page. The other choice, filing the page under the other document, would need a second set of page hashes and a second `thaw-check` rule, since `thaw-check` reads only its own document's pages (2026-11-13, EMB-109). The detail is in the repo's `DESIGN.md`.
