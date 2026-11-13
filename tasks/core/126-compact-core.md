@@ -1,6 +1,6 @@
 # 126 — `embarch-core/open.md` is in reserve
 
-**State:** claimed by agent/core/126-compact-core, 2026-11-13 13:48
+**State:** done
 **Source:** `tasks/suite/037` added the bullet saying decision 108's rename has not reached the installed service, and left `open.md` at 4,314 of 5,120 B. It sat at 3,918 B before, one byte under the reserve line, so any new bullet would have spent it. `DOC-COMPACTION.md` §2.
 **Scope:** core
 **Hardware:** none
@@ -21,6 +21,10 @@ Bring `embarch-core/open.md` out of reserve (`scripts/check-doc-size.py --pressu
 
 ## Done when
 
-- [ ] `embarch-core/open.md` is clear of reserve: `scripts/check-doc-size.py --pressure` shows it `PAID` or not at all.
-- [ ] Moved text matches the original apart from headers and pointer lines.
-- [ ] Every `Must not delete:` item is still readable.
+- [x] `embarch-core/open.md` is clear of reserve: `scripts/check-doc-size.py --pressure` shows it `PAID` or not at all.
+- [x] Moved text matches the original apart from headers and pointer lines.
+- [x] Every `Must not delete:` item is still readable.
+
+## Answer to the compaction pass's human question
+
+Can `spec.md` alone answer what someone needs to work on this component today? Yes for what Core does and the contracts it keeps. It does not say what is unproven on real hardware or the owner's pending deploy; that sits in `open.md` and `open/never-exercised.md`, which a person about to touch the bootload, signal-tap, lease or capture paths should read. The split moves seven bullets verbatim; the decision 108 deploy bullet stays whole in `open.md`.
