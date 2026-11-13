@@ -1,6 +1,6 @@
 # 047 — The carried R3.2 patch's `usbc_pd.h` compiles as a file's first include
 
-**State:** claimed by agent/dev-bench/047-usbc-pd-header-compiles-on-its-own, 2026-11-13 13:51 (toolchain unit, run by the leg itself)
+**State:** done
 **Source:** EMB-147, found by `tasks/dev-bench/037` splitting pd-bench's pure logic into `pd_logic.c` and testing it on `native_sim`, 2026-11-10
 **Issue:** EMB-147
 **Scope:** dev-bench
@@ -49,11 +49,28 @@ meets a compiler error that points at the wrong struct.
 
 ## Done when
 
-- [ ] `usbc-pd-r32.patch` adds `#include <zephyr/toolchain.h>` to `usbc_pd.h`,
+- [x] `usbc-pd-r32.patch` adds `#include <zephyr/toolchain.h>` to `usbc_pd.h`,
       and its `patches.yml` `sha256sum` matches the file.
-- [ ] A fresh `west init -l manifest && west update && west patch apply` in
+- [x] A fresh `west init -l manifest && west update && west patch apply` in
       `workspaces/pd-bench/` reports 6 patches applied, and both shields still
       build with no warnings.
-- [ ] `pd_logic.h` no longer includes `<zephyr/toolchain.h>`, and
+- [x] `pd_logic.h` no longer includes `<zephyr/toolchain.h>`, and
       `pd-bench/tests/logic` still builds and passes on `native_sim`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Result
+
+Run by the leg itself, 2026-11-13, in a fresh west workspace inside the unit's
+worktree (`west update --path-cache` from the `native_sim` workspace, a local
+clone that fetched only what v4.4.2 adds, under three minutes; Zephyr v4.4.2). One new hunk in the patch's
+`usbc_pd.h` section adds the include after `<zephyr/types.h>`; the later
+hunks' new-file line numbers, the post-image blob id and the diffstat moved by
+one line, and part 16 of the patch message gained a bullet saying why.
+`git apply -v` reports the same offsets for the whole patch before and after,
+none in `usbc_pd.h`. Red first: with the workaround removed and the old patch,
+`tests/logic` failed on `native_sim` with the four `conflicting types for
+'__packed'` errors and the `manufacturer_info` one. Then `west patch apply`: 6
+applied; `west twister -T pd-bench/tests/logic -p native_sim`: 13 of 13 test
+cases passed; `west twister -T pd-bench -p nucleo_g0b1re`: both shields
+built, 0 warnings in either build log. The other copy of the patch, outside
+the suite, is untouched, as the task required.
