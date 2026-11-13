@@ -16,6 +16,7 @@
 - Constants and budgets table moved verbatim to [spec/constants.md](../embarch-dev-bench/spec/constants.md); spec.md out of its size reserve.
 
 ### Fixed
+- pd-bench's carried USB PD R3.2 patch makes `usbc_pd.h` include `<zephyr/toolchain.h>`, so a file that includes it first compiles; `pd_logic.h` drops its workaround include (EMB-147).
 - The bench refuses a study whose protocols_crc does not hold, naming the seal, as it already did for steps and streams; decision 41.
 - An open monitor window keeps its subscriptions and labels through the steps inside it, and a protocol run inside one no longer times out (dev-bench decision 55).
 - A monitor step no longer passes when its subscriptions failed or the link dropped; each failed subscription is named in the transcript (dev-bench decision 54).
