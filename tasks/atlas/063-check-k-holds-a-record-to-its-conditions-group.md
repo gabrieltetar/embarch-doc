@@ -1,6 +1,6 @@
 # 063 — Check K holds a record to the group its condition names
 
-**State:** claimed by agent/atlas/063-check-k-holds-a-record-to-its-conditions-group, 2026-11-12 20:09
+**State:** done
 **Source:** EMB-113, filed while reviewing `atlas/046` (EMB-35) after it landed
 **Issue:** EMB-113
 **Scope:** atlas
@@ -43,11 +43,11 @@ and a two-condition table is exactly where that mistake is easiest to make.
 
 ## Done when
 
-- [ ] On a synthetic page with two groups headed by different conditions, a
+- [x] On a synthetic page with two groups headed by different conditions, a
       record whose `cond` names one group and whose numbers sit in the other is
       a K disagreement.
-- [ ] A record matching its own group's cells still passes, and a table whose
+- [x] A record matching its own group's cells still passes, and a table whose
       groups carry no condition behaves as it does today.
-- [ ] The module docstring's K line and `DESIGN.md` say what K now does.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet:
+- [x] The module docstring's K line and `DESIGN.md` say what K now does.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet:
       `test_public_guard` ran, not skipped).
