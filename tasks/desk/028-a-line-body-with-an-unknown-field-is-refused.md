@@ -53,10 +53,20 @@ happened or undo it.
 
 ## Done when
 
-- [ ] A line body with a field the desk does not know is refused with a 400
+- [x] A line body with a field the desk does not know is refused with a 400
       that names the field, and nothing is written.
-- [ ] An agent can remove a line its own session wrote, by note id, through the
+- [x] An agent can remove a line its own session wrote, by note id, through the
       API and an MCP tool, and cannot remove another session's.
-- [ ] Tests cover both.
-- [ ] The callers grep is recorded here, with any issue it filed.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), and a deploy debt written here.
+- [x] Tests cover both.
+- [x] The callers grep is recorded here, with any issue it filed.
+- [x] Gate green (`../../embarch-fleet/gate.md`), and a deploy debt written here.
+
+## Result
+
+- Decision 85 (`embarch-desk/decisions/notes.md`). Unknown field: collected by `#[serde(flatten)]` on `LineBody` and refused in `LineBody::note` as a 400 naming each field (axum's `deny_unknown_fields` would answer 422). Covers `tile_line` too. Take-back: `DELETE /sessions/{sid}/line/{nid}` and MCP `desk_remove_line`; 403 another's, 404 unknown, 400 on a sent tile.
+- **Callers grep** (2026-11-12, read-only over embarch-chat, embarch-ui, embarch-api, embarch-fleet, embarch-doc/scripts, the plugin and hooks): `embarch-chat/src/desk/client.ts` sends `text`, `kind`; `embarch-ui/assets/desk.js` and `tests/browser/drive_desk.py` send `text`, `kind`; the desk's own MCP tool sends `text`, `kind`, `item`. No caller sends an unknown field; **no issue filed**.
+- Gate: cargo build, test (260), clippy green; doc gates below.
+
+## Deploy debt
+
+The installed desk is untouched. Until the owner deploys this build, a running desk still drops unknown fields and has no `desk_remove_line`. After deploy, verify on the live desk: POST `/sessions/<sid>/line` with `{"text":"x","bogus":1}` answers 400 naming `bogus`; `desk_add_line` then `desk_remove_line` removes it from the tile. The plugin's MCP server restarts with the binary, so open chats need a new session to see the tool.
