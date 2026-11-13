@@ -1,7 +1,8 @@
 # 026 — `embarch-chat/decisions/sessions.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/chat/026-compact-chat, 2026-11-12 19:34
 **Source:** the EMB-91 landing added decision 105 to `decisions/sessions.md` beside 103's as-built text and left it at 11,394 of 12,288 B.
+**Reserve at dispatch (2026-11-12):** `decisions/sessions.md` is now 12,745 of 12,288 B, 457 B over: the owner's decisions 106 (EMB-161) and 100's amendment (EMB-162) landed in it since filing, so check which decisions it holds before choosing the group to move. Also near its limit: `decisions/promptu.md` (decision 96), 204 B left; leave it alone.
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
