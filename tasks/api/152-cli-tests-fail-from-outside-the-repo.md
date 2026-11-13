@@ -1,6 +1,6 @@
 # 152 — Subprocess CLI tests fail when `cargo test` runs from outside the repo
 
-**State:** claimed by agent/api/152-cli-tests-fail-from-outside-the-repo, 2026-11-12 20:09
+**State:** done
 **Source:** EMB-158, filed by a worker on 2026-11-11, measured against a branch based on `origin/main` `d36be9e`
 **Issue:** EMB-158
 **Scope:** api
@@ -48,8 +48,30 @@ twenty failures at once look like a broken branch.
 
 ## Done when
 
-- [ ] The cause is named in this file.
-- [ ] The suite passes from the repo and from the suite root
+- [x] The cause is named in this file (below).
+- [x] The suite passes from the repo and from the suite root
       (`--manifest-path`), and a test or the fix's comment says why the
       working directory matters.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Cause and fix
+
+Not the working directory the binary reads. `embarch-api/.cargo/config.toml`
+blanks `EMBARCH_REQUIRE_LEASE` (`force = true`) for test runs, and cargo finds
+that file by walking up from the *invoking* working directory, not from
+`--manifest-path`. From the suite root it is not read, so a session that
+exports `EMBARCH_REQUIRE_LEASE=1` (this one does) leaks it into every spawned
+binary; the lease gate then asks the mock Core for `/lease`, gets a body with
+no `holder`, and the call fails (`missing field holder`). It was the child's
+inherited environment, not its cwd, that differed.
+
+Fix: `tests/support/mod.rs` gains `api_command(exe)`, a `Command` with
+`EMBARCH_REQUIRE_LEASE` removed and a comment saying why; the five failing
+files spawn the binary through it. No user-visible change, so no decision.
+Passes from the worktree and from the suite root (`--manifest-path`,
+`--target-dir` beside the worktree), `--workspace`, no failures.
+
+Tests that spawn the binary without the mock Core (e.g. `version_line`,
+`patches_cli`) were not hit and were left alone. Task 153 (clock-named scratch
+dirs) shares no cause with this one: it is about directory names, this about an
+inherited variable.
