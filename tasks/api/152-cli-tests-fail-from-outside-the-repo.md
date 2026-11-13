@@ -1,6 +1,6 @@
 # 152 — Subprocess CLI tests fail when `cargo test` runs from outside the repo
 
-**State:** open
+**State:** claimed by agent/api/152-cli-tests-fail-from-outside-the-repo, 2026-11-12 20:09
 **Source:** EMB-158, filed by a worker on 2026-11-11, measured against a branch based on `origin/main` `d36be9e`
 **Issue:** EMB-158
 **Scope:** api
