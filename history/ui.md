@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- embarch-ui reads embarch-ui/config.toml under the user config dir when EMBARCH_UI_CONFIG is unset; `service install` names its config ([102](../embarch-ui/decisions/ui-config.md)).
 - The Study Designer reads the bench's build from `dev_bench_version`; against a Core that does not send it, the build shows as unavailable.
 - A Desk tab session row whose folder was deleted says "folder gone" where its Jump or Open chat button was, instead of losing the button silently.
 - embarch-ui's README points at embarch-chat's launcher and describes its status bar states.
