@@ -1,6 +1,6 @@
 # 064 — `freeze.py` files a page cite that names another document under that document
 
-**State:** open
+**State:** claimed by agent/atlas/064-freeze-files-a-cross-document-cite-under-its-own-document, 2026-11-13 13:27
 **Source:** EMB-109, filed while relaying a burndown leg's report, 2026-11-09
 **Issue:** EMB-109
 **Scope:** atlas
