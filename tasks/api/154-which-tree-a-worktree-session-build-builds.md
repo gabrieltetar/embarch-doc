@@ -1,6 +1,6 @@
 # 154 — Which source tree a build asked from a worktree session builds
 
-**State:** claimed by agent/api/154-which-tree-a-worktree-session-build-builds, 2026-11-14 11:12
+**State:** done
 **Source:** EMB-128, filed by an audit while `desk/020` (EMB-19) landed: that task asked its worker to check this and file it, and the worker did not check
 **Issue:** EMB-128
 **Scope:** api
@@ -59,6 +59,38 @@ supervisor copies the answer onto the issue at the fold.
 files near their limit: `ledger` 15 B left, `bench-exchange` 122 B,
 `failure-reporting` 192 B; this task should need none of them.
 
+## Found
+
+**The main clone.** Established by a run: a unit test (`resolve.rs`,
+`a_zephyr_build_runs_in_and_builds_the_configured_source_path_not_the_working_directory`)
+assembles the plan over a temporary config and fixture with the test's own cwd
+elsewhere; the config-discovery and spawn lines are read. Bug filed: **EMB-181**
+(fix belongs in `resolve.rs` `resolve_zephyr_build`/`resolve_static`, with
+`src/main.rs` startup supplying the working directory).
+
+1. **Directory:** `project.source_path`, verbatim from the config (`resolve.rs`
+   `resolve_zephyr_build`, `cwd: project.source_path.clone()`; `build.rs`
+   `.current_dir(&plan.cwd)`). Run.
+2. **Source/app path:** positional `<source_path>/app/<app>` (or `apps/`), from
+   `zephyr::app_path` (`zephyr.rs`) called in `resolve_zephyr_build`. Run.
+3. **`-d`:** `<build_dir_root>/<target dir name>`, `build_dir_root` verbatim from
+   the config (`resolve_zephyr_build`; `zephyr::build_command`). Run.
+4. **Environment:** the plan sets only the project's `env` table
+   (`env: project.env.clone()`; `build.rs` `.envs(&plan.env)` adds it to the
+   server's inherited environment). `ZEPHYR_MODULES` set in the server's process
+   reaches `west` by inheritance; the plan sets none and never removes one.
+   Read for `build.rs`, run for the plan's `env`. Whether Claude Code puts a
+   worktree's `settings.local.json` `env` into the MCP server's environment was
+   not checked and is the desk's side.
+
+Why: `src/main.rs` uses the working directory only to find the config
+(`find_config_upward`); the config linked into a worktree is the main clone's,
+whose `source_path` is absolute, and nothing rebases it. The working directory
+is never consulted for a build. So decision 80's override cannot change which
+tree is built, and west locates its workspace from the main clone's cwd as well.
+A relative `source_path` would resolve against the process cwd, but configs
+carry absolute ones. Hardware: none.
+
 ## Why now
 
 It is the one Fleet Ready issue, and a worktree session that builds the main
@@ -66,10 +98,10 @@ clone without saying so ships a firmware image from the wrong tree.
 
 ## Done when
 
-- [ ] The four items above are named under `## Found`, each with the file and
+- [x] The four items above are named under `## Found`, each with the file and
       function it comes from, and whether it was run or read.
-- [ ] If the answer is the main clone, a `bug` is filed against `embarch-api`
+- [x] If the answer is the main clone, a `bug` is filed against `embarch-api`
       naming the fix's place, and its key is in this file.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped if anything shipped (a test, a spec
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped if anything shipped (a test, a spec
       sentence).
