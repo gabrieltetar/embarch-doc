@@ -1,6 +1,6 @@
 # 155 — A build asked from a worktree session builds that worktree, or refuses
 
-**State:** open
+**State:** claimed by agent/api/155-a-worktree-session-build-builds-the-worktree, 2026-11-14 11:24
 **Source:** EMB-181, filed by the `api/154` worker after it established, by a test, that such a build runs the main clone's tree
 **Issue:** EMB-181
 **Scope:** api
