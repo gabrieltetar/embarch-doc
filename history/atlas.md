@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch-atlas schematic` now writes boards/<label>/issues.md (kind, net, sheet, page per extractor issue), prints its path, and MAP.md links it.
 - `code` and `states` look up a C symbol or an SMF table in the sources a build compiled, and `code vs=` diffs it between two builds (embarch-atlas `DESIGN.md`, Query surface).
 - Atlas reads a standard's applicability tables and state machines as records (checks L, E): `applies` and `transitions` lookups. See embarch-atlas DESIGN.md.
 - atlas join checks the build's devicetree and Kconfig against a standard's requirements (fw_check), each failure a config-vs-standard candidate citing page and line (DESIGN.md).
