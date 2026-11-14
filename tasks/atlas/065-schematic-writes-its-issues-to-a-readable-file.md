@@ -1,6 +1,6 @@
 # 065 — `atlas schematic` writes its extraction issues to a readable file
 
-**State:** open
+**State:** claimed by agent/atlas/065-schematic-writes-its-issues-to-a-readable-file, 2026-11-14 11:16
 **Source:** EMB-179, filed by an audit while tracing an MCU control line to a FET on a rebuilt board atlas
 **Issue:** EMB-179
 **Scope:** atlas
