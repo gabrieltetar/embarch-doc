@@ -1,6 +1,6 @@
 # 154 — Which source tree a build asked from a worktree session builds
 
-**State:** open
+**State:** claimed by agent/api/154-which-tree-a-worktree-session-build-builds, 2026-11-14 11:12
 **Source:** EMB-128, filed by an audit while `desk/020` (EMB-19) landed: that task asked its worker to check this and file it, and the worker did not check
 **Issue:** EMB-128
 **Scope:** api
