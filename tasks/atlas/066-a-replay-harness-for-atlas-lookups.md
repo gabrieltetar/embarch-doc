@@ -1,6 +1,6 @@
 # 066 — A replay harness for atlas lookups against recorded sessions
 
-**State:** open
+**State:** claimed by agent/atlas/066-a-replay-harness-for-atlas-lookups, 2026-11-14 11:24
 **Source:** EMB-148, filed by an audit after atlas task 003 (`config` takes a list and `vs=`) replayed five recorded `.config` greps and three `.config` diffs with a throwaway script
 **Issue:** EMB-148
 **Scope:** atlas
