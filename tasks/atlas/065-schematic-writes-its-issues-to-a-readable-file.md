@@ -1,6 +1,6 @@
 # 065 — `atlas schematic` writes its extraction issues to a readable file
 
-**State:** claimed by agent/atlas/065-schematic-writes-its-issues-to-a-readable-file, 2026-11-14 11:16
+**State:** done
 **Source:** EMB-179, filed by an audit while tracing an MCU control line to a FET on a rebuilt board atlas
 **Issue:** EMB-179
 **Scope:** atlas
@@ -41,9 +41,16 @@ net, and today reading them costs a script.
 
 ## Done when
 
-- [ ] `embarch-atlas schematic` writes the board's issues to a markdown file and prints its path.
-- [ ] `MAP.md` links each board's issues file.
-- [ ] Each issue line names its net, sheet and page (or says which of the three an issue kind does not carry).
-- [ ] A test covers the file's content and the `MAP.md` link, over a synthetic board.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
-- [ ] `changelog.d/` fragment dropped; `embarch-atlas/design.md` or the code repo's `DESIGN.md` updated if the board atlas layout is described there.
+- [x] `embarch-atlas schematic` writes the board's issues to a markdown file and prints its path.
+- [x] `MAP.md` links each board's issues file.
+- [x] Each issue line names its net, sheet and page (or says which of the three an issue kind does not carry).
+- [x] A test covers the file's content and the `MAP.md` link, over a synthetic board.
+- [x] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
+- [x] `changelog.d/` fragment dropped; `embarch-atlas/design.md` or the code repo's `DESIGN.md` updated if the board atlas layout is described there.
+
+## What shipped
+
+- `schematic` writes `boards/<label>/issues.md` (also rewritten by nothing else; `declare-pin-name` leaves it alone since it does not change issues) and the summary line prints its path.
+- Each line: `<board>: <kind> net=<..> sheet=<..> page=<..> | <issue text verbatim>`. Issues are plain strings in `netlist.json`, so `smartpdf.classify_issue` derives kind/net/sheet from the text by pattern; page comes from the text or the sheet's page in `netlist.json`. `-` marks what a kind does not carry (part-level kinds such as MPN disagreements, the missing-popups notice). Unmatched text is kind `other`.
+- `MAP.md` boards section appends `issues: boards/<label>/issues.md` to each board line.
+- Design choice vs. the issue's direction: none beyond the above; the optional `q schematic-issues` lookup was not added. `DESIGN.md` updated. Debt: MAP.md links the file even for an atlas whose board was extracted before this change until `schematic` is re-run.
