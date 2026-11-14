@@ -1,6 +1,6 @@
 # 066 — A replay harness for atlas lookups against recorded sessions
 
-**State:** claimed by agent/atlas/066-a-replay-harness-for-atlas-lookups, 2026-11-14 11:24
+**State:** done
 **Source:** EMB-148, filed by an audit after atlas task 003 (`config` takes a list and `vs=`) replayed five recorded `.config` greps and three `.config` diffs with a throwaway script
 **Issue:** EMB-148
 **Scope:** atlas
@@ -62,8 +62,22 @@ the next lookup should be, and a per-task script makes them incomparable.
 
 ## Done when
 
-- [ ] One command scans a project's transcripts for a named call pattern and lists the matching calls with their recorded result sizes.
-- [ ] The same command replays them through the mapped lookup against a copy of the atlas dir and prints calls and characters before and after, numbers only.
-- [ ] It never writes into the project's firmware tree or its atlas dir, and a test proves the copy is what gets written.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
-- [ ] `changelog.d/` fragment dropped; the code repo's `DESIGN.md` or `embarch-atlas/design.md` says the harness exists and why it is not a verb.
+- [x] One command scans a project's transcripts for a named call pattern and lists the matching calls with their recorded result sizes.
+- [x] The same command replays them through the mapped lookup against a copy of the atlas dir and prints calls and characters before and after, numbers only.
+- [x] It never writes into the project's firmware tree or its atlas dir, and a test proves the copy is what gets written.
+- [x] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
+- [x] `changelog.d/` fragment dropped; the code repo's `DESIGN.md` or `embarch-atlas/design.md` says the harness exists and why it is not a verb.
+
+## What shipped
+
+`scripts/replay.py` in `embarch-atlas` (branch `agent/atlas/066-a-replay-harness-for-atlas-lookups`), with `tests/test_replay.py` (synthetic transcripts, a synthetic atlas dir; 7 tests; `test_public_guard` ran, not skipped) and a "The replay harness" section in the repo's `DESIGN.md`.
+
+- One command: `scripts/replay.py --project NAME` lists matching calls with recorded result sizes; adding `--atlas-dir A --build-dir B [--vs-dir C] [--report]` replays and prints before/after calls and characters, numbers only (`--report` is the `## Result` table, per pattern and total).
+- Patterns table: `config-grep` (`q config SYMS`) and `config-diff` (`q config SYMS --vs`). A recorded command is parsed, never run: the replay runs an argument vector rebuilt from the parts, whitelisted flags, no shell; pipes, redirects, substitutions and other commands do not match.
+- Every write goes under a `/tmp` copy of the atlas dir (`GIT_OPTIONAL_LOCKS=0`); a test proves the real atlas dir and build dir are byte-identical afterwards and the copy is what the lookup got.
+- Choices: in-process lookup call (`cli.main`), so the harness needs the venv's `embarch_atlas`; `--pinned` makes the lookup answer from the atlas's pinned build instead of `--build-dir` (used by the end-to-end test); a replay that fails is counted as skipped. The optional old-lookup-from-`origin/main` comparison was not built.
+- The copy lives under `/tmp`, so a relative `--build` would resolve against the copy's location; pass absolute build dirs.
+
+## Owed
+
+**The first real run is owed.** Nothing here ran against a real transcript, build dir or atlas: run `scripts/replay.py --project <name> --atlas-dir <atlas> --build-dir <build> --report` once by an owner-side session, and expect to adjust the parsers to the shapes real commands take (the patterns are deliberately narrow, so the first run may match fewer calls than 003's script did).
