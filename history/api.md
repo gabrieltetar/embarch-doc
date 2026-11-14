@@ -17,6 +17,9 @@
 - embarch-api tests name their scratch directories from a process-wide counter (support::unique_dir), not the nanosecond clock; two tests no longer share one.
 - embarch-api tests: the binary-spawning tests strip `EMBARCH_REQUIRE_LEASE`, so `cargo test --manifest-path` from the suite root no longer fails 20 tests.
 - lease_client tests no longer flake: two tests in one clock tick shared a scratch dir; a counter names it now (api task 151).
+
+### Decided
+- Found and pinned in a test: an api build runs the config's source_path, not the session's worktree, so a worktree session builds the main clone; a known defect, bug EMB-181, not fixed here. See [spec](../embarch-api/spec.md).
 ## 2026-10
 
 ### Added
