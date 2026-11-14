@@ -1,6 +1,6 @@
 # 155 — A build asked from a worktree session builds that worktree, or refuses
 
-**State:** claimed by agent/api/155-a-worktree-session-build-builds-the-worktree, 2026-11-14 11:24
+**State:** done
 **Source:** EMB-181, filed by the `api/154` worker after it established, by a test, that such a build runs the main clone's tree
 **Issue:** EMB-181
 **Scope:** api
@@ -71,10 +71,19 @@ every one of them builds the main clone while the session edits the worktree.
 
 ## Done when
 
-- [ ] A build from a server whose working directory is a git worktree of the clone `source_path` points into runs in, and passes the app path from, that worktree, or refuses with a message naming both trees.
-- [ ] The build directory choice for that case is stated, so a worktree build never overwrites the main clone's build directory.
-- [ ] A unit test pins it, replacing `api/154`'s pinning test.
-- [ ] A numbered decision records the rule; `spec.md`'s known-defect bullet is replaced by it.
-- [ ] `embarch-ui` still builds against the crate, or the crate is untouched; this file says which.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] A build from a server whose working directory is a git worktree of the clone `source_path` points into runs in, and passes the app path from, that worktree, or refuses with a message naming both trees.
+- [x] The build directory choice for that case is stated, so a worktree build never overwrites the main clone's build directory.
+- [x] A unit test pins it, replacing `api/154`'s pinning test.
+- [x] A numbered decision records the rule; `spec.md`'s known-defect bullet is replaced by it.
+- [x] `embarch-ui` still builds against the crate, or the crate is untouched; this file says which.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
+
+## What shipped
+
+- `embarch-api/src/worktree.rs` (new), called from `main.rs` startup after `Config::load_from_path`: rule and build-directory choice in `embarch-api` decision 106. Chose **refuse** when the worktree lacks the path (startup error naming both trees), **build the worktree** otherwise.
+- **`embarch-firmware-build`'s public API is unchanged**: the relating is in `embarch-api`'s own code. Its only edit is deleting `api/154`'s pinning test from `resolve.rs`; `src/worktree.rs` carries the replacement test, which also keeps 154's `env` assertion. `embarch-ui` is therefore untouched by this change; the supervisor builds ui at the land.
+- Build directory: `<build_dir_root>/worktree-<name>-<fnv8 of the worktree path>`; never the main clone's.
+- `spec.md`'s known-defect bullet replaced by the rule.
+- Depends on the server's cwd being the worktree; whether a worktree's `settings.local.json` reaches the MCP process is `embarch-desk`'s side, not assumed. Not moved: absolute paths inside a static `build_command` or `env` values.
+- Unverified live: no real `west build` was run (not permitted); the plan is pinned by the unit test only.
