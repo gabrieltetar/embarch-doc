@@ -55,4 +55,4 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 
 ## Open
 
-- **This inventory was taken from the docs, not from the code.** Before the proposal is accepted, each "yes" worth relying on gets a check against its repo.
+- **This inventory was taken from the docs, not from the code.** Each "yes" a phase relies on is checked against its repo when that phase starts (owner, 2026-11-15).

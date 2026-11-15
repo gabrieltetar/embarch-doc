@@ -9,12 +9,14 @@ Shared by the Study and the Test: one publish mechanism, one zip shape, one audi
 - **An explicit step.** A finished run is a draft; `study_publish <id>` (an MCP tool and a subcommand) publishes it. Only the runs worth keeping are published. A Test run publishes the same way, as one zip for the whole run.
 - **One zip with everything**: the PDF report, the study file, `events.json`, the operator's notes, the hash manifest, and **every capture twice: the raw `.bin` (the evidence) and its CSV rendering (what a reader opens).** **It also carries `report.typ` and the Typst packages it used, so the PDF can be rebuilt from the zip alone**, with no repo and no network. **It is not for a repo.**
 - **Written to a local folder set in embarch-api's configuration, with no default**: publish refuses until the folder is configured, and says how. Sending the zip anywhere else stays a human step.
+- **Named `<date>-<slug>-<id8>.zip`**: the date, the study's slug (a Test run's suite name), the first 8 characters of the run ID.
 - **The operator's notes come in as a `notes` parameter**: the agent asks the person and passes their words verbatim. A UI form comes later.
 - **Republishing overwrites.** `study_publish <id>` again replaces the zip, so a copy someone received earlier can differ from the current one; the hash manifest inside each copy is how two copies are told apart.
 
 ## The report
 
 - **Rendered by embarch-api, to PDF, with Typst built into the binary**: no external tool to install, plots drawn as SVG and embedded.
+- **A plot over a large capture draws per-bin min and max, never an average**, as the UI's series route already does ([embarch-ui interfaces](../../embarch-ui/interfaces.md)); the raw file in the zip holds the detail.
 - **A Study's body is its own `report.typ`**, free in shape, compiled against the run's files ([02-study.md](02-study.md#the-report)).
 - **A Test's body is organised by requirement**: each verdict cites the run behind it, and **every applicable test that did not run is listed, with why** ([03-test.md](03-test.md#the-report)).
 
@@ -36,5 +38,4 @@ Shared by the Study and the Test: one publish mechanism, one zip shape, one audi
 
 ## Open
 
-- **The zip's name.** **Recommended:** `<date>-<study slug>-<study id prefix>.zip`, a Test run's with the suite name instead of the slug.
-- **Size.** A long capture makes a large zip, and a plot over millions of rows makes a large PDF. **Recommended:** plots drawn from binned min/max series, as the UI's series route already does ([embarch-ui interfaces](../../embarch-ui/interfaces.md)).
+- **A zip's own size**: a long capture is in it twice, raw and rendered. No limit decided; measure on the first real Study.

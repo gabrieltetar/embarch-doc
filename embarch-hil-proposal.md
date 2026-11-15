@@ -50,7 +50,6 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 The full lists close each note; the ones that block a phase:
 
 - **The order of Live and Test** after Study publish (above).
-- **What runs when the installed EmbArch is at another commit than the plan's suite pin** ([04](notes/hil/04-premade-suites.md#open)).
-- **The zip's name**, and how large captures are plotted ([06](notes/hil/06-report-and-publish.md#open)).
+- **The inventory of what exists** ([08](notes/hil/08-existing-pieces.md)) was taken from the docs; each row a phase relies on is checked against its repo when that phase starts.
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.
