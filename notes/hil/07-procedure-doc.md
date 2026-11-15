@@ -9,6 +9,8 @@
 - **`suite/hil-guide.md`** holds the procedure: written for the agent first, readable by an engineer. It is a guide, so it may restate what it needs rather than only link ([DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3).
 - **The `embarch-hil` skill, shipped with embarch-api**, installed when `embarch init` registers the MCP server, so every firmware repo with EmbArch gets it. It loads when a task needs hardware, holds the "which mode" table, and points at the guide's section for the mode. Same owner as the tools it describes; the precedent is the atlas's `atlas-use` skill.
 
+**One file to start, split into one file per mode if it outgrows the studies guide (about 23 KB)**; the skill points at sections either way.
+
 ## An outline of the guide
 
 1. **Choosing a mode**: the table in [01-modes.md](01-modes.md#how-an-agent-picks-a-mode), and the fleet's exclusion.
@@ -33,4 +35,3 @@ Gaps in today's agent-facing docs, found while gathering these notes:
 ## Open
 
 - **Whether `embarch-chat`'s prompt library gets buttons for the three modes.** Later, once the guide exists.
-- **The guide's size.** A guide has no cap of its own here; the studies guide is 23 KB. **Recommended:** split by mode if it passes that.

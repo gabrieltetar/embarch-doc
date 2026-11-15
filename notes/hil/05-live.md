@@ -38,7 +38,7 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 **A live answer that settles something the datasheet or schematic left open becomes a `measured` fact in the atlas, with its receipt**: the live call, the board's identity, the image hash, the time, the live-log line. It is shown beside the datasheet's claim, and **a disagreement with the datasheet becomes a check finding.** `measured` is already one of the atlas's provenance levels (`DESIGN.md`).
 
-**A finding measured on an image other than the atlas's pinned build is still written, never refused**: the receipt records the image it was measured on, and the atlas shows it as measured on a different build.
+**A finding measured on an image other than the atlas's pinned build is still written, never refused**: the receipt records the image it was measured on, and the atlas shows it as measured on a different build. **That image is Core's `last_images` record** of what it last flashed on the chip; a board flashed outside EmbArch leaves that record wrong or absent, and an absent chip is recorded as unknown, never guessed ([lease tools](../../embarch-api/interfaces/tools-lease.md)).
 
 ## When Live is not enough
 
@@ -48,5 +48,4 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 - **Bench-board commands are free**, including ones that put power or protocol traffic on the DUT (a PD partner asking for 20 V). Recorded as decided; worth a second look once the first live session on the PD bench has run.
 - **The write-back command**: an atlas CLI verb and MCP tool, its name and fields. The atlas rework's call.
-- **How the image a finding was measured on is known**: the same 16-word `image_check` the live stacks use, or Core's `last_images`. **Recommended:** `image_check` when the atlas has the ELF, else `last_images`, and the receipt says which.
 - **The live log's fields.** To fix with the first writer.

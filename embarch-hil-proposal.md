@@ -41,15 +41,14 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 
 1. **The atlas rework**, in its own notes (the owner's call: start there).
 2. **Study publish**, on the BLE GATT data-acquisition path, which already runs on hardware; Tests reuse the same publish.
-3. **Recommended:** Live: the guide's Live section, the live log, the permission lists, then the write-back once the atlas has its verb.
-4. **Recommended:** Test: the numeric parse and a first host study on the real PD bench (the [host-study proposal](embarch-host-study-proposal.md)'s own first item), then the Core route and a custom suite, then the first premade suite.
-5. `suite/hil-guide.md` grows a section per mode as each lands, rather than waiting for all three.
+3. **Live**: the guide's Live section, the live log, the permission lists, then the write-back once the atlas has its verb.
+4. **Test**: the numeric parse and a first host study on the real PD bench (the [host-study proposal](embarch-host-study-proposal.md)'s own first item), then the Core route and a custom suite, then the first premade suite.
+5. `suite/hil-guide.md` grows a section per mode as each lands, rather than waiting for all three, and splits into one file per mode if it outgrows the studies guide (about 23 KB).
 
 ## Open questions
 
-The full lists close each note; the ones that block a phase:
+The full lists close each note; what is left is measured later or is the atlas rework's call. The one that touches every phase:
 
-- **The order of Live and Test** after Study publish (above).
 - **The inventory of what exists** ([08](notes/hil/08-existing-pieces.md)) was taken from the docs; each row a phase relies on is checked against its repo when that phase starts.
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.
