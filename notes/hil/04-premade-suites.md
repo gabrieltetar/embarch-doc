@@ -13,6 +13,7 @@
 - **Premade suites live in the atlas, on the requirement records.**
 - **One suite per standard; each test states the revision range it applies to.** A project says which revision it tests against.
 - **A suite ships IDs only, no spec text.** The spec is copyrighted and the upstream repo is public; any wording a reader sees comes from the engineer's own copy of the spec, distilled locally as the atlas already does.
+- **Test procedures are written by EmbArch from the requirement**, never copied from an official compliance test document, and **no compliance test ID appears anywhere**, not even as a cross-reference.
 - **Bench binding by convention.** A premade test names signals, boards and instruments by conventional names, and **the suite ships its benches as saved-bench descriptions** that use those names ([03-test.md](03-test.md#benches)). A study naming a signal, never a cable, is today's rule ([studies guide §4](../../suite/studies-guide.md)).
 - **Mostly black-box, with named DUT hooks.** A premade test drives EmbArch's own partner bench and instruments, the way a conformance lab does. **Where the DUT must act itself** (a swap the DUT initiates), **the test calls a named hook**, which the project maps to a shell command or an operator prompt, or leaves unmapped and the test is skipped with the reason ([03-test.md](03-test.md#the-duts-inputs)). Anything else DUT-specific is a custom test.
 
@@ -28,7 +29,6 @@ The Test runner reads these; their shape is the rework's call.
 
 ## Open
 
-- **Whether the test procedures themselves may ship publicly.** IDs only covers the spec's own text; a test procedure written from an official compliance test document may also be covered. **Recommended:** write procedures from the requirement, not from a compliance document, and cite a compliance test ID only as a cross-reference.
 - **How a premade suite is versioned against EmbArch releases**, and how a project pins one.
 - **Where the PD partner's command set is fixed**: premade tests depend on the PD bench app's commands ([pd-bench README](../../../embarch-dev-bench/pd-bench/README.md)), so a change there is a change to every premade PD test.
 - **Which hook names the first suite needs.** To be drafted with the first suite, not ahead of it.

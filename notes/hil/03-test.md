@@ -56,7 +56,7 @@ A test may need two kinds of input about the DUT:
 
 ## It grows out of the ledger
 
-**EmbArch Test replaces the hardware test ledger by growing out of it** ([embarch-api decision 98](../../embarch-api/decisions/ledger.md), [tools](../../embarch-api/interfaces/tools-ledger.md)). The ledger's three files and its computed pending view are kept and renamed; `tests.toml`'s `needs` becomes a bench; rows a person entered by hand stay possible. **The ledger is not yet verified on a bench**, so nothing about it is a measurement yet.
+**EmbArch Test replaces the hardware test ledger by growing out of it** ([embarch-api decision 98](../../embarch-api/decisions/ledger.md), [tools](../../embarch-api/interfaces/tools-ledger.md)). The ledger's three files and its computed pending view are kept and renamed: **`embarch/tests/` holds the custom suites, the test plans and the results, and `ledger_show`, `ledger_pending` and `ledger_add` become `test_show`, `test_pending` and `test_add`**; `tests.toml`'s `needs` becomes a bench; rows a person entered by hand stay possible. **The ledger is not yet verified on a bench**, so nothing about it is a measurement yet.
 
 ## The report
 
@@ -64,7 +64,6 @@ A test may need two kinds of input about the DUT:
 
 ## Open
 
-- **The renamed files and tools.** **Recommended:** `embarch/tests/` holding the custom suites, the plans and the results; `test_pending` and `test_show` for the two ledger reads.
-- **Where custom suites live**, if not `embarch/tests/`, and whether a custom suite can reuse a premade test with different parameters.
+- **Whether a custom suite can reuse a premade test with different parameters**, or only call it as it is.
 - **What the agent sees while a run is in flight**: Core's study events stream ([embarch-api study-events](../../embarch-api/decisions/study-events.md)) per study, or a run-level stream. **Recommended:** a run-level status with the current bench, test and pending prompt.
 - **A Test run's results in Core's retention sweep** (`EMBARCH_STUDY_RESULTS_KEEP`, 50 runs): a long run's studies count against it. **Recommended:** a run's studies are swept together, and never while the run is unpublished.

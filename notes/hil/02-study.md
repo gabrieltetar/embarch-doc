@@ -25,6 +25,8 @@
 
 **Who writes each prose section is decided by the study too**, not by the procedure.
 
+**A Study with no `report.typ` still publishes**: the audit appendix plus a data section listing each capture with its row count, so a Study is never unpublishable.
+
 **embarch-api always appends a fixed audit appendix** that the study cannot leave out: pinned inputs, losses and overrides, the study design, operator notes and the hash manifest ([06-report-and-publish.md](06-report-and-publish.md#the-audit-appendix)).
 
 ## Where its files live
@@ -33,7 +35,6 @@
 
 ## Open
 
-- **A Study with no `report.typ`.** **Recommended:** publish still works and renders only the audit appendix plus a data section that lists each tap with its row count, so a Study is never unpublishable.
 - **How the agent writes the prose sections** the study assigns to it. **Recommended:** one file per run in the study's folder, which `report.typ` includes by the run's ID, so a republish renders the same words. Not yet asked.
 - **Which plots Typst can draw offline.** Plot packages are normally fetched from the Typst package registry; a binary that must work offline has to vendor the ones it supports. To measure when the work starts.
 - **The Study Designer UI** gains host-study rows later ([host-study proposal](../../embarch-host-study-proposal.md), "What is left" item 3); nothing in the Study mode waits on it.
