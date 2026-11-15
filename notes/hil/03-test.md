@@ -4,7 +4,7 @@
 
 ## What a Test is
 
-**Technical conformance with a verdict.** A **test suite** (USB PD R3.2 is one) holds an exhaustive set of **tests**; the engineer or agent **selects** the tests to run. A suite's tests are **grouped by bench**, so one run can span **one or more benches**, one after another. A suite is **premade** (shipped upstream with the atlas, [04-premade-suites.md](04-premade-suites.md)) or **custom** (written in the firmware repo by the engineer and agent).
+**Technical conformance with a verdict.** A **test suite** (USB PD R3.2 is one) holds an exhaustive set of **tests**; the engineer or agent **selects** the tests to run. A suite's tests are **grouped by bench**, so one run can span **one or more benches**, one after another. A suite is **premade** (shipped upstream with the atlas, [04-premade-suites.md](04-premade-suites.md)) or **custom** (written in the firmware repo by the engineer and agent). **A custom suite reuses a premade test by copying it into the firmware repo and editing it freely**; the copy keeps no link back upstream.
 
 ## One test
 
@@ -38,7 +38,8 @@
 3. **Before a bench's first test, a smoke check**: the topology the bench needs is live, the DUT's and every board's identity validates, each companion board answers a hello, each instrument answers an identity query. A failing check names the piece and runs no test on that bench.
 4. **A failure stops what depends on it.** If step 2 of a bench fails, continuing that bench makes no sense, so cancellation works per bench and per step. **A failure ends its own bench and the run goes on to the next bench; a cancel ends the whole run.** The study in flight always runs its teardown, as host studies already do.
 5. **Watching a run.** One `test_status` call answers the current bench, the current test, the verdicts so far, and a waiting prompt with its text, from any session; each study's own events stay available underneath.
-6. **Sequential only.** Two benches acting at the same moment are out of scope; Core runs one study at a time and a host study cannot drive the dev bench.
+6. **Retention.** A Test run's studies count as one unit in Core's retention sweep (`EMBARCH_STUDY_RESULTS_KEEP`, 50 runs), are swept together, and **are never swept while the run is unpublished.**
+7. **Sequential only.** Two benches acting at the same moment are out of scope; Core runs one study at a time and a host study cannot drive the dev bench.
 
 ## Selecting and rerunning
 
@@ -65,5 +66,3 @@ A test may need two kinds of input about the DUT:
 
 ## Open
 
-- **Whether a custom suite can reuse a premade test with different parameters**, or only call it as it is.
-- **A Test run's results in Core's retention sweep** (`EMBARCH_STUDY_RESULTS_KEEP`, 50 runs): a long run's studies count against it. **Recommended:** a run's studies are swept together, and never while the run is unpublished.

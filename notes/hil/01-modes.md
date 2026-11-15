@@ -34,11 +34,10 @@ A Study may use either runner, the dev bench's (`run_study`) or Core's own (`run
 **Every mode holds the bench lease** ([embarch-api lease tools](../../embarch-api/interfaces/tools-lease.md)):
 
 - **Live**: a short lease (900 s, renewed by the MCP server's timer), taken with a purpose and released when the exploration ends.
-- **Study**: the session's lease for the run.
 - **Test**: **the run holds its own lease in Core**, named after the run and released at its end or on cancel, because a Test run outlives the session that started it ([03-test.md](03-test.md)).
+- **Study**: **the same run-held lease as a Test, once Core can hold one**; until then, the session's lease.
 
 ## Open
 
-- Whether a long Study also gets a run-held lease like a Test, or keeps the session's. **Recommended:** the same as a Test once Core can hold one for a run; until then, the session's.
 - What the agent does when the request fits no row of the table above. **Recommended:** ask which mode, naming the three in one line each.
 - Whether "check R3.2" with no selection means every applicable test, or the saved test plan when one exists. **Recommended:** the plan when one exists, and say so.

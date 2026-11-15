@@ -50,9 +50,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 The full lists close each note; the ones that block a phase:
 
 - **The order of Live and Test** after Study publish (above).
-- **Whether a custom suite can reuse a premade test with new parameters** ([03](notes/hil/03-test.md#open)).
-- **How a premade suite is versioned and pinned** against EmbArch releases ([04](notes/hil/04-premade-suites.md#open)).
-- **Whether a long Study gets a run-held lease** like a Test ([01](notes/hil/01-modes.md#open)).
-- **The publish defaults**: folder, zip name, raw captures, re-rendering from the zip alone ([06](notes/hil/06-report-and-publish.md#open)).
+- **How a suite pinned by git commit is fetched** when the installed atlas is at another one ([04](notes/hil/04-premade-suites.md#open)).
+- **The publish defaults**: folder, zip name, how operator notes are typed in ([06](notes/hil/06-report-and-publish.md#open)).
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.
