@@ -2,7 +2,7 @@
 
 **Status:** draft, 2026-11-15.
 
-The owner asked, during the interview, whether anything is missing from the atlas beyond the planes and what would make it easier for a new contributor to navigate. **Nothing below is answered yet: the findings are measured or read on 2026-11-15, and every recommendation sits under Open.**
+The owner asked, during the interview, whether anything is missing from the atlas beyond the planes and what would make it easier for a new contributor to navigate. **The owner took all nine recommendations on 2026-11-15** ("Decided" below); the findings they answer were measured or read the same day.
 
 ## What a new contributor meets today
 
@@ -21,16 +21,22 @@ From `DESIGN.md`'s own "Not yet built (deliberately)": a native EDA adapter, geo
 - **A schematic that is not an embedded-netlist PDF gives no netlist** (the ladder's rung 2 needs net bookmarks; rung 3 is only a cross-check). A reader for an EDA tool's netlist export would widen hardware intake; the earlier review proposed one (R10-05). Its status is not checked here.
 - **No end-to-end example on public data.** The tests hold an upstream Zephyr sample for the code lookups; there is no single command that builds a whole atlas from public fixtures, so a contributor can see every output.
 
+## Decided
+
+**All nine, in the order they help a newcomer most** (owner, 2026-11-15). Where each sits in the rework's order is [the proposal's](../../embarch-atlas-planes-proposal.md#order).
+
+1. **The design moves into this repo's four files, organised by plane**: `spec.md` and `spec/<plane>.md`, `decisions.md` with the dated owner decisions pulled out of `DESIGN.md` and numbered, `interfaces.md` (CLI verbs, lookups and MCP tools, `atlas.toml`, the on-disk layout, the record schema), `open.md`. The budget is 10 KB per spec file and 12 KB per interface group ([DOC-BUDGET.md](../../DOC-BUDGET.md)), so the move is a compaction, not a copy.
+2. **A one-screen pipeline map** at the top of the spec: inventory, document prep, records, `doc check`, render, freeze, build, join, MAP and graph, second look, each with its modules and its plane.
+3. **A module map grouped by plane**, in the docs: specifications (`inventory`, `pdftext`, `columns`, `records`, `check`, `render`, `freeze`, `regparse`, `rm`, `svd`, `vote`, `standard`, `coverage`, `missing`, `answers`), hardware (`smartpdf`, `geom`, `interfaces`, `pinnames`, `nettrace`), firmware (`build`, `buildq`, `kconfig`, `dt`, `codeq`, `footprint`, `update`, `bump`), interactions (`join`, `mismatch`, `codecheck`, `limits`, `fwcheck`, `secondlook`, `diff`, `graph`, `mapgen`, `cmsisalias`), measured and live (`live`, `corestate`), surface (`query`, `mcp_server`, `cli`, `project`, `stale`, `common`).
+4. **A check catalogue** (letter or class, what it compares, planes read, severity, module), rendered from the check registry the plane tags need, so it cannot drift ([09](09-interactions.md#open)).
+5. **Contributor recipes**: add a record kind, a check, a lookup, a document kind; each lists the files it touches and the test that guards it.
+6. **The atlas's terms in the suite glossary**: twins, second look, freeze and thaw, worklist, unit key, the provenance classes, and this rework's plane, mention and claim.
+7. **A public end-to-end example**: one command builds an atlas from public fixtures, so a contributor sees every output.
+8. **A "Before you start" block in the atlas README**, from R10-21, for an engineer's first run.
+9. **A netlist-export reader**, so a schematic from another EDA tool gives a netlist.
+
 ## Open
 
-Recommendations, in the order they would help a newcomer most.
-
-1. **Move the design into this repo's four files as part of the rework**, with the planes as the spec's table of contents: `spec.md` and `spec/<plane>.md`, `decisions.md` with the dated owner decisions pulled out of `DESIGN.md` and numbered, `interfaces.md` (CLI verbs, lookups and MCP tools, `atlas.toml`, the on-disk layout, the record schema), `open.md`. The budget is 10 KB per spec file and 12 KB per interface group ([DOC-BUDGET.md](../../DOC-BUDGET.md)), so the move is also a compaction, not a copy.
-2. **A one-screen pipeline map** at the top of the spec: inventory, document prep, records, `doc check`, render, freeze, build, join, MAP and graph, second look, each with its modules and its plane.
-3. **A module map grouped by plane**: specifications (`inventory`, `pdftext`, `columns`, `records`, `check`, `render`, `freeze`, `regparse`, `rm`, `svd`, `vote`, `standard`, `coverage`, `missing`, `answers`), hardware (`smartpdf`, `geom`, `interfaces`, `pinnames`, `nettrace`), firmware (`build`, `buildq`, `kconfig`, `dt`, `codeq`, `footprint`, `update`, `bump`), interactions (`join`, `mismatch`, `codecheck`, `limits`, `fwcheck`, `secondlook`, `diff`, `graph`, `mapgen`, `cmsisalias`), measured and live (`live`, `corestate`), surface (`query`, `mcp_server`, `cli`, `project`, `stale`, `common`). Moving the package into sub-packages is a separate, later call: it touches every import and every branch in flight.
-4. **A check catalogue** (letter or class, what it compares, planes read, severity, module), rendered from the check registry the plane tags need, so it cannot drift ([09](09-interactions.md#open)).
-5. **Contributor recipes**: add a record kind, a check, a lookup, a document kind. Each lists the files it touches and the test that guards it.
-6. **The atlas's terms in the suite glossary.**
-7. **A public end-to-end example**: one command builds an atlas from public fixtures.
-8. **The README's "Before you start" block** from R10-21, for an engineer's first run.
-9. **A netlist-export reader** for schematics from other EDA tools.
+- **Moving the code into sub-packages per plane.** The module map is in the docs only; a package move touches every import and every branch in flight, and stays a separate, later call.
+- **Whether R10-05's netlist-export reader or R10-21's README block already landed.** Not checked; the first task on either reads the atlas repo's history.
+- **Whether the end-to-end example grows from the design × hardware fixture**, the first synthetic fixture this rework writes. Recommended.

@@ -33,11 +33,11 @@ Spans `embarch-atlas`, `embarch-desk`, `embarch-core`, `embarch-api` and this re
 
 | Sub-project | Work |
 |---|---|
-| `embarch-atlas` | Plane tags and per-plane staleness; mention matching and claim records; the `design-vs-hardware` check; rework overlays, units, revisions; module cards with range replay; the platform checks; the external-interface extractor and check; the measured write-back; a check catalogue rendered from the check registry |
+| `embarch-atlas` | Plane tags and per-plane staleness; mention matching and claim records; the `design-vs-hardware` check; rework overlays, units, revisions; module cards with range replay; the platform checks; the external-interface extractor and check; the measured write-back; a check catalogue rendered from the check registry; a netlist-export reader for other EDA tools; a public end-to-end example; the README's "Before you start" block |
 | `embarch-desk` | A route serving an issue's or PR's full text, comments and `updatedAt` from its cache; a Slack connector scoped to channels the engineer picks; the Slack-to-Linear draft |
 | `embarch-core` | The MCU's unique ID available to a client, if it is not already (checked when units start) |
 | `embarch-api` | The live-log line the measured write-back takes as its receipt (the HIL proposal's live-log writer) |
-| `embarch-doc` | The atlas's design moved into its four files, organised by plane; the atlas's terms in the glossary ([what a newcomer meets](notes/atlas/12-navigation.md)) |
+| `embarch-doc` | The atlas's design moved into its four files, organised by plane, with a pipeline map, a module map by plane, the check catalogue and contributor recipes; the atlas's terms in the glossary (the owner's call: [the nine navigation items](notes/atlas/12-navigation.md#decided)) |
 
 ## Order
 
@@ -47,10 +47,12 @@ The rest is recommended and not yet answered:
 
 2. **The measured write-back**, which the HIL proposal's Live phase waits on.
 3. **Plane tags on every existing check**, per-plane staleness and the check catalogue.
-4. **Hardware revisions, reworks and units.**
+4. **Hardware revisions, reworks and units**, and the netlist-export reader.
 5. **Module cards with range replay.**
 6. **External interfaces**, then **the platform**, then **the Slack connector**.
-7. **The design moved into this repo's four files**, once the planes it is organised by have landed.
+7. **The design moved into this repo's four files**, once the planes it is organised by have landed, with the pipeline map, the module map and the contributor recipes.
+
+**Any time**, being small: the atlas's terms in the glossary, the README's "Before you start" block, and the public end-to-end example grown from step 1's fixture.
 
 ## Open questions
 
