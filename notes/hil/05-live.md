@@ -32,11 +32,13 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 ## The live log
 
-**Every live call is appended to `embarch/live/<date>-<session>.jsonl` in the firmware repo**, untracked like the rest of `embarch/`: what was read or sent, to which board, the image hash on it, the time, and the answer. A write-back receipt points at its line.
+**Every live call is appended to `embarch/live/<date>-<session>.jsonl` in the firmware repo**, untracked like the rest of `embarch/`: what was read or sent, to which board, the image hash on it, the time, and the answer. **One file and one line shape, written by both embarch-api (raw calls) and embarch-atlas (decoded calls).** A write-back receipt points at its line.
 
 ## Writing a finding back
 
 **A live answer that settles something the datasheet or schematic left open becomes a `measured` fact in the atlas, with its receipt**: the live call, the board's identity, the image hash, the time, the live-log line. It is shown beside the datasheet's claim, and **a disagreement with the datasheet becomes a check finding.** `measured` is already one of the atlas's provenance levels (`DESIGN.md`).
+
+**A finding measured on an image other than the atlas's pinned build is still written, never refused**: the receipt records the image it was measured on, and the atlas shows it as measured on a different build.
 
 ## When Live is not enough
 
@@ -46,5 +48,5 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 - **Bench-board commands are free**, including ones that put power or protocol traffic on the DUT (a PD partner asking for 20 V). Recorded as decided; worth a second look once the first live session on the PD bench has run.
 - **The write-back command**: an atlas CLI verb and MCP tool, its name and fields. The atlas rework's call.
-- **Whether a write-back needs the image to match the pinned build.** **Recommended:** yes, through the same `image_check` the live stacks use, and a fact measured on another image is refused.
-- **The live log's fields**, and whether `embarch-api` (raw calls) and `embarch-atlas` (decoded calls) write the same file. **Recommended:** one file, one line shape, both writers.
+- **How the image a finding was measured on is known**: the same 16-word `image_check` the live stacks use, or Core's `last_images`. **Recommended:** `image_check` when the atlas has the ELF, else `last_images`, and the receipt says which.
+- **The live log's fields.** To fix with the first writer.
