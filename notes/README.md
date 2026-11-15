@@ -15,3 +15,4 @@
 | Folder | What is being shaped | Folds into |
 |---|---|---|
 | [hil/](hil/README.md) | How an agent runs hardware-in-the-loop: a Study, a Test, or Live access | [embarch-hil-proposal.md](../embarch-hil-proposal.md) |
+| [atlas/](atlas/README.md) | The atlas in seven planes, each with its own version and update procedure, and one join for their interactions | [embarch-atlas-planes-proposal.md](../embarch-atlas-planes-proposal.md) |

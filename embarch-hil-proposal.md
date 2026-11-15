@@ -29,7 +29,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 
 | Sub-project | Work |
 |---|---|
-| `embarch-atlas` | **The rework, drafted first in its own notes by the owner.** HIL needs from it: requirement IDs stable across revisions, a test record on a requirement, suite bench descriptions, applicability, the capabilities it decodes from a build, and a write-back verb for a live finding ([the list](notes/hil/04-premade-suites.md#what-the-hil-side-needs-from-the-atlas-rework)) |
+| `embarch-atlas` | **The rework: [embarch-atlas-planes-proposal.md](embarch-atlas-planes-proposal.md)**, research in [notes/atlas/](notes/atlas/README.md). HIL needs from it: requirement IDs stable across revisions, a test record on a requirement, suite bench descriptions, applicability, the capabilities it decodes from a build, and a write-back verb for a live finding ([the list](notes/hil/04-premade-suites.md#what-the-hil-side-needs-from-the-atlas-rework)) |
 | `embarch-study-designer` | Suite and test types: a study plus verdict rules, revision range, bench and config, run count, hooks. A declared numeric parse on a host step |
 | `embarch-core` | The number parsed at step time. **A Test route**: a resolved run, grouped by bench, prompts between benches, the smoke check, the same-DUT check, failure per bench, cancel. **A lease held by a run.** Retention that keeps a run's studies together |
 | `embarch-api` | `study_publish`: Typst, the PDF, the zip, the audit appendix. Test selection and resolution, `run_test`, run status. **The ledger grown into Test**: `embarch/tests/`, `test_show`, `test_pending`, `test_add`, with test plans holding DUT inputs and hook mappings. The live-log writer. The `hil` skill |
@@ -39,7 +39,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 
 ## Order
 
-1. **The atlas rework**, in its own notes (the owner's call: start there).
+1. **The atlas rework**, in [its own proposal](embarch-atlas-planes-proposal.md) (the owner's call: start there).
 2. **Study publish**, on the BLE GATT data-acquisition path, which already runs on hardware; Tests reuse the same publish.
 3. **Live**: the guide's Live section, the live log, the permission lists, then the write-back once the atlas has its verb.
 4. **Test**: the numeric parse and a first host study on the real PD bench (the [host-study proposal](embarch-host-study-proposal.md)'s own first item), then the Core route and a custom suite, then the first premade suite.

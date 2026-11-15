@@ -4,7 +4,7 @@
 
 ## The idea
 
-**EmbArch ships premade test suites for standards** (USB PD R3.2 first), and the engineer and agent add **custom suites** for one project's own context. The owner is reworking the atlas and **will draft that rework as its own notes folder, and start there**; this file records only what the HIL side needs from it.
+**EmbArch ships premade test suites for standards** (USB PD R3.2 first), and the engineer and agent add **custom suites** for one project's own context. The owner is reworking the atlas, **drafted in [notes/atlas/](../atlas/README.md), and starts there**; this file records only what the HIL side needs from it, and [notes/atlas/11-hil.md](../atlas/11-hil.md) says where each need lands.
 
 **Why this fits the atlas:** a standard binds a *role* (a PD source, a sink), not a part, and the atlas already models it that way ([atlas design](../../embarch-atlas/design.md#standards-and-specifications)). A requirement record there already carries a static `fw_check`, which compares the firmware's configuration with the standard ([same doc](../../embarch-atlas/design.md#firmware-configuration-against-a-standard)). **A premade test is the dynamic check of the same requirement**, so it lives on the same record: one requirement, three things (the requirement, its static configuration check, its hardware test).
 
