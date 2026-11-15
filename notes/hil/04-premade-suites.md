@@ -10,12 +10,13 @@
 
 ## Decided
 
-- **Premade suites live in the atlas, on the requirement records.**
+- **Premade suites live in the atlas, on the requirement records.** Two commits are in play and must not be confused: **an atlas built for a board is pinned to the firmware's commit**, while **the shared suite is EmbArch's own, upstream, at an EmbArch commit.**
 - **One suite per standard; each test states the revision range it applies to.** A project says which revision it tests against.
-- **A project pins a premade suite by its upstream git commit**, named in the test plan; the report states that commit.
+- **A project pins a premade suite by the EmbArch git commit of the shared suite**, named in the test plan; the report states that commit beside the firmware's.
 - **A suite ships IDs only, no spec text.** The spec is copyrighted and the upstream repo is public; any wording a reader sees comes from the engineer's own copy of the spec, distilled locally as the atlas already does.
 - **Test procedures are written by EmbArch from the requirement**, never copied from an official compliance test document, and **no compliance test ID appears anywhere**, not even as a cross-reference.
 - **Bench binding by convention.** A premade test names signals, boards and instruments by conventional names, and **the suite ships its benches as saved-bench descriptions** that use those names ([03-test.md](03-test.md#benches)). A study naming a signal, never a cable, is today's rule ([studies guide §4](../../suite/studies-guide.md)).
+- **The bench boards' command sets are already EmbArch's.** The dev bench, the PD partner and every other bench app are EmbArch firmware in `embarch-dev-bench`, which defines their commands ([pd-bench README](../../../embarch-dev-bench/pd-bench/README.md)), so a premade test and the commands it sends change in the same suite.
 - **Mostly black-box, with named DUT hooks.** A premade test drives EmbArch's own partner bench and instruments, the way a conformance lab does. **Where the DUT must act itself** (a swap the DUT initiates), **the test calls a named hook**, which the project maps to a shell command or an operator prompt, or leaves unmapped and the test is skipped with the reason ([03-test.md](03-test.md#the-duts-inputs)). Anything else DUT-specific is a custom test.
 
 ## What the HIL side needs from the atlas rework
@@ -30,6 +31,5 @@ The Test runner reads these; their shape is the rework's call.
 
 ## Open
 
-- **How a pinned commit is fetched** when the installed atlas is at another commit: a second checkout, or the atlas refusing until it matches.
-- **Where the PD partner's command set is fixed**: premade tests depend on the PD bench app's commands ([pd-bench README](../../../embarch-dev-bench/pd-bench/README.md)), so a change there is a change to every premade PD test.
+- **What happens when the installed EmbArch is at another commit than the plan's pin**: read the suite at the pinned commit from git history, refuse naming both, or warn and run the installed one.
 - **Which hook names the first suite needs.** To be drafted with the first suite, not ahead of it.

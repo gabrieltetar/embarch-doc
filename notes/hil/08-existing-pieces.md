@@ -13,7 +13,7 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | Board identity gate, `validate` | yes | [embarch-topology spec](../../embarch-topology/spec.md) |
 | `last_images`: what Core last flashed, with its SHA-256 | yes | [lease tools](../../embarch-api/interfaces/tools-lease.md) |
 | A lease held by a run instead of a session | **no** | Test |
-| The `hil` skill and `suite/hil-guide.md` | **no** | [07-procedure-doc.md](07-procedure-doc.md) |
+| The `embarch-hil` skill and `suite/hil-guide.md` | **no** | [07-procedure-doc.md](07-procedure-doc.md) |
 
 ## Study
 

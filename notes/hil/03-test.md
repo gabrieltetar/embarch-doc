@@ -66,3 +66,4 @@ A test may need two kinds of input about the DUT:
 
 ## Open
 
+- Nothing left open here as of 2026-11-15.

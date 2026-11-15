@@ -33,8 +33,9 @@
 
 **Both study kinds are saved in the firmware repo's `embarch/studies/<slug>/`**: the study file, its `report.typ`, and the prose files the agent writes, side by side. A dev-bench study is saved under `embarch/studies/` by the Study Designer today ([embarch-ui spec](../../embarch-ui/spec.md)); **a host study is not saved in a repo at all** ([embarch-ui decision 96](../../embarch-ui/decisions/bench-configs.md)), so this is new for host studies.
 
+**The prose the agent writes for a run is one file per run in the study's folder** (`embarch/studies/<slug>/runs/<run id>`), which `report.typ` includes by the run's ID, so a republish renders the same words.
+
 ## Open
 
-- **How the agent writes the prose sections** the study assigns to it. **Recommended:** one file per run in the study's folder, which `report.typ` includes by the run's ID, so a republish renders the same words. Not yet asked.
 - **Which plots Typst can draw offline.** Plot packages are normally fetched from the Typst package registry; a binary that must work offline has to vendor the ones it supports. To measure when the work starts.
 - **The Study Designer UI** gains host-study rows later ([host-study proposal](../../embarch-host-study-proposal.md), "What is left" item 3); nothing in the Study mode waits on it.
