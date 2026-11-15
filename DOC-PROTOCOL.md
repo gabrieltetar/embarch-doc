@@ -31,6 +31,7 @@ embarch/
     ├── features.d/          one fragment per feature-inventory row
     ├── status.d/            pending edits to a shared suite-level doc
     ├── tasks/               the background agents' work queue
+    ├── notes/               research intake while a design is shaped
     ├── history/             assembled per sub-project, + archive/
     └── scripts/             the CI checks, plus the fleet's own tools
 ```
