@@ -14,7 +14,7 @@ The options in these notes were weighed by **reuse of what already exists** and 
 |---|---|---|---|
 | Specifications | Inventory, page text, page classes (today) | A document's sections, when translated (today) | Page text hashes |
 | Hardware | The schematic's netlist; the rework merge | A rework draft, once per rework | The rework source's version key |
-| Firmware | The build, the code index, the commits attached to modules | A card per changed module ([03](03-firmware.md#open)) | The module's file hashes |
+| Firmware | The build, the code index, the commits attached to modules | A card per changed module, rewritten by a session ([03](03-firmware.md#who-rewrites-a-card)) | The module's file hashes |
 | Platform | West revisions, the patch set, the HAL searches | None planned | |
 | Design | Mentions over the desk's index | Claims, and which issues belong, when a session asks | The source and its `updatedAt` |
 | External interfaces | The firmware side, extracted from the build | The defining document's sections, as they are needed | Page text hashes |

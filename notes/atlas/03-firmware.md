@@ -20,9 +20,13 @@
 
 Chosen over replaying each commit in order, which the owner proposed and weighed: it keeps every intermediate step but costs one read per commit, reads states that no longer exist (fixups, reverts), and has no line of history to follow across a rebase. **What per-commit replay offered that is worth keeping is the why, and the attached commit messages keep it.**
 
+## Who rewrites a card
+
+**The bump marks, a session rewrites.** LLM work runs only on demand, in a session ([10](10-running-cost.md)), and the hook's bump runs none, so the two answers meet here: **the bump marks each changed module's card as behind and attaches the range's commits** (deterministic, free), and **the card is rewritten when a session runs `/atlas-update` or looks the module up.** The owner took this recommendation on 2026-11-15, settling the conflict between "on each update" and "on demand only".
+
 ## Open
 
-- **"On update" against "on demand".** LLM work runs only on demand, in a session ([10](10-running-cost.md)), and the hook's bump runs none. Recommended: the bump marks each changed module's card as behind and attaches the range's commits; the card is rewritten when a session runs `/atlas-update` or looks the module up.
+- **What a card that is behind answers.** Recommended: it still answers, says it is behind and lists the commits it has not read, as a stale atlas answers under its stale line.
 - **The freeze key.** Recommended: the module's files' content hashes and the procedure version, as a reference-manual unit is keyed, so two branches with the same module content share one card.
 - **The first atlas.** Range replay from nothing writes a card for every module; its cost on a real firmware repo is not measured.
 - **The card's fields and budget.** Recommended: at most 1.5K tokens, as a part card is.

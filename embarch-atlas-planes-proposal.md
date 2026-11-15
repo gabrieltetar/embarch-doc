@@ -14,7 +14,7 @@ Spans `embarch-atlas`, `embarch-desk`, `embarch-core`, `embarch-api` and this re
 |---|---|---|---|
 | **Specifications** | Datasheets, manuals, errata, app notes, standards | doc_id and sha256 | A plane tag; interface documents and platform errata use its machinery |
 | **Hardware** | Netlist and BOM per board revision, rework overlays, units | Board revision and rework set | Revisions; **reworks drafted by an LLM and confirmed by the engineer**; units keyed by MCU unique ID ([02](notes/atlas/02-hardware.md)) |
-| **Firmware** | Build, devicetree, Kconfig, code index, states; module cards | Commit | **Module cards kept current by range replay** ([03](notes/atlas/03-firmware.md)) |
+| **Firmware** | Build, devicetree, Kconfig, code index, states; module cards | Commit | **Module cards kept current by range replay**: the bump marks a changed module's card behind, a session rewrites it ([03](notes/atlas/03-firmware.md#who-rewrites-a-card)) |
 | **Platform** | Zephyr, SDK and HAL versions, west patches, upstream known issues | West revisions and the patch set | The plane ([04](notes/atlas/04-platform.md)) |
 | **Design** | Linear issues, PR discussions, commit messages, design documents | Per source: `updatedAt`, commit, sha256 | **Read live through the desk; Slack finds, never cited** ([05](notes/atlas/05-design.md)) |
 | **External interfaces** | A document defining an interface (a client's BLE API); what the firmware exposes or consumes | Document sha256; commit | **Both sides, and a check between them** ([07](notes/atlas/07-interfaces.md)) |
@@ -56,7 +56,6 @@ The rest is recommended and not yet answered:
 
 Each note closes with its own list. The ones that touch more than one plane:
 
-- **"On update" against "on demand"** for module cards ([03](notes/atlas/03-firmware.md#open)).
 - **Where measured records live once planes are shared** ([01](notes/atlas/01-planes.md#open)).
 - **The spelling rule for a name that prose and the netlist write differently** ([05](notes/atlas/05-design.md#open)).
 - **Nothing here is measured**: the first numbers come from the first fixture and the atlas's replay harness ([10](notes/atlas/10-running-cost.md)).
