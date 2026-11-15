@@ -8,7 +8,8 @@ Shared by the Study and the Test: one publish mechanism, one zip shape, one audi
 
 - **An explicit step.** A finished run is a draft; `study_publish <id>` (an MCP tool and a subcommand) publishes it. Only the runs worth keeping are published. A Test run publishes the same way, as one zip for the whole run.
 - **One zip with everything**: the PDF report, the study file, `events.json`, the operator's notes, the hash manifest, and **every capture twice: the raw `.bin` (the evidence) and its CSV rendering (what a reader opens).** **It also carries `report.typ` and the Typst packages it used, so the PDF can be rebuilt from the zip alone**, with no repo and no network. **It is not for a repo.**
-- **Written to a local folder set in embarch-api's configuration.** Sending the zip anywhere else stays a human step.
+- **Written to a local folder set in embarch-api's configuration, with no default**: publish refuses until the folder is configured, and says how. Sending the zip anywhere else stays a human step.
+- **The operator's notes come in as a `notes` parameter**: the agent asks the person and passes their words verbatim. A UI form comes later.
 - **Republishing overwrites.** `study_publish <id>` again replaces the zip, so a copy someone received earlier can differ from the current one; the hash manifest inside each copy is how two copies are told apart.
 
 ## The report
@@ -35,7 +36,5 @@ Shared by the Study and the Test: one publish mechanism, one zip shape, one audi
 
 ## Open
 
-- **The default folder.** embarch-api runs on the developer's side (WSL2 in the daily topology) and Core on the bench machine, so the zip is built from Core's files read over HTTP. **Recommended:** a folder under the developer's home, named in the config, made on first publish.
 - **The zip's name.** **Recommended:** `<date>-<study slug>-<study id prefix>.zip`, a Test run's with the suite name instead of the slug.
-- **How operator notes are typed in**: a `notes` parameter the agent fills from what the person says, or a UI form. **Recommended:** the parameter first, the UI later.
 - **Size.** A long capture makes a large zip, and a plot over millions of rows makes a large PDF. **Recommended:** plots drawn from binned min/max series, as the UI's series route already does ([embarch-ui interfaces](../../embarch-ui/interfaces.md)).

@@ -23,7 +23,9 @@ A Study may use either runner, the dev bench's (`run_study`) or Core's own (`run
 | Look or poke while developing: "what is in this register", "reset it and show me the log" | **Live** |
 | A Live result that is about to be cited in a PR, a ticket or a report | Redo it as a **Study** or a **Test**, so it has a published receipt |
 
-**A spec named is a Test, not a Study** — the owner's own example: "check the PD contract works" runs the Test.
+**A spec named is a Test, not a Study** — the owner's own example: "check the PD contract works" runs the Test. **A spec named with no tests runs the project's saved test plan for that suite, and says so**; with no plan, the agent lists the applicable tests grouped by bench and asks which to run.
+
+**A request that fits no row gets one question**: Study, Test or Live, each in one line, the agent's pick first.
 
 ## Who may run them
 
@@ -39,5 +41,4 @@ A Study may use either runner, the dev bench's (`run_study`) or Core's own (`run
 
 ## Open
 
-- What the agent does when the request fits no row of the table above. **Recommended:** ask which mode, naming the three in one line each.
-- Whether "check R3.2" with no selection means every applicable test, or the saved test plan when one exists. **Recommended:** the plan when one exists, and say so.
+- Nothing left open here as of 2026-11-15.

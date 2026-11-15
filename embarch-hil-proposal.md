@@ -12,7 +12,7 @@ Spans `embarch-atlas`, `embarch-study-designer`, `embarch-core`, `embarch-api`, 
 | **Test** | Technical conformance: selected tests of a suite such as USB PD R3.2 | One or more, one after another | A verdict per test, coverage, a published report |
 | **Live** | An instant read or action during development | The DUT and its bench boards | An answer, a live-log line, a fact written back to the atlas |
 
-**A bench** is one DUT, zero or one dev bench, and any companion boards and instruments, described as a saved bench and bound to real probes by Make live ([vocabulary](notes/hil/README.md#vocabulary)). **Purpose separates the modes**, and a spec named in a request makes it a Test ([how an agent picks](notes/hil/01-modes.md#how-an-agent-picks-a-mode)). **Interactive sessions only**: the fleet stays off hardware. **Every mode holds the bench lease**; a Test run holds its own.
+**A bench** is one DUT, zero or one dev bench, and any companion boards and instruments, described as a saved bench and bound to real probes by Make live ([vocabulary](notes/hil/README.md#vocabulary)). **Purpose separates the modes**, and a spec named in a request makes it a Test ([how an agent picks](notes/hil/01-modes.md#how-an-agent-picks-a-mode)). **Interactive sessions only**: the fleet stays off hardware. **Every mode holds the bench lease**; a Test run holds its own, and a Study run will too once Core can hold one for a run.
 
 ## The design in one screen
 
@@ -51,6 +51,6 @@ The full lists close each note; the ones that block a phase:
 
 - **The order of Live and Test** after Study publish (above).
 - **How a suite pinned by git commit is fetched** when the installed atlas is at another one ([04](notes/hil/04-premade-suites.md#open)).
-- **The publish defaults**: folder, zip name, how operator notes are typed in ([06](notes/hil/06-report-and-publish.md#open)).
+- **The zip's name**, and how large captures are plotted ([06](notes/hil/06-report-and-publish.md#open)).
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.
