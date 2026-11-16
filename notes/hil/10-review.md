@@ -134,6 +134,10 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 **Two reviewers on that fix diff**: **6 findings, none high.** Fixed the same way: a study's teardown, which the agent wrote, runs only while it can be logged, the safe-off in its place otherwise; which Core answers is shown on every act, the token pair picked by Core's own status, and a service start logs the time it was stopped and resets each board's last flasher to unknown; the fingerprint written to `embarch/core-fingerprint` by the elevated install; check 9 requires every text-layer glyph to be visible in the render; leftover wording aligned.
 
+### Round 3's sixth round, the loop's last
+
+**Two reviewers on that fix diff**: **6 findings, none high.** Fixed the same way: embarch-api and embarch-ui send the service's token pair only to a Core that signs a fresh challenge with the key whose fingerprint the elevated install recorded; `core-fingerprint` is out of the agent's reach only in the container topology, and elsewhere a fact resting on it says "fingerprint not protected here"; a repo registered later gets the file through an elevated step; check 9's visibility test made mechanical (render with and without each glyph run, a stated contrast and a minimum size); the dev workflow §4a and umbrella decision 32 amendments stated as to do once accepted. **The loop stops here, at its round cap**: six rounds, the high findings falling 7, 2, 1, 0, 0, 0; the last round's fixes are unreviewed.
+
 ## Still unanswered
 
 - **R23** and **R24**, above.
@@ -141,4 +145,4 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 ## Open
 
-- **Round 3's delta rounds**: the review loop goes on over round 3's fixes until its stop rule ends it.
+- **Round 4**: a full round once the owner has confirmed or undone the round-2 and round-3 recommendations, reading the sixth round's unreviewed fixes with the rest.
