@@ -122,6 +122,10 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 **Three reviewers on the fix diff** (evidence, prevention, consistency): **18 findings, 2 high.** Fixed the same way: a source install never opens an attested store; the call log's fail-closed rule always admits teardown, an output switched off and a cancel, with a quota that refuses the agent's calls first; the staging folder follows no link; a registered passkey binds whatever the container statement says; an action prompt's measurement is `by: bench` and can fail; every compile of a zip's sources is confined; `report-data.json` carries the audit appendix's claims, the notes and prose adoption go through Core, the atlas's count is a labelled input; the flasher's scope is in the signed record and the call log a chain of its own; `verify` rebuilds the PDF and checks the publish's own entry against Core; an atlas fact re-verifies its zip on use; a host study takes a go when it holds a prompt; the CLI's Make live and the signed release have owners in the proposals.
 
+### Round 3's third round
+
+**Two reviewers on that fix diff**: **9 findings, 1 high.** Fixed the same way: a source install runs Core under the engineer's own account, so the OS keeps it out of the attested store; the fail-closed exception is a cancel and Core's own safe-off, built from the declarations, with a reserved tail and the person's recovery; the call log's head and the run's range in each signed record, its segment in the zip; `verify` check 9 compares rendered pages and admits only images drawn from the data or signed captures, and reports a Typst version it lacks as not rebuilt; the atlas's fingerprint comes from Core or the read-only mount; a host study's go is named among the person's acts, bound to the study's hash and prompt kinds; the notes' and prose's text hashes in Core's record; the revision number in `report-data.json`; a Core route for a publish's entry and the log head.
+
 ## Still unanswered
 
 - **R23** and **R24**, above.
