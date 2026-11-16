@@ -2,7 +2,7 @@
 
 **Status:** draft, 2026-11-15.
 
-A web survey made in review round 1, at the owner's request, of what exists before EmbArch claims anything as new ([00-goals.md](00-goals.md), G3). **Stars and dates are as the survey found them on 2026-11-15**; an item marked *unverified* was seen only in a search listing, not opened. Nothing here is decided; what the HIL design should take from it is under Open.
+A web survey made in review round 1, at the owner's request, of what exists before EmbArch claims anything as new ([00-goals.md](00-goals.md), G3). **Stars and dates are as the survey found them on 2026-11-15**; an item marked *unverified* was seen only in a search listing, not opened. What the HIL design took from it was answered in round 1 and is in the notes it changed; what is left is under Open.
 
 ## Agent-driven HIL
 
@@ -63,14 +63,9 @@ A web survey made in review round 1, at the owner's request, of what exists befo
 
 ## What is new in EmbArch
 
-**Measured against the survey, nothing found combines** verdicts decided by code from named measurements with engineer-confirmed inputs, a deterministic check of every number in an agent's prose, every attempt listed, and a report a third party can verify offline from raw captures, **for agent-run HIL measurement and conformance**. The closest, Agentic HIL, has the audit chain and the authority outside the workspace, and none of the rest. **No agent-driven USB PD work exists.** The claim is safe to make in those words, and no wider.
+**Measured against the survey, nothing was found that combines** verdicts decided by code from named measurements with engineer-confirmed inputs, a deterministic listing of every untagged number in an agent's prose that matches no measurement, every attempt listed, and a report a third party can verify offline from raw captures, **for agent-run HIL measurement and conformance**. The closest, Agentic HIL, has the audit chain and the authority outside the workspace, and none of the rest. **No agent-driven USB PD work was found.** The claim is safe to make in those words, as of the survey's date, and no wider.
 
 ## Open
 
-Recommended takes from the survey, unanswered unless marked:
-
-- **Prevention against a subverting agent**, the owner's answer of round 1 ("plan for prevention"), is designed in [12-prevention.md](12-prevention.md), on Agentic HIL's authority-outside-the-workspace, the approval-integrity papers' out-of-band channel, and DSSE with Ed25519.
-- **A guard band's verdict**: what a result between the tolerance limit and the acceptance limit gets.
-- **The interop exports**: JUnit XML as the CI summary, OCP T&V v2.0 JSON Lines as the lossless one, both written into the zip.
-- **The VIF as a capability source**, beside the atlas's decoding and the engineer's declaration.
-- **Re-renders**: whether `typst-pdf` output is byte-identical across machines and patch versions, to measure before `verify` compares PDFs rather than only the data.
+- **Which claims of this survey to re-check before a public one is made on them**: the items marked *unverified*, and the licences of the pieces the evidence proposal adopts.
+- **A second survey once the design is close to built**, since the field moved fast in 2026: Agentic HIL released near-daily.

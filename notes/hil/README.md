@@ -22,14 +22,17 @@ The research behind [embarch-hil-proposal.md](../../embarch-hil-proposal.md): on
 
 ## Vocabulary
 
-These words mean exactly this in every file here.
+These words mean exactly this in every file here. Where one word names two things, the second is written out in full (review round 2).
 
-- **Bench**: one DUT, zero or one dev bench, and any number of companion boards (a USB PD partner, ...) and instruments (an electronic load, a supply). Described as a **saved bench** (parts, cables, configs) in the firmware repo's `embarch/topologies/` ([embarch-ui decision 73](../../embarch-ui/decisions/saved-benches.md)). The description does not change with the probes and ports; **Make live** binds the real ones by live enrolment ([decision 90](../../embarch-ui/decisions/bench-live.md)).
-- **Study**: a custom, almost scientific question answered by measurement, on **exactly one bench**. Either runner: a dev-bench study or a host study.
-- **Test**: technical conformance with a verdict. A **test suite** (USB PD R3.2 is one) holds **tests**; a run selects some of them; the tests are grouped by bench; a run spans **one or more benches**.
-- **Live**: an instant read or action on the DUT or a bench board, during a development session.
+- **Bench**: one DUT, zero or one dev bench, and any number of **bench boards** (the dev bench, a USB PD partner, ...) and **instruments** (an electronic load, a supply). Described as a **saved bench** (parts, cables, configs) in the firmware repo's `embarch/topologies/` ([embarch-ui decision 73](../../embarch-ui/decisions/saved-benches.md)). The description does not change with the probes and ports; **Make live** binds the real ones by live enrolment ([decision 90](../../embarch-ui/decisions/bench-live.md)). **The bench lease** is Core's lock on all of it; **`by: bench`** on a measurement means a bench board or an instrument measured it. Never "bench" alone for one board.
+- **Study** (the mode): a custom, almost scientific question answered by measurement, on **exactly one bench**. Either runner: a dev-bench study or a host study. **A study** (the file) is the steps a runner executes; a test runs one, so "a test's study" is the file, not the mode.
+- **Test** (the mode, capitalised): technical conformance with a verdict, as pre-compliance evidence. A **test suite** (USB PD R3.2 is one) holds **tests** (lower case: one test); a Test run selects some of them; the tests are grouped by bench; a run spans **one or more benches**. The hardware test ledger's "tests" become these ([03](03-test.md#it-grows-out-of-the-ledger)); a firmware's unit tests are never called tests here without "unit".
+- **Run**: one execution, of a study or of a Test selection, with an id in Core's run log. A Test run holds one study run per test and per pass of its run count.
+- **Live** (the mode): an instant read or action on the DUT or a bench board, during a development session. Not Make live, which is the UI's step binding a saved bench to real probes.
 - **Premade suite**: a test suite shipped with EmbArch as plain data, runnable without an atlas. **Custom suite**: one the engineer and agent write in the firmware repo.
-- **Measurement**: a named value with a unit, a resolution and the file and rows it came from, computed by Core at step time or by embarch-api's built-in reducers after the run ([02](02-study.md#measurements)).
-- **Verdict**: one of pass, fail, error, inconclusive, skipped, cancelled, decided by code ([03](03-test.md#the-verdict)).
+- **Measurement**: a named value with a unit, a resolution, an uncertainty, who measured it and the file and rows it came from, computed by Core, at step time or through the shared crate's built-in reducers as each test or study ends ([02](02-study.md#measurements)).
+- **Verdict**: one of pass, fail, error, inconclusive, skipped, cancelled, decided by code ([03](03-test.md#the-verdict)); a requirement may also be **not verified**.
 - **Resolved run** (`run.json`): a Test selection with every test expanded and every input substituted, hashed, the unit of reproducibility ([03](03-test.md#selecting-and-rerunning)).
+- **A person's act**: an act only the person may make (a confirmation, the go, an observation or clearance answer, a manual verdict, an identity declaration), made with the person's token ([12](12-prevention.md)).
+- **Attested**, **unattested**: whether a run's records were signed by a Core under its own account ([12](12-prevention.md#the-root-of-trust-core-under-its-own-account)).
 - **Publish**: turning a finished run into one zip holding a PDF report and every file behind it.

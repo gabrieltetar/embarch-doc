@@ -2,11 +2,11 @@
 
 **Status:** draft, 2026-11-15.
 
-Each round reviews 01 to 09 and [the proposal](../../embarch-hil-proposal.md) against [the goals](00-goals.md). **An answered finding folds into the note it is about and leaves this file**; what stays is what is unanswered, each round's outcome, and its line per goal.
+Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.md) against [the goals](00-goals.md). **An answered finding folds into the note it is about and leaves this file**; what stays is what is unanswered, each round's outcome, and its line per goal.
 
 ## Round 1 (2026-11-15)
 
-**23 findings, then 6 more from a second pass (R25 to R30); the owner answered all but R23, R24 and R27 in the same session.** Where each answer landed:
+**23 findings, then 6 more from a second pass (R25 to R30); the owner answered all but R23 and R24 in the same session.** Where each answer landed:
 
 | Finding | Answer | Now in |
 |---|---|---|
@@ -71,6 +71,36 @@ Each round reviews 01 to 09 and [the proposal](../../embarch-hil-proposal.md) ag
 
 The proposal's order predates round 1. **Recommended:** its one-screen design and its work table take round 1's answers (done in round 1), and **its order puts the file shapes (verdicts, `measurements.json`, `run.json`) before Study publish**, so the Study zip is not reshaped when Test lands.
 
-## Round 2 (planned)
+## Round 2 (2026-11-15)
 
-**An independent review, one lens per reviewer**, each given [the goals](00-goals.md) and this folder: evidence integrity, hardware safety, adoption by a new engineer, professional practice against the prior art, consistency with the suite's decisions. Run once the prior-art survey has landed and R1 is answered.
+**Five independent reviewers, one lens each**, on the tree at `1a854154`: evidence integrity, prevention and safety, adoption, lab practice, consistency with the suite. **39 ledger rows, 13 high**, some rows holding two issues the ledger merged by line; the loop's ledger is outside the repo, under `.git/embarch-review/hil-round-2/`. **The owner asked for the round to run without stopping to ask** (2026-11-15), so **every fix below is the reviewer's recommendation, applied and marked "review round 2, recommended" where it stands**, for the owner to confirm or undo.
+
+| Theme | What changed | Now in |
+|---|---|---|
+| **One source of truth** | Core computes every measurement and keeps the run history; the repo's rows mirror it and lose a disagreement; retention never sweeps an entry, captures only once published | [02](02-study.md#measurements), [03](03-test.md#a-run), [06](06-report-and-publish.md#publish) |
+| **`verify`** | Checks Core's signatures against a fingerprint got out of band, recomputes with the crate version the records name, checks every number in the PDF, the labels; says what it cannot recompute | [06](06-report-and-publish.md#verify) |
+| **Verdicts** | Core's step outcomes mapped to the six verdicts; a guard band on both sides; runs combine by a severity order; a requirement with no test run is `not verified`; uncertainty on every measurement; calibration checked against the run's date; export mapping that never reads green | [03](03-test.md#the-verdict), [06](06-report-and-publish.md#the-audit-appendix) |
+| **What is confirmed** | A custom test whole, by its hash, prompt kinds included; a premade one by its suite version; Core re-expands `run.json`; a measured capability runs first and the rest `requires` it | [03](03-test.md#the-duts-inputs) |
+| **A person's acts** | "Relayed" decided by the token's scope, amending Core decision 105; identity routes in the person's scope; the card escapes the agent's strings and needs Core's nonce; a touch per observation or clearance; the first passkey in the elevated install; the go bound and used once; notes, adoptions and calibration dates attributed by scope | [12](12-prevention.md), [03](03-test.md#a-run) |
+| **The boundary** | The repo's host-executed files read-only; the firewall out of the agent's reach; the report says what Core saw, not where the agent ran; the boundary holds only while the agent's code runs inside it | [12](12-prevention.md#a-persons-act-what-a-ui-card-can-prove-and-what-it-cannot) |
+| **Safety at authoring** | A clearance prompt required between a handling prompt and an energising step, checked at definition; the card shows what Core switched on; bench boards' images read back | [12](12-prevention.md#operator-prompts-by-kind), [03](03-test.md#a-run) |
+| **Observed and claimed** | Core's record separates what it observed from the build's commit and dirty state | [06](06-report-and-publish.md#the-audit-appendix) |
+| **Adoption** | Unattested and attested said plainly; vocabulary rewritten; a reducer's contributor path and version; `unvalidated` premade tests; a suite version beside its commit | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account), [README](README.md#vocabulary), [02](02-study.md#measurements), [04](04-premade-suites.md#decided) |
+| **Consistency** | The lease handed to a run at the go; the person's setup calls admitted between benches; a run's study and prose paths; §1.1's full list; decision 96's premise; the false "a Test run holds its own lease today"; the proposals aligned | [03](03-test.md), [05](05-live.md), [07](07-procedure-doc.md), [02](02-study.md#where-its-files-live), the proposals |
+
+**Not changed**: the part of one row asking the guide to lead with a cheapest first result, since the owner declined a walkthrough in round 1; and **a requirement passing with tests skipped for a gap**, the owner's rule, which the practice reviewer rated high for a client reading it: kept, and raised for the owner under [03](03-test.md#open)'s Open.
+
+**The goals, after round 2** (the reviewer's reading):
+
+- **G2, G5**: closer; the unattested path needs nothing the owner's setup has, and a contributor's reducer and test have a path. The container remains a new step for an attested report.
+- **G3**: the verdict model now matches lab practice to the reviewers' reading (decision rule, guard band, uncertainty, severity order, statement of conformity).
+- **G4, G6**: no high finding is left unanswered on paper; **every one rests on [the evidence proposal](../../embarch-hil-evidence-proposal.md) being built as written**, and the round-2 additions are the owner's to confirm.
+
+## Still unanswered after round 2
+
+- **R23** and **R24**, above.
+- **Every "review round 2, recommended"** in the notes, for the owner to confirm or undo.
+
+## Open
+
+- **Round 3**: a verify round of one reviewer on the round-2 fixes, and a full round once the owner has confirmed them.
