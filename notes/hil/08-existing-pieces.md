@@ -16,7 +16,7 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | The `embarch-hil` skill and `suite/hil-guide.md` | **no** | [07-procedure-doc.md](07-procedure-doc.md) |
 | Measurements: `measurements.json`, the reducers and verdict rules as one crate Core and embarch-api link | **no** | [02-study.md](02-study.md#measurements) |
 | The numeric-oracle listing and per-block authorship at publish | **no**; the atlas has the numeric rule for its own records | [02-study.md](02-study.md#the-report) |
-| Revisions on republish, the manifest hash in the ledger row, every run listed | **no**; the ledger's rows are append-only | [06-report-and-publish.md](06-report-and-publish.md#publish) |
+| Revisions on republish, the manifest hash in Core's run log, every run listed from it | **no**; the ledger's rows are append-only | [06-report-and-publish.md](06-report-and-publish.md#publish) |
 | `verify <zip>` | **no** | [06-report-and-publish.md](06-report-and-publish.md#verify) |
 
 ## Study
