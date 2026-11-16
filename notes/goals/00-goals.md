@@ -2,8 +2,6 @@
 
 **Status:** draft, 2026-11-16.
 
-**What EmbArch sets out to be, written for a reader who has never heard of it.** The future `suite/goals.md`, in draft. The vision, scope, goals and non-goals are the owner's answers of 2026-11-16; the wording of each goal is the interviewer's and the owner may correct it. Each status line is taken from the suite's docs, not checked against the code ([03-status.md](03-status.md)).
-
 ## Vision
 
 **Hardware-in-the-loop for the firmware engineer and LLM agents: real benches, real measurements, and evidence anyone can check.**
