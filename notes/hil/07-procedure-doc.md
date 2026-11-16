@@ -31,7 +31,7 @@ Gaps in today's agent-facing docs, found while gathering these notes:
 - **[agent-guide.md](../../suite/agent-guide.md) never says which kind of hardware work to do.** It lists 54 tools and how to permit them, and nothing about studies against live reads against test runs.
 - **The atlas's live tools appear nowhere in the suite's agent docs.** `reg_read`, `shell`, `shell_run`, `live_stacks` and the atlas's own `core_state` (beside embarch-api's tool of that name) are documented only in the `embarch-atlas` repo's `DESIGN.md`, which is local and unpublished.
 - **The lease is in the tool reference, not in any procedure**: when to take it, for how long, when to let it go.
-- **§1.1's permission lists disagree with the Live mode**: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow, and the atlas's tools get a list of their own ([05-live.md](05-live.md#reach-and-permission)).
+- **§1.1's permission lists disagree with the Live mode**: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow, the atlas's tools get a list of their own, and **the identity tools leave §1.1 and the MCP surface**, becoming the person's (review round 2, recommended) ([05-live.md](05-live.md#reach-and-permission)).
 - **The [studies guide](../../suite/studies-guide.md) is written for an engineer** and stops at reading captures: nothing on reporting or publishing.
 - **The ledger has no procedure at all**: tools only ([embarch-api ledger tools](../../embarch-api/interfaces/tools-ledger.md)).
 

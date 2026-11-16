@@ -45,7 +45,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 | `embarch-dev-bench` | Each bench board's idle command, for the default precondition. The PD partner's fault-injection commands, for validating premade tests; its Source_Capabilities capture, for a measured capability |
 | `embarch-ui` | Host studies saved in `embarch/studies/`. A suite's benches copied into `embarch/topologies/`. A Test run view, later |
 | `embarch-umbrella` | `embarch init` installs the `embarch-hil` skill beside the MCP server |
-| `embarch-doc` | `suite/hil-guide.md`. [agent-guide.md](suite/agent-guide.md) §1.1: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow; the atlas's tools get a list of their own |
+| `embarch-doc` | `suite/hil-guide.md`. [agent-guide.md](suite/agent-guide.md) §1.1: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow; the atlas's tools get a list of their own; the identity tools leave it and the MCP surface, becoming the person's ([the evidence proposal](embarch-hil-evidence-proposal.md)) |
 
 ## Order
 
