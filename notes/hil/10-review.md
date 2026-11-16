@@ -104,11 +104,25 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 **Two reviewers on the verification fixes** (one on integrity and prevention, one on consistency, lab practice and adoption), the loop's last round by its cap: **10 findings, none high.** Fixed the same way, marked "review round 2, recommended": a manual verdict is an entry in Core's run log, made through a route that records the token's scope; `bench_image` shown beside each value it touches and in the appendix, and a verdict resting on an unreleased or unverified bench board says so; bench firmware compared with the hashes the installed EmbArch release ships, so a custom test and a Study have a reference; a unit whose hardware ID read-out protection blocks is keyed on the probe's enrolment and the declared serial, and its reports say its history may be split; definitions the agent writes reach Core through embarch-api and fill the person's `embarch/` from Core's copies, since a fetch from the agent's clone carries no `embarch/`; the identity tools leaving the MCP surface, stated in the Live note, the procedure note and both proposals; one acceptance rule for both decision rules, 2 × max(w, `U`); the export rule restored to "no verdict but pass maps to a passing outcome"; the evidence proposal's amended UI decision corrected to 90; the round-2 markers added where they were missing. **The loop stops here**: its round cap, and no high finding in its last two rounds.
 
-## Still unanswered after round 2
+## Round 3 (2026-11-15)
+
+**The owner asked the review to go on without stopping**, so round 3 read the whole design with round 2's recommendations taken as the current design, not as decisions. **Five reviewers** (evidence integrity, prevention and safety, lab practice, consistency, adoption): **about 50 findings, 7 high**, each fixed on the reviewer's recommendation and marked "review round 3, recommended".
+
+| Theme | What changed | Now in |
+|---|---|---|
+| **What Core signs** | A signed record per Test run (the selection as expanded at the go, every test's status, its resume); `report-data.json`, every non-prose claim of the report, written and signed by Core at publish; the unit's segment of the run log in the zip; a log that starts anew says so; Core's signature covers what it produced, and embarch-api's files rest on `verify` | [03](03-test.md#a-run), [06](06-report-and-publish.md#publish) |
+| **`verify`** | Verdicts against `report-data.json`; every selected test accounted for; citations rescanned in the sources; the PDF's other claims diffed; both exports regenerated; the log segment's chain checked | [06](06-report-and-publish.md#verify) |
+| **Prevention** | An attested Core only from a signed release; firmware taken as bytes, never from a path; the call log a file of its own, failing closed; the passkey as the whole person's scope where the agent is not contained; the container statement a person's act in Core's store; an agent-flashed bench board named as such; a host study with a prompt or an energising step takes the person's go and the clearance check; an action prompt's measurement must feed a limit or an `until` | [12](12-prevention.md), [02](02-study.md#how-a-study-runs-as-the-procedure-would-say-it) |
+| **The boundary** | The person's `embarch/` mounted read-only into the clone under a container-owned layer; the writer of the person's `embarch/` confined; publish runs with the agent's embarch-api, so a zip is trusted through `verify`; `report.typ` compiled with a confined root | [12](12-prevention.md#a-persons-act-what-a-ui-card-can-prove-and-what-it-cannot), [06](06-report-and-publish.md#publish) |
+| **Lab practice** | The standard and revision named; uncertainty per producer, derived measurements included; a premade test's default rule a guard band with w = `U`, simple acceptance's risk stated; per-verdict counts beside every combined verdict; calibration bound to the serial and certificate, checked per measurement; qualifiers kept in both exports; the person's name declared in Core | [02](02-study.md#measurements), [03](03-test.md#the-verdict), [06](06-report-and-publish.md#the-audit-appendix) |
+| **Flows** | `run_test` prepares, the go starts and takes the preparing session's lease; the smoke check before a Study; `test_add` through Core's route; the CLI covers Make live; a contributor's dev Core reads a suite checkout | [03](03-test.md), [02](02-study.md), [12](12-prevention.md#the-root-of-trust-core-under-its-own-account) |
+| **Adoption and consistency** | The PD partner's boards named; the example suite before the PD suite; Live's lease, `validate` and `reset_dev_bench` free; "saved bench", "live bench", "Test run" in chat; the live log a mirror of Core's call log; the proposals aligned (own clone, decision 96, embarch.md §5, Study publish's prerequisites, the manifest hash in Core's log); missing round-2 markers added | [04](04-premade-suites.md), [05](05-live.md), [README](README.md), both proposals |
+
+## Still unanswered
 
 - **R23** and **R24**, above.
-- **Every "review round 2, recommended"** in the notes, for the owner to confirm or undo.
+- **Every "review round 2, recommended" and "review round 3, recommended"** in the notes, for the owner to confirm or undo.
 
 ## Open
 
-- **Round 3**: a full round once the owner has confirmed or undone the round-2 recommendations; the round-2 fixes have had their verification and final rounds.
+- **Round 3's delta rounds**: the review loop goes on over round 3's fixes until its stop rule ends it.
