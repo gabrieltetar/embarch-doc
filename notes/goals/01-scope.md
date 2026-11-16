@@ -27,7 +27,7 @@ The answers behind [00-goals.md](00-goals.md)'s "Built for", "Non-goals" and "Wh
 - **Zephyr first.** Builds go through west and the in-DUT trace (`embarch-outpost`) is a Zephyr module; other firmware can use flashing, serial and studies, but Zephyr-only features are not promised for it.
 - **Windows with WSL2, and Linux.** The daily setup is Core as a Windows service with `embarch-api` in WSL2; macOS shipped reasoned-only and has never been tested ([roadmap](../../suite/roadmap.md), "Later").
 - **Any MCP agent, Claude Code first.** The MCP server and the CLI are the contract; Claude Code is the agent tested and documented ([agent-guide.md](../../suite/agent-guide.md)).
-- **"LLM", not "AI".** The owner's reason: "the word LLM suits better for a technical crowd than AI that is a way broader concept and overused word". Every file here says LLM agent; a sweep of the suite's existing docs is a separate piece of work.
+- **"LLM", not "AI".** The owner's reason: "the word LLM suits better for a technical crowd than AI that is a way broader concept and overused word". Every file here says LLM agent; the sweep of the suite's existing docs is EMB-194, in Backlog.
 
 ## The trinity
 
@@ -58,4 +58,3 @@ Offered as goals and cut by the owner:
 - **`embarch-chat` has no remote**, by the owner's choice ([embarch.md](../../embarch.md) §3), so "MIT-licensed" for the owner's tooling describes the licence file, not a published repo. Whether the goals say so.
 - **The two token scopes** of the HIL evidence design (an agent scope and a person scope) are read here as living inside the trinity: one engineer, two kinds of caller. An inference, not asked.
 - **Whether the trinity and §5's "single-engineer scope"** are reconciled when this folds: §5 rewritten to the trinity, or both kept.
-- **The "LLM" sweep of the existing docs**: drafted as a Backlog issue, not yet filed.
