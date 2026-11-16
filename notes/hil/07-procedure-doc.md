@@ -13,13 +13,16 @@
 
 ## An outline of the guide
 
+0. **What the agent is and is not trusted with**: the claim's two sentences, the agent's may-and-never table, and every rule that is procedure-only, named as such ([09-trust-model.md](09-trust-model.md)).
 1. **Choosing a mode**: the table in [01-modes.md](01-modes.md#how-an-agent-picks-a-mode), and the fleet's exclusion.
 2. **Before any hardware**: `status` (Core reachable, the lease, `last_images`), `lease_take` with a purpose, the saved bench live, `validate`.
 3. **Live**: reach, what is free and what asks, the atlas or raw path, the live log, writing a finding back, when to escalate.
-4. **Study**: from the question to a published zip, with the BLE GATT data-acquisition example.
-5. **Test**: selecting from a suite, the test plan, the DUT's inputs and hooks, starting a Core-run Test, prompts between benches, reading verdicts and coverage, publishing.
-6. **Publishing**: the zip, the audit appendix, the operator's notes.
-7. **What the agent never does**: answer an operator prompt on its own, decide a verdict, run hardware from the fleet, `git checkout` to reach a revision a study asks for, read a truncated capture as complete.
+4. **Study**: from the question to a published zip, with the BLE GATT data-acquisition example: declaring measurements, reading `measurements.json` rather than captures, prose that cites measurements.
+5. **Test**: selecting from a suite, the test plan, proposing the DUT's inputs and hooks for the engineer to confirm, the preview and the engineer's go, starting a Core-run Test, prompts between benches, reading the six verdicts and coverage, publishing.
+6. **Authoring for safety**: what a study or test puts on the DUT is checked against the DUT's ratings when it is written, since nothing limits it at run time (owner, review round 1).
+7. **Publishing**: the zip, revisions, the audit appendix, the operator's notes, `verify`.
+8. **What the agent never does**, each with the layer that enforces it ([09](09-trust-model.md)): answer an operator prompt on its own, decide a verdict, run hardware from the fleet, `git checkout` to reach a revision a study asks for, read a truncated capture as complete, **edit a test, a limit or a plan to make a run pass**, use an input it proposed before the engineer confirms it.
+9. **After a failure**: the agent diagnoses and proposes causes and fixes; **a firmware fix is a new image and a new run, and the report shows both** (owner, review round 1).
 
 ## Gaps it closes
 

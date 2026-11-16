@@ -11,10 +11,11 @@
 ## Reach and permission
 
 - **Reach: the DUT and the bench's boards** (dev bench, PD partner and other companion boards). **Instruments are reached only through a Study or a Test.**
-- **Free, no question asked:** reads (registers, memory, core state, stacks, serial log), resets, **any shell command on the DUT or a bench board.**
+- **Free, no question asked:** reads (registers, memory, core state, stacks, serial log), resets, **any shell command on the DUT or a bench board.** Kept after review round 1, which proposed a project list of destructive DUT commands that ask (owner: all stay free).
 - **Asks every time:** flashing and bootloading, a read that clears what it reads (`reg_read_clear`), a read that writes a page select (`reg_read_bank`).
 - **agent-guide.md §1.1 changes to match**: `reset`, `signal_exchange` and the atlas's `shell_run` move from ask to allow. The guide's lists and the procedure must not disagree.
 - **The lease**: a short one (900 s, renewed by the MCP server), taken with a purpose, released at the end ([01-modes.md](01-modes.md#the-lease)).
+- **Never during a run**: while a study or a test runs, Core refuses every Live call, reads included (owner, review round 1; [12](12-prevention.md#what-stays-outside-prevention-and-is-said-so)).
 
 ## With and without an atlas
 
@@ -38,6 +39,8 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 **A live answer that settles something the datasheet or schematic left open becomes a `measured` fact in the atlas, with its receipt**: the live call, the board's identity, the image hash, the time, the live-log line. It is shown beside the datasheet's claim, and **a disagreement with the datasheet becomes a check finding.** `measured` is already one of the atlas's provenance levels (`DESIGN.md`).
 
+**A measured fact says how it was measured** (owner, review round 1): `via: live`, or `via: study` / `via: test` with the published zip's hash. **The atlas answers a `via: live` fact as development evidence**, so a Live result cannot be cited through the atlas when it could not be cited directly ([When Live is not enough](#when-live-is-not-enough)).
+
 **A finding measured on an image other than the atlas's pinned build is still written, never refused**: the receipt records the image it was measured on, and the atlas shows it as measured on a different build. **That image is Core's `last_images` record** of what it last flashed on the chip; a board flashed outside EmbArch leaves that record wrong or absent, and an absent chip is recorded as unknown, never guessed ([lease tools](../../embarch-api/interfaces/tools-lease.md)).
 
 ## When Live is not enough
@@ -46,6 +49,6 @@ The atlas half is the `embarch-atlas` repo's `DESIGN.md`, "Live (`live.py`)"; it
 
 ## Open
 
-- **Bench-board commands are free**, including ones that put power or protocol traffic on the DUT (a PD partner asking for 20 V). Recorded as decided; worth a second look once the first live session on the PD bench has run.
+- **Bench-board commands are free**, including ones that put power or protocol traffic on the DUT (a PD partner asking for 20 V). Recorded as decided, and review round 1's runtime envelope was declined (owner: safety is an authoring concern, [03](03-test.md#benches)); Live has no authoring step, so worth a second look once the first live session on the PD bench has run.
 - **The write-back command**: an atlas CLI verb and MCP tool, its name and fields. The atlas rework's call.
 - **The live log's fields.** To fix with the first writer.

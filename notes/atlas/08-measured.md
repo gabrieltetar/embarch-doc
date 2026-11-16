@@ -8,6 +8,7 @@
 
 ## A measured fact
 
+- **How it was measured**: `via: live`, or `via: study` / `via: test` with the zip's hash; **a `via: live` fact is answered as development evidence**, so a Live result cannot be cited through the atlas ([HIL notes](../hil/05-live.md#writing-a-finding-back), owner, HIL review round 1).
 - **Its receipt**: the live call, the unit (its MCU's unique ID, and through it the board revision and reworks, [02](02-hardware.md#units)), the image hash (Core's `last_images`), the time, and the live-log line.
 - **Shown beside the claim it bears on**: a datasheet's value, a design claim, a netlist connection. **A disagreement is a check finding** ([09](09-interactions.md)).
 - **Measured on other hardware or another image is written, never refused**, and shown as such: the image rule is the HIL notes', the hardware rule follows from the target declaring its hardware ([02](02-hardware.md#which-hardware-an-atlas-joins-against)).

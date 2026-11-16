@@ -14,6 +14,10 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | `last_images`: what Core last flashed, with its SHA-256 | yes | [lease tools](../../embarch-api/interfaces/tools-lease.md) |
 | A lease held by a run instead of a session | **no** | Test |
 | The `embarch-hil` skill and `suite/hil-guide.md` | **no** | [07-procedure-doc.md](07-procedure-doc.md) |
+| Measurements: `measurements.json`, the reducers and verdict rules as one crate Core and embarch-api link | **no** | [02-study.md](02-study.md#measurements) |
+| The numeric-oracle listing and per-block authorship at publish | **no**; the atlas has the numeric rule for its own records | [02-study.md](02-study.md#the-report) |
+| Revisions on republish, the manifest hash in the ledger row, every run listed | **no**; the ledger's rows are append-only | [06-report-and-publish.md](06-report-and-publish.md#publish) |
+| `verify <zip>` | **no** | [06-report-and-publish.md](06-report-and-publish.md#verify) |
 
 ## Study
 
@@ -24,7 +28,7 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | Dev-bench studies saved in `embarch/studies/` | yes | [embarch-ui spec](../../embarch-ui/spec.md) |
 | Host studies saved in a repo | **no** | [02-study.md](02-study.md#where-its-files-live) |
 | `report.typ`, Typst in embarch-api, the PDF | **no** | [06-report-and-publish.md](06-report-and-publish.md) |
-| `study_publish` and the zip | **no** | same |
+| `publish` and the zip | **no** | same |
 
 ## Test
 
@@ -40,7 +44,27 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | A number parsed out of a reply at step time | **no** | same, item 2 |
 | Suites, tests with verdict rules, test plans, DUT hooks | **no** | [03-test.md](03-test.md) |
 | A Core route that runs a resolved Test across benches | **no** | same |
+| Six verdicts, a failure charged by what the step addressed | **no**; a lost port is `Fail` today | [Core decision 95](../../embarch-core/decisions/host-study.md), [03-test.md](03-test.md#the-verdict) |
+| Preconditions, `requires`, `stop_on_fail` | **no** | [03-test.md](03-test.md#one-test) |
+| `run.json`, templates, the preview | **no** | [03-test.md](03-test.md#selecting-and-rerunning) |
+| The image read back through the probe | **no**; the atlas's `image_check` reads 16 words at three places | `embarch-atlas` repo, `DESIGN.md`, "Live" |
+| A resolution per measurement source, refused limits | **no** | [03-test.md](03-test.md#the-verdict) |
+| An interrupted run resumed, the host kept awake | **no**; an `interrupted` record exists | [embarch-api studies](../../embarch-api/interfaces/studies.md) |
+| Capability provenance, confirmation of every verdict-deciding input | **no** | [03-test.md](03-test.md#the-duts-inputs) |
+| Premade tests validated against injected faults | **no** | [04-premade-suites.md](04-premade-suites.md#decided) |
 | Premade suites on atlas requirement records | **no** | [04-premade-suites.md](04-premade-suites.md) |
+
+## Prevention
+
+| Piece | Exists | Where |
+|---|---|---|
+| Core as an installed Windows service, typically under another account | yes | [embarch-token.md](../../embarch-token.md) |
+| Core's own account on Linux and macOS, a protected store, a signing key | **no** | [12-prevention.md](12-prevention.md#the-root-of-trust-core-under-its-own-account) |
+| Token scopes (agent, person) | **no**; one token, full authority | [embarch-token.md](../../embarch-token.md) |
+| Signed records, the hash-chained run log and call log | **no** | [12-prevention.md](12-prevention.md#what-core-then-guarantees-in-code) |
+| The card for a person's acts; confirmations kept by Core | **no**; the UI's prompt modal exists | [embarch-ui decision 69](../../embarch-ui/decisions/operator-prompt.md) |
+| The agent's dev container, set up by `embarch init` | **no** | [12-prevention.md](12-prevention.md#a-persons-act-what-a-ui-card-can-prove-and-what-it-cannot) |
+| Prompt kinds; no other hardware call during a run | **no**; `study_lock` refuses some routes during a study | [Core decision 95](../../embarch-core/decisions/host-study.md) |
 
 ## Live
 
@@ -50,7 +74,7 @@ The options were weighed by simplicity and by reuse. This is the reuse side: wha
 | Decoded reads: `reg_read`, `shell`, `shell_run`, `live_stacks`, `core_state` | yes | `embarch-atlas` repo, `DESIGN.md`, "Live" |
 | `measured` as an atlas provenance level | yes | same, "records" |
 | The live log | **no** | [05-live.md](05-live.md#the-live-log) |
-| Writing a live finding back, with its receipt | **no** | [05-live.md](05-live.md#writing-a-finding-back) |
+| Writing a live finding back, with its receipt and `via` | **no** | [05-live.md](05-live.md#writing-a-finding-back) |
 | Permission lists matching the Live mode | **no** | [07-procedure-doc.md](07-procedure-doc.md#gaps-it-closes) |
 
 ## Open

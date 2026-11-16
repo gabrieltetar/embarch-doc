@@ -17,17 +17,31 @@
 3. **The firmware is the one the study declares.** The study's build declaration and `--reflash` decide whether anything is built and flashed ([studies guide §2](../../suite/studies-guide.md)); `status`'s `last_images` against the agent's own image says what is on the board now.
 4. **Run.** `run_study` or `run_host_study`; `study_watch` or `study_status` until it ends.
 5. **Read the losses before the data.** `list_study_streams`: every tap, its bytes, and **whether it was truncated** ([studies guide §1](../../suite/studies-guide.md)).
-6. **Draft the prose the study asks for**, then **publish** ([06-report-and-publish.md](06-report-and-publish.md)).
+6. **Read the measurements, not the captures.** `measurements.json` is small enough for the agent's context; a raw capture is not, and a conclusion drawn from a sample of one is the failure this avoids ([09](09-trust-model.md), F8).
+7. **Draft the prose the study asks for**, citing measurements by name, then **publish** ([06-report-and-publish.md](06-report-and-publish.md)).
+
+## Measurements
+
+**A measurement is a named value**: `{name, value, unit, source: {file, rows or bytes}, by, method, resolution}`, where **`by` says who measured it**: `bench` (EmbArch's bench boards or instruments), `dut` (the DUT reporting about itself, in firmware the agent may have written) or `person` (an observation prompt's answer); the report shows it beside the value ([12](12-prevention.md#what-stays-outside-prevention-and-is-said-so)). **Two producers** (owner, review round 1):
+
+- **Core, at step time**: a host-study step's declared numeric parse ([03-test.md](03-test.md#the-verdict)).
+- **After each test or study ends**: **derived measurements**, declared by name in the study, over its captures, from **a fixed set of built-in reducers**: count, rate, min, max, mean, a percentile, the interval between two markers, the value at a marker. Rust, deterministic, versioned. No agent-written script computes a reported number.
+
+**The reducers and the verdict rules are one crate** (owner, review round 1), in `embarch-study-designer`'s host-only half: **Core links it to judge each test as it ends**, so a verdict resting on a derived measurement can still end its test, skip what `requires` it, or stop the run; **embarch-api links it for `verify`**, so a zip is rechecked by the code that judged it. One implementation, the way `embarch-topology` is the one implementation of hardware access ([embarch.md](../../embarch.md) §4). **Each reducer has a stated contract** (its inputs, its output unit, how it reports incomplete input) and a fixture of its own, so a contributor adds one as a small reviewable change, and the guide's reducer list is generated from the crate.
+
+Both land in **`measurements.json`**, the one file that **limits** act on ([03](03-test.md#one-test)), **`report.typ`** reads, **prose** cites, the audit appendix traces through each `source`, and **`verify`** recomputes ([06](06-report-and-publish.md#verify)). A measurement over a truncated capture, or across a dropped-record gap, says so, and a verdict resting on it is inconclusive.
 
 ## The report
 
-**Its shape is free, and decided by the study itself.** Each study carries its own `report.typ`, a Typst source that reads the run's files and draws its own plots. embarch-api compiles it at publish time, so **every number in the body comes from the run's files, never typed by the agent.** The lab-report shape (question, method, setup, results, analysis, limits, conclusion) is the shape the guide recommends and the example uses, and nothing enforces it.
+**Its shape is free, and decided by the study itself.** Each study carries its own `report.typ`, a Typst source that reads the run's `measurements.json` and files, and draws its own plots. embarch-api compiles it at publish time. The lab-report shape (question, method, setup, results, analysis, limits, conclusion) is the shape the guide recommends and the example uses, and nothing enforces it.
 
-**Who writes each prose section is decided by the study too**, not by the procedure.
+**The run's files are the numeric oracle** (owner, review round 1), the atlas's rule carried over (`embarch-atlas` repo, `DESIGN.md`, "Principles" 2). **Every number in the prose and in `report.typ`'s text equals a measurement it cites, or carries a tag**: `(derived)`, `(spec)` or `(inference)`. Publish goes ahead and **lists in the audit appendix every untagged number that matches no measurement**, so a number the agent typed from memory is visible to whoever reads the report.
 
-**A Study with no `report.typ` still publishes**: the audit appendix plus a data section listing each capture with its row count, so a Study is never unpublishable.
+**Who writes each prose section is decided by the study**, and **the report says who wrote each block** (owner, review round 1): `agent (<model id>)` or a person's name; a person may adopt an agent's block, which then reads "agent, reviewed by <name>". The appendix lists every block and its author.
 
-**embarch-api always appends a fixed audit appendix** that the study cannot leave out: pinned inputs, losses and overrides, the study design, operator notes and the hash manifest ([06-report-and-publish.md](06-report-and-publish.md#the-audit-appendix)).
+**A Study with no `report.typ` still publishes**: the audit appendix plus a data section listing each capture with its row count and each measurement, so a Study is never unpublishable.
+
+**embarch-api always appends a fixed audit appendix** that the study cannot leave out ([06-report-and-publish.md](06-report-and-publish.md#the-audit-appendix)).
 
 ## Where its files live
 
@@ -37,5 +51,6 @@
 
 ## Open
 
-- **Which plots Typst can draw offline.** Plot packages are normally fetched from the Typst package registry; a binary that must work offline has to vendor the ones it supports. To measure when the work starts.
+- **Which plots Typst can draw offline.** Plot packages are normally fetched from the Typst package registry; a binary that must work offline has to vendor the ones it supports. To measure when the work starts; the prior-art survey ([09](09-trust-model.md#open)) looks at it.
+- **Whether the reducer set covers the first studies.** Fixed by the BLE GATT example: rate and loss over a capture.
 - **The Study Designer UI** gains host-study rows later ([host-study proposal](../../embarch-host-study-proposal.md), "What is left" item 3); nothing in the Study mode waits on it.
