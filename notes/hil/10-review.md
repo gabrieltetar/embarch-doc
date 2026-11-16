@@ -126,6 +126,10 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 **Two reviewers on that fix diff**: **9 findings, 1 high.** Fixed the same way: a source install runs Core under the engineer's own account, so the OS keeps it out of the attested store; the fail-closed exception is a cancel and Core's own safe-off, built from the declarations, with a reserved tail and the person's recovery; the call log's head and the run's range in each signed record, its segment in the zip; `verify` check 9 compares rendered pages and admits only images drawn from the data or signed captures, and reports a Typst version it lacks as not rebuilt; the atlas's fingerprint comes from Core or the read-only mount; a host study's go is named among the person's acts, bound to the study's hash and prompt kinds; the notes' and prose's text hashes in Core's record; the revision number in `report-data.json`; a Core route for a publish's entry and the log head.
 
+### Round 3's fourth round
+
+**Two reviewers on that fix diff**: **9 findings, none high.** Fixed the same way: the owner's development loop stated, `deploy-core` installing a development Core in the logon session beside the stopped service, with its own store, tokens and hash check, so development never turns the attested install unattested; the safe-off covering every declared output and the teardown logged to the reserved tail; the atlas's fingerprint only from the read-only mount, never a Core's own answer; check 9's image test made mechanical (a closed list of Typst calls, numerals as text) with the Typst version and fonts pinned; check 8 split per chain; the two segments named alike everywhere; 01's runner note and the proposal's identity-tool pointer corrected.
+
 ## Still unanswered
 
 - **R23** and **R24**, above.

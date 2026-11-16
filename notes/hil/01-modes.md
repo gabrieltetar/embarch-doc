@@ -12,7 +12,7 @@
 | **Test** | Technical conformance with a verdict per test | One or more, one after another | A verdict per test, coverage, a report | Selected tests of the USB PD R3.2 suite |
 | **Live** | Exploration during development | The DUT and its bench boards | An answer now, a live log, findings written back to the atlas | Read a peripheral's registers, run a shell command, reset and watch the log |
 
-A Study may use either runner, the dev bench's (`run_study`) or Core's own (`run_host_study`), because the runner is an implementation detail. Logging a PD voltage profile with no pass criterion is a Study. A Test's tests are studies too, plus verdict rules ([03-test.md](03-test.md)).
+A Study may use either runner, the dev bench's (`run_study`) or Core's own (`run_host_study`), because the runner is an implementation detail, with one difference: a host study that holds a prompt starts on the person's go ([02](02-study.md#how-a-study-runs-as-the-procedure-would-say-it)) (review round 3, recommended). Logging a PD voltage profile with no pass criterion is a Study. A Test's tests are studies too, plus verdict rules ([03-test.md](03-test.md)).
 
 ## How an agent picks a mode
 
