@@ -1,6 +1,6 @@
 # 067 — A session in a worktree finds the main clone's atlas
 
-**State:** open
+**State:** claimed by agent/atlas/067-worktree-sessions-find-the-main-clones-atlas, 2026-11-17 13:42
 **Source:** EMB-90, filed by an audit after a session planning a driver change in a worktree read a datasheet with an inline `pdftotext` script before finding the atlas in the main clone
 **Issue:** EMB-90
 **Scope:** atlas
