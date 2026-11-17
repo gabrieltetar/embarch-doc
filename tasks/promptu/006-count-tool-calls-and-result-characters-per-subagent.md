@@ -1,6 +1,6 @@
 # 006 — Count a session's tool calls and result characters per subagent and activity
 
-**State:** open
+**State:** claimed by agent/promptu/006-count-tool-calls-and-result-characters-per-subagent, 2026-11-17 13:42
 **Source:** EMB-149, filed by an audit after a lookup replay (atlas task 002) needed yet another throwaway counting script
 **Issue:** EMB-149
 **Scope:** promptu
