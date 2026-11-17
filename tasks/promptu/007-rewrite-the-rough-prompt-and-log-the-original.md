@@ -1,6 +1,6 @@
 # 007 — Promptu rewrites the rough prompt and keeps the original in its log
 
-**State:** open
+**State:** claimed by agent/promptu/007-rewrite-the-rough-prompt-and-log-the-original, 2026-11-17 14:26
 **Source:** EMB-196, the build of `embarch-promptu` decision 42 (owner, 2026-11-17)
 **Issue:** EMB-196
 **Scope:** promptu
