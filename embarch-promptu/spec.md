@@ -24,7 +24,7 @@ Step 2 (the terminal pass, `/promptu`; committed) and step 3 (the CLI, `embarch-
 ## 3. Invariants
 
 - **No model call and no network** in the hook, the checks or the inventory. The pass is the only model call, and `lint`, `next` and `render` are model-free and deterministic.
-- **Render, don't rewrite** (decision 9): the rough prompt reaches the rendered prompt verbatim, under Goal or, for a brief, as the whole of its start; no model rephrases it.
+- **A rewrite keeps the original** (decision 42, amending 9): after the questions one model call rewrites a rough prompt, and the footer says `rewritten=yes`; the original is in the log and `promptu original <run>` prints it. A pasted brief is never rewritten (24): it stays verbatim, only its gaps added. A failed rewrite leaves the structured render with his words verbatim under Goal; `rewrite = "off"` turns it off.
 - **A fill stands only on evidence** (decision 10): its quote, folded for case, quotes and whitespace, is in the source it names, the source is one the question takes, and an always-asked question is pre-selected only from the prompt.
 - **Nothing runs before the owner says so**: the skill shows the prompt and waits for "send as is" or "edit".
 - **Promptu never blocks the task**: a missing binary or a failing command is one line, and Claude works on the rough prompt as typed; `prep` and `render` degrade rather than fail (contract §7.8, §8.3).
@@ -48,7 +48,7 @@ The hook's and the pass's speed, the limits and the ids: [spec/constants.md](spe
 - **Show startup cost** in the inventory (decision 8).
 - **Install itself**, or decide a design fork: those wait for the owner (`docs/forks.md` in the repo; F1–F4 answered as decisions 18–21, S1–S3 as 22–24).
 - **Touch a reply inside a running task** (decision 16): `/promptu` runs only when typed.
-- **Rewrite the rough prompt or store a run log**: the footer is the record (decision 13); the state folder keeps the last answers and the draft only. Decision 42 reverses both, not yet built (EMB-196, EMB-197).
+- **Prune its log, or choose the rewrite's model for the owner**: `log/<run>.json` stays (decision 42, built EMB-196); `rewrite_model` is a setting, `sonnet` until he picks, and the wait is measured, not assumed (`promptu stats`; the ten-prompt measurement is owed, [open.md](open.md)).
 
 ## 6. Pointers
 

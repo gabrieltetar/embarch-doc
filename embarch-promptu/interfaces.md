@@ -32,6 +32,16 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | `promptu prep --start` | A desk Start work run: never a `signals.desk: never` pattern, the `default` one when there is no pick; output `start` and `pattern.start_default` | §7.8 |
 | `prep` / `next` `filled[]` | A fill a page does not ask carries `ask`, `picked`, `other` and `changed`, so a dialog changes it in place; the change is an answer, `!` in the footer (decision 38) | §7.8 |
 
+## Commands (decision 42, the rewrite)
+
+| Command | What | Contract |
+|---|---|---|
+| `promptu render <run> …` | Now also rewrites a rough prompt (one model call; a brief, no-pattern, offline or `rewrite = "off"` run is not), writes `log/<run>.json`, and adds `"rewritten"` to its JSON; the footer gains `rewritten=yes` | §8.3, §8.4 |
+| `promptu original <run> [--json]` | **The read-back verb** (for `embarch-chat`'s card, EMB-197): stdout is the run's rough prompt exactly as typed, no added newline; `--json` the whole log entry; **exit 0** printed, **exit 2** with one stderr line and nothing on stdout when the run has no log entry or the id is not a run id | §8.5 |
+| `promptu stats [--model <name>] [--json]` | p50 and p95 (nearest rank) of the wait after the last question (`wait_ms`) and the rewrite call (`rewrite_ms`) over the logged rewritten runs, overall and per model; exit 0 | §8.6 |
+
+**The log entry** (`log/<run>.json`, contract §8.4): `promptu`, `run`, `date`, `cwd`, `project_key`, `pattern`, `version`, `mode` (`prompt`·`brief`), `original`, `rendered` (what landed in the draft, footer included: the weekly loop's edit baseline), `rewritten`, `rewrite_skipped` (`brief`·`no-pattern`·`offline`·`off`·`failed: …`), `rewrite_model`, `rewrite_effort`, `rewrite_ms`, `wait_ms`.
+
 ## The hook
 
 - **Registered** by the plugin's `hooks/hooks.json` on PreToolUse and PostToolUse, matcher `Write|Edit|MultiEdit`, command `promptu hook` found on `PATH`, timeout 5 s (contract §3.1).
@@ -45,6 +55,7 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 |---|---|---|---|
 | Memory labels (`kind`, `type`, `review-by`, `source`, domains) | Claude, under the `CLAUDE.md` rule | the hook, the inventory | §2 |
 | The footer, `— promptu <pattern>@<version> …`, and the 6-hex memory id | `promptu render` (step 2) | the memory menu's "used", the weekly loop | §6 |
+| `promptu original <run>`, `log/<run>.json` | `promptu render` (decision 42) | `embarch-chat`'s Promptu card (rollback, EMB-197), the weekly loop (`rendered`), `promptu stats` | §8.4–§8.6 |
 | Pattern files (`patterns/*.md`) | the repo; the weekly loop's approved changes (step 4) | `prep`, `lint`, `render` | §7.1 |
 | `promptu prep` and `next` JSON | step 2 | the `/promptu` skill, the chat's dialog (step 3) | §7.8, §8.2 |
 | `promptu patterns` JSON | step 3 | the chat's Promptu card | §7.9 |
@@ -58,8 +69,8 @@ What a later step may change, and what it may not: contract §11.
 
 | Path | What |
 |---|---|
-| `~/.config/embarch-promptu/config.toml` | The machine's settings: `memory_hook`; `pass_effort`, `pass_model`, `pass_timeout_s`, `voice_skill`, `memory_claude_md_sections`, and `[embarch]` `desk` / `embarch-api` = `auto` · `on` · `off` (contract §7.6) |
-| `~/.local/state/embarch-promptu/` | Runs between `prep` and `render`, each project's last answers, drafts (contract §7.5) |
+| `~/.config/embarch-promptu/config.toml` | The machine's settings: `memory_hook`; `pass_effort`, `pass_model`, `pass_timeout_s`; `rewrite`, `rewrite_model`, `rewrite_effort`, `rewrite_timeout_s` (decision 42); `voice_skill`, `memory_claude_md_sections`, and `[embarch]` `desk` / `embarch-api` = `auto` · `on` · `off` (contract §7.6) |
+| `~/.local/state/embarch-promptu/` | Runs between `prep` and `render`, each project's last answers, drafts, and `log/` (one entry per rendered run, never pruned) (contract §7.5) |
 | `<memory base>/projects/<folder>/memory/` | Claude Code's auto-memory folder, located as contract §1.2 says |
 | `plugin/` in the repo | The `embarch-promptu` plugin: `.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/promptu/SKILL.md` |
 | `patterns/` in the repo | The pattern set, embedded in the binary; `PROMPTU_PATTERNS` reads a folder instead |

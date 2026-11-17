@@ -43,7 +43,7 @@ Decided by the owner on 2026-10-29 (fork S8). `bench-session` asks board, what i
 `/promptu` is a skill with `disable-model-invocation: true`. AskUserQuestion takes four questions a call, so a page holds three plus a "Rest" control (keep going, or take the rest of the optional questions as recommended; required ones are still asked, 31), and the last page four; `/promptu --rec` takes every recommendation.
 
 ### 13 — The footer is the only record
-The footer is the only record of what a run asked and filled; the answers alone are kept per project for next time (27). The rendered prompt ends with one line, `— promptu <pattern>@<version> asked=… filled=… skipped=… assume=…`, about 40–60 tokens; a memory fill names its entry as `memory.<id>`, **the first six hex digits of the SHA-1 of the topic file's name**. Nothing else is stored. **Rejected:** a separate run log, the file stem as the id (up to 40 characters).
+The footer is the only record of what a run asked and filled; the answers alone are kept per project for next time (27). The rendered prompt ends with one line, `— promptu <pattern>@<version> asked=… filled=… skipped=… assume=…`, about 40–60 tokens; a memory fill names its entry as `memory.<id>`, **the first six hex digits of the SHA-1 of the topic file's name**. Nothing else is stored. **Rejected:** a separate run log, the file stem as the id (up to 40 characters). *Amended by 42: the log is a second record, holding the original rough prompt.*
 
 ### 41 — The pass plans for work that will outgrow one context window
 
