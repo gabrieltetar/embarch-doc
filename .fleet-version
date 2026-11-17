@@ -1,8 +1,8 @@
 {
-  "framework_sha": "42db4cd6c7336d4ffe5679c665c7096d51fc7c92",
+  "framework_sha": "d84d997668d635494c0b6ef1f8a06c2f2cbe58b1",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-11-12T06:09:20Z",
+  "installed_at": "2026-11-17T20:14:40Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "8591155e84e5e44827e8ae1b5d143895e7df6eaa6c09d5bf70c9dcfe1e3bb9d6",
@@ -13,16 +13,16 @@
     ".claude/agents/embarch-reviewer.md": "e1c898693be67465c7ee3e128b0db376ff4d3483c8eac48f20a71669899d8f8a",
     ".claude/agents/embarch-supervisor.md": "576e82ffebec73b4449a290cf34f144c45601add2d2f09ff57344dba08687d7a",
     ".claude/agents/embarch-worker.md": "dcf7015ab7bdb88175d43dc6126eaababe2e9d9fe4bc57e78561fe061b443648",
-    ".claude/commands/fleet-watch.md": "cd55ee8fc3e4d85195489548891f82d5b522416c49ff0a5499f57dd2da742333",
-    ".claude/commands/fleet.md": "b3a0b4b4068a9b97cf56248a751b671cdc9dc3bf00a6c20b0935260aa5958840",
+    ".claude/commands/fleet-watch.md": "db1508aa7e778f94885eb2c7b91c09ce990bab7007a0ada86e66f741391833ee",
+    ".claude/commands/fleet.md": "2d40e93a8917bfeb79fbe17e870e22064200f88f126c74d1f1769f148496c062",
     ".claude/commands/review-loop.md": "75c5fa53e342fa3029c25156636b4233b84458e34546a586a20c5c59332c0576",
     ".claude/commands/suite-review.md": "970093e2208aad4aaf8535f2ab44cd69f82f0b63dd7279d940da5527e28fdf05",
     ".claude/commands/supervise.md": "df06e82b973d5d8e4dd81b7b6e69f84d97f3aae38bea501fb78c42d2bfa292c0",
-    ".claude/leg.md": "c8ec9d56e59bd3a5ef728c748abac34d40d97cdea65e9565ac6cdfb7d84843d4",
+    ".claude/leg.md": "925cc88d900ba624382ac7a7c0a045081939bdf9011ef6b528c00df0c335f1b3",
     ".claude/settings.json": "275ede4c9f3654f136a8b3b33e3127e852cde8f78a061642bc9c062862d3877c",
     "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
     "status.d/README.md": "e4b55984fe66147934de476d73c613c68439de82f11678cc4938f1c44a46cc3f",
-    "tasks/README.md": "4749ecbbe8a85ed730addc2f1a07154fe9004c410e0de3439fb5b81e85fc31aa",
+    "tasks/README.md": "310cb169586e398dc22e3d00f4f0d7843baa91505c9fed140be9ede841a12a91",
     "scripts/check-ownership.py": "8cd3cae2d38119f103aab77d8694f04b72fdb5c7234a8baa60c23324f002ef9d",
     "scripts/queue-status.py": "42534c6b295eecbd580d37b75f7634068e11ba41a6a6ca5f22769bcb9ea234a8",
     "scripts/usage-budget.py": "6cb9786103b2d9a2efcbbcfe7abbe14077229401c3aabc460430c4cbfa5bd1e2",
@@ -39,6 +39,7 @@
     "scripts/fleet-linear.py": "fca7969733c28ff0360cf744cce910a02e02d4cf7e916b2ba78875668541dcda",
     "scripts/fleet-read.py": "b89d624a3ef5b22d20874ff917fb33bb7bde53e1731c8701eaa3f21125aa862f",
     "scripts/fleet-react.py": "327a95f6ef97688c24e81a7b9f37548bae495e9bcb2895582600715bba51bd88",
-    "scripts/fleet-slack-doctor.py": "325a2a5a6ecd64806981cb87643232964b1d11443ed9ee15b8e48b8a9cc788e0"
+    "scripts/fleet-slack-doctor.py": "325a2a5a6ecd64806981cb87643232964b1d11443ed9ee15b8e48b8a9cc788e0",
+    "scripts/permission-rules.py": "06c1b4055174b59d6bd2eaf9795a9b7bbd80c8c93ed90d1e40d12cf7c85490b1"
   }
 }
