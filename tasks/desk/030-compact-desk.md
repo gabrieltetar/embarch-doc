@@ -1,6 +1,6 @@
 # 030 — `embarch-desk/spec.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/desk/030-compact-desk, 2026-11-17 14:25
 **Source:** desk 029 (EMB-110) added the sentence that the desk checks an issue key against Linear before making its card, and left `spec.md` at 9,168 of 10,240 B (reserve from 9,012 B).
 **Scope:** desk
 **Hardware:** none
