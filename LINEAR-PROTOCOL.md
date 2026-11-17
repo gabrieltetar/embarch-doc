@@ -1,6 +1,6 @@
 # embarch-doc: Linear issues and comments
 
-**Status:** active, 2026-11-05. The shapes every issue and comment in the EmbArch Linear workspace (team `EMB`) takes, whoever writes it: the owner, an interactive session, a fleet leg, a worker, a reviewer, an audit. `scripts/fleet-linear.py` in the framework repo enforces it: `file` and `rewrite` refuse a body that breaks §2–3, and `lint` checks every open issue. **Nothing it sends names a client** (owner's call, 2026-11-10): every issue, edit and comment is read against the client-name denylist first, since the fleet copies an issue into public task files, and a hit or a dark denylist sends nothing. A client's workspace is not covered; text going there follows the `gabriel-voice` skill alone.
+**Status:** active, 2026-11-05. The shapes every issue and comment in the EmbArch Linear workspace (team `EMB`, and the collector team `THR` of §7) takes, whoever writes it: the owner, an interactive session, a fleet leg, a worker, a reviewer, an audit. `scripts/fleet-linear.py` in the framework repo enforces it: `file` and `rewrite` refuse a body that breaks §2–3, and `lint` checks every open issue. **Nothing it sends names a client** (owner's call, 2026-11-10): every issue, edit and comment is read against the client-name denylist first, since the fleet copies an issue into public task files, and a hit or a dark denylist sends nothing. A client's workspace is not covered; text going there follows the `gabriel-voice` skill alone.
 
 ## 1. Three rules behind every shape
 
@@ -34,7 +34,7 @@
 - **`Type`** — one of §3's six.
 - **`Scope`** — the sub-project without `embarch-` (`desk`, `atlas`, `ui`, `doc` for embarch-doc), or `suite` for one change that must land across several repos at once, which the supervisor runs itself ([the protocol](../embarch-fleet/protocol.md) §8). Any other clone in the suite root is a scope too, such as `private`; the fleet never works one. A repo scope matches the issue's Project, `embarch-<scope>`.
 - **`Hardware`** — `none`, `verify-only`, `bench`, `toolchain` or `required`: an honest claim about **the fix**, with [tasks/README.md](tasks/README.md)'s meanings. Anything only the owner can do — a phone, a bench, a login — is `required`.
-- **`Filed by`** — `owner`, `session`, `worker`, `reviewer`, `audit` or `decision`. It replaces the old *"Filed by the fleet (…)"* footer, and `fleet-linear.py file` writes it from `--from` when the body leaves it out.
+- **`Filed by`** — `owner`, `session`, `worker`, `reviewer`, `audit` or `decision` in `EMB`; `throwaway` in `THR` (§7). It replaces the old *"Filed by the fleet (…)"* footer, and `fleet-linear.py file` writes it from `--from` when the body leaves it out.
 - **`Done when`** — at least one `- [ ]` item, each checkable by reading code or running something.
 
 **Where a section names code, it names it exactly:** `` `embarch-desk/src/linear.rs` `gql_detail` ``, one location per line, with the line's role after a dash. **Put file names and code in backticks, and name a domain in words:** Linear turns a bare `store.rs` into a link to `http://store.rs`, and links a domain such as Claude's web app even inside backticks [measured 2026-11-05, EMB-11].
@@ -80,6 +80,7 @@ Each type's sections sit between the fields and `## Done when`, as `##` headers.
 | **Blocked** | anyone | what it waits on: an issue key, a decision, hardware |
 | **Changed** | anyone | the body was edited: what changed and why |
 | **Finding** | anyone | something learned while working that does not change the ask |
+| **Seen again** | `fleet-linear.py file`, in `THR` only | a repeat of a collected job: what the new filing was doing when it wrote the script (§7) |
 
 **A comment longer than its point is a thread.** The head comment holds the kind and the point, under 600 characters; detail goes in replies under it, one topic each, under 1,500 characters, posted by the same Send (`replies` on `linear_draft_comment`, or `---` lines in `fleet-linear.py comment`'s body). A reader skims the heads for the story and opens a thread only for its detail. A reply opens with a kind only when it is an **Answer**.
 
@@ -101,4 +102,12 @@ Each type's sections sit between the fields and `## Done when`, as `##` headers.
 | The owner's window | Backlog → **Todo** → In Progress → In Review → Done | the owner picks it; the desk's Start work moves it to In Progress |
 
 **Three fields make an issue the owner's, whatever its status:** a `Scope` the fleet does not work — `fleet` (reserved; `check-ownership.py` refuses it as a worker scope) or a clone with no directory here, such as `private` — `Hardware: required` (the owner's hands), and `Type: decision` (the owner's call). `fleet-linear.py ready` moves such an issue out of Fleet Ready to Todo with a **Sent back** comment naming the field, unless a task on `main` already names it. So a field set honestly at filing is the guard, and anything that needs the owner — a phone, a bench, a choice — says `required` or `decision` rather than prose. Until a leg runs `ready`, the listener's count still includes such an issue: one leg may start and find nothing.
+
+## 7. The ThrowawayCollector team
+
+**A job an agent wrote throwaway Python for is reported to its own team, `THR`, not to `EMB`** (owner's call, 2026-11-16). The owner's throwaway-python hook asks for one report whenever an agent writes a `.py` file outside any git repository or runs inline Python through Bash. A report records that agents keep rewriting a job, not a piece of work, so it stays out of `EMB`'s Backlog, where it read like an audit finding. Reports filed in `EMB` before that day stay there.
+
+- **Filed with `fleet-linear.py file --from throwaway`.** `fleet.toml`'s `[linear.file_team]` sends that kind to `THR`, into Backlog. The body takes §2–3's shape, usually a `gap`, with `Filed by: throwaway`. `THR` has no Project per repo, so `Scope` names the repo, and `--project` is checked against it but not sent.
+- **A repeat is counted, not refused.** Filing the exact title of an open `THR` issue adds a **Seen again** comment to it instead of a second issue, quoting the new report's `## Found while`. `fleet-linear.py open --from throwaway` lists the open titles, and the hook shows them to the agent. The number of **Seen again** comments shows which jobs keep coming back.
+- **The owner works `THR` by hand, in `THR`.** No fleet command reads it, and an issue there never moves to Fleet Ready.
 
