@@ -45,3 +45,7 @@ A standard's applicability tables are one `applicability` record per cell (item,
 ## A cite of another document rests no frozen unit
 
 `doc freeze` keys a unit on the pages it cites in its own document. A cite that names another document (`other-doc p.7`) is left out of those pages, by the same test check M uses to tell the two apart (`check.split_cites`, `find_sibling`); a unit that cites only other documents rests on every page. The other choice, filing the page under the other document, would need a second set of page hashes and a second `thaw-check` rule, since `thaw-check` reads only its own document's pages (2026-11-13, EMB-109). The detail is in the repo's `DESIGN.md`.
+
+## A shared datasheet library, and a copy of every file an atlas read
+
+`[project] library` in `atlas.toml` names one local folder the engineer fills by hand, outside any firmware repo. `inventory` reads it beside the sources folder and `missing` re-reads it once the boards' parts are known; a library file enters the manifest only when tied to a board part or the MCU role (the others serve other projects), and the sources folder's file wins an identical one. `doc prep` and `schematic` copy the file they read to `files/<sha256>/<name>` in the atlas directory and `doc.json` `path` names the copy, so a replaced or deleted original changes nothing already built. The tool never writes into the library and never fetches. Owner decision 2026-11-17; the detail is in the repo's `DESIGN.md`, "Where documents come from".

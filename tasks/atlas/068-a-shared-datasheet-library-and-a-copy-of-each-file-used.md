@@ -1,6 +1,6 @@
 # 068 — A shared datasheet library, and a copy of every file an atlas used
 
-**State:** claimed by agent/atlas/068-a-shared-datasheet-library-and-a-copy-of-each-file-used, 2026-11-17 14:25
+**State:** done on agent/atlas/068-a-shared-datasheet-library-and-a-copy-of-each-file-used, 2026-11-17
 **Source:** EMB-198, the build of the owner decision recorded on 2026-11-17 in `embarch-atlas/DESIGN.md`, "Where documents come from"
 **Issue:** EMB-198
 **Scope:** atlas
@@ -75,10 +75,26 @@ The owner moved it to Fleet Ready the day he recorded the decision.
 
 ## Done when
 
-- [ ] With `[project] library` unset, `inventory` and `missing` write the same files as before, and the existing tests pass unchanged.
-- [ ] A datasheet present only in the library covers a board part in `missing` and in the join; a library file no board part or MCU role is tied to is neither in the manifest nor under "Supplied documents nothing uses".
-- [ ] `doc prep` and the schematic ingest copy the file they read under its sha256 in the atlas directory, and `doc.json` `path` names the copy; after the original is deleted or replaced, `doc check`, `doc freeze` and `second-look prompt` still read the copy.
-- [ ] A library file whose content changed shows in the inventory diff, and a confirmation in `answers.toml` on the old content goes back to proposed, as it does for the sources folder.
-- [ ] A test runs `inventory`, `missing` and `doc prep` with the library folder read-only and no network, and nothing fails or writes there.
-- [ ] `DESIGN.md` describes what was built in "Where documents come from", the on-disk layout and the `atlas.toml` section, and its "Not yet built" line for the library is gone.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, Python bullet); `changelog.d/` fragment dropped.
+- [x] With `[project] library` unset, `inventory` and `missing` write the same files as before, and the existing tests pass unchanged.
+- [x] A datasheet present only in the library covers a board part in `missing` and in the join; a library file no board part or MCU role is tied to is neither in the manifest nor under "Supplied documents nothing uses".
+- [x] `doc prep` and the schematic ingest copy the file they read under its sha256 in the atlas directory, and `doc.json` `path` names the copy; after the original is deleted or replaced, `doc check`, `doc freeze` and `second-look prompt` still read the copy.
+- [x] A library file whose content changed shows in the inventory diff, and a confirmation in `answers.toml` on the old content goes back to proposed, as it does for the sources folder.
+- [x] A test runs `inventory`, `missing` and `doc prep` with the library folder read-only and no network, and nothing fails or writes there.
+- [x] `DESIGN.md` describes what was built in "Where documents come from", the on-disk layout and the `atlas.toml` section, and its "Not yet built" line for the library is gone.
+- [x] Gate green (`../../embarch-fleet/gate.md`, Python bullet); `changelog.d/` fragment dropped.
+
+## Outcome
+
+Built in `embarch-atlas` (`src/embarch_atlas/library.py`, `tests/test_library.py`, `DESIGN.md` "Where documents come from"): the setting, the tied-only scan with its index, the sha256 copy (`doc prep`, `schematic`, and `inventory` for a document prepped earlier), `missing` re-reading the library, board PDFs found in the library.
+
+Readings taken where the task left room:
+
+- The library flag is `library: true` on the manifest record, not `origin = "library"`: `origin` already holds the Zone.Identifier host that `coverage._link` reads.
+- The copy is unconditional, library set or not (item 3 says so). One existing assertion, `test_prep_writes_identity_pages_and_toc`, expected `doc.json` `path` to be the original and now expects the copy; no other test changed.
+- `missing` runs `inventory` first when a library is set, because ties read the BOM.
+- A name both folders have with different content becomes `library/<name>` (with `library_path`).
+
+## Left, as a follow-up
+
+- No test drives the schematic ingest's copy: it needs a real Altium Smart PDF, which no synthetic fixture here is. The wiring is one call in `smartpdf.run`; `keep_copy` itself is exercised through `doc prep`. A `[[boards]] pdf` kept only in the library is found by `project.board_pdf` and tied in the scan, also untested for the same reason.
+- `join`/`build` do not refresh the manifest themselves; a library file becomes tied at the next `inventory` or `missing`.
