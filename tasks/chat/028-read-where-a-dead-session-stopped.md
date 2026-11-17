@@ -1,11 +1,38 @@
 # 028 — Read where a dead session stopped, without parsing its transcript
 
-**State:** claimed by agent/chat/028-read-where-a-dead-session-stopped, 2026-11-17 14:26
-**Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript
+**State:** blocked
+**Unparks when:** now: parked only so the fold could record the revert, and set back to `open` in the commit after it.
+**Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript; EMB-200, the reviewer's finding on the first landing
 **Issue:** EMB-189
+**Issue:** EMB-200
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
+
+## Blocked
+
+Reverted after landing on a reviewer finding (EMB-200); see "Re-land, read first".
+
+## Re-land, read first
+
+This was built once, landed and **reverted on 2026-11-17**: the reviewer found
+that the MCP tool reads the extension host's login (`CLAUDE_CONFIG_DIR` or
+`~/.claude`), not the chat's own, against decision 101 (a chat keeps its login
+for life; every other transcript read in a chat uses
+`projectsRoot(this.opts.env ?? chatEnv())`, `src/wire/chat.ts`). A chat on a
+second login would read another account's folder.
+
+- **Code:** the build is commit `97cf346` on `embarch-chat`'s `main`, reverted
+  by `3288cf6`. Start from `origin/main`, `git revert 3288cf6` to restore it,
+  then pass the chat's own projects root to `lastSessionCall` from
+  `src/hostHooks.ts` (it already takes a `root` nothing supplies; `HandoffPort`
+  in `src/handoff.ts` carries no login today), with a test that a chat started
+  on a `configDir` login reads that login's `projects/` folder.
+- **Docs:** the doc half is commit `88f845e7` on `embarch-doc`'s
+  `origin/agent/chat/028-read-where-a-dead-session-stopped`, never landed.
+  Cherry-pick it, then make `spec/handoff.md` name the login the read uses.
+- Everything below still stands; the first worker's choices (the MCP tool beside
+  `handoff`, the CLI, the 30 s live-file rule for the CLI) were found sound.
 
 ## What
 
@@ -61,4 +88,5 @@ needs the same thing.
 - [ ] One command, given a working directory, prints the previous session's last turns and tool calls without the caller knowing the transcript path.
 - [ ] It finds a session filed under the main clone's folder when asked from one of its worktrees.
 - [ ] It never prints the current session as "the previous one"; a test covers it.
+- [ ] Called from a chat started on a `configDir` login, the tool reads that login's `projects/` folder; a test covers it, and `spec/handoff.md` names the login.
 - [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
