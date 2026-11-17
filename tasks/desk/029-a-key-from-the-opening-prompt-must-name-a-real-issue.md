@@ -1,6 +1,6 @@
 # 029 — A key from the opening prompt must name a real issue before the desk adopts it
 
-**State:** claimed by agent/desk/029-a-key-from-the-opening-prompt-must-name-a-real-issue, 2026-11-17 13:42
+**State:** done
 **Source:** EMB-110, filed by an audit while relaying a burndown leg's report from the listener window
 **Issue:** EMB-110
 **Scope:** desk
@@ -44,8 +44,20 @@ notes on someone else's issue.
 
 ## Done when
 
-- [ ] Adopting a key that no connected workspace has is refused by the desk, not by the session's reading of the text.
-- [ ] A test covers one real key and one key-shaped string that is not an issue, without a live Linear (a fake or a recorded reply).
-- [ ] The skill text and tool replies say the desk now checks, rather than asking the session to.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped.
+- [x] Adopting a key that no connected workspace has is refused by the desk, not by the session's reading of the text.
+- [x] A test covers one real key and one key-shaped string that is not an issue, without a live Linear (a fake or a recorded reply).
+- [x] The skill text and tool replies say the desk now checks, rather than asking the session to.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped.
+
+## Outcome
+
+The premise was half stale: `ensure_item` already looked a key with no card up in Linear and refused it with a 404 naming the key (EMB-9); only the card-exists path skipped it, which is right, since that card was made from a real issue. What was missing: the refusal did not name the workspaces asked, nothing tested it, the unreachable-Linear case was undocumented, and the tool text still told the session to filter. Done: the lookup is `adopt_key`, the 404 appends `(workspaces asked: ...)`, Linear failing to answer stays the 502 carrying its error (no card made, nothing adopted unchecked), a thread-local fake Linear URL (`linear::TEST_URL`, test builds only) backs `the_desk_adopts_a_key_only_after_a_workspace_has_it`, and the skill, MCP instructions, two tool replies and the hook text say the desk checks. The 404/502 split is in `spec.md` and `interfaces.md` (no decision).
+
+## Withheld decision
+
+Unreachable Linear: refuse with a 502 carrying Linear's error, never adopt unchecked. It is today's behaviour (a failing `find_issue` propagates), now documented and tested; a mixed answer (one workspace "not found", another erroring) also refuses, since the key may live in the unreachable one. Wants a numbered desk decision.
+
+## Debt
+
+`plugin/skills/desk/SKILL.md` changed; the installed plugin only updates after `plugin.json`'s version is bumped and pushed (the owner's step, not done here).
