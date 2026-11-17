@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A session in a git worktree of an atlas-equipped repo now resolves the main clone's atlas (CLI, MCP, `atlas-use` skill); an explicit `--atlas-dir` still wins.
 - scripts/replay.py in embarch-atlas replays recorded shell calls through the lookup that replaces them and prints a numbers-only before/after table; not a verb (reads private transcripts).
 - `embarch-atlas schematic` now writes boards/<label>/issues.md (kind, net, sheet, page per extractor issue), prints its path, and MAP.md links it.
 - `code` and `states` look up a C symbol or an SMF table in the sources a build compiled, and `code vs=` diffs it between two builds (embarch-atlas `DESIGN.md`, Query surface).
