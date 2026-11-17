@@ -21,7 +21,10 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.autosave` | `true` | Save an open file's unsaved changes before Claude reads, edits or writes it (61) |
 | `embarchChat.continueAfterReload` | `true` | A chat cut off by a reload offers Continue, never by itself (63) |
 | `embarchChat.diagnosticsTool` | `false` | Give Claude `getDiagnostics`, the Problems panel (65) |
-| `embarchChat.handoff` | `card` | Claude's `handoff(prompt)`: `card` asks, `immediate` switches at once, `off` declares no tool (103) |
+| `embarchChat.handoff` | `card` | Claude's `handoff(prompt)`: `card` asks, `immediate` switches at once, `off` declares no tool (103); `immediate` also starts a chat's Limits menu with Automatic handoff on, the chat's switch then deciding (109) |
+| `embarchChat.continueAfterSessionLimit` | `true` | A new chat's Limits menu: continue on its own once the 5-hour limit that cut a turn off resets (109) |
+| `embarchChat.continueAfterWeeklyLimit` | `false` | The same, for a weekly limit, all models' or one model's (109) |
+| `embarchChat.continueMessage` | `continue` | What a chat sends on its own at a limit's reset; each chat's menu can change it (109) |
 | `embarchChat.attachOpenFile` | `true` | The open file goes with each message; off, a file goes only with selected lines (60) |
 | `embarchChat.attachSelection` | `true` | The selected lines go with each message; off, `@` still inserts them (60) |
 | `embarchChat.promptuPath` | `promptu` | Promptu's CLI, on PATH by default; not found, the Promptu icon stays dark and Enter sends as before (95, 96) |
@@ -78,5 +81,6 @@ What the host hands a chat's webview from the desk and the chat's folder; the we
 |---|---|
 | `{t:"refs", refs}` | The window's desk's reference index, `{issues, prs}` whole, each time it changes; `null` with none (88) |
 | `{t:"usage", usage}` | The plan's usage from any chat's `rate_limit_event` (`unifiedWindows`), merged window by window, each `{used, resetsAt, at}`; per-model limits under `models`; `null` before one (99) |
+| `limitPrefs`, `handoffTool`, `limitWait` in a chat's state | The Limits menu (109): `{session, weekly, text, handoff}`; whether the handoff tool is declared; the hit the chat waits on, `{limit, window, resetsAt, hitAt, armed, stopped?}`, folded from the host's `_limitPrefs` and `_limitWait`. The page answers `{t:"limits", prefs}` and `{t:"limitCancel"}` |
 | `{t:"promptuState"}`, `{t:"promptu", view}`, `{t:"promptuResult"}`, `{t:"promptuMemory"}` | Promptu's card, a chat's dialog as `prep`/`next` printed it, how a run ended (the prompt, or one line and Start work's starter), the Memory menu's data; the brief itself never (95, 96, 98) |
 | `githubRepo` in each snapshot's view | The chat's folder's GitHub repo, `owner/repo`, from its git config on disk — regular files of 64 KB or less, a FIFO, a device or a larger file read as none — github.com only, picked as `gh` picks one with no terminal: the remote `gh repo set-default` marked, else upstream, github, origin; `null` with none. Used for a prose or draft `PR #N` only, never for a step (88) |

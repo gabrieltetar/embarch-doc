@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-12.
 
-Which login and desk a window runs under, a due login's one warm-up, one pick for every panel in a window, and an agent's handoff of its chat to a fresh session. Split out of [sessions.md](sessions.md) on 2026-11-12, verbatim.
+Which login and desk a window runs under, a due login's one warm-up, one pick for every panel in a window, an agent's handoff of its chat to a fresh session, and a turn the plan's usage limit cuts off. Split out of [sessions.md](sessions.md) on 2026-11-12, verbatim.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -15,6 +15,10 @@ The panel still calls `claude agents` and `claude --version` in its own environm
 ### 103 — An agent can hand its chat to a fresh session in the same panel
 
 Decided by the owner, 2026-11-07 (EMB-61); **built 2026-11-09** (embarch-chat task 007), unit-tested against a fake CLI, not seen in a live panel. The panel's own MCP server (65) carries a `handoff(prompt)` tool in every chat, so the server is declared whenever the handoff is on, not only with `embarchChat.diagnosticsTool`. `embarchChat.handoff` (machine scope): `card`, the default, shows the prompt editable with Continue in a fresh session and Stay, and Stay answers the tool so the agent carries on; `immediate` switches at once; `off` declares no tool. Continue ends the chat's `claude` and starts a fresh one in the same panel, the prompt its first message, below a divider naming the handoff; the timeline above stays, and the fresh session keeps the chat's mode, model, effort and work item. **Amends 36's rejection of a fresh chat opened unasked**; 63 still holds, since this carries on work the owner started rather than rerunning a step. **As built:** the fresh session is a new `claude` session in a new chat record on the same item (`startChat` on the old chat's cwd, work item and mode, then its model, effort and Ultracode carried over), and the panel that showed the old chat is re-pointed at it, tab or sidebar; the old history is copied into the fresh chat's timeline, so after a reload the fresh chat shows only its own transcript, and the old session stays on the list. **Rejected:** a fenced `handoff` block in a reply (one that quotes a block would start it), the desk's tools and mailbox (two repos and processes for one panel's act), a new tab (the old panel would be left showing the ended chat, and the owner would have two views to reconcile), a fresh session in a looser mode.
+
+### 109 — A turn the usage limit cuts off goes on by itself at the reset, per chat, from the rail's Limits menu
+
+Decided by the owner, 2026-11-16; **built 2026-11-16**, tested against a fake CLI and headless Firefox, never seen on a real hit over the panel's wire. A hit is the CLI's made-up reply, `error: "rate_limit"`, "You've hit your 5-hour limit · resets 11:30pm" [measured from a 2.1.322 transcript]; its reset is the turn's rejected `rate_limit_event`, else the reply's words. A minute past it the chat sends the menu's message, `continue`. **The menu**, above the gear: after the 5-hour limit, on by default; after a weekly limit, off; the message; the handoff's switch (103), on meaning no card. A turn starting meanwhile or Cancel ends the wait; two continues turned back before a step ran stop it; a reload keeps it. **Amends 63**: the switch is the owner's click. **Rejected:** the CLI's own `autoContinueAtUsageLimit`, whose wait ends with the process the idle close ends; one switch per window.
 
 ### 105 — A due login is refreshed by one warm-up, alone
 

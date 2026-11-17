@@ -19,6 +19,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 ## Not yet seen
 
+- **A real limit hit over the panel's wire** (109): the made-up reply is read from a 2.1.322 transcript and the rejected `rate_limit_event` from usage.ts's shape (99); neither has been seen in a chat's stream. Claude Code 2.1.322 also carries its own automatic continue (`autoContinueAtUsageLimit`, behind a server flag); whether it runs in `stream-json` mode is not known. If it does, the chat's wait ends when its turn starts, so the two never both send.
 - **The Usage icon against a real account** (99): read from the recorded sessions' shape and Claude Code 2.1.287's bundle; `unifiedWindows` is an `@internal` field of the CLI's, so a later version may drop it (the icon then reads the one limit an event names).
 - **Promptu in the owner's window** (94–98): built and tested against a fake `promptu`, the real CLI offline, a scratch desk and headless Firefox; never run in VS Code, against the real Sonnet pass, or from a real Start work.
 
