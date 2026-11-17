@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- promptu calls <session> counts a session's tool calls and result characters per subagent and activity class, and lists one class's calls with sizes.
 - Promptu's pass accepts the chat's context usage (prep --context-usage) and names a way in Who does it for high-context work, footer way=; see contract §7.10.
 
 ### Changed
