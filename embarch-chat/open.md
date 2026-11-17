@@ -7,6 +7,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 ## Not done
 
 - **The library has not been seeded** (decision 14): the plugin holds promptu's three pieces and `~/.claude/commands` is empty [measured 2026-10-23]. The `claude -p` grouping pass over past prompts, then the owner's ✓/✕, is what fills it.
+- **`last_session` does not write a `Handoff` desk line** from what it reads (EMB-189's optional second half); it only prints. "Pending" is a reading of the transcript (a background call with no finished notification) not a live process; tested on synthetic transcripts only.
 
 ## Waiting on the owner
 

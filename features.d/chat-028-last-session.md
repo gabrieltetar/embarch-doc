@@ -1,0 +1,1 @@
+| Read a dead session back: `last_session` MCP tool and `node dist/last-session.js`, last turns, tool calls and pending background tasks, main-clone fallback from a worktree | Shipped — tested on synthetic transcripts only | local | EMB-189 |
