@@ -14,6 +14,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **`promptu hook`** (decisions 5–7), run by the plugin's PreToolUse and PostToolUse hooks. A Write, Edit or MultiEdit into an auto-memory folder is checked as the file the write would leave, on what the write touches: T1–T7 on a topic file, I1–I5 on the index, and O1 (orphaned topic files) after an index write. **Warn mode** is the default: the write goes ahead and Claude is told what to fix. **Block mode** refuses a write with an error (exit 2); `off` checks nothing. Set in `~/.config/embarch-promptu/config.toml`.
 - **`promptu memory [--json]`** (decision 8): the memory that loads in a folder, by scope (user, auto, project), then domain, then kind, each entry with its 6-hex memory id, age and stale flags.
 - **`promptu memory check [<path>...]`**: the same checks on files as they stand.
+- **`promptu calls <session> [--subagent <id>] [--class <name>] [--json]`**: a recorded session's tool calls and result characters, per subagent (and the main thread) and per activity class (`git`, `build`, `config`, `source`, `other`), so a before/after replay is a measurement; with `--class`, that class's calls one per line with their result sizes. The class rules are one table in `src/calls.rs` (`classify`), pinned by a test. Reads Claude Code's transcripts; synthetic fixtures only in tests.
 - **The plugin** `embarch-promptu` 0.1.0, the two hooks, installed from the `embarch` marketplace (decision 20).
 
 ## 2b. Build steps 2 and 3, not installed

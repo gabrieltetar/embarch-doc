@@ -1,6 +1,6 @@
 # 006 — Count a session's tool calls and result characters per subagent and activity
 
-**State:** claimed by agent/promptu/006-count-tool-calls-and-result-characters-per-subagent, 2026-11-17 13:42
+**State:** done
 **Source:** EMB-149, filed by an audit after a lookup replay (atlas task 002) needed yet another throwaway counting script
 **Issue:** EMB-149
 **Scope:** promptu
@@ -51,8 +51,8 @@ count, and a measurement that changes with the script is not one.
 
 ## Done when
 
-- [ ] One command prints calls and result characters per subagent of a session, and per activity class.
-- [ ] The class rules are defined in one place, and a test pins what each class matches.
-- [ ] It lists one class's calls with their result sizes, for a replay to map.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped.
+- [x] One command prints calls and result characters per subagent of a session, and per activity class.
+- [x] The class rules are defined in one place, and a test pins what each class matches.
+- [x] It lists one class's calls with their result sizes, for a replay to map.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped.
