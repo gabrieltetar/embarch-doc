@@ -1,6 +1,6 @@
 # 027 — `embarch-chat/spec.md`, `interfaces.md`, `open.md` and `decisions/shape.md` are in reserve
 
-**State:** done, 2026-11-17
+**State:** done
 **Source:** the continue-after-limit branch added decision 109 (a turn the usage limit cuts off goes on at the reset; the rail's Limits menu) and left `spec.md` at 9,594 of 10,240 B, `interfaces.md` at 13,880 of 15,360 B and `open.md` at 4,341 of 5,120 B. Decision 110 (nothing in the chat scrolls sideways, EMB-116) left `decisions/shape.md` at 11,381 of 12,288 B.
 **Scope:** chat
 **Hardware:** none
