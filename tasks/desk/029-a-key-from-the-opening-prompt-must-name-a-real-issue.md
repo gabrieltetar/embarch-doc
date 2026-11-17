@@ -1,6 +1,6 @@
 # 029 — A key from the opening prompt must name a real issue before the desk adopts it
 
-**State:** open
+**State:** claimed by agent/desk/029-a-key-from-the-opening-prompt-must-name-a-real-issue, 2026-11-17 13:42
 **Source:** EMB-110, filed by an audit while relaying a burndown leg's report from the listener window
 **Issue:** EMB-110
 **Scope:** desk
