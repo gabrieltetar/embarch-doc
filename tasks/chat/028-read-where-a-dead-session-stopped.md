@@ -1,17 +1,12 @@
 # 028 — Read where a dead session stopped, without parsing its transcript
 
-**State:** blocked
-**Unparks when:** now: parked only so the fold could record the revert, and set back to `open` in the commit after it.
+**State:** open
 **Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript; EMB-200, the reviewer's finding on the first landing
 **Issue:** EMB-189
 **Issue:** EMB-200
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
-
-## Blocked
-
-Reverted after landing on a reviewer finding (EMB-200); see "Re-land, read first".
 
 ## Re-land, read first
 
