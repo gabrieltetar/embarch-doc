@@ -1,6 +1,6 @@
 # 068 — A shared datasheet library, and a copy of every file an atlas used
 
-**State:** open
+**State:** claimed by agent/atlas/068-a-shared-datasheet-library-and-a-copy-of-each-file-used, 2026-11-17 14:25
 **Source:** EMB-198, the build of the owner decision recorded on 2026-11-17 in `embarch-atlas/DESIGN.md`, "Where documents come from"
 **Issue:** EMB-198
 **Scope:** atlas
