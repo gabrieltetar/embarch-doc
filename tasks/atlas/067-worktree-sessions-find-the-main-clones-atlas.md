@@ -1,6 +1,6 @@
 # 067 — A session in a worktree finds the main clone's atlas
 
-**State:** claimed by agent/atlas/067-worktree-sessions-find-the-main-clones-atlas, 2026-11-17 13:42
+**State:** done
 **Source:** EMB-90, filed by an audit after a session planning a driver change in a worktree read a datasheet with an inline `pdftotext` script before finding the atlas in the main clone
 **Issue:** EMB-90
 **Scope:** atlas
@@ -49,10 +49,14 @@ about `DESIGN.md`: describe the lookup order, do not open a new design question)
 The owner moved it to Fleet Ready; a worktree is the default for desk work items,
 which is where the hardware questions behind a driver or devicetree change are asked.
 
+## Outcome
+
+Atlas side alone meets the first item, so nothing is filed for another repo. `common.atlas_dir()` keeps `--atlas-dir` first and the worktree's own `embarch/atlas` second, then falls back to the main clone's (`common.main_clone_atlas`: git common dir named `.git`, not the toplevel itself, folder exists); every CLI and MCP entry point uses it, as does `build.resolve_atlas_dir`'s default. Kept the issue's direction. `skills/atlas-use/SKILL.md` gained an "In a git worktree" section and a wider trigger; `DESIGN.md` "How a session sees the atlas" describes the lookup order. Tests in `tests/test_project.py` use synthetic repos. Note: `CLAUDE.local.md`'s `@embarch/atlas/MAP.md` import still does not resolve in a worktree; the skill tells the session to read the main clone's MAP.
+
 ## Done when
 
-- [ ] A session started in a fresh worktree of an atlas-equipped repo can run `find_text` and read `MAP.md` without opening the main clone by hand.
-- [ ] The `atlas-use` skill's trigger fires in that worktree.
-- [ ] A test covers the fallback over a synthetic repo and worktree, and the explicit `--atlas-dir` still wins.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
-- [ ] `changelog.d/` fragment dropped; `DESIGN.md` or `embarch-atlas/design.md` updated where the atlas location is described.
+- [x] A session started in a fresh worktree of an atlas-equipped repo can run `find_text` and read `MAP.md` without opening the main clone by hand.
+- [x] The `atlas-use` skill's trigger fires in that worktree.
+- [x] A test covers the fallback over a synthetic repo and worktree, and the explicit `--atlas-dir` still wins.
+- [x] Gate green (`../../embarch-fleet/gate.md`, Python bullet).
+- [x] `changelog.d/` fragment dropped; `DESIGN.md` or `embarch-atlas/design.md` updated where the atlas location is described.
