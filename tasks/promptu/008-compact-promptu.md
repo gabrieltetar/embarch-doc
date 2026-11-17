@@ -9,7 +9,7 @@
 **Compacts:** embarch-promptu/decisions/patterns.md
 **Size debt due:** 2026-11-24
 **In flux:** yes. The rewrite (decision 42) was just built, the chat's card (EMB-197) is the next unit and the owner has not settled the rewrite's model or wait; decisions 9, 13, 14 and 24 are each amended by 42 and will be restated once he settles it.
-**Unparks when:** the owner records the rewrite's model and wait after the ten-prompt measurement (`tasks/promptu/007`, owed), or EMB-197 lands, whichever is first; the compaction rides in the unit that next writes `decisions/patterns.md`.
+**Unparks when:** the owner records the rewrite's model and wait after the ten-prompt measurement (owed, `embarch-promptu/open.md`), or EMB-197 lands, whichever is first; the compaction rides in the unit that next writes `decisions/patterns.md`.
 **Must not delete:** decision 42 whole, the "Amended by 42" pointers on 9, 13, 14 and 24, and the rejected-alternative lists of 9, 13 and 24.
 
 ## What
