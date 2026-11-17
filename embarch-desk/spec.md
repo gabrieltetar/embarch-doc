@@ -56,7 +56,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 5. What it deliberately does not do
 
-OAuth only for Linear's MCP sign-in, no other time source, no in-desk Linear writes, no second machine, no agent approvals: [spec/non-goals.md](spec/non-goals.md).
+OAuth only for Linear's MCP sign-in, no other time source, no in-desk Linear comments, issue creation, PR review or merge, no second machine, no agent approvals: [spec/non-goals.md](spec/non-goals.md).
 
 ## 6. Pointers
 
