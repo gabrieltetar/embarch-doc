@@ -47,7 +47,7 @@ The hook's and the pass's speed, the limits and the ids: [spec/constants.md](spe
 - **Show startup cost** in the inventory (decision 8).
 - **Install itself**, or decide a design fork: those wait for the owner (`docs/forks.md` in the repo; F1–F4 answered as decisions 18–21, S1–S3 as 22–24).
 - **Touch a reply inside a running task** (decision 16): `/promptu` runs only when typed.
-- **Rewrite the rough prompt or store a run log**: the footer is the record (decision 13); the state folder keeps the last answers and the draft only.
+- **Rewrite the rough prompt or store a run log**: the footer is the record (decision 13); the state folder keeps the last answers and the draft only. Decision 42 reverses both, not yet built (EMB-196, EMB-197).
 
 ## 6. Pointers
 
