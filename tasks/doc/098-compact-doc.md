@@ -1,6 +1,6 @@
 # 098 — Compact `DOC-CONVENTIONS.md` back out of its reserve
 
-**State:** open
+**State:** done — 11,590 to 10,582 of 12,288 B (86.1%), cold provenance, counts and an incident retelling cut; both **Must not delete** items kept verbatim
 **Source:** `tasks/suite/023`'s closing commit, 2026-11-10: the owner landed its drafted "measured arm" paragraph in `DOC-CONVENTIONS.md` "Measured vs. assumed", which took the file to 11,590 of 12,288 B (94.3%), inside the reserve
 **Scope:** doc
 **Hardware:** none
@@ -20,5 +20,5 @@
 
 ## Done when
 
-- [ ] `DOC-CONVENTIONS.md` is out of the reserve, and `check-doc-size.py` passes without this task.
-- [ ] Nothing named under **Must not delete** is lost.
+- [x] `DOC-CONVENTIONS.md` is out of the reserve, and `check-doc-size.py` passes without this task.
+- [x] Nothing named under **Must not delete** is lost.
