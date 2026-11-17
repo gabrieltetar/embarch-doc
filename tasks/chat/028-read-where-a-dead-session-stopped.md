@@ -1,6 +1,6 @@
 # 028 — Read where a dead session stopped, without parsing its transcript
 
-**State:** open
+**State:** claimed by agent/chat/028-read-where-a-dead-session-stopped, 2026-11-17 14:26
 **Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript
 **Issue:** EMB-189
 **Scope:** chat
