@@ -1,6 +1,6 @@
 # 030 — `embarch-desk/spec.md` is in reserve
 
-**State:** claimed by agent/desk/030-compact-desk, 2026-11-17 14:25
+**State:** done
 **Source:** desk 029 (EMB-110) added the sentence that the desk checks an issue key against Linear before making its card, and left `spec.md` at 9,168 of 10,240 B (reserve from 9,012 B).
 **Scope:** desk
 **Hardware:** none
@@ -21,6 +21,12 @@ Bring `spec.md` out of reserve: move one whole section with a natural home into 
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/spec.md`.
-- [ ] A moved section is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/spec.md`.
+- [x] A moved section is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Result
+
+Moved §5 (what it deliberately does not do) verbatim to `embarch-desk/spec/non-goals.md`; `spec.md` keeps a one-line pointer naming each non-goal. The status line and the session work-item bullet (key check, 404, 502) are untouched.
+
+**Human question (DOC-COMPACTION-PASS):** can `spec.md` alone still answer what someone needs to work on this component today? Yes: what it is, every invariant, the interface summary and constants stay in it, and the non-goals are named in the pointer, with the detail one click away.
