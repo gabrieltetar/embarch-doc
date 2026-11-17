@@ -1,1 +1,1 @@
-| `linear_list_issues`: an agent lists a team's Linear issues in a named state (a queue such as "Fleet Ready"), in any connected workspace, with the cap's cut reported | Built on a branch, not deployed; backends filtered by unit test only, no live workspace | unit | 79 |
+| `linear_list_issues`: an agent lists a team's Linear issues in a named state (a queue such as "Fleet Ready"), in the workspace the session's desk follows, with the cap's cut reported | Built on a branch, not deployed; backends filtered by unit test only, no live workspace | unit | 79 |
