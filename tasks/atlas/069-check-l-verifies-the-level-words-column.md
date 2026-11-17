@@ -1,6 +1,6 @@
 # 069 — Check L verifies the level word's column, like check K
 
-**State:** open
+**State:** claimed by agent/atlas/069-check-l-verifies-the-level-words-column, 2026-11-17 14:51
 **Source:** EMB-160, filed from the protocol-records work (atlas task 011), which added check L
 **Issue:** EMB-160
 **Scope:** atlas
