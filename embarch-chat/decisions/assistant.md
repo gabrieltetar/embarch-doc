@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-23.
 
-The Haiku assistant at the input: quick replies, ghost text, cards and the desk's references in them, when it runs and what it sees, and what it left to Promptu (97). Where its 💡 sits is decision 94 ([shape.md](shape.md)).
+The Haiku assistant at the input: quick replies, ghost text, cards and the desk's references in them, when it runs and what it sees, and what it left to Promptu (97). Where its 💡 sits is decision 94 ([rail.md](rail.md)).
 
 **What it rests on [measured 2026-10-22]:** Haiku thinks by default here — 5–9 s for a one-line completion. With thinking off (`--max-thinking-tokens 0`), stripped (`--tools ""`, `--strict-mcp-config`, `--setting-sources ""`), unsaved (`--no-session-persistence`, which leaves no transcript in the owner's history) and streamed (`--include-partial-messages`), a `claude -p` call is ready in 0.37 s, sends its first token at 0.86 s and finishes at 1.07 s (three runs alike), for $0.0016 with a one-line context. `--prompt-suggestions` gives the CLI's own guess at the next prompt; the `get_context_usage` control request gives a chat's tokens by category.
 

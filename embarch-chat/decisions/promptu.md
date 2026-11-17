@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-30.
 
-How the chat draws `embarch-promptu` (its build step 3): the icon and its card, the pass and its dialog at a task start and on desk Start work, and the Memory menu. Promptu itself — the CLI, the patterns, the footer — is [`embarch-promptu`](../../embarch-promptu/spec.md)'s; the chat runs its `promptu` CLI and draws what it prints. The rail that holds them is decision 94 ([shape.md](shape.md)); the 💡's split with Promptu is 97 ([assistant.md](assistant.md)).
+How the chat draws `embarch-promptu` (its build step 3): the icon and its card, the pass and its dialog at a task start and on desk Start work, and the Memory menu. Promptu itself — the CLI, the patterns, the footer — is [`embarch-promptu`](../../embarch-promptu/spec.md)'s; the chat runs its `promptu` CLI and draws what it prints. The rail that holds them is decision 94 ([rail.md](rail.md)); the 💡's split with Promptu is 97 ([assistant.md](assistant.md)).
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 

@@ -9,3 +9,11 @@ Split verbatim from [../spec.md](../spec.md) §2 on 2026-11-10, under [DOC-COMPA
 - **Promptu** (decisions 94–98, the `embarch-promptu` CLI): a rail on the left edge holds Usage (99) at the top, Memory, Promptu, Library, Suggestions and the 💬 side question (57) at the bottom, each a one-colour SVG. At a task start, or on Start work (11), Enter runs `promptu prep` and a dialog over the chat asks what is missing; the prompt lands in the draft, never sent. The Memory menu draws `promptu memory --json`, and with three machine settings (`embarchChat.memoryPass.*`: stamp file, interval in days, command) it carries a periodic-pass line (last date, due) that starts a chat with the command, the icon dotted while due (98); the 💡 keeps references only (97).
 - **A gear at the rail's foot holds the mode, the model and its effort, Remote Control and MCP** (107): shown on a chat before its first message, the input's row the box and Send; one short `claude` per login and folder, sent no message, fills it before the chat's own runs (108).
 - **The desk's reference index is mirrored** from `GET /refs` (88): the cards call carries the issues and PRs the draft matches locally, so a vague "the widget PR" becomes the PR itself, and a key or PR in Claude's prose the index knows is a link.
+
+## Invariants of the input
+
+Moved verbatim from [../spec.md](../spec.md) §3 on 2026-11-17.
+
+- **Promptu never sends and never blocks sending**: its prompt goes to the draft; a failure is one line and the draft as typed (96).
+- **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached, and that row's preview is what shows (86).
+- **A reference in the draft is written from the desk's index, never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88).
