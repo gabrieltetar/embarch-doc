@@ -1,6 +1,6 @@
 # 084 — Narrow "never fetches" to the document pipeline, with `fetch-text` as the stated exception
 
-**State:** claimed by agent/atlas/084-narrow-never-fetches-to-the-document-pipeline, 2026-11-18 15:55
+**State:** done
 **Source:** Fleet Ready issue (a reviewer's finding on `atlas/077`): `fetch-text` makes a network call while `DESIGN.md` and `README.md` still say the tool never fetches and makes no network call.
 **Issue:** EMB-208
 **Scope:** atlas
@@ -29,7 +29,7 @@ The doc and the code disagree on main today, and the owner has answered the ques
 
 ## Done when
 
-- [ ] `DESIGN.md`, `README.md` and `embarch-doc/embarch-atlas/design.md` no longer say the tool never fetches or makes no network call without naming `fetch-text` as the exception outside the document pipeline.
-- [ ] The narrowed "Still no fetching" bullet says why `fetch-text` does not reopen the 2026-11-17 decision.
-- [ ] The **Unreconciled** sentence in `embarch-doc/embarch-atlas/design.md` is gone.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] `DESIGN.md`, `README.md` and `embarch-doc/embarch-atlas/design.md` no longer say the tool never fetches or makes no network call without naming `fetch-text` as the exception outside the document pipeline.
+- [x] The narrowed "Still no fetching" bullet says why `fetch-text` does not reopen the 2026-11-17 decision.
+- [x] The **Unreconciled** sentence in `embarch-doc/embarch-atlas/design.md` is gone.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
