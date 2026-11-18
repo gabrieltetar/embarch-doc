@@ -1,6 +1,7 @@
 # 032 — A wire probe asks the live `claude` one question
 
-**State:** open
+**State:** claimed by agent/chat/032-a-wire-probe-asks-the-live-claude-one-question, 2026-11-17 23:00
+**Reserve:** `embarch-chat/spec.md` 9,119 of 10,240 B (1,121 B left), already filed against `tasks/chat/031-compact-chat.md` (open); decision 96 in `decisions/promptu.md` has 204 B left. Put the probe's description in a topic file under `embarch-chat/spec/` or `interfaces/`, not in `spec.md`.
 **Source:** Fleet Ready issue: each CLI update ends with a throwaway script to see what the wire does now, and one such script's key filter hid a field and led to a wrong first reading.
 **Issue:** EMB-163
 **Scope:** chat
