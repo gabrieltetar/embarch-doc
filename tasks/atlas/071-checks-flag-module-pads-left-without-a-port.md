@@ -1,6 +1,6 @@
 # 071 — `checks.md` flags module pads left without a port, and DT pins on them
 
-**State:** open
+**State:** claimed by agent/atlas/071-checks-flag-module-pads-left-without-a-port, 2026-11-17 18:34
 **Source:** EMB-188 and EMB-156, two audit findings about module pad names the schematic reader leaves blank; `atlas/070` added the text-layer recovery both waited on
 **Issue:** EMB-188
 **Issue:** EMB-156
