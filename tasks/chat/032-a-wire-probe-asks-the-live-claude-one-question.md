@@ -1,6 +1,6 @@
 # 032 — A wire probe asks the live `claude` one question
 
-**State:** claimed by agent/chat/032-a-wire-probe-asks-the-live-claude-one-question, 2026-11-17 23:00
+**State:** done
 **Reserve:** `embarch-chat/spec.md` 9,119 of 10,240 B (1,121 B left), already filed against `tasks/chat/031-compact-chat.md` (open); decision 96 in `decisions/promptu.md` has 204 B left. Put the probe's description in a topic file under `embarch-chat/spec/` or `interfaces/`, not in `spec.md`.
 **Source:** Fleet Ready issue: each CLI update ends with a throwaway script to see what the wire does now, and one such script's key filter hid a field and led to a wrong first reading.
 **Issue:** EMB-163
@@ -18,8 +18,12 @@ The owner moved the issue to Fleet Ready. `test/record.mjs` records a whole sess
 
 ## Done when
 
-- [ ] One command spawns the real `claude` with the panel's flags under a given config dir and binary, sends given requests with delays, and prints every reply line with its time since spawn.
-- [ ] The same tool lists a wire fixture one line per entry.
-- [ ] Whatever can run without a live `claude` is tested: argument parsing, the `--send` delay syntax, and `--list` against a committed fixture.
-- [ ] The chat docs say where the probe is and when to reach for it, without growing `embarch-chat/spec.md` (in reserve, see the dispatch note).
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the npm bullet), `changelog.d/` fragment dropped.
+- [x] One command spawns the real `claude` with the panel's flags under a given config dir and binary, sends given requests with delays, and prints every reply line with its time since spawn.
+- [x] The same tool lists a wire fixture one line per entry.
+- [x] Whatever can run without a live `claude` is tested: argument parsing, the `--send` delay syntax, and `--list` against a committed fixture.
+- [x] The chat docs say where the probe is and when to reach for it, without growing `embarch-chat/spec.md` (in reserve, see the dispatch note).
+- [x] Gate green (`../../embarch-fleet/gate.md`, the npm bullet), `changelog.d/` fragment dropped.
+
+## Debt
+
+The live path (spawn, send, print) is untested: no live `claude` was run. Owed to the owner: `node build.mjs --tests`, then `node tools/wire-probe.mjs --send '{"type":"user","message":{"role":"user","content":"hi"}}@500'` against a real login.

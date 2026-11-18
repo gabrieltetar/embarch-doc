@@ -55,6 +55,10 @@ Per chat: `claude --input-format stream-json --output-format stream-json --verbo
 
 The desk calls (`/view`, `/sessions`, `/items`, `/mailbox`, `/refs`) and the entries the chat takes: [interfaces/desk.md](interfaces/desk.md).
 
+## The wire probe
+
+Ask the live `claude` one question, unfiltered, before raising `TESTED_RANGE`: [interfaces/wire-probe.md](interfaces/wire-probe.md).
+
 ## What the page is handed
 
 What the host hands a chat's webview from the desk and the chat's folder; the webview never holds the desk token (20):
