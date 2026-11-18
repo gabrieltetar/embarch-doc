@@ -24,8 +24,12 @@ The owner moved the issue to Fleet Ready. Until it lands, an agent's reply draft
 - Test against recorded `/view` payloads or a stub server. **Never send a draft to a real repository.**
 - No file of this sub-project is in reserve.
 
+## Notes
+
+Browser check (`drive_desk.py`) stubs PATCH and Send in the page; the scratch desk binary had to be rebuilt from `embarch-desk` main (the checked-in debug binary predated EMB-173). A fully sent draft leaves `/view`, so the tab keeps a dismissable "Posted" card for the URLs. Debt: not run against a real PR (by rule).
+
 ## Done when
 
-- [ ] A `github_replies` draft renders on the Desk tab with its repo, PR and one editable body per thread.
-- [ ] Editing a body and pressing Send posts the edited text, and the posted URLs are shown on the card.
-- [ ] Tests or a recorded-payload check cover the render and the PATCH body; gate green (`../../embarch-fleet/gate.md`); `spec.md` updated, `changelog.d/` fragment dropped, `features.d/ui-<NNN>-*` row if it is a user-visible feature.
+- [x] A `github_replies` draft renders on the Desk tab with its repo, PR and one editable body per thread.
+- [x] Editing a body and pressing Send posts the edited text, and the posted URLs are shown on the card.
+- [x] Tests or a recorded-payload check cover the render and the PATCH body; gate green (`../../embarch-fleet/gate.md`); `spec.md` updated, `changelog.d/` fragment dropped, `features.d/ui-<NNN>-*` row if it is a user-visible feature.

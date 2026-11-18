@@ -1,0 +1,1 @@
+| Desk tab card for a `github_replies` draft: repo and PR, one editable reply per review thread, posted threads shown as links, URLs shown after Send | Shipped — driven in headless Firefox with PATCH and Send stubbed in the page, so no repository was reached; **not run against a real PR** | browser | |
