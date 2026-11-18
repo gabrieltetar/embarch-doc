@@ -1,6 +1,6 @@
 # 084 — Narrow "never fetches" to the document pipeline, with `fetch-text` as the stated exception
 
-**State:** open
+**State:** claimed by agent/atlas/084-narrow-never-fetches-to-the-document-pipeline, 2026-11-18 15:55
 **Source:** Fleet Ready issue (a reviewer's finding on `atlas/077`): `fetch-text` makes a network call while `DESIGN.md` and `README.md` still say the tool never fetches and makes no network call.
 **Issue:** EMB-208
 **Scope:** atlas
