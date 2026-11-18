@@ -1,6 +1,6 @@
 # 010 — A shell write into a memory index gets checked, or told to use Edit
 
-**State:** claimed by agent/promptu/010-shell-writes-to-a-memory-index-get-checked, 2026-11-17 18:34
+**State:** done (claimed by agent/promptu/010-shell-writes-to-a-memory-index-get-checked, 2026-11-17 18:34)
 **Source:** EMB-187, an audit finding: a memory index line added by a shell script skipped Promptu's memory checks and came out over the length limit
 **Issue:** EMB-187
 **Scope:** promptu
@@ -48,7 +48,11 @@ memory hook exists, and this route skips all of them.
 
 ## Done when
 
-- [ ] A shell write into an auto-memory `MEMORY.md` gets the same index findings as an Edit, or a warning naming Edit.
-- [ ] A Bash command that only reads the memory folder gets nothing.
-- [ ] Tests cover both.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] A shell write into an auto-memory `MEMORY.md` gets the same index findings as an Edit, or a warning naming Edit.
+- [x] A Bash command that only reads the memory folder gets nothing.
+- [x] Tests cover both.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Done
+
+PreToolUse on Bash warns (any mode, never refuses) and names Edit when the command names a memory-folder `MEMORY.md` and looks like a write; reads get nothing. Reuses `claude::memory_target`. Spec and `docs/contract.md` §3.3a updated; no new decision. Limit: a script that builds the path at run time, or never names the index, is not seen. Hardware debt: none. A real session has not run this hook on Bash; the plugin needs the owner's reinstall for the new matcher.
