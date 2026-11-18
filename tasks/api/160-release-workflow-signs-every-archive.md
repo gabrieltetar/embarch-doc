@@ -1,6 +1,6 @@
 # 160 — The release workflow signs every archive it uploads
 
-**State:** claimed by agent/api/160-release-workflow-signs-every-archive, 2026-11-17 22:36
+**State:** done, pushed on agent/api/160-release-workflow-signs-every-archive, 2026-11-17
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** api
@@ -67,8 +67,14 @@ built and has nothing signed to check.
 
 ## Done when
 
-- [ ] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
-- [ ] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
-- [ ] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
-- [ ] The api docs say what a release carries and give the exact `cosign verify-blob` check.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+- [x] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
+- [x] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
+- [x] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
+- [x] The api docs say what a release carries and give the exact `cosign verify-blob` check.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+
+## Result
+
+`sign-and-publish` job added to `release.yml` (matrix uploads artifacts; one job signs and publishes). Docs: `embarch-api/spec/implementation.md` §8. No new decision.
+
+**Debt (owner-side):** `actionlint` did not run (not installed); the workflow loaded with PyYAML only. Nothing was released, so the first real tag is the test: check the approval prompt, that `cosign-release: v3.0.4` resolves, the artifact download, and `cosign verify-blob` with the identity in §8.

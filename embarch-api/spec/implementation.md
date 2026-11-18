@@ -53,3 +53,18 @@ Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [i
 | log retention | 7 daily files, `api.log.<date>` | Core's scheme, so one reader covers both |
 
 The logfile is **per-user**, not machine-wide — `/var/lib` is root-owned, this runs as the engineer ([decisions](../decisions/logging.md) 43).
+
+## 8. Release
+
+A `v*.*.*` tag runs `.github/workflows/release.yml` ([build](../decisions/build.md) 75 names it). `verify-version` gates a four-target `build` matrix (no `id-token` there), which uploads each archive as a workflow artifact; one `sign-and-publish` job (`environment: release`, `id-token: write`) downloads them, signs each with `cosign sign-blob --yes --bundle` (cosign 3.0.4 or later, pinned through `sigstore/cosign-installer`) and publishes asset and `<asset>.sigstore.json` together. Signing sits in `release.yml` itself, never a reusable workflow, so the certificate identity is this file at the tag. One owner approval of the `release` environment covers a release.
+
+Check an asset (identity and issuer exact, not a pattern):
+
+```
+cosign verify-blob --bundle <asset>.sigstore.json \
+  --certificate-identity https://github.com/gabrieltetar/embarch-api/.github/workflows/release.yml@refs/tags/<tag> \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  <asset>
+```
+
+**Not yet run**: the workflow was parsed as YAML only (`actionlint` was not installed) and no tag has produced a signed release; the first one is the test.
