@@ -1,6 +1,6 @@
 # 083 — Diff an Altium project's parts and pin nets against a PDF-built atlas
 
-**State:** claimed by agent/atlas/083-diff-cad-netlist-against-pdf-atlas, 2026-11-18 04:59
+**State:** done
 **Source:** Fleet Ready issue: a netlist the atlas parsed from a schematic PDF cannot be checked against the CAD revision released for fabrication.
 **Issue:** EMB-88
 **Scope:** atlas
@@ -32,7 +32,7 @@ Second half of EMB-88, after `082` gives a CAD-side netlist in the PDF netlist's
 
 ## Done when
 
-- [ ] One command reports the parts and named pin nets that differ between an Altium project and an atlas built from the same project's PDF, with a renamed net as a name-only difference.
-- [ ] A variant's not-fitted parts are reported against the PDF's all-fitted view.
-- [ ] Tests cover the fixture pair above, and a clean pair exits 0.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] One command reports the parts and named pin nets that differ between an Altium project and an atlas built from the same project's PDF, with a renamed net as a name-only difference.
+- [x] A variant's not-fitted parts are reported against the PDF's all-fitted view.
+- [x] Tests cover the fixture pair above, and a clean pair exits 0.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
