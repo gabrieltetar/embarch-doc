@@ -1,11 +1,49 @@
 # 028 — Read where a dead session stopped, without parsing its transcript
 
-**State:** claimed by agent/chat/028-read-where-a-dead-session-stopped, 2026-11-17 14:26
-**Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript
+**State:** done
+**Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript; EMB-200, the reviewer's finding on the first landing
 **Issue:** EMB-189
+**Issue:** EMB-200
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
+
+## Resume, read before anything else
+
+The re-land worker dispatched at 14:51 died on a usage-limit 429 with its tree
+uncommitted. Recovery committed that tree as it stood, ungated:
+
+- **Code:** `agent/chat/028-read-where-a-dead-session-stopped` on `embarch-chat`
+  is `c55f218` (`git revert 3288cf6`, the build restored) plus `1898a43` (the
+  dead worker's WIP: a `projectsRoot` getter on `Chat`, the field on
+  `HandoffPort`, `hostHooks.ts` passing it to `lastSessionCall`, and a test for a
+  `configDir` login). Review it as someone else's draft, finish it, and run the
+  whole gate; do not trust that it passes.
+- **Docs:** the doc branch is still `88f845e7` alone, on a `main` 13 commits
+  old, and pushed. Add your commits on top and push without rewriting it; do not
+  rebase or force-push. The leg cherry-picks it at landing. `spec/handoff.md`
+  still has to name the login the read uses.
+
+## Re-land, read first
+
+This was built once, landed and **reverted on 2026-11-17**: the reviewer found
+that the MCP tool reads the extension host's login (`CLAUDE_CONFIG_DIR` or
+`~/.claude`), not the chat's own, against decision 101 (a chat keeps its login
+for life; every other transcript read in a chat uses
+`projectsRoot(this.opts.env ?? chatEnv())`, `src/wire/chat.ts`). A chat on a
+second login would read another account's folder.
+
+- **Code:** the build is commit `97cf346` on `embarch-chat`'s `main`, reverted
+  by `3288cf6`. Start from `origin/main`, `git revert 3288cf6` to restore it,
+  then pass the chat's own projects root to `lastSessionCall` from
+  `src/hostHooks.ts` (it already takes a `root` nothing supplies; `HandoffPort`
+  in `src/handoff.ts` carries no login today), with a test that a chat started
+  on a `configDir` login reads that login's `projects/` folder.
+- **Docs:** the doc half is commit `88f845e7` on `embarch-doc`'s
+  `origin/agent/chat/028-read-where-a-dead-session-stopped`, never landed.
+  Cherry-pick it, then make `spec/handoff.md` name the login the read uses.
+- Everything below still stands; the first worker's choices (the MCP tool beside
+  `handoff`, the CLI, the 30 s live-file rule for the CLI) were found sound.
 
 ## What
 
@@ -61,4 +99,5 @@ needs the same thing.
 - [x] One command, given a working directory, prints the previous session's last turns and tool calls without the caller knowing the transcript path.
 - [x] It finds a session filed under the main clone's folder when asked from one of its worktrees.
 - [x] It never prints the current session as "the previous one"; a test covers it.
+- [x] Called from a chat started on a `configDir` login, the tool reads that login's `projects/` folder; a test covers it, and `spec/handoff.md` names the login.
 - [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
