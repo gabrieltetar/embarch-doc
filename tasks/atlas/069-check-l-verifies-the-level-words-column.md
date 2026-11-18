@@ -1,6 +1,6 @@
 # 069 — Check L verifies the level word's column, like check K
 
-**State:** done, 2026-11-17
+**State:** done — 2026-11-17
 **Source:** EMB-160, filed from the protocol-records work (atlas task 011), which added check L
 **Issue:** EMB-160
 **Scope:** atlas
