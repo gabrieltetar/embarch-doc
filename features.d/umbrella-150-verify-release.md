@@ -1,0 +1,1 @@
+| `embarch verify-release` — offline check of an unpacked suite release: the manifest's Sigstore signature under the exact release-workflow identity, then every file's SHA-256 | Shipped — **no signed suite manifest exists to check end to end until EMB-190 ships**; tested on two public bundles | unit | 14 |

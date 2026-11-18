@@ -1,6 +1,6 @@
 # 097 — `embarch verify-release`: check a suite release offline before installing it
 
-**State:** claimed by agent/umbrella/097-embarch-verify-release, 2026-11-17 18:34
+**State:** done on agent/umbrella/097-embarch-verify-release, 2026-11-17 (awaiting landing)
 **Source:** EMB-192, filed by the owner: step 3 of `embarch-doc/embarch-release-signing-proposal.md`, whose spike passed on 2026-11-16
 **Issue:** EMB-192
 **Scope:** umbrella
@@ -112,11 +112,21 @@ manifest.
 
 ## Done when
 
-- [ ] `embarch verify-release [DIR]` exists, verifies the manifest's bundle under the exact identity and issuer above, then every listed file's SHA-256, and prints the suite version, component tags and commits, identity and log time.
-- [ ] The cosign and uv fixture tests pass under `cargo test`, and each also fails with a wrong identity, a wrong issuer and a wrong digest.
-- [ ] A synthetic-manifest test fails on a missing file and on a changed byte.
-- [ ] `cargo test` passes with the network unavailable, and only `--refresh-trust-root` code reaches it.
-- [ ] `cargo clippy --all-targets -- -D warnings` is clean.
-- [ ] `build-check.yml` exists and builds all four targets on a branch push, aarch64 included; its first run's result is recorded here.
-- [ ] The verification function is public to the crate and returns a result type.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment and the `status.d/` fragment above dropped.
+- [x] `embarch verify-release [DIR]` exists, verifies the manifest's bundle under the exact identity and issuer above, then every listed file's SHA-256, and prints the suite version, component tags and commits, identity and log time.
+- [x] The cosign and uv fixture tests pass under `cargo test`, and each also fails with a wrong identity, a wrong issuer and a wrong digest.
+- [x] A synthetic-manifest test fails on a missing file and on a changed byte.
+- [x] `cargo test` passes with the network unavailable, and only `--refresh-trust-root` code reaches it.
+- [x] `cargo clippy --all-targets -- -D warnings` is clean.
+- [x] `build-check.yml` exists and builds all four targets on a branch push, aarch64 included; its first run's result is recorded here.
+- [x] The verification function is public to the crate and returns a result type.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment and the `status.d/` fragment above dropped.
+
+## Result
+
+- Code: `src/verify_release.rs`, the `VerifyRelease` variant in `src/main.rs`, pinned deps in `Cargo.toml`, fixtures in `tests/fixtures/` (the cosign bundle and uv's `sigstore-intermediate` bundle, 7 KB and 14 KB; the other uv attestation, issued by GitHub's own instance, was not kept). Public API: `verify_release::verify_release(dir, &TrustRootSource) -> Result<Verified, VerifyError>` and the sync `verify_release_with_root`.
+- Gate: `cargo build`, `cargo test` (272 pass, offline), `cargo clippy --all-targets -- -D warnings` clean; `check-docs.py`, client-name and both ownership checks green.
+- **`build-check.yml` first run** (branch push, run 44217599100): `aarch64-unknown-linux-gnu` success (the `aws-lc-sys` cross leg), `x86_64-unknown-linux-gnu` success, `x86_64-pc-windows-msvc` success, `aarch64-apple-darwin` **cancelled** with no log and no failed step. The worker could not re-run it (admin rights needed). Treat macOS as unverified until a re-run or the next push.
+- **Found, not fixed:** a log key missing from the root usually surfaces from `sigstore-verify` as `InclusionPromise("No log key valid at integrated time ...")`, not `UnknownLog`, so `VerifyError::LogNotTrusted` (which names `--refresh-trust-root`) covers `UnknownLog`, `InclusionPromise`, `InclusionProof` and `Checkpoint`. The hint also shows on a genuinely bad proof.
+- **Assumption:** the signed manifest's component commits (EMB-190 not shipped). Components parse as a bare tag or `{"tag","commit"}`; `files` is `{path: sha256}`. Reconcile when EMB-190 fixes the shape.
+- **Decision 28's "copies with no check"** is now stale in part (`verify-release` exists; `setup` still copies unchecked until step 4). No decision filed or edited, per the burndown rule; step 4 is the natural place to amend it.
+- **Hardware debt:** none. **Windows-native build:** not applicable (no `embarch-core` change).

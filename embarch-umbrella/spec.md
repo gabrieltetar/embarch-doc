@@ -20,7 +20,7 @@ Not:
 ## Shape
 
 ```
-        setup / init / doctor / status / up / down / deploy-core
+        setup / init / doctor / status / up / down / deploy-core / verify-release
                               |
                            embarch
                     /         |          \
@@ -56,6 +56,7 @@ Not:
 | `embarch status` | anytime, cheap | Is Core up, which class, how many probes — the latter needs a second, authenticated `GET /status`, and no-token/unauthorized/unreachable are reported as themselves, never as a probe count of `0` (decision 46). `--json` |
 | `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
 | `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
+| `embarch verify-release [DIR]` | before installing a suite release | Offline check that the unpacked folder (default: the running binary's own) is what the release workflow signed: the manifest's Sigstore bundle under one exact identity and issuer, then every listed file's SHA-256. Fetches nothing; `--refresh-trust-root` alone does. Exit `0` only when everything checked. [interfaces/verify-release.md](interfaces/verify-release.md); [proposal](../embarch-release-signing-proposal.md) step 3, EMB-192 |
 
 Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the message on stderr (or folded into the JSON object under `--json`), `2` a malformed invocation.
 
