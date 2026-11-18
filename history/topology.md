@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-09-02. Assembled from `changelog.d/` fragments by `scripts/build_changelog.py`; newest window first. Capped at 20 KB: over that, whole windows roll off the end, oldest first — never the newest, so a single over-cap window stays and says so — into [archive/](archive/).
 
+## 2026-11
+
+### Added
+- embarch-topology's release.yml signs every archive keylessly with cosign in one `sign` job and uploads a .sigstore.json bundle beside each ([spec](../embarch-topology/spec.md)).
 ## 2026-10
 
 ### Added

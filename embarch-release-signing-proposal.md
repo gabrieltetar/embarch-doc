@@ -43,7 +43,7 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 
 | Sub-project | Work |
 |---|---|
-| `embarch-core`, `embarch-api`, `embarch-topology` | `release.yml`: `id-token: write`, a bundle signed and uploaded per asset, the signing job in the protected environment |
+| `embarch-core`, `embarch-api` | `release.yml`: `id-token: write`, a bundle signed and uploaded per asset, the signing job in the protected environment. **`embarch-topology`'s is written** (2026-11-17, EMB-190, unrun on a tag): its [spec](embarch-topology/spec.md#what-a-release-carries) |
 | `embarch-umbrella` | `assemble-suite.yml` on `suite-v*` tags: component bundles verified, a per-file SHA-256 manifest signed, build provenance. `embarch verify-release`'s extension check (the rest of it is built). The elevated install verifying in a protected staging folder, then filling Core's store; a `doctor` check naming the verified release Core came from. The release script. [Decision 14](embarch-umbrella/decisions/install.md) amended: the manifest gains hashes and a signature |
 | `embarch-dev-bench` | A release workflow for the bench firmware images |
 | `embarch-doc` | [The user guide](suite/user-guide.md)'s install section, with the first download checked by `cosign`; [the dev workflow](embarch-dev-workflow.md)'s cutting a release; the HIL notes' release wording pointed here |

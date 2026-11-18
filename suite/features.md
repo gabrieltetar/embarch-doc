@@ -45,6 +45,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `POST /study/{id}/prompt` — a host study's `Prompt` step waits for a person: `PromptPending`/`PromptResolved`, `pending_prompt` on `GET /study/{id}`, answers checked by prompt id, capped at one hour | Shipped — **host-side only: proven over a scripted backend and the real slot across threads; never answered on a bench; Core not deployed; native Windows build unrun** | unit | 105 |
 | A host study's `Prompt` names a bench configuration (`bench_config`): Core forwards it unresolved on `PromptPending`, `pending_prompt` and the step's record; `study_watch` and `study-status --follow` show it | Built — **scripted backend and mock Core only; Core not deployed**; `embarch-ui`'s modal resolves it against the live bench (its decision 99), driven against a stub Core only | unit | 107 |
 | `POST /live/core-state` — where a running or hung core is: `DHCSR` and `DWT_PCSR` samples without halting, or registers and `SCB_ICSR` under one counted halt | Shipped — **host-side only: logic proven over a scripted core; never run on a board (PC samples, found-halted case, `DWT_PCSR` presence unchecked), native Windows build unrun** | unit | 97 |
+| Core release archives signed in CI (cosign keyless, `.sigstore.json` bundle per asset) | Built — **no tag has run it; the workflow parsed as YAML only, `actionlint` did not run** | n/a | 1,2,7,17 |
 
 ## embarch-api
 
@@ -162,6 +163,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Declared dev-bench link **serial**, distinct from its JTAG probe's | Shipped | hw | 17 |
 | Declared dev-bench link **interface** — closes the two-VCOM-on-one-probe gap the DK bench exposed | Shipped | hw | 20 |
 | A guessed dev-bench port **says so** — `dev-bench` prints "COM16, guessed among 2" | Shipped — **rendering is unit-tested only; no bench has yet produced a guess to see it on** | unit | 20 |
+| embarch-topology release archives signed keylessly in CI, a cosign bundle beside each asset — **unrun on a real tag**; the first signed release is the test | Built (workflow only; `actionlint` did not run) | — | — |
 | A `role` is unique — moving one onto different silicon displaces the old row and says so | Shipped | hw | 20 |
 | A role's two halves are independent rows-in-one: a board **type** (`name`/`chip`, written with no probe opened) and a probe binding (`probe_serial`/`hardware_id`, null until one is bound), plus `remove_by_role` to retract | Shipped | unit | 35 |
 | Nordic arm of the self-reported-identity comparison — **the gate had never once run against Nordic silicon** | Shipped | hw | 21 |
@@ -177,6 +179,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
 | `init` never writes an inferred board as fact | Shipped — the board from `build_info.yml` becomes `CHANGE-ME` and is quoted back in a comment with the build's age; a repo with several recorded builds has all of them named and none picked. **Unit tests only; no scaffolded config has been fed to a real `embarch-api` since the change** | unit | 41 |
+| Signed suite release — `release.yml` and `assemble-suite.yml` sign archives and a hashed manifest, verifying each component first | Written, **never run on a tag; actionlint did not run** | no | 14 |
 | `init`/`doctor` support for live target discovery | Shipped, **decision 17's amendment included 2026-09-05**: check 8 shells out to `embarch-api list-targets`, umbrella's scanner deleted. Contract **observed against a real `embarch-api` 2026-09-06**; the check has not run inside `doctor` | unit | 17, 42 |
 | Topology auto-detection (ordered loopback → WSL2 gateway → explicit host; `401` counts as finding Core) | Shipped | local | 6 |
 | `embarch status` — where Core is, `--json` | Shipped — with a probe count; "could not look" is never `0`. Host-tested only | local | 11, 46 |
