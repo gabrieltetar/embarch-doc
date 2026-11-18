@@ -1,6 +1,6 @@
 # 080 — Inventory the shell commands compiled into a pinned build
 
-**State:** open
+**State:** claimed by agent/atlas/080-inventory-shell-commands-in-a-pinned-build, 2026-11-18 03:57
 **Source:** Fleet Ready issue: sessions keep working out by hand, with throwaway scripts over the ELF and `compile_commands.json`, which Zephyr shell commands an image has and with what argument syntax.
 **Issue:** EMB-157
 **Scope:** atlas
