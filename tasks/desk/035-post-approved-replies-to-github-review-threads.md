@@ -1,6 +1,6 @@
 # 035 — Post approved replies to GitHub review threads from one draft
 
-**State:** open
+**State:** claimed by agent/desk/035-post-approved-replies-to-github-review-threads, 2026-11-17 23:43
 **Source:** Fleet Ready issue: posting approved replies to a PR review took a throwaway script that split a draft file and called the GitHub API once per thread.
 **Issue:** EMB-173
 **Scope:** desk
