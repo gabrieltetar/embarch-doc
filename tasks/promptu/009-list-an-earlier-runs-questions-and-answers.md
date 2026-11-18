@@ -1,6 +1,6 @@
 # 009 — List the questions an earlier run of a prompt asked, and the answers
 
-**State:** open
+**State:** claimed by agent/promptu/009-list-an-earlier-runs-questions-and-answers, 2026-11-17 17:21
 **Source:** EMB-185, filed by an audit after a rerun interview prompt asked the owner the same questions again and the session dug the earlier answers out of old transcripts with a throwaway script
 **Issue:** EMB-185
 **Scope:** promptu
