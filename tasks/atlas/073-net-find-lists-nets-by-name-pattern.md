@@ -1,6 +1,7 @@
 # 073 — `net-find` lists nets by name pattern across boards
 
-**State:** open
+**State:** claimed by agent/atlas/073-net-find-lists-nets-by-name-pattern, 2026-11-17 23:00
+**Reserve:** no `embarch-atlas` file is in reserve (`check-doc-size.py --pressure`, 2026-11-17 22:58).
 **Source:** Fleet Ready issue: a review needed every net matching a name pattern on two boards, with its pins, and `net-trace` takes one exact name.
 **Issue:** EMB-96
 **Scope:** atlas
