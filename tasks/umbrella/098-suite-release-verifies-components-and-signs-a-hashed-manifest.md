@@ -1,6 +1,6 @@
 # 098 — The suite release verifies its components and signs a hashed manifest
 
-**State:** open
+**State:** claimed by agent/umbrella/098-suite-release-verifies-components-and-signs-a-hashed-manifest, 2026-11-17 22:36
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** umbrella
