@@ -1,6 +1,6 @@
 # 079 — Worst-case RC threshold-crossing time from board parts and facts
 
-**State:** claimed by agent/atlas/079-worst-case-rc-threshold-crossing-time, 2026-11-18 03:49
+**State:** done
 **Source:** Fleet Ready issue: a firmware session wrote inline Python to work out the worst-case time for an RC node to cross a gate's input threshold, from component tolerances and the supply's accuracy, when the atlas already holds most of the inputs.
 **Issue:** EMB-195
 **Scope:** atlas
@@ -33,7 +33,11 @@ The owner moved the issue to Fleet Ready. The atlas's `parts` lookup already say
 
 ## Done when
 
-- [ ] The atlas answers a worst-case RC crossing time range for a node, with each input cited or named as assumed.
-- [ ] A node that is not a single R and C, or that lacks a threshold or regulator fact, gets an answer naming what is missing or unsupported.
-- [ ] A test reproduces a hand-computed case to three significant figures.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] The atlas answers a worst-case RC crossing time range for a node, with each input cited or named as assumed.
+- [x] A node that is not a single R and C, or that lacks a threshold or regulator fact, gets an answer naming what is missing or unsupported.
+- [x] A test reproduces a hand-computed case to three significant figures.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+
+## Outcome
+
+`q rc_timing` / MCP `rc_timing` shipped (lookups 21 to 22). Handles charging (R to a rail, C to ground) and discharging (R to ground, `rail=` names the supply). Inputs: `bom.json` tolerances via `bomvals`, rail range from the regulator's VOUT `limit` record (min/max, or nominal with an accuracy record), VIH `min` / VIL `max` from the receiving part. Assumed and labelled: caller-passed `r_tol`/`c_tol`, and the EIA temperature class table (C0G/NP0, X7R, X5R, X7S, X6S, X7T, Y5V, Z5U). No feature-inventory row: `features.d` has no atlas section.
