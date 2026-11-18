@@ -1,6 +1,6 @@
 # 070 — Recover a module symbol's rotated pad names from the PDF text layer
 
-**State:** open
+**State:** claimed by agent/atlas/070-recover-rotated-module-pad-names-from-the-text-layer, 2026-11-17 18:09
 **Source:** EMB-89, filed by an audit after a second-reader pin check paired 16 bottom-row module pads to their port names by hand from the schematic's text layer
 **Issue:** EMB-89
 **Scope:** atlas
