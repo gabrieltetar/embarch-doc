@@ -1,6 +1,6 @@
 # 076 — Render pages of any PDF to images an agent can read
 
-**State:** open
+**State:** claimed by agent/atlas/076-render-pdf-pages-for-an-image-read, 2026-11-18 03:19
 **Source:** Fleet Ready issue: an agent reading a scanned PDF with no text layer improvised page rendering and tiling with throwaway shell and Python.
 **Issue:** EMB-138
 **Scope:** atlas
