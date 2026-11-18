@@ -1,6 +1,6 @@
 # 159 — The bundle README's recover line states only what Core decided
 
-**State:** open
+**State:** claimed by agent/api/159-bundle-recover-line-states-only-what-core-decided, 2026-11-17 19:19
 **Source:** EMB-203, a reviewer finding on `api/158`: the bundle README's nRF54L recover line says Core's decisions map the vendor runner's `--erase` to the range erase, and no Core decision says that
 **Issue:** EMB-203
 **Scope:** api
