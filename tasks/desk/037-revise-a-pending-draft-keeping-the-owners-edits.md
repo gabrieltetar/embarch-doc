@@ -1,6 +1,6 @@
 # 037 — Revise a pending draft without mixing the agent's revision into the owner's edits
 
-**State:** open
+**State:** claimed by agent/desk/037-revise-a-pending-draft-keeping-the-owners-edits, 2026-11-18 03:18
 **Source:** Fleet Ready issue: an agent revising its own pending draft after the owner had edited it patched the draft and its untouched baseline copy with a throwaway script, so the learning diff stayed limited to the owner's edits.
 **Issue:** EMB-165
 **Scope:** desk
