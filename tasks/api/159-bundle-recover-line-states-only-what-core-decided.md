@@ -51,7 +51,11 @@ recovery instruction for a bricked board.
 
 ## Done when
 
-- [ ] The README's recover line and `tools-bundle.md` say only what decisions 32 and 36 say.
-- [ ] No text says decision 36 maps decision 32's `--erase` to the range erase.
-- [ ] A test fails if that claim comes back.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] The README's recover line and `tools-bundle.md` say only what decisions 32 and 36 say.
+- [x] No text says decision 36 maps decision 32's `--erase` to the range erase.
+- [x] A test fails if that claim comes back.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Result
+
+Recover line and `tools-bundle.md` reworded from the text of core decisions 32 and 36; test asserts the new wording and the absence of the old claim. No decision needed.
