@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas `q rc_timing` and MCP `rc_timing`: worst-case time for a series R and C node to cross the receiving pin's guaranteed VIH or VIL, each input cited or named assumed (atlas/079).
 - Atlas `q decode` and MCP `decode`: a command-then-read part's raw reply as status bits, count and value; below-minimum counts stay negative, unclamped (atlas/078).
 - embarch-atlas gains `fetch-text <url|file>`: a page or PDF as plain text, and a bot challenge or rate limit reported as blocked, never printed as content. No new dependency.
 - embarch-atlas pdf pages renders pages of any PDF, scanned or not, to PNGs for the image Read tool, with tile grids, point crops and a per-page text-layer report.
