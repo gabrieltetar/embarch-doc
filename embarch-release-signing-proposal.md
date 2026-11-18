@@ -43,7 +43,6 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 
 | Sub-project | Work |
 |---|---|
-| `embarch-api` | `release.yml`: `id-token: write`, a bundle signed and uploaded per asset, the signing job in the protected environment. **`embarch-core`'s and `embarch-topology`'s are written** (2026-11-17, EMB-190, unrun on a tag): [core](embarch-core/spec.md#release-assets), [topology](embarch-topology/spec.md#what-a-release-carries) |
 | `embarch-umbrella` | `assemble-suite.yml` on `suite-v*` tags: component bundles verified, a per-file SHA-256 manifest signed, build provenance. `embarch verify-release`'s extension check (the rest of it is built). The elevated install verifying in a protected staging folder, then filling Core's store; a `doctor` check naming the verified release Core came from. The release script. [Decision 14](embarch-umbrella/decisions/install.md) amended: the manifest gains hashes and a signature |
 | `embarch-dev-bench` | A release workflow for the bench firmware images |
 | `embarch-doc` | [The user guide](suite/user-guide.md)'s install section, with the first download checked by `cosign`; [the dev workflow](embarch-dev-workflow.md)'s cutting a release; the HIL notes' release wording pointed here |
@@ -51,7 +50,7 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 
 ## Order
 
-1. **Sign in CI**: the component archives and the suite manifest. Useful at once, since anyone can check a release with `cosign`. About half a day.
+1. **Sign in CI**: the component archives and the suite manifest. Useful at once, since anyone can check a release with `cosign`. **The component half is written** (2026-11-17, EMB-190), not yet run on a tag: each `release.yml` signs its archives in one job in the `release` environment, and each repo's docs give the check — [core](embarch-core/spec.md#release-assets), [api](embarch-api/spec/implementation.md#8-release), [topology](embarch-topology/spec.md#what-a-release-carries).
 2. **Harden the account**: done 2026-11-16. A passkey; on the five release repos, the tag ruleset and the `release` environment (the owner reviews, tag runs only).
 3. **`embarch verify-release`**: built 2026-11-17 (EMB-192), now in `embarch-umbrella`'s docs. Its `aws-lc-sys` build passed `build-check.yml`'s first run on the aarch64 Linux cross leg; the macOS leg was cancelled, unverified.
 4. **The elevated install checking before installing**, landing with the evidence proposal's step 1 (Core's own account and store).

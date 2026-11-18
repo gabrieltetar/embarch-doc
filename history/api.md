@@ -10,6 +10,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Release workflow signs every archive with cosign (keyless, `.sigstore.json` bundle beside each); see embarch-api/spec/implementation.md §8.
 - A server running in a git worktree of the clone source_path is in builds that worktree, in a build dir of its own, or refuses naming both trees; decision 106.
 - - embarch-api/open.md split: bench and toolchain verification debts moved verbatim to open/bench-verification.md (api/150).
 - `dev_bench_hello` and `dev-bench-hello --json` carry `dev_bench_version`; `run_study` refuses a pinned bench version Core did not report (105).
