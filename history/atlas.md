@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- q parts <board> <ref>... and an MCP tool return MPN, value, tolerance, rating, DNP and pin nets; schematic parses tolerance and rating into bom.json (EMB-180).
 - The atlas gains a nineteenth lookup, `net_find`: every net matching a name pattern across all boards with its pins (CLI `q net-find`, read-only MCP tool).
 - `schematic_text` (CLI `q schematic-text`, MCP): search schematic PDF page text, each hit with board, file, page, sheet; see embarch-atlas DESIGN.md.
 - Atlas schematic ingest recovers a module's rotated pad names from the PDF text layer, marked text-layer; unpairable pads go to issues.md (EMB-89).
