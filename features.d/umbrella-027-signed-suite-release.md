@@ -1,0 +1,1 @@
+| Signed suite release — `release.yml` and `assemble-suite.yml` sign archives and a hashed manifest, verifying each component first | Written, **never run on a tag; actionlint did not run** | no | 14 |

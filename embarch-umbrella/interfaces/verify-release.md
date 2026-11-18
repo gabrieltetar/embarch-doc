@@ -28,9 +28,22 @@ lists; it defaults to the running `embarch`'s own folder, as `setup` does.
 
 **Output** (stdout; failure on stderr, exit `1`): suite version, each component's tag and
 commit, the verified certificate identity, the issuer, the log entry's time, the file count.
-A component the manifest records as a bare tag prints "commit not recorded"; the manifest
-`doctor` reads today names tags only, and the object form `{"tag", "commit"}` is accepted
-for the signed manifest EMB-190 writes. **That shape is an assumption until EMB-190 ships.**
+The manifest's `components` object maps each name to its tag (the shape `doctor` reads) and a
+sibling `commits` object maps it to the commit; a component missing from `commits` prints
+"commit not recorded". The shape is fixed by `assemble-suite.yml` (EMB-190) and read unchanged by
+`manifest.rs` and `verify_release.rs`:
+
+```json
+{"suite_version": "0.2.0", "target": "x86_64-unknown-linux-gnu",
+ "components": {"embarch": "v0.2.0", "embarch-core": "v0.1.4", "embarch-api": "v0.1.0"},
+ "commits": {"embarch": "<sha>", "embarch-core": "<sha>", "embarch-api": "<sha>"},
+ "files": {"embarch": "<sha256>", "embarch-core": "<sha256>", "embarch-api": "<sha256>"}}
+```
+
+`files` covers every file of the archive but the manifest. The release carries the manifest and
+bundle per target as `embarch-manifest-<target>.json` and `.json.sigstore.json`; rename them to
+`embarch-manifest.json` and `embarch-manifest.json.sigstore.json` beside the unpacked archive (the
+archive holds the same manifest, and a bundle signs bytes, not a name).
 
 **For the checked install (step 4):** `verify_release::verify_release(dir, &TrustRootSource)
 -> Result<Verified, VerifyError>` (async) and the synchronous, offline
@@ -46,4 +59,4 @@ digest (cosign v3.1.4's `cosign-linux-amd64`, uv 0.13.8's x86_64 Linux build att
 the latter issued by `sigstore-intermediate`), each failing on a wrong identity, issuer and
 digest; a root with its log keys removed; and the file check on a synthetic manifest (missing
 file, one changed byte, unsafe paths). **No signed suite manifest has been verified end to
-end** until EMB-190 ships and a release is tagged.
+end** until the owner tags the first signed suite release.

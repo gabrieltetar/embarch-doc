@@ -1,6 +1,6 @@
 # 098 — The suite release verifies its components and signs a hashed manifest
 
-**State:** claimed by agent/umbrella/098-suite-release-verifies-components-and-signs-a-hashed-manifest, 2026-11-17 22:36
+**State:** done
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** umbrella
@@ -88,10 +88,24 @@ exists until this ships.
 
 ## Done when
 
-- [ ] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it; the signing job has `id-token: write` and `environment: release`.
-- [ ] `assemble-suite.yml` triggers on `suite-v*.*.*` tags, reads the component tags from `suite.toml`, and fails when any component bundle does not verify against its exact workflow identity.
-- [ ] `embarch-manifest.json` carries a `files` object of per-file SHA-256 and each component's commit; `manifest.rs` is unchanged and its tests pass; `verify-release`, its tests and `interfaces/verify-release.md` read that exact shape.
-- [ ] The suite release carries `embarch-manifest.json.sigstore.json` and a build-provenance attestation per archive.
-- [ ] `actionlint` passes on every changed workflow, or, where it is not installed, each parses as YAML and the debt is recorded here.
-- [ ] Decision 14 amended in place; `spec.md` and the release docs say what a release now carries.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+- [x] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it; the signing job has `id-token: write` and `environment: release`.
+- [x] `assemble-suite.yml` triggers on `suite-v*.*.*` tags, reads the component tags from `suite.toml`, and fails when any component bundle does not verify against its exact workflow identity.
+- [x] `embarch-manifest.json` carries a `files` object of per-file SHA-256 and each component's commit; `manifest.rs` is unchanged and its tests pass; `verify-release`, its tests and `interfaces/verify-release.md` read that exact shape.
+- [x] The suite release carries `embarch-manifest.json.sigstore.json` and a build-provenance attestation per archive.
+- [x] `actionlint` passes on every changed workflow, or, where it is not installed, each parses as YAML and the debt is recorded here.
+- [x] Decision 14 amended in place; `spec.md` and the release docs say what a release now carries.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+
+## Result
+
+Shipped on the branch; nothing tagged or released.
+
+- **Manifest shape:** `components` stays name-to-tag (what `manifest.rs` reads); new sibling top-level `commits` (name to sha) and `files` (relative path to SHA-256, every archive file but the manifest). `verify_release.rs` dropped its `ComponentEntry` tag-or-object enum for this shape; tests, `interfaces/verify-release.md` agree. `manifest.rs` unchanged.
+- **Signing shape:** matrix builds upload workflow artifacts; one `sign` job per workflow (`environment: release`, `id-token: write`) signs and publishes. In `release.yml` it only runs on tags.
+- **Per-target manifest names:** the four manifests collide on a release, so assets are `embarch-manifest-<target>.json` and `.json.sigstore.json`; rename beside the unpacked archive to verify. Design call, not in the task; no numbered decision per burndown.
+- **suite.toml:** newest local tags core v0.1.4, api v0.1.0, umbrella v0.1.0, all unsigned.
+
+## Debts (owner-side)
+
+- **`actionlint` did not run** (not installed). All three workflows parse as YAML with PyYAML; `suite.toml` parses with tomllib. Run `actionlint` before the first tag.
+- **No workflow has run.** Unverified: `cosign-release: v3.0.4` input name of `sigstore/cosign-installer@v3`, `actions/attest-build-provenance@v2` inputs, the manifest python heredoc, and the component identity string against a real signed tag. First signed suite release needs new signed component tags (core/127, api/160 first).
