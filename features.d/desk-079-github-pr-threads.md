@@ -1,0 +1,1 @@
+| `github_pr_threads`: an agent reads a PR's inline review threads root-then-replies, review states, and which threads the author has not answered, complete past 100 comments | Built on a branch, not deployed; grouping and paging unit-tested on synthetic JSON, no live GitHub call | unit | |

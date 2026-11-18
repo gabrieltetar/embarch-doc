@@ -1,6 +1,6 @@
 # 033 — A desk tool returns a pull request's review threads
 
-**State:** claimed by agent/desk/033-a-desk-tool-returns-a-prs-review-threads, 2026-11-17 19:19
+**State:** done
 **Source:** EMB-176, an audit finding: a session answering a code review pulls the review comments with `gh api` and writes a throwaway script to group them into threads
 **Issue:** EMB-176
 **Scope:** desk
@@ -53,9 +53,13 @@ The owner moved EMB-176 to Fleet Ready.
 
 ## Done when
 
-- [ ] One desk tool call returns a PR's inline threads grouped root-then-replies, with author, time, path and line on each comment.
-- [ ] The same call returns the review bodies with their state.
-- [ ] Threads where the PR author has not replied after the latest reviewer comment are marked.
-- [ ] A PR with more than 100 review comments comes back complete; a test covers pagination.
-- [ ] `spec.md` and `interfaces.md` name the tool, and `interfaces.md` is out of reserve.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] One desk tool call returns a PR's inline threads grouped root-then-replies, with author, time, path and line on each comment.
+- [x] The same call returns the review bodies with their state.
+- [x] Threads where the PR author has not replied after the latest reviewer comment are marked.
+- [x] A PR with more than 100 review comments comes back complete; a test covers pagination.
+- [x] `spec.md` and `interfaces.md` name the tool, and `interfaces.md` is out of reserve.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Outcome
+
+`github_pr_threads` (MCP) over `POST /github/pr-threads`; `src/threads.rs` groups, `github::pr_threads` pages (100 per page, no cap). No design fork filed; `awaiting_only` is the optional flag. Tool needs a live GitHub account, so the live call was not exercised (tests are synthetic JSON): debt, run `github_pr_threads` on a real PR once deployed. `interfaces.md` Connectors-and-CLI section moved verbatim to `interfaces/cli.md` (12,858 B, out of reserve).

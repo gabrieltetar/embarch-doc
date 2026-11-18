@@ -41,7 +41,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 ## 3. Interfaces
 
-**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `/oauth/linear/callback`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens or Linear's MCP sign-in (68); a CLI. Reference: [interfaces.md](interfaces.md).
+**HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `/oauth/linear/callback`; the plugin's hooks, `desk` skill and MCP server — agents' one access point to Linear and Harvest ([decision 29](decisions.md)); connectors on pasted tokens or Linear's MCP sign-in (68); a CLI; `github_pr_threads` reads a pull request's review threads (EMB-176). Reference: [interfaces.md](interfaces.md).
 
 ## 4. Constants
 

@@ -1,6 +1,6 @@
 # 032 — `embarch-desk/interfaces.md` is in reserve
 
-**State:** blocked
+**State:** done
 **Source:** desk 031 (EMB-137) added the `get` subcommand to `embarch-desk/interfaces.md`, leaving it at 14,128 of 15,360 B (92.0%, 1,232 B left).
 **Scope:** desk
 **Hardware:** none
@@ -22,5 +22,5 @@ Bring `embarch-desk/interfaces.md` out of reserve: shorten the longest route row
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/interfaces.md`.
-- [ ] Nothing named under **Must not delete** is lost.
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/interfaces.md`.
+- [x] Nothing named under **Must not delete** is lost.
