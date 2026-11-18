@@ -1,6 +1,6 @@
 # 069 — Check L verifies the level word's column, like check K
 
-**State:** claimed by agent/atlas/069-check-l-verifies-the-level-words-column, 2026-11-17 17:20
+**State:** done, 2026-11-17
 **Source:** EMB-160, filed from the protocol-records work (atlas task 011), which added check L
 **Issue:** EMB-160
 **Scope:** atlas
@@ -55,7 +55,11 @@ not one.
 
 ## Done when
 
-- [ ] Check L fails a record whose level word is in the quoted row but in another role's column.
-- [ ] A test covers both the right-column pass and the wrong-column failure, and a record with no column to test reports not checkable.
-- [ ] `DESIGN.md` (and the translate procedure, if the record shape changed) says what check L proves.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] Check L fails a record whose level word is in the quoted row but in another role's column.
+- [x] A test covers both the right-column pass and the wrong-column failure, and a record with no column to test reports not checkable.
+- [x] `DESIGN.md` (and the translate procedure, if the record shape changed) says what check L proves.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Outcome
+
+Resumed worker reviewed the recovered draft (6301f43) and kept it: check L reuses K's word-position approach (`_level_column`), no new record field (`role`/`as` already name the column), not-checkable reasons: no-words, no-role, row-not-found, no-header, level-not-in-words, level-from-note. Cells whose level comes from a footnote are not checkable, so the procedure-example and the fixture count moved to 14/16. Gate: pytest 858 passed, 3 skips (west workspace, built atlas, SVD; test_public_guard ran).
