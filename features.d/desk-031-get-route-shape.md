@@ -1,0 +1,1 @@
+| `embarch-desk get <route>` prints a route's shape from a shell (keys, list lengths, sample row, count by a field; `--raw`), masking secrets, and reaches a named instance by config folder and port | Built on a branch, not deployed; a stub desk on an ephemeral port in tests | unit | 82 |

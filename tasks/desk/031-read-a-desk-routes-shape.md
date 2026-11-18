@@ -1,6 +1,6 @@
 # 031 — Read a desk route's shape from a shell
 
-**State:** claimed by agent/desk/031-read-a-desk-routes-shape, 2026-11-17 17:21
+**State:** done on agent/desk/031-read-a-desk-routes-shape (2026-11-17)
 **Source:** EMB-137, filed by an audit after a session building a desk sub-tab piped `curl` into throwaway Python three times to learn what routes returned
 **Issue:** EMB-137
 **Scope:** desk
@@ -44,7 +44,7 @@ The owner moved EMB-137 to Fleet Ready.
 
 ## Done when
 
-- [ ] One command prints a route's top-level keys, list lengths and one sample row, without the caller handling the token.
-- [ ] It reaches a named instance, such as a dev desk on its own config dir and port, and not only the default one; a test covers it.
-- [ ] No token or connector secret reaches its output; a test covers it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] One command prints a route's top-level keys, list lengths and one sample row, without the caller handling the token.
+- [x] It reaches a named instance, such as a dev desk on its own config dir and port, and not only the default one; a test covers it.
+- [x] No token or connector secret reaches its output; a test covers it.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
