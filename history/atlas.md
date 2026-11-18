@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas `q shell-commands` and MCP `shell_commands`: the shell commands an image has, with argument counts and help, read from its ELF; stale-flagged when the ELF changes (atlas/080).
 - Atlas `q rc_timing` and MCP `rc_timing`: worst-case time for a series R and C node to cross the receiving pin's guaranteed VIH or VIL, each input cited or named assumed (atlas/079).
 - Atlas `q decode` and MCP `decode`: a command-then-read part's raw reply as status bits, count and value; below-minimum counts stay negative, unclamped (atlas/078).
 - embarch-atlas gains `fetch-text <url|file>`: a page or PDF as plain text, and a bot challenge or rate limit reported as blocked, never printed as content. No new dependency.
