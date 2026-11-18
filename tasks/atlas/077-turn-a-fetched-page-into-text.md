@@ -1,6 +1,6 @@
 # 077 — Turn a fetched web page into readable text, and say when it is a bot challenge
 
-**State:** claimed by agent/atlas/077-turn-a-fetched-page-into-text, 2026-11-18 03:31
+**State:** done
 **Source:** Fleet Ready issue: agents doing web research keep rewriting a one-off HTML-stripping script when the page fetch tool is blocked or returns raw bytes.
 **Issue:** EMB-135
 **Scope:** atlas
@@ -25,7 +25,7 @@ The owner moved the issue to Fleet Ready. Every session that hits a blocked fetc
 
 ## Done when
 
-- [ ] One command takes a URL or a local HTML file and prints the page body as plain text with scripts, styles and tags removed and entities unescaped.
-- [ ] The command reports a bot-challenge or rate-limit response as blocked instead of printing it as content.
-- [ ] A PDF response is converted to text by the same command.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] One command takes a URL or a local HTML file and prints the page body as plain text with scripts, styles and tags removed and entities unescaped.
+- [x] The command reports a bot-challenge or rate-limit response as blocked instead of printing it as content.
+- [x] A PDF response is converted to text by the same command.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
