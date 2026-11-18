@@ -1,6 +1,6 @@
 # 010 — A shell write into a memory index gets checked, or told to use Edit
 
-**State:** open
+**State:** claimed by agent/promptu/010-shell-writes-to-a-memory-index-get-checked, 2026-11-17 18:34
 **Source:** EMB-187, an audit finding: a memory index line added by a shell script skipped Promptu's memory checks and came out over the length limit
 **Issue:** EMB-187
 **Scope:** promptu
