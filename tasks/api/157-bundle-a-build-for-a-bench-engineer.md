@@ -1,6 +1,6 @@
 # 157 — Package a finished build as a flashable bundle for a bench engineer
 
-**State:** open
+**State:** claimed by agent/api/157-bundle-a-build-for-a-bench-engineer, 2026-11-17 18:09
 **Source:** EMB-171, filed by an audit after a firmware packet for a hardware engineer was hand-built with inline Python, because no `zip` binary was installed
 **Issue:** EMB-171
 **Scope:** api
