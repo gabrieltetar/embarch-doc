@@ -1,6 +1,6 @@
 # 031 — Compact embarch-chat's spec
 
-**State:** open
+**State:** claimed by agent/chat/031-compact-chat, 2026-11-17 23:21
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
