@@ -6,6 +6,9 @@
 
 ### Added
 - embarch-topology's release.yml signs every archive keylessly with cosign in one `sign` job and uploads a .sigstore.json bundle beside each ([spec](../embarch-topology/spec.md)).
+
+### Changed
+- Topology spec: the validation section moved verbatim to spec/validation.md; spec.md is out of reserve.
 ## 2026-10
 
 ### Added
