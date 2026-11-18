@@ -29,6 +29,7 @@
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
 ### Changed
+- The atlas-use skill and MAP.md now show that `q config` takes several symbols and `*` patterns in one call, and `--vs pinned` for differences.
 - Atlas check L now verifies the applicability level sits in the record's role column by word x-positions, like check K; rows it cannot place are reported not checkable.
 - Atlas check K holds a record to the side-by-side MIN/TYP/MAX group its cond names when headers carry a condition; unmatched falls back to agreement with a warning (atlas/063).
 - Atlas `fw` follows the linked git worktree a session runs in (`status` names it; `build` keeps the repo basename); `EMBARCH_ATLAS_FW` overrides. See embarch-atlas DESIGN.md.
