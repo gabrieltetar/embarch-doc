@@ -245,6 +245,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `linear_list_issues`: an agent lists a team's Linear issues in a named state (a queue such as "Fleet Ready"), in the workspace the session's desk follows, with the cap's cut reported | Built on a branch, not deployed; backends filtered by unit test only, no live workspace | unit | 79 |
 | Start work on a west project writes `ZEPHYR_MODULES` (the workspace's modules, the main clone swapped for the worktree) into the worktree's local settings, so a build there reads the worktree's drivers and board files | Built on a branch, not deployed; stand-in `west` in tests, no real build | unit | 80 |
 | The desk reports a desk folder whose Claude Code login has no `embarch-api` MCP server (in `GET /desks` and at session start) with the user-scope `claude mcp add` command; read-only, never writes `.claude.json` | Built on a branch, not deployed; temporary `.claude.json` files in tests | unit | 82 |
+| `github_pr_threads`: an agent reads a PR's inline review threads root-then-replies, review states, and which threads the author has not answered, complete past 100 comments | Built on a branch, not deployed; grouping and paging unit-tested on synthetic JSON, no live GitHub call | unit | |
 
 ## embarch-chat
 

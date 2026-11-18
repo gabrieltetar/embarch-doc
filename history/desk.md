@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- desk: github_pr_threads MCP tool returns a PR's review threads, review states and unanswered-by-author marks; interfaces.md split out of reserve
 - - `embarch-desk get <route>` prints a desk route's shape (keys, list lengths, a sample row) with secrets masked; reaches a named instance by --config-dir/--port.
 - embarch-desk removes a Done or Canceled issue's folder, worktrees and branches once no chat window polls for it (embarch-desk decision 84).
 - embarch-desk: an issue moved to Done or Canceled leaves `end` or `unfinished` for its window; `POST /items/{id}/finish`, `close_out` on cards ([decision 83](../embarch-desk/decisions/sessions.md)).
