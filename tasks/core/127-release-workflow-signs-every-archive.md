@@ -63,10 +63,16 @@ No core file is in doc-size reserve.
 The owner moved EMB-190 to Fleet Ready. Step 3 (`embarch verify-release`) is
 built and has nothing signed to check.
 
+## Outcome
+
+`release.yml`: build matrix now `contents: read` and uploads `archive-<target>` workflow artifacts; new `sign-and-publish` job (`needs: build`, `environment: release`, `contents: write` + `id-token: write`, in this file) installs cosign v3.0.4 via `sigstore/cosign-installer@v4`, runs `cosign sign-blob --yes --bundle <asset>.sigstore.json <asset>` on all four archives (fails if not exactly 4) and publishes assets and bundles with `softprops/action-gh-release@v2`. Docs: `embarch-core/spec.md` §3 "Release assets" (exact `verify-blob` command), `decisions/platform.md` decision 1/2/7/17 note. No new decision.
+
+**Debt (owner-side):** `actionlint` is not installed and did not run; the workflow only loaded as YAML under PyYAML. Nothing ran on a real tag: the first release shows whether `cosign-installer@v4` accepts `cosign-release: v3.0.4`, and whether `download-artifact` merge-multiple lays files flat in `dist/`. `workflow_dispatch` runs would also now wait on the `release` environment (tag-only, so the environment may refuse them).
+
 ## Done when
 
-- [ ] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
-- [ ] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
-- [ ] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
-- [ ] The core docs say what a release carries and give the exact `cosign verify-blob` check.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+- [x] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
+- [x] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
+- [x] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
+- [x] The core docs say what a release carries and give the exact `cosign verify-blob` check.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
