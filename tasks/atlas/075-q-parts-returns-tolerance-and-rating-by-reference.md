@@ -1,6 +1,6 @@
 # 075 — `q parts` returns value, tolerance and rating by reference
 
-**State:** open
+**State:** claimed by agent/atlas/075-q-parts-returns-tolerance-and-rating-by-reference, 2026-11-17 23:43
 **Source:** Fleet Ready issue: a worst-case divider calculation needed each part's tolerance, and `parts.md` drops it, so a session parsed `bom.json` by hand.
 **Issue:** EMB-180
 **Scope:** atlas
