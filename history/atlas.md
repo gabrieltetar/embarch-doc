@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas `q decode` and MCP `decode`: a command-then-read part's raw reply as status bits, count and value; below-minimum counts stay negative, unclamped (atlas/078).
 - embarch-atlas gains `fetch-text <url|file>`: a page or PDF as plain text, and a bot challenge or rate limit reported as blocked, never printed as content. No new dependency.
 - embarch-atlas pdf pages renders pages of any PDF, scanned or not, to PNGs for the image Read tool, with tile grids, point crops and a per-page text-layer report.
 - q parts <board> <ref>... and an MCP tool return MPN, value, tolerance, rating, DNP and pin nets; schematic parses tolerance and rating into bom.json (EMB-180).
