@@ -1,6 +1,6 @@
 # 085 — `q stacks` lists a driver's per-instance thread stack
 
-**State:** done, 2026-11-18
+**State:** done — 2026-11-18
 **Source:** Fleet Ready issue: `embarch-atlas q stacks` omits every thread stack a driver defines once per devicetree instance, so its count and noinit total are too low for any driver that owns a thread.
 **Issue:** EMB-27
 **Scope:** atlas
