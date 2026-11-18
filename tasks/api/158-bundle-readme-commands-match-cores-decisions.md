@@ -1,6 +1,6 @@
 # 158 — The bundle README's commands match what Core's decisions record
 
-**State:** open
+**State:** claimed by agent/api/158-bundle-readme-commands-match-cores-decisions, 2026-11-17 18:34
 **Source:** EMB-202, a reviewer finding on `api/157`: the bundle README presents a full-chip-erase program command as what embarch-core records, against `embarch-core` decisions 36 and 32
 **Issue:** EMB-202
 **Scope:** api
