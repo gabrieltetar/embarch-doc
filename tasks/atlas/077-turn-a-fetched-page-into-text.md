@@ -1,6 +1,6 @@
 # 077 — Turn a fetched web page into readable text, and say when it is a bot challenge
 
-**State:** open
+**State:** claimed by agent/atlas/077-turn-a-fetched-page-into-text, 2026-11-18 03:31
 **Source:** Fleet Ready issue: agents doing web research keep rewriting a one-off HTML-stripping script when the page fetch tool is blocked or returns raw bytes.
 **Issue:** EMB-135
 **Scope:** atlas
