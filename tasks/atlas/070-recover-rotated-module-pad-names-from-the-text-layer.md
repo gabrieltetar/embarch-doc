@@ -49,7 +49,11 @@ EMB-188 put it first in their sequence.
 
 ## Done when
 
-- [ ] An atlas built from a schematic whose module symbol prints pad names as rotated text shows a port for every named pad in `pins.md`, each marked as recovered from the text layer.
-- [ ] A pad whose name cannot be paired is listed in the atlas report.
-- [ ] A test builds such a PDF and checks both.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] An atlas built from a schematic whose module symbol prints pad names as rotated text shows a port for every named pad in `pins.md`, each marked as recovered from the text layer.
+- [x] A pad whose name cannot be paired is listed in the atlas report.
+- [x] A test builds such a PDF and checks both.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Notes
+
+Unpaired pads are listed in the netlist `issues` (so `issues.md`, kind `pad-name-unpaired`), the schematic ingest's own report; a `checks.md` flag is EMB-156/EMB-188 and untouched. Vertical pads: rotated words in the pad number's x column; side pads: upright words on the pad's row, own side of the outline. Tested on a synthetic PDF only; real symbols with other layouts (numbers inside, mirrored columns) are unmeasured.
