@@ -1,6 +1,6 @@
 # 034 — Restack a stacked branch onto its moved base, hunk by hunk
 
-**State:** open
+**State:** claimed by agent/desk/034-restack-a-stacked-branch-onto-its-moved-base, 2026-11-17 23:21
 **Source:** Fleet Ready issue: when a base PR gains commits, a session restacks the branch on it by hand and writes a throwaway script that deletes or keeps conflict-marker blocks with a regex.
 **Issue:** EMB-142
 **Scope:** desk
