@@ -1,6 +1,6 @@
 # 083 — Diff an Altium project's parts and pin nets against a PDF-built atlas
 
-**State:** open
+**State:** claimed by agent/atlas/083-diff-cad-netlist-against-pdf-atlas, 2026-11-18 04:59
 **Source:** Fleet Ready issue: a netlist the atlas parsed from a schematic PDF cannot be checked against the CAD revision released for fabrication.
 **Issue:** EMB-88
 **Scope:** atlas
@@ -27,6 +27,8 @@ Second half of EMB-88, after `082` gives a CAD-side netlist in the PDF netlist's
 - Compare through the joined board nets (`aliases` included), never per sheet, so a net the PDF joins through off-sheet ports is one net on both sides.
 - Fixtures are synthetic and generic and reuse `082`'s test writer: one CAD project and one `netlist.json` that differ by one part value, one renamed net, one pin moved to another net, and one net the PDF left auto-named. `test_public_guard` must run, not skip.
 - CLI only unless a lookup is the natural home: if it goes under `q` and into MCP, update every lookup count and the test that pins the tool count, as `atlas/075` did. Docs: `DESIGN.md`, `README.md`, `embarch-doc/embarch-atlas/design.md`.
+- `082` landed as `embarch-atlas cad` (`src/embarch_atlas/cad.py`, code `b7edc78`); its fixture writer is `tests/schdoc_synth.py`, and its nine unverified format assumptions are in `DESIGN.md`, "Native EDA project". Build on that reader rather than re-parsing.
+- No file of this sub-project is in reserve.
 
 ## Done when
 
