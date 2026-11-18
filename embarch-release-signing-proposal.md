@@ -21,8 +21,7 @@ Spans `embarch-core`, `embarch-api`, `embarch-topology`, `embarch-umbrella`, `em
 
 Recommended, not yet answered one by one. Facts about the tools were checked on 2026-11-16 against Sigstore's and GitHub's own pages ([Checked](#checked-2026-11-16)).
 
-- **Each component's `release.yml` signs its archives**: `cosign sign-blob --bundle` per asset, with `id-token: write`, and the bundle (`.sigstore.json`: the signature, the short-lived certificate and the log's inclusion proof) uploaded beside the asset. **The certificate's identity is `https://github.com/` plus the job's `job_workflow_ref`**, the workflow file at the ref it ran on, and extensions carry the source repository, its commit, its ref and the trigger event. **No signing step sits in a reusable workflow**, since `job_workflow_ref` then names the called workflow, not the caller.
-- **Suite assembly becomes tag-triggered** on `suite-v*`, rather than started by hand, so its certificate names a tag rather than `main`. It **verifies each component's bundle against that component's own workflow identity** before repackaging, since a replaced asset would otherwise be signed again; writes `embarch-manifest.json` with **the SHA-256 of every file of every target**, the component tags and commits; signs the manifest; and adds GitHub's build provenance (`actions/attest-build-provenance`) as a second, non-deciding record.
+- **Signing in CI is written (step 1, 2026-11-17, EMB-190) and not yet run on a tag**, and lives in the owning repos' docs: each component's `release.yml` signs its archives ([core](embarch-core/spec.md#release-assets), [api](embarch-api/spec/implementation.md#8-release), [topology](embarch-topology/spec.md#what-a-release-carries)), and the suite assembly, on `suite-v*` tags, verifies each component's bundle by its exact identity, writes and signs a manifest per target with every file's SHA-256 and each component's tag and commit, and attests each archive ([umbrella spec](embarch-umbrella/spec.md), [decision 14](embarch-umbrella/decisions/install.md)). Each target's manifest and bundle are published as `embarch-manifest-<target>.json` and `embarch-manifest-<target>.json.sigstore.json`, since four would collide on one release. The reason the signing stays in each workflow file: the certificate's identity is `https://github.com/` plus the job's `job_workflow_ref`, which names a reusable workflow rather than its caller.
 - **`embarch verify-release` is built (step 3, 2026-11-17)** and lives in `embarch-umbrella`'s [spec](embarch-umbrella/spec.md) and [interfaces/verify-release.md](embarch-umbrella/interfaces/verify-release.md): the issuer and an exact identity built from the manifest's version, never a pattern; Sigstore's trust root embedded, so a check fetches nothing and an unknown log key names `--refresh-trust-root`, which fetches through TUF for that run and **never caches the root**, since a cached root in a folder the engineer's account can write could be swapped; the pinned `sigstore-verify` crate, not the "experimental" `sigstore` crate and not `cosign`, a runtime dependency against [umbrella decision 1](embarch-umbrella/decisions/release.md). **Still proposed:** checking the certificate's source-repository and ref extensions against that identity too (the identity already names both), and a test against a real suite release bundle, which needs step 1 first.
 - **The elevated install verifies before it installs**: it copies the archive into a staging folder only the elevated step can write, checks it there, so nothing can swap a file between the check and the install, and only then installs Core under its service account, **fills Core's protected store from the manifest** (bench firmware hashes, premade suites), records the manifest hash and the verified identity, and on a first install generates Core's key, shows its fingerprint and writes `core-fingerprint` ([12](notes/hil/12-prevention.md#the-root-of-trust-core-under-its-own-account)). **A failed check installs nothing.** An older suite version than the installed one is refused unless the person passes `--allow-downgrade`, which is recorded.
 - **Two signatures, two questions.** The release signature says which build is EmbArch's; Core's own key, made at install, signs its records, and a client still checks that key's fingerprint, got from the engineer. **`verify` can join the two**: the Core binary hash a signed record carries ([umbrella decision 56](embarch-umbrella/decisions/schema-skew.md)'s `binary_sha256`) looked up in a verified release manifest, so a report reads "Core: suite-v0.2.0, release verified".
@@ -43,14 +42,14 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 
 | Sub-project | Work |
 |---|---|
-| `embarch-umbrella` | `assemble-suite.yml` on `suite-v*` tags: component bundles verified, a per-file SHA-256 manifest signed, build provenance. `embarch verify-release`'s extension check (the rest of it is built). The elevated install verifying in a protected staging folder, then filling Core's store; a `doctor` check naming the verified release Core came from. The release script. [Decision 14](embarch-umbrella/decisions/install.md) amended: the manifest gains hashes and a signature |
+| `embarch-umbrella` | `embarch verify-release`'s extension check (the rest of it is built). The elevated install verifying in a protected staging folder, then filling Core's store; a `doctor` check naming the verified release Core came from. The release script |
 | `embarch-dev-bench` | A release workflow for the bench firmware images |
 | `embarch-doc` | [The user guide](suite/user-guide.md)'s install section, with the first download checked by `cosign`; [the dev workflow](embarch-dev-workflow.md)'s cutting a release; the HIL notes' release wording pointed here |
 | GitHub, by hand | Done: step 2 below |
 
 ## Order
 
-1. **Sign in CI**: the component archives and the suite manifest. Useful at once, since anyone can check a release with `cosign`. **The component half is written** (2026-11-17, EMB-190), not yet run on a tag: each `release.yml` signs its archives in one job in the `release` environment, and each repo's docs give the check — [core](embarch-core/spec.md#release-assets), [api](embarch-api/spec/implementation.md#8-release), [topology](embarch-topology/spec.md#what-a-release-carries).
+1. **Sign in CI**: written 2026-11-17 (EMB-190), in the five workflows the first bullet above names, and not yet run on a tag. `actionlint` has not run on any of them. The first signed suite release needs new signed component tags in `embarch-umbrella/suite.toml`, and cutting them is the owner's.
 2. **Harden the account**: done 2026-11-16. A passkey; on the five release repos, the tag ruleset and the `release` environment (the owner reviews, tag runs only).
 3. **`embarch verify-release`**: built 2026-11-17 (EMB-192), now in `embarch-umbrella`'s docs. Its `aws-lc-sys` build passed `build-check.yml`'s first run on the aarch64 Linux cross leg; the macOS leg was cancelled, unverified.
 4. **The elevated install checking before installing**, landing with the evidence proposal's step 1 (Core's own account and store).
@@ -61,13 +60,13 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 **No `embarch` exists yet to check the first `embarch`**, so the guide gives one command, with cosign 3.0.4 or later, and `gh attestation verify` as an alternative; from then on every update is checked by the installed `embarch`, and an attested install only ever by the elevated step:
 
 ```
-cosign verify-blob embarch-manifest.json \
-  --bundle embarch-manifest.json.sigstore.json \
+cosign verify-blob embarch-manifest-<target>.json \
+  --bundle embarch-manifest-<target>.json.sigstore.json \
   --certificate-identity https://github.com/gabrieltetar/embarch-umbrella/.github/workflows/assemble-suite.yml@refs/tags/suite-v<version> \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
 ```
 
-then `sha256sum -c` against the manifest's list.
+then each unpacked file's SHA-256 against the manifest's `files`.
 
 ## Checked (2026-11-16)
 
