@@ -1,6 +1,6 @@
 # 031 — Read a desk route's shape from a shell
 
-**State:** open
+**State:** claimed by agent/desk/031-read-a-desk-routes-shape, 2026-11-17 17:21
 **Source:** EMB-137, filed by an audit after a session building a desk sub-tab piped `curl` into throwaway Python three times to learn what routes returned
 **Issue:** EMB-137
 **Scope:** desk
