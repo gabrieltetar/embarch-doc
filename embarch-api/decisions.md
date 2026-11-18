@@ -15,7 +15,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The tool and CLI surface — JSON shape and versioning](decisions/surface.md) — JSON shape, watching a study live, what this binary says about itself, and which commit it is | 16, 24, 50, 93 | 6.0 KB |
 | [How a failure is reported and attributed](decisions/failure-reporting.md) — how a tool description cites its own decision, and the parity rule extended to the signal/dev-bench-link writers and the live memory read | 57, 67, 82, 83 | 6.3 KB |
 | [`validate`'s `kind`-classification thread](decisions/validate-kind.md) — call sites branching on `kind`, the third `"unknown"` value for a `kind`-less Core, and the `not_attached` lead's wording | 71, 73, 76 | 6.8 KB |
-| [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises | 23, 29, 41, 47, 52, 88 | 8.2 KB |
+| [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises; `bundle`'s README and chip-family table kept in code | 23, 29, 41, 47, 52, 88, 107 | 9.0 KB |
 | [`bench_exchange`](decisions/bench-exchange.md) — one call runs a console sequence and returns every listened console as one filtered timeline; why its times are the client's, not Core's | 89 | 4.0 KB |
 | [`serial_log` reads a declared signal](decisions/serial-log-signal.md) — Core resolves the signal to the port's current name; this crate never does, and project/port stay the fallback | 94 | 2.4 KB |
 | [Bench instruments](decisions/instruments.md) — four tools over Core's `/instruments` routes, the measured `et54` preset, and an unacknowledged set as an error | 97 | 2.6 KB |
