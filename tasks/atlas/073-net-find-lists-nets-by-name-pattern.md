@@ -1,6 +1,6 @@
 # 073 — `net-find` lists nets by name pattern across boards
 
-**State:** claimed by agent/atlas/073-net-find-lists-nets-by-name-pattern, 2026-11-17 23:00
+**State:** done
 **Reserve:** no `embarch-atlas` file is in reserve (`check-doc-size.py --pressure`, 2026-11-17 22:58).
 **Source:** Fleet Ready issue: a review needed every net matching a name pattern on two boards, with its pins, and `net-trace` takes one exact name.
 **Issue:** EMB-96
@@ -18,8 +18,12 @@ The owner moved the issue to Fleet Ready. Without the verb an agent writes a scr
 
 ## Done when
 
-- [ ] `embarch-atlas q net-find <pattern>` lists every matching net across all boards with board, net name and member pins.
-- [ ] The same lookup is an MCP tool on the atlas server, registered read-only.
-- [ ] A test covers a substring match, a glob match, a board filter and a pattern with no matches.
-- [ ] Every lookup count and list in the repo and in `embarch-doc/embarch-atlas/` agrees with the new count.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `changelog.d/` fragment dropped, `features.d/atlas-<NNN>-*` row if it is a user-visible feature.
+- [x] `embarch-atlas q net-find <pattern>` lists every matching net across all boards with board, net name and member pins.
+- [x] The same lookup is an MCP tool on the atlas server, registered read-only.
+- [x] A test covers a substring match, a glob match, a board filter and a pattern with no matches.
+- [x] Every lookup count and list in the repo and in `embarch-doc/embarch-atlas/` agrees with the new count.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `changelog.d/` fragment dropped, `features.d/atlas-<NNN>-*` row if it is a user-visible feature.
+
+## Outcome
+
+`nettrace.find` / `query.net_find` / MCP `net_find` / `q net-find`; 19 lookups everywhere. No `features.d` row: no atlas lookup has its own row (the atlas is one inventory row, `not-yet-020`). Pins print as bare `REF-PIN` (the board is on the line), the key form `net_trace` accepts after `<board>:`.
