@@ -1,6 +1,6 @@
 # 100 — The umbrella README says "LLM coding agent", not "AI coding agent"
 
-**State:** open
+**State:** claimed by agent/umbrella/100-readme-says-llm-coding-agent, 2026-11-17 23:21
 **Source:** Fleet Ready issue: the owner chose "LLM" over "AI" for every EmbArch doc in EmbArch's own voice (`notes/goals/01-scope.md`, "LLM", not "AI").
 **Issue:** EMB-194
 **Scope:** umbrella
