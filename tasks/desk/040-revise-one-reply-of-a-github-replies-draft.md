@@ -1,6 +1,6 @@
 # 040 — Revise one reply of a GitHub review-replies draft
 
-**State:** claimed by agent/desk/040-revise-one-reply-of-a-github-replies-draft, 2026-11-18 16:34
+**State:** done
 **Source:** Fleet Ready issue: an agent can revise a Linear draft around the owner's edits, but `POST /drafts/{id}/revise` refuses every `github_replies` draft with a 400. Named as next work in `embarch-desk` decision 88.
 **Issue:** EMB-212
 **Scope:** desk
@@ -25,7 +25,7 @@ The owner chose this as the extension on top of decisions 88 and 89 when he reco
 
 ## Done when
 
-- [ ] Revising one reply of a `github_replies` draft by `comment_id` changes that reply and no other.
-- [ ] A reply the owner edited is refused with 409, naming the reply and both texts; a posted reply is refused too.
-- [ ] Decisions 88 and 89 and `interfaces` say so.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] Revising one reply of a `github_replies` draft by `comment_id` changes that reply and no other.
+- [x] A reply the owner edited is refused with 409, naming the reply and both texts; a posted reply is refused too.
+- [x] Decisions 88 and 89 and `interfaces` say so.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
