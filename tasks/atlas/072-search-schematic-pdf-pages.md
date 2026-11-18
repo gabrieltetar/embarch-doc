@@ -38,7 +38,7 @@ recovery this sequence started with.
 
 ## Done when
 
-- [ ] A query returns hits from schematic PDF pages, each with its file and page number.
-- [ ] A test covers it on a synthetic schematic.
-- [ ] The atlas-use skill and `DESIGN.md` name the new search.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] A query returns hits from schematic PDF pages, each with its file and page number.
+- [x] A test covers it on a synthetic schematic.
+- [x] The atlas-use skill and `DESIGN.md` name the new search.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
