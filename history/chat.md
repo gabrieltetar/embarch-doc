@@ -12,6 +12,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- Picking a login now offers a window reload, since Claude Code's account dialog keeps the old login until one (embarch-chat decision 106).
 - embarch-chat: spec, interfaces, open and decisions/shape.md out of reserve; sections moved verbatim to spec/, interfaces/, open/ and decisions/rail.md.
 - Chat: sessions.md split, login and handoff decisions (101, 103, 105, 106) now in decisions/logins.md.
 - Chat spec §2's library, assistant, Promptu and reference-index bullets split verbatim into spec/input.md.
