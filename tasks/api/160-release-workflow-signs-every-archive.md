@@ -1,6 +1,7 @@
 # 160 — The release workflow signs every archive it uploads
 
-**State:** done, pushed on agent/api/160-release-workflow-signs-every-archive, 2026-11-17
+**State:** done
+**Branch:** pushed on agent/api/160-release-workflow-signs-every-archive (2026-11-17)
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** api
