@@ -1,6 +1,6 @@
 # 097 — `embarch verify-release`: check a suite release offline before installing it
 
-**State:** open
+**State:** claimed by agent/umbrella/097-embarch-verify-release, 2026-11-17 18:34
 **Source:** EMB-192, filed by the owner: step 3 of `embarch-doc/embarch-release-signing-proposal.md`, whose spike passed on 2026-11-16
 **Issue:** EMB-192
 **Scope:** umbrella
