@@ -1,6 +1,6 @@
 # 157 — Package a finished build as a flashable bundle for a bench engineer
 
-**State:** claimed by agent/api/157-bundle-a-build-for-a-bench-engineer, 2026-11-17 18:09
+**State:** done on branch; was claimed by agent/api/157-bundle-a-build-for-a-bench-engineer, 2026-11-17 18:09
 **Source:** EMB-171, filed by an audit after a firmware packet for a hardware engineer was hand-built with inline Python, because no `zip` binary was installed
 **Issue:** EMB-171
 **Scope:** api
@@ -58,9 +58,21 @@ The owner moved EMB-171 to Fleet Ready.
 
 ## Done when
 
-- [ ] `embarch-api bundle <project>` writes `<name>-<short-sha>/` with the hex and `README.md`, and `<name>-<short-sha>.zip`, with no `zip` binary on the machine.
-- [ ] The README holds the program, reset and recover commands with the hex's file name filled in, taken from what the suite records for the chip family, and says so plainly for a family it records nothing for.
-- [ ] A notes file passed to the verb is appended to the README.
-- [ ] The verb refuses a build whose artifact is older than its sources.
-- [ ] The same operation is reachable as an MCP tool.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] `embarch-api bundle <project>` writes `<name>-<short-sha>/` with the hex and `README.md`, and `<name>-<short-sha>.zip`, with no `zip` binary on the machine.
+- [x] The README holds the program, reset and recover commands with the hex's file name filled in, taken from what the suite records for the chip family, and says so plainly for a family it records nothing for.
+- [x] A notes file passed to the verb is appended to the README.
+- [x] The verb refuses a build whose artifact is older than its sources.
+- [x] The same operation is reachable as an MCP tool.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Outcome
+
+Shipped `embarch-api bundle` and the `bundle` MCP tool over `src/bundle.rs`; documented in `interfaces/tools-bundle.md`.
+
+- **The issue's "freshness rule" was only half there.** `build_and_flash` checks the artifact advanced past the *build's start*; nothing compared it with the *sources*. The comparison is new (`artifact_is_stale`, newest source mtime under the build's `cwd`, build dir and `.git`/`build`/`target`/`node_modules` skipped), and the verb also refuses when the build leaves the artifact stale.
+- **Coverage is `nrf54l` only**: the one family the suite records commands for. Program is `nrfutil ... chip_erase_mode=ERASE_ALL` (a name Core's docs give, never one Core runs); reset is J-Link Commander's `r`/`g`/`qc` from Core's J-Link arm; recover is the vendor erase-all (Core flashing decisions). The suite records no `nrfutil` reset, so none is written. Other families get a README line saying so.
+- **Design points for the owner, not decided as a numbered decision (burndown):** the template and family table live in `src/bundle.rs`, not a config file; partition addresses are read from `zephyr.dts` labels `mcuboot` / `image-0`, which fits Zephyr/MCUboot builds only.
+
+## Hardware-verification debt
+
+None run on hardware by rule. Unverified against a real sysbuild directory: the `zephyr.dts` parse (tested on a synthetic one) and that a real nRF54L `merged.hex` passes the segment check. Run `embarch-api bundle <real project>` once on a machine with a finished sysbuild build, and check the hex flashes with the README's program command.

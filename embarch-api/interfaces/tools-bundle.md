@@ -1,0 +1,14 @@
+# embarch-api: bundle tool
+
+**Status:** active, 2026-11-17. Packaging a finished build for an engineer who has a debug probe and the vendor's flashing CLI, with no toolchain and no checkout. See [tools.md](tools.md) for the one-table premise and `P`.
+
+| Tool / subcommand | Parameters | Does |
+|---|---|---|
+| `bundle` / `bundle <project>` | `project`, `P`, `notes_path?` (CLI `--notes <file>`), `out_dir?` (CLI `--out <dir>`, default the working directory), `build_variant?` | Writes `<name>-<short-sha>/` holding `<name>-<short-sha>.hex` and `README.md`, and `<name>-<short-sha>.zip` of that folder. Returns `folder`, `hex`, `readme`, `zip`, `segments`, `built`. Touches no hardware and needs no Core beyond resolving the target |
+
+- **Reuse or build.** The artifact is reused when it is newer than every file in the source tree (the build directory, `.git`, `build`, `target` and `node_modules` aside); otherwise the project is built. The existing fresh-artifact rule (spec §2) says an artifact must have advanced past the build's start, but nothing compared it with the *sources* before this verb, so the comparison is new here. It **refuses**, writing nothing, when the build fails, does not replace the artifact, or the shipped hex is still older than the sources.
+- **Which hex.** The sysbuild `merged.hex` at the build directory's root when there is one, else the artifact.
+- **Checked before anything is written.** The hex must hold data at the address of the partition labelled `mcuboot` and of the one labelled `image-0`, both read from the build's own `zephyr.dts` (the artifact's directory, then each image directory under the build), never from a constant. A partition's address is its `reg` offset plus the unit address of the flash node holding it, in 32-bit cells. A build with no such table is refused, not guessed at.
+- **Named by the commit.** `git rev-parse --short HEAD` of the project's `source_path`; a dirty tree is named in the README, not refused.
+- **No shell archiver, no script.** The zip is written with the `zip` crate and the hex read with `ihex`.
+- **The README** is rendered from a template in `src/bundle.rs`: the program (full chip erase), reset and recover commands with the hex's file name filled in, the console baud from the project's `serial_baud`, then the notes file appended. **Every command comes from a family table (`FAMILIES`) that holds only what the suite already records**, today `nrf54l` from `embarch-core`'s flash backends and its flashing decisions: `nrfutil device program ... chip_erase_mode=ERASE_ALL`, J-Link Commander's `r`, `g`, `qc` reset, and the vendor erase-all as recovery. A family the table does not hold gets a README line saying the suite records nothing, and no command. A project with no `serial_baud` gets the same line for the console.

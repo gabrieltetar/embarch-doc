@@ -1,0 +1,1 @@
+| `bundle` — a finished build as `<name>-<short-sha>/` (hex, README of the suite's flash commands) and a zip, CLI and MCP | Built, checked on a synthetic build only; only `nrf54l` has commands, other families say so | unit | [tools-bundle](../embarch-api/interfaces/tools-bundle.md) |
