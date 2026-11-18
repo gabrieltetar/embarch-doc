@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The wire probe (tools/wire-probe.mjs) asks the live claude one question and prints every reply line with its time; --list reads a fixture; interfaces/wire-probe.md.
 - The Promptu card offers "Restore my original prompt" after a rewrite: one click puts the typed prompt back in the draft, read through `promptu original` ([spec](../embarch-chat/spec/input.md)).
 - The `last_session` MCP tool and `node dist/last-session.js` print a dead session's last turns, tool calls and pending background tasks, falling back to the main clone's folder from a worktree.
 - An issue that is Done or Canceled ends its chat: a message on top, one Close window button, no more input; an unfinished one lists its blockers with Finish (embarch-chat decision 104).
