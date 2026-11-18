@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `schematic_text` (CLI `q schematic-text`, MCP): search schematic PDF page text, each hit with board, file, page, sheet; see embarch-atlas DESIGN.md.
 - Atlas schematic ingest recovers a module's rotated pad names from the PDF text layer, marked text-layer; unpairable pads go to issues.md (EMB-89).
 - atlas: `[project] library` names a shared datasheet folder read beside sources; `doc prep` and `schematic` keep a sha256 copy of each file they read ([design](../embarch-atlas/design.md)).
 - A session in a git worktree of an atlas-equipped repo now resolves the main clone's atlas (CLI, MCP, `atlas-use` skill); an explicit `--atlas-dir` still wins.
