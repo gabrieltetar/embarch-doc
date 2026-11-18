@@ -1,12 +1,28 @@
 # 028 — Read where a dead session stopped, without parsing its transcript
 
-**State:** claimed by agent/chat/028-read-where-a-dead-session-stopped, 2026-11-17 14:51
+**State:** claimed by agent/chat/028-read-where-a-dead-session-stopped, 2026-11-17 17:20
 **Source:** EMB-189, filed by an audit after a resumed session had an agent write a throwaway script to dig the last turns out of a dead session's transcript; EMB-200, the reviewer's finding on the first landing
 **Issue:** EMB-189
 **Issue:** EMB-200
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
+
+## Resume, read before anything else
+
+The re-land worker dispatched at 14:51 died on a usage-limit 429 with its tree
+uncommitted. Recovery committed that tree as it stood, ungated:
+
+- **Code:** `agent/chat/028-read-where-a-dead-session-stopped` on `embarch-chat`
+  is `c55f218` (`git revert 3288cf6`, the build restored) plus `1898a43` (the
+  dead worker's WIP: a `projectsRoot` getter on `Chat`, the field on
+  `HandoffPort`, `hostHooks.ts` passing it to `lastSessionCall`, and a test for a
+  `configDir` login). Review it as someone else's draft, finish it, and run the
+  whole gate; do not trust that it passes.
+- **Docs:** the doc branch is still `88f845e7` alone, on a `main` 13 commits
+  old, and pushed. Add your commits on top and push without rewriting it; do not
+  rebase or force-push. The leg cherry-picks it at landing. `spec/handoff.md`
+  still has to name the login the read uses.
 
 ## Re-land, read first
 
