@@ -1,7 +1,6 @@
 # 083 — Diff an Altium project's parts and pin nets against a PDF-built atlas
 
-**State:** blocked — waits for the SchDoc reader it compares against.
-**Unparks when:** tasks/atlas/082 lands.
+**State:** open
 **Source:** Fleet Ready issue: a netlist the atlas parsed from a schematic PDF cannot be checked against the CAD revision released for fabrication.
 **Issue:** EMB-88
 **Scope:** atlas

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas: `embarch-atlas cad` reads an Altium project's SchDoc sources into parts, pin nets and variant not-fitted parts, read-only; synthetic fixtures only ([design](../embarch-atlas/design.md)).
 - Atlas `derive strain-budget <file>`: section modulus, strain, deflection, bridge output, noise-limited resolution from loads and geometry, each (derived) with its formula; no atlas read (atlas/081).
 - Atlas `q shell-commands` and MCP `shell_commands`: the shell commands an image has, with argument counts and help, read from its ELF; stale-flagged when the ELF changes (atlas/080).
 - Atlas `q rc_timing` and MCP `rc_timing`: worst-case time for a series R and C node to cross the receiving pin's guaranteed VIH or VIL, each input cited or named assumed (atlas/079).
