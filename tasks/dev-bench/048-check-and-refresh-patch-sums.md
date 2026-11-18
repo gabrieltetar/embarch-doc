@@ -1,6 +1,6 @@
 # 048 — Check and refresh the sha256 sums in a patches.yml
 
-**State:** open
+**State:** claimed by agent/dev-bench/048-check-and-refresh-patch-sums, 2026-11-17 18:09
 **Source:** EMB-146, filed by an audit after `tasks/dev-bench/036` reworded two carried Zephyr patches and recomputed their sums by hand
 **Issue:** EMB-146
 **Scope:** dev-bench
