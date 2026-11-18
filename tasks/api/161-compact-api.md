@@ -1,6 +1,6 @@
 # 161 — `embarch-api/spec/implementation.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/api/161-compact-api, 2026-11-17 23:00
 **Source:** api 160 (EMB-190) added §8 Release, leaving `spec/implementation.md` at 9,168 of 10,240 B.
 **Scope:** api
 **Hardware:** none
