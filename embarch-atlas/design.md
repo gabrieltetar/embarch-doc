@@ -26,7 +26,7 @@ A standard's requirement record may carry a `fw_check`: inputs read from the bui
 
 ## Web page or PDF as text
 
-`fetch-text <url|file> [--json]` turns an http(s) URL or a local HTML or PDF file into plain text: scripts, styles and tags removed, entities unescaped, whitespace collapsed (standard-library `html.parser`, no new dependency). A bot challenge, captcha or rate-limit page (HTTP 403/429/503 with a short body, or a short page carrying a known interstitial phrase) is never printed as content: exit 3, `blocked: true` on stderr, or in the `--json` result. A PDF reuses `pdf pages`' poppler helpers (`pdftotext`). Not an MCP tool. Detail: the repo's `DESIGN.md`.
+`fetch-text <url|file> [--json]` turns an http(s) URL or a local HTML or PDF file into plain text: scripts, styles and tags removed, entities unescaped, whitespace collapsed (standard-library `html.parser`, no new dependency). A bot challenge, captcha or rate-limit page (HTTP 403/429/503 with a short body, or a short page carrying a known interstitial phrase) is never printed as content: exit 3, `blocked: true` on stderr, or in the `--json` result. A PDF reuses `pdf pages`' poppler helpers (`pdftotext`). Not an MCP tool. Detail: the repo's `DESIGN.md`. **Unreconciled:** this is the atlas's one network call, and the "never fetches" statements in this file and in `DESIGN.md` (with the owner's 2026-11-17 rejection of an opt-in fetcher) do not yet carve it out; EMB-208 holds that for the owner.
 
 ## Open questions, recorded before resuming (so they aren't re-litigated from scratch)
 

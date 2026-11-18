@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas gains `fetch-text <url|file>`: a page or PDF as plain text, and a bot challenge or rate limit reported as blocked, never printed as content. No new dependency.
 - embarch-atlas pdf pages renders pages of any PDF, scanned or not, to PNGs for the image Read tool, with tile grids, point crops and a per-page text-layer report.
 - q parts <board> <ref>... and an MCP tool return MPN, value, tolerance, rating, DNP and pin nets; schematic parses tolerance and rating into bom.json (EMB-180).
 - The atlas gains a nineteenth lookup, `net_find`: every net matching a name pattern across all boards with its pins (CLI `q net-find`, read-only MCP tool).
