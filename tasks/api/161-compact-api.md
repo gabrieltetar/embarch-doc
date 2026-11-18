@@ -1,6 +1,6 @@
 # 161 — `embarch-api/spec/implementation.md` is in reserve
 
-**State:** claimed by agent/api/161-compact-api, 2026-11-17 23:00
+**State:** done
 **Source:** api 160 (EMB-190) added §8 Release, leaving `spec/implementation.md` at 9,168 of 10,240 B.
 **Scope:** api
 **Hardware:** none
@@ -21,5 +21,5 @@ Bring `spec/implementation.md` out of reserve by moving a settled section into a
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-api/spec/implementation.md`.
-- [ ] `check-links.py` green; gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-api/spec/implementation.md`.
+- [x] `check-links.py` green; gate green (`../../embarch-fleet/gate.md`).
