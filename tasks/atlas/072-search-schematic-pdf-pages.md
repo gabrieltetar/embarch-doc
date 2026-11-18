@@ -1,6 +1,6 @@
 # 072 — Search the text of schematic PDF pages
 
-**State:** open
+**State:** claimed by agent/atlas/072-search-schematic-pdf-pages, 2026-11-17 19:19
 **Source:** EMB-156, an audit finding: `find_text` searches datasheet documents only, so a pin name or a net cannot be looked up on a schematic page
 **Issue:** EMB-156
 **Scope:** atlas
