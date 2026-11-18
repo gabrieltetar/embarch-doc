@@ -1,6 +1,6 @@
 # 127 — The release workflow signs every archive it uploads
 
-**State:** open
+**State:** claimed by agent/core/127-release-workflow-signs-every-archive, 2026-11-17 22:36
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** core
