@@ -1,6 +1,6 @@
 # 081 — Derive a strain-sensor signal budget from loads and geometry
 
-**State:** claimed by agent/atlas/081-strain-sensor-signal-budget, 2026-11-18 04:09
+**State:** done
 **Source:** Fleet Ready issue: sessions sizing a strain or load sensor against an ADC's noise keep re-deriving section modulus, strain and bridge output with inline Python, so constants and assumptions drift between reports.
 **Issue:** EMB-139
 **Scope:** atlas
@@ -33,8 +33,8 @@ The owner moved the issue to Fleet Ready, scoped to `atlas`. The atlas already m
 
 ## Done when
 
-- [ ] One command returns section modulus, bending, axial and torsional strain, and deflection for solid and tubular round sections and a rectangular flexure, from a load case.
-- [ ] The same command returns bridge output per microstrain and the noise-limited resolution, given gauge factor, excitation and ADC noise.
-- [ ] Every output value is tagged `(derived)` and names its formula.
-- [ ] A test reproduces at least three hand-computed cases (solid rod, thin-wall tube, rectangular flexure) to three significant figures.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] One command returns section modulus, bending, axial and torsional strain, and deflection for solid and tubular round sections and a rectangular flexure, from a load case.
+- [x] The same command returns bridge output per microstrain and the noise-limited resolution, given gauge factor, excitation and ADC noise.
+- [x] Every output value is tagged `(derived)` and names its formula.
+- [x] A test reproduces at least three hand-computed cases (solid rod, thin-wall tube, rectangular flexure) to three significant figures.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
