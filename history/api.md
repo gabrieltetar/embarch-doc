@@ -16,6 +16,7 @@
 - Windows tree kill on a timed-out build verified on Windows; decision 75 drops its unix-only qualifier ([decisions/build.md](../embarch-api/decisions/build.md)).
 
 ### Fixed
+- Bundle README now gives Core's range-erase nrfutil command, not ERASE_ALL, and says it is unconfirmed on a board.
 - embarch-api tests name their scratch directories from a process-wide counter (support::unique_dir), not the nanosecond clock; two tests no longer share one.
 - embarch-api tests: the binary-spawning tests strip `EMBARCH_REQUIRE_LEASE`, so `cargo test --manifest-path` from the suite root no longer fails 20 tests.
 - lease_client tests no longer flake: two tests in one clock tick shared a scratch dir; a counter names it now (api task 151).
