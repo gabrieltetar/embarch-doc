@@ -1,6 +1,6 @@
 # 085 — `q stacks` lists a driver's per-instance thread stack
 
-**State:** claimed by agent/atlas/085-list-per-instance-driver-thread-stacks, 2026-11-18 16:34
+**State:** done, 2026-11-18
 **Source:** Fleet Ready issue: `embarch-atlas q stacks` omits every thread stack a driver defines once per devicetree instance, so its count and noinit total are too low for any driver that owns a thread.
 **Issue:** EMB-27
 **Scope:** atlas
@@ -28,7 +28,7 @@ The issue's reproduction supplies the real symbol shape the fleet could not see 
 
 ## Done when
 
-- [ ] A per-instance stack symbol (`<name>_stack_<N>` in `noinit`) appears in `stack_rows` and in `q stacks`, with its option matched as for any other stack.
-- [ ] The fixture in `tests/test_footprint.py` carries that symbol shape, and a non-stack noinit symbol with a numeric suffix stays out.
-- [ ] `q stacks`'s count and noinit total include the per-instance stacks.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it lists the name patterns; `changelog.d/` fragment dropped.
+- [x] A per-instance stack symbol (`<name>_stack_<N>` in `noinit`) appears in `stack_rows` and in `q stacks`, with its option matched as for any other stack.
+- [x] The fixture in `tests/test_footprint.py` carries that symbol shape, and a non-stack noinit symbol with a numeric suffix stays out.
+- [x] `q stacks`'s count and noinit total include the per-instance stacks.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `DESIGN.md` updated if it lists the name patterns; `changelog.d/` fragment dropped.
