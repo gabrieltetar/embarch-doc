@@ -1,6 +1,6 @@
 # 079 — Worst-case RC threshold-crossing time from board parts and facts
 
-**State:** open
+**State:** claimed by agent/atlas/079-worst-case-rc-threshold-crossing-time, 2026-11-18 03:49
 **Source:** Fleet Ready issue: a firmware session wrote inline Python to work out the worst-case time for an RC node to cross a gate's input threshold, from component tolerances and the supply's accuracy, when the atlas already holds most of the inputs.
 **Issue:** EMB-195
 **Scope:** atlas
