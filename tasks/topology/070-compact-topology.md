@@ -1,6 +1,6 @@
 # 070 — Compact embarch-topology's spec
 
-**State:** claimed by agent/topology/070-compact-topology, 2026-11-17 23:00
+**State:** done
 **Scope:** topology
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,5 @@
 
 ## Done when
 
-- [ ] `embarch-topology/spec.md` is out of reserve and no behaviour it states is lost.
-- [ ] Gate green.
+- [x] `embarch-topology/spec.md` is out of reserve and no behaviour it states is lost.
+- [x] Gate green.
