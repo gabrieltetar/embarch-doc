@@ -1,6 +1,6 @@
 # 075 — `q parts` returns value, tolerance and rating by reference
 
-**State:** claimed by agent/atlas/075-q-parts-returns-tolerance-and-rating-by-reference, 2026-11-17 23:43
+**State:** done 2026-11-17 on agent/atlas/075-q-parts-returns-tolerance-and-rating-by-reference
 **Source:** Fleet Ready issue: a worst-case divider calculation needed each part's tolerance, and `parts.md` drops it, so a session parsed `bom.json` by hand.
 **Issue:** EMB-180
 **Scope:** atlas
@@ -25,7 +25,7 @@ The owner moved the issue to Fleet Ready. Every firmware limit derived from a di
 
 ## Done when
 
-- [ ] `embarch-atlas q parts <board> <ref>...` prints MPN, value, tolerance, rating and DNP for each reference, and says which references it did not find; the MCP tool returns the same.
-- [ ] Tolerance is parsed from the BOM description when no dedicated field exists, and shows as unknown rather than guessed when neither has it.
-- [ ] `parts.md` rows carry the tolerance.
-- [ ] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); docs updated, `changelog.d/` fragment dropped.
+- [x] `embarch-atlas q parts <board> <ref>...` prints MPN, value, tolerance, rating and DNP for each reference, and says which references it did not find; the MCP tool returns the same.
+- [x] Tolerance is parsed from the BOM description when no dedicated field exists, and shows as unknown rather than guessed when neither has it.
+- [x] `parts.md` rows carry the tolerance.
+- [x] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); docs updated, `changelog.d/` fragment dropped.
