@@ -1,6 +1,6 @@
 # 078 — Decode the raw reply of a sensor that has no registers
 
-**State:** claimed by agent/atlas/078-decode-a-command-then-read-sensor-reply, 2026-11-18 03:47
+**State:** done — 2026-11-18, q decode and MCP decode shipped
 **Source:** Fleet Ready issue: a session debugging a sensor that read zero on the bench converted its raw I2C reply (a status byte and a 24-bit count) to a physical value by hand, because `reg_read` decodes registers and this part has none.
 **Issue:** EMB-177
 **Scope:** atlas
@@ -27,7 +27,7 @@ The owner moved the issue to Fleet Ready. The atlas already decodes a register r
 
 ## Done when
 
-- [ ] Given the hex bytes of a status-plus-count reply and the node's label, the atlas prints each status bit, the count and the physical value, with the datasheet page cited.
-- [ ] A count below the transfer function's minimum is reported as a negative value, not clamped.
-- [ ] A part with no frame layout or transfer function in its records gets an answer naming what is missing.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] Given the hex bytes of a status-plus-count reply and the node's label, the atlas prints each status bit, the count and the physical value, with the datasheet page cited.
+- [x] A count below the transfer function's minimum is reported as a negative value, not clamped.
+- [x] A part with no frame layout or transfer function in its records gets an answer naming what is missing.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
