@@ -1,6 +1,6 @@
 # 033 — A desk tool returns a pull request's review threads
 
-**State:** open
+**State:** claimed by agent/desk/033-a-desk-tool-returns-a-prs-review-threads, 2026-11-17 19:19
 **Source:** EMB-176, an audit finding: a session answering a code review pulls the review comments with `gh api` and writes a throwaway script to group them into threads
 **Issue:** EMB-176
 **Scope:** desk
