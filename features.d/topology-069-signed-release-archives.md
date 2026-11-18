@@ -1,0 +1,1 @@
+| embarch-topology release archives signed keylessly in CI, a cosign bundle beside each asset — **unrun on a real tag**; the first signed release is the test | Built (workflow only; `actionlint` did not run) | — | — |

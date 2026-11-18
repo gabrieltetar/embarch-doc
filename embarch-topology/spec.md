@@ -104,6 +104,19 @@ across a retry or a later operation. A board unplugged, re-enrolled, or
 moved between calls is invisible until the next call; **never cache a pass
 as durable — re-call instead** (decision 29).
 
+## What a release carries
+
+A `v*.*.*` tag builds four archives (Windows `.zip`; Linux x86_64, Linux aarch64 and macOS arm64 `.tar.gz`). The build matrix holds no OIDC token and only uploads workflow artifacts; one `sign` job in `release.yml` itself, under the `release` environment (the owner approves, tag runs only) with `id-token: write`, signs each archive with cosign 3.0.4 or later (`cosign sign-blob --bundle`) and publishes every archive beside its `<archive>.sigstore.json` bundle. The signing stays in this file because the certificate's identity is the workflow at the tag. To check an asset:
+
+```
+cosign verify-blob <archive> \
+  --bundle <archive>.sigstore.json \
+  --certificate-identity https://github.com/gabrieltetar/embarch-topology/.github/workflows/release.yml@refs/tags/<tag> \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+```
+
+Not yet run on a real tag: the first signed release is the first test (the suite assembly does not pull these archives today). Design: [release signing proposal](../embarch-release-signing-proposal.md).
+
 ## Where it stands
 
 Both real boards are enrolled; a real flash-plus-study has run clean.

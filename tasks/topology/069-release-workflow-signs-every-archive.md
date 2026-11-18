@@ -1,6 +1,6 @@
 # 069 — The release workflow signs every archive it uploads
 
-**State:** claimed by agent/topology/069-release-workflow-signs-every-archive, 2026-11-17 22:36
+**State:** done (branch pushed, not merged); claimed by agent/topology/069-release-workflow-signs-every-archive, 2026-11-17 22:36
 **Source:** EMB-190, the owner's issue: step 1 of `embarch-release-signing-proposal.md` ("Order"), sign every release in CI
 **Issue:** EMB-190
 **Scope:** topology
@@ -68,8 +68,14 @@ built and has nothing signed to check.
 
 ## Done when
 
-- [ ] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
-- [ ] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
-- [ ] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
-- [ ] The topology docs say what a release carries and give the exact `cosign verify-blob` check.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+- [x] `release.yml` signs every uploaded asset with cosign 3.0.4 or later and uploads a `.sigstore.json` bundle beside it.
+- [x] The signing job has `id-token: write` and `environment: release`, and sits in `release.yml` itself, not a reusable workflow.
+- [x] `actionlint` passes on the changed workflow, or, where it is not installed, it parses as YAML and the debt is recorded here.
+- [x] The topology docs say what a release carries and give the exact `cosign verify-blob` check.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10); `changelog.d/` fragment; the `status.d/` fragment for the proposal.
+
+## Result
+
+- `release.yml`: `build` matrix now uploads `archive-<target>` workflow artifacts (no signing, no `id-token`); new `sign` job (`needs: build`, `environment: release`, `id-token: write`, `contents: write`) downloads them, installs cosign v3.0.4 via `sigstore/cosign-installer@v3`, runs `cosign sign-blob --yes --bundle <asset>.sigstore.json` on each (fails unless exactly 4 archives), and publishes asset and bundle with `softprops/action-gh-release@v2`. No reusable workflow. `test.yml` untouched.
+- Docs: `embarch-topology/spec.md` "What a release carries" (with the exact `cosign verify-blob`). No decision added or amended (no design call needed; crate.md decision text on release CI is about path deps, not signing).
+- **Debt, owner-side:** `actionlint` is not installed and did not run; the workflow was only loaded with PyYAML (parses, jobs: verify-version, build, sign). Nothing was run on a real tag; the first signed release is the first test. Unverified guess: `cosign-installer@v3` accepting `cosign-release: v3.0.4` (the installer's documented input) — check on the first run. Also `workflow_dispatch` runs would still fail at the `release` environment/publish as before (not a tag).

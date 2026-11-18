@@ -1,0 +1,3 @@
+**Target:** embarch-release-signing-proposal.md — "Order", step 1 (sign every release in CI), embarch-topology's half
+**Was:** step 1 not built for embarch-topology; its release.yml uploads bare archives
+**Now:** embarch-topology's release.yml (EMB-190, task topology/069) builds in the matrix, then one `sign` job (`environment: release`, `id-token: write`, cosign 3.0.4 via sigstore/cosign-installer) signs all four archives and uploads each `.sigstore.json` bundle. Identity `https://github.com/gabrieltetar/embarch-topology/.github/workflows/release.yml@refs/tags/<tag>`. Unrun on a real tag; actionlint did not run (not installed). See embarch-topology/spec.md "What a release carries".
