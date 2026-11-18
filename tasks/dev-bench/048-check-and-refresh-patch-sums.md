@@ -1,6 +1,6 @@
 # 048 — Check and refresh the sha256 sums in a patches.yml
 
-**State:** claimed by agent/dev-bench/048-check-and-refresh-patch-sums, 2026-11-17 18:09
+**State:** done on agent/dev-bench/048-check-and-refresh-patch-sums, 2026-11-17
 **Source:** EMB-146, filed by an audit after `tasks/dev-bench/036` reworded two carried Zephyr patches and recomputed their sums by hand
 **Issue:** EMB-146
 **Scope:** dev-bench
@@ -49,7 +49,7 @@ The owner moved EMB-146 to Fleet Ready.
 
 ## Done when
 
-- [ ] One command reports every `patches.yml` entry whose `sha256sum` does not match its file, and exits non-zero when any does.
-- [ ] One command rewrites those `sha256sum` fields in place, leaving every other field and comment untouched; a test compares the rest of the file byte for byte.
-- [ ] `pd-bench/README.md` names the command where it says how to change a patch.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] One command reports every `patches.yml` entry whose `sha256sum` does not match its file, and exits non-zero when any does.
+- [x] One command rewrites those `sha256sum` fields in place, leaving every other field and comment untouched; a test compares the rest of the file byte for byte.
+- [x] `pd-bench/README.md` names the command where it says how to change a patch.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.

@@ -47,7 +47,7 @@ workspaces/                       one west topdir per vendor family, and pd-benc
 └── pd-bench/      Zephyr v4.4.2 + six USB-C patches in manifest/zephyr/ (decision 58)
 ```
 
-Each workspace's manifest lives in a `manifest/` subdirectory, not at the workspace root: `west init -l <dir>` places `.west/` *next to* `<dir>`, so nesting keeps each topdir independent. `app` is a symlink in every vendor workspace and `pd-bench` in its own, never a copy. In `workspaces/pd-bench/`, `west patch apply` follows `west update`.
+Each workspace's manifest lives in a `manifest/` subdirectory, not at the workspace root: `west init -l <dir>` places `.west/` *next to* `<dir>`, so nesting keeps each topdir independent. `app` is a symlink in every vendor workspace and `pd-bench` in its own, never a copy. In `workspaces/pd-bench/`, `west patch apply` follows `west update`. **`scripts/patch-sums.py --check|--update <patches.yml>`** keeps a `patches.yml`'s `sha256sum` fields true without a west workspace: it resolves `path` as `west patch` does (against `patches/` beside the yml), hashes with west's newline normalisation, and `--update` edits only the stale values in place. It is the gate's `--check` step for a changed patch (named in the repo's `CLAUDE.md`), so a stale sum fails before `west patch apply` does; tests in `scripts/test_patch_sums.py`.
 
 ## 3. Invariants
 
