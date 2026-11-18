@@ -1,6 +1,6 @@
 # 074 — The atlas-use skill and `MAP.md` show that `q config` takes several symbols
 
-**State:** open
+**State:** claimed by agent/atlas/074-atlas-use-shows-q-config-takes-several-symbols, 2026-11-17 23:21
 **Source:** Fleet Ready issue: a session read ten Kconfig symbols by parsing an atlas's `kconfig.json` with a throwaway script, because the skill shows `config` with one symbol.
 **Issue:** EMB-186
 **Scope:** atlas
