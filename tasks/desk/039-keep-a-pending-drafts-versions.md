@@ -1,6 +1,6 @@
 # 039 — Keep every agent revision and owner edit of a pending draft as a version
 
-**State:** claimed by agent/desk/039-keep-a-pending-drafts-versions, 2026-11-18 15:55
+**State:** done
 **Source:** Fleet Ready issue: a pending draft keeps only the agent's last version beside the owner's current body, so the learning diff cannot be taken against an earlier round, and a second owner edit after a revision cannot be told apart from the first. Named as next work in `embarch-desk` decision 88.
 **Issue:** EMB-211
 **Scope:** desk
@@ -27,8 +27,10 @@ The owner chose this as the extension on top of decision 88 when he recorded it 
 
 ## Done when
 
-- [ ] Every agent revision and owner edit of a pending draft is kept as a version with its author and time; a no-op `PATCH` adds none.
-- [ ] `GET /drafts/{id}` returns the versions, and `desk_get_draft` diffs any two; with no versions named, `agent_body` and `owner_diff` answer as before.
-- [ ] A draft stored before this unit reads with a synthesized history, tested.
-- [ ] Decision 88 names the history; `interfaces` documents the new fields.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped, `features.d/` row if a new capability shows.
+- [x] Every agent revision and owner edit of a pending draft is kept as a version with its author and time; a no-op `PATCH` adds none.
+- [x] `GET /drafts/{id}` returns the versions, and `desk_get_draft` diffs any two; with no versions named, `agent_body` and `owner_diff` answer as before.
+- [x] A draft stored before this unit reads with a synthesized history, tested.
+- [x] Decision 88 names the history; `interfaces` documents the new fields.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped, `features.d/` row if a new capability shows.
+
+Hardware verification debt: none. `spec.md` untouched (038 stays as filed). `github_replies` drafts are not versioned (one body per thread; 040).
