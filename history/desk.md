@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A pending draft keeps every agent revision and owner edit as a version; desk_get_draft diffs any two (88).
 - Desk drafts keep the agent version beside the owner edits: desk_revise_draft applies a change to both and refuses a collision; desk_get_draft gives the owner-only diff (EMB-165).
 - embarch-desk: github_draft_review_replies drafts replies to a PR's review threads; one Send posts each in its own thread after every comment id is checked.
 - `desk_restack` restacks a stacked branch onto its moved base, resolving each conflicted hunk as ours, theirs or neither; local git, never pushes (EMB-142)

@@ -1,12 +1,11 @@
 # 040 — Revise one reply of a GitHub review-replies draft
 
-**State:** blocked
+**State:** open
 **Source:** Fleet Ready issue: an agent can revise a Linear draft around the owner's edits, but `POST /drafts/{id}/revise` refuses every `github_replies` draft with a 400. Named as next work in `embarch-desk` decision 88.
 **Issue:** EMB-212
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
-**Unparks when:** desk/039 lands.
 
 ## What
 
