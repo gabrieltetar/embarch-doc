@@ -1,6 +1,6 @@
 # 035 — Post approved replies to GitHub review threads from one draft
 
-**State:** claimed by agent/desk/035-post-approved-replies-to-github-review-threads, 2026-11-17 23:43
+**State:** done
 **Source:** Fleet Ready issue: posting approved replies to a PR review took a throwaway script that split a draft file and called the GitHub API once per thread.
 **Issue:** EMB-173
 **Scope:** desk
@@ -23,9 +23,16 @@ The owner moved the issue to Fleet Ready. Every session that answers a code revi
 - Test against a stubbed GitHub client. **Never post to a real repository** from a test or by hand.
 - No file of this sub-project is in reserve.
 
+## Outcome
+
+`github_draft_review_replies(repo, number, replies)` MCP tool, over `POST /drafts` kind `github_replies` (same pending-draft store, Send and `direct_writes` path as the Linear drafts). Send checks every comment id against the PR's review comments (`github::thread_roots`) before posting, posts each body under its thread's root, records each URL on the draft and returns `urls`; a mid-batch failure keeps the draft open with posted URLs kept. Tested against a local stub GitHub server (four tests in `server.rs`), never a real repo.
+
+- **No decision authored (burndown).** The desk's first draft that posts outside Linear arguably wants one; not filed, the shape is documented in `interfaces.md`.
+- **Debt, other repo:** the Desk tab (`embarch-ui/assets/desk.js`) does not render or edit this draft kind; filed as EMB-205. The first box is met in the desk's data (`/view` drafts) and PATCH/Send routes, not yet on screen.
+
 ## Done when
 
-- [ ] A session can propose replies to two or more review threads on one PR, and they wait for the owner's Send on the Desk tab.
-- [ ] On Send, each reply lands in its own thread, and every posted URL is returned or shown.
-- [ ] A comment id that does not belong to the PR stops the send before anything is posted.
-- [ ] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
+- [x] A session can propose replies to two or more review threads on one PR, and they wait for the owner's Send on the Desk tab.
+- [x] On Send, each reply lands in its own thread, and every posted URL is returned or shown.
+- [x] A comment id that does not belong to the PR stops the send before anything is posted.
+- [x] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
