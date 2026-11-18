@@ -1,6 +1,6 @@
 # 100 — The umbrella README says "LLM coding agent", not "AI coding agent"
 
-**State:** claimed by agent/umbrella/100-readme-says-llm-coding-agent, 2026-11-17 23:21
+**State:** done (2026-11-17)
 **Source:** Fleet Ready issue: the owner chose "LLM" over "AI" for every EmbArch doc in EmbArch's own voice (`notes/goals/01-scope.md`, "LLM", not "AI").
 **Issue:** EMB-194
 **Scope:** umbrella
@@ -29,7 +29,11 @@ The owner moved the issue to Fleet Ready. `notes/goals/` already says "LLM" thro
 
 ## Done when
 
-- [ ] `embarch-umbrella/README.md` reads "LLM coding agent" (or "LLM agent") where it said "AI coding agent".
-- [ ] Two `status.d/` fragments name the exact `Was` text of the two `suite/` lines and what each should say.
-- [ ] The whole-word search over embarch-doc's and embarch-umbrella's Markdown finds `AI` only in a quote, a product or company name, the landscape research, or the two lines the fragments cover.
-- [ ] Gate green (`../../embarch-fleet/gate.md`: cargo, client names on the code repo, `check-docs.py`, ownership on both branches).
+- [x] `embarch-umbrella/README.md` reads "LLM coding agent" (or "LLM agent") where it said "AI coding agent".
+- [x] Two `status.d/` fragments name the exact `Was` text of the two `suite/` lines and what each should say.
+- [x] The whole-word search over embarch-doc's and embarch-umbrella's Markdown finds `AI` only in a quote, a product or company name, the landscape research, or the two lines the fragments cover.
+- [x] Gate green (`../../embarch-fleet/gate.md`: cargo, client names on the code repo, `check-docs.py`, ownership on both branches).
+
+## Result
+
+Whole-word search (`grep -rnw AI`, history/changelog.d/research/prior-art excluded): embarch-doc finds only `notes/goals/01-scope.md` and `notes/goals/README.md` (quotes of the rule), this task file, the two `suite/` lines the fragments cover, and the fragments themselves. embarch-umbrella finds nothing after the README edit.
