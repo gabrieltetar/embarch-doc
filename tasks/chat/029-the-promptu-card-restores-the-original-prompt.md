@@ -1,6 +1,6 @@
 # 029 — The Promptu card restores the original prompt after a rewrite
 
-**State:** done, 2026-11-17 (branch agent/chat/029-the-promptu-card-restores-the-original-prompt)
+**State:** done (2026-11-17, branch agent/chat/029-the-promptu-card-restores-the-original-prompt)
 **Source:** EMB-197, filed by the owner once `embarch-promptu` decision 42 made Promptu rewrite the rendered prompt
 **Issue:** EMB-197
 **Scope:** chat
