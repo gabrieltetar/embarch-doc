@@ -1,6 +1,6 @@
 # 074 — The atlas-use skill and `MAP.md` show that `q config` takes several symbols
 
-**State:** claimed by agent/atlas/074-atlas-use-shows-q-config-takes-several-symbols, 2026-11-17 23:21
+**State:** done
 **Source:** Fleet Ready issue: a session read ten Kconfig symbols by parsing an atlas's `kconfig.json` with a throwaway script, because the skill shows `config` with one symbol.
 **Issue:** EMB-186
 **Scope:** atlas
@@ -24,6 +24,8 @@ The owner moved the issue to Fleet Ready.
 
 ## Done when
 
-- [ ] The atlas-use skill's quick-lookup row for Kconfig shows `config <SYM> [<SYM> ...]` and a `*` pattern example, and names `--vs pinned` if the row has room.
-- [ ] The tools line of a generated `MAP.md` names the multi-symbol form.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `changelog.d/` fragment dropped.
+- [x] The atlas-use skill's quick-lookup row for Kconfig shows `config <SYM> [<SYM> ...]` and a `*` pattern example, and names `--vs pinned` if the row has room.
+- [x] The tools line of a generated `MAP.md` names the multi-symbol form.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `changelog.d/` fragment dropped.
+
+Confirmed against `buildq.names_of`, the `q config` argparse (`symbol` is `nargs="*"`) and `tests/test_buildq.py`: `q config A B USB_*` and `q config A,B,USB_*` both work, `*` `?` `[` patterns work, `--vs pinned` lists differences. All forms in the issue are accepted. The skill row already showed `symbols=[A, B, USB_*]`; it now leads with the multi-symbol form. No test pinned the MAP.md tools line.
