@@ -1,0 +1,1 @@
+| `desk_restack`: an agent restacks a branch onto its base's new tip, lists each conflicted hunk and resolves it as ours, theirs or neither, with the diff shown before continuing and no push | Built on a branch, not deployed; tested on throwaway git repos (clean, each choice, marker refusal, abort, rewritten base) | unit | |

@@ -1,6 +1,6 @@
 # 034 — Restack a stacked branch onto its moved base, hunk by hunk
 
-**State:** claimed by agent/desk/034-restack-a-stacked-branch-onto-its-moved-base, 2026-11-17 23:21
+**State:** done
 **Source:** Fleet Ready issue: when a base PR gains commits, a session restacks the branch on it by hand and writes a throwaway script that deletes or keeps conflict-marker blocks with a regex.
 **Issue:** EMB-142
 **Scope:** desk
@@ -25,7 +25,11 @@ The owner moved the issue to Fleet Ready. Every stacked PR whose base takes revi
 
 ## Done when
 
-- [ ] One call rebases a stacked branch onto its base's current tip and lists every conflicted hunk with file and line.
-- [ ] A hunk can be resolved as ours, theirs or neither without hand-editing markers, and the result is shown as a diff against the base before the rebase continues.
-- [ ] It refuses to continue while any conflict marker remains in a tracked file, and it never pushes.
-- [ ] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
+- [x] One call rebases a stacked branch onto its base's current tip and lists every conflicted hunk with file and line.
+- [x] A hunk can be resolved as ours, theirs or neither without hand-editing markers, and the result is shown as a diff against the base before the rebase continues.
+- [x] It refuses to continue while any conflict marker remains in a tracked file, and it never pushes.
+- [x] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
+
+## Done
+
+MCP tools only (no CLI, no desk route): `desk_restack`, `desk_restack_resolve`, `desk_restack_continue` (diff first, `confirm=true` to proceed), `desk_restack_abort`, in `src/restack.rs`. Git runs in the MCP process against the session's repo (`repo` param or cwd); `old_base` covers a rewritten base. No decision authored.
