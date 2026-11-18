@@ -1,1 +1,0 @@
-- `embarch-desk get <route>` prints a desk route's shape (keys, list lengths, a sample row) with secrets masked; reaches a named instance by --config-dir/--port.
