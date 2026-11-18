@@ -1,6 +1,6 @@
 # 029 — The Promptu card restores the original prompt after a rewrite
 
-**State:** claimed by agent/chat/029-the-promptu-card-restores-the-original-prompt, 2026-11-17 18:09
+**State:** done, 2026-11-17 (branch agent/chat/029-the-promptu-card-restores-the-original-prompt)
 **Source:** EMB-197, filed by the owner once `embarch-promptu` decision 42 made Promptu rewrite the rendered prompt
 **Issue:** EMB-197
 **Scope:** chat
@@ -55,7 +55,11 @@ which landed with `tasks/promptu/007`, and for `tasks/chat/028`, which landed
 
 ## Done when
 
-- [ ] After a rewritten run, the card's restore action puts the original prompt in the draft, verbatim.
-- [ ] The action is absent for a run that was not rewritten, such as a pasted brief.
-- [ ] A webview check covers both cases.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] After a rewritten run, the card's restore action puts the original prompt in the draft, verbatim.
+- [x] The action is absent for a run that was not rewritten, such as a pasted brief.
+- [x] A webview check covers both cases.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Done
+
+The restore action is a button under the draft ("Restore my original prompt", `RestoreOriginal` in `webview/chat/promptu.tsx`), shown while the landed prompt came from a run whose `render` returned `"rewritten": true` (contract §8.3), not read from the footer. The host (`PromptuRuns.restore`) remembers the run id and reads `promptu original <run> --json`; the page never names a run. It clears on restore, send, clear or a new pass. Behaviour is recorded in `embarch-chat/spec/input.md`; decision 96 untouched. The installed `promptu` on this machine predates `original`, so only the fake was exercised: **debt, owner-side:** run one real rewritten prompt and click the action against a promptu build with `original`.
