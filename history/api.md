@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- api: `bundle` verb and MCP tool package a build as a hex, README of flash commands and zip for a bench engineer; see interfaces/tools-bundle.md.
 - build --each <base>..<tip> builds every commit in every variant from its own module sources, with --same-tree-as ([decisions](../embarch-api/decisions.md) 104).
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
