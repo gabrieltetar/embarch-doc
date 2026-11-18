@@ -1,6 +1,6 @@
 # 070 — Compact embarch-topology's spec
 
-**State:** open
+**State:** claimed by agent/topology/070-compact-topology, 2026-11-17 23:00
 **Scope:** topology
 **Hardware:** none
 **Owner:** no
