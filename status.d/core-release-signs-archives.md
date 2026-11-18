@@ -1,3 +1,0 @@
-**Target:** embarch-release-signing-proposal.md — "Order", step 1, and "The work, by sub-project" (`embarch-core` row)
-**Was:** "Sign in CI ... About half a day." with every component's `release.yml` unsigned
-**Now:** `embarch-core`'s `release.yml` signs all four archives (2026-11-17, task core/127, built and not yet run on a tag): the build matrix uploads workflow artifacts, one `sign-and-publish` job in the `release` environment (`id-token: write`, cosign 3.0.4 via `sigstore/cosign-installer@v4`) signs each with `cosign sign-blob --bundle` and publishes asset and bundle. Remaining: api, topology, umbrella.

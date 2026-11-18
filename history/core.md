@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Core's release workflow signs every archive with cosign (Sigstore keyless) and uploads a `.sigstore.json` bundle beside it; see [spec](../embarch-core/spec.md) §3.
 - Core open.md: never-exercised bullets split out to open/never-exercised.md, verbatim.
 - `GET /dev-bench/hello` serves the bench's build as `dev_bench_version`, not `firmware_version`, the DUT's name on a Study; the wire `HelloAck` is unchanged (108).
 - Core's study pre-flight now refuses a one-shot monitor step inside an open monitor window, with the crate's message (core decision 90).
