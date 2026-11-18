@@ -1,6 +1,6 @@
 # embarch-chat: spec
 
-**Status:** active, 2026-11-01. **Decisions 94–100 installed** (67 retired): measured 2026-11-05, the installed `dist/extension.js` is md5-identical to the clone's, built 2026-11-04 02:10 after `2b04ff5`; install time unrecorded. Decision 100 is not recorded as reviewed. Deployed from a local `.vsix`: decisions 1–49 (with `embarch-desk` d9a8efc, `embarch-ui` 2e73649, the desk's chat setting on) and **50–85 on 2026-10-23** (embarch-chat b6996cc). **Decisions 86–88 installed 2026-10-25** (embarch-chat d998b2f, with `embarch-desk` 9d43fe4 and `embarch-ui` ab1b9f8), **89–91 2026-10-26** (0f8d613; 91's column 0067fcf), **92–93** the same day (c973aec); 50–88 each after three review rounds. **Decision 106 built 2026-11-11 (EMB-161), not installed.** The repo has a public GitHub remote, and `main` is pushed.
+**Status:** active, 2026-11-01. **Decisions 94–100 installed** (67 retired): measured 2026-11-05, the installed `dist/extension.js` is md5-identical to the clone's, built 2026-11-04 after `2b04ff5`; install time unrecorded. Decision 100 is not recorded as reviewed. Deployed from a local `.vsix`: decisions 1–93 by 2026-10-26 (50–88 each after three review rounds; per-install commits are in git history). **Decision 106 built 2026-11-11 (EMB-161), not installed.** The repo has a public GitHub remote, and `main` is pushed.
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Settings, commands, keys, the `claude` command line and the desk calls: [interfaces.md](interfaces.md). Constants: [spec/constants.md](spec/constants.md). The input's library, assistant and Promptu: [spec/input.md](spec/input.md).
 
@@ -55,4 +55,4 @@ Idle close, the column, timings, caps and the tested `claude` range: [spec/const
 
 ## 6. Pointers
 
-The repo: `../embarch-chat` (local, no remote); its README covers building, testing and installing. The desk side — the mailbox, the Desk's line per chat, the work item's notes: [embarch-desk](../embarch-desk/spec.md), routes in its [interfaces.md](../embarch-desk/interfaces.md). The launcher's own history: `embarch-ui` decisions 3 and 28.
+The repo: `../embarch-chat`; its README covers building, testing and installing. The desk side — the mailbox, the Desk's line per chat, the work item's notes: [embarch-desk](../embarch-desk/spec.md), routes in its [interfaces.md](../embarch-desk/interfaces.md). The launcher's own history: `embarch-ui` decisions 3 and 28.

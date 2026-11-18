@@ -1,6 +1,6 @@
 # 031 — Compact embarch-chat's spec
 
-**State:** claimed by agent/chat/031-compact-chat, 2026-11-17 23:21
+**State:** done
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,11 @@
 
 ## Done when
 
-- [ ] `embarch-chat/spec.md` is out of reserve and no behaviour it states is lost.
-- [ ] Gate green.
+- [x] `embarch-chat/spec.md` is out of reserve and no behaviour it states is lost.
+- [x] Gate green.
+
+## Result
+
+spec.md 9119 -> 8804 B, out of reserve. Dropped per-install commit SHAs and dates from Status (git history holds them); fixed "local, no remote" in Pointers, which contradicted the public remote. Login bullets (101, 106) untouched.
+
+Compaction question: can spec.md alone answer what someone needs to work on this component today? Yes for behaviour and invariants, with the split files and decisions linked for detail; the Status line is the one part that is install history, not behaviour, and is now shorter.
