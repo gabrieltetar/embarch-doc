@@ -1,6 +1,6 @@
 # 009 — List the questions an earlier run of a prompt asked, and the answers
 
-**State:** claimed by agent/promptu/009-list-an-earlier-runs-questions-and-answers, 2026-11-17 17:21
+**State:** done
 **Source:** EMB-185, filed by an audit after a rerun interview prompt asked the owner the same questions again and the session dug the earlier answers out of old transcripts with a throwaway script
 **Issue:** EMB-185
 **Scope:** promptu
@@ -53,8 +53,8 @@ The owner moved EMB-185 to Fleet Ready.
 
 ## Done when
 
-- [ ] Given a prompt and a transcript folder holding an earlier session started from it, the verb lists that session's `AskUserQuestion` questions, options and the owner's answers.
-- [ ] A transcript started from a different prompt is not listed; a test covers it.
-- [ ] The verb writes nothing and reads only the folder it is given.
-- [ ] `spec.md` and `interfaces.md` name the verb, its match rule and its output.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] Given a prompt and a transcript folder holding an earlier session started from it, the verb lists that session's `AskUserQuestion` questions, options and the owner's answers.
+- [x] A transcript started from a different prompt is not listed; a test covers it.
+- [x] The verb writes nothing and reads only the folder it is given.
+- [x] `spec.md` and `interfaces.md` name the verb, its match rule and its output.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
