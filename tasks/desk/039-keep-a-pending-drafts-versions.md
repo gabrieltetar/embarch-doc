@@ -1,6 +1,6 @@
 # 039 — Keep every agent revision and owner edit of a pending draft as a version
 
-**State:** open
+**State:** claimed by agent/desk/039-keep-a-pending-drafts-versions, 2026-11-18 15:55
 **Source:** Fleet Ready issue: a pending draft keeps only the agent's last version beside the owner's current body, so the learning diff cannot be taken against an earlier round, and a second owner edit after a revision cannot be told apart from the first. Named as next work in `embarch-desk` decision 88.
 **Issue:** EMB-211
 **Scope:** desk
