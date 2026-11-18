@@ -1,0 +1,1 @@
+| `desk_revise_draft` / `desk_get_draft`: an agent revises a pending draft (a section or an append) without touching the owner's edits, and reads the owner-only diff after Send | Built on a branch, not deployed; unit-tested on stubbed state, never against a real Linear or a Desk tab edit | unit | |

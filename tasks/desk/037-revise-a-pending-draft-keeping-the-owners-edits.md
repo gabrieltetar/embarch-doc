@@ -26,8 +26,17 @@ The owner moved the issue to Fleet Ready. The issue's own Direction prefers a dr
 
 ## Done when
 
-- [ ] A session applies a revision to a pending draft through a desk tool, without writing a script, and the owner's earlier edits survive it.
-- [ ] After Send, the desk can give the last agent version, and its diff against the sent text contains only the owner's changes.
-- [ ] A revision that would overwrite an owner edit is refused and says what collided.
-- [ ] `scripts/check-doc-size.py --pressure` no longer lists `embarch-desk/interfaces.md`; the moved text is byte-identical in its new file.
-- [ ] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
+- [x] A session applies a revision to a pending draft through a desk tool, without writing a script, and the owner's earlier edits survive it.
+- [x] After Send, the desk can give the last agent version, and its diff against the sent text contains only the owner's changes.
+- [x] A revision that would overwrite an owner edit is refused and says what collided.
+- [x] `scripts/check-doc-size.py --pressure` no longer lists `embarch-desk/interfaces.md`; the moved text is byte-identical in its new file.
+- [x] Tests cover the cases above; gate green (`../../embarch-fleet/gate.md`); `spec.md`/`interfaces.md` updated, `changelog.d/` fragment dropped, `features.d/desk-<NNN>-*` row if it is a user-visible feature.
+
+## Done
+
+- Desk: `src/draftedit.rs` (section and append revision, owner-only diff), `Draft.agent_body`, `POST /drafts/{id}/revise`, `GET /drafts/{id}`, MCP `desk_revise_draft` and `desk_get_draft`, skill line. A draft made before this unit has no `agent_body`; its body at first revision stands in for it.
+- Docs: `interfaces.md` split (tool inventory verbatim to `interfaces/mcp-tools.md`, now 12,549 of 15,360 B, out of reserve; closing 036 is the supervisor's); `spec.md` went into reserve by 147 B and is filed as `tasks/desk/038-compact-desk.md`.
+- **No decision filed (burndown).** Open for the supervisor: whether the desk should record owner edits as a history rather than one agent version plus the current body, and whether `github_replies` drafts (one body per thread) should get per-reply revision. Both left out; a `github_replies` revise is a 400.
+- Direct-write desks send at creation, so there is nothing to revise there.
+- The Desk tab (embarch-ui) does not show `agent_body` or the diff; that is a UI task.
+- One `cargo test` run in several failed once with 1 of 292 (not reproduced in six further runs, nor identified; the output was not captured).
