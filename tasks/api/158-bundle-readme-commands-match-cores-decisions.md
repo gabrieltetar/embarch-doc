@@ -57,8 +57,8 @@ the wrong command never ships.
 
 ## Done when
 
-- [ ] No README line claims `ERASE_ALL` is what Core records, or the recovery the suite recorded.
-- [ ] Each remaining command matches Core's backend for that family, and an unconfirmed one is labelled as such.
-- [ ] `interfaces/tools-bundle.md` matches the README.
-- [ ] A test fails if `ERASE_ALL` comes back.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] No README line claims `ERASE_ALL` is what Core records, or the recovery the suite recorded.
+- [x] Each remaining command matches Core's backend for that family, and an unconfirmed one is labelled as such.
+- [x] `interfaces/tools-bundle.md` matches the README.
+- [x] A test fails if `ERASE_ALL` comes back.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
