@@ -33,7 +33,11 @@ The owner moved EMB-88 to Fleet Ready. `DESIGN.md`'s schematic ingest ladder alr
 
 ## Done when
 
-- [ ] One command lists the components (designator, part number, value, unique ID) and per-pin nets of an Altium project read from its `.SchDoc` files, at the working tree or at `--rev <commit>`.
-- [ ] With `--variant <name>` it lists that variant's not-fitted parts, matched by unique ID, and names any variation whose unique ID no longer exists.
-- [ ] Tests cover the fixture project above, including a missing `olefile` and an unknown variant name, each refused in one line.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] One command lists the components (designator, part number, value, unique ID) and per-pin nets of an Altium project read from its `.SchDoc` files, at the working tree or at `--rev <commit>`.
+- [x] With `--variant <name>` it lists that variant's not-fitted parts, matched by unique ID, and names any variation whose unique ID no longer exists.
+- [x] Tests cover the fixture project above, including a missing `olefile` and an unknown variant name, each refused in one line.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+None for a board, but one owner-side run: `embarch-atlas cad <real project dir> --variant <name>` on a real Altium project, compared with the PDF-built atlas. Nine format assumptions (length prefix and flag byte, `OWNERINDEX` base, coordinate fractions, pin end direction, port/label anchor, parameter names, designator record, `.PrjPcb` keys, crossing-wire joins) are listed in the repo's `DESIGN.md` "Native EDA project" as unverified; a real file may contradict any of them. No `features.d/` row: the feature inventory has no `atlas` section, and the atlas's own row is under `not-yet`.
