@@ -1,6 +1,6 @@
 # 078 — Decode the raw reply of a sensor that has no registers
 
-**State:** open
+**State:** claimed by agent/atlas/078-decode-a-command-then-read-sensor-reply, 2026-11-18 03:47
 **Source:** Fleet Ready issue: a session debugging a sensor that read zero on the bench converted its raw I2C reply (a status byte and a 24-bit count) to a physical value by hand, because `reg_read` decodes registers and this part has none.
 **Issue:** EMB-177
 **Scope:** atlas
