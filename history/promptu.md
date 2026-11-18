@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A Bash command that writes a memory MEMORY.md now gets a warning naming the Edit tool, since a shell write skips the index checks; reads get nothing (promptu hook).
 - promptu prior lists the questions an earlier run of a prompt asked and the answers, read-only, from a transcript folder (EMB-185).
 - Promptu rewrites a rough prompt after the questions and logs the original; `promptu original <run>` prints it, `promptu stats` gives p50/p95 of the wait (decision 42).
 - promptu calls <session> counts a session's tool calls and result characters per subagent and activity class, and lists one class's calls with sizes.
