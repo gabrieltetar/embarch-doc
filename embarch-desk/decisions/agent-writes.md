@@ -1,0 +1,20 @@
+# embarch-desk decisions: What an agent changes beyond a Linear draft
+
+**Status:** active, 2026-11-18.
+
+A pending draft an agent revises around the owner's edits, replies posted to GitHub review threads, and a branch rebased in the session's repo. Each was built in a burndown leg, which writes no numbered decision, and recorded here by the owner (decisions 88–90).
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Tools: [../interfaces/mcp-tools.md](../interfaces/mcp-tools.md).
+
+## Drafts
+
+### 88 — A draft keeps the agent's version beside the owner's edits, and an agent revises around them
+Decided by the owner, 2026-11-18 (EMB-207), recording what EMB-165 built. Amends 30 and 75. A pending draft stores `agent_body`, the agent's last version, beside the `body` the owner edits; `PATCH` moves only `body`. **`desk_revise_draft` replaces a section** (the text under a heading, to the next heading of the same or higher level) **or appends**, on `agent_body` and, where the owner's body still holds that section as the agent wrote it, on the body too. **Where the owner changed it, a 409 names the section and both texts and nothing changes**, so a revision never overwrites an owner edit and 30's "sent as they leave it" holds. **The learning diff is the owner's edits alone:** the agent's last version against the text sent (`owner_diff`, `desk_get_draft`). A draft made before this takes its body at first revision as the agent's version. **Chosen as next work, each its own gap:** a version history of every agent revision and owner edit, since today a second owner edit after a revision cannot be told apart from the first (EMB-211); and revising one reply of a `github_replies` draft (89), a 400 today (EMB-212).
+
+### 89 — GitHub review replies are a draft like Linear's, posted with the desk's GitHub account
+Decided by the owner, 2026-11-18 (EMB-206), recording what EMB-173 built. The desk's first write outside Linear, and the rule a later GitHub write (a review comment, a PR body) follows. `github_draft_review_replies` makes one `github_replies` draft of replies to two or more review threads on one PR. **It is a draft under 30 and 69:** it waits for the owner's Send, and goes at once only on a desk set to write directly, as the Linear kinds do. **It posts with the GitHub account the desk holds** (a token pasted on the Desk tab, else the `gh` login), the one `github_pr_threads` reads with. **Send checks that every comment id is a review comment on that PR before posting any**, and a mismatch stops the whole send; a reply's id resolves to its thread's root. **A send that fails partway keeps the draft open with the posted URLs**, and the next Send posts only the rest, as 75's cut-short thread does. **Rejected:** keeping GitHub out of `direct_writes`, so its replies always wait (one more rule to explain, and a desk set to write directly then does so for some kinds only); leaving the shape in `interfaces/` with no decision (the next GitHub write would have nothing to follow).
+
+## The restack tools
+
+### 90 — The restack tools rewrite a branch only locally: no fetch, no push, no force
+Decided by the owner, 2026-11-18 (EMB-204), recording what EMB-142 built. The first desk tools that write to a git repository: `desk_restack`, `desk_restack_resolve`, `desk_restack_continue` and `desk_restack_abort` rebase a branch onto its moved base in the session's repo or worktree, from the MCP server, with no desk route. **Their limits are the rule:** they never fetch or push, force or otherwise; a hunk resolves only as ours (the base's side), theirs (the branch's own change) or neither; continue is refused while a conflict marker line remains in any tracked file; and continue shows the conflicted files' diff against the base before `confirm` stages them and continues. **A change that adds fetch, push or force amends this decision**, and a reviewer checks the change against it. **Rejected:** leaving the limits in `spec.md` and `interfaces/` only, as for the read-only `github_pr_threads` (prose a later change can edit without contradicting anything).
