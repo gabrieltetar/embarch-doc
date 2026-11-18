@@ -8,8 +8,8 @@
 
 **Compacts:** embarch-desk/spec.md
 **Size debt due:** 2026-12-01
-**In flux:** yes. The agent-tool and draft surface changed in each of the last five desk units (restack, review threads, review replies, notes, draft revision) and EMB-205 will add how the Desk tab shows the new draft kind; a rewrite now would be restated within a unit or two.
-**Unparks when:** EMB-205 lands, or the next desk unit that writes `spec.md` runs out of its 1,054 B, whichever is first; the compaction rides in that unit.
+**In flux:** yes. The agent-tool and draft surface changed in each of the last five desk units (restack, review threads, review replies, notes, draft revision), and EMB-207 (Backlog) may change what a draft stores; a rewrite now would be restated within a unit or two.
+**Unparks when:** the next desk unit that writes `spec.md` runs out of its 1,054 B; the compaction rides in that unit. EMB-205, the other trigger as filed, has landed and was struck.
 **Must not delete:** the invariants (no agent tool sends a draft, prose is never sent unseen) and the decision/EMB citations; move reference detail to `spec/` verbatim, as `spec/constants.md` was.
 
 ## What
