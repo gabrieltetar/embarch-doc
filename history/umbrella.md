@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Added
+- `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
+
 ### Changed
 - doctor check 13 reads `dev_bench_version`; a Core older than embarch-core decision 108 is a warn that compares nothing (19).
 ## 2026-10
