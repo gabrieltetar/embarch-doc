@@ -1,11 +1,21 @@
 # 069 — Check L verifies the level word's column, like check K
 
-**State:** claimed by agent/atlas/069-check-l-verifies-the-level-words-column, 2026-11-17 14:51
+**State:** claimed by agent/atlas/069-check-l-verifies-the-level-words-column, 2026-11-17 17:20
 **Source:** EMB-160, filed from the protocol-records work (atlas task 011), which added check L
 **Issue:** EMB-160
 **Scope:** atlas
 **Hardware:** none
 **Owner:** no
+
+## Resume, read before anything else
+
+The worker dispatched at 14:51 died on a usage-limit 429 with its tree
+uncommitted. Recovery committed that tree as it stood, ungated, as `6301f43` on
+`agent/atlas/069-check-l-verifies-the-level-words-column` in `embarch-atlas`
+(on `90f70f2`): edits to `src/embarch_atlas/check.py`, `tests/test_protocol.py`,
+`DESIGN.md` and the translate procedure, about 135 lines. Review it as someone
+else's draft, finish it, and run the whole gate; do not trust that it passes.
+The doc branch has no commits yet.
 
 ## What
 
