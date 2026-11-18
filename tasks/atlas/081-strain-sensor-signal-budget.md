@@ -1,6 +1,6 @@
 # 081 — Derive a strain-sensor signal budget from loads and geometry
 
-**State:** open
+**State:** claimed by agent/atlas/081-strain-sensor-signal-budget, 2026-11-18 04:09
 **Source:** Fleet Ready issue: sessions sizing a strain or load sensor against an ADC's noise keep re-deriving section modulus, strain and bridge output with inline Python, so constants and assumptions drift between reports.
 **Issue:** EMB-139
 **Scope:** atlas
