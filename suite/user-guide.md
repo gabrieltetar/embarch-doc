@@ -6,7 +6,7 @@ This describes the real, released binaries. If you are setting up a machine righ
 
 ## 1. What EmbArch gives you
 
-EmbArch lets you build and flash your firmware, reset your board, and read its serial console **from wherever your code lives** — including from an AI coding agent — **without fighting over who owns the USB port.**
+EmbArch lets you build and flash your firmware, reset your board, and read its serial console **from wherever your code lives** — including from an LLM coding agent — **without fighting over who owns the USB port.**
 
 The concrete problem it was built for: your firmware builds in WSL2, but your debug probe is a Windows USB device, and forwarding USB into WSL2 is miserable. **EmbArch splits the job in two so the boundary stops mattering.**
 

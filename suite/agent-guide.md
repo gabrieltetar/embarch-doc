@@ -1,6 +1,6 @@
 # EmbArch: driving it from Claude Code
 
-**Status:** active, 2026-10-29. For a firmware engineer letting an AI coding agent drive EmbArch. Continues [user-guide.md](user-guide.md), which gets EmbArch working in the first place; this was its §7 until 2026-10-29.
+**Status:** active, 2026-10-29. For a firmware engineer letting an LLM coding agent drive EmbArch. Continues [user-guide.md](user-guide.md), which gets EmbArch working in the first place; this was its §7 until 2026-10-29.
 
 ## 1. Using it from Claude Code
 
