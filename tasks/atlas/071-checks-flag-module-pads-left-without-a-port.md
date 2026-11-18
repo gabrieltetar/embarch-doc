@@ -54,7 +54,13 @@ them after EMB-89, which `atlas/070` landed today.
 
 ## Done when
 
-- [ ] An atlas whose module symbol has a pad with a net and no port lists that pad in `checks.md`.
-- [ ] A DT pin that cannot be joined to a pad appears in `checks.md` as unresolved.
-- [ ] A test covers a contiguous range of named pads on one side of a module symbol, and the result is recorded here.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+- [x] An atlas whose module symbol has a pad with a net and no port lists that pad in `checks.md`.
+- [x] A DT pin that cannot be joined to a pad appears in `checks.md` as unresolved.
+- [x] A test covers a contiguous range of named pads on one side of a module symbol, and the result is recorded here.
+- [x] Gate green (`../../embarch-fleet/gate.md`); `changelog.d/` fragment dropped.
+
+## Result
+
+- `mismatch.py`: check `MCU pads with a net have a pin name` and class `pad-without-name` (part, pad, net; a `text-layer` or overlay name counts as named); check `DT pins resolve to a schematic pad` and class `dt-pin-unresolved` (each DT node and property, needs a build, else under Not run). Both are in `checks.md` and `mismatches.json`. Recorded in `DESIGN.md` beside the text-layer recovery.
+- **Coverage of EMB-188's shape** (`tests/test_textlayer_pads.py`): a contiguous range of six pads down one side of a synthetic module, upright names beside them inside the outline, is recovered by `atlas/070`'s `recover_pad_names` (all six `name_source: text-layer`, no `pad-name-unpaired`). The existing bottom-row test covers the rotated-name row. Not covered and not guessed at: rotated names on a side column, or names outside the outline; if the real board is one of those, the flags above report it and a fix needs the real page.
+- Gate: pytest, clippy n/a (Python). Hardware: none.
