@@ -1,6 +1,6 @@
 # 030 — A login pick says which Claude Code surfaces need a reload
 
-**State:** open
+**State:** claimed by agent/chat/030-a-login-pick-says-which-claude-code-surfaces-need-a-reload, 2026-11-17 19:19
 **Source:** EMB-168, a session finding: after the window's login is changed, Claude Code's account dialog keeps naming the login the window opened on, while new chats run on the picked one
 **Issue:** EMB-168
 **Scope:** chat
