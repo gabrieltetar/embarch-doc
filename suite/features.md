@@ -251,6 +251,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `github_pr_threads`: an agent reads a PR's inline review threads root-then-replies, review states, and which threads the author has not answered, complete past 100 comments | Built on a branch, not deployed; grouping and paging unit-tested on synthetic JSON, no live GitHub call | unit | |
 | `desk_restack`: an agent restacks a branch onto its base's new tip, lists each conflicted hunk and resolves it as ours, theirs or neither, with the diff shown before continuing and no push | Built on a branch, not deployed; tested on throwaway git repos (clean, each choice, marker refusal, abort, rewritten base) | unit | |
 | `github_draft_review_replies`: an agent drafts replies to several review threads on one PR; one Send posts each in its thread after every comment id is checked, and records the URLs | Built on a branch, not deployed; tested against a stubbed GitHub, never a real repo; the Desk tab does not yet render this draft kind | unit | |
+| `desk_revise_draft` / `desk_get_draft`: an agent revises a pending draft (a section or an append) without touching the owner's edits, and reads the owner-only diff after Send | Built on a branch, not deployed; unit-tested on stubbed state, never against a real Linear or a Desk tab edit | unit | |
 
 ## embarch-chat
 
