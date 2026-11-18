@@ -1,6 +1,6 @@
 # 110 — The Desk tab renders and edits GitHub review-reply drafts
 
-**State:** open
+**State:** claimed by agent/ui/110-desk-tab-renders-github-replies-drafts, 2026-11-18 03:18
 **Source:** Fleet Ready issue: the Desk tab shows a GitHub review-replies draft as a blank Linear comment, so its replies cannot be read, edited or sent from the tab.
 **Issue:** EMB-205
 **Scope:** ui
