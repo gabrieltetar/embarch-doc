@@ -1,6 +1,7 @@
 # 076 — Render pages of any PDF to images an agent can read
 
 **State:** claimed by agent/atlas/076-render-pdf-pages-for-an-image-read, 2026-11-18 03:19
+**Outcome:** shipped as `pdf pages` (`src/embarch_atlas/pdfpages.py`), poppler only, no MCP tool; real-scan legibility was checked by reading generated PNG sizes, not a client scan.
 **Source:** Fleet Ready issue: an agent reading a scanned PDF with no text layer improvised page rendering and tiling with throwaway shell and Python.
 **Issue:** EMB-138
 **Scope:** atlas
@@ -24,8 +25,8 @@ The owner moved the issue to Fleet Ready. The atlas already flags pages that nee
 
 ## Done when
 
-- [ ] One command renders a page range of a PDF with no text layer to PNG files that the image `Read` tool reads legibly at the default settings.
-- [ ] The command can split each page into a tile grid or a crop box given in PDF points.
-- [ ] The command reports, per page, whether a text layer exists.
-- [ ] It needs only poppler and the atlas's existing dependencies.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
+- [x] One command renders a page range of a PDF with no text layer to PNG files that the image `Read` tool reads legibly at the default settings.
+- [x] The command can split each page into a tile grid or a crop box given in PDF points.
+- [x] The command reports, per page, whether a text layer exists.
+- [x] It needs only poppler and the atlas's existing dependencies.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); docs updated, `changelog.d/` fragment dropped.
