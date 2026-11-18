@@ -249,6 +249,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Start work on a west project writes `ZEPHYR_MODULES` (the workspace's modules, the main clone swapped for the worktree) into the worktree's local settings, so a build there reads the worktree's drivers and board files | Built on a branch, not deployed; stand-in `west` in tests, no real build | unit | 80 |
 | The desk reports a desk folder whose Claude Code login has no `embarch-api` MCP server (in `GET /desks` and at session start) with the user-scope `claude mcp add` command; read-only, never writes `.claude.json` | Built on a branch, not deployed; temporary `.claude.json` files in tests | unit | 82 |
 | `github_pr_threads`: an agent reads a PR's inline review threads root-then-replies, review states, and which threads the author has not answered, complete past 100 comments | Built on a branch, not deployed; grouping and paging unit-tested on synthetic JSON, no live GitHub call | unit | |
+| `desk_restack`: an agent restacks a branch onto its base's new tip, lists each conflicted hunk and resolves it as ours, theirs or neither, with the diff shown before continuing and no push | Built on a branch, not deployed; tested on throwaway git repos (clean, each choice, marker refusal, abort, rewritten base) | unit | |
 
 ## embarch-chat
 

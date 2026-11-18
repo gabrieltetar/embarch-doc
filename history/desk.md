@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `desk_restack` restacks a stacked branch onto its moved base, resolving each conflicted hunk as ours, theirs or neither; local git, never pushes (EMB-142)
 - desk: github_pr_threads MCP tool returns a PR's review threads, review states and unanswered-by-author marks; interfaces.md split out of reserve
 - - `embarch-desk get <route>` prints a desk route's shape (keys, list lengths, a sample row) with secrets masked; reaches a named instance by --config-dir/--port.
 - embarch-desk removes a Done or Canceled issue's folder, worktrees and branches once no chat window polls for it (embarch-desk decision 84).
