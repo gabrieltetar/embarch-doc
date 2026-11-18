@@ -1,6 +1,6 @@
 # 082 — Read an Altium project's SchDoc sources into parts, pin nets and variants
 
-**State:** open
+**State:** claimed by agent/atlas/082-read-altium-schdoc-project, 2026-11-18 04:31
 **Source:** Fleet Ready issue: the atlas reads schematics only from PDF, so a board definition cannot be checked against the CAD revision released for fabrication when the hardware repository holds only Altium sources at that commit.
 **Issue:** EMB-88
 **Scope:** atlas
