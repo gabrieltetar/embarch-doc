@@ -1,6 +1,6 @@
 # 088 — Read TI register resets printed as width-prefixed binary, and a capital-R `[Reset = ...]` heading
 
-**State:** open
+**State:** claimed by agent/atlas/088-read-ti-width-prefixed-binary-resets, 2026-11-19 00:12
 **Source:** Fleet Ready issue: on one TI charger datasheet `doc regparse --template ti` found 13 registers and 67 fields, carried no reset value on any of them, and wrote no `conflict` record; four other TI and Maxim datasheets now parse with resets, so this is one TI layout variant.
 **Issue:** EMB-33
 **Scope:** atlas
