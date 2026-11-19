@@ -1,6 +1,6 @@
 # 087 — Read a reference manual whose chapters sit under one root bookmark and whose register pages are Nordic-style
 
-**State:** open
+**State:** claimed by agent/atlas/087-read-a-nordic-style-reference-manual, 2026-11-19 00:00
 **Source:** Fleet Ready issue: on a 940-page Nordic product specification that serves as the reference manual, `mcu rm-outline` found 1 chapter across 2,208 sections and `mcu vote` parsed 0 register sections, so that MCU's SVD gets no `conflict`, `quirk` or `rule` records.
 **Issue:** EMB-32
 **Scope:** atlas
