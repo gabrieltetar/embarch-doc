@@ -34,6 +34,6 @@ These words mean exactly this in every file here. Where one word names two thing
 - **Measurement**: a named value with a unit, a resolution, an uncertainty, who measured it and the file and rows it came from, computed by Core, at step time or through the shared crate's built-in reducers as each test or study ends ([02](02-study.md#measurements)).
 - **Verdict**: one of pass, fail, error, inconclusive, skipped, cancelled, decided by code ([03](03-test.md#the-verdict)); a requirement may also be **not verified**.
 - **Resolved run** (`run.json`): a Test selection with every test expanded and every input substituted, hashed, the unit of reproducibility ([03](03-test.md#selecting-and-rerunning)).
-- **A person's act**: an act only the person may make (a confirmation, the go, an observation or clearance answer, a manual verdict, an identity declaration), made with the person's token ([12](12-prevention.md)).
+- **A person's act**: an act only the person may make (a confirmation, the go, an observation or clearance answer, a manual verdict, an identity declaration, a no-DUT bench's subject or a fixture's reference value ([13](13-research-phase.md), owner, 2026-11-19)), made with the person's token ([12](12-prevention.md)).
 - **Attested**, **unattested**: whether a run's records were signed by a Core under its own account ([12](12-prevention.md#the-root-of-trust-core-under-its-own-account)).
 - **Publish**: turning a finished run into one zip holding a PDF report and every file behind it.

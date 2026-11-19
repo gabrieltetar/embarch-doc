@@ -67,7 +67,7 @@ Shared by the Study and the Test: one publish mechanism, one zip shape, one audi
 | **Limits and losses** | Truncated captures, dropped records, overrides such as `--allow-version-mismatch`, inconclusive verdicts and why, and what is measured against what is assumed |
 | **Inputs and their provenance** | For a Test, each DUT capability (`measured`, `decoded`, `confirmed`, `declared`), each hook mapping, and who confirmed each |
 | **The study design** | The study as submitted, and a readable list of its steps, taps and checks; for a test copied from a premade one, its `derived_from` and every verdict-deciding field changed |
-| **Every run** | Every run of the same test or study on the same unit, from Core's run log, grouped by image and definition hash, with its verdict and whether it was published |
+| **Every run** | Every run of the same test or study on the same unit (on a bench with no DUT, the same declared subject and bench boards, said to be declared, not read, [13](13-research-phase.md#a-bench-with-no-dut), owner, 2026-11-19), from Core's run log, grouped by image and definition hash, with its verdict and whether it was published |
 | **Prose** | Each block and its author, and the token that entered it; every untagged, tagged and hardcoded number ([02](02-study.md#the-report)) |
 | **Plots** | Each plot cites the file it was drawn from |
 | **Operator and setup notes** | Who ran it, which bench, cables and fixtures, conditions: typed in by the person at publish time; each prompt's answer, its kind, and **the token's scope it came with** (person, or relayed by the agent) beside the surface (`ui`, `mcp`, `cli`) (review round 2, recommended) |

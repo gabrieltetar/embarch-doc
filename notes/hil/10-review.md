@@ -140,14 +140,14 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 ## Note 13's review (2026-11-18)
 
-**Two reviewers on [13](13-research-phase.md) and the analog-capture proposal** (facts and consistency; the trust model, lab practice and adoption against the goals): **29 findings, 9 high.** **The factual ones are fixed**: a bench study already holds a `Raw` capture open through a step's delay, with `record_checks`, so the proposal's first stage needs no suite change; Live keeps Core's capture outside a study; an odd-length read misaligns samples with no newline in it; 02's bench sentence; the evidence row's stage A; the tags 02 has; a fixture value is not in the model. **The trust-model ones are recommendations under [13](13-research-phase.md#open)**, marked "note 13 review, recommended", for the owner: how Core knows a bench has no DUT, a declared subject keying the run history, an `(analysis)` tag, a fixture value as a person's act, discarding unpublished scans' captures, `by` for a relayed sample, a Study's own declarations labelled unconfirmed, and "no DUT board".
+**Two reviewers on [13](13-research-phase.md) and the analog-capture proposal** (facts and consistency; the trust model, lab practice and adoption against the goals): **29 findings, 9 high.** **The factual ones are fixed**: a bench study already holds a `Raw` capture open through a step's delay, with `record_checks`, so the proposal's first stage needs no suite change; Live keeps Core's capture outside a study; an odd-length read misaligns samples with no newline in it; 02's bench sentence; the evidence row's stage A; the tags 02 has; a fixture value is not in the model. **The trust-model ones went to the owner. Confirmed 2026-11-19 and folded into [13](13-research-phase.md)**: Core decides there is no DUT from its own state; a declared subject keys the run history; an `(analysis)` tag; a fixture value as a person's act. **Still recommendations under [13](13-research-phase.md#open)**, marked "note 13 review, recommended": discarding unpublished scans' captures, `by` for a relayed sample, a Study's own declarations labelled unconfirmed, and "no DUT board".
 
 | Goal | Line |
 |---|---|
 | G1 | Met with named gaps: the subject's declaration, which the run history rests on, is Open |
 | G2 | Met with named gaps: stage A now runs with no suite change; the per-scan cost is unmeasured |
 | G3 | Met with named gaps: "no DUT" against lab usage and the retention of unpublished scans are Open |
-| G4 | **Not met until the owner answers** the first four recommendations in 13's Open |
+| G4 | Met with named gaps: the four holes closed by the owner's answers of 2026-11-19, whose wording no reviewer has read yet; a Study's own declarations are still unlabelled (Open) |
 | G5 | Met: the excursion counter is a reducer a contributor adds to the crate |
 | G6 | Met with named gaps: the sensor answer on the DUT route is development evidence, and the proposal says so |
 | G7 | Met: the bench definition reopened, its consequences carried into 02, 03 and the README |

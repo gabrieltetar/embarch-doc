@@ -80,7 +80,7 @@ Spans `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and 
 ## What stays outside the suite
 
 - **The event detector.** What a payload means is the engineer's ([embarch-study-designer decision 52](embarch-study-designer/decisions/payload-meaning.md)), and the dev bench interprets no payload ([spec](embarch-dev-bench/spec.md) §3). A generic excursion-count reducer is the HIL design's question ([13](notes/hil/13-research-phase.md#the-detector-being-researched)), not a detector.
-- **The DUT's sampling and counting firmware** (items 1 and 6), and stage A's analysis script, which the agent may write: how its count is labelled in a report is open in [13](notes/hil/13-research-phase.md#open).
+- **The DUT's sampling and counting firmware** (items 1 and 6), and stage A's analysis script, which the agent may write: in a report its count is tagged `(analysis)`, never a measurement ([13](notes/hil/13-research-phase.md#the-detector-being-researched)).
 - **The sensor's analog front end**: bias, gain and coupling are hardware the engineer chooses.
 
 ## Open
