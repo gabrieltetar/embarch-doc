@@ -1,6 +1,6 @@
 # 090 — Read a Maxim register map printed as one bit-column table with no per-register headings
 
-**State:** open
+**State:** claimed by agent/atlas/090-maxim-bit-column-register-map, 2026-11-19 00:25
 **Source:** Fleet Ready issue: `doc regparse --template maxim` found 0 registers on a Maxim optical-sensor datasheet and noted three bit diagrams that name no register address.
 **Issue:** EMB-34
 **Scope:** atlas
