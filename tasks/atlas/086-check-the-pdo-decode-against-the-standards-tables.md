@@ -1,6 +1,6 @@
 # 086 — Check the USB PD PDO decode against the standard's tables, and pin it with tests
 
-**State:** open
+**State:** claimed by agent/atlas/086-check-the-pdo-decode-against-the-standards-tables, 2026-11-18 23:23
 **Source:** Fleet Ready issue: the config-vs-standard check (`atlas/004`) decodes Fixed, Variable, Battery and Augmented PDOs from a bit layout written from memory, and nothing has compared those positions and units with the standard.
 **Issue:** EMB-159
 **Scope:** atlas
