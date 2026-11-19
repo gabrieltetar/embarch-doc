@@ -1,6 +1,6 @@
 # 086 — Check the USB PD PDO decode against the standard's tables, and pin it with tests
 
-**State:** claimed by agent/atlas/086-check-the-pdo-decode-against-the-standards-tables, 2026-11-18 23:23
+**State:** done 2026-11-18, agent/atlas/086-check-the-pdo-decode-against-the-standards-tables
 **Source:** Fleet Ready issue: the config-vs-standard check (`atlas/004`) decodes Fixed, Variable, Battery and Augmented PDOs from a bit layout written from memory, and nothing has compared those positions and units with the standard.
 **Issue:** EMB-159
 **Scope:** atlas
@@ -36,7 +36,11 @@ The owner supplied the tables on the issue, so the check needs no distilled stan
 
 ## Done when
 
-- [ ] Every PDO and APDO type's field positions and units in `_pdo` agree with the layout above, source and sink, and any that did not is fixed.
-- [ ] `tests/test_fwcheck.py` pins at least one known word per type (Fixed 5 V source and sink, Fixed above 5 V, Battery, Variable, SPR PPS source and sink, SPR AVS, EPR AVS source and sink) to its expected fields.
-- [ ] `DESIGN.md` says the decode was checked against USB PD R3.2 V1.2 and what a reserved field decodes to.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] Every PDO and APDO type's field positions and units in `_pdo` agree with the layout above, source and sink, and any that did not is fixed.
+- [x] `tests/test_fwcheck.py` pins at least one known word per type (Fixed 5 V source and sink, Fixed above 5 V, Battery, Variable, SPR PPS source and sink, SPR AVS, EPR AVS source and sink) to its expected fields.
+- [x] `DESIGN.md` says the decode was checked against USB PD R3.2 V1.2 and what a reserved field decodes to.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+Positions and units in `_pdo` all agreed with the layout. Three fixes, each as the dispatch notes guessed: (1) a fixed PDO above 5 V now decodes only `mv`, `ma` and source `peak`, the vSafe5V flags are `None`; (2) a sink EPR AVS APDO's B7..0 lands in new `max_w`, `pdp_w` is `None` for a sink; (3) SPR AVS fields renamed `ma_9_15v` / `ma_15_20v`, `__str__` says "for 9-15 V". The only consumers of the old names were the unit test and `DESIGN.md`, both updated; no skill reference used them. Also fixed the test fixture's EPR max voltage, which overflowed its 9-bit field.
