@@ -33,7 +33,7 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 | Premade tests validated against injected faults | Taken, a later phase | [04](04-premade-suites.md#decided) |
 | The claim's two sentences open the guide and the proposal | Taken | [09](09-trust-model.md#the-claim) |
 | Reducers and verdict rules as one crate, linked by Core and embarch-api | Taken | [02](02-study.md#measurements) |
-| A requirement's verdict | **Pass when every test that ran passed**; skipped tests listed under it | [03](03-test.md#the-report) |
+| A requirement's verdict | **Pass when every test that ran passed**; skipped tests listed under it (narrowed 2026-11-19: a test skipped for a gap makes it `not verified`) | [03](03-test.md#the-report) |
 | A contract and a fixture per reducer | Taken | [02](02-study.md#measurements) |
 | A confirmation recorded with its surface | Taken | [03](03-test.md#the-duts-inputs) |
 | `publish <run id>` for a Study and a Test | Taken | [06](06-report-and-publish.md#publish) |
@@ -50,26 +50,13 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 **The goals, after round 1** (the reviewer's reading, [00](00-goals.md)):
 
-- **G1 critical**: met with gaps; the fold into the proposal and the order are R24 below.
+- **G1 critical**: met with gaps; the fold into the proposal and the order were R24, answered in the owner's confirmation pass below.
 - **G2 adoption**: met with gaps; a suite no longer needs an atlas, and the first hour is not yet written down anywhere.
 - **G3 professional**: met with gaps; the vocabulary, the decision rule and the exports match lab practice ([11](11-prior-art.md)); what is new is claimed in [11](11-prior-art.md#what-is-new-in-embarch)'s words and no wider.
 - **G4 the LLM-HIL problem**: met for the evidence **against an agent that subverts**, once [the evidence proposal](../../embarch-hil-evidence-proposal.md) is built ([12](12-prevention.md)); **the hardware outside a run rests on authoring and review alone**, by the owner's choice, and the guide says so.
 - **G5 open source**: the reducer contract and suites as plain data help; **the dev container is a new step for every adopter**, round 2's adoption lens.
 - **G6 clients**: met for the report, signed by Core and checkable by `verify` against a pinned key; the same hardware note as G4.
 - **G7 depth**: round 2 planned below.
-
-## Unanswered
-
-### R23 — Smaller points
-
-- **An idle Live lease**: 900 s renewed by the MCP server's timer holds the bench for as long as the session lives. Release after a stated idle time.
-- **Instruments in Live**: 05 excludes them, while `instrument_exchange` is an MCP tool today. Procedure-only; say so, or gate it.
-- **Several units**: a design-validation campaign runs one plan on three units. One run per unit, and a report over runs, later.
-- **The glossary**: HIL test, test suite, test plan, run, resolved run, verdict, measurement. "Test" also names the ledger's tests and unit tests.
-
-### R24 — The proposal and its order
-
-The proposal's order predates round 1. **Recommended:** its one-screen design and its work table take round 1's answers (done in round 1), and **its order puts the file shapes (verdicts, `measurements.json`, `run.json`) before Study publish**, so the Study zip is not reshaped when Test lands.
 
 ## Round 2 (2026-11-15)
 
@@ -152,12 +139,37 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 | G6 | Met with named gaps: the sensor answer on the DUT route is development evidence, and the proposal says so |
 | G7 | Met: the bench definition reopened, its consequences carried into 02, 03 and the README |
 
+## The owner's confirmation pass (2026-11-19)
+
+**The owner went through every "review round 2, recommended" and "review round 3, recommended", theme by theme, then note 13's four and R23 and R24.** A marker the owner confirmed now reads "review round N, owner 2026-11-19"; where an answer changed or deferred something, the note says so in place.
+
+| Theme | Answer |
+|---|---|
+| Core as the one source of truth; what Core signs, `report-data.json` included; the signed run record and resume | Confirmed |
+| `verify` | **Checks 0 to 8 confirmed; check 9, the PDF rebuilt and compared page by page in pixels, cut**: the PDF is checked on its text layer, and what an image in it shows rests on embarch-api ([06](06-report-and-publish.md#verify)) |
+| Verdicts | Confirmed, and **a test skipped for a gap makes its requirement `not verified`**: only a not-applicable or not-selected skip sits under a pass, which narrows the round-1 rule ([03](03-test.md#the-report)) |
+| Uncertainty and the decision rule; bench-board readback and `bench_image`; the numeric-oracle rules | Confirmed |
+| What is confirmed; prepare, go and lease; the refusals during a run | Confirmed |
+| Prompts and safety at definition | Confirmed; **outputs switched off at run time before a handling prompt: declined**, since a "plug the cable now" prompt needs the DUT powered ([12](12-prevention.md#operator-prompts-by-kind)) |
+| Who the report says did what | Confirmed |
+| Identity as the person's act | **On an attested Core only**: on an unattested one the identity routes, an instrument's declarations and the setup calls between benches stay on MCP with the agent's token, labelled as the agent's; every other person's act keeps the person's surface ([12](12-prevention.md#the-root-of-trust-core-under-its-own-account)) |
+| The card and the passkey | The card confirmed; **the passkey's details wait for its own phase**, marked so ([12](12-prevention.md#open)) |
+| Unattested and attested | Confirmed |
+| Core's install and the development loop | Confirmed, landing with the attested phase, and **changed**: the two Cores never run at once on one bench, since the shared port is the lock that keeps a development Core off the bench during attested work, and **the engineer's account may stop and start the service without elevation**; new, so round 4 reads it ([12](12-prevention.md#the-root-of-trust-core-under-its-own-account)) |
+| The call log failing closed; firmware taken as bytes | Confirmed |
+| The agent's container | The hardening and the firewall confirmed; **the agent's own clone and the `embarch/` flow are decided in the standalone pass**, marked so ([12](12-prevention.md#open)) |
+| Exports and publish; files and suites; Live | Confirmed |
+| R23, the smaller points | All four taken: the Live lease released after a stated idle time ([01](01-modes.md#the-lease)); Core refuses `instrument_exchange` outside a run ([05](05-live.md#reach-and-permission)); several units as later work ([03](03-test.md#open)); the guide opens with a glossary ([07](07-procedure-doc.md#an-outline-of-the-guide)) |
+| R24, the order | Taken: the file shapes are fixed as a doc before Study publish ([the proposal](../../embarch-hil-proposal.md#order)) |
+| Note 13's four | "No DUT board", `by` following a relayed tap's declared origin, and a Study's own declarations labelled unconfirmed: confirmed. **A scan's captures may be discarded by either token**, the discard and its token's scope kept in the history ([13](13-research-phase.md#many-scans-few-reports)) |
+
+**The order and who builds it** (owner, 2026-11-19): **the first milestone is an unattested Study publish**: the file shapes, the shared crate, Core signing its records and keeping its run log under the engineer's own account, then publish and `verify` on the BLE GATT study. **Core's own account and the `deploy-core` change come later**, as the attested phase. **HIL runs alongside the atlas rework**, and only Live's write-back waits on it. **The fleet writes the code that needs no hardware; interactive sessions do every bench run** ([the proposal](../../embarch-hil-proposal.md#order)).
+
 ## Still unanswered
 
-- **R23** and **R24**, above.
-- **Every "review round 2, recommended" and "review round 3, recommended"** in the notes, for the owner to confirm or undo.
-- **Every "note 13 review, recommended"** in [13](13-research-phase.md#open).
+- **The passkey's details**, until its phase, and **the agent's own clone and the `embarch/` flow**, until the standalone pass ([12](12-prevention.md#open)).
+- **Switching between the Cores without elevation**: the owner's answer of 2026-11-19, not yet read by a reviewer.
 
 ## Open
 
-- **Round 4**: a full round once the owner has confirmed or undone the round-2 and round-3 recommendations, reading the sixth round's unreviewed fixes with the rest.
+- **Round 4**: a full round on the design as confirmed, with **the five lenses plus buildability** (whether each piece can be built and tested in its own repo, and what is heavier than a first version needs), reading note 13 and the 2026-11-19 changes with the rest. **Its findings go to the owner before anything is folded**, and nothing lands marked "recommended" again (owner, 2026-11-19).

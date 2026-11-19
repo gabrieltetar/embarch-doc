@@ -13,9 +13,11 @@
 
 ## An outline of the guide
 
+**The guide opens with a glossary**: HIL test, test suite, test plan, run, resolved run, verdict and measurement, kept apart from the ledger's tests and from unit tests (owner, 2026-11-19).
+
 0. **What the agent is and is not trusted with**: the claim's two sentences, the agent's may-and-never table, and every rule that is procedure-only, named as such ([09-trust-model.md](09-trust-model.md)).
 1. **Choosing a mode**: the table in [01-modes.md](01-modes.md#how-an-agent-picks-a-mode), and the fleet's exclusion.
-2. **Before any hardware**: `status` (Core reachable, the lease, `last_images`), `lease_take` with a purpose, the saved bench live, `validate`. **At a Test's go the session's lease passes to the run** and comes back when it ends ([03](03-test.md#a-run), item 1) (review round 2, recommended).
+2. **Before any hardware**: `status` (Core reachable, the lease, `last_images`), `lease_take` with a purpose, the saved bench live, `validate`. **At a Test's go the session's lease passes to the run** and comes back when it ends ([03](03-test.md#a-run), item 1) (review round 2, owner 2026-11-19).
 3. **Live**: reach, what is free and what asks, the atlas or raw path, the live log, writing a finding back, when to escalate.
 4. **Study**: from the question to a published zip, with the BLE GATT data-acquisition example: declaring measurements, reading `measurements.json` rather than captures, prose that cites measurements.
 5. **Test**: selecting from a suite, the test plan, proposing the DUT's inputs and hooks for the engineer to confirm, the preview and the engineer's go, starting a Core-run Test, prompts between benches, reading the six verdicts and coverage, publishing.
@@ -31,7 +33,7 @@ Gaps in today's agent-facing docs, found while gathering these notes:
 - **[agent-guide.md](../../suite/agent-guide.md) never says which kind of hardware work to do.** It lists 54 tools and how to permit them, and nothing about studies against live reads against test runs.
 - **The atlas's live tools appear nowhere in the suite's agent docs.** `reg_read`, `shell`, `shell_run`, `live_stacks` and the atlas's own `core_state` (beside embarch-api's tool of that name) are documented only in the `embarch-atlas` repo's `DESIGN.md`, which is local and unpublished.
 - **The lease is in the tool reference, not in any procedure**: when to take it, for how long, when to let it go.
-- **§1.1's permission lists disagree with the Live mode**: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow, the atlas's tools get a list of their own, and **the identity tools leave §1.1 and the MCP surface**, becoming the person's (review round 2, recommended) ([05-live.md](05-live.md#reach-and-permission)).
+- **§1.1's permission lists disagree with the Live mode**: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow, the atlas's tools get a list of their own, and **on an attested Core, the identity tools leave §1.1 and the MCP surface**, becoming the person's (review round 2, owner 2026-11-19) ([05-live.md](05-live.md#reach-and-permission)).
 - **The [studies guide](../../suite/studies-guide.md) is written for an engineer** and stops at reading captures: nothing on reporting or publishing.
 - **The ledger has no procedure at all**: tools only ([embarch-api ledger tools](../../embarch-api/interfaces/tools-ledger.md)).
 

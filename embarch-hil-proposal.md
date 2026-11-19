@@ -45,21 +45,29 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 | `embarch-dev-bench` | Each bench board's idle command, for the default precondition. The PD partner's fault-injection commands, for validating premade tests; its Source_Capabilities capture, for a measured capability |
 | `embarch-ui` | Host studies saved in `embarch/studies/`. A suite's benches copied into `embarch/topologies/`. **[Decision 96](embarch-ui/decisions/bench-configs.md) amended**: renaming or deleting a config a saved study or test names is refused ([02](notes/hil/02-study.md#where-its-files-live)). A Test run view, later |
 | `embarch-umbrella` | `embarch init` installs the `embarch-hil` skill beside the MCP server |
-| `embarch-doc` | `suite/hil-guide.md`. [agent-guide.md](suite/agent-guide.md) §1.1: `reset`, `signal_exchange`, `mem_read`, `core_state`, `bench_exchange`, `validate`, `reset_dev_bench` and the three lease tools move to allow; the atlas's tools get a list of their own; the identity tools leave it and the MCP surface, becoming the person's ([the evidence proposal](embarch-hil-evidence-proposal.md)) |
+| `embarch-doc` | `suite/hil-guide.md`. [agent-guide.md](suite/agent-guide.md) §1.1: `reset`, `signal_exchange`, `mem_read`, `core_state`, `bench_exchange`, `validate`, `reset_dev_bench` and the three lease tools move to allow; the atlas's tools get a list of their own; on an attested Core, the identity tools leave it and the MCP surface, becoming the person's ([the evidence proposal](embarch-hil-evidence-proposal.md)) |
 
 ## Order
 
-1. **The atlas rework**, in [its own proposal](embarch-atlas-planes-proposal.md) (the owner's call: start there).
-2. **Study publish**, on the BLE GATT data-acquisition path, which already runs on hardware; Tests reuse the same publish. **It needs, before it lands**: the shared crate's reducers linked by Core, and Core's signed records and run log, the [evidence proposal](embarch-hil-evidence-proposal.md)'s steps 1 and 2 (scoped tokens, Core's own account and store, then signing), so the first published zip is already signed and verifiable.
-3. **Live**: the guide's Live section, the live log, the permission lists, then the write-back once the atlas has its verb.
-4. **Test**: the numeric parse and a first host study on the real PD bench (the [host-study proposal](embarch-host-study-proposal.md)'s own first item), then the Core route and a custom suite, then the first premade suite.
-5. `suite/hil-guide.md` grows a section per mode as each lands, rather than waiting for all three, and splits into one file per mode if it outgrows the studies guide (about 23 KB).
+**The owner's answers of 2026-11-19** ([10-review.md](notes/hil/10-review.md#the-owners-confirmation-pass-2026-11-19)). The implementation plan, unit by unit, follows review round 4.
+
+1. **HIL runs alongside the atlas rework**, no longer after it: every mode runs without an atlas, so only Live's write-back waits, on [the planes proposal](embarch-atlas-planes-proposal.md)'s measured write-back.
+2. **The file shapes, fixed as a doc**: verdicts, `measurements.json`, `run.json`, so the Study zip is not reshaped when Test lands.
+3. **The shared crate**: the reducers and the verdict rules, linked by Core.
+4. **Core signs its records and keeps its run log, under the engineer's own account**: the [evidence proposal](embarch-hil-evidence-proposal.md)'s step 2 ahead of its step 1, so the first published zip is signed and verifiable, and unattested.
+5. **Study publish and `verify`**, on the BLE GATT data-acquisition path, which already runs on hardware; Tests reuse the same publish.
+6. **Live**: the guide's Live section, the live log, the permission lists, then the write-back once the atlas has its verb.
+7. **Test**: the numeric parse and a first host study on the real PD bench (the [host-study proposal](embarch-host-study-proposal.md)'s own first item), then the Core route and the example shell suite, then the first premade suite.
+8. **The attested phase, later**: Core under its own account, its protected store, installs from a signed release, and `deploy-core`'s development Core beside the service; its place against Live and Test is the implementation plan's call.
+9. `suite/hil-guide.md` grows a section per mode as each lands, rather than waiting for all three, and splits into one file per mode if it outgrows the studies guide (about 23 KB).
+
+**Who builds it**: the fleet writes the code that needs no hardware, from Fleet Ready issues; every bench run, the guide and the standing docs stay in interactive sessions, since the fleet stays off hardware.
 
 ## Open questions
 
 The full lists close each note; what is left is measured later or is the atlas rework's call. The ones that touch every phase:
 
 - **The inventory of what exists** ([08](notes/hil/08-existing-pieces.md)) was taken from the docs; each row a phase relies on is checked against its repo when that phase starts.
-- **The order** ([10-review.md](notes/hil/10-review.md) R24). Recommended: the file shapes (verdicts, `measurements.json`, `run.json`) fixed as a doc before Study publish, so the Study zip is not reshaped when Test lands.
+- **The implementation plan**, unit by unit, after review round 4 ([10-review.md](notes/hil/10-review.md#open)).
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.
