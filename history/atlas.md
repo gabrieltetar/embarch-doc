@@ -49,6 +49,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- embarch-atlas `q stacks` now lists a driver's per-instance thread stacks (`<name>_stack_<N>`) and counts them in its total.
 - atlas: `checks.md` lists netted pads left without a pin name (`pad-without-name`) and DT pins no pad resolves to (`dt-pin-unresolved`), so a skipped pin check no longer reads as passing.
 - atlas: doc freeze no longer counts a cite of another document (other-doc p.7) as a page of the citing document; a change to that page no longer thaws the unit.
 - `embarch-atlas doc freeze` counts only pages inside the document, and warns on a unit citing a page outside 1..pages instead of counting it.
