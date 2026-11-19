@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas: `doc regparse --template maxim` also reads `Name Register (0x..)` headings with one summary table carrying DEFAULT; a row or heading missing its twin is a conflict (EMB-34).
 - embarch-atlas: `mcu rm-outline` reads a single-root outline's chapters and `mcu vote` parses Nordic-style register pages (synthetic fixtures only; real-datasheet run owed). See DESIGN.md.
 - atlas: `board-diff` diffs an Altium project's parts and pin nets against a PDF-built atlas's netlist; a renamed net is name-only; exit 1 on a difference (EMB-88)
 - Atlas: `embarch-atlas cad` reads an Altium project's SchDoc sources into parts, pin nets and variant not-fitted parts, read-only; synthetic fixtures only ([design](../embarch-atlas/design.md)).
