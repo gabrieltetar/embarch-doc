@@ -4,7 +4,7 @@
 
 ## What a Study is
 
-**A custom, almost scientific question, answered by measurement on exactly one bench.** A bench here is one DUT, zero or one dev bench, and any companion boards and instruments wired to that setup ([README](README.md#vocabulary)). Two benches in one piece of work make it a Test.
+**A custom, almost scientific question, answered by measurement on exactly one bench.** A bench here is zero or one DUT (none only for a Study or Live, [13](13-research-phase.md#a-bench-with-no-dut)), zero or one dev bench, and any companion boards and instruments wired to that setup ([README](README.md#vocabulary)). Two benches in one piece of work make it a Test.
 
 **The runner is not what makes it a Study.** A dev-bench study (`run_study`, the bench plays the DUT's BLE counterpart) and a host study (`run_host_study`, Core drives serial exchanges, instruments and operator prompts itself) are both Studies when what they produce is measurements.
 

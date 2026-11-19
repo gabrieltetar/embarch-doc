@@ -138,10 +138,25 @@ The proposal's order predates round 1. **Recommended:** its one-screen design an
 
 **Two reviewers on that fix diff**: **6 findings, none high.** Fixed the same way: embarch-api and embarch-ui send the service's token pair only to a Core that signs a fresh challenge with the key whose fingerprint the elevated install recorded; `core-fingerprint` is out of the agent's reach only in the container topology, and elsewhere a fact resting on it says "fingerprint not protected here"; a repo registered later gets the file through an elevated step; check 9's visibility test made mechanical (render with and without each glyph run, a stated contrast and a minimum size); the dev workflow §4a and umbrella decision 32 amendments stated as to do once accepted. **The loop stops here, at its round cap**: six rounds, the high findings falling 7, 2, 1, 0, 0, 0; the last round's fixes are unreviewed.
 
+## Note 13's review (2026-11-18)
+
+**Two reviewers on [13](13-research-phase.md) and the analog-capture proposal** (facts and consistency; the trust model, lab practice and adoption against the goals): **29 findings, 9 high.** **The factual ones are fixed**: a bench study already holds a `Raw` capture open through a step's delay, with `record_checks`, so the proposal's first stage needs no suite change; Live keeps Core's capture outside a study; an odd-length read misaligns samples with no newline in it; 02's bench sentence; the evidence row's stage A; the tags 02 has; a fixture value is not in the model. **The trust-model ones are recommendations under [13](13-research-phase.md#open)**, marked "note 13 review, recommended", for the owner: how Core knows a bench has no DUT, a declared subject keying the run history, an `(analysis)` tag, a fixture value as a person's act, discarding unpublished scans' captures, `by` for a relayed sample, a Study's own declarations labelled unconfirmed, and "no DUT board".
+
+| Goal | Line |
+|---|---|
+| G1 | Met with named gaps: the subject's declaration, which the run history rests on, is Open |
+| G2 | Met with named gaps: stage A now runs with no suite change; the per-scan cost is unmeasured |
+| G3 | Met with named gaps: "no DUT" against lab usage and the retention of unpublished scans are Open |
+| G4 | **Not met until the owner answers** the first four recommendations in 13's Open |
+| G5 | Met: the excursion counter is a reducer a contributor adds to the crate |
+| G6 | Met with named gaps: the sensor answer on the DUT route is development evidence, and the proposal says so |
+| G7 | Met: the bench definition reopened, its consequences carried into 02, 03 and the README |
+
 ## Still unanswered
 
 - **R23** and **R24**, above.
 - **Every "review round 2, recommended" and "review round 3, recommended"** in the notes, for the owner to confirm or undo.
+- **Every "note 13 review, recommended"** in [13](13-research-phase.md#open).
 
 ## Open
 
