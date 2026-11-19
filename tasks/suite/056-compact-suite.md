@@ -8,6 +8,7 @@
 **Size debt due:** 2026-11-25
 **In flux:** no
 **Must not delete:** a row of §6 for any top-level file: the index is useful only while exhaustive ([DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §5), and the next top-level file needs room for its own row.
+**Announced:** `#embarch-fleet` `ts` `1795086320.551719`, 2026-11-19 04:05, by the leg that resumed `atlas/090`. The window closes at 04:35 with no objection; until then the task stays `open` and parked. A leg that finds this line with the window closed and no reply in that thread may run it without re-announcing.
 
 ## What
 
