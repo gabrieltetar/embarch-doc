@@ -12,7 +12,7 @@ Spans `embarch-atlas`, `embarch-study-designer`, `embarch-core`, `embarch-api`, 
 | **Test** | Technical conformance: selected tests of a suite such as USB PD R3.2 | One or more, one after another | A verdict per test, coverage, a published report |
 | **Live** | An instant read or action during development | The DUT and its bench boards | An answer, a live-log line, a fact written back to the atlas |
 
-**A bench** is one DUT, zero or one dev bench, and any companion boards and instruments, described as a saved bench and bound to real probes by Make live ([vocabulary](notes/hil/README.md#vocabulary)). **Purpose separates the modes**, and a spec named in a request makes it a Test ([how an agent picks](notes/hil/01-modes.md#how-an-agent-picks-a-mode)). **Interactive sessions only**: the fleet stays off hardware. **Every mode holds the bench lease**; a Test run holds its own, and a Study run will too once Core can hold one for a run.
+**A bench** is zero or one DUT (none only for a Study or Live, [13](notes/hil/13-research-phase.md)), zero or one dev bench, and any companion boards and instruments, described as a saved bench and bound to real probes by Make live ([vocabulary](notes/hil/README.md#vocabulary)). **Purpose separates the modes**, and a spec named in a request makes it a Test ([how an agent picks](notes/hil/01-modes.md#how-an-agent-picks-a-mode)). **Interactive sessions only**: the fleet stays off hardware. **Every mode holds the bench lease**; a Test run holds its own, and a Study run will too once Core can hold one for a run.
 
 ## What it is held to
 
