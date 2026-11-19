@@ -1,6 +1,6 @@
 # 089 — Read Maxim register headings with a `0x..` address and a summary table carrying defaults
 
-**State:** claimed by agent/atlas/089-maxim-register-headings-with-a-hex-address, 2026-11-19 00:17
+**State:** done
 **Source:** Fleet Ready issue: `doc regparse --template maxim` found 0 registers on a Maxim fuel-gauge datasheet ("no line came close"), while a third Maxim fuel gauge parses with 235 registers, so the template reads one Maxim layout and misses others.
 **Issue:** EMB-34
 **Scope:** atlas
@@ -31,8 +31,18 @@ The owner pasted the headings and the summary table on the issue, which is what 
 
 ## Done when
 
-- [ ] A synthetic document with `Name Register (0x..)` headings and the summary table above yields its registers, each with its address and its `DEFAULT`.
-- [ ] A table row with no heading, and a heading with no row, are each reported.
-- [ ] The existing Maxim fixtures' output is unchanged (`tests/test_regparse.py` stays green).
-- [ ] `DESIGN.md` says which Maxim layouts the template reads.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A synthetic document with `Name Register (0x..)` headings and the summary table above yields its registers, each with its address and its `DEFAULT`.
+- [x] A table row with no heading, and a heading with no row, are each reported.
+- [x] The existing Maxim fixtures' output is unchanged (`tests/test_regparse.py` stays green).
+- [x] `DESIGN.md` says which Maxim layouts the template reads.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+`Maxim` now also reads `Name Register (0xNN)` headings (the word `Register` required) with one summary table (page with `ADDRESS` and `DEFAULT` header words; rows `0xNN NAME ... R/W|R|W 0xVVVV|—`). Each register takes its reset from its row's `DEFAULT`; a row with no heading is written as `summary.<NAME>`, a heading with no row as `<NAME>.no_summary_row`, a name differing between heading and row as `<NAME>.table_name`. The old layout is untouched (`tests/test_regparse.py` green, 966 passed). A register with no bit diagram stays a 16-bit register with no fields; its address prints with two hex digits. Synthetic fixture `mxhx@1` in `tests/regparse_synth.py`. `DESIGN.md` names both layouts.
+
+The heading regex was not tightened: a flash command heading (`Write Command (0x02)`) never matched the new form for lack of the word `Register`, and the second symptom on the issue is **not** claimed fixed. The bit-column map layout is `atlas/090`.
+
+## Debt (owner-side)
+
+`doc regparse --template maxim` on the real datasheet that read 0 registers: not run (the datasheet is not in the repo). Owed to confirm the real summary-table row shape (wrapped `REGISTER NAME` header, descriptions wrapping onto several lines) matches the synthetic one.
