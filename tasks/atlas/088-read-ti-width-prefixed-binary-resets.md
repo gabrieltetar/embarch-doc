@@ -1,6 +1,6 @@
 # 088 — Read TI register resets printed as width-prefixed binary, and a capital-R `[Reset = ...]` heading
 
-**State:** claimed by agent/atlas/088-read-ti-width-prefixed-binary-resets, 2026-11-19 00:12
+**State:** done (agent/atlas/088-read-ti-width-prefixed-binary-resets, 2026-11-19)
 **Source:** Fleet Ready issue: on one TI charger datasheet `doc regparse --template ti` found 13 registers and 67 fields, carried no reset value on any of them, and wrote no `conflict` record; four other TI and Maxim datasheets now parse with resets, so this is one TI layout variant.
 **Issue:** EMB-33
 **Scope:** atlas
@@ -33,8 +33,16 @@ The owner pasted one register exactly as it prints, which is what the earlier se
 
 ## Done when
 
-- [ ] A synthetic register in this layout yields its heading, field-table and bit-diagram resets, and a multi-bit `2b10` reset decodes to its value.
-- [ ] A synthetic register whose resets disagree writes a `conflict` record; a `[Reset = X]` register writes none and carries no reset.
-- [ ] Every existing TI fixture's output is unchanged (`tests/test_regparse.py` stays green).
-- [ ] `DESIGN.md` names the cause and the width-prefixed form.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A synthetic register in this layout yields its heading, field-table and bit-diagram resets, and a multi-bit `2b10` reset decodes to its value.
+- [x] A synthetic register whose resets disagree writes a `conflict` record; a `[Reset = X]` register writes none and carries no reset.
+- [x] Every existing TI fixture's output is unchanged (`tests/test_regparse.py` stays green).
+- [x] `DESIGN.md` names the cause and the width-prefixed form.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Result
+
+**Cause.** The layout printed three forms the TI template did not know, so every reset was `None` and `_check_document` had nothing to compare (hence no conflict): the field-table cell `1b0` / `2b10` matched none of `RESET_TOK`'s alternatives (the digit after `b` fails its `(?![\w])` lookahead); the bit-diagram token `R/W-1b0` matched none of `FIGTOK`'s (`[01xX]+b` or `<hex>h`; `R-X` matched none); the heading `[Reset = 0x11]` fell through `_reset_spec` to a text note (`0x` hex was not a value). `HEAD`, `TABLE_HDR` and the capital `R` were already fine (`re.I`).
+
+**Fix** (`src/embarch_atlas/regparse.py`): `RESET_TOK`, `FIGTOK` and `_bits_value` read `<width>b<bits>`; `_heading_reset` / `_reset_spec` read `0x..`; `[Reset = X]` is a text spec "reset unknown (X)" (no reset, no conflict); `R-X` diagram tokens read as unknown. A width-prefixed cell whose digit count disagrees with its width reads as unknown and writes a `conflict` `<REG>.<FIELD>.reset_width` (field table); in a bit diagram it reads as unknown, so it conflicts only when the field table has a value. Fixture `SYN880` in `tests/regparse_synth.py` (consistent, heading-vs-fields conflict, `[Reset = X]`, bad width); tests in `tests/test_regparse.py`. DESIGN.md names the cause and the form. Gate: `pytest -q` green (964 passed, 3 skipped).
+
+**Debt (owner-side, hardware: none).** Run `doc regparse <doc_id> --template ti` on the real datasheet and check its resets and its 3 conflicts. Not claimed here; the layout was written from the issue's description, so a variation in real column spacing is untested.
