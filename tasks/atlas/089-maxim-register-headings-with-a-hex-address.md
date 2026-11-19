@@ -1,6 +1,6 @@
 # 089 — Read Maxim register headings with a `0x..` address and a summary table carrying defaults
 
-**State:** open
+**State:** claimed by agent/atlas/089-maxim-register-headings-with-a-hex-address, 2026-11-19 00:17
 **Source:** Fleet Ready issue: `doc regparse --template maxim` found 0 registers on a Maxim fuel-gauge datasheet ("no line came close"), while a third Maxim fuel gauge parses with 235 registers, so the template reads one Maxim layout and misses others.
 **Issue:** EMB-34
 **Scope:** atlas
