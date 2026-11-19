@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas's Maxim template reads a single B7..B0 bit-column register map with no per-register headings as 8-bit registers; a column span vs [m:n] mismatch is reported (EMB-34).
 - embarch-atlas: `doc regparse --template maxim` also reads `Name Register (0x..)` headings with one summary table carrying DEFAULT; a row or heading missing its twin is a conflict (EMB-34).
 - embarch-atlas: `mcu rm-outline` reads a single-root outline's chapters and `mcu vote` parses Nordic-style register pages (synthetic fixtures only; real-datasheet run owed). See DESIGN.md.
 - atlas: `board-diff` diffs an Altium project's parts and pin nets against a PDF-built atlas's netlist; a renamed net is name-only; exit 1 on a difference (EMB-88)
