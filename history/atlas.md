@@ -50,6 +50,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- `doc regparse --template ti` reads width-prefixed binary resets (`2b10`), `[Reset = 0x11]` and `[Reset = X]`; before, a layout printing them got no reset and no conflicts (EMB-33, atlas DESIGN.md).
 - embarch-atlas's USB PD PDO decode checked against USB PD R3.2 V1.2: sink EPR AVS gets max_w, SPR AVS currents are ma_9_15v/ma_15_20v, a fixed PDO above 5 V leaves the vSafe5V flags None (DESIGN.md).
 - embarch-atlas `q stacks` now lists a driver's per-instance thread stacks (`<name>_stack_<N>`) and counts them in its total.
 - atlas: `checks.md` lists netted pads left without a pin name (`pad-without-name`) and DT pins no pad resolves to (`dt-pin-unresolved`), so a skipped pin check no longer reads as passing.
