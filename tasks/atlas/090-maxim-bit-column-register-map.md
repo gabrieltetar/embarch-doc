@@ -1,6 +1,6 @@
 # 090 — Read a Maxim register map printed as one bit-column table with no per-register headings
 
-**State:** claimed by agent/atlas/090-maxim-bit-column-register-map, 2026-11-19 04:06 — resumed: the 00:25 claim's worker died with its leg at 00:30; its uncommitted tree is `d80aa9f` on the branch
+**State:** done on agent/atlas/090-maxim-bit-column-register-map (resumed after the 00:30 worker died; its recovered tree `d80aa9f` was reviewed against Done-when and kept as is)
 **Source:** Fleet Ready issue: `doc regparse --template maxim` found 0 registers on a Maxim optical-sensor datasheet and noted three bit diagrams that name no register address.
 **Issue:** EMB-34
 **Scope:** atlas
@@ -27,8 +27,14 @@ The owner pasted the table on the issue, which is what the earlier send-back ask
 
 ## Done when
 
-- [ ] A synthetic bit-column register map yields one 8-bit register per row with address, POR state and access, and its fields with correct bit ranges, including a wrapped register name and a wrapped field name.
-- [ ] A field whose column span disagrees with its `[m:n]` suffix is reported.
-- [ ] The existing Maxim fixtures' output is unchanged (`tests/test_regparse.py` stays green).
-- [ ] `DESIGN.md` says which Maxim layouts are read and how register width is chosen.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+- [x] A synthetic bit-column register map yields one 8-bit register per row with address, POR state and access, and its fields with correct bit ranges, including a wrapped register name and a wrapped field name.
+- [x] A field whose column span disagrees with its `[m:n]` suffix is reported.
+- [x] The existing Maxim fixtures' output is unchanged (`tests/test_regparse.py` stays green).
+- [x] `DESIGN.md` says which Maxim layouts are read and how register width is chosen.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped.
+
+## Closing note
+
+Maxim layout 3 (bit-column register map) is read by `Maxim._bitrows`/`_bitmap_regs`: one 8-bit register per row (address, POR state as reset, access), fields from the drawn cell rules, `[m:n]` giving the width; a span/suffix disagreement is a `conflict` `<REG>.<FIELD>.span`. Synthetic fixtures `mxbit@1` (rules drawn) and `mxbn@1` (none drawn) in `tests/regparse_synth.py`. `DESIGN.md` verb table updated. Gate: full pytest 969 passed, 3 skipped; client-name check clean.
+
+**Debt (owner-side, not Done-when):** run `doc regparse --template maxim` on the real optical-sensor datasheet and check the registers, bit ranges and any `.span` conflicts it reports; the template was only exercised on synthetic PDFs.
