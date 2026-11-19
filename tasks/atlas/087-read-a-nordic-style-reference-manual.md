@@ -1,6 +1,6 @@
 # 087 — Read a reference manual whose chapters sit under one root bookmark and whose register pages are Nordic-style
 
-**State:** claimed by agent/atlas/087-read-a-nordic-style-reference-manual, 2026-11-19 00:00
+**State:** done (2026-11-19)
 **Source:** Fleet Ready issue: on a 940-page Nordic product specification that serves as the reference manual, `mcu rm-outline` found 1 chapter across 2,208 sections and `mcu vote` parsed 0 register sections, so that MCU's SVD gets no `conflict`, `quirk` or `rule` records.
 **Issue:** EMB-32
 **Scope:** atlas
@@ -31,8 +31,16 @@ The owner pasted the outline's first two levels and one register page on the iss
 
 ## Done when
 
-- [ ] A synthetic single-root outline yields its level-2 entries as chapters in `mcu rm-outline`.
-- [ ] A synthetic Nordic-style register page is flagged as a register section and parsed by `mcu vote` into offset, reset and fields with correct bit ranges.
-- [ ] The ST fixtures' results do not change (`tests/` stays green).
-- [ ] `DESIGN.md` ("The MCU's own documents") says which reference-manual layouts are read and what each detector keys on.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped; `embarch-doc/embarch-atlas/design.md` updated if it states what layouts are read.
+- [x] A synthetic single-root outline yields its level-2 entries as chapters in `mcu rm-outline`.
+- [x] A synthetic Nordic-style register page is flagged as a register section and parsed by `mcu vote` into offset, reset and fields with correct bit ranges.
+- [x] The ST fixtures' results do not change (`tests/` stays green).
+- [x] `DESIGN.md` ("The MCU's own documents") says which reference-manual layouts are read and what each detector keys on.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet); `changelog.d/` fragment dropped; `embarch-doc/embarch-atlas/design.md` updated if it states what layouts are read.
+
+## Result
+
+`rm.unroot_toc` drops a lone unnumbered level-1 root (when at least two level-2 entries sit under it) so its level-2 entries become chapters; a numbered single chapter is left alone, which keeps ST outlines unchanged. A `...Registers` container whose children are bare upper-case names flags them as register sections (`BARE_REG_RE`). `vote.parse_nordic_fields` reads the `Bit number` / `ID` / `Reset` rows and the field table into the existing register record. `DESIGN.md` "Reference-manual layouts read" says what each detector keys on. `tests/test_nordic_rm.py` holds the synthetic fixtures; the full suite is green (962 passed, 3 skipped). `embarch-doc/embarch-atlas/design.md` does not state which layouts are read, so it is unchanged.
+
+## Debt (owner-side, not a Done-when item)
+
+One `embarch-atlas mcu rm-outline` and one `mcu vote` run on the real nRF54L-series datasheet. The fixtures are synthetic and aligned exactly; the real text layer's column positions in the `ID` row, multi-letter field IDs, and registers whose table rows differ from the shape in the issue are unverified.
