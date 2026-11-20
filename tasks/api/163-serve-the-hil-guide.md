@@ -1,6 +1,6 @@
 # 163 — `embarch-api guide hil <mode>` serves the HIL guide embedded at build, and an `embarch-hil` skill points at it
 
-**State:** claimed by agent/api/163-serve-the-hil-guide, 2026-11-20 14:39
+**State:** claimed by agent/api/163-serve-the-hil-guide, 2026-11-20 15:50 — resumed: the 14:39 claim's worker died with its leg (last write 14:45); its uncommitted trees are code `e5c197e`, doc `203df53c` on the branch
 **Source:** Fleet Ready issue: the HIL guide has to reach an agent on any machine, not only one with an `embarch-doc` checkout. `notes/hil/14-implementation-plan.md`, unit M1.12, and its Open item "Where `suite/hil-guide.md` is embedded from"; `notes/hil/07-procedure-doc.md`, "Its form" (review round 4, owner 2026-11-20).
 **Issue:** EMB-227
 **Scope:** api
