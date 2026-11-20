@@ -1,7 +1,6 @@
 # 162 — `embarch-core-client` resolves the agent and the person token, and embarch-api's MCP server sends only the agent's
 
-**State:** blocked — waits on Core writing the two tokens; the file name and the override variable are that unit's decision.
-**Unparks when:** tasks/core/128 lands.
+**State:** open
 **Source:** Fleet Ready issue: Core has one full-authority token, and HIL needs an agent scope and a person scope ("embarch-api and embarch-ui read the pair"). `notes/hil/14-implementation-plan.md`, unit M1.4; `notes/hil/12-prevention.md` ("the agent ... holding the repo, embarch-api and an agent-scoped Core token only").
 **Issue:** EMB-219
 **Scope:** api

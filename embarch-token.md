@@ -6,12 +6,14 @@ The single shared secret authenticating every caller of Core's HTTP API. **The s
 
 ## 1. What it is
 
-**A single opaque string, shared across every caller.** Not a JWT, not signed, not structured — Core does a plain exact-string comparison against every request's bearer header. **No expiry, no issued-at, no claims:** it is valid until the token file is deleted and Core regenerates one, or an explicit override changes it.
+**An opaque string, and Core holds two: the agent's token and the person's** ([`embarch-core` decision 109](embarch-core/decisions/auth.md)). Either authenticates, and each request carries the scope its token names. Not a JWT, not signed, not structured — Core does a plain exact-string comparison against every request's bearer header. **No expiry, no issued-at, no claims:** it is valid until the token file is deleted and Core regenerates one, or an explicit override changes it.
 
 **Two ways a value gets chosen, in strict precedence order:**
 
 1. **An explicit override** — the env var on Core, or an inline value or env-var name in the API's config. **If set it is used as-is; no file is read or written.**
 2. **Auto-generated and persisted**, when nothing explicit is set: **Core generates a random value on first startup and persists it to a machine-wide file**, so the same value survives a restart. The API reads that same file when nothing is configured.
+
+The precedence and the format describe both tokens: the agent's is `EMBARCH_TOKEN`, else `token`, and the person's `EMBARCH_PERSON_TOKEN`, else `person-token` beside it.
 
 **That replaced a hardcoded insecure default entirely.** An unset token used to fall back to a literal `dev-token-change-me` with a warning — **a known-insecure value baked into the binary.** It is gone, and Core logs loudly either way — on generating a new token *and* on reusing an existing one — **so which happened is never silent.**
 
@@ -19,10 +21,10 @@ The single shared secret authenticating every caller of Core's HTTP API. **The s
 
 | Component | How it holds the token |
 |---|---|
-| **Core**, HTTP server and foreground CLI alike | The env var if set; otherwise the token file if present, or generate one and write it there. **Local CLI operation is not a separate credential** |
+| **Core**, HTTP server and foreground CLI alike | The env var if set; otherwise the token file if present, or generate one and write it there; the person token the same way from its own variable and file. **Local CLI operation is not a separate credential** |
 | **`embarch-api`** | Its config's inline value or env-var name (the latter wins if both are set); **otherwise the same token file Core uses.** If neither resolves it **fails to start with a clear error** rather than proceeding unauthenticated |
 
-**Beyond process memory, the API's own config file and the token file are the only two places the token is ever written to disk.** Stored inline in a config, that file wants owner-only permissions and exclusion from version control — identical treatment to any other local secret.
+**Clients still resolve the agent's token alone.** **Beyond process memory, the API's own config file and the token files are the only places a token is ever written to disk.** Stored inline in a config, that file wants owner-only permissions and exclusion from version control — identical treatment to any other local secret.
 
 ### The auto-generated token file
 
@@ -38,7 +40,7 @@ Core creates the directory with a plain `create_dir_all` and locks down only the
 
 Every request carries the token as a bearer header, checked by exact-string comparison. **There is no TLS anywhere in this path** — Core's server is plain HTTP — **so the token crosses the network in cleartext on every call.**
 
-- **Single shared secret, no per-caller identity.** The same token authenticates Core's own local process and any remote API caller: **Core can tell "authorized" from "not", never "which caller."** Adequate for the suite's single-engineer scope.
+- **Two secrets, two scopes, no identity within a scope.** Core records whether a request carried the agent's token or the person's and refuses nothing by scope yet (decision 109). Every caller holding the same token is the same caller to it: **Core can tell the agent from the person, never one caller from another.** Adequate for the suite's single-engineer scope.
 - **The token's confidentiality in transit relies entirely on the trustworthiness of the network segment it crosses** — localhost, a WSL2 loopback, or eventually a LAN.
 - **The threat model, explicitly:** this protects against **an unauthenticated stranger on the same network hitting Core's endpoints directly.** It does **not** protect against anyone with access to the machines running Core or the API — env vars, config files and process memory are all readable at that level — **nor against network-level eavesdropping. An appropriate trade-off for a single-engineer local tool, not an oversight, but worth stating plainly rather than leaving implicit.**
 
@@ -59,7 +61,7 @@ Every request carries the token as a bearer header, checked by exact-string comp
 **Every item below was re-examined in a suite-wide design pass and every one was deliberately kept open rather than answered — the repo owner's explicit call.** Worth stating at the top, because **a list of open security questions reads as neglect when it is in fact a posture**: today every byte of this token stays on one machine's loopback, where **TLS buys nothing, per-caller identity distinguishes one caller from itself, and a rotation cadence protects against nothing that is happening.**
 
 - **No TLS in transit.** Not yet assessed against the anticipated LAN deployment; **may need revisiting before Core is reachable over a real, less-trusted network rather than a loopback.**
-- **No per-caller identity.** Revisit if Core ever needs to tell *which* caller, not just authorized or not.
+- **No per-caller identity within a scope.** Core tells the agent's token from the person's, not one holder of a token from another. Revisit if Core ever needs to tell *which* caller.
 - **No rotation grace window or hot-reload.** An accepted low-frequency cost; **revisit only if rotation ever needs to happen without a stop-the-world restart.**
 - **No rotation trigger or cadence policy.** Mechanics only, above.
 - **Cross-machine token distribution remains unsolved.** The file mechanism bridges same-machine deployments only; **a genuinely separate host needs explicit config, with no auto-discovery.** Revisit once a real remote deployment needs it.
