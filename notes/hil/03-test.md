@@ -20,6 +20,8 @@
 
 ## The verdict
 
+The six verdicts' spellings and reasons are fixed in [embarch-study-designer/interfaces/hil-shapes.md](../../embarch-study-designer/interfaces/hil-shapes.md).
+
 **Decided by code, never by the agent**, and one of six:
 
 | Verdict | Means |
@@ -76,7 +78,7 @@
 
 - **Selection narrows by applicability, then picks.** The runner keeps the tests that apply to the DUT's role and capabilities and to the benches that exist, then the engineer or agent picks by test ID or tag.
 - **A selection is saved as a test plan** in the firmware repo, to rerun it ("our PD regression set").
-- **`run.json` is the resolved run**: every test expanded to a concrete study, the DUT's inputs substituted, limits, benches, configs, preconditions, the suite's commit, the plan's hash, and each capability with its provenance. **A premade test is a template**, expanded here: one pass per PDO the DUT advertises, say. `run.json` is hashed, kept by Core, carried in the zip, and is what `verify` recomputes against ([06](06-report-and-publish.md#verify)).
+- **`run.json` is the resolved run**: every test expanded to a concrete study, the DUT's inputs substituted, limits, benches, configs, preconditions, the suite's commit, the plan's hash, and each capability with its provenance. **A premade test is a template**, expanded here: one pass per PDO the DUT advertises, say. `run.json` is hashed, kept by Core, carried in the zip, and is what `verify` recomputes against ([06](06-report-and-publish.md#verify)). Its shape is fixed in [embarch-study-designer/interfaces/hil-run.md](../../embarch-study-designer/interfaces/hil-run.md).
 - **A preview before the start, and the go.** **The go card is rendered from Core's record of `run.json`**, not from the agent's words: the tests per bench, every prompt with its kind, what will be powered and at what level (from the instrument and bench-board steps), each custom or derived test's diff against what was confirmed, every input still unconfirmed, and an upper bound on the duration from the timeouts. The agent may show the same preview in the chat as a convenience. **The engineer's go starts the run; it binds the run's id, `run.json`'s hash, a nonce Core issued for that card and an expiry, and is used once**, so an old go cannot start a run again (review round 2, owner 2026-11-19). **`run_test` prepares a run and never starts one**: embarch-api sends `run.json` and its definitions to Core with the agent's token, and Core re-expands it, registers a prepared run with its id, and renders that run's card. **The go, given with the person's token, starts it and takes the lease from the session that prepared it**, which must hold the lease at that moment; otherwise Core refuses the go and says why (review round 3, owner 2026-11-19).
 - **The rerun rule is today's ledger rule**, computed from Core's run log rather than the repo's mirror (review round 2, owner 2026-11-19): a test is pending when its latest run on the current DUT image is not a pass, so it never ran on that image or its latest run there failed, errored, was inconclusive or was cancelled, or when its commit was rebased away (review round 4, owner 2026-11-20).
 
