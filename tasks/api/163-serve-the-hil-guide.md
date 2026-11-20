@@ -1,6 +1,6 @@
 # 163 — `embarch-api guide hil <mode>` serves the HIL guide embedded at build, and an `embarch-hil` skill points at it
 
-**State:** claimed by agent/api/163-serve-the-hil-guide, 2026-11-20 15:50 — resumed: the 14:39 claim's worker died with its leg (last write 14:45); its uncommitted trees are code `e5c197e`, doc `203df53c` on the branch
+**State:** done — resumed after the 14:39 claim's worker died with its leg; its trees were verified and one test fixed
 **Source:** Fleet Ready issue: the HIL guide has to reach an agent on any machine, not only one with an `embarch-doc` checkout. `notes/hil/14-implementation-plan.md`, unit M1.12, and its Open item "Where `suite/hil-guide.md` is embedded from"; `notes/hil/07-procedure-doc.md`, "Its form" (review round 4, owner 2026-11-20).
 **Issue:** EMB-227
 **Scope:** api
@@ -25,8 +25,12 @@ The plan marks M1.12 as needing nothing, and the owner moved it to Fleet Ready w
 
 ## Done when
 
-- [ ] `embarch-api guide hil study|test|live` prints that mode's section, and a test runs the built command from a directory with no `embarch-doc` reachable.
-- [ ] The `embarch-hil` skill exists in this repo and every pointer in it names a command that resolves.
-- [ ] A decision records where the embedded text comes from and how a guide edit reaches the binary.
-- [ ] `spec.md`, `decisions.md`, `open.md` and the CLI interface doc updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches).
+- [x] `embarch-api guide hil study|test|live` prints that mode's section, and a test runs the built command from a directory with no `embarch-doc` reachable.
+- [x] The `embarch-hil` skill exists in this repo and every pointer in it names a command that resolves.
+- [x] A decision records where the embedded text comes from and how a guide edit reaches the binary.
+- [x] `spec.md`, `decisions.md`, `open.md` and the CLI interface doc updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches).
+
+## Outcome
+
+Built and verified on resume: the dead worker's code was sound; the only defect was `cli.rs`'s subcommand-count tripwire and `tests/json_surface.rs` not knowing `guide` (fixed), and three comments citing decision 99 instead of 108. Embedded text is a pinned copy `guide/hil-guide.md` (decision 108), drift-tested where `embarch-doc` is reachable. Skill install by `embarch init` is owed by `embarch-umbrella` (in `open.md`). No hardware debt.
