@@ -7,6 +7,8 @@
 **Hardware:** none
 **Owner:** no
 
+**Resume, 2026-11-20:** the first worker died mid-run; its tree (`5322a69c`) was read against every Done-when item, tick fixtures re-derived by hand, and kept unchanged. Gate and `check-ownership.py --scope study-designer` re-run green. Design only: no hardware or code debt.
+
 ## What
 
 One interface doc under `embarch-study-designer/interfaces/` that fixes, field by field, the shapes every later milestone-1 unit writes or reads:
