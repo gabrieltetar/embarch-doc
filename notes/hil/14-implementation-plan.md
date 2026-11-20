@@ -34,6 +34,8 @@ The plan asked for once review round 4 closed ([10](10-review.md#round-4-2026-11
 | **M1.13** The guide's Study and trust sections | `embarch-doc` (`suite/`) | interactive | M1.10, M1.11 | `suite/hil-guide.md`: the glossary, the claim and its exceptions, the rules that rest on procedure alone, choosing a mode, the Study section with the BLE GATT example ([07](07-procedure-doc.md#an-outline-of-the-guide)) | A first Study can be run and published from the guide alone |
 | **M1.14** The first published Study | — | interactive, bench | every unit above | Run the BLE GATT study on the bench, publish it, run `verify` on the zip in a clean folder, read the report against the trust model ([09](09-trust-model.md)) | A zip that verifies, and every gap it shows filed |
 
+**Filed as EMB-216 to EMB-229, in unit order, in Backlog** (2026-11-20).
+
 **What can start at once**: M1.1, M1.4 and M1.12, which need nothing. M1.2, M1.3, M1.5 and M1.9 follow M1.1; M1.6 follows M1.5, M1.7 follows M1.2, M1.8 needs M1.4, M1.6 and M1.7, M1.10 needs M1.8 and M1.9, and M1.11 needs M1.10. **Each unit amends its own repo's decisions as it lands**, and moves its part of the two proposals into that repo's docs ([DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3).
 
 ## The later phases, in outline
