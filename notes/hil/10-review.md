@@ -191,10 +191,12 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 **The second delta round**: the same two lenses on that fold: **5 findings, 1 medium, none high**, every one ruled by the owner and folded: the footer page number must equal its page's index; the plot helper's package is check 9's one admitted import; the file-shapes doc pins the tick algorithm and the footer rule; a source build takes the Typst package list from its checkout; the evidence proposal's Core row stages the call log and names the passkey stop route ([06](06-report-and-publish.md#verify)).
 
+**The loop's last round**: the same two lenses on the second delta's fold: **no findings**. High findings fell 2, 0, 0, 0 and medium 20, 6, 1, 0 across the loop's four rounds; **the owner stopped the loop there** (2026-11-20), since no change was left for a further round to read.
+
 ## Still unanswered
 
 - **The passkey's details**, until its phase, and **the agent's own clone and the `embarch/` flow**, until the standalone pass ([12](12-prevention.md#open)).
 
 ## Open
 
-- **Round 4's next delta round**: the reviewers read the delta round's fold, and **its findings again go to the owner before anything is folded** (owner, 2026-11-19).
+- **The implementation plan**, unit by unit, for the first milestone: the next step, now that round 4 is closed.
