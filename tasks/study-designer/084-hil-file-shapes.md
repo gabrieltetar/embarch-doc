@@ -1,6 +1,6 @@
 # 084 — Fix the HIL file shapes in one interface doc
 
-**State:** open
+**State:** claimed by agent/study-designer/084-hil-file-shapes, 2026-11-20 14:39
 **Source:** Fleet Ready issue: the HIL design needs its file shapes fixed in one doc before any code, so a Study's zip is not reshaped when Test lands. `notes/hil/14-implementation-plan.md`, unit M1.1; `notes/hil/10-review.md`, R24 ("the file shapes are fixed as a doc before Study publish").
 **Issue:** EMB-216
 **Scope:** study-designer
