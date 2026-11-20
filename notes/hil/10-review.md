@@ -146,7 +146,7 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 | Theme | Answer |
 |---|---|
 | Core as the one source of truth; what Core signs, `report-data.json` included; the signed run record and resume | Confirmed |
-| `verify` | **Checks 0 to 8 confirmed; check 9, the PDF rebuilt and compared page by page in pixels, cut**: the PDF is checked on its text layer, and what an image in it shows rests on embarch-api ([06](06-report-and-publish.md#verify)) |
+| `verify` | **Checks 0 to 8 confirmed; check 9, the PDF rebuilt and compared page by page in pixels, cut**: the PDF is checked on its text layer, and what an image in it shows rests on embarch-api; *superseded in round 4*, which restored check 9's source rule ([06](06-report-and-publish.md#verify)) |
 | Verdicts | Confirmed, and **a test skipped for a gap makes its requirement `not verified`**: only a not-applicable or not-selected skip sits under a pass, which narrows the round-1 rule ([03](03-test.md#the-report)) |
 | Uncertainty and the decision rule; bench-board readback and `bench_image`; the numeric-oracle rules | Confirmed |
 | What is confirmed; prepare, go and lease; the refusals during a run | Confirmed |
@@ -187,10 +187,12 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 **The goals, after round 4** (the reviewers' reading): G4 and G6 had three holes the round-3 and 2026-11-19 changes opened (the challenge, stop and start, pictures) and one in the suite's own docs (the identity store), each closed on the owner's ruling; G1 and G2 gained a first milestone that can be built as written; G5 gained the contributor paths.
 
+**The delta round**: two reviewers on the fold (integrity and prevention; consistency, lab practice and buildability): **14 findings, none high**, in 10 ledger rows, every one ruled by the owner and folded, each marked "review round 4, owner 2026-11-20". `verify` derives plot ticks itself and checks 9 as a whitelist of the syntax tree, the carried Typst packages hashed against the release's list; the stop and start grant written only by the elevated install, a touch-gated stop made through a Core route, the safe-off promised on a graceful stop and at every start, a fingerprint copy for the container; the call log's half of check 8 from the Live phase on; "U undeclared" on a Study value from an uncharacterised bench board; the claim's exceptions completed; Core enforcing the Live idle release; the evidence proposal's umbrella row and header ([06](06-report-and-publish.md#verify), [12](12-prevention.md#the-root-of-trust-core-under-its-own-account), [02](02-study.md#measurements), [09](09-trust-model.md#the-claim), [01](01-modes.md#the-lease)).
+
 ## Still unanswered
 
 - **The passkey's details**, until its phase, and **the agent's own clone and the `embarch/` flow**, until the standalone pass ([12](12-prevention.md#open)).
 
 ## Open
 
-- **Round 4's delta round**: the reviewers read the fold of 2026-11-20, and **its findings again go to the owner before anything is folded** (owner, 2026-11-19).
+- **Round 4's next delta round**: the reviewers read the delta round's fold, and **its findings again go to the owner before anything is folded** (owner, 2026-11-19).
