@@ -35,7 +35,7 @@ The owner's order puts the file shapes first (R24) and the plan marks M1.1 as ne
 
 ## Done when
 
-- [ ] The shapes doc exists under `embarch-study-designer/interfaces/` and covers every bullet in **What**.
-- [ ] A `status.d/` fragment for each of notes 02, 03 and 06 names where its pointer goes.
-- [ ] `spec.md`'s map and `decisions.md` updated; a decision records the choices the notes left open.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the doc bullet; `check-ownership.py --scope study-designer`); `changelog.d/` fragment dropped.
+- [x] The shapes doc exists under `embarch-study-designer/interfaces/` and covers every bullet in **What**.
+- [x] A `status.d/` fragment for each of notes 02, 03 and 06 names where its pointer goes.
+- [x] `spec.md`'s map and `decisions.md` updated; a decision records the choices the notes left open.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the doc bullet; `check-ownership.py --scope study-designer`); `changelog.d/` fragment dropped.

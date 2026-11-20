@@ -32,6 +32,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Executing a protocol](decisions/protocol-exec.md) — what a run does, what it may report, and what the parser refuses | 60, 62, 84 |
 | [Authoring surfaces](decisions/authoring.md) — the table, a raw payload row, a saved-study library, one built-in vocabulary | 6, 34, 37, 38, 73 |
 | [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67, 69 |
+| [The HIL file shapes](decisions/hil-shapes.md) — what the notes left open in `measurements.json`, the verdicts, `run.json`, a Study's export, and the PDF readers | 90, 91 |
 | [Things this crate does not have](decisions/removed.md) — removals, and two tombstones | 19, 22, 28, 48, 54 |
 
 **The durable principle this crate keeps re-deriving**, stated once here because it generalises past it: *no EmbArch component should ever present an inference about what a specific piece of hardware or firmware does — derived from reading its source, its comments, or any heuristic — as established fact.* Where that knowledge is needed, the answer is a pipeline for the engineer who actually knows to supply it explicitly. Decisions 35, 41, 45, 52, 56 and 58 are each that rule applied somewhere else.
