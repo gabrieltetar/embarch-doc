@@ -12,6 +12,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **`artifact_path_for_core` is still tolerated at load.** `embarch-umbrella` stopped scaffolding it 2026-09-13. **Closes with one grep of the real configs** — none carrying it means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`; not checkable inside the suite: [decisions](decisions/config-retirement.md) 64
 - **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
 - **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
+- **The `embarch-hil` skill is not installed anywhere.** It ships in this repo (`skills/embarch-hil/`), but copying it into a firmware repo is `embarch-umbrella`'s (`embarch init`, `embarch-hil-proposal.md`'s table). **The guide it points at is a skeleton** until `suite/hil-guide.md` (plan unit M1.13) exists and is copied over `guide/hil-guide.md` ([decisions](decisions/guide.md) 108).
 - **Real-hardware and real-toolchain verification debts** (bootload, `bench_exchange`, `study_watch`, ledger, lease, build verdict, `build --each`) live in [open/bench-verification.md](open/bench-verification.md), moved verbatim.
 
 ## Structural limits

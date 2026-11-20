@@ -1,0 +1,1 @@
+| `guide hil <mode>` and the `embarch-hil` skill — the HIL guide served from the binary, no `embarch-doc` needed | Built; every section is a skeleton until M1.13 writes the guide; skill not yet installed by `embarch init` | unit | [guide](../embarch-api/interfaces/guide.md) |
