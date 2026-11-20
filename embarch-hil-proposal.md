@@ -49,7 +49,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 
 ## Order
 
-**The owner's answers of 2026-11-19 and 2026-11-20** ([10-review.md](notes/hil/10-review.md#round-4-2026-11-20)). The implementation plan, unit by unit, follows round 4's delta round.
+**The owner's answers of 2026-11-19 and 2026-11-20** ([10-review.md](notes/hil/10-review.md#round-4-2026-11-20)). The units: [14](notes/hil/14-implementation-plan.md).
 
 1. **HIL runs alongside the atlas rework**, no longer after it: every mode runs without an atlas, so only Live's write-back waits, on [the planes proposal](embarch-atlas-planes-proposal.md)'s measured write-back.
 2. **The file shapes, fixed as a doc**: verdicts, `measurements.json`, `run.json`, a Study's export and check shape, the PDF's text extractor and number grammar, the plot helper's ticks and the footer rule, a bench board's characterisation.
@@ -68,6 +68,5 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 The full lists close each note; what is left is measured later or is the atlas rework's call. The ones that touch every phase:
 
 - **The inventory of what exists** ([08](notes/hil/08-existing-pieces.md)) was taken from the docs; each row a phase relies on is checked against its repo when that phase starts.
-- **The implementation plan**, unit by unit, after review round 4 ([10-review.md](notes/hil/10-review.md#open)).
 
 **Fold:** each phase moves its part into the owning sub-project's docs as it is accepted and deletes it here; the notes go with it. This file is deleted once nothing in it is still proposed.

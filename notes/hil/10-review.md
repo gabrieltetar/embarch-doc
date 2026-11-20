@@ -199,4 +199,4 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 ## Open
 
-- **The implementation plan**, unit by unit, for the first milestone: the next step, now that round 4 is closed.
+- **The implementation plan**: milestone 1 unit by unit in [14](14-implementation-plan.md), each unit a Backlog issue.
