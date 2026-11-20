@@ -15,7 +15,7 @@
 | `dev_bench_log.rs` | the bench's own daily-rolling debug file, plus `classify()` and Core's boundary markers |
 | `service.rs` | registration via `service-manager`; a `windows` submodule for the real SCM dispatch |
 | `elevate.rs` | `is_elevated()`/`ensure_elevated_or_fallback()` |
-| `token_store.rs` | resolves/generates/persists the machine-wide token file; `local_data_dir()` |
+| `token_store.rs` | resolves/generates/persists the agent and person token files (decision 109), `Scope`, `Tokens`; `local_data_dir()` |
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `host_study.rs` | `POST /host-studies`, `/study/{id}/cancel`, `/study/{id}/prompt`: the executor, teardown, taps, prompts (95, 98, 105, 107) |

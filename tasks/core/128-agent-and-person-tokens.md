@@ -28,8 +28,16 @@ The plan marks M1.4 as needing nothing, and M1.8 (Core's side of publish) attrib
 
 ## Done when
 
-- [ ] A fresh data directory gets both token files at first start, and a restart reuses both.
-- [ ] A test calls one route with each token and asserts the scope recorded for each; a call with neither is refused as today.
-- [ ] `spec.md`, the auth decision and `interfaces/` say what the two tokens are, where each lives, and where the scope is recorded.
-- [ ] `status.d/` fragment for `embarch-token.md`; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+- [x] A fresh data directory gets both token files at first start, and a restart reuses both.
+- [x] A test calls one route with each token and asserts the scope recorded for each; a call with neither is refused as today.
+- [x] `spec.md`, the auth decision and `interfaces/` say what the two tokens are, where each lives, and where the scope is recorded.
+- [x] `status.d/` fragment for `embarch-token.md`; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+
+## Closing note
+
+Shipped as `embarch-core` decision 109 (`decisions/auth.md`): `token_store::resolve_tokens` reads `EMBARCH_TOKEN` / `token` (agent) and `EMBARCH_PERSON_TOKEN` / `person-token` (person); `auth_middleware` inserts a `Scope` request extension, which handlers take as an extractor. Decision 93 amended with a one-line pointer: the lease holder is not the scope. `status.d/core-agent-and-person-tokens.md` covers `embarch-token.md` §1, §2, §3, §5.
+
+**Debt: native Windows build and the person-token `icacls` lockdown** are unrun here (a worktree cannot build natively; `gate.md`). The person file goes through the same `restrict_token_file_permissions` as the agent's. Verify from the main checkout on Windows: first start creates both files with the restricted ACL, and a restart reuses them.
+
+**Not done, by design:** no client resolves the person token (`tasks/api/162`, `tasks/ui/111`); `service.rs`'s install passes only `EMBARCH_TOKEN`; no existing record carries the scope (`open.md`).

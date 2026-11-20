@@ -10,6 +10,10 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **Decision 108's rename has not reached the installed service.** Built natively on Windows in a scratch copy on 2026-11-10, never deployed, so the bench's Core still serves `firmware_version`, and a caller built after the rename reports the bench's build as unknown against it. Owner-run: deploy (`embarch-dev-workflow.md` §4a), then `embarch-api dev-bench-hello` prints `dev_bench_version`.
 
+## Scope is carried, not yet recorded anywhere
+
+- **Decision 109's scope reaches no existing record.** The `Scope` request extension exists and a test reads it, but the lease holder, `hw_holder`, the study record and the logs carry none; M1.5 to M1.8 add it where each needs it. The person token file's `icacls` lockdown on Windows is unrun, and `embarch-core-client`, `embarch-api` and `embarch-ui` still know only the agent's token (`tasks/api/162`, `tasks/ui/111`).
+
 ## Unverified diagnoses
 
 - **Whether probe-rs writes killed the nRF54L15 is evidence, not proof** (decision 36): a J-Link erase-and-program recovered the board, but a full reprogram may have cleared something else.

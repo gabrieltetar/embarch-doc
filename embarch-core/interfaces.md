@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-07.
 
-Every route requires `Authorization: Bearer <token>`. Semantics and rationale: [decisions.md](decisions.md).
+Every route requires `Authorization: Bearer <token>`: the agent's or the person's (decision 109), both reaching every route, the scope recorded and not enforced. Semantics and rationale: [decisions.md](decisions.md).
 
 ## Conventions
 

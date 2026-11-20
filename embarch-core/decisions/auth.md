@@ -24,6 +24,13 @@ Core may be reachable over a real network, so an unauthenticated surface is unac
 
 **What this decision does not claim**: it does not assert what the default ACL concretely grants on any given Windows machine — `embarch-token.md` already flags that as unmeasured — only that Core deliberately never restricts it, and why.
 
+### 109 — Two tokens, an agent's and a person's, and the scope each request carries
+HIL has to say who did each act, and Core had one full-authority secret. At first start Core writes **two** tokens and authenticates a request with either. **The agent's stays exactly what it was**: `EMBARCH_TOKEN`, else `<data dir>/token`, so `embarch-core-client`'s discovery and every caller in `embarch-api`, `embarch-ui` and `embarch-atlas` work unchanged. **The person's is `EMBARCH_PERSON_TOKEN`, else `<data dir>/person-token`** beside it: 64 hex characters, written on first use, `0600` (Linux) or the same `icacls` lockdown (decision 53, unvalidated on Windows for this second file), reused on restart. Two equal values are refused at start, since a scope that cannot be told apart is no scope.
+
+`auth_middleware` resolves the match into `token_store::Scope` (`Agent` or `Person`) and puts it in the request's extensions; a handler takes `scope: Scope` as an extractor, and a request that reached one is always authenticated, so a missing extension is a `500` naming the unwired router. It is also a `debug` line in `core.log`. **Nothing is refused by scope in this unit**: Core is unattested, so the identity routes stay on the agent's token, labelled the agent's, and both tokens reach every route. The lease (decision 93) is **not** scoped: its holder is the `holder` string a caller names, and it neither reads nor records the scope. M1.5 to M1.8 stamp scope into records and refuse by it; they are why it is carried now.
+
+**Measured:** the unit tests: each token records its own scope, neither is refused, a call with neither is `401`, and the file pair is generated once and reused. **Assumed:** the Windows ACL on `person-token`.
+
 ### 11 — An optional `core.toml`, narrowed to `bind`/`port`, still design-only
 Every knob is env-var-only, and passing environment to an installed service is the bug class decision 3 already paid for. **Never written.** Narrowed when `embarch-topology` abandoned the four `dev_bench_*` knobs outright: a config value left stale wins over reality exactly as capably as an env var left stale, and enrollment is the fix either way.
 

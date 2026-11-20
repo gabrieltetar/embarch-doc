@@ -19,7 +19,8 @@ splits into `interfaces/<topic>.md`.
 | log retention | 7 daily files | [assumed] |
 | `EMBARCH_FLASH_BACKEND` | — | forces a backend (`probe-rs`, `jlink`, `nrfutil`); an unrecognised value is refused by name before any tool lookup runs, and forcing probe-rs onto a refused family logs a warning |
 | `EMBARCH_JLINK_EXE` / `_NRFUTIL_EXE` | — | vendor-tool overrides, searched after `PATH` and before default install dirs |
-| `EMBARCH_TOKEN` | — | explicit env var wins over the machine-wide file |
+| `EMBARCH_TOKEN` | — | the agent's token: explicit env var wins over the machine-wide `token` file |
+| `EMBARCH_PERSON_TOKEN` | — | the person's token (decision 109): env var wins over the `person-token` file beside `token`; must differ from the agent's |
 
 Paths follow one convention: `%ProgramData%\embarch\` on Windows,
 `/var/lib/embarch/` elsewhere — token, `logs/core.log.<date>`,

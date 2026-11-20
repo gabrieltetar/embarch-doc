@@ -8,7 +8,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 `hw_lock` serialises single requests only, but a session's work is a sequence: between two calls another session can flash its own image, and every later reply silently describes the wrong firmware. The field's `mkdir` lock directory (two sessions, one DUT, one bench board, from 2026-10-08) saw 62 holds by 8 sessions, one collision, and a reflash after every take, since nobody knew what the other left; it held only while every session remembered it, and never saw `embarch-atlas`'s live tool calls.
 
-**The shape** ([interfaces](../interfaces/hardware.md)): `POST /lease` returns a token, once; `PUT` renews (its own TTL if `ttl_s` is omitted) and `DELETE` releases, both with it in `X-Embarch-Lease`. A second `POST` while one is live is `409` naming the first.
+**The shape** ([interfaces](../interfaces/hardware.md)): `POST /lease` returns a token, once; `PUT` renews (its own TTL if `ttl_s` is omitted) and `DELETE` releases, both with it in `X-Embarch-Lease`. A second `POST` while one is live is `409` naming the first. The holder is the name a caller gives, never the token scope (decision 109).
 
 **The whole bench, not one board.** Field sessions always used both boards; a per-board lease needs a board vocabulary Core lacks (a chip is not a role, a signal is neither), and two leases bring a lock-order problem for nothing. Leasing one board is a new decision.
 
