@@ -25,4 +25,4 @@
 ## Open
 
 - **Whether the reviewer's readings in the table say what the owner meant**, goal by goal.
-- **What "ground-breaking" is measured against**: the prior-art survey of review round 1 ([11-prior-art.md](11-prior-art.md)), once it lands.
+- **What "ground-breaking" is measured against**: the prior-art survey of review round 1 ([11-prior-art.md](11-prior-art.md)), which has landed: its "What is new in EmbArch" is the claim's limit.

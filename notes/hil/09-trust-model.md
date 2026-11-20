@@ -20,8 +20,8 @@ Point 3 is the one that decides whether EmbArch's output is worth anything outsi
 
 Two sentences the guide and the proposal open with, and the design is held to (owner, review round 1):
 
-- **No number, verdict or identity in a published report depends on the agent having told the truth; every sentence the agent wrote is labelled as its own.**
-- **The agent does to the hardware only what the engineer allowed: a study or a test written in a file the engineer can read before it runs, and shown in a preview before a Test starts, or a Live action on the free list; every call is logged.** Hardware safety is an authoring concern, not a runtime limit (owner, review round 1): no envelope is enforced at execution. That is weaker than an enforced limit, by the owner's choice, and the guide says so.
+- **No number, verdict or identity in an attested published report depends on the agent having told the truth; every sentence the agent wrote is labelled as its own.** **Its exceptions, each shown in the report** (review round 4, owner 2026-11-20): a number in prose that cites no measurement is listed, not refused; a tag (`(derived)`, `(spec)`, `(inference)`, `(analysis)`) is the agent's choice, shown as such; a value resting on a declaration the agent made on an unattested Core reads "declared by the agent"; and on an unattested Core the agent can read the signing key, so an unattested zip's signatures prove its integrity only, and `verify` says so ([06](06-report-and-publish.md#verify)).
+- **The agent does to the hardware only what the engineer allowed: a study or a test written in a file the engineer can read before it runs, and shown in a preview before a Test starts, or a Live action on the free list; every call to Core is logged.** Hardware safety is an authoring concern, not a runtime limit (owner, review round 1): no envelope is enforced at execution. That is weaker than an enforced limit, by the owner's choice, and the guide says so.
 
 **The agent is outside the evidence chain.** The chain is stimulus → measurement → record → verdict → report, and each link is produced by versioned code (Core, embarch-api, the bench firmware) or attested by a named person. The agent plans, authors, operates and interprets; it produces no link. A test of the claim: **the published zip would be byte-for-byte the same if a person had made the same tool calls**, apart from the prose labelled as the agent's.
 
@@ -81,7 +81,7 @@ Found in the suite's docs; each is a mechanism the claim stands on, and each say
 
 ## Prior art
 
-**From memory, not checked online in this round.** Each borrows a piece; **none models an agent as the operator**, which is the part EmbArch adds.
+**From memory, not checked online in this round.** Each borrows a piece. **What EmbArch adds is claimed in [11](11-prior-art.md#what-is-new-in-embarch)'s words and no wider**: that survey found about twenty projects with an agent driving hardware, and none that combines verdicts decided by code, engineer-confirmed inputs, every attempt listed and a report a third party can verify offline (review round 4, owner 2026-11-20).
 
 - **OpenHTF**: measurements as named values with units and validators; outcomes that separate a failed DUT from an error in the station.
 - **LabGrid**: strategies that drive a board to a known state before a test; reservations, which the lease already is.

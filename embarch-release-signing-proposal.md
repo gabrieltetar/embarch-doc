@@ -52,7 +52,7 @@ Recommended, not yet answered one by one. Facts about the tools were checked on 
 1. **Sign in CI**: written 2026-11-17 (EMB-190), in the five workflows the first bullet above names, and not yet run on a tag. `actionlint` has not run on any of them. The first signed suite release needs new signed component tags in `embarch-umbrella/suite.toml`, and cutting them is the owner's.
 2. **Harden the account**: done 2026-11-16. A passkey; on the five release repos, the tag ruleset and the `release` environment (the owner reviews, tag runs only).
 3. **`embarch verify-release`**: built 2026-11-17 (EMB-192), now in `embarch-umbrella`'s docs. Its `aws-lc-sys` build passed `build-check.yml`'s first run on the aarch64 Linux cross leg; the macOS leg was cancelled, unverified.
-4. **The elevated install checking before installing**, landing with the evidence proposal's step 1 (Core's own account and store).
+4. **The elevated install checking before installing**, landing with the evidence proposal's step 3 (Core's own account and store, the attested phase).
 5. **The bench firmware release**, then the premade suites once the first exists.
 
 ## The first download

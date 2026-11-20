@@ -7,7 +7,7 @@
 **A suite guide of record plus a thin skill.**
 
 - **`suite/hil-guide.md`** holds the procedure: written for the agent first, readable by an engineer. It is a guide, so it may restate what it needs rather than only link ([DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3).
-- **The `embarch-hil` skill, shipped with embarch-api**, installed when `embarch init` registers the MCP server, so every firmware repo with EmbArch gets it. It loads when a task needs hardware, holds the "which mode" table, and points at the guide's section for the mode. Same owner as the tools it describes; the precedent is the atlas's `atlas-use` skill.
+- **The `embarch-hil` skill, shipped with embarch-api**, installed when `embarch init` registers the MCP server, so every firmware repo with EmbArch gets it. It loads when a task needs hardware, holds the "which mode" table, and points at the guide's section for the mode. Same owner as the tools it describes; the precedent is the atlas's `atlas-use` skill. **The guide reaches an adopter's agent through embarch-api**, which embeds it and serves it (`embarch-api guide hil <mode>`), versioned with the tools it describes, so the skill's pointers work with no embarch-doc checkout (review round 4, owner 2026-11-20).
 
 **One file to start, split into one file per mode if it outgrows the studies guide (about 23 KB)**; the skill points at sections either way.
 
@@ -15,14 +15,14 @@
 
 **The guide opens with a glossary**: HIL test, test suite, test plan, run, resolved run, verdict and measurement, kept apart from the ledger's tests and from unit tests (owner, 2026-11-19).
 
-0. **What the agent is and is not trusted with**: the claim's two sentences, the agent's may-and-never table, and every rule that is procedure-only, named as such ([09-trust-model.md](09-trust-model.md)).
+0. **What the agent is and is not trusted with**: the claim's two sentences, the agent's may-and-never table, and every rule that is procedure-only, named as such ([09-trust-model.md](09-trust-model.md)); what the engineer's container statement excludes, until the standalone pass settles the agent's clone ([12](12-prevention.md#a-persons-act-what-a-ui-card-can-prove-and-what-it-cannot)) (review round 4, owner 2026-11-20).
 1. **Choosing a mode**: the table in [01-modes.md](01-modes.md#how-an-agent-picks-a-mode), and the fleet's exclusion.
 2. **Before any hardware**: `status` (Core reachable, the lease, `last_images`), `lease_take` with a purpose, the saved bench live, `validate`. **At a Test's go the session's lease passes to the run** and comes back when it ends ([03](03-test.md#a-run), item 1) (review round 2, owner 2026-11-19).
 3. **Live**: reach, what is free and what asks, the atlas or raw path, the live log, writing a finding back, when to escalate.
 4. **Study**: from the question to a published zip, with the BLE GATT data-acquisition example: declaring measurements, reading `measurements.json` rather than captures, prose that cites measurements.
 5. **Test**: selecting from a suite, the test plan, proposing the DUT's inputs and hooks for the engineer to confirm, the preview and the engineer's go, starting a Core-run Test, prompts between benches, reading the six verdicts and coverage, publishing.
 6. **Authoring for safety**: what a study or test puts on the DUT is checked against the DUT's ratings when it is written, since nothing limits it at run time (owner, review round 1).
-7. **Publishing**: the zip, revisions, the audit appendix, the operator's notes, `verify`.
+7. **Publishing**: the zip, revisions, the audit appendix, the operator's notes, `verify`. **Development runs, then a run for record**: a study or test is built and validated on an unattested Core and, once the engineer is happy with it, run for record on the attested Core, with what carries over and what is declared again ([12](12-prevention.md#the-root-of-trust-core-under-its-own-account)) (review round 4, owner 2026-11-20).
 8. **What the agent never does**, each with the layer that enforces it ([09](09-trust-model.md)): answer an operator prompt on its own, decide a verdict, run hardware from the fleet, `git checkout` to reach a revision a study asks for, read a truncated capture as complete, **edit a test, a limit or a plan to make a run pass**, use an input it proposed before the engineer confirms it.
 9. **After a failure**: the agent diagnoses and proposes causes and fixes; **a firmware fix is a new image and a new run, and the report shows both** (owner, review round 1).
 

@@ -75,7 +75,7 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 | **Adoption** | Unattested and attested said plainly; vocabulary rewritten; a reducer's contributor path and version; `unvalidated` premade tests; a suite version beside its commit | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account), [README](README.md#vocabulary), [02](02-study.md#measurements), [04](04-premade-suites.md#decided) |
 | **Consistency** | The lease handed to a run at the go; the person's setup calls admitted between benches; a run's study and prose paths; §1.1's full list; decision 96's premise; the false "a Test run holds its own lease today"; the proposals aligned | [03](03-test.md), [05](05-live.md), [07](07-procedure-doc.md), [02](02-study.md#where-its-files-live), the proposals |
 
-**Not changed**: the part of one row asking the guide to lead with a cheapest first result, since the owner declined a walkthrough in round 1; and **a requirement passing with tests skipped for a gap**, the owner's rule, which the practice reviewer rated high for a client reading it: kept, and raised for the owner under [03](03-test.md#open)'s Open.
+**Not changed**: the part of one row asking the guide to lead with a cheapest first result, since the owner declined a walkthrough in round 1; and **a requirement passing with tests skipped for a gap**, the owner's rule, which the practice reviewer rated high for a client reading it: kept, and raised for the owner, who narrowed it on 2026-11-19: a test skipped for a gap makes its requirement `not verified`.
 
 **The goals, after round 2** (the reviewer's reading):
 
@@ -165,11 +165,32 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 **The order and who builds it** (owner, 2026-11-19): **the first milestone is an unattested Study publish**: the file shapes, the shared crate, Core signing its records and keeping its run log under the engineer's own account, then publish and `verify` on the BLE GATT study. **Core's own account and the `deploy-core` change come later**, as the attested phase. **HIL runs alongside the atlas rework**, and only Live's write-back waits on it. **The fleet writes the code that needs no hardware; interactive sessions do every bench run** ([the proposal](../../embarch-hil-proposal.md#order)).
 
+## Round 4 (2026-11-20)
+
+**Six reviewers, one lens each**, on the tree at `85472c9d`: evidence integrity, prevention and safety, lab practice, consistency, adoption, and **buildability**, new this round. **56 findings, 4 high**, held in 32 ledger rows, since the loop merges findings within three lines of each other; about 906 k reviewer tokens. The ledger is outside the repo, under `.git/embarch-review/hil-round-4/`. **Every finding went to the owner before anything was folded** (owner, 2026-11-19), and each answer below is marked "review round 4, owner 2026-11-20" where it stands.
+
+| Theme | The owner's ruling | Now in |
+|---|---|---|
+| **High: Core's pre-token challenge** signed caller bytes with the evidence key, so a record could be forged through it | A fixed frame, `embarch-core-auth-v1` with Core's and the caller's nonces; no route signs bytes a caller supplies | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account) |
+| **High: stop and start without elevation** let an agent sharing the account take the passkey's origin | No elevation only where the agent runs in a container; elevation or a passkey touch wherever a passkey is registered or no container is stated; the host-side fingerprint written by the elevated install beside the token file | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account) |
+| **High: a picture in `report.typ`** could carry a number `verify` never sees | Check 9's source rule restored, its pixel rebuild staying cut: pictures only through the plot helper over signed files or as signed captures, numerals only as text | [06](06-report-and-publish.md#verify), [02](02-study.md#the-report) |
+| **High: the identity store** sat where the engineer's account can write | On an attested install, in Core's protected store, Core its only writer, the topology CLI refusing it; Core 53 and topology 23 amended | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account), the evidence proposal |
+| Core around a stop | Outputs off at every stop and start, a stop refused under a run; exclusive probe and port handles under a run or lease; stop gaps printed in the report; the topology CLI refusing hardware under a service's lease or run, the call log named Core's calls | [12](12-prevention.md#what-core-then-guarantees-in-code), [06](06-report-and-publish.md#publish) |
+| Who declared what, on an unattested Core | Every declaration stamped with its token's scope, `declared_by` on each measurement, "declared by the agent" in the report; `dev_bench_link` and a tap's origin among the identity routes | [12](12-prevention.md#the-root-of-trust-core-under-its-own-account), [02](02-study.md#measurements), [13](13-research-phase.md#a-bench-with-no-dut) |
+| The claim's wording | Stated for an attested report, its exceptions listed; an unattested zip's signatures prove integrity only, and `verify` says so; the newness line in 09 brought to 11's words | [09](09-trust-model.md#the-claim), [06](06-report-and-publish.md#verify) |
+| The first milestone | No readback yet (a claim, bench boards `unverified`); two scoped tokens in it; the run log only, the call log with Live and its fail-closed rule with the attested phase; the crate versioned by behaviour | [the proposal](../../embarch-hil-proposal.md#order), [03](03-test.md#a-run), [02](02-study.md#measurements) |
+| Qualifiers and exports | Qualifiers roll up, a verdict carries its evidence's source; a gap skip exports as an error; "calibration undeclared"; the rerun rule counts every non-pass | [03](03-test.md#the-verdict), [06](06-report-and-publish.md#publish) |
+| Uncertainty inputs | A missing `U` or range refuses the test; bench boards' `U` ships with their firmware; statistical reducers add their type-A term | [03](03-test.md#the-verdict), [02](02-study.md#measurements) |
+| Adoption | embarch-api serves the guide; a suite version confirmed once by its manifest hash; the contributor paths for a bench app and a reducer; **development runs on an unattested Core, then a run for record on the attested one** (the owner's framing) | [07](07-procedure-doc.md), [03](03-test.md#the-duts-inputs), [04](04-premade-suites.md#open), [12](12-prevention.md#the-root-of-trust-core-under-its-own-account) |
+| Evidence edges | The run history keyed on every entry for the unit; check 4's exemptions closed; a failing or cited scan's captures discarded only by the person; the container statement defined | [06](06-report-and-publish.md#publish), [13](13-research-phase.md#many-scans-few-reports), [12](12-prevention.md#a-persons-act-what-a-ui-card-can-prove-and-what-it-cannot) |
+| Twelve mechanical fixes | Taken whole: stale step numbers, one phrase for the unattested Core, the atlas notes, a closed list of attestation labels, leftover markers, R23's work rows with a 30 min Live idle release, `embarch.md` §5, note 13's route, the study file as a signed subject, markers re-evaluated by `verify`, a republish built from the earlier zip, signed fields for a Study's own declarations | across the notes and the proposals |
+
+**The goals, after round 4** (the reviewers' reading): G4 and G6 had three holes the round-3 and 2026-11-19 changes opened (the challenge, stop and start, pictures) and one in the suite's own docs (the identity store), each closed on the owner's ruling; G1 and G2 gained a first milestone that can be built as written; G5 gained the contributor paths.
+
 ## Still unanswered
 
 - **The passkey's details**, until its phase, and **the agent's own clone and the `embarch/` flow**, until the standalone pass ([12](12-prevention.md#open)).
-- **Switching between the Cores without elevation**: the owner's answer of 2026-11-19, not yet read by a reviewer.
 
 ## Open
 
-- **Round 4**: a full round on the design as confirmed, with **the five lenses plus buildability** (whether each piece can be built and tested in its own repo, and what is heavier than a first version needs), reading note 13 and the 2026-11-19 changes with the rest. **Its findings go to the owner before anything is folded**, and nothing lands marked "recommended" again (owner, 2026-11-19).
+- **Round 4's delta round**: the reviewers read the fold of 2026-11-20, and **its findings again go to the owner before anything is folded** (owner, 2026-11-19).

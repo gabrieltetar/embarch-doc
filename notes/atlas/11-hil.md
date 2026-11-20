@@ -16,4 +16,4 @@
 
 ## Open
 
-- **The order.** The HIL proposal puts this rework first and its Live phase third; Live waits on the write-back verb. This rework starts with design × hardware ([the proposal](../../embarch-atlas-planes-proposal.md#order)), so the write-back lands after it. Recommended: the write-back right after design × hardware, before the other planes.
+- **The order.** The HIL proposal now runs alongside this rework, not after it (owner, 2026-11-19, [its order](../../embarch-hil-proposal.md#order)); only its Live write-back waits on the write-back verb. This rework starts with design × hardware ([the proposal](../../embarch-atlas-planes-proposal.md#order)), so the write-back lands after it. Recommended: the write-back right after design × hardware, before the other planes.
