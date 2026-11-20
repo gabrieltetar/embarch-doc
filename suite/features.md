@@ -26,6 +26,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Cross-platform service install and control | Shipped — **all four need elevation on every OS, not just Windows** | hw | 3 |
 | `start`/`stop` CLI subcommands | Shipped — smoke-tested on Linux only | hw | 3 |
 | Auto-generated machine-wide token file | Shipped | unit | §6 |
+| Agent and person tokens — two bearer tokens, each request carries its scope | Shipped — recorded as a request extension, enforced nowhere yet; no client resolves the person token | unit | 109 |
 | Service environment token passthrough | Shipped | unit | 3 |
 | Serial bridge to dev-bench (`/study*`, `/dev-bench/hello`) | Shipped | hw | 21 |
 | Erase on flash | Shipped — **the brick hazard is closed: no backend maps it to a chip erase** | hw | 32, 36 |
@@ -94,6 +95,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `declare_instrument` / `instrument_exchange` — an SCPI bench instrument declared with its line facts (preset `et54`), one command per exchange, an `Instrument` host-study step | Shipped — **never run against an instrument; Core not deployed** | unit | 97 |
 | `run_host_study` / `answer_prompt` — run a host study, relay a person's answer to its prompt (never the agent's own), `study_watch` returns early on a waiting prompt | Shipped — **mock-tested only; never run against a real Core** | unit | 99 |
 | `bundle` — a finished build as `<name>-<short-sha>/` (hex, README of the suite's flash commands) and a zip, CLI and MCP | Built, checked on a synthetic build only; only `nrf54l` has commands, other families say so | unit | [tools-bundle](../embarch-api/interfaces/tools-bundle.md) |
+| `guide hil <mode>` and the `embarch-hil` skill — the HIL guide served from the binary, no `embarch-doc` needed | Built; every section is a skeleton until M1.13 writes the guide; skill not yet installed by `embarch init` | unit | [guide](../embarch-api/interfaces/guide.md) |
 
 ## embarch-dev-bench
 
