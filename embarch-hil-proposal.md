@@ -52,7 +52,7 @@ What exists and what does not: [notes/hil/08-existing-pieces.md](notes/hil/08-ex
 **The owner's answers of 2026-11-19 and 2026-11-20** ([10-review.md](notes/hil/10-review.md#round-4-2026-11-20)). The implementation plan, unit by unit, follows round 4's delta round.
 
 1. **HIL runs alongside the atlas rework**, no longer after it: every mode runs without an atlas, so only Live's write-back waits, on [the planes proposal](embarch-atlas-planes-proposal.md)'s measured write-back.
-2. **The file shapes, fixed as a doc**: verdicts, `measurements.json`, `run.json`, a Study's export and check shape, the PDF's text extractor and number grammar, a bench board's characterisation.
+2. **The file shapes, fixed as a doc**: verdicts, `measurements.json`, `run.json`, a Study's export and check shape, the PDF's text extractor and number grammar, the plot helper's ticks and the footer rule, a bench board's characterisation.
 3. **The shared crate**: the reducers and the verdict rules, versioned by behaviour, linked by Core.
 4. **Core signs its records, keeps its run log and writes two scoped tokens, as a Core not installed from a signed release** (the [evidence proposal](embarch-hil-evidence-proposal.md)'s step 1): the first zip signed, verifiable and unattested; `deploy-core` unchanged; no readback yet, so the DUT image is a claim and bench boards `unverified`.
 5. **Study publish and `verify`**, on the BLE GATT data-acquisition path, which already runs on hardware; Tests reuse the same publish.
