@@ -1,6 +1,6 @@
 # 128 — Core writes an agent token and a person token, and every request carries its scope
 
-**State:** claimed by agent/core/128-agent-and-person-tokens, 2026-11-20 14:39
+**State:** claimed by agent/core/128-agent-and-person-tokens, 2026-11-20 15:50 — resumed: the 14:39 claim's worker died with its leg (last write 14:45); its uncommitted trees are code `c2ad59f`, doc `b0bc9438` on the branch
 **Source:** Fleet Ready issue: Core has one full-authority token, and HIL needs an agent scope and a person scope so a report can say who did each act. `notes/hil/14-implementation-plan.md`, unit M1.4; `notes/hil/12-prevention.md` ("Core needs scoped tokens either way"; "Unattested, the two scopes still exist").
 **Issue:** EMB-219
 **Scope:** core
