@@ -41,3 +41,5 @@ Shipped as `embarch-core` decision 109 (`decisions/auth.md`): `token_store::reso
 **Debt: native Windows build and the person-token `icacls` lockdown** are unrun here (a worktree cannot build natively; `gate.md`). The person file goes through the same `restrict_token_file_permissions` as the agent's. Verify from the main checkout on Windows: first start creates both files with the restricted ACL, and a restart reuses them.
 
 **Not done, by design:** no client resolves the person token (`tasks/api/162`, `tasks/ui/111`); `service.rs`'s install passes only `EMBARCH_TOKEN`; no existing record carries the scope (`open.md`).
+
+**Resume:** the first worker died unverified. On resume the build and clippy were green but 2 route-sweep tests failed, because the new test-only `/probe` router put a line starting `.route("` in `api.rs`, which the sweep's source scan counts as a registered route; the probe now sits on one `Router::new().route(` line. 395 tests then passed. The features fragment was renamed from `core-125-` to `core-128-` to carry this task's number.
