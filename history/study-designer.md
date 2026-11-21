@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Added
+- study-designer: built-in HIL reducers (count, rate, min, max, mean, percentile, interval, value at a marker), versioned by behaviour, feature `reducers`; decisions 92-94.
+
 ### Changed
 - Split study-designer decision 41 (vendor GATT identities) out of decisions/gatt.md into decisions/vendor-identities.md; trimmed two types.md paragraphs.
 - study-designer: a one-shot monitor step inside an open monitor window is refused by build_study and Study::validate_monitor_windows (decision 89)
