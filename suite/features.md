@@ -144,6 +144,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A host study repeats a block of steps (count or a values sweep) and declares per-tap line counts, with pass markers in the result type; no expected value exists to compare against | Built, **types and validation only, host tests**; Core does not accept `HostStudy` or render counts yet | host | 86 |
 | A saved study reports when a protocol it carries no longer matches its `.eap` (unchanged / changed / gone) | Shipped — advisory, crate API only; the UI shows nothing yet | host | 87 |
 | The shared crate computes derived measurements with built-in reducers (count, rate, min, max, mean, percentile, interval, value at a marker), each versioned by behaviour, with `U` and a type-A term | Built, **host tests against fixtures**; behind feature `reducers`; no Core calls them yet | host | 92, 93, 94 |
+| The shared crate decides HIL verdicts in code: the six verdicts, a step outcome's mapping, the guard band on both sides of a limit, the acceptance-width refusal and the requirement roll-up, each versioned by behaviour | Built, **host tests against fixtures**; behind feature `verdicts`; no Core calls them yet | host | 95, 96, 97, 98 |
 
 ## embarch-outpost
 

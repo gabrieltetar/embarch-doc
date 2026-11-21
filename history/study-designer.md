@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-study-designer decisions 95-98: HIL verdict rules (verdicts, guard band, width check, roll-up) behind feature `verdicts`; new reason `observation_unanswered`.
 - study-designer: built-in HIL reducers (count, rate, min, max, mean, percentile, interval, value at a marker), versioned by behaviour, feature `reducers`; decisions 92-94.
 
 ### Changed
