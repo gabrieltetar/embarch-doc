@@ -1,6 +1,6 @@
 # 162 — `embarch-core-client` resolves the agent and the person token, and embarch-api's MCP server sends only the agent's
 
-**State:** claimed by agent/api/162-core-client-resolves-both-token-scopes, 2026-11-21 12:28
+**State:** done agent/api/162-core-client-resolves-both-token-scopes, 2026-11-21
 **Source:** Fleet Ready issue: Core has one full-authority token, and HIL needs an agent scope and a person scope ("embarch-api and embarch-ui read the pair"). `notes/hil/14-implementation-plan.md`, unit M1.4; `notes/hil/12-prevention.md` ("the agent ... holding the repo, embarch-api and an agent-scoped Core token only").
 **Issue:** EMB-219
 **Scope:** api
@@ -23,7 +23,7 @@ Core accepts both tokens once `core/128` lands, and `tasks/ui/111` (the UI calli
 
 ## Done when
 
-- [ ] A unit test resolves each scope from each source (explicit, environment, file), and the agent's resolution is unchanged.
-- [ ] The MCP server's client is built with the agent's token, and a test or a type says so.
-- [ ] `spec.md`, `decisions.md` and `interfaces/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches; `embarch-ui` and `embarch-umbrella` still build against the crate).
+- [x] A unit test resolves each scope from each source (explicit, environment, file), and the agent's resolution is unchanged.
+- [x] The MCP server's client is built with the agent's token, and a test or a type says so.
+- [x] `spec.md`, `decisions.md` and `interfaces/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches; `embarch-ui` and `embarch-umbrella` still build against the crate). **Debt:** embarch-ui and embarch-umbrella were not built against this branch (outside the worker's repo); the supervisor does at landing. Public items added only: TokenScope, resolve_token_for, CoreConfig::{person_token, person_token_env, resolve_token_for}, CoreClient::{new_with_scope, scope}.
