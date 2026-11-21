@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-core-client resolves the agent or the person token by scope; MCP and CLI send only the agent token ([decisions](../embarch-api/decisions/client-crate.md) 109).
 - Serve the HIL guide: embarch-api guide hil [live|study|test] prints the text embedded in the binary; an embarch-hil skill points at it (decision 108).
 - api: `bundle` verb and MCP tool package a build as a hex, README of flash commands and zip for a bench engineer; see interfaces/tools-bundle.md.
 - build --each <base>..<tip> builds every commit in every variant from its own module sources, with --same-tree-as ([decisions](../embarch-api/decisions.md) 104).

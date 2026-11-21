@@ -1,7 +1,6 @@
 # 111 — embarch-ui calls Core with the person token
 
-**State:** blocked — waits on `embarch-core-client` resolving the person token.
-**Unparks when:** tasks/api/162 lands.
+**State:** open — unparked by `api/162`'s fold, 2026-11-21.
 **Source:** Fleet Ready issue: Core has one full-authority token, and HIL needs an agent scope and a person scope ("embarch-api and embarch-ui read the pair"). `notes/hil/14-implementation-plan.md`, unit M1.4; `notes/hil/12-prevention.md` ("the UI holds the person's token").
 **Issue:** EMB-219
 **Scope:** ui
@@ -18,7 +17,7 @@ M1.8 attributes notes and prose adoptions by the token's scope, and the card tho
 
 ## Dispatch notes
 
-- Read `api/162`'s decision and `core/128`'s before writing: the resolution and the file are theirs.
+- Read `api/162`'s decision and `core/128`'s before writing: the resolution and the file are theirs. `api/162` landed as `embarch-api` decision 109: `CoreClient::new_with_scope(config, TokenScope::Person)`, with `CoreConfig::person_token` / `person_token_env`, and a person client with no person token is an error naming its sources, never the agent's token.
 - Whether the UI falls back to the agent token when the person's is missing is a design choice with a trust cost (a fallback makes every UI act read as the agent's). Decide it in a `embarch-ui` decision and say the cost.
 - Out of scope: any card or person's act itself (later units).
 
