@@ -1,6 +1,6 @@
 # 086 — The shared crate's HIL verdict rules: verdicts, guard band, acceptance width and the requirement roll-up
 
-**State:** claimed by agent/study-designer/086-hil-verdict-rules, 2026-11-21 12:28
+**State:** done
 **Source:** Fleet Ready issue: the shared crate has no verdict rules, so a verdict is not decided by code and `verify` cannot recompute one. `notes/hil/14-implementation-plan.md`, unit M1.3 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/03-test.md`, "The verdict"; `notes/hil/06-report-and-publish.md` for the roll-up and its qualifiers.
 **Issue:** EMB-218
 **Scope:** study-designer
@@ -27,8 +27,12 @@ Core's Test route and `verify` need them. A Study has no verdict, so milestone 1
 
 ## Done when
 
-- [ ] A fixture per verdict, per qualifier and per roll-up case passes.
-- [ ] A limit narrower than the acceptance width is refused, and a result inside either guard band is `inconclusive` with `guard_band`.
-- [ ] `check-doc-size.py --pressure` no longer lists `interfaces/hil-shapes.md`.
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the shared-crate bullet; `check-ownership.py --scope study-designer` on both branches).
+- [x] A fixture per verdict, per qualifier and per roll-up case passes.
+- [x] A limit narrower than the acceptance width is refused, and a result inside either guard band is `inconclusive` with `guard_band`.
+- [x] `check-doc-size.py --pressure` no longer lists `interfaces/hil-shapes.md`.
+- [x] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the shared-crate bullet; `check-ownership.py --scope study-designer` on both branches).
+
+## Outcome
+
+Decisions 95 to 98 (`decisions/hil-verdicts.md`); `interfaces/hil-verdicts.md`; code `src/verdicts.rs` behind feature `verdicts = ["alloc"]`, fixtures in `tests/fixtures/verdicts/`. The observation-prompt gap is closed with the reason `observation_unanswered` (95). `hil-shapes.md` compacted by moving the characterisation section verbatim to `interfaces/hil-characterisation.md`; 11,205 B to under 10,000 B. **Debts:** none hardware. Core and `verify` must turn `verdicts` on (a Cargo feature edit in `embarch-core` and `embarch-api` when they first call the rules).

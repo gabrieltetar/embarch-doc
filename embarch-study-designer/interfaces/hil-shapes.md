@@ -1,8 +1,8 @@
 # embarch-study-designer: the HIL file shapes (index)
 
-**Status:** active, 2026-11-20. Written by `tasks/study-designer/084`, the plan's unit M1.1 (`notes/hil/14`): the doc R24 asked for, so a Study's zip is not reshaped when Test lands. **Design, not yet code** except the reducers' half: M1.2 built the measurement keys a reducer owns ([hil-reducers.md](hil-reducers.md)); the file types, verdicts and the rest are M1.3 to M1.11's.
+**Status:** active, 2026-11-20. Written by `tasks/study-designer/084`, the plan's unit M1.1 (`notes/hil/14`): the doc R24 asked for, so a Study's zip is not reshaped when Test lands. **Design, not yet code** except two halves: M1.2 built the measurement keys a reducer owns ([hil-reducers.md](hil-reducers.md)) and M1.3 the verdict rules ([hil-verdicts.md](hil-verdicts.md)); the file types and the rest are M1.5 to M1.11's.
 
-Group: this file (verdicts, `measurements.json`, a bench board's characterisation) · [hil-run.md](hil-run.md) (`run.json`, a Study's export and check shape) · [hil-pdf.md](hil-pdf.md) (the PDF text extractor, the number grammar, the tick algorithm, the footer rule). Why each open detail went the way it did: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decisions 90 and 91.
+Group: this file (verdicts, `measurements.json`) · [hil-characterisation.md](hil-characterisation.md) (a bench board's characterisation) · [hil-run.md](hil-run.md) (`run.json`, a Study's export and check shape) · [hil-pdf.md](hil-pdf.md) (the PDF text extractor, the number grammar, the tick algorithm, the footer rule). Why each open detail went the way it did: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decisions 90 and 91.
 
 Where a note is the source the doc cites it. A value marked *(shape)* is this doc's choice where the notes were silent; each is listed in decision 90 or 91.
 
@@ -20,7 +20,7 @@ From the plan's table (`notes/hil/14`); a unit written against this group needs 
 
 | Shape | Written by | Read by |
 |---|---|---|
-| Verdicts, `run.json` | M1.3 defines the rules over them; no milestone-1 unit writes a `run.json` (Test phase) | M1.3, M1.5 (a subject), M1.10, M1.11 |
+| Verdicts, `run.json` | M1.3 built the rules over them; no milestone-1 unit writes a `run.json` (Test phase) | M1.3, M1.5 (a subject), M1.10, M1.11 |
 | `measurements.json` | M1.7 (values and `U` from M1.2) | M1.5 (a subject), M1.9 (`report.typ`), M1.10, M1.11 |
 | A Study's export and check | M1.8 (`report-data.json`), M1.10 (the exports, the zip) | M1.11 |
 | Extractor, number grammar | the shared crate (M1.2's home) | M1.10 (source rescan), M1.11 |
@@ -29,18 +29,18 @@ From the plan's table (`notes/hil/14`); a unit written against this group needs 
 
 ## The six verdicts
 
-From `notes/hil/03-test.md`, "The verdict". The spelling is the string in every file, record and export; **no other string is a verdict** *(shape: lowercase, as the note writes them)*. A Study has none ([hil-run.md](hil-run.md#a-studys-export-and-check)). How a verdict is reached is M1.3's, not this doc's.
+From `notes/hil/03-test.md`, "The verdict". The spelling is the string in every file, record and export; **no other string is a verdict** *(shape: lowercase, as the note writes them)*. A Study has none ([hil-run.md](hil-run.md#a-studys-export-and-check)). **How a verdict is reached is built**: [hil-verdicts.md](hil-verdicts.md), `verdicts` feature, decisions 95 to 98.
 
 | String | Means (03) | `reason` values |
 |---|---|---|
 | `pass` | Every limit held, on every run, on complete evidence | none |
 | `fail` | The DUT broke a limit or a marker rule | `limit`, `marker_rule`, `step_failed`, `step_timed_out` |
 | `error` | The setup could not judge the DUT: a bench board, an instrument or a port failed, or the smoke check did | `bench_step_failed`, `port_lost`, `empty_reply`, `prompt_not_confirmed`, `smoke_check` |
-| `inconclusive` | The evidence is incomplete, or the result is inside a guard band (both sides of the tolerance limit) | `truncated_capture`, `truncated_reply`, `record_gap`, `parse_failed`, `guard_band`, `calibration_expired` |
+| `inconclusive` | The evidence is incomplete, or the result is inside a guard band (both sides of the tolerance limit) | `truncated_capture`, `truncated_reply`, `record_gap`, `parse_failed`, `guard_band`, `calibration_expired`, `observation_unanswered` |
 | `skipped` | Not run, with the reason | gap: `hook_unmapped`, `bench_missing`, `requires_not_met`, `stopped_by_error`, `stopped_after_fail`; no gap: `not_applicable`, `not_selected` |
 | `cancelled` | The run was cancelled | none |
 
-- **`reason` is a closed list of lowercase strings** *(shape)*; a verdict carries one reason where the table lists any, the first that applies in M1.3's order. **Gap versus no gap** is the split 03 and 06 draw for a requirement's `not verified` and the JUnit mapping: the first five `skipped` reasons are gaps *(03's list, spelled here)*.
+- **`reason` is a closed list of lowercase strings** *(shape)*; a verdict carries one reason where the table lists any, the first that applies in [hil-verdicts.md](hil-verdicts.md)'s order. **Gap versus no gap** is the split 03 and 06 draw for a requirement's `not verified` and the JUnit mapping: the first five `skipped` reasons are gaps *(03's list, spelled here)*.
 - **Severity order**, as a number where a file needs one: `error` 5, `fail` 4, `inconclusive` 3, `cancelled` 2, `skipped` 1, `pass` 0 (03). Every combined verdict carries its per-verdict counts, an object keyed by the six strings.
 - **A verdict carries its qualifiers**, an array of strings from the closed list in 03 and 06: `bench_firmware_unreleased`, `bench_firmware_unverified`, `bench_firmware_flashed_by_agent`, `unvalidated`, `unit_identity_not_read`, `calibration_undeclared`, `declared_by_agent`, `declared_by_study`, `relayed`, `rests_on_dut_report`, `rests_on_person_observation`, `n_of_m_run` (with `n` and `m` beside it) *(shape: the spellings)*.
 
@@ -75,23 +75,6 @@ Top level, all required: `schema`; `run_id` (string); **`behaviours`**: an objec
 | `declared_by` | array | One `{what, name, scope}` per declaration the value rests on (`what`: `role`, `signal`, `tap`, `instrument_u`, `study_value`), `scope` the token's scope that made it, `agent` or `person`, from Core's signed record (02). Empty means it rests on none |
 | `incomplete` | array of strings | Empty when complete. Else `truncated_capture`, `truncated_reply`, `record_gap`, `parse_failed`: 02's "says so", which makes a verdict resting on it `inconclusive` (03) *(shape: the key)* |
 
-
 ## A bench board's characterisation
 
-`characterisation.json`, one per bench board type, **shipped with the board's released firmware** (03: resolution, `U` and range "ship with its released firmware"). Written by an EmbArch release, never by a study or the agent; read by Core at M1.7 and by `verify` (M1.11); carried in the zip at `characterisation/<board>.json`, its hash in the measurement's `instrument.characterisation` (06, "Instruments"). **Nothing in milestone 1 ships one**: every Study value from such a board reads `U undeclared` (02).
-
-```json
-{ "schema": 1, "board": "dev-bench", "firmware": { "version": "…", "image_sha256": "…" },
-  "characterised": "2026-11-20", "valid_days": 365,
-  "channels": [ { "name": "clock", "unit": "us", "range": { "min": 0, "max": 4294967295 },
-                 "resolution": 1, "uncertainty": { "U": 2, "k": 2, "basis": "characterisation" } } ] }
-```
-
-| Key | Type | Meaning |
-|---|---|---|
-| `board` | string | The board type, as its identity names it |
-| `firmware` | `{version, image_sha256}` | The released image this was measured on; ties it to the `released` hash list (03, smoke check) |
-| `characterised` | date | The day it was measured (06: "a date") |
-| `valid_days` | integer, at least 1 | The validity period (06). **Valid until** `characterised` + `valid_days`, inclusive; a measurement with `at_utc_ms` after it is `inconclusive`, `calibration_expired`, as an instrument's due date is *(shape: days, and the end inclusive)* |
-| `channels` | array | One per thing it times or measures: `{name, unit, range {min, max}, resolution, uncertainty}`, `uncertainty` the `{U, k, basis}` above with `basis` `characterisation` |
-
+Moved verbatim to [hil-characterisation.md](hil-characterisation.md): `characterisation.json`, shipped with a bench board's released firmware, never by a study; nothing in milestone 1 ships one *(shape, decision 90)*.

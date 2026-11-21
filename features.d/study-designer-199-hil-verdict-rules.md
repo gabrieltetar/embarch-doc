@@ -1,0 +1,1 @@
+| The shared crate decides HIL verdicts in code: the six verdicts, a step outcome's mapping, the guard band on both sides of a limit, the acceptance-width refusal and the requirement roll-up, each versioned by behaviour | Built, **host tests against fixtures**; behind feature `verdicts`; no Core calls them yet | host | 95, 96, 97, 98 |
