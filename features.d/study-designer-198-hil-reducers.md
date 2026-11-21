@@ -1,0 +1,1 @@
+| The shared crate computes derived measurements with built-in reducers (count, rate, min, max, mean, percentile, interval, value at a marker), each versioned by behaviour, with `U` and a type-A term | Built, **host tests against fixtures**; behind feature `reducers`; no Core calls them yet | host | 92, 93, 94 |

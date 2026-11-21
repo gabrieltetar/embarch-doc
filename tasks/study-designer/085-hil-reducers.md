@@ -1,6 +1,6 @@
 # 085 — The shared crate's built-in HIL reducers, each with a contract, a fixture and a `U` rule
 
-**State:** claimed by agent/study-designer/085-hil-reducers, 2026-11-21 12:10
+**State:** done by agent/study-designer/085-hil-reducers, 2026-11-21
 **Source:** Fleet Ready issue: the shared crate has no built-in reducers, so nothing computes a derived measurement and `verify` has nothing to recompute it with. `notes/hil/14-implementation-plan.md`, unit M1.2 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/02-study.md`, "Measurements".
 **Issue:** EMB-217
 **Scope:** study-designer
@@ -26,8 +26,14 @@ M1.7 (Core writing `measurements.json` as each study ends) and M1.11 (`verify` r
 
 ## Done when
 
-- [ ] `cargo test` passes against each reducer's fixture with no Core installed.
-- [ ] A reducer over incomplete input (a truncated capture, a record gap) reports it in `incomplete`, and a test shows a behaviour change bumps the version while the old behaviour stays callable.
-- [ ] Each statistical reducer's fixture checks its `type_a` term.
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the shared-crate bullet: once per feature set its consumers build it with; `check-ownership.py --scope study-designer` on both branches).
+- [x] `cargo test` passes against each reducer's fixture with no Core installed.
+- [x] A reducer over incomplete input (a truncated capture, a record gap) reports it in `incomplete`, and a test shows a behaviour change bumps the version while the old behaviour stays callable.
+- [x] Each statistical reducer's fixture checks its `type_a` term.
+- [x] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the shared-crate bullet: once per feature set its consumers build it with; `check-ownership.py --scope study-designer` on both branches).
+
+## Done
+
+Decisions 92 to 94 (`decisions/hil-reducers.md`); interface `interfaces/hil-reducers.md`; code `src/reducers.rs` behind feature `reducers = ["alloc"]`, `embarch-core` and `embarch-api` turn it on for M1.7 and M1.11. Gated under no features, alloc, std, `study-ui,gatt-extract,eap-parse`, `reducers` and all-features: build, test and clippy `-D warnings` green; a CI cell for `reducers` added to `.github/workflows/test.yml` and run locally with `--locked --no-default-features`.
+
+No hardware debt. Assumed, not measured: the percentile's type-A convention (decision 94).

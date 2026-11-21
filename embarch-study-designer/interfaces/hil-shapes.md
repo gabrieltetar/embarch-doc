@@ -1,6 +1,6 @@
 # embarch-study-designer: the HIL file shapes (index)
 
-**Status:** active, 2026-11-20. Written by `tasks/study-designer/084`, the plan's unit M1.1 (`notes/hil/14`): the doc R24 asked for, so a Study's zip is not reshaped when Test lands. **Design, not yet code**: no type below exists in the crate; M1.2 to M1.11 write them against this.
+**Status:** active, 2026-11-20. Written by `tasks/study-designer/084`, the plan's unit M1.1 (`notes/hil/14`): the doc R24 asked for, so a Study's zip is not reshaped when Test lands. **Design, not yet code** except the reducers' half: M1.2 built the measurement keys a reducer owns ([hil-reducers.md](hil-reducers.md)); the file types, verdicts and the rest are M1.3 to M1.11's.
 
 Group: this file (verdicts, `measurements.json`, a bench board's characterisation) · [hil-run.md](hil-run.md) (`run.json`, a Study's export and check shape) · [hil-pdf.md](hil-pdf.md) (the PDF text extractor, the number grammar, the tick algorithm, the footer rule). Why each open detail went the way it did: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decisions 90 and 91.
 
@@ -61,13 +61,13 @@ Top level, all required: `schema`; `run_id` (string); **`behaviours`**: an objec
 |---|---|---|
 | `name` | string | The study's name for it; what `#m("name")` and `[name]` cite |
 | `value` | number, string or `null` | A number; a string for a `person` choice among declared answers; `null` only when `incomplete` holds `parse_failed` |
-| `unit` | string | `V`, `mV`, `A`, `mA`, `W`, `mW`, `s`, `ms`, `us`, `Hz`, `B`, `1` (a pure number, a count); a choice has `1` *(shape: the list is the crate's `Unit` widened; M1.2 may extend it, amending here)* |
+| `unit` | string | `V`, `mV`, `A`, `mA`, `W`, `mW`, `s`, `ms`, `us`, `Hz`, `B`, `1` (a pure number, a count); a choice has `1` *(shape: the list is the crate's `Unit` widened; M1.2 needed no extension)* |
 | `at_utc_ms` | integer | When it was measured; a window's end. What a calibration due date or validity period is checked against *(shape)* |
 | `source` | object | `{file, rows? , bytes?, step?}`: `file` a name in the zip; **exactly one of** `rows` `[first, last]` (0-based, inclusive) or `bytes` `[offset, length]` for a capture; `step` (the step's name, and `iteration` if in a `Repeat`) instead of both for a step-time parse out of `events.json` |
 | `by` | `bench`, `dut` or `person` | Who measured (02). Core fills it from what the step addressed, never from the study |
 | `instrument` | object or `null` | `null` for `dut` and `person`. Else `{name, kind (board or instrument), identity, calibration?, characterisation?}`: `identity` the `*IDN?` reply or the board's identity reply (`null` if unread); `calibration` (an instrument) `{serial, certificate_ref, due, declared_by_scope}` or absent when undeclared; `characterisation` (a board) the hash of its file below, or absent when it ships none |
 | `bench_image` | `released`, `unreleased`, `unverified` or `null` | The producing board's image status (03). `null` where no bench board produced it. In milestone 1 every board is `unverified` (14) |
-| `method` | object | `{kind: "parse", pattern}`, `{kind: "reducer", name, behaviour, window}` (the version of `behaviours[name]`; `window` the reducer's own parameters, M1.2) or `{kind: "prompt", prompt_kind}` for a `person` value |
+| `method` | object | `{kind: "parse", pattern}`, `{kind: "reducer", name, behaviour, window}` (the version of `behaviours[name]`; `window` the reducer's own parameters: `from_utc_ms`, `to_utc_ms`, `percentile`, `from_marker`, `to_marker`, absent keys omitted, [hil-reducers.md](hil-reducers.md)) or `{kind: "prompt", prompt_kind}` for a `person` value |
 | `resolution` | number or `null` | In `unit`. `null` is undeclared: a Test refuses it at definition; a Study keeps it and `u_source` says `undeclared` |
 | `uncertainty` | object or `null` | `{U, k, basis}`, plus `type_a` (the standard uncertainty of its own estimate, present only on a statistical reducer's value): `U` expanded, in `unit`; `k` the coverage factor; `basis` one of `datasheet`, `calibration`, `characterisation`, `declared`, `derived` *(shape: the list is 03's four sources plus the reducers' derived)*. `null` with `u_source` `none` means a quantity with no uncertainty (a count, a choice) |
 | `u_source` | string | **Always present** (02 names it for a Study's own declarations; every value gets one so a reader never infers it) *(shape)*: `source` (the instrument's or board's own declaration), `study` ("declared by the study, unconfirmed"), `undeclared` ("U undeclared"), `derived`, `none` |
