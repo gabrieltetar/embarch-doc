@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core signs each study run's record (Ed25519, DSSE over an in-toto Statement) and answers a fixed-frame `POST /auth/challenge`: [decision 110](../embarch-core/decisions/signing.md).
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed

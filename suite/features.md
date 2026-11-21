@@ -27,6 +27,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `start`/`stop` CLI subcommands | Shipped — smoke-tested on Linux only | hw | 3 |
 | Auto-generated machine-wide token file | Shipped | unit | §6 |
 | Agent and person tokens — two bearer tokens, each request carries its scope | Shipped — recorded as a request extension, enforced nowhere yet; no client resolves the person token | unit | 109 |
+| `record.dsse.json` — Ed25519-signed DSSE/in-toto record per study run, plus `POST /auth/challenge` (fixed frame, no token) | Shipped — host-tested only; Windows key-file ACL unrun; observed and claimed facts kept apart | unit | 110 |
 | Service environment token passthrough | Shipped | unit | 3 |
 | Serial bridge to dev-bench (`/study*`, `/dev-bench/hello`) | Shipped | hw | 21 |
 | Erase on flash | Shipped — **the brick hazard is closed: no backend maps it to a chip erase** | hw | 32, 36 |
