@@ -34,7 +34,7 @@ Two front-ends (`tools.rs` MCP, `cli.rs`) over one set of modules; the map is [i
 
 **Inbound is "whoever can spawn the process"** — MCP and CLI alike, no API key, bearer token or session at this layer. A deliberate simplification; [decisions/shape.md](../decisions/shape.md) carries what it costs.
 
-**Outbound** is `EMBARCH_TOKEN`: config `token_env`, then `token`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../../embarch-token.md). Whichever value resolves is attached by **one funnel** in `embarch-core-client`, the only sender ([decisions](../decisions/client-crate.md) 55).
+**Outbound** is `EMBARCH_TOKEN`: config `token_env`, then `token`, then machine-wide token-file discovery. Full lifecycle: [embarch-token.md](../../embarch-token.md). Whichever value resolves is attached by **one funnel** in `embarch-core-client`, the only sender ([decisions](../decisions/client-crate.md) 55). **Always the agent's token**: Core holds a second, the person's, which the client can resolve (`TokenScope::Person`) for a surface that acts for the engineer, and no MCP tool or CLI verb selects it ([decisions](../decisions/client-crate.md) 109).
 
 ## 7. Constants
 

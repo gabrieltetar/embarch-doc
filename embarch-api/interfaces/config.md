@@ -22,6 +22,8 @@ In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upw
 | `port` | integer | no | 4884 | Only consulted by `"auto"` when building candidates |
 | `token` | string | no | — | Inline bearer token |
 | `token_env` | string | no | — | Env var to read the token from instead. **Wins if both are set.** If neither resolves, machine-wide token-file discovery runs before failing |
+| `person_token` | string | no | — | The person's token, inline. Read only by a client built for the person's scope, never by the MCP server or CLI ([../decisions](../decisions/client-crate.md) 109) |
+| `person_token_env` | string | no | — | Env var for the person's token; wins over `person_token`. Then `EMBARCH_PERSON_TOKEN`, then the `person-token` file beside the agent's. Never the agent's token |
 | `status_timeout_secs` | integer | no | 10 | |
 | `reset_timeout_secs` | integer | no | 10 | |
 | `flash_timeout_secs` | integer | no | 120 | Its own budget: flashing takes far longer than a status check |

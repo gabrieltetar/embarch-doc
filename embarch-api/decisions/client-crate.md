@@ -61,3 +61,13 @@ Decisions 37/38 accepted six hand-written copies of `embarch_topology::hardware`
 ***Rejected: keeping a mirror for the derives.*** `Alert`/`DetectedPort` lacked `PartialEq`/`Eq` the copies had; adding two derives upstream is smaller than a copy kept alive to carry them.
 
 Naming the original also **gains** `guessed_among` — whether a port was picked among equally-plausible candidates rather than determined. The mirror had no such field, so a caller could not tell a guess from an answer.
+
+### 109 — The client resolves either of Core's two tokens by scope; the MCP server and the CLI send only the agent's
+
+`embarch-core` decision 109 gave Core an agent token and a person token. `embarch-core-client` now names the choice: `TokenScope::{Agent, Person}`, `token_discovery::resolve_token_for(scope, ..)`, `CoreConfig::resolve_token_for(scope)` and `CoreClient::new_with_scope(config, scope)`. **`resolve_token`, `CoreConfig::resolve_token` and `CoreClient::new` are unchanged and mean the agent's**, so its consumers build as before.
+
+**The person's order** is config `person_token_env`, config `person_token`, the `EMBARCH_PERSON_TOKEN` variable Core itself reads, then `person-token` beside the agent's file (same WSL2 mapping as the agent's). **It never falls back to the agent's token**: no person token is an error naming its sources.
+
+**Only a library caller reaches the person's.** The MCP server and every CLI verb build their client through `agent_core_client`, which names `TokenScope::Agent`, and a test pins that a configured `person_token` does not change it. No flag asks for the person's: the surfaces that act for the engineer (`tasks/ui/111`) call `new_with_scope`. A flag would be one more way for an agent to ask for the wrong scope. The scope is fixed at construction; `CoreClient::scope()` reads it.
+
+**Measured:** unit tests per source, and `new` is the agent's. **Not run:** the WSL2 `person-token` path against a live Core.
