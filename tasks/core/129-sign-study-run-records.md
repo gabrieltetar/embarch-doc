@@ -1,6 +1,6 @@
 # 129 — Core signs each study run's record with an Ed25519 key, as a DSSE envelope over an in-toto Statement
 
-**State:** open
+**State:** claimed by agent/core/129-sign-study-run-records, 2026-11-21 12:10
 **Source:** Fleet Ready issue: Core does not sign study run records, so a published zip cannot be checked without trusting the agent. `notes/hil/14-implementation-plan.md`, unit M1.5 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 1, and "The root of trust: Core, under its own account" for the key and the challenge.
 **Issue:** EMB-220
 **Scope:** core
