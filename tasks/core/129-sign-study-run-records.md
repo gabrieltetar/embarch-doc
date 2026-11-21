@@ -1,6 +1,6 @@
 # 129 — Core signs each study run's record with an Ed25519 key, as a DSSE envelope over an in-toto Statement
 
-**State:** claimed by agent/core/129-sign-study-run-records, 2026-11-21 12:10
+**State:** done on agent/core/129-sign-study-run-records, 2026-11-21
 **Source:** Fleet Ready issue: Core does not sign study run records, so a published zip cannot be checked without trusting the agent. `notes/hil/14-implementation-plan.md`, unit M1.5 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 1, and "The root of trust: Core, under its own account" for the key and the challenge.
 **Issue:** EMB-220
 **Scope:** core
@@ -28,7 +28,20 @@ M1.6 (the hash-chained run log, which holds each Statement's hash) follows this,
 
 ## Done when
 
-- [ ] A study run's record verifies with a standard DSSE check in a test, and fails it when a subject's bytes change.
-- [ ] The challenge route signs only its frame, and a test shows a caller-chosen payload cannot be signed through it.
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped; a `status.d/` fragment for `embarch-token.md` if the key file sits beside the tokens.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+- [x] A study run's record verifies with a standard DSSE check in a test, and fails it when a subject's bytes change.
+- [x] The challenge route signs only its frame, and a test shows a caller-chosen payload cannot be signed through it.
+- [x] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped; a `status.d/` fragment for `embarch-token.md` if the key file sits beside the tokens.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+
+## Done
+
+Decision 110 (`embarch-core/decisions/signing.md`), `interfaces/signing.md`, `src/signing.rs`. Library `ed25519-dalek` 2; predicate type the URN `urn:embarch:predicate:study-run:v1`.
+
+- **Decided beyond the task text:** the challenge route is `POST /auth/challenge` and takes **no token** (the notes' check happens before any token is sent), so it sits in `signing.rs` outside the swept `build_router` lines and the sweep's "every route requires the token" claim now has one stated exception. A device study now keeps its `Study` as `study.json` (the name host studies use) so it can be a subject. Build claims arrive as query parameters on both study routes (`build_commit`, `build_dirty`, `build_toolchain`); embarch-api does not send them yet (a follow-up in `embarch-api`).
+- **Declaration scopes** are an in-memory ledger stamped by the five declaration routes; the predicate says from when it has been watching (`witnessed_since_utc_ms`). Persisting it is M1.6's.
+
+## Debts
+
+- **Windows (native build, not run; a worktree cannot build it):** from the main checkout in a Windows session, start Core, then `icacls %ProgramData%\embarch\signing-key` should list only the running account, `SYSTEM` and `Administrators`; a second start reuses the key (same `keyid` in `core.log`). Also `cargo build` there for the `windows`-only `pub(crate) restrict_token_file_permissions` call from `signing.rs`.
+- No third-party DSSE tool (e.g. a Go or Python verifier) was run against an envelope; the tests' independent check follows the DSSE v1 text.
+- Follow-ups for others: `embarch-api` sending the `build_*` parameters and calling the challenge before sending a token; `embarch-core-client` for both.

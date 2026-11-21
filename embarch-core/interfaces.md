@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-07.
 
-Every route requires `Authorization: Bearer <token>`: the agent's or the person's (decision 109), both reaching every route, the scope recorded and not enforced. Semantics and rationale: [decisions.md](decisions.md).
+Every route requires `Authorization: Bearer <token>` except `POST /auth/challenge`: the agent's or the person's (decision 109), both reaching every route, the scope recorded and not enforced. Semantics and rationale: [decisions.md](decisions.md).
 
 ## Conventions
 
@@ -25,6 +25,7 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Studies](interfaces/studies.md) — the dev-bench handshake, the async study job, and the listing of past ones | `/dev-bench/hello`, `/studies`, `/study`, `/study/{id}`, `/study/{id}/events`, `/study/{id}/steps`, `/study/{id}/streams`, `/study/{id}/stream/{name}` |
 | [Host studies](interfaces/host-studies.md) — a study Core runs itself, answering its prompts, and cancelling it | `/host-studies`, `/study/{id}/cancel`, `/study/{id}/prompt`, `/study/{id}/line-counts` |
 | [Streams](interfaces/streams.md) — a tap's arrival times and its `OutpostTrace` load repartition | `/study/{id}/stream/{name}/arrivals`, `/study/{id}/stream/{name}/load` |
+| [Signing](interfaces/signing.md) — the signed run record, and the one route that takes no token | `/auth/challenge` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |
 | [Modules](interfaces/modules.md) — not a route group, spec §4's source-file table | — |

@@ -12,7 +12,9 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 ## Scope is carried, not yet recorded anywhere
 
-- **Decision 109's scope reaches no existing record.** The `Scope` request extension exists and a test reads it, but the lease holder, `hw_holder`, the study record and the logs carry none; M1.5 to M1.8 add it where each needs it. The person token file's `icacls` lockdown on Windows is unrun, and `embarch-core-client`, `embarch-api` and `embarch-ui` still know only the agent's token (`tasks/api/162`, `tasks/ui/111`).
+- **Decision 109's scope reaches the signed run record only** (decision 110: each declaration's scope). The lease holder, `hw_holder` and the logs carry none; M1.6 to M1.8 add it where each needs it. The person token file's `icacls` lockdown on Windows is unrun, and `embarch-core-client`, `embarch-api` and `embarch-ui` still know only the agent's token (`tasks/api/162`, `tasks/ui/111`).
+
+- **Decision 110's declarations ledger is in memory.** A declaration made before this Core started is not in a run's record, which says so (`witnessed_since_utc_ms`); M1.6's protected store is where the ledger should live. A declaration outside the five the ledger watches (a tap's declared origin, a study value) is not stamped yet. **Windows ACL debt:** the `signing-key` file's `icacls` lockdown is unrun, as `person-token`'s is. From the main checkout in a Windows session, start Core natively, then `icacls %ProgramData%\embarch\signing-key` must list only the running account, `SYSTEM` and `Administrators`, and a second start must print `reusing the existing signing key` with the same `keyid` in `core.log`. A worktree cannot build it.
 
 ## Unverified diagnoses
 

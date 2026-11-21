@@ -1,0 +1,1 @@
+| `record.dsse.json` — Ed25519-signed DSSE/in-toto record per study run, plus `POST /auth/challenge` (fixed frame, no token) | Shipped — host-tested only; Windows key-file ACL unrun; observed and claimed facts kept apart | unit | 110 |
