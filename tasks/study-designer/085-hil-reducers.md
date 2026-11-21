@@ -1,6 +1,6 @@
 # 085 — The shared crate's built-in HIL reducers, each with a contract, a fixture and a `U` rule
 
-**State:** open
+**State:** claimed by agent/study-designer/085-hil-reducers, 2026-11-21 12:10
 **Source:** Fleet Ready issue: the shared crate has no built-in reducers, so nothing computes a derived measurement and `verify` has nothing to recompute it with. `notes/hil/14-implementation-plan.md`, unit M1.2 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/02-study.md`, "Measurements".
 **Issue:** EMB-217
 **Scope:** study-designer
