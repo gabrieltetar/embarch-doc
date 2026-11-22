@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `run_study` sends Core the project checkout's commit, dirty state and `west` version as build claims, none without a git checkout; [decision 111](../embarch-api/decisions/build-claims.md).
 - embarch-api renders a report's `report.typ` to PDF offline, Typst built in, lilaq embedded, root confined to the staged files ([decision 110](../embarch-api/decisions/report-pdf.md)).
 - embarch-core-client resolves the agent or the person token by scope; MCP and CLI send only the agent token ([decisions](../embarch-api/decisions/client-crate.md) 109).
 - Serve the HIL guide: embarch-api guide hil [live|study|test] prints the text embedded in the binary; an embarch-hil skill points at it (decision 108).
