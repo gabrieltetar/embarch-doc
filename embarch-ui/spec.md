@@ -45,6 +45,7 @@ Plus any from a tab folder (100). Navigation, the sidebar, the UI's desk as shel
 
 ## Invariants
 
+- **The Bearer is the person's token** (103): the UI's one Core client is built with `TokenScope::Person`, and a missing person token stops the UI at start rather than falling back to the agent's.
 - **Every hardware-adjacent call, read or write, goes over HTTP+Bearer to Core.** Verified structurally: neither `probe-rs` nor `serialport` is in `cargo tree -e normal`. **A firmware build is not one of them** — `west` in a subprocess and files on disk, though flash and reset still go to Core.
 - **Everything live reaches the browser as SSE** served by this binary; no client-side interval polling (no `setInterval` in `app.js`). Where a source has no push surface the polling is server-side, unseen by the browser.
 - **A snippet list is ordered end to end**: picker, stored `Study` and `west -S` are one sequence, sorted into a set by nothing (reversals 114). **A saved study's `firmware_version` is rewritten only after a waved-through mismatch, never over `any`** (40), in the run's own repo.

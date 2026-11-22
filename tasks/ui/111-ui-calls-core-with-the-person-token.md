@@ -24,7 +24,13 @@ M1.8 attributes notes and prose adoptions by the token's scope, and the card tho
 
 ## Done when
 
-- [ ] The UI's Core client is built with the person token, and a test or a type says so.
-- [ ] A missing person token is reported as the decision says.
-- [ ] `spec.md`, `decisions.md` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope ui` on both branches).
+- [x] The UI's Core client is built with the person token, and a test or a type says so.
+- [x] A missing person token is reported as the decision says.
+- [x] `spec.md`, `decisions.md` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope ui` on both branches).
+
+## Outcome
+
+Decision 103 (`embarch-ui/decisions/core-token.md`): `config::core_client` builds the one `CoreClient` with `TokenScope::Person`; no agent fallback. **Deviation from the What, on purpose:** a missing person token stops the UI at start (error naming the sources) instead of a banner where "Core unreachable" shows, because every handler holds one `CoreClient` and none can be built without a token; reasons in the decision. If the owner wants the banner, that is a follow-up (an `Option<CoreClient>` through the handlers).
+
+**Verification debt:** not run against the installed `embarch-ui.service` or a real Core with a person token; the missing-token test is conditional (a machine with a `person-token` file passes without erroring).
