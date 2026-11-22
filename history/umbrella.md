@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch init now installs the embarch-hil skill into a firmware repo (excluded locally, removed by --uninstall) and gains --dry-run.
 - Suite release workflows sign every archive and a per-file SHA-256 manifest with cosign, verify component bundles first, and attest each archive; not yet run on a tag (EMB-190).
 - `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
 

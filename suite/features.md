@@ -185,6 +185,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | `embarch setup` — per-machine setup with topology auto-detection, a real install and real `PATH` | Shipped, `--dry-run` included (2026-09-04) — **the Windows registry half is type-checked, not run** | local | 3, 21, 28 |
 | `embarch init` — scaffold a repo's config plus local MCP registration | Shipped | local | 10, 12 |
+| `embarch init` installs the `embarch-hil` skill beside the MCP server | Shipped — **the skill path is assumed from memory of Claude Code's docs, never loaded in a live session** | local | 59 |
 | `init` never writes an inferred board as fact | Shipped — the board from `build_info.yml` becomes `CHANGE-ME` and is quoted back in a comment with the build's age; a repo with several recorded builds has all of them named and none picked. **Unit tests only; no scaffolded config has been fed to a real `embarch-api` since the change** | unit | 41 |
 | Signed suite release — `release.yml` and `assemble-suite.yml` sign archives and a hashed manifest, verifying each component first | Written, **never run on a tag; actionlint did not run** | no | 14 |
 | `init`/`doctor` support for live target discovery | Shipped, **decision 17's amendment included 2026-09-05**: check 8 shells out to `embarch-api list-targets`, umbrella's scanner deleted. Contract **observed against a real `embarch-api` 2026-09-06**; the check has not run inside `doctor` | unit | 17, 42 |
