@@ -1,6 +1,6 @@
 # 101 — `embarch init` installs the `embarch-hil` skill beside the MCP server
 
-**State:** claimed by agent/umbrella/101-init-installs-the-hil-skill, 2026-11-21 17:12
+**State:** done
 **Source:** `embarch-api/open.md`: "The `embarch-hil` skill is not installed anywhere. It ships in this repo (`skills/embarch-hil/`), but copying it into a firmware repo is `embarch-umbrella`'s (`embarch init`, `embarch-hil-proposal.md`'s table)." The proposal's `embarch-umbrella` row: "`embarch init` installs the `embarch-hil` skill beside the MCP server". `embarch-api` decision 108 (`decisions/guide.md`) for the skill and the guide it points at.
 **Scope:** umbrella
 **Hardware:** none
@@ -25,7 +25,19 @@
 
 ## Done when
 
-- [ ] `embarch init` in a scratch repo installs the skill, `--uninstall` removes it, and `--dry-run` names it without writing (tests, in a temporary directory, never a real firmware repo).
-- [ ] The installed skill's text matches what `embarch-api` ships, by whatever route the decision picks, and a test fails if it drifts.
-- [ ] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped; the closing note says what `embarch-api/open.md`'s line should now read, and the supervisor amends it at the fold.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope umbrella` on both branches).
+- [x] `embarch init` in a scratch repo installs the skill, `--uninstall` removes it, and `--dry-run` names it without writing (tests, in a temporary directory, never a real firmware repo).
+- [x] The installed skill's text matches what `embarch-api` ships, by whatever route the decision picks, and a test fails if it drifts.
+- [x] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped; the closing note says what `embarch-api/open.md`'s line should now read, and the supervisor amends it at the fold.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope umbrella` on both branches).
+
+## Closing note
+
+Shipped: `embarch init` installs `.claude/skills/embarch-hil/SKILL.md` (pinned copy, drift test against `../embarch-api`), excludes it locally, `--uninstall` removes it, new `init --dry-run` prints the plan. Decision 59. `spec.md` compacted by moving the marketplace paragraph verbatim to `spec/marketplace.md` (9,281 to 8,808 B, out of reserve); `umbrella/099` untouched, still blocked.
+
+**Debt (verification):** the skill path `.claude/skills/<name>/SKILL.md` is `[assumed]`, not loaded in a live Claude Code session. Check: run `embarch init` in a scratch repo and confirm the agent lists `embarch-hil`.
+
+## Finding
+
+A repo already `init`ed gets no skill (`init` exits on an existing config). Left as is; an upgrade path would be a follow-on.
+
+**`embarch-api/open.md` line should now read:** "The `embarch-hil` skill is installed by `embarch init` (embarch-umbrella decision 59) from a pinned copy; a test in embarch-umbrella fails on drift. Repos `init`ed earlier need `init --uninstall` then `init`. The guide it points at is a skeleton until `suite/hil-guide.md` (M1.13)."
