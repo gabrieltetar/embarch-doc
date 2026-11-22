@@ -1,6 +1,6 @@
 # 102 — `embarch init` on an initialised repo installs what it lacks and leaves the config alone
 
-**State:** claimed by agent/umbrella/102-init-on-an-initialised-repo-installs-what-it-lacks, 2026-11-22 03:03
+**State:** done (2026-11-22)
 **Source:** `tasks/umbrella/101`'s finding (2026-11-21): "A repo already `init`ed gets no skill (`init` exits on an existing config)." `embarch-api/open.md`: "a repo `init`ed earlier needs `init --uninstall` then `init`". `embarch-umbrella` decision 59 (`decisions/integration.md`).
 **Scope:** umbrella
 **Hardware:** none
@@ -24,7 +24,7 @@ On a repo whose config already exists, `init` leaves the config untouched and in
 
 ## Done when
 
-- [ ] `init` on a scratch repo with an existing config installs the skill and the exclude entries, leaves the config byte-identical, and exits as the decision says (a test).
-- [ ] `init` on a repo that lacks nothing changes nothing and says so (a test); `--dry-run` on that path writes nothing (a test).
-- [ ] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope umbrella` on both branches).
+- [x] `init` on a scratch repo with an existing config installs the skill and the exclude entries, leaves the config byte-identical, and exits as the decision says (a test).
+- [x] `init` on a repo that lacks nothing changes nothing and says so (a test); `--dry-run` on that path writes nothing (a test).
+- [x] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope umbrella` on both branches).
