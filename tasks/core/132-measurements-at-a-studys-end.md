@@ -1,6 +1,6 @@
 # 132 — Core computes the declared measurements and writes `measurements.json` as each study ends
 
-**State:** open
+**State:** claimed by agent/core/132-measurements-at-a-studys-end, 2026-11-22 03:03
 **Source:** Fleet Ready issue: Core does not compute measurements when a study ends. `notes/hil/14-implementation-plan.md`, unit M1.7 (after M1.2, landed as `tasks/study-designer/085`); `notes/hil/02-study.md`, "Measurements"; `embarch-study-designer/interfaces/hil-shapes.md` for `measurements.json`, field by field, and `hil-reducers.md` for the reducers' `Input`.
 **Issue:** EMB-222
 **Scope:** core
@@ -26,7 +26,8 @@ M1.8 (Core's side of publish) and M1.9's `report.typ` read `measurements.json`, 
 - Read `hil-shapes.md`'s `measurements.json` section and the declaration shape, `embarch-study-designer/interfaces/hil-declarations.md` (decisions 99 and 100, landed by `suite/057`), before writing; do not invent a second shape for either.
 - **Three things `suite/057` left to this unit**: calling `validate_measurements` when a study is submitted, beside `validate_record_checks` (nothing calls it yet); the window's `from_utc_ms` and `to_utc_ms`, which a declaration cannot carry; and **what stamps a marker** (`from_marker`, `to_marker` are free names, unchecked, and a name nothing produces reads `value: null`, `parse_failed`). Say in a decision what a marker is.
 - **Decisions near their size limit**: `signing` #110 is already over its limit, so do not grow it; `lease` #93 has 182 B left. A new topic file is the home.
-- **`embarch-core/spec.md` is in reserve** (`tasks/core/130`, parked); if `tasks/core/131` has not already brought it out, compact it as part of this unit the way that task's dispatch note says.
+- **`tasks/ui/112` runs beside this unit** (the Study Designer keeps a study's declarations through a save); it calls `validate_measurements` before a save. Nothing in it is yours, and nothing here is its.
+- **In reserve, 2026-11-22: `embarch-core/open.md`, 4,764 of 5,120 B (356 B left)**, filed against `tasks/core/133`, `blocked` on `In flux: yes`, whose `Unparks when:` says the compaction rides in the next core unit that runs out of room in it. If this unit's `open.md` edit does not fit, **compact `open.md` in this unit** per that task (move settled detail verbatim into `open/`, keep its `Must not delete:` list) and say so in the closing note; if it fits, leave the file in reserve and `core/133` as it is. `spec.md` is 8,014 of 10,240 B, out of reserve (`core/130` paid it). Decisions near their size limit: `signing` #110 (over), `lease` #93 (182 B left), `run-log` #111 (201 B left).
 - Out of scope: verdicts (a Study has none), `report-data.json` and publish (M1.8).
 
 ## Done when
