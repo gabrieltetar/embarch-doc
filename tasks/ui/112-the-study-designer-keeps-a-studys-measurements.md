@@ -1,6 +1,6 @@
 # 112 — The Study Designer keeps a study's measurement declarations through a save
 
-**State:** open
+**State:** claimed by agent/ui/112-the-study-designer-keeps-a-studys-measurements, 2026-11-22 03:03
 **Source:** `tasks/suite/057` (2026-11-21), `embarch-study-designer` decisions 99 and 100: `Study` gained `measurements`. Read off the code while landing it: `api_studies_save` rebuilds the saved `Study` from the tab's rows through `build_authored`, and `study_builder` sets `measurements` empty, so a hand-written study carrying declarations, opened in the tab and saved, would lose them with nothing said. Not run against a real saved study.
 **Scope:** ui
 **Hardware:** none
@@ -18,7 +18,8 @@ A saved study's `measurements` survive the Study Designer: loading a study shows
 
 - The declaration's shape is `embarch-study-designer/interfaces/hil-declarations.md`; the crate's `validate_measurements` refuses what Core could not compute. Call it before a save writes a file, the way the save already refuses rows that would fail at run time.
 - `features.d/ui-025-...` says the tab authors every field but `measurements`; amend it in this unit to what is true after it.
-- Out of scope: anything Core computes.
+- Out of scope: anything Core computes. `tasks/core/132` (Core computes the declarations) runs beside this unit.
+- **Nothing in `embarch-ui/` is in reserve**, 2026-11-22 (`spec.md` 8,487 of 10,240 B). Decisions near their size limit, not to grow: `trace-view` #10 (0 B), `gatt-capture` #17 (4 B), `trace-chart` #10 (14 B), `launcher` #28 (22 B), `tab-folders` #100 (113 B). A new topic file, or `study-authoring.md`, is the home.
 
 ## Done when
 
