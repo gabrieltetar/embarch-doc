@@ -1,6 +1,6 @@
 # 101 — `embarch init` installs the `embarch-hil` skill beside the MCP server
 
-**State:** open
+**State:** claimed by agent/umbrella/101-init-installs-the-hil-skill, 2026-11-21 17:12
 **Source:** `embarch-api/open.md`: "The `embarch-hil` skill is not installed anywhere. It ships in this repo (`skills/embarch-hil/`), but copying it into a firmware repo is `embarch-umbrella`'s (`embarch init`, `embarch-hil-proposal.md`'s table)." The proposal's `embarch-umbrella` row: "`embarch init` installs the `embarch-hil` skill beside the MCP server". `embarch-api` decision 108 (`decisions/guide.md`) for the skill and the guide it points at.
 **Scope:** umbrella
 **Hardware:** none
