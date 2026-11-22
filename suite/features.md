@@ -49,6 +49,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `POST /live/core-state` — where a running or hung core is: `DHCSR` and `DWT_PCSR` samples without halting, or registers and `SCB_ICSR` under one counted halt | Shipped — **host-side only: logic proven over a scripted core; never run on a board (PC samples, found-halted case, `DWT_PCSR` presence unchecked), native Windows build unrun** | unit | 97 |
 | Core release archives signed in CI (cosign keyless, `.sigstore.json` bundle per asset) | Built — **no tag has run it; the workflow parsed as YAML only, `actionlint` did not run** | n/a | 1,2,7,17 |
 | Hash-chained run log: an entry per run, publish and discard, never swept; retention spares unpublished captures; the person alone discards a failing run | Built — **host-side only: no Windows build, no client sends the person token yet, the log's tail is unanchored** | n/a | 111, 112 |
+| `measurements.json` — Core reduces a study's declared measurements over its captures as it ends, by/instrument from the tap, bench values `u_source: undeclared` | Built — **fixtures only: no real capture reduced, the rate tolerance is assumed; host-side, no Windows build** | n/a | 113, 114, 115 |
 
 ## embarch-api
 

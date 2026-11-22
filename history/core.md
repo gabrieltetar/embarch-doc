@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core computes a study's declared measurements as it ends and writes `measurements.json`, a signed subject of the run record ([decision 113](../embarch-core/decisions/measurements.md)).
 - Core keeps a hash-chained run log, retention sweeps no unpublished run, and only the person token discards a failing run (decisions 111, 112).
 - Core signs each study run's record (Ed25519, DSSE over an in-toto Statement) and answers a fixed-frame `POST /auth/challenge`: [decision 110](../embarch-core/decisions/signing.md).
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
