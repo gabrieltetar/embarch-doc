@@ -48,6 +48,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A host study's `Prompt` names a bench configuration (`bench_config`): Core forwards it unresolved on `PromptPending`, `pending_prompt` and the step's record; `study_watch` and `study-status --follow` show it | Built — **scripted backend and mock Core only; Core not deployed**; `embarch-ui`'s modal resolves it against the live bench (its decision 99), driven against a stub Core only | unit | 107 |
 | `POST /live/core-state` — where a running or hung core is: `DHCSR` and `DWT_PCSR` samples without halting, or registers and `SCB_ICSR` under one counted halt | Shipped — **host-side only: logic proven over a scripted core; never run on a board (PC samples, found-halted case, `DWT_PCSR` presence unchecked), native Windows build unrun** | unit | 97 |
 | Core release archives signed in CI (cosign keyless, `.sigstore.json` bundle per asset) | Built — **no tag has run it; the workflow parsed as YAML only, `actionlint` did not run** | n/a | 1,2,7,17 |
+| Hash-chained run log: an entry per run, publish and discard, never swept; retention spares unpublished captures; the person alone discards a failing run | Built — **host-side only: no Windows build, no client sends the person token yet, the log's tail is unanchored** | n/a | 111, 112 |
 
 ## embarch-api
 
