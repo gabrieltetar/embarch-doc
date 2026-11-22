@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `publish <run id>` (tool and subcommand) writes a finished Study run as one zip: PDF, Core's signed files, both exports, sources. [interfaces](../embarch-api/interfaces/publish.md)
 - `run_study` sends Core the project checkout's commit, dirty state and `west` version as build claims, none without a git checkout; [decision 111](../embarch-api/decisions/build-claims.md).
 - embarch-api renders a report's `report.typ` to PDF offline, Typst built in, lilaq embedded, root confined to the staged files ([decision 110](../embarch-api/decisions/report-pdf.md)).
 - embarch-core-client resolves the agent or the person token by scope; MCP and CLI send only the agent token ([decisions](../embarch-api/decisions/client-crate.md) 109).

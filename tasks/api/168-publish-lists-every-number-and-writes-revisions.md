@@ -1,12 +1,17 @@
 # 168 — `publish` lists every number in the report, names each prose block's author, and writes revisions
 
-**State:** blocked
+**State:** open
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.10 ("The zip"), its second half
 **Issue:** EMB-225
 **Scope:** api
 **Hardware:** none
 **Owner:** no
-**Unparks when:** `tasks/api/167` lands; this builds on the zip it writes.
+
+## Dispatch notes
+
+- `tasks/api/167` landed the zip (`embarch-api` decisions 112 to 114, `interfaces/publish.md`). Its worker named the hooks: `publish_report::ReportInputs` and `appendix_source` for the oracle listing and the authorship rows, the `adopted` rows and `notes/operator-notes.txt` for authorship, and the Core-fetch step in `publish::run` as what a revision built from the earlier zip replaces.
+- **`embarch-api/open.md` is in reserve** (4,294 of 5,120 B). `tasks/api/169-compact-api.md` is parked on `In flux: yes` until this unit lands and says the compaction rides here: **compact `open.md` out of reserve (at or under 3,919 B) as part of this unit**, moving settled detail into `open/` verbatim with links left, and keep 169's **Must not delete** items. Say so in your report.
+- Core serves a pending revision's `measurements.json` only after the manifest exists (EMB-241, Fleet Ready for `embarch-core`); 167 publishes with a warning in that case. Leave that behaviour alone here unless EMB-241 has landed when you start.
 
 ## What
 
