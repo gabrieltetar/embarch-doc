@@ -1,6 +1,6 @@
 # 165 — Compact two embarch-api docs in reserve
 
-**State:** open
+**State:** claimed by agent/api/165-compact-api, 2026-11-22 03:03
 **Scope:** api
 **Hardware:** none
 **Owner:** no
@@ -12,6 +12,13 @@
 ## What
 
 Both files sit in the last 10% of their cap after api/162 (decision 109). Leave client-crate.md alone until ui/111 lands, then compact it; config.md can be compacted now.
+
+## Dispatch notes
+
+- **`ui/111` has landed** (2026-11-21), so both files are compacted in this unit. In reserve, 2026-11-22: `decisions/client-crate.md` 12,278 of 12,288 B (10 B left; out at 11,059 B or less), `interfaces/config.md` 11,368 of 12,288 B (920 B left; same line). Nothing else in `embarch-api/` is in reserve; `open.md` is 3,870 of 5,120 B.
+- **A doc-only unit**: you get an `embarch-doc` worktree and no code worktree, since nothing here changes `embarch-api`'s source.
+- **Split first** (`DOC-COMPACTION.md` §2): a verbatim move of settled text into a new topic file restates nothing, so prefer it over rewording a decision. A decision's number never changes, and a moved decision leaves its index line and links working (`check-links.py`).
+- Decisions near their own size limit, not to grow: `ledger` #98 (15 B), `bench-exchange` #89 (122 B), `failure-reporting` #67 (192 B).
 
 ## Done when
 
