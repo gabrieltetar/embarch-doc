@@ -1,0 +1,1 @@
+| `measurements.json` — Core reduces a study's declared measurements over its captures as it ends, by/instrument from the tap, bench values `u_source: undeclared` | Built — **fixtures only: no real capture reduced, the rate tolerance is assumed; host-side, no Windows build** | n/a | 113, 114, 115 |

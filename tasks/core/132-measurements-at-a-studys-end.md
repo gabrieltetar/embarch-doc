@@ -1,6 +1,6 @@
 # 132 — Core computes the declared measurements and writes `measurements.json` as each study ends
 
-**State:** claimed by agent/core/132-measurements-at-a-studys-end, 2026-11-22 03:03
+**State:** done
 **Source:** Fleet Ready issue: Core does not compute measurements when a study ends. `notes/hil/14-implementation-plan.md`, unit M1.7 (after M1.2, landed as `tasks/study-designer/085`); `notes/hil/02-study.md`, "Measurements"; `embarch-study-designer/interfaces/hil-shapes.md` for `measurements.json`, field by field, and `hil-reducers.md` for the reducers' `Input`.
 **Issue:** EMB-222
 **Scope:** core
@@ -32,7 +32,13 @@ M1.8 (Core's side of publish) and M1.9's `report.typ` read `measurements.json`, 
 
 ## Done when
 
-- [ ] A recorded capture yields the expected `measurements.json` (a fixture test).
-- [ ] A value from an uncharacterised bench board reads `u_source: undeclared`.
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches). The native Windows build is a debt, recorded.
+- [x] A recorded capture yields the expected `measurements.json` (a fixture test).
+- [x] A value from an uncharacterised bench board reads `u_source: undeclared`.
+- [x] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches). The native Windows build is a debt, recorded.
+
+## Closing note
+
+Decision 113 (`embarch-core/decisions/measurements.md`): Core's receipt stamp is the clock; a marker is the first word of a `Text` tap's line; the window is the capture's span; `rate_check` tolerance `0.05 + 2/(n-1)` is **[assumed]**; a declared `U` is honoured for a `dut` value only. `validate_measurements` now runs in `validate_study`. `open.md` took its edit within its 356 B and stays in reserve, so `core/133` is untouched; the new open item went into `open/never-exercised.md`. `signing` #110 only shrank.
+
+**Debts.** Native Windows build not run (host-side only). Hardware-verification debt: reduce a real study's captures (a `rate` and an `interval` over a bench console) and read `measurements.json`; also the person-token scope on `study_value` has never been seen end to end.

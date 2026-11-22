@@ -10,6 +10,7 @@ What the [studies routes](studies.md) are reading. Core owns these paths and thi
 study_results/<study_id>/
 ├── study.json           the submitted study, as Core received it (a signed subject)
 ├── record.dsse.json     the signed run record (decision 110), written as the run ends
+├── measurements.json    the declared measurements (decision 113), when the study declares any (a signed subject)
 ├── events.json          the StudyResult: steps (with both time edges), provenance, streams
 │                        written incrementally, `.partial` until StudyDone
 └── streams/

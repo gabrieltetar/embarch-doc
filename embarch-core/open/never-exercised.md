@@ -14,3 +14,5 @@ Paths and decisions that have only met unit tests, a simulator or a scratch buil
 - **Background capture (decision 92) has never met a port.** Scripted ports only. Open: a capture while exchanges, flashes and resets run on either board; a boot log across a bridge reset; a CDC ACM re-enumeration reopening with a gap marker.
 
 - **The bench lease (decision 93) has never met an installed Core or a second client.** Router-tested only; the two-client check and native Windows build are the owner's.
+
+- **`measurements.json` (decisions 113 to 115) has met fixtures only.** No real study's capture has been reduced: the arrival granularity of a real console, a real study's declarations, and the `rate_check` tolerance (`0.05 + 2/(n-1)`, **[assumed]**) are unseen. Owner-run: a device study declaring a `rate` and an `interval` over a bench console, then read `measurements.json` beside `streams/`.
