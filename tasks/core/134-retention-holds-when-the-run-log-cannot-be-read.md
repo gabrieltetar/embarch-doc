@@ -1,6 +1,6 @@
 # 134 — Retention sweeps nothing when the run log cannot be read
 
-**State:** open
+**State:** claimed by agent/core/134-retention-holds-when-the-run-log-cannot-be-read, 2026-11-21 22:07
 **Source:** Fleet Ready issue: Core's retention sweeps unpublished captures when the run log cannot be read. Found by the reviewer of `tasks/core/131` (the run log, `embarch-core` decisions 111 and 112).
 **Issue:** EMB-239
 **Scope:** core
