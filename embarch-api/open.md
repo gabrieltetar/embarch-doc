@@ -1,6 +1,6 @@
 # embarch-api: open questions
 
-**Status:** active, 2026-09-09.
+**Status:** active, 2026-11-22.
 
 Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
@@ -10,11 +10,8 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 - **Windows never runs the smoke-harness tier.** `tests/smoke_harness.rs` ([decisions](decisions/smoke-harness.md) 30, `tasks/api/075`) is `#[cfg(unix)]` (POSIX-shell `build_command`). Windows reaches only the mocked criteria ([decisions](decisions/tests.md) 46).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**
 - **`artifact_path_for_core` is still tolerated at load.** `embarch-umbrella` stopped scaffolding it 2026-09-13. **Closes with one grep of the real configs** — none carrying it means refuse it by name like `[[projects.targets]]`/`soc_chip_overrides`; not checkable inside the suite: [decisions](decisions/config-retirement.md) 64
-- **`stack` has met only throwaway repos** ([decisions](decisions/stack.md) 96): no real PR stack or forge; hunks spanning two commits go to the newest.
-- **`patches` has met only a 3-patch fixture** ([decisions](decisions/patches.md) 92). No real `west patch` manifest, plain-diff entries or merge-heavy history; base passed by hand.
-- **`embarch init` installs the `embarch-hil` skill** (`skills/embarch-hil/`) from a pinned copy an `embarch-umbrella` test holds equal to this one ([its decision 59](../embarch-umbrella/decisions/integration.md)); a repo `init`ed earlier gets it from `init` again (its decision 60), and the install path is unconfirmed in a live session. **The guide it points at is a skeleton** until `suite/hil-guide.md` (M1.13) is copied over `guide/hil-guide.md` ([decisions](decisions/guide.md) 108).
-- **The report PDF is unmeasured past one machine and 100,000 rows** ([decisions](decisions/report-pdf.md) 110): byte-identical across two processes here, not across machines (`06`'s open question stays open); a million-row capture, and `plot_ticks` still lives here, not in the shared crate `hil-pdf.md` names.
-- **`publish` has met only a mock Core** ([decisions](decisions/publish.md) 113, `tasks/api/167`), and Core's pending-revision files (`core/136`) only in Core's own test; the OCP T&V lines are unvalidated against the format's schema, and the first real study's zip size is unmeasured.
+- **`stack`, `patches`, the `embarch-hil` skill install and the report PDF have met only fixtures or one machine** ([decisions](decisions/stack.md) 96, [92](decisions/patches.md), [108](decisions/guide.md), [110](decisions/report-pdf.md)); the four items, verbatim, are in [open/unmeasured-details.md](open/unmeasured-details.md).
+- **`publish` has met only a mock Core** ([decisions](decisions/publish.md) 113, [115 to 117](decisions/publish-revisions.md)), and Core's pending-revision files (`core/136`) only in Core's own test. Unmeasured: the OCP T&V lines against the format's schema, the first real study's zip size, a real `report.typ` through the oracle scan. **A republish after the retention sweep refuses** until Core takes the earlier zip's files (`embarch-core/open.md`).
 - **Real-hardware and real-toolchain verification debts** (bootload, `bench_exchange`, `study_watch`, ledger, lease, build verdict, `build --each`) live in [open/bench-verification.md](open/bench-verification.md), moved verbatim.
 
 ## Structural limits

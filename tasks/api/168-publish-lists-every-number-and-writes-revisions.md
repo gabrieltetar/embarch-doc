@@ -1,6 +1,6 @@
 # 168 — `publish` lists every number in the report, names each prose block's author, and writes revisions
 
-**State:** claimed by agent/api/168-publish-lists-every-number-and-writes-revisions, 2026-11-22 13:03
+**State:** done
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.10 ("The zip"), its second half
 **Issue:** EMB-225
 **Scope:** api
@@ -27,8 +27,19 @@ The second half of EMB-225; `verify` (EMB-226) checks the oracle listing (check 
 
 ## Done when
 
-- [ ] A fixture report's prose and `report.typ` list each cited, tagged, unbound and hardcoded number in the appendix, in a test per kind; an embedded image is refused.
-- [ ] Each prose block's author and the scope Core recorded are in the appendix.
-- [ ] Publishing a fixture run again writes `-r2`, keeps the first zip byte for byte, and names r1 and its manifest hash.
-- [ ] `interfaces/` and `spec.md` amended; new numbered decisions.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A fixture report's prose and `report.typ` list each cited, tagged, unbound and hardcoded number in the appendix, in a test per kind; an embedded image is refused.
+- [x] Each prose block's author and the scope Core recorded are in the appendix.
+- [x] Publishing a fixture run again writes `-r2`, keeps the first zip byte for byte, and names r1 and its manifest hash.
+- [x] `interfaces/` and `spec.md` amended; new numbered decisions.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## What shipped
+
+- `publish_oracle.rs` (the lexical scan, decision 115), prose blocks and the author column (116), revisions from the earlier zip and the swept-run refusal (117); `--prose`, `--prose-author`, `--prose-reviewed-by` and the MCP `prose` param. Tests: 8 unit and 6 new in `tests/publish.rs` (one per kind, the picture refusals, authorship, r2 from a zip with the capture routes 404, the swept refusal).
+- `open.md` compacted 4,294 to 3,525 B: four fixture-only items moved verbatim to `open/unmeasured-details.md`, a link left; the 169 Must-not-delete items (Core's pending-revision statement as main's `core/136` fold words it, the bench-verification pointer) kept.
+- 167's warn-on-missing-measurements path is untouched; core/136 has landed upstream.
+
+## Debts
+
+- **Hardware:** none. **Not run:** a real Core, a real swept run, a real `report.typ` through the scan.
+- A republish after the sweep refuses until Core takes the earlier zip's files (`embarch-core/open.md`).
