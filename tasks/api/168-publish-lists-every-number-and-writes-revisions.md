@@ -1,6 +1,6 @@
 # 168 — `publish` lists every number in the report, names each prose block's author, and writes revisions
 
-**State:** open
+**State:** claimed by agent/api/168-publish-lists-every-number-and-writes-revisions, 2026-11-22 13:03
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.10 ("The zip"), its second half
 **Issue:** EMB-225
 **Scope:** api
