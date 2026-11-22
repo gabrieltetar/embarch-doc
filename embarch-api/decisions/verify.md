@@ -1,0 +1,21 @@
+# embarch-api decisions: `verify`
+
+**Status:** active, 2026-11-22 (`tasks/api/170`, HIL M1.11, first half).
+
+Decisions 118 to 121. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/publish.md](../interfaces/publish.md#verify). Source: `notes/hil/06-report-and-publish.md`, "Verify". Checks 4, 6 and 9 are `tasks/api/171`'s.
+
+### 118 - `verify` is a CLI-only subcommand that needs no config, no Core and a public key
+
+It is dispatched in `main` before config resolution, like `versions` and `guide`, so a reader with nothing but the zip and a key runs it; it has no MCP tool (an agent verifying its own zip proves nothing), recorded as a `CliOnly` asymmetry in `tool_subcommand_parity`. It lives behind the `pdf` feature because check 7 regenerates exports through `publish_export`. `embarch-core`'s signing doc gives the key as a fingerprint (the SHA-256 of the public key), and a fingerprint cannot verify an Ed25519 signature, so the flag is `--public-key`; the fingerprint is derived from it. The crate depends on `ed25519-dalek` (`verify_strict`, no `rand`) and turns on the shared crate's `reducers` feature, which `embarch-core` already runs.
+
+### 119 - A key not matched by an attested fingerprint verifies integrity and says "origin unattested"
+
+`--attested-fingerprint` is what the reader got from the engineer's elevated install. Equal to the key's SHA-256: attested. Otherwise the result, text and JSON, carries 06's words: the signatures prove integrity only, since the agent can read an unattested Core's key. This is not a failure and does not change the exit code; a key that does not verify the signatures is (check 0). Every Core is unattested in milestone 1, so the first real zip will always say so. The report prints the fingerprint of the key it used, never one read from the zip.
+
+### 120 - Exit 0 means no check failed, and a partial check says what it did not recompute
+
+A check is `pass`, `FAIL`, `partial`, `not checked by this version` or `not applicable`. Exit 1 only on `FAIL`; `--json`'s `complete` is true only when every check ran in full, so a caller that wants more than "nothing contradicted" reads it. Check 2 is partial **always** in this version: it re-runs each measurement's reducer at the behaviour the signed record names over `streams/<tap>.csv`, and compares the value, the reducer and the behaviour; it does not re-evaluate step outcomes (`until`, `refused_on`), does not read a Text tap's markers (so `interval` and `value_at_marker` are not recomputed), and does not compare `uncertainty`, `by` or `incomplete`, which rest on the bench topology and the run's truncation flags that the zip does not carry. A behaviour this build lacks is "not recomputed", never a match.
+
+### 121 - Check 8's chain starts from the segment's first entry, and the publish's own entry is out of reach
+
+The segment is `{entry, hash}` lines; each hash is the SHA-256 of the entry's `serde_json` bytes, `prev` the line before's, `seq` consecutive. A first entry whose `prev` is not all zeros is noted, not failed (a later segment is allowed). The last hash and the line count must equal `run_log.head` and `run_log.length` in the signed manifest. The run's `run` entry must exist once, name `record.dsse.json`'s hash and each capture's; a discard of the run fails. The publish's entry and any later revision are after the head and are not checkable offline; the result says so. Check 5 reads the same segment for the adoptions and the run's `go_by`, which it recomputes the label from (Core's rule: a person's act is `go_by`, the publisher, an adoption or a declaration with the person's scope), so a forged label fails without trusting `report-data.json`.

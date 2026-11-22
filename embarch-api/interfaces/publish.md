@@ -1,6 +1,6 @@
 # embarch-api: `publish`, and the zip it writes
 
-**Status:** active, 2026-11-22 (`tasks/api/167` and `168`, HIL M1.10). Why: [decisions 112 to 114](../decisions/publish.md) and [115 to 117](../decisions/publish-revisions.md). Core's side: [embarch-core/interfaces/publish.md](../../embarch-core/interfaces/publish.md). Source: `notes/hil/06-report-and-publish.md`. A reader builds `verify` (M1.11) from this file and those two, not from this crate's source.
+**Status:** active, 2026-11-22 (`tasks/api/167` and `168`, HIL M1.10). Why: [decisions 112 to 114](../decisions/publish.md) and [115 to 117](../decisions/publish-revisions.md). Core's side: [embarch-core/interfaces/publish.md](../../embarch-core/interfaces/publish.md). Source: `notes/hil/06-report-and-publish.md`. A reader builds `verify` (M1.11) from this file and those two, not from this crate's source. `verify`'s own surface is the last section; why: [decisions 118 to 121](../decisions/verify.md).
 
 ## The tool and the subcommand
 
@@ -43,3 +43,23 @@ Named `<date>-<slug>-<id8>.zip`: the UTC date of the publish, the study name slu
 ## What publish reads of Core before the manifest exists
 
 `GET /study/{id}/publish/{revision}/files/{name}` serves the run's own files, `measurements.json` among them, at the pending revision, before the manifest exists (`embarch-core` decision 116, since `core/136`), so the PDF and the exports are built from it. A `404` there is still read as "absent", and **if the manifest then names it the zip carries a warning that the PDF and exports were built without it**; a Core that serves the pending revision never takes that path, and no real Core has yet been met ([../open.md](../open.md)). The captures and the step outcomes come through the existing `GET /study/{id}/stream/{name}`, `/streams` and `/steps` routes, which serve today.
+
+## verify
+
+`embarch-api verify <zip> --public-key <hex> [--attested-fingerprint <hex>] [--json]` (CLI only, no MCP tool; `src/verify.rs`, behind `pdf`). It loads **no config and calls no Core**, and reads the zip and the key alone.
+
+- `--public-key`: Core's raw Ed25519 public key (64 hex), got out of band, never read from the zip. Its SHA-256 is the key fingerprint (the DSSE `keyid`). A signature that does not verify under it, or names another `keyid`, fails check 0.
+- `--attested-fingerprint`: the fingerprint of Core's elevated install. Equal to the key's, the origin reads attested. Absent or different, the result carries **"origin unattested"**, that the signatures prove integrity only and that the agent can read an unattested Core's key ([decision 119](../decisions/verify.md)).
+
+Exit 0 when **no check failed**, 1 otherwise (a failed check, an unreadable zip or a bad key). `--json`: `{success, complete, zip, produced_by_embarch_api, verified_by_embarch_api, key_fingerprint, attested, origin, checks [{check, name, status, compared, problems}]}`. `success` is "none failed", `complete` is "every check ran in full and passed", so a caller that needs more than "nothing contradicted" reads `complete`. `status` is `pass`, `FAIL`, `partial`, `not checked by this version` or `not applicable`. `produced_by_embarch_api` is the zip's own appendix's claim.
+
+| Check | What this version does |
+|---|---|
+| 0 signatures | The manifest, `record.dsse.json` and `report-data.dsse.json` verify as DSSE v1 (PAE) under the key; the record's subjects hash to the zip's files and cover `events.json`, `measurements.json`, `study.json` and every `streams/*`; the report-data envelope signs this `report-data.json` |
+| 1 manifest | Every Core subject and every `embarch_api_files` entry hashes as listed; every zip file is one or the other; the manifest's `record_sha256` and `report_data_sha256` are the files' |
+| 2 measurements | Each declared measurement re-run over `streams/<tap>.csv` with the behaviour `record.dsse.json` names; value, reducer and behaviour compared. **Partial**: a behaviour this build lacks, `interval` and `value_at_marker` (markers need a text tap's arrival stamps), Text and trace taps, and **every step outcome** (`until` and `refused_on` re-evaluation) are reported "not recomputed" ([decision 120](../decisions/verify.md)) |
+| 3 verdicts | Not applicable to a Study |
+| 4, 6, 9 | **Not checked by this version** (`tasks/api/171`) |
+| 5 labels | The attestation label, `go_by`, `published_by` and `adopted` recomputed from the run log's segment, the manifest and the record; each note and prose file hashes to the text Core recorded; a notes/prose file nobody adopted fails |
+| 7 exports | `junit_xml` and `ocp_jsonl` regenerated from `report-data.json`, `measurements.json` and `events.json`'s steps, byte for byte |
+| 8 run log | Every hash, `prev` and `seq` recomputed; the chain ends at the manifest's signed head and length; one `run` entry for this run names `record.dsse.json`'s hash and each capture's; "no call log"; the publish's own entry and any later revision are **not checkable offline** and the result says so |

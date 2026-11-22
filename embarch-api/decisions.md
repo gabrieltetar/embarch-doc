@@ -40,7 +40,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 2.7 KB |
 | [What a study reads back](decisions/study-reads.md) — seals, schemas, the manifest, and the stream tools that replaced three fixed-channel aliases | 27, 28, 31, 33, 39 | 6.2 KB |
 | [What a study flashes first](decisions/study-reflash.md) — reflash sequencing, three gaps in `run_study`'s own contract, and a bench version Core did not report | 40, 44, 105 | 7.8 KB |
-| [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, no longer constants, and the one route whose timeout is stated rather than inherited | 32, 45, 68 | 5.0 KB |
+| [The dev-bench pipeline](decisions/dev-bench.md) — outside `[[projects]]`, no longer constants, and the one route whose timeout is stated rather than inherited | 32, 45, 68 | 3.7 KB |
 | [The patch-series round trip](decisions/patches.md) — `patches export/import/regroup`: one scratch tree, fixes folded by blame, regroup proved by tree id | 92 | 3.6 KB |
 | [The review-fold and restack family](decisions/stack.md) — `stack plan/fold/restack`: fixups by blame, backed-up autosquash, atomic leased restack, tree identity by git | 96 | 4.9 KB |
 | [The served HIL guide](decisions/guide.md) — `guide hil` embeds a pinned copy in this repo; how a guide edit reaches the binary and what catches drift | 108 | 2.3 KB |
@@ -48,5 +48,6 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [What a study tells Core about its build](decisions/build-claims.md) — `run_study` sends the project checkout's commit, dirty state and `west` version as claims, each only when read; a host study sends none | 111 | 3.3 KB |
 | [`publish`](decisions/publish.md) — one function behind the tool and the subcommand, a folder setting with no default, the order of calls and the one file Core cannot yet serve, what the zip holds that this crate made | 112, 113, 114 | 4.9 KB |
 | [`publish`, the oracle and revisions](decisions/publish-revisions.md) — the numeric-oracle listing is a lexical scan, a prose block's author is Core's scope plus a claim, a revision is built from the earlier zip and a swept run refuses | 115, 116, 117 | 4.3 KB |
+| [`verify`](decisions/verify.md) — CLI-only, no config or Core, a public key not a fingerprint, "origin unattested", exit 0 is "no check failed" with partial checks named, the run-log chain and what is out of its reach | 118, 119, 120, 121 | 3.7 KB |
 
 **Decisions 31 and 33 are one decision under two numbers.** The commit that added decision 32 inserted it in the middle and **renumbered the entry below it from 31 to 33**, so every prose reference to `decision 31` written before that commit silently began pointing at a different entry. One entry owns both numbers, in [study-reads.md](decisions/study-reads.md) — which is why numbers are permanent here now (DOC-COMPACTION.md §5).

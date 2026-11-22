@@ -1,6 +1,6 @@
 # 170 — `verify <zip>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log
 
-**State:** claimed by agent/api/170-verify-a-published-zip-offline, 2026-11-22 13:38
+**State:** done — agent/api/170-verify-a-published-zip-offline, 2026-11-22
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its first half; the checks are `notes/hil/06-report-and-publish.md`, "Verify"
 **Issue:** EMB-226
 **Scope:** api
@@ -32,8 +32,18 @@ The first half of EMB-226, unblocked when EMB-225 (`tasks/api/167`, `168`) lande
 
 ## Done when
 
-- [ ] `verify` passes a fixture zip that `publish` wrote in a test.
-- [ ] It fails each tampered copy, one test each: a changed number in `measurements.json` (check 1 or 2), a forged attestation label (check 5), an edited note or prose file (check 5), a dropped run-log entry (check 8), and a key that is not the given fingerprint (check 0).
-- [ ] An unattested key's result carries 06's "origin unattested" wording; checks 4, 6 and 9 read "not checked by this version".
-- [ ] `interfaces/` and `spec.md` amended; new numbered decisions.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] `verify` passes a fixture zip that `publish` wrote in a test.
+- [x] It fails each tampered copy, one test each: a changed number in `measurements.json` (check 1 or 2), a forged attestation label (check 5), an edited note or prose file (check 5), a dropped run-log entry (check 8), and a key that is not the given fingerprint (check 0).
+- [x] An unattested key's result carries 06's "origin unattested" wording; checks 4, 6 and 9 read "not checked by this version".
+- [x] `interfaces/` and `spec.md` amended; new numbered decisions.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result (2026-11-22)
+
+`embarch-api verify <zip> --public-key <hex> [--attested-fingerprint <hex>]`, `src/verify.rs`, decisions 118 to 121 (`decisions/verify.md`). The test is `tests/verify.rs`: one test, one section per tampered copy (a changed number, a forged label, an edited note, an unadopted prose file, a dropped log entry, another key), each asserting the check that names it; it re-signs the zip `publish` wrote against the mock Core with a real key, since the mock cannot sign.
+
+**Known gaps, said in the result and in decision 120:**
+- Check 2 is **partial**: step outcomes (`until` / `refused_on`) are not re-evaluated, and `interval` / `value_at_marker` and Text taps are not recomputed. `uncertainty`, `by` and `incomplete` are not compared.
+- The flag is `--public-key`, not a fingerprint (a fingerprint cannot verify a signature); see decision 118. **Owner: say if the interface should carry the key another way** (e.g. Core serving it).
+- Checks 4, 6 and 9: "not checked by this version", `tasks/api/171`.
+- **Hardware-verification debt:** none, but never run against a real Core's zip; `report-data.dsse.json`'s statement shape and the run-log entry shapes were read from `embarch-core` source, not observed.
