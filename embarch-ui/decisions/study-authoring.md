@@ -33,3 +33,14 @@ The editor background is `--bg-surface-2` and **not `--bg-surface-inset`**, whic
 In the browser it lives in the Load dropdown's own area, not a second list: it is the same library, and the only difference is that this file has no rows. A run-only study is recognised from the listing's `editable` flag **before any fetch**, so the browser never calls the load route to be told `409`. The preview touches neither `sdRows` nor `sdTaps` and **says so out loud** — a read-only panel under an unrelated table is otherwise the most natural thing in the world to misread as *this is what is loaded*.
 
 Run goes through the **existing** version-check dialog (`sdPendingRun` plus `sdDispatchRun` is the whole refactor): the question it asks is the same question either way, and a second dialog would be a second place to get that answer wrong. It reads the **file's** `requires`, not the table's. Capacity is deliberately not reported for a stored run, because `/preflight` builds from the step table and saying nothing beats reporting another study's numbers.
+
+### 104 — The tab keeps a study's `measurements` and does not author them
+
+`Study.measurements` (`embarch-study-designer` decisions 99 and 100) are written by an agent or by hand, and `api_studies_save` rebuilds the study from the tab's rows, which carry no declarations: a person who opened such a study to change a step would have stripped them, and Core would have reported no measurements. Nothing in the file said it had happened, which is the silent drop decisions 17 and 51 already refuse.
+
+**Load returns them verbatim and Save, Run and Pre-flight send them back.** The tab holds the loaded array as an opaque value (`sdMeasurements`), shows their names and count in the build-options summary line ("kept as they are, not editable here"), and never reshapes them, so a load and a save leave the file byte for byte as it was (a test in `main.rs`). Cleared when the project changes; a file with none loads as none.
+
+**Authoring them in the tab is deferred, not refused.** A declaration names a tap by `id`, a reducer, a struct field, a unit and a window with markers, so a form is a design of its own (reducer-dependent fields, marker names from the step table), and the need today is that the agent's declarations survive. Revisit when a person, not an agent, has to write one.
+
+**The save is refused with the crate's message** when `validate_measurements` refuses what was sent (`400`, prefixed `measurements:`), after `build_authored` has made the taps it checks against; Run and Pre-flight refuse the same way, so a study that would not save does not run from the table either. `apply_measurements` sits beside `build_authored`, not in it: they are host-only and sealed by neither CRC.
+

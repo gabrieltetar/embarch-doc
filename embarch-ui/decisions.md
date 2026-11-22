@@ -35,7 +35,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/project.md](decisions/project.md) | 14 | Opening a firmware project: the repo picker, the recents list, and the first-time-project detection rule |
 | [decisions/designer-panels.md](decisions/designer-panels.md) | 41, 51 | The Study Designer's panel layout: one apply-study path, build options behind a button, static firmware analysis as an explicit action with no extractor field, one "Define the wire" panel |
 | [decisions/firmware-build.md](decisions/firmware-build.md) | 38, 39, 40, 62 | A study builds its own DUT firmware: the ordered snippet picker, the three-state outpost mode, the build as a phase of a run, where its log is read, when a saved study's version is rewritten, and the log saying which board it built and why |
-| [decisions/study-authoring.md](decisions/study-authoring.md) | 29, 30 | The `.eap` editor dialog, and running a saved study as it is on disk |
+| [decisions/study-authoring.md](decisions/study-authoring.md) | 29, 30, 104 | The `.eap` editor dialog, running a saved study as it is on disk, and keeping its `measurements` |
 | [decisions/gatt-capture.md](decisions/gatt-capture.md) | 15, 16, 17 | Per-characteristic taps, characteristic names, the target dialog |
 | [decisions/time-chart.md](decisions/time-chart.md) | 34, 35, 36, 66 | One axis for every stream a study produced: `core_rx_utc_ms` as the only clock read, a tier chosen once and never promoted, and the three states of a mark; a capped strip or lane says so (66) |
 | [decisions/time-chart-live.md](decisions/time-chart-live.md) | 37 | The Time chart fed live through the same projection, a mark placed once, a non-monotone anchor rejected and counted |

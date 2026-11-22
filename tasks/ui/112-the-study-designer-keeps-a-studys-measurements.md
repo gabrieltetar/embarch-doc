@@ -23,7 +23,11 @@ A saved study's `measurements` survive the Study Designer: loading a study shows
 
 ## Done when
 
-- [ ] A study file with `measurements`, loaded and saved through the tab's routes, keeps them byte-for-byte equal (a test).
-- [ ] A save whose declarations `validate_measurements` refuses is refused with its message (a test).
-- [ ] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope ui` on both branches).
+- [x] A study file with `measurements`, loaded and saved through the tab's routes, keeps them byte-for-byte equal (a test).
+- [x] A save whose declarations `validate_measurements` refuses is refused with its message (a test).
+- [x] `spec.md`, `decisions/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope ui` on both branches).
+
+## Outcome
+
+Decision 104 (`embarch-ui/decisions/study-authoring.md`). Load returns `measurements` verbatim; Save, Run and Pre-flight send them back and refuse what `validate_measurements` refuses (`400`, `measurements: ...`). The tab lists their names in the build-options summary; authoring them is deferred (stated in 104). Test: `a_study_keeps_its_measurements_through_load_and_save` in `embarch-ui/src/main.rs`. Not run against a real saved study or a browser (no hardware involved; the JS change is unexercised beyond the route test). `features.d/ui-025` amended.
