@@ -15,6 +15,9 @@
 - `GET /dev-bench/hello` serves the bench's build as `dev_bench_version`, not `firmware_version`, the DUT's name on a Study; the wire `HelloAck` is unchanged (108).
 - Core's study pre-flight now refuses a one-shot monitor step inside an open monitor window, with the crate's message (core decision 90).
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
+
+### Fixed
+- Retention sweeps nothing, and GET /studies lists everything, while Core's run log cannot be read or verified (decision 111).
 ## 2026-10
 
 ### Added
