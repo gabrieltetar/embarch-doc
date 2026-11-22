@@ -1,6 +1,6 @@
 # 136 — The publish files route serves a run's own files at the pending revision
 
-**State:** open
+**State:** claimed by agent/core/136-serve-a-pending-revisions-run-files, 2026-11-22 13:04
 **Source:** `embarch-api/interfaces/publish.md`, "What publish needs of Core that Core does not yet do", found by `tasks/api/167`
 **Issue:** EMB-241
 **Scope:** core
