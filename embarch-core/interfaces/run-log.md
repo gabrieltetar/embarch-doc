@@ -15,6 +15,7 @@ All four take the token and are lease-open (they touch files, never a port). Err
 
 | `type` | Fields |
 |---|---|
-| `run` | `kind` (`device`/`host`), `status` (`completed`/`failed`), `reason`, `clean`, `ended_utc_ms`, `record_sha256` (null if never signed), `captures` `[{name, sha256}]` |
-| `published` | `manifest_sha256`, `scope`, `at_utc_ms` |
+| `run` | `kind` (`device`/`host`), `status` (`completed`/`failed`), `reason`, `clean`, `ended_utc_ms`, `record_sha256` (null if never signed), `captures` `[{name, sha256}]`, `go_by` (the scope that began the run) |
+| `published` | `manifest_sha256`, `scope`, `at_utc_ms`; from the publish route also `revision`, `log_head`, `report_data_sha256` ([publish](publish.md)) |
+| `adopted` | `kind` (`note`/`prose`), `name`, `text_sha256`, `scope`, `at_utc_ms` ([publish](publish.md)) |
 | `discarded` | `scope`, `files_removed`, `at_utc_ms` |

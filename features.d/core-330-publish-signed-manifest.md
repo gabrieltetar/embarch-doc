@@ -1,0 +1,1 @@
+| `POST /study/{id}/report-data`, `/publish`, `/adopt` — a signed `report-data.json` and manifest for a study run, notes and prose attributed by token scope and text hash, the run log head recorded | Shipped — **host-tested only, no real study published; Windows ACL unrun; no third-party DSSE verifier run** | unit | 116, 117, 118, 119 |

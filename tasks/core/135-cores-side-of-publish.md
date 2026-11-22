@@ -1,6 +1,6 @@
 # 135 — Core's side of publish: a signed `report-data.json` and a signed manifest
 
-**State:** claimed by agent/core/135-cores-side-of-publish, 2026-11-22 08:05
+**State:** done
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.8 ("Core's side of publish"), after M1.4 (decision 109), M1.6 (decisions 111, 112) and M1.7 (decisions 113 to 115), all landed
 **Issue:** EMB-223
 **Scope:** core
@@ -30,10 +30,16 @@ M1.8 is the next unit on the milestone 1 path, and EMB-225 (the zip) and EMB-226
 
 ## Done when
 
-- [ ] Publishing a fixture run through Core's routes yields a signed manifest and a signed `report-data.json`, each verifying with a standard DSSE check against Core's key, in a test.
-- [ ] A note entered with the agent's token is recorded as "relayed by the agent", one entered with the person's token as the person's, each with the text's SHA-256; tested over HTTP.
-- [ ] The publish records the run log's head beside the manifest hash, and `open.md`'s tail-anchor item is updated to say what remains (`verify` check 8 comparing it is M1.11's).
-- [ ] `report-data.json` for a Study carries no `tests`, `requirements` or `verdicts` key; tested.
-- [ ] The routes are in `embarch-core/interfaces/`, the decisions numbered from 116, `spec.md` amended where it describes the run log or signing.
-- [ ] `embarch-core/open.md` out of reserve per `tasks/core/133`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] Publishing a fixture run through Core's routes yields a signed manifest and a signed `report-data.json`, each verifying with a standard DSSE check against Core's key, in a test.
+- [x] A note entered with the agent's token is recorded as "relayed by the agent", one entered with the person's token as the person's, each with the text's SHA-256; tested over HTTP.
+- [x] The publish records the run log's head beside the manifest hash, and `open.md`'s tail-anchor item is updated to say what remains (`verify` check 8 comparing it is M1.11's).
+- [x] `report-data.json` for a Study carries no `tests`, `requirements` or `verdicts` key; tested.
+- [x] The routes are in `embarch-core/interfaces/`, the decisions numbered from 116, `spec.md` amended where it describes the run log or signing.
+- [x] `embarch-core/open.md` out of reserve per `tasks/core/133`.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Done
+
+Decisions 116 to 119 (`decisions/publish.md`), routes in `interfaces/publish.md`. Two routes carry the publish (`report-data`, then `publish`) plus `adopt` and a file fetch. `open.md` is 3,842 B, out of reserve: settled text moved verbatim to `open/scope-and-ledger.md`, `open/unverified-and-moved.md` and `open/designed-not-built.md`; the owner-run `icacls` step and every decision number are kept. **`tasks/core/133` is closed by this unit** (the supervisor closes it at the fold).
+
+**Hardware-verification debt:** none (Hardware: none). **Unverified:** the native Windows build (the owner runs it from the main checkout), the `icacls` lockdown (unrun), a real study's publish, a third-party DSSE verifier.
