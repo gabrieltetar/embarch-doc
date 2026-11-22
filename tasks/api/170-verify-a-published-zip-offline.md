@@ -1,6 +1,6 @@
 # 170 — `verify <zip>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log
 
-**State:** open
+**State:** claimed by agent/api/170-verify-a-published-zip-offline, 2026-11-22 13:38
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its first half; the checks are `notes/hil/06-report-and-publish.md`, "Verify"
 **Issue:** EMB-226
 **Scope:** api
