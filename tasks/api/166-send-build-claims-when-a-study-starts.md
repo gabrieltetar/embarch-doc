@@ -1,6 +1,6 @@
 # 166 — embarch-api tells Core what it built when it starts a study
 
-**State:** claimed by agent/api/166-send-build-claims-when-a-study-starts, 2026-11-21 22:07
+**State:** done
 **Source:** Fleet Ready issue: embarch-api does not send build claims when it starts a study. `embarch-core` decision 110 (`decisions/signing.md`) and `embarch-core/interfaces/signing.md`, landed with `tasks/core/129`; `notes/hil/14-implementation-plan.md`, M1.5's follow-up, before M1.10.
 **Issue:** EMB-238
 **Scope:** api
@@ -24,7 +24,11 @@ Publish (M1.10) and `verify` (M1.11) show the build a report was made from, and 
 
 ## Done when
 
-- [ ] A study started through the MCP tool and through the CLI sends all three parameters, and a test shows them on the request.
-- [ ] A build with no git checkout sends none of them (a test).
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches).
+- [x] A study started through the MCP tool and through the CLI sends all three parameters, and a test shows them on the request.
+- [x] A build with no git checkout sends none of them (a test).
+- [x] `spec.md`, `decisions/`, `interfaces/` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope api` on both branches).
+
+## Result
+
+Decision 111 (`decisions/build-claims.md`). `MCP run_study` and CLI `run-study` send `build_commit`, `build_dirty` and (zephyr-west) `build_toolchain` from the project the ledger row uses. Host studies send none (no project, no build). No MCP-subprocess test exists; the MCP call site shares `build_claims::for_project` with the CLI, whose request is tested. Core and `embarch-ui` unbuilt here: supervisor builds `embarch-ui`/`embarch-umbrella` against the branch (client change is additive). No features.d row: a small addition to an existing tool.
