@@ -1,6 +1,6 @@
 # 111 — embarch-ui calls Core with the person token
 
-**State:** open — unparked by `api/162`'s fold, 2026-11-21.
+**State:** claimed by agent/ui/111-ui-calls-core-with-the-person-token, 2026-11-21 17:12 — unparked by `api/162`'s fold.
 **Source:** Fleet Ready issue: Core has one full-authority token, and HIL needs an agent scope and a person scope ("embarch-api and embarch-ui read the pair"). `notes/hil/14-implementation-plan.md`, unit M1.4; `notes/hil/12-prevention.md` ("the UI holds the person's token").
 **Issue:** EMB-219
 **Scope:** ui
