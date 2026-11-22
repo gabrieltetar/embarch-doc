@@ -1,6 +1,6 @@
 # 164 — embarch-api renders a report to PDF offline, with Typst built in and its root confined to the staged files
 
-**State:** open
+**State:** claimed by agent/api/164-render-a-report-to-pdf-offline, 2026-11-21 17:11
 **Source:** Fleet Ready issue: embarch-api cannot render a report to PDF offline. `notes/hil/14-implementation-plan.md`, unit M1.9 (after M1.1, landed as `tasks/study-designer/084`); `notes/hil/06-report-and-publish.md`; `embarch-study-designer/interfaces/hil-pdf.md` for the plot helper's tick algorithm and the footer rule.
 **Issue:** EMB-224
 **Scope:** api
