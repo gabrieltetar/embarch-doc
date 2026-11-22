@@ -98,6 +98,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `run_host_study` / `answer_prompt` — run a host study, relay a person's answer to its prompt (never the agent's own), `study_watch` returns early on a waiting prompt | Shipped — **mock-tested only; never run against a real Core** | unit | 99 |
 | `bundle` — a finished build as `<name>-<short-sha>/` (hex, README of the suite's flash commands) and a zip, CLI and MCP | Built, checked on a synthetic build only; only `nrf54l` has commands, other families say so | unit | [tools-bundle](../embarch-api/interfaces/tools-bundle.md) |
 | `guide hil <mode>` and the `embarch-hil` skill — the HIL guide served from the binary, no `embarch-doc` needed | Built; every section is a skeleton until M1.13 writes the guide; skill not yet installed by `embarch init` | unit | [guide](../embarch-api/interfaces/guide.md) |
+| Report to PDF — a library module, Typst built in, lilaq embedded, root confined to the staged files | Built; no tool or subcommand yet (`publish` is M1.10); fixture renders offline and byte-identically on this machine, other machines unmeasured | unit | [report-pdf](../embarch-api/interfaces/report-pdf.md) |
 
 ## embarch-dev-bench
 

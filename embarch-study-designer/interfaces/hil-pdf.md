@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-20. Part of the HIL file shapes ([hil-shapes.md](hil-shapes.md)). Design, not yet code. **Every constant here is assumed, not measured** (DOC-CONVENTIONS), until M1.9 renders a fixture and M1.11 reads it; a unit that must change one amends it here. Source: `notes/hil/06-report-and-publish.md`, "Verify" check 4 and "The report"; review round 4 delegated these four rules to this doc. Choices: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decision 91.
 
-**One implementation.** The extractor's contract, the grammar and `plot_ticks` live once in the shared crate's host-only half; embarch-api's plot helper (M1.9) and `verify` (M1.11) both call them, so the helper cannot draw a tick `verify` would not derive. The prose and `report.typ` rescans of check 4 apply the same grammar to source text.
+**One implementation.** The extractor's contract, the grammar and `plot_ticks` live once in the shared crate's host-only half; embarch-api's plot helper (M1.9) and `verify` (M1.11) both call them, so the helper cannot draw a tick `verify` would not derive. **`plot_ticks` lives in embarch-api's `report_pdf` until it moves here** ([embarch-api decision 110](../../embarch-api/decisions/report-pdf.md), 2026-11-21), and the Typst helper carries its own copy, which a test holds equal to the Rust one; `verify` is to call the Rust one. The prose and `report.typ` rescans of check 4 apply the same grammar to source text.
 
 ## The text extractor
 
@@ -47,11 +47,13 @@ The unit and value conversions (mV and V) and the match itself are M1.11's and M
 3. `raw = (hi - lo) / (TICK_TARGET - 1)`, **`TICK_TARGET = 5`** *(assumed)*.
 4. `e = floor(log10(raw))`, corrected so `10^e <= raw < 10^(e+1)` (a compare loop, not the float result alone); `f = raw / 10^e`.
 5. **`m = 1` if `f < 1.5`, `2` if `f < 3`, `5` if `f < 7`, else `10` (then `m = 1`, `e = e + 1`).** (Heckbert's rounding thresholds.) `step = m × 10^e`, `m` in {1, 2, 5}.
-6. `first_k = floor(lo / step)`, `last_k = ceil(hi / step)`, each corrected by an exact compare, so `first_k × step <= lo` and `last_k × step >= hi` hold with no float slack. **The axis is drawn from `first_k × step` to `last_k × step`.**
+6. `first_k = floor(lo / step)`, `last_k = ceil(hi / step)`, each corrected by a compare, so `first_k × step <= lo` and `last_k × step >= hi` hold in `f64` (the note below the fixtures). **The axis is drawn from `first_k × step` to `last_k × step`.**
 7. **Ticks are `k × step` for `k` from `first_k` to `last_k`.** Each is written **with `decimals = max(0, -e)` digits after the point, no exponent, no digit grouping, an ASCII `-` for a negative** (so it reads as a sign in the grammar), and `-0` written as `0`. The text is produced by integer arithmetic on `k × m` scaled by `10^decimals`, never by formatting an `f64`.
 8. **The set of tick texts of every plot of the report is what `verify` admits as axis ticks** for check 4, whatever the page; a number that equals a tick text but sits in prose is still a number to match, since the exemption is by being a tick, and the helper's own tick glyph runs are the ones exempted *(shape)*.
 
 Fixtures M1.9 and M1.11 both carry (hand-computed): `(0, 100)` gives step 20, ticks `0 20 40 60 80 100`; `(0, 3.3)` gives step 1, `0 1 2 3 4`; `(4.75, 5.25)` gives step 0.1, `4.7 4.8 … 5.3`, one decimal; `(-10, 10)` gives step 5, `-10 -5 0 5 10`; `(2, 2)` gives the single tick `2`.
+
+**The arithmetic is `f64`, as M1.9 built it** ([embarch-api decision 110](../../embarch-api/decisions/report-pdf.md), 2026-11-21): the compares in steps 4 and 6 correct `e`, `first_k` and `last_k` against float slack, and step 5 compares the float `f`, so a range whose `f` lands on a threshold takes the float side. `(-0.3, 0.3)` gives `f = 1.4999…` and step 0.1, where decimal arithmetic gives 0.2; it is a fixture, so `verify` derives what the helper drew.
 
 ## The footer rule
 

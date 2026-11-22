@@ -1,3 +1,0 @@
-**Target:** embarch-study-designer/interfaces/hil-pdf.md "The plot helper's tick algorithm"; notes/hil/06-report-and-publish.md "Verify" check 9
-**Was:** ticks use "exact compare" and "the shared crate's host-only half" holds `plot_ticks`; check 9 admits "EmbArch's plot helper over a signed file in the zip" as a call over a file name
-**Now:** M1.9 (`tasks/api/164`) computes ticks in f64 with compare-corrections (`(-0.3, 0.3)` gives step 0.1), `plot_ticks` lives in embarch-api until moved, and a Typst package cannot read the project by string, so the admitted call takes `path("capture.csv")`, see embarch-api decision 110.

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-api renders a report's `report.typ` to PDF offline, Typst built in, lilaq embedded, root confined to the staged files ([decision 110](../embarch-api/decisions/report-pdf.md)).
 - embarch-core-client resolves the agent or the person token by scope; MCP and CLI send only the agent token ([decisions](../embarch-api/decisions/client-crate.md) 109).
 - Serve the HIL guide: embarch-api guide hil [live|study|test] prints the text embedded in the binary; an embarch-hil skill points at it (decision 108).
 - api: `bundle` verb and MCP tool package a build as a hex, README of flash commands and zip for a bench engineer; see interfaces/tools-bundle.md.
