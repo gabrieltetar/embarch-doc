@@ -1,6 +1,6 @@
 # 166 — embarch-api tells Core what it built when it starts a study
 
-**State:** open
+**State:** claimed by agent/api/166-send-build-claims-when-a-study-starts, 2026-11-21 22:07
 **Source:** Fleet Ready issue: embarch-api does not send build claims when it starts a study. `embarch-core` decision 110 (`decisions/signing.md`) and `embarch-core/interfaces/signing.md`, landed with `tasks/core/129`; `notes/hil/14-implementation-plan.md`, M1.5's follow-up, before M1.10.
 **Issue:** EMB-238
 **Scope:** api
