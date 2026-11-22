@@ -1,0 +1,1 @@
+| Report to PDF — a library module, Typst built in, lilaq embedded, root confined to the staged files | Built; no tool or subcommand yet (`publish` is M1.10); fixture renders offline and byte-identically on this machine, other machines unmeasured | unit | [report-pdf](../embarch-api/interfaces/report-pdf.md) |

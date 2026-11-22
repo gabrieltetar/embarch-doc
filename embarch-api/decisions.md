@@ -43,5 +43,6 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The patch-series round trip](decisions/patches.md) — `patches export/import/regroup`: one scratch tree, fixes folded by blame, regroup proved by tree id | 92 | 3.6 KB |
 | [The review-fold and restack family](decisions/stack.md) — `stack plan/fold/restack`: fixups by blame, backed-up autosquash, atomic leased restack, tree identity by git | 96 | 4.9 KB |
 | [The served HIL guide](decisions/guide.md) — `guide hil` embeds a pinned copy in this repo; how a guide edit reaches the binary and what catches drift | 108 | 2.3 KB |
+| [The report's PDF](decisions/report-pdf.md) — Typst as a library behind the `pdf` feature, lilaq and its imports embedded, one resolver whose root is the staged files, links refused, a reproducible PDF | 110 | 4.0 KB |
 
 **Decisions 31 and 33 are one decision under two numbers.** The commit that added decision 32 inserted it in the middle and **renumbered the entry below it from 31 to 33**, so every prose reference to `decision 31` written before that commit silently began pointing at a different entry. One entry owns both numbers, in [study-reads.md](decisions/study-reads.md) — which is why numbers are permanent here now (DOC-COMPACTION.md §5).
