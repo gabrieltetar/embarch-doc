@@ -216,7 +216,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
 | Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
-| Study Designer authors every field a `Study` carries but `measurements` (`embarch-study-designer` decision 99, `tasks/ui/112`) — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30 |
+| Study Designer authors every field a `Study` carries but `measurements`, which it lists and keeps through save and run (decision 104) — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30, 104 |
 | Saved-study library in the firmware repo | Shipped | local | 14 |
 | Opening a firmware repo from the tab, and creating a study in it | Shipped | local | 14 |
 | Selective-monitor targets in a grouped dialog rather than a wall of inline checkboxes | Shipped | local | 17 |
