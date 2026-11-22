@@ -1,6 +1,6 @@
 # 131 — Core keeps a hash-chained run log, and retention sweeps no capture before publish
 
-**State:** claimed by agent/core/131-hash-chained-run-log, 2026-11-21 17:11
+**State:** done — on agent/core/131-hash-chained-run-log, 2026-11-21
 **Source:** Fleet Ready issue: Core has no hash-chained run log. `notes/hil/14-implementation-plan.md`, unit M1.6 (after M1.5, landed as `tasks/core/129`); `notes/hil/13-research-phase.md`, "Many scans, few reports", for the discard rules; `notes/hil/06-report-and-publish.md` for what publish and `verify` check 8 read from the log.
 **Issue:** EMB-221
 **Scope:** core
@@ -33,8 +33,16 @@ M1.8 (Core's side of publish) needs it, and M1.6 was waiting only on M1.5's sign
 
 ## Done when
 
-- [ ] The chain recomputes in a test, and a test shows a tampered or removed entry breaks it.
-- [ ] A discard of a failing run's captures with the agent's token is refused, the same discard with the person's token succeeds, and both leave the entry and its capture hashes in place.
-- [ ] Retention no longer sweeps an unpublished run's captures (a test).
-- [ ] `spec.md`, `decisions/`, `interfaces/`, `open.md` updated; `spec.md` out of reserve; `changelog.d/` fragment dropped; a `status.d/` fragment for `embarch-token.md` if the token's lifecycle or a refusal by scope changes what it says.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches). The native Windows build is a debt, recorded, not a gate item.
+- [x] The chain recomputes in a test, and a test shows a tampered or removed entry breaks it.
+- [x] A discard of a failing run's captures with the agent's token is refused, the same discard with the person's token succeeds, and both leave the entry and its capture hashes in place.
+- [x] Retention no longer sweeps an unpublished run's captures (a test).
+- [x] `spec.md`, `decisions/`, `interfaces/`, `open.md` updated; `spec.md` out of reserve; `changelog.d/` fragment dropped; a `status.d/` fragment for `embarch-token.md` if the token's lifecycle or a refusal by scope changes what it says.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches). The native Windows build is a debt, recorded, not a gate item.
+
+## Closing note
+
+Built `src/run_log.rs` (decision 111, `decisions/run-log.md`, `interfaces/run-log.md`): chained `run-log.jsonl`, four lease-open routes, the discard refused `403` to the agent on a run that did not end clean or is published, and retention (`stream_store::sweep_study_results`, `GET /studies`) that spares unpublished runs. No schema version bumped (new routes only). The log entry carries the record's hash (reasons in the decision).
+
+**`spec.md` compacted in this unit**: §3's deployment and release-assets text moved verbatim to `spec/deployment.md`, a pointer left under the same `### Release assets` heading so the proposal's anchor still resolves; the invariants and every decision citation kept. 7,965 B now, out of reserve. **The supervisor can close `core/130` at the fold.**
+
+**Debts:** native Windows build not run (host-side only); `run-log.jsonl` `icacls` lockdown unrun (in `open.md`); no client sends the person token yet (`tasks/api/162`, `tasks/ui/111`), so the discard is unexercised over a real Core.

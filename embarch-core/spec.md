@@ -22,7 +22,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 
 ## 2. Invariants
 
-- **Every route requires `Authorization: Bearer <token>`**, with one exception, `POST /auth/challenge` (`signing.rs`, decision 110), which signs a fixed frame so a client can check which Core answers before it sends a token — and "every" is asserted mechanically: the test sweep derives its route list from `build_router`'s own source, so a route added to `build_router` without an auth case fails the build rather than shipping open (decision 42; `signing.rs`'s router is outside that sweep). Two secrets (decision 109), exact-string compared in `auth_middleware`: the **agent's**, from `EMBARCH_TOKEN` and otherwise the machine-wide `token` file, and the **person's**, from `EMBARCH_PERSON_TOKEN` and otherwise `person-token` beside it, both generated and persisted on first startup. Either authenticates; the match travels as a `Scope` request extension (`token_store.rs`), recorded and not yet enforced, and only the signed run record carries it ([open.md](open.md)). No finer identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md). **Core signs each study run's record** with an Ed25519 key beside the token files (`signing-key`): `record.dsse.json`, a DSSE envelope over an in-toto Statement naming every capture, `events.json`, `study.json` and, once it exists, `measurements.json` by SHA-256, its predicate keeping what Core observed apart from what embarch-api claimed ([decision 110](decisions/signing.md), [interfaces/signing.md](interfaces/signing.md)).
+- **Every route requires `Authorization: Bearer <token>`**, with one exception, `POST /auth/challenge` (`signing.rs`, decision 110), which signs a fixed frame so a client can check which Core answers before it sends a token — and "every" is asserted mechanically: the test sweep derives its route list from `build_router`'s own source, so a route added to `build_router` without an auth case fails the build rather than shipping open (decision 42; `signing.rs`'s router is outside that sweep). Two secrets (decision 109), exact-string compared in `auth_middleware`: the **agent's**, from `EMBARCH_TOKEN` and otherwise the machine-wide `token` file, and the **person's**, from `EMBARCH_PERSON_TOKEN` and otherwise `person-token` beside it, both generated and persisted on first startup. Either authenticates; the match travels as a `Scope` request extension (`token_store.rs`); **one route refuses by it, the discard of a run's captures** (decision 112), and the signed run record carries it ([open.md](open.md)). No finer identity and no TLS; full lifecycle, threat model and known gaps: [embarch-token.md](../embarch-token.md). **Core signs each study run's record** with an Ed25519 key beside the token files (`signing-key`): `record.dsse.json`, a DSSE envelope over an in-toto Statement naming every capture, `events.json`, `study.json` and, once it exists, `measurements.json` by SHA-256, its predicate keeping what Core observed apart from what embarch-api claimed ([decision 110](decisions/signing.md), [interfaces/signing.md](interfaces/signing.md)). **A hash-chained run log** (`run-log.jsonl`, never swept) holds an entry per run, publish and discard, and retention sweeps no unpublished run's captures ([decision 111](decisions/run-log.md)).
 - **One `hw_lock` serialises all hardware access**, held for the whole handler body. **A second caller waits up to 500 ms for the first to finish; past that it is refused `503` naming the route holding the lock** (decision 14, built `tasks/core/013`) rather than queueing silently and indefinitely — an unbounded wait is indistinguishable from Core being unresponsive, which is the failure decision 14 exists to rule out. A separate `study_lock` serialises studies and `GET /dev-bench/hello`'s handshake, and the dev-bench identity gate takes `hw_lock`; a signal tap's read-only port takes neither, but registers the port it holds so `/bootload` refuses it by name.
 - **Every blocking hardware call runs in `tokio::task::spawn_blocking`.** `probe-rs` and `serialport` are synchronous.
 - **Probe attach is per-call, never held open.** Open, attach, operate, drop.
@@ -41,24 +41,11 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 
 **An installed, autostarting OS service is the normal deployment** — that is what makes the rest of the suite need no launcher: if Core is up at boot, `embarch-api` always finds it running. A foreground `run` is fully supported and is the right choice for debugging Core itself.
 
-Runs natively on Windows, reachable from WSL2 at the session's dynamic host-gateway IP. Windows Firewall needs no inbound rule under the newer Hyper-V-firewall WSL networking mode. Building natively on Windows needs Visual Studio Build Tools' "Desktop development with C++" workload for `link.exe` — a bare `rustup` toolchain is not enough.
-
-`install`/`uninstall`/`start`/`stop`/`update` **self-elevate** (UAC `runas` on Windows, `pkexec`→`sudo` on Linux, `osascript`→`sudo` on macOS); with no GUI and no TTY they print the command and exit nonzero. `update <new-exe>` must be invoked **from the installed binary's own path**, pointing at the new build — the reverse renames the source aside as its own backup and fails mid-way, leaving the service stopped.
-
-`run` self-detects SCM versus a console and branches internally: an `sc create`-registered binary must call `StartServiceCtrlDispatcherW` and report `SERVICE_RUNNING` within 30 s or SCM kills the start (error 1053).
+Platforms, self-elevation and the SCM start rule: [spec/deployment.md](spec/deployment.md).
 
 ### Release assets
 
-A `v*.*.*` tag runs `.github/workflows/release.yml`: four targets are built, and one `sign-and-publish` job (in the `release` GitHub environment, owner-approved, `id-token: write` on that job only) signs every archive with Sigstore keyless signing, cosign 3.0.4 or later, and publishes each archive with its `<archive>.sigstore.json` bundle. The signing step sits in `release.yml` itself, never a reusable workflow, so the certificate names this file. **Built 2026-11-17, not yet run: no tag has been pushed since.** Check an asset (cosign 3.0.4 or later):
-
-```
-cosign verify-blob embarch-core-<target>.<zip|tar.gz> \
-  --bundle embarch-core-<target>.<zip|tar.gz>.sigstore.json \
-  --certificate-identity https://github.com/gabrieltetar/embarch-core/.github/workflows/release.yml@refs/tags/v<version> \
-  --certificate-oidc-issuer https://token.actions.githubusercontent.com
-```
-
-[The proposal](../embarch-release-signing-proposal.md) holds the design; `embarch verify-release` ([embarch-umbrella](../embarch-umbrella/spec.md)) checks the same identity for a suite release.
+Every archive is Sigstore-signed in CI; the signing job, what is built and the `cosign verify-blob` command: [spec/deployment.md](spec/deployment.md#release-assets).
 
 ## 4. Modules
 

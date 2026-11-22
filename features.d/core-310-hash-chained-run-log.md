@@ -1,0 +1,1 @@
+| Hash-chained run log: an entry per run, publish and discard, never swept; retention spares unpublished captures; the person alone discards a failing run | Built — **host-side only: no Windows build, no client sends the person token yet, the log's tail is unanchored** | n/a | 111, 112 |
