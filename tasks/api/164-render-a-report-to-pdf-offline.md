@@ -22,9 +22,10 @@ M1.10 (`publish`, the zip) needs it, and it depends only on M1.1, so it can run 
 ## Dispatch notes
 
 - **Fetching lilaq's source to vendor it is part of the task**: pin one version, record where it came from and its hash, and check its licence is compatible before committing it. Pick the Typst, `typst-as-lib` and lilaq versions together; a mismatch is the likely first failure.
+- **A fetch no permission rule allows is refused, not prompted**, because the fleet runs unattended. If lilaq's source cannot be fetched by an allowed route, stop and report `blocked` with what you tried; never write the package yourself.
 - **Typst is a large dependency.** Whether it sits behind a cargo feature, and what that costs `cargo build` time and the binary, is this unit's decision; record it with the numbers you measured.
 - **Read `measurements.json`'s shape from `interfaces/hil-shapes.md`** for the fixture run; do not invent a second shape.
-- **Decisions near their size limit**: `ledger` #98 (15 B left), `bench-exchange` #89 (122 B), `failure-reporting` #67 (192 B). A new report topic file is the expected home.
+- **Decisions near their size limit**: `ledger` #98 (15 B left), `bench-exchange` #89 (122 B), `failure-reporting` #67 (192 B). A new report topic file is the expected home. In reserve, filed against `tasks/api/165`: `decisions/client-crate.md` (10 B left) and `interfaces/config.md` (920 B); do not add to either.
 - Out of scope: the zip and `publish` (M1.10), `verify` (M1.11), anything Core writes.
 
 ## Done when
