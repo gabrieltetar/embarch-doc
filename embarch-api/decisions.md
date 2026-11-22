@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-06.
 
-Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Config: [interfaces/config.md](interfaces/config.md), [interfaces/dev-bench-config.md](interfaces/dev-bench-config.md). Tools: [interfaces/tools.md](interfaces/tools.md), [interfaces/studies.md](interfaces/studies.md).
+Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md). Config: [interfaces/config.md](interfaces/config.md), [interfaces/config-selection.md](interfaces/config-selection.md), [interfaces/dev-bench-config.md](interfaces/dev-bench-config.md). Tools: [interfaces/tools.md](interfaces/tools.md), [interfaces/studies.md](interfaces/studies.md).
 
 **Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). `scripts/check-decision-refs.py` resolves every one.
 
@@ -33,7 +33,8 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [What board.yml/app scanning trusts](decisions/zephyr-scan.md) — the retired SoC-override hatch, the uncached scan's cost bound, and the `app/`/`apps/` scan | 13, 22, 63, 86 | 6.5 KB |
 | [Reaching Core](decisions/core-link.md) — address resolution and artifact transfer | 11, 14, 15, 17, 26 | 3.9 KB |
 | [The shared firmware-build crate](decisions/firmware-build-crate.md) — why `config`/`zephyr`/`resolve`/`build`/`json_out` left this repo for a sibling `embarch-ui` can reach, and the streaming build log that followed | 78, 79 | 4.7 KB |
-| [The shared client crate](decisions/client-crate.md) — extraction, the one auth-and-send funnel, the stack, older-Core parsing, one WSL2 predicate, the crate's home, the two token scopes, and the retired mirrored `embarch-topology` types | 36, 37, 38, 55, 58, 62, 66, 72, 109 | 12.0 KB |
+| [The shared client crate](decisions/client-crate.md) — extraction, the one auth-and-send funnel, the stack, older-Core parsing, and the two token scopes | 36, 37, 38, 55, 58, 109 | 7.1 KB |
+| [Where the client crate lives and what it names](decisions/client-crate-types.md) — one WSL2 predicate, the crate's home inside this repo, and the retired mirrored `embarch-topology` types | 62, 66, 72 | 5.5 KB |
 | [The bench lease client](decisions/lease.md) — the token in `EMBARCH_LEASE_TOKEN` through the one funnel, renewal inside the MCP server, a lease `409` told apart from the three others, and a session made to hold one | 90, 101 | 7.4 KB |
 | [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
 | [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 2.7 KB |

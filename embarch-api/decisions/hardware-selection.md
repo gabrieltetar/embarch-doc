@@ -20,7 +20,7 @@ no project selection, since the route itself takes none.
 **Mirrors Core's own serialized `HelloAckInfo` field-for-field, not
 `embarch_topology::hardware`'s comparison type** — the two are never checked
 against each other (this crate cannot link the `hardware` feature — the same
-constraint that, before [client-crate](client-crate.md) decision 72, made
+constraint that, before [client-crate](client-crate-types.md) decision 72, made
 `SignalLink` a hand-written mirror too; decision 72 retired that mirror and
 made `SignalLink` a type alias to the real `embarch-topology` type instead),
 so a struct built from the wrong side compiles and passes its own tests while

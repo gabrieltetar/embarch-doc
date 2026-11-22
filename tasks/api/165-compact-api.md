@@ -22,5 +22,5 @@ Both files sit in the last 10% of their cap after api/162 (decision 109). Leave 
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` shows neither file in reserve.
-- [ ] The compactor's commit message answers whether `spec.md` alone says what someone needs to work on this component today.
+- [x] `scripts/check-doc-size.py --pressure` shows neither file in reserve.
+- [x] The compactor's commit message answers whether `spec.md` alone says what someone needs to work on this component today.
