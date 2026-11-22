@@ -6,9 +6,7 @@
 **Owner:** no
 **Compacts:** embarch-api/decisions/client-crate.md, embarch-api/interfaces/config.md
 **Size debt due:** 2026-11-28
-**In flux:** per file
-- embarch-api/decisions/client-crate.md: yes (ui/111 will add the person-token caller and may extend decision 109)
-- embarch-api/interfaces/config.md: no
+**In flux:** no. `client-crate.md` was `yes` until `ui/111` landed (2026-11-21); it built the person-token caller in `embarch-ui` without extending decision 109, so both files can be compacted now.
 **Must not delete:** decision 109's rule that the person scope never falls back to the agent's token, and its reason for no CLI flag; the `EMBARCH_PERSON_TOKEN` order in config.md.
 
 ## What
