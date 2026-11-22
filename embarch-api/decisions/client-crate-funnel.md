@@ -1,0 +1,19 @@
+# embarch-api decisions: The shared client crate's funnel and home
+
+**Status:** active, 2026-11-22.
+
+The shared `embarch-core-client` crate's one auth-and-send funnel and where the crate lives. Split out of [client-crate.md](client-crate.md) on 2026-11-22 (`api/165`), a verbatim move along a topical seam.
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). The crate's runtime stack, extraction, older-Core parsing, WSL2 predicate, topology types and token scopes: [client-crate.md](client-crate.md).
+
+### 55 — One funnel applies the bearer token; nine routes were exempt from the rule that said so
+`send`/`send_no_content` consume the response, so the nine routes giving a status its own meaning (a `404` for "not enrolled", a `409` for a topology mismatch) and the SSE stream could not use them; each applied `.bearer_auth(…)` itself. **A convention nine of twenty-five sites are exempt from is not one** — and the comment was the worse half, since a new route copies the hand-written form while the sentence a reader trusts says it cannot exist.
+
+So the funnel moves down. `dispatch` applies the token and the timeout and sends; `send`/`send_no_content` are thin readers over it; a route needing typed status handling hands it a `RequestBuilder` and reads the status itself. `bearer_token()` is **retired**. The guard: one `.bearer_auth(…)` in the crate, no send site outside `dispatch`. ***Rejected: `default_headers`*** — it authenticates every request the `reqwest::Client` makes rather than this client's *routes*. **Nothing was unauthenticated before this**; the wire is unchanged.
+
+### 66 — The crate lives inside `embarch-api`'s own tree, not a tenth repo, and `embarch-ui` path-depends across a repo boundary to reach it
+Decisions 37/38 settled that the shared Core client is one implementation, not where it lives. It sits at `crates/embarch-core-client` inside this repo, unlike `embarch-study-designer` (decision 8) and `embarch-topology` (decision 13), each of which got a standalone repo. **Only decision 8 states the FFI/C rationale** — two Cargo dependents plus one FFI/C consumer as the case a standalone shared crate is for. **`embarch-topology` decision 13 states no such reason**: only that a shared crate needs *somewhere* for three consumers to depend on. This crate's three consumers (`embarch-api`, `embarch-ui`, `embarch-umbrella`) are all plain Cargo path dependents, so decision 8's case does not hold — and the question was never taken up either way: 37/38 left the crate where the extraction happened.
+
+The cost, stated rather than softened (`spec.md:48`): `embarch-ui` path-depends on it from outside this repo, so **a change made here reaches a repo this one does not own**, and `check-ownership.py` does not refuse that move — nothing in the fleet mechanism stops an `api` task editing a crate `embarch-ui` depends on. `suite/decisions.md` 1 documents the gate-spelling cost that follows.
+
+Kept anyway: a tenth repo for Cargo-only consumers with no cross-language boundary pays a cost `embarch-study-designer`/`embarch-topology` accepted for a reason (FFI, independent hardware/software versioning) that does not hold here, and decision 56 already made the crate a workspace member with its own tests in this repo's gate. **Reverses** if a *fourth* Cargo consumer with its own release cadence appears, or an `api`-only change here breaks `embarch-ui` or `embarch-umbrella` silently.
