@@ -147,6 +147,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A saved study reports when a protocol it carries no longer matches its `.eap` (unchanged / changed / gone) | Shipped — advisory, crate API only; the UI shows nothing yet | host | 87 |
 | The shared crate computes derived measurements with built-in reducers (count, rate, min, max, mean, percentile, interval, value at a marker), each versioned by behaviour, with `U` and a type-A term | Built, **host tests against fixtures**; behind feature `reducers`; no Core calls them yet | host | 92, 93, 94 |
 | The shared crate decides HIL verdicts in code: the six verdicts, a step outcome's mapping, the guard band on both sides of a limit, the acceptance-width refusal and the requirement roll-up, each versioned by behaviour | Built, **host tests against fixtures**; behind feature `verdicts`; no Core calls them yet | host | 95, 96, 97, 98 |
+| A study declares its derived measurements — reducer, tap, field, unit, window and the values it declares for itself, refused at validation when Core could not compute one | Built, **host tests**; always compiled; **Core computes none and calls no validation yet (`tasks/core/132`), and only a hand-written study file carries one** | host | 99, 100 |
 
 ## embarch-outpost
 
@@ -214,7 +215,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 |---|---|---|---|
 | One consolidated human-facing UI, six tabs, replacing three ad hoc surfaces | Shipped, live-validated against the deployed Core | local, hw | 1, 4 |
 | Study Designer tab — editable step table, registration, discovery, run-and-watch | Shipped | local | 11 |
-| Study Designer authors every field a `Study` carries — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30 |
+| Study Designer authors every field a `Study` carries but `measurements` (`embarch-study-designer` decision 99, `tasks/ui/112`) — `.eap` protocols and `RunProtocol` steps, per-tap record framing, the dev-bench log level, payload layouts and registered actions (edit/delete, refused while a saved study uses one), and running a saved study as it is on disk | Shipped — **the `Debug` level's clamp note has never fired: this bench's build reaches `Debug`, so there is nothing to clamp** | unit, local, hw | 29, 30 |
 | Saved-study library in the firmware repo | Shipped | local | 14 |
 | Opening a firmware repo from the tab, and creating a study in it | Shipped | local | 14 |
 | Selective-monitor targets in a grouped dialog rather than a wall of inline checkboxes | Shipped | local | 17 |
