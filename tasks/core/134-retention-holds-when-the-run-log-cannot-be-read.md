@@ -27,7 +27,11 @@ An unreadable run log must stop the sweep: nothing is deleted, and Core's log sa
 
 ## Done when
 
-- [ ] A test with a corrupted run-log line shows the sweep deletes nothing and logs why.
-- [ ] A test with a run-log file that cannot be opened (present but unreadable, or a directory in its place) shows the same.
-- [ ] Decision 111 says what retention does when the log cannot be read; `spec.md` and `interfaces/` updated if they state the sweep; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+- [x] A test with a corrupted run-log line shows the sweep deletes nothing and logs why.
+- [x] A test with a run-log file that cannot be opened (present but unreadable, or a directory in its place) shows the same.
+- [x] Decision 111 says what retention does when the log cannot be read; `spec.md` and `interfaces/` updated if they state the sweep; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`; `check-ownership.py --scope core` on both branches).
+
+## Result
+
+`RunLog::unpublished_ids` and `run_log::protected_ids` now return `Result` and verify the chain; `retention_sweep` (`study.rs`) sweeps nothing and logs `error` on `Err`. `GET /studies` on `Err` lists every study (`keep: 0`). Tests cover a corrupted line, a tampered line, a directory in the log's place. The `error` log line itself is not asserted (no log-capture crate). Windows native build stays a debt.
