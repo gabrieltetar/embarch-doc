@@ -1,6 +1,6 @@
 # 135 — Core's side of publish: a signed `report-data.json` and a signed manifest
 
-**State:** open
+**State:** claimed by agent/core/135-cores-side-of-publish, 2026-11-22 08:05
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.8 ("Core's side of publish"), after M1.4 (decision 109), M1.6 (decisions 111, 112) and M1.7 (decisions 113 to 115), all landed
 **Issue:** EMB-223
 **Scope:** core
