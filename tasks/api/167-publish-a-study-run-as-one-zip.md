@@ -1,6 +1,6 @@
 # 167 — `publish <run id>` turns a finished study run into one zip
 
-**State:** open
+**State:** claimed by agent/api/167-publish-a-study-run-as-one-zip, 2026-11-22 08:18
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.10 ("The zip"), after M1.8 (`embarch-core` decisions 116 to 119, `tasks/core/135`) and M1.9 (`embarch-api` decision 110)
 **Issue:** EMB-225
 **Scope:** api
