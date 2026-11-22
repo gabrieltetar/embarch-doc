@@ -1,6 +1,6 @@
 # 102 — `embarch init` on an initialised repo installs what it lacks and leaves the config alone
 
-**State:** open
+**State:** claimed by agent/umbrella/102-init-on-an-initialised-repo-installs-what-it-lacks, 2026-11-22 03:03
 **Source:** `tasks/umbrella/101`'s finding (2026-11-21): "A repo already `init`ed gets no skill (`init` exits on an existing config)." `embarch-api/open.md`: "a repo `init`ed earlier needs `init --uninstall` then `init`". `embarch-umbrella` decision 59 (`decisions/integration.md`).
 **Scope:** umbrella
 **Hardware:** none
@@ -17,6 +17,7 @@ On a repo whose config already exists, `init` leaves the config untouched and in
 - **The exit code on that path is a contract change**: a script that relied on `init` failing on an existing config sees `0` where it saw `1`. Say in the decision what it exits with and why; `embarch-umbrella` decision 12 (nothing committed) still holds.
 - **The config is never read to decide what to install** and never rewritten, not even reformatted. A config `init` cannot parse is not this unit's business.
 - `embarch-umbrella/spec.md` is 8,808 of 10,240 B, out of reserve; `decisions/integration.md` is 3,837 B. Decisions near their size limit: `prune-policy` #26, `deploy` #32, `mirrors` #20 (each under 40 B).
+- **Nothing in `embarch-umbrella/` is in reserve**, 2026-11-22.
 - Tests in a temporary directory only, never a real firmware repo.
 - **The closing note says what `embarch-api/open.md`'s line on the skill should read** (it names the uninstall workaround today); the supervisor amends it at the fold, since that file is `embarch-api`'s.
 - Out of scope: `embarch setup`, and upgrading a config's contents.
