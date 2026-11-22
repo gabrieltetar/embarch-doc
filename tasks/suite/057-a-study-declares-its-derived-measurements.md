@@ -6,6 +6,7 @@
 **Scope:** suite
 **Hardware:** none
 **Owner:** no
+**Announced:** `#embarch-fleet` `ts` `1795306202.861479`, 2026-11-21 17:10, by the leg that split EMB-222. The window closes at 17:40 with no objection; until then the task stays `open` and parked. A leg that finds this line with the window closed and no reply in that thread may run it without re-announcing.
 
 ## What
 
