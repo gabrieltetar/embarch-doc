@@ -1,12 +1,11 @@
 # 132 — Core computes the declared measurements and writes `measurements.json` as each study ends
 
-**State:** blocked
+**State:** open
 **Source:** Fleet Ready issue: Core does not compute measurements when a study ends. `notes/hil/14-implementation-plan.md`, unit M1.7 (after M1.2, landed as `tasks/study-designer/085`); `notes/hil/02-study.md`, "Measurements"; `embarch-study-designer/interfaces/hil-shapes.md` for `measurements.json`, field by field, and `hil-reducers.md` for the reducers' `Input`.
 **Issue:** EMB-222
 **Scope:** core
 **Hardware:** none
 **Owner:** no
-**Unparks when:** `tasks/suite/057` lands: a study cannot declare a derived measurement until `Study` has a field for it.
 
 ## What
 
@@ -24,7 +23,8 @@ M1.8 (Core's side of publish) and M1.9's `report.typ` read `measurements.json`, 
 
 ## Dispatch notes
 
-- Read `hil-shapes.md`'s `measurements.json` section and `suite/057`'s declaration shape before writing; do not invent a second shape for either.
+- Read `hil-shapes.md`'s `measurements.json` section and the declaration shape, `embarch-study-designer/interfaces/hil-declarations.md` (decisions 99 and 100, landed by `suite/057`), before writing; do not invent a second shape for either.
+- **Three things `suite/057` left to this unit**: calling `validate_measurements` when a study is submitted, beside `validate_record_checks` (nothing calls it yet); the window's `from_utc_ms` and `to_utc_ms`, which a declaration cannot carry; and **what stamps a marker** (`from_marker`, `to_marker` are free names, unchecked, and a name nothing produces reads `value: null`, `parse_failed`). Say in a decision what a marker is.
 - **Decisions near their size limit**: `signing` #110 is already over its limit, so do not grow it; `lease` #93 has 182 B left. A new topic file is the home.
 - **`embarch-core/spec.md` is in reserve** (`tasks/core/130`, parked); if `tasks/core/131` has not already brought it out, compact it as part of this unit the way that task's dispatch note says.
 - Out of scope: verdicts (a Study has none), `report-data.json` and publish (M1.8).

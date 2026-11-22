@@ -1,6 +1,6 @@
 # 057 — A study declares its derived measurements, a host-type schema bump across four repos
 
-**State:** open
+**State:** done
 **Source:** Fleet Ready issue: Core does not compute measurements when a study ends. `notes/hil/02-study.md`, "Measurements": derived measurements are "declared by name in the study", and a Study's own declared values (a `dut` value's resolution and `U`, a declared sample rate) are "declared by the study, unconfirmed". `notes/hil/14-implementation-plan.md`, unit M1.7. Nothing yet fixes how a study declares either: `embarch-study-designer/interfaces/hil-shapes.md` fixes `measurements.json`, the output, and `hil-reducers.md` the reducers' `Input` and `window`, but `Study` has no field that names a measurement.
 **Issue:** EMB-222
 **Scope:** suite
@@ -31,8 +31,12 @@ M1.7 (`tasks/core/132`, Core writes `measurements.json`) cannot start without it
 
 ## Done when
 
-- [ ] A study with a `measurements` list round-trips through the crate, and each refusal above has a fixture.
-- [ ] `HOST_TYPE_SCHEMA_VERSION` bumped, its history line written.
-- [ ] `embarch-core`, `embarch-api` and `embarch-ui` build, test and pass `clippy --all-targets -- -D warnings` against the new crate, each on its own `main`.
-- [ ] `spec.md`, `decisions/`, `interfaces/` updated in `embarch-study-designer`; `changelog.d/` fragments dropped.
-- [ ] `check-docs.py` green.
+- [x] A study with a `measurements` list round-trips through the crate, and each refusal above has a fixture.
+- [x] `HOST_TYPE_SCHEMA_VERSION` bumped, its history line written.
+- [x] `embarch-core`, `embarch-api` and `embarch-ui` build, test and pass `clippy --all-targets -- -D warnings` against the new crate, each on its own `main`.
+- [x] `spec.md`, `decisions/`, `interfaces/` updated in `embarch-study-designer`; `changelog.d/` fragments dropped.
+- [x] `check-docs.py` green.
+
+## Closing note
+
+Run by the supervisor 2026-11-21, the 22:01 leg's last unit; the window closed 17:40 with no reply in its thread. `src/measures.rs` (always compiled) and `Study.measurements`, decisions 99 and 100 (`decisions/hil-declarations.md`, `interfaces/hil-declarations.md`); host schema 22, wire 15. Tests in the module, one per refusal, plus a JSON and a postcard round trip; a first draft skipped empty fields and the crate's own postcard round trip refused it, so nothing is skipped. Consumers: one `Study` literal each in `embarch-core` and `embarch-api` tests; `embarch-ui` builds `Study` only through the crate's builder, so it changed nothing, and `tasks/ui/112` is filed because its save drops a study's declarations. Unparked `tasks/core/132`, with the three things this left to it in its dispatch notes. One changelog fragment, `study-designer-measurement-declarations.added.md`; the consumers' literal edits are test-only.

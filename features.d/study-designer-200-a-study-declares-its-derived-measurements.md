@@ -1,0 +1,1 @@
+| A study declares its derived measurements — reducer, tap, field, unit, window and the values it declares for itself, refused at validation when Core could not compute one | Built, **host tests**; always compiled; **Core computes none and calls no validation yet (`tasks/core/132`), and only a hand-written study file carries one** | host | 99, 100 |

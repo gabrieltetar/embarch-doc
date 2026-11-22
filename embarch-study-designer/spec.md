@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-02.
 
-What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md) · [interfaces/decoders.md](interfaces/decoders.md) · [interfaces/eap.md](interfaces/eap.md). The HIL reducers (built, feature `reducers`; [hil-reducers.md](interfaces/hil-reducers.md)). The HIL verdict rules (built, feature `verdicts`; [hil-verdicts.md](interfaces/hil-verdicts.md)). The HIL file shapes (design, except the reducers' and verdicts' halves; [hil-shapes.md](interfaces/hil-shapes.md) is the index, with [hil-run.md](interfaces/hil-run.md) and [hil-pdf.md](interfaces/hil-pdf.md)). What a study carries and which seal covers it: [spec/carriage.md](spec/carriage.md).
+What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Types: [interfaces/types.md](interfaces/types.md) · [interfaces/decoders.md](interfaces/decoders.md) · [interfaces/eap.md](interfaces/eap.md). The HIL reducers (built, feature `reducers`; [hil-reducers.md](interfaces/hil-reducers.md)). The HIL verdict rules (built, feature `verdicts`; [hil-verdicts.md](interfaces/hil-verdicts.md)). A study's measurement declarations (built, always compiled; [hil-declarations.md](interfaces/hil-declarations.md)). The HIL file shapes (design, except the reducers' and verdicts' halves; [hil-shapes.md](interfaces/hil-shapes.md) is the index, with [hil-run.md](interfaces/hil-run.md) and [hil-pdf.md](interfaces/hil-pdf.md)). What a study carries and which seal covers it: [spec/carriage.md](spec/carriage.md).
 
 ## 1. What it is
 
