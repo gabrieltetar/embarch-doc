@@ -1,6 +1,6 @@
 # 131 — Core keeps a hash-chained run log, and retention sweeps no capture before publish
 
-**State:** open
+**State:** claimed by agent/core/131-hash-chained-run-log, 2026-11-21 17:11
 **Source:** Fleet Ready issue: Core has no hash-chained run log. `notes/hil/14-implementation-plan.md`, unit M1.6 (after M1.5, landed as `tasks/core/129`); `notes/hil/13-research-phase.md`, "Many scans, few reports", for the discard rules; `notes/hil/06-report-and-publish.md` for what publish and `verify` check 8 read from the log.
 **Issue:** EMB-221
 **Scope:** core
