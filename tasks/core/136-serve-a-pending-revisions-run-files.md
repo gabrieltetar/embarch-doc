@@ -1,6 +1,6 @@
 # 136 — The publish files route serves a run's own files at the pending revision
 
-**State:** claimed by agent/core/136-serve-a-pending-revisions-run-files, 2026-11-22 13:04
+**State:** done 2026-11-22
 **Source:** `embarch-api/interfaces/publish.md`, "What publish needs of Core that Core does not yet do", found by `tasks/api/167`
 **Issue:** EMB-241
 **Scope:** core
@@ -24,7 +24,12 @@ At the **pending** revision, the one `POST /study/{id}/report-data` has opened a
 
 ## Done when
 
-- [ ] After `POST /study/{id}/report-data` and before `POST /study/{id}/publish`, `GET .../publish/{revision}/files/measurements.json` for that revision returns the run's file, its bytes equal to what the manifest later signs; tested over HTTP.
-- [ ] A name that is not one of the run's Core files, and a revision other than the pending one, still answer `404`; tested.
-- [ ] `interfaces/publish.md`'s row for the route says what it serves at a pending revision; decision 116 amended or a new decision added.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] After `POST /study/{id}/report-data` and before `POST /study/{id}/publish`, `GET .../publish/{revision}/files/measurements.json` for that revision returns the run's file, its bytes equal to what the manifest later signs; tested over HTTP.
+- [x] A name that is not one of the run's Core files, and a revision other than the pending one, still answer `404`; tested.
+- [x] `interfaces/publish.md`'s row for the route says what it serves at a pending revision; decision 116 amended or a new decision added.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Debts
+
+- **Native Windows build of embarch-core not run** (worktree cannot; protocol §10): the change is host-neutral Rust, but run it from the main checkout after landing.
+- **No end-to-end check against a real Core with embarch-api's `publish`**: tested over HTTP in-process only (`pending_revision_serves_the_runs_own_files_and_nothing_else`). Pending means: revision equals published-count+1 and `report-data.json` exists for it; the served set is `events.json`, `measurements.json`, `study.json`, `record.dsse.json`, `streams/*`.

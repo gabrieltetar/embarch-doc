@@ -1,0 +1,3 @@
+**Target:** embarch-api/interfaces/publish.md "What publish needs of Core that Core does not yet do", embarch-api/open.md's publish item, and features.d/api-360-publish.md's maturity cell (embarch-api's, not core's)
+**Was:** "Core does not serve `measurements.json` before the manifest exists", so a study with measurements publishes with a warning
+**Now:** Core serves the run's own files (measurements.json, events.json, study.json, record.dsse.json, streams/*) at the pending revision once `report-data` has opened it (core/136, decision 116); the gap is closed on Core's side, awaiting the api owner's wording and an end-to-end check on a real Core.

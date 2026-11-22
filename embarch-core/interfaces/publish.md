@@ -9,7 +9,7 @@ All take the token (either) and are lease-open. Errors are plain text. A **Study
 | `POST` | `/study/{id}/adopt` | `{"kind": "note"\|"prose", "name": "<relative file name>", "text": "..."}` | `200` the `adopted` `{entry, hash}` (`scope`, `text_sha256`); `400` bad kind or name; `404` no such run; `413` text over 1 MiB |
 | `POST` | `/study/{id}/report-data` | none | `200 {revision, report_data_sha256, keyid, report_data}`; `404`; `409` the run has no signed record or was discarded |
 | `POST` | `/study/{id}/publish` | `{"files": [{"name", "sha256"}]}`, embarch-api's own files | `200 {revision, entry, keyid}`; `400` a bad or duplicate name, or a Core-produced name; `409` no `report-data` yet or it changed since (a later adoption, or another token scope than the asker's), or another publish took the revision; `404` |
-| `GET` | `/study/{id}/publish/{revision}/files/{name}` | none | `200` the bytes of one of the four below or any file the revision's manifest names; `404` otherwise |
+| `GET` | `/study/{id}/publish/{revision}/files/{name}` | none | `200` the bytes of one of the four below or any file the revision's manifest names; **at the pending revision** (the one `report-data` opened, before `publish` signs it) the run's own Core files: `events.json`, `measurements.json`, `study.json`, `record.dsse.json`, `streams/*`, the bytes the manifest will sign; `404` otherwise (any other name or revision, or a revision `report-data` has not opened) |
 
 Files in `study_results/<id>/publish/r<N>/`: `report-data.json` (plain), `report-data.dsse.json`, `run-log-segment.jsonl` (every log line before the publish's entry, as in `GET /run-log`) and `manifest.dsse.json`. Both envelopes are DSSE v1 under the [signing](signing.md) key.
 
