@@ -50,6 +50,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core release archives signed in CI (cosign keyless, `.sigstore.json` bundle per asset) | Built — **no tag has run it; the workflow parsed as YAML only, `actionlint` did not run** | n/a | 1,2,7,17 |
 | Hash-chained run log: an entry per run, publish and discard, never swept; retention spares unpublished captures; the person alone discards a failing run | Built — **host-side only: no Windows build, no client sends the person token yet, the log's tail is unanchored** | n/a | 111, 112 |
 | `measurements.json` — Core reduces a study's declared measurements over its captures as it ends, by/instrument from the tap, bench values `u_source: undeclared` | Built — **fixtures only: no real capture reduced, the rate tolerance is assumed; host-side, no Windows build** | n/a | 113, 114, 115 |
+| `POST /study/{id}/report-data`, `/publish`, `/adopt` — a signed `report-data.json` and manifest for a study run, notes and prose attributed by token scope and text hash, the run log head recorded | Shipped — **host-tested only, no real study published; Windows ACL unrun; no third-party DSSE verifier run** | unit | 116, 117, 118, 119 |
 
 ## embarch-api
 
