@@ -14,6 +14,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Split embarch-api client-crate.md (decisions 55, 66) and config.md (zephyr-west selection) into topic files, verbatim; both out of reserve.
 - Split embarch-api `spec/implementation.md` §4 (deployment and topology) verbatim into `spec/deployment.md`, clearing its size reserve.
 - Release workflow signs every archive with cosign (keyless, `.sigstore.json` bundle beside each); see embarch-api/spec/implementation.md §8.
 - A server running in a git worktree of the clone source_path is in builds that worktree, in a build dir of its own, or refuses naming both trees; decision 106.
