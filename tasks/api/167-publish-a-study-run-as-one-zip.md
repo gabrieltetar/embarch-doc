@@ -1,6 +1,6 @@
 # 167 — `publish <run id>` turns a finished study run into one zip
 
-**State:** claimed by agent/api/167-publish-a-study-run-as-one-zip, 2026-11-22 08:18
+**State:** done
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.10 ("The zip"), after M1.8 (`embarch-core` decisions 116 to 119, `tasks/core/135`) and M1.9 (`embarch-api` decision 110)
 **Issue:** EMB-225
 **Scope:** api
@@ -28,9 +28,13 @@ M1.10 is next on the milestone 1 path now that Core signs the manifest, and `ver
 
 ## Done when
 
-- [ ] A fixture run publishes one zip, against a fake Core in a test, holding the PDF, the study file, `events.json`, `measurements.json`, Core's signed record, `report-data.json` and its envelope, the signed manifest, the run log's segment, every capture raw and as CSV, both exports, `report.typ` and its packages, and the notes.
-- [ ] Every embarch-api file's SHA-256 in the zip equals the hash sent to Core's `publish` route, in that test.
-- [ ] `publish` refuses with no publish folder configured, and the message says how to set one.
-- [ ] A Study run with no `report.typ` publishes, with the appendix and a data section.
-- [ ] The MCP tool and the subcommand are in `interfaces/`, with the zip's layout; `spec.md` amended.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A fixture run publishes one zip, against a fake Core in a test, holding the PDF, the study file, `events.json`, `measurements.json`, Core's signed record, `report-data.json` and its envelope, the signed manifest, the run log's segment, every capture raw and as CSV, both exports, `report.typ` and its packages, and the notes.
+- [x] Every embarch-api file's SHA-256 in the zip equals the hash sent to Core's `publish` route, in that test.
+- [x] `publish` refuses with no publish folder configured, and the message says how to set one.
+- [x] A Study run with no `report.typ` publishes, with the appendix and a data section.
+- [x] The MCP tool and the subcommand are in `interfaces/`, with the zip's layout; `spec.md` amended.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Outcome
+
+Decisions 112 to 114 ([decisions/publish.md](../../embarch-api/decisions/publish.md)); layout in [interfaces/publish.md](../../embarch-api/interfaces/publish.md). Tested against a mock Core only (`tests/publish.rs`, 8 tests). **Debts:** (1) **Core does not serve `measurements.json` before the manifest exists**, so a study with measurements publishes with a warning; filed as EMB-241 for `core`. (2) No real Core, no real study's publish, no bench: `Hardware: none` stands, but the first real publish is M1.14's. (3) OCP T&V lines unvalidated against the format's schema. (4) `embarch-api/open.md` entered its reserve: `tasks/api/169-compact-api.md`, blocked on `tasks/api/168`, which carries it.

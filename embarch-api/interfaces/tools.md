@@ -21,6 +21,7 @@
 - [Capture](tools-capture.md) — `capture_start`, `capture_read`, `capture_stop`, `bench_exchange`
 - [Instruments](tools-instruments.md) — `declare_instrument`, `list_instruments`, `remove_instrument`, `instrument_exchange`
 - [Ledger](tools-ledger.md) — `ledger_add`, `ledger_show`, `ledger_pending`, and `run_study`'s `test`
+- [Publish](publish.md) — `publish`, and the zip it writes
 - [Host studies](tools-host-study.md) — `run_host_study`, `answer_prompt`, and `study_watch` stopping on a waiting prompt
 
 ## Error handling

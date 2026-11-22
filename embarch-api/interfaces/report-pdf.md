@@ -1,6 +1,6 @@
 # embarch-api: rendering a report to PDF
 
-**Status:** active, 2026-11-21. Library module `embarch_api::report_pdf` (feature `pdf`, on by default); not yet a tool or subcommand, `publish` (HIL M1.10) is its caller. Why: [decision 110](../decisions/report-pdf.md). Fixed shapes it follows: embarch-study-designer's `hil-pdf.md` and `hil-shapes.md`.
+**Status:** active, 2026-11-21. Library module `embarch_api::report_pdf` (feature `pdf`, on by default); its caller is `publish` ([publish.md](publish.md)). Why: [decision 110](../decisions/report-pdf.md). Fixed shapes it follows: embarch-study-designer's `hil-pdf.md` and `hil-shapes.md`.
 
 ## The module
 
@@ -12,7 +12,8 @@
 
 ## What the compile does
 
-- The main file is the compile's own: `#set page(footer: context align(center, counter(page).display("1")))` then `#include "/report.typ"`. The footer is the page number alone; a `report.typ` that sets its own footer overrides it, and refusing that is publish's (M1.10).
+- The main file is the compile's own: `#set page(footer: context align(center, counter(page).display("1")))` then `#include "/report.typ"`. The footer is the page number alone; a `report.typ` that sets its own footer overrides it, which `publish` refuses.
+- When a file named `appendix.typ` is staged, the compile appends it after a page break (`APPENDIX_FILE`): the fixed audit appendix `publish` generates.
 - A package path is served from the embedded `typst-packages/`, a project path from the staging directory, nothing else. A path that escapes the root, an absolute path outside it, a file never staged and a non-regular file all fail the compile.
 - Fonts are Typst's embedded set. `datetime.today()` and the PDF's `/CreationDate` are `timestamp_unix`; the PDF's id derives from `ident`.
 
