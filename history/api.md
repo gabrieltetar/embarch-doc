@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- verify checks 4, 6 and 9: the PDF's numbers, report-data recomputed, report.typ's syntax tree; publish refuses by the same whitelist.
 - `embarch-api verify <zip> --public-key <hex>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log (decisions 118 to 121).
 - publish lists every number in the prose and report.typ, names each prose block's author, and writes -r2 from the earlier zip ([decisions](../embarch-api/decisions/publish-revisions.md) 115-117).
 - `publish <run id>` (tool and subcommand) writes a finished Study run as one zip: PDF, Core's signed files, both exports, sources. [interfaces](../embarch-api/interfaces/publish.md)

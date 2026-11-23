@@ -12,6 +12,7 @@
 - `embarch-api` decision 117 (`decisions/publish-revisions.md`) refuses a republish after the retention sweep and writes nothing, because Core's `report-data` answered `404` once the run's directory was gone. `tasks/core/137` gives Core a way to take the earlier revision's Core files back; read the decision it lands with before designing this side.
 - The earlier zip is already read for a republish (`measurements.json` and the `streams/*` renderings, decision 117), so this extends that read rather than adding a second one.
 - Per-decision budgets near their limit in `embarch-api`: `ledger#98`, `bench-exchange#89`, `failure-reporting#67`. Amend 117 in `decisions/publish-revisions.md`, or add a new decision there.
+- **`embarch-api/interfaces/publish.md` is in reserve** (11,437 of 12,288 B, out of reserve at 11,059 B), filed as `tasks/api/173`, blocked on `In flux: yes` because `verify` is still moving. This unit edits the publish half of that file, so compact it here: move a settled section verbatim into a new `interfaces/` file with a link left (`DOC-COMPACTION.md` §2's split), leave the `verify` section where it is, and say in your result which bytes moved. That is `tasks/api/173`'s only file, so the supervisor closes it at your fold. While there, the `verify` table's check 5 row still says "`adopted` recomputed", which `tasks/api/171` moved into check 6's whole-document compare (decision 124); correct that one cell.
 
 ## What
 
