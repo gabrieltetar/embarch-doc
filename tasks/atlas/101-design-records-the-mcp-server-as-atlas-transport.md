@@ -1,6 +1,6 @@
 # 101 — The atlas design doc records its own MCP server as the transport it chose
 
-**State:** open
+**State:** claimed by agent/atlas/101-design-records-the-mcp-server-as-atlas-transport, 2026-11-23 15:01
 **Source:** embarch-atlas/design.md — "Transport is unresolved: reachable over `embarch-api`'s existing MCP surface, or its own server."
 **Scope:** atlas
 **Hardware:** none
