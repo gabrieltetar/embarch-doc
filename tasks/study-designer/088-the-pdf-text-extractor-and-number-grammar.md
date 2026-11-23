@@ -1,6 +1,6 @@
 # 088 — The shared crate's PDF text extractor and number grammar, for `verify`'s check 4
 
-**State:** claimed by agent/study-designer/088-the-pdf-text-extractor-and-number-grammar, 2026-11-22 18:09
+**State:** done (2026-11-22, agent/study-designer/088-the-pdf-text-extractor-and-number-grammar)
 **Source:** `embarch-study-designer/interfaces/hil-pdf.md`, "The text extractor" and "The number grammar" (design, not yet code); `notes/hil/06-report-and-publish.md`, "Verify" check 4; `notes/hil/14-implementation-plan.md`, unit M1.11
 **Issue:** EMB-226
 **Scope:** study-designer
@@ -27,8 +27,12 @@ The two halves of `hil-pdf.md` that are text, built as code in the crate's host-
 
 ## Done when
 
-- [ ] Extractor tests over fixture PDFs: page order, content-stream order, the coordinates and size, an unmapped glyph failing with its page, NFKC applied (a full-width digit, a ligature), the line and word thresholds.
-- [ ] Grammar tests for each rule `hil-pdf.md` states, including a year, a version and a page count read as numbers.
-- [ ] The crate builds and tests with the new feature on and off, and with `--no-default-features`; every consumer's feature set builds unchanged (`../../embarch-fleet/gate.md`, the shared-crate bullet).
-- [ ] `interfaces/hil-pdf.md` says what is built and names the API; a new numbered decision for the library and anything the doc left open.
-- [ ] Gate green, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] Extractor tests over fixture PDFs: page order, content-stream order, the coordinates and size, an unmapped glyph failing with its page, NFKC applied (a full-width digit, a ligature), the line and word thresholds.
+- [x] Grammar tests for each rule `hil-pdf.md` states, including a year, a version and a page count read as numbers.
+- [x] The crate builds and tests with the new feature on and off, and with `--no-default-features`; every consumer's feature set builds unchanged (`../../embarch-fleet/gate.md`, the shared-crate bullet).
+- [x] `interfaces/hil-pdf.md` says what is built and names the API; a new numbered decision for the library and anything the doc left open.
+- [x] Gate green, `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Outcome
+
+Built behind `pdf-text` (`lopdf`, decisions 101 to 103). Gate: build, test and clippy `-D warnings` green for default, `--no-default-features`, `alloc`, `std,reducers`, `study-ui,gatt-extract,eap-parse`, `pdf-text` and `--all-features`. **Debt:** only hand-assembled fixture PDFs have been read; no Typst-rendered PDF (M1.9's fixture) yet, so the word-gap threshold and the 0.5 em width fallback stay assumed. `tasks/api/171` calls `pdf_text::extract_pages` / `words` and `number_grammar::numbers_in_word` / `numbers_in_text` (hil-pdf.md, "What is built").

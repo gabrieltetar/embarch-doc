@@ -1,0 +1,1 @@
+| The shared crate reads a PDF's text back for `verify` check 4: pages, glyph runs through ToUnicode, NFKC, lines and words, and the number grammar for extracted and source text | Built, **hand-assembled fixture PDFs only, no Typst-rendered PDF read yet**; behind feature `pdf-text`; no consumer calls it yet | host | 101, 102, 103 |

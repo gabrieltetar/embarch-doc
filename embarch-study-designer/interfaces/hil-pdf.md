@@ -1,12 +1,21 @@
 # embarch-study-designer: reading numbers back out of the PDF
 
-**Status:** active, 2026-11-20. Part of the HIL file shapes ([hil-shapes.md](hil-shapes.md)). Design, not yet code. **Every constant here is assumed, not measured** (DOC-CONVENTIONS), until M1.9 renders a fixture and M1.11 reads it; a unit that must change one amends it here. Source: `notes/hil/06-report-and-publish.md`, "Verify" check 4 and "The report"; review round 4 delegated these four rules to this doc. Choices: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decision 91.
+**Status:** active, 2026-11-22. Part of the HIL file shapes ([hil-shapes.md](hil-shapes.md)). The extractor and the grammar are **built** (feature `pdf-text`, below); the tick algorithm and the footer rule are still design. **Every constant here is assumed, not measured** (DOC-CONVENTIONS), until M1.9 renders a fixture and M1.11 reads it; a unit that must change one amends it here. Source: `notes/hil/06-report-and-publish.md`, "Verify" check 4 and "The report"; review round 4 delegated these four rules to this doc. Choices: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decision 91; the library: [decisions/hil-pdf.md](../decisions/hil-pdf.md), 101 to 103.
 
 **One implementation.** The extractor's contract, the grammar and `plot_ticks` live once in the shared crate's host-only half; embarch-api's plot helper (M1.9) and `verify` (M1.11) both call them, so the helper cannot draw a tick `verify` would not derive. **`plot_ticks` lives in embarch-api's `report_pdf` until it moves here** ([embarch-api decision 110](../../embarch-api/decisions/report-pdf.md), 2026-11-21), and the Typst helper carries its own copy, which a test holds equal to the Rust one; `verify` is to call the Rust one. The prose and `report.typ` rescans of check 4 apply the same grammar to source text.
 
+## What is built, and the API `verify` calls
+
+Behind the `pdf-text` feature (off by default; `embarch-api` turns it on for check 4), two modules, both host-only:
+
+- **`pdf_text`**: `extract_pages(&[u8]) -> Result<Vec<Page>, ExtractError>` (`Page { number, runs }`, `GlyphRun { text, x, y, size, x_end }`; `ExtractError::Unmapped { page, .. }` displays as "unextractable text on page N"), and `words(&Page) -> Vec<Word>` (the line and word thresholds, constants `LINE_BREAK_Y_SIZE`, `WORD_GAP_SIZE`, `DEFAULT_GLYPH_WIDTH_EM`, the last two assumed).
+- **`number_grammar`**: `numbers_in_word(word, &HashSet<String>)` (the opaque-word rule, then the tokens), `numbers_in_text(text, opaque)` for the prose files and `report.typ`, `tokens(word)`, `is_opaque`; a `NumberToken { text, start, value: Decimal, sig_digits, decimals }`.
+
+Choices and what they add to the contract: [decisions/hil-pdf.md](../decisions/hil-pdf.md). Tested against hand-assembled fixture PDFs only; **nothing has read a Typst-rendered PDF yet**, so the word-gap threshold and the width fallback stay assumed until M1.9's fixture exists.
+
 ## The text extractor
 
-Its contract, whatever library M1.11 picks (the crate is not named: the contract is):
+Its contract, whatever library is used (it is `lopdf`, decision 101, but the contract is what a swap must keep):
 
 - **Input: the PDF's pages in the page tree's order; output, per page, glyph runs in content-stream order**, each `{text, x, y, size}`: `x` and `y` the run's origin in points from the page's bottom-left, `size` its font size. No reading-order heuristic, no re-flow, no de-hyphenation: what the PDF draws, in the order it draws it.
 - **Every glyph must map to Unicode** (the font's ToUnicode map). **One glyph with no mapping fails check 4** ("unextractable text on page N"): a numeral that cannot be read back is the failure the check exists to find, so it is never skipped.
