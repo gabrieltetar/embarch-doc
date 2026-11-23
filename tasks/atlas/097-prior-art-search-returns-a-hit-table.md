@@ -1,6 +1,6 @@
 # 097 — A prior-art search returns one hit table
 
-**State:** claimed by agent/atlas/097-prior-art-search-returns-a-hit-table, 2026-11-23 14:45
+**State:** done — prior-art search wraps DEPATISnet; terms read, robots.txt flagged for the owner; hardware none
 **Source:** Fleet Ready issue: agents running a patent prior-art scan rewrite throwaway scrapers against public patent databases every time
 **Issue:** EMB-136
 **Scope:** atlas
@@ -62,14 +62,14 @@ failed.
 
 ## Done when
 
-- [ ] One command returns a hit table for a keyword plus class query from
+- [x] One command returns a hit table for a keyword plus class query from
       DEPATISnet, with title, applicant, dates and abstract per hit, as
       markdown and JSON.
-- [ ] The source's terms for automated access are recorded in the decision.
-- [ ] Tests cover the parse from recorded responses and a blocked or
+- [x] The source's terms for automated access are recorded in the decision.
+- [x] Tests cover the parse from recorded responses and a blocked or
       rate-limited answer, with no network.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
       `changelog.d/` fragment dropped, `features.d/` row if it is a new
       user-facing command, `status.d/` fragment for anything suite-level it
       made false.
