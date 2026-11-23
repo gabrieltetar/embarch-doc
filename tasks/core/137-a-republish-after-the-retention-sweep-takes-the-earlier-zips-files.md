@@ -1,6 +1,6 @@
 # 137 — Core takes the earlier zip's own files, so a run swept by retention still republishes
 
-**State:** open
+**State:** claimed by agent/core/137-a-republish-after-the-retention-sweep-takes-the-earlier-zips-files, 2026-11-23 11:45
 **Source:** `embarch-core/open.md` — "A revision after the retention sweep has no captures to hash"; `notes/hil/06-report-and-publish.md` — "A revision is built from the earlier zip, its captures included, so retention sweeping a published run's captures never stops a republish" (owner, 2026-11-20)
 **Scope:** core
 **Hardware:** none
