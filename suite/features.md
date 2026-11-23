@@ -82,6 +82,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Rolling **per-user** logfile, surfaced in the UI's Debug tab | Shipped | unit | 43 |
 | Artifact transfer to a Core on a genuinely separate machine | Todo — design resolved (multipart upload), unbuilt | n/a | 15 |
 | Config hot-reload | Todo | n/a | — |
+| `study_measurements` / `study-measurements` — a finished run's `measurements.json` as Core wrote it, before any publish; Core's four refusals named (`no-such-run`, `still-running`, `no-measurements`, `files-gone`) | Built — **never run against a live Core** | unit | [studies](../embarch-api/interfaces/studies.md) |
 | `PATH`/toolchain preflight | **Moved** — lands as an umbrella `doctor` check | n/a | §12 |
 | The UNC artifact path | **Retired** — it only ever worked against a foreground Core, never the installed service | hw | §9 |
 | `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |

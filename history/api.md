@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `study_measurements` tool and `study-measurements` subcommand read a finished run's measurements.json before publish, naming Core's four refusals; see embarch-api/interfaces/studies.md.
 - `embarch-api core-key` prints Core's public key and fingerprint after checking its signature over a fresh nonce; the HIL guide's Study step 6 uses it (EMB-247).
 - verify checks 4, 6 and 9: the PDF's numbers, report-data recomputed, report.typ's syntax tree; publish refuses by the same whitelist.
 - `embarch-api verify <zip> --public-key <hex>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log (decisions 118 to 121).
