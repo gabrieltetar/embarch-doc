@@ -1,6 +1,6 @@
 # 091 — net_trace uses the fitted package's pin map
 
-**State:** claimed by agent/atlas/091-net-trace-uses-the-fitted-packages-pin-map, 2026-11-23 13:07
+**State:** done
 **Source:** Fleet Ready issue, an audit finding while tracing a sensor's supply rail
 **Issue:** EMB-236
 **Scope:** atlas
@@ -32,13 +32,17 @@ pinout) is the worker's design to record as a decision.
 
 ## Done when
 
-- [ ] `net_trace` on a rail fed by a multi-package part names the pins of the
+- [x] `net_trace` on a rail fed by a multi-package part names the pins of the
       fitted package (test with a two-package fixture, fitted in the second).
-- [ ] A part whose package cannot be resolved shows the schematic pin name and
+- [x] A part whose package cannot be resolved shows the schematic pin name and
       says the package was not resolved, rather than guessing the first.
-- [ ] The regulator's output is reported as the rail's source in that fixture.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), including
+- [x] The regulator's output is reported as the rail's source in that fixture.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), including
       `test_public_guard` running, not skipped.
-- [ ] `embarch-atlas`'s docs updated where they describe `net_trace`'s pin
+- [x] `embarch-atlas`'s docs updated where they describe `net_trace`'s pin
       join, `changelog.d/` fragment dropped, `status.d/` fragment for anything
       suite-level it made false. Fixtures use generic part and net names only.
+
+## Outcome
+
+`Join.part_package` now falls back to `part_package_fitted` when no package is declared: the component's `footprint`/`package` text, else the one package the schematic's pin names agree with and none contradicts, else the one whose pin count matches. Unresolved: `net_trace` shows the schematic pin name, "package not resolved" and why, never the first package. Tests in `tests/test_nettrace.py`. Not reproduced: the issue's exact `GND` misread (the pre-change code already gave no record for an ambiguous pin, so the rail showed no source); the fix covers both.
