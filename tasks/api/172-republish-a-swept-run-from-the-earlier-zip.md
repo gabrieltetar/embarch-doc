@@ -1,6 +1,6 @@
 # 172 — `publish` republishes a swept run by handing Core the earlier zip's own files
 
-**State:** claimed by agent/api/172-republish-a-swept-run-from-the-earlier-zip, 2026-11-23 12:38 — resumed; the 11:57 claim's worker died at its login's 5-hour limit
+**State:** done
 **Source:** `embarch-api/open.md` — "A republish after the retention sweep refuses"; `notes/hil/06-report-and-publish.md` — "A revision is built from the earlier zip, its captures included" (owner, 2026-11-20)
 **Scope:** api
 **Hardware:** none
@@ -27,7 +27,11 @@ Closes the one departure from 06's design that `tasks/api/168` recorded, once Co
 
 ## Done when
 
-- [ ] A test against the mock Core: a swept run republishes to `-r2` from the earlier zip, and the earlier zip is unchanged.
-- [ ] A test: a swept run with no earlier zip in the publish folder refuses, saying which file it looked for.
-- [ ] Decision 117 amended (or a new decision), `interfaces/publish.md` and the `open.md` line updated.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A test against the mock Core: a swept run republishes to `-r2` from the earlier zip, and the earlier zip is unchanged.
+- [x] A test: a swept run with no earlier zip in the publish folder refuses, saying which file it looked for.
+- [x] Decision 117 amended (or a new decision), `interfaces/publish.md` and the `open.md` line updated.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result
+
+Decision 126 (`decisions/publish-revisions.md`); 117 trimmed to point at it. `interfaces/publish.md`: 'What publish reads of Core before the manifest exists' moved verbatim to `interfaces/publish-pending-reads.md` (738 B of body, link left); check 5's cell no longer claims `adopted` (check 6 compares it whole). Stale lines fixed: decision 110, decision 123, `open.md`, the footer comment in `verify_report.rs`. Shared crate gained one method, `CoreClient::restore_file`. **Hardware debt:** none; a real swept run against a real Core is unrun (open.md). `tasks/api/173` is `interfaces/publish.md` only, now out of reserve.

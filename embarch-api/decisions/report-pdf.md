@@ -24,4 +24,4 @@ Decision 110: a report renders to PDF inside the binary, offline and reproducibl
 
 **The cost of Typst, measured:** cold `cargo build` of the workspace 66 s without it, 147 s with it (debug); release 71 s without, 187 s with the Typst crates built on top; the **release binary 21.5 MB without, 84.3 MB with** (embedded fonts and the packages included), the debug binary linking it not measured. It is a default feature, `pdf`, since `publish` is this binary's job; `--no-default-features` builds without it.
 
-**Not verified:** a 100,000-row capture rendered in 3.6 s (debug); a million rows is not measured. Sizes are for a binary that calls `render_report`; `main.rs` does not yet.
+**Not verified:** a 100,000-row capture rendered in 3.6 s (debug); a million rows is not measured. Sizes are for a binary that calls `render_report`; `publish` has called it since `tasks/api/167`.
