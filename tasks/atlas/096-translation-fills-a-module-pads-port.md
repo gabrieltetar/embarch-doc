@@ -37,14 +37,20 @@ worker's call.
   need either, the third box is met by saying why none was run.
 - No web fetch for a datasheet.
 
+## Outcome
+
+The pin-table step (`datasheet-procedure.md`) now writes `port` per module pad. `DESIGN.md`'s `pin` row already read as a field description (no "by hand only" wording remained), so its pad-table section was updated instead: it no longer says translation is unexercised in principle. No deterministic check was added: the record schema's `port` pattern already rejects a malformed value through `check`.
+
+Third box: no real module datasheet translation was run. None is in either repo, the only candidates sit in client repos' source dirs, writing a translation there is forbidden, and no web fetch is allowed. Debt: translate one real module datasheet with the skill and confirm `port` on its pad records (an engineer-supplied module datasheet, no hardware).
+
 ## Done when
 
-- [ ] The skill's pin-table step writes `port` for each pad of a module's pad
+- [x] The skill's pin-table step writes `port` for each pad of a module's pad
       table, normalised as `build_pin_map` reads it.
-- [ ] `DESIGN.md`'s `pin` row no longer says the field is filled by hand only.
-- [ ] A translation of one real module datasheet is checked for `port` on its
+- [x] `DESIGN.md`'s `pin` row no longer says the field is filled by hand only.
+- [x] A translation of one real module datasheet is checked for `port` on its
       pad records, or this file says why none was run.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
       `changelog.d/` fragment dropped, `status.d/` fragment for anything
       suite-level it made false.
