@@ -1,6 +1,6 @@
 # 041 — The missing-embarch-api session line names every missing piece
 
-**State:** claimed by agent/desk/041-missing-embarch-api-line-names-every-missing-piece, 2026-11-23 13:08
+**State:** done 2026-11-23
 **Source:** Fleet Ready issue, a session that planned to flash a board by hand after reading the line
 **Issue:** EMB-230
 **Scope:** desk
@@ -61,14 +61,14 @@ leave 038 alone.
 
 ## Done when
 
-- [ ] For a folder whose repo has no `embarch/embarch.toml` and no matching
+- [x] For a folder whose repo has no `embarch/embarch.toml` and no matching
       project, the session line names `embarch init` and where to run it, as
       well as the register command.
-- [ ] A session line whose register command carries another project's
+- [x] A session line whose register command carries another project's
       `--config` says the desk repo's own config is used.
-- [ ] The session line says not to flash or build outside EmbArch, and to ask
+- [x] The session line says not to flash or build outside EmbArch, and to ask
       the user instead.
-- [ ] `mcpreg.rs` tests cover the repo-without-config case.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] `mcpreg.rs` tests cover the repo-without-config case.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.

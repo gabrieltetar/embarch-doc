@@ -6,4 +6,4 @@
 
 **A worktree of a west project builds its own module** (decision 80): Start work writes `ZEPHYR_MODULES` — the workspace's Zephyr modules with the main clone swapped for the worktree — into the worktree's `.claude/settings.local.json` `env`; outside a west workspace nothing is written, and a missing `west` or a module with no `name:` is a warning in its answer.
 
-**A folder whose login lacks `embarch-api` is flagged** (decision 82): `GET /desks` marks it and a session starting there is told the user-scope `claude mcp add` command; the desk only reads `.claude.json`.
+**A folder whose login lacks `embarch-api` is flagged** (decision 82): `GET /desks` marks it and a session starting there is told every missing piece in order (the user-scope `claude mcp add` command, `embarch init` when the repo has no config of its own) and not to flash by hand; the desk only reads `.claude.json`.
