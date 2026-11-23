@@ -1,6 +1,6 @@
 # 138 — `embarch-core/open.md` still owes `verify` check 8, which has landed
 
-**State:** open
+**State:** claimed by agent/core/138-open-md-still-owes-verify-check-8, 2026-11-23 12:38
 **Source:** `embarch-core/open.md` — "The run log's tail is anchored only from a publish on … Remains for M1.11: `verify` check 8 comparing the recorded head."; `embarch-api/interfaces/publish.md` check 8 row and `embarch-api/decisions/verify.md` decisions 118 to 121 (landed 2026-11-22, `tasks/api/170`). Filed by the supervisor during a refill sweep, 2026-11-23.
 **Scope:** core
 **Hardware:** none
