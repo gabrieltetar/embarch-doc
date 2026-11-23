@@ -26,7 +26,7 @@ None is measured; each is a spelling or a type, chosen so M1.2, M1.3, M1.5 and M
 
 ### 91 — `run.json`, a Study's export and the PDF readers: what the notes left open
 
-*Assumed, not measured*: every constant in [hil-pdf.md](../interfaces/hil-pdf.md) (0.5 and 0.3 `size` for the line and word breaks, `TICK_TARGET` 5, the footer band 8 to 15 mm and its 5 mm centring), until M1.9 renders a fixture and M1.11 reads it.
+*Assumed, not measured*: every constant in [hil-pdf.md](../interfaces/hil-pdf.md) (0.5 `size` for the line break, `TICK_TARGET` 5, the 5 mm centring, Letter) until M1.9 renders a fixture and M1.11 reads it. *Measured once* (embarch-api decision 123; Typst 0.15.1, one font set, A4): the footer band, now 8 to 16 mm, and the 0.3 word gap.
 
 - **`run.json`**: top-level keys (`suite`, `plan_hash`, `standard`, `dut`, `resumes`, `options`, `benches`, `tests`) are 03's list given names; **a template's expansion is one entry per concrete pass, its id suffixed `#<n>`; the study is carried by hash and file name, not inlined; the limits are the tolerance limits and the acceptance limit is derived from them and w**, never stored, so the two cannot disagree. `decision_rule` is `{kind, w_multiple}`.
 - **A Study's run has a `run_status`** (`completed`, `step_failed`, `interrupted`, `cancelled`), spelled apart from the six verdicts and a pure function of `events.json`, so `verify` recomputes it. 06 check 3 says a Study has no verdict and defers its "export and check shape" here; this is that.

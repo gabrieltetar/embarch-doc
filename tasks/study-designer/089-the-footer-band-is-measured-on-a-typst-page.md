@@ -1,6 +1,6 @@
 # 089 — `hil-pdf.md`'s footer band is 8 to 16 mm, measured on a Typst page
 
-**State:** claimed by agent/study-designer/089-the-footer-band-is-measured-on-a-typst-page, 2026-11-23 11:45
+**State:** done, 2026-11-23
 **Source:** `embarch-api/decisions/verify-report.md` decision 123 — "the footer's baseline sits at 14.96 mm (11 pt) and just over 15 mm under the appendix's 9 pt, on the edge of `hil-pdf.md`'s 8 to 15 mm band, so this crate uses 8 to 16 mm (filed against the doc)"
 **Issue:** EMB-242
 **Scope:** study-designer
@@ -26,6 +26,6 @@ The footer band in the PDF text interface reads 8 to 16 mm and says it was measu
 
 ## Done when
 
-- [ ] `interfaces/hil-pdf.md`'s footer band reads 8 to 16 mm, with the measurement named (Typst 0.15.1, 11 pt and 9 pt, one font set, A4) and the `embarch-api` decision that took it.
-- [ ] Decision 91's assumed list in `decisions/hil-shapes.md` agrees with it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] `interfaces/hil-pdf.md`'s footer band reads 8 to 16 mm, with the measurement named (Typst 0.15.1, 11 pt and 9 pt, one font set, A4) and the `embarch-api` decision that took it.
+- [x] Decision 91's assumed list in `decisions/hil-shapes.md` agrees with it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
