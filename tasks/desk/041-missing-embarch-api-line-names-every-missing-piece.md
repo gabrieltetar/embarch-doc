@@ -1,6 +1,6 @@
 # 041 — The missing-embarch-api session line names every missing piece
 
-**State:** open
+**State:** claimed by agent/desk/041-missing-embarch-api-line-names-every-missing-piece, 2026-11-23 13:08
 **Source:** Fleet Ready issue, a session that planned to flash a board by hand after reading the line
 **Issue:** EMB-230
 **Scope:** desk
