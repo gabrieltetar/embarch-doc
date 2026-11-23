@@ -1,6 +1,6 @@
 # 138 — `embarch-core/open.md` still owes `verify` check 8, which has landed
 
-**State:** claimed by agent/core/138-open-md-still-owes-verify-check-8, 2026-11-23 12:38
+**State:** done
 **Source:** `embarch-core/open.md` — "The run log's tail is anchored only from a publish on … Remains for M1.11: `verify` check 8 comparing the recorded head."; `embarch-api/interfaces/publish.md` check 8 row and `embarch-api/decisions/verify.md` decisions 118 to 121 (landed 2026-11-22, `tasks/api/170`). Filed by the supervisor during a refill sweep, 2026-11-23.
 **Scope:** core
 **Hardware:** none
@@ -22,6 +22,6 @@ The bullet names M1.11 as remaining after M1.11 landed, so a reader of `embarch-
 
 ## Done when
 
-- [ ] The run-log-tail bullet no longer says check 8 is owed, and states what check 8 does and does not cover, citing `embarch-api`'s decision by number.
-- [ ] Any other line in `embarch-core/open.md` or `embarch-core/open/*.md` that the verify decisions made false is corrected, or the result says none was found.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] The run-log-tail bullet no longer says check 8 is owed, and states what check 8 does and does not cover, citing `embarch-api`'s decision by number.
+- [x] Any other line in `embarch-core/open.md` or `embarch-core/open/*.md` that the verify decisions made false is corrected, or the result says none was found.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.

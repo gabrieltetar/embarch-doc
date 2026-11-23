@@ -16,7 +16,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **Decision 110's declarations ledger is in memory**, so a declaration made before this Core started is not in a run's record (`witnessed_since_utc_ms`). **Windows ACL debt, owner-run:** `icacls` on `signing-key` and `run-log.jsonl` (steps and the expected output in [open/scope-and-ledger.md](open/scope-and-ledger.md)); a worktree cannot build it.
 
-- **The run log's tail is anchored only from a publish on** (decisions 111, 118): a publish records the head it ended at beside the manifest hash, so a tail cut *before* that head is detectable, one after the last publish is not. Remains for M1.11: `verify` check 8 comparing the recorded head. A run a crash cut off mid-way has no entry and is swept like any run; an entry that fails to write is logged at `error` and leaves the run unprotected.
+- **The run log's tail is anchored only from a publish on** (decisions 111, 118): a publish records the head it ended at beside the manifest hash, so a tail cut *before* that head is detectable, one after the last publish is not. `verify` check 8 (api decision 121) checks a zip's segment against the signed head; the publish's own entry is not checkable offline. A run a crash cut off mid-way has no entry and is swept like any run; an entry that fails to write is logged at `error` and leaves the run unprotected.
 
 - **"A pending requirement" has no store** (milestone 1 has no Test phase): `RunLog::discard`'s `clean` test is where a requirement holding a run would refuse the agent too. Not built.
 
