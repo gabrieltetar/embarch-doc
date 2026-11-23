@@ -14,6 +14,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- core open.md no longer owes verify check 8: embarch-api decision 121 checks the zip segment against the signed head; the publish entry stays unverifiable offline.
 - Core's release workflow signs every archive with cosign (Sigstore keyless) and uploads a `.sigstore.json` bundle beside it; see [spec](../embarch-core/spec.md) §3.
 - Core open.md: never-exercised bullets split out to open/never-exercised.md, verbatim.
 - `GET /dev-bench/hello` serves the bench's build as `dev_bench_version`, not `firmware_version`, the DUT's name on a Study; the wire `HelloAck` is unchanged (108).
