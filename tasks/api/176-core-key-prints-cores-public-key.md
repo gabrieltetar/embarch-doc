@@ -1,6 +1,6 @@
 # 176 — `core-key` prints the public key of the Core it reaches, checked against the challenge
 
-**State:** open
+**State:** claimed by agent/api/176-core-key-prints-cores-public-key, 2026-11-23 15:41
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-247
 **Scope:** api
