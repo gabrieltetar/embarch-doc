@@ -1,6 +1,6 @@
 # 008 — `embarch-promptu/decisions/patterns.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/promptu/008-compact-promptu, 2026-11-23 11:45
 **Source:** promptu 007 (EMB-196) added the footer and log pointers to decisions 13 and 14, leaving `decisions/patterns.md` at 11,138 of 12,288 B (reserve from 11,059 B; it stood at 11,058 B on `main`, at the edge).
 **Scope:** promptu
 **Hardware:** none
