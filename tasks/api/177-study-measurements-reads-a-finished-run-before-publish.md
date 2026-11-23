@@ -1,7 +1,6 @@
 # 177 — `study_measurements` reads a finished run's `measurements.json` before publish
 
-**State:** blocked
-**Unparks when:** tasks/core/139
+**State:** open
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-246
 **Scope:** api
@@ -20,8 +19,10 @@ route, its refusals and their statuses from
 
 When this is done, a `study_measurements` MCP tool and an
 `embarch-api study-measurements <study_id>` subcommand return the file as Core
-wrote it, and pass Core's refusals (unknown study, run not ended, no
-measurements declared) through by name rather than as a generic failure.
+wrote it, and pass Core's refusals through by name rather than as a generic
+failure. `core/139` landed `GET /study/{study_id}/measurements` with four: 404
+(no such run), 409 (still running), 422 (no `measurements.json`) and 410 (the
+run's files are gone).
 
 ## Why now
 
@@ -63,11 +64,16 @@ limit in this scope: `ledger` #98 (15 B), `bench-exchange` #89 (122 B),
 `failure-reporting` #67 (192 B). If the tool needs a decision, file a new one
 rather than growing any of those.
 
+Also, while you are in `embarch-core-client`: `api/176` split the funnel into
+`dispatch` (a wrapper) and `dispatch_with(.., bearer)`, and decision 55's prose
+still says `dispatch` applies the token. Correct that sentence in place, and
+name `dispatch_with` in decision 129 if it fits in one clause. No new decision.
+
 ## Done when
 
 - [ ] One MCP tool and one CLI subcommand return a finished run's
       `measurements.json` before any publish, unchanged.
-- [ ] Core's three refusals reach the caller by name; a test covers the file
+- [ ] Core's four refusals reach the caller by name; a test covers the file
       and each refusal without a live Core.
 - [ ] The pinned guide's Study step 4 names the tool instead of the
       first-revision workaround; `status.d/` fragment for `suite/hil-guide.md`.
