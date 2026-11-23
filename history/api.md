@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch-api verify <zip> --public-key <hex>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log (decisions 118 to 121).
 - publish lists every number in the prose and report.typ, names each prose block's author, and writes -r2 from the earlier zip ([decisions](../embarch-api/decisions/publish-revisions.md) 115-117).
 - `publish <run id>` (tool and subcommand) writes a finished Study run as one zip: PDF, Core's signed files, both exports, sources. [interfaces](../embarch-api/interfaces/publish.md)
 - `run_study` sends Core the project checkout's commit, dirty state and `west` version as build claims, none without a git checkout; [decision 111](../embarch-api/decisions/build-claims.md).

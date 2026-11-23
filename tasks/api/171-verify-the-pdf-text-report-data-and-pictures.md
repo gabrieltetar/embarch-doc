@@ -1,7 +1,7 @@
 # 171 — `verify` checks the PDF's text, recomputes `report-data.json`, and whitelists `report.typ`'s syntax tree
 
 **State:** blocked
-**Unparks when:** `tasks/api/170` and `tasks/study-designer/088` have both landed.
+**Unparks when:** `tasks/study-designer/088` has landed.
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its second half; `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9
 **Issue:** EMB-226
 **Scope:** api
