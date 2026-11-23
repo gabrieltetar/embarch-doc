@@ -6,6 +6,7 @@ Truth: [spec.md](spec.md). Rationale: [decisions.md](decisions.md).
 
 ## Known wrong / unfinished
 
+- **`verify` has never read a real Core's zip, and check 4 has met one Typst font set.** Its footer band is 8 to 16 mm where `hil-pdf.md` says 8 to 15 ([decision 123](decisions/verify-report.md), filed); a number only `appendix.typ` prints keeps check 4 partial; `report-data.json`'s recompute is a second copy of Core's builder that can drift ([decision 124](decisions/verify-report.md)).
 - **A `[[projects]]` `board` is a hardware fact nothing checks against hardware.** From `build_info.yml`, it names the last build, not the desk's board; violates [spec.md](spec.md) §2's no-inference-as-fact invariant. `init` no longer writes one (`embarch-umbrella` decision 41); older configs do.
 - **Windows never runs the smoke-harness tier.** `tests/smoke_harness.rs` ([decisions](decisions/smoke-harness.md) 30, `tasks/api/075`) is `#[cfg(unix)]` (POSIX-shell `build_command`). Windows reaches only the mocked criteria ([decisions](decisions/tests.md) 46).
 - **Nothing gives a scripted caller a failure *kind*.** `error_kind` is retired unbuilt ([decisions](decisions/surface.md) 16, 50); branching on a cause means matching prose. **Not this repo's fix**: Core's `{code, message, cause}` body (`embarch-core` decision 12) is deferred. **Never derive a kind from the HTTP status.**

@@ -1,6 +1,6 @@
 # 171 — `verify` checks the PDF's text, recomputes `report-data.json`, and whitelists `report.typ`'s syntax tree
 
-**State:** claimed by agent/api/171-verify-the-pdf-text-report-data-and-pictures, 2026-11-22 18:19
+**State:** done — agent/api/171-verify-the-pdf-text-report-data-and-pictures, 2026-11-22
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its second half; `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9
 **Issue:** EMB-226
 **Scope:** api
@@ -25,7 +25,13 @@ The second half of EMB-226. With it, `verify` runs every check 06 gives a Study.
 
 ## Done when
 
-- [ ] It fails each tampered copy, one test each: a changed number in the PDF, an embedded image, an aliased plot call, a package off the list, a `report-data.json` that disagrees with the records.
-- [ ] `publish` refuses a `report.typ` that the whitelist refuses.
-- [ ] `interfaces/` and `spec.md` amended; new numbered decisions.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] It fails each tampered copy, one test each: a changed number in the PDF, an embedded image, an aliased plot call, a package off the list, a `report-data.json` that disagrees with the records.
+- [x] `publish` refuses a `report.typ` that the whitelist refuses.
+- [x] `interfaces/` and `spec.md` amended; new numbered decisions.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Done
+
+`src/report_whitelist.rs`, `src/verify_report.rs` (checks 4, 6, 9), `publish` refuses by the whitelist, decisions 122 to 125 ([decisions/verify-report.md](../../embarch-api/decisions/verify-report.md)). Tests: `tests/verify.rs` (a changed PDF number; an embedded image, an alias, `eval` and an unsigned plot file; a package off the list; a `report-data.json` that disagrees with the records; a Study zip with a lilaq plot passing 4, 6 and 9) and `tests/publish.rs` (the whitelist refusal).
+
+**Findings.** The extractor read a Typst and lilaq PDF with its constants unchanged. The footer baseline measured 14.96 mm, on the edge of the doc's 8 to 15 mm band, so check 4 uses 8 to 16 mm: filed against `hil-pdf.md`. Core's report-data builder was small enough to recompute independently in `verify`, so it was not moved to the shared crate (decision 124).
