@@ -42,6 +42,7 @@
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
 ### Changed
+- The datasheet procedure writes a module pad table's SoC port as each pad record's port; see embarch-atlas/design.md.
 - Atlas live tools take an optional lease_token, so a session holding the bench lease can use shell and reg_read; a 409 lease refusal reads as did not run.
 - The atlas-use skill and MAP.md now show that `q config` takes several symbols and `*` patterns in one call, and `--vs pinned` for differences.
 - Atlas check L now verifies the applicability level sits in the record's role column by word x-positions, like check K; rows it cannot place are reported not checkable.
