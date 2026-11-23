@@ -4,7 +4,7 @@
 
 ## 1. Three rules behind every shape
 
-**An issue carries everything its worker needs, so nobody reads around it.** An agent picking one up reads the body first and should need nothing else to start: every file path, function, command, verbatim error, decision number and measurement it would otherwise go and find is in the body. A reference points at something an agent can open — a repo path, `<sub-project>` decision N, an issue key — never a chat, a Slack thread or a screenshot (the desk cannot read attachments).
+**An issue carries everything its worker needs, so nobody reads around it.** An agent picking one up reads the body first and should need nothing else to start: every file path, function, command, verbatim error, decision number and measurement it would otherwise go and find is in the body. A reference points at something an agent can open — a repo path, `<sub-project>` decision N, an issue key — never a chat, a Slack thread or a screenshot.
 
 **The body is the current ask; comments are its history.** A comment that changes the ask comes with an edit to the body in the same step (`linear_draft_edit`, or `fleet-linear.py rewrite`), and is a **Changed** comment saying what moved. So an agent reads the body and the latest comment, never the whole discussion to rebuild the ask.
 
