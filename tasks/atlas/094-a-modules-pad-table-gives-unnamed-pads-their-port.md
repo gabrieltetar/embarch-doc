@@ -1,6 +1,6 @@
 # 094 — A module's pad table gives an unnamed pad its port
 
-**State:** claimed by agent/atlas/094-a-modules-pad-table-gives-unnamed-pads-their-port, 2026-11-23 13:53
+**State:** done
 **Source:** Fleet Ready issue, filed by `atlas/092`'s worker for the part of its issue that unit could not meet
 **Issue:** EMB-243
 **Scope:** atlas
@@ -38,13 +38,28 @@ port are free or interrupt-capable.
 
 ## Done when
 
-- [ ] A module's pad table translates into a record that maps each pad to its
+- [x] A module's pad table translates into a record that maps each pad to its
       SoC port.
-- [ ] `pins.md` gives the port and DT use of an unnamed pad on a
+- [x] `pins.md` gives the port and DT use of an unnamed pad on a
       function-named net from that record, marked with its source.
-- [ ] A test covers a module fixture whose unnamed pads resolve only through
+- [x] A test covers a module fixture whose unnamed pads resolve only through
       the pad table.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated,
       `changelog.d/` fragment dropped, `status.d/` fragment for anything
       suite-level it made false.
+
+## Outcome
+
+**Decided.** The record kind is the existing `pin` record with a new optional `port` field (schema + DESIGN.md), keyed to the
+module like any pin record (the document covering its MPN, `package` as usual); no new kind, loader or join table. Order in
+`build_pin_map`: symbol pin name, pad table `port` (`port_source` `module pad table`), datasheet pin name, net name. The
+symbol wins over a disagreeing pad table; `pins.json` carries `port_conflict` and `pins.md` prints `(pad table says X)`.
+A port is normalised (`P1.3` -> `P1.03`). `port_why` now names the `port` field as the remedy.
+
+**Tests.** `tests/test_join_nordic.py` synthetic module: pad resolved only via the table (with DT use), table ahead of net
+name, symbol-wins conflict, a pad with no row still saying why. Full suite 978 passed.
+
+**Not exercised.** Whether the `atlas-translate-docs` pin-table pass fills `port` from a real module datasheet's pad table
+is untried (it needs an LLM pass over a real datasheet); the skill text was not changed, so until it is told to emit `port`
+the field is filled by hand or by `engineer-declared` records.
