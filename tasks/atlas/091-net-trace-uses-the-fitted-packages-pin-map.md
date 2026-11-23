@@ -1,6 +1,6 @@
 # 091 — net_trace uses the fitted package's pin map
 
-**State:** open
+**State:** claimed by agent/atlas/091-net-trace-uses-the-fitted-packages-pin-map, 2026-11-23 13:07
 **Source:** Fleet Ready issue, an audit finding while tracing a sensor's supply rail
 **Issue:** EMB-236
 **Scope:** atlas
