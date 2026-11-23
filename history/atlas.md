@@ -42,6 +42,7 @@
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
 ### Changed
+- Atlas live tools take an optional lease_token, so a session holding the bench lease can use shell and reg_read; a 409 lease refusal reads as did not run.
 - The atlas-use skill and MAP.md now show that `q config` takes several symbols and `*` patterns in one call, and `--vs pinned` for differences.
 - Atlas check L now verifies the applicability level sits in the record's role column by word x-positions, like check K; rows it cannot place are reported not checkable.
 - Atlas check K holds a record to the side-by-side MIN/TYP/MAX group its cond names when headers carry a condition; unmatched falls back to agreement with a warning (atlas/063).
