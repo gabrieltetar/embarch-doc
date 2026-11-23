@@ -17,7 +17,7 @@ What a doc may weigh and what counts as a debt. `scripts/check-doc-size.py` impl
 | Suite-level doc | **10 KB** | `suite/*.md` |
 | A complete inventory table — every row must be there | **15 KB** | `suite/roadmap.md` |
 | An assembled inventory — the budget is per row, and there is **no** per-file cap | **none** | `suite/features.md`, from `features.d/` |
-| A narrative guide | **25 KB** | `suite/{user,studies}-guide.md` |
+| A narrative guide | **25 KB** | `suite/{user,studies,hil}-guide.md` |
 | A protocol doc | **12 KB** | `DOC-*.md` |
 | Reversals index | **10 KB** | `embarch-decision-reversals.md` |
 | Reversal range | **20 KB** | `reversals/rows-<a>-<b>.md` |
