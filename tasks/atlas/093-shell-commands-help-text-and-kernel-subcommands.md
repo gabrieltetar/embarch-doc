@@ -1,6 +1,6 @@
 # 093 — `shell_commands` decodes each help string and lists `kernel`'s subcommands
 
-**State:** claimed by agent/atlas/093-shell-commands-help-text-and-kernel-subcommands, 2026-11-23 13:36
+**State:** done
 **Source:** Fleet Ready issue, a session listing a board image's shell commands before running them
 **Issue:** EMB-234
 **Scope:** atlas
@@ -35,13 +35,21 @@ a current Zephyr.
 
 ## Done when
 
-- [ ] A test with a Zephyr 4.4 style entry layout decodes the help text as
+- [x] A test with a Zephyr 4.4 style entry layout decodes the help text as
       plain ASCII.
-- [ ] A test shows `shell_commands command=kernel` on such an image listing
+- [x] A test shows `shell_commands command=kernel` on such an image listing
       `reboot`.
-- [ ] A help pointer that does not reach printable text gives an empty help,
+- [x] A help pointer that does not reach printable text gives an empty help,
       never bytes.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/` updated where they describe
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/` updated where they describe
       the shell inventory, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Outcome
+
+Two causes, both read from Zephyr 4.4 source (`include/zephyr/shell/shell.h`, `subsys/shell/shell_utils.c`):
+the help pointer is `SHELL_HELP(description, usage)`, a `struct shell_cmd_help` whose first word is the magic
+`0x86D20BC4` (the garbage bytes), and `kernel`'s set is made by `SHELL_SUBCMD_SET_CREATE` and `SHELL_SUBCMD_ADD`:
+a zero object in `shell_subcmds` with the entries after it, not a union holding a pointer. Both are read now;
+`shell.json` is schema 2 (adds `usage`). Tests build the layouts synthetically; not run against a real image.
