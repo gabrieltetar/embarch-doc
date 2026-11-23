@@ -12,6 +12,7 @@
 - Promptu's pass accepts the chat's context usage (prep --context-usage) and names a way in Who does it for high-context work, footer way=; see contract §7.10.
 
 ### Changed
+- Promptu's decisions 22, 23 and 25 to 28 moved verbatim from decisions/patterns.md to decisions/questions.md, bringing patterns.md out of reserve.
 - Split promptu spec.md: build steps 2 and 3 moved verbatim to spec/build-steps.md, 9,563 to 6,949 B ([spec](../embarch-promptu/spec.md)).
 - Promptu decision 39 retired: the chat's handoff card and chip are gone (embarch-chat 36, 97).
 - Promptu decision 40 amended: the rail's icons are one-colour SVGs, not emoji, following chat 94 (EMB-56).
