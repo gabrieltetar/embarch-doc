@@ -1,6 +1,6 @@
 # 175 — The build verdict reports the application image on a sysbuild build
 
-**State:** open
+**State:** claimed by agent/api/175-build-verdict-reports-the-application-image-on-sysbuild, 2026-11-23 13:36
 **Source:** Fleet Ready issue, a session building a sysbuild firmware commit through `build --each`
 **Issue:** EMB-232
 **Scope:** api
