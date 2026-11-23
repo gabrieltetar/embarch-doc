@@ -52,6 +52,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- atlas shell_commands: Zephyr 4.4 structured help decodes to text, and section-added sets (`kernel`) list their subcommands; non-text help is empty.
 - pins.md: a module pad the symbol leaves unnamed takes its port from a port-named net, else says why it has none (EMB-237).
 - Net trace reads the pin names of the package a board part is fitted with, inferred from pin names or count, and says when it cannot tell (EMB-236).
 - `doc regparse --template ti` reads width-prefixed binary resets (`2b10`), `[Reset = 0x11]` and `[Reset = X]`; before, a layout printing them got no reset and no conflicts (EMB-33, atlas DESIGN.md).
