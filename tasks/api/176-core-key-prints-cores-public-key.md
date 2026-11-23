@@ -1,6 +1,6 @@
 # 176 — `core-key` prints the public key of the Core it reaches, checked against the challenge
 
-**State:** claimed by agent/api/176-core-key-prints-cores-public-key, 2026-11-23 15:41
+**State:** done — core-key built, checked against a fresh nonce; guide step 6 updated
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-247
 **Scope:** api
@@ -73,12 +73,16 @@ rather than growing any of those.
 
 ## Done when
 
-- [ ] `embarch-api core-key` prints Core's public key and its SHA-256
+- [x] `embarch-api core-key` prints Core's public key and its SHA-256
       fingerprint after checking the challenge's signature over a fresh nonce,
       and exits non-zero, saying why, when the signature does not check.
-- [ ] A test covers a good answer and a bad signature without a live Core.
-- [ ] The pinned guide's Study step 6 names `core-key` instead of the `curl`;
+- [x] A test covers a good answer and a bad signature without a live Core.
+- [x] The pinned guide's Study step 6 names `core-key` instead of the `curl`;
       `status.d/` fragment for `suite/hil-guide.md`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), bar the drift guard above.
-- [ ] `spec.md`/`decisions.md`/`interfaces/` updated where they list the CLI,
+- [x] Gate green (`../../embarch-fleet/gate.md`), bar the drift guard above.
+- [x] `spec.md`/`decisions.md`/`interfaces/` updated where they list the CLI,
       `changelog.d/` fragment dropped.
+
+## Report
+
+Decision 129 (`decisions/verify.md`). Shared crate `crates/embarch-core-client`: one call, `auth_challenge` + `ChallengeAnswer`, and `dispatch` split into `dispatch_with(.., bearer)` so the tokenless route stays inside the one funnel; `tests/core_client_http.rs` sweep exempts `/auth/challenge` (must send no token). The drift guard `the_pinned_copy_matches_the_suite_guide_where_one_is_reachable` is red by construction until the supervisor folds `status.d/api-176-hil-guide-core-key.md`. The positive path is unit-tested with a real key; a mock Core cannot sign a random nonce, so the end-to-end test is the replay refusal. **Hardware-verification debt:** none needed, but `core-key` has never run against a live Core.

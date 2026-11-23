@@ -2,6 +2,10 @@
 
 **Status:** active, 2026-11-23. Split verbatim from [publish.md](publish.md) (`tasks/api/173`); the section below is unchanged.
 
+## core-key
+
+`embarch-api core-key [--json]` (CLI only; `src/core_key.rs`) runs `POST /auth/challenge` against the Core `status` reaches, with a fresh random 32-hex nonce and **no token**. It checks the frame, the Ed25519 signature and the `keyid` ([decision 129](../decisions/verify.md)) before printing the raw public key (64 hex, `verify --public-key`'s form) and its SHA-256 fingerprint. `--json`: `{success, public_key, fingerprint}`. A failed check or an unreachable Core exits 1 with `error`. It writes the key nowhere.
+
 ## verify
 
 `embarch-api verify <zip> --public-key <hex> [--attested-fingerprint <hex>] [--json]` (CLI only, no MCP tool; `src/verify.rs`, behind `pdf`). It loads **no config and calls no Core**, and reads the zip and the key alone.

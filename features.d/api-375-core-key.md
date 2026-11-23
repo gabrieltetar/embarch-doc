@@ -1,0 +1,1 @@
+| `core-key` — Core's public key (64 hex, `verify --public-key`'s form) and SHA-256 fingerprint, printed only after Core's signature over a fresh nonce's challenge frame checks; no token sent, key written nowhere | Built — **never run against a live Core** | unit | [verify](../embarch-api/interfaces/verify.md) |

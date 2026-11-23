@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-22 (`tasks/api/170`, HIL M1.11, first half).
 
-Decisions 118 to 121. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/verify.md](../interfaces/verify.md). Source: `notes/hil/06-report-and-publish.md`, "Verify". Checks 4, 6 and 9 are `tasks/api/171`'s.
+Decisions 118 to 121 and 129. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/verify.md](../interfaces/verify.md). Source: `notes/hil/06-report-and-publish.md`, "Verify". Checks 4, 6 and 9 are `tasks/api/171`'s.
 
 ### 118 - `verify` is a CLI-only subcommand that needs no config, no Core and a public key
 
@@ -19,3 +19,7 @@ A check is `pass`, `FAIL`, `partial`, `not checked by this version` or `not appl
 ### 121 - Check 8's chain starts from the segment's first entry, and the publish's own entry is out of reach
 
 The segment is `{entry, hash}` lines; each hash is the SHA-256 of the entry's `serde_json` bytes, `prev` the line before's, `seq` consecutive. A first entry whose `prev` is not all zeros is noted, not failed (a later segment is allowed). The last hash and the line count must equal `run_log.head` and `run_log.length` in the signed manifest. The run's `run` entry must exist once, name `record.dsse.json`'s hash and each capture's; a discard of the run fails. The publish's entry and any later revision are after the head and are not checkable offline; the result says so. Check 5 reads the same segment for the adoptions and the run's `go_by`, which it recomputes the label from (Core's rule: a person's act is `go_by`, the publisher, an adoption or a declaration with the person's scope), so a forged label fails without trusting `report-data.json`.
+
+### 129 - `core-key` prints the key only after Core's signature over a fresh nonce's frame checks, sends no token, and writes nothing
+
+`verify` needs Core's key out of band and nothing printed it; the guide's `curl` with a fixed nonce checked nothing. `embarch-api core-key [--json]` (CLI only, like `verify`; it needs the config only to find the Core `status` reaches) draws 16 random bytes as the nonce, calls `POST /auth/challenge`, and rebuilds the frame `embarch-core-auth-v1\n<core_nonce>\n<nonce>` from [Core decision 110](../../embarch-core/interfaces/signing.md) itself. It prints only if `frame` equals that string, the Ed25519 signature over it verifies under `public_key`, and `keyid` is the SHA-256 of that key; otherwise it exits 1 saying which. Output: the 64-hex key and the fingerprint `verify` already computes (`verify::sha`, one definition). **No token is sent** (the route takes none, and the point is learning which Core answers first), and **the key is written nowhere**: not into the config, and `verify` does not learn to read it, so the key stays out of band for `verify`. One call is added to `embarch-core-client` (`auth_challenge`, `ChallengeAnswer`), which `embarch-ui` shares. **Measured:** unit tests with a real key (good, wrong key, other nonce, wrong keyid) and a mock Core (no `Authorization` header; a replayed answer exits 1). **Assumed:** a live Core's answer, not run here.
