@@ -152,6 +152,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The shared crate computes derived measurements with built-in reducers (count, rate, min, max, mean, percentile, interval, value at a marker), each versioned by behaviour, with `U` and a type-A term | Built, **host tests against fixtures**; behind feature `reducers`; no Core calls them yet | host | 92, 93, 94 |
 | The shared crate decides HIL verdicts in code: the six verdicts, a step outcome's mapping, the guard band on both sides of a limit, the acceptance-width refusal and the requirement roll-up, each versioned by behaviour | Built, **host tests against fixtures**; behind feature `verdicts`; no Core calls them yet | host | 95, 96, 97, 98 |
 | A study declares its derived measurements — reducer, tap, field, unit, window and the values it declares for itself, refused at validation when Core could not compute one | Built, **host tests**; always compiled; **Core computes none and calls no validation yet (`tasks/core/132`), and only a hand-written study file carries one** | host | 99, 100 |
+| The shared crate reads a PDF's text back for `verify` check 4: pages, glyph runs through ToUnicode, NFKC, lines and words, and the number grammar for extracted and source text | Built, **hand-assembled fixture PDFs only, no Typst-rendered PDF read yet**; behind feature `pdf-text`; no consumer calls it yet | host | 101, 102, 103 |
 
 ## embarch-outpost
 

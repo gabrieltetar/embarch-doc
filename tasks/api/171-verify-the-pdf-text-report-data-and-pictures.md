@@ -1,7 +1,6 @@
 # 171 — `verify` checks the PDF's text, recomputes `report-data.json`, and whitelists `report.typ`'s syntax tree
 
-**State:** blocked
-**Unparks when:** `tasks/study-designer/088` has landed.
+**State:** open
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its second half; `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9
 **Issue:** EMB-226
 **Scope:** api
@@ -11,7 +10,7 @@
 ## Dispatch notes
 
 - `tasks/api/170` builds `verify <zip>` with checks 0, 1, 2, 3, 5, 7 and 8, and reports 4, 6 and 9 as "not checked by this version"; this task fills those three in.
-- `tasks/study-designer/088` builds the PDF text extractor and the number grammar behind a feature of the shared crate; turn it on here. `plot_ticks` stays in this crate's `report_pdf` (decision 110), and check 4 calls it.
+- `tasks/study-designer/088` built the PDF text extractor and the number grammar behind the shared crate's `pdf-text` feature (its decisions 101 to 103); turn it on here and call `pdf_text::extract_pages`, `pdf_text::words`, `number_grammar::numbers_in_word` and `number_grammar::numbers_in_text`, as `embarch-study-designer/interfaces/hil-pdf.md` "What is built" names them. `pdf-text` pulls `lopdf` in, a large tree, into this crate only. Its word-gap threshold and 0.5 em width fallback are assumed and have read only hand-assembled PDFs, so check 4 against a Typst-rendered PDF is the first real test. `plot_ticks` stays in this crate's `report_pdf` (decision 110), and check 4 calls it.
 - `embarch-api` decisions 114 and 115 left the `footer` refusal and the picture refusal lexical, with check 9's syntax-tree whitelist to M1.11; once the whitelist exists, `publish` refuses by it too (06: "publish refuses a `report.typ` that breaks the rule").
 
 ## What

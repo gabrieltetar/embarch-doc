@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- study-designer: `pdf-text` feature, a PDF text extractor and the number grammar for verify's check 4 ([hil-pdf.md](../embarch-study-designer/interfaces/hil-pdf.md))
 - A study declares the measurements Core is to compute when it ends (`Study.measurements`), refused at validation when Core could not; host schema 22: deploy Core, embarch-api and embarch-ui together.
 - embarch-study-designer decisions 95-98: HIL verdict rules (verdicts, guard band, width check, roll-up) behind feature `verdicts`; new reason `observation_unanswered`.
 - study-designer: built-in HIL reducers (count, rate, min, max, mean, percentile, interval, value at a marker), versioned by behaviour, feature `reducers`; decisions 92-94.
