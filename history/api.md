@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch-api core-key` prints Core's public key and fingerprint after checking its signature over a fresh nonce; the HIL guide's Study step 6 uses it (EMB-247).
 - verify checks 4, 6 and 9: the PDF's numbers, report-data recomputed, report.typ's syntax tree; publish refuses by the same whitelist.
 - `embarch-api verify <zip> --public-key <hex>` checks a published Study zip offline: signatures, manifest, measurements, labels, exports, run log (decisions 118 to 121).
 - publish lists every number in the prose and report.typ, names each prose block's author, and writes -r2 from the earlier zip ([decisions](../embarch-api/decisions/publish-revisions.md) 115-117).
