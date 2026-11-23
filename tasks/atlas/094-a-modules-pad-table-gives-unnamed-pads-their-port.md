@@ -1,6 +1,6 @@
 # 094 — A module's pad table gives an unnamed pad its port
 
-**State:** open
+**State:** claimed by agent/atlas/094-a-modules-pad-table-gives-unnamed-pads-their-port, 2026-11-23 13:53
 **Source:** Fleet Ready issue, filed by `atlas/092`'s worker for the part of its issue that unit could not meet
 **Issue:** EMB-243
 **Scope:** atlas
