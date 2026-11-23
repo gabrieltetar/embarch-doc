@@ -1,6 +1,6 @@
 # 092 — The pin table fills the port and DT use for every module pin
 
-**State:** open
+**State:** claimed by agent/atlas/092-pin-table-fills-port-and-dt-use-for-every-module-pin, 2026-11-23 13:21
 **Source:** Fleet Ready issue, an audit finding while listing a board's free interrupt-capable pins
 **Issue:** EMB-237
 **Scope:** atlas
