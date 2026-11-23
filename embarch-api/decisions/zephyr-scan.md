@@ -37,3 +37,10 @@ Surface text carried the same hardcoded assumption: `tools.rs`'s `list_targets` 
 **`scan` returns `ScanError::AllBoardsDropped(notes)` when `board.yml` files exist but no candidate has devicetree source.** One line per candidate: board, SoC, files looked for. One dropped board beside a live one stays a plain partial list, as decision 63 kept "found no apps" apart from `NoAppDir`; that, not "no targets", is what is refused.
 
 Measured against Zephyr's own `dts.cmake` source only, not a build; "single SoC" is `socs.len() == 1`.
+
+### 127 — A board whose `board.yml` names no CPU cluster takes them from its SoC's `soc.yml`
+`scan` read clusters from `board.yml` alone, so a board listing only `socs: - name: nrf54l15` looked for `<board>_nrf54l15.dts` or `<board>.dts`, found neither and was dropped, though Zephyr builds it as `<board>/nrf54l15/cpuapp` from `<board>_nrf54l15_cpuapp.dts` (the SoC's `soc.yml` supplies `cpuclusters`). A project with such a board had to fall back to `discovery = "static"`.
+
+**When no variant of a SoC names a cluster, the scan takes that SoC's clusters from `soc.yml`** and tries `<board>_<soc>_<cluster>.dts`, plus each named variant per cluster; each candidate still has to pass the same `.dts` check, so a cluster with no file is dropped. A `board.yml` that names its clusters scans as before. **Where `soc.yml` is read:** `<source_path>/soc`, `<source_path>/zephyr/soc` and `<source_path>/../zephyr/soc` (the west layout, project beside `zephyr/`), each walked six levels for files named `soc.yml`; any mapping with a `name` and `cpuclusters` is taken, so the family/series nesting need not be modelled. A module-provided SoC outside those roots is not found. **If none is found** the drop message is today's, plus "found no soc.yml defining soc <soc>".
+
+Measured against fixtures shaped like Zephyr's `soc/nordic` file, not a real tree; the bare `<board>_<soc>.dts` of a SoC that has clusters is no longer offered.

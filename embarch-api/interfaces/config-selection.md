@@ -6,7 +6,7 @@ How a call selects a target, and what a `static` project refuses. Split out of [
 
 Current truth: [../spec.md](../spec.md). The fields these rules read: [config.md](config.md).
 
-**For a `zephyr-west` project nothing is stored that the repo can answer.** Board, SoC, cpucluster, variant, revision and app enumeration is a pure filesystem and YAML read, re-run every call and **never cached** ([../decisions](../decisions/zephyr.md) 12). A tuple is real only if a `.dts` exists for that combination, the revision is `board.yml`'s declared default or has a revision-suffixed overlay, and a board using a custom revision format does not itself reject it.
+**For a `zephyr-west` project nothing is stored that the repo can answer.** Board, SoC, cpucluster, variant, revision and app enumeration is a pure filesystem and YAML read, re-run every call and **never cached** ([../decisions](../decisions/zephyr.md) 12). A tuple is real only if a `.dts` exists for that combination, the revision is `board.yml`'s declared default or has a revision-suffixed overlay, and a board using a custom revision format does not itself reject it. A board whose `board.yml` names no CPU cluster takes them from its SoC's `soc.yml` ([decision 127](../decisions/zephyr-scan.md)).
 
 **A `static` project refuses a selection outright** ([../decisions](../decisions/zephyr.md) 51): `board`, `variant`, `revision`, `app`, `snippets` or `extra_args` given on a call to it fail naming which were given, rather than being accepted and dropped. **It has exactly one target — itself** ([../decisions](../decisions/config-retirement.md) 53), which is what `list_targets` reports for it. Everything below is `zephyr-west`.
 

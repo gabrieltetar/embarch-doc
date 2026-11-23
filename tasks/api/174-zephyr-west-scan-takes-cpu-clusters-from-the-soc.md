@@ -1,6 +1,6 @@
 # 174 — The zephyr-west scan takes a board's CPU clusters from its SoC
 
-**State:** claimed by agent/api/174-zephyr-west-scan-takes-cpu-clusters-from-the-soc, 2026-11-23 13:07
+**State:** done
 **Source:** Fleet Ready issue, a session setting up a project with a custom nRF54L15 board
 **Issue:** EMB-231
 **Scope:** api
@@ -45,11 +45,11 @@ a new decision, number it per `DOC-CONVENTIONS.md`.
 
 ## Done when
 
-- [ ] A board whose `board.yml` lists only `nrf54l15` yields
+- [x] A board whose `board.yml` lists only `nrf54l15` yields
       `<board>/nrf54l15/cpuapp` targets in `list-targets`.
-- [ ] A test covers a SoC-defined cluster, with a fixture `soc.yml`.
-- [ ] A board whose `board.yml` does name its clusters scans as before (test).
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated where they describe the
+- [x] A test covers a SoC-defined cluster, with a fixture `soc.yml`.
+- [x] A board whose `board.yml` does name its clusters scans as before (test).
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated where they describe the
       zephyr-west scan, `changelog.d/` fragment dropped, `status.d/` fragment
       for anything suite-level it made false.
