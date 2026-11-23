@@ -1,6 +1,6 @@
 # 096 — Datasheet translation fills a module pad's port
 
-**State:** open
+**State:** claimed by agent/atlas/096-translation-fills-a-module-pads-port, 2026-11-23 14:08
 **Source:** Fleet Ready issue, filed by `atlas/094`'s worker for the translation half its unit left untried
 **Issue:** EMB-245
 **Scope:** atlas
