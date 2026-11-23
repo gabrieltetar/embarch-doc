@@ -1,6 +1,6 @@
 # 095 — Atlas live tools work under a lease the same session holds
 
-**State:** claimed by agent/atlas/095-atlas-live-tools-work-under-the-sessions-own-lease, 2026-11-23 13:58
+**State:** done
 **Source:** Fleet Ready issue, a session running read-only bus and GPIO checks under a lease taken through embarch-api's MCP
 **Issue:** EMB-233
 **Scope:** atlas
@@ -39,16 +39,34 @@ had not.
 
 ## Done when
 
-- [ ] With a lease token supplied, the live tools pass it to the `embarch-api`
+- [x] With a lease token supplied, the live tools pass it to the `embarch-api`
       CLI they run; a test shows it reaches the CLI's environment and no log
       or answer prints it.
-- [ ] A `409` lease refusal makes `shell` say the command did not run; a test
+- [x] A `409` lease refusal makes `shell` say the command did not run; a test
       covers it.
-- [ ] Hardware-verification debt written into this file: with the lease held
+- [x] Hardware-verification debt written into this file: with the lease held
       through the embarch-api MCP, atlas `shell device list` in the same
       session returns the device list (a live Core and a board, which a worker
       does not touch).
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated where they
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `DESIGN.md` and `embarch-doc/embarch-atlas/design.md` updated where they
       describe the live tools, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
+
+## Outcome
+
+**Decision.** Every live MCP tool (`shell`, `shell_run`, `reg_read`, `reg_read_clear`, `reg_read_bank`, `live_stacks`,
+`core_state`) takes an optional `lease_token` argument, the value `lease_take` returned. `live.lease(token)` holds it in a
+context variable for that call; `call_api` passes it as `EMBARCH_LEASE_TOKEN` in the CLI child's environment only (never
+argv), and every CLI failure text is scrubbed of it. Nothing stores or logs it. The atlas CLI's own `live` verbs inherit
+the shell's variable and need no argument. `_NOT_WRITTEN` now also matches `409` and `lease`, so a lease refusal is "did
+not run" (exit 1) and the next console is not tried. The refusal's exact wording is assumed (tests use two plausible
+texts), not measured against a live Core. Tests: tests/test_live.py (token in env and not argv, released after the block,
+blank ignored, scrubbed from a failure, `shell_read` passes it and prints none, 409 reads as did not run).
+
+## Hardware-verification debt
+
+With the lease taken through the embarch-api MCP (`lease_take`), in the same session call atlas `shell` with
+`command: "device list"` and `lease_token` set to the token. Expect the device list, not a 409. Also confirm what text
+Core's 409 carries for a wrong or missing token and that it still matches `409|lease` (a live Core and a board; a worker
+touches neither).
