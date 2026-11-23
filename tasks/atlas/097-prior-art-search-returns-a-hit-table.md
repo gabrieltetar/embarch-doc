@@ -7,7 +7,7 @@
 **Issue:** EMB-136
 **Scope:** atlas
 **Hardware:** none
-**Owner:** no
+**Owner:** required — the owner holds the patent prior-art scan (2026-11-23): no leg takes it, whatever EMB-248 says, until the owner lifts the hold
 
 ## What
 
