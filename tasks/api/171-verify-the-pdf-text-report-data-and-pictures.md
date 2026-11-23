@@ -1,6 +1,6 @@
 # 171 — `verify` checks the PDF's text, recomputes `report-data.json`, and whitelists `report.typ`'s syntax tree
 
-**State:** open
+**State:** claimed by agent/api/171-verify-the-pdf-text-report-data-and-pictures, 2026-11-22 18:19
 **Source:** `notes/hil/14-implementation-plan.md`, unit M1.11 ("verify"), its second half; `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9
 **Issue:** EMB-226
 **Scope:** api
