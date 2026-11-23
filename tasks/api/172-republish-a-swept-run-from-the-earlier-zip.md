@@ -1,6 +1,6 @@
 # 172 — `publish` republishes a swept run by handing Core the earlier zip's own files
 
-**State:** claimed by agent/api/172-republish-a-swept-run-from-the-earlier-zip, 2026-11-23 11:57
+**State:** claimed by agent/api/172-republish-a-swept-run-from-the-earlier-zip, 2026-11-23 12:38 — resumed; the 11:57 claim's worker died at its login's 5-hour limit
 **Source:** `embarch-api/open.md` — "A republish after the retention sweep refuses"; `notes/hil/06-report-and-publish.md` — "A revision is built from the earlier zip, its captures included" (owner, 2026-11-20)
 **Scope:** api
 **Hardware:** none
@@ -8,6 +8,7 @@
 
 ## Dispatch notes
 
+- **This is a resume** (supervisor, 2026-11-23 12:38). The first worker stopped at 12:08 when its login hit the 5-hour limit, with 120 lines changed in `src/publish.rs`, `src/verify_report.rs`, `tests/publish.rs`, `tests/core_client_http.rs` and `crates/embarch-core-client/src/client.rs`, uncommitted and never built. The supervisor committed that tree as found to the code branch (`97d58d8`, "recovered uncommitted tree"); the doc branch had nothing. Read that commit's diff first and continue from it: it is unreviewed and unbuilt, so keep what is right and change what is not. It touched `embarch-core-client`, a shared crate: keep that change additive, and say in your result what it added.
 - `embarch-api` decision 117 (`decisions/publish-revisions.md`) refuses a republish after the retention sweep and writes nothing, because Core's `report-data` answered `404` once the run's directory was gone. `tasks/core/137` gives Core a way to take the earlier revision's Core files back; read the decision it lands with before designing this side. **It landed 2026-11-23 as `embarch-core` decision 120** (`embarch-core/decisions/publish.md`, `embarch-core/interfaces/publish.md`): `PUT /study/{id}/restore/{name}`, raw body, one file at a time — `manifest.dsse.json` first (`422` unless the run log recorded its hash for this run), then every Core file it names as a subject (`409` before a manifest, `422` for a non-subject, a revision output or a wrong digest). `report-data` on a swept run now answers `409` naming what to hand back (it was `404`/`500`), and runs unchanged once every named file is back. embarch-api's own files are not subjects and are not restored; they are resent with `publish` as usual.
 - The earlier zip is already read for a republish (`measurements.json` and the `streams/*` renderings, decision 117), so this extends that read rather than adding a second one.
 - Per-decision budgets near their limit in `embarch-api`: `ledger#98`, `bench-exchange#89`, `failure-reporting#67`. Amend 117 in `decisions/publish-revisions.md`, or add a new decision there.
