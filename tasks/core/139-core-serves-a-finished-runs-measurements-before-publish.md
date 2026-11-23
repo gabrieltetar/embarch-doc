@@ -1,6 +1,6 @@
 # 139 — Core serves a finished run's `measurements.json` before any publish
 
-**State:** open
+**State:** claimed by agent/core/139-core-serves-a-finished-runs-measurements-before-publish, 2026-11-23 15:41
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-246
 **Scope:** core
