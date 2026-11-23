@@ -1,6 +1,8 @@
 # 097 — A prior-art search returns one hit table
 
-**State:** claimed by agent/atlas/097-prior-art-search-returns-a-hit-table, 2026-11-23 14:45
+**State:** blocked — the worker built it and pushed both branches (code 572bca3, doc fafa3f2c, gate green on the branch), but the search host's robots exclusion file disallows every agent, which this task's terms rule sends to the owner; not landed. On the owner's go, gate and land those branches as they stand; on an official-API answer, rework them
+
+**Unparks when:** the owner's word on EMB-248
 **Source:** Fleet Ready issue: agents running a patent prior-art scan rewrite throwaway scrapers against public patent databases every time
 **Issue:** EMB-136
 **Scope:** atlas
