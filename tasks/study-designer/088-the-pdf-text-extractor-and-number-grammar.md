@@ -1,6 +1,6 @@
 # 088 — The shared crate's PDF text extractor and number grammar, for `verify`'s check 4
 
-**State:** open
+**State:** claimed by agent/study-designer/088-the-pdf-text-extractor-and-number-grammar, 2026-11-22 18:09
 **Source:** `embarch-study-designer/interfaces/hil-pdf.md`, "The text extractor" and "The number grammar" (design, not yet code); `notes/hil/06-report-and-publish.md`, "Verify" check 4; `notes/hil/14-implementation-plan.md`, unit M1.11
 **Issue:** EMB-226
 **Scope:** study-designer
