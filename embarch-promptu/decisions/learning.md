@@ -1,6 +1,6 @@
 # embarch-promptu decisions: Learning
 
-**Status:** active, 2026-10-30.
+**Status:** active, 2026-11-23.
 
 The weekly sheet and what it learns from. Moved verbatim from `decisions.md` on 2026-10-30, when step 3's fork answers took it past its 25 KB cap ([DOC-COMPACTION.md](../../DOC-COMPACTION.md) §2).
 
@@ -14,3 +14,18 @@ Decided by the owner on 2026-10-29; **not built** (build step 4). Without the De
 
 ### 15 — Success after four weeks
 Reported on each sheet: corrections per prompt at or below 0.10 against non-Promptu sessions as a control, redirected messages per task start down about 30%, at least 90% of pre-filled answers kept, at least 85% of picked patterns kept, questions per run falling, and a one-key "better · same · worse" line.
+
+### 43 — An approved pattern change lands as a commit on a branch, never pushed
+Decided by the owner on 2026-11-23, for build step 4. `promptu week apply` commits each approved pattern line on a branch in a checkout named in Promptu's config, with the version bumped, lint clean, the example renders updated, and a configured public-safety command run first (for the owner, the suite's client-name and denylist checks). Nothing is pushed: landing and reinstalling stay the owner's. With no checkout configured, the pattern lines are written out as a patch. **Rejected:** committing to `main` and pushing, which breaks the branch-and-land rule; applying memory lines only, which leaves nothing learnt reaching a pattern.
+
+### 44 — A run is a log entry, and its sent prompt is matched by footer, project and time
+Decided by the owner on 2026-11-23, for build step 4. The run list is `log/`. A run's sent message is the first owner message after the log time, in that project, carrying the same footer line; a tie goes to the text closest to `rendered`. A terminal run's edit is read from its draft, kept until the week is packed. **Rejected:** a `run=` footer field, which puts an id in every prompt; transcripts only, which miss every terminal run. Heuristic on two identical quick runs, and said so.
+
+### 45 — The schedule lives in Promptu's config
+Decided by the owner on 2026-11-23, for build step 4 and EMB-85. The weekly schedule is a config key (default Wednesday 08:00); `promptu week timer` writes the systemd user units from it, and `promptu week status` computes the next run and a missed one from it and the last run record, so the chat asks Promptu and never the scheduler. Amends 14's timer to be generated rather than hand-written. **Rejected:** asking systemd, Linux-only; reporting the last run only, which cannot say "missed".
+
+### 46 — One sheet waits at a time
+Decided by the owner on 2026-11-23, for build step 4. A new week's run re-proposes the open lines' events with the new week's and marks the earlier sheet superseded. **Rejected:** sheets piling up; skipping a week while a sheet is open, which loses events past the transcripts' 30 days.
+
+### 47 — Step 4's first cut: re-render and replay, a commit as the only outcome
+Decided by the owner on 2026-11-23. Step 4 tests a proposed pattern by re-rendering its examples and replaying 3 to 5 real past prompts, and counts a commit as the only outcome. 14's quarterly or new-model refresh, and outcomes beyond a commit (a PR merged, a study passed), come later, each its own issue. The smaller step 4 choices run on their recommended defaults and are recorded in the repo's `docs/forks.md` by the contract unit.
