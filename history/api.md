@@ -18,6 +18,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- `publish` republishes a swept run by handing Core the earlier zip's own files back; with no earlier zip it refuses naming the file ([decision 126](../embarch-api/decisions/publish-revisions.md))
 - Split embarch-api client-crate.md (decisions 55, 66) and config.md (zephyr-west selection) into topic files, verbatim; both out of reserve.
 - Split embarch-api `spec/implementation.md` §4 (deployment and topology) verbatim into `spec/deployment.md`, clearing its size reserve.
 - Release workflow signs every archive with cosign (keyless, `.sigstore.json` bundle beside each); see embarch-api/spec/implementation.md §8.
