@@ -1,6 +1,6 @@
 # 177 — `study_measurements` reads a finished run's `measurements.json` before publish
 
-**State:** open
+**State:** claimed by agent/api/177-study-measurements-reads-a-finished-run-before-publish, 2026-11-23 16:12 — burndown leg: no new numbered decision
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-246
 **Scope:** api
