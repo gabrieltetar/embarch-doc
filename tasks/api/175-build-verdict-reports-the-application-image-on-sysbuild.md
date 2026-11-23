@@ -1,6 +1,6 @@
 # 175 — The build verdict reports the application image on a sysbuild build
 
-**State:** claimed by agent/api/175-build-verdict-reports-the-application-image-on-sysbuild, 2026-11-23 13:36
+**State:** done
 **Source:** Fleet Ready issue, a session building a sysbuild firmware commit through `build --each`
 **Issue:** EMB-232
 **Scope:** api
@@ -44,10 +44,10 @@ say so and file a new decision rather than growing it.
 
 ## Done when
 
-- [ ] A sysbuild log with an application table then an MCUboot table gives the
+- [x] A sysbuild log with an application table then an MCUboot table gives the
       application's FLASH and RAM in the verdict.
-- [ ] A test covers the two-table log; a single-image log reads as before.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated where they describe the
+- [x] A test covers the two-table log; a single-image log reads as before.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated where they describe the
       verdict's memory figures, `changelog.d/` fragment dropped, `status.d/`
       fragment for anything suite-level it made false.
