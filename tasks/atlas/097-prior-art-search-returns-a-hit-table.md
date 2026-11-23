@@ -1,6 +1,6 @@
 # 097 — A prior-art search returns one hit table
 
-**State:** open
+**State:** claimed by agent/atlas/097-prior-art-search-returns-a-hit-table, 2026-11-23 14:45
 **Source:** Fleet Ready issue: agents running a patent prior-art scan rewrite throwaway scrapers against public patent databases every time
 **Issue:** EMB-136
 **Scope:** atlas
