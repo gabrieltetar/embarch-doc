@@ -1,6 +1,6 @@
 # 172 — `publish` republishes a swept run by handing Core the earlier zip's own files
 
-**State:** open
+**State:** claimed by agent/api/172-republish-a-swept-run-from-the-earlier-zip, 2026-11-23 11:57
 **Source:** `embarch-api/open.md` — "A republish after the retention sweep refuses"; `notes/hil/06-report-and-publish.md` — "A revision is built from the earlier zip, its captures included" (owner, 2026-11-20)
 **Scope:** api
 **Hardware:** none
