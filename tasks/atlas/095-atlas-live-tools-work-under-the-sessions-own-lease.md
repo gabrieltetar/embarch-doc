@@ -1,6 +1,6 @@
 # 095 — Atlas live tools work under a lease the same session holds
 
-**State:** open
+**State:** claimed by agent/atlas/095-atlas-live-tools-work-under-the-sessions-own-lease, 2026-11-23 13:58
 **Source:** Fleet Ready issue, a session running read-only bus and GPIO checks under a lease taken through embarch-api's MCP
 **Issue:** EMB-233
 **Scope:** atlas
