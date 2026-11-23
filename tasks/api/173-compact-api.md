@@ -1,6 +1,6 @@
 # 173 — `embarch-api/interfaces/publish.md` is in reserve
 
-**State:** claimed by agent/api/173-compact-api, 2026-11-23 12:52
+**State:** done
 **Source:** api 171 (EMB-226) filled `verify`'s table rows for checks 4, 6 and 9, leaving `interfaces/publish.md` at 11,437 of 12,288 B (reserve from 11,059 B).
 **Scope:** api
 **Hardware:** none
@@ -26,6 +26,12 @@ Bring `interfaces/publish.md` out of reserve: split the `verify` section into `i
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-api/interfaces/publish.md`.
-- [ ] The moved text is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-api/interfaces/publish.md`.
+- [x] The moved text is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Result
+
+`publish.md` 11,070 -> 6,951 B (out of reserve); new `verify.md` 4,370 B holds the `verify` section byte-identical under a 3-line header. publish.md keeps a `## verify` pointer heading (so old `#verify` anchors still resolve); its status line now links verify.md. Links updated: `spec.md`, `decisions/verify.md`, `decisions/verify-report.md`, `features.d/api-370-verify.md`. `suite/features.md` left stale for the fold. Every Must-not-delete item moved with the section, unedited.
+
+**Can `spec.md` alone answer what someone needs to work on the publish and verify surfaces today?** Not alone. It states what each does, the nine checks in one sentence, the refusals and the pointers, enough to know what exists and not to re-derive it. Building or changing a check, the zip layout, revisions or the exact recompute rules needs `interfaces/publish.md`, `interfaces/verify.md` and the decisions; the detail is by design in those, so spec.md is the map, not the working text.

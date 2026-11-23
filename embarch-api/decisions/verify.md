@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-22 (`tasks/api/170`, HIL M1.11, first half).
 
-Decisions 118 to 121. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/publish.md](../interfaces/publish.md#verify). Source: `notes/hil/06-report-and-publish.md`, "Verify". Checks 4, 6 and 9 are `tasks/api/171`'s.
+Decisions 118 to 121. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/verify.md](../interfaces/verify.md). Source: `notes/hil/06-report-and-publish.md`, "Verify". Checks 4, 6 and 9 are `tasks/api/171`'s.
 
 ### 118 - `verify` is a CLI-only subcommand that needs no config, no Core and a public key
 

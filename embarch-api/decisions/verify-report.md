@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-22 (`tasks/api/171`, HIL M1.11, second half).
 
-Decisions 122 to 125. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/publish.md](../interfaces/publish.md#verify). Source: `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9. The first half: [verify.md](verify.md).
+Decisions 122 to 125. Index: [../decisions.md](../decisions.md). Surface: [../interfaces/verify.md](../interfaces/verify.md). Source: `notes/hil/06-report-and-publish.md`, "Verify" checks 4, 6 and 9. The first half: [verify.md](verify.md).
 
 ### 122 - Check 9 is a whitelist over the parsed tree, and `publish` refuses by the same one
 
