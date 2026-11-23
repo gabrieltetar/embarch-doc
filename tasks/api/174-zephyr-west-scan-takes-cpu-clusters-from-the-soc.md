@@ -1,6 +1,6 @@
 # 174 — The zephyr-west scan takes a board's CPU clusters from its SoC
 
-**State:** open
+**State:** claimed by agent/api/174-zephyr-west-scan-takes-cpu-clusters-from-the-soc, 2026-11-23 13:07
 **Source:** Fleet Ready issue, a session setting up a project with a custom nRF54L15 board
 **Issue:** EMB-231
 **Scope:** api
