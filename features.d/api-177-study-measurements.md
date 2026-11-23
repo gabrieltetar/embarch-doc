@@ -1,0 +1,1 @@
+| `study_measurements` / `study-measurements` — a finished run's `measurements.json` as Core wrote it, before any publish; Core's four refusals named (`no-such-run`, `still-running`, `no-measurements`, `files-gone`) | Built — **never run against a live Core** | unit | [studies](../embarch-api/interfaces/studies.md) |

@@ -1,6 +1,6 @@
 # 177 — `study_measurements` reads a finished run's `measurements.json` before publish
 
-**State:** claimed by agent/api/177-study-measurements-reads-a-finished-run-before-publish, 2026-11-23 16:12 — burndown leg: no new numbered decision
+**State:** done — study_measurements tool and CLI subcommand ship with named Core refusals; pinned guide updated; drift guard red by construction
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-246
 **Scope:** api
@@ -71,12 +71,18 @@ name `dispatch_with` in decision 129 if it fits in one clause. No new decision.
 
 ## Done when
 
-- [ ] One MCP tool and one CLI subcommand return a finished run's
+- [x] One MCP tool and one CLI subcommand return a finished run's
       `measurements.json` before any publish, unchanged.
-- [ ] Core's four refusals reach the caller by name; a test covers the file
+- [x] Core's four refusals reach the caller by name; a test covers the file
       and each refusal without a live Core.
-- [ ] The pinned guide's Study step 4 names the tool instead of the
+- [x] The pinned guide's Study step 4 names the tool instead of the
       first-revision workaround; `status.d/` fragment for `suite/hil-guide.md`.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), bar the drift guard above.
-- [ ] `spec.md`/`decisions.md`/`interfaces/` updated where they list the study
+- [x] Gate green (`../../embarch-fleet/gate.md`), bar the drift guard above.
+- [x] `spec.md`/`decisions.md`/`interfaces/` updated where they list the study
       tools, `changelog.d/` fragment dropped.
+
+## Notes
+
+- Shipped: MCP `study_measurements`, CLI `study-measurements <study_id> [--out]`; `CoreClient::get_study_measurements` and `MeasurementsRefusal` (names `no-such-run`, `still-running`, `no-measurements`, `files-gone`) in `crates/embarch-core-client/src/client.rs` only. Decisions 55 and 129 amended in place.
+- Drift guard `the_pinned_copy_matches_the_suite_guide_where_one_is_reachable` is the one expected red until the supervisor folds `status.d/api-177-hil-guide-copy.md`.
+- No new decision was needed; the refusal type's design lives in `interfaces/studies.md`. Verified against a mock Core only; **hardware-verification debt: none** (a live Core's route is core/139's to prove).
