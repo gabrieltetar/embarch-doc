@@ -23,8 +23,15 @@ For a run whose directory has been swept, Core accepts the earlier revision's Co
 
 ## Done when
 
-- [ ] A test: a run published once, its directory swept, the earlier revision's files handed back, and `report-data` then `publish` write `r2` with a manifest naming the revision it supersedes.
-- [ ] A test for each refusal: a manifest whose hash the run log never recorded for this run, a file that is not one of its subjects, a file whose bytes do not match its digest.
-- [ ] A run still on disk publishes exactly as before.
-- [ ] `interfaces/publish.md` amended; a new numbered decision for how the files are taken and what is refused; the `open.md` item closed or narrowed.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+- [x] A test: a run published once, its directory swept, the earlier revision's files handed back, and `report-data` then `publish` write `r2` with a manifest naming the revision it supersedes.
+- [x] A test for each refusal: a manifest whose hash the run log never recorded for this run, a file that is not one of its subjects, a file whose bytes do not match its digest.
+- [x] A run still on disk publishes exactly as before.
+- [x] `interfaces/publish.md` amended; a new numbered decision for how the files are taken and what is refused; the `open.md` item closed or narrowed.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Result
+
+Built `PUT /study/{id}/restore/{name}` (decision 120, `src/publish.rs`): the manifest is accepted only if its hash is a `published` entry for the run in the log; each Core file only if an accepted manifest lists it with the same digest. `report-data` on a swept or half-restored run is now `409` naming what is missing. Tests: swept-and-republished as r2 superseding r1, and each refusal. A run still on disk is untouched (existing tests). Gate: cargo build, test (436 pass), clippy green.
+
+**Debt, Windows:** native Windows build not run (not available to a worker); a real sweep on the Windows service not exercised.
+**Open:** `tasks/api/172` makes embarch-api send the files; `open.md` item narrowed to that.

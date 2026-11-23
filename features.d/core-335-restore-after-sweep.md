@@ -1,0 +1,1 @@
+| `PUT /study/{id}/restore/{name}` — a swept run's earlier manifest and Core files taken back, each checked against a manifest Core signed and logged, so a republish works | Built — **host-tested only; embarch-api does not send the files yet (`tasks/api/172`); no real sweep run on the Windows service** | unit | 120 |

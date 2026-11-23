@@ -30,7 +30,7 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 ## Publish, not yet complete
 
-- **A revision after the retention sweep has no captures to hash** (decision 116): `POST /study/{id}/report-data` answers `404` once the run's directory is swept, so a republish needs the earlier zip's files, which Core does not take. The run log's segment is the whole log to the head, not one unit's.
+- **A republish after the retention sweep needs the caller to resend the earlier zip's files** (decision 120): Core takes them back checked against its own logged manifest, so what stays open is embarch-api sending them (`tasks/api/172`). The run log's segment is the whole log to the head, not one unit's.
 
 ## Structural limits
 
