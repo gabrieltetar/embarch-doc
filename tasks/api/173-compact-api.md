@@ -1,6 +1,6 @@
 # 173 — `embarch-api/interfaces/publish.md` is in reserve
 
-**State:** open
+**State:** claimed by agent/api/173-compact-api, 2026-11-23 12:52
 **Source:** api 171 (EMB-226) filled `verify`'s table rows for checks 4, 6 and 9, leaving `interfaces/publish.md` at 11,437 of 12,288 B (reserve from 11,059 B).
 **Scope:** api
 **Hardware:** none
