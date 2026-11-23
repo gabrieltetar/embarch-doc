@@ -1,6 +1,6 @@
 # 008 — `embarch-promptu/decisions/patterns.md` is in reserve
 
-**State:** claimed by agent/promptu/008-compact-promptu, 2026-11-23 11:45
+**State:** done (agent/promptu/008-compact-promptu, 2026-11-23)
 **Source:** promptu 007 (EMB-196) added the footer and log pointers to decisions 13 and 14, leaving `decisions/patterns.md` at 11,138 of 12,288 B (reserve from 11,059 B; it stood at 11,058 B on `main`, at the edge).
 **Scope:** promptu
 **Hardware:** none
@@ -29,6 +29,10 @@ Bring `decisions/patterns.md` out of reserve: move whole decisions whose subject
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-promptu/decisions/patterns.md`.
-- [ ] Moved decisions are byte-identical in their new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-promptu/decisions/patterns.md`.
+- [x] Moved decisions are byte-identical in their new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+
+## Result
+
+Decisions 22, 23, 25, 26, 27, 28 moved byte for byte to `decisions/questions.md`; `decisions/patterns.md` is 7,568 B; index row updated. 9, 13, 24, 42 untouched.
