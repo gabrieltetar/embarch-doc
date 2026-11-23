@@ -1,6 +1,6 @@
 # 093 — `shell_commands` decodes each help string and lists `kernel`'s subcommands
 
-**State:** open
+**State:** claimed by agent/atlas/093-shell-commands-help-text-and-kernel-subcommands, 2026-11-23 13:36
 **Source:** Fleet Ready issue, a session listing a board image's shell commands before running them
 **Issue:** EMB-234
 **Scope:** atlas
