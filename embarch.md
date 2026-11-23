@@ -10,7 +10,7 @@ A suite of tools for firmware engineers **spanning from software to the physical
 
 EmbArch was originally [gabrieltetar/embarch](https://github.com/gabrieltetar/embarch), a C#/WPF desktop application for static analysis and graph visualization of embedded C/C++ codebases.
 
-**Static analysis was always part of the scope, alongside the hardware-facing tooling — it is paused rather than dropped.** It will resurface as `embarch-atlas`: an analysis capability for coding agents and engineers to reason about a firmware codebase's structure, **not tied to any one protocol** — MCP is a plausible transport, not the defining shape of the capability. The original GUI's role narrows accordingly, to a debug-facing feature of that.
+**Static analysis was always part of the scope, alongside the hardware-facing tooling.** It resurfaced as `embarch-atlas`: an analysis capability for coding agents and engineers to reason about a firmware codebase's structure, **not tied to any one protocol** — it answers over its own MCP server and its CLI alike, and is not a tool on `embarch-api`'s surface. The original GUI's role narrows accordingly, to a debug-facing feature of that.
 
 ## 3. Sub-projects
 

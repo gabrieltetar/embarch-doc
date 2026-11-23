@@ -86,6 +86,7 @@
 - atlas build pins a multi-image sysbuild atlas to the application image, picked by domains.yaml default, else the app directory name.
 
 ### Decided
+- Atlas transport is settled as its own MCP server (`embarch-atlas mcp`); see embarch-atlas/design.md, Transport.
 - atlas: "never fetches" narrowed to the document pipeline; fetch-text stays as a standalone research verb outside it (EMB-208).
 - Atlas: a session may invoke the skills that build or update an atlas (disable-model-invocation dropped, owner 2026-11-10). embarch-atlas DESIGN.md "The skills".
 ## 2026-10
