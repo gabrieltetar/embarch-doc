@@ -12,7 +12,7 @@ So this directory is **one file on purpose**. `decisions.md`, `open.md` and `int
 
 - **Ownership is enforced, not described.** [protocol.md](../../embarch-fleet/protocol.md) §3 maps every path to who may write it, and `scripts/check-ownership.py` is what makes it true — of a worker's branch, and of the supervisor's own commits. `suite` and `fleet` are refused as worker scopes outright.
 - **The claim commit is the interlock.** A task is claimed on this repo's `main`, one commit per task, pushed before the branch is cut. Two supervisors cannot claim the same task because one of them loses a race in git.
-- **Nothing waits for everything.** A leg is a rolling wave: a finished worker's branches land, its fragments fold, its log entry is written and a new task starts in the freed slot at once.
+- **A leg runs in waves.** A wave's workers go out together as foreground calls in one message and report to the leg, which lands, folds and logs each, then fills the freed slots. The wave is a barrier because background workers report to the listener, and a leg waiting on them was never resumed (EMB-214).
 - **A leg holds no authority over a standing rule.** Amending one is the owner's, from the owner's own window, and `check-ownership.py --supervisor` is what stops it happening any other way — including when the leg is right.
 - **The log is the review surface**, and under full delegate it is the only one. One entry per unit, in the same commit as the fold; a unit that lands unlogged has failed.
 - **Closing VS Code stops the fleet.** That is the kill switch, by design.
