@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core takes a swept run's earlier files back through PUT /study/{id}/restore, checked against its logged manifest, so a republish works (decision 120).
 - Core's publish files route serves the run's own files (measurements.json, events.json, streams) at the pending revision, before publish signs them (EMB-241).
 - Core signs a publish manifest and report-data.json for a study run, takes notes by scope and hash, and records the run log head ([decisions 116-119](../embarch-core/decisions/publish.md)).
 - Core computes a study's declared measurements as it ends and writes `measurements.json`, a signed subject of the run record ([decision 113](../embarch-core/decisions/measurements.md)).

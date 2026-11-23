@@ -1,7 +1,6 @@
 # 172 — `publish` republishes a swept run by handing Core the earlier zip's own files
 
-**State:** blocked
-**Unparks when:** `tasks/core/137` has landed.
+**State:** open
 **Source:** `embarch-api/open.md` — "A republish after the retention sweep refuses"; `notes/hil/06-report-and-publish.md` — "A revision is built from the earlier zip, its captures included" (owner, 2026-11-20)
 **Scope:** api
 **Hardware:** none
@@ -9,7 +8,7 @@
 
 ## Dispatch notes
 
-- `embarch-api` decision 117 (`decisions/publish-revisions.md`) refuses a republish after the retention sweep and writes nothing, because Core's `report-data` answered `404` once the run's directory was gone. `tasks/core/137` gives Core a way to take the earlier revision's Core files back; read the decision it lands with before designing this side.
+- `embarch-api` decision 117 (`decisions/publish-revisions.md`) refuses a republish after the retention sweep and writes nothing, because Core's `report-data` answered `404` once the run's directory was gone. `tasks/core/137` gives Core a way to take the earlier revision's Core files back; read the decision it lands with before designing this side. **It landed 2026-11-23 as `embarch-core` decision 120** (`embarch-core/decisions/publish.md`, `embarch-core/interfaces/publish.md`): `PUT /study/{id}/restore/{name}`, raw body, one file at a time — `manifest.dsse.json` first (`422` unless the run log recorded its hash for this run), then every Core file it names as a subject (`409` before a manifest, `422` for a non-subject, a revision output or a wrong digest). `report-data` on a swept run now answers `409` naming what to hand back (it was `404`/`500`), and runs unchanged once every named file is back. embarch-api's own files are not subjects and are not restored; they are resent with `publish` as usual.
 - The earlier zip is already read for a republish (`measurements.json` and the `streams/*` renderings, decision 117), so this extends that read rather than adding a second one.
 - Per-decision budgets near their limit in `embarch-api`: `ledger#98`, `bench-exchange#89`, `failure-reporting#67`. Amend 117 in `decisions/publish-revisions.md`, or add a new decision there.
 - **`embarch-api/interfaces/publish.md` is in reserve** (11,437 of 12,288 B, out of reserve at 11,059 B), filed as `tasks/api/173`, blocked on `In flux: yes` because `verify` is still moving. This unit edits the publish half of that file, so compact it here: move a settled section verbatim into a new `interfaces/` file with a link left (`DOC-COMPACTION.md` §2's split), leave the `verify` section where it is, and say in your result which bytes moved. That is `tasks/api/173`'s only file, so the supervisor closes it at your fold. While there, the `verify` table's check 5 row still says "`adopted` recomputed", which `tasks/api/171` moved into check 6's whole-document compare (decision 124); correct that one cell.
