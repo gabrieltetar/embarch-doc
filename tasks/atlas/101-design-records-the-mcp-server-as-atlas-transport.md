@@ -1,6 +1,6 @@
 # 101 — The atlas design doc records its own MCP server as the transport it chose
 
-**State:** claimed by agent/atlas/101-design-records-the-mcp-server-as-atlas-transport, 2026-11-23 15:01
+**State:** done — design.md states the transport as settled (own MCP server); status paragraph removed; DESIGN.md agrees, no code change
 **Source:** embarch-atlas/design.md — "Transport is unresolved: reachable over `embarch-api`'s existing MCP surface, or its own server."
 **Scope:** atlas
 **Hardware:** none
@@ -59,10 +59,10 @@ by the supervisor from that sweep; no Linear issue.
 
 ## Done when
 
-- [ ] `embarch-atlas/design.md` states the transport as the atlas's own MCP
+- [x] `embarch-atlas/design.md` states the transport as the atlas's own MCP
       server, with what settled it, and no longer lists it as unresolved.
-- [ ] Anything still genuinely open from the old paragraph is kept as an open
+- [x] Anything still genuinely open from the old paragraph is kept as an open
       question, and nothing else is.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for anything
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped; `status.d/` fragment for anything
       suite-level it made false.

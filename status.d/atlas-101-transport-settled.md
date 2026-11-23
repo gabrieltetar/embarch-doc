@@ -1,0 +1,1 @@
+embarch.md §2's sentence "MCP is a plausible transport `embarch-api` could expose it over, not the defining shape" is now stale for atlas: its transport is settled as its own stdio MCP server (`embarch-atlas mcp`), not a tool on `embarch-api`. The sub-project row should say so.
