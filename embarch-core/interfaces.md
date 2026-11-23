@@ -28,7 +28,7 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Signing](interfaces/signing.md) — the signed run record, and the one route that takes no token | `/auth/challenge` |
 | [Run log](interfaces/run-log.md) — the hash-chained log of runs, publishes and discards, and the discard refused by scope | `/run-log`, `/study/{id}/log`, `/study/{id}/published`, `/study/{id}/discard` |
 | [Measurements](interfaces/measurements.md) — `measurements.json`, written as a device study ends and signed as a subject | — |
-| [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}` |
+| [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}`, `/study/{id}/measurements` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |
 | [Modules](interfaces/modules.md) — not a route group, spec §4's source-file table | — |

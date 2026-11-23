@@ -36,7 +36,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Operator prompts in a host study](decisions/host-prompt.md) | 105, 107 | 5.3 KB |
 | [Signing a study run's record](decisions/signing.md) | 110 | 7.0 KB |
 | [The run log, retention before publish, and the discard](decisions/run-log.md) | 111, 112 | 7.1 KB |
-| [Measurements at a study's end](decisions/measurements.md) | 113, 114, 115 | 6.5 KB |
+| [Measurements at a study's end](decisions/measurements.md) | 113, 114, 115, 121 | 7.3 KB |
 | [Core's side of publish](decisions/publish.md) | 116, 117, 118, 119, 120 | 8.3 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

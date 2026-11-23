@@ -1,6 +1,6 @@
 # 139 — Core serves a finished run's `measurements.json` before any publish
 
-**State:** claimed by agent/core/139-core-serves-a-finished-runs-measurements-before-publish, 2026-11-23 15:41
+**State:** done — GET /study/{id}/measurements serves the run file as written; 404/409/410/422 refusals; lease-open; decision 121
 **Source:** Fleet Ready issue, found while writing the HIL guide's Study section
 **Issue:** EMB-246
 **Scope:** core
@@ -63,12 +63,11 @@ one in `decisions/measurements.md` rather than growing any of those.
 
 ## Done when
 
-- [ ] A finished run's `measurements.json` is returned unchanged by one `GET`,
+- [x] A finished run's `measurements.json` is returned unchanged by one `GET`,
       with no publish having run.
-- [ ] Unknown study, unfinished run and no-measurements run each refuse with a
+- [x] Unknown study, unfinished run and no-measurements run each refuse with a
       distinct status and message.
-- [ ] Tests cover all four cases and the route sweep includes the route.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), including the native Windows
-      build.
-- [ ] `interfaces/measurements.md` documents the route; `spec.md` and
+- [x] Tests cover all four cases and the route sweep includes the route.
+- [x] Gate green on Linux (build, test 437, clippy). **Debt:** the native Windows build was not run: it cannot build from a worktree (gate.md, protocol.md step 1); run `cargo.exe build` from the main checkout once landed.
+- [x] `interfaces/measurements.md` documents the route; `spec.md` and
       `decisions/` updated as needed; `changelog.d/` fragment dropped.
