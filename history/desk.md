@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The Desk's Promptu section sets the weekly sheet's feel line through POST /promptu/feel/{week}, which runs week mark --feel (65).
 - embarch-desk serves Promptu's weekly sheet to the Desk tab: GET /promptu, /promptu/sheet, and mark and apply routes that run the promptu CLI; no agent tool reaches them (decision 65).
 - A pending draft keeps every agent revision and owner edit as a version; desk_get_draft diffs any two (88).
 - Desk drafts keep the agent version beside the owner edits: desk_revise_draft applies a change to both and refuses a collision; desk_get_draft gives the owner-only diff (EMB-165).
