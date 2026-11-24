@@ -1,6 +1,6 @@
 # 104 — The atlas's live-log lines agree with embarch-api's on image hash, board and when a line is written
 
-**State:** open
+**State:** claimed by agent/atlas/104-live-log-lines-agree-with-embarch-api, 2026-11-23 22:05
 **Source:** reviewer of `atlas/103` (2026-11-23), reading the atlas's new live-log writer against embarch-api's on `origin/main`
 **Issue:** EMB-289
 **Scope:** atlas
