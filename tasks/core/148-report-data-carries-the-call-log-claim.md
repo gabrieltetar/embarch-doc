@@ -1,6 +1,6 @@
 # 148 — `report-data.json` carries the run's call-log head, range and count
 
-**State:** claimed by agent/core/148-report-data-carries-the-call-log-claim, 2026-11-23 23:22 — paired with api/185, landed together
+**State:** done — report-data.json observed.call_log {head, first_seq, last_seq, count} written from the signed record, absent when the record has none; paired with api/185
 **Source:** decisions 116 and 119 (`decisions/publish.md`); `interfaces/signing.md` (`observed.call_log`) and `interfaces/publish.md` (`report-data.json`)
 **Issue:** EMB-265
 **Scope:** core
@@ -41,7 +41,7 @@ belongs in `interfaces/publish.md` and decision 116 or 119.
 
 ## Done when
 
-- [ ] A fixture publish's `report-data.json` carries the call log's head, range and count, taken from the signed record.
-- [ ] A run whose record has no `observed.call_log` gets no field.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); the native Windows build recorded as a debt in your report.
-- [ ] `interfaces/publish.md` and the amended decision updated, `changelog.d/` fragment dropped.
+- [x] A fixture publish's `report-data.json` carries the call log's head, range and count, taken from the signed record.
+- [x] A run whose record has no `observed.call_log` gets no field.
+- [x] Gate green (`../../embarch-fleet/gate.md`); the native Windows build recorded as a debt in your report.
+- [x] `interfaces/publish.md` and the amended decision updated, `changelog.d/` fragment dropped.
