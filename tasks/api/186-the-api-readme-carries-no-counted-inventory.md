@@ -1,6 +1,6 @@
 # 186 — The api README carries no counted inventory
 
-**State:** claimed by agent/api/186-the-api-readme-carries-no-counted-inventory, 2026-11-24 03:19
+**State:** done — README rewritten: no counted inventory, links interface docs, getting-started follows user guide
 **Source:** suite review audit, 2026-11-23: three code-repo READMEs describe the suite as of September
 **Issue:** EMB-297
 **Scope:** api
@@ -35,10 +35,10 @@ them the wrong setup path. EMB-297, which also files `core/149` and
 
 ## Done when
 
-- [ ] `embarch-api/README.md` states no tool, endpoint or command count or
+- [x] `embarch-api/README.md` states no tool, endpoint or command count or
       list, and links the interface docs that own them.
-- [ ] Its getting-started matches `suite/user-guide.md`.
-- [ ] `cargo build` and `cargo test` still green in `embarch-api` (README-only
+- [x] Its getting-started matches `suite/user-guide.md`.
+- [x] `cargo build` and `cargo test` still green in `embarch-api` (README-only
       change; `clippy` as the gate requires).
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
