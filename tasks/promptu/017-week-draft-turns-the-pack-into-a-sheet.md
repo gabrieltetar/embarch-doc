@@ -1,6 +1,6 @@
 # 017 — `promptu week draft` turns the week's pack into a ✓/✕ sheet
 
-**State:** claimed by agent/promptu/017-week-draft-turns-the-pack-into-a-sheet, 2026-11-23 22:40
+**State:** done — week draft built: fake-claude sheet, lint-checked proposed patterns, failed lines, no tools; forks W13-W15
 **Source:** decisions 14 and 30 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10, the sheet (written by `promptu/011`)
 **Issue:** EMB-276
 **Scope:** promptu
@@ -47,14 +47,20 @@ new decision, stop and say so in this file and in your report.
 
 ## Done when
 
-- [ ] With a fake `claude`, a fixture pack yields a `sheet.json` that matches
+- [x] With a fake `claude`, a fixture pack yields a `sheet.json` that matches
       contract §10, a `sheet.md`, and the proposed files.
-- [ ] A proposed pattern that fails lint, or a line naming an unknown pattern
+- [x] A proposed pattern that fails lint, or a line naming an unknown pattern
       or question, stays on the sheet with status `failed` and its error.
-- [ ] A failed or timed-out call writes no sheet and exits non-zero with one
+- [x] A failed or timed-out call writes no sheet and exits non-zero with one
       line on stderr.
-- [ ] The call runs with no tools and no MCP servers, as the pass does.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test
+- [x] The call runs with no tools and no MCP servers, as the pass does.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test
       --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped.
+
+## Done
+
+Built in `embarch-promptu`: `src/draft.rs`, `src/draft_system.md`, `tests/draft.rs`, config keys `week_model` (default `opus`), `week_effort`, `week_timeout_s`. Contract §14.4 and forks W13 (reply shape; a missing target or failed lint stays `failed`, a broken line is dropped), W14 (a `no-change` line starts cut), W15 (carrying earlier lines waits for the pack's `carried` events). No new numbered decision.
+
+**Not built, by design:** `check.replay` is `[]` (EMB-281); carried lines and the friction `numbers` wait for EMB-274; `week_checkout`/`apply` are EMB-279. **Not tested:** the timeout path of `week draft` itself (`week_timeout_s` cannot go below 60 s); it is `pass::call_model`'s, covered by `tests/prompts.rs`. **Unmeasured:** a real Opus reply; the drafter's system prompt is untried against a model. No hardware-verification debt. `016` had not landed; the pack fixture is hand-built from `run` events.
