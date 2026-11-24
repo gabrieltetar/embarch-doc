@@ -1,6 +1,6 @@
 # 071 — The linking process sets the identity store's folder
 
-**State:** open
+**State:** claimed by agent/topology/071-the-linking-process-sets-the-identity-stores-folder, 2026-11-24 04:02
 **Source:** `notes/hil/12-prevention.md`, "The root of trust" (the protected store bullet): on an attested install the identity store lives inside Core's protected store, with Core its only writer; `notes/hil/14-implementation-plan.md`, "The later phases, in outline" (unit A.4)
 **Issue:** EMB-320
 **Scope:** topology
