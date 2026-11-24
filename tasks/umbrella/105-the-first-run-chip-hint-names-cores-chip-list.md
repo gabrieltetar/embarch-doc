@@ -1,6 +1,6 @@
 # 105 — The first-run chip hint names Core's chip-list
 
-**State:** claimed by agent/umbrella/105-the-first-run-chip-hint-names-cores-chip-list, 2026-11-24 04:02
+**State:** done — both strings now name embarch-core chip-list
 **Source:** suite review audit, 2026-11-23: umbrella still sends a newcomer to a second toolchain install that Core decision 34 replaced
 **Issue:** EMB-310
 **Scope:** umbrella
@@ -35,8 +35,8 @@ is in reserve.
 
 ## Done when
 
-- [ ] Neither the doctor fix line nor the scaffolded config mentions
+- [x] Neither the doctor fix line nor the scaffolded config mentions
       `probe-rs-tools`; both name `embarch-core chip-list`.
-- [ ] `spec.md` or `interfaces/` updated only where they quote either string.
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md` or `interfaces/` updated only where they quote either string.
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
