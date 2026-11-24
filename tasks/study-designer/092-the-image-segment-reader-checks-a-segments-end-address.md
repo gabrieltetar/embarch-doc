@@ -1,6 +1,6 @@
 # 092 — The image-segment reader checks a segment's end address
 
-**State:** claimed by agent/study-designer/092-the-image-segment-reader-checks-a-segments-end-address, 2026-11-24 10:29
+**State:** done — merge checks every chunk end with checked_add; tests for ELF and bin; interface doc updated
 **Source:** reading `study-designer/091`'s shared-crate diff before merging it
 **Issue:** EMB-399
 **Scope:** study-designer
@@ -37,10 +37,10 @@ are ones this task does not touch.
 
 ## Done when
 
-- [ ] An ELF with a load address near `u64::MAX` and a second segment gives an
+- [x] An ELF with a load address near `u64::MAX` and a second segment gives an
       `ImageError` in a debug-build test.
-- [ ] A bin with such a base and enough bytes gives an `ImageError`.
-- [ ] `interfaces/hil-image.md` says addresses are checked as well as offsets.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), under `hil-image` and
+- [x] A bin with such a base and enough bytes gives an `ImageError`.
+- [x] `interfaces/hil-image.md` says addresses are checked as well as offsets.
+- [x] Gate green (`../../embarch-fleet/gate.md`), under `hil-image` and
       `--all-features` at least.
-- [ ] `changelog.d/` fragment dropped.
+- [x] `changelog.d/` fragment dropped.
