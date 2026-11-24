@@ -1,6 +1,6 @@
 # 050 — A script writes the released bench-firmware list
 
-**State:** claimed by agent/dev-bench/050-a-script-writes-the-released-bench-firmware-list, 2026-11-24 10:29
+**State:** done — bench-firmware-list.py writes release/bench-firmware.json from the shared crate example; tests green
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase: "the released bench-firmware hash list"), with `notes/hil/03-test.md`, "A run", item 3
 **Issue:** EMB-389
 **Scope:** dev-bench
@@ -58,12 +58,12 @@ are ones this task does not touch.
 
 ## Done when
 
-- [ ] The script's output for the shared crate's fixture image
+- [x] The script's output for the shared crate's fixture image
       (`tests/fixtures/hil-image/` in `embarch-study-designer`) carries the
       identity and segments the crate's own test expects for it.
-- [ ] Two images give two entries, sorted.
-- [ ] The README says where the list lives and when it is written.
-- [ ] A test for the script runs in the repo's existing Python test style
+- [x] Two images give two entries, sorted.
+- [x] The README says where the list lives and when it is written.
+- [x] A test for the script runs in the repo's existing Python test style
       (`scripts/test_patch_sums.py`).
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
