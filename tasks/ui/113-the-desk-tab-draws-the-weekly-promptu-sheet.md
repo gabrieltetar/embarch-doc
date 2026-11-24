@@ -1,6 +1,6 @@
 # 113 — The Desk tab draws Promptu's weekly sheet, with its ✓/✕, notes, feel line and Apply
 
-**State:** claimed by agent/ui/113-the-desk-tab-draws-the-weekly-promptu-sheet, 2026-11-24 00:24
+**State:** done — Desk tab Promptu section built; drive_desk_promptu.py passes against a stand-in desk
 **Source:** `embarch-desk` decision 65 (the Desk tab's spot left empty for a Promptu section, and the four `/promptu` routes `desk/042` added); `embarch-promptu` decisions 14 and 30 and `docs/contract.md` §9 (`promptu desk --json`) and §10 (the sheet); the Desk row of `spec/tabs.md`
 **Issue:** EMB-283
 **Scope:** ui
@@ -54,9 +54,13 @@ them: `tab-folders` 100 (113 B left), `launcher` 28 (22 B), `topology-tab`
 
 ## Done when
 
-- [ ] With `open: 0` the section takes no space on the tab.
-- [ ] The browser drive marks a line ✕, adds a note, cuts a group, sets the feel line and applies, against a stubbed desk, and checks each request's path and body.
-- [ ] A failed line shows its error and stays open after Apply.
-- [ ] `spec/tabs.md`'s Desk row says what the section does.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `changelog.d/` fragment dropped.
+- [x] With `open: 0` the section takes no space on the tab.
+- [x] The browser drive marks a line ✕, adds a note, cuts a group, sets the feel line and applies, against a stubbed desk, and checks each request's path and body.
+- [x] A failed line shows its error and stays open after Apply.
+- [x] `spec/tabs.md`'s Desk row says what the section does.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+The section is in `assets/desk.js`, `index.html` and `style.css`; the drive is the new `tests/browser/drive_desk_promptu.py` (a stand-in desk it serves itself), run here against geckodriver on scratch ports and all 18 checks passed. `drive_desk.py` (real scratch desk) was not run: it does not touch this section. The feel route is stubbed to desk/043's shape (`POST /promptu/feel/{week}`, `{"feel": ...}`); **not run against a real desk or Promptu**. Amended shell decision 56 and the Desk row of `spec/tabs.md`; no new decision. No decision file touched near its limit. Hardware: none.

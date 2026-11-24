@@ -1,0 +1,1 @@
+| Desk tab Promptu section: bar count (hidden at 0 open), weekly sheet panel with numbers, per-group and per-line ✓/✕ with notes, the feel line and Apply | Shipped — driven in headless Firefox against a stand-in desk, each request path and body checked; **not run against a real desk or Promptu** (the feel route is desk/043) | browser | 56 |
