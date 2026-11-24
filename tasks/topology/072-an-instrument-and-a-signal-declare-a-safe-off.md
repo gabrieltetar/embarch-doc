@@ -1,6 +1,6 @@
 # 072 — An instrument and a signal declare a safe-off
 
-**State:** open
+**State:** claimed by agent/topology/072-an-instrument-and-a-signal-declare-a-safe-off, 2026-11-24 08:50
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): Core is to switch off every output a bench declares, with a command built from the declaration, and no declaration holds one
 **Issue:** EMB-321
 **Scope:** topology
