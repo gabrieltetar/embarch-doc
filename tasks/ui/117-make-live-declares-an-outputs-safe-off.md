@@ -1,6 +1,6 @@
 # 117 — Make live declares an output's safe-off
 
-**State:** claimed by agent/ui/117-make-live-declares-an-outputs-safe-off, 2026-11-24 09:53
+**State:** done — Make live declares and carries a safe-off; decision 90 amended
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): the safe-off field landed on `Instrument` and `SignalLink` in `embarch-topology` (`topology/072`, `suite/059`), and Make live still sends it empty
 **Issue:** EMB-337
 **Scope:** ui
@@ -46,11 +46,17 @@ decision 43 must change, it has 207 B.
 
 ## Done when
 
-- [ ] A declaration with a safe-off round-trips through the form to a fake
+- [x] A declaration with a safe-off round-trips through the form to a fake
       Core with the person's token.
-- [ ] One without shows "no safe-off declared".
-- [ ] A re-declare does not drop a safe-off Core already holds, by the rule you
+- [x] One without shows "no safe-off declared".
+- [x] A re-declare does not drop a safe-off Core already holds, by the rule you
       chose, with a test.
-- [ ] Decision 90 amended; `spec/bench-live.md` updated.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Decision 90 amended; `spec/bench-live.md` updated.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+**Rule chosen (decision 90 amended, spec/bench-live.md):** what the bench states wins; a bench stating none keeps the safe-off Core already holds (read from `GET /instruments` / `GET /signals` before the writes), and the row says so. Make live never clears one; an instrument stating none is not declared while Core's list is unread. Entry: the part inspector's Safe-off box (saved as `Part.safe_off`) and a `safe_off` key on `[[signals]]`. Test: `make_live_declares_a_safe_off_and_carries_one_core_already_holds` (embarch-ui `src/main.rs`).
+
+**Not done:** no signal editor in the page (signals have none today), so a signal's safe-off is a file key. The browser drive (`tests/browser`) was not run for the new textarea (no browser here); the textarea is only `node --check`ed. Token: the stub Core does not check bearer tokens, the declaration goes through the same client as before.

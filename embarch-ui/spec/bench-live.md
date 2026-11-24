@@ -26,11 +26,13 @@ The config tab the record names is marked as the live wiring. **Live report** re
 | A probe on a role's part, or over its SWD lead | `POST /probes/enroll {role}`, `name` the board type | Proposed |
 | A probe reached by a role-less board | `POST /probes/enroll`, no role, `name` its label | Proposed |
 | `vcom` on the dev-bench part | `POST /dev-bench/link` | Applied; deferred while the role holds no board |
-| Each `[[signals]]` entry | `POST /signals` | Applied |
-| `scpi` on a part | `PUT /instruments`, the template's line facts | Applied |
+| Each `[[signals]]` entry, its `safe_off` line | `POST /signals` | Applied |
+| `scpi` on a part, its `safe_off` lines | `PUT /instruments`, the template's line facts | Applied |
 | The DUT's bootload pair | `PUT /bootload/ports` | Applied |
 
 The bench-level cables count, and the live config's; no others.
+
+**Safe-off.** An instrument takes its commands from the part's Safe-off box in the Topology tab's inspector (one per line, shown for a part with an `scpi` binding; saved as the part's `safe_off`), a signal its one line from a `safe_off` key in the file. Each declaration row ends *safe-off declared (n commands)*, *no safe-off declared*, or *safe-off kept from Core (n commands)*: a bench stating none keeps what Core holds, because `PUT /instruments` and `POST /signals` replace by name (90). It never clears one, and an instrument stating none is not declared while Core's list is unread. The terminal form sends the same field.
 
 ## The live report
 
