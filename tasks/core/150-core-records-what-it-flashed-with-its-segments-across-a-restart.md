@@ -1,6 +1,6 @@
 # 150 — Core records what it flashed, with its segments, across a restart
 
-**State:** claimed by agent/core/150-core-records-what-it-flashed-with-its-segments-across-a-restart, 2026-11-24 09:53
+**State:** done — flashed-images.jsonl written per flash and bootload with segments, scope and call-log seq, read back at start; decision 93 amended
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase), checked against `notes/hil/08-existing-pieces.md`: `last_images` is in memory, holds no segments, and a restart forgets it
 **Issue:** EMB-361
 **Scope:** core
@@ -56,13 +56,24 @@ overflow checks concurrently without changing its signature; build against
 
 ## Done when
 
-- [ ] A fixture hex flashed through a fake backend gives an entry with its
+- [x] A fixture hex flashed through a fake backend gives an entry with its
       segments, identity and scope.
-- [ ] A new `AppState` over the same folder reads the entry back.
-- [ ] `GET /status` answers as before (an existing or new test pins its shape).
-- [ ] The file's shape is documented in `embarch-doc/embarch-core/interfaces/`,
+- [x] A new `AppState` over the same folder reads the entry back.
+- [x] `GET /status` answers as before (an existing or new test pins its shape).
+- [x] The file's shape is documented in `embarch-doc/embarch-core/interfaces/`,
       and decision 93 amended.
-- [ ] Gate green (`../../embarch-fleet/gate.md`); the native Windows build is
+- [x] Gate green (`../../embarch-fleet/gate.md`); the native Windows build is
       the supervisor's hardware debt, so note anything Windows-specific.
-- [ ] `changelog.d/` fragment dropped, `features.d/` row if a feature row is
+- [x] `changelog.d/` fragment dropped, `features.d/` row if a feature row is
       owed, `status.d/` fragment for anything suite-level made false.
+
+## Notes (worker)
+
+- **Cargo.lock moved by one line**: `embarch-study-designer` gains `sha2 0.11.0` (the `hil-image` feature's dependency, already in the tree through Core). Built against `main`'s `hil_image.rs`.
+- **Fields**: the entry uses `FlashedImage`'s existing names (`flashed_at`, `lease_holder`, `path`, `sha256`) beside the task's; `flashed_at` and `at_utc_ms` are one instant. New: `role`, `identity`, `segments`, `scope`, `at_utc_ms`, `call_log_seq`. Said in `interfaces/hardware.md`.
+- **call_log_seq**: the call-log entry is written after the handler, so the handler only marks the chip on the call's `BoardNote` and `call_log_middleware` appends the line with the entry's `seq` (and the scope). A handler run without that middleware writes nothing.
+- **"Fake backend"**: Core has no fake flash backend (`hardware::flash` opens a real probe), so the tests drive `ImageLog` and `image_detail` on a fixture hex, and a stand-in `/flash` handler through `call_log_middleware`. The `/flash` and `/bootload` handler bodies themselves are not run by a test.
+- **Bootload records no segments** (`identity`/`segments` `null`): the slot address of a signed image is not known to Core. A readback has nothing to compare for a bootloaded board until something supplies it.
+- **Windows-specific**: none; `std::fs` append only. Native Windows build is the supervisor's debt as usual.
+- **Hardware-verification debt**: one real `/flash` and `/bootload` on a bench, then check `flashed-images.jsonl` in the data folder has the line, `role`, `call_log_seq` matching the call-log entry, and survives a Core restart.
+- `spec.md` untouched, so 147's compaction was not triggered.

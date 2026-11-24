@@ -1,0 +1,1 @@
+| Flashed-image record — `flashed-images.jsonl` keeps what Core flashed per board, with load segments, identity, scope and call-log seq, across a restart; `GET /status` `last_images` reads from it | Shipped — **host-tested through a stand-in handler; no real flash or bootload ever wrote it, and a bootload records no segments** | unit | 93 |
