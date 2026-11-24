@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Atlas live tools append a decoded line (answer plus every Core call-log entry) to the live log embarch-api writes; see [design](../embarch-atlas/design.md).
 - Atlas: a module datasheet's pin records may carry a SoC `port`, which gives an unnamed pad its port and DT use in pins.md (design.md).
 - embarch-atlas's Maxim template reads a single B7..B0 bit-column register map with no per-register headings as 8-bit registers; a column span vs [m:n] mismatch is reported (EMB-34).
 - embarch-atlas: `doc regparse --template maxim` also reads `Name Register (0x..)` headings with one summary table carrying DEFAULT; a row or heading missing its twin is a conflict (EMB-34).
