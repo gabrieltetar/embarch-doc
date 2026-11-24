@@ -1,6 +1,6 @@
 # 042 — The desk serves Promptu's weekly sheet and takes its ✓/✕ through routes that run the `promptu` CLI
 
-**State:** claimed by agent/desk/042-the-desk-serves-promptus-weekly-sheet, 2026-11-24 00:08
+**State:** done — four routes run the promptu CLI, tested on a fake binary; no MCP tool reaches them; interfaces.md compacted to 12,723 B; decision 65 amended
 **Source:** decision 65 (`decisions/cockpit.md`, the Desk tab's spot for a Promptu section); decision 67 (finding the `promptu` binary); `embarch-promptu` decisions 14 and 30; `embarch-promptu` `docs/contract.md` §9 and §10, and `week show`, `week mark` and `week apply` (`promptu/014`, `promptu/019`)
 **Issue:** EMB-282
 **Scope:** desk
@@ -52,9 +52,9 @@ into `spec/`). Do not edit `tasks/desk/038`; I update it at the fold.
 
 ## Done when
 
-- [ ] Each route is tested against a fake `promptu` on a scratch `PATH`.
-- [ ] With no `promptu`, `GET /promptu` answers `{"promptu": 1, "open": 0}`, and the other routes answer an error that names the missing binary.
-- [ ] No MCP tool reaches these routes, and a test says so.
-- [ ] `interfaces.md` lists the routes and is out of reserve; decision 65 is amended to record them.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+- [x] Each route is tested against a fake `promptu` on a scratch `PATH`.
+- [x] With no `promptu`, `GET /promptu` answers `{"promptu": 1, "open": 0}`, and the other routes answer an error that names the missing binary.
+- [x] No MCP tool reaches these routes, and a test says so.
+- [x] `interfaces.md` lists the routes and is out of reserve; decision 65 is amended to record them.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.

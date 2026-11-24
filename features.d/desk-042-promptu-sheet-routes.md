@@ -1,0 +1,1 @@
+| Desk routes for Promptu's weekly sheet (`GET /promptu`, `/promptu/sheet`, `POST …/sheet/{week}/{line}`, `/apply/{week}`): each runs the `promptu` CLI; HTTP only, no MCP tool | Built on a branch; tested against a fake `promptu` only, never against the real CLI (its `week mark` and `week apply` landed in a branch, not main) | unit | |

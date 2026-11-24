@@ -38,6 +38,8 @@ Searched as `<KEY> type:pr involves:@me`, then **checked against title and branc
 ### 65 — The Desk tab draws no Slack bar; its spot waits for a Promptu section
 Decided by the owner on 2026-10-29: the Slack bar and its feed leave the Desk tab, and the place the bar held stays empty for a Promptu section, a later change. The desk's own Slack side went the same day (66). Amends 1, 4–5 and 57; retires `embarch-ui` decision 63, the bar's reply identity.
 
+**The Promptu section's routes (EMB-282, 2026-11-24).** Four HTTP routes, each running one `promptu` command and passing its JSON on, so the desk holds no Promptu logic: `GET /promptu` (`desk --json`, cached 60 s, `{"promptu":1,"open":0}` when the binary is absent or fails), `GET /promptu/sheet` (`week show`), `POST /promptu/sheet/{week}/{line}` (`week mark`) and `POST /promptu/apply/{week}` (`week apply`). Found as decision 67 finds it. **No MCP tool reaches them**, a test says so: marking and applying a sheet is the owner's, like ✓ on a tile. Without the binary the three others answer a 503 naming it. [interfaces.md](../interfaces.md) has the routes.
+
 ## Time
 
 ### 10 — Captured automatically, sent only on ✓
