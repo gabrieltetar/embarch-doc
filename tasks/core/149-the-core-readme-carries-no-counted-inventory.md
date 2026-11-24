@@ -1,6 +1,6 @@
 # 149 — The Core README carries no counted inventory
 
-**State:** open
+**State:** claimed by agent/core/149-the-core-readme-carries-no-counted-inventory, 2026-11-24 03:45
 **Source:** suite review audit, 2026-11-23: three code-repo READMEs describe the suite as of September
 **Issue:** EMB-297
 **Scope:** core
