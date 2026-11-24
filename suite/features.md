@@ -130,6 +130,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Stimulus and sensing hardware-in-the-loop rig | Proposed | n/a | — |
 | Power sampling during a study | **Deferred, not cancelled** — no front end; a declared `PowerFrontEnd` tap is accepted, crosses the wire, is parsed and captures nothing (`bytes_written: 0`) | n/a | 24 |
 | Advertiser census reports Manufacturer Specific Data (company ID + payload, capped) | Shipped — parsing/rendering ztest-verified on host; the claimed correspondence between the payload and a DUT's enrolled hardware ID is read off client firmware source, unconfirmed on air | host | 44 |
+| Released bench-firmware list: `scripts/bench-firmware-list.py` writes `release/bench-firmware.json` (identity and segments per image) | Shipped | host test | — |
 
 ## embarch-study-designer
 

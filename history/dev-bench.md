@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A script, `scripts/bench-firmware-list.py`, writes the release's `release/bench-firmware.json`; see embarch-dev-bench/spec/bench-firmware-list.md.
 - dev-bench `scripts/patch-sums.py` checks and refreshes a patches.yml's sha256sum values in place, with no west workspace.
 - pd-bench gets a build-only twister sample for both shields and a native_sim ztest of its pure logic, `pd_logic.c` (dev-bench decision 59).
 - pd-bench builds from its own `workspaces/pd-bench/`: Zephyr v4.4.2 plus six carried USB-C patches applied by `west patch` (dev-bench decision 58).
