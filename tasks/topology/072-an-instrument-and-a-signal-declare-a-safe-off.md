@@ -1,7 +1,6 @@
 # 072 — An instrument and a signal declare a safe-off
 
-**State:** blocked — finished and pushed on its branch; it cannot land alone because three consumers build these types with struct literals
-**Unparks when:** suite/059 lands this branch together with the consumers' literal fixes
+**State:** done — safe_off on Instrument and SignalLink, checked and round-tripped; gate green on four feature sets; landed by suite/059 with the consumers' literal fixes
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): Core is to switch off every output a bench declares, with a command built from the declaration, and no declaration holds one
 **Issue:** EMB-321
 **Scope:** topology
@@ -62,12 +61,19 @@ belongs in decision 20, keep its growth to a pointer at decision 49.
 
 ## Done when
 
-- [ ] An instrument and a signal with `safe_off` round-trip through the store.
-- [ ] A store fixture written before the field loads, and is rewritten byte for
+- [x] An instrument and a signal with `safe_off` round-trip through the store.
+- [x] A store fixture written before the field loads, and is rewritten byte for
       byte.
-- [ ] An empty line, a line holding CR or LF, and an over-long line are each
+- [x] An empty line, a line holding CR or LF, and an over-long line are each
       refused by `check`, for both types.
-- [ ] Gate green under every feature set the crate's consumers build it with
+- [x] Gate green under every feature set the crate's consumers build it with
       (`../../embarch-fleet/gate.md`).
-- [ ] Decision 49 amended; `spec.md`/`interfaces/` updated; `changelog.d/`
+- [x] Decision 49 amended; `spec.md`/`interfaces/` updated; `changelog.d/`
       fragment dropped.
+
+## Notes
+
+- **Core's docs (supervisor applies at the fold):** if `embarch-core/interfaces/instruments.md` lists `Instrument`'s fields, add `safe_off: Vec<String>` (optional, omitted when empty); if it lists `SignalLink`'s, add `safe_off: Option<String>`.
+- **Breaking for consumers that build the structs by literal:** both types gained a field, so `embarch-core` (`api.rs`, `study.rs`), `embarch-api` (`tools.rs`, `core-client`, `tests/core_client_http.rs`) and `embarch-ui` (`topology.rs`) need `safe_off: Default::default()` where they construct `Instrument`/`SignalLink`. Not touched here (other repos); expect red there until fixed.
+- **Assumed, not measured:** the 4096-byte cap repeats Core's `MAX_WRITE_BYTES`; topology cannot depend on Core. `SignalLink::check` is new and is called by `signal::declare` (hardware feature).
+- The `SignalLink` half is a one-line pointer in `decisions/links-origin.md` (decision 48's file) and in decision 49; decision 20 untouched (29 B margin).

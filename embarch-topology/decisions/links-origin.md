@@ -21,3 +21,5 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **What it costs.** A board origin is fixed to one probe: moving the bench board to another probe means re-declaring the signal. A role origin does not have that cost, which is why the role form stays the default for a DUT.
 
 **Reverses if** a bench board ever needs to be swapped for an identical one without re-declaring its signals, which would want a stable board identity that is neither a role nor a probe.
+
+**A signal may also declare a `safe_off` shell line** for its bench board: decision 49.
