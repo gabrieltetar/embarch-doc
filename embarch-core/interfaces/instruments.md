@@ -4,7 +4,7 @@
 
 | Method | Path | Body / query | Response |
 |---|---|---|---|
-| `PUT` / `GET` | `/instruments` | `PUT` an `Instrument`: `{name, protocol?: "scpi", port: UsbPortId, baud, write_terminator?: "\n", read_terminator?: "\r\n", min_interval_ms?: 0, ack_ok?, ack_err?}` | `PUT` echoes what was stored, replacing an instrument of the same name; **`400`** for a name that is not a path segment, a zero baud, an empty terminator, `ack_err` without `ack_ok`, or a port identity one live port could match together with another instrument's. `GET` returns the list, empty when none |
+| `PUT` / `GET` | `/instruments` | `PUT` an `Instrument`: `{name, protocol?: "scpi", port: UsbPortId, baud, write_terminator?: "\n", read_terminator?: "\r\n", min_interval_ms?: 0, ack_ok?, ack_err?, safe_off?: [line]}` (`safe_off`: topology decision 49; stored, not yet sent) | `PUT` echoes what was stored, replacing an instrument of the same name; **`400`** for a name that is not a path segment, a zero baud, an empty terminator, `ack_err` without `ack_ok`, a `safe_off` line that is empty, holds CR or LF or is over 4096 bytes, or a port identity one live port could match together with another instrument's. `GET` returns the list, empty when none |
 | `DELETE` | `/instruments/{name}` | — | `204`, or `404` when nothing is declared under `name` |
 | `POST` | `/instruments/{name}/exchange` | any JSON body | **Always `409`**, before any lock or port, with a text naming a host study's `Instrument` step; no caller is admitted, so no reply body exists. The route stays so an older client reads a reason, not a `404` |
 
