@@ -1,6 +1,6 @@
 # 116 — A saved bench is made live from the terminal
 
-**State:** open
+**State:** claimed by agent/ui/116-a-saved-bench-is-made-live-from-the-terminal, 2026-11-24 08:50
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase): "the CLI does the same in the person's terminal, so a Test needs no UI" (`notes/hil/03-test.md`, "Benches")
 **Issue:** EMB-386
 **Scope:** ui
