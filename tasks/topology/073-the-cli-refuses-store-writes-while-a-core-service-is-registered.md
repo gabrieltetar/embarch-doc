@@ -1,6 +1,6 @@
 # 073 — The CLI refuses store writes while a Core service is registered
 
-**State:** claimed by agent/topology/073-the-cli-refuses-store-writes-while-a-core-service-is-registered, 2026-11-24 11:04
+**State:** done — CLI refuses store writes while a Core service is registered; fake-registry tests, Windows read type-checked in a scratch crate; real-service run is a debt
 **Source:** `notes/hil/12-prevention.md` — the protected store bullet and item 3: the topology CLI refuses to write the identity store while a Core service is installed
 **Issue:** EMB-322
 **Scope:** topology
@@ -52,14 +52,23 @@ in reserve.
 
 ## Done when
 
-- [ ] With a fake registry: registered and stopped refuses each store write,
+- [x] With a fake registry: registered and stopped refuses each store write,
       naming its Core route; not registered bootstraps as today.
-- [ ] Registered and answering on a non-default bind refuses, with no
+- [x] Registered and answering on a non-default bind refuses, with no
       `--core-port` given.
-- [ ] Each arm's refusal happens before any probe or store is opened.
-- [ ] The Windows registry read type-checks for `x86_64-pc-windows-msvc`
+- [x] Each arm's refusal happens before any probe or store is opened.
+- [x] The Windows registry read type-checks for `x86_64-pc-windows-msvc`
       (`cargo check --target x86_64-pc-windows-msvc`; the target is installed).
-- [ ] Decisions 23 and 28 amended; `cli.md` and `spec.md` say what holds.
-- [ ] A hardware-verification debt in this file for the owner's bench session:
+- [x] Decisions 23 and 28 amended; `cli.md` and `spec.md` say what holds.
+- [x] A hardware-verification debt in this file for the owner's bench session:
       a real registered service, stopped and running, on Windows and under WSL2.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+
+## Hardware-verification debt
+
+Owner's bench session, on a real registered service (nothing here ran against one):
+
+- **Windows**: `reg query HKLM\SYSTEM\CurrentControlSet\Services\com.embarch.core /v ImagePath` parses (a `--bind` after a quoted exe path); `embarch-topology enroll`, `unenroll`, `set-board`, `validate`, `set-dev-bench-link` each refuse with the service stopped and running, and with Core on a non-default `--bind`, no `--core-port` given. After `embarch-core uninstall`, `enroll` bootstraps locally again.
+- **WSL2**: the same five commands through `sc.exe qc com.embarch.core` and through an `embarch-core` systemd unit if one exists; and `list`/`alerts` against a service registered with `--service` (Core's installer writes no `--service` flag today, so this arm is exercised only by a hand-registered command line).
+- **Not run**: `cargo check --target x86_64-pc-windows-msvc` of the whole binary dies in `hidapi`'s `build.rs` (no MSVC `cc` in WSL, the known debt). The Windows-only code in `bin/registry.rs` was type-checked in a scratch crate on that target instead, with `DEFAULT_CORE_PORT` stubbed.
+- Core's `--service` flag is not in `embarch-core/src/main.rs` today; the parse is ready for it.

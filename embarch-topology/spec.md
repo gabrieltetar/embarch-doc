@@ -35,8 +35,8 @@ one codebase, two things built from it:
        - live validation, the durable alert log, and the structured
          mismatch error with its fix-it URL
   2. a thin CLI over the same crate: a human inspects always, and mutates
-     (enroll/validate/set-dev-bench-link) only when no Core answers on
-     this machine — else it refuses and names Core's route (decision 28).
+     (enroll/validate/set-dev-bench-link) only when no Core answers and
+     no Core service is registered (OS read) — else it refuses and names Core's route (decision 28).
      Its local web UI half is retired (decision 5).
 
 embarch-core, embarch-api and embarch-umbrella all depend on the crate

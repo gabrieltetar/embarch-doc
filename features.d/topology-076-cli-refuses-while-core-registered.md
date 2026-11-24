@@ -1,0 +1,1 @@
+| `embarch-topology` CLI refuses store writes while a Core service is registered (Windows key, systemd unit, `sc.exe qc` from WSL2), stopped or on another bind — **unrun against a real service** | Built (host fake-registry tests) | host | 28 |

@@ -32,6 +32,8 @@ Prompted directly: a human enrolling both real boards, already both plugged in, 
 
 *Amended by decision 45: the guard probes the port named by `--core-port`.*
 
+**Amended 2026-11-24 (`tasks/topology/073`): a registered Core service owns the store, running or not.** The CLI refuses every store write while one is registered, before any probe; stated in [cli.md](cli.md) decision 45's amendment.
+
 ### 35 — A role is a fixed pair and a board's name is its own field; enrolling gains a counterpart
 
 **`role` was a free string, so a board's name had nowhere else to go.** A bench with a third board acquired a third role — `client-nucleo` — and from then on nothing could answer "which board is the DUT" by looking, because a role, a name and a typo were the same kind of value. [`embarch-ui` decision 44](../../embarch-ui/decisions/topology-boards.md) is where that was felt; this is what the crate did about it.
