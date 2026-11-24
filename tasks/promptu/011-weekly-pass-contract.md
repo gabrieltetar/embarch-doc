@@ -1,6 +1,6 @@
 # 011 — The weekly pass's contract: the week commands, the desk command and the sheet
 
-**State:** open
+**State:** claimed by agent/promptu/011-weekly-pass-contract, 2026-11-23 18:03
 **Source:** embarch-promptu/open.md — the two step 4 lines; decisions 43 to 47 (`decisions/learning.md`, the owner's step 4 answers, 2026-11-23)
 **Issue:** EMB-272
 **Scope:** promptu
