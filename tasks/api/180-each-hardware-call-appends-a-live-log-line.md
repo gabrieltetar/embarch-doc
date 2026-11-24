@@ -1,6 +1,6 @@
 # 180 — Each hardware call appends a line to the firmware repo's live log, citing Core's call-log entry
 
-**State:** claimed by agent/api/180-each-hardware-call-appends-a-live-log-line, 2026-11-23 21:00
+**State:** done — Each gated call appends a live-log line citing Core entry; call_log reads entries; mock Core only, bench debt in open.md
 **Source:** notes/hil/05-live.md — "The live log": a readable mirror of Core's call log in the firmware repo, its fields "to fix with the first writer"
 **Issue:** EMB-255
 **Scope:** api
@@ -55,13 +55,13 @@ your report. `decisions/ledger.md` decision 98 has 15 B left and
 
 ## Done when
 
-- [ ] Against a fake Core, a `mem_read` and a `reset` each append one line
+- [x] Against a fake Core, a `mem_read` and a `reset` each append one line
       naming Core's entry, the board and the image hash.
-- [ ] A call Core refuses appends a line with the refusal.
-- [ ] `mem-read --json` output carries Core's entry, and `call-log` returns an
+- [x] A call Core refuses appends a line with the refusal.
+- [x] `mem-read --json` output carries Core's entry, and `call-log` returns an
       entry by its `seq`.
-- [ ] `interfaces/live-log.md` fixes the line shape, the file's name and its
+- [x] `interfaces/live-log.md` fixes the line shape, the file's name and its
       place.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.

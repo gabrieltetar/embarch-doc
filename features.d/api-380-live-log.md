@@ -1,0 +1,1 @@
+| `embarch-api` live log — every hardware call appends a line to `<repo>/embarch/live/` citing Core's call-log entry; `call_log` / `call-log` read entries by `seq` | Built on a branch, not deployed — **mock Core only** | unit | [live-log](../embarch-api/interfaces/live-log.md) |
