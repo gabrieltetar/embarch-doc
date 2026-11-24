@@ -1,6 +1,6 @@
 # 105 — A live finding is written back to the atlas as a measured fact
 
-**State:** open
+**State:** claimed by agent/atlas/105-a-live-finding-is-written-back-as-a-measured-fact, 2026-11-23 22:40
 **Source:** Fleet Ready issue (owner): `measured` is a provenance level in the atlas's records, and nothing writes it
 **Issue:** EMB-267
 **Scope:** atlas
