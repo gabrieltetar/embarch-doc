@@ -1,6 +1,6 @@
 # 035 — A click on the Promptu card's weekly line runs the pass now, or opens the waiting sheet
 
-**State:** open
+**State:** claimed by agent/chat/035-a-click-on-the-promptu-cards-weekly-line-runs-or-opens, 2026-11-24 01:56
 **Source:** decision 95 (`decisions/promptu.md`, the Promptu card and its weekly line, which today rejects "opening the sheet or running the pass from the card (EMB-284)"); `embarch-promptu` decisions 30 and 45 and `docs/contract.md` §14.4 (`week run`, exit 4 while a run is live; `week status`)
 **Issue:** EMB-284
 **Scope:** chat
