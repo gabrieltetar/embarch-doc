@@ -1,6 +1,6 @@
 # 092 — The image-segment reader checks a segment's end address
 
-**State:** open
+**State:** claimed by agent/study-designer/092-the-image-segment-reader-checks-a-segments-end-address, 2026-11-24 10:29
 **Source:** reading `study-designer/091`'s shared-crate diff before merging it
 **Issue:** EMB-399
 **Scope:** study-designer
