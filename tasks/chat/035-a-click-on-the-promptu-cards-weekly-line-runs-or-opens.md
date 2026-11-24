@@ -1,6 +1,6 @@
 # 035 — A click on the Promptu card's weekly line runs the pass now, or opens the waiting sheet
 
-**State:** claimed by agent/chat/035-a-click-on-the-promptu-cards-weekly-line-runs-or-opens, 2026-11-24 01:56
+**State:** done — The card weekly line opens the sheet (review skill typed, unsent) or runs week run once; failure is one line; decision 95 amended
 **Source:** decision 95 (`decisions/promptu.md`, the Promptu card and its weekly line, which today rejects "opening the sheet or running the pass from the card (EMB-284)"); `embarch-promptu` decisions 30 and 45 and `docs/contract.md` §14.4 (`week run`, exit 4 while a run is live; `week status`)
 **Issue:** EMB-284
 **Scope:** chat
@@ -49,9 +49,9 @@ is within 204 B of its limit; you should not need it.
 
 ## Done when
 
-- [ ] With a fake `promptu`, one click runs `week run` once, and a click while it runs starts nothing.
-- [ ] With a sheet waiting, a click opens it as decided and runs nothing.
-- [ ] A failed run shows one line on the card.
-- [ ] Decision 95 and the chat's `spec.md` say what the click does.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `npm run build`, `npm run typecheck`, `npm test` and `npm run test:webview`.
-- [ ] `changelog.d/` fragment dropped.
+- [x] With a fake `promptu`, one click runs `week run` once, and a click while it runs starts nothing.
+- [x] With a sheet waiting, a click opens it as decided and runs nothing.
+- [x] A failed run shows one line on the card.
+- [x] Decision 95 and the chat's `spec.md` say what the click does.
+- [x] Gate green (`../../embarch-fleet/gate.md`): `npm run build`, `npm run typecheck`, `npm test` and `npm run test:webview`.
+- [x] `changelog.d/` fragment dropped.

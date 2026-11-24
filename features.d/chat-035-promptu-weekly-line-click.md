@@ -1,0 +1,1 @@
+| A click on the Promptu card's weekly line opens the waiting sheet in a new chat with `/embarch-promptu:review` typed, unsent, or runs `promptu week run` in the background (one at a time, a failure one line) | Built, not installed — **seen only against a fake `promptu` in the webview harness** | unit | 95 |
