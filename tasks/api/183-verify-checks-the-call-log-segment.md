@@ -1,6 +1,6 @@
 # 183 — `verify` checks a zip's call-log segment against its signed range
 
-**State:** open
+**State:** claimed by agent/api/183-verify-checks-the-call-log-segment, 2026-11-23 22:40
 **Source:** `notes/hil/06-report-and-publish.md`, check 8: "the chain recomputes over each run's range of entries … a zip from before then carries no call-log segment, and its appendix says 'no call log'"
 **Issue:** EMB-254
 **Scope:** api
