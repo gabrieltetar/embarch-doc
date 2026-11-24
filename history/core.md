@@ -18,6 +18,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core's persisted record of what it flashed: spec invariant and /status row now say so; spec.md out of reserve (signing text moved to spec/signing.md).
 - Core appends each flash and bootload, with its load segments, scope and call-log seq, to flashed-images.jsonl, and reads it at start, so last_images survives a restart.
 - Core: `PUT /instruments` and `POST /signals` accept and store a declaration's `safe_off`, refusing a bad line with `400`; nothing sends it yet (topology decision 49).
 - The Core README no longer carries an endpoint count or a file/endpoint list; it points at the interface docs.
