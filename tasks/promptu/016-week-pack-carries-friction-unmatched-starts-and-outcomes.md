@@ -1,6 +1,6 @@
 # 016 — `promptu week pack` carries friction, unmatched starts and outcomes
 
-**State:** open
+**State:** claimed by agent/promptu/016-week-pack-carries-friction-unmatched-starts-and-outcomes, 2026-11-23 23:22
 **Source:** decisions 14 and 15 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md`'s pack records (written by `promptu/011`, built by `promptu/013`)
 **Issue:** EMB-274
 **Scope:** promptu
