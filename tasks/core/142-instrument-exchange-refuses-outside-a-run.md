@@ -1,6 +1,6 @@
 # 142 — Core refuses instrument_exchange outside a run
 
-**State:** open
+**State:** claimed by agent/core/142-instrument-exchange-refuses-outside-a-run, 2026-11-23 17:31
 **Source:** notes/hil/05-live.md — "Reach and permission": instruments are reached only through a Study or a Test, and Core refuses `instrument_exchange` outside a run (owner 2026-11-19)
 **Issue:** EMB-252
 **Scope:** core
