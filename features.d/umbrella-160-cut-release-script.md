@@ -1,0 +1,1 @@
+| `scripts/cut-release.py` — dry-run-by-default script that tags changed components, tags the suite, waits on CI, verifies the download and prints the install line | Built — **tested against a fake runner only; never run on a real tag** | unit | 14 |

@@ -1,6 +1,6 @@
 # 109 — A script cuts a signed suite release
 
-**State:** claimed by agent/umbrella/109-a-script-cuts-a-signed-suite-release, 2026-11-24 12:48
+**State:** done — script, fake-runner tests and topic file shipped; never run live
 **Source:** `embarch-release-signing-proposal.md` — "One script cuts a release (`embarch-umbrella/scripts/`): checks the versions, tags each component that changed, waits for its CI, tags the suite, waits, downloads and verifies the result, and prints the elevated install command"
 **Issue:** EMB-344
 **Scope:** umbrella
@@ -52,10 +52,18 @@ probe-vendors#49, sticky-host#48, budgets#44; none is this task's.
 
 ## Done when
 
-- [ ] With a fake runner, the dry run prints every command and runs none.
-- [ ] A component whose version equals its latest tag is skipped.
-- [ ] A failed component run stops the script before the suite tag.
-- [ ] A failed verification stops it and says so.
-- [ ] `spec.md` names the script; a topic file says how to run it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`) plus the script's own tests,
+- [x] With a fake runner, the dry run prints every command and runs none.
+- [x] A component whose version equals its latest tag is skipped.
+- [x] A failed component run stops the script before the suite tag.
+- [x] A failed verification stops it and says so.
+- [x] `spec.md` names the script; a topic file says how to run it.
+- [x] Gate green (`../../embarch-fleet/gate.md`) plus the script's own tests,
       `changelog.d/` fragment dropped.
+
+## Result
+
+- Script: `scripts/cut-release.py` (Python 3.12 stdlib); doc: `interfaces/cut-release.md`.
+- **Gate command for its tests:** `python3 -m unittest discover -s scripts -p 'test_*.py'` in `embarch-umbrella` (8 tests, fake runner).
+- **`spec.md` is now 9,272 B of 10,240** (was 9,161; +111 B, one sentence). For `tasks/umbrella/107`'s park.
+- No new decision; decision 14 untouched.
+- **Debt:** never run against real `gh`/`git`; the first real cut verifies the `gh run list/watch/release download` argument shapes. `embarch install-core` is printed as the issue gives it.
