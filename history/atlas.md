@@ -57,6 +57,7 @@
 - atlas join now has a synthetic Nordic-project test (P0.xx/P1.xx netlist, Nordic dt.json) asserting the pin map's DT column and a non-zero pin-check count.
 
 ### Fixed
+- The atlas's live-log line reads the image hash from Core's last_images, takes board in embarch-api's order and writes no line when Core is down (atlas/104).
 - atlas shell_commands: Zephyr 4.4 structured help decodes to text, and section-added sets (`kernel`) list their subcommands; non-text help is empty.
 - pins.md: a module pad the symbol leaves unnamed takes its port from a port-named net, else says why it has none (EMB-237).
 - Net trace reads the pin names of the package a board part is fitted with, inferred from pin names or count, and says when it cannot tell (EMB-236).

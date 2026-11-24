@@ -1,7 +1,6 @@
 # 105 — A live finding is written back to the atlas as a measured fact
 
-**State:** blocked
-**Unparks when:** tasks/atlas/104
+**State:** open
 **Source:** Fleet Ready issue (owner): `measured` is a provenance level in the atlas's records, and nothing writes it
 **Issue:** EMB-267
 **Scope:** atlas
@@ -44,8 +43,10 @@ The next session answering a hardware question from the atlas needs the
 finding, and the following unit compares a measured value with the datasheet
 (EMB-268, waiting on this).
 
-**Parked behind `atlas/104`:** both change `live.py` and the live-log line, and
-this unit's image lookup and receipt build on 104's.
+**Was parked behind `atlas/104`**, which landed on 2026-11-23: both change the
+live-log line, and this unit's image lookup and receipt build on 104's. 104 put
+the `last_images` lookup in `src/embarch_atlas/livelog.py` (`image_sha256`) and
+made a decoded line follow only a call that cited Core entries.
 
 **Burndown leg: no new numbered decision.** `embarch-atlas/design.md` and the
 repo's `DESIGN.md` "Records" and "Live" are amended in place. If the work needs
