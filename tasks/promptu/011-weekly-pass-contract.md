@@ -1,6 +1,6 @@
 # 011 — The weekly pass's contract: the week commands, the desk command and the sheet
 
-**State:** claimed by agent/promptu/011-weekly-pass-contract, 2026-11-23 18:03
+**State:** done — contract §9, §10, §14 written; decisions 14, 15, 30 amended; forks W1-W9 added
 **Source:** embarch-promptu/open.md — the two step 4 lines; decisions 43 to 47 (`decisions/learning.md`, the owner's step 4 answers, 2026-11-23)
 **Issue:** EMB-272
 **Scope:** promptu
@@ -53,15 +53,15 @@ and change nothing there.
 
 ## Done when
 
-- [ ] `docs/contract.md` specifies each `promptu week` command and `promptu
+- [x] `docs/contract.md` specifies each `promptu week` command and `promptu
       desk`: arguments, output, exit codes, files read and written.
-- [ ] §9 and §10 no longer say "sketch", and §11 lists what step 4 fixes.
-- [ ] The week folder and every new config key are in the contract and in the
+- [x] §9 and §10 no longer say "sketch", and §11 lists what step 4 fixes.
+- [x] The week folder and every new config key are in the contract and in the
       "Files" table of `interfaces.md`.
-- [ ] Decision 14 records the chat's card as a second place the weekly pass
+- [x] Decision 14 records the chat's card as a second place the weekly pass
       shows (owner, 2026-11-07).
-- [ ] Every choice the owner has not made is in `docs/forks.md` with a
+- [x] Every choice the owner has not made is in `docs/forks.md` with a
       provisional default.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
