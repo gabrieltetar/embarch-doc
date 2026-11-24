@@ -11,6 +11,7 @@
 - `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
 
 ### Changed
+- The umbrella README no longer carries a command or binary list; it points at the interface docs and the user guide (EMB-297).
 - Umbrella's embarch init now reads the api's HIL skill file at build time; the pinned copy that drifted is gone (decision 59).
 - umbrella: README says LLM coding agent, not AI coding agent (EMB-194)
 - doctor check 13 reads `dev_bench_version`; a Core older than embarch-core decision 108 is a warn that compares nothing (19).
