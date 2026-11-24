@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The chat's Promptu card shows the weekly pass in one line (last run, next run, waiting sheet), and the icon is dotted while a sheet waits or a run was missed (embarch-chat 95, EMB-85).
 - The wire probe (tools/wire-probe.mjs) asks the live claude one question and prints every reply line with its time; --list reads a fixture; interfaces/wire-probe.md.
 - The Promptu card offers "Restore my original prompt" after a rewrite: one click puts the typed prompt back in the draft, read through `promptu original` ([spec](../embarch-chat/spec/input.md)).
 - The `last_session` MCP tool and `node dist/last-session.js` print a dead session's last turns, tool calls and pending background tasks, falling back to the main clone's folder from a worktree.
