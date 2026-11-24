@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Promptu's weekly pack now carries friction, unmatched task starts, commit outcomes and carried lines.
 - `promptu week draft` turns the week's pack into the ✓/✕ sheet with one stripped Opus call: lines, linted proposed patterns, old/new examples, `run.json` (forks W13–W15).
 - Promptu's week status, week show and desk read the week folder, offline (contract §9, §14.4); status gains running.
 - Added: promptu week pack writes the week's run events (footer facts, the owner's edit as a diff, chat or terminal) to week/<week>/pack.json; no model.
