@@ -1,6 +1,6 @@
 # 102 — Glossary rows for the guides' terms, and a current Study entry
 
-**State:** claimed by agent/doc/102-glossary-rows-for-the-guides-terms, 2026-11-24 13:51
+**State:** done — edit set for glossary rows and Study row delivered in status.d; supervisor applies at the fold
 **Source:** EMB-317 — the glossary has none of the terms the guides use, and its Study entry says a study runs "through dev-bench"
 **Issue:** EMB-317
 **Scope:** doc
@@ -39,8 +39,8 @@ EMB-317, from the 2026-11-23 suite audit.
 
 ## Done when
 
-- [ ] Every listed term has a glossary row naming its owning doc, in the
+- [x] Every listed term has a glossary row naming its owning doc, in the
       quoted edit set.
-- [ ] The Study row covers both runners; studies-guide §1 links to it.
-- [ ] `python3 scripts/check-docs.py` green on the branch, `changelog.d/`
+- [x] The Study row covers both runners; studies-guide §1 links to it.
+- [x] `python3 scripts/check-docs.py` green on the branch, `changelog.d/`
       fragment dropped.
