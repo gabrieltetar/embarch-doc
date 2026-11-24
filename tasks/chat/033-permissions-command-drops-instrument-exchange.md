@@ -1,6 +1,6 @@
 # 033 — The permissions command writes the agent guide's lists, for both MCP servers
 
-**State:** open
+**State:** claimed by agent/chat/033-permissions-command-drops-instrument-exchange, 2026-11-23 22:05
 **Source:** reviewer of `api/178` (2026-11-23): `embarch-api` removed the `instrument_exchange` tool, and `embarch-chat`'s permissions command still lists it. Widened at the split of a second issue the same day: `doc/099` revised the agent guide's lists, and the command's copy now disagrees with them.
 **Issue:** EMB-287
 **Issue:** EMB-291
