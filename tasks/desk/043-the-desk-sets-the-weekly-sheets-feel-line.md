@@ -1,6 +1,6 @@
 # 043 — The desk sets the weekly sheet's feel line through a route that runs `promptu week mark --feel`
 
-**State:** open
+**State:** claimed by agent/desk/043-the-desk-sets-the-weekly-sheets-feel-line, 2026-11-24 00:24
 **Source:** decision 65 (`decisions/cockpit.md`, the Desk tab's Promptu section and its four routes, `desk/042`); `embarch-promptu` `docs/contract.md` §10 (`feel`) and §14.4 (`week mark --feel`, which takes no id)
 **Issue:** EMB-283
 **Scope:** desk
