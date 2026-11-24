@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Promptu's week status, week show and desk read the week folder, offline (contract §9, §14.4); status gains running.
 - Added: promptu week pack writes the week's run events (footer facts, the owner's edit as a diff, chat or terminal) to week/<week>/pack.json; no model.
 - Promptu weekly pass: the contract now specifies promptu week (pack, draft, run, status, show, mark, apply, timer) and desk, the sheet and the week folder; nine forks open (EMB-272).
 - A Bash command that writes a memory MEMORY.md now gets a warning naming the Edit tool, since a shell write skips the index checks; reads get nothing (promptu hook).
