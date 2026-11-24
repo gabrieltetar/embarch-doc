@@ -1,6 +1,6 @@
 # 189 — The HIL guide sends the DUT census to the dev-bench log
 
-**State:** open
+**State:** claimed by agent/api/189-the-hil-guide-sends-the-dut-census-to-the-dev-bench-log, 2026-11-24 12:48
 **Source:** `suite/studies-guide.md` §3a — `fail_reason` is capped and lists only advertisers that sent a name; the HIL guide's Study 1 offers it as a census beside `dev-bench.log`
 **Issue:** EMB-402
 **Scope:** api
