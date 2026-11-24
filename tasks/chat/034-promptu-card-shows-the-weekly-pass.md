@@ -1,6 +1,6 @@
 # 034 — The Promptu card shows the weekly pass's last run, next run and waiting sheet
 
-**State:** open
+**State:** claimed by agent/chat/034-promptu-card-shows-the-weekly-pass, 2026-11-23 22:40
 **Source:** Fleet Ready issue (owner): the chat's Promptu card says nothing about the weekly pass, so a waiting sheet can sit unread for a week
 **Issue:** EMB-85
 **Scope:** chat
