@@ -1,6 +1,6 @@
 # 102 — Glossary rows for the guides' terms, and a current Study entry
 
-**State:** open
+**State:** claimed by agent/doc/102-glossary-rows-for-the-guides-terms, 2026-11-24 13:51
 **Source:** EMB-317 — the glossary has none of the terms the guides use, and its Study entry says a study runs "through dev-bench"
 **Issue:** EMB-317
 **Scope:** doc
