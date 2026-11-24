@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Add `embarch-ui bench make-live <slug>`: a saved bench is made live from the terminal, sharing the route's code; proposals apply only with `--bind`. [bench-live](../embarch-ui/spec/bench-live.md)
 - ui: the Desk tab draws the weekly Promptu sheet: bar count, numbers, groups, lines with ✓/✕ and notes, the feel line and Apply; hidden at open 0 ([shell 56](../embarch-ui/decisions/shell.md)).
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
