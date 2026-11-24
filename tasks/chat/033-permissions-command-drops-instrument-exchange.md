@@ -1,6 +1,6 @@
 # 033 — The permissions command writes the agent guide's lists, for both MCP servers
 
-**State:** claimed by agent/chat/033-permissions-command-drops-instrument-exchange, 2026-11-23 22:05
+**State:** done — command writes the guide 1.1 lists for both servers
 **Source:** reviewer of `api/178` (2026-11-23): `embarch-api` removed the `instrument_exchange` tool, and `embarch-chat`'s permissions command still lists it. Widened at the split of a second issue the same day: `doc/099` revised the agent guide's lists, and the command's copy now disagrees with them.
 **Issue:** EMB-287
 **Issue:** EMB-291
@@ -50,8 +50,8 @@ in your report.
 
 ## Done when
 
-- [ ] Every tool in the command's allow and ask lists sits in the same list in §1.1, for both servers.
-- [ ] The command writes a block for `mcp__embarch-atlas__*`.
-- [ ] No list and no prose names `instrument_exchange` as a tool.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `embarch-chat`'s npm gate and the doc gate.
-- [ ] A `changelog.d/` fragment dropped, and `embarch-doc/embarch-chat/` updated if it describes the command's lists.
+- [x] Every tool in the command's allow and ask lists sits in the same list in §1.1, for both servers.
+- [x] The command writes a block for `mcp__embarch-atlas__*`.
+- [x] No list and no prose names `instrument_exchange` as a tool.
+- [x] Gate green (`../../embarch-fleet/gate.md`): `embarch-chat`'s npm gate and the doc gate.
+- [x] A `changelog.d/` fragment dropped, and `embarch-doc/embarch-chat/` updated if it describes the command's lists.
