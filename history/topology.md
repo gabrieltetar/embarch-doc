@@ -9,6 +9,7 @@
 - embarch-topology's release.yml signs every archive keylessly with cosign in one `sign` job and uploads a .sigstore.json bundle beside each ([spec](../embarch-topology/spec.md)).
 
 ### Changed
+- topology CLI refuses every store write while a Core service is registered (stopped or on another bind), not only when one answers: decision 28, amended.
 - The topology crate's identity-store folder is set once by the linking process via set_data_dir; the default path is unchanged (decision 23).
 - Topology spec: the validation section moved verbatim to spec/validation.md; spec.md is out of reserve.
 ## 2026-10

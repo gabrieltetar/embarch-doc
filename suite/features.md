@@ -190,6 +190,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A `role` is unique — moving one onto different silicon displaces the old row and says so | Shipped | hw | 20 |
 | An instrument and a signal declare an optional safe-off, checked like an exchange line | Shipped | hw | 49 |
 | A role's two halves are independent rows-in-one: a board **type** (`name`/`chip`, written with no probe opened) and a probe binding (`probe_serial`/`hardware_id`, null until one is bound), plus `remove_by_role` to retract | Shipped | unit | 35 |
+| `embarch-topology` CLI refuses store writes while a Core service is registered (Windows key, systemd unit, `sc.exe qc` from WSL2), stopped or on another bind — **unrun against a real service** | Built (host fake-registry tests) | host | 28 |
 | Nordic arm of the self-reported-identity comparison — **the gate had never once run against Nordic silicon** | Shipped | hw | 21 |
 | DUT signal links and the dev-bench-bypass route | Shipped — declared, stored and resolved; **validation has no caller and no wire has been read** | unit, hw | 18 |
 | Live push of a mismatch alert | **Retired** — the durable log plus a fixed UI link replaced it | local | 19 |
