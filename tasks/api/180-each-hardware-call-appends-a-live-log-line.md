@@ -1,6 +1,6 @@
 # 180 — Each hardware call appends a line to the firmware repo's live log, citing Core's call-log entry
 
-**State:** open
+**State:** claimed by agent/api/180-each-hardware-call-appends-a-live-log-line, 2026-11-23 21:00
 **Source:** notes/hil/05-live.md — "The live log": a readable mirror of Core's call log in the firmware repo, its fields "to fix with the first writer"
 **Issue:** EMB-255
 **Scope:** api
