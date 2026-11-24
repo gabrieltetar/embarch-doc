@@ -1,6 +1,6 @@
 # 117 — Make live declares an output's safe-off
 
-**State:** open
+**State:** claimed by agent/ui/117-make-live-declares-an-outputs-safe-off, 2026-11-24 09:53
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): the safe-off field landed on `Instrument` and `SignalLink` in `embarch-topology` (`topology/072`, `suite/059`), and Make live still sends it empty
 **Issue:** EMB-337
 **Scope:** ui
