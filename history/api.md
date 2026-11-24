@@ -21,6 +21,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Check 6 recomputes report-data.json's observed.call_log (head, range, count) from the signed record, and the appendix prints it; a zip from a Core before core/148 fails check 6.
 - `verify` check 8 now recomputes a zip's call-log segment against the signed record's range; no segment still reads "no call log".
 - A lease Core released after 30 idle minutes now drops this process's token and refuses the next hardware call until `lease_take`; see [lease tools](../embarch-api/interfaces/tools-lease.md).
 - Split the verify section of interfaces/publish.md into interfaces/verify.md, verbatim; publish.md leaves reserve (tasks/api/173).
