@@ -1,6 +1,6 @@
 # 100 — The studies guide leads with the signal's own baud
 
-**State:** claimed by agent/doc/100-studies-guide-leads-with-the-signals-own-baud, 2026-11-24 03:19
+**State:** done — fragment delivers corrected sections 3 and 4 step 1
 **Source:** suite review audit, 2026-11-23: `suite/studies-guide.md` sends a newcomer to a registry edit for a signal's line rate
 **Issue:** EMB-318
 **Scope:** doc
@@ -42,8 +42,18 @@ service to do what one field on the declare already does. EMB-318.
 
 ## Done when
 
-- [ ] The three code facts are confirmed, with where, in this file.
-- [ ] A `status.d/doc-*` fragment gives §3 and §4 step 1 text that names the
+- [x] The three code facts are confirmed, with where, in this file.
+- [x] A `status.d/doc-*` fragment gives §3 and §4 step 1 text that names the
       per-signal `baud` first and the env var as the fallback.
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Findings
+
+Confirmed 2026-11-24:
+
+1. `embarch-core/src/stream_store.rs:116-119`, `signal_baud_for`: `link.baud.unwrap_or_else(signal_baud)`; `signal_baud()` reads `EMBARCH_SIGNAL_BAUD` else `DEFAULT_SIGNAL_BAUD` (1_000_000).
+2. `embarch-api/src/cli.rs` `declare-signal` takes `baud` (`Option<u32>`, passed to `parse_signal_link`, ~lines 277, 1699).
+3. `embarch-api/src/tools.rs:916-920` the declare_signal MCP params carry `baud: Option<u32>` ("e.g. 115200 for a DUT console", `embarch-topology` decision 37).
+
+`embarch-core/decisions/signal-exchange.md` does not exist in the main checkout (no `decisions` path under `embarch-core`), so there is nothing there to flag. Replacement text is in `status.d/doc-studies-guide-signal-own-baud.md`.
