@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-04.
 
-A tab the user's own config adds to the page, served at runtime with none of its code in this binary. Current truth: [../spec/tabs.md](../spec/tabs.md#tab-folders). Routes and the manifest: [../interfaces.md](../interfaces.md#tab-folders).
+A tab the user's own config adds to the page, served at runtime with none of its code in this binary. Current truth: [../spec/tabs.md](../spec/tab-folders.md). Routes and the manifest: [../interfaces.md](../interfaces.md#tab-folders).
 
 ### 100 — A tab comes from a folder the config names, drawn into the page when it is served
 
