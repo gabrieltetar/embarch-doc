@@ -9,7 +9,7 @@ A chip holds load segments, not a hex or ELF file, so a readback cannot compare 
 `image_segments(bytes, format, base) -> Result<Vec<Segment>, ImageError>`, `format` `Hex`, `Elf` or `Bin`. The result is the **maximal contiguous address ranges the image writes**, sorted by address, each `{address, length, sha256}` (`sha256` the lowercase hex SHA-256 of that range's bytes). Records or segments that touch (one ends where the next begins) are one range; a gap, however small, makes two; two that overlap are an error (`Overlap`), not a merge.
 
 - **Hex** (Intel HEX): data records (type 00) at the offset plus the extended segment (02) or linear (04) base; end-of-file (01) ends it; start-address records (03, 05) are ignored. A bad checksum, byte count or digit is an error naming the line.
-- **ELF** (32 or 64 bit, either byte order): the `p_filesz` bytes of each `PT_LOAD` segment at its **physical address** (`p_paddr`). Bytes past `p_filesz` (zero-filled `.bss`) are not written to the chip and are not in the list. So a hex and an ELF of one build give the same list.
+- **ELF** (32 or 64 bit, either byte order): the `p_filesz` bytes of each `PT_LOAD` segment at its **physical address** (`p_paddr`). Bytes past `p_filesz` (zero-filled `.bss`) are not written to the chip and are not in the list. So a hex and an ELF of one build give the same list. Every offset sum and product read from the headers is checked (`checked_add`, `checked_mul`): a program-header table position, or a segment's offset plus size, that overflows `u64` or `usize` is `ImageError::Elf("truncated")` or `"segment outside the file"`, never a debug-build panic (EMB-397, `tasks/study-designer/091`).
 - **Bin**: one range at `base`, which a bin requires (`NoBase` otherwise); an empty bin gives no range.
 
 ## The identity
@@ -26,7 +26,7 @@ A chip holds load segments, not a hex or ELF file, so a readback cannot compare 
                 "identity": "…", "segments": [ { "address": 0, "length": 0, "sha256": "…" } ] } ] }
 ```
 
-`identity` is the identity of that entry's `segments` (`BenchImage::identity_consistent()` checks it). A bench board's image is compared with the entry for its `board` by identity, and by segments when the identity differs, to say which range did.
+`identity` is the identity of that entry's `segments` (`BenchImage::identity_consistent()` checks it). A bench board's image is compared with the entry for its `board` by identity, and by segments when the identity differs, to say which range did. **`Segment`, `BenchImage` and `BenchFirmwareList` refuse an unknown key** on deserialisation (`deny_unknown_fields`), as `interfaces/hil-shapes.md` asks of every HIL JSON file.
 
 ## The example
 

@@ -1,6 +1,6 @@
 # 091 — The image-segment reader refuses a malformed ELF and unknown keys
 
-**State:** claimed by agent/study-designer/091-the-image-segment-reader-refuses-a-malformed-elf-and-unknown-keys, 2026-11-24 09:53
+**State:** done — checked offset arithmetic in the ELF path and deny_unknown_fields on the three types; gate green under every consumer feature set
 **Source:** the post-merge review of `study-designer/090` (2026-11-24): unchecked offset arithmetic in `src/hil_image.rs`, and HIL JSON types without `deny_unknown_fields`
 **Issue:** EMB-397
 **Scope:** study-designer
@@ -44,13 +44,13 @@ three types' fields: `core/150` builds against them concurrently.
 
 ## Done when
 
-- [ ] An ELF whose segment offset plus size overflows `u64`, and one whose
+- [x] An ELF whose segment offset plus size overflows `u64`, and one whose
       program-header table position overflows it, each give an `ImageError`,
       in tests that run in a debug build.
-- [ ] `Segment`, `BenchImage` and `BenchFirmwareList` each refuse an unknown
+- [x] `Segment`, `BenchImage` and `BenchFirmwareList` each refuse an unknown
       key, with a test each.
-- [ ] `interfaces/hil-image.md` says both.
-- [ ] Gate green under every feature set the crate's consumers build it with
+- [x] `interfaces/hil-image.md` says both.
+- [x] Gate green under every feature set the crate's consumers build it with
       (`../../embarch-fleet/gate.md`), `hil-image` and `--all-features`
       included.
-- [ ] `changelog.d/` fragment dropped.
+- [x] `changelog.d/` fragment dropped.
