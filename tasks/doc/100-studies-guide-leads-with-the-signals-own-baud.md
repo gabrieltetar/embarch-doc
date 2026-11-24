@@ -1,6 +1,6 @@
 # 100 — The studies guide leads with the signal's own baud
 
-**State:** open
+**State:** claimed by agent/doc/100-studies-guide-leads-with-the-signals-own-baud, 2026-11-24 03:19
 **Source:** suite review audit, 2026-11-23: `suite/studies-guide.md` sends a newcomer to a registry edit for a signal's line rate
 **Issue:** EMB-318
 **Scope:** doc
