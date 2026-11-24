@@ -1,6 +1,6 @@
 # 059 — Land the safe-off field with its consumers
 
-**State:** open — announced 2026-11-24 09:00, ts 1795536052.967279; runs after 09:30 if no objection in that thread
+**State:** claimed by agent/suite/059-land-the-safe-off-field-with-its-consumers, 2026-11-24 09:32 — window ts 1795536052.967279 closed 09:31 with no reply
 **Source:** `topology/072`'s worker report: `Instrument` and `SignalLink` gained a field, so every consumer that builds one with a struct literal stops compiling the moment the topology branch lands
 **Issue:** EMB-321
 **Scope:** suite
