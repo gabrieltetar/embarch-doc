@@ -17,6 +17,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core refuses every lease-gated call, the lease holder's too, while a study runs; only the study's cancel is admitted (decision 95).
 - Core refuses POST /instruments/{name}/exchange for every caller with 409 naming a host study Instrument step; decision 104 (embarch-core/decisions/instruments.md).
 - core open.md no longer owes verify check 8: embarch-api decision 121 checks the zip segment against the signed head; the publish entry stays unverifiable offline.
 - Core's release workflow signs every archive with cosign (Sigstore keyless) and uploads a `.sigstore.json` bundle beside it; see [spec](../embarch-core/spec.md) §3.
