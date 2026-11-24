@@ -1,6 +1,6 @@
 # 104 — The umbrella README carries no counted inventory
 
-**State:** claimed by agent/umbrella/104-the-umbrella-readme-carries-no-counted-inventory, 2026-11-24 03:45
+**State:** done — README states no count or command list and links the owning docs
 **Source:** suite review audit, 2026-11-23: three code-repo READMEs describe the suite as of September
 **Issue:** EMB-297
 **Scope:** umbrella
@@ -29,9 +29,9 @@ split with `api/186` and `core/149`.
 
 ## Done when
 
-- [ ] `embarch-umbrella/README.md` states no binary or command count or list,
+- [x] `embarch-umbrella/README.md` states no binary or command count or list,
       and links the docs that own them.
-- [ ] `cargo build` and `cargo test` still green in `embarch-umbrella`
+- [x] `cargo build` and `cargo test` still green in `embarch-umbrella`
       (README-only change; `clippy` as the gate requires).
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
