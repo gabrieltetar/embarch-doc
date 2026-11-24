@@ -1,6 +1,6 @@
 # 113 — The Desk tab draws Promptu's weekly sheet, with its ✓/✕, notes, feel line and Apply
 
-**State:** open
+**State:** claimed by agent/ui/113-the-desk-tab-draws-the-weekly-promptu-sheet, 2026-11-24 00:24
 **Source:** `embarch-desk` decision 65 (the Desk tab's spot left empty for a Promptu section, and the four `/promptu` routes `desk/042` added); `embarch-promptu` decisions 14 and 30 and `docs/contract.md` §9 (`promptu desk --json`) and §10 (the sheet); the Desk row of `spec/tabs.md`
 **Issue:** EMB-283
 **Scope:** ui
