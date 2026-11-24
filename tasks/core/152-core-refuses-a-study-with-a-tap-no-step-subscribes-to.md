@@ -1,6 +1,6 @@
 # 152 — Core refuses a study with a tap no step subscribes to
 
-**State:** claimed by agent/core/152-core-refuses-a-study-with-a-tap-no-step-subscribes-to, 2026-11-24 13:22
+**State:** done — validate_study calls Study::validate_stream_subscriptions; test added
 **Source:** EMB-308 — a study with an unsubscribed GATT notify tap is refused only in the UI's authoring path
 **Issue:** EMB-308
 **Scope:** core
@@ -27,5 +27,5 @@ crate computes these checks and Core does not restate them.
 
 ## Done when
 
-- [ ] Core refuses the study at submit; a test covers it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] Core refuses the study at submit; a test covers it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
