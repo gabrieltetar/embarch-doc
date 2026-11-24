@@ -1,6 +1,6 @@
 # 060 — The one-owner hardware claim says what Core and topology each own
 
-**State:** open — announced ts 1795543398.128079 (2026-11-24 11:03); runs after 11:33 if no objection
+**State:** claimed by agent/suite/060-the-one-owner-hardware-claim-says-what-core-and-topology-each-own, 2026-11-24 13:13 — window ts 1795543398.128079 closed 11:33 with no reply; executed by the supervisor in its leg worktree
 **Source:** the 2026-11-23 suite audit — `embarch.md` §4 says `embarch-topology`'s `hardware` feature is the only code that touches `probe-rs` or a serial port, and Core opens both itself
 **Issue:** EMB-304
 **Scope:** suite
