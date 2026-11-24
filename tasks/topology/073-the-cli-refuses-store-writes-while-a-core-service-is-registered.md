@@ -1,6 +1,6 @@
 # 073 — The CLI refuses store writes while a Core service is registered
 
-**State:** open
+**State:** claimed by agent/topology/073-the-cli-refuses-store-writes-while-a-core-service-is-registered, 2026-11-24 11:04
 **Source:** `notes/hil/12-prevention.md` — the protected store bullet and item 3: the topology CLI refuses to write the identity store while a Core service is installed
 **Issue:** EMB-322
 **Scope:** topology
