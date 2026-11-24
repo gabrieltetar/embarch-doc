@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Umbrella verify-release also checks the certificate's source repository, ref and build config extensions as exact strings ([interface](../embarch-umbrella/interfaces/verify-release.md)).
 - `embarch init` on a repo whose config exists now installs the missing skill and exclude entries, leaves the config alone and exits 0 (umbrella decision 60).
 - embarch init now installs the embarch-hil skill into a firmware repo (excluded locally, removed by --uninstall) and gains --dry-run.
 - Suite release workflows sign every archive and a per-file SHA-256 manifest with cosign, verify component bundles first, and attest each archive; not yet run on a tag (EMB-190).
