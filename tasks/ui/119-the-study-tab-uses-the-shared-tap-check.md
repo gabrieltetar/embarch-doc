@@ -1,6 +1,6 @@
 # 119 — The study tab uses the shared tap check
 
-**State:** claimed by agent/ui/119-the-study-tab-uses-the-shared-tap-check, 2026-11-24 13:22
+**State:** done — build_taps runs Study::validate_stream_subscriptions on a scratch Study; any_step_subscribes removed; decision 17 amended
 **Source:** EMB-308 — `decisions/gatt-capture.md` says the tab is the only place holding both steps and taps, but `Study` holds both
 **Issue:** EMB-308
 **Scope:** ui
@@ -29,7 +29,7 @@ its headroom with `scripts/check-doc-size.py --decisions` first.
 
 ## Done when
 
-- [ ] The tab's refusal comes from the shared check, wording unchanged; the
+- [x] The tab's refusal comes from the shared check, wording unchanged; the
       local helper is removed.
-- [ ] `decisions/gatt-capture.md` no longer says the check cannot be shared.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] `decisions/gatt-capture.md` no longer says the check cannot be shared.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
