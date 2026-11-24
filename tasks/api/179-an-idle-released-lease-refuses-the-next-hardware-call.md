@@ -1,6 +1,6 @@
 # 179 — An idle-released lease drops the held token and refuses the next hardware call
 
-**State:** open
+**State:** claimed by agent/api/179-an-idle-released-lease-refuses-the-next-hardware-call, 2026-11-23 21:29
 **Source:** notes/hil/07-procedure-doc.md — "Before any hardware": an agent takes the lease with a purpose before any hardware call
 **Issue:** EMB-256
 **Scope:** api
