@@ -7,6 +7,13 @@
 **Hardware:** none
 **Owner:** no
 
+**Dispatch note (reserve):** `embarch-api/open.md` is in reserve (4,204 of
+5,120 B, 916 B left), filed as `api/181` (blocked; its flux is the live-log
+item only). If you add to `open.md`, first move its longest items *other than*
+the live-log item into `open/` verbatim, keeping `api/181`'s Must not delete,
+and say in your report whether the file is at or under 3,919 B. Do not edit
+`api/181`; the supervisor closes it at the fold if the file left reserve.
+
 ## What
 
 Core now releases a lease after 30 minutes with no hardware call (`embarch-core`

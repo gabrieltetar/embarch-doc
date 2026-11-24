@@ -7,6 +7,15 @@
 **Hardware:** none
 **Owner:** no
 
+**Dispatch note (reserve):** `embarch-promptu/spec.md` (9,186 of 10,240 B)
+and `open.md` (4,055 of 5,120 B) are in reserve, filed as `promptu/015`
+(blocked, in flux). For each of the two you write, move reference text into
+`spec/` (or `open/`) **verbatim** in this unit, keeping `promptu/015`'s Must
+not delete, so the file ends at or under 9,039 B (`spec.md`) or 3,919 B
+(`open.md`). A verbatim move restates nothing, so the flux does not forbid it.
+Do not edit `promptu/015`; say in your report which files left reserve and the
+supervisor strikes them off it at the fold.
+
 ## What
 
 The chat's Promptu card and the desk's `GET /promptu` need to ask Promptu what
