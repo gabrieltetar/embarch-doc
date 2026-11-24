@@ -16,7 +16,7 @@
 | Key | Type | Meaning |
 |---|---|---|
 | `board` | string | The board type, as its identity names it |
-| `firmware` | `{version, image_sha256}` | The released image this was measured on; ties it to the `released` hash list (03, smoke check) |
+| `firmware` | `{version, image_sha256}` | The released image this was measured on; ties it to the `released` hash list (03, smoke check). `image_sha256` is the image's **identity**, the SHA-256 of its segments' canonical JSON, not of a file ([hil-image.md](hil-image.md)) |
 | `characterised` | date | The day it was measured (06: "a date") |
 | `valid_days` | integer, at least 1 | The validity period (06). **Valid until** `characterised` + `valid_days`, inclusive; a measurement with `at_utc_ms` after it is `inconclusive`, `calibration_expired`, as an instrument's due date is *(shape: days, and the end inclusive)* |
 | `channels` | array | One per thing it times or measures: `{name, unit, range {min, max}, resolution, uncertainty}`, `uncertainty` the `{U, k, basis}` above with `basis` `characterisation` |

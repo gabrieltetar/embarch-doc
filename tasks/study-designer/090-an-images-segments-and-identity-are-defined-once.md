@@ -1,6 +1,6 @@
 # 090 — An image's segments and identity are defined once
 
-**State:** claimed by agent/study-designer/090-an-images-segments-and-identity-are-defined-once, 2026-11-24 08:50
+**State:** done — hil_image module (feature hil-image), example, fixtures, interface doc; gate green under every consumer feature set
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase): a readback compares a chip's load segments with the artifact Core flashed (`notes/hil/03-test.md`, "A run", item 3), and no shared definition of either exists
 **Issue:** EMB-357
 **Scope:** study-designer
@@ -58,12 +58,12 @@ every consumer's feature set.
 
 ## Done when
 
-- [ ] A fixture hex and the ELF it was made from give the same segments and
+- [x] A fixture hex and the ELF it was made from give the same segments and
       identity.
-- [ ] A bin with a base address gives one segment at that address.
-- [ ] A hex with a gap gives two segments.
-- [ ] Gate green under every feature set the crate's consumers build it with
+- [x] A bin with a base address gives one segment at that address.
+- [x] A hex with a gap gives two segments.
+- [x] Gate green under every feature set the crate's consumers build it with
       (`../../embarch-fleet/gate.md`).
-- [ ] `interfaces/hil-image.md` gives the segment rule, the identity and the
+- [x] `interfaces/hil-image.md` gives the segment rule, the identity and the
       list's shape; `hil-characterisation.md` points at it; `changelog.d/`
       fragment dropped.

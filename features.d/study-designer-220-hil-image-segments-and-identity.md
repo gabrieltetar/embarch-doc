@@ -1,0 +1,1 @@
+| The shared crate reduces a hex, ELF or bin image to its load segments (address, length, SHA-256) and an identity, and fixes the shape of `bench-firmware.json`, so a readback and the released list compare one definition | Built, **host tests against a small objcopy-made hex/ELF fixture**; behind feature `hil-image`; nothing calls it yet | host | 90 |
