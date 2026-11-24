@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A study's GattNotify tap no step subscribes to is refused by Study::validate_stream_subscriptions (UnsubscribedTapError), opt-in; see decision 55.
 - HIL image segments, identity (SHA-256 of their canonical JSON) and bench-firmware.json shape, host-only feature `hil-image`: [hil-image.md](../embarch-study-designer/interfaces/hil-image.md).
 - study-designer: `pdf-text` feature, a PDF text extractor and the number grammar for verify's check 4 ([hil-pdf.md](../embarch-study-designer/interfaces/hil-pdf.md))
 - A study declares the measurements Core is to compute when it ends (`Study.measurements`), refused at validation when Core could not; host schema 22: deploy Core, embarch-api and embarch-ui together.

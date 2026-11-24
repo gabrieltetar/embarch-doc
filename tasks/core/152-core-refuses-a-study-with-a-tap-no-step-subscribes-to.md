@@ -1,7 +1,6 @@
 # 152 — Core refuses a study with a tap no step subscribes to
 
-**State:** blocked — waits for the shared check
-**Unparks when:** `tasks/study-designer/093` lands
+**State:** open — the shared check landed in `embarch-study-designer` 42a9d8a as `Study::validate_stream_subscriptions` (`UnsubscribedTapError`)
 **Source:** EMB-308 — a study with an unsubscribed GATT notify tap is refused only in the UI's authoring path
 **Issue:** EMB-308
 **Scope:** core
