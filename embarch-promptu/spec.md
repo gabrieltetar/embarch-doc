@@ -15,7 +15,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 - **`promptu memory [--json]`** (decision 8): the memory that loads in a folder, by scope (user, auto, project), then domain, then kind, each entry with its 6-hex memory id, age and stale flags.
 - **`promptu memory check [<path>...]`**: the same checks on files as they stand.
 - **`promptu calls`** and **`promptu prior`**: a recorded session's tool calls by class, and what a prompt's earlier runs asked. [spec/read-commands.md](spec/read-commands.md).
-- **`promptu week status`, `week show` and `desk`** (EMB-275): read-only views of the week folder, no model, no network. [spec/read-commands.md](spec/read-commands.md).
+- **`promptu week status`, `week show` and `desk`** (EMB-275): read-only views of the week folder, no model, no network. **`week pack`'s session events** (EMB-274). [spec/read-commands.md](spec/read-commands.md).
 - **The plugin** `embarch-promptu` 0.1.0, the two hooks, installed from the `embarch` marketplace (decision 20).
 
 ## 2b. Build steps 2 and 3, not installed

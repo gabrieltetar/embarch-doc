@@ -1,6 +1,6 @@
 # 016 — `promptu week pack` carries friction, unmatched starts and outcomes
 
-**State:** claimed by agent/promptu/016-week-pack-carries-friction-unmatched-starts-and-outcomes, 2026-11-23 23:22
+**State:** done — week pack builds session, unmatched, outcome and carried events; fork W16
 **Source:** decisions 14 and 15 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md`'s pack records (written by `promptu/011`, built by `promptu/013`)
 **Issue:** EMB-274
 **Scope:** promptu
@@ -43,12 +43,12 @@ file and in your report.
 
 ## Done when
 
-- [ ] Each event kind has an invented transcript fixture and a test.
-- [ ] A commit made by a subagent counts as its session's outcome.
-- [ ] Each session in the pack says whether it started with Promptu.
-- [ ] The pack still makes no model call and no network call.
-- [ ] `docs/contract.md`'s session records match what the pack writes.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test
+- [x] Each event kind has an invented transcript fixture and a test.
+- [x] A commit made by a subagent counts as its session's outcome.
+- [x] Each session in the pack says whether it started with Promptu.
+- [x] The pack still makes no model call and no network call.
+- [x] `docs/contract.md`'s session records match what the pack writes.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test
       --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped.

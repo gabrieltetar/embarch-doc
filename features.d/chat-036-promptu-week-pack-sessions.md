@@ -1,0 +1,1 @@
+| `promptu week pack` session events: friction candidates, unmatched task starts, a commit (a subagent's too) as the outcome, whether a session started with Promptu, carried sheet lines | Built, not installed — **invented transcripts only; the friction signs and commit match have met no real week** | unit | 47 |
