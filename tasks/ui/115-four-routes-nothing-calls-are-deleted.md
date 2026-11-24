@@ -1,6 +1,6 @@
 # 115 — Four routes nothing calls are deleted
 
-**State:** open
+**State:** claimed by agent/ui/115-four-routes-nothing-calls-are-deleted, 2026-11-24 03:19
 **Source:** suite review audit, 2026-11-23: four `embarch-ui` routes have no caller in any page or sibling repo
 **Issue:** EMB-311
 **Scope:** ui
