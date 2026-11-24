@@ -1,6 +1,6 @@
 # 152 — Core refuses a study with a tap no step subscribes to
 
-**State:** open — the shared check landed in `embarch-study-designer` 42a9d8a as `Study::validate_stream_subscriptions` (`UnsubscribedTapError`)
+**State:** claimed by agent/core/152-core-refuses-a-study-with-a-tap-no-step-subscribes-to, 2026-11-24 13:22
 **Source:** EMB-308 — a study with an unsubscribed GATT notify tap is refused only in the UI's authoring path
 **Issue:** EMB-308
 **Scope:** core
