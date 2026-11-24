@@ -37,9 +37,28 @@ The owner put this rule in the HIL Live phase on 2026-11-23
 item 4). A halted debug read disturbs the DUT the run is measuring, and the HIL
 guide's Live section already says Live never runs during a run.
 
-**Doc headroom:** decision 93 (`decisions/lease.md`) has about 180 B left.
-Record the rule as a new decision and touch 93 or 95 only by a short pointer.
+**Doc headroom:** decision 93 (`decisions/lease.md`) has about 70 B left.
 `decisions/signing.md` decision 110 is already over its cap; leave it alone.
+
+**Dispatched in a burndown leg (2026-11-23): no new numbered decision.** The rule
+is the owner's (the HIL notes above), so record it by amending existing
+decisions in place: replace decision 93's paragraph "A study in flight is not
+interrupted …", which this rule overturns, with a shorter pointer, and put the
+rule, its exceptions and the `embarch-api` finding in decision 95
+(`decisions/host-study.md`, which has room) or decision 19's `study_lock`
+(`decisions/studies.md`). Read "a Core decision records the rule" below as that
+amendment. If it cannot be recorded without a new decision, stop and say so here
+and in your report.
+
+**`embarch-core/open.md` is in reserve** (4,260 of 5,120 B; out of reserve at
+3,919 B or less), and its compaction `tasks/core/144` is parked until this task
+lands, because Core's lease and gated-call surface was moving under it. This
+task is the last of that movement, so **compact `open.md` as part of this
+unit**: bring it out of reserve without dropping a fact or a decision pointer,
+and keep everything 144's `Must not delete:` names (the scope-enforcement
+bullets for decisions 109 to 112 and 118, the Windows ACL debt, and the call-log
+`board` bullet for decision 122). Do not edit 144; the supervisor closes it at
+the fold.
 
 ## Done when
 
