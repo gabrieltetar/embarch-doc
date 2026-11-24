@@ -1,6 +1,6 @@
 # 042 — The desk serves Promptu's weekly sheet and takes its ✓/✕ through routes that run the `promptu` CLI
 
-**State:** open
+**State:** claimed by agent/desk/042-the-desk-serves-promptus-weekly-sheet, 2026-11-24 00:08
 **Source:** decision 65 (`decisions/cockpit.md`, the Desk tab's spot for a Promptu section); decision 67 (finding the `promptu` binary); `embarch-promptu` decisions 14 and 30; `embarch-promptu` `docs/contract.md` §9 and §10, and `week show`, `week mark` and `week apply` (`promptu/014`, `promptu/019`)
 **Issue:** EMB-282
 **Scope:** desk
