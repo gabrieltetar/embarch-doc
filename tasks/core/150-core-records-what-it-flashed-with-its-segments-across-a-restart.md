@@ -1,6 +1,6 @@
 # 150 — Core records what it flashed, with its segments, across a restart
 
-**State:** open
+**State:** claimed by agent/core/150-core-records-what-it-flashed-with-its-segments-across-a-restart, 2026-11-24 09:53
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase), checked against `notes/hil/08-existing-pieces.md`: `last_images` is in memory, holds no segments, and a restart forgets it
 **Issue:** EMB-361
 **Scope:** core
