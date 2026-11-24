@@ -1,6 +1,6 @@
 # 140 — Core keeps a hash-chained log of every hardware call made to it
 
-**State:** open
+**State:** claimed by agent/core/140-core-keeps-a-hash-chained-call-log, 2026-11-23 17:08
 **Source:** notes/hil/12-prevention.md — "What Core then guarantees, in code", item 3: Core logs every hardware call made to it in a hash chain of its own, beside the run log, Live included
 **Issue:** EMB-249
 **Scope:** core
