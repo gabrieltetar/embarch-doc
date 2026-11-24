@@ -8,7 +8,7 @@
 
 `embarch-dev-bench` is a second board — **a test fixture, not your DUT** — that plays your device's BLE counterpart on demand. **Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.**
 
-The unit of work is a **study**: an ordered list of steps, each a BLE action, with pass/fail checks. A **step is never a power-sampling window**: that step kind was retired at wire schema v9 (`embarch-study-designer` decision 39), and a capture of any kind is authored as a declared **tap**, never as a step.
+The unit of work is a **study** ([glossary](../embarch-glossary.md): it runs on this bench or on Core's own host runner), an ordered list of steps with pass/fail checks. A **step is never a power-sampling window**: that step kind was retired at wire schema v9 (`embarch-study-designer` decision 39), and a capture of any kind is authored as a declared **tap**, never as a step.
 
 **The walkthrough is in the HIL guide, not here.** Writing a study, running it, reading its losses and publishing it are the Study section: `embarch-api guide hil study` ([hil-guide.md](hil-guide.md)), with a complete worked study (`embarch-api/tests/fixtures/ble_gatt_rate_study.json`) and the truncation, reflash and address rules, each stated there once. (A capture is truncated when retention rotation deleted an older segment or the bench reported dropping records.) Field by field: [embarch-study-designer/interfaces/types.md](../embarch-study-designer/interfaces/types.md). This guide keeps what that one leaves out: this bench's measured behaviour (§3 to §3b) and DUT traces (§4).
 

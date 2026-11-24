@@ -20,7 +20,7 @@ The load-bearing terms used across every doc in this repo. **This doc restates n
 | **probe** | A physical debug probe probe-rs can attach to. **Declared as belonging to a role by a human, because no software can derive which board a probe is wired to** | [topology](embarch-topology/spec.md) |
 | **hw_lock** | Core's single mutex serializing **all** DUT probe and serial access. **A second process calling a hardware function directly, without sharing it, is a real class of bug** | [core](embarch-core/decisions.md) decision 4 |
 | **topology class** | `local` / `wsl-host` / `remote` — the three ways the API and Core can be arranged relative to each other. **Detected live on every call; only the class is ever persisted, never an address** | [topology](embarch-topology/spec.md) |
-| **Study** | A scripted sequence of BLE stimulus and interaction steps plus measurement, run against a DUT through dev-bench. **Entirely static once submitted** | [study-designer](embarch-study-designer/spec.md) |
+| **Study** | A scripted sequence of steps plus measurement, run on the dev bench or Core's own host runner (`run_host_study`). **Entirely static once submitted** | [study-designer](embarch-study-designer/spec.md) |
 | **Step** | One action within a study, with a timeout, an optional pre-delay the bench sleeps *before* running it, and a continue-on-fail rule | [study types](embarch-study-designer/interfaces/types.md) |
 | **study seal** | Any of a study's **three** CRC-32s — over `steps`, over `streams`, over `protocols` — **each covering one contiguous span, each recomputed and overwritten by whoever submits, each checked independently at both hops so a mismatch says *which* part is corrupt.** Siblings rather than one widened seal, because a seal sits between the spans on the wire | [study-designer](embarch-study-designer/decisions/versioning.md) |
 | **wire schema version / host type version** | Two hand-bumped constants, **one per hop they guard**: the Core↔dev-bench handshake, and the API↔Core status check. **The host one is a strict superset** — a study crosses that hop whole, including fields dev-bench never sees — so it moves for host-only changes too. **Both are mismatch *detectors*, never negotiators**, and a compile-time assertion holds the host one at or above the wire one | [study-designer](embarch-study-designer/decisions/versioning.md) |
@@ -38,3 +38,14 @@ The load-bearing terms used across every doc in this repo. **This doc restates n
 | **guard-reachable** | The half of the `.eap` grammar that **crosses the wire to dev-bench, because a running state machine has to evaluate it in real time.** The rest stays host-side | [protocols](embarch-study-designer/decisions/protocols.md) |
 | **dev-bench log level** | How verbose the bench's own firmware is **for one study** — applied on dispatch and reverted afterwards. **Runtime filtering can only reduce below what the build compiled in**, so the Kconfig that looks like a default is really a ceiling | [dev-bench](embarch-dev-bench/decisions/logging.md) decision 39 |
 | **dev-bench debug log** | Every log line the bench sends, in a file beside Core's own — **so debugging a study after the fact does not mean correlating two files by timestamp** | [core](embarch-core/decisions.md) decision 37 |
+| **host study** | Run by Core itself | [core](embarch-core/decisions/host-study.md) 95 |
+| **bench lease** | Session holds the bench | [core](embarch-core/decisions/lease.md) 93 |
+| **instrument** | A declared bench device | [topology](embarch-topology/decisions/instruments.md) 49 |
+| **bench board** | A board with no role | [topology](embarch-topology/decisions/enrollment-bench.md) 41 |
+| **role** | `dut` or `dev-bench` | [topology](embarch-topology/decisions/enrollment.md) 35 |
+| **enrolment** | A human binds probe to board | [topology](embarch-topology/decisions/enrollment.md) 14 |
+| **bootload** | Image via the DUT's bootloader | [core](embarch-core/decisions/bootload.md) 77 |
+| **ledger** | What ran on hardware | [api](embarch-api/decisions/ledger.md) 98 |
+| **publish** | A run as one zip | [api](embarch-api/spec.md) |
+| **saved bench** | A bench file in the repo | [ui](embarch-ui/decisions/saved-benches.md) 44 |
+| **live bench** | A saved bench applied | [ui](embarch-ui/decisions/bench-live.md) 90 |

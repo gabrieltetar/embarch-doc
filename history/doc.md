@@ -4,6 +4,9 @@
 
 ## 2026-11
 
+### Added
+- Edit set for the glossary: a Study row covering the dev bench and Core's host runner, plus eleven link-only rows for the guides' terms; studies-guide §1 points at it (status.d, EMB-317).
+
 ### Changed
 - Fragment for doc/101: studies-guide 1-2 shrink to a pointer at the HIL guide; user and agent guides link `embarch-api guide hil` (EMB-316).
 - Studies guide fragment: a signal's own baud, set on declare-signal, is the line rate; EMBARCH_SIGNAL_BAUD is the fallback.
