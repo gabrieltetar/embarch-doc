@@ -1,6 +1,6 @@
 # 023 — A plugin skill walks the weekly sheet in the terminal for a user without the Desk
 
-**State:** open
+**State:** claimed by agent/promptu/023-a-terminal-skill-walks-the-weekly-sheet, 2026-11-24 00:24
 **Source:** decisions 29 and 30 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 and §14.4; `week show`, `week mark` and `week apply` (`promptu/014`, `promptu/019`)
 **Issue:** EMB-280
 **Scope:** promptu
