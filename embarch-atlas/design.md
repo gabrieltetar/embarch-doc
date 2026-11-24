@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-23. This doc is the source of truth for the decisions it states below; the `embarch-atlas` repo's `DESIGN.md` (a long working draft, dated 2026-09-30, which still says it will move here) carries the detail each section points at, and it is the code's own reference. The repo is public on GitHub. The human surface is [embarch-ui decisions 52-54](../embarch-ui/decisions/atlas-tab.md).
 
-**[`research/`](research/) is still raw intake, not folded:** the landscape survey (five notes, 2026-09), findings and not decisions, deleted once the design that consumes them is written; [its README](research/README.md) records the scope the survey was run under. The repo has its own `research/` of document-pipeline notes, separate from this one. See [embarch.md](../embarch.md) §2 for the suite lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose. [suite/roadmap.md](../suite/roadmap.md) still lists the atlas under its Later bucket as "built locally, unpublished", which understates it: atlas units land most days.
+**[`research/`](research/) is still raw intake, not folded:** the landscape survey (five notes, 2026-09), findings and not decisions, deleted once the design that consumes them is written; [its README](research/README.md) records the scope the survey was run under. The repo has its own `research/` of document-pipeline notes, separate from this one. See [embarch.md](../embarch.md) §2 for the suite lineage (the original `gabrieltetar/embarch` C#/WPF static-analysis GUI) and §3 for its one-line purpose. [suite/roadmap.md](../suite/roadmap.md) says where it sits in the suite's plan.
 
 ## Which image the build describes
 
