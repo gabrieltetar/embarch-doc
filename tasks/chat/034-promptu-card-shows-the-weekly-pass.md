@@ -1,6 +1,6 @@
 # 034 — The Promptu card shows the weekly pass's last run, next run and waiting sheet
 
-**State:** claimed by agent/chat/034-promptu-card-shows-the-weekly-pass, 2026-11-23 22:40
+**State:** done — Card line and icon dot built against a fake promptu; decision 95, spec/input.md, interfaces amended
 **Source:** Fleet Ready issue (owner): the chat's Promptu card says nothing about the weekly pass, so a waiting sheet can sit unread for a week
 **Issue:** EMB-85
 **Scope:** chat
@@ -52,9 +52,9 @@ is not listed.
 
 ## Done when
 
-- [ ] With a fake `promptu`, the card shows last run, next run and a waiting sheet, and one line on an error.
-- [ ] The ✨ marker shows for a waiting sheet and for a missed run, and not otherwise.
-- [ ] A `promptu` without `week status` hides the line and leaves the icon unmarked.
-- [ ] Decision 95 and the chat's `spec.md` describe the line.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `npm run typecheck`, `npm test`, and the doc gate.
-- [ ] `changelog.d/` fragment dropped.
+- [x] With a fake `promptu`, the card shows last run, next run and a waiting sheet, and one line on an error.
+- [x] The ✨ marker shows for a waiting sheet and for a missed run, and not otherwise.
+- [x] A `promptu` without `week status` hides the line and leaves the icon unmarked.
+- [x] Decision 95 and the chat's `spec.md` describe the line.
+- [x] Gate green (`../../embarch-fleet/gate.md`): `npm run typecheck`, `npm test`, and the doc gate.
+- [x] `changelog.d/` fragment dropped.

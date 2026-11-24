@@ -1,0 +1,1 @@
+| Promptu card's weekly-pass line from `promptu week status --json`: last run, next run, a run in progress or missed, the waiting sheet's open count, one line on an error; the ✨ is dotted while a sheet waits or a run was missed; an old `promptu` shows neither | Built, not installed — **seen only against a fake `promptu` in the webview harness** | unit | 95 |
