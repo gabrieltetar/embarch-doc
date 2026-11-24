@@ -63,13 +63,22 @@ The plan asked for once review round 4 closed ([10](10-review.md#round-4-2026-11
 
 **The owner's answers, 2026-11-23.** `instrument_exchange` stays a Core route that refuses outside a run with a pointer to the `Instrument` step, and its tool goes (Q1). The during-a-run refusal belongs to Live (Q2). The atlas's measured write-back is built in Live, ahead of the planes rework (Q3). A fold chains the first read at once and writes the repeats as one later entry (Q4). **The eleven smaller choices the issue bodies make were each kept by the owner the next day**: among them, a refused call is logged, Core keeps hashes and not answers, a run in flight is not idle, and a write-back citing an entry Core does not hold is refused.
 
+## The Test and attested phases
+
+**Planned 2026-11-24 the same way, every relevant row of [08](08-existing-pieces.md) checked against the code first, and filed with their blocker chains.** The unit tables, the code check and the choices sheets are in the planning drafts; each issue body carries its unit.
+
+- **Test**: 46 units. Fleet: T.1–T.38 and T.41, EMB-352 to EMB-390; the crate's step-time parse, test, suite and plan types and run expansion; Core's definitions, prepare, go, run-held lease, executor, prompt kinds, smoke check, run record and Test publish; embarch-api's plans, `run_test`, ledger-to-`test_*` and Test `verify`; the UI's confirmation and go cards; `pd-bench`'s idle, hello and timing lines. Owner: create the `embarch-suites` repo (EMB-391; the example shell suite T.39 and the PD suite T.40 are filed after it, the PD suite being the owner's because its limits come from the specification), the guide's Test section (EMB-392), the first host study on the PD bench (EMB-393), `pd-bench`'s characterisation (EMB-394) and the first Test run (EMB-395).
+- **Attested**: 32 units. Fleet: A.1–A.25, EMB-320 to EMB-344; topology's settable store and `safe_off` declarations, Core's service and development stores, install under its own account, safe-off at start and stop, exclusive handles, the call log failing closed with its quota, embarch-api's challenge before any token, the UI's Core identity, and `embarch-umbrella`'s install, deploy and release scripts. Owner: the docs (EMB-345), a rehearsal and a real signed release, the first elevated install on Windows, the development loop and first run for record on the bench, and the Linux install (EMB-346 to EMB-351).
+
+**Choices the bodies carry on the drafts' recommendations**, for the owner to strike: 29 for Test (among them suites in a new repo, JSON definitions, a 10-minute go nonce, an image identified by its per-range hashes) and 25 for attested (among them the virtual `NT SERVICE` account, service mode from a `run --service` flag, a 1 GiB call-log quota, Linux in this phase).
+
 ## The later phases, in outline
 
 Each gets its own unit list when it starts, with its rows of [08](08-existing-pieces.md) checked against the code first.
 
 - **Live**, planned above: the call log (its chain, folded reads, receipts, described as Core's calls) and its half of check 8; the live log as its mirror; the 30-minute idle release enforced by Core; `instrument_exchange` refused outside a run; [agent-guide.md](../../suite/agent-guide.md) §1.1; the write-back once the atlas has its measured write-back.
-- **Test**: the numeric parse at step time; a first host study on the real PD bench; the image readback and the released bench-firmware hash list; Core's Test route (`run.json` re-expanded, the go card and the go, prompts by kind, the run-held lease, the failure policy, the run record); the example shell suite, then the PD suite; the ledger grown into `test_*`.
-- **The attested phase**: Core under its own account; its protected store, the identity store included; installs from a signed release only; `deploy-core`'s development Core beside the service, and the start and stop grant; outputs off at every stop and start; exclusive port handles; the topology CLI refusing under a lease; the call log failing closed, with its quota and reserved tail.
+- **Test**, planned above: the numeric parse at step time; a first host study on the real PD bench; the image readback and the released bench-firmware hash list; Core's Test route (`run.json` re-expanded, the go card and the go, prompts by kind, the run-held lease, the failure policy, the run record); the example shell suite, then the PD suite; the ledger grown into `test_*`.
+- **The attested phase**, planned above: Core under its own account; its protected store, the identity store included; installs from a signed release only; `deploy-core`'s development Core beside the service, and the start and stop grant; outputs off at every stop and start; exclusive port handles; the topology CLI refusing under a lease; the call log failing closed, with its quota and reserved tail.
 - **The standalone container pass**, then **the passkey phase**.
 
 ## Open
