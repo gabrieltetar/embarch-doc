@@ -251,6 +251,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A host study's operator prompt opens a modal on any tab (text, countdown, Confirm/Cancel, sound and notification), answered as `ui`, and shown to a page opened mid-prompt | Shipped — rendered and driven in headless Firefox against a stub Core (`drive_prompt.py`); **never met a live Core prompt**, and the beep and notification are unmeasured | browser drive | 69 |
 | A tab from a folder the user's own config names, drawn into the page when served; its files, its calls to loopback backends and a polled event stream, with the token kept server-side and only this UI's own page answered; a broken tab left out and logged | Shipped — driven in headless Firefox with a sample tab and a stand-in backend (`drive_tab.py`), and its routes against a real desk; **no real tab built on it yet** | unit, browser | 100 |
 | Desk tab card for a `github_replies` draft: repo and PR, one editable reply per review thread, posted threads shown as links, URLs shown after Send | Shipped — driven in headless Firefox with PATCH and Send stubbed in the page, so no repository was reached; **not run against a real PR** | browser | |
+| Desk tab Promptu section: bar count (hidden at 0 open), weekly sheet panel with numbers, per-group and per-line ✓/✕ with notes, the feel line and Apply | Shipped — driven in headless Firefox against a stand-in desk, each request path and body checked; **not run against a real desk or Promptu** (the feel route is desk/043) | browser | 56 |
 
 ## embarch-desk
 

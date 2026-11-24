@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- ui: the Desk tab draws the weekly Promptu sheet: bar count, numbers, groups, lines with ✓/✕ and notes, the feel line and Apply; hidden at open 0 ([shell 56](../embarch-ui/decisions/shell.md)).
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
