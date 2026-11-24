@@ -1,6 +1,6 @@
 # 118 — Make live skips a signal whose stored safe-off it cannot read
 
-**State:** claimed by agent/ui/118-make-live-skips-a-signal-whose-stored-safe-off-it-cannot-read, 2026-11-24 10:29
+**State:** done — Make live skips an unreadable-list signal with no stated safe-off; decision 90 amended under 4 KB
 **Source:** the reviewer of `ui/117` (Make live declares an output's safe-off), below its bar, filed as a bug
 **Issue:** EMB-401
 **Scope:** ui
@@ -43,10 +43,10 @@ decisions near their limit (launcher#28, tab-folders#100, topology-tab#10 and
 
 ## Done when
 
-- [ ] With `GET /signals` failing and no safe-off on the bench entry, the signal
+- [x] With `GET /signals` failing and no safe-off on the bench entry, the signal
       is not posted and a failed row names the reason, in a test against a fake
       Core.
-- [ ] A signal whose bench entry states a safe-off is still posted in that case.
-- [ ] Decision 90 states the signal case, no larger than it is now.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] A signal whose bench entry states a safe-off is still posted in that case.
+- [x] Decision 90 states the signal case, no larger than it is now.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
