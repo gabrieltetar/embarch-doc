@@ -1,6 +1,6 @@
 # 142 — Core refuses instrument_exchange outside a run
 
-**State:** claimed by agent/core/142-instrument-exchange-refuses-outside-a-run, 2026-11-23 17:31
+**State:** done — route refuses every caller 409 before any port; decision 104 and interface amended
 **Source:** notes/hil/05-live.md — "Reach and permission": instruments are reached only through a Study or a Test, and Core refuses `instrument_exchange` outside a run (owner 2026-11-19)
 **Issue:** EMB-252
 **Scope:** core
@@ -33,11 +33,11 @@ runs, and the HIL guide's Live section states that reach.
 
 ## Done when
 
-- [ ] `POST /instruments/{name}/exchange` answers `409` with no study in
+- [x] `POST /instruments/{name}/exchange` answers `409` with no study in
       flight, naming a host study's `Instrument` step, and opens no port.
-- [ ] The host study tests with an `Instrument` step still pass.
-- [ ] Decision 104 (`decisions/instruments.md`) and `interfaces/instruments.md`
+- [x] The host study tests with an `Instrument` step still pass.
+- [x] Decision 104 (`decisions/instruments.md`) and `interfaces/instruments.md`
       are amended.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
