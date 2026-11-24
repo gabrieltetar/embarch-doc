@@ -1,6 +1,6 @@
 # 115 — Four routes nothing calls are deleted
 
-**State:** claimed by agent/ui/115-four-routes-nothing-calls-are-deleted, 2026-11-24 03:19
+**State:** done — four dead routes, handlers and apply-only test assertions removed; docs amended
 **Source:** suite review audit, 2026-11-23: four `embarch-ui` routes have no caller in any page or sibling repo
 **Issue:** EMB-311
 **Scope:** ui
@@ -55,11 +55,15 @@ topology-tab#43 207 B, plus several pinned ones. Do not grow those.
 
 ## Done when
 
-- [ ] The four routes return 404 (or the ones with a found caller are kept and
+- [x] The four routes return 404 (or the ones with a found caller are kept and
       named here), and their handlers are gone.
-- [ ] No `embarch-ui` doc names a deleted route; decisions 90 and 94 say what
+- [x] No `embarch-ui` doc names a deleted route; decisions 90 and 94 say what
       happened; the `open/bench.md` slugify bullet is closed.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
       green in `embarch-ui`.
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Result
+
+Caller search (embarch-ui src/assets/tests/scripts; api, core, chat, desk, topology, outpost, atlas, study-designer, umbrella, dev-bench scripts, fleet and doc scripts): no caller for any of the four, all four deleted. `RoleProposal.displaces` went with them (only the apply route read it). `main.rs`'s apply-route test became an `/api/enroll` test (the apply assertions went; `bench::live` carries its own wording). The slugify bullet in `open/bench.md` was narrowed rather than closed: the old profile *delete* still slugifies. No decision retired, so no reversal fragment.

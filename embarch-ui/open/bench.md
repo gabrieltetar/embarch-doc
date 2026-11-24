@@ -8,7 +8,7 @@ Unresolved in the bench editor's built half. Current truth: [../spec/bench.md](.
 
 - **No built-in board has a connector a signal can ride part to part**, so a legacy BLE bench with a `via-dev-bench` signal warns `signal-no-path`: its DUT is drawn as the generic board, whose one connector is USB to this machine, and a signal path never runs through this machine (decision 72). The warning is right about the description and says nothing about the wire. **Trigger:** a repo template for that DUT with the pin header the bench wires, and the cable drawn; the part editor and the canvas can now draw both (80, 87).
 
-- **The old `/api/topology/profiles/{slug}` delete and apply still slugify the URL path**, where every `/api/bench` route refuses a path that is not a slug with `400`: `Bench-A` reaches `bench-a` there. Phase 4 took the page off apply but kept both routes for API callers (decision 90). **Trigger:** the next change to either route.
+- **The old `/api/topology/profiles/{slug}` delete still slugifies the URL path**, where every `/api/bench` route refuses a path that is not a slug with `400`: `Bench-A` reaches `bench-a` there. The apply route, which did the same, was removed (EMB-311). **Trigger:** the next change to this route.
 
 - **Unknown keys in a bench file are dropped when it is saved** — in a legacy role table, a part, a cable, a config or the top level — because a bench loads tolerantly (decision 44's "tolerant on the load path") and is written from what was loaded (decision 73). A part template is strict, so it is listed instead. **Trigger:** the first hand-added key someone expects the editor to keep.
 

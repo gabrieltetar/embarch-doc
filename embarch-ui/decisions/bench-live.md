@@ -22,7 +22,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-live.md
 
 **Never a silent skip** (75's rule, carried over). A template that will not load, a part whose template is missing and a binding on a connector that does not carry it are rows with route `(not sent)`, saying what happened; a Core record differing from the bench is a row against `GET /probes/enrolled`; a Core refusal — a lease the UI does not hold included — is one `ok: false` row in Core's words, the rest still applied; a Core read that fails is a row, never an empty list.
 
-**The page no longer calls `/api/topology/profiles/{slug}/apply`** (coordinator decision): Saved benches' Open and the desk banner put the bench on the canvas and offer Make live. The route stays for API callers, and shares each role's step, the signal step and the link step with this one, its answer unchanged.
+**The page no longer calls `/api/topology/profiles/{slug}/apply`** (coordinator decision): Saved benches' Open and the desk banner put the bench on the canvas and offer Make live. The route was kept for API callers, then removed (EMB-311, nothing in the suite called it): the role, signal and link steps live here alone.
 
 ### 91 — Nothing is retracted silently: what Core holds and the bench does not name is listed, each with its own Retract
 

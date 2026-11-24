@@ -47,4 +47,4 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench.md](../
 
 **`#topology?board=` marks the part that is the board** (58): a part holding that role, that board type, or the dev-bench board's served label. **Board types opens only when no part is marked**, and only once the canvas has read a bench, so a board both on a part and in the catalog lands on the part, never on a panel over it. `window.embarchBench.markedParts()` and `settled()` tell `app.js` which, and `embarch:bench-marked` says when to ask again.
 
-**Left without a page caller**, and kept for API callers: `POST /api/topology/roles/{role}/board`, `POST /api/topology/link` and the old apply (90).
+**Removed, with no page or repo caller** (EMB-311): the role-board, link and apply routes, and `GET /api/study-designer/gatt/{study_id}`. They answer `404`; `bench::live` carries the apply step (90).
