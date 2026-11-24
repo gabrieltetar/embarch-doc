@@ -30,6 +30,7 @@
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 
 ### Fixed
+- embarch-chat: the Promptu card's on-by-default test waits for the state event that carries the patterns, so it no longer fails 4 runs in 20 (EMB-294).
 - The host test no longer expects a cards call without the desk's references (decision 97); it failed against any fresh desk binary.
 - Decision 103's as-built and rejected prose no longer names the deleted freshChat or 36's chip (chat/022).
 - Host tests drove a chat whose process env was taken at creation: five set FAKE_CLAUDE_* after; they now set it first. All 60 pass on a main-built desk (stale-binary theory was wrong).
