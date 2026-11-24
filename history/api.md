@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `declare_instrument` and `declare_signal` (and their verbs) take `safe_off`; a re-declare that omits it keeps the stored one. [decision 97](../embarch-api/decisions/instruments.md)
 - Each call that reaches a lease-gated route appends a line to the firmware repo's embarch/live/ log, citing Core's call-log entry; call_log reads entries back (EMB-255).
 - `study_measurements` tool and `study-measurements` subcommand read a finished run's measurements.json before publish, naming Core's four refusals; see embarch-api/interfaces/studies.md.
 - `embarch-api core-key` prints Core's public key and fingerprint after checking its signature over a fresh nonce; the HIL guide's Study step 6 uses it (EMB-247).

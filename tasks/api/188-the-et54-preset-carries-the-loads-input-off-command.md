@@ -1,7 +1,7 @@
 # 188 — The et54 preset carries the load's input-off command
 
 **State:** blocked — no source on disk gives the ET54's input-off command
-**Unparks when:** the owner records the ET54-series load's input-off command, as its programming manual gives it, in this file or on EMB-334; and `tasks/api/187` has landed
+**Unparks when:** the owner records the ET54-series load's input-off command, as its programming manual gives it, in this file or on EMB-334
 **Source:** EMB-334's second half, split out at the split (2026-11-24)
 **Issue:** EMB-334
 **Scope:** api
