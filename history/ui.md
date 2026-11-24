@@ -9,6 +9,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- Compacted ui decisions/shell.md and spec/tabs.md: decisions 58, 59 moved to page-links.md and the Tab folders text to spec/tab-folders.md, verbatim.
 - The Study Designer keeps a loaded study's declared measurements through save, run and pre-flight, lists their names, and refuses a save with ones the crate rejects (ui decision 104).
 - embarch-ui sends Core the person's token, not the agent's; a missing person token stops the UI at start ([decision 103](../embarch-ui/decisions/core-token.md)).
 - embarch-ui reads embarch-ui/config.toml under the user config dir when EMBARCH_UI_CONFIG is unset; `service install` names its config ([102](../embarch-ui/decisions/ui-config.md)).
