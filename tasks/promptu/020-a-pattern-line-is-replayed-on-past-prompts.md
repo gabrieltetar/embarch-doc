@@ -1,6 +1,6 @@
 # 020 — A pattern line that changes a question, a signal or a source is replayed on past prompts
 
-**State:** claimed by agent/promptu/020-a-pattern-line-is-replayed-on-past-prompts, 2026-11-24 02:09
+**State:** done — week draft replays a question, signal or source change on up to five past prompts, old file against new, under week_replay_cap_usd; forks W23, W24
 **Source:** decisions 14 and 47 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md`'s sheet lines; the sheet `week draft` writes (`promptu/017`)
 **Issue:** EMB-281
 **Scope:** promptu
@@ -49,8 +49,8 @@ paragraph to `spec/status.md`; put your status edit there, not back in
 
 ## Done when
 
-- [ ] With a fake `claude`, a question change yields a side-by-side file per replayed prompt; a template-only change yields none.
-- [ ] The cap stops the replay and says so on the line.
-- [ ] Past prompts are read from the log only; nothing leaves the state folder.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+- [x] With a fake `claude`, a question change yields a side-by-side file per replayed prompt; a template-only change yields none.
+- [x] The cap stops the replay and says so on the line.
+- [x] Past prompts are read from the log only; nothing leaves the state folder.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
