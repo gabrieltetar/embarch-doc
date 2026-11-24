@@ -43,11 +43,11 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 
 **The log entry** (`log/<run>.json`, contract §8.4): `promptu`, `run`, `date`, `cwd`, `project_key`, `pattern`, `version`, `mode` (`prompt`·`brief`), `original`, `rendered` (what landed in the draft, footer included: the weekly loop's edit baseline), `rewritten`, `rewrite_skipped` (`brief`·`no-pattern`·`offline`·`off`·`failed: …`), `rewrite_model`, `rewrite_effort`, `rewrite_ms`, `wait_ms`.
 
-## Commands (build step 4: the contract, not yet built)
+## Commands (build step 4: `week pack` built for run events, the rest is the contract)
 
 | Command | What | Contract |
 |---|---|---|
-| `promptu week pack [--week <w>] [--projects <dir>] [--json]` | The week's events (runs, sessions, unmatched task starts, commit outcomes) into `week/<w>/pack.json`; no model | §14.4, §14.5 |
+| `promptu week pack [--week <w>] [--projects <dir>] [--json]` | The week's events into `week/<w>/pack.json`; no model. **Built: the `run` events** (footer facts, the owner's edit as a diff, chat or terminal); sessions, unmatched task starts and commit outcomes are counted 0 until EMB-274 | §14.4, §14.5 |
 | `promptu week draft [--week <w>] [--pack <path>] [--json]` | The one model call: the sheet's lines, each pattern line linted, rendered and replayed; supersedes the open sheet | §14.4 |
 | `promptu week run [--week <w>] [--scheduled] [--json]` | `pack` then `draft`; what the timer runs | §14.4 |
 | `promptu week status [--json]` | Schedule, last run, next run, missed, open count (what the chat's card asks) | §14.4 |
