@@ -20,3 +20,6 @@
 - Promptu decision 39 retired: the chat's handoff card and chip are gone (embarch-chat 36, 97).
 - Promptu decision 40 amended: the rail's icons are one-colour SVGs, not emoji, following chat 94 (EMB-56).
 - promptu I2 on a header-less MEMORY.md now says the first `## <domain>` header may be added in the same write (decision 21).
+
+### Fixed
+- Promptu's folder-name decode charges its walk bound only for children whose name fits, so a crowded temp folder no longer hides a checkout; the decode test cleans up on failure.
