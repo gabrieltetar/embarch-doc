@@ -38,11 +38,36 @@ The plan asked for once review round 4 closed ([10](10-review.md#round-4-2026-11
 
 **What can start at once**: M1.1, M1.4 and M1.12, which need nothing. M1.2, M1.3, M1.5 and M1.9 follow M1.1; M1.6 follows M1.5, M1.7 follows M1.2, M1.8 needs M1.4, M1.6 and M1.7, M1.10 needs M1.8 and M1.9, and M1.11 needs M1.10. **Each unit amends its own repo's decisions as it lands**, and moves its part of the two proposals into that repo's docs ([DOC-PROTOCOL.md](../../DOC-PROTOCOL.md) §3).
 
+## The Live phase
+
+**Planned 2026-11-23, with every row of [08](08-existing-pieces.md) Live touches checked against the code first; filed as these issues.** Fleet units first, then the owner's two.
+
+| Unit | Issue | Repo | Who | Needs | What |
+|---|---|---|---|---|---|
+| **L.1** Call log | EMB-249 | `embarch-core` | fleet | — | `call-log.jsonl`: one chained entry per lease-gated call, refusals included; repeated reads folded; each answer names its entry |
+| **L.2** Call log in record and zip | EMB-250 | `embarch-core` | fleet | L.1 | The signed record carries the head and the run's range; publish writes the segment |
+| **L.3** Idle release | EMB-251 | `embarch-core` | fleet | — | A lease released after 30 min with no hardware call, whatever client renews; a run in flight is not idle |
+| **L.4** `instrument_exchange` outside a run | EMB-252 | `embarch-core` | fleet | — | Refused outside a run, pointing to a host study's `Instrument` step |
+| **L.5** Only the run's calls during a run | EMB-253 | `embarch-core` | fleet | — | Every lease-gated route refused while a study runs, but its cancel |
+| **L.6** Check 8's call-log half | EMB-254 | `embarch-api` | fleet | L.2 | `verify` recomputes the segment the record names |
+| **L.7** Live log, raw lines | EMB-255 | `embarch-api` | fleet | L.1 | One line per hardware call in `embarch/live/`, citing Core's entry; a `call-log` subcommand |
+| **L.8** After an idle release | EMB-256 | `embarch-api` | fleet | L.3 | The token dropped; the next hardware call refused with the reason |
+| **L.9** The instrument tool follows Core | EMB-257 | `embarch-api` | fleet | L.4 | The tool and CLI verb removed |
+| **L.10** Call log in `report-data.json` | EMB-265 | `suite` | fleet | L.2, L.6 | The head, range and count, with check 6's recompute of them, in one unit |
+| **L.11** Live log, decoded lines | EMB-266 | `embarch-atlas` | fleet | L.7 | Each atlas live tool's decoded line, citing Core's entries |
+| **L.12** Measured write-back | EMB-267 | `embarch-atlas` | fleet | L.7, L.11 | A `measured` fact with its receipt from Core's entry |
+| **L.13** Measured beside claimed | EMB-268 | `embarch-atlas` | fleet | L.12 | A disagreement with the datasheet becomes a check finding |
+| **L.14** agent-guide.md §1.1 | EMB-269 | `embarch-doc` | fleet | L.9 | The permission lists per [05](05-live.md), with an atlas list |
+| **L.15** The guide's Live section | EMB-270 | `embarch-doc`, `embarch-api` | interactive | L.1–L.11, L.14 | `suite/hil-guide.md` "Live" and its pinned copy |
+| **L.16** The first Live session | EMB-271 | — | interactive, bench | every unit above | About 2 h on the bench, 30 min of it the idle wait |
+
+**The owner's answers, 2026-11-23.** `instrument_exchange` stays a Core route that refuses outside a run with a pointer to the `Instrument` step, and its tool goes (Q1). The during-a-run refusal belongs to Live (Q2). The atlas's measured write-back is built in Live, ahead of the planes rework (Q3). A fold chains the first read at once and writes the repeats as one later entry (Q4). **The eleven smaller choices the issue bodies make were each kept by the owner the next day**: among them, a refused call is logged, Core keeps hashes and not answers, a run in flight is not idle, and a write-back citing an entry Core does not hold is refused.
+
 ## The later phases, in outline
 
 Each gets its own unit list when it starts, with its rows of [08](08-existing-pieces.md) checked against the code first.
 
-- **Live**: the call log (its chain, folded reads, receipts, described as Core's calls) and its half of check 8; the live log as its mirror; the 30-minute idle release enforced by Core; `instrument_exchange` refused outside a run; [agent-guide.md](../../suite/agent-guide.md) §1.1; the write-back once the atlas has its measured write-back.
+- **Live**, planned above: the call log (its chain, folded reads, receipts, described as Core's calls) and its half of check 8; the live log as its mirror; the 30-minute idle release enforced by Core; `instrument_exchange` refused outside a run; [agent-guide.md](../../suite/agent-guide.md) §1.1; the write-back once the atlas has its measured write-back.
 - **Test**: the numeric parse at step time; a first host study on the real PD bench; the image readback and the released bench-firmware hash list; Core's Test route (`run.json` re-expanded, the go card and the go, prompts by kind, the run-held lease, the failure policy, the run record); the example shell suite, then the PD suite; the ledger grown into `test_*`.
 - **The attested phase**: Core under its own account; its protected store, the identity store included; installs from a signed release only; `deploy-core`'s development Core beside the service, and the start and stop grant; outputs off at every stop and start; exclusive port handles; the topology CLI refusing under a lease; the call log failing closed, with its quota and reserved tail.
 - **The standalone container pass**, then **the passkey phase**.
