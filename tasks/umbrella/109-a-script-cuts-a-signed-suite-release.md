@@ -1,6 +1,6 @@
 # 109 — A script cuts a signed suite release
 
-**State:** open
+**State:** claimed by agent/umbrella/109-a-script-cuts-a-signed-suite-release, 2026-11-24 12:48
 **Source:** `embarch-release-signing-proposal.md` — "One script cuts a release (`embarch-umbrella/scripts/`): checks the versions, tags each component that changed, waits for its CI, tags the suite, waits, downloads and verifies the result, and prints the elevated install command"
 **Issue:** EMB-344
 **Scope:** umbrella
