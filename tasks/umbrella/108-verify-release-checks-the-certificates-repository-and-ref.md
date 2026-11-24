@@ -1,6 +1,6 @@
 # 108 — verify-release checks the certificate's repository, ref and build config
 
-**State:** open
+**State:** claimed by agent/umbrella/108-verify-release-checks-the-certificates-repository-and-ref, 2026-11-24 11:04
 **Source:** `embarch-release-signing-proposal.md` — "Still proposed: checking the certificate's source-repository and ref extensions against that identity too"
 **Issue:** EMB-343
 **Scope:** umbrella
