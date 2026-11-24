@@ -1,6 +1,6 @@
 # 179 — An idle-released lease drops the held token and refuses the next hardware call
 
-**State:** claimed by agent/api/179-an-idle-released-lease-refuses-the-next-hardware-call, 2026-11-23 21:29
+**State:** done — client drops the token on a renew 404 and refuses the next gated call; lease docs name the 30 min idle release
 **Source:** notes/hil/07-procedure-doc.md — "Before any hardware": an agent takes the lease with a purpose before any hardware call
 **Issue:** EMB-256
 **Scope:** api
@@ -51,12 +51,12 @@ report.
 
 ## Done when
 
-- [ ] Against a fake Core whose renew answers the idle release, the next
+- [x] Against a fake Core whose renew answers the idle release, the next
       `mem_read` refuses with the reason and sends nothing to Core.
-- [ ] `lease_show` then reports that this process holds no token.
-- [ ] A `lease_take` after it works, and hardware calls go through again.
-- [ ] The lease tools' descriptions and `interfaces/tools-lease.md` name the
+- [x] `lease_show` then reports that this process holds no token.
+- [x] A `lease_take` after it works, and hardware calls go through again.
+- [x] The lease tools' descriptions and `interfaces/tools-lease.md` name the
       30-minute idle release.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
