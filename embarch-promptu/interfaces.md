@@ -53,7 +53,7 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | `promptu week status [--json]` | **Built.** Schedule, last run, next run, missed, running, open count (what the chat's card asks); `PROMPTU_NOW` pins the clock | §14.4 |
 | `promptu week show [--week <w>] [--json]` | **Built.** The open sheet: `sheet.json`, or `sheet.md` as text | §14.4 |
 | `promptu week mark <id>... [--verdict approve\|cut] [--note <t>] [--feel better\|same\|worse]` | A line's or a group's ✓/✕, the sheet's feel | §14.4 |
-| `promptu week apply [--week <w>] [--dry-run] [--json]` | Approved pattern lines as commits on a branch, never pushed; memory lines into the memory folder | §14.4 |
+| `promptu week apply [--week <w>] [--dry-run] [--json]` | Approved pattern lines as commits on a branch, never pushed; memory lines into the memory folder | §14.4 | 
 | `promptu week timer [--print] [--remove]` | The systemd user timer and service from `week_schedule` | §14.4 |
 | `promptu desk --json` | **Built.** The open count and groups for the desk's `GET /promptu` | §9 |
 

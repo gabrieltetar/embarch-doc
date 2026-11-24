@@ -1,0 +1,27 @@
+# 022 — `embarch-promptu/spec.md` is in reserve
+
+**State:** blocked
+**Source:** promptu 019 (EMB-279) added `week mark` and `week apply` to the status paragraph, leaving `spec.md` at 9,074 of 10,240 B (1,166 B left).
+**Scope:** promptu
+**Hardware:** none
+**Owner:** no
+
+**Compacts:** embarch-promptu/spec.md
+**Size debt due:** 2026-12-07
+**In flux:** yes. Step 4 is mid-build: `week run`, `timer`, the replay check (promptu 020) and the sheet's numbers (promptu 021) are still to land, and each rewrites the status paragraph.
+**Unparks when:** step 4's last command (`week timer`) is built, or the next promptu unit that writes `spec.md` runs out of its 1,166 B.
+**Must not delete:** the step-by-step build status and its EMB references; move the long status paragraph to `spec/` verbatim, leaving a link.
+
+## What
+
+Bring `spec.md` out of reserve by moving the longest status text into `spec/` verbatim, leaving links.
+
+## Why now
+
+`check-doc-size.py` fails on a file in reserve with no debt filed.
+
+## Done when
+
+- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-promptu/spec.md`.
+- [ ] Moved text is byte-identical in its new file; `check-links.py` green.
+- [ ] Gate green (`../../embarch-fleet/gate.md`).

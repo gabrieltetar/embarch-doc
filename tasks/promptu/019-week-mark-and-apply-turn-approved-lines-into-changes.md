@@ -1,6 +1,6 @@
 # 019 — `promptu week mark` records a verdict, and `week apply` turns each approved line into its change
 
-**State:** claimed by agent/promptu/019-week-mark-and-apply-turn-approved-lines-into-changes, 2026-11-23 23:54
+**State:** done — week mark and week apply built; memory lines through the hook checks, pattern lines as a branch commit or a patch; tests on scratch folders and a scratch checkout
 **Source:** decisions 30 and 43 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 and §14; the sheet `week draft` writes (`promptu/017`)
 **Issue:** EMB-279
 **Scope:** promptu
@@ -48,10 +48,15 @@ so in this file and in your report.
 
 ## Done when
 
-- [ ] In a scratch memory folder, an approved memory line writes a file that `promptu memory check` passes, and a line that would fail writes nothing.
-- [ ] In a scratch checkout, an approved pattern line makes the change the contract describes, with the version bumped, and nothing is pushed.
-- [ ] With no checkout configured, an approved pattern line is written out as a patch.
-- [ ] A ✕ written in `sheet.md` is honoured by `week apply`.
-- [ ] Applying the same sheet twice changes nothing the second time.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+- [x] In a scratch memory folder, an approved memory line writes a file that `promptu memory check` passes, and a line that would fail writes nothing.
+- [x] In a scratch checkout, an approved pattern line makes the change the contract describes, with the version bumped, and nothing is pushed.
+- [x] With no checkout configured, an approved pattern line is written out as a patch.
+- [x] A ✕ written in `sheet.md` is honoured by `week apply`.
+- [x] Applying the same sheet twice changes nothing the second time.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+
+## Notes
+
+- Forks W17 (one commit per pattern, branch restored) and W18 (`external` lines are never applied by `mark`), and W4/W5's built defaults, are in `docs/forks.md`. Decisions 30 and 43 amended in place; no new decision.
+- Verified only on scratch folders and a scratch git checkout; never a real memory folder or pattern checkout. Hardware: none. Feature row owed (EMB-292: no promptu section in `build_features.py`).
