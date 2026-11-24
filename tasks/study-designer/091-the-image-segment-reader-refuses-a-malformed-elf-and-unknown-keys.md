@@ -1,6 +1,6 @@
 # 091 — The image-segment reader refuses a malformed ELF and unknown keys
 
-**State:** open
+**State:** claimed by agent/study-designer/091-the-image-segment-reader-refuses-a-malformed-elf-and-unknown-keys, 2026-11-24 09:53
 **Source:** the post-merge review of `study-designer/090` (2026-11-24): unchecked offset arithmetic in `src/hil_image.rs`, and HIL JSON types without `deny_unknown_fields`
 **Issue:** EMB-397
 **Scope:** study-designer
