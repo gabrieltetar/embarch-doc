@@ -1,6 +1,6 @@
 # 019 — `promptu week mark` records a verdict, and `week apply` turns each approved line into its change
 
-**State:** open
+**State:** claimed by agent/promptu/019-week-mark-and-apply-turn-approved-lines-into-changes, 2026-11-23 23:54
 **Source:** decisions 30 and 43 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 and §14; the sheet `week draft` writes (`promptu/017`)
 **Issue:** EMB-279
 **Scope:** promptu
