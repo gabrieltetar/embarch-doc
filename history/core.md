@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core chains every call to a lease-gated route, refusals too, into `call-log.jsonl`; answers name their entry; `GET /call-log` reads a range ([decision 122](../embarch-core/decisions/call-log.md)).
 - Core: GET /study/{id}/measurements returns a finished run's measurements.json unchanged, no publish; distinct 404/409/410/422 refusals ([decision 121](../embarch-core/decisions/measurements.md))
 - Core takes a swept run's earlier files back through PUT /study/{id}/restore, checked against its logged manifest, so a republish works (decision 120).
 - Core's publish files route serves the run's own files (measurements.json, events.json, streams) at the pending revision, before publish signs them (EMB-241).
