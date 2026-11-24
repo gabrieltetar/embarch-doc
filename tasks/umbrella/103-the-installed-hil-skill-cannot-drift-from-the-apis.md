@@ -1,6 +1,6 @@
 # 103 — The installed HIL skill cannot drift from the api's
 
-**State:** claimed by agent/umbrella/103-the-installed-hil-skill-cannot-drift-from-the-apis, 2026-11-24 03:19
+**State:** done — embarch init include_str!s the api skill file through the sibling checkout; the pinned copy is deleted; decision 59 amended
 **Source:** suite review audit, 2026-11-23: umbrella's pinned `embarch-hil` skill lags the api's copy
 **Issue:** EMB-315
 **Scope:** umbrella
@@ -50,12 +50,12 @@ deploy#32 29 B, mirrors#20 32 B, probe-vendors#49 140 B, sticky-host#48
 
 ## Done when
 
-- [ ] The skill `embarch init` writes is byte-identical to
+- [x] The skill `embarch init` writes is byte-identical to
       `embarch-api/skills/embarch-hil/SKILL.md` on `main`, and a test says so.
-- [ ] Either the copy is gone (installer reads the api's file), or it is
+- [x] Either the copy is gone (installer reads the api's file), or it is
       re-pinned and this file says why the preferred route was not possible.
-- [ ] Decision 59 amended in place.
-- [ ] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
+- [x] Decision 59 amended in place.
+- [x] `cargo build`, `cargo test`, `cargo clippy --all-targets -- -D warnings`
       green in `embarch-umbrella`.
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
