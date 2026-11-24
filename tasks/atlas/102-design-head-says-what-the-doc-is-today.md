@@ -1,6 +1,6 @@
 # 102 — The atlas design doc's head says what the doc is today
 
-**State:** open
+**State:** claimed by agent/atlas/102-design-head-says-what-the-doc-is-today, 2026-11-23 17:08
 **Source:** the reviewer of `atlas/101` (supervisor log, 2026-11-23 15:04): "`embarch-atlas/design.md`'s head still calls the doc a placeholder awaiting resumed design work, which was stale before this unit"
 **Scope:** atlas
 **Hardware:** none
@@ -31,8 +31,7 @@ left as written. A reader opening the doc meets "placeholder" above sections
 the atlas's code follows, which is the drift `DOC-PROTOCOL.md` §5 exists to
 prevent.
 
-**Doc headroom:** `embarch-atlas/design.md` is about 24,000 of its 25,600 B, so
-the new head should be no longer than the old one.
+**Doc headroom:** `embarch-atlas/design.md` is about 21,100 B; not in reserve.
 
 ## Done when
 
