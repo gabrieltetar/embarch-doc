@@ -1,6 +1,6 @@
 # 103 — The atlas's live tools append a decoded line to the live log
 
-**State:** claimed by agent/atlas/103-live-tools-append-a-decoded-line-to-the-live-log, 2026-11-23 21:29
+**State:** done — live tools append a decoded embarch-live/1 line, with every Core call-log entry, to the live log
 **Source:** `notes/hil/05-live.md`, "The live log": "One file and one line shape, written by both embarch-api (raw calls) and embarch-atlas (decoded calls)"
 **Issue:** EMB-266
 **Scope:** atlas
@@ -49,13 +49,13 @@ your report.
 
 ## Done when
 
-- [ ] With a fake `embarch-api` returning Core entries, a `reg_read` appends
+- [x] With a fake `embarch-api` returning Core entries, a `reg_read` appends
       one decoded line naming them.
-- [ ] A `shell` call that reads an external part's register over several
+- [x] A `shell` call that reads an external part's register over several
       exchanges names every entry.
-- [ ] A call refused before the write appends a line saying it did not run.
-- [ ] No line carries the lease token (a test).
-- [ ] `DESIGN.md` "Live" and `embarch-doc/embarch-atlas/design.md` say what the
+- [x] A call refused before the write appends a line saying it did not run.
+- [x] No line carries the lease token (a test).
+- [x] `DESIGN.md` "Live" and `embarch-doc/embarch-atlas/design.md` say what the
       atlas writes and where.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet).
+- [x] `changelog.d/` fragment dropped.
