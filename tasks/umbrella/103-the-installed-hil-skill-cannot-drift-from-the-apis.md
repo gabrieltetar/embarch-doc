@@ -1,6 +1,6 @@
 # 103 — The installed HIL skill cannot drift from the api's
 
-**State:** open
+**State:** claimed by agent/umbrella/103-the-installed-hil-skill-cannot-drift-from-the-apis, 2026-11-24 03:19
 **Source:** suite review audit, 2026-11-23: umbrella's pinned `embarch-hil` skill lags the api's copy
 **Issue:** EMB-315
 **Scope:** umbrella
