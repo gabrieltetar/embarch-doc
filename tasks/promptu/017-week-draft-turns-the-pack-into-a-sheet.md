@@ -1,6 +1,6 @@
 # 017 — `promptu week draft` turns the week's pack into a ✓/✕ sheet
 
-**State:** open
+**State:** claimed by agent/promptu/017-week-draft-turns-the-pack-into-a-sheet, 2026-11-23 22:40
 **Source:** decisions 14 and 30 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10, the sheet (written by `promptu/011`)
 **Issue:** EMB-276
 **Scope:** promptu
