@@ -1,6 +1,6 @@
 # 104 — The umbrella README carries no counted inventory
 
-**State:** open
+**State:** claimed by agent/umbrella/104-the-umbrella-readme-carries-no-counted-inventory, 2026-11-24 03:45
 **Source:** suite review audit, 2026-11-23: three code-repo READMEs describe the suite as of September
 **Issue:** EMB-297
 **Scope:** umbrella
