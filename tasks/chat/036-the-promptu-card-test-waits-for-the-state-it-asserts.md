@@ -1,6 +1,6 @@
 # 036 — The Promptu card test waits for the state it asserts on
 
-**State:** claimed by agent/chat/036-the-promptu-card-test-waits-for-the-state-it-asserts, 2026-11-24 02:25
+**State:** done — card test waits for the state event carrying the patterns; 4/20 failed before, 0/20 after
 **Source:** `chat/035`'s gate (2026-11-24 log entry): the worker saw the test fail on unchanged `main` 2 of 3 runs; the supervisor's gate run passed it
 **Issue:** EMB-294
 **Scope:** chat
@@ -39,16 +39,26 @@ does, stop and say so in this file.
 decision 96 (`decisions/promptu.md`) has 204 B left under its per-decision
 limit, so do not grow it.
 
+## Result
+
+Cause: the card test took the first `state` event, but patterns and week
+status load side by side and each emits one, so the week load could fire first
+and the test read empty patterns. Event order is not part of the service's
+contract, so the test was fixed: it waits (5 s bound) for the `state` event
+after which `patterns` is non-empty. Before: 4 failures in 20 runs. After: 0 in
+20. The other tests in the file wait for two `state` events (both loads) and do
+not share the pattern. Service and spec unchanged.
+
 ## Done when
 
-- [ ] The test passes in 20 consecutive `npm test -- test/promptu.test.mjs`
+- [x] The test passes in 20 consecutive `npm test -- test/promptu.test.mjs`
       runs (or the narrowest invocation that runs it), and the count is in
       this file.
-- [ ] The test waits for the state it asserts on, or the service orders its
+- [x] The test waits for the state it asserts on, or the service orders its
       first events deterministically.
-- [ ] Full `npm test` green with the desk binary from `scripts/desk-gate-bin.py`
+- [x] Full `npm test` green with the desk binary from `scripts/desk-gate-bin.py`
       in `embarch-fleet` (`gate.md`'s npm bullet), plus `npm run build`,
       `npm run typecheck` and `npm run test:webview`.
-- [ ] `changelog.d/` fragment dropped; no `spec.md` change expected unless
+- [x] `changelog.d/` fragment dropped; no `spec.md` change expected unless
       the service's event order becomes a stated promise.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
