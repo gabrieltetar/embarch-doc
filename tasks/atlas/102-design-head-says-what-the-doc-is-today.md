@@ -1,6 +1,6 @@
 # 102 — The atlas design doc's head says what the doc is today
 
-**State:** claimed by agent/atlas/102-design-head-says-what-the-doc-is-today, 2026-11-23 17:08
+**State:** done — design.md head rewritten; roadmap and embarch.md staleness filed as status.d fragments
 **Source:** the reviewer of `atlas/101` (supervisor log, 2026-11-23 15:04): "`embarch-atlas/design.md`'s head still calls the doc a placeholder awaiting resumed design work, which was stale before this unit"
 **Scope:** atlas
 **Hardware:** none
@@ -35,8 +35,8 @@ prevent.
 
 ## Done when
 
-- [ ] The head of `embarch-atlas/design.md` says what the doc is today, with no
+- [x] The head of `embarch-atlas/design.md` says what the doc is today, with no
       claim the repo or the roadmap contradicts.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `changelog.d/` fragment dropped, `status.d/` fragment for anything
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped, `status.d/` fragment for anything
       suite-level it made false.
