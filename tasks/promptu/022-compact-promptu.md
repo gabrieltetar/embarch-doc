@@ -8,8 +8,8 @@
 
 **Compacts:** embarch-promptu/spec.md
 **Size debt due:** 2026-12-07
-**In flux:** yes. Step 4 is mid-build: `week run`, `timer`, the replay check (promptu 020) and the sheet's numbers (promptu 021) are still to land, and each rewrites the status paragraph.
-**Unparks when:** step 4's last command (`week timer`) is built, or the next promptu unit that writes `spec.md` runs out of its 1,166 B.
+**In flux:** yes. Step 4 is mid-build: the replay check (promptu 020), the sheet's numbers (promptu 021) and the terminal review skill (promptu 023) are still to land, and each rewrites the status paragraph.
+**Unparks when:** `promptu/020`, `promptu/021` and `promptu/023` land (step 4's remaining units; `week timer` is built), or the next promptu unit that writes `spec.md` runs out of its reserve (1,150 B left at 9,090 B).
 **Must not delete:** the step-by-step build status and its EMB references; move the long status paragraph to `spec/` verbatim, leaving a link.
 
 ## What

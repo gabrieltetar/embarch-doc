@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- promptu week run packs and drafts under a lock (exit 4 if one is running); week timer prints the systemd units and installs nothing; run.json records every run.
 - promptu week mark records verdicts, notes and feel and reads sheet.md's ✕ back; week apply writes approved memory lines through the hook's checks and commits pattern lines on a branch (EMB-279).
 - Promptu's weekly pack now carries friction, unmatched task starts, commit outcomes and carried lines.
 - `promptu week draft` turns the week's pack into the ✓/✕ sheet with one stripped Opus call: lines, linted proposed patterns, old/new examples, `run.json` (forks W13–W15).
