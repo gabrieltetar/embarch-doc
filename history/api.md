@@ -39,6 +39,9 @@
 - embarch-api tests: the binary-spawning tests strip `EMBARCH_REQUIRE_LEASE`, so `cargo test --manifest-path` from the suite root no longer fails 20 tests.
 - lease_client tests no longer flake: two tests in one clock tick shared a scratch dir; a counter names it now (api task 151).
 
+### Removed
+- Removed the `instrument_exchange` tool and `instrument-exchange` subcommand; Core refuses that route, so an instrument is reached by a host study's `Instrument` step (EMB-257).
+
 ### Decided
 - Found and pinned in a test: an api build runs the config's source_path, not the session's worktree, so a worktree session builds the main clone; a known defect, bug EMB-181, not fixed here. See [spec](../embarch-api/spec.md).
 ## 2026-10
