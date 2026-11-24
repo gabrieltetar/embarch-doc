@@ -10,7 +10,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **A Rust client for SMP — the Simple Management Protocol mcumgr and MCUboot speak — ported from [smpclient](https://github.com/intercreate/smpclient) 7.3.0 and the [smp](https://github.com/JPHutchins/smp) 4.2.0 package beneath it.** It exists so Core can hand a signed image to a DUT's MCUboot serial-recovery bootloader over USB CDC ACM, the second way to put firmware on a DUT after a debug probe.
 
-**It never opens a port.** Every call takes a `Read + Write` the caller already opened; in the suite that caller is `embarch-topology`'s `hardware` feature, which stays the only code that opens a serial port ([decision 2](decisions.md)). A caller sets a short read timeout on the port; the client treats `TimedOut` as "nothing yet" and keeps its own deadline.
+**It never opens a port.** Every call takes a `Read + Write` the caller already opened; in the suite that caller is Core's `POST /bootload`, which opens the port once `embarch-topology` has matched it ([decision 2](decisions.md); [`embarch.md`](../embarch.md) §4 states who opens what). A caller sets a short read timeout on the port; the client treats `TimedOut` as "nothing yet" and keeps its own deadline.
 
 ## 2. What it does
 
