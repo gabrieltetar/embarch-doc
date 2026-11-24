@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `promptu week draft` replays a question, signal or source change on past prompts, old pattern against new, under `week_replay_cap_usd`: [contract §10](../../embarch-promptu/docs/contract.md).
 - Promptu's plugin gains /embarch-promptu:review, a skill that walks the weekly ✓/✕ sheet in the terminal and applies it, no Desk needed.
 - promptu week run packs and drafts under a lock (exit 4 if one is running); week timer prints the systemd units and installs nothing; run.json records every run.
 - promptu week mark records verdicts, notes and feel and reads sheet.md's ✕ back; week apply writes approved memory lines through the hook's checks and commits pattern lines on a branch (EMB-279).
