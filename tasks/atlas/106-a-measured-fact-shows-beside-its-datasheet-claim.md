@@ -1,6 +1,6 @@
 # 106 — A measured fact shows beside the datasheet claim it bears on, and a disagreement is a finding
 
-**State:** claimed by agent/atlas/106-a-measured-fact-shows-beside-its-datasheet-claim, 2026-11-23 23:22
+**State:** done — measured facts show beside register, find_fact and part_card claims; measured-vs-datasheet check
 **Source:** `notes/hil/05-live.md` ("Writing a finding back") and `notes/atlas/08-measured.md` ("A measured fact"); the write-back built by `atlas/105`
 **Issue:** EMB-268
 **Scope:** atlas
@@ -42,9 +42,9 @@ your report.
 
 ## Done when
 
-- [ ] A fixture register whose measured value differs from its datasheet reset value yields a finding in the mismatch report.
-- [ ] `register` and `find_fact` show the measured value beside the datasheet's, labelled development evidence.
-- [ ] A measured value that agrees yields no finding and is shown beside the claim.
-- [ ] A fact measured on another build is shown and reported as such.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `test_public_guard` run and passed.
-- [ ] `embarch-atlas/design.md` updated, `changelog.d/` fragment dropped.
+- [x] A fixture register whose measured value differs from its datasheet reset value yields a finding in the mismatch report.
+- [x] `register` and `find_fact` show the measured value beside the datasheet's, labelled development evidence.
+- [x] A measured value that agrees yields no finding and is shown beside the claim.
+- [x] A fact measured on another build is shown and reported as such.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), `test_public_guard` run and passed.
+- [x] `embarch-atlas/design.md` updated, `changelog.d/` fragment dropped.

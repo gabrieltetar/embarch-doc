@@ -64,6 +64,8 @@ Each live call that reached Core also appends one decoded line to the live log e
 
 **A live finding is written back** (`live write-back`, MCP `write_back`, EMB-267): `measured` fact, `via: live`, receipt read from Core's call-log entries (`embarch-api call-log`) and never the caller's; an entry Core lacks is refused, another build is written and flagged. Appended to `measured.jsonl`. `DESIGN.md`, "Live".
 
+**A measured fact is read back beside its claim** (EMB-268): `register`, `find_fact` and `part_card` show a `via: live` measurement next to the record it bears on (value, `via`, receipt time and image, the different-build flag, the words "development evidence"), and the mismatch report's check "measured values vs the datasheet" raises a `measured-vs-datasheet` finding, severity `check`, where the value disagrees with a register `reset` or a `min`/`max` range. Agreement raises none and is still shown; a claim that is not a comparable number is shown and folded. Entity measurements bear on no record and show nowhere. `DESIGN.md`, "Live".
+
 ## A cite of another document rests no frozen unit
 
 `doc freeze` keys a unit on the pages it cites in its own document. A cite that names another document (`other-doc p.7`) is left out of those pages, by the same test check M uses to tell the two apart (`check.split_cites`, `find_sibling`); a unit that cites only other documents rests on every page. The other choice, filing the page under the other document, would need a second set of page hashes and a second `thaw-check` rule, since `thaw-check` reads only its own document's pages (2026-11-13, EMB-109). The detail is in the repo's `DESIGN.md`.
