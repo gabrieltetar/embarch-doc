@@ -18,6 +18,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- The Core README no longer carries an endpoint count or a file/endpoint list; it points at the interface docs.
 - report-data.json carries observed.call_log {head, first_seq, last_seq, count} from the signed record, when it has one (core/148, paired with api/185); see interfaces/publish.md.
 - Core refuses every lease-gated call, the lease holder's too, while a study runs; only the study's cancel is admitted (decision 95).
 - Core refuses POST /instruments/{name}/exchange for every caller with 409 naming a host study Instrument step; decision 104 (embarch-core/decisions/instruments.md).
