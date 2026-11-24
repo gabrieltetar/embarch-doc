@@ -18,6 +18,7 @@
 | `token_store.rs` | resolves/generates/persists the agent and person token files (decision 109), `Scope`, `Tokens`; `local_data_dir()` |
 | `measurements.rs` | `measurements.json`: the declared reducers over a study's captures, as it ends (decision 113) |
 | `signing.rs` | the Ed25519 key, `record.dsse.json` (DSSE over an in-toto Statement), the declarations ledger, `POST /auth/challenge` (decision 110) |
+| `call_log.rs` | `call-log.jsonl`: the layer that chains one entry per gated call, refusals included, folds repeated reads, names each answer's entry in headers; `GET /call-log` (decision 122) |
 | `run_log.rs` | `run-log.jsonl`: the chained entry per run, publish and discard, the discard refused by scope, the retention split, four routes (decision 111) |
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |

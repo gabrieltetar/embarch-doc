@@ -1,0 +1,1 @@
+| `GET /call-log` and `call-log.jsonl` — a hash-chained entry for every call to a lease-gated route, refusals and folded repeated reads included; Core's calls only | Built — **host-tested only; no real bench session logged; `board` named by four handlers** | unit | 122 |

@@ -1,6 +1,6 @@
 # 140 — Core keeps a hash-chained log of every hardware call made to it
 
-**State:** claimed by agent/core/140-core-keeps-a-hash-chained-call-log, 2026-11-23 17:08
+**State:** done — call_log.rs layer chains every gated call; decision 122; host-tested, no hardware
 **Source:** notes/hil/12-prevention.md — "What Core then guarantees, in code", item 3: Core logs every hardware call made to it in a hash chain of its own, beside the run log, Live included
 **Issue:** EMB-249
 **Scope:** core
@@ -58,18 +58,18 @@ decision 110 is already over its cap; leave it alone.
 
 ## Done when
 
-- [ ] A test calls every route of `LEASE_GATED` and finds one entry per call,
+- [x] A test calls every route of `LEASE_GATED` and finds one entry per call,
       refused calls included, each with its token's scope.
-- [ ] The chain recomputes from the first entry in a test, and an edited,
+- [x] The chain recomputes from the first entry in a test, and an edited,
       removed or reordered line is reported.
-- [ ] Five identical `mem-read` calls in a row give one chained entry and one
+- [x] Five identical `mem-read` calls in a row give one chained entry and one
       fold entry with a count of four; a different call between two reads gives
       no fold.
-- [ ] Every gated route's answer names its entry, and `GET /call-log` returns
+- [x] Every gated route's answer names its entry, and `GET /call-log` returns
       that entry and the head.
-- [ ] `embarch-core/interfaces/call-log.md` gives the entry and fold shapes and
+- [x] `embarch-core/interfaces/call-log.md` gives the entry and fold shapes and
       says the log holds Core's calls only; a new `embarch-core` decision
       records the call log.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.

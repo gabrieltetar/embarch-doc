@@ -1,0 +1,21 @@
+# embarch-core decisions: The call log
+
+**Status:** active, 2026-11-23 (`tasks/core/140`, `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 3). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/call-log.md](../interfaces/call-log.md). Sibling: [run-log.md](run-log.md) (decision 111, whose chain this follows), [lease.md](lease.md) (decision 93, whose `LEASE_GATED` list this logs).
+
+### 122 — Core logs every call to a gated route in a hash chain of its own, refusals included, and says it holds Core's calls only
+
+The live log in a firmware repo, an atlas write-back's receipt and the signed record's `verify` check 8 cite what was done to the bench. The run log holds runs, not the calls inside and outside them, so a session could flash, read and reset with no trace a reader could check. **The log** is `call-log.jsonl` beside `run-log.jsonl`, the run log's line shape (`{entry, hash}`, `prev` all zeros first, `seq` the position), checked by the same `verify_lines`. No sweep, discard or restart touches it; a restart re-reads the head once and carries on.
+
+**One entry per call to a route in `lease::LEASE_GATED`**, made by a layer outside `lease_middleware` and inside `auth_middleware`: a call the lease refuses is seen (`409`), and a gated route added later is logged with no handler change. Why a layer and not a call in each handler: a refusal never reaches a handler, and a handler written next year would otherwise be a gap nobody noticed. A host study's or dev-bench study's own steps stay in its `events.json`; the study's start is the one logged call.
+
+**An entry holds** `at_utc_ms`, method, matched route, path parameters, the request body's SHA-256 and the body itself when it is JSON of at most 4096 bytes (chosen, not measured: every JSON body today is far under it; a firmware upload is its hash alone), the token's `Scope`, the lease holder and purpose or null, the status, the answer's SHA-256, and `board`: `{role, probe_serial, chip, image_sha256}` where a handler named one through `call_log::board_note()` (`/flash`, `/reset`, the two live reads today), `image_sha256` being `last_images`' hash for that chip or `"unknown"`.
+
+**Reads fold.** `POST /live/mem-read`, `/live/core-state`, `/validate`, `GET /serial-log` and `/dev-bench/hello` are reads; the rest are actions and never fold. Consecutive identical reads (same route, parameters, request hash, scope, lease, status and answer hash) fold: the first is chained at once and its answer cites it, the repeats are counted in memory and written as one `fold` entry (`first_seq`, `count`, `first_utc_ms`, `last_utc_ms`) when a different gated call arrives, the lease is released, or Core stops cleanly. A chained entry is never rewritten. Why: a poll loop of a thousand identical reads would bury the calls that matter. A crash loses at most the pending count, never a chained entry; `GET /call-log` shows the pending count as `pending_fold`. A lease that expires with no release leaves its fold pending until the next different call.
+
+**Each gated answer names its entry** in `X-Embarch-Call-Seq` and `X-Embarch-Call-Hash`; a folded repeat names the first entry and adds `X-Embarch-Call-Repeat`. `GET /call-log?from=&to=` returns the range (at most 1000) with `verified`, `head` and `length`; it is in `LEASE_OPEN`, touches no hardware, and is not itself logged.
+
+**It is Core's calls, and only those.** Hardware reached without Core (the topology CLI's own hardware feature, a probe tool by hand) is not in it, and a reader must not read its absence as "nothing happened".
+
+**Not here:** a log that cannot be written is logged and the call served (today's behaviour); fail-closed, a quota and a reserved tail come with the attested phase. `board` is not yet named by `/bootload`, `/validate`, the exchange and capture routes (`open.md`).
+
+**Measured:** unit tests call every `LEASE_GATED` route under a held lease and find one entry each with its scope; five identical `mem-read` calls chain one entry and fold four, and a different call between reads folds nothing; an edited, removed or reordered line names its line; a broken log is not extended. Nothing was run on a board.

@@ -20,6 +20,8 @@ What is unresolved and what would close it. Current truth: [spec.md](spec.md). R
 
 - **"A pending requirement" has no store** (milestone 1 has no Test phase): `RunLog::discard`'s `clean` test is where a requirement holding a run would refuse the agent too. Not built.
 
+- **The call log's `board` is named by four handlers only** (`/flash`, `/reset`, the two live reads; decision 122): `/bootload`, `/validate`, the exchange and capture routes leave it null. A lease that expires unreleased leaves its fold pending until the next different call. Fail-closed, quota and a reserved tail wait for the attested phase.
+
 ## Unverified, and moved elsewhere
 
 - **Whether probe-rs writes killed the nRF54L15** (decision 36) and **the stale bytes a signal port's open cannot discard** (decision 30, `embarch-ui` decision 19): [open/unverified-and-moved.md](open/unverified-and-moved.md).
