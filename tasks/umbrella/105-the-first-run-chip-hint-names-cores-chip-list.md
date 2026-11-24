@@ -1,6 +1,6 @@
 # 105 — The first-run chip hint names Core's chip-list
 
-**State:** open
+**State:** claimed by agent/umbrella/105-the-first-run-chip-hint-names-cores-chip-list, 2026-11-24 04:02
 **Source:** suite review audit, 2026-11-23: umbrella still sends a newcomer to a second toolchain install that Core decision 34 replaced
 **Issue:** EMB-310
 **Scope:** umbrella
