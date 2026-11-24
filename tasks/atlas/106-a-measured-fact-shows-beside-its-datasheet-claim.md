@@ -1,6 +1,6 @@
 # 106 — A measured fact shows beside the datasheet claim it bears on, and a disagreement is a finding
 
-**State:** open
+**State:** claimed by agent/atlas/106-a-measured-fact-shows-beside-its-datasheet-claim, 2026-11-23 23:22
 **Source:** `notes/hil/05-live.md` ("Writing a finding back") and `notes/atlas/08-measured.md` ("A measured fact"); the write-back built by `atlas/105`
 **Issue:** EMB-268
 **Scope:** atlas
