@@ -1,6 +1,6 @@
 # 014 — `promptu week status`, `week show` and `promptu desk` report the weekly pass
 
-**State:** open
+**State:** claimed by agent/promptu/014-week-status-show-and-desk-report-the-weekly-pass, 2026-11-23 21:29
 **Source:** `embarch-promptu` `docs/contract.md` §9, §10 and §14 (written by `promptu/011`); decisions 14, 30 and 46 (`decisions/learning.md`)
 **Issue:** EMB-275
 **Scope:** promptu
