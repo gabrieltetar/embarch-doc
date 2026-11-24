@@ -1,6 +1,6 @@
 # 118 — Make live skips a signal whose stored safe-off it cannot read
 
-**State:** open
+**State:** claimed by agent/ui/118-make-live-skips-a-signal-whose-stored-safe-off-it-cannot-read, 2026-11-24 10:29
 **Source:** the reviewer of `ui/117` (Make live declares an output's safe-off), below its bar, filed as a bug
 **Issue:** EMB-401
 **Scope:** ui
