@@ -1,6 +1,6 @@
 # 036 — The Promptu card test waits for the state it asserts on
 
-**State:** open
+**State:** claimed by agent/chat/036-the-promptu-card-test-waits-for-the-state-it-asserts, 2026-11-24 02:25
 **Source:** `chat/035`'s gate (2026-11-24 log entry): the worker saw the test fail on unchanged `main` 2 of 3 runs; the supervisor's gate run passed it
 **Issue:** EMB-294
 **Scope:** chat
@@ -34,6 +34,10 @@ filed by `chat/035`'s worker.
 
 **Burndown leg: no new numbered decision.** This should need none; if it
 does, stop and say so in this file.
+
+**Doc-size reserve (dispatch note):** no `embarch-chat` file is in reserve;
+decision 96 (`decisions/promptu.md`) has 204 B left under its per-decision
+limit, so do not grow it.
 
 ## Done when
 
