@@ -1,0 +1,1 @@
+| `embarch-ui bench make-live <slug> [--config] [--bind role=serial]` — a saved bench made live from the terminal, sharing the Topology route's code | Shipped — host-tested against a stub Core; not run against a live Core | unit | 90 |

@@ -1,6 +1,6 @@
 # 116 — A saved bench is made live from the terminal
 
-**State:** claimed by agent/ui/116-a-saved-bench-is-made-live-from-the-terminal, 2026-11-24 08:50
+**State:** done — embarch-ui bench make-live shares the route's make_live and the /api/enroll body; stub-Core test checks writes, token, binds and the record
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase): "the CLI does the same in the person's terminal, so a Test needs no UI" (`notes/hil/03-test.md`, "Benches")
 **Issue:** EMB-386
 **Scope:** ui
@@ -46,9 +46,9 @@ topology-tab#43 207 B, plus several pinned ones. Do not grow those.
 
 ## Done when
 
-- [ ] Against a fake Core, the subcommand on a fixture bench sends the same
+- [x] Against a fake Core, the subcommand on a fixture bench sends the same
       declarations the route sends, with the person's token.
-- [ ] A binding not given is printed as proposed and not applied.
-- [ ] The live record the tab reads shows the bench live.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] Decision 90 amended; `spec.md` updated; `changelog.d/` fragment dropped.
+- [x] A binding not given is printed as proposed and not applied.
+- [x] The live record the tab reads shows the bench live.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] Decision 90 amended; `spec.md` updated; `changelog.d/` fragment dropped.

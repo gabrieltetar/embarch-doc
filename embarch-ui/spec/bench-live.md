@@ -14,6 +14,8 @@ Beside Save, the bench's live state in words: *not live*; *live*, or *live · A*
 - **Stop being live**, on the bench the record names, or while its file is gone or broken: the record goes and Core keeps what it holds.
 - The **write-through indicator**: *declared · 2 proposals · 1 failed*, a button opening that report; or, lasting until a declare lands, *saved, not declared*, *not declared again* or *declared, not recorded*, saying why.
 
+**From a terminal:** `embarch-ui bench make-live <slug> [--config <name>] [--bind <role>=<serial>]...` is an explicit make-live of the bench as saved, in the repo the config names (else the working directory), with the person's token. It prints the declared rows, each proposal and the leftovers; a proposal is enrolled only by a `--bind` naming its role (a bench board: its label) and the proposal's serial, and the command exits non-zero on a failed row or a bind that applied nothing. It shares the route's code (90), so it writes the same live record the tab reads.
+
 The config tab the record names is marked as the live wiring. **Live report** reopens the last report.
 
 ## What reaches Core
