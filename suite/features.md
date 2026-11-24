@@ -225,6 +225,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | Shipped in all four repos that release; the other four still have no release workflow. Proven by running the step, not by a tag | n/a | 27, 29 |
 | `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped — **the verification compared a byte count and reported `landed` through a cancelled elevation** | hw | 32 |
 | `embarch verify-release` — offline check of an unpacked suite release: the manifest's Sigstore signature under the exact release-workflow identity, then every file's SHA-256 | Shipped — **no signed suite manifest exists to check end to end until EMB-190 ships**; tested on two public bundles | unit | 14 |
+| `scripts/cut-release.py` — dry-run-by-default script that tags changed components, tags the suite, waits on CI, verifies the download and prints the install line | Built — **tested against a fake runner only; never run on a real tag** | unit | 14 |
 
 ## embarch-ui
 
