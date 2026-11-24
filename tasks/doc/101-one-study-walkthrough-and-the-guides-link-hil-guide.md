@@ -1,6 +1,6 @@
 # 101 — One study walkthrough, and the human guides link the HIL guide
 
-**State:** open
+**State:** claimed by agent/doc/101-one-study-walkthrough-and-the-guides-link-hil-guide, 2026-11-24 11:04
 **Source:** the 2026-11-23 suite audit — `suite/studies-guide.md` and `suite/hil-guide.md` teach the same study material, and neither `user-guide.md` nor `agent-guide.md` links the HIL guide
 **Issue:** EMB-316
 **Scope:** doc
