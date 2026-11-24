@@ -1,6 +1,6 @@
 # 012 — The folder-name decode finds a checkout however crowded the folders above it are
 
-**State:** open
+**State:** claimed by agent/promptu/012-folder-name-decode-survives-a-crowded-temp-folder, 2026-11-23 22:05
 **Source:** found re-running the gate on `promptu/011` (2026-11-23): `cargo test` fails on a machine whose temp folder holds about 3,800 subfolders
 **Issue:** EMB-286
 **Scope:** promptu
