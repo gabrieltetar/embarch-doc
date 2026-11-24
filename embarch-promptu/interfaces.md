@@ -76,7 +76,7 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | `promptu patterns` JSON | step 3 | the chat's Promptu card | §7.9 |
 | `promptu render` input and output | step 2 | the skill, the chat | §8 |
 | `promptu desk --json` | step 4 | the desk's `GET /promptu`, the chat's card | §9 |
-| `sheet.json`, `week/<week>/` | `promptu week draft`, step 4; `mark` and `apply` change it | the Desk section, the chat's card, `/promptu:review` | §10, §14.1 |
+| `sheet.json`, `week/<week>/` | `promptu week draft`, step 4; `mark` and `apply` change it | the Desk section, the chat's card, `/embarch-promptu:review` | §10, §14.1 |
 
 What a later step may change, and what it may not: contract §11.
 
@@ -87,5 +87,5 @@ What a later step may change, and what it may not: contract §11.
 | `~/.config/embarch-promptu/config.toml` | The machine's settings: `memory_hook`; `pass_effort`, `pass_model`, `pass_timeout_s`; `rewrite`, `rewrite_model`, `rewrite_effort`, `rewrite_timeout_s` (decision 42); `week_schedule`, `week_model`, `week_effort`, `week_timeout_s`, `week_checkout`, `week_public_check` (the weekly pass, contract §14.2); `voice_skill`, `memory_claude_md_sections`, and `[embarch]` `desk` / `embarch-api` = `auto` · `on` · `off` (contract §7.6) |
 | `~/.local/state/embarch-promptu/` | Runs between `prep` and `render`, each project's last answers, drafts, `log/` (one entry per rendered run, never pruned) and `week/` (one folder per week: pack, run record, sheet, proposed files; contract §7.5, §14.1) |
 | `<memory base>/projects/<folder>/memory/` | Claude Code's auto-memory folder, located as contract §1.2 says |
-| `plugin/` in the repo | The `embarch-promptu` plugin: `.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/promptu/SKILL.md` |
+| `plugin/` in the repo | The `embarch-promptu` plugin: `.claude-plugin/plugin.json`, `hooks/hooks.json`, `skills/promptu/SKILL.md`, `skills/review/SKILL.md` (the weekly sheet in the terminal) |
 | `patterns/` in the repo | The pattern set, embedded in the binary; `PROMPTU_PATTERNS` reads a folder instead |

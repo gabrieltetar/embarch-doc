@@ -1,6 +1,6 @@
 # 023 — A plugin skill walks the weekly sheet in the terminal for a user without the Desk
 
-**State:** claimed by agent/promptu/023-a-terminal-skill-walks-the-weekly-sheet, 2026-11-24 00:24
+**State:** done — plugin/skills/review (typed /embarch-promptu:review), plugin 0.4.0, contract, README, fork W21, decision 30 amended
 **Source:** decisions 29 and 30 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 and §14.4; `week show`, `week mark` and `week apply` (`promptu/014`, `promptu/019`)
 **Issue:** EMB-280
 **Scope:** promptu
@@ -48,9 +48,9 @@ this unit, carrying `promptu/022`'s `Must not delete:` list, and say so.
 
 ## Done when
 
-- [ ] The skill's `allowed-tools` lists only the `promptu week` commands it runs.
-- [ ] A missing binary or a failing command is one line, and the skill stops without changing anything.
-- [ ] The plugin's version is bumped and its description names the skill.
-- [ ] The README says how to review a sheet without EmbArch.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+- [x] The skill's `allowed-tools` lists only the `promptu week` commands it runs.
+- [x] A missing binary or a failing command is one line, and the skill stops without changing anything.
+- [x] The plugin's version is bumped and its description names the skill.
+- [x] The README says how to review a sheet without EmbArch.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
