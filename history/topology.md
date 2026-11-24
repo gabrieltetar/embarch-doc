@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Topology: an instrument's and a signal's optional safe_off line(s) are declared and checked (decision 49).
 - embarch-topology's release.yml signs every archive keylessly with cosign in one `sign` job and uploads a .sigstore.json bundle beside each ([spec](../embarch-topology/spec.md)).
 
 ### Changed
