@@ -1,6 +1,6 @@
 # 178 — The instrument_exchange tool and CLI verb are gone; run_host_study names the Instrument step
 
-**State:** open
+**State:** claimed by agent/api/178-instrument-exchange-tool-and-verb-are-gone, 2026-11-23 18:02
 **Source:** notes/hil/05-live.md — "Reach and permission": an instrument is reached only through a Study or a Test
 **Issue:** EMB-257
 **Scope:** api
