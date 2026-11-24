@@ -1,6 +1,6 @@
 # 151 — The spec says what Core persists of what it flashed
 
-**State:** open
+**State:** claimed by agent/core/151-the-spec-says-what-core-persists-of-what-it-flashed, 2026-11-24 10:29
 **Source:** the reviewer of `core/150` (Core records what it flashed, with its segments, across a restart)
 **Issue:** EMB-400
 **Scope:** core
