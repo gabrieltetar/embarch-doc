@@ -1,6 +1,6 @@
 # 012 — The folder-name decode finds a checkout however crowded the folders above it are
 
-**State:** claimed by agent/promptu/012-folder-name-decode-survives-a-crowded-temp-folder, 2026-11-23 22:05
+**State:** done — decode charges the budget only for fitting children; guard type and 3200-sibling test added
 **Source:** found re-running the gate on `promptu/011` (2026-11-23): `cargo test` fails on a machine whose temp folder holds about 3,800 subfolders
 **Issue:** EMB-286
 **Scope:** promptu
@@ -45,8 +45,8 @@ states the walk's bound, amend it in place.
 
 ## Done when
 
-- [ ] `decode_folder` finds the target with more than 3000 non-matching sibling folders, in a test.
-- [ ] A failed run of the decode test leaves no scratch folder behind.
-- [ ] `cargo test --all-targets` passes with the machine's own crowded `/tmp`, and `cargo clippy --all-targets -- -D warnings` is clean.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated where they describe the walk, and a `changelog.d/` fragment dropped.
+- [x] `decode_folder` finds the target with more than 3000 non-matching sibling folders, in a test.
+- [x] A failed run of the decode test leaves no scratch folder behind.
+- [x] `cargo test --all-targets` passes with the machine's own crowded `/tmp`, and `cargo clippy --all-targets -- -D warnings` is clean.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated where they describe the walk, and a `changelog.d/` fragment dropped.
