@@ -1,6 +1,6 @@
 # 187 — The instrument and signal tools carry a safe-off
 
-**State:** open
+**State:** claimed by agent/api/187-the-instrument-and-signal-tools-carry-a-safe-off, 2026-11-24 09:53
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): the safe-off field landed on `Instrument` and `SignalLink` in `embarch-topology` (`topology/072`, `suite/059`), and the api's tools still send it empty
 **Issue:** EMB-334
 **Scope:** api
