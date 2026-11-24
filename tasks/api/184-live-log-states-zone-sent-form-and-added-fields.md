@@ -1,6 +1,6 @@
 # 184 — The live log's contract states the file's time zone, `sent`'s form and a writer's added fields
 
-**State:** claimed by agent/api/184-live-log-states-zone-sent-form-and-added-fields, 2026-11-23 23:54
+**State:** done — live-log.md states zone, sent form, added fields, core_calls on failure; open.md compacted to 3873 B; no code change
 **Source:** worker and reviewer of `atlas/103` (2026-11-23): the atlas became the live log's second writer and had to guess four things `interfaces/live-log.md` does not say
 **Issue:** EMB-290
 **Scope:** api
@@ -59,8 +59,8 @@ citations stay. Do not edit `tasks/api/181`; I close it at the fold.
 
 ## Done when
 
-- [ ] `interfaces/live-log.md` states the file name's zone, `sent`'s form, and `core_calls` on a failed call.
-- [ ] It names the atlas's `outcome` field, or the rule for a writer's added fields.
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-api/open.md`; moved text is byte-identical in its new file.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DOC_DIR` at your doc worktree if a test reads the docs.
-- [ ] `changelog.d/` fragment dropped.
+- [x] `interfaces/live-log.md` states the file name's zone, `sent`'s form, and `core_calls` on a failed call.
+- [x] It names the atlas's `outcome` field, or the rule for a writer's added fields.
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-api/open.md`; moved text is byte-identical in its new file.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DOC_DIR` at your doc worktree if a test reads the docs.
+- [x] `changelog.d/` fragment dropped.
