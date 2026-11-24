@@ -1,6 +1,6 @@
 # 093 — A study refuses a stream tap no step subscribes to
 
-**State:** open
+**State:** claimed by agent/study-designer/093-a-study-refuses-a-stream-tap-no-step-subscribes-to, 2026-11-24 12:48
 **Source:** decision 55 (`decisions/payload-meaning.md`) — a GATT notify tap must actually produce records; today only the UI's authoring path refuses a tap no step subscribes to
 **Issue:** EMB-308
 **Scope:** study-designer
