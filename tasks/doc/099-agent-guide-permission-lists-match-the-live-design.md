@@ -1,6 +1,6 @@
 # 099 — The agent guide's permission lists match the Live design and today's tools
 
-**State:** open
+**State:** claimed by agent/doc/099-agent-guide-permission-lists-match-the-live-design, 2026-11-23 21:29
 **Source:** `notes/hil/05-live.md` ("Reach and permission") and `notes/hil/07-procedure-doc.md` ("Gaps it closes"), against `suite/agent-guide.md` §1.1
 **Issue:** EMB-269
 **Scope:** doc
