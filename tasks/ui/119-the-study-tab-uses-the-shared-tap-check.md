@@ -1,6 +1,6 @@
 # 119 — The study tab uses the shared tap check
 
-**State:** open — the shared check landed in `embarch-study-designer` 42a9d8a as `Study::validate_stream_subscriptions` (`UnsubscribedTapError`, carrying the tap's index, so the tab maps it back to the tap's name)
+**State:** claimed by agent/ui/119-the-study-tab-uses-the-shared-tap-check, 2026-11-24 13:22
 **Source:** EMB-308 — `decisions/gatt-capture.md` says the tab is the only place holding both steps and taps, but `Study` holds both
 **Issue:** EMB-308
 **Scope:** ui
