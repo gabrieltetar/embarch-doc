@@ -1,6 +1,6 @@
 # 182 — A swept run's restore skips the call-log segment, and republishes
 
-**State:** claimed by agent/api/182-restore-skips-the-call-log-segment, 2026-11-23 22:05
+**State:** done — CALL_LOG_SEGMENT_NAME joins CORE_PUBLISH_FILES; restore skips it; tests and docs updated
 **Source:** worker of `core/145` (2026-11-23): Core now writes `call-log-segment.jsonl` into a published revision and names it in the signed manifest
 **Issue:** EMB-288
 **Scope:** api
@@ -36,11 +36,11 @@ in your report.
 
 ## Done when
 
-- [ ] A test restores a fixture zip whose manifest names
+- [x] A test restores a fixture zip whose manifest names
       `call-log-segment.jsonl`, and the fake Core receives no PUT for it.
-- [ ] A test names the file in `CORE_PUBLISH_FILES`.
-- [ ] `interfaces/` text that lists the files Core writes on publish names the
+- [x] A test names the file in `CORE_PUBLISH_FILES`.
+- [x] `interfaces/` text that lists the files Core writes on publish names the
       segment, if any such list exists.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated where they say what restore
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated where they say what restore
       skips, `changelog.d/` fragment dropped.
