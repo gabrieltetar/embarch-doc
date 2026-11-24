@@ -17,9 +17,16 @@ lists; it defaults to the running `embarch`'s own folder, as `setup` does.
    `https://github.com/gabrieltetar/embarch-umbrella/.github/workflows/assemble-suite.yml@refs/tags/suite-v<suite_version>`
    with the manifest's own `suite_version`. Exact string, never a pattern, never
    `any_identity()`.
-2. Every entry of the manifest's `files` object (relative path to SHA-256): present, same
+2. The signing certificate's own extensions, read after the signature passes, each an exact
+   string and never a pattern: Source Repository URI (`1.3.6.1.4.1.57264.1.12`) is
+   `https://github.com/gabrieltetar/embarch-umbrella`; Source Repository Ref (`.1.14`) is
+   `refs/tags/suite-v<suite_version>`; Build Config URI (`.1.18`) equals the identity of
+   check 1. A missing extension fails and names it; a differing one names the extension, the
+   expected value and the found one. A bundle whose identity matches but whose extensions
+   name another repository or ref fails.
+3. Every entry of the manifest's `files` object (relative path to SHA-256): present, same
    hash. A path that is absolute or climbs out of the folder is refused.
-3. Trust root: the public-good root compiled into `sigstore-trust-root` by default, so
+4. Trust root: the public-good root compiled into `sigstore-trust-root` by default, so
    **verification fetches nothing**. `--trusted-root` reads one file. `--refresh-trust-root`
    fetches through TUF for that run with the TUF cache disabled, so nothing is kept. A
    transparency-log rejection (unknown key, no key valid at the entry's time, a checkpoint or
@@ -57,6 +64,8 @@ crate is pre-1.0, so the pin moves only with the fixture tests passing. They add
 **Tests**, offline: two public bundles committed under `tests/fixtures/` and verified by
 digest (cosign v3.1.4's `cosign-linux-amd64`, uv 0.13.8's x86_64 Linux build attestation,
 the latter issued by `sigstore-intermediate`), each failing on a wrong identity, issuer and
-digest; a root with its log keys removed; and the file check on a synthetic manifest (missing
+digest; the uv bundle's three extensions read and asserted, a differing expected value failing
+naming the extension, and the cosign bundle (a human identity, no CI claims) failing naming the
+missing one; a root with its log keys removed; and the file check on a synthetic manifest (missing
 file, one changed byte, unsafe paths). **No signed suite manifest has been verified end to
 end** until the owner tags the first signed suite release.

@@ -1,6 +1,6 @@
 # 108 — verify-release checks the certificate's repository, ref and build config
 
-**State:** claimed by agent/umbrella/108-verify-release-checks-the-certificates-repository-and-ref, 2026-11-24 11:04
+**State:** done — verify-release reads and exactly matches the three certificate extensions; interface doc, status fragment and tests written
 **Source:** `embarch-release-signing-proposal.md` — "Still proposed: checking the certificate's source-repository and ref extensions against that identity too"
 **Issue:** EMB-343
 **Scope:** umbrella
@@ -40,12 +40,12 @@ probe-vendors#49, sticky-host#48, budgets#44; none is this task's.
 
 ## Done when
 
-- [ ] Against a fixture bundle in `tests/fixtures/`, the three extensions are
+- [x] Against a fixture bundle in `tests/fixtures/`, the three extensions are
       read, and a test asserts their values.
-- [ ] An expected value that differs from the certificate's fails, naming the
+- [x] An expected value that differs from the certificate's fails, naming the
       extension; a certificate without one of them fails, naming it.
-- [ ] `interfaces/verify-release.md` says what is checked.
-- [ ] A `status.d/` fragment asks the supervisor to remove the proposal's
+- [x] `interfaces/verify-release.md` says what is checked.
+- [x] A `status.d/` fragment asks the supervisor to remove the proposal's
       "still proposed" line in `embarch-release-signing-proposal.md`, which a
       worker may not edit.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
