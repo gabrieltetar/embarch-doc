@@ -1,1 +1,1 @@
-| `declare_instrument` / `instrument_exchange` — an SCPI bench instrument declared with its line facts (preset `et54`), one command per exchange, an `Instrument` host-study step | Shipped — **never run against an instrument; Core not deployed** | unit | 97 |
+| `declare_instrument` — an SCPI bench instrument declared with its line facts (preset `et54`), reached only by an `Instrument` host-study step; the `instrument_exchange` tool and verb are retired | Shipped — **never run against an instrument; Core not deployed** | unit | 97 |

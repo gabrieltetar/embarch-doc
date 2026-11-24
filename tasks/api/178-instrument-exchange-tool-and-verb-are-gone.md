@@ -1,6 +1,6 @@
 # 178 — The instrument_exchange tool and CLI verb are gone; run_host_study names the Instrument step
 
-**State:** claimed by agent/api/178-instrument-exchange-tool-and-verb-are-gone, 2026-11-23 18:02
+**State:** done — tool, CLI verb and client call removed; docs amended
 **Source:** notes/hil/05-live.md — "Reach and permission": an instrument is reached only through a Study or a Test
 **Issue:** EMB-257
 **Scope:** api
@@ -42,12 +42,12 @@ compares the two.
 
 ## Done when
 
-- [ ] `tools.rs` registers no `instrument_exchange`, and the CLI has no
+- [x] `tools.rs` registers no `instrument_exchange`, and the CLI has no
       `instrument-exchange`.
-- [ ] `run_host_study`'s description names the `Instrument` step as the way to
+- [x] `run_host_study`'s description names the `Instrument` step as the way to
       an instrument.
-- [ ] `interfaces/tools-instruments.md`, `interfaces/tools.md` and decision 97
+- [x] `interfaces/tools-instruments.md`, `interfaces/tools.md` and decision 97
       are amended.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.

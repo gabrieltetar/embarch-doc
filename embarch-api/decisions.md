@@ -18,7 +18,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Per-tool wrapping](decisions/tool-wrapping.md) — why a given tool exists (or deliberately doesn't), its params, what its description promises; `bundle`'s README and chip-family table kept in code | 23, 29, 41, 47, 52, 88, 107 | 9.0 KB |
 | [`bench_exchange`](decisions/bench-exchange.md) — one call runs a console sequence and returns every listened console as one filtered timeline; why its times are the client's, not Core's | 89 | 4.0 KB |
 | [`serial_log` reads a declared signal](decisions/serial-log-signal.md) — Core resolves the signal to the port's current name; this crate never does, and project/port stay the fallback | 94 | 2.4 KB |
-| [Bench instruments](decisions/instruments.md) — four tools over Core's `/instruments` routes, the measured `et54` preset, and an unacknowledged set as an error | 97 | 2.6 KB |
+| [Bench instruments](decisions/instruments.md) — three tools over Core's `/instruments` routes, the measured `et54` preset, and an instrument reached only by a study step | 97 | 2.4 KB |
 | [The hardware test ledger](decisions/ledger.md) — per-project test definitions, rows and bench header; a computed pending view; a `run_study` row that settles when read | 98 | 3.9 KB |
 | [Host-run studies and operator prompts](decisions/host-study.md) — `run_host_study`, `answer_prompt` that relays a person and never answers itself, a watch that stops for a waiting prompt, a prompt's `bench_config` shown and never resolved | 99, 100 | 4.0 KB |
 | [A bench board by its own name](decisions/bench-board-forms.md) — `origin_board` on `declare_signal`, `probe_serial` on `validate`, `mem_read` and `core_state`; an older Core caught by reading back | 95 | 2.1 KB |
