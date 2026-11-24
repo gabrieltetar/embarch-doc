@@ -1,6 +1,6 @@
 # 090 — An image's segments and identity are defined once
 
-**State:** open
+**State:** claimed by agent/study-designer/090-an-images-segments-and-identity-are-defined-once, 2026-11-24 08:50
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase): a readback compares a chip's load segments with the artifact Core flashed (`notes/hil/03-test.md`, "A run", item 3), and no shared definition of either exists
 **Issue:** EMB-357
 **Scope:** study-designer
