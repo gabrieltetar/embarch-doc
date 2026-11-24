@@ -1,6 +1,6 @@
 # 187 — The instrument and signal tools carry a safe-off
 
-**State:** claimed by agent/api/187-the-instrument-and-signal-tools-carry-a-safe-off, 2026-11-24 09:53
+**State:** done — safe_off carried by both tools and verbs; a re-declare keeps the stored one; decision 97 amended
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, attested phase): the safe-off field landed on `Instrument` and `SignalLink` in `embarch-topology` (`topology/072`, `suite/059`), and the api's tools still send it empty
 **Issue:** EMB-334
 **Scope:** api
@@ -50,10 +50,14 @@ Decisions near their per-decision limit are ones this task does not touch
 
 ## Done when
 
-- [ ] A fake Core receives `safe_off` from each tool and each CLI verb.
-- [ ] A declaration without it behaves by the rule you chose, with a test
+- [x] A fake Core receives `safe_off` from each tool and each CLI verb.
+- [x] A declaration without it behaves by the rule you chose, with a test
       covering a re-declare over a stored safe-off.
-- [ ] `interfaces/tools-instruments.md` (and the signal tool's doc) describe the
+- [x] `interfaces/tools-instruments.md` (and the signal tool's doc) describe the
       field and the re-declare rule; decision 97 amended.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `--workspace` included.
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `--workspace` included.
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+Rule chosen: **omitted keeps the stored value; an explicit empty list (instrument) or empty string (signal) clears it.** The tool reads `GET /instruments` / `GET /signals` before the write when `safe_off` is omitted, and a failed read stops the declare. Both tools and both CLI verbs (`--safe-off`, repeatable on `declare-instrument`; `--clear-safe-off`; `--safe-off ""` on `declare-signal`) share one helper per type. Tests: `tests/safe_off_cli.rs` (mock Core: sent, kept over a re-declare, cleared, unreadable read refused) plus unit tests in `src/instrument.rs`. The MCP tool paths share the helpers the CLI tests drive; no separate MCP-level fake-Core test was added. `crates/embarch-core-client` untouched. Decision 97 amended in place, no new decision.
