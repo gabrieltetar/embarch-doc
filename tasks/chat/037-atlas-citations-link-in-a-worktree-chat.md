@@ -1,6 +1,6 @@
 # 037 — Atlas citations link in a chat opened in a worktree
 
-**State:** open
+**State:** claimed by agent/chat/037-atlas-citations-link-in-a-worktree-chat, 2026-11-24 13:51
 **Source:** EMB-409 — a chat opened in a linked worktree finds no atlas, so its citations stay plain text
 **Issue:** EMB-409
 **Scope:** chat
