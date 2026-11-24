@@ -1,6 +1,6 @@
 # 106 — `status --json` and `doctor --json` carry a schema version
 
-**State:** claimed by agent/umbrella/106-status-and-doctor-json-carry-a-schema-version, 2026-11-24 08:50
+**State:** done — schema_version on both --json objects, success on status, shape tests
 **Source:** suite review audit, 2026-11-23: the umbrella spec calls its two `--json` outputs a stable machine-readable contract, and neither is versioned
 **Issue:** EMB-299
 **Scope:** umbrella
@@ -44,9 +44,9 @@ mirrors#20 32 B, probe-vendors#49 140 B, sticky-host#48 186 B, budgets#44
 
 ## Done when
 
-- [ ] `embarch status --json` and `embarch doctor --json` each carry
+- [x] `embarch status --json` and `embarch doctor --json` each carry
       `schema_version`; `status --json` carries `success`.
-- [ ] A test pins both shapes, and fails if a key is dropped or the version
+- [x] A test pins both shapes, and fails if a key is dropped or the version
       changes without the constant.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md` updated; `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md` updated; `changelog.d/` fragment dropped.

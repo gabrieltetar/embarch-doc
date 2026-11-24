@@ -10,6 +10,8 @@ Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/doctor-
 
 `status` is one Core call — **cheap enough for a UI or a shell prompt to poll.** `doctor` is the full chain including filesystem checks and a build-command resolution, **far too heavy to poll.** The JSON shape on both is the contract a UI consumes, **and it exists in v1 specifically so the UI does not arrive and find only human-formatted text to scrape.**
 
+**Versioned (EMB-299).** Both objects carry `schema_version` from one umbrella-owned constant, `JSON_SCHEMA_VERSION` in `src/main.rs` (the counter belongs to the crate whose shape it versions, `embarch-api` 24), hand-bumped on any shape change. `status --json` also carries `success`. Tests pin both objects' top-level keys.
+
 ### 37 — A check may carry a machine-readable `code`, because `status` cannot hold every state a check distinguishes
 
 Decision 23 asks check 10 to report success, failure and timeout **distinctly**, and decision 11 makes `--json` the contract a UI consumes. Those two together do not fit in three statuses: registered-but-broken and registered-but-hanging are both Fail, and the only thing separating them was an English sentence in `detail`.
