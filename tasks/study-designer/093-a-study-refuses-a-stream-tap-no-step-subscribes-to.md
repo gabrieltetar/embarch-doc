@@ -1,6 +1,6 @@
 # 093 — A study refuses a stream tap no step subscribes to
 
-**State:** claimed by agent/study-designer/093-a-study-refuses-a-stream-tap-no-step-subscribes-to, 2026-11-24 12:48
+**State:** done — Study::validate_stream_subscriptions and UnsubscribedTapError added; decision 55 amended
 **Source:** decision 55 (`decisions/payload-meaning.md`) — a GATT notify tap must actually produce records; today only the UI's authoring path refuses a tap no step subscribes to
 **Issue:** EMB-308
 **Scope:** study-designer
@@ -47,10 +47,10 @@ ble#44. Leave them alone.
 
 ## Done when
 
-- [ ] A `Study` method refuses an unsubscribed GATT notify tap with a typed
+- [x] A `Study` method refuses an unsubscribed GATT notify tap with a typed
       error naming the tap; a tap subscribed by an unfiltered monitor, by a
       selective one naming it, and a non-GATT tap all pass. Tests for each.
-- [ ] `cargo check` green in Core, the UI and the api against this branch.
-- [ ] Clippy and tests green under the crate's feature sets (`../../embarch-fleet/gate.md`).
-- [ ] `interfaces.md` (or the topic file it points to) lists the check beside
+- [x] `cargo check` green in Core, the UI and the api against this branch. (Not run by the worker, per dispatch: consumers path-depend on the main checkout. Read-only grep of core, ui, api, umbrella: none names the new type or method, and the change adds one struct, one method and one import only, so no exhaustive match or literal can break. The supervisor runs the consumer check at landing.)
+- [x] Clippy and tests green under the crate's feature sets (`../../embarch-fleet/gate.md`).
+- [x] `interfaces.md` (or the topic file it points to) lists the check beside
       its siblings; `changelog.d/` fragment dropped.

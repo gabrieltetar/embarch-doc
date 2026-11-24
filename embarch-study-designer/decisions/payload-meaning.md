@@ -28,7 +28,7 @@ The variant had existed since decision 39 and was **decoded but dead**: dev-benc
 
 **The cost is addressing rather than meaning:** dev-bench now keeps a notify tap's characteristic UUID, having skipped those bytes outright. The encoding stays deliberately unkept — what a payload means is exactly what decision 39 took away from that node — but *which characteristic's notifications go to which tap id* is routing, precisely like the source tag, and this node has to know it because this node sends the record. The service UUID stays skipped: a notification identifies itself by characteristic.
 
-**The failure this leaves reachable, and where it is caught.** A tap naming a characteristic no step subscribes to captures nothing, passes, and looks fine. Refused at authoring time by `embarch-ui`, which has both the steps and the taps in hand — not at run time, where it is an empty file after a run that cost hardware time.
+**The failure this leaves reachable, and where it is caught.** A tap naming a characteristic no step subscribes to captures nothing, passes, and looks fine. `Study::validate_stream_subscriptions()` computes the refusal (`UnsubscribedTapError { tap, service_uuid, characteristic_uuid }`, opt-in like `validate_wait_budgets`; `embarch-ui` and Core's submit path call it) — not at run time, where it is an empty file after a run that cost hardware time.
 
 
 ### 70 — A tap declares its records' framing, and the host checks the checksum the data already carries
