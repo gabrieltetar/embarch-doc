@@ -1,6 +1,6 @@
 # 141 — Core releases a lease after 30 minutes with no hardware call
 
-**State:** claimed by agent/core/141-core-releases-a-lease-idle-for-30-minutes, 2026-11-23 17:21
+**State:** done — Core releases a lease idle 30 min (decision 123), study-aware, with tests
 **Source:** notes/hil/01-modes.md — "The lease": a Live lease is released at the end or after 30 min with no hardware call, which Core enforces itself whatever client renews
 **Issue:** EMB-251
 **Scope:** core
@@ -49,16 +49,16 @@ leave it alone.
 
 ## Done when
 
-- [ ] A test with a forced clock: a lease renewed every minute with no hardware
+- [x] A test with a forced clock: a lease renewed every minute with no hardware
       call is gone 30 minutes after its start.
-- [ ] A hardware call with the token restarts the clock; a call with a wrong
+- [x] A hardware call with the token restarts the clock; a call with a wrong
       token does not.
-- [ ] With a study in flight the lease is kept past 30 minutes, and released 30
+- [x] With a study in flight the lease is kept past 30 minutes, and released 30
       minutes after the study ends if no call came.
-- [ ] A renew after the release is refused naming the idle release and the
+- [x] A renew after the release is refused naming the idle release and the
       holder.
-- [ ] Decision 93 is amended with the rule (by a pointer, per the headroom
+- [x] Decision 93 is amended with the rule (by a pointer, per the headroom
       above).
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.

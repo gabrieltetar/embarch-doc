@@ -39,5 +39,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Measurements at a study's end](decisions/measurements.md) | 113, 114, 115, 121 | 7.3 KB |
 | [Core's side of publish](decisions/publish.md) | 116, 117, 118, 119, 120 | 8.3 KB |
 | [The call log](decisions/call-log.md) | 122 | 4.0 KB |
+| [The idle lease release](decisions/lease-idle.md) | 123 | 3.0 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

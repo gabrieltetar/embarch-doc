@@ -22,4 +22,6 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **`GET /status` adds `lease` and `last_images`**: per chip, the last image Core flashed or bootloaded since starting, recorded only on success. `sha256` hashes the bytes read just before flashing (`null` if unreadable); `path` is `(uploaded)` for a multipart flash, `(bootload image)` for `POST /bootload`. **An absent entry means unknown, not "nothing flashed"**: a restart empties it, and another tool's flash never appears. A session taking the bench compares `sha256` with its image to decide on a reflash. It keeps the spec's "no persisted current-firmware record": nothing is persisted or treated as truth.
 
+**An idle lease is released too** (decision 123, [lease-idle.md](lease-idle.md)): 30 min with no hardware call.
+
 **The client half is `embarch-api`'s** (inbox drop, `tasks/core/099`): the token rides an environment variable so `embarch-atlas`'s live calls inherit it.
