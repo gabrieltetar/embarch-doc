@@ -36,4 +36,4 @@ An `embarch-api` build, flash, bootload, study or `serial_log` result becomes pa
 
 ### 16 — Atlas citations become links
 
-`atlas-use` cites every hardware fact as `<doc_id> p<N>` or `<board>:<ref>`, and in a repo with an `embarch/atlas` each opens in the editor: that page's text (the document's card when the page has none), or the line naming the ref in the board's nets or parts. **Rejected:** a hardware pane for the open file (a second Atlas tab), plain text.
+`atlas-use` cites every hardware fact as `<doc_id> p<N>` or `<board>:<ref>`, and in a repo with an `embarch/atlas` (the nearest above the chat's folder, else the main clone's when the chat is in a linked worktree, found from its `.git` file) each opens in the editor: that page's text (the document's card when the page has none), or the line naming the ref in the board's nets or parts. **Rejected:** a hardware pane for the open file (a second Atlas tab), plain text.

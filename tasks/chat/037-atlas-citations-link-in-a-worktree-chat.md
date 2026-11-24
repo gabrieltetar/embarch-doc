@@ -1,6 +1,6 @@
 # 037 — Atlas citations link in a chat opened in a worktree
 
-**State:** claimed by agent/chat/037-atlas-citations-link-in-a-worktree-chat, 2026-11-24 13:51
+**State:** done — atlasInfo falls back to the main clone atlas from a linked worktree; decision 16 amended
 **Source:** EMB-409 — a chat opened in a linked worktree finds no atlas, so its citations stay plain text
 **Issue:** EMB-409
 **Scope:** chat
@@ -35,13 +35,13 @@ ones that open in a worktree.
 
 ## Done when
 
-- [ ] In a fixture worktree beside a main clone with an atlas, `atlasInfo`
+- [x] In a fixture worktree beside a main clone with an atlas, `atlasInfo`
       returns the main clone's atlas root, doc ids and boards (a test in
       `test/atlas.test.mjs`: a scratch main clone, `git worktree add` beside it).
-- [ ] A worktree's own `embarch/atlas`, when it has one, wins over the main
+- [x] A worktree's own `embarch/atlas`, when it has one, wins over the main
       clone's.
-- [ ] A folder in no git repo, and a main clone with no atlas, give null as
+- [x] A folder in no git repo, and a main clone with no atlas, give null as
       today.
-- [ ] Decision 16 says where the atlas is looked for.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the npm bullet), `changelog.d/`
+- [x] Decision 16 says where the atlas is looked for.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the npm bullet), `changelog.d/`
       fragment dropped.
