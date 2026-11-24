@@ -1,6 +1,6 @@
 # 099 — The agent guide's permission lists match the Live design and today's tools
 
-**State:** claimed by agent/doc/099-agent-guide-permission-lists-match-the-live-design, 2026-11-23 21:29
+**State:** done — status.d/doc-agent-guide-permissions.md carries the 58-tool allow/ask lists and the atlas lists; supervisor folds into agent-guide.md §1.1
 **Source:** `notes/hil/05-live.md` ("Reach and permission") and `notes/hil/07-procedure-doc.md` ("Gaps it closes"), against `suite/agent-guide.md` §1.1
 **Issue:** EMB-269
 **Scope:** doc
@@ -62,8 +62,8 @@ and register read.
 
 ## Done when
 
-- [ ] A `status.d/doc-agent-guide-permissions.md` fragment carries §1.1's replacement lists: every tool `embarch-api/src/tools.rs` registers sits in exactly one of allow and ask, with today's count and date.
-- [ ] In it, the ten tools 05 makes free sit under allow.
-- [ ] In it, an atlas list names its seven live tools, with `reg_read_clear` and `reg_read_bank` under ask.
-- [ ] Any placement the rule does not settle is named at the top of the fragment.
-- [ ] `python3 scripts/check-docs.py` passes, and `check-ownership.py --scope doc` is green.
+- [x] A `status.d/doc-agent-guide-permissions.md` fragment carries §1.1's replacement lists: every tool `embarch-api/src/tools.rs` registers sits in exactly one of allow and ask, with today's count and date.
+- [x] In it, the ten tools 05 makes free sit under allow.
+- [x] In it, an atlas list names its seven live tools, with `reg_read_clear` and `reg_read_bank` under ask.
+- [x] Any placement the rule does not settle is named at the top of the fragment.
+- [x] `python3 scripts/check-docs.py` passes, and `check-ownership.py --scope doc` is green.
