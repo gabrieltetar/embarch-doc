@@ -1,12 +1,12 @@
 # 038 — `embarch-desk/spec.md` is in reserve
 
 **State:** blocked
-**Source:** desk 037 (EMB-165) added the draft-revision tools to `spec.md`, leaving it at 9,186 of 10,240 B (1,054 B left).
+**Source:** desk 037 (EMB-165) added the draft-revision tools to `spec.md`, leaving it at 9,186 of 10,240 B (1,054 B left). On 2026-11-23 the owner's archive route took `interfaces.md` into reserve too, at 14,073 of 15,360 B; its HTTP surface is in flux with the rest.
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-desk/spec.md
+**Compacts:** embarch-desk/spec.md, embarch-desk/interfaces.md
 **Size debt due:** 2026-12-01
 **In flux:** yes. The agent-tool and draft surface changed in each of the last five desk units (restack, review threads, review replies, notes, draft revision), and EMB-207 (Backlog) may change what a draft stores; a rewrite now would be restated within a unit or two.
 **Unparks when:** the next desk unit that writes `spec.md` runs out of its 1,054 B; the compaction rides in that unit. EMB-205, the other trigger as filed, has landed and was struck.
