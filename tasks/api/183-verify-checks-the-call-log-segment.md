@@ -1,6 +1,6 @@
 # 183 — `verify` checks a zip's call-log segment against its signed range
 
-**State:** claimed by agent/api/183-verify-checks-the-call-log-segment, 2026-11-23 22:40
+**State:** done — check 8 recomputes the call-log segment against the signed range; no-segment zips still read "no call log"
 **Source:** `notes/hil/06-report-and-publish.md`, check 8: "the chain recomputes over each run's range of entries … a zip from before then carries no call-log segment, and its appendix says 'no call log'"
 **Issue:** EMB-254
 **Scope:** api
@@ -50,13 +50,13 @@ file and in your report.
 
 ## Done when
 
-- [ ] A fixture zip with a call-log segment passes check 8 and lists what it
+- [x] A fixture zip with a call-log segment passes check 8 and lists what it
       compared.
-- [ ] Copies with an entry dropped, an entry altered, and a segment from
+- [x] Copies with an entry dropped, an entry altered, and a segment from
       another run each fail check 8, naming why.
-- [ ] A milestone-1 fixture zip with no segment still passes, reading "no call
+- [x] A milestone-1 fixture zip with no segment still passes, reading "no call
       log".
-- [ ] `interfaces/verify.md` row 8 is amended.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] `interfaces/verify.md` row 8 is amended.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped.
