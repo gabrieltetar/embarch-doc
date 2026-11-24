@@ -1,6 +1,6 @@
 # 101 — One study walkthrough, and the human guides link the HIL guide
 
-**State:** claimed by agent/doc/101-one-study-walkthrough-and-the-guides-link-hil-guide, 2026-11-24 11:04
+**State:** done — edit set delivered as status.d/doc-one-study-walkthrough.md; hil-guide.md untouched; guides applied at the fold
 **Source:** the 2026-11-23 suite audit — `suite/studies-guide.md` and `suite/hil-guide.md` teach the same study material, and neither `user-guide.md` nor `agent-guide.md` links the HIL guide
 **Issue:** EMB-316
 **Scope:** doc
@@ -53,11 +53,11 @@ shrink it. `agent-guide.md` is 4,399 B.
 
 ## Done when
 
-- [ ] The fragment's edits give `agent-guide.md` and `user-guide.md` §9 a
+- [x] The fragment's edits give `agent-guide.md` and `user-guide.md` §9 a
       pointer to `embarch-api guide hil` and `hil-guide.md`.
-- [ ] After them, the reflash, truncation, MSB-first address and census lore
+- [x] After them, the reflash, truncation, MSB-first address and census lore
       each appears in one guide.
-- [ ] `studies-guide.md` §1 to §2 are a pointer plus the bench and trace
+- [x] `studies-guide.md` §1 to §2 are a pointer plus the bench and trace
       material, and the file ends smaller than it started.
-- [ ] `suite/hil-guide.md` unchanged.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] `suite/hil-guide.md` unchanged.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
