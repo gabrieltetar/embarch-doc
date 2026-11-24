@@ -1,6 +1,6 @@
 # 014 — `promptu week status`, `week show` and `promptu desk` report the weekly pass
 
-**State:** claimed by agent/promptu/014-week-status-show-and-desk-report-the-weekly-pass, 2026-11-23 21:29
+**State:** done — week status, week show and desk built and tested; contract and docs updated
 **Source:** `embarch-promptu` `docs/contract.md` §9, §10 and §14 (written by `promptu/011`); decisions 14, 30 and 46 (`decisions/learning.md`)
 **Issue:** EMB-275
 **Scope:** promptu
@@ -52,9 +52,13 @@ choice goes to `docs/forks.md` as an open fork with a provisional default.
 
 ## Done when
 
-- [ ] Each command's JSON matches the contract, tested on scratch state folders: no week yet, a waiting sheet, an applied sheet, a missed run, and a run in progress.
-- [ ] None of them calls a model or the network.
-- [ ] `promptu desk --json` prints `{"promptu": 1, "open": 0}` when the state folder does not exist.
-- [ ] `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings` pass. On a machine with a crowded `/tmp`, a failure of `claude::tests::a_folder_name_decodes_back_to_the_checkout_on_disk` is `promptu/012`'s (EMB-286), not this unit's: say so if it appears.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`open.md`/`interfaces.md` updated, and a `changelog.d/` fragment dropped.
+- [x] Each command's JSON matches the contract, tested on scratch state folders: no week yet, a waiting sheet, an applied sheet, a missed run, and a run in progress.
+- [x] None of them calls a model or the network.
+- [x] `promptu desk --json` prints `{"promptu": 1, "open": 0}` when the state folder does not exist.
+- [x] `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings` pass. On a machine with a crowded `/tmp`, a failure of `claude::tests::a_folder_name_decodes_back_to_the_checkout_on_disk` is `promptu/012`'s (EMB-286), not this unit's: say so if it appears.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`open.md`/`interfaces.md` updated, and a `changelog.d/` fragment dropped.
+
+## Done
+
+`week status`, `week show` and `desk` are in `src/weekread.rs`, tested in `tests/weekread.rs` (6 scenarios: no state folder, waiting, applied, missed, running, unreadable sheet). Contract §14.1 and §14.4 gained `running` and the `running` run status; `PROMPTU_NOW` pins the clock; fork W12 records the choice. `spec.md` and `open.md` left reserve (8,901 B and 3,340 B) by moving reference text verbatim to `spec/read-commands.md` and `open/unmeasured.md`. The plain `cargo test` fails only `claude::tests::a_folder_name_decodes_back_to_the_checkout_on_disk` (`promptu/012`, EMB-286); with `TMPDIR` on a fresh folder everything passes.
