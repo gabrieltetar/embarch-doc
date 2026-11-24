@@ -1,8 +1,8 @@
 {
-  "framework_sha": "c7a0f83a47478625893937352f2e267717e93697",
+  "framework_sha": "34756f3c8db940b49fd8d20152e89db56bb78d67",
   "framework_dirty": false,
   "config": "fleet.toml",
-  "installed_at": "2026-11-23T21:58:07Z",
+  "installed_at": "2026-11-24T00:50:55Z",
   "installed_from": "/home/gabriel/Github/embarch/embarch-fleet",
   "files": {
     ".claude/agents/embarch-auditor-dimension.md": "8591155e84e5e44827e8ae1b5d143895e7df6eaa6c09d5bf70c9dcfe1e3bb9d6",
@@ -18,7 +18,7 @@
     ".claude/commands/review-loop.md": "75c5fa53e342fa3029c25156636b4233b84458e34546a586a20c5c59332c0576",
     ".claude/commands/suite-review.md": "970093e2208aad4aaf8535f2ab44cd69f82f0b63dd7279d940da5527e28fdf05",
     ".claude/commands/supervise.md": "df06e82b973d5d8e4dd81b7b6e69f84d97f3aae38bea501fb78c42d2bfa292c0",
-    ".claude/leg.md": "e63a4d82a801d5bf7df334e5fff3aac67fde040fd8f78587af4a13d67aab5a37",
+    ".claude/leg.md": "a22486ad75b3722dca3216fa6fc37854f0741d6792dd0bf15108c92fc4bd239a",
     ".claude/settings.json": "275ede4c9f3654f136a8b3b33e3127e852cde8f78a061642bc9c062862d3877c",
     "changelog.d/README.md": "edc228d6fc6ec044200f3816699a90d1a976ad949e90d09766c73ed6a3bb0a39",
     "status.d/README.md": "e4b55984fe66147934de476d73c613c68439de82f11678cc4938f1c44a46cc3f",
