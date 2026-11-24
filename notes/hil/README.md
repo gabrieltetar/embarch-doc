@@ -20,7 +20,7 @@ The research behind [embarch-hil-proposal.md](../../embarch-hil-proposal.md): on
 | [11-prior-art.md](11-prior-art.md) | What exists before EmbArch claims anything as new: agent-driven HIL, evidence against fabricated numbers, approval integrity, classical HIL frameworks, formats |
 | [12-prevention.md](12-prevention.md) | Prevention against an agent that deliberately subverts the trust model: Core as the root of trust, signed records, a person's acts by passkey |
 | [13-research-phase.md](13-research-phase.md) | **A project's first research pass**: no fourth mode, a dev kit as the DUT before custom hardware, a bench with no DUT, who samples decides `by`, and the detector being researched |
-| [14-implementation-plan.md](14-implementation-plan.md) | **The implementation plan**: milestone 1, an unattested Study publish, unit by unit, and the later phases in outline |
+| [14-implementation-plan.md](14-implementation-plan.md) | **The implementation plan**: milestone 1, an unattested Study publish, unit by unit; the Live, Test, attested, container and passkey phases, each planned and filed |
 
 ## Vocabulary
 
