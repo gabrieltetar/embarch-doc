@@ -1,6 +1,6 @@
 # 105 — A live finding is written back to the atlas as a measured fact
 
-**State:** claimed by agent/atlas/105-a-live-finding-is-written-back-as-a-measured-fact, 2026-11-23 22:40
+**State:** done — live write-back verb and write_back tool write measured records from Core call-log entries; gate green
 **Source:** Fleet Ready issue (owner): `measured` is a provenance level in the atlas's records, and nothing writes it
 **Issue:** EMB-267
 **Scope:** atlas
@@ -54,9 +54,15 @@ a new decision, stop and say so in this file and in your report.
 
 ## Done when
 
-- [ ] A fixture write-back writes a schema-valid `measured` record with `via: live` and a receipt whose call, board and time come from Core's entry.
-- [ ] A write-back citing an entry Core does not hold is refused.
-- [ ] One measured on another image is written, marked "measured on a different build", its image named "read back" or "as last flashed by Core".
-- [ ] `DESIGN.md` and `embarch-atlas/design.md` document the verb, the tool and the record.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), in the worktree's own venv, with `test_public_guard` running.
-- [ ] `changelog.d/` fragment dropped.
+- [x] A fixture write-back writes a schema-valid `measured` record with `via: live` and a receipt whose call, board and time come from Core's entry.
+- [x] A write-back citing an entry Core does not hold is refused.
+- [x] One measured on another image is written, marked "measured on a different build", its image named "read back" or "as last flashed by Core".
+- [x] `DESIGN.md` and `embarch-atlas/design.md` document the verb, the tool and the record.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), in the worktree's own venv, with `test_public_guard` running.
+- [x] `changelog.d/` fragment dropped.
+
+## Done
+
+Verb `embarch-atlas live write-back`, MCP tool `write_back` (flat tool names mirror the `live` verbs: `reg_read` / `live reg-read`; "write-back" is the HIL notes' own term). Code: `src/embarch_atlas/measured.py`, `$defs/measurement` in `schemas/record.schema.json`, `measurement` in `records.KINDS`. Records go to `<atlas dir>/measured.jsonl` (my choice: above the per-commit atlases, so a rebuild never touches it; where the plane lives once planes are shared stays open). No new numbered decision: design choices (new record kind `measurement`, `src: live`, file location, refusal set, `build` pinned/different/unknown, "reflashed since the call" counts as a different build) are written into `DESIGN.md` "Live" and `embarch-atlas/design.md`; the supervisor may want to number them.
+
+**Verification debt (host-side only, no hardware needed to close it):** the `call_log.entries` shape (`{entry, hash}` lines, `entry.route`, `entry.at_utc_ms`, `entry.board`) is read from `embarch-core` `origin/main` source and `embarch-api`'s `call-log` CLI, not measured against a live Core; tests use a fake `embarch-api`. Run `embarch-api call-log --seq N --json` against a real Core and compare with `core_entry`.
