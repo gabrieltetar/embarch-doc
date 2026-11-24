@@ -1,6 +1,6 @@
 # 021 — The weekly sheet opens with decision 15's numbers, a control beside each, and the owner's feel line
 
-**State:** open
+**State:** claimed by agent/promptu/021-the-weekly-sheet-opens-with-decision-15s-numbers, 2026-11-24 01:56
 **Source:** decision 15 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 (`numbers`, `feel`) and §14.5 (the pack's records); the session events `week pack` writes (`promptu/016`); `week draft`'s `numbers()` (`src/draft.rs`, `promptu/017`)
 **Issue:** EMB-278
 **Scope:** promptu
@@ -49,6 +49,16 @@ session events, which landed as `promptu/016`.
 changes. Where the contract leaves a choice open, record it as a fork in
 `docs/forks.md` on a default. If the work needs a new decision, stop and say
 so in this file and in your report.
+
+**Doc size, a dispatch note (supervisor):** `embarch-promptu/spec.md` is in
+reserve (9,147 of 10,240 B, out of reserve at 9,039 B or less), filed as
+`tasks/promptu/022`, `blocked` on `In flux: yes`. You are the unit making that
+flux, so **bring `spec.md` out of reserve in this unit**: move its long status
+paragraph to a file under `embarch-promptu/spec/` verbatim, leaving a one-line
+summary and a link, then make your own status edit there. Carry
+`promptu/022`'s `Must not delete:` (the step-by-step build status and its EMB
+references). Say in your report what moved; I close `promptu/022` at the fold.
+No other promptu file is in reserve.
 
 ## Done when
 
