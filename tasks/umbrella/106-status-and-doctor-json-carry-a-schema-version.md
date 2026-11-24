@@ -1,6 +1,6 @@
 # 106 — `status --json` and `doctor --json` carry a schema version
 
-**State:** open
+**State:** claimed by agent/umbrella/106-status-and-doctor-json-carry-a-schema-version, 2026-11-24 08:50
 **Source:** suite review audit, 2026-11-23: the umbrella spec calls its two `--json` outputs a stable machine-readable contract, and neither is versioned
 **Issue:** EMB-299
 **Scope:** umbrella
