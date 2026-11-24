@@ -6,7 +6,7 @@
 **Hardware:** none
 **Owner:** no
 
-**Compacts:** embarch-desk/spec.md, embarch-desk/interfaces.md
+**Compacts:** embarch-desk/spec.md
 **Size debt due:** 2026-12-01
 **In flux:** yes. The agent-tool and draft surface changed in each of the last five desk units (restack, review threads, review replies, notes, draft revision), and EMB-207 (Backlog) may change what a draft stores; a rewrite now would be restated within a unit or two.
 **Unparks when:** the next desk unit that writes `spec.md` runs out of its 1,054 B; the compaction rides in that unit. EMB-205, the other trigger as filed, has landed and was struck.
@@ -15,6 +15,10 @@
 ## What
 
 Bring `spec.md` out of reserve by moving reference text into `spec/` verbatim, leaving links.
+
+`interfaces.md` was struck off the `Compacts:` line on 2026-11-24: `desk/042`
+paid it in its own unit, moving two route rows verbatim into
+`interfaces/draft-note-routes.md` (14,073 to 12,723 B, out of reserve).
 
 ## Why now
 

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-desk serves Promptu's weekly sheet to the Desk tab: GET /promptu, /promptu/sheet, and mark and apply routes that run the promptu CLI; no agent tool reaches them (decision 65).
 - A pending draft keeps every agent revision and owner edit as a version; desk_get_draft diffs any two (88).
 - Desk drafts keep the agent version beside the owner edits: desk_revise_draft applies a change to both and refuses a collision; desk_get_draft gives the owner-only diff (EMB-165).
 - embarch-desk: github_draft_review_replies drafts replies to a PR's review threads; one Send posts each in its own thread after every comment id is checked.
