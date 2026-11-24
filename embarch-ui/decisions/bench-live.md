@@ -24,7 +24,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-live.md
 
 **Never a silent skip** (75's rule). A template that will not load, a part whose template is missing and a binding on a connector that does not carry it are rows with route `(not sent)`, saying what happened; a Core record differing from the bench is a row against `GET /probes/enrolled`; a Core refusal (a lease not held included) is one `ok: false` row in Core's words, the rest still applied; a failed Core read is a row, never an empty list.
 
-**Make live has a terminal form** (EMB-386): `embarch-ui bench make-live <slug> [--config <name>] [--bind <role>=<serial>]...`, It calls the route's own function (`live::make_live`) and, for a bind, `/api/enroll`'s, with the person's token, so the two cannot disagree. Every proposal is printed and **only a bind naming its role (a bench board: its label) and the serial it names is applied**; any other bind applies nothing and fails the command.
+**Make live has a terminal form** (EMB-386): `embarch-ui bench make-live <slug> [--config <name>] [--bind <role>=<serial>]...`. It calls the route's own function (`live::make_live`) and, for a bind, `/api/enroll`'s, with the person's token, so the two cannot disagree. Every proposal is printed and **only a bind naming its role (a bench board: its label) and the serial it names is applied**; any other bind applies nothing and fails the command.
 
 **The page no longer calls `/api/topology/profiles/{slug}/apply`** (coordinator decision): Open and the desk banner put the bench on the canvas and offer Make live. The route was removed (EMB-311, nothing called it); the role, signal and link steps live here alone.
 

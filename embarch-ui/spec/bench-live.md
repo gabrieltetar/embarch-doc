@@ -32,7 +32,7 @@ The config tab the record names is marked as the live wiring. **Live report** re
 
 The bench-level cables count, and the live config's; no others.
 
-**Safe-off.** An instrument takes its commands from the part's Safe-off box in the Topology tab's inspector (one per line, shown for a part with an `scpi` binding; saved as the part's `safe_off`), a signal its one line from a `safe_off` key in the file. Each declaration row ends *safe-off declared (n commands)*, *no safe-off declared*, or *safe-off kept from Core (n commands)*: a bench stating none keeps what Core holds, because `PUT /instruments` and `POST /signals` replace by name (90). It never clears one, and an instrument stating none is not declared while Core's list is unread. The terminal form sends the same field.
+**Safe-off.** An instrument takes its commands from the part's Safe-off box in the Topology tab's inspector (one per line, shown for a part with an `scpi` binding; saved as the part's `safe_off`), a signal its one line from a `safe_off` key in the file. Each declaration row ends *safe-off declared (n commands)*, *no safe-off declared*, or *safe-off kept from Core (n commands)*: a bench stating none keeps what Core holds, because `PUT /instruments` and `POST /signals` replace by name (90). It never clears one, and an instrument or signal stating none is not declared while Core's list of them is unread. The terminal form sends the same field.
 
 ## The live report
 

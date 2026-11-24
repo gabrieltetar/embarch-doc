@@ -10,6 +10,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- Make live no longer posts a signal whose stored safe-off it cannot read: with GET /signals failing and none on the bench entry, a failed row says why (decision 90).
 - Make live declares an output's safe-off from the part's Safe-off box and keeps one Core already holds; rows say what was declared.
 - Compacted ui decisions/shell.md and spec/tabs.md: decisions 58, 59 moved to page-links.md and the Tab folders text to spec/tab-folders.md, verbatim.
 - The Study Designer keeps a loaded study's declared measurements through save, run and pre-flight, lists their names, and refuses a save with ones the crate rejects (ui decision 104).
