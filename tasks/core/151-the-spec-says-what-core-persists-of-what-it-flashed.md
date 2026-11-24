@@ -1,6 +1,6 @@
 # 151 — The spec says what Core persists of what it flashed
 
-**State:** claimed by agent/core/151-the-spec-says-what-core-persists-of-what-it-flashed, 2026-11-24 10:29
+**State:** done — spec invariant and /status row say Core persists flashed-images.jsonl; spec.md out of reserve
 **Source:** the reviewer of `core/150` (Core records what it flashed, with its segments, across a restart)
 **Issue:** EMB-400
 **Scope:** core
@@ -55,11 +55,11 @@ host-study#95, run-log#111, instruments#104) are ones this task does not touch.
 
 ## Done when
 
-- [ ] `spec.md` no longer states "no persisted current-firmware record" without
+- [x] `spec.md` no longer states "no persisted current-firmware record" without
       the `flashed-images.jsonl` record and why it is not write-ahead state.
-- [ ] The `/status` row's `last_images` clause in `interfaces/hardware.md` no
+- [x] The `/status` row's `last_images` clause in `interfaces/hardware.md` no
       longer says "since it started".
-- [ ] `scripts/check-doc-size.py --pressure` does not list
+- [x] `scripts/check-doc-size.py --pressure` does not list
       `embarch-core/spec.md`; moved text byte-identical; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
-- [ ] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `changelog.d/` fragment dropped.
