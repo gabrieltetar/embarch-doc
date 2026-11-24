@@ -1,6 +1,6 @@
 # 185 — Check 6 recomputes the report's call-log claim, and the appendix prints it
 
-**State:** open
+**State:** claimed by agent/api/185-check-6-and-the-appendix-read-the-call-log-claim, 2026-11-23 23:22 — paired with core/148, landed together
 **Source:** decision 124 (`decisions/verify-report.md`); `embarch-core/interfaces/signing.md` (`observed.call_log`) and `interfaces/publish.md` (`report-data.json`)
 **Issue:** EMB-265
 **Scope:** api
