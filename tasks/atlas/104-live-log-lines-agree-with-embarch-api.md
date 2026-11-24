@@ -1,6 +1,6 @@
 # 104 — The atlas's live-log lines agree with embarch-api's on image hash, board and when a line is written
 
-**State:** claimed by agent/atlas/104-live-log-lines-agree-with-embarch-api, 2026-11-23 22:05
+**State:** done — livelog.py reads last_images, orders board like embarch-api, gates on cited Core entries
 **Source:** reviewer of `atlas/103` (2026-11-23), reading the atlas's new live-log writer against embarch-api's on `origin/main`
 **Issue:** EMB-289
 **Scope:** atlas
@@ -43,8 +43,8 @@ decision, stop and say so in this file and in your report.
 
 ## Done when
 
-- [ ] With a fake `embarch-api` and a fake Core `status` carrying `last_images`, an atlas line names the same image hash as the raw line.
-- [ ] A call whose Core is unreachable writes no decoded line, and a refused call still writes its `did-not-run` line.
-- [ ] A test pins `board` to the request's role and probe when the answer names another.
-- [ ] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), in the worktree's own venv, with `test_public_guard` running rather than skipped.
-- [ ] `embarch-atlas/design.md` and `DESIGN.md` updated where they describe the line, `changelog.d/` fragment dropped.
+- [x] With a fake `embarch-api` and a fake Core `status` carrying `last_images`, an atlas line names the same image hash as the raw line.
+- [x] A call whose Core is unreachable writes no decoded line, and a refused call still writes its `did-not-run` line.
+- [x] A test pins `board` to the request's role and probe when the answer names another.
+- [x] Gate green (`../../embarch-fleet/gate.md`, the Python bullet), in the worktree's own venv, with `test_public_guard` running rather than skipped.
+- [x] `embarch-atlas/design.md` and `DESIGN.md` updated where they describe the line, `changelog.d/` fragment dropped.
