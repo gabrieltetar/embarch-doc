@@ -1,6 +1,6 @@
 # 021 — The weekly sheet opens with decision 15's numbers, a control beside each, and the owner's feel line
 
-**State:** claimed by agent/promptu/021-the-weekly-sheet-opens-with-decision-15s-numbers, 2026-11-24 01:56
+**State:** done — five numbers, control, null, feel line and read-only sheet.md built; spec.md out of reserve
 **Source:** decision 15 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md` §10 (`numbers`, `feel`) and §14.5 (the pack's records); the session events `week pack` writes (`promptu/016`); `week draft`'s `numbers()` (`src/draft.rs`, `promptu/017`)
 **Issue:** EMB-278
 **Scope:** promptu
@@ -62,9 +62,16 @@ No other promptu file is in reserve.
 
 ## Done when
 
-- [ ] Each of the five checks has a fixture pack with a known answer, and a test.
-- [ ] The two friction checks carry a control figure from non-Promptu sessions, with a test.
-- [ ] A check with no data that week is null, not zero, and the contract says so.
-- [ ] `sheet.md` opens with the numbers and the feel line, marked read-only.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+- [x] Each of the five checks has a fixture pack with a known answer, and a test.
+- [x] The two friction checks carry a control figure from non-Promptu sessions, with a test.
+- [x] A check with no data that week is null, not zero, and the contract says so.
+- [x] `sheet.md` opens with the numbers and the feel line, marked read-only.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test --all-targets` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `spec.md`/`decisions.md`/`interfaces.md` updated where they change, `changelog.d/` fragment dropped.
+
+## Result
+
+- All five checks computed from the pack in `numbers()` (`src/draft.rs`); the two friction checks carry `control` (non-Promptu sessions). Fork W22 (default: count every candidate redirect, since the drafter records no per-candidate judgement).
+- Contract §10 amended: a check with no data is listed with `value: null` (was "left out"); `control` named; `feel` and the read-only `sheet.md` opening stated. `week mark --feel` already exists (promptu/019).
+- Tests: `numbers_list_every_check...`, `friction_counts_promptu_sessions_and_a_control_apart`, `the_markdown_opens_with_the_numbers_and_the_feel_line` (unit, `src/draft.rs`).
+- `spec.md` out of reserve: the status paragraph moved verbatim to `embarch-promptu/spec/status.md`; `promptu/022` closes at the fold.
