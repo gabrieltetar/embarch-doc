@@ -16,7 +16,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **Capture start and stop are gated; reading is not.** `POST /signals/{name}/capture` records the DUT for up to 600 s, so an unleased session could start one the holder never asked for, and `POST /bootload` is then refused by name against its port; `DELETE` ends the holder's recording. The lease gates only who starts the sequence: decision 92's capture still takes no `hw_lock`, and outlives its lease (bounded by `max_s`). `GET .../capture` stays open: it returns held bytes and moves no board.
 
-**A study in flight is not interrupted**: `POST /study` is gated at submit; a lease taken mid-study succeeds and does not stop it: it is about *new* requests, and the study holds `study_lock`.
+**A study in flight refuses every gated call but its cancel**, the lease's token too ([95](host-study.md), `core/143`); a lease taken mid-study succeeds and does not stop it.
 
 **Expiry is lazy**: no timer, live iff `now < expires` at each check, so a crashed holder frees the bench at its TTL with no sweep to fail. `ttl_s` is `1..=14400` (four hours), else `400`. **[assumed]**: the cap is reasoned from the field's longest hold, 1.4 h (6.3 h across 62 holds), not measured. In memory: a Core restart frees the bench (the safe direction); the holder sees `404` on its next renew.
 

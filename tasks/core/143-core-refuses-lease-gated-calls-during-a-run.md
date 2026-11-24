@@ -1,6 +1,6 @@
 # 143 — Core refuses every lease-gated call while a study runs, bar its cancel
 
-**State:** claimed by agent/core/143-core-refuses-lease-gated-calls-during-a-run, 2026-11-23 18:02
+**State:** done — lease_middleware refuses every gated call but cancel while a study runs; decisions 93 and 95 amended; open.md out of reserve
 **Source:** notes/hil/12-prevention.md — "What stays outside prevention": while a study or a test runs, Core refuses every hardware call that is not the run's own, Live reads included
 **Issue:** EMB-253
 **Scope:** core
@@ -62,13 +62,13 @@ the fold.
 
 ## Done when
 
-- [ ] A test with a study in flight walks `LEASE_GATED` and gets `409` for every
+- [x] A test with a study in flight walks `LEASE_GATED` and gets `409` for every
       route but `POST /study/{id}/cancel`, with the lease's own token too.
-- [ ] The existing dev-bench and host study tests pass.
-- [ ] The decision states whether `embarch-api`'s `run_study` and
+- [x] The existing dev-bench and host study tests pass.
+- [x] The decision states whether `embarch-api`'s `run_study` and
       `run_host_study` make a lease-gated call while their run is in flight,
       naming any that does.
-- [ ] A Core decision records the rule and its exceptions.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] A Core decision records the rule and its exceptions.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
