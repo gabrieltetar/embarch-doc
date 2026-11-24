@@ -49,12 +49,12 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 |---|---|---|
 | `promptu week pack [--week <w>] [--projects <dir>] [--json]` | The week's events into `week/<w>/pack.json`; no model. **Built: all five event kinds**: `run` (footer facts, the owner's edit as a diff), `session` (friction candidates, whether it started with Promptu), `unmatched`, `outcome` (a commit, a subagent's included), `carried` (EMB-274) | §14.4, §14.5 |
 | `promptu week draft [--week <w>] [--pack <path>] [--json]` | **Built.** The one model call: the sheet's lines, each pattern line linted and its examples rendered old and new (replay: EMB-281); supersedes the open sheet; a failed call writes only `run.json` and exits 1 | §14.4 |
-| `promptu week run [--week <w>] [--scheduled] [--json]` | `pack` then `draft`; what the timer runs | §14.4 |
+| `promptu week run [--week <w>] [--scheduled] [--json]` | **Built (EMB-277).** `pack` then `draft` under `week/run.lock`; what the timer runs; writes `run.json` (kind, start, end, status, cost), a failed run too; exit 4 when another run is in progress | §14.4 |
 | `promptu week status [--json]` | **Built.** Schedule, last run, next run, missed, running, open count (what the chat's card asks); `PROMPTU_NOW` pins the clock | §14.4 |
 | `promptu week show [--week <w>] [--json]` | **Built.** The open sheet: `sheet.json`, or `sheet.md` as text | §14.4 |
 | `promptu week mark <id>... [--verdict approve\|cut] [--note <t>] [--feel better\|same\|worse]` | A line's or a group's ✓/✕, the sheet's feel | §14.4 |
 | `promptu week apply [--week <w>] [--dry-run] [--json]` | Approved pattern lines as commits on a branch, never pushed; memory lines into the memory folder | §14.4 | 
-| `promptu week timer [--print] [--remove]` | The systemd user timer and service from `week_schedule` | §14.4 |
+| `promptu week timer [--enabled] [--json]` | **Built (EMB-277).** Prints the systemd user timer and service from `week_schedule`, binary path in `ExecStart`; installs nothing; `--enabled` records the instant in `week/timer.json` | §14.4 |
 | `promptu desk --json` | **Built.** The open count and groups for the desk's `GET /promptu` | §9 |
 
 ## The hook
