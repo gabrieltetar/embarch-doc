@@ -1,6 +1,6 @@
 # 103 — The atlas's live tools append a decoded line to the live log
 
-**State:** open
+**State:** claimed by agent/atlas/103-live-tools-append-a-decoded-line-to-the-live-log, 2026-11-23 21:29
 **Source:** `notes/hil/05-live.md`, "The live log": "One file and one line shape, written by both embarch-api (raw calls) and embarch-atlas (decoded calls)"
 **Issue:** EMB-266
 **Scope:** atlas
