@@ -17,6 +17,7 @@
 - study-designer: a one-shot monitor step inside an open monitor window is refused by build_study and Study::validate_monitor_windows (decision 89)
 
 ### Fixed
+- The image-segment reader errors, not panics, on an ELF whose offsets overflow; the bench-firmware JSON types refuse unknown keys ([hil-image](../embarch-study-designer/interfaces/hil-image.md)).
 - study-designer: `GattTranscriptEntry::att_status` doc comment names its per-kind meanings (ATT error, properties byte, HCI disconnect reason) instead of calling it always an ATT error code.
 
 ### Removed
