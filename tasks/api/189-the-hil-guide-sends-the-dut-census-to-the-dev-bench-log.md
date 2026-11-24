@@ -1,6 +1,6 @@
 # 189 — The HIL guide sends the DUT census to the dev-bench log
 
-**State:** claimed by agent/api/189-the-hil-guide-sends-the-dut-census-to-the-dev-bench-log, 2026-11-24 12:48
+**State:** done — guide/hil-guide.md bullet corrected; suite copy handed to the fold via status.d
 **Source:** `suite/studies-guide.md` §3a — `fail_reason` is capped and lists only advertisers that sent a name; the HIL guide's Study 1 offers it as a census beside `dev-bench.log`
 **Issue:** EMB-402
 **Scope:** api
@@ -45,9 +45,9 @@ advertising.
 
 ## Done when
 
-- [ ] `guide/hil-guide.md` carries the corrected bullet and nothing else changed.
-- [ ] A `status.d/` fragment gives the supervisor the exact old and new bullet
+- [x] `guide/hil-guide.md` carries the corrected bullet and nothing else changed.
+- [x] A `status.d/` fragment gives the supervisor the exact old and new bullet
       for `suite/hil-guide.md`.
-- [ ] `cargo test` green, with the drift guard run against the scratch copy as
+- [x] `cargo test` green, with the drift guard run against the scratch copy as
       above.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment dropped.
