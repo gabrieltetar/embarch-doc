@@ -1,6 +1,6 @@
 # 050 — A script writes the released bench-firmware list
 
-**State:** open
+**State:** claimed by agent/dev-bench/050-a-script-writes-the-released-bench-firmware-list, 2026-11-24 10:29
 **Source:** HIL implementation plan (`notes/hil/14-implementation-plan.md`, Test phase: "the released bench-firmware hash list"), with `notes/hil/03-test.md`, "A run", item 3
 **Issue:** EMB-389
 **Scope:** dev-bench
