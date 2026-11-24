@@ -1,6 +1,6 @@
 # EmbArch: driving it from Claude Code
 
-**Status:** active, 2026-10-29. For a firmware engineer letting an LLM coding agent drive EmbArch. Continues [user-guide.md](user-guide.md), which gets EmbArch working in the first place; this was its §7 until 2026-10-29.
+**Status:** active, 2026-11-23. For a firmware engineer letting an LLM coding agent drive EmbArch. Continues [user-guide.md](user-guide.md), which gets EmbArch working in the first place; this was its §7 until 2026-10-29.
 
 ## 1. Using it from Claude Code
 
@@ -14,12 +14,17 @@
 
 ### 1.1 Which operations should need your approval
 
-**Reading and building are safe and frequent; anything that reaches a board — or rewrites what EmbArch remembers about one — should be a decision you make.** That is the whole surface, the 53 tools of 2026-10-29 still served, split for `.claude/settings.local.json`:
+**Reading and building are safe and frequent, and so are a Live session's reads and resets under the bench lease; flashing a board, or rewriting what EmbArch remembers about one, should be a decision you make.** That is the whole surface, the 58 tools of 2026-11-23, split for `.claude/settings.local.json`. The server is registered as `embarch-api`, so each rule is `mcp__embarch-api__<tool>`:
 
-- **allow** — reads, and host-side builds that touch no hardware: `alerts`, `build`, `build_dev_bench`, `capture_read`, `capture_start`, `capture_stop`, `dev_bench_hello`, `lease_show`, `ledger_pending`, `ledger_show`, `list_instruments`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `serial_log`, `show_bootload_ports`, `status`, `study_status`, `study_stream_data`, `study_stream_load`, `study_watch`
-- **ask** — reaches a board, or writes what EmbArch has recorded about one: `answer_prompt`, `bench_exchange`, `bootload`, `build_and_bootload`, `build_and_flash`, `build_and_flash_dev_bench`, `clear_bootload_ports`, `core_state`, `declare_bootload_ports`, `declare_instrument`, `declare_signal`, `dev_bench_link`, `enroll_probe`, `flash`, `flash_dev_bench`, `lease_release`, `lease_renew`, `lease_take`, `ledger_add`, `mem_read`, `remove_instrument`, `remove_signal`, `reset`, `reset_dev_bench`, `run_host_study`, `run_study`, `set_role_board`, `signal_exchange`, `unenroll_probe`, `validate`
+- **allow** — reads, host-side builds that touch no hardware, resets, and the lease calls a Live session takes with a purpose (a prompt on each would make every session ask): `alerts`, `bench_exchange`, `build`, `build_dev_bench`, `build_each`, `bundle`, `call_log`, `capture_read`, `capture_start`, `capture_stop`, `core_state`, `dev_bench_hello`, `lease_release`, `lease_renew`, `lease_show`, `lease_take`, `ledger_pending`, `ledger_show`, `list_instruments`, `list_projects`, `list_serial_ports`, `list_signals`, `list_study_streams`, `list_targets`, `mem_read`, `reset`, `reset_dev_bench`, `serial_log`, `show_bootload_ports`, `signal_exchange`, `status`, `study_measurements`, `study_status`, `study_stream_data`, `study_stream_load`, `study_watch`, `validate`
+- **ask** — flashing and bootloading, and what writes what EmbArch has recorded or answers for you: `answer_prompt`, `bootload`, `build_and_bootload`, `build_and_flash`, `build_and_flash_dev_bench`, `clear_bootload_ports`, `declare_bootload_ports`, `declare_instrument`, `declare_signal`, `dev_bench_link`, `enroll_probe`, `flash`, `flash_dev_bench`, `ledger_add`, `publish`, `remove_instrument`, `remove_signal`, `run_host_study`, `run_study`, `set_role_board`, `unenroll_probe`
 
-**`run_study` is the one to be deliberate about**: with `reflash` it builds and flashes from your working tree *as it currently stands*, on both boards. `validate` only re-checks an enrolled board's identity, but it does attach to the probe, so it sits with the rest — as do `mem_read` and `core_state`. **`answer_prompt` relays *your* answer to a host study waiting on a person**, and a lab supply or load is driven only by a host study's `Instrument` step, run with `run_host_study`: both ask, so the person stays the one deciding. The capture tools read a console the way `serial_log` does. **A tool missing from both lists is newer than this page**: treat it as ask.
+The atlas's MCP server is registered as `embarch-atlas` (`mcp__embarch-atlas__<tool>`):
+
+- **allow** — its static lookups (`applies`, `code`, `config`, `decode`, `doc_section`, `doc_toc`, `dt_node`, `find_fact`, `find_text`, `footprint`, `mismatch_report`, `net_find`, `net_trace`, `part_card`, `parts`, `pin_trace`, `rc_timing`, `register`, `schematic_text`, `shell_commands`, `stacks`, `states`, `transitions`) and, on a Live board, `core_state`, `live_stacks`, `reg_read`, `shell` and `shell_run`
+- **ask** — `reg_read_bank` (writes a page select) and `reg_read_clear` (reads a register whose read clears a flag or pops a FIFO)
+
+**`run_study` is the one to be deliberate about**: with `reflash` it builds and flashes from your working tree *as it currently stands*, on both boards. **Live reads and resets are free because a lease gates them and Core refuses them while a study or test runs**; `validate`, `mem_read` and `core_state` are reads. **`answer_prompt` relays *your* answer to a host study waiting on a person**, and a lab supply or load is driven only by a host study's `Instrument` step, run with `run_host_study`: both ask, so the person stays the one deciding. `bundle` writes only a folder and a zip from a finished build; `publish` writes a signed deliverable, so it asks. **A tool missing from both lists is newer than this page**: treat it as ask.
 
 If your `CLAUDE.md` tells the agent never to build firmware on its own — **a sensible rule when a stray `west build` can blow away a build tree** — note the exemption explicitly, or the agent will keep asking:
 
