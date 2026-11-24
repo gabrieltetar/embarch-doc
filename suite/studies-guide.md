@@ -61,7 +61,7 @@ Core writes each run to `study_results/<study_id>/` under its own machine-wide d
 
 **Both defaults are reasoned rather than measured.** Raise the first if a real run is being truncated; raise or zero the second if you need history.
 
-A third, rarer one: **`EMBARCH_SIGNAL_BAUD`** sets the line rate when Core reads a DUT signal on its own serial port rather than through the bench. **It has to match what the DUT actually transmits at, and nothing can check that for you: if they disagree, every frame fails its CRC and the capture looks exactly like a firmware bug.** Its real value on this bench is `460800` — **which is the ceiling of the link rather than a preference**, since the USB-UART bridge refuses to open above 750000 and the SoC has no baud between 460800 and 921600, **so it is the only value both ends can produce.** And **1000000 is this variable's own default**, so this bench **keeps two numbers in step by hand**: this variable and the DUT's configured speed.
+A third, rarer one is a DUT signal's line rate when Core reads it on its own serial port rather than through the bench, and **it belongs on the signal**: declare its `baud` (§4 step 1). **`EMBARCH_SIGNAL_BAUD`** is only the fallback for a signal that declares none, default 1000000. **Either way it must match what the DUT transmits at, and nothing can check that for you: if they disagree, every frame fails its CRC and the capture looks exactly like a firmware bug.** On this bench that is `460800` — **the ceiling of the link rather than a preference**, since the USB-UART bridge refuses to open above 750000 and the SoC has no baud between 460800 and 921600, **so it is the only value both ends can produce.**
 
 **On an installed Core these are not shell variables.** Core runs as a service, so it reads its environment from the service registration — on Windows, the service's own `Environment` value in the registry — **and the service must be restarted for a change to take.**
 
@@ -127,7 +127,7 @@ Two things have to be true first, **in the UI or, since
 [`embarch-api` decision 67](../embarch-api/decisions.md), from a terminal**:
 `declare-signal`, `list-signals`, `remove-signal`, `dev-bench-link`, each also an MCP tool.
 
-**1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software, so it can only be stated.** In the **Topology** tab, open **Signals** and declare a signal: give it a name (that is what a study taps it by) and pick a route.
+**1. Tell EmbArch where the wire goes.** **A cable between two headers is invisible to software, so it can only be stated.** In the **Topology** tab, open **Signals** and declare a signal: give it a name (that is what a study taps it by) and pick a route. **A direct signal also takes its `baud`** (§3); the tab has no field for it yet, so use `embarch-api declare-signal ... --baud <rate>` or the `declare_signal` tool.
 
 - **direct** — straight to a serial port on the machine running Core, **bypassing the bench.** You pick the port from a list **Core itself enumerates, because a port on *your* machine is not necessarily a port on Core's.** This is what the outpost uses today, **for a hardware reason rather than a preference: the bench has no spare pins for it yet.**
 - **via dev-bench** — the signal terminates on bench pins and the bench relays it. **Nothing here has the pins yet, but declaring it is a one-field change when it does, and no saved study has to be rewritten — a study names the *signal*, never the cable.**
