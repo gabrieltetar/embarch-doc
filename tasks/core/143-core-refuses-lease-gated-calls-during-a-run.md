@@ -1,6 +1,6 @@
 # 143 — Core refuses every lease-gated call while a study runs, bar its cancel
 
-**State:** open
+**State:** claimed by agent/core/143-core-refuses-lease-gated-calls-during-a-run, 2026-11-23 18:02
 **Source:** notes/hil/12-prevention.md — "What stays outside prevention": while a study or a test runs, Core refuses every hardware call that is not the run's own, Live reads included
 **Issue:** EMB-253
 **Scope:** core
