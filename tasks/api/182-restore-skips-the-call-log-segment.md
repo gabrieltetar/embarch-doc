@@ -1,6 +1,6 @@
 # 182 — A swept run's restore skips the call-log segment, and republishes
 
-**State:** open
+**State:** claimed by agent/api/182-restore-skips-the-call-log-segment, 2026-11-23 22:05
 **Source:** worker of `core/145` (2026-11-23): Core now writes `call-log-segment.jsonl` into a published revision and names it in the signed manifest
 **Issue:** EMB-288
 **Scope:** api
