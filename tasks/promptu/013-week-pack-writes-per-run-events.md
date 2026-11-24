@@ -1,6 +1,6 @@
 # 013 — `promptu week pack` writes the week's per-run events for the drafter
 
-**State:** open
+**State:** claimed by agent/promptu/013-week-pack-writes-per-run-events, 2026-11-23 21:00
 **Source:** `embarch-promptu` `docs/contract.md` §14 (the weekly pass, written by `promptu/011`); decisions 14 and 42 (`decisions/learning.md`)
 **Issue:** EMB-273
 **Scope:** promptu
