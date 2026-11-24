@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Clicking the Promptu card's weekly line opens the waiting sheet in a new chat with the review skill typed, or runs the weekly pass now, never twice at once (decision 95).
 - The chat's Promptu card shows the weekly pass in one line (last run, next run, waiting sheet), and the icon is dotted while a sheet waits or a run was missed (embarch-chat 95, EMB-85).
 - The wire probe (tools/wire-probe.mjs) asks the live claude one question and prints every reply line with its time; --list reads a fixture; interfaces/wire-probe.md.
 - The Promptu card offers "Restore my original prompt" after a rewrite: one click puts the typed prompt back in the draft, read through `promptu original` ([spec](../embarch-chat/spec/input.md)).
