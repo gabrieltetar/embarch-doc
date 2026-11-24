@@ -65,7 +65,7 @@ Everything else is detected live. These cannot be:
 | **A DUT's bootload ports** (app and bootloader USB identities) | Zephyr's default VID:PID is shared by every board built from defaults (decision 36) |
 | **A bench instrument** (USB identity and line facts) | A bridge's VID:PID is shared by every device on it; line facts are learned on the bench (decision 49) |
 
-Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file (decision 23); a store predating later facts still loads.
+Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file by default; the linking process may set the folder once at start (decision 23); a store predating later facts still loads.
 
 ## Storage and roles
 
@@ -113,6 +113,6 @@ Both real boards are enrolled; a real flash-plus-study has run clean.
 
 **The mismatch path is exercised, not just designed:** two different nRF54L15 DUTs have alternated on one probe three times, each tripping the gate (decision 12).
 
-**No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, overwriting the record; **no override on the store path** — its only variable is `ProgramData`, unsettable once the service runs.
+**No agent can induce one.** Every route pointing a role at other silicon runs through `enroll`, overwriting the record; **no override on the store path from outside** — the folder is the linking process's choice, set once at start (decision 23), and the default's only variable is `ProgramData`, unsettable once the service runs.
 
 The register pair those reads use is confirmed against real silicon independently (decision 21). Everything else open: [open.md](open.md).

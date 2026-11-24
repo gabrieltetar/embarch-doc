@@ -1,6 +1,6 @@
 # 071 — The linking process sets the identity store's folder
 
-**State:** claimed by agent/topology/071-the-linking-process-sets-the-identity-stores-folder, 2026-11-24 04:02
+**State:** done — set_data_dir shipped, decision 23 amended, gated under four feature sets
 **Source:** `notes/hil/12-prevention.md`, "The root of trust" (the protected store bullet): on an attested install the identity store lives inside Core's protected store, with Core its only writer; `notes/hil/14-implementation-plan.md`, "The later phases, in outline" (unit A.4)
 **Issue:** EMB-320
 **Scope:** topology
@@ -49,15 +49,21 @@ builds it with, not only defaults and `--all-features`
 
 ## Done when
 
-- [ ] A test sets the folder to a temp dir, enrols a board, declares an
+- [x] A test sets the folder to a temp dir, enrols a board, declares an
       instrument and a signal, and finds `enrollment.toml` there and nothing
       at the default path.
-- [ ] Unset, every path is what it was, and the existing tests pass
+- [x] Unset, every path is what it was, and the existing tests pass
       unchanged.
-- [ ] A second set, or a set after the first store access, is refused with a
+- [x] A second set, or a set after the first store access, is refused with a
       message saying why.
-- [ ] `cargo build`, `test` and `clippy --all-targets -- -D warnings` green
+- [x] `cargo build`, `test` and `clippy --all-targets -- -D warnings` green
       under every feature set the gate names.
-- [ ] Decision 23 amended; `spec.md`/`interfaces/` updated where they state
+- [x] Decision 23 amended; `spec.md`/`interfaces/` updated where they state
       the folder; `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+
+## Notes
+
+- Shipped: `paths::set_data_dir` (re-exported `hardware::set_data_dir`, `hardware` feature), a process-wide `Mutex<Setting>`; any `data_dir()` read marks it used. Tests in `src/hardware/paths.rs`: set-once and set-after-use refusals (on a local `Setting`), and one test on the real global that enrols a role board, declares an instrument and a signal and finds `enrollment.toml` in the temp folder. It is the only test in the binary that touches the global.
+- Gated: defaults, `--all-features`, `--no-default-features --features software,wire`, `--no-default-features --features hardware`; build, test, clippy `-D warnings` all green.
+- Core's doc (`embarch-core/decisions/auth.md` line 21) cites decision 23 for the default directory and its ACL; still true for the default, nothing to change. Decision 43 needed no line.
