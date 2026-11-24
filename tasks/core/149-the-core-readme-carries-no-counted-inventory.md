@@ -1,6 +1,6 @@
 # 149 — The Core README carries no counted inventory
 
-**State:** claimed by agent/core/149-the-core-readme-carries-no-counted-inventory, 2026-11-24 03:45
+**State:** done — README carries no counted inventory; points at interface docs
 **Source:** suite review audit, 2026-11-23: three code-repo READMEs describe the suite as of September
 **Issue:** EMB-297
 **Scope:** core
@@ -28,9 +28,9 @@ split with `api/186` and `umbrella/104`.
 
 ## Done when
 
-- [ ] `embarch-core/README.md` states no endpoint or file count or list, and
+- [x] `embarch-core/README.md` states no endpoint or file count or list, and
       links the interface docs that own them.
-- [ ] `cargo build` and `cargo test` still green in `embarch-core`
+- [x] `cargo build` and `cargo test` still green in `embarch-core`
       (README-only change; `clippy` as the gate requires).
-- [ ] `changelog.d/` fragment dropped.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `changelog.d/` fragment dropped.
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
