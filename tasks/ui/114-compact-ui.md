@@ -1,6 +1,6 @@
 # 114 — `embarch-ui/decisions/shell.md` and `spec/tabs.md` are in reserve
 
-**State:** open
+**State:** claimed by agent/ui/114-compact-ui, 2026-11-24 01:56
 **Source:** ui/113 (EMB-283) added the Promptu section to decision 56 and the Desk row of `spec/tabs.md`: `shell.md` is at 11,553 of 12,288 B (735 B left) and `tabs.md` at 9,079 of 10,240 B (1,161 B left).
 **Scope:** ui
 **Hardware:** none
