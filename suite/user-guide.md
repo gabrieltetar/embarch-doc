@@ -219,7 +219,7 @@ Core protects its endpoints with a single shared secret, and **in the normal cas
 
 **Worth knowing: there is no TLS**, so the token crosses your network in cleartext. **Fine on localhost or a WSL2 loopback; think twice on shared wifi.**
 
-**Testing against a second board?** Studies, the dev bench, and capturing a DUT trace are their own guide: [studies-guide.md](studies-guide.md).
+**Testing against a second board?** Start with `embarch-api guide hil study` ([hil-guide.md](hil-guide.md)), then the bench and trace notes in [studies-guide.md](studies-guide.md).
 
 ## 10. Working on EmbArch itself
 

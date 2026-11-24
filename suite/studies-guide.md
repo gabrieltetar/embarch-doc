@@ -4,41 +4,19 @@
 
 ## 1. Dev bench and studies
 
-> **Partly usable.** The endpoints and CLI are implemented and have run against a real bench and a real DUT. **What is missing is hardware**: power-sampling hardware (deferred by decision), GPIO and analog stimulus, and any physical DUT connector. Read this as "how the parts that exist work", not a tutorial you can follow end to end.
+> **Partly usable.** The endpoints and CLI are implemented and have run against a real bench and a real DUT. **What is missing is hardware**: power-sampling hardware (deferred by decision), GPIO and analog stimulus, and any physical DUT connector. Read this as "how the parts that exist work"; the tutorial is the HIL guide's Study section, which §1 points at.
 
 `embarch-dev-bench` is a second board — **a test fixture, not your DUT** — that plays your device's BLE counterpart on demand. **Instead of manually pairing with a phone to check whether your peripheral advertises correctly, you describe what should happen and the bench does it, reproducibly, every build.**
 
 The unit of work is a **study**: an ordered list of steps, each a BLE action, with pass/fail checks. A **step is never a power-sampling window**: that step kind was retired at wire schema v9 (`embarch-study-designer` decision 39), and a capture of any kind is authored as a declared **tap**, never as a step.
 
-**Start from the worked example, not from the type tables.** `embarch-api/tests/fixtures/self_test_study.json` is a complete, currently-valid study — the §3a self-test — and a test deserializes it on every run, so it cannot go stale. The one shape a `serde` reading will not predict is that **`action` is externally tagged**: one key, the variant name, its value the fields (`{"BleAdvertise": {…}}`). Field by field: [embarch-study-designer/interfaces/types.md](../embarch-study-designer/interfaces/types.md).
-
-```sh
-embarch-api run-study --study-file my-study.json     # returns a study_id
-embarch-api study-status <study_id>                  # pending | running | completed | failed
-embarch-api list-study-streams <study_id>            # what it captured, and whether anything was lost
-embarch-api study-stream-data <study_id> --name <tap> --out capture.csv
-```
-
-**Read `list-study-streams` before you read a capture.** It lists every capture the study declared, how many bytes each wrote, and — **the column that matters** — whether it was **truncated**. A truncated capture is a short one: either retention rotation deleted an older segment, or the bench reported dropping records. **Nothing else in the suite will tell you, and a short capture read as a complete one is the failure this whole area is built to prevent.** A capture listed with 0 bytes was declared and produced nothing, **which is a different problem from one that was never declared.**
+**The walkthrough is in the HIL guide, not here.** Writing a study, running it, reading its losses and publishing it are the Study section: `embarch-api guide hil study` ([hil-guide.md](hil-guide.md)), with a complete worked study (`embarch-api/tests/fixtures/ble_gatt_rate_study.json`) and the truncation, reflash and address rules, each stated there once. (A capture is truncated when retention rotation deleted an older segment or the bench reported dropping records.) Field by field: [embarch-study-designer/interfaces/types.md](../embarch-study-designer/interfaces/types.md). This guide keeps what that one leaves out: this bench's measured behaviour (§3 to §3b) and DUT traces (§4).
 
 Add `--raw` to a fetch for the byte-for-byte bytes instead of the rendered CSV, and use `--out` rather than piping when a capture is not text. **The older per-channel commands are gone** — `study-power-data`, `study-waveform-data` and `study-gatt-data` were retired 2026-09-11, because they could not report truncation and `study-stream-data` can.
 
 ## 2. Saying which firmware a study is for
 
-A study declares the bench and DUT builds it is meant to run against, and **`"any"` is a legal, explicit answer for either.** Core checks the bench's declaration against what the bench actually reports and **refuses the study before any step runs** if they disagree, naming both strings.
-
-`--reflash` says what to do about a disagreement:
-
-```sh
-embarch-api run-study --study-file my-study.json --reflash dev-bench
-embarch-api run-study --study-file my-study.json --reflash dut --project my-firmware
-```
-
-`none`, the default, means **"run against what is already on the boards"** — flashing is the destructive half, and **a study that just observes a board you flashed by hand should not quietly overwrite it.** The others rebuild and reflash **from your working tree exactly as it stands right now.**
-
-**EmbArch will not run `git checkout` for you, ever.** If your tree is not at the revision the study asks for, **the run fails, names both revisions, and stops before touching the board. Moving your tree is your call, not a test harness's.**
-
-`--allow-version-mismatch` runs anyway, **and the override is written into the result** naming what was required and what actually ran — **so a result that was waved through never looks like one that met its requirements.**
+What a study's `requires` and `--reflash` do, that EmbArch never runs `git checkout`, and what `--allow-version-mismatch` writes into the result are the HIL guide's Study section 2 (`embarch-api guide hil study`). Two things it leaves out: `--reflash` takes `none` (the default), `dev-bench`, `dut` or `both`; and `none` is the default because flashing is the destructive half, so a study that observes a board you flashed by hand does not overwrite it.
 
 **One limit worth knowing: nothing can read a firmware version back off a DUT.** When EmbArch says a run flashed a particular version, it means **"this run built and flashed *this tree*, at this revision"**, derived by running `git describe` in your project. **The bench is different — it reports its own version over its link, so that one is a real measurement.**
 
@@ -67,13 +45,13 @@ A third, rarer one is a DUT signal's line rate when Core reads it on its own ser
 
 ## 3a. A study that actually ran, and where the DUT half stops
 
-**One study has been run end to end by the fleet against the real bench** [measured 2026-09-06, `dev-bench` probe `001057729826`, hardware ID `6fcddc36cb781b71`, both roles validated live first]. It is the two-step `BleAdvertise` self-test — **`embarch-api/tests/fixtures/self_test_study.json`**, the file §1 points at — submitted with `reflash` at its `none` default — **nothing was built and nothing was flashed** — and it passed 2 of 2 steps. Its provenance came back `dev_bench_source: ReportedByDevBench, dev_bench_version: 49958d34` against a `Declared` firmware version of `any`, which is §2's asymmetry showing up in a real result: the bench's version is a measurement and the DUT's is a claim.
+**One study has been run end to end by the fleet against the real bench** [measured 2026-09-06, `dev-bench` probe `001057729826`, hardware ID `6fcddc36cb781b71`, both roles validated live first]. It is the two-step `BleAdvertise` self-test — **`embarch-api/tests/fixtures/self_test_study.json`** — submitted with `reflash` at its `none` default — **nothing was built and nothing was flashed** — and it passed 2 of 2 steps. Its provenance came back `dev_bench_source: ReportedByDevBench, dev_bench_version: 49958d34` against a `Declared` firmware version of `any`, which is §2's asymmetry showing up in a real result: the bench's version is a measurement and the DUT's is a claim.
 
 **Read that for exactly what it is: the bench half works and the DUT was never involved.** No step in it connects, so none of this bench's DUT-side lore was exercised. A green study is **not** yet evidence that a study reaches a DUT here.
 
 **Reaching a DUT means a `BleConnect` step, and it needs to be told which peripheral.** Its own design (study-designer decision 43) records that connecting to "whichever DUT shows up first" is not usable on a real bench: consecutive runs of one study reached visibly different peripherals, none of them the DUT, and every study then failed with "service not found on DUT" — true, and completely misleading. So a real study sets `target_address` or `target_name`; `embarch-api/tests/fixtures/ble_connect_worked_example.json` is the worked form, round-tripped by `embarch-api/tests/ble_connect_fixture.rs`.
 
-**How to find out what to put there: run a `BleConnect` whose `target_name` no device could have.** A failed name match does not return a bare timeout — the bench reports what *was* on the air, in the step's own `fail_reason`. That is the scan, and it is why there is no separate scan action. A blank name means "no filter", so the nonsense name is the whole trick.
+**How to find out what to put there is the HIL guide's** (run a `BleConnect` whose `target_name` nothing has, and read the census). What it leaves out: a failed name match does not return a bare timeout, it reports what *was* on the air in the step's own `fail_reason`. That is the scan, which is why there is no separate scan action; a blank name means "no filter", so the nonsense name is the whole trick.
 
 **Run against this bench** [measured 2026-09-06, one 20 s step], the failing step came back:
 
@@ -101,7 +79,7 @@ The census works and is a measurement, but **nothing links a BLE advertiser to a
 
 **`target_address` reaches an advertiser that `target_name` cannot**, and it has now been exercised: a `BleConnect` at `C4:82:E1:42:B1:26 (public)` — connectable, **no name advertised**, therefore invisible to every `fail_reason` census — connected and its `GattDiscover` returned three services and eight characteristics [measured 2026-09-06, study `bd39085d9aa34162a1a555494642ae43`, both steps `Pass`]. So a nameless DUT is reachable; you just cannot find it by name.
 
-**The bytes go in display order, most significant first.** `C4:82:E1:42:B1:26` is `[196, 130, 225, 66, 177, 38]` with `kind: "Public"`, exactly as `bt_addr_le_to_str` prints it in the census log — verified by connecting with it, above. **It is written down in three places, and the type is one of them**: `embarch-study-designer/src/ids.rs` states it on `BleAddress` itself (both `BleAddressKind`s, never reversed in that crate); `embarch-study-designer/interfaces/types.md` states it in prose; and `ble_bridge_real.c`'s `to_bt_addr` reverses it for Zephyr with a comment saying so. A wrong guess still fails *silently* — the step simply never matches — which is why the type saying it matters (`embarch-dev-bench` decision 23).
+**The byte order is the HIL guide's rule, and it has been checked on the air.** `C4:82:E1:42:B1:26` is `[196, 130, 225, 66, 177, 38]` with `kind: "Public"`, exactly as `bt_addr_le_to_str` prints it in the census log, verified by connecting with it, above. **It is written down in three places, and the type is one of them**: `embarch-study-designer/src/ids.rs` states it on `BleAddress` itself (both `BleAddressKind`s, never reversed in that crate); `embarch-study-designer/interfaces/types.md` states it in prose; and `ble_bridge_real.c`'s `to_bt_addr` reverses it for Zephyr with a comment saying so. A wrong guess still fails *silently* — the step simply never matches — which is why the type saying it matters (`embarch-dev-bench` decision 23).
 
 **Whether an address off a census is durable depends on which kind it is, and "random" does not mean "rotating".** A BLE random address is one of three sub-types, told apart by the **top two bits of its most significant (leftmost, as printed) byte** — a Bluetooth Core Spec fact (Vol 6 Part B §1.3.2), not an inference about any DUT: `11` **static random**, which does not rotate at all; `01` **resolvable private**, which does; `00` **non-resolvable private**, which also does. A Zephyr peripheral with privacy off advertises a *static* random address — `embarch-dev-bench` decision 17 chose exactly that, reproducibility over privacy realism — **so `target_address` is perfectly durable for the ordinary DUT, and it is the leftmost nibble that tells you.**
 

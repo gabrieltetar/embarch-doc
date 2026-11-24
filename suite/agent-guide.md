@@ -12,6 +12,8 @@
 - *"Flash it, then show me the serial log for the first 5 seconds after reset."*
 - *"This won't compile — build it and fix the errors."* ← **the one that pays for the whole setup**, because the agent sees the real compiler output and iterates without you relaying it.
 
+**For hardware work, read the HIL guide first.** `embarch-api guide hil` prints what every mode shares (what you are trusted with and never do, choosing Live, Study or Test, what comes before any hardware), and `embarch-api guide hil study` prints the Study walkthrough, from writing a study to publishing it. The same text is [hil-guide.md](hil-guide.md). Live and Test are not written yet.
+
 ### 1.1 Which operations should need your approval
 
 **Reading and building are safe and frequent, and so are a Live session's reads and resets under the bench lease; flashing a board, or rewriting what EmbArch remembers about one, should be a decision you make.** That is the whole surface, the 58 tools of 2026-11-23, split for `.claude/settings.local.json`. The server is registered as `embarch-api`, so each rule is `mcp__embarch-api__<tool>`:

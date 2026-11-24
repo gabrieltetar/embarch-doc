@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- Fragment for doc/101: studies-guide 1-2 shrink to a pointer at the HIL guide; user and agent guides link `embarch-api guide hil` (EMB-316).
 - Studies guide fragment: a signal's own baud, set on declare-signal, is the line rate; EMBARCH_SIGNAL_BAUD is the fallback.
 - Agent-guide §1.1 permission lists restated for 58 tools and the atlas server, as a status.d fragment awaiting the supervisor fold (doc/099).
 ## 2026-10
