@@ -18,6 +18,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core appends each flash and bootload, with its load segments, scope and call-log seq, to flashed-images.jsonl, and reads it at start, so last_images survives a restart.
 - Core: `PUT /instruments` and `POST /signals` accept and store a declaration's `safe_off`, refusing a bad line with `400`; nothing sends it yet (topology decision 49).
 - The Core README no longer carries an endpoint count or a file/endpoint list; it points at the interface docs.
 - report-data.json carries observed.call_log {head, first_seq, last_seq, count} from the signed record, when it has one (core/148, paired with api/185); see interfaces/publish.md.

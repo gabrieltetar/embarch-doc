@@ -55,6 +55,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `GET /study/{id}/measurements` — a finished run's measurements.json as written, no publish | Shipped (host tests only; not run against a live Core) | host | 121 |
 | `POST /study/{id}/report-data`, `/publish`, `/adopt` — a signed `report-data.json` and manifest for a study run, notes and prose attributed by token scope and text hash, the run log head recorded | Shipped — **host-tested only, no real study published; Windows ACL unrun; no third-party DSSE verifier run** | unit | 116, 117, 118, 119 |
 | `PUT /study/{id}/restore/{name}` — a swept run's earlier manifest and Core files taken back, each checked against a manifest Core signed and logged, so a republish works | Built — **host-tested only; embarch-api does not send the files yet (`tasks/api/172`); no real sweep run on the Windows service** | unit | 120 |
+| Flashed-image record — `flashed-images.jsonl` keeps what Core flashed per board, with load segments, identity, scope and call-log seq, across a restart; `GET /status` `last_images` reads from it | Shipped — **host-tested through a stand-in handler; no real flash or bootload ever wrote it, and a bootload records no segments** | unit | 93 |
 
 ## embarch-api
 
