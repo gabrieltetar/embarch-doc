@@ -1,6 +1,6 @@
 # 018 — `promptu week run` packs and drafts the week, one run at a time, and `week timer` prints its units
 
-**State:** open
+**State:** claimed by agent/promptu/018-week-run-packs-and-drafts-one-run-at-a-time, 2026-11-24 00:08
 **Source:** decisions 14 and 45 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md`'s run record and exit codes; `week pack` (`promptu/013`) and `week draft` (`promptu/017`)
 **Issue:** EMB-277
 **Scope:** promptu
@@ -42,6 +42,15 @@ open-sheet click) waits on this.
 where they change. Where the contract leaves a choice open, record it as a fork
 in `docs/forks.md` on a default, as `promptu/011`, `013` and `017` did. If the
 work needs a new decision, stop and say so in this file and in your report.
+
+**Dispatch note (supervisor, 2026-11-24): three stale lines from
+`promptu/019`, fix them in this unit.** Its reviewer found wording that the
+amended decision 43 and fork W17 no longer match: `docs/contract.md` (near
+line 704, §14.2) still says "one commit per line" where `week apply` makes one
+commit per pattern; the comment above `sheet_md` in `src/draft.rs` and fork
+W5's option text in `docs/forks.md` still call `sheet.md` a read-only view,
+where `week mark` and `week apply` now read it back. Make each say what is
+built.
 
 ## Done when
 
