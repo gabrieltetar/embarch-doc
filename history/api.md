@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Each call that reaches a lease-gated route appends a line to the firmware repo's embarch/live/ log, citing Core's call-log entry; call_log reads entries back (EMB-255).
 - `study_measurements` tool and `study-measurements` subcommand read a finished run's measurements.json before publish, naming Core's four refusals; see embarch-api/interfaces/studies.md.
 - `embarch-api core-key` prints Core's public key and fingerprint after checking its signature over a fresh nonce; the HIL guide's Study step 6 uses it (EMB-247).
 - verify checks 4, 6 and 9: the PDF's numbers, report-data recomputed, report.typ's syntax tree; publish refuses by the same whitelist.
