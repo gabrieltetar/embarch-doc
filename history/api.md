@@ -33,6 +33,7 @@
 - Windows tree kill on a timed-out build verified on Windows; decision 75 drops its unix-only qualifier ([decisions/build.md](../embarch-api/decisions/build.md)).
 
 ### Fixed
+- A swept run's republish no longer PUTs `call-log-segment.jsonl` to Core's restore route, which refused it with 422 (EMB-288).
 - Verdict memory is the first linker table, the application's on sysbuild, not MCUboot's; decision 128.
 - Zephyr-west scan takes a board's CPU clusters from its SoC's soc.yml when board.yml names none ([decision 127](../embarch-api/decisions/zephyr-scan.md)).
 - The bundle README's recover line now states only what core decision 32 measured and no longer says decision 36 maps it to the range erase.
