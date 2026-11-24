@@ -1,6 +1,6 @@
 # 145 — A run's signed record names its call-log range, and publish carries the segment
 
-**State:** open
+**State:** claimed by agent/core/145-a-runs-signed-record-names-its-call-log-range, 2026-11-23 21:00
 **Source:** notes/hil/12-prevention.md — item 3: "Each signed record carries the call log's head and the run's range of entries, and the zip carries that segment beside the run log's"
 **Issue:** EMB-250
 **Scope:** core
