@@ -1,6 +1,6 @@
 # 185 — Check 6 recomputes the report's call-log claim, and the appendix prints it
 
-**State:** claimed by agent/api/185-check-6-and-the-appendix-read-the-call-log-claim, 2026-11-23 23:22 — paired with core/148, landed together
+**State:** done — check 6 recomputes observed.call_log, appendix prints it; decision 124 amended; 512 tests pass
 **Source:** decision 124 (`decisions/verify-report.md`); `embarch-core/interfaces/signing.md` (`observed.call_log`) and `interfaces/publish.md` (`report-data.json`)
 **Issue:** EMB-265
 **Scope:** api
@@ -59,9 +59,9 @@ parked as `tasks/api/181` (blocked). Leave `open.md` alone if you can.
 
 ## Done when
 
-- [ ] A fixture zip whose `report-data.json` carries the call log's head, range and count passes check 6.
-- [ ] The same zip with the count altered fails check 6, naming the field.
-- [ ] A milestone-1 fixture zip still passes check 6, and its appendix reads "no call log".
-- [ ] The appendix of the fixture publish prints the head, range, count and the Core's-calls sentence.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DOC_DIR` at your doc worktree if a test reads the docs.
-- [ ] Decision 124 amended in place, `interfaces/` updated, `changelog.d/` fragment dropped.
+- [x] A fixture zip whose `report-data.json` carries the call log's head, range and count passes check 6.
+- [x] The same zip with the count altered fails check 6, naming the field.
+- [x] A milestone-1 fixture zip still passes check 6, and its appendix reads "no call log".
+- [x] The appendix of the fixture publish prints the head, range, count and the Core's-calls sentence.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `EMBARCH_DOC_DIR` at your doc worktree if a test reads the docs.
+- [x] Decision 124 amended in place, `interfaces/` updated, `changelog.d/` fragment dropped.
