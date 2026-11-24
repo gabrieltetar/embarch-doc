@@ -11,7 +11,7 @@
 ## Sections
 
 - [Config and discovery](tools-discovery.md) — `list_projects`, `list_targets`, `status`, `versions`
-- [Build and flash](tools-build-flash.md) — `build`, `flash`, `build_and_flash`, `build_each`, `reset`, `mem_read`, `core_state`, `serial_log`, `list_serial_ports`
+- [Build and flash](tools-build-flash.md) — `build`, `flash`, `build_and_flash`, `build_each`, `reset`, `mem_read`, `core_state`, `serial_log`, `list_serial_ports`, `call_log` (Core's call log, [live-log.md](live-log.md))
 - [Bundle](tools-bundle.md) — `bundle`
 - [Bootload](tools-bootload.md) — `bootload`, `build_and_bootload`, `declare_bootload_ports`, `show_bootload_ports`, `clear_bootload_ports`
 - [Studies](studies.md) — `run_study`, `study_status`, `study_watch`, `study_stream_data`, `study_measurements`, `list_study_streams`, `study_stream_load`. (The three fixed-channel aliases `study_power_data`/`study_waveform_data`/`study_gatt_data` were retired 2026-09-11 — `suite/015`, [decisions/study-reads.md](../decisions/study-reads.md) 39. `study_stream_data` is the forwarding address.)
