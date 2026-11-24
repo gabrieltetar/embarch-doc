@@ -1,6 +1,6 @@
 # 020 — A pattern line that changes a question, a signal or a source is replayed on past prompts
 
-**State:** open
+**State:** claimed by agent/promptu/020-a-pattern-line-is-replayed-on-past-prompts, 2026-11-24 02:09
 **Source:** decisions 14 and 47 (`decisions/learning.md`); `embarch-promptu` `docs/contract.md`'s sheet lines; the sheet `week draft` writes (`promptu/017`)
 **Issue:** EMB-281
 **Scope:** promptu
@@ -39,6 +39,13 @@ changes. Where the contract leaves a choice open (which past prompts are
 picked, the cap's default), record it as a fork in `docs/forks.md` on a
 default. If the work needs a new decision, stop and say so in this file and in
 your report.
+
+**Doc size, a dispatch note (supervisor):** no `embarch-promptu` file is in
+reserve. `spec.md` is 7,710 of 10,240 B since `promptu/021` moved its status
+paragraph to `spec/status.md`; put your status edit there, not back in
+`spec.md`. If your work pushes a file into reserve, file
+`tasks/promptu/<NNN>-compact-promptu.md` in the same commit per
+`tasks/README.md`.
 
 ## Done when
 
