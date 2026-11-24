@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core: a run's signed record names its call-log range (`observed.call_log`), and publish writes `call-log-segment.jsonl` beside the run-log segment ([publish](../embarch-core/interfaces/publish.md)).
 - Core releases a bench lease after 30 minutes with no hardware call, whatever client renews it; a renew after it is refused naming the idle release (decision 123).
 - Core chains every call to a lease-gated route, refusals too, into `call-log.jsonl`; answers name their entry; `GET /call-log` reads a range ([decision 122](../embarch-core/decisions/call-log.md)).
 - Core: GET /study/{id}/measurements returns a finished run's measurements.json unchanged, no publish; distinct 404/409/410/422 refusals ([decision 121](../embarch-core/decisions/measurements.md))

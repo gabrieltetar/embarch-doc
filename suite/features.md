@@ -30,6 +30,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `record.dsse.json` — Ed25519-signed DSSE/in-toto record per study run, plus `POST /auth/challenge` (fixed frame, no token) | Shipped — host-tested only; Windows key-file ACL unrun; observed and claimed facts kept apart | unit | 110 |
 | Service environment token passthrough | Shipped | unit | 3 |
 | `GET /call-log` and `call-log.jsonl` — a hash-chained entry for every call to a lease-gated route, refusals and folded repeated reads included; Core's calls only | Built — **host-tested only; no real bench session logged; `board` named by four handlers** | unit | 122 |
+| A run's signed record names its call-log range and head, and publish carries the range's `call-log-segment.jsonl` in the signed manifest | Built — **host-tested only; `embarch-api` `verify` does not yet check it, and a restore of a swept run in `embarch-api` does not yet know the file** | unit | 111, 116 |
 | Serial bridge to dev-bench (`/study*`, `/dev-bench/hello`) | Shipped | hw | 21 |
 | Erase on flash | Shipped — **the brick hazard is closed: no backend maps it to a chip erase** | hw | 32, 36 |
 | Flashing backend per chip family, preferring the board's own runner | Shipped | hw | 36 |
