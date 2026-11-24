@@ -1,6 +1,6 @@
 # 148 — `report-data.json` carries the run's call-log head, range and count
 
-**State:** open
+**State:** claimed by agent/core/148-report-data-carries-the-call-log-claim, 2026-11-23 23:22 — paired with api/185, landed together
 **Source:** decisions 116 and 119 (`decisions/publish.md`); `interfaces/signing.md` (`observed.call_log`) and `interfaces/publish.md` (`report-data.json`)
 **Issue:** EMB-265
 **Scope:** core
