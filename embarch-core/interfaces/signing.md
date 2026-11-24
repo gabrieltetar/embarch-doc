@@ -28,6 +28,7 @@ The Statement: `_type` `https://in-toto.io/Statement/v1`; `subject` `[{name, dig
 | `observed.image_status` | `unverified` in milestone 1 |
 | `observed.declarations` | `{witnessed_since_utc_ms, entries: [{what, name, scope, at_utc_ms}]}`; `what` is `role`, `signal`, `instrument`, `bootload_ports` or `dev_bench_link`, `scope` `agent` or `person` |
 | `observed.behaviours` | `measurements.json`'s `behaviours`, `{}` until it exists |
+| `observed.call_log` | `{prev, head, length, first_seq, last_seq}`: the call log ([call-log.md](call-log.md)) as the run began and ended. `prev` is the head when the run began (the entry before the range; 64 zeros for an empty log), `head` the head when it ended (a pending fold is written first), `length` the log's length then. The range is the entries with `seq` `first_seq` to `last_seq`; both are null when no call was made, and `prev` equals `head`. Absent when the run was sealed with no call log to read, as one recorded before the call log existed (`tasks/core/145`; no `schema` bump) |
 | `claimed.build` | `{commit, dirty, toolchain}` as embarch-api told Core, each null when not sent; `claimed.build` is null when none were |
 
 Verify as any DSSE v1 envelope with the public key whose SHA-256 is `keyid`; then hash each named file and compare. The key file is `signing-key` beside the token files ([embarch-token.md](../../embarch-token.md)).

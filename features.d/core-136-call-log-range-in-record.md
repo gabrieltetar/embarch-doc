@@ -1,0 +1,1 @@
+| A run's signed record names its call-log range and head, and publish carries the range's `call-log-segment.jsonl` in the signed manifest | Built — **host-tested only; `embarch-api` `verify` does not yet check it, and a restore of a swept run in `embarch-api` does not yet know the file** | unit | 111, 116 |

@@ -1,6 +1,6 @@
 # 145 — A run's signed record names its call-log range, and publish carries the segment
 
-**State:** claimed by agent/core/145-a-runs-signed-record-names-its-call-log-range, 2026-11-23 21:00
+**State:** done — predicate names the call-log range; publish carries call-log-segment.jsonl
 **Source:** notes/hil/12-prevention.md — item 3: "Each signed record carries the call log's head and the run's range of entries, and the zip carries that segment beside the run log's"
 **Issue:** EMB-250
 **Scope:** core
@@ -50,16 +50,29 @@ recorded without a new decision, stop and say so in this file and your report.
 
 ## Done when
 
-- [ ] A fixture run's `record.dsse.json` names the call log's head and the run's
+- [x] A fixture run's `record.dsse.json` names the call log's head and the run's
       range, and still verifies with a standard DSSE check.
-- [ ] Publishing it writes `call-log-segment.jsonl`, the signed manifest lists
+- [x] Publishing it writes `call-log-segment.jsonl`, the signed manifest lists
       it, and its entries recompute to the recorded head.
-- [ ] A run with no call in its range publishes an empty segment that names the
+- [x] A run with no call in its range publishes an empty segment that names the
       head.
-- [ ] A zip published with the segment still passes today's `embarch-api
+- [x] A zip published with the segment still passes today's `embarch-api
       verify` (say how you checked; a fixture or reasoning from its checks).
-- [ ] `interfaces/signing.md` and `interfaces/publish.md` name the new fields
+      Checked by reading, no fixture: `verify.rs` check 1 takes every manifest
+      subject present in the zip with a matching hash; check 6 reads
+      `report-data.json` only (untouched); check 8 reads `run-log-segment.jsonl`
+      alone; `publish.rs` `run` zips every manifest subject Core serves.
+- [x] `interfaces/signing.md` and `interfaces/publish.md` name the new fields
       and file.
-- [ ] Gate green (`../../embarch-fleet/protocol.md` §10).
-- [ ] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/protocol.md` §10).
+- [x] `spec.md`/`decisions.md`/`open.md` updated, `changelog.d/` fragment
       dropped, `status.d/` fragment for anything suite-level it made false.
+
+## Notes
+
+- Predicate field: `observed.call_log {prev, head, length, first_seq, last_seq}`, no `schema` bump (additive); absent when the log could not be read at the run's start or end. The end note flushes a pending fold first.
+- Segment: a header line `{"call_log_segment": {prev, head, first_seq, last_seq}}`, then the range's `{entry, hash}` lines. Open choice: the header is mine, the task did not fix the shape.
+- Publish is `409` if the log no longer chains over the recorded range.
+- Decisions amended in place: 111, 116 (publish.md). 110 untouched; fields in `interfaces/signing.md`.
+- **Filed EMB-288 (api):** `restore_from_zip` would PUT `call-log-segment.jsonl`, which Core refuses 422; `CORE_PUBLISH_FILES` needs the name.
+- Hardware-verification debt: none (host-side only).
