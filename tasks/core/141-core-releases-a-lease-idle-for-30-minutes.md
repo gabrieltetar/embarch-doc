@@ -1,6 +1,6 @@
 # 141 — Core releases a lease after 30 minutes with no hardware call
 
-**State:** open
+**State:** claimed by agent/core/141-core-releases-a-lease-idle-for-30-minutes, 2026-11-23 17:21
 **Source:** notes/hil/01-modes.md — "The lease": a Live lease is released at the end or after 30 min with no hardware call, which Core enforces itself whatever client renews
 **Issue:** EMB-251
 **Scope:** core
