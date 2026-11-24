@@ -1,6 +1,6 @@
 # 043 — The desk sets the weekly sheet's feel line through a route that runs `promptu week mark --feel`
 
-**State:** claimed by agent/desk/043-the-desk-sets-the-weekly-sheets-feel-line, 2026-11-24 00:24
+**State:** done — POST /promptu/feel/{week} runs week mark --feel; fake-binary and refusal tests, gate green
 **Source:** decision 65 (`decisions/cockpit.md`, the Desk tab's Promptu section and its four routes, `desk/042`); `embarch-promptu` `docs/contract.md` §10 (`feel`) and §14.4 (`week mark --feel`, which takes no id)
 **Issue:** EMB-283
 **Scope:** desk
@@ -48,8 +48,8 @@ reserve; keep it there.
 
 ## Done when
 
-- [ ] The route is tested against a fake `promptu` on a scratch `PATH`: a good feel runs `week mark --feel` once with the week, a bad feel and a bad week are refused without running it, and no binary is a 503.
-- [ ] No MCP tool reaches the route, and a test says so.
-- [ ] `interfaces.md`'s `/promptu` row and decision 65 name the route.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
-- [ ] `changelog.d/` fragment dropped.
+- [x] The route is tested against a fake `promptu` on a scratch `PATH`: a good feel runs `week mark --feel` once with the week, a bad feel and a bad week are refused without running it, and no binary is a 503.
+- [x] No MCP tool reaches the route, and a test says so.
+- [x] `interfaces.md`'s `/promptu` row and decision 65 name the route.
+- [x] Gate green (`../../embarch-fleet/gate.md`), with `cargo test` and `cargo clippy --all-targets -- -D warnings`.
+- [x] `changelog.d/` fragment dropped.
