@@ -1,6 +1,6 @@
 # 040 — The 💡 linker offers datasheet and spec sections through the atlas
 
-**State:** claimed by agent/chat/040-the-linker-offers-datasheet-and-spec-sections, 2026-11-25 03:56
+**State:** done — chat decision 114: atlas section source, embarchChat.atlasPath, fake-atlas tests
 **Source:** EMB-411 — the 💡 linker cannot offer a datasheet or spec section
 **Issue:** EMB-411
 **Scope:** chat
@@ -61,17 +61,17 @@ constants. If your work pushes a file into reserve, file
 
 ## Done when
 
-- [ ] With a fake `embarch-atlas` (modelled on `test/fake-promptu.mjs`) printing
+- [x] With a fake `embarch-atlas` (modelled on `test/fake-promptu.mjs`) printing
       two documents' sections, "check the protection section of the switch
       datasheet" offers that section, written `<doc_id> p<N> §<id> "<title>"`.
-- [ ] The written text, rendered as prose with that atlas set, is a citation
+- [x] The written text, rendered as prose with that atlas set, is a citation
       link.
-- [ ] No binary, an atlas-less folder, and a failing run each give no section
+- [x] No binary, an atlas-less folder, and a failing run each give no section
       line and one log line.
-- [ ] Two cards calls with no atlas change spawn the verb once.
-- [ ] A draft with no cue word and no part name gets no section line.
-- [ ] The decision says it, with the setting.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `npm ci`, `build`,
+- [x] Two cards calls with no atlas change spawn the verb once.
+- [x] A draft with no cue word and no part name gets no section line.
+- [x] The decision says it, with the setting.
+- [x] Gate green (`../../embarch-fleet/gate.md`): `npm ci`, `build`,
       `typecheck`, `npm test`, `test:webview`.
-- [ ] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
+- [x] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
       `status.d/` fragment for anything suite-level it made false.

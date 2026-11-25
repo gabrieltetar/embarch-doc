@@ -27,6 +27,7 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.continueMessage` | `continue` | What a chat sends on its own at a limit's reset; each chat's menu can change it (109) |
 | `embarchChat.attachOpenFile` | `true` | The open file goes with each message; off, a file goes only with selected lines (60) |
 | `embarchChat.attachSelection` | `true` | The selected lines go with each message; off, `@` still inserts them (60) |
+| `embarchChat.atlasPath` | `embarch-atlas` | The atlas CLI the linker reads sections with, on PATH by default; not found or no atlas, no section line, one log line (114) |
 | `embarchChat.promptuPath` | `promptu` | Promptu's CLI, on PATH by default; not found, the Promptu icon stays dark and Enter sends as before (95, 96) |
 | `embarchUi.host` / `embarchUi.port` | `127.0.0.1` / `4890` | Where `embarch-ui.service` serves, for the launcher's probe (102); also the Desk link, bench-card links and a step's card, study and board links (87) |
 

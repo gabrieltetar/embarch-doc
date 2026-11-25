@@ -1,0 +1,1 @@
+| The 💡 linker offers the atlas's datasheet and spec sections (`embarch-atlas refs`), gated by cue words or a part name, written as a citation head | Built, not installed — **tested on a fake `embarch-atlas` only; not seen against a real atlas** | unit | 114 |
