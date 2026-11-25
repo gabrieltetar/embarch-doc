@@ -1,6 +1,6 @@
 # 162 — A Test run opens a setup window between benches
 
-**State:** open
+**State:** claimed by agent/core/162-a-test-run-opens-a-setup-window-between-benches, 2026-11-25 10:12
 **Source:** EMB-367 — Core does not know a prompt's kind and lets the agent answer any prompt (second half; the kinds are `core/161`)
 **Issue:** EMB-367
 **Scope:** core
