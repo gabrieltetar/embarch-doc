@@ -1,6 +1,6 @@
 # 154 — Core holds the bench's serial ports for a lease's or a study's life
 
-**State:** claimed by agent/core/154-core-holds-the-bench-ports-under-a-lease, 2026-11-25 02:30
+**State:** done — port holder shipped host-side (decision 130); pty-tested; Windows COM and bench verification is a debt
 **Source:** EMB-326 — Core lets go of every serial port between calls, even under a lease
 **Issue:** EMB-326
 **Scope:** core
@@ -57,13 +57,22 @@ No file is in reserve on the size ledger at dispatch.
 
 ## Done when
 
-- [ ] On a Linux pty pair: with a lease taken, a second open of the held port
+- [x] On a Linux pty pair: with a lease taken, a second open of the held port
       fails, and Core's own exchange on it still works through the held handle.
-- [ ] After the release, a second open succeeds.
-- [ ] A study's signed record lists the ports held during it.
-- [ ] Every existing serial test passes.
-- [ ] A hardware-verification debt is left in this file for Windows COM ports
+- [x] After the release, a second open succeeds.
+- [x] A study's signed record lists the ports held during it.
+- [x] Every existing serial test passes.
+- [x] A hardware-verification debt is left in this file for Windows COM ports
       on the bench; a new decision records the holder.
-- [ ] Gate green; the native Windows build stays a debt for the owner;
+- [x] Gate green; the native Windows build stays a debt for the owner;
       `changelog.d/` fragment dropped; `status.d/` fragment for anything
       suite-level it made false.
+
+## Hardware-verification debt
+
+Verify on the bench, with a lease taken, by a second Core (another HTTP port, same user) and by a terminal program:
+
+- On **Windows COM ports** (the service host): a second open of a held signal port and of a held instrument port fails with an access error, and Core's own exchange, instrument call and a study tap on them still work through the held handle. Not measured: a COM port's exclusivity was assumed from the OS.
+- On a real **CDC ACM bench port** (Linux and Windows): holding it across a DUT reset and re-enumeration (a signal port that re-enumerates after `/reset` or `/flash` leaves a stale handle; the hold then keeps an old name until the lease ends, and the new name is adopted on first use). Check that an exchange after a reset still reaches the DUT.
+- That DTR asserted at hold time (the OS does it on open) does not reset a board that a plain open did not.
+- The native Windows build of `embarch-core` is the owner's debt, as ever.

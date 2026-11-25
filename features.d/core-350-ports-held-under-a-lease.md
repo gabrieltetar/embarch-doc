@@ -1,0 +1,1 @@
+| Core holds the declared signal and instrument serial ports for a lease's or a study's life; `observed.ports_held` in the signed record | Shipped — **pty-tested on Linux only; Windows COM ports and a real bench port unverified** | host | 130 |

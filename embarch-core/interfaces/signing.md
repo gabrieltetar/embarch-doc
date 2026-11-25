@@ -27,6 +27,7 @@ The Statement: `_type` `https://in-toto.io/Statement/v1`; `subject` `[{name, dig
 | `observed.provenance` | `events.json`'s `provenance` object (null for a host study) |
 | `observed.image_status` | `unverified` in milestone 1 |
 | `observed.declarations` | `{witnessed_since_utc_ms, entries: [{what, name, scope, at_utc_ms}]}`; `what` is `role`, `signal`, `instrument`, `bootload_ports` or `dev_bench_link`, `scope` `agent` or `person` |
+| `observed.ports_held` | the serial ports Core held when it sealed, sorted names (`[]` when none; decision 130) |
 | `observed.mode` | `service` or `development`: the mode Core ran in (decision 129) |
 | `observed.behaviours` | `measurements.json`'s `behaviours`, `{}` until it exists |
 | `observed.call_log` | `{prev, head, length, first_seq, last_seq}`: the call log ([call-log.md](call-log.md)) as the run began and ended. `prev` is the head when the run began (the entry before the range; 64 zeros for an empty log), `head` the head when it ended (a pending fold is written first), `length` the log's length then. The range is the entries with `seq` `first_seq` to `last_seq`; both are null when no call was made, and `prev` equals `head`. Absent when the run was sealed with no call log to read, as one recorded before the call log existed (`tasks/core/145`; no `schema` bump) |
