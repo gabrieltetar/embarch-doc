@@ -1,6 +1,6 @@
 # 038 — The 💡 linker takes references of any kind
 
-**State:** open
+**State:** claimed by agent/chat/038-the-linker-takes-references-of-any-kind, 2026-11-25 01:59
 **Source:** EMB-408 — the linker only knows issues and PRs, in one hard-coded block
 **Issue:** EMB-408
 **Scope:** chat
