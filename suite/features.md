@@ -335,6 +335,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | One pick decides a window's login for EmbArch Chat and Claude Code's panel, through a file a `claude` wrapper reads; the login item names the account and warns while two logins hold one; a resumed chat keeps the login it started on | Built, not installed — **not seen in a window or with a real panel resume** | unit | 106 |
 | The 💡 linker offers the chat folder's branches and worktrees, gated by cue words or an exact name, a branch with its PR, the chat's own left out | Built, not installed — **tested on scratch repos only; not seen in a window** | unit | 113 |
 | The 💡 linker offers the atlas's datasheet and spec sections (`embarch-atlas refs`), gated by cue words or a part name, written as a citation head | Built, not installed — **tested on a fake `embarch-atlas` only; not seen against a real atlas** | unit | 114 |
+| The 💡 linker offers the desk's Linear projects (`Linear project "<name>" (<url>)`, ungated) and documents (`Linear doc "<title>" (<project>, <url>)`, gated by cue words or a URL), from the mirrored index | Built, not installed — **tested on a made-up index only; not seen against a real workspace** | unit | 117 |
 
 ## Not yet a sub-project
 
