@@ -1,0 +1,1 @@
+| `list-studies [--limit N]` — Core's retained studies, newest first, each with its taps and a flat `encoding_kind`; CLI only, no lease | Built | unit | [studies](../embarch-api/interfaces/studies.md) |

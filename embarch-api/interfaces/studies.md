@@ -21,6 +21,8 @@ MCP tools are `snake_case`, CLI subcommands `kebab-case`, over one implementatio
 
 CLI data subcommands take `[--out <path>]`. **`--out` is how a binary capture gets out intact** — a raw tap's bytes are not text, and the no-`--out` path writes them to stdout untouched. `list-study-streams` marks a short capture on its own row, not a column an eye slides past.
 
+**`list-studies [--limit N]` is a CLI-only read verb** (EMB-405; no MCP tool, a test says so): Core's `GET /studies`, no lease, newest first by `started_utc_ms` (a study with none after those that have one, by id), `--limit` keeping the first N. `--json` is `{success, keep, studies: [{study_id, study_name, status, started_utc_ms, ended_utc_ms, taps, note}]}`; a tap is `{name, encoding, encoding_kind, rendered}`, `encoding_kind` the flat `raw`/`text`/`samples`/`gatt_transcript`/`outpost_trace`/`struct`, and `taps` is null (never empty) where Core could not read them. Shape fixed by `embarch-promptu`'s `docs/contract.md` 15.3.
+
 ## Watching a study live
 
 `study-status --follow` (CLI) and `study_watch` (MCP) are **an addition to polling, never a replacement** — `study_status` with no flag is still one snapshot. Both consume the same client ([decisions](../decisions.md) 48, 49); they differ only in that a CLI user can be handed a stream and an MCP caller cannot.

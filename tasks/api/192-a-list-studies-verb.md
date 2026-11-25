@@ -1,6 +1,6 @@
 # 192 — `embarch-api list-studies` lists Core's retained studies and their taps
 
-**State:** claimed by agent/api/192-a-list-studies-verb, 2026-11-25 01:19
+**State:** done — list-studies verb shipped, gate green
 **Source:** EMB-405 — embarch-api cannot list Core's studies from the command line
 **Issue:** EMB-405
 **Scope:** api
@@ -51,13 +51,17 @@ file. Decision files within 256 B of their limit: `lease` (#90, over),
 
 ## Done when
 
-- [ ] Against a fake Core, `--json list-studies` prints the studies newest
+- [x] Against a fake Core, `--json list-studies` prints the studies newest
       first, each tap with `encoding` and `encoding_kind`.
-- [ ] `--limit 2` prints two; a study with no start time comes after those
+- [x] `--limit 2` prints two; a study with no start time comes after those
       with one.
-- [ ] A study whose taps Core could not read keeps `taps: null`.
-- [ ] An unreachable Core gives the same error shape `list-instruments` gives.
-- [ ] The MCP server registers no `list_studies` tool (a test says so).
-- [ ] `embarch-doc/embarch-api/` says it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] A study whose taps Core could not read keeps `taps: null`.
+- [x] An unreachable Core gives the same error shape `list-instruments` gives.
+- [x] The MCP server registers no `list_studies` tool (a test says so).
+- [x] `embarch-doc/embarch-api/` says it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.
+
+## Notes
+
+`StreamEncoding` has a sixth variant the contract's `encoding_kind` list lacks: `Struct { decoder }`. It prints `encoding_kind: "struct"` (additive). `embarch-promptu`'s contract 15.3 should add `struct` to its list; no decision was needed.
