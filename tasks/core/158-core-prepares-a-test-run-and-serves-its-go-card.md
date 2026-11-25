@@ -1,6 +1,6 @@
 # 158 — Core prepares a Test run and serves its go card
 
-**State:** claimed by agent/core/158-core-prepares-a-test-run-and-serves-its-go-card, 2026-11-25 07:37
+**State:** done — POST /test-runs and the go card served; gate green on Linux, native Windows build a debt
 **Source:** EMB-364 — Core cannot prepare a Test run or render what the go would start
 **Issue:** EMB-364
 **Scope:** core
@@ -76,12 +76,17 @@ study-designer's, and it is in reserve.
 
 ## Done when
 
-- [ ] A fixture `run.json` Core reproduces is registered and its card served;
+- [x] A fixture `run.json` Core reproduces is registered and its card served;
       the same with one limit edited is refused, naming the limit.
-- [ ] The card lists an unconfirmed input, each prompt's kind, each energising
+- [x] The card lists an unconfirmed input, each prompt's kind, each energising
       step and the duration bound.
-- [ ] The nonce is in the card for the person's token only.
-- [ ] A reused `run_id` is refused.
-- [ ] A decision and `interfaces/test-runs.md` give the routes and the card's
+- [x] The nonce is in the card for the person's token only.
+- [x] A reused `run_id` is refused.
+- [x] A decision and `interfaces/test-runs.md` give the routes and the card's
       shape.
-- [ ] Gate green; the native Windows build recorded as a debt.
+- [x] Gate green; the native Windows build recorded as a debt.
+
+## Debts
+
+- **Native Windows build not run** (`embarch-core`): host-side half shipped; the Linux gate is green. Verify with `cargo build` from the main checkout over UNC once landed.
+- **Three gaps, in decision 134's "Not here"**: a study file is not checked against `study.hash`; the benches that exist are assumed from `run.json`; the registered run's hash includes the confirmations at the prepare (EMB-365 decides). Filed as issues where another repo owns the fix.

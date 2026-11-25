@@ -1,0 +1,1 @@
+| Core prepares a Test run — `POST /test-runs` re-expands `run.json` and refuses one it does not reproduce; `GET /test-runs/{run_id}/card` serves the go card, with the go nonce for the person only | Built — **host-side only; no go starts a run yet (EMB-365), a study file is not checked against its hash, and the benches that exist are assumed from `run.json`** | unit | 134 |
