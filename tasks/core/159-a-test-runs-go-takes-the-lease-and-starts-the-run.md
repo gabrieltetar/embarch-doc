@@ -1,6 +1,6 @@
 # 159 — A Test run's go takes the lease and starts the run
 
-**State:** open
+**State:** claimed by agent/core/159-a-test-runs-go-takes-the-lease-and-starts-the-run, 2026-11-25 08:28
 **Source:** EMB-365 — a Test run cannot hold the bench lease or start on the person's go
 **Issue:** EMB-365
 **Scope:** core
