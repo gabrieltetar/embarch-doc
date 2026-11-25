@@ -1,6 +1,6 @@
 # 202 — Read Core's no-measurements refusal by a stable code, not its wording
 
-**State:** open
+**State:** claimed by agent/api/202-read-the-no-measurements-refusal-by-a-stable-code, 2026-11-25 13:46
 **Source:** EMB-553 — Core's measurements route still refuses a host study that now has measurements (the `embarch-api` half; `core/164` is Core's)
 **Issue:** EMB-553
 **Scope:** api
