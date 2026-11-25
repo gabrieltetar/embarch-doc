@@ -171,6 +171,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The shared crate reads a PDF's text back for `verify` check 4: pages, glyph runs through ToUnicode, NFKC, lines and words, and the number grammar for extracted and source text | Built, **hand-assembled fixture PDFs only, no Typst-rendered PDF read yet**; behind feature `pdf-text`; no consumer calls it yet | host | 101, 102, 103 |
 | The shared crate reduces a hex, ELF or bin image to its load segments (address, length, SHA-256) and an identity, and fixes the shape of `bench-firmware.json`, so a readback and the released list compare one definition | Built, **host tests against a small objcopy-made hex/ELF fixture**; behind feature `hil-image`; nothing calls it yet | host | 90 |
 | The shared crate has JSON types for a HIL test, a suite manifest and a plan, the definition hash a confirmation binds (RFC 8785) and the diff of a derived test against its premade one | Built, **fixtures only; no consumer, no premade suite yet**; behind feature `hil-test` | host | 109 |
+| `run.json` expansion: a selection becomes the resolved run (statuses, templates per capability value, capability checks first, bench order, the canonical hash and a duration bound) in one pure function Core and embarch-api share | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 111 |
 
 ## embarch-outpost
 

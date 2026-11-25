@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- study-designer: `hil_expand::expand` turns a test selection into the resolved `run.json` plus a selection record, behind `hil-test` ([decision 111](../embarch-study-designer/decisions/hil-tests.md)).
 - The shared crate's `hil_check::check_test` refuses a HIL test at definition and returns every refusal; `energises` is public (decision 110, EMB-354).
 - HIL test, suite manifest and plan types, a canonical (RFC 8785) definition hash and a derived-test diff, behind `hil-test` ([hil-tests](../embarch-study-designer/interfaces/hil-tests.md)).
 - A host step may read one number from its reply (`parse`, `parse_step_number`), and a prompt says its kind (`setup`, `action`, `observation`, `clearance`); decision 108, host v25.
