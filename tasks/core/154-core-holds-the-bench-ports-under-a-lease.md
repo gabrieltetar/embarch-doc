@@ -1,6 +1,6 @@
 # 154 — Core holds the bench's serial ports for a lease's or a study's life
 
-**State:** open
+**State:** claimed by agent/core/154-core-holds-the-bench-ports-under-a-lease, 2026-11-25 02:30
 **Source:** EMB-326 — Core lets go of every serial port between calls, even under a lease
 **Issue:** EMB-326
 **Scope:** core
