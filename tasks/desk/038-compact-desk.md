@@ -1,6 +1,6 @@
 # 038 — `embarch-desk/spec.md` is in reserve
 
-**State:** claimed by agent/desk/038-compact-desk, 2026-11-25 01:03 — unparked for the verbatim split its What names
+**State:** done — moved §1 desks and knowledge paragraphs and §3 body verbatim to spec/desks-knowledge-interfaces.md; spec.md 9225 to 7795 B
 **Source:** desk 037 (EMB-165) added the draft-revision tools to `spec.md`, leaving it at 9,186 of 10,240 B (1,054 B left). On 2026-11-23 the owner's archive route took `interfaces.md` into reserve too, at 14,073 of 15,360 B; its HTTP surface is in flux with the rest.
 **Scope:** desk
 **Hardware:** none
@@ -29,6 +29,6 @@ paid it in its own unit, moving two route rows verbatim into
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/spec.md`.
-- [ ] Moved text is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-desk/spec.md`.
+- [x] Moved text is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
