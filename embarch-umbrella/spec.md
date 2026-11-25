@@ -48,17 +48,7 @@ Not:
 
 ## Command surface
 
-| Command | Scope | Behaviour |
-|---|---|---|
-| `embarch setup` | once per machine | Detect topology, install Core as a service, ensure the token file exists, copy all three binaries to the canonical per-user location and put it on `PATH`, **run `embarch-desk service install` and `claude plugin install embarch-desk@embarch` when the desk is located, each skipped by name when not (decision 58)**, record the class and the Windows-side Core path, then point at `embarch status` and `embarch init` as next steps — it does not run `doctor` itself. `--uninstall` reverses it (the desk's two steps included) and exits `1` if any step failed; **`--dry-run` prints the whole plan and changes nothing** (decision 21); `--dev-bench-repo` records the checkout check 13 compares against |
-| `embarch init` | once per firmware repo | Scaffold the repo's `embarch/` config, install the `embarch-hil` skill at `.claude/skills/embarch-hil/` (decision 59), exclude both locally, register the MCP server, then point at `embarch status` and the first `embarch-api build` as next steps — it does not run `doctor` itself. **An inferred board is never written as fact, and several recorded builds are all named rather than one picked** (decision 41). **On a repo whose config exists it installs only the skill and exclude entries it lacks, leaves the config unread and untouched, and exits `0` (decision 60).** `--uninstall` reverses all of it, and `--dry-run` prints the plan and writes nothing; committing the integration for a team is a follow-on step it does not take (decision 12) |
-| `embarch doctor` | anytime | The full check chain. `--json`, carrying `schema_version`. **Nothing in it deletes anything** — `--prune` is unbuilt (decision 26, [prune-policy](decisions/prune-policy.md)) |
-| `embarch status` | anytime, cheap | Is Core up, which class, how many probes — the latter needs a second, authenticated `GET /status`, and no-token/unauthorized/unreachable are reported as themselves, never as a probe count of `0` (decision 46). `--json`, carrying `schema_version` and `success` |
-| `embarch up` / `down` | fallback | Installed service first; foreground Core only with `--foreground` |
-| `embarch deploy-core` | WSL2 → Windows service, during development | Sync, build natively, stop/copy/start under one elevation, **verify the binary changed**. `--dry-run`, `--print-script`, and overrides for every probed or saved path |
-| `embarch verify-release [DIR]` | before installing a suite release | Offline check that the unpacked folder (default: the running binary's own) is what the release workflow signed: the manifest's Sigstore bundle under one exact identity and issuer, then every listed file's SHA-256. Fetches nothing; `--refresh-trust-root` alone does. Exit `0` only when everything checked. [interfaces/verify-release.md](interfaces/verify-release.md); [proposal](../embarch-release-signing-proposal.md) step 3, EMB-192 |
-
-Exit codes follow `embarch-api`'s convention: `0` success, `1` failure with the message on stderr (or folded into the JSON object under `--json`), `2` a malformed invocation.
+The command table (`setup`, `init`, `doctor`, `status`, `up`/`down`, `deploy-core`, `verify-release`) and the exit-code convention: [spec/commands.md](spec/commands.md).
 
 ## The `embarch` plugin marketplace
 

@@ -1,6 +1,6 @@
 # 107 — `embarch-umbrella/spec.md` is in reserve
 
-**State:** claimed by agent/umbrella/107-compact-umbrella, 2026-11-25 01:04 — unparked for the verbatim split its What names
+**State:** done — command table moved verbatim to spec/commands.md
 **Source:** umbrella 106 (EMB-299) added the `schema_version` contract to `spec.md`, leaving it at 9,161 of 10,240 B; umbrella 109 (EMB-344) added one sentence naming the release script, leaving 9,272 B (968 B left).
 **Scope:** umbrella
 **Hardware:** none
@@ -25,6 +25,6 @@ Bring `spec.md` out of reserve by moving the longest sections into a topic file 
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-umbrella/spec.md`.
-- [ ] Moved text is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-umbrella/spec.md`.
+- [x] Moved text is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
