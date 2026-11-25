@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The chat's 💡 linker offers the chat folder's branches and worktrees (with the PR on a branch) when a draft says rebase, branch, worktree or names one; the chat's own is left out (chat 113).
 - Clicking the Promptu card's weekly line opens the waiting sheet in a new chat with the review skill typed, or runs the weekly pass now, never twice at once (decision 95).
 - The chat's Promptu card shows the weekly pass in one line (last run, next run, waiting sheet), and the icon is dotted while a sheet waits or a run was missed (embarch-chat 95, EMB-85).
 - The wire probe (tools/wire-probe.mjs) asks the live claude one question and prints every reply line with its time; --list reads a fixture; interfaces/wire-probe.md.

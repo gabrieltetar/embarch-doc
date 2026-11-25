@@ -306,6 +306,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | An agent hands its chat to a fresh session in the same panel: `handoff(prompt)` on the panel's own MCP server, as an editable card (Continue / Stay), immediate, or off | Built, not installed — **not seen in a live panel or with a real `claude` calling the tool** | unit | 103 |
 | A Done or Canceled issue ends its chat: the message on top, one Close window button, input closed for good across a reload; an unfinished issue lists its blockers with Finish | Shipped host-side against the desk's contract; waits on `embarch-desk` 025 to send it | unit | 104 |
 | One pick decides a window's login for EmbArch Chat and Claude Code's panel, through a file a `claude` wrapper reads; the login item names the account and warns while two logins hold one; a resumed chat keeps the login it started on | Built, not installed — **not seen in a window or with a real panel resume** | unit | 106 |
+| The 💡 linker offers the chat folder's branches and worktrees, gated by cue words or an exact name, a branch with its PR, the chat's own left out | Built, not installed — **tested on scratch repos only; not seen in a window** | unit | 113 |
 
 ## Not yet a sub-project
 
