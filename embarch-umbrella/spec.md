@@ -20,7 +20,7 @@ Not:
 ## Shape
 
 ```
-        setup / init / doctor / status / up / down / deploy-core / verify-release
+        setup / init / doctor / status / up / down / deploy-core / verify-release / install-core
                               |
                            embarch
                     /         |          \
@@ -48,7 +48,7 @@ Not:
 
 ## Command surface
 
-The command table (`setup`, `init`, `doctor`, `status`, `up`/`down`, `deploy-core`, `verify-release`) and the exit-code convention: [spec/commands.md](spec/commands.md).
+The command table (`setup`, `init`, `doctor`, `status`, `up`/`down`, `deploy-core`, `verify-release`, `install-core`) and the exit-code convention: [spec/commands.md](spec/commands.md).
 
 ## The `embarch` plugin marketplace
 

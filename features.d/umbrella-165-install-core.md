@@ -1,0 +1,1 @@
+| `embarch install-core` — verifies a signed release in an admin-only staging folder, refuses an older suite, records what it installed | Built — **the elevation, the service registration and the binary install from staging are later units; tested with a fake verifier, the Windows ACL step never run** | unit | 61 |

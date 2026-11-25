@@ -1,6 +1,6 @@
 # 110 — `embarch install-core` verifies a signed release before it installs
 
-**State:** claimed by agent/umbrella/110-install-core-verifies-a-signed-release-first, 2026-11-25 01:59
+**State:** done — install-core verifies in admin-only staging, downgrade rule, record; decision 61
 **Source:** EMB-338 — no install verifies a signed release before installing Core
 **Issue:** EMB-338
 **Scope:** umbrella
@@ -59,14 +59,20 @@ No file is in reserve on the size ledger at dispatch.
 
 ## Done when
 
-- [ ] With a fake verifier, a passing release writes the record with every
+- [x] With a fake verifier, a passing release writes the record with every
       field; a failing one writes nothing.
-- [ ] An older suite version is refused; with `--allow-downgrade` it is
+- [x] An older suite version is refused; with `--allow-downgrade` it is
       written and the record says so.
-- [ ] `--dry-run` prints the plan and touches nothing.
-- [ ] Windows-gated code, if any, type-checks with
+- [x] `--dry-run` prints the plan and touches nothing.
+- [x] Windows-gated code, if any, type-checks with
       `cargo check --target x86_64-pc-windows-msvc`
       (`embarch-dev-workflow.md` §4).
-- [ ] A new decision; `interfaces/install-core.md` gives the record's shape.
-- [ ] Gate green; `changelog.d/` fragment dropped; `status.d/` fragment for
+- [x] A new decision; `interfaces/install-core.md` gives the record's shape.
+- [x] Gate green; `changelog.d/` fragment dropped; `status.d/` fragment for
       anything suite-level it made false.
+
+## Notes (worker)
+
+- Built `src/install_core.rs` (`install_core_elevated` takes folders, a verifier closure and the time; 12 tests). Decision 61 in `decisions/install-core.md`; record in `interfaces/install-core.md`.
+- **Windows type-check debt:** `cargo check --target x86_64-pc-windows-msvc` fails in `aws-lc-sys`'s C build (the known WSL limit), so the one `cfg(windows)` block (`icacls`) was type-checked in a throwaway crate only. Recorded in `open.md`.
+- Archive input shells out to `tar`; self-elevation is not built (caller must hold the privilege).
