@@ -1,6 +1,6 @@
 # 122 — A running study has a cancel button in the UI
 
-**State:** claimed by agent/ui/122-a-running-study-has-a-cancel-button-in-the-ui, 2026-11-25 10:12
+**State:** done — Cancel button on a running study; POST /api/live/cancel relays cancel_study and passes Core refusals on; host-tested against a stub Core (decision 109)
 **Source:** EMB-487 — no tool or button cancels a running study (the UI half; the tool is `api/198`)
 **Issue:** EMB-487
 **Scope:** ui
@@ -32,7 +32,7 @@ study's view. If your work pushes any file into reserve, file
 
 ## Done when
 
-- [ ] Against a fake Core, the button's route cancels a running study and the
+- [x] Against a fake Core, the button's route cancels a running study and the
       view shows its end.
-- [ ] A refused cancel shows Core's reason.
-- [ ] Gate green.
+- [x] A refused cancel shows Core's reason.
+- [x] Gate green.

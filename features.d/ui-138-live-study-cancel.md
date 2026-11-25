@@ -1,0 +1,1 @@
+| Live Study: Cancel button on a running study, relaying to Core's cancel route and showing Core's refusal | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 109 |
