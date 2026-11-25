@@ -10,7 +10,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 **A work cockpit's backend: the work item, and the connectors that fill it.** A work item is an EmbArch object — usually one Linear issue — that joins the issue to its GitHub PRs, the Claude Code sessions that worked on it, its bench activity and its time ([decision 6](decisions.md)). None of the four services holds that join; the desk does.
 
-**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a card row atop the Desk tab: every desk's waiting tiles, past weeks' behind a button ([decisions 10, 57, 76](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
+**Time captures itself and reaches Harvest only on a ✓.** A Claude Code plugin's hooks report session events; each work item gets one tile per day, and the user sends it (✓) or drops it (✕) from the hand, a card row atop the Desk tab: every desk's waiting tiles, past weeks' behind a button ([decisions 10, 57, 76](decisions.md)). An earlier tile can fold into a later one of its item, sent as one entry (58); part of a tile's hours, with lines, can move to another item's tile on the same day (92). The entry links the item's Linear issue, as Linear's own Harvest integration does (63).
 
 **Suite desks and worktrees** (decisions 70, 80, 82, 91): Start work makes a folder per issue with worktrees and symlinks, opens it as one multi-root window, writes `ZEPHYR_MODULES` for west projects, and `GET /desks` flags a login lacking `embarch-api`: [spec/suite-desk.md](spec/suite-desk.md).
 
@@ -24,6 +24,7 @@ What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.
 
 - **A tile proposes only what Harvest doesn't already hold** for its item that day (41), and **one with nothing left to propose closes itself** unless a person typed its hours (`null` clears them; ✓'s own hours never count, 61) — computed, so it opens again if the entries go (57).
 - **Time after a ✓ comes back** as a continuation of its entry (64).
+- **A move between items keeps the day's total**: the two tiles' typed hours sum to what they proposed before, both stay open for ✓, and a sent, discarded or folded tile takes no part (92).
 - **A folded tile carries only what it proposed**, and goes to history with its target, never before (58). A fold goes only to a later real day; a folded row reports the hours it carried, and ✓ without a note sends the folded lines too (60).
 - **Time is session-open time** — a session's first event to its last, idle gaps included — kept as spans per (session, work item, local day). **A gap over 8 hours ends a span** instead of counting ([decision 23](decisions.md)). Activity across midnight splits at midnight. A tile's seconds are the plain sum of its spans: parallel sessions both count in full.
 - **A session under an ignored path makes no time and is never asked.** EmbArch's own repos are on the owner's list, which is also what keeps the agent fleet out ([decision 12](decisions.md)).
