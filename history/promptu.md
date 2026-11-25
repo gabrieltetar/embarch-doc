@@ -22,6 +22,7 @@
 - Promptu's pass accepts the chat's context usage (prep --context-usage) and names a way in Who does it for high-context work, footer way=; see contract §7.10.
 
 ### Changed
+- promptu open.md: steps 1 to 3 bullets moved verbatim to open/steps-1-3.md, out of reserve.
 - The weekly sheet now lists all five decision-15 numbers (null when no data), a non-Promptu control on the friction pair, and the feel line, read-only, at the top of sheet.md.
 - Promptu's decisions 22, 23 and 25 to 28 moved verbatim from decisions/patterns.md to decisions/questions.md, bringing patterns.md out of reserve.
 - Split promptu spec.md: build steps 2 and 3 moved verbatim to spec/build-steps.md, 9,563 to 6,949 B ([spec](../embarch-promptu/spec.md)).
