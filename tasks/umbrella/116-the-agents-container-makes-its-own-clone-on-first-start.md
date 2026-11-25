@@ -1,6 +1,6 @@
 # 116 — The agent's container makes its own clone on first start
 
-**State:** open
+**State:** claimed by agent/umbrella/116-the-agents-container-makes-its-own-clone-on-first-start, 2026-11-25 09:19
 **Source:** EMB-451 — the agent's container has no clone of its own on first start
 **Issue:** EMB-451
 **Scope:** umbrella
