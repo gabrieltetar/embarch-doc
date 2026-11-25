@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch install-core` verifies a signed suite release in an admin-only staging folder, refuses a downgrade, and writes installed-release.json (decision 61).
 - Umbrella gains scripts/cut-release.py: a dry-run-by-default script that tags changed components, tags the suite, and verifies the release; see interfaces/cut-release.md.
 - Umbrella verify-release also checks the certificate's source repository, ref and build config extensions as exact strings ([interface](../embarch-umbrella/interfaces/verify-release.md)).
 - `embarch init` on a repo whose config exists now installs the missing skill and exclude entries, leaves the config alone and exits 0 (umbrella decision 60).
