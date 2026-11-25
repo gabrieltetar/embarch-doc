@@ -1,6 +1,6 @@
 # 202 — Read Core's no-measurements refusal by a stable code, not its wording
 
-**State:** claimed by agent/api/202-read-the-no-measurements-refusal-by-a-stable-code, 2026-11-25 13:46
+**State:** done — The refusal is read by status or code, never wording; tool text and test updated.
 **Source:** EMB-553 — Core's measurements route still refuses a host study that now has measurements (the `embarch-api` half; `core/164` is Core's)
 **Issue:** EMB-553
 **Scope:** api
@@ -44,10 +44,10 @@ reserve (`tasks/api/201`, blocked, `In flux: yes`): do not write it in this unit
 
 ## Done when
 
-- [ ] A `422` with `code: "no_measurements"` and any message is explained as
+- [x] A `422` with `code: "no_measurements"` and any message is explained as
       no-measurements.
-- [ ] A `422` with no `code` (an older Core) is still explained as
+- [x] A `422` with no `code` (an older Core) is still explained as
       no-measurements.
-- [ ] No test or code path matches Core's message text.
-- [ ] The tool's text no longer says a host study has no measurements.
-- [ ] Gate green, the client crate included.
+- [x] No test or code path matches Core's message text.
+- [x] The tool's text no longer says a host study has no measurements.
+- [x] Gate green, the client crate included.
