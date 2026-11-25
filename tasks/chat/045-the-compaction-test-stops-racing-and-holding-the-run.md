@@ -1,6 +1,6 @@
 # 045 — The compaction test stops racing, and a failed one stops holding the run
 
-**State:** open
+**State:** claimed by agent/chat/045-the-compaction-test-stops-racing-and-holding-the-run, 2026-11-25 13:46
 **Source:** EMB-556 — a compaction test races under load and then holds npm test for ten minutes
 **Issue:** EMB-556
 **Scope:** chat
