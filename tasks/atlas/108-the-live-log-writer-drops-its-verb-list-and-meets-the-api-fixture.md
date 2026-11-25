@@ -1,6 +1,6 @@
 # 108 — The live-log writer drops its verb list and meets the api's fixture
 
-**State:** claimed by agent/atlas/108-the-live-log-writer-drops-its-verb-list-and-meets-the-api-fixture, 2026-11-25 00:40
+**State:** done — UNGATED removed (core_calls decides); the api's 19 fixture cases run through livelog.py in tests/test_livelog.py
 **Source:** EMB-319 — the atlas live-log writer keeps a verb list the api output already answers
 **Issue:** EMB-319
 **Scope:** atlas
@@ -38,8 +38,8 @@ decision or `design.md` paragraph in place where it names `UNGATED`.
 
 ## Done when
 
-- [ ] `UNGATED` is gone and a test shows a lease-free verb writes no line.
-- [ ] A pytest runs `api/191`'s cases through `livelog.py` and fails on a
+- [x] `UNGATED` is gone and a test shows a lease-free verb writes no line.
+- [x] A pytest runs `api/191`'s cases through `livelog.py` and fails on a
       difference in a shared field.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.
