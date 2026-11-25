@@ -1,0 +1,1 @@
+| `person_writer` — a confined writer for the person's `embarch/` (fixed kinds and names, no link followed, atomic by rename, runs nothing) | Built; no caller yet, Windows branch not built | unit | 132 |
