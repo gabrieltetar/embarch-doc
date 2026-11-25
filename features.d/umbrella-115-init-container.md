@@ -1,0 +1,1 @@
+| `embarch init --container` — the agent's container definition and exchange folder outside the repo, and a registry of repos | Shipped — **host side only; no image built, no container started** | local | 65 |

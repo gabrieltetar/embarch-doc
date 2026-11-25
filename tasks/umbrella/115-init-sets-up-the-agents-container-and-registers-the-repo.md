@@ -1,6 +1,6 @@
 # 115 — `init` sets up the agent's container and registers the repo
 
-**State:** claimed by agent/umbrella/115-init-sets-up-the-agents-container-and-registers-the-repo, 2026-11-25 08:28
+**State:** done — init registers repos and sets up the container folders; decision 65
 **Source:** EMB-447 — `embarch init` cannot set up the agent's container outside the repo
 **Issue:** EMB-447
 **Scope:** umbrella
@@ -82,12 +82,17 @@ their limit, do not grow:** `prune-policy.md` 26 (19 B left), `deploy.md` 32
 
 ## Done when
 
-- [ ] On a temp repo with a temp home, `init --container` writes every listed
+- [x] On a temp repo with a temp home, `init --container` writes every listed
       file and folder, and `git status --porcelain` in the repo is empty after.
-- [ ] State lists the repo with and without `--container`; a state file
+- [x] State lists the repo with and without `--container`; a state file
       without the field loads.
-- [ ] `--uninstall` removes the state entry and, only after a typed yes, the
+- [x] `--uninstall` removes the state entry and, only after a typed yes, the
       folders.
-- [ ] `--dry-run` writes nothing and names every path.
-- [ ] A new decision in `projects.md`.
-- [ ] Gate green.
+- [x] `--dry-run` writes nothing and names every path.
+- [x] A new decision in `projects.md`.
+- [x] Gate green.
+
+## Debts
+
+- **Native Windows, unrun:** `embarch init --container` was tested on Linux against a temp home; the `%APPDATA%` / `%LOCALAPPDATA%` folders are covered only by the pure resolver's test. Run it once on native Windows with a throwaway repo.
+- **`west list` never run against a real west workspace:** `west_mounts` parses the format from memory (decision 64).
