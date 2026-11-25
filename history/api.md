@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A shared fixture, `embarch-api/tests/fixtures/live-log/`, pins the five rules both live-log writers follow; a Rust test runs every case ([live-log](../embarch-api/interfaces/live-log.md)).
 - `declare_instrument` and `declare_signal` (and their verbs) take `safe_off`; a re-declare that omits it keeps the stored one. [decision 97](../embarch-api/decisions/instruments.md)
 - Each call that reaches a lease-gated route appends a line to the firmware repo's embarch/live/ log, citing Core's call-log entry; call_log reads entries back (EMB-255).
 - `study_measurements` tool and `study-measurements` subcommand read a finished run's measurements.json before publish, naming Core's four refusals; see embarch-api/interfaces/studies.md.

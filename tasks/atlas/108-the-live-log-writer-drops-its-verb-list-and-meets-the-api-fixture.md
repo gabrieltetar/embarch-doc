@@ -1,7 +1,6 @@
 # 108 — The live-log writer drops its verb list and meets the api's fixture
 
-**State:** blocked — waits on `api/191`'s shared fixture
-**Unparks when:** `api/191` lands its `tests/fixtures/live-log/` cases on `embarch-api`'s `main`.
+**State:** open — `api/191`'s 19 cases landed in `embarch-api/tests/fixtures/live-log/` at `c254d15`, described in `embarch-doc/embarch-api/interfaces/live-log.md` "The shared fixture"
 **Source:** EMB-319 — the atlas live-log writer keeps a verb list the api output already answers
 **Issue:** EMB-319
 **Scope:** atlas
