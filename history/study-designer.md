@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- study-designer: `judge_run`, `judge_test`, `skip` turn a test's records into its verdict, one function for Core and `verify` (decision 112).
 - study-designer: `hil_expand::expand` turns a test selection into the resolved `run.json` plus a selection record, behind `hil-test` ([decision 111](../embarch-study-designer/decisions/hil-tests.md)).
 - The shared crate's `hil_check::check_test` refuses a HIL test at definition and returns every refusal; `energises` is public (decision 110, EMB-354).
 - HIL test, suite manifest and plan types, a canonical (RFC 8785) definition hash and a derived-test diff, behind `hil-test` ([hil-tests](../embarch-study-designer/interfaces/hil-tests.md)).

@@ -60,6 +60,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core's service store and development store (`run --service`, `run --store <dir>`); `/status` and the challenge report `mode` and `keyid` | Shipped — **host tests only; the store's ACL is the elevated install's job and nothing ran on Windows** | host | 129 |
 | Core holds the declared signal and instrument serial ports for a lease's or a study's life; `observed.ports_held` in the signed record | Shipped — **pty-tested on Linux only; Windows COM ports and a real bench port unverified** | host | 130 |
 | Core keeps HIL test definitions by hash, premade suites and confirmations — `POST /definitions`, `GET /suites`, `/confirmations/*`; the card and the post are the person's on every Core | Built — **host-side only; the checkout layout is assumed, and no run or go consumes a confirmation yet (EMB-364)** | unit | 133 |
+| Core prepares a Test run — `POST /test-runs` re-expands `run.json` and refuses one it does not reproduce; `GET /test-runs/{run_id}/card` serves the go card, with the go nonce for the person only | Built — **host-side only; no go starts a run yet (EMB-365), a study file is not checked against its hash, and the benches that exist are assumed from `run.json`** | unit | 134 |
 
 ## embarch-api
 
@@ -173,6 +174,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The shared crate reduces a hex, ELF or bin image to its load segments (address, length, SHA-256) and an identity, and fixes the shape of `bench-firmware.json`, so a readback and the released list compare one definition | Built, **host tests against a small objcopy-made hex/ELF fixture**; behind feature `hil-image`; nothing calls it yet | host | 90 |
 | The shared crate has JSON types for a HIL test, a suite manifest and a plan, the definition hash a confirmation binds (RFC 8785) and the diff of a derived test against its premade one | Built, **fixtures only; no consumer, no premade suite yet**; behind feature `hil-test` | host | 109 |
 | `run.json` expansion: a selection becomes the resolved run (statuses, templates per capability value, capability checks first, bench order, the canonical hash and a duration bound) in one pure function Core and embarch-api share | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 111 |
+| Test verdict composition: `judge_run`, `judge_test` and `skip` turn a run's step outcomes and measurements into one verdict with qualifiers, the one function Core and `verify` share | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 112 |
 
 ## embarch-outpost
 
@@ -239,6 +241,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `scripts/cut-release.py` — dry-run-by-default script that tags changed components, tags the suite, waits on CI, verifies the download and prints the install line | Built — **tested against a fake runner only; never run on a real tag** | unit | 14 |
 | `embarch install-core` — verifies a signed release in an admin-only staging folder, refuses an older suite, records what it installed | Built — **the elevation, the service registration and the binary install from staging are later units; tested with a fake verifier, the Windows ACL step never run** | unit | 61 |
 | `src/agent.rs`: pure renderers for the agent container (mounts, hardening, `container.toml`) | Built, unused — **no container was ever started; `docker-desktop` and `macos` are unverified** | no | 62 |
+| `src/agent.rs`: `render_containerfile` and `west_mounts` for the agent's image — **no image was ever built; SDK URL, package list and `west list` format are from memory** | Built, unused | no | 64 |
 
 ## embarch-ui
 
