@@ -17,6 +17,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Study structure and execution](decisions/study.md) — steps, failure, the fuzzing loop | 9, 13, 14, 16, 29, 42, 51, 80 |
 | [Host-run repeat and line counts](decisions/host-repeat.md) — a loop and a per-pass count with no verdict, and why no schema bump | 86 |
 | [A prompt that names a bench configuration](decisions/host-prompt.md) — a name only, forwarded by Core and resolved by whoever shows the prompt | 88 |
+| [A host step's number and a prompt's kind](decisions/host-parse.md) — `parse` on a step, `parse_step_number`, and who may answer a prompt | 108 |
 | [Streams: one generic capture pipeline](decisions/streams.md) — four near-identical paths become one | 11, 20, 21, 27, 39, 82 |
 | [Declared payload meaning](decisions/payload-meaning.md) — where a byte acquires a meaning | 52, 55, 70, 71 |
 | [GATT discovery and monitoring](decisions/gatt.md) — walking a table, windows | 31, 32, 36, 53, 83, 89 |

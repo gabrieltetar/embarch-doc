@@ -6,7 +6,7 @@
 
 ## What is built, and the API `verify` calls
 
-Behind the `pdf-text` feature (off by default; `embarch-api` turns it on for check 4), two modules, both host-only:
+Behind the `pdf-text` feature (off by default; `embarch-api` turns it on for check 4), two modules, both host-only (`number_grammar` behind `std` since decision 108, for a host step's parse):
 
 - **`pdf_text`**: `extract_pages(&[u8]) -> Result<Vec<Page>, ExtractError>` (`Page { number, runs }`, `GlyphRun { text, x, y, size, x_end }`; `ExtractError::Unmapped { page, .. }` displays as "unextractable text on page N"), and `words(&Page) -> Vec<Word>` (the line and word thresholds, constants `LINE_BREAK_Y_SIZE`, `WORD_GAP_SIZE`, `DEFAULT_GLYPH_WIDTH_EM`, the last two assumed).
 - **`number_grammar`**: `numbers_in_word(word, &HashSet<String>)` (the opaque-word rule, then the tokens), `numbers_in_text(text, opaque)` for the prose files and `report.typ`, `tokens(word)`, `is_opaque`; a `NumberToken { text, start, value: Decimal, sig_digits, decimals }`.

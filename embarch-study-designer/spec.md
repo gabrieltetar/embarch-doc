@@ -37,7 +37,7 @@ Three consumers in two languages: two Cargo dependents, and dev-bench, which lin
 | Feature | Brings | Who uses it |
 |---|---|---|
 | *(default, `no_std`)* | the wire types, CRC sealing, canonical row rendering, tap validation | everyone (no firmware links it today) |
-| `std` / `alloc` | heap-backed `steps` and result containers; the host-run study types (`HostStudy`, decision 80; `Repeat` and `LineCount`, decision 86; a prompt's `bench_config`, decision 88; JSON only). `std` also pulls `regex` to compile a count pattern | the two host crates |
+| `std` / `alloc` | heap-backed `steps` and result containers; the host-run study types (`HostStudy`, decision 80; `Repeat` and `LineCount`, decision 86; a prompt's `bench_config`, decision 88; a step's `parse` and a prompt's `kind`, decision 108; JSON only). `std` also pulls `regex` to compile a count or parse pattern, and carries `number_grammar`; with `reducers`, `parse_step_number` | the two host crates |
 | `gatt-extract` | the repo-walking GATT extractor (needs `regex`, `ignore`) | an authoring-time binary |
 | `eap-parse` | the `.eap` parser and a host-side **reference** interpreter | authoring, and pinning the semantics C must match |
 | `study-ui` | table-authoring types, the study builder, and the custom-action registry | `embarch-ui` |

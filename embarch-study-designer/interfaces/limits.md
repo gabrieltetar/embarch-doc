@@ -69,5 +69,6 @@ Host-only, never on the dev-bench wire; all **[assumed]**, from one 49-step fiel
 | `MAX_HOST_EXPANDED_STEPS` | 512 | passes times inner steps |
 | `MAX_HOST_VALUE_LEN` | 32 | one `values` entry, bytes |
 | `MAX_HOST_LINE_COUNTS` | 32 | `HostStudy.line_counts` |
-| `MAX_HOST_PATTERN_LEN` | 256 | `LineCount.pattern`, bytes |
+| `MAX_HOST_PATTERN_LEN` | 256 | `LineCount.pattern`, `StepParse.pattern` (decision 108), bytes |
+| `MAX_HOST_PROMPT_ANSWERS` | 16 | an observation prompt's `answers` (decision 108) |
 
