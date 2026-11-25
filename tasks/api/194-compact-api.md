@@ -1,6 +1,6 @@
 # 194 — compact `embarch-api/open.md`
 
-**State:** claimed by agent/api/194-compact-api, 2026-11-25 03:54
+**State:** done — open.md 4,292 to 3,779 B by verbatim split: live-log debt to open/bench-verification.md, Windows smoke-harness gap to open/unmeasured-details.md
 **Scope:** api
 **Hardware:** none
 **Owner:** no
@@ -15,4 +15,4 @@
 
 ## Done when
 
-- [ ] `open.md` is out of reserve and every `Must not delete:` line survives.
+- [x] `open.md` is out of reserve and every `Must not delete:` line survives.
