@@ -1,6 +1,6 @@
 # 039 — The 💡 linker offers local branches and worktrees
 
-**State:** open
+**State:** claimed by agent/chat/039-the-linker-offers-branches-and-worktrees, 2026-11-25 02:47
 **Source:** EMB-410 — the 💡 linker cannot offer a branch or a worktree
 **Issue:** EMB-410
 **Scope:** chat
