@@ -1,0 +1,1 @@
+| Core client methods for the confirmation routes (`pending_confirmations`, `confirmation_card`, `confirm`) — the engineer's confirmation card calls them; deliberately no MCP tool | Built; mock Core only | unit | — |

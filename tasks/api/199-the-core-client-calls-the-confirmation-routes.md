@@ -1,6 +1,6 @@
 # 199 — The core client calls the confirmation routes
 
-**State:** claimed by agent/api/199-the-core-client-calls-the-confirmation-routes, 2026-11-25 10:12
+**State:** done — three CoreClient methods, mocked and in the funnel sweep; gate green
 **Source:** `ui/121`'s worker, blocked: the UI's confirmation card (EMB-383) needs client methods for Core's confirmation routes
 **Scope:** api
 **Hardware:** none
@@ -50,7 +50,7 @@ limit. If your work pushes any file into reserve, file
 
 ## Done when
 
-- [ ] The three methods exist on `CoreClient`, each with a mocked test that
+- [x] The three methods exist on `CoreClient`, each with a mocked test that
       asserts the bearer header, and each in the funnel sweep.
-- [ ] A refused `confirm` returns Core's text.
-- [ ] Gate green, the client crate included.
+- [x] A refused `confirm` returns Core's text.
+- [x] Gate green, the client crate included.
