@@ -1,6 +1,6 @@
 # 165 — Core reads an image back through the probe and says which state holds
 
-**State:** open
+**State:** claimed by agent/core/165-core-reads-an-image-back-through-the-probe, 2026-11-25 15:44
 **Source:** EMB-362 — Core cannot read an image back through the probe
 **Issue:** EMB-362
 **Scope:** core
