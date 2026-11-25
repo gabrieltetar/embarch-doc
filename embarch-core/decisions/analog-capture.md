@@ -1,0 +1,18 @@
+# embarch-core decisions: The dev bench's analog capture
+
+**Status:** active, 2026-11-24.
+
+How Core gets a dev bench's analog blocks to the tap decoder of [streams.md](streams.md) decision 125: finding and opening the samples port.
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
+
+
+## The samples port
+
+### 126 — A study with an analog source opens the dev bench's samples port, found from its recorded identity
+
+2026-11-24 (EMB-480; the owner's EMB-469 decisions 1 and 13). Decision 125 decodes the blocks once bytes reach a tap; this is what brings them there. **A study whose `StreamSource::AnalogInput` (tag 5) is declared opens the enrolled dev bench's samples CDC ACM port before `StudyStart` is sent, and holds it exclusively until the run ends.** Before, because the source writes its start header once, when the study starts it, and a closed port would lose it; the port's stale input is cleared on open (bytes before the first header are refused by decision 125's decoder, which would otherwise put a refusal row at the head of every recording). It is not scoped by `StreamScope`: the header does not repeat, so a port opened at step 3 cannot show the stream's start.
+
+**The port is found from identity and order, never a name.** The dev bench is one USB device with three ports (`embarch-dev-bench` decision 61: control, samples, SMP, each with an interface string). **The OS does not give Core the string**: `serialport`'s `UsbPortInfo` has VID, PID, serial, manufacturer, product and an interface *number*, nothing else. So Core takes the control port's recorded identity (decision 124's `control_port`, `embarch-topology` decision 50), requires its VID to be the dev bench's (`0xEBAC`) and a serial and an interface to be recorded, lists the ports with that VID, PID and serial in interface-number order, and takes the one after the control port, the firmware declaring them control, samples, SMP. Rejected: matching the string "EmbArch samples", which nothing reports; recording a samples interface at enrollment, a second field to keep true beside the control port's and no more known than the order. **Whether the OS reports the interface numbers in the firmware's order, and which interface of a CDC function it reports, is not established by reading code** and is owed to a bench run.
+
+**A samples port that cannot be found refuses the study before anything starts**, with the reason: no recorded identity (`409`, say how to record one), a recorded port that is not a dev bench or lacks a serial or interface (`409`), the bench not enumerated or no port after its control port (`404`, as for decision 124), the OS giving no interface numbers (`409`), the port held by another study or a failed open (`409`). Nothing is flashed, reset or sent first; the study lock is released. **The reader is Core's own thread**, the one a direct signal tap uses, so the start header and blocks take the path of every other tap's bytes into decision 125's decoder, and it stops with the rest of Core's own ports on every exit: the end, a failure, a timeout, a panic. **A device study has no cancel route** (`POST /study/{id}/cancel` is for a host study, which declares no analog source), so "cancel" is the failure and timeout exits. A read error on the samples port ends the reader and sets the tap's `lost_at_source`, so the capture reads as short rather than complete. Measured: unit tests with a fake port, no hardware (the header and a 5-minute 32 ksps stream through the real reader: every byte kept, no gap or refusal row; absent port refused with `open` never called; stop closes and releases the port). A real session over the CDC link is owed to the bench.
