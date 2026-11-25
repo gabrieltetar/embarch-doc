@@ -1,6 +1,6 @@
 # 041 — The linker offers Kconfig symbols and devicetree nodes
 
-**State:** claimed by agent/chat/041-the-linker-offers-kconfig-symbols-and-devicetree-nodes, 2026-11-25 07:38
+**State:** done — symbols and nodes offered from 114's atlas read; decision 115
 **Source:** EMB-412 — the 💡 linker cannot offer a Kconfig symbol or a devicetree node
 **Issue:** EMB-412
 **Scope:** chat
@@ -63,13 +63,13 @@ bullet) so the desk-backed tests run instead of skipping.
 
 ## Done when
 
-- [ ] "turn on the shell history option" offers the symbol whose prompt says
+- [x] "turn on the shell history option" offers the symbol whose prompt says
       so, written `CONFIG_<NAME> ("<prompt>")`.
-- [ ] A draft naming `CONFIG_<NAME>` or `<NAME>` exactly gets its line with no
+- [x] A draft naming `CONFIG_<NAME>` or `<NAME>` exactly gets its line with no
       cue word.
-- [ ] "the second I2C bus node" offers the node; `&i2c1` in a draft finds it
+- [x] "the second I2C bus node" offers the node; `&i2c1` in a draft finds it
       by label; a path finds it too.
-- [ ] A stale atlas's card says so in its why.
-- [ ] Translated documents with no built atlas offer sections and no symbol or
+- [x] A stale atlas's card says so in its why.
+- [x] Translated documents with no built atlas offer sections and no symbol or
       node.
-- [ ] A decision says it.
+- [x] A decision says it.

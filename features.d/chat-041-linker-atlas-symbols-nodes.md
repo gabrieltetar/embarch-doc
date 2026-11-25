@@ -1,0 +1,1 @@
+| The 💡 linker offers the atlas's Kconfig symbols (`CONFIG_<NAME> ("<prompt>")`) and devicetree nodes (`&<label> (<path>, <compatible>)`), gated by cue words or an exact name | Built, not installed — **tested on a fake `embarch-atlas` only; not seen against a real atlas** | unit | 115 |
