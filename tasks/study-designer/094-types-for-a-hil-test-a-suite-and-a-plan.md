@@ -1,6 +1,6 @@
 # 094 — Types for a HIL test, a test suite and a test plan
 
-**State:** claimed by agent/study-designer/094-types-for-a-hil-test-a-suite-and-a-plan, 2026-11-25 03:44
+**State:** done — types, hash and diff built behind hil-test; decision 109; gate green
 **Source:** EMB-353 — no type exists for a HIL test, a test suite or a test plan
 **Issue:** EMB-353
 **Scope:** study-designer
@@ -71,16 +71,16 @@ grow them. If your work pushes a file into reserve, file
 
 ## Done when
 
-- [ ] A fixture test, suite and plan round-trip; unknown keys are refused.
-- [ ] The definition hash is the same for a test with its map keys reordered,
+- [x] A fixture test, suite and plan round-trip; unknown keys are refused.
+- [x] The definition hash is the same for a test with its map keys reordered,
       and differs for a changed limit.
-- [ ] A copy of a fixture premade test with one limit widened reports exactly
+- [x] A copy of a fixture premade test with one limit widened reports exactly
       that field, old and new.
-- [ ] `interfaces/hil-tests.md` gives every field, and a new decision records
+- [x] `interfaces/hil-tests.md` gives every field, and a new decision records
       the choices above, marking the three the owner may strike.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `cargo build`, `cargo test`,
+- [x] Gate green (`../../embarch-fleet/gate.md`): `cargo build`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings`, under each feature set the
       crate's consumers build it with (no features, `alloc`, `std`, and
       `--all-features` at least).
-- [ ] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
+- [x] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
       `status.d/` fragment for anything suite-level it made false.

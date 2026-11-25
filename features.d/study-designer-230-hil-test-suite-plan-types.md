@@ -1,0 +1,1 @@
+| The shared crate has JSON types for a HIL test, a suite manifest and a plan, the definition hash a confirmation binds (RFC 8785) and the diff of a derived test against its premade one | Built, **fixtures only; no consumer, no premade suite yet**; behind feature `hil-test` | host | 109 |
