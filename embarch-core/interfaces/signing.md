@@ -4,7 +4,7 @@
 
 | Method | Path | Body / query | Response |
 |---|---|---|---|
-| `POST` | `/auth/challenge` | **No token.** `{"nonce": "<32 to 128 lowercase hex, even count>"}`; nothing else is accepted | `200 {frame, core_nonce, keyid, public_key, signature}`; `400` for a nonce outside that shape. `signature` is lowercase hex of the Ed25519 signature over `frame` = `embarch-core-auth-v1\n<core_nonce>\n<nonce>`. Signs nothing else |
+| `POST` | `/auth/challenge` | **No token.** `{"nonce": "<32 to 128 lowercase hex, even count>"}`; nothing else is accepted | `200 {frame, core_nonce, mode, keyid, public_key, signature}`; `mode` is `service` or `development` (decision 129), Core's word and outside the signed `frame`; `400` for a nonce outside that shape. `signature` is lowercase hex of the Ed25519 signature over `frame` = `embarch-core-auth-v1\n<core_nonce>\n<nonce>`. Signs nothing else |
 | `POST` | `/study`, `/host-studies` | optional query `build_commit` (7 to 64 lowercase hex), `build_dirty` (`true`/`false`), `build_toolchain` (printable, 200 bytes) | unchanged; the three are recorded as `claimed.build`, `400` when malformed |
 
 ## `record.dsse.json`
@@ -27,8 +27,9 @@ The Statement: `_type` `https://in-toto.io/Statement/v1`; `subject` `[{name, dig
 | `observed.provenance` | `events.json`'s `provenance` object (null for a host study) |
 | `observed.image_status` | `unverified` in milestone 1 |
 | `observed.declarations` | `{witnessed_since_utc_ms, entries: [{what, name, scope, at_utc_ms}]}`; `what` is `role`, `signal`, `instrument`, `bootload_ports` or `dev_bench_link`, `scope` `agent` or `person` |
+| `observed.mode` | `service` or `development`: the mode Core ran in (decision 129) |
 | `observed.behaviours` | `measurements.json`'s `behaviours`, `{}` until it exists |
 | `observed.call_log` | `{prev, head, length, first_seq, last_seq}`: the call log ([call-log.md](call-log.md)) as the run began and ended. `prev` is the head when the run began (the entry before the range; 64 zeros for an empty log), `head` the head when it ended (a pending fold is written first), `length` the log's length then. The range is the entries with `seq` `first_seq` to `last_seq`; both are null when no call was made, and `prev` equals `head`. Absent when the run was sealed with no call log to read, as one recorded before the call log existed (`tasks/core/145`; no `schema` bump) |
 | `claimed.build` | `{commit, dirty, toolchain}` as embarch-api told Core, each null when not sent; `claimed.build` is null when none were |
 
-Verify as any DSSE v1 envelope with the public key whose SHA-256 is `keyid`; then hash each named file and compare. The key file is `signing-key` beside the token files ([embarch-token.md](../../embarch-token.md)).
+Verify as any DSSE v1 envelope with the public key whose SHA-256 is `keyid`; then hash each named file and compare. The key file is `signing-key` in Core's store, with `public-key` (the raw public key, hex) beside it: `<data dir>/store/` under `run --service`, `<dir>` under `run --store <dir>`, the data dir beside the token files ([embarch-token.md](../../embarch-token.md)) with neither ([decision 129](../decisions/auth.md)).

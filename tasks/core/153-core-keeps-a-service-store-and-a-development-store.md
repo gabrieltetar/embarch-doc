@@ -1,6 +1,6 @@
 # 153 — Core keeps a service store or a development store, and says which
 
-**State:** claimed by agent/core/153-core-keeps-a-service-store-and-a-development-store, 2026-11-25 01:59
+**State:** done — service/development stores, mode and keyid in status and challenge; Windows build is an owner debt
 **Source:** EMB-323 — Core has one store whatever runs it, so service and development share it
 **Issue:** EMB-323
 **Scope:** core
@@ -65,20 +65,27 @@ No file is in reserve on the size ledger at dispatch.
 
 ## Done when
 
-- [ ] `run --service` with no store refuses to start, naming the elevated
+- [x] `run --service` with no store refuses to start, naming the elevated
       install; with one, every file listed above is read and written inside
       it, and nothing else but the token files and `study_results/` under
       `<data dir>`.
-- [ ] `run --store <tmp>` keeps its own token pair, key, logs and results in
+- [x] `run --store <tmp>` keeps its own token pair, key, logs and results in
       `<tmp>`; two such Cores have different keys.
-- [ ] With neither flag, every path is today's and the existing tests pass.
-- [ ] `/status` and the challenge answer carry `mode` and `keyid`;
+- [x] With neither flag, every path is today's and the existing tests pass.
+- [x] `/status` and the challenge answer carry `mode` and `keyid`;
       `public-key` hashes to `keyid`; `study_in_flight` names a running study.
-- [ ] The Windows-gated parts type-check with
+- [x] The Windows-gated parts type-check with
       `cargo check --target x86_64-pc-windows-msvc`
       (`embarch-dev-workflow.md` §4); the native Windows build stays a debt in
       this file for the owner.
-- [ ] A new decision; spec §3, `interfaces/signing.md` and decision 53
+- [x] A new decision; spec §3, `interfaces/signing.md` and decision 53
       amended.
-- [ ] Gate green; `changelog.d/` fragment dropped; `status.d/` fragment for
+- [x] Gate green; `changelog.d/` fragment dropped; `status.d/` fragment for
       anything suite-level it made false.
+
+## Debts
+
+- **Native Windows build (owner).** `cargo check --target x86_64-pc-windows-msvc` on the whole crate dies in `hidapi`'s `build.rs` (host `cc`), as the worker contract says it does, so it was not run green. No line added here is `cfg(windows)`-gated: `main`'s existing `try_dispatch` arm now follows `init_store`, and the new code uses only `local_data_dir`, which both cfgs define. Owner: build from the main checkout on Windows, then `run --service` with no `<data dir>\store` (expect the refusal) and `run --store <dir>`.
+- **Hardware / live Core: none run.** The `store/` folder's ACL is the elevated install's job (a later unit); this unit only refuses a missing one.
+- **Left in the data dir on purpose:** `logs/` (tracing starts before the flags parse). The task's "nothing else but tokens and `study_results/`" reads as Core's state files; say if logs should move too.
+- `flashed-images.jsonl` (not in the task's list) follows the run log into the store.

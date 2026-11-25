@@ -1,0 +1,1 @@
+| Core's service store and development store (`run --service`, `run --store <dir>`); `/status` and the challenge report `mode` and `keyid` | Shipped — **host tests only; the store's ACL is the elevated install's job and nothing ran on Windows** | host | 129 |
