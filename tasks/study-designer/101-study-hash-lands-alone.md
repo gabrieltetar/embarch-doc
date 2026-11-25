@@ -1,6 +1,6 @@
 # 101 — `study_hash` lands alone: one function fixes a premade study's hash
 
-**State:** open
+**State:** claimed by agent/study-designer/101-study-hash-lands-alone, 2026-11-25 15:44
 **Source:** EMB-555 — the additive half of `study-designer/099`, which landed and was reverted on 2026-11-25 (code `1dfdae1`, doc `29869b13`)
 **Issue:** EMB-555
 **Scope:** study-designer
