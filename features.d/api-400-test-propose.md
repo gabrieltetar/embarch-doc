@@ -1,0 +1,1 @@
+| `test_propose` / `test_plan` — propose a HIL test, capability or hook for the engineer to confirm; plans and custom suites in `embarch/tests/`; selecting a suite copies its benches | Built; mock Core only | unit | 134 |

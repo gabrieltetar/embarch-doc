@@ -1,6 +1,6 @@
 # 196 — Test plans in the repo, and proposals sent to Core
 
-**State:** claimed by agent/api/196-test-plans-in-the-repo-and-proposals-sent-to-core, 2026-11-25 08:28
+**State:** done — test_propose and test_plan shipped; mock-Core tests green; real-Core verification debt in open/bench-verification.md
 **Source:** EMB-376 — embarch-api has no test plan and no way to propose a DUT input
 **Issue:** EMB-376
 **Scope:** api
@@ -78,12 +78,12 @@ reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit per
 
 ## Done when
 
-- [ ] Against a fake Core, a proposed custom test arrives with its hash and the
+- [x] Against a fake Core, a proposed custom test arrives with its hash and the
       reply says it waits for confirmation.
-- [ ] A proposal the crate refuses is refused before Core is called, with the
+- [x] A proposal the crate refuses is refused before Core is called, with the
       crate's reason.
-- [ ] Selecting a fixture suite copies its bench; a second selection with a
+- [x] Selecting a fixture suite copies its bench; a second selection with a
       changed saved bench leaves it and reports the diff.
-- [ ] `interfaces/` gives the tools and the layout; the new decision records
+- [x] `interfaces/` gives the tools and the layout; the new decision records
       it.
-- [ ] Gate green.
+- [x] Gate green.

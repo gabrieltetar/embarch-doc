@@ -16,3 +16,5 @@ Files, in `<project source_path>/embarch/ledger/`:
 | `run_study` (`--test`) | `test?` | Appends a `submitted` row for the project named or the session's desk's; the result's `ledger` says `appended` or `skipped` and why |
 
 **Not verified on a bench** ([open.md](../open.md)).
+
+The HIL Test's definitions and plans are [tools-tests.md](tools-tests.md); the ledger's `tests.toml` is not renamed (decision 134).
