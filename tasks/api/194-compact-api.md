@@ -1,6 +1,6 @@
 # 194 — compact `embarch-api/open.md`
 
-**State:** open
+**State:** claimed by agent/api/194-compact-api, 2026-11-25 03:54
 **Scope:** api
 **Hardware:** none
 **Owner:** no
