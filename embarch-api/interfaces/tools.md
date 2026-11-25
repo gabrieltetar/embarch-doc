@@ -21,7 +21,7 @@
 - [Capture](tools-capture.md) — `capture_start`, `capture_read`, `capture_stop`, `bench_exchange`
 - [Instruments](tools-instruments.md) — `declare_instrument`, `list_instruments`, `remove_instrument`
 - [Ledger](tools-ledger.md) — `ledger_add`, `ledger_show`, `ledger_pending`, and `run_study`'s `test`
-- [Tests](tools-tests.md) — `test_propose`, `test_plan`, and the `embarch/tests/` layout
+- [Tests](tools-tests.md) — `test_propose`, `test_plan`, `run_test`, `test_status`, and the `embarch/tests/` layout
 - [Live log](live-log.md) — the line each hardware call appends to the firmware repo; `call_log`
 - [Publish](publish.md) — `publish`, and the zip it writes
 - [Host studies](tools-host-study.md) — `run_host_study`, `answer_prompt`, `cancel_study`, and `study_watch` stopping on a waiting prompt

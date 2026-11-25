@@ -1,6 +1,6 @@
 # 200 — `run_test` prepares a Test run and `test_status` watches it
 
-**State:** claimed by agent/api/200-run-test-prepares-a-test-run-and-test-status-watches-it, 2026-11-25 12:33
+**State:** done — run_test and test_status built against a mock Core; decision 135
 **Source:** EMB-377 — an agent cannot prepare a Test run or watch one
 **Issue:** EMB-377
 **Scope:** api
@@ -57,10 +57,18 @@ same commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] Against a fake Core, `run_test` on a fixture plan sends the `run.json` the
+- [x] Against a fake Core, `run_test` on a fixture plan sends the `run.json` the
       crate gives and returns the preview with an unconfirmed input listed.
-- [ ] No code path in the MCP server or the agent's CLI calls the go.
-- [ ] `test_status` returns the current bench, test, verdicts so far and a
+- [x] No code path in the MCP server or the agent's CLI calls the go.
+- [x] `test_status` returns the current bench, test, verdicts so far and a
       waiting prompt.
-- [ ] `interfaces/` gives both tools.
-- [ ] Gate green, the client crate included.
+- [x] `interfaces/` gives both tools.
+- [x] Gate green, the client crate included.
+
+## Done
+
+Decision 135 (`embarch-api/decisions/test-run.md`); code in `src/hil_run.rs`, the client's `prepare_test_run`, `test_run_status` and `test_run_card`, and `tests/run_test_cli.rs` (mock Core).
+
+**Verification debt (not hardware):** only a mock Core has been met. Owed against a real Core: it reproduces this crate's `run.json`, accepts the base studies a template needs beside the expanded ones, and serves a premade suite's studies at `GET /definitions/<study hash>`. Recorded in `embarch-api/open/bench-verification.md`.
+
+`spec.md` entered reserve; filed `tasks/api/201-compact-api.md` (In flux: yes).
