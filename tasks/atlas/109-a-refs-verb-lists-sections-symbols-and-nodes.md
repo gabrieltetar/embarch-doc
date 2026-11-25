@@ -1,6 +1,6 @@
 # 109 — A `refs` verb lists the atlas's sections, symbols and nodes in one read
 
-**State:** open
+**State:** claimed by agent/atlas/109-a-refs-verb-lists-sections-symbols-and-nodes, 2026-11-25 01:19
 **Source:** EMB-404 — the atlas cannot list its sections, symbols and nodes for another tool
 **Issue:** EMB-404
 **Scope:** atlas
