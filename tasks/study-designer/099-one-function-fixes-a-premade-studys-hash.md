@@ -1,6 +1,6 @@
 # 099 — One function fixes a premade study's hash, and `check_test` refuses a mismatch
 
-**State:** open
+**State:** claimed by agent/study-designer/099-one-function-fixes-a-premade-studys-hash, 2026-11-25 13:46
 **Source:** EMB-555 — fix the hash convention for a premade study file and check it
 **Issue:** EMB-555
 **Scope:** study-designer
