@@ -36,3 +36,14 @@ Checked 2026-11-24: `Action` has no prompt variant and the dev-bench wire has no
 - **No prompt kind.** The HIL run file's `prompt_kinds` has no type in this crate yet, and neither session prompt asks anyone to observe.
 - **An analog tap needs a session**, because without a cap a recording runs at about 64 kB/s until something stops it.
 - *Rejected: a `Prompt` action in `Action`.* A wire change to the step list and a firmware prompt path for something only Core shows.
+
+### 107 — `StudyStop`, the first message Core can send after `StudyStart`
+
+Filed 2026-11-24 (EMB-485) after EMB-482: a session's cap, an early Done (core decision 127) and a cancel stopped only Core's side, because nothing on the wire told the bench to stop and it kept sampling. The bench owner approved the change the same day, while no bench carried schema 16, so **16 and 17 ship in one reflash**.
+
+- **`DevBenchMessage::StudyStop { reason: StopReason }`**, appended at discriminant 9; `StopReason` is `Cap`, `Done`, `Cancel` (0, 1, 2), one varint byte. `[09 01]` is `StudyStop { Done }`, pinned by a test beside the three reasons and the refusal of a fourth.
+- **The reason is informational.** The bench stops the same way for every value and logs it; Core still decides what each means for its own record. It is appended to the enum, so a later reason is a one-line addition with its own bump.
+- **The bench answers with what it already sends**: it closes every open tap (each with its own `StreamClose`, `dropped` still the tap's own count) and then sends `StudyDone { completed: false }`. No new reply message. The step a stop cut short sends no `StepResult`: what it would carry is a wait ending, not the DUT's answer.
+- **A `StudyStop` with no study running is ignored** and gets no reply beyond a `LogLine` saying so, so a stop that races a study's natural end leaves Core with that study's own `StudyDone` and nothing to mistake for a second one. Dev-bench's side: [decision 67](../../embarch-dev-bench/decisions/analog.md).
+- **Wire**, so `DEV_BENCH_WIRE_SCHEMA_VERSION` 16 to 17 and `HOST_TYPE_SCHEMA_VERSION` 23 to 24 by the superset rule (decision 12). The history is in `schema_version.rs`.
+- *Rejected: a stop that reuses `Hello`.* `Hello` is a hard reset that also re-runs the handshake and would drop the bench's results for a study Core only wants ended. *Rejected: no reason field.* A bench's log of why a study ended was cheap to carry and costs one byte.

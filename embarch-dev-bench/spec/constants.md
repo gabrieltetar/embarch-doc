@@ -9,7 +9,7 @@ Split verbatim from [../spec.md](../spec.md) §5 (`tasks/dev-bench/040`), when t
 | link baud | 1 Mbaud | must equal Core's `DEV_BENCH_BAUD` exactly, or the first `Hello` fails to decode |
 | `current-speed` overlay | `&uart20` on the DK | [measured 2026-08-31] the DK's `zephyr,console` is already `uart20`, so only the baud needed setting |
 | `link_rx_ring` | 2 KB | [assumed] scheduling latency, deliberately not `DBM_MAX_FRAME_LEN` — §4 |
-| `DBM_MAX_INBOUND_FRAME_LEN` | 12,507 B | [computed from `serial_protocol.h`] Core sends only `Hello` and `StudyStart`; sized to `StudyStart`, which gained `DBM_MAX_PROTOCOLS_WIRE_LEN` at schema v15 (decision 41) |
+| `DBM_MAX_INBOUND_FRAME_LEN` | 12,507 B | [computed from `serial_protocol.h`] Core sends only `Hello`, `StudyStart` and (schema 17, a few bytes) `StudyStop`; sized to `StudyStart`, which gained `DBM_MAX_PROTOCOLS_WIRE_LEN` at schema v15 (decision 41) |
 | `DBM_MAX_OUTBOUND_FRAME_LEN` | 3,082 B | [measured] `StepResult`'s bound — the largest message dev-bench can produce |
 | `DBM_MAX_TRANSCRIPT_PAYLOAD_LEN` | 244 B | one full 247-byte ATT MTU minus the 3-byte ATT header |
 | `DBM_MAX_STREAM_CHUNK_BYTES` | 293 B | [computed from `serial_protocol.h`] the worst-case encoded transcript entry, 244 B plus a 49-byte envelope; the crate allows 512 (decision 53) |

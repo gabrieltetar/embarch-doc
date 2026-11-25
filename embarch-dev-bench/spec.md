@@ -73,7 +73,7 @@ The link UART has **three writers**, which is why `link_tx_mutex` is held across
 | transcript TX thread | its own | drains a `k_msgq` the BLE sink fills |
 | log backend | Zephyr's log thread | `CONFIG_LOG_MODE_DEFERRED`, so backends never run in the caller's context |
 
-Inbound is **interrupt-driven**: an ISR drains the FIFO into a 2 KB ring buffer. The buffer is sized to *scheduling latency, not a whole frame* — Core sends `Hello` then `StudyStart` and waits, so nothing arrives during the long BLE calls the loop blocks in.
+Inbound is **interrupt-driven**: an ISR drains the FIFO into a 2 KB ring buffer. The buffer is sized to *scheduling latency, not a whole frame* — Core sends `Hello` then `StudyStart` and waits, so a running study reads only a `StudyStop` (decision 67).
 
 Three sinks, with deliberately different threading contracts:
 
