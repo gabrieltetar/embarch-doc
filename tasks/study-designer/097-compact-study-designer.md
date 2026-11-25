@@ -1,6 +1,6 @@
 # 097 — compact `embarch-study-designer/interfaces/hil-run.md`
 
-**State:** open
+**State:** claimed by agent/study-designer/097-compact-study-designer, 2026-11-25 08:56
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
