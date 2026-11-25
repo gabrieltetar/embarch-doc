@@ -1,6 +1,6 @@
 # 190 — The HIL guide's Words point at the glossary
 
-**State:** claimed by agent/api/190-hil-guide-words-point-at-the-glossary, 2026-11-25 00:40
+**State:** done — Study entry names the glossary row; others keep gloss (no rows); status fragment carries bytes
 **Source:** EMB-317 — hil-guide's "Words" section redefines Bench, Study, Test, Run, Measurement and Verdict
 **Issue:** EMB-317
 **Scope:** api
@@ -28,7 +28,7 @@ EMB-317, after `doc/102` adds the glossary rows.
 
 ## Done when
 
-- [ ] The pinned copy's Words entries name the glossary as the definition.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), drift guard green against a
+- [x] The pinned copy's Words entries name the glossary as the definition.
+- [x] Gate green (`../../embarch-fleet/gate.md`), drift guard green against a
       sibling `embarch-doc` carrying the same edit, `changelog.d/` fragment
       dropped.
