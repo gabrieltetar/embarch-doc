@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- desk: GET /refs also carries the Linear documents of the indexed projects (title and link, newest 500); see embarch-desk decision 56 (EMB-407)
 - The desk's reference index (`GET /refs`) now lists the Linear projects in a desk's scope, each with its Linear URL: [decision 56](../embarch-desk/decisions/access-point.md).
 - The Desk's Promptu section sets the weekly sheet's feel line through POST /promptu/feel/{week}, which runs week mark --feel (65).
 - embarch-desk serves Promptu's weekly sheet to the Desk tab: GET /promptu, /promptu/sheet, and mark and apply routes that run the promptu CLI; no agent tool reaches them (decision 65).
