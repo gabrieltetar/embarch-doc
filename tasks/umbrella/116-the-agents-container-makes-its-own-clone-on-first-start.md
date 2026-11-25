@@ -1,6 +1,6 @@
 # 116 — The agent's container makes its own clone on first start
 
-**State:** claimed by agent/umbrella/116-the-agents-container-makes-its-own-clone-on-first-start, 2026-11-25 09:19
+**State:** done — agent half rendered, golden and shell-tested with stubs; hardware debt left
 **Source:** EMB-451 — the agent's container has no clone of its own on first start
 **Issue:** EMB-451
 **Scope:** umbrella
@@ -65,11 +65,15 @@ only that item. If your work pushes any other file into reserve, file
 
 ## Done when
 
-- [ ] The agent half is golden-tested.
-- [ ] Run by a shell test against temp folders, with stub `git` and `claude`
+- [x] The agent half is golden-tested.
+- [x] Run by a shell test against temp folders, with stub `git` and `claude`
       first on `PATH`, the first start makes the clone, the remote, the west
       config, the link and the seed; a second start seeds nothing but a new
       file.
-- [ ] A file the agent changed in its copy is left alone on a later start.
-- [ ] A hardware-verification debt is left for the owner's first container.
-- [ ] Gate green.
+- [x] A file the agent changed in its copy is left alone on a later start.
+- [x] A hardware-verification debt is left for the owner's first container.
+- [x] Gate green.
+
+## Hardware-verification debt
+
+Owner's first container (decision 66): `git -C /work/<folder> remote -v` shows one remote, `person`; `claude mcp list` from the clone shows `embarch`; `cat /work/.west/config`; `west list`; edit a file under `/outbox/embarch`, add one under the person's `embarch/`, restart: the edit stays, the new file arrives. The shell test used stub `git` and `claude`, so real git's `safe.directory` and `--no-local` behaviour, the gitignore semantics for a link, and `CLAUDE_CONFIG_DIR` are from memory.

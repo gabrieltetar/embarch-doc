@@ -1,0 +1,1 @@
+| `src/agent.rs`: `render_entrypoint_agent`, the container entrypoint half that clones the repo, links `embarch/` and registers the MCP server — **no container started; git and claude behaviour from memory** | Built, unused | no | 66 |

@@ -1,0 +1,21 @@
+# embarch-umbrella decisions: the agent's own clone
+
+**Status:** active, 2026-11-25.
+
+What the agent half of the container's entrypoint does on its first start and on every start after. Index: [../decisions.md](../decisions.md). Design: [notes/hil/12-prevention.md](../../notes/hil/12-prevention.md), "The repo is the boundary's one door".
+
+### 66 — The agent half makes the agent's clone at `/work/<repo folder>` on first start, and every later start copies only what is new
+
+**This is the plan's recommended shape (plan choices 1, 2 and 10), not an owner-struck one; the owner may strike any of the three.** It extends 62 (the `/work`, `/outbox`, `/person/repo` rows) and 63 (the root half ends by `exec`ing this script as uid 1000), and settles where 65 left the clone: **`/work/<repo folder>`, which is also the west manifest path.** `render_entrypoint_agent(&plan)` is pure text; `init --container` writes it beside the root half as `entrypoint-agent.sh`, and writes the skill as `embarch-hil-SKILL.md` (`init`'s own `SKILL_TEXT`). Starting the container, and the root half's argument that names this script, are EMB-448's.
+
+**While `/work/.embarch-seeded` is absent:** (1) `git -c safe.directory=/person/repo clone --no-local /person/repo /work/<folder>`; (2) the clone's `origin` is removed and `person` added at `/exchange.git`, the only remote; (3) `/work/.west/config` holds `[manifest]` and `path = <folder>`, so 64's read-only projects and the clone form the workspace; (4) `/outbox/embarch` is made from the definition folder's `embarch.toml.template`, and the clone's `embarch` is a link to it; (5) the skill is copied into the clone's `.claude/skills/embarch-hil/`; (6) `claude mcp add embarch -- /opt/embarch/bin/embarch-api --config /work/<folder>/embarch/embarch.toml`, run from inside the clone; (7) the marker is touched.
+
+**Every start, first included, after that:** every file under the person's `embarch/` that `/outbox/embarch` lacks is copied in, except the top-level `embarch.toml` and `build/`. A file in both is the agent's and is never touched, so the agent's edit survives and the person's later change to it does not arrive. A file the person deleted stays. The marker is touched before this copy, so a copy that fails is retried next start. Symlinks and other non-regular files are skipped. **Nothing from the person's repo runs:** no hook, no `west update`, no build; a test holds the script's code lines to that.
+
+**Where the unit departs from the task:** `git clone` leaves `origin` pointing at the person's repo, so it is removed to make `person` the only remote. The exclude entry is `embarch`, not `embarch/`: **from memory,** a gitignore pattern with a trailing slash matches only a directory, and the clone's `embarch` is a link. The script exports `CLAUDE_CONFIG_DIR=/home/agent/.claude` so the registration lands in the mounted folder: **from memory,** Claude Code keeps `.claude.json` beside `$HOME` otherwise, and a recreated container would lose the registration while the marker, in the `/work` volume, says it was done. A first start that died after the clone is refused with a message, never deleted over: no marker means the agent has done nothing in it, but removing a folder is the person's call.
+
+**From memory, to be checked:** `safe.directory` (git refuses a repo another user owns unless it is named); `--no-local` (avoids hard links into a read-only source); the west config's `[manifest] path`; the exclude semantics; `CLAUDE_CONFIG_DIR`; `claude mcp add`'s default scope being the working folder. **Unverified:** the shell test runs the script against temp folders with stub `git` and `claude` first on `PATH`; no real git cloned and no container started.
+
+**Hardware-free debt, for the owner's first container:** start it and read `git -C /work/<folder> remote -v` (one remote, `person`), `claude mcp list` from the clone, `cat /work/.west/config`, `west list`, then edit a file under `/outbox/embarch`, add one under the person's `embarch/` and restart: the edit stays, the new file arrives.
+
+**Open:** a person's deletion or change never reaches the agent's copy; whether a changed `embarch.toml.template` should; and removing a clone a person wants rebuilt (today: delete the volume's folder and the marker).

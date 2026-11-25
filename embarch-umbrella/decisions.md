@@ -32,5 +32,6 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/deploy.md](decisions/deploy.md) | 32, 50 | `deploy-core`, and the verification that is the point of it |
 | [decisions/build-identity.md](decisions/build-identity.md) | 57 | Which commit a suite binary is, replacing one that runs, and `doctor` check 18 |
 | [decisions/agent-container.md](decisions/agent-container.md) | 62, 63, 64 | The agent's container rendered by pure functions: each mount's mode, the hardening, the forbidden-input scan; the firewall script, its allowlist and Core's address; the image and its west mounts |
+| [decisions/agent-clone.md](decisions/agent-clone.md) | 66 | The agent half of the entrypoint: the clone, its one remote, the west config, the `embarch/` link and seed, the skill and the MCP registration, on first start |
 
 **Decisions 27 and 29 are one decision under two numbers** — an insertion renumbered it. See [release.md](decisions/release.md).
