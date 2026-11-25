@@ -1,6 +1,6 @@
 # 160 — Core runs a Test selection test by test
 
-**State:** claimed by agent/core/160-core-runs-a-test-selection-test-by-test, 2026-11-25 09:19
+**State:** done — executor, status route and study-cancel admission built over fake backends; bench path is a hardware-verification debt
 **Source:** EMB-366 — Core has nothing that runs a Test selection test by test
 **Issue:** EMB-366
 **Scope:** core
@@ -68,16 +68,26 @@ doc-size reserve at dispatch. If your work pushes one into reserve, file
 
 ## Done when
 
-- [ ] Over fake backends: a fail in test 1 still runs test 2; an error on bench
+- [x] Over fake backends: a fail in test 1 still runs test 2; an error on bench
       A skips the rest of A and runs bench B; a cancel marks every remaining
       test `cancelled`.
-- [ ] With `stop_on_fail`, the tests after the first fail are
+- [x] With `stop_on_fail`, the tests after the first fail are
       `stopped_after_fail`; a test requiring a failed one is
       `requires_not_met`.
-- [ ] A test with a run count of three and one failing run is `fail` with
+- [x] A test with a run count of three and one failing run is `fail` with
       counts.
-- [ ] A lost port on a bench board's signal is `error`; `until_not_seen` on the
+- [x] A lost port on a bench board's signal is `error`; `until_not_seen` on the
       DUT's is `fail`.
-- [ ] `GET /test-runs/{run_id}` during a fake run names the bench, the test and
+- [x] `GET /test-runs/{run_id}` during a fake run names the bench, the test and
       the verdicts so far.
-- [ ] Gate green.
+- [x] Gate green.
+
+## Result
+
+Decisions 136 and 137 (`decisions/test-run-executor.md`), `src/test_executor.rs`. Host-side only; every Done-when item is a unit test over a fake bench, and the status test holds a study open and reads `GET /test-runs/{run_id}` mid-run.
+
+- **`expect` (choice) path and `calibration_expired`:** not applied to a person's choice (an instrument's lapse; Core never sets it). Core records no observation choice yet, so an `expect` limit reads `record_gap`.
+- **Study source:** Core keeps no study, so the prepare now keeps the study each test runs in the record; the bytes stay unchecked against `study.hash`.
+- **`RUN_ADMITTED`** names the study cancel, admitted whole under a run.
+- **Hardware-verification debt:** one run of a two-test fixture suite on a bench with a DUT and a bench board, through the person's go: the real reset, the idle line (board signal assumed named by its part id, 500 ms quiet wait) and `run_study_blocking`. **Native Windows build not run.**
+- **Left (open.md):** restart reconcile, between-bench prompt and smoke check, `power_cycle`/`detach` commands, dev-bench studies in a run (plan choice 18, the owner's). `hil_judge` lacked nothing I needed.
