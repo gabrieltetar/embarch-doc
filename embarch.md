@@ -117,7 +117,7 @@ setup and verification, off to the side and out of the runtime path entirely:
 |---|---|
 | [suite/user-guide.md](suite/user-guide.md) | Getting started and day-to-day use, for an engineer new to EmbArch |
 | [suite/agent-guide.md](suite/agent-guide.md) | Driving EmbArch from Claude Code, and which of its MCP tools should ask you first |
-| [suite/studies-guide.md](suite/studies-guide.md) | Studies, the dev bench, and capturing a DUT trace |
+| [suite/studies-guide.md](suite/studies-guide.md) | Studies, the dev bench, and [DUT traces](suite/trace-guide.md) |
 | [suite/hil-guide.md](suite/hil-guide.md) | The HIL guide, for the agent first: the trust claim, choosing a mode, and a Study from question to verified zip |
 | [suite/features.md](suite/features.md) | Every feature and **how far it is actually verified** |
 | [suite/roadmap.md](suite/roadmap.md) | What shipped, what is in flight, what is deferred |

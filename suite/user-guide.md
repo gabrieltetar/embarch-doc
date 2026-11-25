@@ -63,7 +63,7 @@ embarch setup            :: Windows cmd.exe — no ./ prefix
 
 **On macOS the binaries are not code-signed yet**, so Gatekeeper blocks them on first run: right-click → Open, or `xattr -d com.apple.quarantine ./embarch`.
 
-**There is a fourth binary and it is not in the archive.** `embarch-ui` — the browser UI whose tabs [the studies guide](studies-guide.md) §4 needs — ships from [its own repo](https://github.com/gabrieltetar/embarch-ui): `cargo run --release`, then `http://127.0.0.1:4890`, its README for the rest. Every CLI and MCP path works without it; authoring a trace tap and reading the trace back do not.
+**There is a fourth binary and it is not in the archive.** `embarch-ui` — the browser UI whose tabs [the trace guide](trace-guide.md) needs — ships from [its own repo](https://github.com/gabrieltetar/embarch-ui): `cargo run --release`, then `http://127.0.0.1:4890`, its README for the rest. Every CLI and MCP path works without it; authoring a trace tap and reading the trace back do not.
 
 `setup` works out which row of §2 you are on, installs Core as a boot service, ensures the shared token exists, puts the binaries on your `PATH`, and finishes by running `doctor`.
 
@@ -219,7 +219,7 @@ Core protects its endpoints with a single shared secret, and **in the normal cas
 
 **Worth knowing: there is no TLS**, so the token crosses your network in cleartext. **Fine on localhost or a WSL2 loopback; think twice on shared wifi.**
 
-**Testing against a second board?** Start with `embarch-api guide hil study` ([hil-guide.md](hil-guide.md)), then the bench and trace notes in [studies-guide.md](studies-guide.md).
+**Testing against a second board?** Start with `embarch-api guide hil study` ([hil-guide.md](hil-guide.md)), then the bench notes in [studies-guide.md](studies-guide.md) and the trace notes in [trace-guide.md](trace-guide.md).
 
 ## 10. Working on EmbArch itself
 
