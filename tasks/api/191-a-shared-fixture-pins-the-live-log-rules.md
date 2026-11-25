@@ -1,6 +1,6 @@
 # 191 — A shared fixture pins the live-log rules both writers follow
 
-**State:** open
+**State:** claimed by agent/api/191-a-shared-fixture-pins-the-live-log-rules, 2026-11-25 00:11
 **Source:** EMB-319 — the atlas live-log writer keeps a verb list the api output already answers
 **Issue:** EMB-319
 **Scope:** api
