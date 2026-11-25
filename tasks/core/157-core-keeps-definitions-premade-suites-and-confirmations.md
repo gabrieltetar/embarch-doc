@@ -1,6 +1,6 @@
 # 157 — Core keeps definitions, premade suites and confirmations
 
-**State:** open
+**State:** claimed by agent/core/157-core-keeps-definitions-premade-suites-and-confirmations, 2026-11-25 06:51
 **Source:** EMB-363 — Core holds no definition, premade suite or confirmation
 **Issue:** EMB-363
 **Scope:** core
