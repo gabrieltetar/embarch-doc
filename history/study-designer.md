@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- HIL test, suite manifest and plan types, a canonical (RFC 8785) definition hash and a derived-test diff, behind `hil-test` ([hil-tests](../embarch-study-designer/interfaces/hil-tests.md)).
 - A host step may read one number from its reply (`parse`, `parse_step_number`), and a prompt says its kind (`setup`, `action`, `observation`, `clearance`); decision 108, host v25.
 - A study's GattNotify tap no step subscribes to is refused by Study::validate_stream_subscriptions (UnsubscribedTapError), opt-in; see decision 55.
 - HIL image segments, identity (SHA-256 of their canonical JSON) and bench-firmware.json shape, host-only feature `hil-image`: [hil-image.md](../embarch-study-designer/interfaces/hil-image.md).
