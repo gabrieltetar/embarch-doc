@@ -23,6 +23,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- api: the HIL guide's Words entry for Study now names the glossary row as its definition (EMB-317).
 - The embedded HIL guide sends the DUT census to `dev-bench.log`: `fail_reason` is capped and names only advertisers that sent a name (EMB-402).
 - The embarch-api README no longer counts tools or endpoints and its getting-started follows the user guide (embarch init).
 - The live log's contract now states the file name's zone, `sent`'s form per writer, `core_calls` on a failed call and a writer's added fields (`outcome`).
