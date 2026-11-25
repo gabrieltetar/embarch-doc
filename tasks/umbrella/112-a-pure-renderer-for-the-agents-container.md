@@ -1,6 +1,6 @@
 # 112 — A pure renderer for the agent's container
 
-**State:** open
+**State:** claimed by agent/umbrella/112-a-pure-renderer-for-the-agents-container, 2026-11-25 06:12
 **Source:** EMB-444 — no code renders the agent's container, its mounts or its hardening
 **Issue:** EMB-444
 **Scope:** umbrella
