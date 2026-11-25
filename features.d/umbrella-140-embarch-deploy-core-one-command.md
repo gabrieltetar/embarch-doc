@@ -1,1 +1,1 @@
-| `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped — **the verification compared a byte count and reported `landed` through a cancelled elevation** | hw | 32 |
+| `embarch deploy-core` — one-command deploy of a development Core beside the service, `--restore-service` to undo, **verifying the hash on the copy and `/status`** | Shipped — **the development install and the restore have not run on the Windows machine**; the older stop/overwrite path it replaces was hw-verified | unit | 32, 68 |

@@ -1,6 +1,6 @@
 # 118 — `deploy-core` installs a development Core beside the service, and one command restores the service
 
-**State:** claimed by agent/umbrella/118-deploy-core-installs-a-development-core-beside-the-service, 2026-11-25 15:44
+**State:** done — development Core beside the service, restore, cancel-run; host-side only, bench debt filed
 **Source:** EMB-341 — `deploy-core` replaces the service, so development turns the bench unattested
 **Issue:** EMB-341
 **Scope:** umbrella
@@ -67,6 +67,18 @@ for that file. If it does not, leave `open.md` alone. `embarch-dev-workflow.md`
 §4a describes the deploy loop and is the owner's; say in your report what it
 now gets wrong, and do not edit it.
 
+## Done
+
+`src/deploy_dev.rs` builds the stop-service, start-service, start-dev and
+stop-dev scripts as functions (golden-tested) and runs the install and restore
+sequences over two traits, so a fake Core and fake Host test them. Decision 68
+(`embarch-umbrella/decisions/deploy.md`) records the change to 32 and 32 got a
+5-byte pointer. `open.md` was not touched, so 111 stays as it is. `/status`
+does expose `mode`, `keyid`, `study_in_flight` and `binary_sha256`
+(`embarch-core/interfaces/hardware.md`), and `POST /study/{id}/cancel` exists
+for host and device studies; the bench-study caveat in `studies.md` ("no cancel
+for a bench study") is older than decision 128 and was not re-read here.
+
 ## Hardware verification
 
 **Not measured**: any of it on the Windows machine. Leave a
@@ -76,13 +88,42 @@ with the service running, one with a study in flight (refused, then
 
 ## Done when
 
-- [ ] The stop, start and restore scripts are built by functions and
+- [x] The stop, start and restore scripts are built by functions and
       golden-tested.
-- [ ] Against a fake Core, a study in flight refuses without `--cancel-run`
+- [x] Against a fake Core, a study in flight refuses without `--cancel-run`
       and is cancelled with it.
-- [ ] The hash check fails when the running development Core's hash differs
+- [x] The hash check fails when the running development Core's hash differs
       from the build.
-- [ ] No step writes the service's registered binary path, with a test.
-- [ ] A decision records the change to 32; a hardware-verification debt is
+- [x] No step writes the service's registered binary path, with a test.
+- [x] A decision records the change to 32; a hardware-verification debt is
       left for the owner's bench session.
-- [ ] Gate green.
+- [x] Gate green.
+
+## Hardware-verification debt (owner's bench session, Windows machine)
+
+**Not measured:** every step below. Run `deploy-core` from the WSL2 checkout and
+check each against `GET /status`.
+
+1. **Service running, no study:** one elevation (stop only); afterwards `/status`
+   reads `mode: development` and `binary_sha256` equal to
+   `target\release\embarch-core.exe`'s hash; the service is stopped and its
+   registered binary's hash is unchanged.
+2. **Study in flight:** `deploy-core` refuses and names `--cancel-run`, stops
+   nothing; with `--cancel-run` the study cancels, then the deploy lands.
+3. **`deploy-core --restore-service`:** the development Core is gone (PID from
+   `umbrella.toml`), the service runs, `/status` reads `mode: service` with a
+   `keyid` equal to `core-fingerprint`.
+4. **Assumptions to confirm:** `keyid` and `core-fingerprint` compare equal after
+   dropping separators; the token discovery finds the development store's token
+   with no flag; the development Core binds the service's registered address;
+   `Start-Process -PassThru` from `powershell.exe -File` over WSL2 leaves the
+   process alive after the script ends.
+5. **A second `deploy-core`** with the development Core running: it stops the
+   first by PID (the copy would fail on a running exe) and starts the new one.
+
+## For the owner
+
+`embarch-dev-workflow.md` §4a now gets wrong: it describes the deploy as
+stop/copy/start over the service's binary under one elevation, and a service
+that is running afterwards. It is now a development Core beside a stopped
+service, `--restore-service` to undo, and `--cancel-run`.
