@@ -61,7 +61,8 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core holds the declared signal and instrument serial ports for a lease's or a study's life; `observed.ports_held` in the signed record | Shipped — **pty-tested on Linux only; Windows COM ports and a real bench port unverified** | host | 130 |
 | Core keeps HIL test definitions by hash, premade suites and confirmations — `POST /definitions`, `GET /suites`, `/confirmations/*`; the card and the post are the person's on every Core | Built — **host-side only; the checkout layout is assumed, and no run or go consumes a confirmation yet (EMB-364)** | unit | 133 |
 | Core prepares a Test run — `POST /test-runs` re-expands `run.json` and refuses one it does not reproduce; `GET /test-runs/{run_id}/card` serves the go card, with the go nonce for the person only | Built — **host-side only; the go is core-370, a study file is not checked against its hash, and the benches that exist are assumed from `run.json`** | unit | 134 |
-| Core starts a Test run on the person's go — `POST /test-runs/{run_id}/go` spends the card's nonce and moves the session's lease to the run, `/cancel` ends it from either token | Built — **host-side only; nothing executes the run's studies yet (EMB-366), the native Windows build was not run, and a Core restart mid-run leaves it started with no end** | unit | 135 |
+| Core starts a Test run on the person's go — `POST /test-runs/{run_id}/go` spends the card's nonce and moves the session's lease to the run, `/cancel` ends it from either token | Built — **host-side only; the executor is core-380, the native Windows build was not run, and a Core restart mid-run leaves it started with no end** | unit | 135 |
+| Core runs a started Test run — bench by bench, test by test, each study through the host-study executor, verdicts from the shared crate, a fail/error/cancel/`stop_on_fail` policy, `GET /test-runs/{run_id}` | Built — **host studies only; the real reset, idle line and study path ran over no bench, `power_cycle` and `detach` are an error, and no between-bench prompt or smoke check yet** | unit | 136 |
 
 ## embarch-api
 
@@ -245,6 +246,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch install-core` — verifies a signed release in an admin-only staging folder, refuses an older suite, records what it installed | Built — **the elevation, the service registration and the binary install from staging are later units; tested with a fake verifier, the Windows ACL step never run** | unit | 61 |
 | `src/agent.rs`: pure renderers for the agent container (mounts, hardening, `container.toml`) | Built, unused — **no container was ever started; `docker-desktop` and `macos` are unverified** | no | 62 |
 | `src/agent.rs`: `render_containerfile` and `west_mounts` for the agent's image — **no image was ever built; SDK URL, package list and `west list` format are from memory** | Built, unused | no | 64 |
+| `src/agent.rs`: `render_entrypoint_agent`, the container entrypoint half that clones the repo, links `embarch/` and registers the MCP server — **no container started; git and claude behaviour from memory** | Built, unused | no | 66 |
 
 ## embarch-ui
 
