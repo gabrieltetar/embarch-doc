@@ -1,6 +1,6 @@
 # 043 — The 💡 linker offers a bench instrument
 
-**State:** claimed by agent/chat/043-the-linker-offers-a-bench-instrument, 2026-11-25 10:12
+**State:** done — instrument source and runner built; decision 116; references.md split, out of reserve
 **Source:** EMB-414 — the 💡 linker cannot offer a bench instrument
 **Issue:** EMB-414
 **Scope:** chat
@@ -66,12 +66,18 @@ per `tasks/README.md`.
 
 ## Done when
 
-- [ ] With a fake `embarch-api` listing `eload` and `psu`, "set the load to 1 A"
+- [x] With a fake `embarch-api` listing `eload` and `psu`, "set the load to 1 A"
       offers both, written `instrument "<name>" (scpi)`; "ask eload for its
       voltage" offers `eload` by name.
-- [ ] A draft with no instrument word and no name gets no instrument line.
-- [ ] No binary means no spawn; a failing binary logs once and offers nothing.
-- [ ] Cards calls within 5 minutes spawn the verb once; a chat off screen spawns
+- [x] A draft with no instrument word and no name gets no instrument line.
+- [x] No binary means no spawn; a failing binary logs once and offers nothing.
+- [x] Cards calls within 5 minutes spawn the verb once; a chat off screen spawns
       nothing.
-- [ ] The decision says it, and `references.md` is out of reserve.
-- [ ] Gate green.
+- [x] The decision says it, and `references.md` is out of reserve.
+- [x] Gate green.
+
+## Notes
+
+- `references.md` is 6,003 B, out of reserve; decisions 113 to 115 moved verbatim to `references-kinds.md` (8,888 B) with 116 beside them. 88 and 112 untouched, so every `Must not delete:` item of `tasks/chat/042` survives.
+- The gate's `check-decision-refs.py` is red on one line only: `history/chat.md:9` cites decision 114 at `references.md`. `history/` is not a chat worker's to write; filed to the spool for the supervisor. Repoint it at `../embarch-chat/decisions.md`.
+- Hardware-verification debt: none to a board, but the instrument kind is not seen against a real `embarch-api` and a declared bench; tested on `test/fake-api.mjs` only.

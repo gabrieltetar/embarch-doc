@@ -1,0 +1,1 @@
+| The 💡 linker offers the bench's declared instruments (`instrument "<name>" (<protocol>)`), every one when the draft carries an instrument word, one when it names it; read with `embarch-api --json list-instruments`, cached 5 minutes | Built, not installed — **tested on a fake `embarch-api` only; not seen against a real bench** | unit | 116 |
