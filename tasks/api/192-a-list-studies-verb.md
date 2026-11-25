@@ -1,6 +1,6 @@
 # 192 — `embarch-api list-studies` lists Core's retained studies and their taps
 
-**State:** open
+**State:** claimed by agent/api/192-a-list-studies-verb, 2026-11-25 01:19
 **Source:** EMB-405 — embarch-api cannot list Core's studies from the command line
 **Issue:** EMB-405
 **Scope:** api
