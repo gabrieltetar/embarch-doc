@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `POST /test-runs/{id}/go` (the person's token) starts a prepared run and moves the bench lease to it; `/cancel` ends it; the lease returns to its session. Decision 135.
 - Core registers a prepared Test run it re-expands and serves its go card, with a nonce for the person only: `POST /test-runs`, `GET /test-runs/{run_id}/card` (decision 134).
 - Core keeps HIL definitions by hash, reads premade suites from EMBARCH_SUITES_DIR, and records a person-only confirmation in the run log (decision 133).
 - Core reads a host step's declared parse out of its reply, records it in events.json and writes measurements.json for a host study (decision 131).
