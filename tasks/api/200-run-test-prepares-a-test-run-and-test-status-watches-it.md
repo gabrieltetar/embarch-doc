@@ -1,6 +1,6 @@
 # 200 — `run_test` prepares a Test run and `test_status` watches it
 
-**State:** open
+**State:** claimed by agent/api/200-run-test-prepares-a-test-run-and-test-status-watches-it, 2026-11-25 12:33
 **Source:** EMB-377 — an agent cannot prepare a Test run or watch one
 **Issue:** EMB-377
 **Scope:** api
