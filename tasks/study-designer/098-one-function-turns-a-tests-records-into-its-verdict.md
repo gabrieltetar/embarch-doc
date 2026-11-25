@@ -1,6 +1,6 @@
 # 098 — One function turns a test's records into its verdict
 
-**State:** open
+**State:** claimed by agent/study-designer/098-one-function-turns-a-tests-records-into-its-verdict, 2026-11-25 07:37
 **Source:** EMB-356 — no shared function turns a test's records into its verdict
 **Issue:** EMB-356
 **Scope:** study-designer
