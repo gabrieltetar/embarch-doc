@@ -1,0 +1,1 @@
+| Token sent only to the attested Core — a challenge, then the machine-wide token on a fingerprint match, the development token (or none) on a mismatch; `status` shows mode and fingerprint | Built — **never run against a live Core** | unit | [133](../embarch-api/decisions/client-crate-funnel.md) |

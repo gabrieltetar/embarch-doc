@@ -1,6 +1,6 @@
 # 195 — The client sends Core's token only after a challenge
 
-**State:** claimed by agent/api/195-the-client-sends-cores-token-only-after-a-challenge, 2026-11-25 06:12
+**State:** done — decision 133: token sent only after a verified challenge, picked by core-fingerprint
 **Source:** EMB-333 — embarch-api sends Core's token to whatever answers on the port
 **Issue:** EMB-333
 **Scope:** api
@@ -57,11 +57,15 @@ commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] Against a fake Core: a match sends the machine-wide token; a mismatch
+- [x] Against a fake Core: a match sends the machine-wide token; a mismatch
       sends the development token from a temp store; a mismatch with no
       development store sends no `Authorization` header at all and errors.
-- [ ] No `core-fingerprint` file: the same token as today.
-- [ ] A challenge answer with a bad signature or a foreign frame sends nothing.
-- [ ] `status` shows mode, fingerprint and match.
-- [ ] Decision 109 amended or a new decision; a `status.d/` fragment for
+- [x] No `core-fingerprint` file: the same token as today.
+- [x] A challenge answer with a bad signature or a foreign frame sends nothing.
+- [x] `status` shows mode, fingerprint and match.
+- [x] Decision 109 amended or a new decision; a `status.d/` fragment for
       `embarch-token.md`.
+
+## Outcome
+
+Decision 133 (`embarch-api/decisions/client-crate-funnel.md`). `dispatch_with` takes its token from `CoreClient::attested()`: with a `core-fingerprint` beside the token file, one challenge per connection (cached, cleared on a connect failure), then machine-wide token on a match, development token (or no header and an error naming both fingerprints) on a mismatch, nothing on a bad challenge. No fingerprint file: today's behaviour with no challenge, an explicit config token included (chosen so the suite's fake Cores need no signing route); with the file, an explicit token still wins but waits for a good challenge. `core_key::check` moved to `embarch_core_client::attest`; `status` (tool and CLI) carries `attestation`. Added public items only: `attest::*`, `CoreClient::{attestation, new_with_stores}`, `CoreConfig::token_is_explicit`. **Hardware/live-Core debt:** the development-store paths and the WSL2 `%LOCALAPPDATA%` shell-out were never run against a real Core; tests use temp stores and a signing mock. Existing integration tests that use real discovery would start challenging if a `core-fingerprint` is installed on the test machine.
