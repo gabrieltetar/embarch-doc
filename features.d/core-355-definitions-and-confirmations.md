@@ -1,0 +1,1 @@
+| Core keeps HIL test definitions by hash, premade suites and confirmations — `POST /definitions`, `GET /suites`, `/confirmations/*`; the card and the post are the person's on every Core | Built — **host-side only; the checkout layout is assumed, and no run or go consumes a confirmation yet (EMB-364)** | unit | 133 |

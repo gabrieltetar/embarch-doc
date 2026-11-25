@@ -17,6 +17,7 @@ splits into `interfaces/<topic>.md`.
 | `EMBARCH_STUDY_RESULTS_KEEP` | 50 (`0` disables) | [assumed] |
 | `MAX_UNDECODABLE_FRAMES` | 10 | [assumed] separates one lost frame from a noise stream |
 | log retention | 7 daily files | [assumed] |
+| `EMBARCH_SUITES_DIR` | unset (nothing premade) | the checkout of premade HIL suites Core reads, per call; the owner may strike it for a config key (decision 133) |
 | `EMBARCH_FLASH_BACKEND` | — | forces a backend (`probe-rs`, `jlink`, `nrfutil`); an unrecognised value is refused by name before any tool lookup runs, and forcing probe-rs onto a refused family logs a warning |
 | `EMBARCH_JLINK_EXE` / `_NRFUTIL_EXE` | — | vendor-tool overrides, searched after `PATH` and before default install dirs |
 | `EMBARCH_TOKEN` | — | the agent's token: explicit env var wins over the machine-wide `token` file |

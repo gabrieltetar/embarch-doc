@@ -1,6 +1,6 @@
 # 157 — Core keeps definitions, premade suites and confirmations
 
-**State:** claimed by agent/core/157-core-keeps-definitions-premade-suites-and-confirmations, 2026-11-25 06:51
+**State:** done — definitions by hash, premade suites, person-only confirmations in the run log; host-side, no hardware
 **Source:** EMB-363 — Core holds no definition, premade suite or confirmation
 **Issue:** EMB-363
 **Scope:** core
@@ -79,12 +79,12 @@ reserve. If your work pushes one into reserve, file
 
 ## Done when
 
-- [ ] A definition posted twice is kept once, by its hash; an invalid one is
+- [x] A definition posted twice is kept once, by its hash; an invalid one is
       refused with the crate's reason.
-- [ ] A confirmation with the agent's token is refused `403`; with the
+- [x] A confirmation with the agent's token is refused `403`; with the
       person's token and a fresh nonce it is entered in the run log; the same
       nonce again is refused.
-- [ ] An edited definition, a new hash, reads unconfirmed.
-- [ ] A premade test identical to the checkout's copy needs no confirmation;
+- [x] An edited definition, a new hash, reads unconfirmed.
+- [x] A premade test identical to the checkout's copy needs no confirmation;
       one byte changed needs one.
-- [ ] A decision and `interfaces/` docs give the routes and the entry shape.
+- [x] A decision and `interfaces/` docs give the routes and the entry shape.

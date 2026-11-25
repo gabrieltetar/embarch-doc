@@ -38,6 +38,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [A host step's declared number](decisions/host-parse.md) | 131 | 4.3 KB |
 | [Operator prompts in a host study](decisions/host-prompt.md) | 105, 107 | 5.3 KB |
 | [Signing a study run's record](decisions/signing.md) | 110 | 7.0 KB |
+| [Definitions, premade suites and confirmations](decisions/definitions.md) | 133 | 4.9 KB |
 | [The run log, retention before publish, and the discard](decisions/run-log.md) | 111, 112 | 7.1 KB |
 | [Measurements at a study's end](decisions/measurements.md) | 113, 114, 115, 121 | 7.3 KB |
 | [Core's side of publish](decisions/publish.md) | 116, 117, 118, 119, 120 | 8.3 KB |
