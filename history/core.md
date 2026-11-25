@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core's `run --service` and `run --store <dir>` keep the key, logs and identity in their own store; /status and the challenge say `mode` and `keyid` (decision 129).
 - Core: a run's signed record names its call-log range (`observed.call_log`), and publish writes `call-log-segment.jsonl` beside the run-log segment ([publish](../embarch-core/interfaces/publish.md)).
 - Core releases a bench lease after 30 minutes with no hardware call, whatever client renews it; a renew after it is refused naming the idle release (decision 123).
 - Core chains every call to a lease-gated route, refusals too, into `call-log.jsonl`; answers name their entry; `GET /call-log` reads a range ([decision 122](../embarch-core/decisions/call-log.md)).
