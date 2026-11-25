@@ -1,8 +1,7 @@
 # 121 — The UI shows a card on which the engineer confirms a test input
 
 **State:** blocked — embarch-core-client has no confirmation-route methods; a second repo (embarch-api) must add them first
-
-**Unparks when:** embarch-api adds pending_confirmations, confirmation_card and confirm to CoreClient and it lands
+**Unparks when:** `api/199` has landed
 **Source:** EMB-383 — the UI has no card on which the engineer confirms a test input
 **Issue:** EMB-383
 **Scope:** ui
