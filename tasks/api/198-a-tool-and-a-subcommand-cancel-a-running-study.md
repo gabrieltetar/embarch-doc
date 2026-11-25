@@ -1,6 +1,6 @@
 # 198 — A tool and a subcommand cancel a running study
 
-**State:** open
+**State:** claimed by agent/api/198-a-tool-and-a-subcommand-cancel-a-running-study, 2026-11-25 09:42
 **Source:** EMB-487 — no tool or button cancels a running study (the api half; the UI button is `ui/122`)
 **Issue:** EMB-487
 **Scope:** api
