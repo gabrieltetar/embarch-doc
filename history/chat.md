@@ -15,6 +15,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- Chat: the 💡 linker takes references from any number of sources, one `<references>` block of 12 lines with cue-word gating; issues and PRs are the first source (chat decision 112).
 - Permissions command now writes the agent guide's 1.1 lists for embarch-api and embarch-atlas; instrument_exchange is gone from it.
 - Picking a login now offers a window reload, since Claude Code's account dialog keeps the old login until one (embarch-chat decision 106).
 - embarch-chat: spec, interfaces, open and decisions/shape.md out of reserve; sections moved verbatim to spec/, interfaces/, open/ and decisions/rail.md.
