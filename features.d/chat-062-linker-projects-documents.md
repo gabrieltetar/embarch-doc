@@ -1,0 +1,1 @@
+| The 💡 linker offers the desk's Linear projects (`Linear project "<name>" (<url>)`, ungated) and documents (`Linear doc "<title>" (<project>, <url>)`, gated by cue words or a URL), from the mirrored index | Built, not installed — **tested on a made-up index only; not seen against a real workspace** | unit | 117 |

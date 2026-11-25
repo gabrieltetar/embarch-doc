@@ -1,6 +1,6 @@
 # 044 — The 💡 linker offers a Linear project or document
 
-**State:** claimed by agent/chat/044-the-linker-offers-a-linear-project-or-document, 2026-11-25 12:34
+**State:** done — the linker offers the desk's Linear projects and documents (decision 117)
 **Source:** EMB-413 — the 💡 linker cannot offer a Linear project or document
 **Issue:** EMB-413
 **Scope:** chat
@@ -57,12 +57,12 @@ do not grow it.
 
 ## Done when
 
-- [ ] With the extended `refs-index.mjs`, "follow the bring-up notes" offers the
+- [x] With the extended `refs-index.mjs`, "follow the bring-up notes" offers the
       document, written `Linear doc "<title>" (<project>, <url>)`.
-- [ ] "under the logger project" offers the project.
-- [ ] A document URL in the draft finds its entry with no cue word.
-- [ ] A document title written to steer the cards reaches no draft: the
+- [x] "under the logger project" offers the project.
+- [x] A document URL in the draft finds its entry with no cue word.
+- [x] A document title written to steer the cards reaches no draft: the
       reference is quoted and clipped, and another card carrying it is dropped.
-- [ ] An index with no `projects` or `documents` behaves as today.
-- [ ] The decision and `interfaces/desk.md` say it.
-- [ ] Gate green.
+- [x] An index with no `projects` or `documents` behaves as today.
+- [x] The decision and `interfaces/desk.md` say it.
+- [x] Gate green.

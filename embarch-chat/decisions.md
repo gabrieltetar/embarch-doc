@@ -20,5 +20,5 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/library.md](decisions/library.md) | 7, 13, 14, 38, 39 | An entry is a command or skill, two folders, seeded from past prompts, the 📚 and 💡, promptu's install pieces |
 | [decisions/assistant.md](decisions/assistant.md) | 19, 24, 28 (retired), 36, 97, 37, 25, 26, 34, 27 | Haiku's quick replies, ghost text and cards, what it left to Promptu, three waves, the chat on screen only, what it sees |
 | [decisions/references.md](decisions/references.md) | 88, 112 | The desk's reference index in cards and prose; the linker's sources, one block and the cue-word gate |
-| [decisions/references-kinds.md](decisions/references-kinds.md) | 113, 114, 115, 116 | The linker's kinds: branches and worktrees; datasheet and spec sections; Kconfig symbols and devicetree nodes; the bench's declared instruments |
+| [decisions/references-kinds.md](decisions/references-kinds.md) | 113, 114, 115, 116, 117 | The linker's kinds: branches and worktrees; datasheet and spec sections; Kconfig symbols and devicetree nodes; the bench's declared instruments; the desk's Linear projects and documents |
 | [decisions/promptu.md](decisions/promptu.md) | 95, 96, 98 | `embarch-promptu` in the chat: the icon and its card, the pass and its dialog at a task start and on Start work, the Memory menu |

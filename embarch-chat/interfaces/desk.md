@@ -22,6 +22,6 @@ From the Node side only, bearer token from `deskTokenPath` (20). Shapes and stat
 | `POST /items/{id}/finish` | Finish: the desk re-checks and posts a fresh `end` or `unfinished`; answers `{"ended":true}` or `{"ended":false,"blockers":[…]}`, which the chat ignores — it acts on the entry. 404 from an older desk: one plain error (104) |
 | `POST /mailbox` `{"kind":"focus"}` | Jump to a chat another window runs: that window takes the entry and shows it (31) |
 | `GET /mailbox` entry `{"kind":"open"}` | Starts an untracked chat in the entry's folder, with no prompt (desk decision 70) |
-| `GET /refs`, `GET /refs?desk=<id>` | The reference index of the desk `/view` is asked for (88): read once, then again only when `/view`'s `refs_ms` or the desk moves |
+| `GET /refs`, `GET /refs?desk=<id>` | The reference index of the desk `/view` is asked for (88): read once, then again only when `/view`'s `refs_ms` or the desk moves. Its `projects` (`id`, `name`, `state`, `url`) and `documents` (`id`, `title`, `url`, `project_id`, `project_name`) feed the linker's project and document kinds (117); a desk that omits them reads as none |
 
 **A desk older than b722b3b** ignores `/view?desk=` and does not keep the mark: the list says "Update embarch-desk" and shows only chats in the window's repos. **One older than 8f06ba0** has no `refs_ms` in `/view`, so `/refs` is never asked: no reference cards, no prose links, and a step shows only what it carries.
