@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-ui gains a Confirm tab: Core's card for each pending test input as text, confirmed with the person's token and the card's nonce ([decision 110](../embarch-ui/decisions/confirm-tab.md)).
 - Live Study's status card has a Cancel button on a running study, relaying to Core's cancel route ([decision 109](../embarch-ui/decisions/live-study.md)).
 - Add `embarch-ui bench make-live <slug>`: a saved bench is made live from the terminal, sharing the route's code; proposals apply only with `--bind`. [bench-live](../embarch-ui/spec/bench-live.md)
 - ui: the Desk tab draws the weekly Promptu sheet: bar count, numbers, groups, lines with ✓/✕ and notes, the feel line and Apply; hidden at open 0 ([shell 56](../embarch-ui/decisions/shell.md)).

@@ -287,6 +287,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Desk tab Promptu section: bar count (hidden at 0 open), weekly sheet panel with numbers, per-group and per-line ✓/✕ with notes, the feel line and Apply | Shipped — driven in headless Firefox against a stand-in desk, each request path and body checked; **not run against a real desk or Promptu** (the feel route is desk/043) | browser | 56 |
 | `embarch-ui bench make-live <slug> [--config] [--bind role=serial]` — a saved bench made live from the terminal, sharing the Topology route's code | Shipped — host-tested against a stub Core; not run against a live Core | unit | 90 |
 | Live Study: Cancel button on a running study, relaying to Core's cancel route and showing Core's refusal | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 109 |
+| Confirm tab: the engineer confirms a custom or derived test, capability or hook from Core's own card, one or all shown, with the person's token and the card's nonce | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 110 |
 
 ## embarch-desk
 
