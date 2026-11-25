@@ -1,6 +1,6 @@
 # 045 — The compaction test stops racing, and a failed one stops holding the run
 
-**State:** claimed by agent/chat/045-the-compaction-test-stops-racing-and-holding-the-run, 2026-11-25 13:46
+**State:** done — compaction tests read the hold at the turn end event and dispose in t.after; 20 wire runs and 2 full npm test runs green under load
 **Source:** EMB-556 — a compaction test races under load and then holds npm test for ten minutes
 **Issue:** EMB-556
 **Scope:** chat
@@ -41,7 +41,17 @@ filing.
 
 ## Done when
 
-- [ ] The test passes twenty runs in a row of `wire.test.mjs` while a parallel
+- [x] The test passes twenty runs in a row of `wire.test.mjs` while a parallel
       `cargo test` (any repo) loads the machine.
-- [ ] A forced failure in any compaction test ends the run in under a minute.
-- [ ] Gate green, the full `npm test` included.
+- [x] A forced failure in any compaction test ends the run in under a minute.
+- [x] Gate green, the full `npm test` included.
+
+## Result
+
+Passes alone on `main` today (86 of 86), so the failure is load-only: the CLI's
+`/compact` result is instant, so the held rest goes out before the test's
+`await turns()` resumes. The assertion now reads `sent()` inside the turn's own
+event; every compaction test's chat is disposed in `t.after`. Measured: 20 runs
+of `wire.test.mjs` under a parallel `cargo test` (all green, 6-7 s each), 2 full
+`npm test` runs (one under `cargo test` load, 428 pass, 0 fail, ~45 s); a forced
+failure ends in about 1 s. No hold behaviour was wrong, so no decision.
