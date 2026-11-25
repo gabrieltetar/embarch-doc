@@ -10,7 +10,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/hil-sha
 
 None is measured; each is a spelling or a type, chosen so M1.2, M1.3, M1.5 and M1.7 write against one fixed shape. Each is marked *(shape)* in the interface.
 
-- **File conventions.** JSON, `snake_case`, unknown keys refused, a `schema` integer from 1; a hash is lowercase hex SHA-256 over the bytes as written, Core's JSON canonical (RFC 8785, JCS) so a rewrite reproduces it; times are `*_utc_ms` on `rx_utc_ms`'s clock, dates `YYYY-MM-DD` UTC. *Rejected:* a `sha256:` prefix, which a reader would have to strip.
+- **File conventions.** JSON, `snake_case`, unknown keys refused, a `schema` integer from 1; a hash is lowercase hex SHA-256; a study's is `study_hash`, over its canonical JSON (RFC 8785, JCS; decision 113), not the file's bytes, and Core's JSON is canonical so a rewrite reproduces it; times are `*_utc_ms` on `rx_utc_ms`'s clock, dates `YYYY-MM-DD` UTC. *Rejected:* a `sha256:` prefix, which a reader would have to strip.
 - **Verdict strings and `reason`.** The six are 03's words in lowercase. 03 gives the reasons in prose; the closed lowercase list in the interface is this unit's spelling, with the five "skipped for a gap" reasons split from `not_applicable` and `not_selected` because 03 and 06 treat them differently. Severity is a number (error 5 … pass 0) where a file needs one.
 - **Qualifier spellings**: the twelve in 03 and 06 as snake-case strings; `n_of_m_run` carries `n` and `m`.
 - **`measurements.json` top level**: `schema`, `run_id`, `behaviours` (name to integer), `measurements`. 02 says the behaviour versions are "written into" the file without a place.

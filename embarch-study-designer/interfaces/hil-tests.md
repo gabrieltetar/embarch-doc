@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-25 (EMB-353, `tasks/study-designer/094`; the checks, EMB-354, `095`). Code: `src/hil_test.rs` and `src/hil_check.rs`, feature `hil-test` (needs `alloc`, `verdicts`, `sha2`, `serde_json`; host-only; nothing turns it on yet); fixtures `tests/fixtures/hil-tests/`, tests `tests/hil_tests.rs`, `tests/hil_checks.rs`. Why: decision 109 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Conventions (JSON, `snake_case`, `schema`, unknown keys refused): [hil-shapes.md](hil-shapes.md#conventions-all-hil-files). Source: `notes/hil/03-test.md`, "One test" and "The DUT's inputs"; `04-premade-suites.md`, "Decided".
 
-A test is a study plus verdict rules; there is no new step format. These types check **shape only**: the definition-time checks are [below](#the-definition-time-checks); a study that does not hash to `study.hash` and a hook with no mapping are a later unit's. `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
+A test is a study plus verdict rules; there is no new step format. These types check **shape only**: the definition-time checks are [below](#the-definition-time-checks); a study that does not hash to `study.hash` (`study-designer/100`) and a hook with no mapping are a later unit's. `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
 
 ## A test (`TestDef`)
 
@@ -10,7 +10,7 @@ A test is a study plus verdict rules; there is no new step format. These types c
 |---|---|---|
 | `schema` | integer | 1; defaults to 1 when absent on read, always written |
 | `test_id`, `title` | string | The id is stable within its suite; neither decides a verdict |
-| `study` | `{file, hash}` | The study by file name and SHA-256 of its bytes (an expanded template's study is kept by its own hash) |
+| `study` | `{file, hash}` | The study by file name and its `study_hash` (an expanded template's study is kept by its own hash) |
 | `requirements` | strings | **The suite's own stable slugs**, never section numbers: lowercase letter first, then `a-z 0-9 - _ .` (`is_requirement_slug`) |
 | `revision_range` | `{from, to}` | Spec revisions it applies to; `null` is open on that side |
 | `bench` | `{name, config}` | The bench it needs and its config, by name, both required |
@@ -46,6 +46,8 @@ A test is a study plus verdict rules; there is no new step format. These types c
 ## The definition hash
 
 `definition_hash(&T)` (and `TestDef::hash()`, `SuiteManifest::hash()`): **lowercase hex SHA-256 over the canonical JSON (RFC 8785) of the value as this crate serialises it.** Keys sort by UTF-16 code unit; numbers are the ES6 spelling (`canonical_json` is public); so key order and a defaulted field's spelling in the source file never change it, and a changed limit does. A confirmation binds this hash. Integers in these files stay below 2^53.
+
+`study_hash(&HostStudy) -> String` (decision 113): `definition_hash` of the study, so the hash is of its content, not of the file's layout; an expanded template's hash is this function's value for the expanded study. `check_test` does not yet refuse a study that does not hash to `study.hash`: that is `study-designer/100`.
 
 ## `derived_diff(copy, premade) -> Vec<FieldDiff>`
 

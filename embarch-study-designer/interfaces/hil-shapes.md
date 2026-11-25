@@ -10,7 +10,7 @@ Where a note is the source the doc cites it. A value marked *(shape)* is this do
 
 - **JSON, UTF-8, no BOM; keys are `snake_case`.** Unknown keys are refused by a reader (as `deny_unknown_fields` does elsewhere in this crate) *(shape)*.
 - **Every file carries `schema`: an integer, starting at 1**, bumped when a reader of the old shape would misread the new one *(shape)*.
-- **A hash is 64 lowercase hex characters of SHA-256 over the file's bytes as written**, no prefix. A JSON file Core writes is canonical (RFC 8785, JCS) so a rewrite reproduces its hash *(shape)*.
+- **A hash is 64 lowercase hex characters of SHA-256**, no prefix; a study's is `study_hash`, over its canonical JSON, not the file's bytes (decision 113). A JSON file Core writes is canonical (RFC 8785, JCS) so a rewrite reproduces its hash *(shape)*.
 - **Times are `*_utc_ms`: integer milliseconds since the Unix epoch, the clock of `StreamRecord::rx_utc_ms`**; a date is `YYYY-MM-DD`, UTC *(shape)*.
 - **Absent and `null` differ, and each field says which it uses.** "Required" means the key is always present; `null` then means "not known or not declared", never "zero".
 

@@ -1,6 +1,6 @@
 # 101 — `study_hash` lands alone: one function fixes a premade study's hash
 
-**State:** claimed by agent/study-designer/101-study-hash-lands-alone, 2026-11-25 15:44
+**State:** done — study_hash lands alone; check_test unchanged; decision 113 amended
 **Source:** EMB-555 — the additive half of `study-designer/099`, which landed and was reverted on 2026-11-25 (code `1dfdae1`, doc `29869b13`)
 **Issue:** EMB-555
 **Scope:** study-designer
@@ -64,13 +64,13 @@ in the same commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] `study_hash` fixes the study hash for a non-template study, with a test
+- [x] `study_hash` fixes the study hash for a non-template study, with a test
       that pins a known input to its hash.
-- [ ] `check_test` refuses nothing new; an expanded template's hash is
+- [x] `check_test` refuses nothing new; an expanded template's hash is
       unchanged.
-- [ ] Decision 113 records the convention and names `study-designer/100` for
+- [x] Decision 113 records the convention and names `study-designer/100` for
       the refusal; `hil-shapes.md` agrees.
-- [ ] Gate green. (The landing leg re-tests `embarch-api` and `embarch-core`
+- [x] Gate green. (The landing leg re-tests `embarch-api` and `embarch-core`
       against this crate after `cargo clean -p embarch-study-designer` in
       each: a path dependency swapped by symlink is not rebuilt by mtime
       alone, which is how the first pass got through.)
