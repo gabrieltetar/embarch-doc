@@ -1,6 +1,6 @@
 # 113 — The agent container's firewall, and Core's address from inside
 
-**State:** claimed by agent/umbrella/113-the-agent-containers-firewall-and-cores-address-from-inside, 2026-11-25 06:51
+**State:** done — firewall script, allowlist and Core-address table rendered and tested (decision 63); nothing run in a container
 **Source:** EMB-445 — nothing limits the agent container's network to Core and the model API
 **Issue:** EMB-445
 **Scope:** umbrella
@@ -72,13 +72,13 @@ list, and leave 111 as it is. **Other decisions near their limit:**
 
 ## Done when
 
-- [ ] The root script is golden-tested for each topology, with the allowlist
+- [x] The root script is golden-tested for each topology, with the allowlist
       from a fixture `container.toml`.
-- [ ] A test fails when a rendered rule allows a port on Core's host other
+- [x] A test fails when a rendered rule allows a port on Core's host other
       than Core's.
-- [ ] The rendered script exits non-zero on a failed check, read as text in
+- [x] The rendered script exits non-zero on a failed check, read as text in
       the test.
-- [ ] `core_addr_from_container` has one test per row, and the `linux` row's
+- [x] `core_addr_from_container` has one test per row, and the `linux` row's
       note about Core's bind is in its error text.
-- [ ] The decision names every capability the root half holds and says the
+- [x] The decision names every capability the root half holds and says the
       agent half holds none.

@@ -31,6 +31,6 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/mirrors.md](decisions/mirrors.md) | 15, 16, 20 | The liftable-copy pattern, and what survived `embarch-topology` |
 | [decisions/deploy.md](decisions/deploy.md) | 32, 50 | `deploy-core`, and the verification that is the point of it |
 | [decisions/build-identity.md](decisions/build-identity.md) | 57 | Which commit a suite binary is, replacing one that runs, and `doctor` check 18 |
-| [decisions/agent-container.md](decisions/agent-container.md) | 62 | The agent's container rendered by pure functions: each mount's mode, the hardening, and the forbidden-input scan |
+| [decisions/agent-container.md](decisions/agent-container.md) | 62, 63 | The agent's container rendered by pure functions: each mount's mode, the hardening, the forbidden-input scan; the firewall script, its allowlist and Core's address |
 
 **Decisions 27 and 29 are one decision under two numbers** — an insertion renumbered it. See [release.md](decisions/release.md).
