@@ -1,6 +1,6 @@
 # 161 — Core enforces a prompt's kind by the token's scope
 
-**State:** claimed by agent/core/161-core-enforces-a-prompts-kind-by-the-tokens-scope, 2026-11-25 09:42
+**State:** done — prompt kind from run.json, 403 for the agent on observation/clearance, scope recorded, observation value as person measurement, switched_on; decision 138
 **Source:** EMB-367 — Core does not know a prompt's kind and lets the agent answer any prompt (first half; the setup window is `core/162`)
 **Issue:** EMB-367
 **Scope:** core
@@ -66,13 +66,19 @@ new fields. If your work pushes any file into reserve, file
 
 ## Done when
 
-- [ ] An observation answered with the agent's token is refused `403`; with the
+- [x] An observation answered with the agent's token is refused `403`; with the
       person's, its choice is recorded with scope `person` and written as a
       `by: person` measurement.
-- [ ] An answer outside the declared choices is refused `400`, naming them.
-- [ ] An unanswered observation is judged `inconclusive`,
+- [x] An answer outside the declared choices is refused `400`, naming them.
+- [x] An unanswered observation is judged `inconclusive`,
       `observation_unanswered`; an unanswered `action` prompt is `error`.
-- [ ] A prompt after an instrument set lists that output as switched on.
-- [ ] A study outside a Test run answers as it did before.
-- [ ] Decision 105 amended; a new decision records the kinds.
-- [ ] Gate green.
+- [x] A prompt after an instrument set lists that output as switched on.
+- [x] A study outside a Test run answers as it did before.
+- [x] Decision 105 amended; a new decision records the kinds.
+- [x] Gate green.
+
+## Debts
+
+- **Hardware, owner-run:** a Test run on a real bench with a person answering an observation from the UI or CLI (and the agent's token refused `403`), and a prompt after a real instrument set listing it as switched on. Everything here ran over a scripted backend and the real prompt slot.
+- **Native Windows build of `embarch-core` unrun** (a worktree cannot build it).
+- **Not done, said so:** a device study's session prompts record no scope in their own record (the slot holds it); an observation number's declared `resolution` is not enforced on the answer; `switched_on` lists the last energising line per target and does not know an off line from an on one.
