@@ -10,6 +10,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- The UI builds against host schema v25 (`embarch-study-designer` decision 108); a prompt's kind is not shown yet.
 - Study tab's refused-unsubscribed-tap check now comes from study-designer's shared Study method; local helper removed.
 - Make live no longer posts a signal whose stored safe-off it cannot read: with GET /signals failing and none on the bench entry, a failed row says why (decision 90).
 - Make live declares an output's safe-off from the part's Safe-off box and keeps one Core already holds; rows say what was declared.

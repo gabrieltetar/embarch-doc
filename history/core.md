@@ -20,6 +20,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core builds against host schema v25 (`embarch-study-designer` decision 108): it accepts a host study whose steps declare a `parse` or whose prompts declare a kind, and does not act on either yet.
 - Core refuses a study with a GATT notify tap no step subscribes to, at submit; run_study is refused the same way.
 - Core's persisted record of what it flashed: spec invariant and /status row now say so; spec.md out of reserve (signing text moved to spec/signing.md).
 - Core appends each flash and bootload, with its load segments, scope and call-log seq, to flashed-images.jsonl, and reads it at start, so last_images survives a restart.
