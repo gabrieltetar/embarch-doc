@@ -4,7 +4,7 @@
 
 Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Unresolved: [open.md](open.md).
 
-**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file, which is what let them move out of `design.md` §3 into these eight files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
+**Numbers are permanent identifiers**, unique to this sub-project, never renumbered or reused ([DOC-CONVENTIONS.md](../DOC-CONVENTIONS.md)). They address the *sub-project*, not a file, which is what let them move out of `design.md` §3 into these files without touching one of the references pointing at them. `scripts/check-decision-refs.py` resolves every one.
 
 | Load this for | Decisions | Size |
 |---|---|---|
@@ -20,6 +20,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter, and the indices it checks | 41, 50 | 7.3 KB |
 | [Logging](decisions/logging.md) — a framed log backend, and per-study verbosity | 38, 39 | 10.1 KB |
 | [The PD bench](decisions/pd-bench.md) — a USB PD partner scripted over its shell, a second app beside the BLE bench, on a sink or a dual-role shield, built from its own workspace with six carried Zephyr patches, and checked without a board | 48, 49, 58, 59 | 5.2 KB |
+| [The analog source and its USB link](decisions/analog.md) — a SoC-neutral analog source with an nrfx SAADC backend (the portable-API exception), a USB composite device and its IDs, a selectable control link, SMP updates, the sample block, REGOUT0 | 60, 61, 62, 63, 64, 65 | 4.5 KB |
 | [Documentation conventions](decisions/conventions.md) — citing a decision, and what a bare section number into a deleted `design.md` becomes | 47 | 4.1 KB |
 
 Decisions 9, 13 and 22 are reversals of earlier positions in this same doc and are kept where their subject lives rather than in a separate list; each says what it reversed and why.

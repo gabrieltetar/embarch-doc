@@ -17,7 +17,7 @@ Opened by EMB-213: a contact microphone slid over a textured surface, sampled at
 
 ## A bench with no DUT
 
-**A bench has no DUT when nothing under test runs firmware**: the subject is a sensor, a transducer or a passive circuit, wired to a bench board's input or to an instrument. Route 1 of the [analog-capture proposal](../../embarch-analog-capture-proposal.md) is one, the microphone wired to the dev bench's own ADC, though not the stage that proposal recommends first (review round 4, owner 2026-11-20).
+**A bench has no DUT when nothing under test runs firmware**: the subject is a sensor, a transducer or a passive circuit, wired to a bench board's input or to an instrument. Route 1 of the [analog-capture proposal](../../embarch-analog-capture-proposal.md) is one, the microphone wired to the dev bench's own ADC, and the route the bench owner chose, 2026-11-24 (it first recommended route 2).
 
 | Mode | With no DUT | Why |
 |---|---|---|

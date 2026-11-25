@@ -1,6 +1,6 @@
 # Proposal: capturing, viewing and recording one audio-rate analog signal on a bench
 
-**Status:** proposal, 2026-11-18.
+**Status:** proposal, 2026-11-18. Route 1 with a dedicated USB CDC sample link **chosen by the bench owner, 2026-11-24**; being built, EMB-470 to EMB-479.
 
 Spans `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Opened by EMB-213. **An engineer evaluating a sensor concept before any custom board exists has to see and record its signal before a detector can be written**: a contact microphone slid over a textured surface, one event per bump. Piezo pickups and vibration sensors are the same need. What the research pass asks of the HIL design is [notes/hil/13-research-phase.md](notes/hil/13-research-phase.md).
 
@@ -29,66 +29,76 @@ Spans `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and 
 
 | Route | Carrier | Needed | Load | Basis |
 |---|---|---|---|---|
-| 1. Dev-bench analog input | the dev bench's link, 1 Mbaud, **shared** with logs, transcript and step results | 65 to 77 kB/s | **65 to 77 %** | link baud: [dev-bench constants](embarch-dev-bench/spec/constants.md). Low end: COBS only; high end: the transcript entry's 49 B envelope per 244 B [computed there], the worst case on record. A sample chunk's own envelope is unmeasured |
-| 2. DUT over a `Signal` tap, UART | a direct UART, 1 Mbaud, **dedicated** | about 66 kB/s | **about 66 %** | `EMBARCH_SIGNAL_BAUD`'s default ([Core constants](embarch-core/interfaces/constants.md), [assumed] there); 12 B of framing per 512 B of samples [derived from stage A's layout]; the DK's whole UART path at 1 Mbaud, through its debug chip where the port is the DK's own ([dev-bench decision](embarch-dev-bench/decisions/link.md)) [assumed] |
-| 2. DUT over a `Signal` tap, USB | USB CDC ACM, full speed | about 66 kB/s | low [assumed] | no CDC ACM throughput is measured anywhere in the suite ([embarch-smp spec](embarch-smp/spec.md)) |
-| 3. DUT over BLE | 244 B notifications, about 263 a second [derived], **then route 1's link** | 65 to 77 kB/s on the link; **130 to 154 kB/s with a transcript tap**, each notification crossing twice ([decision 55](embarch-study-designer/decisions/payload-meaning.md)) | **over the line** with a transcript | the BLE link at that rate [assumed], unmeasured here |
+| **1. Dev-bench analog input, dedicated CDC sample link (chosen)** | USB CDC ACM, full speed, **its own port**, apart from the 1 Mbaud control link | about 66 kB/s | low [assumed] | 528 B per 512 B of samples [derived from the block]; no CDC ACM throughput is measured anywhere in the suite ([embarch-smp spec](embarch-smp/spec.md)) |
+| 1, as first proposed | the control link, 1 Mbaud, **shared** with logs, transcript and step results | 65 to 77 kB/s | **65 to 77 %** | [dev-bench constants](embarch-dev-bench/spec/constants.md). **Why it was the weak point**; the sample link removes it |
+| 2. DUT over a `Signal` tap, UART | a direct UART, 1 Mbaud, dedicated | about 66 kB/s | about 66 % | `EMBARCH_SIGNAL_BAUD`'s default ([Core constants](embarch-core/interfaces/constants.md), [assumed]) |
+| 3. DUT over BLE | 244 B notifications, about 263 a second [derived], then the control link | 65 to 77 kB/s on the link; 130 to 154 with a transcript tap ([decision 55](embarch-study-designer/decisions/payload-meaning.md)) | **over the line** | unmeasured here |
 | 4. Outside the suite | route 2's carriers, read by the engineer's script | as route 2 | as route 2 | as route 2 |
 
-**Each ADC at 32 ksps is [assumed]**, to be checked against the nRF52840 and nRF54L15 product specifications. **Route 1 also assumes 32 ksps through Zephyr's portable ADC API**, the only one the dev bench may call ([spec](embarch-dev-bench/spec.md) §3) [assumed]; route 2's DUT firmware is the engineer's and may use the vendor's driver.
+**Each ADC at 32 ksps is [assumed]** until the first bench measures it. **The portable ADC API is not used**: the nRF52 backend calls nrfx SAADC directly, a narrow exception ([embarch-dev-bench decision 60](embarch-dev-bench/decisions/analog.md)).
 
 ## The four routes against the six items
 
-| Item | 1. Dev-bench analog input | 2. DUT over a `Signal` tap | 3. DUT over BLE | 4. Outside the suite |
+| Item | 1. Dev-bench input (chosen) | 2. DUT over a `Signal` tap | 3. DUT over BLE | 4. Outside the suite |
 |---|---|---|---|---|
 | 1. Source | the dev bench's ADC; **a bench with no DUT** ([13](notes/hil/13-research-phase.md#a-bench-with-no-dut)) | the DUT's ADC | the DUT's ADC | the DUT's ADC |
-| 2. Rate | shared link, 65 to 77 %; the portable ADC API at 32 ksps unverified | dedicated link, about 66 %, or CDC ACM | BLE unmeasured, then route 1's link | as 2 |
-| 3. Live view | the existing rate-carrying decode | stage B | the existing decode, no rate | the script's own, if any |
-| 4. Recording | rate declared; drops counted, not placed | stage A: raw bytes, drops placed by the DUT's index and CRC; stage B: in the suite | no rate; drops counted | the script's |
-| 5. Offline count | the engineer's ([13](notes/hil/13-research-phase.md#the-detector-being-researched)) | the engineer's | the engineer's | the engineer's |
-| 6. On-device count | the sensor moves to the DUT | **same wiring, same firmware** | same wiring | same wiring |
-| Evidence | **`by: bench`**, once its image is released ([13](notes/hil/13-research-phase.md#who-samples-decides-the-evidence)) | stage A: raw bytes, no measurement; stage B: `by: dut` | `by: dut` | no study record |
-| Suite work | dev-bench firmware, a source variant, a wire bump and reflash | stage A: none; stage B: five repos | a rate; the link's headroom | none |
+| 2. Rate | dedicated CDC link, about 66 kB/s | dedicated link, about 66 %, or CDC ACM | BLE unmeasured, then route 1's link | as 2 |
+| 3. Live view | min/max per column, clip indicator (decision 11) | the existing decode, then min/max | the existing decode, no rate | the script's own, if any |
+| 4. Recording | rate in the start header; drops placed by the block index and CRC | raw bytes, drops placed by the DUT's index and CRC | no rate; drops counted | the script's |
+| 5. Offline count | WAV export (decision 12), then the engineer's ([13](notes/hil/13-research-phase.md#the-detector-being-researched)) | the engineer's | the engineer's | the engineer's |
+| 6. On-device count | the sensor moves to the DUT (a rewire) | same wiring, same firmware | same wiring | same wiring |
+| Evidence | **`by: bench`**, once its image is released ([13](notes/hil/13-research-phase.md#who-samples-decides-the-evidence)) | `by: dut`; raw bytes, no measurement | `by: dut` | no study record |
+| Suite work | EMB-470 to EMB-479 below | Later; a binary `Signal` tap first | a rate; the link's headroom | none |
 
-## Recommended: route 2, in two stages
+## Chosen: route 1, with a dedicated USB CDC sample link
 
-- **The most margin of the three suite routes**, on a link nothing else shares.
-- **It starts with no suite change**, and every later one is general: any sensor a DUT streams needs a binary `Signal` tap with a declared rate.
-- **The detector is researched on the ADC that will run it** (item 6), with no rewiring between research and on-device counting.
-- **What it costs: every value is `by: dut`**, the DUT's own word from firmware the agent may have written ([13](notes/hil/13-research-phase.md#who-samples-decides-the-evidence)), **so its answer about the sensor is development evidence until route 1 exists.** Route 1 is the route when research numbers must reach a published report as bench evidence; it stays under Open, not rejected.
-- **Route 3 is rejected at this rate**: two hops onto a shared link that already lost frames at a far lower rate ([decision 70](embarch-study-designer/decisions/payload-meaning.md)). **Route 4 is stage A without** a study record, a topology-resolved port and Core's run log, so it brings nothing route 2 does not.
+**The bench owner's call, 2026-11-24.** What the first draft recommended (route 2) and why it no longer does:
 
-### Stage A: the first capture
+- **Route 1's weak point was the shared control link** (65 to 77 % of 1 Mbaud). A dedicated USB CDC port for samples removes it, so route 1 carries the signal with margin and no other traffic on its wire.
+- **Route 1's evidence is `by: bench`**, the bench's own measurement from a released image ([13](notes/hil/13-research-phase.md#who-samples-decides-the-evidence)), where route 2's every value is `by: dut`.
+- **The portable ADC API at 32 ksps was unverified**; decision 2 below replaces it with nrfx SAADC on nRF52, one recorded exception.
+- **Route 3 stays rejected** (two hops onto a shared link that already lost frames, [decision 70](embarch-study-designer/decisions/payload-meaning.md)); **route 4** brings nothing route 1 does not.
+- **Route 2 moves to Later.** Its cost, a rewire between research and on-device counting, stays true.
 
-**No suite change; by design, not run.**
+### The thirteen decisions
 
-1. **DUT firmware** (the engineer's repo): the ADC at the chosen rate, double-buffered; **each block a 4 B magic, the 4 B index of its first sample, 256 `i16` samples and a CRC-32/ISO-HDLC** over the preceding bytes, out a UART at 1 Mbaud or a CDC ACM port.
-2. **Topology**: the port declared as a direct `dut-to-host` signal, with its baud.
-3. **A bench study**: one whole-study `Raw` tap on the signal; **`record_checks` naming the tap with the magic**; one `BleAdvertise` step whose `delay_before_ms` is the scan's length, during which the person slides the sensor. The advertising is a placeholder the study needs no peer for.
-4. **After the run**: `<tap>.bin` holds the bytes as sent, and **Core reports which blocks verified** (decision 70). **The engineer's script places each gap by the blocks' indices**, writes one WAV per gap-free segment with the gaps listed, and counts events. No live view yet.
+Each is folded into the sub-project doc named, by the issue named (matched to the issue titles); the item leaves this list when it lands.
 
-### Stage B: in the suite, as issues once accepted
+| # | Decision | Folded into, built by |
+|---|---|---|
+| 1 | The dev bench stays generic firmware for any dev kit: a capability, not a project image; one full image per board | dev-bench spec, EMB-470 |
+| 2 | A SoC-neutral analog-source interface, N-channel-ready, v1 one channel; nRF52 backend only: nrfx SAADC advanced mode on its internal timer (CC = 16 MHz / rate), double-buffered, 12-bit, gain 1/4 on VDD/4, offset calibration per session; the Zephyr ADC driver must not claim the SAADC | dev-bench decision 60, EMB-473 |
+| 3 | Pins in devicetree (the channel with a label such as "A0", a marker input on a DK button); rate, start and stop from the study | dev-bench spec, EMB-470, EMB-473, EMB-474 |
+| 4 | USB composite device on Zephyr 4.5's stack, three CDC ACM ports (control, samples, SMP), named by interface string; VID 0xEBAC (local use, not reserved), PID high byte the device type, low byte from the board serial; serial the chip's unique ID | dev-bench decision 61, EMB-471 |
+| 5 | The control link is selectable per board by a `chosen` entry; enrollment records the port's USB identity; boards in use keep the J-Link UART | dev-bench decision 62, EMB-471, EMB-472 |
+| 6 | Image updates by MCUboot and SMP on the third port, through the bootload tool; the J-Link for the first flash only | dev-bench decision 63, EMB-471 |
+| 7, 8 | The sample block and the once-per-session start header, raw ADC codes | dev-bench decision 64, EMB-473 |
+| 9 | UICR REGOUT0 set to 3.3 V once at boot when unset, for an nRF52840 DK powered from native USB | dev-bench decision 65, EMB-470 |
+| 10 | A session study: Start prompt (declared run fields, saved), sampling, Done prompt, capped at 5 min; the study names an export folder | study-designer, EMB-474 |
+| 11 | Live view: min/max per drawn column, a clip indicator, no marker lines | embarch-ui, EMB-476 |
+| 12 | WAV export of a tap with a declared rate: 16-bit mono PCM, (code minus mid-scale) scaled to fill int16, one file per gap-free segment with the gaps listed, markers as cue points and an Audacity label file, refused with no rate | embarch-api, EMB-477 |
+| 13 | A session's recordings (up to 5 min, about 19 MB raw) are exempt from retention rotation | embarch-core, EMB-475 |
 
-| Repo | Change |
-|---|---|
-| `embarch-study-designer` | **A declared rate for a tap with no `PowerFrontEnd`**, host-only and keyed by tap id as `record_checks` is, so the dev-bench wire does not change; **a `Raw` tap and `record_checks` on `HostStudy`**, so a scan needs no placeholder step and can end on a `Prompt`; for a framed tap, where a record's samples start and which field is the index of its first, so **a gap is placed by index, never inferred from arrival times** |
-| `embarch-core` | **Split a read at newlines for a `Text` tap only**; **carry a partial sample from one read to the next**, or decode a framed tap per verified record rather than per read; host-study `Raw` taps and `Samples` batches to the live feed |
-| `embarch-api` | **A WAV export** of a `Samples` tap with a declared rate: one file per gap-free segment, the gaps listed beside them, refused for a tap with no rate |
-| `embarch-ui` | **Measure the live series at 32 ksps** and decimate before the browser if it does not hold; authoring the rate and framing once host-study rows exist ([host-study proposal](embarch-host-study-proposal.md)) |
-| `embarch-doc` | A studies-guide section for an audio-rate analog signal |
+**What corrects the first draft:** Core's newline split and partial-sample loss for a binary tap (see "What the suite has today") is route 1's problem too, now EMB-475; a gap is placed by block index, never from arrival times; `record_checks` verifies each block's magic and CRC.
+
+**The analog noise floor with DC/DC on and off** is unmeasured: EMB-478.
+
+## Later
+
+- **nRF54L15 and STM32 backends** behind decision 2's interface.
+- **A multi-channel nRF52 backend** (TIMER and PPI).
+- **Route 2:** a DUT-side streaming module emitting the same blocks, so research and on-device counting share wiring and firmware; its stage A needs no suite change beyond the block format.
+- **A test-signal loopback.**
 
 ## What stays outside the suite
 
-- **The event detector.** What a payload means is the engineer's ([embarch-study-designer decision 52](embarch-study-designer/decisions/payload-meaning.md)), and the dev bench interprets no payload ([spec](embarch-dev-bench/spec.md) §3). A generic excursion-count reducer is the HIL design's question ([13](notes/hil/13-research-phase.md#the-detector-being-researched)), not a detector.
-- **The DUT's sampling and counting firmware** (items 1 and 6), and stage A's analysis script, which the agent may write: in a report its count is tagged `(analysis)`, never a measurement ([13](notes/hil/13-research-phase.md#the-detector-being-researched)).
-- **The sensor's analog front end**: bias, gain and coupling are hardware the engineer chooses.
+- **The event detector.** What a payload means is the engineer's ([embarch-study-designer decision 52](embarch-study-designer/decisions/payload-meaning.md)), and the dev bench interprets no payload ([spec](embarch-dev-bench/spec.md) §3). A generic excursion-count reducer is the HIL design's question ([13](notes/hil/13-research-phase.md#the-detector-being-researched)).
+- **The analysis script**, which an LLM agent may write: its count is tagged `(analysis)`, never a measurement.
+- **The sensor's analog front end**: bias, gain and coupling are the engineer's hardware.
 
 ## Open
 
-- **Route 1, the dev bench's own analog input**, for `by: bench` evidence and as the first hardware a power front end could reuse [inference]: a source variant (`PowerFrontEnd` names an instrument), 32 ksps through the portable ADC API, and its share of the link.
-- **Whether a suite-shipped DUT module, outpost-style, frames stage A's blocks** so every engineer does not write it. The outpost itself samples no pin ([embarch-outpost spec](embarch-outpost/spec.md) §1).
-- **The ADC rates, the nRF52840's UART at 1 Mbaud and CDC ACM's throughput**: [assumed] until the first bench measures them.
+- **CDC ACM throughput and the ADC rate** are [assumed] until the first bench measures them.
 - **Whether the live feed holds 32 ksps**, end to end from Core's batches to the browser.
-- **What a scan costs the person** once a host study ends it on a `Prompt`: the person's go on the card before it starts, as for any host study holding a prompt ([02](notes/hil/02-study.md#how-a-study-runs-as-the-procedure-would-say-it)).
 
-**Fold:** each stage moves into its sub-projects' docs as it is accepted and leaves this file; the file is deleted once nothing in it is still proposed.
+**Fold:** each item moves into its sub-project's docs as its issue lands and leaves this file; EMB-479 adds the guide. Deleted once nothing in it is still proposed.
