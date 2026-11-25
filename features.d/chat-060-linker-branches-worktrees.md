@@ -1,0 +1,1 @@
+| The 💡 linker offers the chat folder's branches and worktrees, gated by cue words or an exact name, a branch with its PR, the chat's own left out | Built, not installed — **tested on scratch repos only; not seen in a window** | unit | 113 |

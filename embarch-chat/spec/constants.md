@@ -18,6 +18,7 @@ Split verbatim from [../spec.md](../spec.md) §4 on 2026-10-30, under [DOC-COMPA
 | Startup probe | asked again after 1 min; servers asked each second, at most 15 s; answers in 0.6 s and 2.6 s [measured 2026-11-12] (108) |
 | Assistant | ghost text after a 300 ms pause, first token 0.82–0.89 s; cards on a 2 s pause, 3.8 s; chips and name 2.6 s; $0.002–0.004 a call [measured as built] (26) |
 | Cards with the desk's references | 2.34 s median, a replace naming the PR 8 of 8 [measured 2026-10-25 on a synthetic vague-PR case; 3.9 s and a question before] (88) |
+| Branch and worktree source | the newest 300 local and `origin` branches; git read at most once a minute per folder, before a cards call; a name or path of 200 characters or less [assumed: the plan's recommendations] (113) |
 | `<references>` block | at most 12 lines and 3,600 characters (about 900 tokens), at most 4 lines of one kind before the best of the rest fill it; a title clipped at 90 characters [assumed: the plan's recommendation, 8 lines and 600 tokens before] (88, 112) |
 | Things a folded run lists | 3, then "N more" (87) |
 | Send held for cards | up to 4.5 s, drafts of six words or more (26) |

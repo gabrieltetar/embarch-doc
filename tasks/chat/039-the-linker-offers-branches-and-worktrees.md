@@ -1,6 +1,6 @@
 # 039 — The 💡 linker offers local branches and worktrees
 
-**State:** claimed by agent/chat/039-the-linker-offers-branches-and-worktrees, 2026-11-25 02:47
+**State:** done — branch and worktree source (decision 113) built and tested on scratch repos; not seen in a window
 **Source:** EMB-410 — the 💡 linker cannot offer a branch or a worktree
 **Issue:** EMB-410
 **Scope:** chat
@@ -53,22 +53,22 @@ Decision 112 lives in `embarch-doc/embarch-chat/decisions/references.md`
 (moved out of `assistant.md` by `chat/038`; the issue's pointer to
 `assistant.md` predates that). Record the branch and worktree kind as a dated
 amendment there, or as a new decision in the same file, per decision 112's "one
-more source and a row here". `decisions/promptu.md` (decision 96, 204 B under
+more source and a row here". `decisions/promptu.md` (decision 96, with only 204 B under
 its limit) is not to be touched. `spec/constants.md` takes the source's
 constants.
 
 ## Done when
 
-- [ ] In a scratch repo made in the test with branches `main`,
+- [x] In a scratch repo made in the test with branches `main`,
       `fix/abc-9-fan-curve` and `feature/logger`, the draft "rebase it on the
       fan branch" offers `branch fix/abc-9-fan-curve`.
-- [ ] The chat's own branch and worktree are never offered.
-- [ ] A second worktree is offered as `worktree <path> (branch <name>)`.
-- [ ] A branch the desk's index has a PR on is written with that PR.
-- [ ] A draft with no cue word and no exact branch name gets no branch line.
-- [ ] Git runs at most once a minute while drafts change, and the decision says
+- [x] The chat's own branch and worktree are never offered.
+- [x] A second worktree is offered as `worktree <path> (branch <name>)`.
+- [x] A branch the desk's index has a PR on is written with that PR.
+- [x] A draft with no cue word and no exact branch name gets no branch line.
+- [x] Git runs at most once a minute while drafts change, and the decision says
       so.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `npm ci`, `build`,
+- [x] Gate green (`../../embarch-fleet/gate.md`): `npm ci`, `build`,
       `typecheck`, `npm test`, `test:webview`.
-- [ ] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
+- [x] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
       `status.d/` fragment for anything suite-level it made false.
