@@ -1,6 +1,6 @@
 # 045 — The desk's reference index holds the Linear documents of its projects
 
-**State:** open
+**State:** claimed by agent/desk/045-the-reference-index-holds-linear-documents, 2026-11-25 01:44
 **Source:** EMB-407 — the desk's reference index holds no Linear documents
 **Issue:** EMB-407
 **Scope:** desk
