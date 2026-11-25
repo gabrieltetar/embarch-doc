@@ -1,0 +1,1 @@
+| Confirm tab: the engineer confirms a custom or derived test, capability or hook from Core's own card, one or all shown, with the person's token and the card's nonce | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 110 |

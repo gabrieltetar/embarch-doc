@@ -1,6 +1,6 @@
 # 121 — The UI shows a card on which the engineer confirms a test input
 
-**State:** claimed by agent/ui/121-the-ui-shows-a-card-on-which-the-engineer-confirms-a-test-input, 2026-11-25 12:34
+**State:** done — Confirm tab, decision 110, stub-Core tests; not run in a browser
 **Source:** EMB-383 — the UI has no card on which the engineer confirms a test input
 **Issue:** EMB-383
 **Scope:** ui
@@ -50,17 +50,15 @@ commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] Against a fake Core, a driven test confirms one input and the fake
+- [x] Against a fake Core, a driven test confirms one input and the fake
       receives the person token and the nonce.
-- [ ] A test name holding markup is shown as text.
-- [ ] A refused confirmation shows Core's reason.
-- [ ] A decision records the card.
-- [ ] Gate green.
+- [x] A test name holding markup is shown as text.
+- [x] A refused confirmation shows Core's reason.
+- [x] A decision records the card.
+- [x] Gate green.
 
-## Blocked
+## Notes
 
-The card needs `GET /confirmations/pending`, `GET /confirmations/{hash}/card` and `POST /confirmations` from the UI, with the person token. `embarch-core-client` (embarch-api) has no method for any of them: it has `post_definition`, `definition` and `suites` only. `CoreClient::base_url` and `dispatch` are `pub(crate)`, and the client's own test `every_outbound_request_is_sent_through_the_one_funnel` forbids a second send site, so the UI cannot make the calls itself without bypassing Core's attestation of the token. The client is a second repo, which this task may not touch, and no embarch-api branch holds the methods (checked 2026-11-25).
+Built as the Confirm tab (`src/confirmations.rs`, `assets/confirm.js`), decision 110 in `decisions/confirm-tab.md`. The card draws Core's diff and definition whole, with named sections for the keys the definition has; the real card shape for a capability, hook or limit was not seen from a live Core.
 
-Filed for embarch-api as a gap (title "core client has no methods for the confirmation routes"); the desk was down (Linear's free issue limit), so `fleet-linear.py` spooled it at `.fleet/linear-spool/20261125-094432-2081508-core-client-has-no-methods-for-the-confirmation-ro.json` for the next leg. Nothing was written in embarch-ui.
-
-Design left for whoever builds this once the methods exist: `/api/confirmations` (list, each item joined with its card) and `POST /api/confirmations` relaying `{hash, nonce, surface: "ui"}` with Core's `403/409` text passed on as `api_live_prompt` does; a card in `assets/` that renders every agent string with `textContent`.
+**Hardware-verification debt:** none needed for hardware, but the tab was not run in a browser or against a live Core: open Confirm against a Core holding an unconfirmed custom test, confirm one, and check the run log's `confirmed` entry records surface `ui`.
