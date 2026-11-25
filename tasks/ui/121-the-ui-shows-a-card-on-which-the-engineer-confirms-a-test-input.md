@@ -1,6 +1,6 @@
 # 121 — The UI shows a card on which the engineer confirms a test input
 
-**State:** open
+**State:** claimed by agent/ui/121-the-ui-shows-a-card-on-which-the-engineer-confirms-a-test-input, 2026-11-25 09:42
 **Source:** EMB-383 — the UI has no card on which the engineer confirms a test input
 **Issue:** EMB-383
 **Scope:** ui
