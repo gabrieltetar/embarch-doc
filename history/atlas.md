@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-atlas refs lists every section, Kconfig symbol and devicetree node in one read (--json); read-only, for the chat linker (EMB-404).
 - Atlas lookups show a live measured value beside the datasheet claim it bears on; a disagreement is a `measured-vs-datasheet` finding in the mismatch report.
 - Atlas `live write-back` / MCP `write_back` writes a live finding as a `measured` fact, its receipt read from Core's call-log entries and its image named; another build is flagged, never refused.
 - Atlas live tools append a decoded line (answer plus every Core call-log entry) to the live log embarch-api writes; see [design](../embarch-atlas/design.md).
