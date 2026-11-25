@@ -1,6 +1,6 @@
 # 062 — A host study step parses a number, and a prompt says its kind
 
-**State:** open
+**State:** open — announced in #embarch-fleet 2026-11-25 01:59, ts 1795597152.735759; window closes 02:29; runs as a leg's last unit if that thread holds no objection
 **Source:** EMB-352 — a host study step can neither parse a number nor say what kind of prompt it is
 **Issue:** EMB-352
 **Scope:** suite
