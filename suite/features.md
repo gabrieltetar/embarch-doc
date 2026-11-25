@@ -125,6 +125,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `test_propose` / `test_plan` — propose a HIL test, capability or hook for the engineer to confirm; plans and custom suites in `embarch/tests/`; selecting a suite copies its benches | Built; mock Core only | unit | 134 |
 | `cancel_study` / `cancel-study` — stop a running host or device study through Core's cancel route | Built; mock Core only | unit | — |
 | Core client methods for the confirmation routes (`pending_confirmations`, `confirmation_card`, `confirm`) — the engineer's confirmation card calls them; deliberately no MCP tool | Built; mock Core only | unit | — |
+| `run_test` / `test_status` — prepare a Test run (the card, never the go) and watch it, over Core's test-run routes | Built; mock Core only | unit | 135 |
 
 ## embarch-dev-bench
 

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- api: run_test prepares a Test run and never starts it; test_status reads it; answer_prompt explains a 403. See embarch-api/decisions/test-run.md
 - The core client has pending_confirmations, confirmation_card and confirm for Core's confirmation routes, for the UI's card; no MCP tool or CLI subcommand.
 - embarch-api adds cancel_study and cancel-study, which stop a running host or device study through Core's cancel route (EMB-487).
 - `test_propose` and `test_plan` (and CLI twins) send a test, capability or hook to Core to confirm and keep plans and custom suites under `embarch/tests/` (decision 134).
