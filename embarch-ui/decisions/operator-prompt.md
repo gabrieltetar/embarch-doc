@@ -1,6 +1,6 @@
 # embarch-ui decisions: Operator prompts
 
-**Status:** active, 2026-10-28.
+**Status:** active, 2026-11-24.
 
 The operator-prompt modal, how the UI comes to follow a study it did not start, and the bench change a prompt naming a config draws (99). Recording a config live: [bench-configs.md](bench-configs.md) (98). Index: [../decisions.md](../decisions.md).
 
@@ -18,3 +18,14 @@ A `Prompt` may name a bench config (`embarch-study-designer` decision 88), which
 **The answer never waits on the bench.** Confirm is live from the first frame and the lookup runs after the modal is up, behind its own guard. **Confirm answers first, then marks the config live** (98, record-only): the named one, or the pick; text only, or a config already live, marks nothing, and a lookup still on its way marks once it lands. A refused mark is said on the modal, the answer standing; one failing after the modal has gone is said on the next. *Rejected:* marking before answering, which would let a failed record delay a timed prompt.
 
 Measured by `drive_prompt_bench.py` (headless Firefox, `stub_core.py`'s prompting study started with a `bench_config`, the real bench and live routes on a scratch repo, a proxy slowing the lookup and refusing the mark): the three cases, a pick drawn, recorded and kept for the run, a slow lookup not holding the answer, a refused mark said, a prompt naming none showing no bench section. **Not measured:** a real Core or bench.
+
+## A session's prompts
+### 107 — The modal renders a session Start's run fields, sends them with the person's token and keeps the prompt open on a refusal; Done is Confirm only
+`embarch-core` decision 127 gives a device study's session two prompts on the host study's one slot, and a Start only the person's token can answer, so the UI's modal is the one surface that can. **The pending prompt's optional `session {phase, run_fields [{name, label, required}]}` reaches the browser as the prompt's own `session` key, absent for a host study, so a host prompt's JSON and its modal are what they were.** `embarch-core-client`'s `PendingPrompt` and `PromptPending` carry it, and `PromptAnswerRequest` an optional `run_fields` left out of the body when empty.
+
+- **Start**: the step line reads "Session - Start", the text is the study's `start_text`, and **one text input per declared field, in declared order, a required one starred**; the first takes focus, Enter confirms, the button reads *Start*. **Every declared field is sent, blank ones included**, as `run_fields [{name, value}]` with the answer `confirmed`; *Cancel* sends none. **The page judges nothing**: a required field left blank, an unknown name or an over-long value is Core's refusal to make (`embarch-study-designer` decision 106's `validate_run_answers`), so the two cannot disagree. *Rejected:* blocking Confirm on a blank required field in the page, which would be a second copy of Core's rule.
+- **A `400` or `403` keeps the modal open**, the fields as typed and enabled, with "embarch-core refused the answer: <Core's reason>" (the route passes both statuses on with the reason alone, as it passes a `409`); the prompt is still pending in Core. Any other failure behaves as before.
+- **Done** is up while the capture runs, because that is how a person ends it early: the step line says so, the text is `done_text`, the button reads *Done*, and **there is no Cancel**, since Core takes only `confirmed` there. Either token may answer it; this modal sends the person's.
+- **No Core change and no new route**: `POST /api/live/prompt` takes an optional `run_fields` and relays it.
+
+Measured: unit tests (a session prompt's phase and fields in the stream frame and the snapshot, a host prompt carrying no `session` key; the answer route forwarding the fields as `ui`, a host answer carrying no `run_fields` key, a `400` and a `403` coming back with Core's reason alone); `tests/browser/drive_prompt.py` in headless Firefox against `stub_core.py` (whose session answers apply Core's rules for a required field, a field on a non-Start prompt and a cancelled Done): fields rendered in order with the required one starred, a refused Start keeping the modal open with the reason and the typed values, the corrected answer sent with every field, Done showing its text with no Cancel and confirming, a host prompt unchanged. **Not measured:** a real Core (the stub applies decision 127 as written, not as captured), and the person's token being the one Core scopes: the client carries it by decision 103, and nothing here exercised a `403`'s source.
