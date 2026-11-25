@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A bench instrument's value carries its declared U, resolution and calibration; past its due date it is judged calibration_expired: [decision 140](../embarch-core/decisions/instrument-metrology.md)
 - A Test run raises a setup prompt before each bench after the first and admits enrolment and signal calls while it waits; an agent's answer is relayed. Decision 139.
 - Core refuses the agent's token an observation or a clearance prompt (403), records each answer's scope, takes an observation's value as a person measurement (decision 138).
 - Core runs a started Test run test by test under the failure policy, judges each with the shared crate, and answers GET /test-runs/{id} (decision 136).
