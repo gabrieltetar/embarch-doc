@@ -1,6 +1,6 @@
 # 164 — The measurements route serves a host study's file, and its refusal carries a code
 
-**State:** open
+**State:** claimed by agent/core/164-the-measurements-route-serves-a-host-studys-file, 2026-11-25 13:46
 **Source:** EMB-553 — Core's measurements route still refuses a host study that now has measurements (Core's half; `api/202` is `embarch-api`'s)
 **Issue:** EMB-553
 **Scope:** core
