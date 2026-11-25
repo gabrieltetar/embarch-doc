@@ -1,6 +1,6 @@
 # 193 — A confined writer for the person's `embarch/` folder
 
-**State:** open
+**State:** claimed by agent/api/193-a-confined-writer-for-the-persons-embarch-folder, 2026-11-25 02:47
 **Source:** EMB-457 — nothing writes the person's `embarch/` under a confinement rule
 **Issue:** EMB-457
 **Scope:** api
