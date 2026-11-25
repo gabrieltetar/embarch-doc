@@ -1,6 +1,6 @@
 # 097 — compact `embarch-study-designer/interfaces/hil-run.md`
 
-**State:** claimed by agent/study-designer/097-compact-study-designer, 2026-11-25 08:56
+**State:** done — hil-run.md split verbatim; Study export moved to hil-study-export.md
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
@@ -15,4 +15,8 @@
 
 ## Done when
 
-- [ ] `hil-run.md` is out of reserve and every `Must not delete:` item survives.
+- [x] `hil-run.md` is out of reserve and every `Must not delete:` item survives.
+
+## Done
+
+Verbatim split (nothing deleted, so no squeeze list): the "A Study's export and check" section moved to `interfaces/hil-study-export.md` (4,851 B); `hil-run.md` is 7,602 B with a pointer. Both `Must not delete:` items survive: `run.json` and test-entry tables and the Expansion statuses table stay in `hil-run.md`; the Study-export check table (checks 0 to 9) is in the new file. Links updated in `hil-shapes.md`. Does `spec.md` alone answer what someone needs to work on this component today? Yes for what exists and where each shape lives: it indexes the HIL shapes and names both files; the shape details are deliberately in the interface files, which are the loaded-on-purpose tables, and no spec content was touched. In flux: no.

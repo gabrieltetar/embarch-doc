@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-20. Written by `tasks/study-designer/084`, the plan's unit M1.1 (`notes/hil/14`): the doc R24 asked for, so a Study's zip is not reshaped when Test lands. **Design, not yet code** except two halves: M1.2 built the measurement keys a reducer owns ([hil-reducers.md](hil-reducers.md)) and M1.3 the verdict rules ([hil-verdicts.md](hil-verdicts.md)); the file types and the rest are M1.5 to M1.11's.
 
-Group: this file (verdicts, `measurements.json`) · [hil-tests.md](hil-tests.md) (a test, a suite manifest, a plan: built, `hil-test`, decision 109) · [hil-characterisation.md](hil-characterisation.md) (a bench board's characterisation) · [hil-run.md](hil-run.md) (`run.json`, a Study's export and check shape) · [hil-pdf.md](hil-pdf.md) (the PDF text extractor and number grammar, built behind `pdf-text`; the tick algorithm and the footer rule are design). Why each open detail went the way it did: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decisions 90 and 91.
+Group: this file (verdicts, `measurements.json`) · [hil-tests.md](hil-tests.md) (a test, a suite manifest, a plan: built, `hil-test`, decision 109) · [hil-characterisation.md](hil-characterisation.md) (a bench board's characterisation) · [hil-run.md](hil-run.md) (`run.json`) · [hil-study-export.md](hil-study-export.md) (a Study's export and check) · [hil-pdf.md](hil-pdf.md) (the PDF text extractor and number grammar, built behind `pdf-text`; the tick algorithm and the footer rule are design). Why each open detail went the way it did: [decisions/hil-shapes.md](../decisions/hil-shapes.md), decisions 90 and 91.
 
 Where a note is the source the doc cites it. A value marked *(shape)* is this doc's choice where the notes were silent; each is listed in decision 90 or 91.
 
@@ -29,7 +29,7 @@ From the plan's table (`notes/hil/14`); a unit written against this group needs 
 
 ## The six verdicts
 
-From `notes/hil/03-test.md`, "The verdict". The spelling is the string in every file, record and export; **no other string is a verdict** *(shape: lowercase, as the note writes them)*. A Study has none ([hil-run.md](hil-run.md#a-studys-export-and-check)). **How a verdict is reached is built**: [hil-verdicts.md](hil-verdicts.md), `verdicts` feature, decisions 95 to 98.
+From `notes/hil/03-test.md`, "The verdict". The spelling is the string in every file, record and export; **no other string is a verdict** *(shape: lowercase, as the note writes them)*. A Study has none ([hil-study-export.md](hil-study-export.md)). **How a verdict is reached is built**: [hil-verdicts.md](hil-verdicts.md), `verdicts` feature, decisions 95 to 98.
 
 | String | Means (03) | `reason` values |
 |---|---|---|
