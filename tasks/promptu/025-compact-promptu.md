@@ -1,6 +1,6 @@
 # 025 — `embarch-promptu/open.md` is in reserve
 
-**State:** claimed by agent/promptu/025-compact-promptu, 2026-11-25 01:05 — unparked for the verbatim move its What names
+**State:** done — steps 1 to 3 bullets moved verbatim to open/steps-1-3.md; open.md 4060 to 1946 B
 **Source:** promptu 024 (EMB-403) added the step 5 bullet to `open.md`, leaving it at 4,060 of 5,120 B (1,060 B left).
 **Scope:** promptu
 **Hardware:** none
@@ -25,6 +25,6 @@ Bring `open.md` out of reserve by moving settled step 1 to 3 bullets into `open/
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-promptu/open.md`.
-- [ ] Moved text is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-promptu/open.md`.
+- [x] Moved text is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
