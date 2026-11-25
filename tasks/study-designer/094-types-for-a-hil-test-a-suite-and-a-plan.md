@@ -1,6 +1,6 @@
 # 094 — Types for a HIL test, a test suite and a test plan
 
-**State:** open
+**State:** claimed by agent/study-designer/094-types-for-a-hil-test-a-suite-and-a-plan, 2026-11-25 03:44
 **Source:** EMB-353 — no type exists for a HIL test, a test suite or a test plan
 **Issue:** EMB-353
 **Scope:** study-designer
