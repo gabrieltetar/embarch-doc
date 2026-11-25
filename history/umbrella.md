@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch-umbrella` renders the agent container's mounts, hardening and `container.toml` as pure functions (decision 62); nothing starts one yet.
 - `embarch install-core` verifies a signed suite release in an admin-only staging folder, refuses a downgrade, and writes installed-release.json (decision 61).
 - Umbrella gains scripts/cut-release.py: a dry-run-by-default script that tags changed components, tags the suite, and verifies the release; see interfaces/cut-release.md.
 - Umbrella verify-release also checks the certificate's source repository, ref and build config extensions as exact strings ([interface](../embarch-umbrella/interfaces/verify-release.md)).
