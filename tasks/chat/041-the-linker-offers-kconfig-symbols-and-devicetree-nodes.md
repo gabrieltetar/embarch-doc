@@ -1,6 +1,6 @@
 # 041 — The linker offers Kconfig symbols and devicetree nodes
 
-**State:** open
+**State:** claimed by agent/chat/041-the-linker-offers-kconfig-symbols-and-devicetree-nodes, 2026-11-25 07:38
 **Source:** EMB-412 — the 💡 linker cannot offer a Kconfig symbol or a devicetree node
 **Issue:** EMB-412
 **Scope:** chat
