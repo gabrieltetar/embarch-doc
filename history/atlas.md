@@ -45,6 +45,7 @@
 - The atlas renderer reads `Note N: text` footnotes beside `24.` and `(1)`: listed under the table and in the Note column of citing rows.
 
 ### Changed
+- atlas design.md moved its datasheet-library and cad sections verbatim to design/library-and-cad.md, out of the size reserve.
 - atlas live-log writer drops its lease-free verb list and is tested against embarch-api's shared fixture (EMB-319).
 - Atlas design.md head now says what the doc is today: source of truth for its sections, repo public, research/ still raw intake.
 - The datasheet procedure writes a module pad table's SoC port as each pad record's port; see embarch-atlas/design.md.
