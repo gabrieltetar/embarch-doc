@@ -29,6 +29,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Core's no-measurements refusal is read by its 422 status or `code`, never its wording; the tool no longer says a host study has none ([studies](../embarch-api/interfaces/studies.md)).
 - embarch-api: test_propose and test_plan write the repo's test files through the person writer, which refuses links and hard-linked targets (decision 132).
 - The client sends Core's token only after a verified challenge, picked by the core-fingerprint beside the token file; `status` shows the mode (api decision 133).
 - Compacted embarch-api open.md out of reserve by moving two debts verbatim into open/ files.
