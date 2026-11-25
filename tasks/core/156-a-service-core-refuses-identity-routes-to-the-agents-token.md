@@ -1,6 +1,6 @@
 # 156 — A service Core refuses the identity routes to the agent's token
 
-**State:** claimed by agent/core/156-a-service-core-refuses-identity-routes-to-the-agents-token, 2026-11-25 06:12
+**State:** done — service Core refuses identity routes to the agent token (decision 132)
 **Source:** EMB-331 — an attested Core takes identity declarations from the agent's token
 **Issue:** EMB-331
 **Scope:** core
@@ -52,9 +52,13 @@ commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] A test walks the person's routes: each is `403` to the agent's token in
+- [x] A test walks the person's routes: each is `403` to the agent's token in
       service mode and served in development mode; the person's token is
       served in both.
-- [ ] Every route of the router is classed as the person's or not, by a test.
-- [ ] Decision 109 amended or pointed at; the interface docs name the scope
+- [x] Every route of the router is classed as the person's or not, by a test.
+- [x] Decision 109 amended or pointed at; the interface docs name the scope
       each route takes.
+
+## Outcome
+
+New decision 132 (not an amendment: 109's file has room but 109 is a different claim; it carries a dated pointer). `token_store::PERSON_ROUTES` is the one table; `person_middleware` (inside auth, outside lease) answers 403 to the agent's token when `AppState::person_only` (set from `--service`) is true, so tests run both modes. Two tests: every `AUTH_CASES` route is in exactly one of `PERSON_ROUTES`/`AGENT_ROUTES`, and a walk of all eleven routes as each token in each mode. Debts: native Windows build not run from a worktree; embarch-api's identity tools show the 403 unexplained until EMB-335; the agent can still use the person's token if it can read the file (standalone pass).
