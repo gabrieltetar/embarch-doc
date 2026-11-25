@@ -35,7 +35,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The custom-action registry](decisions/registry.md) — engineer-supplied bytes, and what `validate` refuses a hand-edited file for | 35, 66, 67, 69 |
 | [The HIL file shapes](decisions/hil-shapes.md) — what the notes left open in `measurements.json`, the verdicts, `run.json`, a Study's export, and the PDF readers | 90, 91 |
 | [The HIL reducers](decisions/hil-reducers.md) — one module behind `reducers` (alloc only), behaviours kept by version, what each reducer's `U` and failure are | 92, 93, 94 |
-| [The HIL verdict rules](decisions/hil-verdicts.md) — one module behind `verdicts` (alloc only), evidence before limits, the guard band, the width check, the roll-up's edges | 95, 96, 97, 98 |
+| [The HIL verdict rules](decisions/hil-verdicts.md) — one module behind `verdicts` (alloc only), evidence before limits, the guard band, the width check, the roll-up's edges, and `hil_judge` composing them per test | 95, 96, 97, 98, 112 |
 | [A study's measurement declarations](decisions/hil-declarations.md) — `Study.measurements`, host-only and always compiled, what `validate_measurements` refuses | 99, 100 |
 | [Analog capture](decisions/analog-capture.md) — an audio-rate analog source, framed blocks checked and placed by index, a session around them, and a stop message | 104, 105, 106, 107 |
 | [The HIL test, suite and plan](decisions/hil-tests.md) — JSON types behind `hil-test`, the definition hash over RFC 8785, the per-measurement derived diff; three plan choices the owner may strike | 109 |

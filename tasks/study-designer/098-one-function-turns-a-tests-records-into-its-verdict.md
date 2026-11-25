@@ -1,6 +1,6 @@
 # 098 — One function turns a test's records into its verdict
 
-**State:** claimed by agent/study-designer/098-one-function-turns-a-tests-records-into-its-verdict, 2026-11-25 07:37
+**State:** done — hil_judge: judge_run, judge_test, skip, decision 112; gate green under every consumer feature set; no hardware
 **Source:** EMB-356 — no shared function turns a test's records into its verdict
 **Issue:** EMB-356
 **Scope:** study-designer
@@ -76,13 +76,13 @@ UI's `study-ui,gatt-extract,eap-parse`, `embarch-api`'s `alloc,reducers`,
 
 ## Done when
 
-- [ ] A fixture per path: a lost port on a bench board is `error`,
+- [x] A fixture per path: a lost port on a bench board is `error`,
       `port_lost`; `until_not_seen` on a DUT signal is `fail`; a value inside
       the guard band is `inconclusive`, `guard_band`; a `parse_failed`
       measurement is `inconclusive`.
-- [ ] Two runs, one pass and one fail, give `fail` with counts of one each.
-- [ ] A value from a bench board on an `unreleased` image carries
+- [x] Two runs, one pass and one fail, give `fail` with counts of one each.
+- [x] A value from a bench board on an `unreleased` image carries
       `bench_firmware_unreleased`.
-- [ ] `hil-verdicts.md` documents the two functions, and a decision records
+- [x] `hil-verdicts.md` documents the two functions, and a decision records
       where they live.
-- [ ] Gate green under every consumer's feature set.
+- [x] Gate green under every consumer's feature set.

@@ -1,0 +1,1 @@
+| Test verdict composition: `judge_run`, `judge_test` and `skip` turn a run's step outcomes and measurements into one verdict with qualifiers, the one function Core and `verify` share | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 112 |

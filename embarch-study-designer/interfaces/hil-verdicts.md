@@ -50,3 +50,15 @@ Rolls a requirement's tests into `{verdict, counts, qualifiers, n_of_m, skipped,
 3. Else **`not_verified`** when a test was skipped for a **gap** (`hook_unmapped`, `bench_missing`, `requires_not_met`, `stopped_by_error`, `stopped_after_fail`), or a skip names no reason, **or no test ran**.
 4. Else **`pass`**. A `not_applicable` or `not_selected` skip sits under it, listed in `skipped`. With `not_selected` tests it reads "N of M tests run": `n_of_m {n: tests that ran, m: n + not_selected}` and the qualifier `n_of_m_run`; `not_applicable` is outside `m`.
 5. `qualifiers` are the union of those of the tests that ran.
+
+## `judge_run`, `judge_test`, `skip` (`src/hil_judge.rs`, feature `hil-test`)
+
+The composition Core's run executor and `verify` both call (decision 112); it lives beside `hil_expand`, not in `verdicts`, because it reads a `run.json` test entry. The caller gives each step's `Target` (`StepRecord {step, target, outcome}`) and each measurement's provenance (`MeasurementRecord {measurement, value, u, evidence, origin, declared_by, calibration_undeclared}`); no study does. Errors are `JudgeError`: a rule that could not run, an unknown `decision_rule.kind`, or a `skip` reason that is not a skipped one.
+
+- **`judge_run(test, steps, measurements, rules) -> Judged`**: each step through `step_verdict`; each limit in `test.limits` through `limit_verdict` on the measurement of its name, `w = decision_rule.width(U)` with `U` the measurement's; a limit with `expect` compares the measurement's choice, equal `pass`, different **`fail`, `limit`** (plan choice 27), evidence first as for a number; a limit with no measurement is `inconclusive`, `record_gap`; then `combine`. The reason is the first item's at the worst verdict.
+- **Qualifiers** from every measurement handed in: a bench board on `unreleased`, `unverified` or `flashed_by_agent` firmware, `rests_on_dut_report`, `rests_on_person_observation`, `calibration_undeclared`, `declared_by_agent`, `declared_by_study`. **`unvalidated(judged)`** adds `unvalidated` for a premade test without its evidence, which only the caller knows.
+- **`judge_test(runs, rules) -> TestVerdict {judged, counts}`**: the worst run by `combine`, its qualifiers the union, `counts` of the runs' verdicts.
+- **`skip(reason) -> Judged`**: `skipped` with `requires_not_met`, `stopped_by_error`, `stopped_after_fail`, `bench_missing`, `hook_unmapped`, `not_applicable` or `not_selected`; any other reason is an error.
+- **`behaviours_used(rules)`**: the pinned `step_verdict`, `limit_verdict` and `combine` behaviours, for `measurements.json`'s `behaviours`.
+
+Fixtures: `tests/fixtures/hil_judge.json`, tests `tests/hil_judge.rs`.
