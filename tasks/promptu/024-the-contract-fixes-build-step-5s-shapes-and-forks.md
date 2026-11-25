@@ -1,6 +1,6 @@
 # 024 — The contract fixes build step 5's shapes and forks
 
-**State:** claimed by agent/promptu/024-the-contract-fixes-build-step-5s-shapes-and-forks, 2026-11-25 00:11
+**State:** done — contract §15, §11 step 5, forks L1-L22, spec/status/interfaces/open updated
 **Source:** EMB-403 — Promptu's contract says nothing of build step 5's reads and shapes
 **Issue:** EMB-403
 **Scope:** promptu
@@ -85,11 +85,11 @@ are another sub-project's, so leave them to the chat's own step 5 units.
 
 ## Done when
 
-- [ ] `docs/contract.md` has §15 with the reference entry, the kinds table and
+- [x] `docs/contract.md` has §15 with the reference entry, the kinds table and
       the three read surfaces' JSON, and §11 says what step 5 fixes.
-- [ ] `docs/forks.md` has L1 to L22, each with its default and alternative,
+- [x] `docs/forks.md` has L1 to L22, each with its default and alternative,
       L1, L18, L19 and L21 saying their choice is unrecorded.
-- [ ] Promptu's spec, status and interfaces say step 5 is under way and point
+- [x] Promptu's spec, status and interfaces say step 5 is under way and point
       at §15; `open.md` names the four unrecorded choices.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.

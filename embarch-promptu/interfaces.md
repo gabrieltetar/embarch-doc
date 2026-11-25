@@ -78,6 +78,8 @@ An index. **The reference is the repo's [docs/contract.md](../../embarch-promptu
 | `promptu desk --json` | step 4 | the desk's `GET /promptu`, the chat's card | §9 |
 | `sheet.json`, `week/<week>/` | `promptu week draft`, step 4; `mark` and `apply` change it | the Desk section, the chat's card, `/embarch-promptu:review` | §10, §14.1 |
 
+**Step 5 (the linker's kinds, under way):** adds no `promptu` command. Contract §15 fixes the reference entry, the kinds table and three read surfaces: `embarch-atlas refs --json`, `embarch-api --json list-studies` and the desk's `GET /refs` (`projects`, `documents`).
+
 What a later step may change, and what it may not: contract §11.
 
 ## Files

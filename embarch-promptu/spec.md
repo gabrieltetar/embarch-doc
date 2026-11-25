@@ -1,6 +1,6 @@
 # embarch-promptu: spec
 
-**Status:** active, 2026-11-24. Build step 1 (memory) is installed in warn mode; steps 2 and 3 are on `main`, not installed; **step 4 is under way**: `week pack`, `status`, `show`, `desk`, `draft`, `mark`, `apply`, `run` and `timer` are built (EMB-273–279), and the sheet carries decision 15's five numbers with a control and the feel line (EMB-278); the terminal review skill is promptu/023. The step-by-step status, with every EMB reference: [spec/status.md](spec/status.md).
+**Status:** active, 2026-11-24. Build step 1 (memory) is installed in warn mode; steps 2 and 3 are on `main`, not installed; **step 5 (the chat's 💡 linker kinds) is under way**: its contract is §15 (EMB-403), its choices forks L1–L22, nothing built yet; **step 4 is under way**: `week pack`, `status`, `show`, `desk`, `draft`, `mark`, `apply`, `run` and `timer` are built (EMB-273–279), and the sheet carries decision 15's five numbers with a control and the feel line (EMB-278); the terminal review skill is promptu/023. The step-by-step status, with every EMB reference: [spec/status.md](spec/status.md).
 
 What is true now. Why: [decisions.md](decisions.md). Unresolved: [open.md](open.md). Reference: [interfaces.md](interfaces.md), and the repo's own [docs/contract.md](../../embarch-promptu/docs/contract.md), the interface every build step shares.
 
