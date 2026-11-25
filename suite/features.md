@@ -114,6 +114,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `publish <run id>` — a finished Study run as one zip in a configured folder: the PDF with a fixed audit appendix, Core's signed files, both interop exports, the numeric-oracle listing, `report.typ` and its packages | Built — **mock Core only (pending-revision files since `core/136`, unmet end to end); the appendix lists every number and each prose block's author, and a republish, swept run too, writes `-r2` from the earlier zip (`api/168`, `172`); `verify` is the next row** | unit | [publish](../embarch-api/interfaces/publish.md) |
 | `verify <zip>` — a published Study zip checked offline from the zip and Core's public key: signatures, manifest, measurements re-run, PDF text, labels, report-data recomputed, exports, run-log and call-log chains, `report.typ`'s syntax tree | Built — **checks 0 to 9 all run; check 2 partial (no step outcomes or markers), check 4 partial while the unsigned appendix vouches for a number; first read of a Typst PDF measured the footer band; never run against a real Core's zip** | unit | [verify](../embarch-api/interfaces/verify.md) |
 | `core-key` — Core's public key (64 hex, `verify --public-key`'s form) and SHA-256 fingerprint, printed only after Core's signature over a fresh nonce's challenge frame checks; no token sent, key written nowhere | Built — **never run against a live Core** | unit | [verify](../embarch-api/interfaces/verify.md) |
+| Token sent only to the attested Core — a challenge, then the machine-wide token on a fingerprint match, the development token (or none) on a mismatch; `status` shows mode and fingerprint | Built — **never run against a live Core** | unit | [133](../embarch-api/decisions/client-crate-funnel.md) |
 | `embarch-api` live log — every hardware call appends a line to `<repo>/embarch/live/` citing Core's call-log entry; `call_log` / `call-log` read entries by `seq` | Built on a branch, not deployed — **mock Core only** | unit | [live-log](../embarch-api/interfaces/live-log.md) |
 | `person_writer` — a confined writer for the person's `embarch/` (fixed kinds and names, no link followed, atomic by rename, runs nothing) | Built; no caller yet, Windows branch not built | unit | 132 |
 
@@ -150,6 +151,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Characteristics **and services** named, not numbered, in every picker | Shipped | hw | 56 |
 | Static GATT extraction across the whole repo, scoped by the repo's own ignore rules | Shipped | unit, local | 57 |
 | BLE security elevation as an authored step | Shipped | hw | 44 |
+| The shared crate refuses a HIL test at definition, returning every refusal with its test, field and reason: a bench with no DUT, an undeclared source, a limit no result could be judged against, prompt kinds, an energising step with no clearance, an undeclared precondition, a dev-bench study, two limits on one measurement | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 110 |
 | Dropping the bond mid-study, with a bond scoped to one study | Shipped | local | 46 |
 | Dev-bench link same-chip verification via the handshake's reported identity | Shipped | hw | 47 |
 | **Engineer-declared DUT protocols** (`.eap`: types, grammar, validator, interpreter, three seals) | Shipped, runnable end to end | ztest, hw | 58-62 |
@@ -233,6 +235,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch verify-release` — offline check of an unpacked suite release: the manifest's Sigstore signature under the exact release-workflow identity, then every file's SHA-256 | Shipped — **no signed suite manifest exists to check end to end until EMB-190 ships**; tested on two public bundles | unit | 14 |
 | `scripts/cut-release.py` — dry-run-by-default script that tags changed components, tags the suite, waits on CI, verifies the download and prints the install line | Built — **tested against a fake runner only; never run on a real tag** | unit | 14 |
 | `embarch install-core` — verifies a signed release in an admin-only staging folder, refuses an older suite, records what it installed | Built — **the elevation, the service registration and the binary install from staging are later units; tested with a fake verifier, the Windows ACL step never run** | unit | 61 |
+| `src/agent.rs`: pure renderers for the agent container (mounts, hardening, `container.toml`) | Built, unused — **no container was ever started; `docker-desktop` and `macos` are unverified** | no | 62 |
 
 ## embarch-ui
 

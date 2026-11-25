@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The shared crate's `hil_check::check_test` refuses a HIL test at definition and returns every refusal; `energises` is public (decision 110, EMB-354).
 - HIL test, suite manifest and plan types, a canonical (RFC 8785) definition hash and a derived-test diff, behind `hil-test` ([hil-tests](../embarch-study-designer/interfaces/hil-tests.md)).
 - A host step may read one number from its reply (`parse`, `parse_step_number`), and a prompt says its kind (`setup`, `action`, `observation`, `clearance`); decision 108, host v25.
 - A study's GattNotify tap no step subscribes to is refused by Study::validate_stream_subscriptions (UnsubscribedTapError), opt-in; see decision 55.
