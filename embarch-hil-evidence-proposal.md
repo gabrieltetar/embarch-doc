@@ -67,7 +67,7 @@ Dated items are the owner's; the rest recommended:
 
 ## Open questions
 
-- **Deferred** ([12](notes/hil/12-prevention.md#open)): the passkey's details, to its phase; the agent's own clone and the boundary's details (a build's artifact reaching Core, the toolchain image, the firewall per topology), to the standalone pass.
+- **Deferred** ([12](notes/hil/12-prevention.md#open)): the passkey's details, to its phase; the boundary's details (a build's artifact reaching Core, the toolchain image, the firewall per topology), to the standalone pass.
 - **Unverified**: WebAuthn on a page at `http://127.0.0.1`; whether WSL can reach a Windows service account's store; the licences marked "to confirm"; whether `typst-pdf` renders byte-identically across machines.
 - **Key rotation, a lost key or passkey, a second engineer**: each a person's act.
 

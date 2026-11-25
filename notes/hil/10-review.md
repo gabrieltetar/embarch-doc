@@ -195,7 +195,7 @@ Each round reviews the notes and [the two proposals](../../embarch-hil-proposal.
 
 ## Still unanswered
 
-- **The passkey's details**, until its phase, and **the agent's own clone and the `embarch/` flow**, until the standalone pass ([12](12-prevention.md#open)).
+- **The passkey's details**, until its phase ([12](12-prevention.md#open)). The agent's own clone and the `embarch/` flow were decided by the owner on 2026-11-25 (EMB-443), every recommendation kept.
 
 ## Open
 

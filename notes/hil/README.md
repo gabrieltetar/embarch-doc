@@ -1,6 +1,6 @@
 # notes/hil: running hardware-in-the-loop from an agent
 
-The research behind [embarch-hil-proposal.md](../../embarch-hil-proposal.md): one procedure telling an agent how to run hardware-in-the-loop (HIL) in three modes. Gathered in an interview with the owner on 2026-11-15. **Every answer recorded in these files is the owner's, 2026-11-15 unless dated otherwise, unless it sits under Open or its marker says "recommended"**, which only the passkey's details and the agent's own clone still do ([10](10-review.md#the-owners-confirmation-pass-2026-11-19)).
+The research behind [embarch-hil-proposal.md](../../embarch-hil-proposal.md): one procedure telling an agent how to run hardware-in-the-loop (HIL) in three modes. Gathered in an interview with the owner on 2026-11-15. **Every answer recorded in these files is the owner's, 2026-11-15 unless dated otherwise, unless it sits under Open or its marker says "recommended"**, which only the passkey's details still do ([10](10-review.md#the-owners-confirmation-pass-2026-11-19)).
 
 ## Files
 
