@@ -25,6 +25,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Compacted embarch-api open.md out of reserve by moving two debts verbatim into open/ files.
 - api: the HIL guide's Words entry for Study now names the glossary row as its definition (EMB-317).
 - The embedded HIL guide sends the DUT census to `dev-bench.log`: `fail_reason` is capped and names only advertisers that sent a name (EMB-402).
 - The embarch-api README no longer counts tools or endpoints and its getting-started follows the user guide (embarch init).
