@@ -284,6 +284,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Desk tab card for a `github_replies` draft: repo and PR, one editable reply per review thread, posted threads shown as links, URLs shown after Send | Shipped — driven in headless Firefox with PATCH and Send stubbed in the page, so no repository was reached; **not run against a real PR** | browser | |
 | Desk tab Promptu section: bar count (hidden at 0 open), weekly sheet panel with numbers, per-group and per-line ✓/✕ with notes, the feel line and Apply | Shipped — driven in headless Firefox against a stand-in desk, each request path and body checked; **not run against a real desk or Promptu** (the feel route is desk/043) | browser | 56 |
 | `embarch-ui bench make-live <slug> [--config] [--bind role=serial]` — a saved bench made live from the terminal, sharing the Topology route's code | Shipped — host-tested against a stub Core; not run against a live Core | unit | 90 |
+| Live Study: Cancel button on a running study, relaying to Core's cancel route and showing Core's refusal | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 109 |
 
 ## embarch-desk
 
