@@ -88,6 +88,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `study_measurements` / `study-measurements` — a finished run's `measurements.json` as Core wrote it, before any publish; Core's four refusals named (`no-such-run`, `still-running`, `no-measurements`, `files-gone`) | Built — **never run against a live Core** | unit | [studies](../embarch-api/interfaces/studies.md) |
 | `PATH`/toolchain preflight | **Moved** — lands as an umbrella `doctor` check | n/a | §12 |
 | The UNC artifact path | **Retired** — it only ever worked against a foreground Core, never the installed service | hw | §9 |
+| `list-studies [--limit N]` — Core's retained studies, newest first, each with its taps and a flat `encoding_kind`; CLI only, no lease | Built | unit | [studies](../embarch-api/interfaces/studies.md) |
 | `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |
 | `error_kind` — a machine-readable failure kind | **Retired** — never built; needs Core to serve error codes at all | n/a | 16, 50 |
 | `soc_chip_overrides` — a per-project SoC→chip escape hatch, consulted before Core's `/resolve-chip` | **Retired unbuilt 2026-09-05** — the short-circuit would skip the registry validation that is Core's whole claim to the table; a config declaring the key now fails at load naming the retirement | unit | 13 |
