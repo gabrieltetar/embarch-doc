@@ -12,9 +12,11 @@ The `Study`/`DevBenchMessage` types and the COBS/postcard wire protocol are owne
 
 **The board, as of 2026-08-31: `nrf54l15dk/nrf54l15/cpuapp` (`workspaces/nordic`).** The ESP32-C5 workspace stays in the tree, working (decision 43). **Enrol it with `link_port_interface = 2`** — this DK's console UART is VCOM1, and detection's lowest-index fallback lands on a port that accepts bytes and never answers.
 
+**A third board, the nRF52840 DK, is the one with the analog source and a native USB device** of three CDC ACM ports (control, samples, SMP) under VID 0xEBAC, with MCUboot and SMP updates and a selectable control link: [spec/analog.md](spec/analog.md), decisions 60 to 66. A bench build is one full image per board, never a project image.
+
 **A second app, `pd-bench/`, is a USB PD partner** (decisions 48, 49): a Zephyr USB-C port on a NUCLEO-G0B1RE, a sink on the X-NUCLEO-SNK1M1 or dual role on the X-NUCLEO-DRP1M1 (`-DSHIELD=x_nucleo_drp1m1`, 5 V source from its CN3 supply), scripted over its console shell with `signal_exchange`, enrolled as a bench board. It shares no code with `app/` and never speaks the wire. It builds from `workspaces/pd-bench/`: Zephyr v4.4.2 plus six USB-C patches applied by `west patch` (decision 58).
 
-**v1 scope, explicitly bounded:** BLE plus power sampling only. GPIO/analog stimulus is future scope ([open.md](open.md)). **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: state is observable only through `embarch-core`.
+**v1 scope, explicitly bounded:** BLE, plus **one audio-rate analog input on the nRF52840 DK** (a bench with no DUT, [spec/analog.md](spec/analog.md)). GPIO/analog *stimulus* is future scope ([open.md](open.md)). **No power-sampling hardware and no physical DUT connector yet** — a DUT is whatever is in BLE range. **No on-board status indication**: state is observable only through `embarch-core`.
 
 ## 2. Repository layout
 
@@ -59,7 +61,7 @@ Each workspace's manifest lives in a `manifest/` subdirectory, not at the worksp
 - **More invariants, in full: [spec/invariants-detail.md](spec/invariants-detail.md).** A named thing missing fails the step (an unnamed one is skipped); an open monitor window survives the steps in it; a capacity limit refuses, never truncates; a length prefix is bounded by the bytes left; a manifest index the run cannot follow fails the run by name.
 - **Loss is counted and reported, never silent.** Dropped transcript entries, notifications and log records, RX overruns, and an oversized inbound frame all produce a `LogLine`.
 - **The bench never manufactures a claim.** No hardware ID without `hwinfo`, no `captured_data` on a stub, no protocol outcome for a run that did not happen.
-- **Application code calls only portable Zephyr APIs** (`bt_*`, `gpio_*`, `adc_*`), never anything vendor-proprietary.
+- **Application code calls only portable Zephyr APIs** (`bt_*`, `gpio_*`), never anything vendor-proprietary. **One exception: the analog source's nRF52 backend calls nrfx SAADC directly** (decision 60, [spec/analog.md](spec/analog.md)), and no code outside it does.
 
 ## 4. Link and threading contracts
 

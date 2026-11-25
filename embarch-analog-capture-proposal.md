@@ -1,6 +1,6 @@
 # Proposal: capturing, viewing and recording one audio-rate analog signal on a bench
 
-**Status:** proposal, 2026-11-18. Route 1 with a dedicated USB CDC sample link **chosen by the bench owner, 2026-11-24**; being built, EMB-470 to EMB-479.
+**Status:** proposal, 2026-11-18. Route 1 with a dedicated USB CDC sample link **chosen by the bench owner, 2026-11-24**; built, EMB-470 to EMB-479; waiting on the first bench measurements (EMB-478).
 
 Spans `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and `embarch-dev-bench`, which is why it sits at this repo's root ([DOC-PROTOCOL.md](DOC-PROTOCOL.md) §3). Opened by EMB-213. **An engineer evaluating a sensor concept before any custom board exists has to see and record its signal before a detector can be written**: a contact microphone slid over a textured surface, one event per bump. Piezo pickups and vibration sensors are the same need. What the research pass asks of the HIL design is [notes/hil/13-research-phase.md](notes/hil/13-research-phase.md).
 
@@ -62,22 +62,7 @@ Spans `embarch-core`, `embarch-study-designer`, `embarch-api`, `embarch-ui` and 
 
 ### The thirteen decisions
 
-Each is folded into the sub-project doc named, by the issue named (matched to the issue titles); the item leaves this list when it lands.
-
-| # | Decision | Folded into, built by |
-|---|---|---|
-| 1 | The dev bench stays generic firmware for any dev kit: a capability, not a project image; one full image per board | dev-bench spec, EMB-470 |
-| 2 | A SoC-neutral analog-source interface, N-channel-ready, v1 one channel; nRF52 backend only: nrfx SAADC advanced mode on its internal timer (CC = 16 MHz / rate), double-buffered, 12-bit, gain 1/4 on VDD/4, offset calibration per session; the Zephyr ADC driver must not claim the SAADC | dev-bench decision 60, EMB-473 |
-| 3 | Pins in devicetree (the channel with a label such as "A0", a marker input on a DK button); rate, start and stop from the study | dev-bench spec, EMB-470, EMB-473, EMB-474 |
-| 4 | USB composite device on Zephyr 4.5's stack, three CDC ACM ports (control, samples, SMP), named by interface string; VID 0xEBAC (local use, not reserved), PID high byte the device type, low byte from the board serial; serial the chip's unique ID | dev-bench decision 61, EMB-471 |
-| 5 | The control link is selectable per board by a `chosen` entry; enrollment records the port's USB identity; boards in use keep the J-Link UART | dev-bench decision 62, EMB-471, EMB-472 |
-| 6 | Image updates by MCUboot and SMP on the third port, through the bootload tool; the J-Link for the first flash only | dev-bench decision 63, EMB-471 |
-| 7, 8 | The sample block and the once-per-session start header, raw ADC codes | dev-bench decision 64, EMB-473 |
-| 9 | UICR REGOUT0 set to 3.3 V once at boot when unset, for an nRF52840 DK powered from native USB | dev-bench decision 65, EMB-470 |
-| 10 | A session study: Start prompt (declared run fields, saved), sampling, Done prompt, capped at 5 min; the study names an export folder | study-designer, EMB-474 |
-| 11 | Live view: min/max per drawn column, a clip indicator, no marker lines | embarch-ui, EMB-476 |
-| 12 | WAV export of a tap with a declared rate: 16-bit mono PCM, (code minus mid-scale) scaled to fill int16, one file per gap-free segment with the gaps listed, markers as cue points and an Audacity label file, refused with no rate | embarch-api, EMB-477 |
-| 13 | A session's recordings (up to 5 min, about 19 MB raw) are exempt from retention rotation | embarch-core, EMB-475 |
+All thirteen are folded and built (EMB-470 to EMB-479), so none is restated here: the dev bench's in [decisions 60 to 66](embarch-dev-bench/decisions/analog.md) and [spec/analog.md](embarch-dev-bench/spec/analog.md); the session and block layout in [embarch-study-designer decisions 104 to 106](embarch-study-designer/decisions/analog-capture.md); Core's in [decision 124](embarch-core/decisions/probes.md), [125](embarch-core/decisions/streams.md) and [126](embarch-core/decisions/analog-capture.md); the live view in [embarch-ui decision 105](embarch-ui/decisions/live-series.md); the WAV export in [embarch-api decision 130](embarch-api/decisions/audio-export.md); the walkthrough in [the studies guide](suite/studies-guide.md) §5.
 
 **What corrects the first draft:** Core's newline split and partial-sample loss for a binary tap (see "What the suite has today") is route 1's problem too, now EMB-475; a gap is placed by block index, never from arrival times; `record_checks` verifies each block's magic and CRC.
 
@@ -101,4 +86,4 @@ Each is folded into the sub-project doc named, by the issue named (matched to th
 - **CDC ACM throughput and the ADC rate** are [assumed] until the first bench measures them.
 - **Whether the live feed holds 32 ksps**, end to end from Core's batches to the browser.
 
-**Fold:** each item moves into its sub-project's docs as its issue lands and leaves this file; EMB-479 adds the guide. Deleted once nothing in it is still proposed.
+**Fold:** the Later list and the open measurements remain. Deleted once nothing in it is still proposed.

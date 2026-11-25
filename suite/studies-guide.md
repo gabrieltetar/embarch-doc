@@ -133,3 +133,23 @@ Below it is the **load repartition**: for each thread, interrupt and idle, how m
 
 **And a practical one if you are wiring this up yourself: the pin your board's schematic labels as the debug UART's transmit pin is not necessarily the one your firmware transmits on.** On the board this was first tried against, **the build had been targeting a different board revision entirely**, so the bytes went out a pin nothing was connected to — **and that looks exactly like broken firmware.** Confirm the board revision you are building for before you suspect anything else, then flash something that prints and watch for it.
 
+
+## 5. Recording an audio-rate analog signal
+
+> **Partly built, nothing run on a board yet.** The firmware, Core, the live view and the export are written and tested without hardware. **Not yet measured on a board:** block rate and lost blocks, noise floor, VDD accuracy, link throughput, and the order your OS lists the bench's three USB ports in ([open list](../embarch-dev-bench/open/analog.md)). **An nRF52840 DK is the only board with the backend**; the nRF54L15 DK bench cannot sample.
+
+One analog sensor (e.g. a microphone breakout) on a dev kit, no DUT: [dev-bench decisions 60 to 66](../embarch-dev-bench/decisions/analog.md), [spec](../embarch-dev-bench/spec/analog.md).
+
+**1. Wire it.** Power the front end from the DK's VDD, **3.3 V** once the image has set REGOUT0 (it writes it at boot when unset, decision 65), and take its output to **A0 (P0.03)**. **The input range is 0 to VDD**: a signal centred on 0 V needs a bias or a coupling capacitor, or its negative half clips. **BUTTON2 is the marker**: each press and release is stamped into the recording.
+
+**2. Enrol the bench.** Plug the DK's *nRF USB* port in. It shows up as one device, VID `0xEBAC`, with three serial ports: control, samples and SMP. **Core must record the control port's USB identity (VID, PID, serial, interface)**; the SEGGER ID detection matches does not apply. Core accepts it on `POST /dev-bench/link` as `control_port` ([core decision 124](../embarch-core/decisions/probes.md)); **`embarch-api` has no flag or tool field for it yet**: `dev-bench-link` takes only `--serial` and `--interface`. Core takes the samples port as the next one after it in interface order, and refuses the study, saying why, when it finds none ([core decision 126](../embarch-core/decisions/analog-capture.md)).
+
+**3. Declare the study.** In the study's JSON ([study-designer](../embarch-study-designer/interfaces/analog.md)): an `AnalogInput { sample_hz, channel }` tap (one per study, whole-study), a `record_checks` entry with `AnalogBlocks { channels, samples_per_block }` naming it, and a `session`. **The Study Designer has no form for these yet.** `sample_hz` must be in about 7.8 to 200 kHz, and **the board runs the nearest rate its 16 MHz timer gives** (44100 asked runs at 44077): the header says so and Core records a `rate_mismatch` row ([decision 66](../embarch-dev-bench/decisions/analog.md)).
+
+**The session** is a Start prompt, sampling, then a Done prompt, capped at **5 minutes**. It declares `run_fields` (free text, `required` or not, saved with the study), `max_duration_ms` and an `export_dir`. A session's recording is exempt from retention ([core decision 125](../embarch-core/decisions/streams.md)). **Nothing raises the Start and Done prompts at run time yet** (Core has no code for it at this commit), so do not rely on them.
+
+**4. Read the live view.** Past 50,000 samples a series is drawn as columns, each from its lowest to highest value, so a short burst still shows. **A block that reached the ADC's top or bottom is drawn in the warning colour**: the input clipped, so lower the gain ([ui decision 105](../embarch-ui/decisions/live-series.md)).
+
+**5. Export.** `embarch-api export-audio <study_id> --name <tap> --study-file <study.json> [--out-dir]` writes 16-bit mono WAV at the declared rate, **one file per gap-free segment**, each with cue points for the marker presses and an **Audacity label file** (`.txt`) beside it, and a `-gaps.csv` ([api decision 130](../embarch-api/decisions/audio-export.md)). It refuses a tap with no declared rate, several channels or no verified block, and says which.
+
+**A gap** means a block never arrived: the bench counted it lost, or one failed its CRC and was refused. Core places each block by its index, never its arrival time, so a gap keeps its length, and `<tap>.events.csv` lists it (`gap`, `marker`, `marker_unplaced`, refusals). **A `rate_mismatch` row** says the board's header rate differs from the declared one. Core and the export use the declared rate, so a file asked at 44100 and run at 44077 plays about 0.05 % fast.

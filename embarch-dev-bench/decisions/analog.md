@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-24.
 
-Sampling one analog input on a dev kit and sending it over a USB device of the bench's own. Decided by the bench owner, 2026-11-24, as route 1 of the [analog-capture proposal](../../embarch-analog-capture-proposal.md); built by EMB-470 to EMB-479, so [the spec](../spec.md) does not describe it until EMB-479 lands. The bench stays generic firmware for any dev kit, one full image per board: this adds a capability, not a project image.
+Sampling one analog input on a dev kit and sending it over a USB device of the bench's own. Decided by the bench owner, 2026-11-24, as route 1 of the [analog-capture proposal](../../embarch-analog-capture-proposal.md); built by EMB-470 to EMB-479; [spec/analog.md](../spec/analog.md) describes what is built. The bench stays generic firmware for any dev kit, one full image per board: this adds a capability, not a project image.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
@@ -27,3 +27,12 @@ MCUboot and SMP on the third CDC port, updated by EmbArch's bootload tool; **the
 
 ### 65 — REGOUT0 is set to 3.3 V once at boot when unset
 An nRF52840 DK powered only from its native USB leaves VDD at the regulator's reset default, 1.8 V by the datasheet (not measured on the DK), so an external analog front end would run starved. The image writes UICR REGOUT0 = 3.3 V once at boot **when it is unset**, never on every boot, so the flash write is not repeated. *Rejected:* a board-level jumper or a separate setup flash, either of which a person forgets.
+
+### 66 — The header carries the rate the hardware runs, the backend refuses what the timer cannot reach, and a marker level is logical
+Three choices EMB-473 made inside decisions 60 and 64, recorded 2026-11-24 (EMB-479); the byte layout stays [study-designer's](../../embarch-study-designer/interfaces/analog.md).
+
+- **The start header's `sample_rate_hz` is the rate the timer really runs.** The compare value is `round(16 MHz / rate)`, so a request for 44100 Hz gets CC = 363 and runs at 16 MHz / 363 = 44077 Hz, and the header says 44077 [derived from `analog_source_nrf52.c`, not run]. Core records the difference as a `rate_mismatch` row and applies the study's declared rate (core 125); the header never claims a rate the board did not run.
+- **The backend refuses a rate outside timer CC 80 to 2047, about 7.8 kHz to 200 kHz**, with the reachable span in its log, where the study-designer crate allows 1 to 200000 Hz (decision 104). The crate does not know a backend's timer; a refused rate makes the backend's prepare return `-EINVAL` rather than sample at another one. It also takes channel 0 of one only.
+- **The marker level is logical, 1 asserted.** A pressed active-low button (the DK's BUTTON2) is 1, read through the devicetree flag, so a board with an active-high marker means the same.
+
+*Rejected:* the requested rate in the header, which labels a recording with a rate it did not have; clamping a rate into range, which would run a rate nobody asked for; the physical pin level, which would make a press 0 on one board and 1 on another.
