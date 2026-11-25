@@ -1,6 +1,6 @@
 # 155 — A host step parses its declared number, and a host study writes `measurements.json`
 
-**State:** open
+**State:** claimed by agent/core/155-a-host-step-parses-its-number-and-writes-measurements, 2026-11-25 03:33
 **Source:** EMB-359 — Core records a reply as text and parses no number out of it
 **Issue:** EMB-359
 **Scope:** core
