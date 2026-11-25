@@ -1,6 +1,6 @@
 # 120 — A config a saved study or test names cannot be renamed or deleted
 
-**State:** open
+**State:** claimed by agent/ui/120-a-config-a-saved-study-or-test-names-cannot-be-renamed-or-deleted, 2026-11-25 08:28
 **Source:** EMB-385 — a config a saved study or test names can still be renamed or deleted
 **Issue:** EMB-385
 **Scope:** ui
