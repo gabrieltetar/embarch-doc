@@ -64,6 +64,7 @@ Under `/api/study-designer/`. `404` with no project open, `400` for authoring, `
 |---|---|---|
 | `GET` | `actions` | the table above, plus the merged action list |
 | `POST` | `preflight` | builds the study a run would submit and reports what it is: counts, the protocols the rows named, `protocols_wire_len`, and one sentence per advisory cap it is over. **Never gates** |
+| `POST` | `analog-check` | `{ taps, session }` in, `{ ok }` or `{ ok: false, reason }` out: the crate's sentence for an analog tap or a session that does not fit, so the form shows it beside the field. A refusal is a normal answer, not an HTTP error (decision 106) |
 | `GET` | `protocols` | every `.eap` file with its text, its resolved blocks, its errors, and the repo's duplicate protocol names |
 | `GET`·`PUT`·`DELETE` | `protocols/{stem}` | `PUT` refuses unparseable text with `EapError`'s own `line {n}: …` unchanged, so the editor's band and the message cannot disagree about where the problem is. `DELETE` refuses a referenced protocol (`409`). The stem is validated here and again in `eap_repo::save` |
 | `POST` | `protocols/check` | **`200` even when `ok` is false** — reporting errors is its purpose, the shape `version-check` already uses |

@@ -44,3 +44,16 @@ Run goes through the **existing** version-check dialog (`sdPendingRun` plus `sdD
 
 **The save is refused with the crate's message** when `validate_measurements` refuses what was sent (`400`, prefixed `measurements:`), after `build_authored` has made the taps it checks against; Run and Pre-flight refuse the same way, so a study that would not save does not run from the table either. `apply_measurements` sits beside `build_authored`, not in it: they are host-only and sealed by neither CRC.
 
+### 106 — The tab authors an analog source, its block framing and a session, and shows the crate's reason beside the form
+
+`StreamSource::AnalogInput`, `RecordFraming::AnalogBlocks` and `Study.session` (`embarch-study-designer` decisions 104 to 106) could be written only as JSON (EMB-483).
+
+**One tap row authors the source and the framing.** An "Analog input tap" row holds the rate in Hz and the channel index (the source), and the channels per block and samples per channel per block (the framing). `build_taps` turns it into the `AnalogInput` tap, `Raw` and `WholeStudy` (not choices: the crate refuses anything else) and an `AnalogBlocks` record check carrying the tap's own `id`, as a GATT tap's record magic does. A defaults row is one channel at 32,000 Hz, channel 0, 256 samples per block (the owner's decisions 7 and 8 of the analog capture).
+
+**The session is a section of its own, not a tap's field.** It is one declaration on the study: Start text, run fields (name, label, required), Done text, the time cap in milliseconds and the export folder. Adding the first analog tap adds the default session beside it, because the crate refuses an analog input without one; removing the tap leaves the session. Its JSON shape is the stored `SessionSpec`'s, so a saved study's `session` loads back into the form verbatim, and Save, Run and Pre-flight send it with the taps (`apply_session`, beside `apply_measurements`: host-only, sealed by neither CRC).
+
+**Every refusal is the crate's sentence.** The form restates no range: the limits and defaults come from the actions response (`analog`), the browser clamps a number only to the width of the field it travels in, and `Study::validate_analog_capture` (which runs `validate_session`), `validate_taps` and `validate_record_checks` judge the rest. `POST /analog-check` runs the same checks on the analog taps and the session alone, so the reason appears under the table as the author types, and Save and Run refuse with the identical text (`400`). A saved study run from disk gets the same checks in `preflight_saved`. Text over a field's cap is refused naming the field, never cut.
+
+*Rejected:* client-side range checks (a second copy of every limit); a session field on the tap (one session per study, several fields to a tap would suggest otherwise); validating only on Save (the reason would arrive after the edit that caused it).
+
+*Not here:* Core raising the session's prompts is the Core's own work (EMB-482); this tab only authors the declaration. A study with no analog tap needs no session, and may still declare one.
