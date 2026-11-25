@@ -1,6 +1,6 @@
 # 043 — The 💡 linker offers a bench instrument
 
-**State:** open
+**State:** claimed by agent/chat/043-the-linker-offers-a-bench-instrument, 2026-11-25 10:12
 **Source:** EMB-414 — the 💡 linker cannot offer a bench instrument
 **Issue:** EMB-414
 **Scope:** chat
