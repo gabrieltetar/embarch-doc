@@ -1,6 +1,6 @@
 # 044 — The desk's reference index holds the Linear projects in its scope
 
-**State:** open
+**State:** claimed by agent/desk/044-the-reference-index-holds-linear-projects, 2026-11-25 01:19
 **Source:** EMB-406 — the desk's reference index holds no Linear projects
 **Issue:** EMB-406
 **Scope:** desk
