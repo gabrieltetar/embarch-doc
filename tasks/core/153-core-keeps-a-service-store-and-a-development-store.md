@@ -1,6 +1,6 @@
 # 153 — Core keeps a service store or a development store, and says which
 
-**State:** open
+**State:** claimed by agent/core/153-core-keeps-a-service-store-and-a-development-store, 2026-11-25 01:59
 **Source:** EMB-323 — Core has one store whatever runs it, so service and development share it
 **Issue:** EMB-323
 **Scope:** core
