@@ -1,6 +1,6 @@
 # 044 — The desk's reference index holds the Linear projects in its scope
 
-**State:** claimed by agent/desk/044-the-reference-index-holds-linear-projects, 2026-11-25 01:19
+**State:** done — GET /refs carries the scope projects with URLs on both connector paths; decision 56 and chat-routes say it
 **Source:** EMB-406 — the desk's reference index holds no Linear projects
 **Issue:** EMB-406
 **Scope:** desk
@@ -48,13 +48,13 @@ and say so in this file.
 
 ## Done when
 
-- [ ] A team-bound desk's index lists the team's projects with their URLs; a
+- [x] A team-bound desk's index lists the team's projects with their URLs; a
       project-bound desk's lists that one project.
-- [ ] A failed project fetch keeps the rows it held for the same scope; a
+- [x] A failed project fetch keeps the rows it held for the same scope; a
       changed scope drops them.
-- [ ] A renamed project moves `synced_ms`; an unchanged list does not.
-- [ ] A `refs.json` with no `projects` loads, and `GET /refs` then answers
+- [x] A renamed project moves `synced_ms`; an unchanged list does not.
+- [x] A `refs.json` with no `projects` loads, and `GET /refs` then answers
       `projects: []`.
-- [ ] Decision 56 and `interfaces/chat-routes.md` say it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] Decision 56 and `interfaces/chat-routes.md` say it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.
