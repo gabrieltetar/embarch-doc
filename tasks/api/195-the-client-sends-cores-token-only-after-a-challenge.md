@@ -1,6 +1,6 @@
 # 195 — The client sends Core's token only after a challenge
 
-**State:** open
+**State:** claimed by agent/api/195-the-client-sends-cores-token-only-after-a-challenge, 2026-11-25 06:12
 **Source:** EMB-333 — embarch-api sends Core's token to whatever answers on the port
 **Issue:** EMB-333
 **Scope:** api
