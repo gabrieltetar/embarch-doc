@@ -4,7 +4,7 @@
 
 What `tasks/study-designer/084` (the plan's M1.1, `notes/hil/14`) decided where the HIL notes ([02](../../notes/hil/02-study.md), [03](../../notes/hil/03-test.md), [06](../../notes/hil/06-report-and-publish.md)) were silent. **The notes are the design and the owner's rulings and were not re-decided**: every field name, enum member, rule and number the interfaces cite a note for is the note's. What is listed here is this unit's, **for the owner to see and overturn**.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/hil-shapes.md](../interfaces/hil-shapes.md) (the group's index), [hil-run.md](../interfaces/hil-run.md), [hil-pdf.md](../interfaces/hil-pdf.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../interfaces/hil-shapes.md](../interfaces/hil-shapes.md) (the group's index), [hil-run.md](../interfaces/hil-run.md), [hil-study-export.md](../interfaces/hil-study-export.md), [hil-pdf.md](../interfaces/hil-pdf.md).
 
 ### 90 — The measurement, verdict and characterisation shapes: what the notes left open
 

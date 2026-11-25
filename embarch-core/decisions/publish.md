@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-23 (`tasks/core/135`, the plan's unit M1.8, `notes/hil/14`; 120 from `tasks/core/137`).
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Surface: [../interfaces/publish.md](../interfaces/publish.md). Siblings: [signing.md](signing.md) (decision 110, whose key and envelope this reuses), [run-log.md](run-log.md) (decision 111, whose `published` entry this extends), [measurements.md](measurements.md) (the files the manifest hashes). The shape of a Study's `report-data.json` is the shared crate's: `embarch-study-designer/interfaces/hil-run.md`.
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Surface: [../interfaces/publish.md](../interfaces/publish.md). Siblings: [signing.md](signing.md) (decision 110, whose key and envelope this reuses), [run-log.md](run-log.md) (decision 111, whose `published` entry this extends), [measurements.md](measurements.md) (the files the manifest hashes). The shape of a Study's `report-data.json` is the shared crate's: `embarch-study-designer/interfaces/hil-study-export.md`.
 
 ### 116 — Publish is two routes, `report-data` then `publish`, because the PDF is built from the first and listed in the second
 

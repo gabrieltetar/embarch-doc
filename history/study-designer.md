@@ -18,6 +18,7 @@
 - study-designer: built-in HIL reducers (count, rate, min, max, mean, percentile, interval, value at a marker), versioned by behaviour, feature `reducers`; decisions 92-94.
 
 ### Changed
+- Split a Study's export and check out of hil-run.md into hil-study-export.md, verbatim; hil-run.md leaves reserve.
 - study-designer: the image-segment reader checks a segment's end address; one past u64::MAX is an ImageError, not a panic (EMB-399).
 - study-designer: hil-pdf footer band 8 to 16 mm, measured on one Typst 0.15.1 A4 page (embarch-api 123)
 - Split study-designer decision 41 (vendor GATT identities) out of decisions/gatt.md into decisions/vendor-identities.md; trimmed two types.md paragraphs.
