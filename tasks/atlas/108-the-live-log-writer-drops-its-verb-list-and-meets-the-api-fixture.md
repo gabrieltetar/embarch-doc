@@ -1,6 +1,6 @@
 # 108 — The live-log writer drops its verb list and meets the api's fixture
 
-**State:** open — `api/191`'s 19 cases landed in `embarch-api/tests/fixtures/live-log/` at `c254d15`, described in `embarch-doc/embarch-api/interfaces/live-log.md` "The shared fixture"
+**State:** claimed by agent/atlas/108-the-live-log-writer-drops-its-verb-list-and-meets-the-api-fixture, 2026-11-25 00:40
 **Source:** EMB-319 — the atlas live-log writer keeps a verb list the api output already answers
 **Issue:** EMB-319
 **Scope:** atlas
