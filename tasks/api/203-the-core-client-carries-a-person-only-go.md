@@ -1,6 +1,6 @@
 # 203 — The core client carries a person-only go, and the go ban narrows to the agent's surfaces
 
-**State:** claimed by agent/api/203-the-core-client-carries-a-person-only-go, 2026-11-25 15:44
+**State:** done — test_run_go on the client, mock test and sweep entry, ban narrowed to the agent surfaces, decision 135 amended
 **Source:** EMB-384 — the UI has no go card (the `embarch-api` half: the UI's go has to leave through `embarch-core-client`; `ui/124` is the card)
 **Issue:** EMB-384
 **Scope:** api
@@ -52,10 +52,10 @@ failure-reporting#67 over or near their limits; do not grow those.
 
 ## Done when
 
-- [ ] `CoreClient::test_run_go` exists, is mocked with path, body and bearer
+- [x] `CoreClient::test_run_go` exists, is mocked with path, body and bearer
       asserted, and goes through the one funnel.
-- [ ] The test still fails if `src/tools.rs`, `src/cli.rs` or `src/hil_run.rs`
+- [x] The test still fails if `src/tools.rs`, `src/cli.rs` or `src/hil_run.rs`
       names a `/go` route or `test_run_go`, and no longer covers the client
       crate.
-- [ ] Decision 135 says the agent cannot give the go and the UI can.
-- [ ] Gate green, the client crate included.
+- [x] Decision 135 says the agent cannot give the go and the UI can.
+- [x] Gate green, the client crate included.
