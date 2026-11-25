@@ -1,6 +1,6 @@
 # 095 — A HIL test is checked when it is defined
 
-**State:** open
+**State:** claimed by agent/study-designer/095-a-hil-test-is-checked-when-it-is-defined, 2026-11-25 06:12
 **Source:** EMB-354 — a HIL test is not checked when it is defined
 **Issue:** EMB-354
 **Scope:** study-designer
