@@ -39,3 +39,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 ### 121 — `GET /study/{id}/measurements` serves the file as written, and is lease-open
 
 A finished run's `measurements.json` is served by its own read-only route, unchanged, so a Study's prose can cite it before any publish ([interfaces/measurements.md](../interfaces/measurements.md)). **Refusals are distinct:** `404` unknown run, `409` still running, `422` no file written, `410` files gone; an empty body is never the answer. **Lease list:** `LEASE_OPEN`, beside `/study/{id}/streams` and `/events`: it reads a file already on disk, takes neither `hw_lock` nor a port, and gating it would refuse the very read an agent needs without a bench. **Why not the publish file route:** that serves a name only at a revision `report-data` opened, which is the throwaway publish this removes. **Measured:** unit tests over a fixture run (all four cases and the route sweep); not run against a live Core.
+
+### 141 — The measurements route's `422` carries `code: "no_measurements"`, and serves a host study's file
+
+A host study with a `parse` writes `measurements.json` to the same run directory (decision 131), so the route serves it as it does a device study's; the `422` text no longer says a host study cannot have measurements (it says "a host study with no `parse` step"). The `422` body is JSON `{error, code: "no_measurements"}` so `embarch-api` reads the code, not the sentence (EMB-553). `404`, `409` and `410` stay plain text. Decided 2026-11-25 (`tasks/core/164`).

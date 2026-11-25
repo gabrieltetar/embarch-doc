@@ -10,4 +10,3 @@
 
 - **Discarding a signal port's buffered input on open is not sufficient; the defence is now `embarch-ui`'s** (decision 30). A capture began with **18 stale records** seconds off — those bytes sit inside the USB-UART bridge, past an OS-level purge. Fix built as `embarch-ui` decision 19; unresolved is that it has never met the real prefix ([embarch-ui/open.md](../../embarch-ui/open.md)).
 
-- **A host study's parses** (decision 131) repeat a measurement `name` once per pass of a `Repeat` (`source.iteration` tells them apart), where `hil-shapes.md` asks names unique in the file. `GET /study/{id}/measurements`'s `422` text still says "or is a host study", false for a study with a parse; `embarch-api` matches that text, so it changes with a coordinated unit. Not run on a real port, board or instrument.

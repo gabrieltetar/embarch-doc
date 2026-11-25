@@ -1,1 +1,1 @@
-| `GET /study/{id}/measurements` — a finished run's measurements.json as written, no publish | Shipped (host tests only; not run against a live Core) | host | 121 |
+| `GET /study/{id}/measurements` — a finished run's (device or host study) measurements.json as written, no publish; its 422 carries `code: no_measurements` | Shipped (host tests only; not run against a live Core) | host | 121, 141 |

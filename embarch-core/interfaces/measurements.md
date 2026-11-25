@@ -23,14 +23,14 @@ A marker is the first word of a `Text` tap's line, stamped by the arrival row co
 
 ## `GET /study/{study_id}/measurements`
 
-Returns the run's own `measurements.json`, **byte for byte as Core wrote it**, with `Content-Type: application/json`. No publish, no revision, nothing recomputed or reshaped; read it from the same run directory the publish routes use (`RunLog::run_dir`). It lets a caller read the measurements before writing a Study's prose, instead of publishing once to get at the file. Bearer token required like every route; either scope reads it. Lease-open ([decision 121](../decisions/measurements.md)): it reads a file on disk and touches no port, so it sits in `LEASE_OPEN` beside `/study/{id}/streams`, and a caller without the bench lease reads it.
+Returns the run's own `measurements.json` (a dev-bench study's or a host study's, [decision 131](../decisions/host-parse.md): both sit in the run directory), **byte for byte as Core wrote it**, with `Content-Type: application/json`. No publish, no revision, nothing recomputed or reshaped; read it from the same run directory the publish routes use (`RunLog::run_dir`). It lets a caller read the measurements before writing a Study's prose, instead of publishing once to get at the file. Bearer token required like every route; either scope reads it. Lease-open ([decision 121](../decisions/measurements.md)): it reads a file on disk and touches no port, so it sits in `LEASE_OPEN` beside `/study/{id}/streams`, and a caller without the bench lease reads it.
 
-| Status | When | Body (plain text) |
+| Status | When | Body (plain text unless stated) |
 |---|---|---|
 | `200` | the file exists | the file |
 | `404` | the run log has no run of that id (never started, or still to be entered) | `the run log has no run {id}` |
 | `409` | the study is in the job registry as `running` | `study {id} is still running: its measurements are written as it ends` |
-| `422` | the run is in the log and its files are there but no `measurements.json` was written: the study declared no measurements, did not complete, or is a host study | `study {id} has no measurements.json: it declared no measurements, did not complete, or is a host study` |
+| `422` | the run is in the log and its files are there but no `measurements.json` was written: the study declared no measurements, did not complete, or is a host study with no `parse` step | **JSON** (`application/json`, the one refusal that is not plain text): `{"error": "study {id} has no measurements.json: it declared no measurements, did not complete, or is a host study with no parse step", "code": "no_measurements"}`; a caller reads `code`, not the sentence ([decision 141](../decisions/measurements.md)) |
 | `410` | the run is in the log but its files are gone (discarded, or swept by retention) | `study {id}'s files are gone (discarded or swept by retention)` |
 
 An empty body is never returned. A Core restarted mid-run has no registry entry and no log entry for it, so that run reads `404`, not `409`.

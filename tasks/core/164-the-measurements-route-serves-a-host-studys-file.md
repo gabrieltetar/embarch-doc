@@ -1,6 +1,6 @@
 # 164 — The measurements route serves a host study's file, and its refusal carries a code
 
-**State:** claimed by agent/core/164-the-measurements-route-serves-a-host-studys-file, 2026-11-25 13:46
+**State:** done — host study file served (same run dir); 422 body is JSON with code no_measurements; decision 141; native Windows build is the owner debt
 **Source:** EMB-553 — Core's measurements route still refuses a host study that now has measurements (Core's half; `api/202` is `embarch-api`'s)
 **Issue:** EMB-553
 **Scope:** core
@@ -47,9 +47,9 @@ per `tasks/README.md`.
 
 ## Done when
 
-- [ ] A host study with a `parse` serves its `measurements.json` from the
+- [x] A host study with a `parse` serves its `measurements.json` from the
       route, with a test.
-- [ ] A study with no file gets `422` with `code: "no_measurements"` and a
+- [x] A study with no file gets `422` with `code: "no_measurements"` and a
       message that does not say a host study cannot have measurements.
-- [ ] `interfaces/` gives the code.
-- [ ] Gate green. The native Windows build is a debt the owner runs.
+- [x] `interfaces/` gives the code.
+- [x] Gate green. The native Windows build is a debt the owner runs.
