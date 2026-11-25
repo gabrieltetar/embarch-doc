@@ -1,6 +1,6 @@
 # 156 — A service Core refuses the identity routes to the agent's token
 
-**State:** open
+**State:** claimed by agent/core/156-a-service-core-refuses-identity-routes-to-the-agents-token, 2026-11-25 06:12
 **Source:** EMB-331 — an attested Core takes identity declarations from the agent's token
 **Issue:** EMB-331
 **Scope:** core
