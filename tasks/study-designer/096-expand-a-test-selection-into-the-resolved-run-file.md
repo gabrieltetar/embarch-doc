@@ -1,6 +1,6 @@
 # 096 — Expand a test selection into the resolved run file
 
-**State:** open
+**State:** claimed by agent/study-designer/096-expand-a-test-selection-into-the-resolved-run-file, 2026-11-25 06:51
 **Source:** EMB-355 — nothing expands a test selection into the resolved run file
 **Issue:** EMB-355
 **Scope:** study-designer
