@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Promptu contract §15 fixes build step 5 (the chat linker's kinds): reference entry, kinds table, three read surfaces; forks L1-L22.
 - `promptu week draft` replays a question, signal or source change on past prompts, old pattern against new, under `week_replay_cap_usd`: [contract §10](../../embarch-promptu/docs/contract.md).
 - Promptu's plugin gains /embarch-promptu:review, a skill that walks the weekly ✓/✕ sheet in the terminal and applies it, no Desk needed.
 - promptu week run packs and drafts under a lock (exit 4 if one is running); week timer prints the systemd units and installs nothing; run.json records every run.
