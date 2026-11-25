@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-api adds cancel_study and cancel-study, which stop a running host or device study through Core's cancel route (EMB-487).
 - `test_propose` and `test_plan` (and CLI twins) send a test, capability or hook to Core to confirm and keep plans and custom suites under `embarch/tests/` (decision 134).
 - embarch-api person_writer is the confined writer for the person's embarch/ folder: fixed kinds and names, no link followed, atomic ([decision 132](../embarch-api/decisions/person-mirror.md)).
 - embarch-api list-studies lists Core's retained studies newest first with each tap's encoding and a flat encoding_kind (EMB-405).

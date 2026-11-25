@@ -63,6 +63,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core prepares a Test run — `POST /test-runs` re-expands `run.json` and refuses one it does not reproduce; `GET /test-runs/{run_id}/card` serves the go card, with the go nonce for the person only | Built — **host-side only; the go is core-370, a study file is not checked against its hash, and the benches that exist are assumed from `run.json`** | unit | 134 |
 | Core starts a Test run on the person's go — `POST /test-runs/{run_id}/go` spends the card's nonce and moves the session's lease to the run, `/cancel` ends it from either token | Built — **host-side only; the executor is core-380, the native Windows build was not run, and a Core restart mid-run leaves it started with no end** | unit | 135 |
 | Core runs a started Test run — bench by bench, test by test, each study through the host-study executor, verdicts from the shared crate, a fail/error/cancel/`stop_on_fail` policy, `GET /test-runs/{run_id}` | Built — **host studies only; the real reset, idle line and study path ran over no bench, `power_cycle` and `detach` are an error, and no between-bench prompt or smoke check yet** | unit | 136 |
+| A Test run's prompt takes its kind from `run.json`; the agent's token is refused an `observation` or `clearance` (`403`), each answer records the token's scope, an observation's value is a `by: person` measurement, a prompt lists what Core last switched on | Built — **host-side only: proven over a scripted backend and the real slot; no bench, no person's answer from a surface; Core not deployed; native Windows build unrun** | unit | 138 |
 
 ## embarch-api
 
@@ -122,6 +123,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `embarch-api` live log — every hardware call appends a line to `<repo>/embarch/live/` citing Core's call-log entry; `call_log` / `call-log` read entries by `seq` | Built on a branch, not deployed — **mock Core only** | unit | [live-log](../embarch-api/interfaces/live-log.md) |
 | `person_writer` — a confined writer for the person's `embarch/` (fixed kinds and names, no link followed, atomic by rename, runs nothing) | Built; no caller yet, Windows branch not built | unit | 132 |
 | `test_propose` / `test_plan` — propose a HIL test, capability or hook for the engineer to confirm; plans and custom suites in `embarch/tests/`; selecting a suite copies its benches | Built; mock Core only | unit | 134 |
+| `cancel_study` / `cancel-study` — stop a running host or device study through Core's cancel route | Built; mock Core only | unit | — |
 
 ## embarch-dev-bench
 
