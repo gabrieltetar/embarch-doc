@@ -1,6 +1,6 @@
 # 155 — A host step parses its declared number, and a host study writes `measurements.json`
 
-**State:** claimed by agent/core/155-a-host-step-parses-its-number-and-writes-measurements, 2026-11-25 03:33
+**State:** done — Host step parse read at step time, recorded in events.json, measurements.json written for host studies (decision 131); scripted-backend only
 **Source:** EMB-359 — Core records a reply as text and parses no number out of it
 **Issue:** EMB-359
 **Scope:** core
@@ -65,15 +65,15 @@ same commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] Over a fake port, a DUT reply with a declared parse gives a step record
+- [x] Over a fake port, a DUT reply with a declared parse gives a step record
       with the number and a `measurements.json` entry with `by: dut`.
-- [ ] The same over a bench board's signal gives `by: bench`; over an
+- [x] The same over a bench board's signal gives `by: bench`; over an
       instrument, `by: bench` with the instrument named.
-- [ ] A truncated reply gives `truncated_reply`; a reply with no number gives
+- [x] A truncated reply gives `truncated_reply`; a reply with no number gives
       `value: null` and `parse_failed`.
-- [ ] A host study with no parse writes no `measurements.json`, as today.
-- [ ] `interfaces/measurements.md` and a new decision say it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`): `cargo build`, `cargo test`,
+- [x] A host study with no parse writes no `measurements.json`, as today.
+- [x] `interfaces/measurements.md` and a new decision say it.
+- [x] Gate green (`../../embarch-fleet/gate.md`): `cargo build`, `cargo test`,
       `cargo clippy --all-targets -- -D warnings`.
-- [ ] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
+- [x] `spec`/`decisions`/`open.md` updated, `changelog.d/` fragment dropped,
       `status.d/` fragment for anything suite-level it made false.

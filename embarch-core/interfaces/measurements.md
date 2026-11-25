@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-22 (`tasks/core/132`). Index: [../interfaces.md](../interfaces.md). Why: [decisions 113 to 115](../decisions/measurements.md). The shape, key by key: `embarch-study-designer/interfaces/hil-shapes.md`; the declaration: `hil-declarations.md`; the reducers: `hil-reducers.md`.
 
-Written by `measurements.rs` into `study_results/<id>/measurements.json` as a device study ends, after the captures close and before `record.dsse.json`, which names it as a subject and copies its `behaviours`. **Absent when the study declares no measurement**; absent for a failed study and for a host study.
+Written by `measurements.rs` (a host study's: `host_parse.rs`, below) into `study_results/<id>/measurements.json` as a device study ends, after the captures close and before `record.dsse.json`, which names it as a subject and copies its `behaviours`. **Absent when the study declares no measurement**; absent for a failed study, and for a host study with no `parse`.
 
 | Key | What Core puts there |
 |---|---|
@@ -16,6 +16,8 @@ Written by `measurements.rs` into `study_results/<id>/measurements.json` as a de
 | `uncertainty`, `u_source` | a `dut` value's declared `U` at `k` is `basis: declared`, `u_source: study`; a bench value `null` and `undeclared`; a count `null` and `none` |
 | `rate_check` | present only with a declared `sample_rate_hz`; `tolerance_rel` is `0.05 + 2/(n-1)` |
 | `declared_by` | `signal`, `role`, and `study_value` entries, scope from the ledger (`agent` where unseen) or the submitting token |
+
+**A host study's** file ([decision 131](../decisions/host-parse.md)) holds one measurement per step that declared a `parse`, in step order, with `behaviours: {}`: `value` the parsed number (`null` with `parse_failed`), `method {kind: "parse", pattern}`, `source {file: "events.json", step, iteration?}`, `at_utc_ms` the step's end, `incomplete` `truncated_reply` and/or `parse_failed`, `resolution` null, `uncertainty` null, `u_source` `undeclared`, `declared_by` the signal (and the DUT's role). `by`, `instrument`, `bench_image` from what the step addressed: a `dut` role's signal `dut`, `null`, `null`; another board's signal `bench`, `{name, kind: "board", identity: null}`, `unverified`; an `Instrument` `bench`, `{name, kind: "instrument", identity: null}`, `null`.
 
 A marker is the first word of a `Text` tap's line, stamped by the arrival row covering it.
 

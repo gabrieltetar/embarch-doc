@@ -35,6 +35,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Reading a target's memory](decisions/live-read.md) | 81, 97 | 4.1 KB |
 | [Host-run studies](decisions/host-study.md) | 95, 98, 99 | 8.0 KB |
 | [Bench instruments](decisions/instruments.md) | 104 | 4.4 KB |
+| [A host step's declared number](decisions/host-parse.md) | 131 | 4.3 KB |
 | [Operator prompts in a host study](decisions/host-prompt.md) | 105, 107 | 5.3 KB |
 | [Signing a study run's record](decisions/signing.md) | 110 | 7.0 KB |
 | [The run log, retention before publish, and the discard](decisions/run-log.md) | 111, 112 | 7.1 KB |
