@@ -1,6 +1,6 @@
 # 161 — Core enforces a prompt's kind by the token's scope
 
-**State:** open
+**State:** claimed by agent/core/161-core-enforces-a-prompts-kind-by-the-tokens-scope, 2026-11-25 09:42
 **Source:** EMB-367 — Core does not know a prompt's kind and lets the agent answer any prompt (first half; the setup window is `core/162`)
 **Issue:** EMB-367
 **Scope:** core
