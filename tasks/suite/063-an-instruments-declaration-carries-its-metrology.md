@@ -1,6 +1,6 @@
 # 063 — An instrument's declaration carries its metrology
 
-**State:** open — announced and parked, ts `1795612302.163159` (2026-11-25 06:11); the window closes 06:41 unless a reply cancels it. Poll `fleet-read.py --thread 1795612302.163159` before running.
+**State:** claimed by agent/suite/063-an-instruments-declaration-carries-its-metrology, 2026-11-25 07:12 — run by the supervisor; window ts 1795612302.163159 closed with no reply
 **Source:** EMB-358 — an instrument's declaration carries no resolution, uncertainty or calibration
 **Issue:** EMB-358
 **Scope:** suite
