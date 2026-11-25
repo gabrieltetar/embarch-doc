@@ -1,6 +1,6 @@
 # 198 — A tool and a subcommand cancel a running study
 
-**State:** claimed by agent/api/198-a-tool-and-a-subcommand-cancel-a-running-study, 2026-11-25 09:42
+**State:** done — cancel_study tool and cancel-study subcommand share Core client cancel_study; mock-Core tests green
 **Source:** EMB-487 — no tool or button cancels a running study (the api half; the UI button is `ui/122`)
 **Issue:** EMB-487
 **Scope:** api
@@ -39,7 +39,7 @@ over its per-decision limit), 98 (`ledger.md`, 15 B left) or 134
 
 ## Done when
 
-- [ ] The tool and the subcommand cancel a study against a mock Core, and the
+- [x] The tool and the subcommand cancel a study against a mock Core, and the
       parity test passes.
-- [ ] A cancel of an unknown or ended study reports Core's refusal.
-- [ ] Gate green.
+- [x] A cancel of an unknown or ended study reports Core's refusal.
+- [x] Gate green.

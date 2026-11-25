@@ -6,7 +6,8 @@
 |---|---|---|
 | `run_host_study` / `run-host-study --study-file` | `study_file` | Reads a `HostStudy` JSON file (a `Prompt` may carry `bench_config`), checks it, Core `POST /host-studies`. Returns `study_id`; the study runs on. Refused `409` while any study holds the bench |
 | `answer_prompt` / `answer-prompt <study_id> <prompt_id> <answer>` | `study_id`, `prompt_id`, `answer` (`confirmed`/`cancelled`) | Core `POST /study/{id}/prompt`, `answered_by` `mcp` or `cli`. **Relays a person's answer only.** `409` names the prompt now waiting when this one already ended |
+| `cancel_study` / `cancel-study <study_id>` | `study_id` | Core `POST /study/{id}/cancel` (Core decision 128): any host or device study, `202 {status: "cancelling"}` at once; the study ends after its teardown or the bench's stop, so watch it with `study_status`. Takes the lease token as a gated call. `404` unknown, `409` not running: Core's text, reported |
 
 `study_watch` returns early with `prompt_pending {prompt_id, list, step_index, step_name, text, bench_config?, opened_utc_ms, deadline_utc_ms}` when a prompt waits (`bench_config` as Core sent it, absent when the step names none); `study_status` shows it as `pending_prompt`, and a finished host study's record as `host_result`. `study-status --follow` prints prompts and follows on.
 
-**Nothing here has met a real Core.**
+**Nothing here has met a real Core**; `cancel_study` has met a mock one only.

@@ -24,7 +24,7 @@
 - [Tests](tools-tests.md) — `test_propose`, `test_plan`, and the `embarch/tests/` layout
 - [Live log](live-log.md) — the line each hardware call appends to the firmware repo; `call_log`
 - [Publish](publish.md) — `publish`, and the zip it writes
-- [Host studies](tools-host-study.md) — `run_host_study`, `answer_prompt`, and `study_watch` stopping on a waiting prompt
+- [Host studies](tools-host-study.md) — `run_host_study`, `answer_prompt`, `cancel_study`, and `study_watch` stopping on a waiting prompt
 
 ## Error handling
 
