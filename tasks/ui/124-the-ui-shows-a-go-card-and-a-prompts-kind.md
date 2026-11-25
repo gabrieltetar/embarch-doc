@@ -1,7 +1,6 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** blocked — needs `CoreClient::test_run_go`, which is `api/203`
-**Unparks when:** `api/203` lands
+**State:** open
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui

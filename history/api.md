@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- api: CoreClient::test_run_go carries the person's go for the UI; the go ban narrows to the agent's MCP and CLI sources (decision 135).
 - api: run_test prepares a Test run and never starts it; test_status reads it; answer_prompt explains a 403. See embarch-api/decisions/test-run.md
 - The core client has pending_confirmations, confirmation_card and confirm for Core's confirmation routes, for the UI's card; no MCP tool or CLI subcommand.
 - embarch-api adds cancel_study and cancel-study, which stop a running host or device study through Core's cancel route (EMB-487).
