@@ -43,6 +43,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The go that starts a Test run and the lease it takes](decisions/test-run-go.md) | 135 | 4.4 KB |
 | [The executor of a started Test run](decisions/test-run-executor.md) | 136, 137 | 5.5 KB |
 | [The setup window between two benches](decisions/test-run-setup.md) | 139 | 3.6 KB |
+| [An instrument's metrology and calibration on its measurements](decisions/instrument-metrology.md) | 140 | 2.9 KB |
 | [The run log, retention before publish, and the discard](decisions/run-log.md) | 111, 112 | 7.1 KB |
 | [Measurements at a study's end](decisions/measurements.md) | 113, 114, 115, 121 | 7.3 KB |
 | [Core's side of publish](decisions/publish.md) | 116, 117, 118, 119, 120 | 8.3 KB |

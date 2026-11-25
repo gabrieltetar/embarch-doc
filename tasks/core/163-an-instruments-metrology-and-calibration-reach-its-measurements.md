@@ -1,6 +1,6 @@
 # 163 — An instrument's metrology and calibration reach its measurements
 
-**State:** claimed by agent/core/163-an-instruments-metrology-and-calibration-reach-its-measurements, 2026-11-25 12:34
+**State:** done — metrology and calibration stamped on instrument values; calibration judged per reading; decision 140
 **Source:** EMB-360 — an instrument's uncertainty and calibration never reach its measurements
 **Issue:** EMB-360
 **Scope:** core
@@ -53,11 +53,17 @@ in, file `tasks/core/<NNN>-compact-core.md` in the same commit per
 
 ## Done when
 
-- [ ] An instrument declared with metrology gives its values the declared `U`
+- [x] An instrument declared with metrology gives its values the declared `U`
       and resolution, and `declared_by` names the scope.
-- [ ] A calibration due before the measurement's time marks the value so the
+- [x] A calibration due before the measurement's time marks the value so the
       shared crate's judgement reads it `calibration_expired`.
-- [ ] An instrument with no calibration gives values marked "calibration
+- [x] An instrument with no calibration gives values marked "calibration
       undeclared".
-- [ ] `interfaces/instruments.md` amended.
-- [ ] Gate green. The native Windows build is a debt the owner runs.
+- [x] `interfaces/instruments.md` amended.
+- [x] Gate green. The native Windows build is a debt the owner runs.
+
+## Debts
+
+- **Windows build:** native Windows build of embarch-core not run; the owner runs it.
+- **Hardware / deploy:** none needed; unit-tested with injected instrument lookup. Not run against a real instrument or live Core.
+- **Open:** serial check against `*IDN?` waits for EMB-368. Metrology entry is picked by unit match (exactly one); two entries in one unit leave the value undeclared.

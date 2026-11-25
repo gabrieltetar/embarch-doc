@@ -1,0 +1,1 @@
+| A bench instrument's declared metrology and calibration reach the values it makes (`U`, resolution, `declared_by`); a calibration past due on the reading's day is judged `calibration_expired` | Built — **unit-tested only; serial not checked against `*IDN?` (EMB-368); not run on a real instrument** | unit | 140 |
