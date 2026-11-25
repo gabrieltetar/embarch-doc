@@ -1,6 +1,6 @@
 # 121 — The UI shows a card on which the engineer confirms a test input
 
-**State:** open — unparked by `api/199`'s fold: `CoreClient` now has `pending_confirmations`, `confirmation_card` and `confirm`, each returning `serde_json::Value`
+**State:** claimed by agent/ui/121-the-ui-shows-a-card-on-which-the-engineer-confirms-a-test-input, 2026-11-25 12:34
 **Source:** EMB-383 — the UI has no card on which the engineer confirms a test input
 **Issue:** EMB-383
 **Scope:** ui
