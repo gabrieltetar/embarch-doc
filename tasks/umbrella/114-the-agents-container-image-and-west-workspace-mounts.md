@@ -1,6 +1,6 @@
 # 114 — The agent's container image and its west workspace mounts
 
-**State:** open
+**State:** claimed by agent/umbrella/114-the-agents-container-image-and-west-workspace-mounts, 2026-11-25 07:37
 **Source:** EMB-446 — the agent's container has no toolchain image and no view of the west workspace
 **Issue:** EMB-446
 **Scope:** umbrella
