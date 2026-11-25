@@ -1,6 +1,6 @@
 # 045 — The desk's reference index holds the Linear documents of its projects
 
-**State:** claimed by agent/desk/045-the-reference-index-holds-linear-documents, 2026-11-25 01:44
+**State:** done — RefIndex.documents on both connector paths; decision 56 amended (EMB-407); GraphQL filter and MCP reply shape assumed
 **Source:** EMB-407 — the desk's reference index holds no Linear documents
 **Issue:** EMB-407
 **Scope:** desk
@@ -56,14 +56,20 @@ No file is in reserve on the size ledger at dispatch.
 
 ## Done when
 
-- [ ] On the GraphQL path and on the MCP path, a fixture project's documents
+- [x] On the GraphQL path and on the MCP path, a fixture project's documents
       appear in `GET /refs` with title, URL and project, newest first.
-- [ ] A trashed document is absent; the cap keeps the newest 500.
-- [ ] A failed document fetch keeps the rows for the same scope; an edited
+- [x] A trashed document is absent; the cap keeps the newest 500.
+- [x] A failed document fetch keeps the rows for the same scope; an edited
       title moves `synced_ms`.
-- [ ] A `refs.json` with no `documents` loads, and `GET /refs` then answers
+- [x] A `refs.json` with no `documents` loads, and `GET /refs` then answers
       `documents: []`.
-- [ ] Decision 56 and `interfaces/chat-routes.md` say it, including what is
+- [x] Decision 56 and `interfaces/chat-routes.md` say it, including what is
       left out.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.
+
+## Assumed, not checked against live Linear
+
+- GraphQL: `documents(filter: {project: {id: {in: $p}}}, orderBy: updatedAt)` with `nodes { id title url trashed updatedAt project { id name } }`. No schema copy in the repo and no live call from a worker.
+- MCP: `list_documents` arguments (`projectId`, `orderBy`, `limit`, `cursor`, `fields`) read from the server's tool list; the reply's `documents` key and row spelling are assumed. Unit tests read fixture rows, not a wire call.
+- Fetch is project-by-project on MCP, then merged, deduped and cut to 500 in `refs::newest_documents`. No test drives `scope_documents` over the network.
