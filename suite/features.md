@@ -119,6 +119,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Token sent only to the attested Core — a challenge, then the machine-wide token on a fingerprint match, the development token (or none) on a mismatch; `status` shows mode and fingerprint | Built — **never run against a live Core** | unit | [133](../embarch-api/decisions/client-crate-funnel.md) |
 | `embarch-api` live log — every hardware call appends a line to `<repo>/embarch/live/` citing Core's call-log entry; `call_log` / `call-log` read entries by `seq` | Built on a branch, not deployed — **mock Core only** | unit | [live-log](../embarch-api/interfaces/live-log.md) |
 | `person_writer` — a confined writer for the person's `embarch/` (fixed kinds and names, no link followed, atomic by rename, runs nothing) | Built; no caller yet, Windows branch not built | unit | 132 |
+| `test_propose` / `test_plan` — propose a HIL test, capability or hook for the engineer to confirm; plans and custom suites in `embarch/tests/`; selecting a suite copies its benches | Built; mock Core only | unit | 134 |
 
 ## embarch-dev-bench
 

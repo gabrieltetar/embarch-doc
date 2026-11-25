@@ -1,14 +1,12 @@
 # 097 — compact `embarch-study-designer/interfaces/hil-run.md`
 
-**State:** blocked — hil-run.md in reserve; HIL Test chain still moving
-
-**Unparks when:** the HIL Test chain unit EMB-376 has landed
+**State:** open
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
 **Compacts:** embarch-study-designer/interfaces/hil-run.md
 **Size debt due:** 2026-12-09
-**In flux:** yes
+**In flux:** no — the three units that were moving it (EMB-364, EMB-356, EMB-376) landed by 2026-11-25 (`api/196`'s fold); it was `yes` until then
 **Must not delete:** the key tables of `run.json` and of a test entry with every `(amended)` field; the Expansion statuses table; the Study-export check table (06's checks 0 to 9).
 
 ## What
