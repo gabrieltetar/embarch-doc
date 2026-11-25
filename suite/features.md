@@ -236,6 +236,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `doctor` check 17 — Core's bind address against what this topology needs: the class `setup` recorded versus the address `/status` answered at, and versus the service's registered `--bind`, the only evidence that tells a narrow bind from a wide one | Shipped — met a real narrow-bound Core 2026-10-29 (`bound-narrow` only); fix lines re-check owner-run | unit | 22 |
 | `embarch up`/`down` — fallback start/stop, including across the WSL2 boundary | Shipped — never started a real Core | local | 4, 7, 30 |
 | `src/agent.rs`: the container's root firewall script and Core's address per topology | Built, unused — **no container was ever started; the tools in the image are assumed** | no | 63 |
+| `embarch init --container` — the agent's container definition and exchange folder outside the repo, and a registry of repos | Shipped — **host side only; no image built, no container started** | local | 65 |
 | Suite release archive — three binaries, four targets | Shipped, real tags and a real assembled archive | local | 14 |
 | Release CI asserts each repo's `Cargo.toml` version matches its pushed tag | Shipped in all four repos that release; the other four still have no release workflow. Proven by running the step, not by a tag | n/a | 27, 29 |
 | `embarch deploy-core` — one-command deploy onto the live Windows service, **verifying the binary actually changed** | Shipped — **the verification compared a byte count and reported `landed` through a cancelled elevation** | hw | 32 |

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Umbrella `embarch init` registers every repo and, with `--container`, writes the agent's container definition and exchange folder outside it (decision 65).
 - The agent container image is a rendered Containerfile tagged by its own hash, with the west projects as read-only mounts: [decision 64](../embarch-umbrella/decisions/agent-container.md).
 - The agent container gets a rendered root firewall script, an allowlist in container.toml and a per-topology Core address; see embarch-umbrella decision 63.
 - `embarch-umbrella` renders the agent container's mounts, hardening and `container.toml` as pure functions (decision 62); nothing starts one yet.
