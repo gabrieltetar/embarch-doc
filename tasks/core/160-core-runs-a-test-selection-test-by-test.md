@@ -1,6 +1,6 @@
 # 160 — Core runs a Test selection test by test
 
-**State:** open
+**State:** claimed by agent/core/160-core-runs-a-test-selection-test-by-test, 2026-11-25 09:19
 **Source:** EMB-366 — Core has nothing that runs a Test selection test by test
 **Issue:** EMB-366
 **Scope:** core
