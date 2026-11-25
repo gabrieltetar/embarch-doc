@@ -1,6 +1,6 @@
 # 024 — The contract fixes build step 5's shapes and forks
 
-**State:** open
+**State:** claimed by agent/promptu/024-the-contract-fixes-build-step-5s-shapes-and-forks, 2026-11-25 00:11
 **Source:** EMB-403 — Promptu's contract says nothing of build step 5's reads and shapes
 **Issue:** EMB-403
 **Scope:** promptu
