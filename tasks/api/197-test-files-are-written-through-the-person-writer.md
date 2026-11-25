@@ -1,6 +1,6 @@
 # 197 — Test files are written through the person writer
 
-**State:** claimed by agent/api/197-test-files-are-written-through-the-person-writer, 2026-11-25 08:56
+**State:** done — hil_repo writes through person_writer kinds; 132 and 134 agree
 **Source:** the reviewer of `api/196` (embarch-api `eb2f64d`, doc `44c88c7d`)
 **Scope:** api
 **Hardware:** none
@@ -48,10 +48,10 @@ into reserve, file `tasks/api/<NNN>-compact-api.md` in the same commit per
 
 ## Done when
 
-- [ ] `hil_repo` has no file write of its own; every write is a
+- [x] `hil_repo` has no file write of its own; every write is a
       `person_writer` kind.
-- [ ] A test plants a symbolic link at a suite folder and at a plan path, and
+- [x] A test plants a symbolic link at a suite folder and at a plan path, and
       each write is refused; a hard-linked target is refused.
-- [ ] `api/196`'s tests pass unchanged in what they assert.
-- [ ] Decisions 132 and 134 agree.
-- [ ] Gate green.
+- [x] `api/196`'s tests pass unchanged in what they assert.
+- [x] Decisions 132 and 134 agree.
+- [x] Gate green.
