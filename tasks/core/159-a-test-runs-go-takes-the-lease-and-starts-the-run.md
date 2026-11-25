@@ -1,6 +1,6 @@
 # 159 — A Test run's go takes the lease and starts the run
 
-**State:** claimed by agent/core/159-a-test-runs-go-takes-the-lease-and-starts-the-run, 2026-11-25 08:28
+**State:** done — go and cancel routes, run lock and lease transfer built host-side; decision 135
 **Source:** EMB-365 — a Test run cannot hold the bench lease or start on the person's go
 **Issue:** EMB-365
 **Scope:** core
@@ -74,12 +74,18 @@ reserve, file `tasks/core/<NNN>-compact-core.md` in the same commit per
 
 ## Done when
 
-- [ ] A go with the agent's token is refused `403`; a replayed, expired or
+- [x] A go with the agent's token is refused `403`; a replayed, expired or
       mismatched go is refused naming which.
-- [ ] After the go, a reset with the session's lease token is refused `409`
+- [x] After the go, a reset with the session's lease token is refused `409`
       naming the run; after the run ends, it is admitted again.
-- [ ] A cancel with either token ends the run and is recorded with its scope.
-- [ ] A run longer than 30 minutes keeps its lease (test the idle release
+- [x] A cancel with either token ends the run and is recorded with its scope.
+- [x] A run longer than 30 minutes keeps its lease (test the idle release
       against a run holder, with a fake clock).
-- [ ] Decisions 93 and 123 amended by pointer; the new decision records it.
-- [ ] Gate green.
+- [x] Decisions 93 and 123 amended by pointer; the new decision records it.
+- [x] Gate green.
+
+## Debts
+
+- **Native Windows build of `embarch-core`: not run.** A worktree cannot build it (supervisor note, `protocol.md` §5). Run `cargo build` from the main checkout over UNC after landing. Nothing here is Windows-specific.
+- **Hardware: none touched.** The executor (EMB-366) is the seam this leaves: `test_runs::end_run`, `RUN_ADMITTED` in `api.rs`, decision 135 "The seam".
+- Decision 93's body is still 51 B over its per-decision limit plus the dated pointer; it was not compacted here.

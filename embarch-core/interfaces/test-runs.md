@@ -1,12 +1,14 @@
 # embarch-core: the test-run routes
 
-**Status:** active, 2026-11-25 (`tasks/core/158`, [decision 134](../decisions/test-runs.md)). Index: [../interfaces.md](../interfaces.md).
+**Status:** active, 2026-11-25 (`tasks/core/158` and `159`, [decisions 134](../decisions/test-runs.md) and [135](../decisions/test-run-go.md)). Index: [../interfaces.md](../interfaces.md).
 
-Both take either token and are lease-open (a file and a rendering, never a port). Errors are plain text. Nothing here starts a run.
+All four are lease-open: the first two are a file and a rendering, never a port; the go takes the lease itself and the cancel must reach a run that holds it. Errors are plain text. Preparing starts nothing; the go starts the run.
 
 | Method | Path | Body | Response |
 |---|---|---|---|
 | `POST` | `/test-runs` | `{run, plan, suite?, studies}`: `run` is `run.json` (`embarch-study-designer`'s `RunJson`); `plan` the hash of a kept `plan`; `suite` the hash of a kept suite manifest, or absent for the premade suite the plan's id and version name; `studies` `{<study.file>: <host study>}` | `201 {run_id, run_hash, lease_holder, duration_bound_ms}`; `422` a definition Core does not keep, a manifest test it cannot resolve, a `plan_hash` that is not the plan's, or **a `run.json` it does not reproduce, naming the first differing key**; `409` the `run_id` is already prepared; `400` a `run_id` outside `[A-Za-z0-9_-]{1,128}` or a malformed hash |
+| `POST` | `/test-runs/{run_id}/go` | `{run_id, run_hash, nonce}` from the card; **the person's token only on every Core** | `200 {run_id, run_hash, state: "started", started_utc_ms, lease_holder}`; `403` the agent's token; `422` whose first word is `mismatched`, `expired` or `replayed`; `409` already started, an input still unconfirmed (named), or the session that prepared the run no longer holds the lease (a run prepared with no lease is refused too); `404` |
+| `POST` | `/test-runs/{run_id}/cancel` | none; either token | `200 {run_id, state: "cancelled", by}`; `409` the run is not the one in flight |
 | `GET` | `/test-runs/{run_id}/card` | none | `200 {run_id, run_hash, lease_holder, prepared_utc_ms, card, nonce, expires_utc_ms}`; `nonce` and `expires_utc_ms` are `null` unless the token is the person's; `404` |
 
 `run_hash` is the hash of Core's own re-expansion, in which each capability's and hook's `confirmed` is Core's record; the comparison with the caller's `run.json` blanks `confirmed` on both sides. `lease_holder` is the name of the lease holder when the run was prepared, `null` with none.
@@ -25,4 +27,6 @@ Both take either token and are lease-open (a file and a rendering, never a port)
 
 **Every string a definition, a study or `run.json` wrote is `{"agent_text": "<string>"}`**; a surface escapes it. That includes every string inside a free value — a capability's `value`, a hook's `maps_to` (`{"shell": {"agent_text": cmd}}`), a diff's `old` and `new` — whose object keys stay plain. Numbers, hashes, kinds and Core's own words are plain.
 
-A go nonce is 32 random bytes in hex, single use, ten minutes, in memory, from the store of [definitions](definitions.md); it is issued for `go:<run_id>:<run_hash>`. A prepared run is `test-runs/<run_id>.json` in the store.
+A go nonce is 32 random bytes in hex, single use, ten minutes, in memory, from the store of [definitions](definitions.md); it is issued for `go:<run_id>:<run_hash>`. A prepared run is `test-runs/<run_id>.json` in the store, and a started one also `<run_id>.started.json`.
+
+**While a run is started** the lease is the run's: every lease-gated route is `409` naming the run, the session's token included, and renew and release of the lease likewise; `GET /lease` shows `holder` `test run <id>` and `run_id`. The lease neither expires nor idles, and goes back to the session under its old token, TTL restarted, when the run ends or is cancelled. The run log gains `test_run_started` and `test_run_ended` ([run-log](run-log.md)).

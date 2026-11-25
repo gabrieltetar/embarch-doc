@@ -14,6 +14,8 @@
 
 **The reason is kept in memory**: the holder of the last lease that ended idle, until the next take or a release. A `PUT`, `DELETE` or `GET /lease` after it is `404` naming the holder and "released after 30 min with no hardware call", apart from a plain expiry's text. `GET /lease` shows `last_hardware_call_at` while live.
 
+**2026-11-25:** a Test run holding the lease is never idle ([test-run-go.md](test-run-go.md), 135).
+
 **Known gap:** a pending call-log read fold (decision 122) is not flushed by an idle release, as it is not by an expiry; the next different call or a clean stop writes it.
 
 **The client half is `embarch-api`'s** (EMB-256): learning of the release and stopping its renewals.

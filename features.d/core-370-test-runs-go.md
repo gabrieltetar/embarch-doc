@@ -1,0 +1,1 @@
+| Core starts a Test run on the person's go — `POST /test-runs/{run_id}/go` spends the card's nonce and moves the session's lease to the run, `/cancel` ends it from either token | Built — **host-side only; nothing executes the run's studies yet (EMB-366), the native Windows build was not run, and a Core restart mid-run leaves it started with no end** | unit | 135 |

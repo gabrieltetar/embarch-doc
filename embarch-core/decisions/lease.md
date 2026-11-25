@@ -22,6 +22,6 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **`GET /status` adds `lease` and `last_images`**: per chip, the last image Core flashed or bootloaded, recorded only on success in `flashed-images.jsonl` with its load segments, scope and call-log entry ([interfaces](../interfaces/hardware.md)), so a restart keeps it. `sha256` hashes the bytes read just before flashing; `path` is `(uploaded)` for a multipart flash, `(bootload image)` for `POST /bootload`. **An absent entry means unknown, not "nothing flashed"**: another tool's flash never appears, and an old entry is what Core flashed, not what the chip holds (decision 12). A session taking the bench compares `sha256` with its image to decide on a reflash.
 
-**An idle lease is released too** (decision 123, [lease-idle.md](lease-idle.md)): 30 min with no hardware call. **2026-11-25:** the lease holds the serial ports ([port-hold.md](port-hold.md), 130).
+**An idle lease is released too** (decision 123, [lease-idle.md](lease-idle.md)): 30 min with no hardware call. **2026-11-25:** the lease holds the serial ports ([port-hold.md](port-hold.md), 130). **2026-11-25:** a Test run's go moves it to the run ([test-run-go.md](test-run-go.md), 135).
 
 **The client half is `embarch-api`'s** (inbox drop, `tasks/core/099`): the token rides an environment variable so `embarch-atlas`'s live calls inherit it.
