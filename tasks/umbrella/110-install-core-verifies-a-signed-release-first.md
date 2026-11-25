@@ -1,6 +1,6 @@
 # 110 — `embarch install-core` verifies a signed release before it installs
 
-**State:** open
+**State:** claimed by agent/umbrella/110-install-core-verifies-a-signed-release-first, 2026-11-25 01:59
 **Source:** EMB-338 — no install verifies a signed release before installing Core
 **Issue:** EMB-338
 **Scope:** umbrella
