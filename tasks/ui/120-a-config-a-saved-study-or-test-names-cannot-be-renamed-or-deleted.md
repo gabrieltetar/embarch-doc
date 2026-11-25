@@ -1,6 +1,6 @@
 # 120 — A config a saved study or test names cannot be renamed or deleted
 
-**State:** claimed by agent/ui/120-a-config-a-saved-study-or-test-names-cannot-be-renamed-or-deleted, 2026-11-25 08:28
+**State:** done — config-named 409 on save, references route, dialogs; decision 108
 **Source:** EMB-385 — a config a saved study or test names can still be renamed or deleted
 **Issue:** EMB-385
 **Scope:** ui
@@ -57,10 +57,14 @@ the same commit per `tasks/README.md`.
 
 ## Done when
 
-- [ ] A fixture test naming config `A` blocks its rename and its delete, the
+- [x] A fixture test naming config `A` blocks its rename and its delete, the
       refusal naming the test.
-- [ ] A fixture host study in `embarch/studies/` naming config `A` does the
+- [x] A fixture host study in `embarch/studies/` naming config `A` does the
       same.
-- [ ] A config nothing names renames as before.
-- [ ] Decision 96 amended.
-- [ ] Gate green.
+- [x] A config nothing names renames as before.
+- [x] Decision 96 amended.
+- [x] Gate green.
+
+## Verification debt
+
+- The Rename and Delete dialogs (`assets/bench.js`) and the `drive_bench_configs.py` tweak for Delete's now-asynchronous lookup were not run in headless Firefox: the refusal is proved by route and unit tests (`src/bench/routes.rs`, `src/bench/references.rs`). Needs `drive_bench_configs.py` run once, plus a case with a fixture test naming a config.

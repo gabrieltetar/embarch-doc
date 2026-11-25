@@ -6,11 +6,11 @@ Config slots on the Topology tab's canvas — phase 5 of the bench editor: addin
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec/bench-editing.md](../spec/bench-editing.md), [../spec/bench-live.md](../spec/bench-live.md).
 
-### 96 — A config is added, renamed and deleted on the canvas as a bench edit, and renaming or deleting one is never refused
+### 96 — A config is added, renamed and deleted on the canvas as a bench edit; renaming or deleting one a saved study or test names is refused (108)
 
 **Config slots are edited on the canvas** (owner, 2026-11-01); until phase 5 a config was made only by a bench's first part-to-part cable (82). The config row under the canvas holds a tab per config, then **+ Config**, and **Rename** and **Delete** for the config on screen; it stays while a bench is on screen, with no tab when the bench has none. + Config asks for a name, offering the first single letter no config holds (then `config-<n>`), with an unchecked box to copy the cables of the config on screen; Rename asks for the new name; Delete takes the config and its cables at once, undo bringing them back. **Each is an edit like any other** (80): undone and redone, held in the page, written by Save, never Core. The dialog judges a name by the served rule (97) and against the bench's other configs, and says why in the server's sentence.
 
-**Renaming or deleting a config is never refused** (owner, 2026-11-01, replacing a `409` that would have had to scan for every study naming the config, when host studies are not saved in a repo at all). A study names a config by name, resolved when it needs one: a prompt naming a config the live bench lacks says so and offers a pick (99). The Rename dialog says so — a host study naming the old name is asked about when it runs — or, for the live config, that the live record follows the new name once saved.
+**Renaming or deleting a config was never refused** (owner, 2026-11-01, when host studies were not saved in a repo at all). **Amended 2026-11-25 (108):** once studies and tests are saved in the firmware repo, one a saved study or test names is refused, naming them; a config nothing names is edited as above. The live config's Rename dialog still says the live record follows the new name once saved.
 
 **Each config on screen carries an id of the page's own**, given when the file is read or the config added and kept through renames, undo and redo, so a save tells a rename from a delete and an add — an added config renamed, a rename undone — by id. That is what lets the live record follow a rename (98). *Rejected:* matching by name, where a rename reads as a delete and an add, and by position, which a delete shifts.
 
@@ -34,3 +34,13 @@ A `Prompt` names a config by exact name (`embarch-study-designer` decision 88), 
 - **The operator prompt** marks the config a study asked for once it is answered (99).
 
 Make live on a bench that is not live, or is superseded, is still the explicit make-live that takes the machine (93). *Rejected:* keeping 93's form, which re-declared every row to change one name, and asked Core to write what had not changed.
+
+### 108 — A config a saved host study or test names is neither renamed nor deleted, and the refusal names them
+
+**Amends 96** (owner, `notes/hil/02-study.md`, "Where its files live", review round 2), as the Study Designer already refuses a destructive edit that breaks a saved dev-bench study. **A config is named by** a host study's prompt in `embarch/studies/*.json` (`Prompt.bench_config`, `embarch-study-designer` 88; a prompt carries no bench, so it holds every bench's config of that name) and by a test under `embarch/tests/suites/<suite>/` (`bench.config` of a test whose `bench.name` is this bench's name or slug, and any prompt in the test's study file; `api/196` pins the layout). Every `.json` below a suite folder is read, so a study sits wherever its test's folder puts it.
+
+- **`PUT bench/benches/{slug}` refuses `409` `config-named`** when a config the file holds is absent from the bench sent (the file cannot tell a rename from a delete, the page's ids can, and both break the name), one line per study and test with its file and the prompts that name it. A config nothing names saves as before.
+- **`GET bench/benches/{slug}/config-references?config=`** answers `{named_by, unreadable}` so **Rename and Delete say it before an edit exists**: Rename's dialog shows the list and stays open, Delete opens a dialog listing them and makes no edit. The save is the check; the dialog is courtesy, and a hand-edited page cannot get round it.
+- **A file that does not parse is refused, not skipped**: it is listed as unreadable (`file: not valid JSON …`), and so is a manifest's test file that is missing, since either might be the one naming the config. This is the Study Designer's reference scan's rule. The cost is that a broken file in `embarch/studies/` blocks every config edit until fixed, which is the loud failure this decision prefers to a silent break.
+
+*Rejected:* refusing only for the live bench's config (a study names any bench's), and matching a test by config name alone (another bench's `A` would block this one's).
