@@ -1,6 +1,6 @@
 # 109 — A `refs` verb lists the atlas's sections, symbols and nodes in one read
 
-**State:** claimed by agent/atlas/109-a-refs-verb-lists-sections-symbols-and-nodes, 2026-11-25 01:19
+**State:** done — refs verb: sections, symbols and nodes in one read; tests, DESIGN.md and design.md
 **Source:** EMB-404 — the atlas cannot list its sections, symbols and nodes for another tool
 **Issue:** EMB-404
 **Scope:** atlas
@@ -56,15 +56,15 @@ turns out to need a decision neither states, stop and say so in this file.
 
 ## Done when
 
-- [ ] A fixture with a datasheet `toc.json` and a reference manual
+- [x] A fixture with a datasheet `toc.json` and a reference manual
       `outline.json` gives one `sections` list with each document's `kind`
       and `part`.
-- [ ] A fixture atlas gives `symbols` with their prompts (null where none) and
+- [x] A fixture atlas gives `symbols` with their prompts (null where none) and
       `nodes` with labels, compatibles, status and aliases.
-- [ ] Run from a linked worktree, the verb reads the main clone's atlas.
-- [ ] No atlas folder gives null atlas, empty lists and exit 0; translated
+- [x] Run from a linked worktree, the verb reads the main clone's atlas.
+- [x] No atlas folder gives null atlas, empty lists and exit 0; translated
       documents with no built atlas give sections and no symbols or nodes.
-- [ ] An atlas whose commit is not HEAD gives its stale reasons.
-- [ ] `DESIGN.md`'s CLI table and `embarch-doc/embarch-atlas/` say it.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] An atlas whose commit is not HEAD gives its stale reasons.
+- [x] `DESIGN.md`'s CLI table and `embarch-doc/embarch-atlas/` say it.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.
