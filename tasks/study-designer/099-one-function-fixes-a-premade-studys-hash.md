@@ -1,6 +1,6 @@
 # 099 — One function fixes a premade study's hash, and `check_test` refuses a mismatch
 
-**State:** claimed by agent/study-designer/099-one-function-fixes-a-premade-studys-hash, 2026-11-25 13:46
+**State:** done — study_hash and check_test StudyHashMismatch shipped, decision 113
 **Source:** EMB-555 — fix the hash convention for a premade study file and check it
 **Issue:** EMB-555
 **Scope:** study-designer
@@ -50,10 +50,10 @@ file is in reserve at filing; if your work pushes one in, file
 
 ## Done when
 
-- [ ] One function fixes the study hash for a non-template study, with a test
+- [x] One function fixes the study hash for a non-template study, with a test
       that pins a known input to its hash.
-- [ ] `check_test` refuses a study that does not hash to `study.hash`, with a
+- [x] `check_test` refuses a study that does not hash to `study.hash`, with a
       test.
-- [ ] An expanded template's hash is unchanged (its existing tests pass).
-- [ ] A decision records the convention.
-- [ ] Gate green.
+- [x] An expanded template's hash is unchanged (its existing tests pass).
+- [x] A decision records the convention.
+- [x] Gate green.

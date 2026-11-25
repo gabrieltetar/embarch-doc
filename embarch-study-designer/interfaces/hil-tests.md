@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-25 (EMB-353, `tasks/study-designer/094`; the checks, EMB-354, `095`). Code: `src/hil_test.rs` and `src/hil_check.rs`, feature `hil-test` (needs `alloc`, `verdicts`, `sha2`, `serde_json`; host-only; nothing turns it on yet); fixtures `tests/fixtures/hil-tests/`, tests `tests/hil_tests.rs`, `tests/hil_checks.rs`. Why: decision 109 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Conventions (JSON, `snake_case`, `schema`, unknown keys refused): [hil-shapes.md](hil-shapes.md#conventions-all-hil-files). Source: `notes/hil/03-test.md`, "One test" and "The DUT's inputs"; `04-premade-suites.md`, "Decided".
 
-A test is a study plus verdict rules; there is no new step format. These types check **shape only**: the definition-time checks are [below](#the-definition-time-checks); a study that does not hash to `study.hash` and a hook with no mapping are a later unit's. `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
+A test is a study plus verdict rules; there is no new step format. These types check **shape only**: the definition-time checks are [below](#the-definition-time-checks); a hook with no mapping is a later unit's. `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
 
 ## A test (`TestDef`)
 
@@ -10,7 +10,7 @@ A test is a study plus verdict rules; there is no new step format. These types c
 |---|---|---|
 | `schema` | integer | 1; defaults to 1 when absent on read, always written |
 | `test_id`, `title` | string | The id is stable within its suite; neither decides a verdict |
-| `study` | `{file, hash}` | The study by file name and SHA-256 of its bytes (an expanded template's study is kept by its own hash) |
+| `study` | `{file, hash}` | The study by file name and its `study_hash` (an expanded template's study is kept by its own hash) |
 | `requirements` | strings | **The suite's own stable slugs**, never section numbers: lowercase letter first, then `a-z 0-9 - _ .` (`is_requirement_slug`) |
 | `revision_range` | `{from, to}` | Spec revisions it applies to; `null` is open on that side |
 | `bench` | `{name, config}` | The bench it needs and its config, by name, both required |
@@ -47,6 +47,8 @@ A test is a study plus verdict rules; there is no new step format. These types c
 
 `definition_hash(&T)` (and `TestDef::hash()`, `SuiteManifest::hash()`): **lowercase hex SHA-256 over the canonical JSON (RFC 8785) of the value as this crate serialises it.** Keys sort by UTF-16 code unit; numbers are the ES6 spelling (`canonical_json` is public); so key order and a defaulted field's spelling in the source file never change it, and a changed limit does. A confirmation binds this hash. Integers in these files stay below 2^53.
 
+`study_hash(&HostStudy) -> String` (decision 113): `definition_hash` of the study, so the hash is of its content, not of the file's layout; an expanded template's hash is this function's value for the expanded study. `check_test` refuses a study that does not hash to `study.hash`.
+
 ## `derived_diff(copy, premade) -> Vec<FieldDiff>`
 
 Every verdict-deciding field of the copy that differs from the premade test, as `{field, old, new}`, `old` the premade value and `new` the copy's, `null` where one side has none. Compared: `study`, `requirements`, `revision_range`, `bench`, `precondition`, `requires`, `run_count`, `decision_rule`, `setup_terms`, `template`, and **`limits` and `sources` per measurement** (`limits.vbus_mean`), so a widened band reports that one field, an added limit `old: null`, a dropped one `new: null`. Not compared: `schema`, `test_id`, `title`, `tags`, `derived_from`. Top-level fields first in the order above, then limits, then sources, each by measurement name.
@@ -70,6 +72,7 @@ Why: decision 110 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Sou
 | `EnergisesWithoutClearance` | `study.steps[i]` | a step that energises follows a setup or action prompt with no clearance prompt between (one refusal per prompt) |
 | `PreconditionUndeclared` | `precondition` | `power_cycle` or `detach`, and no bench board lists it |
 | `DevBenchStudy` | `study` | the study is a dev-bench study: not in this phase |
+| `StudyHashMismatch` | `study.hash` | a host study does not hash to `study_hash`; names the study file and both hashes |
 
 **`energises(&HostStep, &SuiteBench)`** is public, for the go card and a prompt's "outputs on" line: an instrument set (`query` false), every DUT line, and a bench-board line the bench does not list in that board's `read_only`; a `Repeat` if an inner step does. A signal is a bench board's only when it is named by the board's `part`, so one that cannot be placed counts as energising. Prompts and waits do not. Teardown steps are not checked.
 

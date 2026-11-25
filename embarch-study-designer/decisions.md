@@ -41,6 +41,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The HIL test, suite and plan](decisions/hil-tests.md) — JSON types behind `hil-test`, the definition hash over RFC 8785, the per-measurement derived diff; three plan choices the owner may strike | 109 |
 | [A HIL test is checked when it is defined](decisions/hil-tests.md) — `check_test` returns every refusal; an energising rule that counts what it cannot place as energising; three more plan choices the owner may strike | 110 |
 | [A selection expands into `run.json`](decisions/hil-tests.md) — one pure `expand`, a selection record, template expansion per capability value, plan choice 9 (`run_id` the caller's) the owner may strike | 111 |
+| [A study's hash is one function](decisions/hil-tests.md) — `study_hash` over the canonical JSON, and `check_test` refuses a mismatch | 113 |
 | [The PDF text extractor and number grammar](decisions/hil-pdf.md) — `lopdf` behind `pdf-text`, what the extractor and grammar add to the doc | 101, 102, 103 |
 | [Things this crate does not have](decisions/removed.md) — removals, and two tombstones | 19, 22, 28, 48, 54 |
 
