@@ -1,7 +1,6 @@
 # 204 — `test-propose` fills a study's hash with `study_hash`
 
-**State:** blocked — needs `hil_test::study_hash` on `embarch-study-designer`'s main, which `study-designer/101` lands
-**Unparks when:** study-designer/101 has landed
+**State:** open
 **Source:** EMB-570 — the reviewer's finding on `study-designer/099`: `test-propose` hashes a study's bytes, which the crate's new refusal rejected
 **Issue:** EMB-570
 **Scope:** api

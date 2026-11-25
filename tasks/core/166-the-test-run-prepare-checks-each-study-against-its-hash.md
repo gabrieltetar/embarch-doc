@@ -1,7 +1,6 @@
 # 166 — The Test-run prepare checks each study against its hash
 
-**State:** blocked — needs `hil_test::study_hash` on `embarch-study-designer`'s main; `study-designer/101` lands it (099 landed it with a refusal and was reverted)
-**Unparks when:** study-designer/101 has landed
+**State:** open
 **Source:** EMB-555 — Core's half of `study-designer/099` (`hil_test::study_hash`, study-designer decision 113)
 **Issue:** EMB-555
 **Scope:** core

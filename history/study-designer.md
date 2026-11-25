@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Added `hil_test::study_hash`, the one hash of a premade study over its canonical JSON; `check_test` is unchanged and refuses a mismatch only from study-designer/100: decision 113.
 - study-designer: `judge_run`, `judge_test`, `skip` turn a test's records into its verdict, one function for Core and `verify` (decision 112).
 - study-designer: `hil_expand::expand` turns a test selection into the resolved `run.json` plus a selection record, behind `hil-test` ([decision 111](../embarch-study-designer/decisions/hil-tests.md)).
 - The shared crate's `hil_check::check_test` refuses a HIL test at definition and returns every refusal; `energises` is public (decision 110, EMB-354).
