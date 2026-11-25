@@ -1,6 +1,6 @@
 # 162 — A Test run opens a setup window between benches
 
-**State:** claimed by agent/core/162-a-test-run-opens-a-setup-window-between-benches, 2026-11-25 10:12
+**State:** done — setup prompt and window between benches; decision 139
 **Source:** EMB-367 — Core does not know a prompt's kind and lets the agent answer any prompt (second half; the kinds are `core/161`)
 **Issue:** EMB-367
 **Scope:** core
@@ -52,10 +52,10 @@ setup prompt and the window. If your work pushes any file into reserve, file
 
 ## Done when
 
-- [ ] A two-bench fixture run raises a `setup` prompt before the second bench,
+- [x] A two-bench fixture run raises a `setup` prompt before the second bench,
       naming it.
-- [ ] During that prompt an enrolment with either token is admitted, and the
+- [x] During that prompt an enrolment with either token is admitted, and the
       agent's is labelled as the agent's; outside it, the same call is refused
       `409`.
-- [ ] A setup prompt answered with the agent's token is recorded as relayed.
-- [ ] Gate green.
+- [x] A setup prompt answered with the agent's token is recorded as relayed.
+- [x] Gate green.

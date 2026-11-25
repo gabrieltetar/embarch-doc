@@ -1,6 +1,6 @@
 # embarch-core: the test-run routes
 
-**Status:** active, 2026-11-25 (`tasks/core/158`, `159` and `160`, [decisions 134](../decisions/test-runs.md), [135](../decisions/test-run-go.md), [136 and 137](../decisions/test-run-executor.md)). Index: [../interfaces.md](../interfaces.md).
+**Status:** active, 2026-11-25 (`tasks/core/158`, `159` and `160`, [decisions 134](../decisions/test-runs.md), [135](../decisions/test-run-go.md), [136 and 137](../decisions/test-run-executor.md), [139](../decisions/test-run-setup.md)). Index: [../interfaces.md](../interfaces.md).
 
 All five are lease-open: the prepare, the status and the card are a file and a rendering, never a port; the go takes the lease itself and the cancel must reach a run that holds it. Errors are plain text. Preparing starts nothing; the go starts the run, and Core's executor runs it ([136](../decisions/test-run-executor.md)).
 
@@ -31,3 +31,5 @@ All five are lease-open: the prepare, the status and the card are a file and a r
 A go nonce is 32 random bytes in hex, single use, ten minutes, in memory, from the store of [definitions](definitions.md); it is issued for `go:<run_id>:<run_hash>`. A prepared run is `test-runs/<run_id>.json` in the store, and a started one also `<run_id>.started.json`.
 
 **While a run is started** the lease is the run's: every lease-gated route is `409` naming the run, the session's token included, and renew and release of the lease likewise; `GET /lease` shows `holder` `test run <id>` and `run_id`. The lease neither expires nor idles, and goes back to the session under its old token, TTL restarted, when the run ends or is cancelled. The run log gains `test_run_started` and `test_run_ended` ([run-log](run-log.md)); each study of the run is a host study in it. **`POST /study/{id}/cancel` is admitted while a run holds the lease**, without a token, and ends the run `cancelled`. The executor keeps `<run_id>.result.json` beside the record when it ends.
+
+**Between two benches** the executor raises a `setup` prompt, answered at `POST /study/{run_id}/prompt` and shown as `waiting_prompt` (`kind` `setup`, step `setup:<bench>`, text naming the bench, its configuration and what is missing, empty until the smoke check). While it waits, enrolment, roles, signals, instruments, bootload ports and the dev-bench link are admitted with either token, each entered as `test_run_setup_call` with its scope; every other gated call stays `409`. An agent's answer is recorded `relayed`; a decline or timeout is an `error` on that bench ([139](../decisions/test-run-setup.md)).
