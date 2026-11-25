@@ -1,6 +1,6 @@
 # 163 — An instrument's metrology and calibration reach its measurements
 
-**State:** open
+**State:** claimed by agent/core/163-an-instruments-metrology-and-calibration-reach-its-measurements, 2026-11-25 12:34
 **Source:** EMB-360 — an instrument's uncertainty and calibration never reach its measurements
 **Issue:** EMB-360
 **Scope:** core
