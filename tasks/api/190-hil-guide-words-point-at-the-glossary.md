@@ -1,6 +1,6 @@
 # 190 — The HIL guide's Words point at the glossary
 
-**State:** open — `doc/102`'s glossary rows landed; the glossary now defines Study, and Bench, Test, Run, Measurement and Verdict have no glossary row of their own, so gloss those in place and point only where a row exists
+**State:** claimed by agent/api/190-hil-guide-words-point-at-the-glossary, 2026-11-25 00:40
 **Source:** EMB-317 — hil-guide's "Words" section redefines Bench, Study, Test, Run, Measurement and Verdict
 **Issue:** EMB-317
 **Scope:** api
