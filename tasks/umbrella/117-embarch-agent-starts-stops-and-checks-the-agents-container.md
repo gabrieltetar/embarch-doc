@@ -1,6 +1,6 @@
 # 117 — `embarch agent` starts, stops and checks the agent's container
 
-**State:** open
+**State:** claimed by agent/umbrella/117-embarch-agent-starts-stops-and-checks-the-agents-container, 2026-11-25 09:42
 **Source:** EMB-448 — nothing starts, stops or checks the agent's container
 **Issue:** EMB-448
 **Scope:** umbrella
