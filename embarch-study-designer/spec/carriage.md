@@ -21,6 +21,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 | `dev_bench_log_level` | yes | **deliberately neither** |
 | `record_checks` (per-tap record framing) | **no** — Core checks the capture after the run | — |
 | `measurements` (derived measurements, decision 99) | **no** — Core computes them after the run | — |
+| `session` (Start and Done prompts, run fields, cap, export folder, decision 106) | **no** — Core shows the prompts | — |
 
 **Three sibling seals, not one widened one.** `struct Study`'s declaration order — which postcard encoding follows — carries the two step/stream seals *together*, after both of their spans: `steps, streams, steps_crc, streams_crc`, then `protocols, protocols_crc` on its own. Only `protocols_crc` immediately follows the one span it covers; a hand-written C decoder digesting `steps` and then `streams` before either seal still gets, at the end, one run of bytes per seal and a mismatch that names **which third** arrived wrong.
 

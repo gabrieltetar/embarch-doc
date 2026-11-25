@@ -36,6 +36,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The HIL reducers](decisions/hil-reducers.md) — one module behind `reducers` (alloc only), behaviours kept by version, what each reducer's `U` and failure are | 92, 93, 94 |
 | [The HIL verdict rules](decisions/hil-verdicts.md) — one module behind `verdicts` (alloc only), evidence before limits, the guard band, the width check, the roll-up's edges | 95, 96, 97, 98 |
 | [A study's measurement declarations](decisions/hil-declarations.md) — `Study.measurements`, host-only and always compiled, what `validate_measurements` refuses | 99, 100 |
+| [Analog capture](decisions/analog-capture.md) — an audio-rate analog source, framed blocks checked and placed by index, and a session around them | 104, 105, 106 |
 | [The PDF text extractor and number grammar](decisions/hil-pdf.md) — `lopdf` behind `pdf-text`, what the extractor and grammar add to the doc | 101, 102, 103 |
 | [Things this crate does not have](decisions/removed.md) — removals, and two tombstones | 19, 22, 28, 48, 54 |
 

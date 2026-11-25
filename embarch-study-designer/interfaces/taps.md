@@ -10,7 +10,7 @@ Every sequence and string is fixed-capacity ([../decisions/limits.md](../decisio
 
 **`StreamTap { id, name, source, encoding, scope }`** — `id` is the wire handle and is its own index in the list; `name` names the output file and nothing else. `dev-bench` is a **reserved** name, rejected at pre-flight, because it belongs to the reserved log tap.
 
-**`StreamSource`** — `GattNotify { service_uuid, characteristic_uuid }`, `PowerFrontEnd { sample_hz }`, `GattTranscript`, `DevBenchLog`, `Signal { name }`. The first four are dev-bench-mediated; a signal is read by Core itself, with the carrier resolved live by topology, **and the tap is identical either way**.
+**`StreamSource`** — `GattNotify { service_uuid, characteristic_uuid }`, `PowerFrontEnd { sample_hz }`, `GattTranscript`, `DevBenchLog`, `Signal { name }`, `AnalogInput { sample_hz, channel }` ([analog.md](analog.md)). The first four and the analog input are dev-bench-mediated; a signal is read by Core itself, with the carrier resolved live by topology, **and the tap is identical either way**.
 
 **`StreamEncoding`** — `Raw`, `Text`, `Samples { layout, unit, channel_id }`, `GattTranscript`, `OutpostTrace`, `Struct { decoder }`. **This is the only place a byte payload acquires a meaning, it is always engineer-declared, and no component ever guesses one.**
 
