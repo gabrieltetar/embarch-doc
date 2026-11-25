@@ -1,6 +1,6 @@
 # 199 — The core client calls the confirmation routes
 
-**State:** open
+**State:** claimed by agent/api/199-the-core-client-calls-the-confirmation-routes, 2026-11-25 10:12
 **Source:** `ui/121`'s worker, blocked: the UI's confirmation card (EMB-383) needs client methods for Core's confirmation routes
 **Scope:** api
 **Hardware:** none
