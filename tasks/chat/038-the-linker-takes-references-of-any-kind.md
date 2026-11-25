@@ -1,6 +1,6 @@
 # 038 — The 💡 linker takes references of any kind
 
-**State:** claimed by agent/chat/038-the-linker-takes-references-of-any-kind, 2026-11-25 01:59
+**State:** done — decision 112; linker takes sources, one <references> block, cue-word gate
 **Source:** EMB-408 — the linker only knows issues and PRs, in one hard-coded block
 **Issue:** EMB-408
 **Scope:** chat
@@ -73,17 +73,21 @@ No file is in reserve on the size ledger at dispatch. `decisions/promptu.md`
 
 ## Done when
 
-- [ ] Every test in `test/references.test.mjs` passes, changed only where it
+- [x] Every test in `test/references.test.mjs` passes, changed only where it
       names the block or a line's tag.
-- [ ] A test source of a second kind shows: at most 4 of its lines when issues
+- [x] A test source of a second kind shows: at most 4 of its lines when issues
       also match; 12 lines and 3,600 characters at most; a gated source offering
       nothing without a cue word or a name, and its line when the draft names an
       entry exactly.
-- [ ] The cards prompt for a draft with only PR lines names no other kind.
-- [ ] A reference card naming a line of the test kind is written from that
+- [x] The cards prompt for a draft with only PR lines names no other kind.
+- [x] A reference card naming a line of the test kind is written from that
       entry's `text`, never from Haiku's words.
-- [ ] The new decision says it; `spec/constants.md` carries the caps.
-- [ ] Gate green (`gate.md`'s npm bullet: `npm ci`, `build`, `typecheck`,
+- [x] The new decision says it; `spec/constants.md` carries the caps.
+- [x] Gate green (`gate.md`'s npm bullet: `npm ci`, `build`, `typecheck`,
       `test`, `test:webview`).
-- [ ] `changelog.d/` fragment dropped; `status.d/` fragment for anything
+- [x] `changelog.d/` fragment dropped; `status.d/` fragment for anything
       suite-level it made false.
+
+## Result
+
+Decision 112 (`embarch-chat/decisions/references.md`, with 88 moved verbatim out of `assistant.md`, which the new decision would have put in reserve). Code: `src/assistant/refsBase.ts` (entry and source types, text helpers), `refsDesk.ts` (the desk's issues and PRs, the first source), `references.ts` (`linkReferences`, the block caps, the kind rows the rule reads). Choices to know: issues and PRs share one scoring pool, as 88 scores them, so its tests hold; a gated source offers by words only on a cue word and, on a name alone, only the named entries. The recorded `cards-refs` call is not re-recorded (no Haiku call): a later unit records it against the new prompt.

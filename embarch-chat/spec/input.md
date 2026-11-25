@@ -16,4 +16,4 @@ Moved verbatim from [../spec.md](../spec.md) §3 on 2026-11-17.
 
 - **Promptu never sends and never blocks sending**: its prompt goes to the draft; a failure is one line and the draft as typed (96).
 - **A card only edits the draft**, previewed in place, never acting outside it (36, 37); nothing typed answers a card that arrived mid-typing (55). **The pointer only previews**: Enter and Tab pick a row only the keys reached, and that row's preview is what shows (86).
-- **A reference in the draft is written from the desk's index, never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88).
+- **A reference in the draft is written from its entry (the desk's index first, any source after), never from Haiku's text**, and references are matched locally: nothing on a keystroke reaches the network (88, 112). A gated kind is offered only when the draft names an entry exactly or carries a cue word (112).
