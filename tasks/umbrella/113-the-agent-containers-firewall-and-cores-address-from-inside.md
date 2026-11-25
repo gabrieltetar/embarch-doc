@@ -1,6 +1,6 @@
 # 113 — The agent container's firewall, and Core's address from inside
 
-**State:** open
+**State:** claimed by agent/umbrella/113-the-agent-containers-firewall-and-cores-address-from-inside, 2026-11-25 06:51
 **Source:** EMB-445 — nothing limits the agent container's network to Core and the model API
 **Issue:** EMB-445
 **Scope:** umbrella
