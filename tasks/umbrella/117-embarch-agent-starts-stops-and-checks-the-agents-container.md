@@ -1,6 +1,6 @@
 # 117 — `embarch agent` starts, stops and checks the agent's container
 
-**State:** claimed by agent/umbrella/117-embarch-agent-starts-stops-and-checks-the-agents-container, 2026-11-25 09:42
+**State:** done — embarch agent up/down/status/shell over a Docker/Podman adapter, tested against a fake runtime; decision 67
 **Source:** EMB-448 — nothing starts, stops or checks the agent's container
 **Issue:** EMB-448
 **Scope:** umbrella
@@ -67,11 +67,15 @@ reserve, file `tasks/umbrella/<NNN>-compact-umbrella.md` in the same commit per
 
 ## Done when
 
-- [ ] Against the fake runtime, each verb issues the expected argv, `up`
+- [x] Against the fake runtime, each verb issues the expected argv, `up`
       building only when the image is missing.
-- [ ] `status` fails, naming it, on a hand-edited `container.toml`, on a
+- [x] `status` fails, naming it, on a hand-edited `container.toml`, on a
       fingerprint copy that differs from the host-side one, and on a fake
       `exec` that reaches an address off the list.
-- [ ] With no runtime on `PATH`, each verb refuses with the install pointer.
-- [ ] A hardware-verification debt is left for the owner's first container.
-- [ ] Gate green.
+- [x] With no runtime on `PATH`, each verb refuses with the install pointer.
+- [x] A hardware-verification debt is left for the owner's first container.
+- [x] Gate green.
+
+## Hardware-verification debt
+
+Nothing ran against a container runtime. On the owner's first container (Docker or Podman installed; `embarch setup` and `embarch init --container` done in a repo): `embarch agent up`; `embarch agent status` (every line `ok`); `embarch agent shell` and `--claude`; `docker inspect embarch-agent-<name>` against the vector in `container.toml`; `embarch agent down` (the volume and exchange folder remain). Also check the from-memory items in decision 67 (`network inspect` JSON, `nc` as the agent user, the Podman network name). A definition folder written before this unit needs `entrypoint-root.sh` deleted and `init --container` run again.

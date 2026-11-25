@@ -48,7 +48,7 @@ Not:
 
 ## Command surface
 
-The command table (`setup`, `init`, `doctor`, `status`, `up`/`down`, `deploy-core`, `verify-release`, `install-core`) and the exit-code convention: [spec/commands.md](spec/commands.md).
+The command table (`setup`, `init`, `doctor`, `status`, `up`/`down`, `agent`, `deploy-core`, `verify-release`, `install-core`) and the exit-code convention: [spec/commands.md](spec/commands.md).
 
 ## The `embarch` plugin marketplace
 

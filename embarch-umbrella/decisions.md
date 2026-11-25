@@ -33,5 +33,6 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/build-identity.md](decisions/build-identity.md) | 57 | Which commit a suite binary is, replacing one that runs, and `doctor` check 18 |
 | [decisions/agent-container.md](decisions/agent-container.md) | 62, 63, 64 | The agent's container rendered by pure functions: each mount's mode, the hardening, the forbidden-input scan; the firewall script, its allowlist and Core's address; the image and its west mounts |
 | [decisions/agent-clone.md](decisions/agent-clone.md) | 66 | The agent half of the entrypoint: the clone, its one remote, the west config, the `embarch/` link and seed, the skill and the MCP registration, on first start |
+| [decisions/agent-runtime.md](decisions/agent-runtime.md) | 67 | `embarch agent up`, `down`, `status` and `shell` over one Docker/Podman adapter, running the vector `init` recorded and checking the definition, fingerprint and firewall |
 
 **Decisions 27 and 29 are one decision under two numbers** — an insertion renumbered it. See [release.md](decisions/release.md).
