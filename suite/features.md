@@ -59,6 +59,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Flashed-image record — `flashed-images.jsonl` keeps what Core flashed per board, with load segments, identity, scope and call-log seq, across a restart; `GET /status` `last_images` reads from it | Shipped — **host-tested through a stand-in handler; no real flash or bootload ever wrote it, and a bootload records no segments** | unit | 93 |
 | Core's service store and development store (`run --service`, `run --store <dir>`); `/status` and the challenge report `mode` and `keyid` | Shipped — **host tests only; the store's ACL is the elevated install's job and nothing ran on Windows** | host | 129 |
 | Core holds the declared signal and instrument serial ports for a lease's or a study's life; `observed.ports_held` in the signed record | Shipped — **pty-tested on Linux only; Windows COM ports and a real bench port unverified** | host | 130 |
+| Core keeps HIL test definitions by hash, premade suites and confirmations — `POST /definitions`, `GET /suites`, `/confirmations/*`; the card and the post are the person's on every Core | Built — **host-side only; the checkout layout is assumed, and no run or go consumes a confirmation yet (EMB-364)** | unit | 133 |
 
 ## embarch-api
 

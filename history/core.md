@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core keeps HIL definitions by hash, reads premade suites from EMBARCH_SUITES_DIR, and records a person-only confirmation in the run log (decision 133).
 - Core reads a host step's declared parse out of its reply, records it in events.json and writes measurements.json for a host study (decision 131).
 - Core keeps the declared signal and instrument serial ports open for a lease's or a study's life and lists them in the signed record (decision 130).
 - Core's `run --service` and `run --store <dir>` keep the key, logs and identity in their own store; /status and the challenge say `mode` and `keyid` (decision 129).
