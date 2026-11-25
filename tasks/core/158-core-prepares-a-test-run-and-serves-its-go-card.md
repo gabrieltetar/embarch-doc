@@ -1,6 +1,6 @@
 # 158 — Core prepares a Test run and serves its go card
 
-**State:** open
+**State:** claimed by agent/core/158-core-prepares-a-test-run-and-serves-its-go-card, 2026-11-25 07:37
 **Source:** EMB-364 — Core cannot prepare a Test run or render what the go would start
 **Issue:** EMB-364
 **Scope:** core
