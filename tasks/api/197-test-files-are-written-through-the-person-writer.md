@@ -1,6 +1,6 @@
 # 197 — Test files are written through the person writer
 
-**State:** open
+**State:** claimed by agent/api/197-test-files-are-written-through-the-person-writer, 2026-11-25 08:56
 **Source:** the reviewer of `api/196` (embarch-api `eb2f64d`, doc `44c88c7d`)
 **Scope:** api
 **Hardware:** none
