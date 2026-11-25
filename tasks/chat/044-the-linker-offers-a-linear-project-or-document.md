@@ -1,6 +1,6 @@
 # 044 — The 💡 linker offers a Linear project or document
 
-**State:** open
+**State:** claimed by agent/chat/044-the-linker-offers-a-linear-project-or-document, 2026-11-25 12:34
 **Source:** EMB-413 — the 💡 linker cannot offer a Linear project or document
 **Issue:** EMB-413
 **Scope:** chat
