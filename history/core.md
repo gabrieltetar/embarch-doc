@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core registers a prepared Test run it re-expands and serves its go card, with a nonce for the person only: `POST /test-runs`, `GET /test-runs/{run_id}/card` (decision 134).
 - Core keeps HIL definitions by hash, reads premade suites from EMBARCH_SUITES_DIR, and records a person-only confirmation in the run log (decision 133).
 - Core reads a host step's declared parse out of its reply, records it in events.json and writes measurements.json for a host study (decision 131).
 - Core keeps the declared signal and instrument serial ports open for a lease's or a study's life and lists them in the signed record (decision 130).

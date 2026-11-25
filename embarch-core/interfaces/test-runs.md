@@ -23,6 +23,6 @@ Both take either token and are lease-open (a file and a rendering, never a port)
 | `decision_rule`, `setup_terms` | `{kind, w_multiple}`; `[{name, unit, U, k}]` |
 | `study` | `{file, hash, bytes_checked_against_hash}`; the last is `false`: Core does not check a study's bytes against `study.hash` yet |
 
-**Every string a definition, a study or `run.json` wrote is `{"agent_text": "<string>"}`**; a surface escapes it. Numbers, hashes, kinds and Core's own words are plain.
+**Every string a definition, a study or `run.json` wrote is `{"agent_text": "<string>"}`**; a surface escapes it. That includes every string inside a free value — a capability's `value`, a hook's `maps_to` (`{"shell": {"agent_text": cmd}}`), a diff's `old` and `new` — whose object keys stay plain. Numbers, hashes, kinds and Core's own words are plain.
 
 A go nonce is 32 random bytes in hex, single use, ten minutes, in memory, from the store of [definitions](definitions.md); it is issued for `go:<run_id>:<run_hash>`. A prepared run is `test-runs/<run_id>.json` in the store.

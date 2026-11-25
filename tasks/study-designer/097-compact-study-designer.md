@@ -2,7 +2,7 @@
 
 **State:** blocked — hil-run.md in reserve; HIL Test chain still moving
 
-**Unparks when:** the HIL Test chain units (EMB-364, EMB-356, EMB-376) have landed
+**Unparks when:** the HIL Test chain unit EMB-376 has landed
 **Scope:** study-designer
 **Hardware:** none
 **Owner:** no
