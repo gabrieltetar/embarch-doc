@@ -22,6 +22,7 @@
 - embarch-desk: desk_add_line takes an optional item (issue key or item id) to note a different work item than the session's own; an unknown one errors and writes nothing (decision 78).
 
 ### Changed
+- desk spec.md: two §1 paragraphs and the §3 body moved verbatim to spec/desks-knowledge-interfaces.md, out of reserve.
 - A desk folder lacking embarch-api is told every missing piece (register command, embarch init, own config used) and not to flash by hand (embarch-desk 82, EMB-230).
 - A github_replies draft can be revised one reply at a time by comment_id, refused where the owner edited the reply or it is posted (embarch-desk decisions 88, 89).
 - embarch-desk: spec.md §5 (non-goals) moved verbatim to spec/non-goals.md, pointer left; spec out of reserve.
