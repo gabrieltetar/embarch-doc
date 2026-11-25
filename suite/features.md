@@ -57,6 +57,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `PUT /study/{id}/restore/{name}` — a swept run's earlier manifest and Core files taken back, each checked against a manifest Core signed and logged, so a republish works | Built — **host-tested only; embarch-api does not send the files yet (`tasks/api/172`); no real sweep run on the Windows service** | unit | 120 |
 | Flashed-image record — `flashed-images.jsonl` keeps what Core flashed per board, with load segments, identity, scope and call-log seq, across a restart; `GET /status` `last_images` reads from it | Shipped — **host-tested through a stand-in handler; no real flash or bootload ever wrote it, and a bootload records no segments** | unit | 93 |
 | Core's service store and development store (`run --service`, `run --store <dir>`); `/status` and the challenge report `mode` and `keyid` | Shipped — **host tests only; the store's ACL is the elevated install's job and nothing ran on Windows** | host | 129 |
+| Core holds the declared signal and instrument serial ports for a lease's or a study's life; `observed.ports_held` in the signed record | Shipped — **pty-tested on Linux only; Windows COM ports and a real bench port unverified** | host | 130 |
 
 ## embarch-api
 
