@@ -1,6 +1,6 @@
 # 196 — Test plans in the repo, and proposals sent to Core
 
-**State:** open
+**State:** claimed by agent/api/196-test-plans-in-the-repo-and-proposals-sent-to-core, 2026-11-25 08:28
 **Source:** EMB-376 — embarch-api has no test plan and no way to propose a DUT input
 **Issue:** EMB-376
 **Scope:** api
