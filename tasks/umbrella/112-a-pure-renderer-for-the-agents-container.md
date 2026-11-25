@@ -1,6 +1,6 @@
 # 112 — A pure renderer for the agent's container
 
-**State:** claimed by agent/umbrella/112-a-pure-renderer-for-the-agents-container, 2026-11-25 06:12
+**State:** done — src/agent.rs: AgentContainer, run_args, try_run_args, forbidden_findings, container_toml; decision 62. Departures: bin_dir and env fields, west_workspace is a project list, container_toml takes no core_addr (hash uses a placeholder). Nothing started; docker-desktop and macos unverified.
 **Source:** EMB-444 — no code renders the agent's container, its mounts or its hardening
 **Issue:** EMB-444
 **Scope:** umbrella
@@ -69,9 +69,9 @@ list, and leave 111 as it is. **Decisions near their per-decision limit:**
 
 ## Done when
 
-- [ ] `run_args` is golden-tested for `linux`, `wsl-host`, `docker-desktop` and
+- [x] `run_args` is golden-tested for `linux`, `wsl-host`, `docker-desktop` and
       `macos`.
-- [ ] The forbidden-input test fails when any listed option, a token folder or
+- [x] The forbidden-input test fails when any listed option, a token folder or
       a `person-token` path is added to a plan, one case each.
-- [ ] `container_toml` round-trips and records the vector's hash.
-- [ ] The decision file names each mount and why it is read-only or read-write.
+- [x] `container_toml` round-trips and records the vector's hash.
+- [x] The decision file names each mount and why it is read-only or read-write.

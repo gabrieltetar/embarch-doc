@@ -1,0 +1,1 @@
+| `src/agent.rs`: pure renderers for the agent container (mounts, hardening, `container.toml`) | Built, unused — **no container was ever started; `docker-desktop` and `macos` are unverified** | no | 62 |
