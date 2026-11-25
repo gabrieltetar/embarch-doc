@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The chat's 💡 linker offers the atlas's Kconfig symbols and devicetree nodes, gated by cue words or an exact name; a stale atlas says so on the card (decision 115).
 - The 💡 linker offers datasheet and spec sections from the repo's atlas, written as citation heads; `embarchChat.atlasPath` ([decision 114](../embarch-chat/decisions/references.md)).
 - The chat's 💡 linker offers the chat folder's branches and worktrees (with the PR on a branch) when a draft says rebase, branch, worktree or names one; the chat's own is left out (chat 113).
 - Clicking the Promptu card's weekly line opens the waiting sheet in a new chat with the review skill typed, or runs the weekly pass now, never twice at once (decision 95).
