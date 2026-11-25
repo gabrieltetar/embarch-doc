@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch agent up|down|status|shell` start, stop, check and enter the agent's container over Docker or Podman, tested against a fake runtime (umbrella decision 67).
 - The agent container's entrypoint half renders: first start clones the repo, links embarch/, installs the skill, registers MCP ([decision 66](../embarch-umbrella/decisions/agent-clone.md)).
 - Umbrella `embarch init` registers every repo and, with `--container`, writes the agent's container definition and exchange folder outside it (decision 65).
 - The agent container image is a rendered Containerfile tagged by its own hash, with the west projects as read-only mounts: [decision 64](../embarch-umbrella/decisions/agent-container.md).

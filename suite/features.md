@@ -249,6 +249,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `src/agent.rs`: pure renderers for the agent container (mounts, hardening, `container.toml`) | Built, unused — **no container was ever started; `docker-desktop` and `macos` are unverified** | no | 62 |
 | `src/agent.rs`: `render_containerfile` and `west_mounts` for the agent's image — **no image was ever built; SDK URL, package list and `west list` format are from memory** | Built, unused | no | 64 |
 | `src/agent.rs`: `render_entrypoint_agent`, the container entrypoint half that clones the repo, links `embarch/` and registers the MCP server — **no container started; git and claude behaviour from memory** | Built, unused | no | 66 |
+| `embarch agent up`, `down`, `status`, `shell` — start, stop, check and enter the agent's container over Docker or Podman — **tested only against a fake runtime; no container was ever started** | Built | no | 67 |
 
 ## embarch-ui
 
