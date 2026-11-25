@@ -1,0 +1,1 @@
+| `src/agent.rs`: `render_containerfile` and `west_mounts` for the agent's image — **no image was ever built; SDK URL, package list and `west list` format are from memory** | Built, unused | no | 64 |

@@ -1,6 +1,6 @@
 # 114 — The agent's container image and its west workspace mounts
 
-**State:** claimed by agent/umbrella/114-the-agents-container-image-and-west-workspace-mounts, 2026-11-25 07:37
+**State:** done — render_containerfile, west_mounts, image_tag and Toolchain in src/agent.rs, golden-tested; decision 64.
 **Source:** EMB-446 — the agent's container has no toolchain image and no view of the west workspace
 **Issue:** EMB-446
 **Scope:** umbrella
@@ -73,11 +73,11 @@ your work pushes another file into reserve, file
 
 ## Done when
 
-- [ ] The Containerfile is golden-tested, with the SDK version read from a
+- [x] The Containerfile is golden-tested, with the SDK version read from a
       fixture workspace, and installs every binary decision 63's script calls.
-- [ ] A fixture `west list` output gives the expected read-only mounts, the
+- [x] A fixture `west list` output gives the expected read-only mounts, the
       manifest repo absent from them.
-- [ ] A non-west fixture gives no mounts and the toolchain comment.
-- [ ] The image tag changes when the rendered text changes, and only then.
-- [ ] Decision 64 records it.
-- [ ] Gate green.
+- [x] A non-west fixture gives no mounts and the toolchain comment.
+- [x] The image tag changes when the rendered text changes, and only then.
+- [x] Decision 64 records it.
+- [x] Gate green.
