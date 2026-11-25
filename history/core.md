@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core refuses the agent's token an observation or a clearance prompt (403), records each answer's scope, takes an observation's value as a person measurement (decision 138).
 - Core runs a started Test run test by test under the failure policy, judges each with the shared crate, and answers GET /test-runs/{id} (decision 136).
 - `POST /test-runs/{id}/go` (the person's token) starts a prepared run and moves the bench lease to it; `/cancel` ends it; the lease returns to its session. Decision 135.
 - Core registers a prepared Test run it re-expands and serves its go card, with a nonce for the person only: `POST /test-runs`, `GET /test-runs/{run_id}/card` (decision 134).

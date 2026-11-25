@@ -1,7 +1,6 @@
 # 162 — A Test run opens a setup window between benches
 
-**State:** blocked — waits on `core/161`, which records each answer's token scope and gives prompts their kind
-**Unparks when:** `core/161` has landed
+**State:** open
 **Source:** EMB-367 — Core does not know a prompt's kind and lets the agent answer any prompt (second half; the kinds are `core/161`)
 **Issue:** EMB-367
 **Scope:** core
@@ -37,7 +36,8 @@ person's token, or on an unattested Core the agent's, labelled as the agent's"
 
 - `src/test_executor.rs` — `drive`, the bench loop, `Env`
 - `src/api.rs` — `lease_middleware`, `RUN_ADMITTED`, `AppState::run_lock`
-- `src/host_study.rs` — the prompt slot `core/161` gave a kind
+- `src/host_study.rs` — the prompt slot `core/161` gave a kind; its
+  `RunContext` and `answered_scope` (decision 138, `decisions/host-prompt.md`)
 - `embarch-doc/embarch-core/decisions/test-run-go.md` (135),
   `test-run-executor.md` (136, 137)
 
