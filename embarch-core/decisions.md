@@ -19,7 +19,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The study record, and reading it back](decisions/study-record.md) | 24, 41, 43, 69, 71, 86 | 8.9 KB |
 | [The handshake: version gate and bench identity](decisions/handshake.md) | 31, 35, 47, 56, 108 | 10.5 KB |
 | [The outpost mode pre-flight](decisions/outpost-preflight.md) | 74 | 4.6 KB |
-| [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39, 88, 124 | 10.4 KB |
+| [Streams, manifests, and rendering](decisions/streams.md) | 30, 38, 39, 88, 125 | 10.4 KB |
 | [Pushing a stream tap live](decisions/streams-live.md) | 70, 72, 73 | 5.9 KB |
 | [The stream index](decisions/stream-index.md) | 62, 63, 64, 65 (retired), 66 (retired), 91 | 9.3 KB |
 | [Logging](decisions/logging.md) | 16, 29, 37, 44, 51, 58, 101 | 10.9 KB |

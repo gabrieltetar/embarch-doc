@@ -23,7 +23,7 @@
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `host_study.rs` | `POST /host-studies`, `/study/{id}/cancel`, `/study/{id}/prompt`: the executor, teardown, taps, prompts (95, 98, 105, 107) |
-| `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep (sparing a session's `session.keep` directory, decision 124). Holds no column knowledge |
-| `analog_tap.rs` | a framed analog tap's decoder: partial records carried across reads, gaps by index, marker edges, `events.csv` rows (decision 124) |
+| `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep (sparing a session's `session.keep` directory, decision 125). Holds no column knowledge |
+| `analog_tap.rs` | a framed analog tap's decoder: partial records carried across reads, gaps by index, marker edges, `events.csv` rows (decision 125) |
 | `outpost_manifest.rs` | `ManifestSlot`: binds a flash's `outpost-manifest.json` to the DUT it flashed, checks the running firmware's build ID against it before rendering a trace, and refuses to render (never to warn) on a mismatch |
 | `outpost_load.rs` | Per-subject load shares and the coverage line over a rendered `*.trace.csv` (decision 62, suite decision 4) — the answer `GET /study/{id}/stream/{name}/load` serves. Consumes the CSV `outpost_manifest.rs` already produced; never touches the raw frames or the manifest. The decoded timeline it reduces from is not served (`/load/spans` retired, decision 91); `embarch-ui` keeps its own decode permanently |
