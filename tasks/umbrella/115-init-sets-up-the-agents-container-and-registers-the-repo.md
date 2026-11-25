@@ -1,6 +1,6 @@
 # 115 — `init` sets up the agent's container and registers the repo
 
-**State:** open
+**State:** claimed by agent/umbrella/115-init-sets-up-the-agents-container-and-registers-the-repo, 2026-11-25 08:28
 **Source:** EMB-447 — `embarch init` cannot set up the agent's container outside the repo
 **Issue:** EMB-447
 **Scope:** umbrella
