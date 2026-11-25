@@ -1,6 +1,6 @@
 # 203 — The core client carries a person-only go, and the go ban narrows to the agent's surfaces
 
-**State:** open
+**State:** claimed by agent/api/203-the-core-client-carries-a-person-only-go, 2026-11-25 15:44
 **Source:** EMB-384 — the UI has no go card (the `embarch-api` half: the UI's go has to leave through `embarch-core-client`; `ui/124` is the card)
 **Issue:** EMB-384
 **Scope:** api
