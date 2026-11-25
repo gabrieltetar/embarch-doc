@@ -1,6 +1,6 @@
 # 107 — `embarch-atlas/design.md` is in reserve
 
-**State:** claimed by agent/atlas/107-compact-atlas, 2026-11-25 01:04 — unparked for the verbatim split its What names
+**State:** done — moved two sections (4.6 KB) verbatim to embarch-atlas/design/library-and-cad.md; design.md 23474 -> 19214 B
 **Source:** atlas 106 (EMB-268) added the read-back of measured facts to `design.md`, leaving it at 23,474 of 25,600 B (2,126 B left).
 **Scope:** atlas
 **Hardware:** none
@@ -25,6 +25,6 @@ Bring `design.md` out of reserve by moving the longest sections into a topic fil
 
 ## Done when
 
-- [ ] `scripts/check-doc-size.py --pressure` does not list `embarch-atlas/design.md`.
-- [ ] Moved text is byte-identical in its new file; `check-links.py` green.
-- [ ] Gate green (`../../embarch-fleet/gate.md`).
+- [x] `scripts/check-doc-size.py --pressure` does not list `embarch-atlas/design.md`.
+- [x] Moved text is byte-identical in its new file; `check-links.py` green.
+- [x] Gate green (`../../embarch-fleet/gate.md`).
