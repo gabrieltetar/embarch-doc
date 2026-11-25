@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-api person_writer is the confined writer for the person's embarch/ folder: fixed kinds and names, no link followed, atomic ([decision 132](../embarch-api/decisions/person-mirror.md)).
 - embarch-api list-studies lists Core's retained studies newest first with each tap's encoding and a flat encoding_kind (EMB-405).
 - A shared fixture, `embarch-api/tests/fixtures/live-log/`, pins the five rules both live-log writers follow; a Rust test runs every case ([live-log](../embarch-api/interfaces/live-log.md)).
 - `declare_instrument` and `declare_signal` (and their verbs) take `safe_off`; a re-declare that omits it keeps the stored one. [decision 97](../embarch-api/decisions/instruments.md)

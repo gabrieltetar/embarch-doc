@@ -114,6 +114,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `verify <zip>` — a published Study zip checked offline from the zip and Core's public key: signatures, manifest, measurements re-run, PDF text, labels, report-data recomputed, exports, run-log and call-log chains, `report.typ`'s syntax tree | Built — **checks 0 to 9 all run; check 2 partial (no step outcomes or markers), check 4 partial while the unsigned appendix vouches for a number; first read of a Typst PDF measured the footer band; never run against a real Core's zip** | unit | [verify](../embarch-api/interfaces/verify.md) |
 | `core-key` — Core's public key (64 hex, `verify --public-key`'s form) and SHA-256 fingerprint, printed only after Core's signature over a fresh nonce's challenge frame checks; no token sent, key written nowhere | Built — **never run against a live Core** | unit | [verify](../embarch-api/interfaces/verify.md) |
 | `embarch-api` live log — every hardware call appends a line to `<repo>/embarch/live/` citing Core's call-log entry; `call_log` / `call-log` read entries by `seq` | Built on a branch, not deployed — **mock Core only** | unit | [live-log](../embarch-api/interfaces/live-log.md) |
+| `person_writer` — a confined writer for the person's `embarch/` (fixed kinds and names, no link followed, atomic by rename, runs nothing) | Built; no caller yet, Windows branch not built | unit | 132 |
 
 ## embarch-dev-bench
 
