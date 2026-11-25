@@ -1,6 +1,6 @@
 # 040 — The 💡 linker offers datasheet and spec sections through the atlas
 
-**State:** open
+**State:** claimed by agent/chat/040-the-linker-offers-datasheet-and-spec-sections, 2026-11-25 03:56
 **Source:** EMB-411 — the 💡 linker cannot offer a datasheet or spec section
 **Issue:** EMB-411
 **Scope:** chat
