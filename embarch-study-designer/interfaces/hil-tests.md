@@ -23,7 +23,10 @@ A test is a study plus verdict rules; there is no new step format. These types c
 | `sources` | array | `{measurement, unit, range_min, range_max, resolution, u, k}`: what the test declares for each `dut` measurement it limits; only the test can say them. `as_source()` gives `verdicts::Source` |
 | `tags` | strings | For a plan's selection; default empty; **not verdict-deciding** *(shape: 03 selects by tag and names no home for them)* |
 | `derived_from` | string, optional | `<test id>@<suite version>`; absent on a premade test |
-| `template` | `{capability}`, optional | The study lines, parse patterns and limits may hold `{capability.<field>}`; filled at expansion (a later unit) |
+| `template` | `{capability}`, optional | The study lines, parse patterns and limits may hold `{capability.<field>}`; filled at expansion ([hil-run.md](hil-run.md#expansion)) |
+| `applies_when` | array, optional | Conditions `{kind: present, capability}`, `{kind: equals, capability, value}`, `{kind: contains, capability, value}`; all must hold or the test is `not_applicable` (decision 111) |
+| `hooks` | strings, optional | The hooks the test needs mapped; one with no mapping gives `hook_unmapped` |
+| `checks` | string, optional | The capability this test checks against its measured value; every template of that capability `requires` it |
 
 ## A suite manifest (`SuiteManifest`)
 
@@ -35,7 +38,7 @@ A test is a study plus verdict rules; there is no new step format. These types c
 
 ## A plan (`Plan`)
 
-`schema`; `suite` `{id, version, commit}` (the EmbArch commit pinned; the version is what a release compares); `select`, `{kind: all}` or `{kind: some, tests, tags}`, a test selected by its id **or** any of its tags (`Selection::selects`); `dut` `{capabilities, hooks}`; `stop_on_fail` (boolean, required).
+`schema`; `suite` `{id, version, commit}` (the EmbArch commit pinned; the version is what a release compares); `select`, `{kind: all}` or `{kind: some, tests, tags}`, a test selected by its id **or** any of its tags (`Selection::selects`); `dut` `{capabilities, hooks}`; `stop_on_fail` (boolean, required); `bench_order` (bench names, optional; the suite's order where empty).
 
 - A capability is `{name, value, provenance}`: `value` any JSON, `provenance` `measured`, `decoded`, `confirmed` or `declared`.
 - A hook is `{hook, target}`, `target` `{kind: shell, command}` or `{kind: prompt, text}`. A hook with no entry skips its test.

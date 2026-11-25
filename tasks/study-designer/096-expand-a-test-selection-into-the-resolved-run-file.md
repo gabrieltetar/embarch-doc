@@ -1,6 +1,6 @@
 # 096 — Expand a test selection into the resolved run file
 
-**State:** claimed by agent/study-designer/096-expand-a-test-selection-into-the-resolved-run-file, 2026-11-25 06:51
+**State:** done — expand, RunJson, selection record, decision 111, gate green
 **Source:** EMB-355 — nothing expands a test selection into the resolved run file
 **Issue:** EMB-355
 **Scope:** study-designer
@@ -73,14 +73,29 @@ in reserve. If your work pushes one into reserve, file
 
 ## Done when
 
-- [ ] The same inputs give the same bytes and hash twice; reordering the
+- [x] The same inputs give the same bytes and hash twice; reordering the
       suite's tests in the file does not change them.
-- [ ] A template over three PDOs gives three test entries; an unmapped hook
+- [x] A template over three PDOs gives three test entries; an unmapped hook
       gives `hook_unmapped`; a test on a bench that does not exist gives
       `bench_missing`.
-- [ ] A capability check is first on its bench and is in the `requires` of
+- [x] A capability check is first on its bench and is in the `requires` of
       every test expanded from it.
-- [ ] `duration_bound` of a fixture equals the hand-summed timeouts.
-- [ ] `hil-run.md` amended for the bench entry and `run_id`, and a decision
+- [x] `duration_bound` of a fixture equals the hand-summed timeouts.
+- [x] `hil-run.md` amended for the bench entry and `run_id`, and a decision
       records the expansion and plan choice 9.
-- [ ] Gate green under no features, `hil-test`, and `--all-features`.
+- [x] Gate green under no features, `hil-test`, and `--all-features`.
+
+## Done
+
+`src/hil_expand.rs` (feature `hil-test`), `tests/hil_expand.rs`, decision 111, `interfaces/hil-run.md` ("Expansion") and `hil-tests.md` amended. Decisions taken, each recorded in 111:
+
+- `expand(suite, plan, dut, ctx)` returns an `Expansion {run, selection, studies}`, not the bare pair the task sketched, since the expanded studies must go out beside `run.json`.
+- The record is `SelectionRecord`; `hil_test::Selection` untouched.
+- **Additive, optional fields** (skipped when empty, so no existing file or hash changes): `TestDef.applies_when`, `TestDef.hooks`, `TestDef.checks`, `Plan.bench_order`. The notes named applicability, hooks, capability checks and plan bench order but the types had no home for them. `derived_diff` reads the three test fields. No consumer builds these types outside `hil_test.rs`/`hil_check.rs` (nothing turns `hil-test` on).
+- `run.json` gained `boards` per bench, `sources`, `hooks`, `step_budget_ms` per test, `expect` per limit; setup terms carry `k` instead of `scope`. `duration_bound` reads `step_budget_ms`, so it needs no study.
+- Plan choice 9 (`run_id` the caller's) is in decision 111 as strikable by the owner.
+- A numeric limit cannot hold a `{capability.<field>}` placeholder (the type is `f64`); templates carry it in measurement names and `expect` values.
+
+Not done: `SuiteTest.hash` vs the definition, `revision_range` vs the standard's revision, dev-bench studies.
+
+Hardware-verification debt: none (host-only).

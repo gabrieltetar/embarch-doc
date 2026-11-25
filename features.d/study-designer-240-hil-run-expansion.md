@@ -1,0 +1,1 @@
+| `run.json` expansion: a selection becomes the resolved run (statuses, templates per capability value, capability checks first, bench order, the canonical hash and a duration bound) in one pure function Core and embarch-api share | Built, **fixtures only; no consumer yet**; behind feature `hil-test` | host | 111 |
