@@ -1,6 +1,6 @@
 # 191 — A shared fixture pins the live-log rules both writers follow
 
-**State:** claimed by agent/api/191-a-shared-fixture-pins-the-live-log-rules, 2026-11-25 00:11
+**State:** done — fixture of 19 cases plus build_line/repo_above/repo_dir_from split; Rust test runs every case
 **Source:** EMB-319 — the atlas live-log writer keeps a verb list the api output already answers
 **Issue:** EMB-319
 **Scope:** api
@@ -54,8 +54,8 @@ own (the interface says so); record the fixture there.
 
 ## Done when
 
-- [ ] `tests/fixtures/live-log/` covers the five rules, and a Rust test runs
+- [x] `tests/fixtures/live-log/` covers the five rules, and a Rust test runs
       every case through `live_log.rs` and fails on a difference.
-- [ ] `interfaces/live-log.md` describes the fixture and the compared fields.
-- [ ] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
+- [x] `interfaces/live-log.md` describes the fixture and the compared fields.
+- [x] Gate green (`../../embarch-fleet/gate.md`), `changelog.d/` fragment
       dropped.

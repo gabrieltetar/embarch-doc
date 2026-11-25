@@ -44,4 +44,25 @@ The 4096-byte cap is chosen, not measured.
 - **`--json`** adds `core_calls` (the `core` array above) to the object of any subcommand that reached a gated route, so a caller can cite the entries without reading the file. It is on a **failed** call too (a refusal, a non-zero exit) when the call reached a gated route, and absent when it reached none. Adding a field is not a `schema_version` bump.
 - **`call_log`** (tool) and **`call-log`** (subcommand): `GET /call-log`, by `seq` (one entry; an entry's `seq` is its position) or `from` (inclusive) to `to` (exclusive), the whole log by default and at most Core's cap per answer (`truncated` says so). `verified` says whether the chain checks out. Not lease-gated, so it writes no line.
 
+## The shared fixture
+
+`embarch-api/tests/fixtures/live-log/` is the contract's executable copy: one plain JSON file per case, pinning the five rules both writers follow: the 4096-byte answer cap, the board order, the path rule, the `<date>-<session>` file name and the `core` entries (`repeat` and refusals included). **A rule change lands there first**, then in both writers. `embarch-api`'s test (`src/live_log/fixture_tests.rs`) feeds every case through `live_log.rs`'s own `build_line`, `repo_above` and `repo_dir_from` (the pure parts of `record`, which take `now` as an argument) and fails on any difference. A second writer's test reads the same files from a sibling checkout, `../embarch-api/tests/fixtures/live-log/*.json`, and runs them through its own code; it needs no Rust.
+
+A case is one JSON object. Every path in it is relative to a root the test makes fresh (a temp directory) and never absolute.
+
+| Key | Holds |
+|---|---|
+| `description`, `rule` | Prose, and which rule it pins (`answer-cap`, `board-order`, `path`, `session`, `core`). Not compared |
+| `layout` | `{dirs, files}`: directories to create under the root, and empty files (`fw/sub/.git` is how a git root is marked; a file or a directory both count) |
+| `cwd` | The working directory the writer ran in |
+| `projects` | `[{name, source_path}]`: the configured projects, `source_path` relative to the root; a writer makes it absolute |
+| `call` | `{tool, sent, project, ok, answer, structured, entries}`. `sent` is the tool's arguments as an object. `project` is the project the call named, or `null`. `answer` is the text the caller got. `structured` is the JSON the answer was made from when the text is not itself JSON, else `null`. `entries` is the gated calls, in order: `{method, path, status, seq, hash, repeat, sent}`, where `sent` is the JSON body Core was sent (or `null`) and `seq`, `hash`, `repeat` are `null` where Core sent no header |
+| `lease` | `{holder, started_at}` of the live lease, or `null`. `started_at` is the text as Core wrote it |
+| `status` | `GET /status`'s answer (`last_images` is what is read), or `null` |
+| `now` | The time to stamp, `YYYY-MM-DDTHH:MM:SSZ`: the clock the case replaces |
+| `expect.path` | Where the line goes, relative to the root (`fw/embarch/live/<date>-<session>.jsonl`), or `null` when the rule says no line is written |
+| `expect.line` | The line, or `null` with `path`. Present as `{schema, tool, board, image_sha256, ok, answer, core, session}` |
+
+A writer applies its own live-route filter to `entries` first (the cases hold only gated routes). It then compares the **path** and, when one is expected, `expect.line` exactly: the line minus `t`, `writer`, `via` and `sent`, plus any field of its own that is not in the contract (the atlas's `outcome`). The four are left out because they differ by writer or by clock: `t` is the time of the write (a case's `now` is only the value to stamp, and a writer may check `t == now`), `writer` names the writer, `via` is the channel the writer was reached by, and `sent` is an object in one writer and a string in the other (see above).
+
 **Not verified on a bench** ([open.md](../open.md)): everything here ran against a mock Core.
