@@ -1,6 +1,6 @@
 # 122 — A running study has a cancel button in the UI
 
-**State:** open
+**State:** claimed by agent/ui/122-a-running-study-has-a-cancel-button-in-the-ui, 2026-11-25 10:12
 **Source:** EMB-487 — no tool or button cancels a running study (the UI half; the tool is `api/198`)
 **Issue:** EMB-487
 **Scope:** ui
