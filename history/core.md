@@ -28,6 +28,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core's measurements route serves a host study's measurements.json, and its 422 carries code no_measurements ([decision 141](../embarch-core/decisions/measurements.md)).
 - Core refuses identity routes (enroll, signals, instruments, bootload ports, dev-bench link) to the agent's token under --service, 403; dev Core unchanged (core decision 132).
 - Core builds against host schema v25 (`embarch-study-designer` decision 108): it accepts a host study whose steps declare a `parse` or whose prompts declare a kind, and does not act on either yet.
 - Core refuses a study with a GATT notify tap no step subscribes to, at submit; run_study is refused the same way.
