@@ -1,8 +1,8 @@
 # embarch-study-designer: the HIL test, suite manifest and plan
 
-**Status:** active, 2026-11-25 (EMB-353, `tasks/study-designer/094`). Code: `src/hil_test.rs`, feature `hil-test` (needs `alloc`, `verdicts`, `sha2`, `serde_json`; host-only; nothing turns it on yet); fixtures `tests/fixtures/hil-tests/`, tests `tests/hil_tests.rs`. Why: decision 109 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Conventions (JSON, `snake_case`, `schema`, unknown keys refused): [hil-shapes.md](hil-shapes.md#conventions-all-hil-files). Source: `notes/hil/03-test.md`, "One test" and "The DUT's inputs"; `04-premade-suites.md`, "Decided".
+**Status:** active, 2026-11-25 (EMB-353, `tasks/study-designer/094`; the checks, EMB-354, `095`). Code: `src/hil_test.rs` and `src/hil_check.rs`, feature `hil-test` (needs `alloc`, `verdicts`, `sha2`, `serde_json`; host-only; nothing turns it on yet); fixtures `tests/fixtures/hil-tests/`, tests `tests/hil_tests.rs`, `tests/hil_checks.rs`. Why: decision 109 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Conventions (JSON, `snake_case`, `schema`, unknown keys refused): [hil-shapes.md](hil-shapes.md#conventions-all-hil-files). Source: `notes/hil/03-test.md`, "One test" and "The DUT's inputs"; `04-premade-suites.md`, "Decided".
 
-A test is a study plus verdict rules; there is no new step format. These types check **shape only**: a bench with no DUT, a limit narrower than its `U` allows, a study that does not hash to `study.hash` and a hook with no mapping are the definition-time checks, a later unit's (EMB-354). `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
+A test is a study plus verdict rules; there is no new step format. These types check **shape only**: the definition-time checks are [below](#the-definition-time-checks); a study that does not hash to `study.hash` and a hook with no mapping are a later unit's. `check()` on each file refuses only a `schema` other than 1, a `run_count` of 0 and a suite bench `description` that is not an object.
 
 ## A test (`TestDef`)
 
@@ -47,3 +47,27 @@ A test is a study plus verdict rules; there is no new step format. These types c
 ## `derived_diff(copy, premade) -> Vec<FieldDiff>`
 
 Every verdict-deciding field of the copy that differs from the premade test, as `{field, old, new}`, `old` the premade value and `new` the copy's, `null` where one side has none. Compared: `study`, `requirements`, `revision_range`, `bench`, `precondition`, `requires`, `run_count`, `decision_rule`, `setup_terms`, `template`, and **`limits` and `sources` per measurement** (`limits.vbus_mean`), so a widened band reports that one field, an added limit `old: null`, a dropped one `new: null`. Not compared: `schema`, `test_id`, `title`, `tags`, `derived_from`. Top-level fields first in the order above, then limits, then sources, each by measurement name.
+
+## The definition-time checks
+
+Why: decision 110 in [../decisions/hil-tests.md](../decisions/hil-tests.md). Source: `notes/hil/03-test.md`, "Benches" and "The verdict"; `12-prevention.md`, "Operator prompts, by kind"; `13-research-phase.md`.
+
+`hil_check::check_test(&TestDef, StudyKind, &SuiteBench, &BTreeMap<String, Measured>) -> Result<(), Vec<Refusal>>`. `StudyKind` is `Host(&HostStudy)` or `DevBench`. `Measured` is `{by: bench | dut | person, source, metrology}`, `Metrology` being `{range_min, range_max, resolution, u}`, each `Option`. A `Refusal` is `{test, field, rule, reason}`, shown as `<test id>: <field>: <reason>`; every refusal is returned, none stops the rest. Value checks: finite, above zero.
+
+| `Rule` | Field | Refused when |
+|---|---|---|
+| `WrongBench` | `bench.name` | the bench given is not the one the test names |
+| `BenchHasNoDut` | `bench.name` | the description holds no part with role `dut` (legacy shape: no non-null `dut`); names the bench |
+| `SourceUndeclared` | `limits[i] (<measurement>)` | a numeric limit's source declares no `U`, resolution or range; names the source. A `dut` measurement's come from the test's `sources`, an instrument's and a bench board's from `measured` |
+| `LimitUnjudgeable` | same | `acceptance_width` refuses with `w = decision_rule.width(U)`: by `U`, then by resolution. A band must be wider than 2 x max(w, x), a one-sided limit more than max(w, x) inside the range |
+| `UnknownMeasurement` | same | a limited measurement is not in `measured` |
+| `DuplicateLimit` | same | a second limit on one measurement (the derived diff keys limits by name) |
+| `PromptHasNoKind` | `study.steps[i]` | a prompt declares no kind |
+| `ActionUnconfirmed` | `study.steps[i]` | an action prompt names no confirming measurement, one that is not `by: bench`, or one no limit of the test reads (an `until` marker names no measurement yet) |
+| `EnergisesWithoutClearance` | `study.steps[i]` | a step that energises follows a setup or action prompt with no clearance prompt between (one refusal per prompt) |
+| `PreconditionUndeclared` | `precondition` | `power_cycle` or `detach`, and no bench board lists it |
+| `DevBenchStudy` | `study` | the study is a dev-bench study: not in this phase |
+
+**`energises(&HostStep, &SuiteBench)`** is public, for the go card and a prompt's "outputs on" line: an instrument set (`query` false), every DUT line, and a bench-board line the bench does not list in that board's `read_only`; a `Repeat` if an inner step does. A signal is a bench board's only when it is named by the board's `part`, so one that cannot be placed counts as energising. Prompts and waits do not. Teardown steps are not checked.
+
+**The worked example** is `tests/fixtures/hil-tests/`: `test.json`, `suite.json` (its bench's `unit` part holds role `dut`) and `study.json` (a setup prompt, a clearance prompt, `OUTP ON`, a parsed query, a read-only status line and an observation prompt), with `vbus_mean` and `vbus_ripple` measured by a bench instrument and `led_state` by a person. It passes every check; `tests/hil_checks.rs` has one fixture per refusal.

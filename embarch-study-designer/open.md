@@ -31,3 +31,8 @@ Power profiling as a whole moved out of the near sequence, and no front-end hard
 ## Not exercised by any routine check
 
 - **No consumer builds this crate `no_std` any more.** Dev-bench firmware stopped linking it when the FFI staticlib retired (decision 7, 2026-11-10); it now reads constants and wire enums from the source at configure time. The `default` CI cell still holds the `no_std`, allocator-free shape (decisions 5, 15) for a future firmware consumer. Whether to keep paying for that shape with no such consumer is open; nothing forces it either way.
+
+## The HIL definition-time checks
+
+- **How a signal maps to a bench board.** `energises` takes a signal as a bench board's only when it is named by the board's `part`; the suite format has no signal-to-board map and the saved-bench description is opaque ([decision 110](decisions/hil-tests.md)). The first suite with a real bench settles it.
+- **An `until` marker over a measurement.** A host step's `until` is a text pattern, so an action prompt's confirming measurement can feed only a limit today.

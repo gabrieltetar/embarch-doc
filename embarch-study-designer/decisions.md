@@ -39,6 +39,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [A study's measurement declarations](decisions/hil-declarations.md) — `Study.measurements`, host-only and always compiled, what `validate_measurements` refuses | 99, 100 |
 | [Analog capture](decisions/analog-capture.md) — an audio-rate analog source, framed blocks checked and placed by index, a session around them, and a stop message | 104, 105, 106, 107 |
 | [The HIL test, suite and plan](decisions/hil-tests.md) — JSON types behind `hil-test`, the definition hash over RFC 8785, the per-measurement derived diff; three plan choices the owner may strike | 109 |
+| [A HIL test is checked when it is defined](decisions/hil-tests.md) — `check_test` returns every refusal; an energising rule that counts what it cannot place as energising; three more plan choices the owner may strike | 110 |
 | [The PDF text extractor and number grammar](decisions/hil-pdf.md) — `lopdf` behind `pdf-text`, what the extractor and grammar add to the doc | 101, 102, 103 |
 | [Things this crate does not have](decisions/removed.md) — removals, and two tombstones | 19, 22, 28, 48, 54 |
 

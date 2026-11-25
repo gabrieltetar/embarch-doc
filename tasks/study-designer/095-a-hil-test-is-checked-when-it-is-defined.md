@@ -1,6 +1,6 @@
 # 095 — A HIL test is checked when it is defined
 
-**State:** claimed by agent/study-designer/095-a-hil-test-is-checked-when-it-is-defined, 2026-11-25 06:12
+**State:** done — check_test returns every refusal; energises is public; decision 110; fixtures per refusal; gate green on six feature sets. Choices: bench has a DUT = part role "dut" (or legacy dut key); a signal is a bench board's only when named by its part, else DUT (fails safe); study kind is Host(&HostStudy) or DevBench; metrology of instrument/bench board/person passed in a measured map; an until marker cannot feed an action prompt yet (host until is a text pattern).
 **Source:** EMB-354 — a HIL test is not checked when it is defined
 **Issue:** EMB-354
 **Scope:** study-designer
@@ -70,11 +70,11 @@ them. If your work pushes a file into reserve, file
 
 ## Done when
 
-- [ ] One fixture per refusal above, each refusal naming the test, the field
+- [x] One fixture per refusal above, each refusal naming the test, the field
       and the reason.
-- [ ] The example test in `interfaces/hil-tests.md` passes every check.
-- [ ] A raw DUT exchange after an action prompt with no clearance between is
+- [x] The example test in `interfaces/hil-tests.md` passes every check.
+- [x] A raw DUT exchange after an action prompt with no clearance between is
       refused; with a clearance prompt between, it passes.
-- [ ] `hil-tests.md` lists every check, and a decision records the energising
+- [x] `hil-tests.md` lists every check, and a decision records the energising
       rule.
-- [ ] Gate green under no features, `hil-test`, and `--all-features`.
+- [x] Gate green under no features, `hil-test`, and `--all-features`.
