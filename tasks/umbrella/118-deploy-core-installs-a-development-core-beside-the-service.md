@@ -1,6 +1,6 @@
 # 118 — `deploy-core` installs a development Core beside the service, and one command restores the service
 
-**State:** open
+**State:** claimed by agent/umbrella/118-deploy-core-installs-a-development-core-beside-the-service, 2026-11-25 15:44
 **Source:** EMB-341 — `deploy-core` replaces the service, so development turns the bench unattested
 **Issue:** EMB-341
 **Scope:** umbrella
