@@ -33,5 +33,6 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Measurements](interfaces/measurements.md) — `measurements.json`, written as a device study ends and signed as a subject | — |
 | [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}`, `/study/{id}/measurements` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
+| [Image readback](interfaces/image-readback.md) — not a route group, the states `readback` answers and the bench-firmware variable | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |
 | [Modules](interfaces/modules.md) — not a route group, spec §4's source-file table | — |

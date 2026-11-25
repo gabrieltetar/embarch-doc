@@ -1,0 +1,1 @@
+| Core reads a board's flashed segments back through the probe and says `holds`/`differs`/`claim` for the DUT, `released`/`unreleased`/`unknown`/`unverified` for a bench board; no route or run calls it yet | Built — **host-side only: proven over a fake memory; no image read back on any chip family; no caller; native Windows build unrun** | unit | 142 |

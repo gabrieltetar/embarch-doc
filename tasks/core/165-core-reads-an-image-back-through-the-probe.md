@@ -1,6 +1,6 @@
 # 165 — Core reads an image back through the probe and says which state holds
 
-**State:** claimed by agent/core/165-core-reads-an-image-back-through-the-probe, 2026-11-25 15:44
+**State:** done — readback and its states built host-side over a fake CoreAccess; decision 142; hardware debt filed
 **Source:** EMB-362 — Core cannot read an image back through the probe
 **Issue:** EMB-362
 **Scope:** core
@@ -65,12 +65,21 @@ the first Test run on the bench.
 
 ## Done when
 
-- [ ] Against a fake `CoreAccess`: every segment matching gives `holds`; one
+- [x] Against a fake `CoreAccess`: every segment matching gives `holds`; one
       changed word gives `differs` naming its range; a refused read gives
       `claim` with the reason.
-- [ ] A bench board whose identity is in a fixture list gives `released`; one
+- [x] A bench board whose identity is in a fixture list gives `released`; one
       that is not gives `unreleased` with the recorded scope, or `unknown`
       with no entry.
-- [ ] A hardware-verification debt names each chip family to read back.
-- [ ] A decision and an interface doc give the states and the variable.
+- [x] A hardware-verification debt names each chip family to read back.
+- [x] A decision and an interface doc give the states and the variable.
 - [ ] Gate green. The native Windows build is a debt the owner runs.
+
+## Hardware-verification debt
+
+Not measured: whether a whole image reads back through the probe on each chip family. For the first Test run on the bench, run `readback` (a bench-side caller does not exist yet; use a scratch call through `live::read_ranges` over the flashed segments) after a flash and compare, on each:
+
+- **nRF54L (L15, L10, L05)**: RRAM, flashed with `nrfutil`/J-Link (decisions 36, 52), read through probe-rs; does a whole segment read back, and does a read-out-protected part give a refusal that becomes a `claim`?
+- **nRF54H**: refused by the flash backend (decision 49); whether probe-rs reads it at all.
+- **STM32 (G0, F4)**: flashed through probe-rs; a G0 in WFI needs the halt per chunk (decision 81); confirm a 1 KiB chunk halts in the low milliseconds.
+- **esp32c5**: RISC-V; `read_ranges` reads Cortex-M's `DHCSR` first, so this needs checking before anything else.
