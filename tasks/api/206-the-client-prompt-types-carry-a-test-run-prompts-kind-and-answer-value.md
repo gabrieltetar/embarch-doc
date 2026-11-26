@@ -1,6 +1,6 @@
 # 206 — The client's prompt types carry a Test run prompt's kind and answer value
 
-**State:** claimed by agent/api/206-the-client-prompt-types-carry-a-test-run-prompts-kind-and-answer-value, 2026-11-26 14:29
+**State:** done — client prompt types carry kind, observation, switched_on and value; decision 137; event has no kind (EMB-577)
 **Source:** EMB-575 — CoreClient prompt types carry a Test run prompt's kind, outputs and answer value
 **Issue:** EMB-575
 **Scope:** api
@@ -48,8 +48,8 @@ limits: do not grow them.
 
 ## Done when
 
-- [ ] The three types carry the fields, with a test that a host study's prompt
+- [x] The three types carry the fields, with a test that a host study's prompt
       and answer are byte for byte what they were, and one that a Test run's
       prompt keeps `kind`, `observation` and `switched_on`.
-- [ ] Gate green (`cargo build --workspace`, `test --workspace`,
+- [x] Gate green (`cargo build --workspace`, `test --workspace`,
       `clippy --workspace --all-targets -- -D warnings`).

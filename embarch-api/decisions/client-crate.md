@@ -57,3 +57,13 @@ Naming the original also **gains** `guessed_among` — whether a port was picked
 **Only a library caller reaches the person's.** The MCP server and every CLI verb build their client through `agent_core_client`, which names `TokenScope::Agent`, and a test pins that a configured `person_token` does not change it. No flag asks for the person's: the surfaces that act for the engineer (`tasks/ui/111`) call `new_with_scope`. A flag would be one more way for an agent to ask for the wrong scope. The scope is fixed at construction; `CoreClient::scope()` reads it.
 
 **Measured:** unit tests per source, and `new` is the agent's. **Not run:** the WSL2 `person-token` path against a live Core.
+
+### 137 — The client's prompt types carry a Test run prompt's kind, outputs and answer value, additively
+
+`PendingPrompt` gains `kind` (`embarch_study_designer`'s `PromptKind`), `observation` and `switched_on` (a new `SwitchedOn {target, line, step}`), each `#[serde(default)]` and skipped when absent or empty, so a host study's prompt reads and writes the bytes it did; `PromptAnswerRequest` gains `value`, skipped when `None`. `observation` is a `serde_json::Value`: Core's shape is the designer's (`{name, answers?, number?}`) and a surface only reads it. `value` is a string (a declared choice) or a number, `confirmed` only ([core 138](../../embarch-core/decisions/host-prompt.md)).
+
+**The event has no `kind`.** Core flattens the prompt onto `PromptPending`, whose stream tag is also `kind`, and serde refuses a tagged variant that declares a field of that name. `StudyEvent::PromptPending` therefore carries `observation` and `switched_on` only; a prompt's kind is read from `GET /study/{id}`'s `pending_prompt`, which a follower polls anyway. `as_pending_prompt` yields `kind: None`. A Test run's event with both keys is refused by the client as a duplicate field; filed against Core (EMB-577).
+
+**Source-breaking for struct literals:** a caller building `PromptAnswerRequest` names `value: None`; the three in this repo do.
+
+**Measured:** `tests/prompt_types.rs`, a host prompt and answer byte for byte, a Test run's prompt round trip, the event with and without the colliding second `kind` (the client refuses the former). **Not run:** against a live Core's Test run.
