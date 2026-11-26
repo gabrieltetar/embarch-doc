@@ -1,6 +1,6 @@
 # 125 — The UI shows which Core it is talking to
 
-**State:** open
+**State:** claimed by agent/ui/125-the-ui-shows-which-core-it-is-talking-to, 2026-11-26 14:29
 **Source:** EMB-336 — embarch-ui does not show which Core it is talking to
 **Issue:** EMB-336
 **Scope:** ui
@@ -39,6 +39,8 @@ scope (ui decision 103), and shows neither. When this is done:
 
 A new ui decision, or 103 amended (`core-token.md` is 1.7 KB).
 **`decisions/live-study.md` is in reserve** (`tasks/ui/123`): do not write it.
+**`spec/tabs.md` is in reserve** (1,080 B left; `tasks/ui/126` is filed
+against it): a line there is fine, a section is not.
 `check-doc-size.py --pressure` lists `bench-live#90`, `launcher#28`,
 `tab-folders#100` and `topology-tab#10`, `#43` near their limits: do not grow
 those.
