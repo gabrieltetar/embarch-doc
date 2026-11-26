@@ -1,6 +1,6 @@
 # 100 — `check_test` refuses a study that does not match its hash
 
-**State:** open
+**State:** claimed by agent/study-designer/100-check-test-refuses-a-study-that-does-not-match-its-hash, 2026-11-26 11:57
 **Source:** EMB-555 — the refusal half of `study-designer/099`, split out when 099 was reverted
 **Issue:** EMB-555
 **Scope:** study-designer
