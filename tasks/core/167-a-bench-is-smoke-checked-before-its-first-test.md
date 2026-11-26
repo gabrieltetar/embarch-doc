@@ -1,6 +1,6 @@
 # 167 — A bench is smoke-checked before its first test
 
-**State:** open
+**State:** claimed by agent/core/167-a-bench-is-smoke-checked-before-its-first-test, 2026-11-26 14:02
 **Source:** EMB-368 — no smoke check runs before a bench's first test
 **Issue:** EMB-368
 **Scope:** core
