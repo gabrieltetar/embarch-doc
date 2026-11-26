@@ -1,6 +1,6 @@
 # 051 — pd-bench has an idle command and a hello line
 
-**State:** open
+**State:** claimed by agent/dev-bench/051-pd-bench-has-an-idle-command-and-a-hello-line, 2026-11-26 14:02
 **Source:** EMB-387 — the PD partner has no idle command and no hello line
 **Issue:** EMB-387
 **Scope:** dev-bench
