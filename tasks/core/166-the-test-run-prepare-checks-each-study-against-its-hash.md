@@ -1,6 +1,6 @@
 # 166 — The Test-run prepare checks each study against its hash
 
-**State:** claimed by agent/core/166-the-test-run-prepare-checks-each-study-against-its-hash, 2026-11-26 11:33
+**State:** done — prepare checks each premade study against study.hash; fixtures moved to study_hash
 **Source:** EMB-555 — Core's half of `study-designer/099` (`hil_test::study_hash`, study-designer decision 113)
 **Issue:** EMB-555
 **Scope:** core
@@ -55,11 +55,19 @@ reserve at filing; if your work pushes one in, file
 
 ## Done when
 
-- [ ] A prepare whose premade study does not hash to its `study.hash` is
+- [x] A prepare whose premade study does not hash to its `study.hash` is
       refused `422` naming the test and both hashes, with a test.
-- [ ] A matching study prepares, and its card says its hash was checked.
-- [ ] An expanded template's study is unaffected, its tests unchanged.
-- [ ] Every Core fixture's `study.hash` is `study_hash` of its study, so the
+- [x] A matching study prepares, and its card says its hash was checked.
+- [x] An expanded template's study is unaffected, its tests unchanged.
+- [x] Every Core fixture's `study.hash` is `study_hash` of its study, so the
       definition-time test passes under `study-designer/100`'s refusal.
-- [ ] The decision and the interface say what is checked.
-- [ ] Gate green. The native Windows build is a debt the owner runs.
+- [x] The decision and the interface say what is checked.
+- [x] Gate green. The native Windows build is a debt the owner runs (not run here).
+
+## Done
+
+Prepare hashes each premade study sent with `study_hash` and refuses `422` on a mismatch (decision 134, amended; field name kept). The fixture `tests/fixtures/hil-tests/test.json` now carries `study_hash` of `study.json`.
+
+**Study-designer/100 refusal, measured:** a throwaway detached worktree of study-designer at origin/main plus 7391457's `hil_check.rs` hunk (the other two files conflicted and were reset to main), with the link re-pointed and `cargo clean -p embarch-study-designer` first: Core's `cargo test` gave 594 passed, 0 failed. Negative control with the old fixture hash: 11 failed (definitions test and ten test_runs tests). Link restored, throwaway removed, normal gate re-run green (594 passed, clippy clean).
+
+**Debt:** native Windows build of embarch-core, not run.
