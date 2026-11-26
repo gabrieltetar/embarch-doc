@@ -1,6 +1,6 @@
 # 204 — `test-propose` fills a study's hash with `study_hash`
 
-**State:** open
+**State:** claimed by agent/api/204-test-propose-fills-a-studys-hash-with-study-hash, 2026-11-26 11:33
 **Source:** EMB-570 — the reviewer's finding on `study-designer/099`: `test-propose` hashes a study's bytes, which the crate's new refusal rejected
 **Issue:** EMB-570
 **Scope:** api
