@@ -1,0 +1,1 @@
+| Core identity line: every tab names the Core as service or development with its fingerprint and a match verdict, a mismatch drawn as a warning | Shipped — host-tested on fixture attestations; not run in a browser or against a live Core; mode is derived from the match | unit | 112 |

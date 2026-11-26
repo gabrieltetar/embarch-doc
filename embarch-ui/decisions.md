@@ -49,3 +49,4 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/tab-folders.md](decisions/tab-folders.md) | 100 | A tab from a folder the user's own config names, drawn into the page when served; its backends loopback-only with the token added; a broken tab left out and logged |
 | [decisions/ui-config.md](decisions/ui-config.md) | 102 | Where the UI finds its config when the shell sets no variable: a default file under the user's config directory, and what `service install` says about it |
 | [decisions/core-token.md](decisions/core-token.md) | 103 | The UI's Core client sends the person's token, and a missing one stops the UI rather than falling back to the agent's |
+| [decisions/core-identity.md](decisions/core-identity.md) | 112 | One line on every tab names the Core: service or development, 16 hex of its fingerprint, and whether it matches the installed one; the mode is derived from the match, not read |

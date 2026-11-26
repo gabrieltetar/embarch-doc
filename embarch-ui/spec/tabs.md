@@ -16,6 +16,8 @@ One persistent left sidebar, one top status bar, client-side navigation by URL f
 | **Atlas** | The open project's hardware atlas as one map (52): modules, MCU peripherals and pins, and every part on every board as a generic schematic symbol, each pin labelled with its net and the firmware's name for it (53). Picks an atlas, walks the problems, opens each claim's source down to the page or the code line (54). Read-only |
 | **Debug** | Three sources: two live tails — Core and `embarch-api`'s rolling file, both reaching the browser as this UI's own `lines` SSE event — and **builds**, stored rather than tailed: every firmware build this UI ran, picked from a list (39) |
 
+**Every tab** carries one line under the top bar naming the Core: mode, 16 hex of its fingerprint, and whether it is the installed one, a mismatch drawn as a warning (112).
+
 ## Tab folders
 
 A tab the user's own config adds (100): [tab-folders.md](tab-folders.md).

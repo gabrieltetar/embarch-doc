@@ -1,6 +1,6 @@
 # 125 — The UI shows which Core it is talking to
 
-**State:** claimed by agent/ui/125-the-ui-shows-which-core-it-is-talking-to, 2026-11-26 14:29
+**State:** done — Core identity line shipped (decision 112); mode derived from the match, client field filed as EMB-576
 **Source:** EMB-336 — embarch-ui does not show which Core it is talking to
 **Issue:** EMB-336
 **Scope:** ui
@@ -47,9 +47,9 @@ those.
 
 ## Done when
 
-- [ ] Fixture statuses for a service and a development Core each render the
+- [x] Fixture statuses for a service and a development Core each render the
       line with the right words.
-- [ ] A mismatch renders as a warning; a Core with no mode renders a line
+- [x] A mismatch renders as a warning; a Core with no mode renders a line
       saying so.
-- [ ] A decision records the line.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] A decision records the line.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
