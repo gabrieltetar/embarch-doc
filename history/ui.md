@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The Confirm tab draws Core's go card for a prepared Test run and gives the person's go, disabled while an input is unconfirmed ([ui 111](../embarch-ui/decisions/confirm-tab.md)).
 - embarch-ui gains a Confirm tab: Core's card for each pending test input as text, confirmed with the person's token and the card's nonce ([decision 110](../embarch-ui/decisions/confirm-tab.md)).
 - Live Study's status card has a Cancel button on a running study, relaying to Core's cancel route ([decision 109](../embarch-ui/decisions/live-study.md)).
 - Add `embarch-ui bench make-live <slug>`: a saved bench is made live from the terminal, sharing the route's code; proposals apply only with `--bind`. [bench-live](../embarch-ui/spec/bench-live.md)
