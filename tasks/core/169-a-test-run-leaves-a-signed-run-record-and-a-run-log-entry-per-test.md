@@ -1,6 +1,6 @@
 # 169 — A Test run leaves a signed run record and a run-log entry per test
 
-**State:** claimed by agent/core/169-a-test-run-leaves-a-signed-run-record-and-a-run-log-entry-per-test, 2026-11-26 14:29
+**State:** done — run record test-run.dsse.json, test and test_run log entries, interrupted seal and Test-run retention unit shipped (decision 144)
 **Source:** EMB-369 — a Test run leaves no signed record of itself and no run-log entry per test
 **Issue:** EMB-369
 **Scope:** core
@@ -58,12 +58,18 @@ Amend `interfaces/signing.md` and `interfaces/run-log.md`.
 
 ## Done when
 
-- [ ] A fixture run cancelled on its second bench has a signed run record that
+- [x] A fixture run cancelled on its second bench has a signed run record that
       names every selected test with a verdict or a reason.
-- [ ] Each test run has a run-log entry with its test id, definition hash, unit
+- [x] Each test run has a run-log entry with its test id, definition hash, unit
       key, DUT image and verdict, and the run has its `test_run` entry.
-- [ ] The retention sweep leaves every study run of an unpublished Test run in
+- [x] The retention sweep leaves every study run of an unpublished Test run in
       place.
-- [ ] The run record verifies with the standard DSSE check.
-- [ ] `interfaces/signing.md` and `interfaces/run-log.md` amended.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The run record verifies with the standard DSSE check.
+- [x] `interfaces/signing.md` and `interfaces/run-log.md` amended.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+
+## Debts
+
+- **Windows build:** nothing here is `cfg(windows)`; the owner's native Windows build is unverified for this change.
+- **Hardware verification:** none run; the record is exercised over a fake bench and a real signing key only. A real Test run on a bench should be checked to leave `test-runs/<id>.test-run.dsse.json` and a `test_run` entry.
+- **Publish route:** none writes a `published` entry with `run_id`, so Test-run captures are held, never swept (`open.md`).

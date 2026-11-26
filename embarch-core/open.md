@@ -34,6 +34,8 @@ What is unresolved and what closes it. Truth: [spec.md](spec.md). Why: [decision
 
 - **A republish after the retention sweep needs the caller to resend the earlier zip's files** (decision 120): Core checks them against its logged manifest; open is embarch-api sending them (`tasks/api/172`). The segment is the whole run log.
 
+- **A Test run's captures are held until a publish route exists for it.** Decision 144 protects a Test run's study runs until a `published` entry names its `run_id`; no route writes one, so nothing of a Test run is swept yet. An interrupted run is sealed with no verdicts, since Core keeps no per-test checkpoint.
+
 ## Structural limits
 
 - **Espressif dev-bench port selection has no story.** Decision 23's removed env overrides had no replacement: `link_port_interface` answers an ambiguous VCOM, and the ESP32-C5-WROOM-1 DK is **[assumed]** one USB-Serial/JTAG interface, no VCOM to name (`tasks/core/028`). Confirming needs the board; the knob stays missing.

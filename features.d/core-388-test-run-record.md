@@ -1,0 +1,1 @@
+| Test run record — Core signs the run as it ends (cancel, deadline, interruption) and logs each test and the run; its studies are swept as one unit | Shipped — **no route publishes a Test run yet, so its captures are held, never swept; bench run and Windows build unverified** | unit | 144 |

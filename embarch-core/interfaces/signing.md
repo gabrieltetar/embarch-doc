@@ -34,3 +34,18 @@ The Statement: `_type` `https://in-toto.io/Statement/v1`; `subject` `[{name, dig
 | `claimed.build` | `{commit, dirty, toolchain}` as embarch-api told Core, each null when not sent; `claimed.build` is null when none were |
 
 Verify as any DSSE v1 envelope with the public key whose SHA-256 is `keyid`; then hash each named file and compare. The key file is `signing-key` in Core's store, with `public-key` (the raw public key, hex) beside it: `<data dir>/store/` under `run --service`, `<dir>` under `run --store <dir>`, the data dir beside the token files ([embarch-token.md](../../embarch-token.md)) with neither ([decision 129](../decisions/auth.md)).
+
+## `test-runs/<run_id>.test-run.dsse.json`
+
+A Test run's own record ([decision 144](../decisions/test-run-record.md)), in Core's store beside `<run_id>.result.json`, written when the run ends: a finish, a cancel, a deadline, or at the next start for a run Core lost (`interrupted`). The same envelope as above and verified the same way. `subject`: `run.json` (the SHA-256 of its canonical form) and `result.json` when kept. `predicateType` `urn:embarch:predicate:test-run:v1`; `predicate`:
+
+| Key | Holds |
+|---|---|
+| `schema`, `run_id`, `status`, `reason`, `ended_utc_ms` | the run; `status` is `completed`, `cancelled`, `deadline` or `interrupted` |
+| `unit_key` | the DUT's hardware ID the first bench's smoke check read; null when none was |
+| `resumes` | the run this one resumes; absent when none |
+| `selection` | `{entries: [{test_id, status, reason, expanded}]}` as Core expanded it at the prepare |
+| `tests[]` | per `run.json` test: `test_id`, `bench`, `definition_hash`, `requirements`, `verdict` (null for a test with no result), `reason` (the verdict's, or `not_run` / `interrupted`), `note`, `dut_image` (`holds`, `differs`, `claim`; null when the bench was not checked), `study_records` `[{study_id, record_sha256}]` |
+| `observed.core.version`, `observed.call_log` | as a study record's |
+
+Each study record is still `record.dsse.json` in its own folder; its `record_sha256` here is the file's hash. A study record names no verdict yet (`tasks/core/170`).

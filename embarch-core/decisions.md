@@ -52,5 +52,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The held serial ports](decisions/port-hold.md) | 130 | 4.0 KB |
 | [Reading an image back](decisions/image-readback.md) | 142 | 3.3 KB |
 | [The smoke check before a bench's first test](decisions/smoke-check.md) | 143 | 4.0 KB |
+| [A Test run's own signed record and run-log entries](decisions/test-run-record.md) | 144 | 4.1 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.
