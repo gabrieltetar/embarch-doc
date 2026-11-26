@@ -1,6 +1,6 @@
 # 046 — The linker offers a study's capture or trace
 
-**State:** open
+**State:** claimed by agent/chat/046-the-linker-offers-a-studys-capture-or-trace, 2026-11-26 14:02
 **Source:** EMB-415 — the 💡 linker cannot offer a study's capture or trace
 **Issue:** EMB-415
 **Scope:** chat
