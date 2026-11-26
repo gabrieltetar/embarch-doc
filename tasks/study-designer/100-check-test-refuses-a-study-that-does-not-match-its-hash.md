@@ -1,7 +1,6 @@
 # 100 — `check_test` refuses a study that does not match its hash
 
-**State:** blocked — `embarch-api` still hashes a study the old way until `api/204` folds; landing this first turned `embarch-api` and `embarch-core` red on 2026-11-25 (Core moved in `core/166`, code `ca34d61`)
-**Unparks when:** api/204 has landed
+**State:** open
 **Source:** EMB-555 — the refusal half of `study-designer/099`, split out when 099 was reverted
 **Issue:** EMB-555
 **Scope:** study-designer
