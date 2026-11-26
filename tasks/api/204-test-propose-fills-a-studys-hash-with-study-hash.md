@@ -1,6 +1,6 @@
 # 204 — `test-propose` fills a study's hash with `study_hash`
 
-**State:** claimed by agent/api/204-test-propose-fills-a-studys-hash-with-study-hash, 2026-11-26 11:33
+**State:** done — test-propose uses study_hash; decision 136; green with and without the refusal
 **Source:** EMB-570 — the reviewer's finding on `study-designer/099`: `test-propose` hashes a study's bytes, which the crate's new refusal rejected
 **Issue:** EMB-570
 **Scope:** api
@@ -47,9 +47,15 @@ a new decision that supersedes the line. `embarch-api/spec.md` is in reserve
 
 ## Done when
 
-- [ ] `hil_repo.rs` uses `study_hash` for both the fill and the comparison.
-- [ ] `cargo test --workspace` is green against `study-designer/101`'s crate
+- [x] `hil_repo.rs` uses `study_hash` for both the fill and the comparison.
+- [x] `cargo test --workspace` is green against `study-designer/101`'s crate
       and stays green with `study-designer/100`'s refusal applied (the first
       reverted pass of `study-designer/099`, `7391457`, is that refusal).
-- [ ] The decision records the change and the rejected alternative.
-- [ ] Gate green, the client crate included.
+- [x] The decision records the change and the rejected alternative.
+- [x] Gate green, the client crate included.
+
+## Done
+
+`hil_repo.rs` fills and compares with `hil_test::study_hash`; the unused `sha256_hex` is gone. Fixtures: `run_test_cli.rs` computes the hash from the fixture study; `test_propose_cli.rs` asserts the filled value equals `study_hash` and gains a test that a wrong given hash is refused naming both. Decision 136 in `decisions/test-plans.md` (the bytes line of 134 shortened to a pointer, so 134 shrank). Supervisor: a row in `embarch-decision-reversals.md` for the bytes convention.
+
+Verification (both measured 2026-11-26): `cargo test --workspace` green against the crate at `origin/main` (ebbaaca), and green again with the `check_test` refusal of `7391457` cherry-picked onto it in a throwaway worktree (`src/hil_check.rs` only; the other two files conflicted and were kept at main) with the link re-pointed and `cargo clean -p embarch-study-designer` run first (the log shows the crate recompiled). Link restored, clean re-run, throwaway removed. Hardware debt: none.
