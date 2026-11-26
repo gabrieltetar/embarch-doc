@@ -1,6 +1,6 @@
 # 047 — The long-chat scroll check settles before it reads
 
-**State:** open
+**State:** claimed by agent/chat/047-the-long-chat-scroll-check-settles-before-it-reads, 2026-11-26 11:57
 **Source:** EMB-571 — a webview check of a long chat's scroll fails under load
 **Issue:** EMB-571
 **Scope:** chat
