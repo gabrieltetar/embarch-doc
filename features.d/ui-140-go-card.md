@@ -1,0 +1,1 @@
+| Go card: the Confirm tab draws Core's card for a prepared Test run and gives the person's go, disabled while an input is unconfirmed | Shipped — host-tested against a stub Core; not run in a browser or against a live Core; the prompt modal's kind and answer wait on EMB-575 | unit | 111 |

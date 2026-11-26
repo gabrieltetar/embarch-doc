@@ -1,6 +1,8 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** claimed by agent/ui/124-the-ui-shows-a-go-card-and-a-prompts-kind, 2026-11-26 14:02
+**State:** blocked — go card shipped (decision 111); the modal's kind, switched_on and observation answer wait on CoreClient fields, filed as EMB-575
+
+**Unparks when:** EMB-575 lands: CoreClient's PendingPrompt, PromptPending and PromptAnswerRequest carry kind, observation, switched_on and value
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui
@@ -56,10 +58,14 @@ and topology-tab#10,#43 near their limits; do not grow those.
 
 ## Done when
 
-- [ ] Against a fake Core, a driven test gives the go once; a second click is
+- [x] Against a fake Core, a driven test gives the go once; a second click is
       refused by the fake and the card says so.
-- [ ] An unconfirmed input disables the go and is named.
+- [x] An unconfirmed input disables the go and is named.
 - [ ] The modal shows an observation prompt's kind, its choices and an output
       switched on, and sends the chosen answer.
-- [ ] A decision records the card.
-- [ ] Gate green.
+- [x] A decision records the card.
+- [x] Gate green.
+
+## Blocked
+
+The modal half (the second and fifth boxes' prompt side) cannot be built from this repo. `embarch-core-client`'s `PendingPrompt` and `StudyEvent::PromptPending` drop `kind`, `observation` and `switched_on`, and `PromptAnswerRequest` has no `value`, so the UI can neither read a prompt's kind nor send an observation's answer; the client is read-only here and the UI holds no raw Core access (103). Filed as EMB-575 (api). The go card shipped in the Confirm tab, decision 111. When EMB-575 lands: pass the fields through `prompt_json` and `PromptAnswerBody`, draw kind, `switched_on` and the choices or number field in the modal, amend `operator-prompt.md` (8,884 B, mind its cap), and tick the third box. "Gate green" is ticked below as the gate is.
