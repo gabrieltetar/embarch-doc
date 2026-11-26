@@ -1,6 +1,6 @@
 # 169 — A Test run leaves a signed run record and a run-log entry per test
 
-**State:** open
+**State:** claimed by agent/core/169-a-test-run-leaves-a-signed-run-record-and-a-run-log-entry-per-test, 2026-11-26 14:29
 **Source:** EMB-369 — a Test run leaves no signed record of itself and no run-log entry per test
 **Issue:** EMB-369
 **Scope:** core
