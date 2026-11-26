@@ -1,6 +1,6 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** open
+**State:** claimed by agent/ui/124-the-ui-shows-a-go-card-and-a-prompts-kind, 2026-11-26 14:02
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui
