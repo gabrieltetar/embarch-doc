@@ -1,6 +1,6 @@
 # 166 — The Test-run prepare checks each study against its hash
 
-**State:** open
+**State:** claimed by agent/core/166-the-test-run-prepare-checks-each-study-against-its-hash, 2026-11-26 11:33
 **Source:** EMB-555 — Core's half of `study-designer/099` (`hil_test::study_hash`, study-designer decision 113)
 **Issue:** EMB-555
 **Scope:** core
