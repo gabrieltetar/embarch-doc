@@ -1,6 +1,6 @@
 # 100 — `check_test` refuses a study that does not match its hash
 
-**State:** claimed by agent/study-designer/100-check-test-refuses-a-study-that-does-not-match-its-hash, 2026-11-26 11:57
+**State:** done — check_test refuses a study that does not hash to study.hash; gated under every consumer feature set
 **Source:** EMB-555 — the refusal half of `study-designer/099`, split out when 099 was reverted
 **Issue:** EMB-555
 **Scope:** study-designer
@@ -32,7 +32,7 @@ their limits; do not grow those.
 
 ## Done when
 
-- [ ] `check_test` refuses a study that does not hash to `study.hash`, with a
+- [x] `check_test` refuses a study that does not hash to `study.hash`, with a
       test.
-- [ ] Gate green. The landing leg re-tests `embarch-api` and `embarch-core`
+- [x] Gate green. The landing leg re-tests `embarch-api` and `embarch-core`
       against it after `cargo clean -p embarch-study-designer` in each.
