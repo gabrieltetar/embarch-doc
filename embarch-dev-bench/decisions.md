@@ -19,7 +19,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Capture taps](decisions/capture.md) — byte forwarding, notify routing, the tap never closed, a record that holds a full-MTU transcript entry and connection rows | 29, 40, 42, 53 | 10.0 KB |
 | [Running an `.eap` protocol](decisions/protocols.md) — the state-machine interpreter, and the indices it checks | 41, 50 | 7.3 KB |
 | [Logging](decisions/logging.md) — a framed log backend, and per-study verbosity | 38, 39 | 10.1 KB |
-| [The PD bench](decisions/pd-bench.md) — a USB PD partner scripted over its shell, a second app beside the BLE bench, on a sink or a dual-role shield, built from its own workspace with six carried Zephyr patches, and checked without a board | 48, 49, 58, 59 | 5.2 KB |
+| [The PD bench](decisions/pd-bench.md) — a USB PD partner scripted over its shell, a second app beside the BLE bench, on a sink or a dual-role shield, built from its own workspace with six carried Zephyr patches, checked without a board, and put back to idle by one command | 48, 49, 58, 59, 68 | 6.4 KB |
 | [The analog source and its USB link](decisions/analog.md) — a SoC-neutral analog source with an nrfx SAADC backend (the portable-API exception), a USB composite device and its IDs, a selectable control link, SMP updates, the sample block, REGOUT0, the rate the hardware runs, a stop from Core | 60, 61, 62, 63, 64, 65, 66, 67 | 5.9 KB |
 | [Documentation conventions](decisions/conventions.md) — citing a decision, and what a bare section number into a deleted `design.md` becomes | 47 | 4.1 KB |
 

@@ -39,3 +39,11 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 **`pd-bench/sample.yaml` builds both shields under twister, build only, and `pd-bench/tests/logic` runs a ztest suite on `native_sim` against `src/pd_logic.c`**: the PDO classifiers, the RDO builders, the `pd max` choice, a choice checked against the caps, the source's Request check and the `pd srccaps` rules. That file makes no shell, kernel or device call, which is what lets it run off-hardware. `main.c` keeps the locking, the stack callbacks and every line the shell prints.
 
 **The USB-C stack does not run off-hardware**: Zephyr v4.4.2 has no TCPC emulator (`drivers/usb_c/tcpc/` holds fusb307, ps8xxx, rt1715, tcpci and two UCPD drivers), and writing one is out of scope. The build check is what catches a patch update or a pin move (decision 58) breaking the build. Neither check is in the fleet's gate (decision 9).
+
+### 68 — `pd idle` puts the bench back to its boot state and `pd hello` names the build; `pd detach` stays out
+
+**`pd idle` restores keep-alive on, `dr accept`, `pr accept`, `answer accept`, the `pd max` choice and the devicetree's Source_Capabilities, drops any contract, and on the DRP1M1 turns VBUS off and discharged through the existing `source_off` path** (a Hard Reset for a sink holding a contract, an ErrorRecovery for a source with a partner attached). It ends `pd: ok`, or `pd: error <what>` when VBUS did not discharge or the request was refused. The list of settings is `PdLogicIdle` in `pd_logic.c`, so the native_sim suite tests it; `main.c` applies it. The HIL design starts every test from a DUT reset plus this command (`notes/hil/03-test.md`).
+
+**`pd hello` prints `pd-bench version <v> commit <c> shield <s>` and then `pd: ok`.** The commit is `git describe --always --dirty` taken by CMake at configure time, `unknown` outside a checkout.
+
+**`pd detach` is not added.** A test could then ask for it as a precondition; the owner may strike this. **Not measured on a board**: the Hard Reset and ErrorRecovery choices are read from the stack, not observed.

@@ -1,6 +1,6 @@
 # 051 — pd-bench has an idle command and a hello line
 
-**State:** claimed by agent/dev-bench/051-pd-bench-has-an-idle-command-and-a-hello-line, 2026-11-26 14:02
+**State:** done — pd idle and pd hello shipped host-side (decision 68); both shields build, logic suite green; hardware debt left
 **Source:** EMB-387 — the PD partner has no idle command and no hello line
 **Issue:** EMB-387
 **Scope:** dev-bench
@@ -55,9 +55,22 @@ and discharged on the DRP1M1.
 
 ## Done when
 
-- [ ] Both shields build from the main checkout's `workspaces/pd-bench` with
+- [x] Both shields build from the main checkout's `workspaces/pd-bench` with
       the worktree's sources.
-- [ ] The native_sim logic suite tests the idle settings list.
-- [ ] The README's shell table lists both commands.
-- [ ] A hardware-verification debt is left for the characterisation session.
-- [ ] Gate green.
+- [x] The native_sim logic suite tests the idle settings list.
+- [x] The README's shell table lists both commands.
+- [x] A hardware-verification debt is left for the characterisation session.
+- [x] Gate green.
+
+## Hardware-verification debt
+
+For the PD bench's characterisation session, on a NUCLEO-G0B1RE with each shield (decision 68):
+
+- **Each setting restored after a test that changed it, on both shields**: set `pd keepalive off`, `pd dr reject`, `pd pr reject`, `pd answer wait`, `pd srccaps 5000:1500` (DRP1M1), `pd pps ...`; run `pd idle`; read `pd status` and `pd srccaps` back and see every one at its default.
+- **A contract dropped**: with a sink holding a (PPS) contract, `pd idle` sends a Hard Reset and the bench renegotiates at the `pd max` choice; with the DRP1M1 sourcing to an attached sink, `pd idle` ends with VBUS off, under 0.6 V within tSafe0V, and the port attaching again from scratch (the ErrorRecovery request).
+- **`pd hello`** prints the version, the commit of the sources as built (`-dirty` when they were) and the right shield on each build.
+- **Not host-checked**: the Hard Reset and ErrorRecovery choices are read from the stack, not run.
+
+## Build record
+
+Built from the main checkout's `workspaces/pd-bench` (west init, `west update --narrow`, `west patch apply`; ignored there) with this worktree's `pd-bench/` as `-s`: SNK1M1 129496 B flash, DRP1M1 149760 B, both clean; the native_sim logic suite passes with four new idle tests.
