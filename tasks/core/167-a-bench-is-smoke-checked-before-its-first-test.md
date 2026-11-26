@@ -1,6 +1,6 @@
 # 167 — A bench is smoke-checked before its first test
 
-**State:** claimed by agent/core/167-a-bench-is-smoke-checked-before-its-first-test, 2026-11-26 14:02
+**State:** done — smoke check built host-side over fakes (decision 143); hardware verification and native Windows build are debt
 **Source:** EMB-368 — no smoke check runs before a bench's first test
 **Issue:** EMB-368
 **Scope:** core
@@ -74,15 +74,21 @@ nothing in it is left unused.
 
 ## Done when
 
-- [ ] Over fakes: a missing signal, a failed validate, a silent hello, a
+- [x] Over fakes: a missing signal, a failed validate, a silent hello, a
       silent `*IDN?` and a differing DUT image each skip the bench's tests as
       `error`, `smoke_check`, naming the piece.
-- [ ] A different DUT hardware ID on bench B refuses bench B, and bench A's
+- [x] A different DUT hardware ID on bench B refuses bench B, and bench A's
       results stand.
-- [ ] A passing check records every identity, every `*IDN?` reply and every
+- [x] A passing check records every identity, every `*IDN?` reply and every
       image status.
-- [ ] A calibration whose serial differs from the `*IDN?` reply is not applied,
+- [x] A calibration whose serial differs from the `*IDN?` reply is not applied,
       and the measurement says so.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
-- [ ] **Hardware debt** recorded here: the check run once against a real bench
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] **Hardware debt** recorded here: the check run once against a real bench
       (DUT, one bench board, one instrument).
+
+## Debt
+
+- **Hardware verification (not run).** The check has run over fakes only. Run it once against a real bench: the DUT, one bench board with a hello line, one instrument with a declared calibration. Start a Test run (fixture suite, two benches) in the person's session with the lease. Confirm the run's `result.json` carries `smoke_checks` with the DUT and board hardware IDs, the board's hello reply, the instrument's `*IDN?` reply and each image status. Confirm that a calibration serial the reply does not name gives `applied: false` in `measurements.json`. Confirm a different DUT unit on bench two refuses it. Also unmeasured: the `SMOKE_WAIT_MS` (2 s) and `SMOKE_PORT_WAIT_MS` (5 s) waits, and that a whole image reads back on each chip family (core/165).
+- **Native Windows build** of embarch-core: not run (the owner's).
+- **Decided, to check against a bench:** a calibration serial matches an `*IDN?` field exactly; a bench board's `unreleased`/`unknown`/`unverified` image is recorded, not failed.

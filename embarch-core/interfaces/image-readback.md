@@ -1,6 +1,6 @@
 # embarch-core: image readback
 
-**Status:** active, 2026-11-25. Not a route: `readback` in `src/readback.rs` has no caller yet (decision 142, [decisions/image-readback.md](../decisions/image-readback.md)).
+**Status:** active, 2026-11-25. Not a route: `readback` in `src/readback.rs` is called by the smoke check (decisions 142, 143, [decisions/image-readback.md](../decisions/image-readback.md)).
 
 `readback(core, board, entry, list) -> ImageStatus`. `core` is `None` when the board has no probe; `entry` is the board's newest `FlashedEntry`; `list` is the released bench firmware. Serialized as `{"status": "<state>", ...}`.
 

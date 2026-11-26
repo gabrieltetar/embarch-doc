@@ -6,7 +6,7 @@ Index: [../decisions.md](../decisions.md). States and the variable: [../interfac
 
 ### 142 — `readback` reads a board's flashed segments back through the probe and says which state holds
 
-Every signed record says `image_status: "unverified"` (decision 110) because Core had no way to read an image back; `POST /live/mem-read` stops at 256 words. This adds the function, `src/readback.rs`, and **nothing calls it yet**: the smoke check and the run record are later units, and `signing.rs` is unchanged. It is not a route.
+Every signed record says `image_status: "unverified"` (decision 110) because Core had no way to read an image back; `POST /live/mem-read` stops at 256 words. This adds the function, `src/readback.rs`, which the smoke check calls before a bench's first test ([143](smoke-check.md)); the run record is a later unit, and `signing.rs` is unchanged. It is not a route.
 
 **What it reads.** The segments of the board's newest `flashed-images.jsonl` entry (decision 93, `FlashedEntry.segments`), each in chunks of at most `MAX_WORDS` words, hashed with SHA-256 over exactly the segment's bytes (an unaligned start or length reads the covering words and trims). Each chunk is one `live::read_ranges` call, so the core halts only as long as one chunk takes (decision 81) and nothing is written. The probe sits behind `CoreAccess`, so every state is tested against a fake memory.
 

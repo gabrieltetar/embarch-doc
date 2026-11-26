@@ -51,5 +51,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The idle lease release](decisions/lease-idle.md) | 123 | 3.0 KB |
 | [The held serial ports](decisions/port-hold.md) | 130 | 4.0 KB |
 | [Reading an image back](decisions/image-readback.md) | 142 | 3.3 KB |
+| [The smoke check before a bench's first test](decisions/smoke-check.md) | 143 | 4.0 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

@@ -1,0 +1,1 @@
+| Core smoke-checks each bench before its first test: signals, roles and instruments declared, `validate`, board hello, instrument `*IDN?`, image readback, the same DUT unit across benches; a failure errors the bench's tests as `smoke_check` | Built — **host-side only: proven over fakes; never run against a real bench; native Windows build unrun** | unit | 143 |
