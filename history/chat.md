@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Decision 119: the 💡 linker offers a study's captures and outpost traces, read with embarch-api list-studies under the instruments' cache rule.
 - The 💡 linker offers the desk's Linear projects and documents, from the mirrored reference index (decision 117).
 - The chat's 💡 linker offers the bench's declared instruments (`instrument "eload" (scpi)`), read with `embarch-api --json list-instruments`; built, not seen on a real bench.
 - The chat's 💡 linker offers the atlas's Kconfig symbols and devicetree nodes, gated by cue words or an exact name; a stale atlas says so on the card (decision 115).
