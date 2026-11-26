@@ -21,6 +21,7 @@ Split verbatim from [../spec.md](../spec.md) §4 on 2026-10-30, under [DOC-COMPA
 | Branch and worktree source | the newest 300 local and `origin` branches; git read at most once a minute per folder, before a cards call; a name or path of 200 characters or less [assumed: the plan's recommendations] (113) |
 | Atlas section source | `embarch-atlas refs --json` in the chat folder, 10 s limit, up to 20,000 sections; read again only when `current.json`, `atlases/` or `docs/` changed [assumed: the plan's recommendations; the cap is this unit's] (114); its symbols and nodes share it (115) |
 | Bench instrument source | `embarch-api --json list-instruments` in the chat folder, 10 s limit, answer or failure kept 5 minutes per folder, before a cards call only [assumed: the owner's to strike] (116) |
+| Study capture source | `embarch-api --json list-studies --limit 20` through the same runner and 5-minute cache as the instruments; at most 50 studies and 50 taps each; without a name match, the newest 4 taps [assumed: the owner's to strike] (119) |
 | `<references>` block | at most 12 lines and 3,600 characters (about 900 tokens), at most 4 lines of one kind before the best of the rest fill it; a title clipped at 90 characters [assumed: the plan's recommendation, 8 lines and 600 tokens before] (88, 112) |
 | Things a folded run lists | 3, then "N more" (87) |
 | Send held for cards | up to 4.5 s, drafts of six words or more (26) |

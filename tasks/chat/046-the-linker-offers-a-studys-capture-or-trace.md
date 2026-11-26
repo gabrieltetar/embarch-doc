@@ -1,6 +1,6 @@
 # 046 — The linker offers a study's capture or trace
 
-**State:** claimed by agent/chat/046-the-linker-offers-a-studys-capture-or-trace, 2026-11-26 14:02
+**State:** done — the linker offers a study's taps as capture and trace kinds, decision 119; gate green
 **Source:** EMB-415 — the 💡 linker cannot offer a study's capture or trace
 **Issue:** EMB-415
 **Scope:** chat
@@ -59,12 +59,16 @@ left; do not grow it.
 
 ## Done when
 
-- [ ] With a fake `list-studies` of three studies, "compare it with yesterday's
+- [x] With a fake `list-studies` of three studies, "compare it with yesterday's
       trace" offers the newest trace first, written as above.
-- [ ] "the vbus capture" offers the tap named `vbus` as a capture with its
+- [x] "the vbus capture" offers the tap named `vbus` as a capture with its
       encoding.
-- [ ] A study id in the draft offers its taps with no cue word.
-- [ ] A study whose `taps` is null offers nothing and breaks nothing.
-- [ ] `list-instruments` and `list-studies` share one cache rule, and the
+- [x] A study id in the draft offers its taps with no cue word.
+- [x] A study whose `taps` is null offers nothing and breaks nothing.
+- [x] `list-instruments` and `list-studies` share one cache rule, and the
       decision says so.
-- [ ] Gate green (`npm test` with the desk binary, per `gate.md`).
+- [x] Gate green (`npm test` with the desk binary, per `gate.md`).
+
+## Result
+
+Shipped as `embarch-chat` decision 119 (`decisions/references-studies.md`, a new topic file, so `references-kinds.md` is untouched). Gate: build, typecheck, `npm test` with the desk binary (433 pass, 3 skipped, 0 fail) and `test:webview` all green; the 💡 cards flake (EMB-574) did not fire. Debt: not seen against a real Core; tested on the fake `embarch-api`.

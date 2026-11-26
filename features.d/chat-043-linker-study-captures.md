@@ -1,0 +1,1 @@
+| The 💡 linker offers a retained study's captures and outpost traces (`trace "<tap>" of study <id> ...`), by study id, a name or a trace/capture word; read with `embarch-api --json list-studies --limit 20`, cached 5 minutes | Built, not installed — **tested on a fake `embarch-api` only; not seen against a real Core** | unit | 119 |
