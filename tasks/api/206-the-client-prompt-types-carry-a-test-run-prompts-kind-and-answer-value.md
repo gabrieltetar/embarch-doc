@@ -1,6 +1,6 @@
 # 206 — The client's prompt types carry a Test run prompt's kind and answer value
 
-**State:** open
+**State:** claimed by agent/api/206-the-client-prompt-types-carry-a-test-run-prompts-kind-and-answer-value, 2026-11-26 14:29
 **Source:** EMB-575 — CoreClient prompt types carry a Test run prompt's kind, outputs and answer value
 **Issue:** EMB-575
 **Scope:** api
