@@ -1,6 +1,6 @@
 # 048 — The 💡 cards checks pass under load
 
-**State:** open
+**State:** claimed by agent/chat/048-the-cards-checks-pass-under-load, 2026-11-26 14:29
 **Source:** EMB-574 — the 💡 cards checks fail under CPU load with no cards request
 **Issue:** EMB-574
 **Scope:** chat
