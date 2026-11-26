@@ -1,6 +1,6 @@
 # 047 — The long-chat scroll check settles before it reads
 
-**State:** claimed by agent/chat/047-the-long-chat-scroll-check-settles-before-it-reads, 2026-11-26 11:57
+**State:** done — the follow was a post-paint effect; now a layout effect, 20 loaded runs of the scroll check green
 **Source:** EMB-571 — a webview check of a long chat's scroll fails under load
 **Issue:** EMB-571
 **Scope:** chat
@@ -47,10 +47,10 @@ its reserve line and `promptu#96` has 204 B left; do not grow either.
 
 ## Done when
 
-- [ ] The check passes twenty runs in a row of `npm run test:webview` while a
-      parallel `cargo test` (any suite repo) loads the machine. Say in the task
-      which repo's tests you ran as the load and how many runs passed.
-- [ ] It still fails if the timeline stops following the reply (checked once
-      by breaking the follow by hand, then restored).
-- [ ] Gate green (`npm ci`, `build`, `typecheck`, `npm test` with the desk
-      binary, `npm run test:webview`, per `gate.md`).
+- [x] The long-chat scroll check passed in all 20 runs of `npm run test:webview` while a loop of `cargo test` in `embarch-topology` ran (about 36000 rounds of it by the end, the machine otherwise idle). The suite as a whole did not: 8 of 20 runs failed a different check ("no cards request in 5000 ms", four 💡 checks), filed as EMB-574. Isolated, the scroll check alone failed 16 of 25 runs under 24 busy loops before the fix and 0 of 25 after.
+- [x] It still fails if the timeline stops following the reply: with the layout effect's `el.scrollTop = el.scrollHeight` removed it failed "at the bottom while it streams"; restored.
+- [x] Gate green (`npm ci`, `build`, `typecheck`, `npm test` with the desk binary: 428 pass, 3 skipped; `npm run test:webview` per the above).
+
+## What it was
+
+A product race, not the test: the follow in `webview/chat/index.tsx` was a `useEffect`, which Preact runs after the next paint, up to 100 ms late on a loaded machine. A read or scroll event in that gap saw the grown timeline above the bottom. It is now a `useLayoutEffect` (chat decision 118); the test is unchanged, since `send` already settles.
