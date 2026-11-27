@@ -13,6 +13,8 @@
 
 **`status` also returns** `lease` (the live lease or `null`) and `last_images`: per chip `chip`, `probe_serial?`, `path`, `sha256?`, `flashed_at`, `lease_holder?` for the last image Core flashed or bootloaded since it started. Compare `sha256` with your own image before reflashing. **An absent chip means unknown, not nothing flashed.** An older Core gives `null` and `[]`.
 
+**`status` also returns** `mode` (`service` or `development`) and `keyid` (the sealing key's fingerprint); `null` from a Core that predates them, which is unknown, not `service` (decision 139).
+
 **A refused hardware call** (any tool or subcommand, including `validate`, `run_study`, `dev_bench_hello`) returns Core's `409` text unchanged: `bench leased by '<holder>' for '<purpose>' (started …, expires …); …`.
 
 **A session made to hold the lease.** With `EMBARCH_REQUIRE_LEASE` in its environment (anything but empty or `0`), both front-ends ask `GET /lease` before a hardware route. With none live, the call fails without reaching the route: `no bench lease is live, and this session must hold one for hardware (EMBARCH_REQUIRE_LEASE is set): …`. A token left over from a dead lease does not help. With one live, the call goes on and Core decides by the token. Open routes, `lease_take` among them, are never affected. The routes are `lease_gate::LEASE_GATED`, a copy of Core's table.

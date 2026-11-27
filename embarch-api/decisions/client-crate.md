@@ -67,3 +67,9 @@ Naming the original also **gains** `guessed_among` — whether a port was picked
 **Source-breaking for struct literals:** a caller building `PromptAnswerRequest` names `value: None`; the three in this repo do.
 
 **Measured:** `tests/prompt_types.rs`, a host prompt and answer byte for byte, a Test run's prompt round trip, the event with and without the colliding second `kind` (the client refuses the former). **Not run:** against a live Core's Test run.
+
+### 139 — The client's `StatusResponse` carries Core's `mode` and `keyid`
+
+`StatusResponse` gains `mode` (`"service"` or `"development"`) and `keyid` (the sealing key's fingerprint), each `Option<String>` with `#[serde(default)]`: Core already sends both ([core 129](../../embarch-core/decisions/)), and the client dropped them, so a surface could only infer the mode from the attestation's match result and read a development Core whose key was recorded as the installed one as `service`. `None` is a Core that predates them: unknown, never `service`. **Source-breaking for struct literals:** none exists in `embarch-api`, `embarch-ui` or `embarch-umbrella` (checked 2026-11-26). The UI switching its identity line to the reported mode is ui's follow-up.
+
+**Measured:** a unit test parses a body with both and one with neither. **Not run:** against a live Core.

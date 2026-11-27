@@ -1,6 +1,6 @@
 # 207 — The client's status carries Core's mode and keyid
 
-**State:** claimed by agent/api/207-the-client-status-carries-cores-mode-and-keyid, 2026-11-26 18:14
+**State:** done — StatusResponse carries mode and keyid; test parses both shapes; decision 139
 **Source:** EMB-576 — StatusResponse drops Core's mode and keyid
 **Issue:** EMB-576
 **Scope:** api
@@ -43,6 +43,6 @@ grow it.
 
 ## Done when
 
-- [ ] `StatusResponse` carries `mode` and `keyid`; a test parses both shapes.
-- [ ] The decision and interface doc say so.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] `StatusResponse` carries `mode` and `keyid`; a test parses both shapes.
+- [x] The decision and interface doc say so.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
