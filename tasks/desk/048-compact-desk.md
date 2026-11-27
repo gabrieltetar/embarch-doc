@@ -1,6 +1,6 @@
 # 048 — compact `embarch-desk/decisions/built.md`
 
-**State:** open
+**State:** claimed by agent/desk/048-compact-desk, 2026-11-27 04:17 — decisions/built.md only; interfaces.md is desk/049, leave it
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
