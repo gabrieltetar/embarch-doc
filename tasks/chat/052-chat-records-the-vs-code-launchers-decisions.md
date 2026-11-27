@@ -1,6 +1,6 @@
 # 052 — chat records the VS Code launcher's decisions
 
-**State:** claimed by agent/chat/052-chat-records-the-vs-code-launchers-decisions, 2026-11-26 22:55
+**State:** done — chat decision 123 records the launcher; 29 and 102 point at it; focus.ts cites it
 **Source:** EMB-303 — The launcher's decisions sit in embarch-ui while its code lives in embarch-chat
 **Issue:** EMB-303
 **Scope:** chat
@@ -63,11 +63,15 @@ shape; number from `scripts/check-task-numbers.py --next chat`).
 
 ## Done when
 
-- [ ] The launcher's invariants are recorded once in chat's decisions, in a
+- [x] The launcher's invariants are recorded once in chat's decisions, in a
       decision that says which `embarch-ui` decisions it carries.
-- [ ] Chat decisions 29 and 102 point at it, not at ui.
-- [ ] `focus.ts`'s comment cites it rather than restating the invariants.
-- [ ] Gate green for `embarch-chat` (its bullet in `gate.md`) and
+- [x] Chat decisions 29 and 102 point at it, not at ui.
+- [x] `focus.ts`'s comment cites it rather than restating the invariants.
+- [x] Gate green for `embarch-chat` (its bullet in `gate.md`) and
       `python3 scripts/check-docs.py`.
-- [ ] The new decision's number is written in this file's closing note;
+- [x] The new decision's number is written in this file's closing note;
       `changelog.d/` fragment.
+
+## Closing note
+
+New decision: **embarch-chat decision 123** (`embarch-chat/decisions/launcher.md`, 4,060 B). It carries `embarch-ui` decision 28 whole, decision 3's thin-launcher stance and rejected alternatives, and 101's status-bar states; 101's behaviour of driving the unit stays in chat decision 102. Left in `embarch-ui` for `tasks/ui/129`: 101's unit (`embarch-ui.service`, environment, one instance) and 3's old `vscode-extension/` packaging and distribution paragraphs. Chat 29 and 102 now point at 123; `focus.ts` cites it (comment only, no behaviour change).
