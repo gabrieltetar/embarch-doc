@@ -1,6 +1,6 @@
 # 189 — A staging read follows no link in any folder of the path
 
-**State:** open
+**State:** claimed by agent/core/189-staging-read-follows-no-link-in-any-folder-of-the-path, 2026-11-27 01:12
 **Source:** EMB-593 — staging read still follows a parent swapped for a link after the check (reviewer finding on `core/185`)
 **Issue:** EMB-593
 **Scope:** core
