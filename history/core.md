@@ -55,6 +55,7 @@
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
 
 ### Fixed
+- A Test run's PromptPending event names its prompt's kind as prompt_kind, so the event's own kind tag survives; GET /study/{id} keeps kind (decision 151).
 - embarch-core refuses the agent's discard of a study run whose Test run is published, as for a published Study ([decision 149](../embarch-core/decisions/test-run-publish.md)).
 - A Test run's test_run entry now binds each study's amended record hash; GET /study/{id}/log answers it (decision 146).
 - Retention sweeps nothing, and GET /studies lists everything, while Core's run log cannot be read or verified (decision 111).
