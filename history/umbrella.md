@@ -31,6 +31,9 @@
 - Umbrella's embarch init now reads the api's HIL skill file at build time; the pinned copy that drifted is gone (decision 59).
 - umbrella: README says LLM coding agent, not AI coding agent (EMB-194)
 - doctor check 13 reads `dev_bench_version`; a Core older than embarch-core decision 108 is a warn that compares nothing (19).
+
+### Fixed
+- `install-core` on Linux now creates the data dir's `logs/` for the `embarch` service user (`embarch-users` can read it), so a service Core keeps its log files; see decision 70.
 ## 2026-10
 
 ### Added
