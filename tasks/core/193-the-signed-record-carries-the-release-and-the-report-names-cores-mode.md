@@ -1,7 +1,6 @@
 # 193 — the signed record carries the release, and the report names Core's mode
 
-**State:** blocked — waits on `tasks/api/227`, which teaches the Test-run verifier the new attestation; `api/225` (check 6, Study reports) has landed
-**Unparks when:** `api/227` has landed
+**State:** open — `api/227` landed (`embarch-api` `1faf5be`): the Test-run verifier and appendix take the new attestation by the record's `observed.release`, through check 6's own helper; `api/225` (Study reports) landed earlier
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** core
