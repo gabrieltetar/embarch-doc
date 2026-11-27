@@ -1,6 +1,6 @@
 # 053 — pd-bench reports PD timings on its own clock
 
-**State:** open
+**State:** claimed by agent/dev-bench/053-pd-bench-reports-pd-timings-on-its-own-clock, 2026-11-26 17:43
 **Source:** EMB-388 — the PD partner cannot report a PD timing on its own clock
 **Issue:** EMB-388
 **Scope:** dev-bench
