@@ -1,6 +1,6 @@
 # 186 — compact `embarch-core/spec.md` and `decisions/platform.md`
 
-**State:** open
+**State:** claimed by agent/core/186-compact-core, 2026-11-27 04:17 — platform.md is now 11,555 B (core/190 put decision 163 in its own file); leave every other core doc alone
 **Scope:** core
 **Hardware:** none
 **Owner:** no
