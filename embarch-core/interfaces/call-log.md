@@ -25,7 +25,7 @@ Every route in `lease::LEASE_GATED` answers with `X-Embarch-Call-Seq` and `X-Emb
 | `lease` | `{holder, purpose}` of the live lease, or null |
 | `status` | the response status; `409` is a call the lease refused |
 | `answer_sha256` | the answer body's hash (null if it could not be read) |
-| `board` | null, or `{role, probe_serial, chip, image_sha256}` where the handler named a board; `image_sha256` is the hash Core last flashed to that chip, or `"unknown"` |
+| `board` | null, or `{role, probe_serial, chip, image_sha256}` where the handler named a board (every route that acts on one does; null for an undeclared signal and for the instrument exchange, partial for an unknown role or probe); `image_sha256` is the hash Core last flashed to that chip, or `"unknown"` |
 
 **A `fold` entry** stands for identical reads after a `call` entry: `{type: "fold", first_seq, count, first_utc_ms, last_utc_ms, method, route, scope, status, answer_sha256}`. `count` is the repeats, not counting the first. Folded reads: `POST /live/mem-read`, `POST /live/core-state`, `GET /serial-log`, `POST /validate`, `GET /dev-bench/hello`. It is written when a different gated call arrives, the lease is released, or Core stops cleanly.
 

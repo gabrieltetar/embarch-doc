@@ -1,6 +1,6 @@
 # 196 — every route that touches a board names it in the call log
 
-**State:** claimed by agent/core/196-every-route-that-touches-a-board-names-it-in-the-call-log, 2026-11-27 05:01
+**State:** done — bootload, validate, signal exchange and capture name their board in the call log; decision 122, interface and open item amended
 **Source:** embarch-core/open.md — "The call log's `board` is named by four handlers only (`/flash`, `/reset`, the two live reads; 122): `/bootload`, `/validate`, exchange and capture leave it null."
 **Scope:** core
 **Hardware:** none
@@ -66,11 +66,11 @@ board misbehaves.
 
 ## Done when
 
-- [ ] `/bootload`, `/validate`, the signal exchange and the capture routes
+- [x] `/bootload`, `/validate`, the signal exchange and the capture routes
       fill `board` when the board is known, each with a test reading the entry
       back.
-- [ ] Decision 122, `interfaces/call-log.md` and `open.md` say which routes
+- [x] Decision 122, `interfaces/call-log.md` and `open.md` say which routes
       name a board and which cases stay null.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`);
       `changelog.d/` fragment.
