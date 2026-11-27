@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `publish` takes a Test run id: one zip over every study run's files and a PDF by requirement; the exports, verify and a resumed pair wait (decision 144).
 - embarch-api person (confirm, go, answer, unit, name) acts for the engineer from a terminal with the person's token after a typed yes; no MCP tool (embarch-api decision 141).
 - Client StatusResponse carries Core's mode and keyid (api decision 139).
 - api: declare_instrument carries an instrument's metrology and calibration (a certificate file sent as its SHA-256); a re-declare keeps what is stored (decision 138)
