@@ -1,6 +1,6 @@
 # 207 — The client's status carries Core's mode and keyid
 
-**State:** open
+**State:** claimed by agent/api/207-the-client-status-carries-cores-mode-and-keyid, 2026-11-26 18:14
 **Source:** EMB-576 — StatusResponse drops Core's mode and keyid
 **Issue:** EMB-576
 **Scope:** api
