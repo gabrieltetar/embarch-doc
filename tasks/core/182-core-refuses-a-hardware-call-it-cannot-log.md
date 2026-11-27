@@ -1,6 +1,6 @@
 # 182 — Core refuses a hardware call it cannot write to its call log
 
-**State:** open
+**State:** claimed by agent/core/182-core-refuses-a-hardware-call-it-cannot-log, 2026-11-26 23:53
 **Source:** EMB-328 — Core serves a hardware call it cannot write to its call log
 **Issue:** EMB-328
 **Scope:** core
