@@ -1,6 +1,6 @@
 # 215 — `verify` checks a Test run's zip and recomputes its verdicts
 
-**State:** open
+**State:** claimed by agent/api/215-verify-checks-a-test-runs-zip-and-recomputes-its-verdicts, 2026-11-26 21:22
 **Source:** EMB-382 — verify cannot check a Test zip's verdicts
 **Issue:** EMB-382
 **Scope:** api
