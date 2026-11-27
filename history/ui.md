@@ -15,6 +15,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- Core identity line shows the mode Core reports, not one derived from the fingerprint match; unknown when absent (ui decision 112, decisions/core-identity.md).
 - Compacted the ui Live Study decisions file out of reserve; no decision changed.
 - A config a saved host study or test names can no longer be renamed or deleted: the save and the dialog refuse it, naming them (ui 108).
 - The UI builds against host schema v25 (`embarch-study-designer` decision 108); a prompt's kind is not shown yet.
