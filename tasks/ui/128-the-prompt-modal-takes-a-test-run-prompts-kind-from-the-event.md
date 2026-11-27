@@ -1,6 +1,6 @@
 # 128 — The prompt modal takes a Test run prompt's kind from the event
 
-**State:** claimed by agent/ui/128-the-prompt-modal-takes-a-test-run-prompts-kind-from-the-event, 2026-11-26 22:55
+**State:** done — kind comes from the event; add_prompt_kind and apply_polled_kind dropped
 **Source:** EMB-591 — The prompt modal takes a Test run prompt's kind from the event, not a study read
 **Issue:** EMB-591
 **Scope:** ui
@@ -61,12 +61,12 @@ says the kind is polled. No file of yours is in reserve.
 
 ## Done when
 
-- [ ] A unit test: a Test run `PromptPending` event with `prompt_kind` set gives
+- [x] A unit test: a Test run `PromptPending` event with `prompt_kind` set gives
       one `prompt` frame whose `pending.kind` is that kind, and the follow
       spawns no study read for it.
-- [ ] An event without `prompt_kind` gets its kind by the read as today, or
+- [x] An event without `prompt_kind` gets its kind by the read as today, or
       shows none, per what the decision says; a test covers that branch.
-- [ ] No comment in `src/` still says the event carries no kind.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] No comment in `src/` still says the event carries no kind.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decision 113 amended; `changelog.d/` fragment.
+- [x] Decision 113 amended; `changelog.d/` fragment.
