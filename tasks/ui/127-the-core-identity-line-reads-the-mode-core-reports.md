@@ -1,6 +1,6 @@
 # 127 — The Core identity line reads the mode Core reports
 
-**State:** open
+**State:** claimed by agent/ui/127-the-core-identity-line-reads-the-mode-core-reports, 2026-11-26 18:52
 **Source:** EMB-580 — UI Core identity line reads the mode Core reports
 **Issue:** EMB-580
 **Scope:** ui
