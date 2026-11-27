@@ -1,6 +1,6 @@
 # 218 — compact `embarch-api/spec.md`
 
-**State:** claimed by agent/api/218-compact-api, 2026-11-26 23:43
+**State:** done — spec.md 9,066 to 8,609 B; two bullet details moved verbatim to interfaces
 **Scope:** api
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,5 @@
 
 ## Done when
 
-- [ ] `spec.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
-- [ ] The human question is answered in the commit message: can `spec.md` alone answer what someone needs to work on this component today?
+- [x] `spec.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The human question is answered in the commit message: can `spec.md` alone answer what someone needs to work on this component today?

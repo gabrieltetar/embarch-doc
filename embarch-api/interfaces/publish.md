@@ -55,3 +55,7 @@ Moved verbatim to [publish-pending-reads.md](publish-pending-reads.md).
 ## verify
 
 Moved verbatim to [verify.md](verify.md).
+
+## Appendix and republishing (moved verbatim from spec.md)
+
+The appendix lists every number in the prose and `report.typ` (cited, tagged, unbound, untagged, hardcoded) and each prose block's author; publishing again writes `-r2` from the earlier zip and names its manifest hash.
