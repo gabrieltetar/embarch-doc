@@ -1,6 +1,6 @@
 # 120 — `install-core` gives Core a user of its own and a protected store on Linux
 
-**State:** claimed by agent/umbrella/120-install-core-gives-core-a-user-and-a-protected-store-on-linux, 2026-11-27 00:27
+**State:** done — Linux half built: generated sh script, golden-tested, fake-host sequence; debt for a scratch distro
 **Source:** EMB-340 — On Linux, Core has no account of its own and no protected store
 **Issue:** EMB-340
 **Scope:** umbrella
@@ -72,11 +72,21 @@ start, keep your edit to it net-neutral or smaller.
 
 ## Done when
 
-- [ ] The script is built by a function and golden-tested.
-- [ ] A pre-existing `store/` not owned by `embarch` is refused before anything
+- [x] The script is built by a function and golden-tested.
+- [x] A pre-existing `store/` not owned by `embarch` is refused before anything
       is written.
-- [ ] `--dry-run` prints every command and changes nothing.
-- [ ] A hardware-verification debt for the owner's run in a scratch distro is
+- [x] `--dry-run` prints every command and changes nothing.
+- [x] A hardware-verification debt for the owner's run in a scratch distro is
       written into this file and `open.md`.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Findings
+
+- **Core's unit writer does set the user.** `embarch-core/src/service.rs` passes `ServiceInstallCtx.username = Some("embarch")` on Linux (`account_for(false)`, tested), so `install --service` writes `User=embarch`; no Core task is needed for that.
+- **Core writes `study_results/` in the data dir** (`token_store::results_root` is `tokens_in(data)`, not `store/`), and the task's layout makes the data dir root-owned `0755`, so a service Core as `embarch` could not create it. The script creates it `embarch:embarch-users` `0750` (decision 70, listed as a deviation). Core's owner may want to move run directories under `store/`; that is a Core call, not filed.
+- The unit's systemd file name (`com.embarch.core.service`) is assumed from the service label; nothing ran.
+
+## Hardware-verification debt
+
+Owner-run, in a scratch systemd distro (never the dev machine): `sudo embarch install-core <a signed suite release>` — seven steps OK; `systemctl cat com.embarch.core` shows `User=embarch`; `ls -ld /var/lib/embarch/store` is `embarch embarch 0700`; both token files `0640 embarch:embarch-users`; after a fresh login the engineer reads `token`; `/var/lib/embarch/core-fingerprint` matches `/status`'s `keyid`; a root-made `store/` is refused with nothing written; `--dry-run` writes nothing. Also in `embarch-umbrella/open.md`.
