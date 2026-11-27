@@ -9,3 +9,5 @@
 | `remove_instrument` | `name` | Core `DELETE /instruments/{name}`; `removed: false`, not an error, when none |
 
 **Nothing here has met an instrument** — see [decision 104](../../embarch-core/decisions/instruments.md)'s bench check.
+
+Who may make each act on an attested and an unattested Core: [tools-topology.md](tools-topology.md), "Who makes an identity act" ([decision 143](../decisions/identity-acts.md)).

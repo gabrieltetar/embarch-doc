@@ -11,3 +11,5 @@
 | `clear_bootload_ports` | — | Core `DELETE /bootload/ports`; `removed: false`, not an error, when none |
 
 **Nothing here has met a real bootloader** — see [../open.md](../open.md).
+
+Who may make each act on an attested and an unattested Core: [tools-topology.md](tools-topology.md), "Who makes an identity act" ([decision 143](../decisions/identity-acts.md)).

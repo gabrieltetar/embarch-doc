@@ -1,6 +1,6 @@
 # 212 — The identity tools name the person's surfaces on a person-scope refusal
 
-**State:** claimed by agent/api/212-the-identity-tools-name-the-persons-surfaces-on-a-refusal, 2026-11-26 20:12
+**State:** done — ten identity tools name --as-person and the Topology tab on a 403; --as-person sends the person token after a typed yes (decision 143)
 **Source:** EMB-335 — the identity tools give a bare refusal on an attested Core
 **Issue:** EMB-335
 **Scope:** api
@@ -61,10 +61,10 @@ compaction blocked on In flux: yes** (`scripts/check-doc-size.py --pressure`):
 
 ## Done when
 
-- [ ] On a fake person-scope `403`, each identity tool's text names the CLI
+- [x] On a fake person-scope `403`, each identity tool's text names the CLI
       command and the UI tab.
-- [ ] `--as-person` sends the person's token, asserted on a fake Core.
-- [ ] A test shows the MCP server never builds a person-scope client.
-- [ ] The interface docs say who may make each act on each kind of Core.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
+- [x] `--as-person` sends the person's token, asserted on a fake Core.
+- [x] A test shows the MCP server never builds a person-scope client.
+- [x] The interface docs say who may make each act on each kind of Core.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
       --all-targets -- -D warnings`).

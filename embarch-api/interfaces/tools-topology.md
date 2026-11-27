@@ -15,3 +15,14 @@
 | `signal_exchange` | `name`, `write`, `until?`, `timeout_ms?`, `append_newline?` (true), `port_wait_ms?` (0, max 10000: wait for a console that is re-enumerating), `match_after_echo?` (Core's default true; false for a console with echo off, else `until` is never searched and the read runs to `timeout_ms`; CLI `--match-after-echo false`; omitted, nothing is sent) | Core `POST /signals/{name}/exchange`: writes one line to a direct `host-to-dut`/`bidirectional` signal (a DUT shell) and returns Core's reply as is: `text` with escape codes, `until_seen`, `truncated`, plus `bytes_read`, `echo_seen`, `written`, `port_lost` (each absent when an older Core did not send it) and, when silent, `port_identity` and `core_state`; `wire_notes` (MCP) and stderr lines (CLI) say them in words, and never advise a resend of a `written` line (decision 82). **CLI only:** `--clean` prints the command's output alone (escape codes out, a cursor-right kept as spaces, echo and closing `--until` prompt dropped, as the atlas `live.clean()`); exit `0` complete, `3` `--until` never seen, `4` zero bytes, `5` `truncated` or `port_lost` (zero bytes outranks the others), each with one stderr line and the reply still printed; `--json` bytes unchanged |
 
 `declare_signal`/`list_signals`/`remove_signal` go over HTTP to Core rather than writing `embarch-topology`'s enrollment file directly, for the same reason `enroll_probe` does: Core owns that write and holds its `hw_lock` while making it, and on the suite's real primary deployment a plain-user process cannot write the file at all ([decisions](../decisions/failure-reporting.md) 67). `dev_bench_link`, which amends the same enrollment file's dev-bench row, sits with the rest of dev-bench's own tools: [tools-dev-bench.md](tools-dev-bench.md).
+
+## Who makes an identity act
+
+The ten identity acts are `enroll_probe`, `unenroll_probe`, `set_role_board`, `declare_instrument`, `remove_instrument`, `declare_signal`, `remove_signal`, `declare_bootload_ports`, `clear_bootload_ports` and `dev_bench_link` ([decision 143](../decisions/identity-acts.md)).
+
+| Core | The agent (MCP tool, or CLI with the agent's token) | The person |
+|---|---|---|
+| Unattested | Makes the act | Makes it in `embarch-ui`'s Topology tab, or on the CLI with `--as-person` |
+| Attested | Refused with a person-scope `403`; the tool's text names the act, `embarch-api <command> --as-person ...` and the Topology tab, and says not to retry | The same two surfaces |
+
+`--as-person` is a global flag on those ten subcommands and refused for every other. It sends the person's token (config `person_token`, `EMBARCH_PERSON_TOKEN`, the `person-token` file) after showing the act and reading a typed `yes`; the MCP server has no way to send that token.

@@ -1,0 +1,1 @@
+| `--as-person` on the ten identity acts, and the identity tools naming the CLI command and the Topology tab on an attested Core's person-scope refusal; CLI-side only | Built; mock Core only | unit | 143 |
