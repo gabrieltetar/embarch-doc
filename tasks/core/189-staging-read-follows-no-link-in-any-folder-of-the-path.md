@@ -1,6 +1,6 @@
 # 189 — A staging read follows no link in any folder of the path
 
-**State:** claimed by agent/core/189-staging-read-follows-no-link-in-any-folder-of-the-path, 2026-11-27 01:12
+**State:** done — nested staging names refused; Unix+Windows both made true by removing the case
 **Source:** EMB-593 — staging read still follows a parent swapped for a link after the check (reviewer finding on `core/185`)
 **Issue:** EMB-593
 **Scope:** core
@@ -60,9 +60,9 @@ against `tasks/core/186`: do not grow it.
 
 ## Done when
 
-- [ ] A parent folder swapped for a link between check and open is not
+- [x] A parent folder swapped for a link between check and open is not
       followed (tested on Unix), or nested names are refused (tested).
-- [ ] 160 and the `staging.rs` module comment state exactly the guarantee the
+- [x] 160 and the `staging.rs` module comment state exactly the guarantee the
       code gives, on each platform.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
