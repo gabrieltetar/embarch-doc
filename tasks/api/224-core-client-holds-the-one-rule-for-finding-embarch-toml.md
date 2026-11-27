@@ -1,6 +1,6 @@
 # 224 — `embarch-core-client` holds the one rule for finding `embarch.toml`
 
-**State:** open
+**State:** claimed by agent/api/224-core-client-holds-the-one-rule-for-finding-embarch-toml, 2026-11-27 03:24 — reserve: api decisions/client-crate.md 456 B left (api/222)
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** api
