@@ -1,6 +1,6 @@
 # embarch-core decisions: The call log's quota
 
-**Status:** active, 2026-11-27 (`tasks/core/187`, `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 3). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/call-log.md](../interfaces/call-log.md). Sibling: [call-log.md](call-log.md) (decision 158, whose fail-closed state and reserved tail this sits beside).
+**Status:** active, 2026-11-27 (`tasks/core/187`, `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 3). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/call-log.md](../interfaces/call-log.md). Sibling: [call-log-fail-closed.md](call-log-fail-closed.md) (decision 158, whose fail-closed state and reserved tail this sits beside).
 
 ### 161 — The call log has a quota; past it the agent's calls are refused first, and only the person raises it
 

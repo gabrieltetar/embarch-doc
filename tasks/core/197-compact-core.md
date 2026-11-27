@@ -1,6 +1,6 @@
 # 197 — compact `embarch-core/decisions/call-log.md`
 
-**State:** claimed by agent/core/197-compact-core, 2026-11-27 05:41
+**State:** done — decision 158 split verbatim into call-log-fail-closed.md; call-log.md 11251 -> 8050 B
 **Scope:** core
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,5 @@
 
 ## Done when
 
-- [ ] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
-- [ ] The human question is answered in the commit message: can `decisions.md` plus this file answer why the call log is shaped as it is?
+- [x] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The human question is answered in the commit message: can `decisions.md` plus this file answer why the call log is shaped as it is?
