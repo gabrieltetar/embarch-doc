@@ -1,6 +1,6 @@
 # 214 — A Test run's zip carries JUnit and OCP exports mapped from its verdicts
 
-**State:** open
+**State:** claimed by agent/api/214-a-test-runs-zip-carries-junit-and-ocp-exports-mapped-from-its-verdicts, 2026-11-26 20:59
 **Source:** EMB-381 — the JUnit and OCP exports carry no verdicts for a Test run
 **Issue:** EMB-381
 **Scope:** api
