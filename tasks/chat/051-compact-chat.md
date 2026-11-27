@@ -1,6 +1,6 @@
 # 051 — compact `embarch-chat/spec.md` and `open.md`
 
-**State:** open
+**State:** claimed by agent/chat/051-compact-chat, 2026-11-26 19:25
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
