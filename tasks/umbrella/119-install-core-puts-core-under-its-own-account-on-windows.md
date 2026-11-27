@@ -1,6 +1,6 @@
 # 119 — `install-core` puts Core under its own account on Windows
 
-**State:** open
+**State:** claimed by agent/umbrella/119-install-core-puts-core-under-its-own-account-on-windows, 2026-11-27 00:14
 **Source:** EMB-339 — The Windows install cannot put Core under its own account
 **Issue:** EMB-339
 **Scope:** umbrella
