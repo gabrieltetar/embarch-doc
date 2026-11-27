@@ -1,6 +1,6 @@
 # 049 — The ghost-text pause check passes under load
 
-**State:** open
+**State:** claimed by agent/chat/049-the-ghost-text-pause-check-passes-under-load, 2026-11-26 18:14
 **Source:** EMB-578 — the ghost-text pause check fails under CPU load
 **Issue:** EMB-578
 **Scope:** chat
