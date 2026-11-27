@@ -15,6 +15,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- The desk proxy takes the desk's port, base URL and token path from embarch-core-client::desk_discovery instead of its own copy; behaviour unchanged; ui decision 56.
 - The prompt modal now takes a Test run prompt's kind from the event's prompt_kind and no longer reads the study for it (embarch-ui decision 113).
 - Compacted embarch-ui/spec/tabs.md out of reserve; no tab row or decision number removed (ui/126).
 - Core identity line shows the mode Core reports, not one derived from the fingerprint match; unknown when absent (ui decision 112, decisions/core-identity.md).
