@@ -1,6 +1,6 @@
 # 180 — A Test run's Exchange steps record their target in the signed files
 
-**State:** open
+**State:** claimed by agent/core/180-a-test-runs-exchange-steps-record-their-target-in-the-signed-files, 2026-11-26 22:02
 **Source:** EMB-586 — Record each Exchange step's target (DUT or bench) in the signed files
 **Issue:** EMB-586
 **Scope:** core
