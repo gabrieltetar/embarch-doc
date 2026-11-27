@@ -1,0 +1,1 @@
+| `embarch install-core --agent-in-container` — one start-and-stop grant for the engineer (a service ACE on Windows, a polkit rule on Linux); `embarch down` refuses under a study | Built — **the grant has never run on a real service or polkit; the SDDL letters are from the rights table, not measured** | unit | 72 |

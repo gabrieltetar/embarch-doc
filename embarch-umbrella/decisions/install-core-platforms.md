@@ -1,6 +1,6 @@
 # embarch-umbrella: decisions — `install-core` on Windows and Linux
 
-**Status:** active, 2026-11-25. Index: [../decisions.md](../decisions.md). The verification and `setup` decisions (61, 71): [install-core.md](install-core.md). Verb: [../spec/commands.md](../spec/commands.md); record: [../interfaces/install-core.md](../interfaces/install-core.md).
+**Status:** active, 2026-11-27. Index: [../decisions.md](../decisions.md). The verification and `setup` decisions (61, 71): [install-core.md](install-core.md). Verb: [../spec/commands.md](../spec/commands.md); record: [../interfaces/install-core.md](../interfaces/install-core.md).
 
 ### 69 — On Windows, `install-core` then installs Core under its own account by one generated, logged, elevated script (EMB-339)
 
@@ -25,3 +25,21 @@ The Linux half of `notes/hil/12-prevention.md` "The root of trust", after decisi
 **Measured vs assumed:** nothing ran as root. The script is golden-tested per step, passes `sh -n`, the step-0 store check ran against a temp dir (an own-owned store, a symlink, an absent one), and the sequence ran against a fake host. Assumed: `useradd --system --user-group`, `usermod -aG`, `stat -c` (GNU coreutils), the unit's name, and Core accepting `0640` token files it did not create. Debt: [open.md](../open.md).
 
 **Reversal:** the owner strikes the Linux half, or Core's unit stops running as `embarch`.
+
+### 72 — `install-core --agent-in-container` makes the elevated half write one start-and-stop grant, and `down` refuses under a study (EMB-342)
+
+Where the agent runs in a container, `notes/hil/12-prevention.md` "The root of trust" lets the engineer's account start and stop Core's service without elevation and never change it; **the grant is written only by the elevated install, and a later change of the engineer's statement never widens it.** Nothing wrote it before. Without the flag the script has **no grant step at all** (tested on both platforms); with it, step 7 follows step 6. The parser, told a grant was asked for, requires `STEP 7 OK`.
+
+**Windows: one ACE, `(A;;RPWPLC;;;<engineer SID>)`**, added to `com.embarch.core`'s descriptor by `sc sdshow`, an edit, `sc sdset`. The letters, from the SDDL service-rights table: `RP` is SERVICE_START (0x10), `WP` SERVICE_STOP (0x20), `LC` SERVICE_QUERY_STATUS (0x04). Chosen so `sc start`, `sc stop` and `sc query` succeed: each opens the service with its own right, and waiting for `STOPPED` or `RUNNING` is a status query. **Left out on purpose:** `LO` (interrogate) and `CR` (user-defined control), which no start, stop or status call needs; `CC`, `SW` and `DT`, not asked for; `DC` change-config, `WD` write-DAC, `WO` write-owner and `SD` delete, which the design forbids. `add_start_stop_ace(sddl, sid)` is the pure function: text in, text out, the ACE placed at the end of the DACL and before the SACL, every other ACE kept in order, an identical ACE already present returned unchanged (a second install adds nothing), a descriptor with no DACL refused (it would read as "everyone"). The script cannot call Rust, so step 7 makes the same edit in PowerShell and prints the descriptor before and after; **`run_windows_half` recomputes the edit with the pure function and fails if the "after" differs**, naming both. It also catches a service manager that normalises the descriptor on `sdset`.
+
+**Linux: one polkit rule**, `/etc/polkit-1/rules.d/50-embarch-core.rules`, root `0644`, written by `printf` lines to a temp file and `install`ed. `polkit_rule_lines(engineer)` is pure and golden-tested: action `org.freedesktop.systemd1.manage-units`, `unit` equal to `com.embarch.core.service`, `verb` equal to `start` or `stop`, `subject.user` the engineer, result `YES`. It names no other unit and no other verb, and mentions no `AUTH_*` result, so everything else keeps polkit's default. The `.service` suffix is decision 70's assumed unit name; a polkit older than 0.106 reads `.pkla` files, not `.rules`, and gets no grant.
+
+**The statement is recorded** in `installed-release.json` as `agent_in_container` and `agent_in_container_at` (both `serde(default)`, so an older record reads). **It is sticky:** an install without the flag keeps the earlier statement and its date, because nothing here removes a grant and a record that forgot one would understate what the machine allows; stating it again moves the date. Removing a grant is by hand.
+
+**`embarch down` refuses while Core's `/status` shows a study in flight**, and `down --cancel-run` cancels it first through `deploy_dev::clear_study`, as `deploy-core --cancel-run` does. A Core that does not answer has no study, so `down` goes ahead.
+
+**Out of scope:** the passkey case. The design says a registered passkey also means no grant; no passkey registration exists yet, so the flag is the only input. Core's half, trying `start` and `stop` unelevated first, is `embarch-core`'s.
+
+**Measured vs assumed:** nothing ran elevated and no descriptor or polkit directory was touched. Tested: the pure edit (with a SACL, without, twice), the polkit rule as golden text and as written by its shell lines, both scripts with and without the flag, the record, `down` against a fake Core. Assumed: the SDDL letters' effect on a real service manager, that `sdset` keeps the descriptor as written, `.service` as polkit's `unit`, and that re-running `install --service` keeps the descriptor (if it recreates the service the grant is gone while the record says otherwise). Debt: [open.md](../open.md).
+
+**Reversal:** the owner strikes the container topology, or Core stops honouring an unelevated start and stop.

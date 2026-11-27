@@ -1,6 +1,6 @@
 # 124 — install-core grants start and stop only when the engineer states a container, and `down` refuses under a study
 
-**State:** claimed by agent/umbrella/124-install-core-grants-start-and-stop-only-for-a-stated-container, 2026-11-27 01:12
+**State:** done — grant step on both platforms, sticky record statement, down refuses under a study; hardware debt filed
 **Source:** EMB-342 — every switch between the service and a development Core needs elevation
 **Issue:** EMB-342
 **Scope:** umbrella
@@ -67,19 +67,28 @@ passkey registration exists yet.
 
 ## Done when
 
-- [ ] The descriptor edit is a pure function, golden-tested: one ACE for the
+- [x] The descriptor edit is a pure function, golden-tested: one ACE for the
       given SID with start, stop and query only; every other ACE kept.
-- [ ] The polkit rule is golden-tested and names only start and stop of the
+- [x] The polkit rule is golden-tested and names only start and stop of the
       one unit.
-- [ ] Without `--agent-in-container`, neither generated script has a grant step.
-- [ ] `installed-release.json` records the statement and its date; an older
+- [x] Without `--agent-in-container`, neither generated script has a grant step.
+- [x] `installed-release.json` records the statement and its date; an older
       record still reads.
-- [ ] Against a fake Core, `embarch down` refuses under a study and cancels it
+- [x] Against a fake Core, `embarch down` refuses under a study and cancels it
       with `--cancel-run`.
-- [ ] A hardware-verification debt in this file for the owner's machine:
+- [x] A hardware-verification debt in this file for the owner's machine:
       an elevated install with the flag, then an unelevated `sc stop` / `sc
       start` (or `systemctl stop` / `start`) as the engineer succeeds and an
       `sc config` (or unit edit) is refused.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); decision, `interfaces/install-core.md`, `spec/commands.md`
       updated; `changelog.d/` fragment.
+
+## Hardware-verification debt
+
+Owner's machine, elevated install; nothing here ran on a real service or polkit (decision 72, `open.md`):
+
+- **Windows:** `embarch install-core <release> --agent-in-container`. `sc sdshow com.embarch.core` shows one new `(A;;RPWPLC;;;<your SID>)` and the transcript's `GRANT-BEFORE`/`GRANT-AFTER` agree. As the engineer, unelevated: `sc stop`, `sc start`, `sc query com.embarch.core` succeed; `sc config com.embarch.core start= demand` is refused. If stop or start is refused, try adding `LO`.
+- **Linux:** `sudo embarch install-core <release> --agent-in-container`. As the engineer: `systemctl stop` and `start com.embarch.core` succeed with no prompt; `systemctl restart` and a unit edit are refused. Needs polkit 0.106 or newer.
+- A second install with and without the flag leaves the grant as it was; whether `install --service` on a re-install keeps the descriptor.
+- `embarch down` against a live Core running a study refuses, and `--cancel-run` cancels then stops.

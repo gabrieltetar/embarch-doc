@@ -1,8 +1,8 @@
 # embarch-umbrella: `embarch install-core` and `installed-release.json`
 
-**Status:** active, 2026-11-27. Built for EMB-338 (`tasks/umbrella/110`), EMB-339 (`tasks/umbrella/119`) and EMB-340 (`tasks/umbrella/120`). Why: decisions 61, 69 and 70, indexed in [decisions.md](../decisions.md). Index: [../decisions.md](../decisions.md).
+**Status:** active, 2026-11-27. Built for EMB-338 (`tasks/umbrella/110`), EMB-339 (`tasks/umbrella/119`) and EMB-340 (`tasks/umbrella/120`). Why: decisions 61, 69, 70 and 72, indexed in [decisions.md](../decisions.md). Index: [../decisions.md](../decisions.md).
 
-`embarch install-core <SOURCE> [--allow-downgrade] [--dry-run] [--data-dir DIR] [--trusted-root FILE | --refresh-trust-root]`. `SOURCE` is an unpacked release folder or its archive. Exit `0` only when the release verified and the record was written; `1` otherwise, with the reason on stderr.
+`embarch install-core <SOURCE> [--allow-downgrade] [--dry-run] [--data-dir DIR] [--trusted-root FILE | --refresh-trust-root] [--agent-in-container]`. `SOURCE` is an unpacked release folder or its archive. Exit `0` only when the release verified and the record was written; `1` otherwise, with the reason on stderr.
 
 **Files, under the data dir** (`/var/lib/embarch` or `%ProgramData%\embarch`):
 
@@ -24,6 +24,8 @@
 | `previous_suite_version` | The replaced version, or `null` for a first install |
 | `staging` | `release-staging/<n>`, relative to the data dir |
 | `installed_at` | UTC, RFC 3339, whole seconds |
+| `agent_in_container` | `true` once an install ran with `--agent-in-container` (decision 72); kept by a later install without the flag, since nothing removes the grant. `false` when absent, so an older record reads |
+| `agent_in_container_at` | UTC, RFC 3339: the install that last stated it, or `null` |
 
 **Order of the elevated half:** create the staging folder restricted; copy or unpack; verify on the copy; compare versions; hash the manifest and binaries; write the record. Any failure removes the staging folder and leaves an existing record as it was. Versions that are not `major.minor.patch[-pre]` cannot be ordered and are refused without `--allow-downgrade`.
 
@@ -31,3 +33,6 @@
 
 **The Linux half** (decision 70), on Linux with the default data dir only, run as root (`sudo embarch install-core`, `$SUDO_USER` is the engineer): one generated `sh` script on stdin, its stdout the transcript, with the same `STEP <n> OK`, `FAILED: step <n> <name>: <why>`, `FINGERPRINT` and `=== done ===` lines and the same exit rule. Step 0 refuses a non-root run, a host without `systemctl`, and a `store` that is a symlink, not a directory, or not owned by `embarch`, before any write. Writes: `/opt/embarch/core/<version>/embarch-core` (root `0755`); user `embarch` and group `embarch-users`; `/var/lib/embarch/store` (`embarch` `0700`), `staging` (`root:embarch-users` `0770`), `study_results` (`embarch:embarch-users` `0750`); `token` and `person-token` (`embarch:embarch-users` `0640`, when absent); the unit with `User=embarch`; `core-fingerprint` (root `0644`). `--dry-run` prints the plan and the script.
 
+**`--agent-in-container`** (decision 72) adds a step 7, `grant`, after step 6, and without the flag neither script has it. **Windows:** one ACE added to `com.embarch.core`'s security descriptor (`sc sdshow`, edit, `sc sdset`), `(A;;RPWPLC;;;<engineer SID>)`: start, stop and query status, never change-config, write-DAC or write-owner; the transcript carries `GRANT-BEFORE` and `GRANT-AFTER` descriptors and the command fails unless the pure edit of the first gives the second. **Linux:** `/etc/polkit-1/rules.d/50-embarch-core.rules`, root `0644`, letting `$SUDO_USER` start and stop `com.embarch.core.service` and nothing else. The statement is the engineer's, not detected; the passkey case is not covered.
+
+**`embarch down [--cancel-run]`**: refuses while Core's `/status` shows a study in flight, naming it; `--cancel-run` cancels it first and waits for Core to be idle. A Core that does not answer does not block it.
