@@ -1,6 +1,6 @@
 # 176 — Discard refuses the agent on a study a published Test run rests on
 
-**State:** claimed by agent/core/176-discard-refuses-the-agent-on-a-study-a-published-test-run-rests-on, 2026-11-26 19:56
+**State:** done — agent discard refused on a study of a published Test run; 149 amended
 **Source:** EMB-582 — discard lets the agent drop captures a published Test run rests on
 **Issue:** EMB-582
 **Scope:** core
@@ -49,10 +49,10 @@ left before its limit (`scripts/check-doc-size.py --pressure`): do not grow 111.
 
 ## Done when
 
-- [ ] The agent's discard of a clean study in a published Test run is refused
+- [x] The agent's discard of a clean study in a published Test run is refused
       `403` with 112's message; a test covers it.
-- [ ] The person's discard of it succeeds, and a clean study in an unpublished
+- [x] The person's discard of it succeeds, and a clean study in an unpublished
       Test run is still the agent's to discard; a test covers each.
-- [ ] 149 or 112 says a published Test run's studies are published for the
+- [x] 149 or 112 says a published Test run's studies are published for the
       discard.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).

@@ -9,7 +9,7 @@ All four take the token and are lease-open (they touch files, never a port). Err
 | `GET` | `/run-log` | none | `200 {verified, error, length, head, entries}`; `entries` are the `{entry, hash}` lines, `error` names the first line that breaks the chain |
 | `GET` | `/study/{id}/log` | none | `200 {run, record_sha256, published, discarded, head, length}`: the run's entry, `record_sha256` the hash the chain binds to the study's record (a Test-run study's `test_run` entry's, else `run`'s; decision 146), its latest `published` and `discarded` (or null) and the log head; `404` no such run; `500` the log does not verify |
 | `POST` | `/study/{id}/published` | `{"manifest_sha256": "<64 lowercase hex>"}` | `200` the new `{entry, hash}`; `400` malformed hash; `404` no such run. Either token; the entry records which |
-| `POST` | `/study/{id}/discard` | none | `200` the `discarded` `{entry, hash}`; `403` the agent's token on a run that did not end clean or has a publish (nothing deleted); `404`; `409` still running or already discarded |
+| `POST` | `/study/{id}/discard` | none | `200` the `discarded` `{entry, hash}`; `403` the agent's token on a run that did not end clean or has a publish, its own or its Test run's (nothing deleted; decision 149); `404`; `409` still running or already discarded |
 
 `run-log.jsonl` sits beside the token files; each line is `{"entry": {...}, "hash": "<sha256 hex of the entry's JSON>"}`. Every entry has `type`, `seq`, `prev`, and (but a `confirmed`, `test` or `test_run*` one) `study_id`, and:
 
