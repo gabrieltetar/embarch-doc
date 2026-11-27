@@ -8,7 +8,7 @@
 
 | Param | Meaning |
 |---|---|
-| `run_id` | A finished **Study** run's id. A Test run does not exist in milestone 1 |
+| `run_id` | A finished **Study** run's id, or a **Test** run's: Core is asked `GET /test-runs/{id}` and a prepared run takes [a Test run's zip](#a-test-runs-zip) ([decision 144](../decisions/publish-test-run.md)). A Test run refuses `notes`, `prose` and `report` before Core is asked |
 | `notes` / `--notes` | Optional. The person's words **verbatim**; adopted through Core, which records the token's scope and the text's hash (a note passed here reads "relayed by the agent") |
 | `prose` / `--prose <path>` (repeatable), `--prose-author`, `--prose-reviewed-by` | Optional. Prose files the agent wrote for the run: adopted as `prose/<name>`, carried in the zip, scanned for numbers. `author` is the model id (an agent's block) or a name; `reviewed_by` the person who adopted an agent's block. Core records the token's scope, not the names ([decision 116](../decisions/publish-revisions.md)) |
 | `report` / `--report` | Optional path to the study's `report.typ`. Absent, the zip carries a data section this crate generates. Nothing finds a study's folder on the caller's behalf |
@@ -39,6 +39,14 @@ Named `<date>-<slug>-<id8>.zip`: the UTC date of the publish, the study name slu
 **Both exports are pure functions** of `report-data.json`, `measurements.json` and the step outcomes (`publish_export::{junit_xml, ocp_jsonl}`), with no clock beyond the signed stamps, so `verify` regenerates and compares bytes. **The PDF rebuilds byte for byte from the zip alone**: unpack, stage `report.typ`, `appendix.typ`, `report-data.json`, `measurements.json` and `streams/*.csv|txt` under one root, render with `ident` and the time the publish used (a test does it).
 
 **What the PDF read is what Core signed**: `publish` compares each file it staged (`report-data.json`, `measurements.json`, the renderings) with the one the manifest names, and writes nothing on a difference.
+
+## A Test run's zip
+
+Through `POST /test-runs/{id}/report-data`, `.../publish` and `GET .../publish/{revision}/files/{name}` ([embarch-core/interfaces/publish.md](../../embarch-core/interfaces/publish.md)); the result, the folder, the name's `<id8>` and `-r<N>` and the refusal to overwrite are a Study's. The slug is the suite's id. `report_source` is always the generated one.
+
+**Core's files**, as served and checked against the manifest: `manifest.dsse.json`, `run.json`, `result.json`, `test-run.dsse.json`, `report-data.json`, `report-data.dsse.json`, `run-log-segment.jsonl`, `call-log-segment.jsonl` (when named), and for each study run `studies/<study_id>/` `events.json`, `measurements.json`, `study.json`, `record.dsse.json`, `streams/*`.
+
+**embarch-api's files**, listed in `embarch_api_files`: `report.pdf`, `report.typ` and `appendix.typ`, no export, package or note. The PDF is organised by requirement: the fixed statement, the unit and who gave the go and published, each requirement's verdict with counts, qualifiers and the tests skipped under it with why, each test citing its run and study runs, the tests that did not run, every run of each test on the unit (a failed one too) and the roll-up rules; the appendix holds Core's observation, `run.json`'s hash, the plan hash and the suite, the attestation, the manual verdicts, what is not carried and the revision superseded. Nothing is built from an earlier zip: Core does not restore a swept Test run. A resumed pair, the per-limit decision rule and the exports are not built.
 
 ## What publish reads of Core before the manifest exists
 

@@ -1,6 +1,6 @@
 # 213 — A Test run publishes as one zip
 
-**State:** claimed by agent/api/213-a-test-run-publishes-as-one-zip, 2026-11-26 20:39
+**State:** done — Test run publishes as one zip with a PDF by requirement (decision 144); mock Core only
 **Source:** EMB-380 — a Test run cannot be published
 **Issue:** EMB-380
 **Scope:** api
@@ -71,15 +71,21 @@ decision.
 
 ## Done when
 
-- [ ] A fixture Test run publishes one zip holding every study run's files,
+- [x] A fixture Test run publishes one zip holding every study run's files,
       `run.json` and both signed records.
-- [ ] Its PDF names a `not_verified` requirement and the test skipped for a gap
+- [x] Its PDF names a `not_verified` requirement and the test skipped for a gap
       behind it.
-- [ ] Its PDF carries the fixed statement and lists an earlier failed run of a
+- [x] Its PDF carries the fixed statement and lists an earlier failed run of a
       passing test.
-- [ ] A Study run still publishes as before (its existing tests pass unchanged).
-- [ ] The `publish` tool description no longer says only a Study run publishes.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] A Study run still publishes as before (its existing tests pass unchanged).
+- [x] The `publish` tool description no longer says only a Study run publishes.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] `decisions`, `interfaces` updated; `changelog.d/` fragment; a
+- [x] `decisions`, `interfaces` updated; `changelog.d/` fragment; a
       `features.d/` row if a feature row's caveat changed.
+
+## Notes
+
+- Decision 144 (`decisions/publish-test-run.md`). `spec.md` was edited and compacted out of reserve in the same commit (9,093 to 8,972 B; line for `verify` shortened, `api/201`'s `Must not delete:` items untouched).
+- **Debt, not hardware:** only a mock Core has served these routes; run `publish` on a real ended Test run against a Core carrying core/175 and 177.
+- Not built, by the task: a resumed pair, the JUnit and OCP exports (EMB-381), `verify` of a Test zip (EMB-382). Not possible from Core's data: the per-limit decision rule (filed to Core, EMB-585).
