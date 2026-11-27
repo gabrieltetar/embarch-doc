@@ -1,6 +1,6 @@
 # 193 — the signed record carries the release, and the report names Core's mode
 
-**State:** open — `api/227` landed (`embarch-api` `1faf5be`): the Test-run verifier and appendix take the new attestation by the record's `observed.release`, through check 6's own helper; `api/225` (Study reports) landed earlier
+**State:** claimed by agent/core/193-the-signed-record-carries-the-release-and-the-report-names-cores-mode, 2026-11-27 05:23
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** core
