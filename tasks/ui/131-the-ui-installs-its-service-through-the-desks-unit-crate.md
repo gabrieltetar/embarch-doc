@@ -1,6 +1,6 @@
 # 131 — the ui installs its service through the desk's unit crate
 
-**State:** claimed by agent/ui/131-the-ui-installs-its-service-through-the-desks-unit-crate, 2026-11-27 03:48
+**State:** done — service.rs installs, uninstalls and reports status through embarch-user-unit; unit text pinned by a test; launcher.md says where the writer lives
 **Source:** EMB-302 — the systemd user-unit writer exists twice, in `embarch-desk` and `embarch-ui`
 **Issue:** EMB-302
 **Scope:** ui
@@ -42,9 +42,13 @@ hardware.
 
 ## Done when
 
-- [ ] The ui's service command installs, uninstalls and reports status
+- [x] The ui's service command installs, uninstalls and reports status
       through the desk's unit crate, and the ui's own copies are gone.
-- [ ] A test pins the unit text, unchanged from today's.
-- [ ] `decisions/launcher.md` says where the shared writer lives.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] A test pins the unit text, unchanged from today's.
+- [x] `decisions/launcher.md` says where the shared writer lives.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Notes
+
+- Path dependency `../embarch-desk/crates/embarch-user-unit` means any checkout, release build or CI of `embarch-ui` needs `embarch-desk` beside it, like the other sibling path-deps. The ui repo has no `.github/` workflows, so nothing there breaks today; a future CI must check out `embarch-desk` too.
