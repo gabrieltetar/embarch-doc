@@ -1,6 +1,6 @@
 # 125 — `embarch doctor` reads `host_type_schema_version` from Core's `/status`
 
-**State:** claimed by agent/umbrella/125-doctor-reads-host-type-schema-version, 2026-11-27 02:13
+**State:** done — doctor reads host_type_schema_version with study_designer_schema_version fallback; three-body test; schema-skew amended
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** umbrella
@@ -45,8 +45,8 @@ names it.
 
 ## Done when
 
-- [ ] `doctor` reads the new key with the old as fallback; a test covers all
+- [x] `doctor` reads the new key with the old as fallback; a test covers all
       three bodies.
-- [ ] Messages and docs use `host_type_schema_version`.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Messages and docs use `host_type_schema_version`.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.

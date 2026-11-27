@@ -16,7 +16,7 @@ The check returned a hardcoded warn — *"not available yet, `embarch-study-desi
 
 **Two comparisons, and they are not two of a kind** (decision 36 adds a fourth number that is neither).
 
-- **Core's served `study_designer_schema_version`** versus **the `HOST_TYPE_SCHEMA_VERSION` the located `embarch-api` compiled** (decision 35) — the `embarch-api`⟷`embarch-core` hop, the one `embarch-api` itself refuses to submit a `Study` across. A difference is a **fail**: the pair cannot run a study at all.
+- **Core's served `host_type_schema_version`** (read first; the older `study_designer_schema_version` is the fallback, and the new key wins when both are served) versus **the `HOST_TYPE_SCHEMA_VERSION` the located `embarch-api` compiled** (decision 35) — the `embarch-api`⟷`embarch-core` hop, the one `embarch-api` itself refuses to submit a `Study` across. A difference is a **fail**: the pair cannot run a study at all.
 - **The bench's wire version** cannot be compared against either of those. `DEV_BENCH_WIRE_SCHEMA_VERSION` counts its own sequence and is only guaranteed `<=` the host one, so equality means nothing and inequality means less. What *is* comparable is `/dev-bench/hello`'s `compatible` — **Core's own verdict**, Core comparing the bench's number against the wire constant Core compiled. Core's wire constant is served nowhere, so recomputing the verdict here would be a mirror with nothing to mirror.
 
 **The stand-in is gone.** This binary's own constant stood in for the located `embarch-api`'s until 2026-09-04, exact only where check 1's manifest agreed: decisions 35 and 36 replace it and say what became of it.
