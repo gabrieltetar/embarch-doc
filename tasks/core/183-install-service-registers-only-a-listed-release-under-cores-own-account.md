@@ -1,6 +1,6 @@
 # 183 — `install --service` registers only a listed release, under Core's own account
 
-**State:** open
+**State:** claimed by agent/core/183-install-service-registers-only-a-listed-release-under-cores-own-account, 2026-11-26 23:43
 **Source:** EMB-324 — Core registers any binary as the service, under the default account
 **Issue:** EMB-324
 **Scope:** core
