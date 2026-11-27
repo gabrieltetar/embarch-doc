@@ -1,6 +1,6 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** open
+**State:** claimed by agent/ui/124-the-ui-shows-a-go-card-and-a-prompts-kind, 2026-11-26 17:44
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui
@@ -53,6 +53,8 @@ A new decision for the card, in `confirm-tab.md` or a new file;
 is in reserve (`tasks/ui/123`): do not write it unless that task has landed.
 `check-doc-size.py --pressure` lists bench-live#90, launcher#28, tab-folders#100
 and topology-tab#10,#43 near their limits; do not grow those.
+**`spec/tabs.md` is in reserve** (906 B left, filed as `tasks/ui/126`): do not
+grow it.
 
 ## Done when
 
