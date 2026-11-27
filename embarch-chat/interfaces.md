@@ -13,8 +13,8 @@ Reference: the settings, commands, keys and views the extension contributes; how
 | `embarchChat.chatLocation` | `editor` | Where a chat opens: an editor tab of its own, or `sidebar` for the secondary sidebar (92) |
 | `embarchChat.claudePath` | `claude` | The `claude` each chat runs (30) |
 | `embarchChat.idleMinutes` | `5` | How long an idle chat's process lives (41) |
-| `embarchChat.deskUrl` | `http://127.0.0.1:4891` | The desk; `127.0.0.1`, `::1` or `localhost` only, else nothing is sent |
-| `embarchChat.deskTokenPath` | `~/.config/embarch-desk/desk-token` | The desk's bearer token |
+| `embarchChat.deskUrl` | unset: `http://127.0.0.1:` + `EMBARCH_DESK_PORT`, else 4891 (124) | The desk; `127.0.0.1`, `::1` or `localhost` only, else nothing is sent |
+| `embarchChat.deskTokenPath` | unset: `desk-token` in the desk's config folder (124) | The desk's bearer token |
 | `embarchChat.assistant` | `true` | The Haiku assistant: ghost text, cards, chips, naming. Off, the instant prefix match and the CLI's own suggestion remain |
 | `embarchChat.startupProbe` | `true` | One short `claude` per login and folder fills a chat's settings menu before its first message (108). Off, they show once the chat's own runs |
 | `embarchChat.showMessageTimestamps` | `false` | A time to the second over each message, a date line where the day changes (68) |

@@ -1,6 +1,6 @@
 # 053 — chat finds the desk by the desk's own rule when no setting names it
 
-**State:** claimed by agent/chat/053-chat-finds-the-desk-by-the-desks-own-rule, 2026-11-27 02:13
+**State:** done — rule.ts holds the desk rule; settings unset follow env; decision 124
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** chat
@@ -50,8 +50,8 @@ left and is not where this goes.
 
 ## Done when
 
-- [ ] With neither setting set, chat's desk URL and token path follow the
+- [x] With neither setting set, chat's desk URL and token path follow the
       desk's precedence from the environment; a set value wins; tests cover it.
-- [ ] One module holds the rule; `package.json`'s descriptions match.
-- [ ] Gate green (`npm ci`, `npm run build`, `npm run typecheck`, `npm test`,
+- [x] One module holds the rule; `package.json`'s descriptions match.
+- [x] Gate green (`npm ci`, `npm run build`, `npm run typecheck`, `npm test`,
       `npm run test:webview`); decision and index row; `changelog.d/` fragment.
