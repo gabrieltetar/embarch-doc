@@ -23,8 +23,9 @@ schema addition, deterministic, no clock. Where the records do not carry a
 field, say so in the data rather than inventing it, and record which.
 
 **Downstream, not yours:** `embarch-api`'s `publish` prints these and its
-`verify` check 6 recomputes them (`api/215`, which may land before you, builds
-check 6 against the shape it read). Say in your report exactly which fields you
+`verify` check 6 recomputes `report-data.json` field by field (`api/215`,
+landed, api decision 146), so the new fields make api's check 6 fail on a real
+zip until api learns them. Say in your report exactly which fields you
 added, so the supervisor files the api follow-up.
 
 ## Where to look
@@ -43,9 +44,9 @@ Amend 148 if it stays under its limit, else a new decision it points to;
 `interfaces/publish.md`'s `report-data.json` list names the new fields.
 **Over or near their limit, do not grow:** `test-run-go#135` (95 B left),
 `run-log#111` (120 B), `instruments#104` (144 B), `signing#110`, `host-study#95`,
-`lease#93` (all over). **`open.md` is in reserve** (4,227 of 5,120 B); this
-task should not need it — if it does, compact it in the same commit, keeping
-`tasks/core/171`'s `Must not delete:` list.
+`lease#93` (all over). `open.md` is out of reserve since `core/178` (3,917 B,
+reserve starts above 3,919 B), so a sentence there puts it back: avoid it, or
+file `tasks/core/<NNN>-compact-core.md` in the same commit.
 
 **Decision numbers:** cite the number you actually wrote, in code comments too;
 twice in a row a worker cited a neighbouring decision's.
