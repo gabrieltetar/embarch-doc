@@ -12,6 +12,16 @@
 
 **Retention.** The study ids in a `test_run` entry are one unit. They stay protected until a `published` entry names the **`run_id`** (no route writes one yet: Core's side of publish for a Test run is a later unit), even when a study is published alone; `discard` still ends a single study's protection. Once released they count once toward `keep` and go or stay together by their newest member's place (`run_log::retained_in_units`). Until the publish route exists a Test run's captures are never swept; that is the stated rule, not an oversight.
 
-**Not here.** The per-test study record's predicate is unchanged (`tasks/core/170`).
+**Not here.** The per-test study record: [145](#145--a-study-record-sealed-for-a-test-names-the-test-its-verdicts-and-what-it-ran-against).
 
 **Measured:** unit tests over the real `drive`, a signing key and a run log: a run cancelled on its second bench signed with a verdict or reason on every test and verifying under an independent DSSE check; the per-test and whole-run entries; an interrupted run sealed once; a Test run's studies held after a solo publish and released by the run's; a Test run counted as one unit. **Not run:** the native Windows build (the owner's debt; nothing here is `cfg(windows)`), and a real run on a bench.
+
+### 145 — A study record sealed for a test names the test, its verdicts and what it ran against
+
+`tasks/core/170`, EMB-369; `notes/hil/03-test.md`, "A run", item 10. The study is sealed before it is judged (110), so Core **amends** each study record when the run ends and **before** the run's own record hashes it (144): `Sealer::amend_for_test` keeps every byte of the Statement, adds `predicate.test`, adds `run.json` (its canonical hash) to the subjects, sorted among them, and signs again. A study run outside a Test run is never amended. The record verifies as before.
+
+`predicate.test`: `run_id`, `test_id`, `bench`, `definition_hash`, `run_index` and `run_count`; `run` (this study's `{verdict, reason, qualifiers}`; null for a study with no judged run, as one Core could not run) and `verdict` (the test's); `note`; from the bench's smoke check (143) `unit_key`, `images` (DUT and each bench board: status and its reason), `identities` (hardware IDs) and `instruments` (each `*IDN?` reply), all null for a bench never checked; `prompts` (per prompt step of the study's `events.json`: `list`, `step`, `prompt_id`, `detail`, `answered_by`, `answered_scope`, the token's scope, 138). `observed.behaviours` stays where 110 put it.
+
+**Not built:** a hello line's reply is not carried. An amend that fails is logged and leaves the record as sealed, without `test`.
+
+**Measured:** a unit test over the real `drive`, `seal` and a key: the amended record verifies under the independent DSSE check, equals the sealed one but for `test`, and the run's record names the amended file's hash. **Not run:** a bench.

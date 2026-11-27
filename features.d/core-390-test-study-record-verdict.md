@@ -1,0 +1,1 @@
+| A study record made for a test in a Test run carries the test's verdict, the images, identities and `*IDN?` replies it ran against, each prompt's answer scope, and `run.json` as a subject | Built — **host-side only: proven over the real `drive`, `seal` and a key; no bench; Core not deployed; native Windows build unrun** | unit | 145 |

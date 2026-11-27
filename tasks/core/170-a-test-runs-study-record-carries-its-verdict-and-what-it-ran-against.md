@@ -1,6 +1,6 @@
 # 170 — A test run's study record carries its verdict and what it ran against
 
-**State:** claimed by agent/core/170-a-test-runs-study-record-carries-its-verdict-and-what-it-ran-against, 2026-11-26 17:43
+**State:** done — amended each test study record with its verdicts, smoke findings, prompt scopes and run.json (decision 145); host-side, unit-tested
 **Source:** EMB-369 — a Test run leaves no signed record of itself and no run-log entry per test
 **Issue:** EMB-369
 **Scope:** core
@@ -48,12 +48,12 @@ decision there, beside it. Do not grow
 
 ## Done when
 
-- [ ] A fixture Test run's per-test record carries the verdict, the image
+- [x] A fixture Test run's per-test record carries the verdict, the image
       status of the DUT and each bench board, the identities and `*IDN?`
       replies, and each prompt answer's scope, with `run.json` among its
       subjects.
-- [ ] A plain study run's record is unchanged, byte for byte in its predicate
+- [x] A plain study run's record is unchanged, byte for byte in its predicate
       fields.
-- [ ] The record still verifies with the standard DSSE check.
-- [ ] `interfaces/signing.md` amended.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The record still verifies with the standard DSSE check.
+- [x] `interfaces/signing.md` amended.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
