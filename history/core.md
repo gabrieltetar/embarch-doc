@@ -41,6 +41,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core's machine data directory now comes from embarch-topology's local_machine_data_dir(); its own resolver is gone (core decision 53).
 - A --service Core flashes only uploaded bytes or files in its staging folder, refusing links, `..` and outside paths; a development Core keeps firmware_path (core decision 160).
 - Core answers 503 to every gated call but a cancel while it cannot write its call log, starts no new study step, and runs the safe-off in place of an unloggable teardown (decision 158, EMB-328).
 - `embarch-core install --service` registers only a binary listed in installed-release.json, under Core's own account; plain `install` registers nothing; `update` refuses a service. Decision 157.
