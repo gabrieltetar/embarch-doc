@@ -1,7 +1,6 @@
 # 226 — `embarch-core-client` takes Core's wire types from Core's wire crate
 
-**State:** blocked — waits on `tasks/core/194`, which creates the crate this depends on
-**Unparks when:** `core/194` has landed
+**State:** open — `core/194` landed the crate (`embarch-core/crates/embarch-core-wire`, core decision 164, `embarch-core` `a7cec14`)
 **Source:** EMB-295 — Core's wire types are hand-mirrored in core-client with uneven drift guards
 **Issue:** EMB-295
 **Scope:** api
@@ -41,7 +40,19 @@ half lands first.
 
 - `crates/embarch-core-client/Cargo.toml`, `src/study_events.rs`,
   `src/client.rs`, `src/lease_gate.rs`
-- `embarch-core/crates/embarch-core-wire` (read only), and core's new decision
+- `embarch-core/crates/embarch-core-wire` (read only), and core decision 164
+  (`embarch-core/decisions/wire.md`), whose last paragraphs say what the
+  client keeps. Two things it settled differently from this file's first
+  draft: the crate depends on `serde`, `serde_json` and
+  `embarch-study-designer` (feature `alloc`), not `serde` alone; and the
+  shared `StudyEvent` is strict, with no unknown-variant fallback, because the
+  client's frame decoder (`StudyStreamItem::Unrecognized`) already keeps an
+  unknown frame's data. **Decide and write down** the older-Core tolerance:
+  the client's mirrors made `StepCompleted`'s three stamps, `core_rx_utc_ms`
+  on `SampleBatch`, `GattTranscript` and `StreamText`, and four newer hello
+  fields `Option` with `#[serde(default)]`; the shared types require them, so
+  an older Core's frame would read as `Unrecognized`. Either accept that and
+  say so in decision 49, or keep a lenient client type for exactly those.
 - **Dispatch setup:** the path dependency is
   `../../../embarch-core/crates/embarch-core-wire`, so the api worktree's parent
   needs an `embarch-core` link to the main checkout. So will every later
