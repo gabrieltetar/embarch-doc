@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `embarch-api person call-log-quota <size>` raises the call log's quota with the person's token after a typed `yes`; `call-log` now prints `size_bytes` and `quota_bytes` (api decision 141).
 - A new MCP tool and CLI verb, resume_test / resume-test, prepare a new Test run of an interrupted run's pending tests through Core's resume route; the go stays the engineer's (decision 148).
 - A Test report prints each limit's decision rule, `w` and `U`, and `verify` rebuilds those fields from `run.json` (decision 147).
 - `verify` checks a Test run's zip: every verdict recomputed through the shared crate, report-data rebuilt, both exports regenerated (decision 146).
