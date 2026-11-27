@@ -1,7 +1,6 @@
 # 192 — Core takes its machine data directory from `embarch-topology`
 
-**State:** blocked — waits for the shared resolver
-**Unparks when:** tasks/topology/074
+**State:** open
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** core

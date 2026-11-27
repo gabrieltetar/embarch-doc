@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Topology: one public `machine_data_dir(class)` resolver plus WSL2 env-var and path helpers; an unset ProgramData is an error, never a silent literal (decision 52).
 - A declared instrument can carry its metrology (resolution, `U`, `k`, basis, range) and its calibration, checked field by field ([decision 51](../embarch-topology/decisions/instruments.md)).
 - Topology: an instrument's and a signal's optional safe_off line(s) are declared and checked (decision 49).
 - embarch-topology's release.yml signs every archive keylessly with cosign in one `sign` job and uploads a .sigstore.json bundle beside each ([spec](../embarch-topology/spec.md)).
