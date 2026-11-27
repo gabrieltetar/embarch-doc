@@ -1,6 +1,6 @@
 # 179 — A Test run's `report-data.json` states each limit's decision rule
 
-**State:** claimed by agent/core/179-a-test-runs-report-data-states-each-limits-decision-rule, 2026-11-26 21:46
+**State:** done — report-data tests[] carry decision_rule and limits with w and U (decision 154)
 **Source:** EMB-585 — a Test run's report-data carries no per-limit decision rule
 **Issue:** EMB-585
 **Scope:** core
@@ -53,10 +53,10 @@ twice in a row a worker cited a neighbouring decision's.
 
 ## Done when
 
-- [ ] `report-data.json` of a Test run lists, per test, each limit with its
+- [x] `report-data.json` of a Test run lists, per test, each limit with its
       decision rule and w (and `U`).
-- [ ] A unit test over a fixture run with a guard band and one with simple
+- [x] A unit test over a fixture run with a guard band and one with simple
       acceptance asserts both.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decision and interface updated; `changelog.d/` fragment.
+- [x] Decision and interface updated; `changelog.d/` fragment.

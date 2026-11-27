@@ -54,7 +54,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The smoke check before a bench's first test](decisions/smoke-check.md) | 143 | 4.0 KB |
 | [A Test run's own signed record, and each study's amended with its test](decisions/test-run-record.md) | 144, 145, 146 | 7.5 KB |
 | [A manual verdict, a unit's serial and the person's name](decisions/manual-verdicts.md) | 147 | 3.0 KB |
-| [A Test run's publish: report data and the manifest](decisions/test-run-publish.md) | 148, 149, 150 | 7.6 KB |
+| [A Test run's publish: report data and the manifest](decisions/test-run-publish.md) | 148, 149, 150, 154 | 8.8 KB |
 | [Keeping the host awake through a Test run](decisions/test-run-awake.md) | 152 | 2.2 KB |
 | [An interrupted Test run and its resume](decisions/test-run-resume.md) | 153 | 4.1 KB |
 
