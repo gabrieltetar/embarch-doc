@@ -1,6 +1,6 @@
 # 168 — Core keeps the host awake through a Test run
 
-**State:** open
+**State:** claimed by agent/core/168-core-keeps-the-host-awake-through-a-test-run, 2026-11-26 20:59
 **Source:** EMB-371 — a Test run can be cut short by the host going to sleep
 **Issue:** EMB-371
 **Scope:** core
