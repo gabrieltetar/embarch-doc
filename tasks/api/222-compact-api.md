@@ -1,6 +1,6 @@
 # 222 — compact `embarch-api/decisions/client-crate.md`
 
-**State:** claimed by agent/api/222-compact-api, 2026-11-27 05:45
+**State:** done — split 137, 139, 150 verbatim into client-crate-types.md; client-crate.md 11832 to 8427 B
 **Scope:** api
 **Hardware:** none
 **Owner:** no
