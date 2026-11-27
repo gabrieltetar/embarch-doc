@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core serves a Test run's revision files at GET /test-runs/{id}/publish/{revision}/files/{name}, as a Study's route does (decision 150).
 - Core publishes a Test run: report-data with the requirement roll-up and every run on the unit, then one signed manifest over every study run's files (EMB-373).
 - embarch-core keeps a manual verdict, a unit's serial and the person's name in its run log; the agent's verdict is relayed ([decision 147](../embarch-core/decisions/manual-verdicts.md)).
 - Core signs a Test run's own record as it ends and enters one run-log entry per test and one for the run; its studies are held until the run is published (decision 144).
