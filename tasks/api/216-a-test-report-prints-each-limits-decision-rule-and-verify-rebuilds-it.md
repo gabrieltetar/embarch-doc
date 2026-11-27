@@ -1,6 +1,6 @@
 # 216 — A Test report prints each limit's decision rule, and `verify` rebuilds it
 
-**State:** claimed by agent/api/216-a-test-report-prints-each-limits-decision-rule-and-verify-rebuilds-it, 2026-11-26 22:02
+**State:** done — decision 147: Test PDF prints limits, verify check 6 rebuilds decision_rule and limits
 **Source:** EMB-588 — A Test report omits each limit's decision rule, and verify skips it
 **Issue:** EMB-588
 **Scope:** api
@@ -84,15 +84,15 @@ code comments. Two recent units cited a neighbour's number.
 
 ## Done when
 
-- [ ] A fixture Test zip carrying both fields passes `verify`; the same zip
+- [x] A fixture Test zip carrying both fields passes `verify`; the same zip
       with one limit's `w` altered in `report-data.json` fails check 6 naming
       the test.
-- [ ] The Test PDF prints each limit's rule, `w` and `U` ("U not declared"
+- [x] The Test PDF prints each limit's rule, `w` and `U` ("U not declared"
       where `u_declared` is false), the simple-acceptance sentence, and no
       longer says the per-limit rule is not carried.
-- [ ] A Study zip still passes `verify` as today.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] A Study zip still passes `verify` as today.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] Decision written; 144 and `interfaces/publish.md` trimmed; `changelog.d/`
+- [x] Decision written; 144 and `interfaces/publish.md` trimmed; `changelog.d/`
       fragment; the `api-360` feature row's caveat if it names the per-limit
       rule as missing.
