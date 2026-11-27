@@ -1,6 +1,6 @@
 # 227 — the Test-run verifier reads the attestation by the record's release
 
-**State:** open
+**State:** claimed by agent/api/227-the-test-run-verifier-reads-the-attestation-by-the-records-release, 2026-11-27 04:17 — reserve: api decisions/client-crate.md 456 B left (api/222), you should not need it; verify-report.md is not in reserve
 **Source:** EMB-332 — a report cannot say which Core signed it; found by `api/225`'s worker and reviewer
 **Issue:** EMB-332
 **Scope:** api
