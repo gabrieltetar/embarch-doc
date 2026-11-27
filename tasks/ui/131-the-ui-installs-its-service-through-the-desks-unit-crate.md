@@ -1,7 +1,6 @@
 # 131 — the ui installs its service through the desk's unit crate
 
-**State:** blocked — waits on `tasks/desk/047`, which makes the crate this calls
-**Unparks when:** `desk/047` has landed
+**State:** open — `desk/047` landed the crate this calls (`embarch-desk/crates/embarch-user-unit`, desk decision 94)
 **Source:** EMB-302 — the systemd user-unit writer exists twice, in `embarch-desk` and `embarch-ui`
 **Issue:** EMB-302
 **Scope:** ui
@@ -32,7 +31,13 @@ hardware.
 ## Where to look
 
 - `src/service.rs`
-- the crate `tasks/desk/047` adds under `embarch-desk/` (read only)
+- `embarch-desk/crates/embarch-user-unit/src/lib.rs` (read only): `Unit`,
+  `unit_text`, `unit_path`, `install`, `uninstall`, `status`; `Unit.args` is
+  empty for the ui, `Unit.vars` carries `CARRIED` in order
+- **Dispatch setup:** the path dependency is
+  `../embarch-desk/crates/embarch-user-unit`, so the ui worktree's parent
+  needs an `embarch-desk` link to the main checkout, which the dispatch table
+  in `.claude/leg.md` does not list yet
 - `embarch-doc/embarch-ui/decisions/launcher.md`
 
 ## Done when
