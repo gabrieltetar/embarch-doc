@@ -1,6 +1,6 @@
 # 074 — One resolver for the machine data directory
 
-**State:** open
+**State:** claimed by agent/topology/074-one-machine-data-directory-resolver, 2026-11-27 01:12
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** topology
