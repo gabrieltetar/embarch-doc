@@ -1,6 +1,6 @@
 # 192 — Core takes its machine data directory from `embarch-topology`
 
-**State:** claimed by agent/core/192-core-takes-its-data-directory-from-topology, 2026-11-27 02:57
+**State:** done — Core calls topology local_machine_data_dir; own resolver deleted
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** core
@@ -43,10 +43,15 @@ reserve under `tasks/core/186`: do not grow them. Decisions 110 (`signing`),
 
 ## Done when
 
-- [ ] Core has no data-directory resolver of its own; it calls topology's.
-- [ ] Existing token-store tests pass unchanged, or changed only where the
+- [x] Core has no data-directory resolver of its own; it calls topology's.
+- [x] Existing token-store tests pass unchanged, or changed only where the
       unset policy moved, and the decision says why.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment. The Windows arm cannot be built
       under WSL (hidapi blocks the crate): type-check it as `core/185` did, and
       say so.
+
+## Debts
+
+- Windows arm not built (WSL, hidapi blocks the crate; native build cannot run from a worktree). The only change on it is deleting `local_data_dir()`'s `cfg(windows)` body; every caller now calls `embarch_topology::local_machine_data_dir()`, which topology builds and tests on both arms. Needs one native Windows `cargo build` from the main checkout after landing.
+- Unset policy: topology 74 keeps the error (empty `ProgramData` is now also an error); Core's behaviour is unchanged otherwise. No token-store test changed.

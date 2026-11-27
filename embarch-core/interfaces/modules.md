@@ -15,7 +15,7 @@
 | `dev_bench_log.rs` | the bench's own daily-rolling debug file, plus `classify()` and Core's boundary markers |
 | `service.rs` | registration via `service-manager`; a `windows` submodule for the real SCM dispatch |
 | `elevate.rs` | `is_elevated()`/`ensure_elevated_or_fallback()` |
-| `token_store.rs` | resolves/generates/persists the agent and person token files (decision 109), `Scope`, `Tokens`; `local_data_dir()` |
+| `token_store.rs` | resolves/generates/persists the agent and person token files (decision 109), `Scope`, `Tokens` |
 | `measurements.rs` | `measurements.json`: the declared reducers over a study's captures, as it ends (decision 113) |
 | `signing.rs` | the Ed25519 key, `record.dsse.json` (DSSE over an in-toto Statement), the declarations ledger, `POST /auth/challenge` (decision 110) |
 | `call_log.rs` | `call-log.jsonl`: the layer that chains one entry per gated call, refusals included, folds repeated reads, names each answer's entry in headers; `GET /call-log` (decision 122) |
