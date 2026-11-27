@@ -1,6 +1,6 @@
 # 121 — `setup` and `doctor` stop naming a Core install that registers nothing
 
-**State:** claimed by agent/umbrella/121-setup-and-doctor-stop-naming-a-core-install-that-registers-nothing, 2026-11-27 00:43
+**State:** done — setup runs no plain install and doctor names install-core / install --service --bind (decision 71)
 **Source:** EMB-339 — the finding comment of 2026-11-27 (Core decision 157, `core/183`)
 **Issue:** EMB-339
 **Scope:** umbrella
@@ -59,9 +59,9 @@ still in reserve.
 
 ## Done when
 
-- [ ] `setup`'s Local arm no longer prints "Installed and started." for a call
+- [x] `setup`'s Local arm no longer prints "Installed and started." for a call
       that registered nothing, tested.
-- [ ] No fix line in `doctor` names `install --bind` without `--service` as a
+- [x] No fix line in `doctor` names `install --bind` without `--service` as a
       registration step; the tests assert the new text.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.

@@ -10,7 +10,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 |---|---|---|
 | [decisions/release.md](decisions/release.md) | 1, 2, 27, 29 | The binary, its name, and the tag-versus-manifest assertion |
 | [decisions/install.md](decisions/install.md) | 3, 4, 5, 14, 28, 54 | Core as an autostarting service, `up`/`down` as a fallback, the release archive, and what `setup` really writes |
-| [decisions/install-core.md](decisions/install-core.md) | 61, 69, 70 | `install-core` verifies a signed release in an admin-only staging folder, refuses a downgrade, records what it installed (with `binary_sha256`), and installs Core under its own account (Windows, Linux) |
+| [decisions/install-core.md](decisions/install-core.md) | 61, 69, 70, 71 | `install-core` verifies a signed release in an admin-only staging folder, refuses a downgrade, records what it installed (with `binary_sha256`), installs Core under its own account (Windows, Linux), and is the only route `setup` and `doctor` name for a registration |
 | [decisions/setup-reversal.md](decisions/setup-reversal.md) | 21, 25, 58 | `setup --dry-run` prints the plan first, `setup --uninstall` reverses it, and `setup` installs the desk's service and plugin |
 | [decisions/topology.md](decisions/topology.md) | 6, 7, 8, 9, 30, 38 | Detecting where Core is, elevation, the WSL2 loopback ambiguity, and which `embarch-core` a `wsl-host` machine actually runs |
 | [decisions/integration.md](decisions/integration.md) | 10, 12, 59, 60 | Where a repo's `embarch/` config lives, how little of it anyone else can see, and the skill `init` installs |

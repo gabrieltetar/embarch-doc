@@ -15,7 +15,7 @@ Ordered; each emits pass/warn/fail plus a concrete fix line.
 | # | Check |
 |---|---|
 | 1 | Both binaries found; versions match the suite manifest (a mismatch is a **warn**, `manifest-mismatch`, decision 14). **A missing `embarch-core` is a warn where none belongs** (`wsl-host`, `remote`). Each binary is found by a **reading** where one exists, never `PATH` alone (decisions 38, 42) |
-| 2 | Core service installed, and running. The fix line for `wsl-host` and `remote` carries `install --bind`, the same address `setup` passes for the class |
+| 2 | Core service installed, and running. The fix line for `wsl-host` and `remote` names `install-core` then `install --service --bind` (decision 71); a plain `install` registers nothing |
 | 3 | Core reachable — reports **which candidate won** and the resolved class |
 | 4 | Token resolves and matches (a `200`, not a `401`) |
 | 5 | At least one probe visible — a count off `/status`. Zero is a warn, **except on Linux with Core on this machine**, where a known debug-probe vendor ID in `/sys/bus/usb/devices` is **Fail — attached but not permitted**, with the udev fix line (decision 18) |

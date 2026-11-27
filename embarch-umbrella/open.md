@@ -10,7 +10,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 
 - **Decision 26's `--prune` stays deferred by choice.** Its prerequisite, `build_dir_name` on `list-targets` (`embarch-api` decision 77), covers the default build only. [Decision 26](decisions/prune-policy.md).
 
-- **Check 17's reworded fix lines and stopped arm are unverified live** (decision 22, `umbrella/095`). **Hardware debt, owner-run** (reinstalls the service): with Core 106 deployed, register `--bind 127.0.0.1`, stop it, run `doctor` in the guest: `bound-narrow` says "stopped and bound narrow"; the printed `install --bind 0.0.0.0` then widens it. `bind-too-narrow` is unmeasured from a mirrored guest, as is whether `embarch setup` gets past an existing registration.
+- **Check 17's reworded fix lines and stopped arm are unverified live** (decision 22, `umbrella/095`). **Hardware debt, owner-run** (reinstalls the service): with Core 106 deployed, register `--bind 127.0.0.1`, stop it, run `doctor` in the guest: `bound-narrow` says "stopped and bound narrow"; the printed `install --service --bind 0.0.0.0` then widens it. `bind-too-narrow` is unmeasured from a mirrored guest.
 
 - **`apply_plan` clears `saved.host` on a non-`remote` `setup` conclusion** ([decision 51](decisions/sticky-host.md)). **Hardware debt:** decision 51's three-step protocol on a real machine.
 
