@@ -1,6 +1,6 @@
 # 196 — every route that touches a board names it in the call log
 
-**State:** open
+**State:** claimed by agent/core/196-every-route-that-touches-a-board-names-it-in-the-call-log, 2026-11-27 05:01
 **Source:** embarch-core/open.md — "The call log's `board` is named by four handlers only (`/flash`, `/reset`, the two live reads; 122): `/bootload`, `/validate`, exchange and capture leave it null."
 **Scope:** core
 **Hardware:** none
