@@ -1,6 +1,6 @@
 # 197 — compact `embarch-core/decisions/call-log.md`
 
-**State:** open
+**State:** claimed by agent/core/197-compact-core, 2026-11-27 05:41
 **Scope:** core
 **Hardware:** none
 **Owner:** no
