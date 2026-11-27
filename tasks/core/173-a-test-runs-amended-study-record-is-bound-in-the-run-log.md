@@ -1,6 +1,6 @@
 # 173 — A Test run's amended study record is bound in the run log
 
-**State:** claimed by agent/core/173-a-test-runs-amended-study-record-is-bound-in-the-run-log, 2026-11-26 18:14
+**State:** done — test_run entry binds the amended hashes; the amend stays (decision 146)
 **Source:** EMB-579 — a Test run's amended study record no longer matches its chained run-log hash
 **Issue:** EMB-579
 **Scope:** core
@@ -49,8 +49,8 @@ yes): do not write it.
 
 ## Done when
 
-- [ ] A Test run's study record's final hash is bound in the chained log, or the
+- [x] A Test run's study record's final hash is bound in the chained log, or the
       amend is removed; the decision says which and why.
-- [ ] A test checks a Test-run study's bound hash against the file on disk.
-- [ ] The interface doc names the binding entry.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] A test checks a Test-run study's bound hash against the file on disk.
+- [x] The interface doc names the binding entry.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).

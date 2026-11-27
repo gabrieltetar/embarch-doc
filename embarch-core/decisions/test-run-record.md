@@ -22,6 +22,19 @@
 
 `predicate.test`: `run_id`, `test_id`, `bench`, `definition_hash`, `run_index` and `run_count`; `run` (this study's `{verdict, reason, qualifiers}`; null for a study with no judged run, as one Core could not run) and `verdict` (the test's); `note`; from the bench's smoke check (143) `unit_key`, `images` (DUT and each bench board: status and its reason), `identities` (hardware IDs) and `instruments` (each `*IDN?` reply), all null for a bench never checked; `prompts` (per prompt step of the study's `events.json`: `list`, `step`, `prompt_id`, `detail`, `answered_by`, `answered_scope`, the token's scope, 138). `observed.behaviours` stays where 110 put it.
 
+**Binding.** The amended file's hash is bound in the chain by the `test_run` entry: [146](#146--a-test-runs-test_run-entry-binds-each-studys-amended-record-hash-the-amend-stays).
+
 **Not built:** a hello line's reply is not carried. An amend that fails is logged and leaves the record as sealed, without `test`.
 
 **Measured:** a unit test over the real `drive`, `seal` and a key: the amended record verifies under the independent DSSE check, equals the sealed one but for `test`, and the run's record names the amended file's hash. **Not run:** a bench.
+
+### 146 — A Test run's `test_run` entry binds each study's amended record hash; the amend stays
+
+`tasks/core/173`, EMB-579. Decision 111 chains a study's `record.dsse.json` hash in its `run` entry when the study ends, and 145 then re-signs that file at the Test run's end. The `run` entry cannot be rewritten, so for a study made inside a Test run it holds the hash of a file that no longer exists. Two ways out, and **the amend stays**:
+
+- **Remove the amend** and carry the verdicts only in the Test run's own record (144). Rejected: the study's own record is what a study is published and handed on as (`notes/hil/03-test.md`, "A run", item 10), and a verdict beside it that the signed study does not state is an unsigned claim about the study. Re-signing is safe because the Statement is kept byte for byte, the key is Core's, and the amended record is bound in the chain; it is a second signed state of one file, not a forgery of the first.
+- **Bind the amended hash** (chosen). The `test_run` entry (144) gains `study_records`: `[{study_id, record_sha256}]`, one per study run the Test run made, each hash taken **after** `amend_studies` ran (null when a study left no record). `study_ids` stays, derived from it, and retention still reads it. The entry is appended after the amends, so the chain recomputes over every entry as before and no entry is rewritten. A study's `run` entry keeps the sealed hash it saw, which is true of the file at that moment.
+
+**The binding entry of a study's record** is the latest `test_run` entry whose `study_records` names it with a non-null hash; failing that, its `run` entry (a plain study, or a Test-run study whose amend or signing failed, where the file is still as sealed). That is `RunLog::bound_record_sha256`. Readers of a record's logged hash and what each reads now: `GET /study/{id}/log` answers it as `record_sha256` beside the `run` entry; `report-data.json`'s `record_sha256` (publish, 118) reads it; publish's check that a study is signed still reads the `run` entry's non-null hash, which is true either way. A Core that stops after the `run` entry and before the `test_run` entry leaves the sealed hash bound and the file amended or not; the run is then sealed `interrupted` at the next start (144), and its studies are not amended.
+
+**Measured:** unit tests over the real `drive`, `seal`, a key and a run log: the `test_run` entry's study hash equals the amended file on disk and `bound_record_sha256` returns it; a plain study is bound by its `run` entry, then by a later `test_run` entry once its file is replaced; the chain verifies. **Not run:** a bench.

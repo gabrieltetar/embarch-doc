@@ -25,3 +25,5 @@ A report must be checkable against a record the agent that wrote it could not qu
 **Publish** is M1.8's and M1.10's; this unit gives `POST /study/{id}/published` `{manifest_sha256}` (either token, the scope recorded) and `GET /study/{id}/log` (the run's entry, its latest publish and discard, the head), tested with a fixture hash.
 
 **Measured:** the agent's discard of a `Fail` and a `TimedOut` run is refused `403` over HTTP with the files and the log untouched; the person's succeeds with the entry and capture hash still in place; the agent may discard a clean unpublished run and not a published one.
+
+A Test-run study's amended record is bound by its `test_run` entry: [146](test-run-record.md).
