@@ -1,6 +1,8 @@
 # 226 — `embarch-core-client` takes Core's wire types from Core's wire crate
 
-**State:** claimed by agent/api/226-core-client-takes-cores-wire-types-from-cores-wire-crate, 2026-11-27 04:31
+**State:** blocked — three of five families from embarch-core-wire; StudyEvent and hello kept lenient, consumers must adapt first (EMB-598)
+
+**Unparks when:** EMB-598 lands: embarch-ui, umbrella and api cli adapted to the shared StudyEvent
 **Source:** EMB-295 — Core's wire types are hand-mirrored in core-client with uneven drift guards
 **Issue:** EMB-295
 **Scope:** api
@@ -71,10 +73,25 @@ half lands first.
 ## Done when
 
 - [ ] The five families come from `embarch-core-wire`; the client's copies and
-      the skipping `lease_gate.rs` test are gone.
-- [ ] No public name the client exports today is gone (the supervisor builds
+      the skipping `lease_gate.rs` test are gone. **Three of five:** the load
+      answer and `LEASE_GATED` are, and the skipping test is gone; `StudyEvent`
+      and the hello answer stay lenient (see Blocked).
+- [x] No public name the client exports today is gone (the supervisor builds
       `embarch-umbrella` and `embarch-ui` against the branch at landing).
-- [ ] Decision 49 records the outcome.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`, `cargo
+- [x] Decision 49 records the outcome.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`, `cargo
       clippy --workspace --all-targets -- -D warnings`); `changelog.d/`
       fragment.
+
+## Blocked
+
+The premise that `embarch-umbrella` and `embarch-ui` build unchanged holds for
+`LoadAnswer`/`LoadSummary`/`LoadSubject` and `LEASE_GATED`, and not for
+`StudyEvent`: the shared type has `u64` stamps (ui reads `Option`, and builds
+`core_rx_utc_ms: None`), a nested `prompt` on `PromptPending`, `answered_by` as an
+enum (ui and this package's `cli.rs` call `.as_deref()` / format it as a string),
+and no `as_pending_prompt`/`prompt_pending`/`study_id`/`kind` (inherent methods
+cannot be added to a foreign type). The hello answer's tolerance of an older Core
+is required by decisions 58/60. So both stay the client's own types, decision 49
+now says so, and two drift tests hold them to `embarch-core-wire` (no checkout to
+be absent). The branch is mergeable as is. Filed EMB-598 for the rest.

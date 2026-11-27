@@ -44,7 +44,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [The shared client crate](decisions/client-crate.md) — extraction, the stack, older-Core parsing, one WSL2 predicate, the retired mirrored `embarch-topology` types, and the two token scopes | 36, 37, 38, 58, 62, 72, 109, 137, 139, 150 | 9.7 KB |
 | [The client crate's funnel and home](decisions/client-crate-funnel.md) — the one auth-and-send funnel, where the crate lives, and the token sent only after a verified challenge | 55, 66, 133 | 6.7 KB |
 | [The bench lease client](decisions/lease.md) — the token in `EMBARCH_LEASE_TOKEN` through the one funnel, renewal inside the MCP server, a lease `409` told apart from the three others, and a session made to hold one | 90, 101 | 7.4 KB |
-| [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, the mirrored `StudyEvent` | 48, 49 | 3.7 KB |
+| [The study event stream](decisions/study-events.md) — `lagged` and a dropped stream as facts, fallback to polling, Core's wire read leniently, drift tests | 48, 49 | 5.7 KB |
 | [The per-machine logfile](decisions/logging.md) — why this crate keeps its own rolling logfile, and why it is per-user | 43 | 2.7 KB |
 | [What a study reads back](decisions/study-reads.md) — seals, schemas, the manifest, and the stream tools that replaced three fixed-channel aliases | 27, 28, 31, 33, 39 | 6.2 KB |
 | [What a study flashes first](decisions/study-reflash.md) — reflash sequencing, three gaps in `run_study`'s own contract, and a bench version Core did not report | 40, 44, 105 | 7.8 KB |
