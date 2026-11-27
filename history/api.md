@@ -39,6 +39,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Core-client token discovery takes the machine data directory from embarch-topology; an unset ProgramData now errors by name instead of falling back to C:\ProgramData.
 - embarch-core-client's /status exposes host_type_schema_version, read from either key (api decision 150).
 - Compacted api spec.md: publish appendix and verify check list moved verbatim to their interface files.
 - `verify` judges a refused Exchange step under the `target` Core recorded on its row; a row without one is still read both ways (decision 149).

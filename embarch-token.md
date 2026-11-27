@@ -34,7 +34,7 @@ Core creates the directory with a plain `create_dir_all` and locks down only the
 
 **Core's signing key sits beside the tokens**: `signing-key`, its Ed25519 key for study run records, created on first start, reused, and locked down like the token file (the Windows `icacls` lockdown unrun). Unlike the tokens it has no environment override, and rotating it changes every later record's `keyid` — [`embarch-core` decision 110](embarch-core/decisions/signing.md).
 
-**WSL2⟷Windows discovery**, since that is this suite's primary split: the API under WSL2 **resolves the real `%ProgramData%` value by shelling out to the Windows side rather than hardcoding `C:\ProgramData`, which could be wrong on a machine that customized it**, then maps the result through WSL2's mount convention to read the same file.
+**WSL2⟷Windows discovery**, since that is this suite's primary split: the API under WSL2 **resolves the real `%ProgramData%` value by shelling out to the Windows side rather than hardcoding `C:\ProgramData`, which could be wrong on a machine that customized it**, then maps the result through WSL2's mount convention to read the same file. `embarch-core-client`'s token discovery does it through `embarch-topology`'s `machine_data_dir` ([decision 52](embarch-topology/decisions/storage.md)), and an unset `ProgramData` is an error that names it, never a literal fallback.
 
 **Scope limit, and it is structural.** This bridges same-machine deployments only — **including the WSL2 split, since both sides are really one physical machine** — not a genuinely separate host. A Core on a real LAN box **has no local file for the API to discover at all**, so that case needs explicit config. **No filesystem convention can bridge two actual machines.**
 
