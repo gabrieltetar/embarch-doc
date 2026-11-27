@@ -22,6 +22,7 @@
 - `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
 
 ### Changed
+- doctor check 11 reads Core's /status `host_type_schema_version`, falling back to the older `study_designer_schema_version`; the new key wins.
 - `setup`/`doctor` name `install-core`, then `install --service --bind`, to register Core; plain `install` registers nothing (decision 71).
 - install-core on Windows now installs Core under its own account by one elevated script, and the record carries binary_sha256 (umbrella decision 69).
 - `deploy-core` installs a development Core beside the service instead of replacing it; `--cancel-run` and `--restore-service` added (decision 68).
