@@ -1,8 +1,7 @@
 # 227 — the Test-run verifier reads the attestation by the record's release
 
-**State:** blocked — the Test-run record has no observed.mode; Core must add it first (EMB-597)
-
-**Unparks when:** Core's Test-run record carries observed.mode (EMB-597)
+**State:** blocked — the Test-run record has no `observed.mode`; `tasks/core/195` adds it (EMB-597). Ready as written once that lands. This task's branch is parked on both remotes (code: no commits; doc: this note), so a resume is `worktree add <path> <branch>`, no `-b`
+**Unparks when:** `core/195` has landed
 **Source:** EMB-332 — a report cannot say which Core signed it; found by `api/225`'s worker and reviewer
 **Issue:** EMB-332
 **Scope:** api

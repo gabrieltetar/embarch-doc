@@ -18,7 +18,9 @@ signed it: its mode, and the release it was installed from.
 `src/test_publish.rs`, so a Test-run report changes with a Study report.
 `embarch-api` accepts the new shape for a Study since `api/225` (check 6) and
 for a Test run once `api/227` lands, which is why this waits on `api/227`. A
-Test-run record's `observed` gains `release` by the same rule as a study's.
+Test-run record's `observed` gains `release` by the same rule as a study's; it
+carries `mode` since `tasks/core/195` (which `api/227` waits on), and a
+Test-run report's `core_mode` is copied from that, as a Study report's is.
 
 The shape is fixed by `tasks/api/225`, which lands first and makes
 `embarch-api`'s check 6 accept it (its task file is retired when it lands;
