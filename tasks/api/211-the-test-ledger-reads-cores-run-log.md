@@ -1,6 +1,6 @@
 # 211 — The test ledger reads Core's run log: test_show, test_pending, test_add
 
-**State:** claimed by agent/api/211-the-test-ledger-reads-cores-run-log, 2026-11-26 19:56
+**State:** done — test_show, test_pending, test_add read Core's run log; ledger_* removed (decision 142)
 **Source:** EMB-379 — the hardware test ledger has not grown into Test
 **Issue:** EMB-379
 **Scope:** api
@@ -67,12 +67,12 @@ than grow those.
 
 ## Done when
 
-- [ ] Against a fake Core, a test whose latest run on the current image failed is
+- [x] Against a fake Core, a test whose latest run on the current image failed is
       pending, and one that passed is not; a relayed manual pass does not clear it.
-- [ ] A mirror row differing from the log is rewritten to the log's.
-- [ ] `test_add` with the agent's token reaches the manual-verdict route and reads
+- [x] A mirror row differing from the log is rewritten to the log's.
+- [x] `test_add` with the agent's token reaches the manual-verdict route and reads
       relayed.
-- [ ] A legacy `embarch/ledger/` row is listed apart; the folder is untouched.
-- [ ] Decision 98 marked superseded, and the interface doc renamed.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
+- [x] A legacy `embarch/ledger/` row is listed apart; the folder is untouched.
+- [x] Decision 98 marked superseded, and the interface doc renamed.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
       --all-targets -- -D warnings`).

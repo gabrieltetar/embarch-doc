@@ -20,7 +20,7 @@
 - [Lease](tools-lease.md) — `lease_take`, `lease_renew`, `lease_release`, `lease_show`; and what `status` now carries
 - [Capture](tools-capture.md) — `capture_start`, `capture_read`, `capture_stop`, `bench_exchange`
 - [Instruments](tools-instruments.md) — `declare_instrument`, `list_instruments`, `remove_instrument`
-- [Ledger](tools-ledger.md) — `ledger_add`, `ledger_show`, `ledger_pending`, and `run_study`'s `test`
+- [Test ledger](tools-test-ledger.md) — `test_show`, `test_pending`, `test_add`, from Core's run log
 - [Tests](tools-tests.md) — `test_propose`, `test_plan`, `run_test`, `test_status`, and the `embarch/tests/` layout
 - [Live log](live-log.md) — the line each hardware call appends to the firmware repo; `call_log`
 - [Publish](publish.md) — `publish`, and the zip it writes

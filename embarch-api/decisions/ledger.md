@@ -1,10 +1,10 @@
 # embarch-api decisions: The hardware test ledger
 
-**Status:** active, 2026-10-28.
+**Status:** retired, 2026-11-26.
 
-Decision 98: what ran, on what, and what waits for which hardware, kept per project and computed rather than hand-written. Landed as `tasks/api/128`, from a field engineer who kept the log and the pending list by hand across 5-6 sessions in 8 days.
+Decision 98: what ran, on what, and what waits for which hardware, kept per project and computed rather than hand-written. Landed as `tasks/api/128`. **Superseded by [142](test-ledger.md)**, which says what of this stands.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Tools: [../interfaces/tools-ledger.md](../interfaces/tools-ledger.md).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). Tools: [../interfaces/tools-test-ledger.md](../interfaces/tools-test-ledger.md).
 
 ### 98 - A per-project ledger under `embarch/ledger/`, a pending view that is computed, and a study row that settles when read
 

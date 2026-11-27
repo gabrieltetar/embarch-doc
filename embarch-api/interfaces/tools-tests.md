@@ -18,6 +18,6 @@
 
 - `embarch/tests/suites/<suite>/suite.json`, and per test `<test id>/test.json` with its study file beside it; a manifest line's `file` is `<test id>/test.json`.
 - `embarch/tests/plans/<plan>.json`.
-- `embarch/tests/results.jsonl`: reserved for the results mirror, not written here.
+- `embarch/tests/results.jsonl`: the run log's mirror, written by [the test ledger tools](tools-test-ledger.md).
 
 Every name is `[a-z0-9][a-z0-9._-]*`. **Not verified on a bench or against a real Core** ([open.md](../open.md)).
