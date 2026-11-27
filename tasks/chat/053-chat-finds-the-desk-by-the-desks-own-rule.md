@@ -1,6 +1,6 @@
 # 053 — chat finds the desk by the desk's own rule when no setting names it
 
-**State:** open
+**State:** claimed by agent/chat/053-chat-finds-the-desk-by-the-desks-own-rule, 2026-11-27 02:13
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** chat
