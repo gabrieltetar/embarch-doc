@@ -15,6 +15,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- The ui's firmware build finds embarch.toml through the shared resolver in embarch-core-client, so it also finds one in an ancestor of the open repo (decision 114).
 - embarch-ui service install now writes its unit through the desk's shared embarch-user-unit crate; unit text unchanged (EMB-302).
 - The desk proxy takes the desk's port, base URL and token path from embarch-core-client::desk_discovery instead of its own copy; behaviour unchanged; ui decision 56.
 - The prompt modal now takes a Test run prompt's kind from the event's prompt_kind and no longer reads the study for it (embarch-ui decision 113).
