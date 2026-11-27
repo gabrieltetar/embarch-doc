@@ -1,6 +1,6 @@
 # 051 — compact `embarch-chat/spec.md` and `open.md`
 
-**State:** claimed by agent/chat/051-compact-chat, 2026-11-26 19:25
+**State:** done — spec.md 9318->9015 B, open.md 4298->3913 B, both out of reserve
 **Scope:** chat
 **Hardware:** none
 **Owner:** no
@@ -15,4 +15,4 @@
 
 ## Done when
 
-- [ ] `spec.md` and `open.md` are out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] `spec.md` and `open.md` are out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
