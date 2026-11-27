@@ -1,6 +1,6 @@
 # 124 — install-core grants start and stop only when the engineer states a container, and `down` refuses under a study
 
-**State:** open
+**State:** claimed by agent/umbrella/124-install-core-grants-start-and-stop-only-for-a-stated-container, 2026-11-27 01:12
 **Source:** EMB-342 — every switch between the service and a development Core needs elevation
 **Issue:** EMB-342
 **Scope:** umbrella
