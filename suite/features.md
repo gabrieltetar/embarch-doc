@@ -76,6 +76,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A Test run Core's restart cut short keeps its finished tests' verdicts, and `POST /test-runs/{id}/resume` prepares a new run of the pending tests, linked by `resumes`, with its own go and smoke check | Built — **host-side only: unit tests over the real `drive`, router and a key; no restart under a run on a bench; Core not deployed; native Windows build unrun; a resumed pair is not published as one zip** | unit | 153 |
 | Core switches every declared instrument and signal `safe_off` line off at each start (after binding the port, before any route) and each graceful stop (SIGTERM, Ctrl-C, SCM Stop), and enters `start` and `stop` in the call log | Built — **host-side only: fake-port unit tests over the real start and stop sequence; no real instrument or bench board, no real signal, SCM Stop unrun; native Windows build unrun** | unit | 156 |
 | Core refuses every gated call but a study's cancel while it cannot write its call log, starts no new host-study step, and keeps a reserved tail for the safe-off | Built — **unit tests with a failing-store seam only; the Windows free-space call compiled on no Linux build; a device study is not stopped** | unit | 158 |
+| Core holds each enrolled board's debug probe while a lease or study is live, and the signed record lists them | Built — **a Core call and a vendor tool close and reopen the probe, so those windows are not covered; fake-opener tests only, no real probe** | unit | 159 |
 
 ## embarch-api
 
