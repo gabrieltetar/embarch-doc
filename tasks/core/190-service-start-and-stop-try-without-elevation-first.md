@@ -1,6 +1,6 @@
 # 190 — Service start and stop try without elevation first
 
-**State:** open
+**State:** claimed by agent/core/190-service-start-and-stop-try-without-elevation-first, 2026-11-27 03:24
 **Source:** EMB-342 — every switch between the service and a development Core needs elevation
 **Issue:** EMB-342
 **Scope:** core
