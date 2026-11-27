@@ -1,6 +1,6 @@
 # 223 — `embarch-core-client` holds the clients' one copy of the desk's address and token rule
 
-**State:** open
+**State:** claimed by agent/api/223-core-client-holds-the-clients-copy-of-the-desks-address, 2026-11-27 02:57
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** api
