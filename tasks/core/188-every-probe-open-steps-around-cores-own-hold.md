@@ -1,6 +1,6 @@
 # 188 — Every probe open steps around Core's own hold
 
-**State:** open
+**State:** claimed by agent/core/188-every-probe-open-steps-around-cores-own-hold, 2026-11-27 00:43
 **Source:** EMB-592 — Validation and the dev-bench gate open a probe Core is holding (reviewer finding on `core/184`)
 **Issue:** EMB-592
 **Scope:** core
