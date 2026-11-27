@@ -1,6 +1,6 @@
 # 205 — declare_instrument passes an instrument's metrology and calibration
 
-**State:** open
+**State:** claimed by agent/api/205-declare-instrument-passes-metrology-and-calibration, 2026-11-26 17:43
 **Source:** EMB-375 — declare_instrument cannot pass an instrument's metrology or calibration
 **Issue:** EMB-375
 **Scope:** api
