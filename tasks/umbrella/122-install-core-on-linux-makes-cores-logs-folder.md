@@ -1,6 +1,6 @@
 # 122 — `install-core` on Linux makes Core's `logs/` folder
 
-**State:** open
+**State:** claimed by agent/umbrella/122-install-core-on-linux-makes-cores-logs-folder, 2026-11-27 00:53
 **Source:** EMB-594 — install-core Linux leaves no writable logs dir for the embarch user (reviewer finding on `umbrella/120`)
 **Issue:** EMB-594
 **Scope:** umbrella
@@ -43,10 +43,27 @@ never touch hardware.
 
 ## Where the doc goes
 
-Amend decision 70 in place (`decisions/install-core.md`, 9,385 B, room).
-`open.md` is 3,818 B, about 100 B under its reserve line: net-neutral or
+Amend decision 70 in place. **`decisions/install-core.md` is now 11,774 of
+12,288 B, in reserve** (out at 11,059 B or less) since `umbrella/121` added
+decision 71, and its debt is `tasks/umbrella/123-compact-umbrella.md`,
+`blocked` on `In flux: yes`. A blocked compaction parks the pass, not the
+reserve, so **this unit pays it** (`DOC-BUDGET.md`, split first): split the
+file **verbatim** by mission before you amend 70 — for example the two
+platform halves, 69 and 70, into a topic file of their own, or 71 into the
+file of its subject — with index rows and every inbound link checked
+(`scripts/check-duplication.py umbrella` first). Carry 123's
+`Must not delete:` list. Once the file is out of reserve, close
+`tasks/umbrella/123` `done` in your commit and leave its `In flux: yes` as
+written. If no verbatim seam fits, say why in 123 and leave it open.
+`open.md` is 3,762 B, about 150 B under its reserve line: net-neutral or
 smaller. **Do not grow:** `agent-runtime#67`, `agent-container#62`,
 `prune-policy#26`, `deploy#32`, `mirrors#20`.
+
+**Two stale lines to correct while you are here** (the `umbrella/121`
+reviewer's note, against decision 71): `spec/commands.md` row 9 still says
+`setup` will "install Core as a service", and `decisions/setup-reversal.md`
+(around line 23) has the dry run naming the `embarch-core install --bind`
+line. Correct both to what 71 says `setup` does now, net-neutral.
 
 ## Done when
 
