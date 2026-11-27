@@ -47,3 +47,7 @@ A background chat gets its chips when it is opened, one call then; the naming ca
 ### 27 — It sees the draft, Claude's last reply, the work item's card, the library's entry names and the chat's context usage
 
 1–3K tokens. **Rejected:** the whole transcript (about 10× the cost), the draft and last reply only.
+
+### 120 — The 💡 checks wait for the cards request on the page's clock, for 15 s
+
+The page posts `cards` 2 s after the draft moves (`CARDS_MS`) and does so under load: the request is late, never missing. After a failure the same page still held it (late in all 6 failures sampled with a 15 s grace). The old wait kept its 5 s deadline on the runner's clock between polls, so one slow driver answer (the poll's script had run before the post, its reply came back seconds later) ended it with no further poll; a 6 s stall of the runner after the draft is typed fails the old wait on all five 💡 checks and passes the new. `waitAssist` is now one async script polling the page's own posts against a deadline on the page's clock, 15 s. A starved page was also seen posting over 5 s late (11 of 20 runs in one burst; cause not isolated, the machine was saturated by other work). [Measured: 6 of 12 loaded runs failed before; the cause was timed under 24 busy loops with 4 to 10 parallel runs; 20 loaded runs pass after.] **Rejected:** a shorter `CARDS_MS` (it changes the product for the test), a product change (the post is sent every time).
