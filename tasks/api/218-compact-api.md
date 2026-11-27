@@ -1,6 +1,6 @@
 # 218 — compact `embarch-api/spec.md`
 
-**State:** open
+**State:** claimed by agent/api/218-compact-api, 2026-11-26 23:43
 **Scope:** api
 **Hardware:** none
 **Owner:** no
