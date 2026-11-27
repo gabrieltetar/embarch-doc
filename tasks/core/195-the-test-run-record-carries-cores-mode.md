@@ -1,6 +1,6 @@
 # 195 — the Test-run record carries Core's mode
 
-**State:** open
+**State:** claimed by agent/core/195-the-test-run-record-carries-cores-mode, 2026-11-27 04:31
 **Source:** EMB-597 — the Test-run record carries no `observed.mode`; found by `api/227`'s worker
 **Issue:** EMB-597
 **Scope:** core
@@ -49,6 +49,8 @@ verifier), then `core/193` (the attestation).
   `interfaces/signing.md`
 - **Size:** `spec.md` is 31 B under its reserve line; you should not need it.
   `decisions/signing.md`'s decision 110 is over its own limit; do not grow it.
+  No core file is in reserve at dispatch. Also over their own limits, so do
+  not grow them: 127, 95, 133, 93, 128.
 
 ## Done when
 
