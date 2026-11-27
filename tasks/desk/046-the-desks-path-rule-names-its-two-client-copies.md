@@ -1,6 +1,6 @@
 # 046 — the desk's path rule names its two client copies
 
-**State:** open — both copies have landed: the Rust one in `api/223` (`embarch-core-client::desk_discovery`, api decision 151), chat's in `chat/053` (`src/desk/rule.ts`, chat decision 124)
+**State:** claimed by agent/desk/046-the-desks-path-rule-names-its-two-client-copies, 2026-11-27 03:24 — reserve: desk decisions/built.md 415 B left (desk/048)
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** desk
