@@ -1,6 +1,6 @@
 # 221 — `embarch-core-client` takes the machine data directory from `embarch-topology`
 
-**State:** claimed by agent/api/221-core-client-takes-the-data-directory-from-topology, 2026-11-27 02:13
+**State:** done — token discovery uses topology machine_data_dir; own resolver and WSL helpers deleted
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** api
@@ -49,8 +49,8 @@ gap), drop a `status.d/` fragment naming it.
 
 ## Done when
 
-- [ ] Token discovery calls topology's resolver; the crate's own resolver and
+- [x] Token discovery calls topology's resolver; the crate's own resolver and
       WSL helpers are gone; an unset `ProgramData` errors by name.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`, and the crate under each feature set its consumers build it
       with, per `gate.md`); decision updated; `changelog.d/` fragment.
