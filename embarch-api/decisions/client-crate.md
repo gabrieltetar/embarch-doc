@@ -56,11 +56,11 @@ Decisions 37/38 accepted six hand-written copies of `embarch_topology::hardware`
 
 `PendingPrompt` gains `kind` (`embarch_study_designer`'s `PromptKind`), `observation` and `switched_on` (a new `SwitchedOn {target, line, step}`), each `#[serde(default)]` and skipped when absent or empty, so a host study's prompt reads and writes the bytes it did; `PromptAnswerRequest` gains `value`, skipped when `None`. `observation` is a `serde_json::Value`: Core's shape is the designer's (`{name, answers?, number?}`) and a surface only reads it. `value` is a string (a declared choice) or a number, `confirmed` only ([core 138](../../embarch-core/decisions/host-prompt.md)).
 
-**The event has no `kind`.** Core flattens the prompt onto `PromptPending`, whose stream tag is also `kind`, and serde refuses a tagged variant that declares a field of that name. `StudyEvent::PromptPending` therefore carries `observation` and `switched_on` only; a prompt's kind is read from `GET /study/{id}`'s `pending_prompt`, which a follower polls anyway. `as_pending_prompt` yields `kind: None`. A Test run's event with both keys is refused by the client as a duplicate field; filed against Core (EMB-577).
+**On the event it is `prompt_kind`** ([core 151](../../embarch-core/decisions/host-prompt.md); the stream's tag is `kind`): `StudyEvent::PromptPending` carries it, optional, and `as_pending_prompt` and `prompt_pending` pass it both ways (`suite/065`). A Core older than 151 writes two `kind` keys, still refused as a duplicate field.
 
-**Source-breaking for struct literals:** a caller building `PromptAnswerRequest` names `value: None`; the three in this repo do.
+**Source-breaking for struct literals:** `value: None` in a `PromptAnswerRequest` (three here), `prompt_kind: None` in a `PromptPending` (`embarch-ui`'s test helper `prompt_event`, fixed in the same pass).
 
-**Measured:** `tests/prompt_types.rs`, a host prompt and answer byte for byte, a Test run's prompt round trip, the event with and without the colliding second `kind` (the client refuses the former). **Not run:** against a live Core's Test run.
+**Measured:** `tests/prompt_types.rs`: a host prompt and answer byte for byte, a Test run's prompt and event round trips with a kind, a host study's event with none. **Not run:** against a live Core's Test run.
 
 ### 139 — The client's `StatusResponse` carries Core's `mode` and `keyid`
 
