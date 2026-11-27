@@ -1,6 +1,6 @@
 # 052 — chat records the VS Code launcher's decisions
 
-**State:** open
+**State:** claimed by agent/chat/052-chat-records-the-vs-code-launchers-decisions, 2026-11-26 22:55
 **Source:** EMB-303 — The launcher's decisions sit in embarch-ui while its code lives in embarch-chat
 **Issue:** EMB-303
 **Scope:** chat
