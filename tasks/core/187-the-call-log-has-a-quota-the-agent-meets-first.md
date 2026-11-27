@@ -1,6 +1,6 @@
 # 187 — The call log has a quota, and the agent's calls meet it first
 
-**State:** open
+**State:** claimed by agent/core/187-the-call-log-has-a-quota-the-agent-meets-first, 2026-11-27 00:53
 **Source:** EMB-329 — The call log has no quota, so the agent's calls can fill the store
 **Issue:** EMB-329
 **Scope:** core
