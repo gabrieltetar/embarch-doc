@@ -1,6 +1,6 @@
 # 188 — Every probe open steps around Core's own hold
 
-**State:** claimed by agent/core/188-every-probe-open-steps-around-cores-own-hold, 2026-11-27 00:43
+**State:** done — probe gates step around the hold (decision 159); hardware debt filed
 **Source:** EMB-592 — Validation and the dev-bench gate open a probe Core is holding (reviewer finding on `core/184`)
 **Issue:** EMB-592
 **Scope:** core
@@ -66,3 +66,11 @@ the shape; number from `scripts/check-task-numbers.py --next core`).
       a study start under a lease, on a real J-Link and a CMSIS-DAP or ST-Link.
 - [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Done
+
+Decision 159 amended in place. Wrapped in `probe_hold::around` (new `around_role` for role-keyed gates): `POST /validate` (role and serial), `POST /probes/enroll` with a `probe_serial`, `enforce_dev_bench_gate` (covers `GET /dev-bench/hello` and the `POST /study` gate, both call sites), and the test executor's `validated_id`. Searched every caller of `validate_*`, `open_probe`, `attach::attach` and `enroll_reporting`; the rest already sit inside `around`. Uncovered, named in 159: `POST /probes/enroll` with no `probe_serial`. Test: `probe_hold::tests::a_role_keyed_gate_closes_its_boards_probe_and_reopens_it` (fake opener); the handlers themselves are not driven under a lease by a test, since the identity gate needs the topology store and a real probe.
+
+## Hardware-verification debt
+
+On a real J-Link and a CMSIS-DAP or ST-Link, with the enrolled board's probe held by a lease: (1) `POST /validate` by role and by `probe_serial` returns a verdict instead of a probe-busy error, and the probe is held again afterwards (`observed.probes_held`); (2) `POST /study` and `GET /dev-bench/hello` under a lease pass the dev-bench gate; (3) `POST /probes/enroll` with a `probe_serial` of a held probe. Also unmeasured: whether a second open fails per probe kind (the premise).
