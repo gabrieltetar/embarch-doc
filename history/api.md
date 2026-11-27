@@ -39,6 +39,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- embarch-core-client's /status exposes host_type_schema_version, read from either key (api decision 150).
 - Compacted api spec.md: publish appendix and verify check list moved verbatim to their interface files.
 - `verify` judges a refused Exchange step under the `target` Core recorded on its row; a row without one is still read both ways (decision 149).
 - The client's `PromptPending` event carries a Test run prompt's kind as `prompt_kind`, read without polling the study (137); `embarch-ui`'s test literal names `prompt_kind: None`.
