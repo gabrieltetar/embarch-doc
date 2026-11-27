@@ -1,6 +1,6 @@
 # 129 — ui points at chat's launcher decisions
 
-**State:** claimed by agent/ui/129-ui-points-at-chats-launcher-decisions, 2026-11-26 23:43
+**State:** done — ui 28 is a pointer to chat 123; 3 and 101 trimmed; spec and indexes cite chat 123
 **Source:** EMB-303 — The launcher's decisions sit in embarch-ui while its code lives in embarch-chat
 **Issue:** EMB-303
 **Scope:** ui
@@ -37,8 +37,8 @@ this is done:
 
 ## Done when
 
-- [ ] Ui decision 28 is a pointer to the chat decision; decision 3 is true about
+- [x] Ui decision 28 is a pointer to the chat decision; decision 3 is true about
       where the launcher lives; 101 points at chat for the launcher's part.
-- [ ] `python3 scripts/check-docs.py` green; `embarch-ui` code untouched unless
+- [x] `python3 scripts/check-docs.py` green; `embarch-ui` code untouched unless
       a comment there cites decision 28 for launcher behaviour.
-- [ ] `changelog.d/` fragment.
+- [x] `changelog.d/` fragment.

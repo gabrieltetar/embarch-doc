@@ -9,7 +9,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | Group | Decisions | What it settles |
 |---|---|---|
 | [decisions/shape.md](decisions/shape.md) | 1, 2, 9 | One consolidated process, zero-build, the repo |
-| [decisions/launcher.md](decisions/launcher.md) | 3, 28, 101 | The VS Code launcher: thin, sideload-only, one strategy behind a registry; Start focuses the window and tab already open, matched on the page title; the UI a systemd user service the launcher drives and never spawns (101) |
+| [decisions/launcher.md](decisions/launcher.md) | 3, 28, 101 | The VS Code launcher: thin, sideload-only, one strategy behind a registry; Start's focus-the-open-tab behaviour moved to `embarch-chat` decision 123 (28 a pointer); the UI a systemd user service the launcher drives and never spawns (101) |
 | [decisions/wiring.md](decisions/wiring.md) | 5, 6, 24, 26 | Every hardware-adjacent call over HTTP to Core; SSE everywhere; the static element-id guard; Core-unreachable as a renderable state, not a crash |
 | [decisions/shell.md](decisions/shell.md) | 4, 46, 56, 57, 63 | The shell's sections, fragment navigation, and the open project as a shell control at the foot of the sidebar |
 | [decisions/page-links.md](decisions/page-links.md) | 58, 59 | A link into the page selects what it names (`#<tab>?<query>`); the tile dialog sends hours only when a person changed them |

@@ -18,4 +18,4 @@ The alternative was weighed on its actual merits: an SPA framework plus a bundle
 
 Matching how `embarch-umbrella`, `embarch-topology` and `embarch-dev-bench` each started: the path dependencies decision 5 requires **needed a real repo to exist before implementation could begin in earnest.**
 
-The VS Code launcher (decisions 3, 28) is its own file: [decisions/launcher.md](launcher.md).
+The VS Code launcher (decisions 3, 28, 101) is its own file: [decisions/launcher.md](launcher.md).
