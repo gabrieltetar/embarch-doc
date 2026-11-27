@@ -1,6 +1,6 @@
 # 047 — the systemd user-unit writer becomes a crate the ui can share
 
-**State:** claimed by agent/desk/047-the-systemd-user-unit-writer-becomes-a-crate-the-ui-can-share, 2026-11-27 02:57
+**State:** done — crate crates/embarch-user-unit, desk installs through it, decision 94
 **Source:** EMB-302 — the systemd user-unit writer exists twice, in `embarch-desk` and `embarch-ui`
 **Issue:** EMB-302
 **Scope:** desk
@@ -59,13 +59,13 @@ and `interfaces.md` where they describe the service install.
 
 ## Done when
 
-- [ ] The unit-text rendering, the quoting and the `systemctl --user` wrapper
+- [x] The unit-text rendering, the quoting and the `systemctl --user` wrapper
       exist once, in a crate in this repo with no dependency beyond `std` and
       `anyhow`, and `embarch-desk service install`, `uninstall` and `status`
       run through it with the same unit text they write today, instance or
       not (a test pins one unit's text before and after).
-- [ ] The adversarial quoting test lives in the crate.
-- [ ] A new desk decision records the home and what stays desk-only.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] The adversarial quoting test lives in the crate.
+- [x] A new desk decision records the home and what stays desk-only.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings` for the desk and for the new crate); `changelog.d/`
       fragment.
