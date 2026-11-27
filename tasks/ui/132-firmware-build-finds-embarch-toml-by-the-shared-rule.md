@@ -1,6 +1,6 @@
 # 132 — firmware build finds `embarch.toml` by the shared rule
 
-**State:** open — `api/224` landed the function this calls (`embarch_core_client::config_discovery::find_config_path`, api decision 152)
+**State:** claimed by agent/ui/132-firmware-build-finds-embarch-toml-by-the-shared-rule, 2026-11-27 04:17 — no ui file is in reserve; the worktree parent links embarch-api, whose core-client carries config_discovery (api decision 152)
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** ui
