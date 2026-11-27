@@ -1,6 +1,6 @@
 # 194 — Core's wire types move into a crate `embarch-core-client` can depend on
 
-**State:** claimed by agent/core/194-cores-wire-types-move-into-a-crate-core-client-can-depend-on, 2026-11-27 03:48
+**State:** done — five wire families live in crates/embarch-core-wire; Core uses them; JSON pinned per family
 **Source:** EMB-295 — Core's wire types are hand-mirrored in core-client with uneven drift guards
 **Issue:** EMB-295
 **Scope:** core
@@ -71,12 +71,26 @@ this shape (shape 4). Topology decision 31 retired six mirrors the same way.
 
 ## Done when
 
-- [ ] The five families are defined once, in `crates/embarch-core-wire`, and
+- [x] The five families are defined once, in `crates/embarch-core-wire`, and
       Core uses them; nothing Core sends changed, and a test per family pins
       its JSON.
-- [ ] The crate depends on `serde` alone and builds by `--manifest-path`.
-- [ ] A new core decision says where Core's wire lives; `interfaces/modules.md`
+- [x] The crate depends on `serde` alone and builds by `--manifest-path`.
+- [x] A new core decision says where Core's wire lives; `interfaces/modules.md`
       names the crate.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`, `cargo
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`, `cargo
       clippy --workspace --all-targets -- -D warnings`); `changelog.d/`
       fragment.
+
+## Outcome
+
+Decision 164 (`embarch-core/decisions/wire.md`) has the design. The five families are in `crates/embarch-core-wire`; Core re-exports them, so no call site moved except four `answer: ...to_string()` ones.
+
+**Departures from the brief, both on purpose:** the crate depends on `serde`, `serde_json` and `embarch-study-designer`, not `serde` alone (the event's payloads are the study-designer's own wire; `serde_json` is `PromptPending`'s flatten, which must stay a `Value` round trip to keep its sorted keys byte for byte). The unknown-variant fallback is not in the type: the client already degrades at its frame decoder (`StudyStreamItem::Unrecognized`), and a `#[serde(other)]` variant would only add a variant Core never sends.
+
+**What `tasks/api/226` must keep on the client side:** the frame decoder and `StudyStreamItem::Unrecognized`; `render_hello_ack` and every caller-side rendering; and an older-Core lenient reading if it wants one, as its own type, because the shared types make required what the mirrors made `Option` (the three `StepCompleted` stamps, `core_rx_utc_ms` on `SampleBatch`/`GattTranscript`/`StreamText`, and `HelloAckResponse`'s four newer fields). Two field types changed for deserializing: `PromptResolved.answer`, `LoadSubject.kind` and `LoadSummary.unit` are `String`. The client's `PendingPrompt`, `SessionPromptInfo` and `SwitchedOn` mirrors can go too, now that the wire crate has them (the client held `observation` as `serde_json::Value`; the shared type is the study-designer's `PromptAnswer`).
+
+**Builds from outside:** a root `cargo build --release` writes `target/release/embarch-core` as before; the release workflow's version awk, `deploy-core`'s rsync and its `cargo build --release` are unaffected (read, not run: no Windows build here).
+
+## Debts
+
+- **Windows native build and a `cross` aarch64 release not run** (`embarch-core` builds natively on Windows only from the main checkout, and there is no Docker here). The wire crate is plain serde, so neither should differ from Linux; run `embarch-umbrella`'s `deploy-core` once after landing.

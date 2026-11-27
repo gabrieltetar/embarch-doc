@@ -25,6 +25,7 @@
 | `test_publish.rs` | a Test run's `report-data.json` (the crate's roll-up, every run on the unit) and its publish over `publish.rs`'s signing; two routes (decisions 148, 149) |
 | `run_log.rs` | `run-log.jsonl`: the chained entry per run, publish and discard, the discard refused by scope, the retention split, four routes (decision 111) |
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
+| `crates/embarch-core-wire` | the JSON a client also reads, defined once and used by Core from here: `StudyEvent` and the prompt types it carries, `HelloAckInfo`, `LoadAnswer`/`LoadSummary`/`LoadSubject`, `LEASE_GATED`. A workspace member; depends on `serde`, `serde_json` and `embarch-study-designer` only (decision 164) |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |
 | `host_study.rs` | `POST /host-studies`, `/study/{id}/cancel`, `/study/{id}/prompt`: the executor, teardown, taps, prompts (95, 98, 105, 107) |
 | `stream_store.rs` | `streams/`, `index.json`, segment rotation, the keep-last-N sweep (sparing a session's `session.keep` directory, decision 125). Holds no column knowledge |
