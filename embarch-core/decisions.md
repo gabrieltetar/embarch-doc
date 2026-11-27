@@ -36,7 +36,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Host-run studies](decisions/host-study.md) | 95, 98, 99 | 8.0 KB |
 | [Bench instruments](decisions/instruments.md) | 104 | 4.4 KB |
 | [A host step's declared number](decisions/host-parse.md) | 131 | 4.3 KB |
-| [Operator prompts in a host study](decisions/host-prompt.md) | 105, 107, 138 | 7.8 KB |
+| [Operator prompts in a host study](decisions/host-prompt.md) | 105, 107, 138, 151 | 9.6 KB |
 | [Signing a study run's record](decisions/signing.md) | 110 | 7.0 KB |
 | [Definitions, premade suites and confirmations](decisions/definitions.md) | 133 | 4.9 KB |
 | [A prepared Test run and its go card](decisions/test-runs.md) | 134 | 3.7 KB |

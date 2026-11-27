@@ -43,3 +43,14 @@ Field use on a USB PD charger board (2026-10-09 to 10-14): the operator typed 25
 - **`switched_on`:** a prompt lists the outputs the energising steps (the crate's `energises`, worked out at the prepare and kept in the run's record as `energising_steps`) last switched on: per target, the last line sent. Core cannot tell an off line from an on one, so it lists the last energising line and does not subtract. A record kept before this has none.
 
 **Measured vs assumed.** Proven over the scripted backend and the real slot; the real backend's kind and `switched_on` through the slot and the run card. **Not run:** a bench, a person's answer from a surface, a real energising step. Session prompts ([127](analog-capture.md)) record no scope in their own record, and a number's declared resolution is not checked.
+
+### 151 — A Test run's `PromptPending` event names its prompt's kind as `prompt_kind`, so `kind` stays the event's tag
+
+EMB-577. `StudyEvent` is tagged by `kind` and the event flattens the pending prompt, whose own `kind` (138) landed on the same object: `serde_json::to_value` kept the last, so the tag was lost, and `embarch-core-client` refused the event as a duplicate field and read the kind from `GET /study/{id}` instead (api 137).
+
+- **On the event only, the prompt's `kind` is written as `prompt_kind`** (`setup`, `action`, `observation`, `clearance`), through a `serialize_with` on the flattened field, so the event has one `kind`: `PromptPending`. **`pending_prompt` on `GET /study/{id}` keeps `kind`**, unchanged, as does the Test run's `waiting_prompt`.
+- **A host study's prompt event is unchanged byte for byte**: its prompt has no kind (138), the field is skipped, and the new key is never written. A session prompt (127) likewise.
+- **Readers found, and what each sees:** `embarch-core-client`'s typed event ignores the unknown `prompt_kind` and now parses a Test run's event, since the duplicate is gone (it reads the kind from the poll until api adopts the key; filed as a follow-up). `embarch-api` CLI follow reads the typed event and is unaffected. `embarch-ui` `live_study.rs` reads the typed event and keeps fetching the kind from `GET /study/{id}` (`add_prompt_kind`); unaffected. The UI browser stub and the api tests build their frames by hand and do not exercise Core's serializer. No raw reader of the event's kind was found.
+- *Rejected:* renaming the status body's key too, which api 137 reads today; and changing the event's tag.
+
+**Measured vs assumed.** Proven by event tests: host (no key), Test run (tag, `prompt_kind`, one ``kind`` in the text), status body (`kind`). **Not run:** the real client against a live Test run's stream.

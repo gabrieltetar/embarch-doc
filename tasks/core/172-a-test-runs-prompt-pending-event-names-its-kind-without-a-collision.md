@@ -1,6 +1,6 @@
 # 172 — A Test run's PromptPending event names its prompt's kind without a collision
 
-**State:** claimed by agent/core/172-a-test-runs-prompt-pending-event-names-its-kind-without-a-collision, 2026-11-26 20:38
+**State:** done — PromptPending names a Test run's prompt kind as prompt_kind; decision 151; EMB-584 filed for the client
 **Source:** EMB-577 — the PromptPending event's flattened prompt kind collides with the event tag
 **Issue:** EMB-577
 **Scope:** core
@@ -55,9 +55,9 @@ its `Must not delete:` items.
 
 ## Done when
 
-- [ ] A Test run's `PromptPending` event carries the prompt's kind under the new
+- [x] A Test run's `PromptPending` event carries the prompt's kind under the new
       key, with one `kind`, the tag; an event test pins it.
-- [ ] A host study's prompt event is unchanged, or the decision says how it
+- [x] A host study's prompt event is unchanged, or the decision says how it
       changed and why.
-- [ ] The interface doc names the key.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The interface doc names the key.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
