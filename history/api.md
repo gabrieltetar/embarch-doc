@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- A Test report prints each limit's decision rule, `w` and `U`, and `verify` rebuilds those fields from `run.json` (decision 147).
 - `verify` checks a Test run's zip: every verdict recomputed through the shared crate, report-data rebuilt, both exports regenerated (decision 146).
 - embarch-api: a Test run's zip carries a JUnit XML and an OCP T&V JSON Lines export mapped from its verdicts; a skip for a gap is `<error type="not_verified">` (decision 145).
 - `publish` takes a Test run id: one zip over every study run's files and a PDF by requirement; the exports, verify and a resumed pair wait (decision 144).
