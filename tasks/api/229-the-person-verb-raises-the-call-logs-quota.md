@@ -1,6 +1,6 @@
 # 229 — the person verb raises the call log's quota
 
-**State:** claimed by agent/api/229-the-person-verb-raises-the-call-logs-quota, 2026-11-27 05:23
+**State:** done — person call-log-quota subcommand, call-log prints size and quota; decision 141 amended; mock Core only
 **Source:** embarch-core/open.md — "No client sends the quota route (161)."
 **Scope:** api
 **Hardware:** none
@@ -59,12 +59,12 @@ refused.
 
 ## Done when
 
-- [ ] The new person subcommand shows size, quota and the request, sends the
+- [x] The new person subcommand shows size, quota and the request, sends the
       `PUT` only on a typed `yes`, and its tests cover yes, anything else,
       `400` and `403`.
-- [ ] `embarch-api call-log` shows `size_bytes` and `quota_bytes` when Core
+- [x] `embarch-api call-log` shows `size_bytes` and `quota_bytes` when Core
       serves them.
-- [ ] Decision 141 and `interfaces/tools-person.md` say so.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] Decision 141 and `interfaces/tools-person.md` say so.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`);
       `changelog.d/` fragment.

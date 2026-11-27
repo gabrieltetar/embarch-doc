@@ -11,5 +11,6 @@ Each subcommand sends the **person's token** (config `person_token`, `EMBARCH_PE
 | `person answer <run_id> <prompt_id> [value]` | `GET /test-runs/{id}` (the waiting prompt must be `prompt_id`); `POST /study/{id}/prompt` `{prompt_id, answer, answered_by: "cli", value?}` | `value` is a number when it parses as one, else text, sent with `confirmed`; `--cancel` sends `cancelled` and takes no value |
 | `person unit <key> --serial <s> --revision <r>` | `PUT /units/{key}` `{serial, board_revision}` | Core decision 147 |
 | `person name <name>` | `PUT /person` `{name}` | Core decision 147 |
+| `person call-log-quota <size>` | `GET /call-log` (shows `size_bytes`, `quota_bytes`, the request); `PUT /call-log/quota` `{quota_bytes}` | `size` is bytes or `KiB`/`MiB`/`GiB`/`TiB`; a `400` (0) and a `403` come back as their own text; Core decision 161 |
 
 `--json` prints `{success, sent, response | error}` (stamped like every verb) on stdout; the card and the question stay on stderr.
