@@ -1,6 +1,6 @@
 # 127 — The Core identity line reads the mode Core reports
 
-**State:** claimed by agent/ui/127-the-core-identity-line-reads-the-mode-core-reports, 2026-11-26 18:52
+**State:** done — identity line reads StatusResponse.mode; decision 112 amended
 **Source:** EMB-580 — UI Core identity line reads the mode Core reports
 **Issue:** EMB-580
 **Scope:** ui
@@ -36,8 +36,8 @@ needs no edit.
 
 ## Done when
 
-- [ ] The identity line reads `StatusResponse.mode`.
-- [ ] A test covers a development Core whose key matches the installed
+- [x] The identity line reads `StatusResponse.mode`.
+- [x] A test covers a development Core whose key matches the installed
       fingerprint (reads `development`), and a Core that reports no `mode`
       (reads unknown, not `service`).
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
