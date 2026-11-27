@@ -1,6 +1,6 @@
 # 131 — the ui installs its service through the desk's unit crate
 
-**State:** open — `desk/047` landed the crate this calls (`embarch-desk/crates/embarch-user-unit`, desk decision 94)
+**State:** claimed by agent/ui/131-the-ui-installs-its-service-through-the-desks-unit-crate, 2026-11-27 03:48
 **Source:** EMB-302 — the systemd user-unit writer exists twice, in `embarch-desk` and `embarch-ui`
 **Issue:** EMB-302
 **Scope:** ui
