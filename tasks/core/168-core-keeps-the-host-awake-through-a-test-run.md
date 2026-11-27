@@ -1,6 +1,6 @@
 # 168 — Core keeps the host awake through a Test run
 
-**State:** claimed by agent/core/168-core-keeps-the-host-awake-through-a-test-run, 2026-11-26 20:59
+**State:** done — decision 152: guard-held SetThreadExecutionState behind a trait; Windows half unbuilt, two debts recorded
 **Source:** EMB-371 — a Test run can be cut short by the host going to sleep
 **Issue:** EMB-371
 **Scope:** core
@@ -49,8 +49,17 @@ while a run holds the lease, and sleeps normally after it ends.
 
 ## Done when
 
-- [ ] A unit test sees one hold at the go and one release at the end, at a
+- [x] A unit test sees one hold at the go and one release at the end, at a
       cancel and at an error.
-- [ ] The Linux build logs the no-op; the Windows half is behind `cfg(windows)`.
-- [ ] Both debts are recorded here.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The Linux build logs the no-op; the Windows half is behind `cfg(windows)`.
+- [x] Both debts are recorded here.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+
+## Debts
+
+- **Hardware-verification debt**: on the first Test run on the bench host, check that the host stays awake through an idle timeout while the run holds the lease, and sleeps normally after it ends (decision 152). The need and the effect on a Windows service are inferred, not measured.
+- **Native Windows build debt (the owner's)**: `src/keep_awake.rs`'s `cfg(windows)` half and the `Win32_System_Power` feature on `windows-sys` in `Cargo.toml` are unbuilt here.
+
+## Done
+
+Decision 152 (`decisions/test-run-awake.md`); `keep_awake.rs`, `test_executor::drive_awake`; four unit tests (complete, cancel, error, panic) each see one hold and one release. The Linux build logs the no-op at the go.

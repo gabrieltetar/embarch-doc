@@ -1,0 +1,1 @@
+| Core keeps the host awake through a Test run — a guard holds `SetThreadExecutionState` from the go and releases on every end | Built — **host-side: unit tests over a recording keeper; the Windows half is unbuilt (`cfg(windows)`); not measured that it holds a service awake through an idle timeout; Core not deployed** | unit | 152 |
