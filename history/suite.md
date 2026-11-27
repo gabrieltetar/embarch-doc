@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Changed
+- The agent guide places all 64 MCP tools, the Test tools among them, and no longer names the retired `ledger_*` tools; their interface stub is deleted (EMB-390, EMB-583).
 - embarch.md compacted out of its reserve: deploy chronology, process history and an incident retelling cut, two stale status facts corrected; every §6 row kept ([embarch.md](../embarch.md)).
 ## 2026-10
 
