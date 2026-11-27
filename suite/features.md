@@ -346,6 +346,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | The 💡 linker offers the chat folder's branches and worktrees, gated by cue words or an exact name, a branch with its PR, the chat's own left out | Built, not installed — **tested on scratch repos only; not seen in a window** | unit | 113 |
 | The 💡 linker offers the atlas's datasheet and spec sections (`embarch-atlas refs`), gated by cue words or a part name, written as a citation head | Built, not installed — **tested on a fake `embarch-atlas` only; not seen against a real atlas** | unit | 114 |
 | The 💡 linker offers the desk's Linear projects (`Linear project "<name>" (<url>)`, ungated) and documents (`Linear doc "<title>" (<project>, <url>)`, gated by cue words or a URL), from the mirrored index | Built, not installed — **tested on a made-up index only; not seen against a real workspace** | unit | 117 |
+| A login of kind `container` runs a chat's `claude` inside the agent container (`<runtime> exec -i -u agent -w /work/<repo> <name> claude`), reads its transcripts from the exchange folder, hands off into a container chat, declares no host hook | Built, not installed — **tested against a stand-in runtime only; no container started** | unit | 122 |
 
 ## Not yet a sub-project
 

@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Decision 122: a login of kind container runs claude through the agent container's runtime exec; transcripts from the exchange folder, handoff stays in the container, no host hook.
 - Decision 119: the 💡 linker offers a study's captures and outpost traces, read with embarch-api list-studies under the instruments' cache rule.
 - The 💡 linker offers the desk's Linear projects and documents, from the mirrored reference index (decision 117).
 - The chat's 💡 linker offers the bench's declared instruments (`instrument "eload" (scpi)`), read with `embarch-api --json list-instruments`; built, not seen on a real bench.
