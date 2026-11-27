@@ -1,6 +1,6 @@
 # 191 — `/status` serves `host_type_schema_version` beside the old key
 
-**State:** claimed by agent/core/191-status-serves-host-type-schema-version, 2026-11-27 02:13
+**State:** done — /status serves both keys, tested; decision 162, open.md carries removal
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** core
@@ -51,8 +51,8 @@ line: net-neutral or smaller.
 
 ## Done when
 
-- [ ] `GET /status` serves both keys with the same value; a test asserts both.
-- [ ] The decision names the new key as the suite's name, says the old one
+- [x] `GET /status` serves both keys with the same value; a test asserts both.
+- [x] The decision names the new key as the suite's name, says the old one
       stays until both readers have moved, and `open.md` carries the removal.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `interfaces/hardware.md` updated; `changelog.d/` fragment.

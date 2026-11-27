@@ -49,6 +49,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [Core's side of publish](decisions/publish.md) | 116, 117, 118, 119, 120 | 8.3 KB |
 | [The call log](decisions/call-log.md) | 122, 156, 158 | 10.7 KB |
 | [The call log's quota](decisions/call-log-quota.md) | 161 | 2.9 KB |
+| [The `/status` schema key](decisions/status-schema-key.md) | 162 | 1.3 KB |
 | [The idle lease release](decisions/lease-idle.md) | 123 | 3.0 KB |
 | [The held serial ports and debug probes](decisions/port-hold.md) | 130, 159 | 6.0 KB |
 | [Reading an image back](decisions/image-readback.md) | 142 | 3.3 KB |
