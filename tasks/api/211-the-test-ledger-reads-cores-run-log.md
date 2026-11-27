@@ -1,6 +1,6 @@
 # 211 — The test ledger reads Core's run log: test_show, test_pending, test_add
 
-**State:** open
+**State:** claimed by agent/api/211-the-test-ledger-reads-cores-run-log, 2026-11-26 19:56
 **Source:** EMB-379 — the hardware test ledger has not grown into Test
 **Issue:** EMB-379
 **Scope:** api
