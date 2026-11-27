@@ -1,6 +1,6 @@
 # 185 — A service Core takes firmware only as bytes or from its own staging folder
 
-**State:** claimed by agent/core/185-a-service-core-takes-firmware-only-from-its-staging-folder, 2026-11-27 00:27
+**State:** done — staging::read gates a service Core JSON paths; decision 160
 **Source:** EMB-330 — A service Core would flash any file its own account can read
 **Issue:** EMB-330
 **Scope:** core
@@ -65,15 +65,19 @@ shape; number from `scripts/check-task-numbers.py --next core`).
 
 ## Done when
 
-- [ ] In service mode on Linux: a symlink, a hardlink, a `..` path and an
+- [x] In service mode on Linux: a symlink, a hardlink, a `..` path and an
       absolute path outside staging are each refused before the file is
       opened; a plain file inside is flashed (fake backend).
-- [ ] In development mode, `firmware_path` behaves as today.
-- [ ] The Windows reparse-point check type-checks for `x86_64-pc-windows-msvc`
+- [x] In development mode, `firmware_path` behaves as today.
+- [x] The Windows reparse-point check type-checks for `x86_64-pc-windows-msvc`
       (`cargo check --target x86_64-pc-windows-msvc` where the target is
       installed; say if it is not); a hardware-verification debt is written
       into this file for a junction test on Windows.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decisions 10 and 18 amended (or a new decision written); `changelog.d/`
+- [x] Decisions 10 and 18 amended (or a new decision written); `changelog.d/`
       fragment.
+
+## Hardware-verification debt
+
+Never run on Windows: junction, symlink and hardlink refusal in `staging::read` (`src/staging.rs`). On the Windows host, with a `run --service` Core and `%ProgramData%\embarch\staging\` present: stage a file and `POST /flash` its name (flashes); `mklink /J` a junction in staging to a folder holding a file and request `junction\file`; `mklink` a symlink and a `mklink /H` hardlink to a staged file; each must answer `400` naming the refusal. Verified here: Linux tests (symlink, hardlink, `..`, outside absolute, missing folder), and the Windows code type-checked for `x86_64-pc-windows-msvc` in a throwaway crate, because the whole crate fails under WSL in hidapi's build.rs.

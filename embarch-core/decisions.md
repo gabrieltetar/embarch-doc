@@ -13,7 +13,7 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The route sweep](decisions/route-sweep.md) | 42, 46, 60 | 8.9 KB |
 | [Probes and board identity](decisions/probes.md) | 9, 22, 23, 26, 61, 124 | 6.5 KB |
 | [Chip mapping and attach guards](decisions/chip-mapping.md) | 8, 34, 80, 89 | 6.3 KB |
-| [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 82, 84 | 6.3 KB |
+| [Flashing](decisions/flashing.md) | 10, 18, 21, 32, 82, 84, 160 | 7.4 KB |
 | [Flashing backend selection and vendor-tool discovery](decisions/flash-backend.md) | 36, 49, 52, 54 | 9.5 KB |
 | [Running a study](decisions/studies.md) | 19, 20, 33, 40, 45, 90 | 7.2 KB |
 | [The study record, and reading it back](decisions/study-record.md) | 24, 41, 43, 69, 71, 86 | 8.9 KB |
