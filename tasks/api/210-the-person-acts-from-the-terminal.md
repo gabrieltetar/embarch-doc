@@ -1,6 +1,6 @@
 # 210 — The person acts from the terminal: a confirmation, the go, an observation
 
-**State:** claimed by agent/api/210-the-person-acts-from-the-terminal, 2026-11-26 19:24
+**State:** done — person verb built (decision 141); mock-Core tests; live Core and a real terminal not run
 **Source:** EMB-378 — the person has no terminal path for a confirmation, the go or an observation
 **Issue:** EMB-378
 **Scope:** api
@@ -64,10 +64,15 @@ Decisions already over or near their limit: `lease#90`, `test-plans#134`,
 
 ## Done when
 
-- [ ] Against a fake Core, each subcommand sends the person's token, and the
+- [x] Against a fake Core, each subcommand sends the person's token, and the
       card's nonce wherever Core's route takes one.
-- [ ] A test fails if the MCP server registers any of them.
-- [ ] With no typed `yes`, nothing is sent.
-- [ ] `interfaces/tools.md` gives the verb.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
+- [x] A test fails if the MCP server registers any of them.
+- [x] With no typed `yes`, nothing is sent.
+- [x] `interfaces/tools.md` gives the verb.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --workspace
       --all-targets -- -D warnings`).
+
+## Debts
+
+- **Live-Core verification:** run `embarch-api person confirm|go|answer|unit|name` against a real Core with a person token on a real terminal (tests pipe stdin to a mock Core). Hardware: none, but a live Core.
+- Client crate additions (additive): `CoreClient::declare_unit`, `CoreClient::declare_person`.

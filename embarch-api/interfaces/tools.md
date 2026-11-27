@@ -24,6 +24,7 @@
 - [Tests](tools-tests.md) — `test_propose`, `test_plan`, `run_test`, `test_status`, and the `embarch/tests/` layout
 - [Live log](live-log.md) — the line each hardware call appends to the firmware repo; `call_log`
 - [Publish](publish.md) — `publish`, and the zip it writes
+- [Person](tools-person.md) — the CLI-only `person` verb: `confirm`, `go`, `answer`, `unit`, `name`; no MCP tool
 - [Host studies](tools-host-study.md) — `run_host_study`, `answer_prompt`, `cancel_study`, and `study_watch` stopping on a waiting prompt
 
 ## Error handling

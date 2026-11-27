@@ -54,7 +54,7 @@ Naming the original also **gains** `guessed_among` — whether a port was picked
 
 **The person's order** is config `person_token_env`, config `person_token`, the `EMBARCH_PERSON_TOKEN` variable Core itself reads, then `person-token` beside the agent's file (same WSL2 mapping as the agent's). **It never falls back to the agent's token**: no person token is an error naming its sources.
 
-**Only a library caller reaches the person's.** The MCP server and every CLI verb build their client through `agent_core_client`, which names `TokenScope::Agent`, and a test pins that a configured `person_token` does not change it. No flag asks for the person's: the surfaces that act for the engineer (`tasks/ui/111`) call `new_with_scope`. A flag would be one more way for an agent to ask for the wrong scope. The scope is fixed at construction; `CoreClient::scope()` reads it.
+**Only the engineer's surfaces reach the person's.** The MCP server and every CLI verb but `person` ([141](person-verb.md)) build their client through `agent_core_client`, which names `TokenScope::Agent`, and a test pins that a configured `person_token` does not change it. No flag asks for the person's: the UI (`tasks/ui/111`) calls `new_with_scope`. A flag would be one more way for an agent to ask for the wrong scope. The scope is fixed at construction; `CoreClient::scope()` reads it.
 
 **Measured:** unit tests per source, and `new` is the agent's. **Not run:** the WSL2 `person-token` path against a live Core.
 

@@ -1,0 +1,1 @@
+| `embarch-api person` — the engineer's confirmation, Test run go, observation answer and unit/name declarations from a terminal, with the person's token and a typed `yes`; CLI only | Built; mock Core only | unit | 141 |
