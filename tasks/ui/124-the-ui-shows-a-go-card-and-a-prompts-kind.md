@@ -1,8 +1,6 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** blocked — go card shipped (decision 111); the modal's kind, switched_on and observation answer wait on CoreClient fields, filed as EMB-575
-
-**Unparks when:** EMB-575 lands: CoreClient's PendingPrompt, PromptPending and PromptAnswerRequest carry kind, observation, switched_on and value
+**State:** open
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui
@@ -69,3 +67,5 @@ and topology-tab#10,#43 near their limits; do not grow those.
 ## Blocked
 
 The modal half (the second and fifth boxes' prompt side) cannot be built from this repo. `embarch-core-client`'s `PendingPrompt` and `StudyEvent::PromptPending` drop `kind`, `observation` and `switched_on`, and `PromptAnswerRequest` has no `value`, so the UI can neither read a prompt's kind nor send an observation's answer; the client is read-only here and the UI holds no raw Core access (103). Filed as EMB-575 (api). The go card shipped in the Confirm tab, decision 111. When EMB-575 lands: pass the fields through `prompt_json` and `PromptAnswerBody`, draw kind, `switched_on` and the choices or number field in the modal, amend `operator-prompt.md` (8,884 B, mind its cap), and tick the third box. "Gate green" is ticked below as the gate is.
+
+**Unparked:** EMB-575 landed as `api/206` (api decision 137). `PendingPrompt` carries `kind`, `observation` and `switched_on`, and `PromptAnswerRequest` carries `value`. Two points the modal half must account for. First, `StudyEvent::PromptPending` carries `observation` and `switched_on` but **no `kind`**. Core flattens the prompt's `kind` onto an event whose tag is also `kind`, and a Test run's event fails to deserialize on the client ("duplicate field `kind`"). Read the kind from `GET /study/{id}`'s `pending_prompt`, not from the event, until EMB-577 (Core) lands. Second, the supervisor added `value: None` to the UI's existing `PromptAnswerRequest` literal in the same pass, so the answer route compiles. Sending a real `value` is this task's.

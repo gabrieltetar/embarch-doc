@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The client's PendingPrompt and answer carry a Test run prompt's kind, observation, switched_on and answer value; see [decision 137](../embarch-api/decisions/client-crate.md).
 - api: CoreClient::test_run_go carries the person's go for the UI; the go ban narrows to the agent's MCP and CLI sources (decision 135).
 - api: run_test prepares a Test run and never starts it; test_status reads it; answer_prompt explains a 403. See embarch-api/decisions/test-run.md
 - The core client has pending_confirmations, confirmation_card and confirm for Core's confirmation routes, for the UI's card; no MCP tool or CLI subcommand.
