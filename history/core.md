@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core signs a Test run's own record as it ends and enters one run-log entry per test and one for the run; its studies are held until the run is published (decision 144).
 - Core smoke-checks each bench before its first test; a failing piece errors its tests as `smoke_check` ([143](../embarch-core/decisions/smoke-check.md)).
 - Core can read a flashed image back through the probe and say which state holds (decision 142); no route or run calls it yet.
 - A bench instrument's value carries its declared U, resolution and calibration; past its due date it is judged calibration_expired: [decision 140](../embarch-core/decisions/instrument-metrology.md)

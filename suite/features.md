@@ -67,6 +67,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | A Test run's prompt takes its kind from `run.json`; the agent's token is refused an `observation` or `clearance` (`403`), each answer records the token's scope, an observation's value is a `by: person` measurement, a prompt lists what Core last switched on | Built — **host-side only: proven over a scripted backend and the real slot; no bench, no person's answer from a surface; Core not deployed; native Windows build unrun** | unit | 138 |
 | Core reads a board's flashed segments back through the probe and says `holds`/`differs`/`claim` for the DUT, `released`/`unreleased`/`unknown`/`unverified` for a bench board; the smoke check calls it | Built — **host-side only: proven over a fake memory; no image read back on any chip family; native Windows build unrun** | unit | 142 |
 | Core smoke-checks each bench before its first test: signals, roles and instruments declared, `validate`, board hello, instrument `*IDN?`, image readback, the same DUT unit across benches; a failure errors the bench's tests as `smoke_check` | Built — **host-side only: proven over fakes; never run against a real bench; native Windows build unrun** | unit | 143 |
+| Test run record — Core signs the run as it ends (cancel, deadline, interruption) and logs each test and the run; its studies are swept as one unit | Shipped — **no route publishes a Test run yet, so its captures are held, never swept; bench run and Windows build unverified** | unit | 144 |
 
 ## embarch-api
 

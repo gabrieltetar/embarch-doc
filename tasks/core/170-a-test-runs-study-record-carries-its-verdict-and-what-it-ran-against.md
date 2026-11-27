@@ -1,8 +1,6 @@
 # 170 — A test run's study record carries its verdict and what it ran against
 
-**State:** blocked — builds on the run record `core/169` adds
-
-**Unparks when:** core/169 lands
+**State:** open
 **Source:** EMB-369 — a Test run leaves no signed record of itself and no run-log entry per test
 **Issue:** EMB-369
 **Scope:** core
@@ -40,7 +38,8 @@ A study run outside a Test run is sealed exactly as before.
 
 ## Where the doc goes
 
-`core/169`'s new topic file, or a new decision beside it. Do not grow
+`core/169` landed decision 144 in `decisions/test-run-record.md`; a new
+decision there, beside it. Do not grow
 `signing#110` (2,486 B over its limit) or any other decision
 `check-doc-size.py --pressure` lists as near or over; point at them.
 
