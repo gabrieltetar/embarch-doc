@@ -1,6 +1,6 @@
 # 184 — Core holds its debug probes while a lease or a study holds the bench
 
-**State:** open
+**State:** claimed by agent/core/184-core-holds-its-probes-while-a-lease-or-study-holds-the-bench, 2026-11-27 00:14
 **Source:** EMB-327 — Core holds no debug probe between calls, even under a lease
 **Issue:** EMB-327
 **Scope:** core
