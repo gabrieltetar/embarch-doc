@@ -1,6 +1,8 @@
 # 227 — the Test-run verifier reads the attestation by the record's release
 
-**State:** claimed by agent/api/227-the-test-run-verifier-reads-the-attestation-by-the-records-release, 2026-11-27 04:17 — reserve: api decisions/client-crate.md 456 B left (api/222), you should not need it; verify-report.md is not in reserve
+**State:** blocked — the Test-run record has no observed.mode; Core must add it first (EMB-597)
+
+**Unparks when:** Core's Test-run record carries observed.mode (EMB-597)
 **Source:** EMB-332 — a report cannot say which Core signed it; found by `api/225`'s worker and reviewer
 **Issue:** EMB-332
 **Scope:** api
@@ -73,3 +75,19 @@ rejects.
 - [ ] Decision and `interfaces/verify.md` say so.
 - [ ] Gate green (`cargo build`, `cargo test --workspace`, `cargo clippy
       --workspace --all-targets -- -D warnings`); `changelog.d/` fragment.
+
+## Blocked
+
+Stopped as this task instructs: **the Test-run record has no `predicate.observed.mode`.**
+`embarch-core`'s `src/test_run_record.rs` (line ~126) writes
+`observed: { core: { version }, call_log }` only. `observed.mode`
+(`crate::token_store::mode()`) is written by the Study record in `src/signing.rs`
+(line ~374) alone. `tasks/core/193` says "`observed.mode` is unchanged" and gives the
+Test-run record only `release`, so as filed it would write a Test-run record with
+`release` and no `mode`, and the rule `core_mode == observed.mode` has nothing to
+compare against.
+
+Needs a Core-side answer first: `tasks/core/193` (or a sibling) must also add
+`observed.mode` to the Test-run record, additive like `call_log` and `release`, no
+`schema` bump. Issue filed against embarch-core. When that is decided, this task is
+ready as written; nothing here was started and no code changed in `embarch-api`.
