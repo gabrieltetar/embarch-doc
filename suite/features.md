@@ -70,6 +70,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Test run record — Core signs the run as it ends (cancel, deadline, interruption) and logs each test and the run; its studies are swept as one unit | Shipped — **no route publishes a Test run yet, so its captures are held, never swept; bench run and Windows build unverified** | unit | 144 |
 | A study record made for a test in a Test run carries the test's verdict, the images, identities and `*IDN?` replies it ran against, each prompt's answer scope, and `run.json` as a subject | Built — **host-side only: proven over the real `drive`, `seal` and a key; no bench; Core not deployed; native Windows build unrun** | unit | 145 |
 | Core keeps a manual verdict, a unit's declared serial and board revision, and the person's name as run-log entries; the agent's verdict reads `relayed`, its serial and name are refused `403` | Built — **host-side only: unit tests over the router and the chain; no bench; Core not deployed; native Windows build unrun** | unit | 147 |
+| Core publishes a Test run — `POST /test-runs/{id}/report-data` writes and signs the crate's requirement roll-up with every run on the unit; `/publish` signs one manifest over every study run's files | Built — **host-side only: unit tests over the router and a fixture run; no real run; Core not deployed; native Windows build unrun; no route serves a revision's files yet, and a resumed pair is not published** | unit | 148 |
 
 ## embarch-api
 
@@ -132,6 +133,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `cancel_study` / `cancel-study` — stop a running host or device study through Core's cancel route | Built; mock Core only | unit | — |
 | Core client methods for the confirmation routes (`pending_confirmations`, `confirmation_card`, `confirm`) — the engineer's confirmation card calls them; deliberately no MCP tool | Built; mock Core only | unit | — |
 | `run_test` / `test_status` — prepare a Test run (the card, never the go) and watch it, over Core's test-run routes | Built; mock Core only | unit | 135 |
+| `embarch-api person` — the engineer's confirmation, Test run go, observation answer and unit/name declarations from a terminal, with the person's token and a typed `yes`; CLI only | Built; mock Core only | unit | 141 |
 
 ## embarch-dev-bench
 

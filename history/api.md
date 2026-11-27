@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- embarch-api person (confirm, go, answer, unit, name) acts for the engineer from a terminal with the person's token after a typed yes; no MCP tool (embarch-api decision 141).
 - Client StatusResponse carries Core's mode and keyid (api decision 139).
 - api: declare_instrument carries an instrument's metrology and calibration (a certificate file sent as its SHA-256); a re-declare keeps what is stored (decision 138)
 - The client's PendingPrompt and answer carry a Test run prompt's kind, observation, switched_on and answer value; see [decision 137](../embarch-api/decisions/client-crate.md).
