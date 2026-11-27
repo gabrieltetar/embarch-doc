@@ -24,6 +24,7 @@
 - embarch-desk: desk_add_line takes an optional item (issue key or item id) to note a different work item than the session's own; an unknown one errors and writes nothing (decision 78).
 
 ### Changed
+- desk interfaces.md: the Linear and Promptu route rows moved verbatim to interfaces/linear-routes.md, out of reserve.
 - embarch-desk decisions 27, 69 and 94 (the service, its instances, the unit writer) moved from built.md to decisions/service.md; no wording changed.
 - desk's paths.rs and interfaces doc name the two client copies of the path/port rule (EMB-305).
 - embarch-desk's systemd unit writer is now the `embarch-user-unit` crate (std and anyhow only), for the UI to share ([decision 94](../embarch-desk/decisions.md)).
