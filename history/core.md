@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core's Test report-data lists each limit's decision rule, w and U per test (EMB-585).
 - A Test run Core's restart cut short keeps its finished verdicts, and `POST /test-runs/{id}/resume` prepares a new run of the rest, linked by `resumes` (core decision 153).
 - Core holds the host awake from a Test run's go to its end through a guard, Windows only, no-op elsewhere (decision 152).
 - Core serves a Test run's revision files at GET /test-runs/{id}/publish/{revision}/files/{name}, as a Study's route does (decision 150).
