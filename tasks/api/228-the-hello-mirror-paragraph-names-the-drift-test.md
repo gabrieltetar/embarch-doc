@@ -1,6 +1,6 @@
 # 228 — the hello mirror paragraph names the drift test
 
-**State:** claimed by agent/api/228-the-hello-mirror-paragraph-names-the-drift-test, 2026-11-27 05:41
+**State:** done — paragraph now names decision 49 drift test; file 10,995 B
 **Source:** EMB-600 — a reviewer's finding on `api/226`: two api decisions still described the client's copies of Core's wire as unchecked after `api/226` held them to Core's own types
 **Issue:** EMB-600
 **Scope:** api
@@ -60,8 +60,8 @@ hello type, and this one still describes the state before `api/226`.
 
 ## Done when
 
-- [ ] The paragraph says what decision 49's hello drift test holds, links it,
+- [x] The paragraph says what decision 49's hello drift test holds, links it,
       and states only what is still true about anything unchecked.
-- [ ] `decisions/hardware-selection.md` is no larger than 11,059 B, or a
+- [x] `decisions/hardware-selection.md` is no larger than 11,059 B, or a
       compaction task is filed in the same commit.
-- [ ] `python3 scripts/check-docs.py` green; `changelog.d/` fragment.
+- [x] `python3 scripts/check-docs.py` green; `changelog.d/` fragment.

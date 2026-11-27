@@ -18,13 +18,12 @@ MCP surface reached it (`tasks/api/036`). Wrapped as `dev_bench_hello`: no param
 no project selection, since the route itself takes none.
 
 **Mirrors Core's own serialized `HelloAckInfo` field-for-field, not
-`embarch_topology::hardware`'s comparison type** — the two are never checked
-against each other (this crate cannot link the `hardware` feature — the same
-constraint that, before [client-crate](client-crate.md) decision 72, made
-`SignalLink` a hand-written mirror too; decision 72 retired that mirror and
-made `SignalLink` a type alias to the real `embarch-topology` type instead),
-so a struct built from the wrong side compiles and passes its own tests while
-failing against a real Core.
+`embarch_topology::hardware`'s comparison type** — this crate cannot link the
+`hardware` feature (`SignalLink` is the exception, per [client-crate](client-crate.md)
+decision 72). The mirror is held to Core's type: [decision 49's](study-events.md)
+hello drift test passes `embarch-core-wire`'s `HelloAckInfo` through the client's
+type and requires the same JSON back, so a struct built from the wrong side
+fails there. Nothing else compares the two, and `embarch_topology` has no hello type to.
 `embarch-core-client`'s `HelloAckResponse` gained `self_reported_hardware_id`,
 `link_identity` and `probe_hardware_id` alongside the three fields it already
 had; no route parsed those three before this, so nothing existing could regress.
