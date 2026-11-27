@@ -1,6 +1,6 @@
 # 178 — An interrupted Test run keeps its finished verdicts, and resumes as a new run of the rest
 
-**State:** open
+**State:** claimed by agent/core/178-an-interrupted-test-run-keeps-its-verdicts-and-resumes-as-a-new-run, 2026-11-26 21:22
 **Source:** EMB-370 — a Core restart loses a Test run in flight
 **Issue:** EMB-370
 **Scope:** core
