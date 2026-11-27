@@ -39,7 +39,7 @@ Told from a Study's by `test-run.dsse.json` and `run.json` and no `record.dsse.j
 | 2 measurements | The Study's re-run, per study folder |
 | 3 verdicts | Each run through `judge_run`, each test through `judge_test`, the requirement roll-up and summary, compared with `result.json`, the study records' `test.run`, the Test record and `report-data.json`; a test with no record entry or no signed `not_run` reason fails by name. An `Exchange` row's recorded `target` is judged alone (149; a row naming another signal than its action fails); a row without one is read both ways, **partial** where they disagree. Executor-decided results, cancelled runs, the image readback, identities and `*IDN?` are named as resting on Core's signature |
 | 4 PDF text | The Study's; the appendix-only partial passes when check 6 regenerates both Typst sources |
-| 5 labels, 6 report claims | Go_by, published_by, label; every `report-data.json` field rebuilt, `report.typ` and `appendix.typ` regenerated, the PDF's printed claims |
+| 5 labels, 6 report claims | Go_by, published_by, label; every `report-data.json` field rebuilt (`attestation` read by the record's `observed.release` as in a Study's check 6, [decision 124](../decisions/verify-report.md)), `report.typ` and `appendix.typ` regenerated, the PDF's printed claims |
 | 7 exports | Both regenerated from `report-data.json` and each study's `measurements.json` |
 
 A run that is not `completed`, `cancelled` or `deadline`, or resumes another, answers checks 3, 5 and 6 `not checked by this version`.
