@@ -1,6 +1,6 @@
 # embarch-core: the call log
 
-**Status:** active, 2026-11-26 (`tasks/core/140`, `tasks/core/181`, [decision 122](../decisions/call-log.md), [156](../decisions/call-log.md)). Index: [../interfaces.md](../interfaces.md).
+**Status:** active, 2026-11-26 (`tasks/core/140`, `tasks/core/181`, [decision 122](../decisions/call-log.md), [156](../decisions/call-log.md), [158](../decisions/call-log.md)). Index: [../interfaces.md](../interfaces.md).
 
 **It holds Core's calls only.** Hardware reached without Core (the topology CLI's own hardware feature, a probe tool by hand) is not in it. A host or dev-bench study's own steps stay in its `events.json`.
 
@@ -45,5 +45,9 @@ Every route in `lease::LEASE_GATED` answers with `X-Embarch-Call-Seq` and `X-Emb
 | `study_ended` | `true` when none was in flight or it released the study lock (its teardown ran) within the wait; `false` when the wait ran out |
 | `hw_lock_held` | `true` when `hw_lock` was still held when its wait ran out (the safe-off ran regardless) |
 | `safe_off` | the safe-off results, below |
+
+**A `safe_off` entry** is written when a study's teardown could not be logged and Core ran its safe-off in place: `{type: "safe_off", at_utc_ms, why, result}`, one per safe-off result (below), into the reserved tail. [Decision 158](../decisions/call-log.md).
+
+**The refusal.** While Core cannot write this log (an append failed, or free space is below the reserved tail) every gated route answers `503` with a plain-text body naming the call log and the reason: `Core cannot write its call log (<reason>), so it refuses hardware calls until it can; ...`. `POST /study/{study_id}/cancel` is never refused. The next append that succeeds with room left ends it: after a failed write the first refusal is itself entered (`status` 503) and the next call is served; a refusal for want of space is not entered. The call-log, key and run-log reads are not gated and stay readable.
 
 **A safe-off result** is `{kind, name, line?, result, reply?, error?}`: `kind` is `instrument`, `signal` or `declarations` (the table could not be read; `name` is `instruments` or `signals`). `result` is one of `"sent"` (`reply` is what came back, empty when the instrument is not read), `"no safe-off declared"` (no `line`), `"port absent"`, `"not writable"` (a signal Core does not write) or `"failed"`; the last three carry `error`. An instrument with several lines has one result per line, in declaration order, and a port absent ends its lines with one `"port absent"` result. Instruments come first, in declaration order, then signals.

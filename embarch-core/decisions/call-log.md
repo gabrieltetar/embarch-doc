@@ -1,6 +1,6 @@
 # embarch-core decisions: The call log
 
-**Status:** active, 2026-11-23 (`tasks/core/140`, `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 3). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/call-log.md](../interfaces/call-log.md). Sibling: [run-log.md](run-log.md) (decision 111, whose chain this follows), [lease.md](lease.md) (decision 93, whose `LEASE_GATED` list this logs).
+**Status:** active, 2026-11-27 (`tasks/core/182`, `tasks/core/140`, `notes/hil/12-prevention.md`, "What Core then guarantees, in code", item 3). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/call-log.md](../interfaces/call-log.md). Sibling: [run-log.md](run-log.md) (decision 111, whose chain this follows), [lease.md](lease.md) (decision 93, whose `LEASE_GATED` list this logs).
 
 ### 122 — Core logs every call to a gated route in a hash chain of its own, refusals included, and says it holds Core's calls only
 
@@ -16,7 +16,7 @@ The live log in a firmware repo, an atlas write-back's receipt and the signed re
 
 **It is Core's calls, and only those.** Hardware reached without Core (the topology CLI's own hardware feature, a probe tool by hand) is not in it, and a reader must not read its absence as "nothing happened".
 
-**Not here:** a log that cannot be written is logged and the call served (today's behaviour); fail-closed, a quota and a reserved tail come with the attested phase. `board` is not yet named by `/bootload`, `/validate`, the exchange and capture routes (`open.md`).
+**Not here:** a quota (EMB-329). A log that cannot be written is decision 158. `board` is not yet named by `/bootload`, `/validate`, the exchange and capture routes (`open.md`).
 
 **Measured:** unit tests call every `LEASE_GATED` route under a held lease and find one entry each with its scope; five identical `mem-read` calls chain one entry and fold four, and a different call between reads folds nothing; an edited, removed or reordered line names its line; a broken log is not extended. Nothing was run on a board.
 
@@ -32,3 +32,14 @@ A Core stop or start used to leave every bench output as it was: `embarch-topolo
 
 **Measured:** unit tests with a fake bench: every declared line is sent before the first route answers and again after the last request and before the `stop` entry (the call log's length at each send is 0 and then 2); a declaration with no line, an absent port, a failed send, a non-writable signal and an unreadable table are each a result; a study in flight has its flag raised and its lock released before the safe-off; a study that never ends is waited for only the bounded time; a start on a taken port fails naming the address; after a dropped Core (no `stop`) the next start reads "not a clean stop" and the chain recomputes. **Not run:** a real instrument, a real bench board, SIGTERM or Ctrl-C on a process, or the SCM Stop (hardware-verification debt, `tasks/core/181`).
 
+### 158 — Core refuses every gated call but a cancel while it cannot write its call log, starts no new step, and keeps a reserved tail for the safe-off
+
+Decision 122 served a call whose entry could not be written, so an agent could act on the bench with nothing a reader could check. The design is `notes/hil/12-prevention.md`, item 3. **Core is in the *cannot-log* state** when an append fails (any error, a chain that does not verify included) or when free space in the call log's folder is below the reserved tail; **the next append that succeeds with room left clears it**, and the space check is made afresh at each gated call, so room returning clears it too. EMB-329's quota builds on this state: it is `CallLog::gate` and `cannot_log`, a reason string and one flag, nothing else.
+
+**In it, every gated route answers `503`** naming the call log and why, **except `POST /study/{study_id}/cancel`**, which is served and entered if it can be. The layer asks before the handler runs, outside the lease layer and inside the auth layer, so an unauthenticated call is still `401` and a refusal replaces `409`. A call whose entry fails *after* its handler ran is served; the next one is refused. **How a failed-write state ends:** the refusal's own entry is the probe, so the first refusal after the writer recovers is entered (`status` 503) and the call after it is served. A space-only refusal is **not** entered, because the tail is for the safe-off.
+
+**A host study in flight starts no new step.** Before each step, each `Repeat` pass and each teardown step, the backend is asked; a step list stops with "the call log cannot be written ... no new step was started", and the teardown, which runs only while it can be logged, is replaced by Core's safe-off (decision 156), run once under `hw_lock`. `events.json` carries `teardown_replaced` (the safe-off's results, null when the teardown ran) and `stopped_reason` says so. The safe-off is entered as one `safe_off` entry per result (`why`, `result`) **without asking the gate**; were the tail spent, Core still switches off and says it could not log in its tracing log. **Not covered:** a device study's steps are the bench firmware's, which Core can only ask to stop; Core does not stop one for the call log (`open.md`).
+
+**The reserved tail** is `(outputs + 2) x 8192 B`: one entry per declared safe-off line (an instrument with none counts one, each signal one), a `start` and a `stop`, read from the declarations at each gate. The 8192 B per entry is **assumed, not measured**. The `start`, `stop` and `safe_off` entries do not ask the gate. The call log stays a file of its own, so a full one never stops the key or the run log being read. Free space is `statvfs` or `GetDiskFreeSpaceExW`, behind a `Store` seam tests make fail or fill.
+
+**Measured:** unit tests with that seam: every gated route but a cancel answers `503` naming the call log while writes fail, nothing is written meanwhile, and after the writer recovers the next call is refused-and-entered and the one after is served and logged; free space below the tail refuses with no entry while a cancel is served and the `safe_off` entries land; a study that cannot log starts no new step and runs the safe-off in place of its teardown. **Not run:** the Windows free-space call (compiled on no Linux build), a full real disk, a real instrument.

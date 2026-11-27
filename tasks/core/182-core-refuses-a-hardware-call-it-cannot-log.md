@@ -1,6 +1,6 @@
 # 182 — Core refuses a hardware call it cannot write to its call log
 
-**State:** claimed by agent/core/182-core-refuses-a-hardware-call-it-cannot-log, 2026-11-26 23:53
+**State:** done — decision 158: cannot-log state, 503 but a cancel, host study halts and safe-off replaces teardown, reserved tail
 **Source:** EMB-328 — Core serves a hardware call it cannot write to its call log
 **Issue:** EMB-328
 **Scope:** core
@@ -75,14 +75,23 @@ into reserve, file `tasks/core/<NNN>-compact-core.md` in the same commit
 
 ## Done when
 
-- [ ] With a writer seam that fails on demand, every gated route answers `503`
+- [x] With a writer seam that fails on demand, every gated route answers `503`
       naming the call log, and a cancel still cancels.
-- [ ] A study in flight when writes fail starts no new step; its teardown is
+- [x] A study in flight when writes fail starts no new step; its teardown is
       replaced by the safe-off, and the record says so.
-- [ ] With free space below the reserved tail, the same refusal, and the
+- [x] With free space below the reserved tail, the same refusal, and the
       safe-off's entries still land.
-- [ ] After the writer recovers, the next call is served and logged.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] After the writer recovers, the next call is served and logged.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decision 122 amended (or a new decision written); `interfaces/call-log.md`
+- [x] Decision 122 amended (or a new decision written); `interfaces/call-log.md`
       gives the refusal; `changelog.d/` fragment.
+
+## Hardware-verification debt
+
+Nothing here touched a board. Unverified: (1) the Windows free-space call
+(`GetDiskFreeSpaceExW`, new `Win32_Storage_FileSystem` feature of `windows-sys`)
+compiled on no build here, so run the native Windows build from the main checkout
+once this lands; (2) a real full disk, and a real host study whose teardown is
+replaced by the safe-off against a real instrument; (3) a device study is not
+stopped by the cannot-log state (decision 158, `open.md`).

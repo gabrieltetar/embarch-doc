@@ -1,0 +1,1 @@
+| Core refuses every gated call but a study's cancel while it cannot write its call log, starts no new host-study step, and keeps a reserved tail for the safe-off | Built — **unit tests with a failing-store seam only; the Windows free-space call compiled on no Linux build; a device study is not stopped** | unit | 158 |
