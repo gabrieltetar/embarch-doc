@@ -1,6 +1,6 @@
 # 217 — embarch-api resumes an interrupted Test run
 
-**State:** claimed by agent/api/217-embarch-api-resumes-an-interrupted-test-run, 2026-11-26 22:23
+**State:** done — resume_test and resume-test over Core resume route, decision 148
 **Source:** EMB-587 — embarch-api cannot resume an interrupted Test run
 **Issue:** EMB-587
 **Scope:** api
@@ -69,13 +69,13 @@ code comments.
 
 ## Done when
 
-- [ ] An interrupted Test run can be resumed from the CLI and from the MCP
+- [x] An interrupted Test run can be resumed from the CLI and from the MCP
       tool against a mock Core, the new run naming the first in `resumes`, and
       neither starts it.
-- [ ] Core's `409` (not interrupted, already resumed, nothing pending) and
+- [x] Core's `409` (not interrupted, already resumed, nothing pending) and
       `404` reach the caller as Core said them.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] Decision written; interface doc names the tool; `status.d/` fragment for
+- [x] Decision written; interface doc names the tool; `status.d/` fragment for
       `suite/agent-guide.md` §1.1; `changelog.d/` fragment; feature row if the
       Test run feature row lists what api can do with a run.
