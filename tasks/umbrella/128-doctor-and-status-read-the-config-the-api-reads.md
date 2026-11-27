@@ -1,6 +1,6 @@
 # 128 — `doctor` and `status` read the config file the API reads
 
-**State:** open — `api/224` landed the function this calls (`embarch_core_client::config_discovery::find_config_path`, api decision 152)
+**State:** claimed by agent/umbrella/128-doctor-and-status-read-the-config-the-api-reads, 2026-11-27 03:48
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** umbrella
@@ -40,6 +40,10 @@ both commands, and `status` finding a token through a config's `token_env`.
 `tasks/umbrella/127`.** Do not grow it. `decisions/agent-runtime.md`
 (decision 67), `install-core-platforms.md` (72) and `agent-container.md`
 (62) are over their per-decision limit; do not touch them.
+`decisions/reporting.md` is in reserve too (11,503 of 12,288 B, 785 B left,
+filed under `tasks/umbrella/129`, open): if the token-gap aside there needs a
+line, keep it net-zero or smaller, and put the new decision in its own topic
+file.
 
 ## Done when
 
