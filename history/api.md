@@ -39,6 +39,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- `verify` judges a refused Exchange step under the `target` Core recorded on its row; a row without one is still read both ways (decision 149).
 - The client's `PromptPending` event carries a Test run prompt's kind as `prompt_kind`, read without polling the study (137); `embarch-ui`'s test literal names `prompt_kind: None`.
 - `test_show`, `test_pending` and `test_add` read Core's run log and replace `ledger_*`; `run_study` no longer takes `test` (decision 142).
 - verify check 2 now recomputes Exchange step outcomes and step-time numbers from the recorded replies and fails naming the step or measurement.
