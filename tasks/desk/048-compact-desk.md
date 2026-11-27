@@ -1,6 +1,6 @@
 # 048 — compact `embarch-desk/decisions/built.md`
 
-**State:** claimed by agent/desk/048-compact-desk, 2026-11-27 04:17 — decisions/built.md only; interfaces.md is desk/049, leave it
+**State:** done — built.md 11873 -> 9001 B by moving 27, 69, 94 verbatim to decisions/service.md (3333 B); index row added
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,5 @@
 
 ## Done when
 
-- [ ] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
-- [ ] The human question is answered in the commit message: can `decisions.md` plus this file answer why the desk runs as a user service and how its unit is written?
+- [x] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The human question is answered in the commit message: can `decisions.md` plus this file answer why the desk runs as a user service and how its unit is written?

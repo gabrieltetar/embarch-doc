@@ -1,0 +1,16 @@
+# embarch-desk decisions: The service and its instances
+
+**Status:** active, 2026-11-27. Split out of [built.md](built.md) by `tasks/desk/048`; the numbers did not change.
+
+Why the desk is a systemd user service, how a second desk runs as a named instance, and how a unit file is written.
+
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
+
+### 27 — A systemd user service beside Claude Code
+On the owner's machine that is WSL, not a Windows service beside Core: it runs `claude -p` and resolves repo paths locally, and the browser reaches it through `embarch-ui`. The unit carries the installing shell's `PATH`, because a user service starts without the user's own bins and the desk runs `claude`, `gh`, `git` and `wslpath`. **Rejected:** a Windows service (every polish call and path crosses the boundary; deploys need UAC), hosting inside `embarch-ui` (sessions lost while the UI is closed), a spool file ingested later (no live tiles).
+
+### 69 — A second desk runs as a named instance, with time and draft-only writes switchable
+`embarch-desk service install --instance NAME --port N` writes `embarch-desk-NAME.service`: the same binary with its own port, config and data folders, its own `CLAUDE_CONFIG_DIR` and `GH_CONFIG_DIR`, and its settings stated in the unit (`EMBARCH_DESK_TIME`, `EMBARCH_DESK_DIRECT_WRITES`, applied at each start). Two settings are new, and both leave a desk without them as it was: **`time`** (on) — off captures no spans, so no tiles, hand or timer, and the timer route refuses; **`direct_writes`** (off) — on makes the agent issue and comment tools send at once, where the rule "no agent tool sends a draft" otherwise holds. The owner's personal dev desk (4892) runs with time off and direct writes on; the work desk runs neither change. **Rejected:** a separate binary or fork (two codebases for one join), a Harvest-less flag per desk (a desk's Harvest binding is already optional).
+
+### 94 — The user-unit writer is a crate in this repo, and the UI shares it
+`crates/embarch-user-unit` renders a unit's text from a description, an executable with its arguments, a `PATH` and `Environment=` pairs, quoting every word by the WSL rule (decision 27: `%` doubled everywhere, `$` doubled in `ExecStart` only). It also knows where a user unit lives (`$XDG_CONFIG_HOME`, empty read as unset, else `~/.config/systemd/user`) and wraps `systemctl --user` with an error carrying its stderr. It takes `std` and `anyhow` only; the instance, its names, ports, folders and flags stay in `src/service.rs` and feed it, and the crate knows nothing of instances. The adversarial quoting test lives in the crate; one test in the desk pins a first desk's unit text and an instance's byte for byte. **Why here:** `embarch-ui/src/service.rs` had grown its own copy of every part (a fix to one was silently missing from the other), and the crate lets the UI depend on little more than `anyhow`. **Rejected:** depending on the whole desk (a binary crate, and tokio, axum and reqwest for a unit file), a sibling repo (a second repo to land for a fix to one rule). **Build:** a workspace member and a default member of the desk's, so plain `cargo build`, `test` and `clippy` reach it; it also builds and tests alone with `--manifest-path`. The UI moves onto it in `tasks/ui/131`.
