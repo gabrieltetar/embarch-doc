@@ -15,6 +15,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- Compacted embarch-ui/spec/tabs.md out of reserve; no tab row or decision number removed (ui/126).
 - Core identity line shows the mode Core reports, not one derived from the fingerprint match; unknown when absent (ui decision 112, decisions/core-identity.md).
 - Compacted the ui Live Study decisions file out of reserve; no decision changed.
 - A config a saved host study or test names can no longer be renamed or deleted: the save and the dialog refuse it, naming them (ui 108).
