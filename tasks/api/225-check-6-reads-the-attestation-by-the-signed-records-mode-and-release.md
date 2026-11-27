@@ -1,6 +1,6 @@
 # 225 — check 6 reads the attestation by the signed record's mode and release
 
-**State:** open
+**State:** claimed by agent/api/225-check-6-reads-the-attestation-by-the-signed-records-mode-and-release, 2026-11-27 03:48
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** api
