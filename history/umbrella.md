@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- `install-core --agent-in-container` grants the engineer start and stop of the Core service only; `down` refuses under a study, `--cancel-run` cancels it first. Decision 72.
 - `embarch install-core` on Linux now installs Core as the `embarch` system user with a protected store, by one generated root script (umbrella decision 70).
 - `embarch agent up|down|status|shell` start, stop, check and enter the agent's container over Docker or Podman, tested against a fake runtime (umbrella decision 67).
 - The agent container's entrypoint half renders: first start clones the repo, links embarch/, installs the skill, registers MCP ([decision 66](../embarch-umbrella/decisions/agent-clone.md)).
