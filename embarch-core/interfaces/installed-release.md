@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-26 ([decision 157](../decisions/platform.md)). Index: [../interfaces.md](../interfaces.md).
 
-`<data dir>/installed-release.json` (`%ProgramData%\embarch\` on Windows, `/var/lib/embarch/` elsewhere). Written by the elevated install of a signed release, which is a later task (EMB-339 on Windows, EMB-340 on Linux); Core only reads it.
+`<data dir>/installed-release.json` (`%ProgramData%\embarch\` on Windows, `/var/lib/embarch/` elsewhere). Written by `embarch install-core` (`embarch-umbrella` decisions 61 and 69), whose record carries more fields than this; Core only reads it.
 
 ```json
 {"binary_sha256": ["<64 lowercase hex>", "..."]}

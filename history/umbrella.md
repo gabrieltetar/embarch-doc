@@ -20,6 +20,7 @@
 - `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
 
 ### Changed
+- install-core on Windows now installs Core under its own account by one elevated script, and the record carries binary_sha256 (umbrella decision 69).
 - `deploy-core` installs a development Core beside the service instead of replacing it; `--cancel-run` and `--restore-service` added (decision 68).
 - umbrella: the command table moved verbatim to embarch-umbrella/spec/commands.md; spec.md links it.
 - umbrella: status --json and doctor --json carry schema_version; status --json also carries success (decision 11).
