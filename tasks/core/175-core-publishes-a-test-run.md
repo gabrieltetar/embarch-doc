@@ -1,6 +1,6 @@
 # 175 — Core publishes a Test run
 
-**State:** open
+**State:** claimed by agent/core/175-core-publishes-a-test-run, 2026-11-26 19:24
 **Source:** EMB-373 — Core cannot publish a Test run
 **Issue:** EMB-373
 **Scope:** core
