@@ -1,6 +1,6 @@
 # 047 — the systemd user-unit writer becomes a crate the ui can share
 
-**State:** open
+**State:** claimed by agent/desk/047-the-systemd-user-unit-writer-becomes-a-crate-the-ui-can-share, 2026-11-27 02:57
 **Source:** EMB-302 — the systemd user-unit writer exists twice, in `embarch-desk` and `embarch-ui`
 **Issue:** EMB-302
 **Scope:** desk
