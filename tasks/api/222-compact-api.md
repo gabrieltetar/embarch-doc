@@ -1,6 +1,6 @@
 # 222 — compact `embarch-api/decisions/client-crate.md`
 
-**State:** open
+**State:** claimed by agent/api/222-compact-api, 2026-11-27 05:45
 **Scope:** api
 **Hardware:** none
 **Owner:** no
