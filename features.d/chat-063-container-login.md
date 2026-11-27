@@ -1,0 +1,1 @@
+| A login of kind `container` runs a chat's `claude` inside the agent container (`<runtime> exec -i -u agent -w /work/<repo> <name> claude`), reads its transcripts from the exchange folder, hands off into a container chat, declares no host hook | Built, not installed — **tested against a stand-in runtime only; no container started** | unit | 122 |

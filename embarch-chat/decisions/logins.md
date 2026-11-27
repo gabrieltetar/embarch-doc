@@ -29,3 +29,24 @@ The window reads only `expiresAt` from `<configDir>/.credentials.json`. While it
 ### 106 — One pick decides a window's login for every panel in it, and a chat keeps its login on resume
 
 Decided by the owner, 2026-11-11 (EMB-161). Claude Code's panel starts `claude` through a wrapper that chose the login by folder alone, so the status item and the panel beside it disagreed; the item named a label, which said nothing once a `/login` had put one account in both logins' folders; and a chat resumed in the panel on the other login spent that login's quota until its 5-hour limit. **The window mirrors its pick, the logins' folders and each chat's login into `~/.config/embarch-chat/logins.json`**, which the wrapper reads: a resumed session's login on record, else the longest picked folder holding its working folder, else its own rule, recording a session it finds none for. A chat's login goes on record when it is created, a fork's and a handoff's taken from the chat they carry on, and it resumes on that login; with no record it takes the window's and records it. Viewing records nothing. **The item shows the account in the login's folder**, with a warning while two logins hold one. Two windows on one folder: the last picked or focused wins. With one login nothing is written. **Which surfaces follow a pick at once** (EMB-168): new EmbArch chats, new Claude Code chats and terminals (the wrapper reads the file when it starts `claude`), and the status item. **Which need a reload:** Claude Code's "Account & usage" dialog, since its extension host caches `claude auth status` and drops it only on its own events (a `/login`, a change to `claudeCode.environmentVariables`) [read from the 2.1.326 bundle]; its commands list (package.json) holds nothing that re-reads the account, so there is no supported route. A pick that changes the login therefore offers Reload Window with the reason, and never reloads unasked.
+
+### 122 — A login of kind container starts `claude` inside the agent's container
+
+**The plan's recommended shape (plan choices 11 and 22), not an owner-struck one; the owner may strike it** (EMB-461). `embarchChat.logins.<name>.container` is `{ record, manifestPath? }`: `record` is the agent's `container.toml` that `embarch init --container` writes (embarch-umbrella decisions 62, 67), read at each start or resume. It gives the container (`--name=`), the runtime binary (`docker` or `podman`), the host repo (the `/person/repo` mount) and the exchange folder (the parent of the `claude-config` mounted at `/home/agent/.claude`); the repo's folder under `/work` is the host repo's own name, as `embarch agent shell` takes it, unless `manifestPath` says otherwise. **A record that cannot be read refuses the chat; it never falls back to the host.**
+
+**The spawn:** `claudePath` is the runtime and the args are `exec -i -u agent -w /work/<manifest path> <name> claude`, then today's flags. The process gets an allowlist of the client's own variables (`PATH`, `HOME`, `XDG_RUNTIME_DIR`, `DOCKER_*`, ...) and none of the host's tokens or the desk's variables, and no `-e` is passed, so `claude` in the container sees none of it. **The cost:** the panel's two per-process variables (SDK file checkpointing, the interrupted-step rerun) do not reach it, so rewinding a message's files and the rerun after a reload are **unverified** in a container chat. A stopped container fails the `exec`; the chat's line names `embarch agent up`.
+
+**Transcripts** are `<exchange>/claude-config/projects/`, the agent's `~/.claude` as the host sees it, in the project folder named for `/work/<manifest path>`, not the host folder the chat is shown in. The chat, `last_session`, a reload and a fork look there. **A handoff** names the old chat as the login's source (106), so a container chat's fresh session is a container chat.
+
+**What the panel declares in `initialize`, and where each runs** (all run in the extension host, over the control channel):
+
+| Declared | Reads or starts | Host login | Container login |
+|---|---|---|---|
+| `PreToolUse` hook `save_before_file_tool` (61) | the editor's unsaved buffers for the tool's path | yes | **no**: the paths are the container's |
+| MCP tool `diagnostics` (65) | the Problems panel | yes, if on | **no** |
+| MCP tool `handoff` (103) | asks the owner; starts the fresh session in the panel | yes | yes: a container session, never a host one |
+| MCP tool `last_session` | reads transcripts on disk, starts nothing | yes | yes: the exchange folder's |
+
+No hook of either kind runs a host command. A container chat skips the login's warm-up (105) and the startup probe (cli.md), which run a host `claude`.
+
+**Open:** the assistant and probes still run a host `claude` under a container pick; `claude-login` (106) reads it as the default folder.

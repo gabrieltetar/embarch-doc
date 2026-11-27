@@ -28,6 +28,7 @@ Unresolved only. Current truth: [spec.md](spec.md). Why: [decisions.md](decision
 - **Decisions 86–88 in the owner's window**: d998b2f installed 2026-10-25 17:08 by `./reinstall.sh` (the package's `dist` matches by md5), live only after his window reload; not yet confirmed.
 - **A reference card against the live desk's real index** (decision 88): the desk serves it since 2026-10-25 17:07 (178 issues, 48 PRs) [measured], but no card has been seen in real use; measured only against a synthetic index, with real Haiku.
 - **Slack's `app_redirect` link** (decision 87), for a channel a step names with no permalink, is untested.
+- **A container login** (122): golden-tested against a stand-in runtime only; no container was started. First session on the owner's machine: a chat starts in the container, its transcript is found under the exchange folder, a handoff stays in the container, no host hook runs, and a stopped container names `embarch agent up`. Rewind and the rerun after a reload need the panel's two variables, which `exec` does not carry.
 - **One pick for every panel** (106): tested against a fake CLI and, for the wrapper, in a scratch home; not installed, never seen in a window, a Claude Code panel's resume included.
 
 ## Structural limits
