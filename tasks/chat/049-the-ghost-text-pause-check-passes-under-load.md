@@ -1,6 +1,6 @@
 # 049 — The ghost-text pause check passes under load
 
-**State:** claimed by agent/chat/049-the-ghost-text-pause-check-passes-under-load, 2026-11-26 18:14
+**State:** done — the pause is measured on the page clock; 40/40 loaded runs pass (old 0/40), a 100 ms pause fails 38/40
 **Source:** EMB-578 — the ghost-text pause check fails under CPU load
 **Issue:** EMB-578
 **Scope:** chat
@@ -50,6 +50,10 @@ you chose and why.
 
 ## Done when
 
-- [ ] The check passes under load, with before and after counts in the decision.
-- [ ] A loaded run with an early post still fails it.
-- [ ] Gate green: `npm ci`, `build`, `typecheck`, `npm test`, `test:webview`.
+- [x] The check passes under load, with before and after counts in the decision.
+- [x] A loaded run with an early post still fails it.
+- [x] Gate green: `npm ci`, `build`, `typecheck`, `npm test`, `test:webview`.
+
+## Outcome
+
+Decision 121 (new, beside 120). Load: 24 busy loops, 8 parallel runs of the ghost check alone, 5 rounds each (40 runs). Old check 0 of 40 pass (all "not before the pause": the runner's 150 ms sleep drifts far past the page's 300 ms timer); new 40 of 40. Early-post proof: `GHOST_MS` = 100, reverted, fails 38 of 40 (101 to 267 ms reported). The page never posted before 300 ms in any run: no product change. Not seen: chat/048's burst of failures on a page-clock deadline; the ghost wait uses the 15 s `waitAssist` and never timed out. Not explained: why 40 of 40 old failures here against 3 in about 60 before; this load was heavier than chat/048's, and the old assertion is only as good as the machine's idle time.
