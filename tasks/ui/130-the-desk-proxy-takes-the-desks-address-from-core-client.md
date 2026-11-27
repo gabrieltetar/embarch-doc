@@ -1,6 +1,6 @@
 # 130 — the desk proxy takes the desk's address and token from `embarch-core-client`
 
-**State:** open — `api/223` landed the module this calls (`embarch-core-client::desk_discovery`, api decision 151)
+**State:** claimed by agent/ui/130-the-desk-proxy-takes-the-desks-address-from-core-client, 2026-11-27 03:24
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** ui
