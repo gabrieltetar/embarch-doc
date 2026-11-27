@@ -1,6 +1,6 @@
 # 126 — `embarch` takes the machine data directory and the WSL helpers from `embarch-topology`
 
-**State:** open
+**State:** claimed by agent/umbrella/126-umbrella-takes-the-data-directory-from-topology, 2026-11-27 02:57
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** umbrella
@@ -39,7 +39,12 @@ WSL helpers in `embarch-topology`. When this is done:
 
 ## Where the doc goes
 
-No umbrella file is in reserve. Amend `decisions/reporting.md`'s caveat in
+**Since this was filed, `open.md` went into reserve** (4,553 of 5,120 B,
+567 B left), parked under `tasks/umbrella/127` (`In flux: yes`): do not grow
+it; if this unit must edit it, compact it in the same commit and keep 127's
+`Must not delete:` list. `decisions/agent-runtime.md` (67),
+`install-core-platforms.md` (72) and `agent-container.md` (62) are over their
+per-decision limit; do not touch them. Amend `decisions/reporting.md`'s caveat in
 place; `embarch-token.md` is suite-level and not yours, so if its relocated-
 `ProgramData` gap is now closed for `doctor`, drop a `status.d/` fragment.
 
