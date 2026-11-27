@@ -1,6 +1,6 @@
 # 221 — `embarch-core-client` takes the machine data directory from `embarch-topology`
 
-**State:** open
+**State:** claimed by agent/api/221-core-client-takes-the-data-directory-from-topology, 2026-11-27 02:13
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** api
