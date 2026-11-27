@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-11-24.
 
-The operator-prompt modal, how the UI comes to follow a study it did not start, and the bench change a prompt naming a config draws (99). Recording a config live: [bench-configs.md](bench-configs.md) (98). Index: [../decisions.md](../decisions.md).
+The operator-prompt modal, how the UI comes to follow a study it did not start, and the bench change a prompt naming a config draws (99, 113). Recording a config live: [bench-configs.md](bench-configs.md) (98). Index: [../decisions.md](../decisions.md).
 
 ## The modal
 ### 69 — A waiting host-study prompt opens a modal on any tab, fed by one stream; the UI follows studies it did not start by polling Core
@@ -29,3 +29,13 @@ Measured by `drive_prompt_bench.py` (headless Firefox, `stub_core.py`'s promptin
 - **No Core change and no new route**: `POST /api/live/prompt` takes an optional `run_fields` and relays it.
 
 Measured: unit tests (a session prompt's phase and fields in the stream frame and the snapshot, a host prompt carrying no `session` key; the answer route forwarding the fields as `ui`, a host answer carrying no `run_fields` key, a `400` and a `403` coming back with Core's reason alone); `tests/browser/drive_prompt.py` in headless Firefox against `stub_core.py` (whose session answers apply Core's rules for a required field, a field on a non-Start prompt and a cancelled Done): fields rendered in order with the required one starred, a refused Start keeping the modal open with the reason and the typed values, the corrected answer sent with every field, Done showing its text with no Cancel and confirming, a host prompt unchanged. **Not measured:** a real Core (the stub applies decision 127 as written, not as captured), and the person's token being the one Core scopes: the client carries it by decision 103, and nothing here exercised a `403`'s source.
+
+## A Test run's prompts
+### 113 — The modal shows a Test run prompt's kind, the outputs Core switched on and an observation's choices or number, and sends the value with Confirm
+`embarch-core` decision 138 gives a Test run's prompt a `kind`, an observation's declared answer and the `switched_on` outputs; `api/206` carries them in `PendingPrompt`, and `PromptAnswerRequest` carries a `value`. **`prompt_json` passes `kind`, `observation` and `switched_on` on** (null, null and empty outside a Test run, so a host study's modal is as before).
+
+- **The kind is read from `GET /study/{id}`'s `pending_prompt`, not the event**: Core's `PromptPending` carries no `kind` until EMB-577 (`core/172`). On each `PromptPending` the follow spawns one read of the study and, when the same prompt id has a kind, sets it and sends a second `prompt` frame; the modal redraws that prompt in place, never while an answer is on its way. A failed read leaves the modal without a kind line.
+- **The modal says the kind** (an observation and a clearance: only the person answers it), lists each output switched on, and for an observation **offers its declared answers as buttons in place of Confirm**, or a number field in the declared unit (step from the resolution); an empty or non-numeric field is not sent. All text is `textContent`.
+- **`POST /api/live/prompt` takes an optional `value`** and relays it with `confirmed` only; Core judges it, and a refusal keeps the modal open (107).
+
+Measured: unit tests (a polled kind set once, another prompt's or none changing nothing, outputs and observation in the frame, a host prompt's nulls). **Not measured:** the modal in a browser, a real Core's Test run, and the order of the event and the study read (assumed: the prompt is in the study record by the time the event is read).

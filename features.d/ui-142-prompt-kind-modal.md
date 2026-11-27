@@ -1,0 +1,1 @@
+| Prompt modal for a Test run: shows a prompt's kind, the outputs Core switched on and an observation's choices or number, and sends the person's value | Shipped — host-tested; not run in a browser or against a real Core's Test run | unit | 113 |

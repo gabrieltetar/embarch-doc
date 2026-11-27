@@ -1,6 +1,6 @@
 # 124 — The UI shows a go card, and its prompt modal shows a prompt's kind
 
-**State:** claimed by agent/ui/124-the-ui-shows-a-go-card-and-a-prompts-kind, 2026-11-26 17:44
+**State:** done — go card (111) and prompt modal kind, switched_on and observation answer (113) shipped
 **Source:** EMB-384 — the UI has no go card, and its prompt modal shows no kind (`api/203` is the client method this needs)
 **Issue:** EMB-384
 **Scope:** ui
@@ -61,7 +61,7 @@ grow it.
 - [x] Against a fake Core, a driven test gives the go once; a second click is
       refused by the fake and the card says so.
 - [x] An unconfirmed input disables the go and is named.
-- [ ] The modal shows an observation prompt's kind, its choices and an output
+- [x] The modal shows an observation prompt's kind, its choices and an output
       switched on, and sends the chosen answer.
 - [x] A decision records the card.
 - [x] Gate green.
