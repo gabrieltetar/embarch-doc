@@ -1,6 +1,6 @@
 # 194 — Core's wire types move into a crate `embarch-core-client` can depend on
 
-**State:** open
+**State:** claimed by agent/core/194-cores-wire-types-move-into-a-crate-core-client-can-depend-on, 2026-11-27 03:48
 **Source:** EMB-295 — Core's wire types are hand-mirrored in core-client with uneven drift guards
 **Issue:** EMB-295
 **Scope:** core
