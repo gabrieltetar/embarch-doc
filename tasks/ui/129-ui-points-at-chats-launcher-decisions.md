@@ -1,7 +1,6 @@
 # 129 — ui points at chat's launcher decisions
 
-**State:** blocked — waits for `tasks/chat/052`, which writes the chat decision this one points at.
-**Unparks when:** tasks/chat/052 lands
+**State:** open — `chat/052` landed: the chat decision is **123**, `embarch-doc/embarch-chat/decisions/launcher.md`.
 **Source:** EMB-303 — The launcher's decisions sit in embarch-ui while its code lives in embarch-chat
 **Issue:** EMB-303
 **Scope:** ui
@@ -10,10 +9,16 @@
 
 ## What
 
-The second of two units. `tasks/chat/052` restates `embarch-ui` decision 28's
-launcher behaviour and invariants (and whatever of decisions 3 and 101 is about
-the launcher itself) as a chat decision in `embarch-doc/embarch-chat/decisions/`;
-its closing note names the number. When this is done:
+The second of two units. `chat/052` restated `embarch-ui` decision 28's
+launcher behaviour and invariants as **`embarch-chat` decision 123**
+(`embarch-doc/embarch-chat/decisions/launcher.md`). It carried 28 whole; from
+3, the thin-launcher stance and the rejected webview and TreeView (3's old
+`vscode-extension/` subdirectory, `.vsix` and `reinstall.sh` packaging
+paragraphs stayed with ui); from 101, the status-bar states and "every click
+goes to `start()`" (the unit itself, its environment and the one-instance rule
+stayed with ui; what the launcher does with the unit is chat 102). Chat 123 is
+36 B under the per-decision cap, so this unit does not need to touch it. When
+this is done:
 
 - Ui decision 28's heading stays (numbers are permanent) and its body becomes a
   one-line pointer saying it moved to that chat decision, per

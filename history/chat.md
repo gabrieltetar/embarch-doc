@@ -53,6 +53,9 @@
 
 ### Removed
 - The chat's 💡 no longer offers background, compact or handoff cards, nor the fresh-chat chip; Promptu's planning owns high-context work (chat decisions 36, 97).
+
+### Decided
+- The VS Code launcher's decisions (Start focuses the open tab, the UI Automation invariants) now live in embarch-chat decision 123, moved from embarch-ui 28.
 ## 2026-10
 
 ### Added
