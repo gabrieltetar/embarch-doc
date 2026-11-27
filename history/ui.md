@@ -40,6 +40,9 @@
 
 ### Removed
 - Removed four embarch-ui routes nothing called: topology role-board, link, profile apply, and study-designer GATT data; they answer 404 (EMB-311).
+
+### Decided
+- embarch-ui decision 28's launcher behaviour now lives in embarch-chat decision 123; ui 28 is a pointer, 3 and 101 trimmed.
 ## 2026-10
 
 ### Added

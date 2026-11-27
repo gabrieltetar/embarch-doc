@@ -1,6 +1,6 @@
 # embarch-ui decisions: The VS Code launcher
 
-**Status:** active, 2026-09-02; 3 and 28 amended by 101; 28 moved to chat 123 on 2026-11-05.
+**Status:** active, 2026-09-02; 3 and 28 amended by 101; 28 moved to chat 123 on 2026-11-26.
 
 Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md).
 
