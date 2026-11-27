@@ -1,6 +1,6 @@
 # 191 — `/status` serves `host_type_schema_version` beside the old key
 
-**State:** open
+**State:** claimed by agent/core/191-status-serves-host-type-schema-version, 2026-11-27 02:13
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** core
