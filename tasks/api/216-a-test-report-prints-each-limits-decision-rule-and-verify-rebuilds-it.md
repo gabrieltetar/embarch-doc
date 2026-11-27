@@ -1,6 +1,6 @@
 # 216 — A Test report prints each limit's decision rule, and `verify` rebuilds it
 
-**State:** open
+**State:** claimed by agent/api/216-a-test-report-prints-each-limits-decision-rule-and-verify-rebuilds-it, 2026-11-26 22:02
 **Source:** EMB-588 — A Test report omits each limit's decision rule, and verify skips it
 **Issue:** EMB-588
 **Scope:** api
