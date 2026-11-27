@@ -38,8 +38,12 @@ deleting them.
 
 ## Where the doc goes
 
-No `embarch-api` file is in reserve. Amend the api decision that owns token
-discovery in place. `embarch-token.md` is suite-level and not yours: if this
+**Reserve, at dispatch:** `decisions/client-crate.md` is 11,828 of 12,288 B,
+460 B left, filed under `tasks/api/222`. If the decision that owns token
+discovery lives there, keep your amendment net-neutral in that file, or move
+the decision verbatim into a new topic file with its index row; do not grow
+`client-crate.md`. Otherwise amend the api decision that owns token discovery
+in place. `embarch-token.md` is suite-level and not yours: if this
 task makes a line there false (the silent fallback, the relocated-`ProgramData`
 gap), drop a `status.d/` fragment naming it.
 
