@@ -26,6 +26,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/dev-bench-firmware.md](decisions/dev-bench-firmware.md) | 19, 47 | Check 13: the stale-dev-bench-firmware comparison, and the two states it must not conflate |
 | [decisions/mcp.md](decisions/mcp.md) | 23, 40 | Check 10: finding our MCP registration in the agent CLI's config, and making it answer |
 | [decisions/reporting.md](decisions/reporting.md) | 11, 37, 39, 46, 52 | What `doctor` and `status` hand back, and the fields a consumer reads |
+| [decisions/config-discovery.md](decisions/config-discovery.md) | 73 | `doctor` and `status` read the `embarch.toml` the API loads: `--config`, `EMBARCH_API_CONFIG`, then the walk, through the shared resolver |
 | [decisions/message-rendering.md](decisions/message-rendering.md) | 43 | Rendering another program's text into a check's `detail`/`fix`, and where normalisation happens |
 | [decisions/budgets.md](decisions/budgets.md) | 44, 45 | How long each remote call is given, and how one that did not come back is named |
 | [decisions/schema-skew.md](decisions/schema-skew.md) | 24, 33, 34, 35, 36, 56 | What checks 11 and 15 compare, where each number comes from, and why skew warns |

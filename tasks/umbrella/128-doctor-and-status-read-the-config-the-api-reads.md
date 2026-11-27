@@ -1,6 +1,6 @@
 # 128 — `doctor` and `status` read the config file the API reads
 
-**State:** claimed by agent/umbrella/128-doctor-and-status-read-the-config-the-api-reads, 2026-11-27 03:48
+**State:** done — doctor and status take --config and honour EMBARCH_API_CONFIG through the shared resolver; status resolves its token through that config (decision 73)
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** umbrella
@@ -47,10 +47,10 @@ file.
 
 ## Done when
 
-- [ ] `doctor` and `status` take `--config` and honour `EMBARCH_API_CONFIG`,
+- [x] `doctor` and `status` take `--config` and honour `EMBARCH_API_CONFIG`,
       through `embarch-core-client`'s resolver, and inspect the file the API
       loads.
-- [ ] `status` resolves its token through the config it found.
-- [ ] An umbrella decision records it; `spec` and `interfaces` name the flag.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] `status` resolves its token through the config it found.
+- [x] An umbrella decision records it; `spec` and `interfaces` name the flag.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
