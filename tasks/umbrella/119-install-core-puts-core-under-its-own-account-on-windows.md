@@ -1,6 +1,6 @@
 # 119 — `install-core` puts Core under its own account on Windows
 
-**State:** claimed by agent/umbrella/119-install-core-puts-core-under-its-own-account-on-windows, 2026-11-27 00:14
+**State:** done — Windows install script, transcript parser, store-owner preflight, dry-run plan and binary_sha256 built and tested; first elevated run is owner-run debt
 **Source:** EMB-339 — The Windows install cannot put Core under its own account
 **Issue:** EMB-339
 **Scope:** umbrella
@@ -94,17 +94,30 @@ reserve.
 
 ## Done when
 
-- [ ] The script is built by a function and golden-tested, step by step.
-- [ ] The transcript parser names each failed step and exits non-zero; a
+- [x] The script is built by a function and golden-tested, step by step.
+- [x] The transcript parser names each failed step and exits non-zero; a
       missing transcript is a failure (decision 50's rule).
-- [ ] A pre-existing store with a foreign owner is refused in the script
+- [x] A pre-existing store with a foreign owner is refused in the script
       before anything is written.
-- [ ] `--dry-run` prints the plan, the paths and the ACLs it would set.
-- [ ] `installed-release.json` carries `binary_sha256` in Core's shape, tested.
-- [ ] Windows-gated code type-checks for `x86_64-pc-windows-msvc` (a
+- [x] `--dry-run` prints the plan, the paths and the ACLs it would set.
+- [x] `installed-release.json` carries `binary_sha256` in Core's shape, tested.
+- [x] Windows-gated code type-checks for `x86_64-pc-windows-msvc` (a
       throwaway crate is the known route, decision 61's note); a
       hardware-verification debt for the owner's first elevated install is
       written into this file and `open.md`.
-- [ ] `open.md` is out of reserve with 111's list intact.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] `open.md` is out of reserve with 111's list intact.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Findings
+
+- **Nothing in Core had to change.** `install --service` reads `binary_sha256` as Core's doc says; the record now has it (decision 69).
+- Core's doc `interfaces/installed-release.md` still says nobody writes the record; `install-core` now does. Core's to reword.
+
+## Hardware-verification debt (owner-run, elevated Windows shell; also in `open.md`)
+
+1. `embarch install-core <signed suite release> --data-dir <temp>`: writes the record; the `release-staging` ACL lists only Administrators and SYSTEM; a tampered file writes nothing.
+2. The default data dir: all six script steps report OK in the transcript; `sc qc com.embarch.core` shows `NT SERVICE\com.embarch.core`; the store's ACL is the service, SYSTEM and Administrators; `core-fingerprint` equals `/status`'s `keyid`; a store pre-created by the engineer is refused at step 0 with nothing written.
+3. Assumed, never run: the `sc showsid` parse, PowerShell 5.1 native-stderr handling, that Core accepts a token file the script wrote.
+
+Windows type-check: the Windows-gated code (`RealHost`, `windows_half`) was `cargo check`ed for `x86_64-pc-windows-msvc` in a throwaway crate at `/tmp/ic-win-check`; the whole crate cannot build under WSL (`aws-lc-sys`).
