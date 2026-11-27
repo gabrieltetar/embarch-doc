@@ -28,7 +28,7 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Signing](interfaces/signing.md) — the signed run record, and the one route that takes no token | `/auth/challenge` |
 | [Run log](interfaces/run-log.md) — the hash-chained log of runs, publishes and discards, and the discard refused by scope | `/run-log`, `/study/{id}/log`, `/study/{id}/published`, `/study/{id}/discard` |
 | [Definitions and confirmations](interfaces/definitions.md) — HIL definitions kept by hash, the premade suites Core reads, and a person's confirmation | `/definitions`, `/definitions/{hash}`, `/suites`, `/confirmations/pending`, `/confirmations/{hash}/card`, `/confirmations` |
-| [Test runs](interfaces/test-runs.md) — a run prepared from `run.json` and the go card Core renders from it, the go, the cancel and where a run is | `/test-runs`, `/test-runs/{run_id}`, `/test-runs/{run_id}/card`, `/test-runs/{run_id}/go`, `/test-runs/{run_id}/cancel` |
+| [Test runs](interfaces/test-runs.md) — a run prepared from `run.json` and the go card Core renders from it, the go, the cancel, a resume and where a run is | `/test-runs`, `/test-runs/{run_id}`, `/test-runs/{run_id}/card`, `/test-runs/{run_id}/go`, `/test-runs/{run_id}/cancel`, `/test-runs/{run_id}/resume` |
 | [Manual verdicts, units and the person](interfaces/manual-verdicts.md) — a verdict entered by hand, a unit's declared serial and the person's name, each a run-log entry | `/manual-verdicts`, `/units/{unit_key}`, `/person` |
 | [Call log](interfaces/call-log.md) — the hash-chained log of every call to a lease-gated route | `/call-log` |
 | [Measurements](interfaces/measurements.md) — `measurements.json`, written as a device study ends and signed as a subject | — |

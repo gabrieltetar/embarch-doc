@@ -22,7 +22,7 @@ The data (`kind: "test_run"`, deterministic, no clock) is read from the prepared
 
 **Refused:** `404` a run Core never prepared; `409` a run that has not ended, has no signed record, a record, result or study record gone or not the file the chain names, or a study whose captures were discarded. A Test run whose studies the sweep took is refused, **not restored**: handing a Test run's files back is not built.
 
-**A resumed pair** (EMB-370, not landed) is not built. Once resume exists, the later run's record names the earlier in `resumes` (144) and the pair will publish as one zip: `report-data` reads the earlier record through that link and reports each test's latest verdict across the pair, the manifest names both records, both `result.json` and both runs' study files, and a `published` entry is made for each run id so retention releases both. Today `resumes` is carried in the data and not followed.
+**A resumed pair** (resume is [153](test-run-resume.md)) is not built. The later run's record names the earlier in `resumes` (144) and the pair will publish as one zip: `report-data` reads the earlier record through that link and reports each test's latest verdict across the pair, the manifest names both records, both `result.json` and both runs' study files, and a `published` entry is made for each run id so retention releases both. Today `resumes` is carried in the data and not followed.
 
 **Not done:** the route that serves a revision's files is 150.
 

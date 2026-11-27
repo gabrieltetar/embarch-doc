@@ -1,6 +1,6 @@
 # 178 — An interrupted Test run keeps its finished verdicts, and resumes as a new run of the rest
 
-**State:** claimed by agent/core/178-an-interrupted-test-run-keeps-its-verdicts-and-resumes-as-a-new-run, 2026-11-26 21:22
+**State:** done — checkpoint per finished test, interrupted run keeps verdicts, POST /test-runs/{id}/resume (decision 153); open.md out of reserve
 **Source:** EMB-370 — a Core restart loses a Test run in flight
 **Issue:** EMB-370
 **Scope:** core
@@ -69,13 +69,13 @@ comment cited a neighbouring decision's number; cite the one you wrote.
 
 ## Done when
 
-- [ ] A fixture run stopped mid-bench, then a new `AppState` over the same
+- [x] A fixture run stopped mid-bench, then a new `AppState` over the same
       folder, gives an `interrupted` run whose signed record keeps its finished
       verdicts and marks the rest `interrupted`.
-- [ ] Its resume prepares only the pending tests, names the first run in
+- [x] Its resume prepares only the pending tests, names the first run in
       `resumes`, and needs its own go.
-- [ ] The resumed run's smoke check reads the images back again.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] The resumed run's smoke check reads the images back again.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decisions and interfaces updated; `changelog.d/` fragment; a
+- [x] Decisions and interfaces updated; `changelog.d/` fragment; a
       `features.d/` row change if the Test run feature row's caveats move.

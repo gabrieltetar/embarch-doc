@@ -14,6 +14,6 @@
 
 **The seam for EMB-366.** `test_runs::end_run(state, run_id, status, reason, by)` is what the executor calls when its studies are done, and is what a cancel calls. `RUN_ADMITTED` in `api.rs` names the gated calls a run still admits ([136](test-run-executor.md)); a prompt's answer needs none, `POST /study/{id}/prompt` is lease-open. The executor stops when the run lock clears (a cancel) and holds `study_lock` per study.
 
-**Open.** A Core restart mid-run drops the run lock and the lease with it (both in memory) and leaves `started` with no `test_run_ended`: a reconcile at start-up is EMB-366's. A run holds the lease with no timeout of its own, so a run whose executor dies without calling `end_run` holds the bench until it is cancelled; the executor owns a deadline from `duration_bound_ms`.
+**Open.** A Core restart mid-run drops the run lock and the lease (both in memory): [153](test-run-resume.md) seals the run `interrupted`. A run holds the lease with no timeout of its own, so a run whose executor dies without calling `end_run` holds the bench until it is cancelled; the executor owns a deadline from `duration_bound_ms`.
 
 **Measured:** unit tests for each refusal, the session's `/reset` `409` naming the run and admitted after the end, a cancel from each token with its scope logged, and a lease held past two idle windows and its TTL. **Not run:** a native Windows build (a worktree cannot build it), and no hardware is touched.

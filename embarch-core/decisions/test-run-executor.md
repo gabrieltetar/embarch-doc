@@ -22,6 +22,6 @@
 
 **Host studies only in this phase.** Running dev-bench studies in a Test run is the alternative: **the owner's to strike (plan choice 18)**, and it changes `Env::run_study`, not the policy.
 
-**Open.** A Core restart mid-run still leaves `started` with no end (a reconcile is its own unit); the between-bench setup is [139](test-run-setup.md), the smoke check is [143](smoke-check.md); a measurement repeated in a `Repeat` is read by its first record; the board-signal and idle-wait assumptions above.
+**Open.** A Core restart mid-run is sealed `interrupted` ([153](test-run-resume.md)); the between-bench setup is [139](test-run-setup.md), the smoke check is [143](smoke-check.md); a measurement repeated in a `Repeat` is read by its first record; the board-signal and idle-wait assumptions above.
 
 **Measured:** unit tests over a fake bench for each policy path (a fail goes on, an error ends its bench, a cancel, `stop_on_fail`, `requires_not_met`, three runs with one fail, a lost port on a board against `until_not_seen` on the DUT, a deadline), the step and measurement mapping, the status during a held test and after, and the study cancel admitted under a run. **Not run:** the real reset, idle and study path on a bench (**debt**: one run of a two-test fixture suite on a bench with a DUT and a board, in the person's session), and a native Windows build.
