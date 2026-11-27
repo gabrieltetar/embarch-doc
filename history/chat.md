@@ -37,6 +37,7 @@
 - Chat: the rail's five icons are one-colour SVGs in currentColor, not colour emoji; lit and unlit differ by opacity or colour (embarch-chat decision 94).
 
 ### Fixed
+- The webview ghost-text check measures its 300 ms pause on the page's clock, not a runner sleep: no more load flake ([decision 121](../embarch-chat/decisions/assistant.md)).
 - Chat's 💡 cards checks wait on the page's clock, so a slow driver reply no longer fails them (embarch-chat 120).
 - The long chat's timeline follows a streaming reply in the render, not after the paint, so a loaded machine no longer drops the follow (chat decision 118).
 - embarch-chat: the compaction tests read the hold at the turn's own end event and dispose their chat in t.after, so a failed one no longer holds npm test for ten minutes.
