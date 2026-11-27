@@ -40,7 +40,7 @@ Reached two ways — over HTTP by `embarch-api`, and by its own CLI (`run`/`inst
 
 ## 3. Deployment
 
-**An installed, autostarting OS service is the normal deployment** — that is what makes the rest of the suite need no launcher: if Core is up at boot, `embarch-api` always finds it running. A foreground `run` is fully supported and is the right choice for debugging Core itself.
+**An installed, autostarting OS service is the normal deployment** — if Core is up at boot, `embarch-api` always finds it running. `install --service` registers only a binary `installed-release.json` lists, under Core's own account ([decision 157](decisions/platform.md)); a source build runs as a development Core (`run`, or `embarch deploy-core`).
 
 **Two stores, and Core says which** ([decision 129](decisions/auth.md)). `run --service` keeps `signing-key`, `public-key`, both logs and the identity store in `<data dir>/store/`, which it never creates (a missing one fails the start, naming the elevated install); the token pair and `study_results/` stay in the data dir. `run --store <dir>` keeps all of it, tokens and results included, in `<dir>`, made if missing. Neither flag is the one-folder layout, unchanged. `GET /status` and the challenge answer carry `mode` (`service` or `development`) and `keyid`.
 

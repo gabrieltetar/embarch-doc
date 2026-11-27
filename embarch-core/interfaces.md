@@ -36,4 +36,5 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Image readback](interfaces/image-readback.md) — not a route group, the states `readback` answers and the bench-firmware variable | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |
+| [Installed release record](interfaces/installed-release.md) — not a route group, the file `install --service` checks | — |
 | [Modules](interfaces/modules.md) — not a route group, spec §4's source-file table | — |

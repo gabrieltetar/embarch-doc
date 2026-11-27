@@ -1,6 +1,6 @@
 # 183 — `install --service` registers only a listed release, under Core's own account
 
-**State:** claimed by agent/core/183-install-service-registers-only-a-listed-release-under-cores-own-account, 2026-11-26 23:43
+**State:** done — install --service gated on installed-release.json, registers run --service under own account; decision 157; Windows check and first elevated install owed
 **Source:** EMB-324 — Core registers any binary as the service, under the default account
 **Issue:** EMB-324
 **Scope:** core
@@ -71,17 +71,27 @@ shape; number from `scripts/check-task-numbers.py --next core`). `open.md` is
 
 ## Done when
 
-- [ ] `install --service` with no record, or a record not listing this
+- [x] `install --service` with no record, or a record not listing this
       binary's hash, refuses before any service-manager call.
-- [ ] With a matching record, the registration built runs
+- [x] With a matching record, the registration built runs
       `run --service --bind <addr>` under the service account, asserted on the
       built arguments for Windows and Linux.
-- [ ] A plain `install` registers nothing and names `embarch deploy-core`.
-- [ ] `update` on a `--service` registration refuses.
-- [ ] The Windows-gated code type-checks for `x86_64-pc-windows-msvc`
+- [x] A plain `install` registers nothing and names `embarch deploy-core`.
+- [x] `update` on a `--service` registration refuses.
+- [x] The Windows-gated code type-checks for `x86_64-pc-windows-msvc`
       (`cargo check --target x86_64-pc-windows-msvc` where the target is
       installed; say if it is not); a hardware-verification debt is written
       into this file for the first elevated install.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Spec §3 and the install decision amended; `changelog.d/` fragment.
+- [x] Spec §3 and the install decision amended; `changelog.d/` fragment.
+
+## Hardware-verification debt
+
+First elevated install, on a Windows machine and on a Linux machine (neither writable here: nothing yet writes `installed-release.json`, EMB-339 and EMB-340):
+
+- Windows: with a record listing the built binary, run `embarch-core install --service --bind 127.0.0.1` elevated, then `sc qc com.embarch.core` must show `SERVICE_START_NAME : NT SERVICE\com.embarch.core` and `BINARY_PATH_NAME` ending `run --service --bind 127.0.0.1`, and Core must start with `mode: service`. Check the virtual account can write `%ProgramData%\embarch\store\` (the install owns its ACL, EMB-339). Re-run over the registration to confirm the in-place rewrite still sets the account.
+- Linux: `systemctl cat com.embarch.core` shows `User=embarch` and `ExecStart=... run --service --bind ...`.
+- `embarch-core update <exe>` against that registration refuses.
+- Not run: `cargo check --target x86_64-pc-windows-msvc` installs but fails in `hidapi`'s `build.rs` (no `guiddef.h`, the known WSL limit), so the Windows-gated code (`apply_windows_account`, the `registered_command` registry read) is unchecked by a compiler.
+- Caller: `embarch-umbrella` calls `install --bind`, which now registers nothing; moving it to `--service` or `deploy-core` is that repo's.
