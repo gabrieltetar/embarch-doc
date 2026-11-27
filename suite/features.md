@@ -292,6 +292,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Live Study: Cancel button on a running study, relaying to Core's cancel route and showing Core's refusal | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 109 |
 | Confirm tab: the engineer confirms a custom or derived test, capability or hook from Core's own card, one or all shown, with the person's token and the card's nonce | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 110 |
 | Go card: the Confirm tab draws Core's card for a prepared Test run and gives the person's go, disabled while an input is unconfirmed | Shipped — host-tested against a stub Core; not run in a browser or against a live Core; the prompt modal's kind and answer wait on EMB-575 | unit | 111 |
+| Core identity line: every tab names the Core as service or development with its fingerprint and a match verdict, a mismatch drawn as a warning | Shipped — host-tested on fixture attestations; not run in a browser or against a live Core; mode is derived from the match | unit | 112 |
 
 ## embarch-desk
 
