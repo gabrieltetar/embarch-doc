@@ -1,6 +1,6 @@
 # 129 — compact `embarch-umbrella/decisions/reporting.md`
 
-**State:** claimed by agent/umbrella/129-compact-umbrella, 2026-11-27 04:31
+**State:** done — decision 52 split verbatim into decisions/doc-guard-test.md; reporting.md 9928 B, out of reserve
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
@@ -17,4 +17,4 @@
 
 ## Done when
 
-- [ ] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
