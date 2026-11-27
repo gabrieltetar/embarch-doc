@@ -1,6 +1,6 @@
 # 173 — A Test run's amended study record is bound in the run log
 
-**State:** open
+**State:** claimed by agent/core/173-a-test-runs-amended-study-record-is-bound-in-the-run-log, 2026-11-26 18:14
 **Source:** EMB-579 — a Test run's amended study record no longer matches its chained run-log hash
 **Issue:** EMB-579
 **Scope:** core
