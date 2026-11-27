@@ -1,6 +1,6 @@
 # 190 — Service start and stop try without elevation first
 
-**State:** claimed by agent/core/190-service-start-and-stop-try-without-elevation-first, 2026-11-27 03:24
+**State:** done — start/stop try unelevated; classifier tested; hardware debt recorded
 **Source:** EMB-342 — every switch between the service and a development Core needs elevation
 **Issue:** EMB-342
 **Scope:** core
@@ -55,14 +55,20 @@ just under its reserve line: net-neutral or smaller.
 
 ## Done when
 
-- [ ] `start` and `stop` try unelevated and elevate only on a rights refusal;
+- [x] `start` and `stop` try unelevated and elevate only on a rights refusal;
       the classifier is a tested pure function.
-- [ ] `install`, `uninstall` and `install --service` are unchanged.
-- [ ] A hardware-verification debt in this file: on Windows and on a systemd
+- [x] `install`, `uninstall` and `install --service` are unchanged.
+- [x] A hardware-verification debt in this file: on Windows and on a systemd
       Linux, with and without `tasks/umbrella/124`'s grant, `embarch-core stop`
       and `start` as the engineer (no prompt with the grant, the usual prompt
       without it).
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); the new decision and its index row; `changelog.d/`
       fragment. The Windows arm cannot be built under WSL (hidapi blocks the
       crate); type-check it in a throwaway crate as `core/185` did, and say so.
+
+## Hardware-verification debt
+
+Not run: no real service may be started or stopped here, and the Windows arm cannot be built under WSL. The code is platform-neutral (`cfg!(windows)` selects only the classifier branch), so the Windows arm was not type-checked in a throwaway crate; the shared path compiles and its tests run on Linux.
+
+Needs running, on Windows and on a systemd Linux, with and without `tasks/umbrella/124`'s grant, as the engineer: `embarch-core stop` then `embarch-core start`. Expect no prompt with the grant and the usual prompt without it. Also confirm the Linux refusal text is one the classifier matches (decision 163 [assumed]).
