@@ -1,6 +1,6 @@
 # 195 — the Test-run record carries Core's mode
 
-**State:** claimed by agent/core/195-the-test-run-record-carries-cores-mode, 2026-11-27 04:31
+**State:** done — predicate.observed.mode added to the Test-run record; test pins it
 **Source:** EMB-597 — the Test-run record carries no `observed.mode`; found by `api/227`'s worker
 **Issue:** EMB-597
 **Scope:** core
@@ -54,10 +54,10 @@ verifier), then `core/193` (the attestation).
 
 ## Done when
 
-- [ ] A Test-run record's `predicate.observed.mode` is present, in service and
+- [x] A Test-run record's `predicate.observed.mode` is present, in service and
       in development mode, equal to what a Study record would carry.
-- [ ] No other field of the record or of `report-data.json` changes.
-- [ ] The decision and interface doc say so.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] No other field of the record or of `report-data.json` changes.
+- [x] The decision and interface doc say so.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`);
       `changelog.d/` fragment.
