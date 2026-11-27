@@ -1,6 +1,6 @@
 # 064 — The agent guide places the Test tools, and nothing links the retired ledger tools
 
-**State:** open
+**State:** open — announced and parked, ts `1795750706.059469` (2026-11-26 20:38); the window closes 21:08 unless a reply cancels it. Poll `fleet-read.py --thread 1795750706.059469` before running.
 **Source:** EMB-390 — agent-guide permission lists do not place the Test tools; EMB-583 — docs outside api still name the retired ledger tools
 **Issue:** EMB-390
 **Scope:** suite
