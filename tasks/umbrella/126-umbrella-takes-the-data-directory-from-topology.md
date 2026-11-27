@@ -1,6 +1,6 @@
 # 126 — `embarch` takes the machine data directory and the WSL helpers from `embarch-topology`
 
-**State:** claimed by agent/umbrella/126-umbrella-takes-the-data-directory-from-topology, 2026-11-27 02:57
+**State:** done — data_dir_for and locate.rs call embarch-topology; check 16 reports resolver errors; decision 39 amended
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** umbrella
@@ -50,8 +50,8 @@ place; `embarch-token.md` is suite-level and not yours, so if its relocated-
 
 ## Done when
 
-- [ ] `data_dir_for` and `locate.rs` call topology; umbrella's copies are gone.
-- [ ] A test drives check 16's path through a stubbed resolver for a relocated
+- [x] `data_dir_for` and `locate.rs` call topology; umbrella's copies are gone.
+- [x] A test drives check 16's path through a stubbed resolver for a relocated
       `ProgramData` (or the resolver's seam, if `topology/074` gives one).
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); decision updated; `changelog.d/` fragment.
