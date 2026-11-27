@@ -20,7 +20,7 @@ each write; `install.rs` gained a read-only `plan_install` built from the same
 constants and predicates the real `install_into` uses, so the two cannot drift;
 and one `apply_plan` walks both modes. A dry run names the canonical directory
 and each binary as copy / already-there / absent, the env file and rc file
-`PATH` would gain, the `embarch-core install --bind` line and its elevation, and
+`PATH` would gain, the `install-core` route it names instead of a registration (decision 71), and
 the state file it would write — and calls a Core it would put there **"would be
 installed by this run"**, never "just installed here".
 

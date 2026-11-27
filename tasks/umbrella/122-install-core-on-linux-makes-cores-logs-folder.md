@@ -1,6 +1,6 @@
 # 122 — `install-core` on Linux makes Core's `logs/` folder
 
-**State:** claimed by agent/umbrella/122-install-core-on-linux-makes-cores-logs-folder, 2026-11-27 00:53
+**State:** done — step_store makes logs/, decision 70 amended, file split, stale lines fixed
 **Source:** EMB-594 — install-core Linux leaves no writable logs dir for the embarch user (reviewer finding on `umbrella/120`)
 **Issue:** EMB-594
 **Scope:** umbrella
@@ -67,11 +67,19 @@ line. Correct both to what 71 says `setup` does now, net-neutral.
 
 ## Done when
 
-- [ ] The generated script creates `logs/` for `embarch`, asserted by a golden
+- [x] The generated script creates `logs/` for `embarch`, asserted by a golden
       test.
-- [ ] Decision 70 and the plan text name `logs/` and its owner and mode.
-- [ ] The task's hardware-verification debt adds: after the first install in a
+- [x] Decision 70 and the plan text name `logs/` and its owner and mode.
+- [x] The task's hardware-verification debt adds: after the first install in a
       scratch systemd distro, `logs/` holds a dated core log and
       `GET /logs/recent` returns lines.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Outcome
+
+`step_store` makes `<data dir>/logs/` `embarch:embarch-users` `0750`, as `study_results/`; decision 70 says why (the engineer reads the files with Core down) and that `embarch-core/src` was re-checked: `study_results/`, `logs/` and the `installed-release.json` read are Core's only data-dir-root accesses. Decisions 69 and 70 moved verbatim to `decisions/install-core-platforms.md`, which took `install-core.md` out of reserve (5,855 B). Stale lines fixed: `spec/commands.md` row 9, `decisions/setup-reversal.md`.
+
+## Hardware-verification debt
+
+After the first `sudo embarch install-core <release>` in a scratch systemd distro: `/var/lib/embarch/logs/` is `embarch:embarch-users` `0750` and holds a dated `core.*` log file, and `GET /logs/recent` returns lines. Recorded in `open.md`'s install-core entry.

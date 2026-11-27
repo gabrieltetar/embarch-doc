@@ -1,6 +1,6 @@
 # embarch-umbrella: `embarch install-core` and `installed-release.json`
 
-**Status:** active, 2026-11-27. Built for EMB-338 (`tasks/umbrella/110`), EMB-339 (`tasks/umbrella/119`) and EMB-340 (`tasks/umbrella/120`). Why: [decisions 61, 69 and 70](../decisions/install-core.md). Index: [../decisions.md](../decisions.md).
+**Status:** active, 2026-11-27. Built for EMB-338 (`tasks/umbrella/110`), EMB-339 (`tasks/umbrella/119`) and EMB-340 (`tasks/umbrella/120`). Why: decisions 61, 69 and 70, indexed in [decisions.md](../decisions.md). Index: [../decisions.md](../decisions.md).
 
 `embarch install-core <SOURCE> [--allow-downgrade] [--dry-run] [--data-dir DIR] [--trusted-root FILE | --refresh-trust-root]`. `SOURCE` is an unpacked release folder or its archive. Exit `0` only when the release verified and the record was written; `1` otherwise, with the reason on stderr.
 
@@ -18,7 +18,7 @@
 | `identity`, `issuer` | The certificate identity and OIDC issuer that signed it |
 | `log_time` | The transparency log entry's time, or `null` |
 | `binaries` | File name to SHA-256, for each of `embarch`, `embarch-core`, `embarch-api` present in the release |
-| `binary_sha256` | Array of lowercase hex: the SHA-256 of the staged `embarch-core`, empty when the release holds none. The shape Core's `install --service` reads ([installed-release](../../embarch-core/interfaces/installed-release.md)); added by [decision 69](../decisions/install-core.md), `binaries` kept |
+| `binary_sha256` | Array of lowercase hex: the SHA-256 of the staged `embarch-core`, empty when the release holds none. The shape Core's `install --service` reads ([installed-release](../../embarch-core/interfaces/installed-release.md)); added by [decision 69](../decisions/install-core-platforms.md), `binaries` kept |
 | `allow_downgrade` | `--allow-downgrade` was passed |
 | `downgraded` | This suite was older than the one it replaced |
 | `previous_suite_version` | The replaced version, or `null` for a first install |

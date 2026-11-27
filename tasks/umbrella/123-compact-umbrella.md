@@ -1,7 +1,6 @@
 # 123 — compact `embarch-umbrella/decisions/install-core.md`
 
-**State:** blocked — install-core is still gaining its self-elevating half and a macOS route
-**Unparks when:** `install-core` self-elevates (the later unit decision 69 names) or the owner strikes macOS support, whichever lands first
+**State:** done — umbrella/122 split decisions 69 and 70 verbatim into install-core-platforms.md; install-core.md is 5,855 B, out of reserve
 **Scope:** umbrella
 **Hardware:** none
 **Owner:** no
