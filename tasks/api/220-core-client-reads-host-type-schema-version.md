@@ -1,6 +1,6 @@
 # 220 — `embarch-core-client` reads `host_type_schema_version` from `/status`
 
-**State:** claimed by agent/api/220-core-client-reads-host-type-schema-version, 2026-11-27 01:12
+**State:** done — StatusResponse exposes host_type_schema_version via a two-key wire struct; decision 150
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** api
@@ -50,9 +50,9 @@ schema check in place, or a short new one; `interfaces/` where it names the key.
 
 ## Done when
 
-- [ ] The client exposes `host_type_schema_version`; a test parses an
+- [x] The client exposes `host_type_schema_version`; a test parses an
       old-key, a new-key and a both-keys `/status` body to the same value.
-- [ ] Both call sites read the new name; no consumer in the suite breaks.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Both call sites read the new name; no consumer in the suite breaks.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`, and the crate under each feature set its consumers build it
       with, per `gate.md`); decision updated; `changelog.d/` fragment.
