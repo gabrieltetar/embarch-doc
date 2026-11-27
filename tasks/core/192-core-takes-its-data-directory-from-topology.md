@@ -1,6 +1,6 @@
 # 192 — Core takes its machine data directory from `embarch-topology`
 
-**State:** open
+**State:** claimed by agent/core/192-core-takes-its-data-directory-from-topology, 2026-11-27 02:57
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** core
@@ -36,8 +36,9 @@ they are.
 
 ## Where the doc goes
 
-`spec.md` and `decisions/platform.md` are in reserve under `tasks/core/186`:
-do not grow them. Amend the core decision that names the path in place
+`spec.md` (1,158 B left) and `decisions/platform.md` (733 B left) are in
+reserve under `tasks/core/186`: do not grow them. Decisions 110 (`signing`),
+127, 95, 133, 93 and 128 are over their per-decision limit; do not touch them. Amend the core decision that names the path in place
 (`decisions/auth.md` names `ProgramData`), net-neutral if you can.
 
 ## Done when
