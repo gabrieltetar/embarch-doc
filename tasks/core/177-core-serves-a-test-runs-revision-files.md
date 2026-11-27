@@ -1,6 +1,6 @@
 # 177 — Core serves a Test run's revision files
 
-**State:** open
+**State:** claimed by agent/core/177-core-serves-a-test-runs-revision-files, 2026-11-26 20:12
 **Source:** EMB-581 — Core serves a Test run's revision files to embarch-api
 **Issue:** EMB-581
 **Scope:** core
