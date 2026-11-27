@@ -1,6 +1,6 @@
 # 223 — `embarch-core-client` holds the clients' one copy of the desk's address and token rule
 
-**State:** claimed by agent/api/223-core-client-holds-the-clients-copy-of-the-desks-address, 2026-11-27 02:57
+**State:** done — embarch_core_client::desk_discovery holds the desk address rule; session_desk.rs uses it; decision 151
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** api
@@ -56,11 +56,11 @@ the desk's location.
 
 ## Done when
 
-- [ ] One public module in `embarch-core-client` returns the desk's config dir,
+- [x] One public module in `embarch-core-client` returns the desk's config dir,
       data dir, token path, port and base URL, with tests for every precedence
       step; `session_desk.rs` calls it and its own copies are gone.
-- [ ] A new api decision records where the clients' rule lives, why the desk
+- [x] A new api decision records where the clients' rule lives, why the desk
       does not take the crate, that chat holds the one TypeScript copy, and
       that generic XDG helpers are out of scope.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings` at the workspace root); `changelog.d/` fragment.
