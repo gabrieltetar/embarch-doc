@@ -1,6 +1,6 @@
 # 120 — `install-core` gives Core a user of its own and a protected store on Linux
 
-**State:** open
+**State:** claimed by agent/umbrella/120-install-core-gives-core-a-user-and-a-protected-store-on-linux, 2026-11-27 00:27
 **Source:** EMB-340 — On Linux, Core has no account of its own and no protected store
 **Issue:** EMB-340
 **Scope:** umbrella
