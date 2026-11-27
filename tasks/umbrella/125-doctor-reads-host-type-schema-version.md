@@ -1,6 +1,6 @@
 # 125 — `embarch doctor` reads `host_type_schema_version` from Core's `/status`
 
-**State:** open
+**State:** claimed by agent/umbrella/125-doctor-reads-host-type-schema-version, 2026-11-27 02:13
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** umbrella
@@ -36,8 +36,12 @@ only, new key only, both.
 
 ## Where the doc goes
 
-No umbrella file is in reserve. Amend `decisions/schema-skew.md` in place where
-it names the key; `interfaces/doctor-chain.md` if a check row names it.
+**Reserve, at dispatch:** `open.md` is 4,553 of 5,120 B, 567 B left, and its
+compaction task `tasks/umbrella/127` is parked on `In flux: yes`. Do not grow
+`open.md`; if you must edit it, compact it in the same unit, keeping
+`umbrella/127`'s `Must not delete:` list. Amend `decisions/schema-skew.md` in
+place where it names the key; `interfaces/doctor-chain.md` if a check row
+names it.
 
 ## Done when
 
