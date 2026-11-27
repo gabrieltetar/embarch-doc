@@ -22,6 +22,7 @@
 - Claude can hand a chat to a fresh session in the same panel: handoff(prompt), as an editable card, immediate, or off (embarchChat.handoff); decision 103 built.
 
 ### Changed
+- Chat's desk URL and token path follow the desk's own rule (port and config-dir env) unless a setting names them; embarch-chat decision 124.
 - Compacted embarch-chat spec.md and open.md out of reserve; no decision changed.
 - Chat: the 💡 linker takes references from any number of sources, one `<references>` block of 12 lines with cue-word gating; issues and PRs are the first source (chat decision 112).
 - Permissions command now writes the agent guide's 1.1 lists for embarch-api and embarch-atlas; instrument_exchange is gone from it.
