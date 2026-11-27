@@ -1,6 +1,6 @@
 # 181 — Core switches every declared output off at start and at a graceful stop
 
-**State:** open
+**State:** claimed by agent/core/181-core-switches-every-declared-output-off-at-start-and-graceful-stop, 2026-11-26 22:55
 **Source:** EMB-325 — Core leaves bench outputs as they were across a stop and a start
 **Issue:** EMB-325
 **Scope:** core
