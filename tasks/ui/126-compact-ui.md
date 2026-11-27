@@ -1,6 +1,6 @@
 # 126 — compact `embarch-ui/spec/tabs.md`
 
-**State:** open
+**State:** claimed by agent/ui/126-compact-ui, 2026-11-26 19:25
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
