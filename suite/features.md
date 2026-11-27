@@ -137,6 +137,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core client methods for the confirmation routes (`pending_confirmations`, `confirmation_card`, `confirm`) — the engineer's confirmation card calls them; deliberately no MCP tool | Built; mock Core only | unit | — |
 | `run_test` / `test_status` — prepare a Test run (the card, never the go) and watch it, over Core's test-run routes | Built; mock Core only | unit | 135 |
 | `embarch-api person` — the engineer's confirmation, Test run go, observation answer and unit/name declarations from a terminal, with the person's token and a typed `yes`; CLI only | Built; mock Core only | unit | 141 |
+| `resume_test` / `resume-test` — prepare a new Test run of an interrupted run's pending tests through Core's resume route and show its card (never the go) | Built; mock Core only | unit | 148 |
 
 ## embarch-dev-bench
 
