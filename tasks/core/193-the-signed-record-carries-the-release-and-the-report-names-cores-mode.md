@@ -1,6 +1,6 @@
 # 193 — the signed record carries the release, and the report names Core's mode
 
-**State:** claimed by agent/core/193-the-signed-record-carries-the-release-and-the-report-names-cores-mode, 2026-11-27 05:23
+**State:** done — observed.release in both record kinds; attestation {label, core_mode, release, reason}; decision 119 amended
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** core
@@ -71,11 +71,11 @@ of trust").
 
 ## Done when
 
-- [ ] The signed record carries `observed.release`, `null` in development and
+- [x] The signed record carries `observed.release`, `null` in development and
       in tests with no release file, the file's two values when it lists this
       binary.
-- [ ] Publishes from a service-mode and a development-mode record write the
+- [x] Publishes from a service-mode and a development-mode record write the
       new attestation, with the reason by mode.
-- [ ] Decisions and interface docs say so.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Decisions and interface docs say so.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.

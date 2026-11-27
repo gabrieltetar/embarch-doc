@@ -8,4 +8,4 @@
 {"binary_sha256": ["<64 lowercase hex>", "..."]}
 ```
 
-`binary_sha256` lists the SHA-256 of every `embarch-core` binary a signed release installed, as `GET /status` reports it. `install --service` refuses unless the SHA-256 of its own executable is an entry, or the file is missing or not JSON with that array. Unknown fields are ignored.
+`binary_sha256` lists the SHA-256 of every `embarch-core` binary a signed release installed, as `GET /status` reports it. `install --service` refuses unless the SHA-256 of its own executable is an entry, or the file is missing or not JSON with that array. Unknown fields are ignored. Core's signed record also reads `suite_version` and `manifest_sha256` from it, when the file lists this binary, as `observed.release` ([signing](signing.md)); either missing gives `null`.
