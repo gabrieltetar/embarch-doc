@@ -1,6 +1,6 @@
 # 215 — `verify` checks a Test run's zip and recomputes its verdicts
 
-**State:** claimed by agent/api/215-verify-checks-a-test-runs-zip-and-recomputes-its-verdicts, 2026-11-26 21:22
+**State:** done — verify checks a Test run's zip: every verdict recomputed through the shared crate, report-data rebuilt, exports regenerated (decision 146)
 **Source:** EMB-382 — verify cannot check a Test zip's verdicts
 **Issue:** EMB-382
 **Scope:** api
@@ -78,12 +78,20 @@ file `tasks/api/<NNN>-compact-api.md` in the same commit.
 
 ## Done when
 
-- [ ] A fixture Test zip passes every check.
-- [ ] The same zip with a verdict flipped in `report-data.json`, a test's
+- [x] A fixture Test zip passes every check.
+- [x] The same zip with a verdict flipped in `report-data.json`, a test's
       record dropped, or a limit in `run.json` altered each fails, naming the
       check and the test.
-- [ ] A Study zip still passes, check 3 answering as today.
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] A Study zip still passes, check 3 answering as today.
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] Decisions and interfaces updated; `changelog.d/` fragment; the verify
+- [x] Decisions and interfaces updated; `changelog.d/` fragment; the verify
       feature row in `features.d/` if it states what verify covers.
+
+## Hardware-verification debt
+
+None needed for the host side; **not run: a real Core's Test zip**. `verify` of a Test run's zip is tested only against a fixture built from a reading of Core's `origin/main` (`tests/verify_test_run.rs`), so the copies of Core's `judge_steps`, `judge_measurements`, `manual_rows`, `runs_on_unit` and the `report-data.json` field list can drift or be wrong. Run `embarch-api verify <zip> --public-key <hex>` on a zip `publish` wrote from a real Test run on the bench-capable Core and read every check.
+
+## Filed
+
+EMB-586 (core): record each Exchange step's target in the signed files, so check 3 stops reading it both ways.

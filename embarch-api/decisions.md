@@ -58,6 +58,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [`verify`](decisions/verify.md) — CLI-only, no config or Core, a public key not a fingerprint, "origin unattested", exit 0 is "no check failed" with partial checks named, the run-log chain and what is out of its reach, and check 2's step outcomes and numbers recomputed from the recorded reply | 118, 119, 120, 121, 140 | 4.8 KB |
 | [`core-key`](decisions/verify.md) — decision 129: Core's key from its challenge, signature checked over a fresh nonce, no token sent, written nowhere |
 | [`verify`'s checks 4, 6 and 9](decisions/verify-report.md) — the syntax-tree whitelist `publish` shares, the six ways a PDF number is admitted and the appendix's unsigned ones, report-data recomputed independently, packages hashed against the build's list | 122, 123, 124, 125 | 5.1 KB |
+| [`verify` of a Test run's zip](decisions/verify-test-run.md) — told by `test-run.dsse.json`, every verdict recomputed through the shared crate, a step's unknown target read both ways, an interrupted run named not checked | 146 | 4.1 KB |
 | [`export-audio`](decisions/audio-export.md) — a framed analog tap as 16-bit WAV from its raw block file, one file per gap-free segment, markers as cue points and labels, the study's declarations read from its JSON, a rate-less tap refused | 130 | 3.5 KB |
 | [The person's `embarch/` writer](decisions/person-mirror.md) — one confined writer: fixed kinds and extensions, a fixed name set, no link followed, atomic by rename, nothing run; no caller yet | 132 | 3.4 KB |
 
