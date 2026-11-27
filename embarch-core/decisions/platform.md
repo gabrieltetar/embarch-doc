@@ -3,7 +3,7 @@
 **Status:** active, 2026-09-02.
 
 How Core runs at all: language and framework choices, how it installs and elevates as an OS
-service, and what serialises hardware access. Auth, binding, and configuration are
+service, and, in [locking.md](locking.md), what serialises hardware access. Auth, binding, and configuration are
 [decisions/auth.md](auth.md); keeping the documented HTTP surface in agreement with the router
 is [decisions/route-sweep.md](route-sweep.md).
 
@@ -34,21 +34,3 @@ Measured 2026-10-29 on the live `com.embarch.core` (`umbrella/033`): `install` o
 
 ### 100 — `--version` names the commit Core was built from
 **Decided 2026-10-28**, suite task 047; the stamp and why are `embarch-umbrella` [decision 57](../../embarch-umbrella/decisions/build-identity.md). `embarch-core --version` prints `embarch-core <version> (commit <8 hex>[, dirty])`, still one line on stdout (`tests/version_stdout.rs` pins the commit). `/status`'s `core_version` stays `CARGO_PKG_VERSION` (decision 13): the commit is not added to the wire, because `binary_sha256` already identifies the bytes that answer. The service build on Windows is made from an rsync copy with no `.git`; `deploy-core` passes the Linux checkout's commit in, and a build made by hand there says `(commit unknown)`.
-
----
-
-
-## Locking
-
-### 4, 14, 15 — One `hw_lock`, `study_lock` for the bench, and a `503` naming the holder on contention
-`hw_lock` is held for the whole handler body, so a `/flash` blocks a concurrent `/reset` from *starting* rather than serialising at the probe-rs call level. The dev-bench link is a different physical connection and is arbitrated by `study_lock`; port enumeration opens nothing and takes neither. No new lock was needed — the existing ones already covered it.
-
-**The dev-bench entry points take both, in one order (`tasks/core/104`).** The identity gate (`enforce_dev_bench_gate`) attaches the dev-bench's probe, so it takes `hw_lock` for the attach and drops it on return (`POST /study` and `GET /dev-bench/hello` both call it; `run_outpost_preflight` takes `hw_lock` again later, so holding across would deadlock). `GET /dev-bench/hello` holds `study_lock` for the whole handshake, written as `GET /dev-bench/hello`, so a study arriving meanwhile is refused `409` naming hello, and hello is refused `409` naming a study in flight. Order is `study_lock` then `hw_lock` on both routes; `hw_lock` never waits on `study_lock`.
-
-**2026-11-25:** a lease or a study also holds the bench's serial ports open between calls, one borrower at a time under `hw_lock` ([port-hold.md](port-hold.md), 130).
-
-**Decision 14 — `503` naming the holder — is now built (`tasks/core/013`), after a period (until 2026-09-06) where this entry asserted it was implemented and it was not.** `hw_lock` stayed `Arc<Mutex<()>>`; a second, plain `std::sync::Mutex<Option<String>>` field (`AppState::hw_holder`) tracks which route currently holds it, set and cleared only by one helper, `acquire_hw_lock`, that every handler now goes through instead of calling `.lock().await` directly. That helper waits up to 500 ms (`HW_LOCK_WAIT_MS`) for the lock via `tokio::time::timeout` over an owned guard; past that it returns `503` with a plain-text body naming the current holder, e.g. `hw_lock held by POST /flash; POST /reset refused after waiting 500ms`, and logs the refusal (`tracing::warn!`) as distinct from a successful, uncontended acquisition (`tracing::info!`) — so `core.log` can tell a wait from a refusal after the fact, which is `tasks/core/013`'s own "Done when" requirement. 500 ms was chosen, not measured, against the bench numbers below (single calls in the low seconds, dominated by fixed overhead) — a value big enough that the common case of a short flash/reset never trips it, small enough that a caller sees the refusal well before its own timeout; a reversal candidate if bench numbers ever show a legitimate hardware op needing longer.
-
-Exercised against the live Windows-service Core at `http://172.22.128.1:4884` [measured 2026-09-06, `core/007`, both boards enrolled and validated], **before this build**: three concurrent `GET /serial-log` on one port, `duration_ms=3000` each, all three returned `200` with a body — no refusal of any kind, consistent with the queueing this decision now replaces. That measurement is history, not current behaviour; `tasks/core/013`'s own test (`api::tests::a_second_caller_is_refused_503_naming_the_holder_under_real_contention`) is host-side, not hardware, and holds `hw_lock` across the 500 ms window itself rather than depending on a live board.
-
----

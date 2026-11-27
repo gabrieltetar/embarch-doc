@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-10-26.
 
-Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). HTTP surface: [../interfaces/hardware.md](../interfaces/hardware.md). Siblings: [platform.md](platform.md) (decisions 4, 14, 15: `hw_lock`, which this sits above), [signal-capture.md](signal-capture.md) (decision 92).
+Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.md). HTTP surface: [../interfaces/hardware.md](../interfaces/hardware.md). Siblings: [locking.md](locking.md) (decisions 4, 14, 15: `hw_lock`, which this sits above), [signal-capture.md](signal-capture.md) (decision 92).
 
 ### 93 — `/lease`: one session holds the whole bench across calls, and a hardware request without its token is refused `409` by name
 

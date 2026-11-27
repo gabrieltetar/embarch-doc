@@ -8,7 +8,8 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 
 | Load this for | Decisions | Size |
 |---|---|---|
-| [Platform, process, and locking](decisions/platform.md) | 1, 2, 3, 4, 7, 14, 15, 17, 100, 106, 157 | 11.5 KB |
+| [Platform and process](decisions/platform.md) | 1, 2, 3, 7, 17, 100, 106, 157 | 8.3 KB |
+| [Locking: `hw_lock`, `study_lock`, the `503`](decisions/locking.md) | 4, 14, 15 | 3.6 KB |
 | [Starting and stopping the service](decisions/service-control.md) | 163 | 2.5 KB |
 | [Auth, binding, and configuration](decisions/auth.md) | 5, 6, 11, 53, 109, 129, 132 | 9.5 KB |
 | [The route sweep](decisions/route-sweep.md) | 42, 46, 60 | 8.9 KB |

@@ -1,6 +1,6 @@
 # 186 — compact `embarch-core/spec.md` and `decisions/platform.md`
 
-**State:** claimed by agent/core/186-compact-core, 2026-11-27 04:17 — platform.md is now 11,555 B (core/190 put decision 163 in its own file); leave every other core doc alone
+**State:** done — platform.md 11555->8265 B (locking split verbatim to locking.md), spec.md 9082->9008 B; both out of reserve
 **Scope:** core
 **Hardware:** none
 **Owner:** no
@@ -15,5 +15,5 @@
 
 ## Done when
 
-- [ ] Both files are out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
-- [ ] The human question is answered in the commit message: can `spec.md` alone answer what someone needs to work on this component today?
+- [x] Both files are out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The human question is answered in the commit message: can `spec.md` alone answer what someone needs to work on this component today?

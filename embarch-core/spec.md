@@ -58,8 +58,4 @@ Board identity, enrollment, hardware-ID readback and dev-bench port detection ar
 
 ## 5. Constants and knobs
 
-Split into [interfaces/constants.md](interfaces/constants.md) on 2026-09-09
-(`tasks/core/030`) when this file reached its size cap — every value, its
-`[measured]`/`[assumed]` tag and its provenance note moved verbatim, nothing
-cut. That file also has the on-disk path convention (`%ProgramData%\embarch\`
-on Windows, `/var/lib/embarch/` elsewhere).
+[interfaces/constants.md](interfaces/constants.md): every value with its `[measured]`/`[assumed]` tag and provenance, and the on-disk path convention (`%ProgramData%\embarch\` on Windows, `/var/lib/embarch/` elsewhere). Split out of this file on 2026-09-09 (`tasks/core/030`).
