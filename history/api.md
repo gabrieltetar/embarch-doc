@@ -39,6 +39,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Finding embarch.toml is one function in embarch-core-client (explicit path, EMBARCH_API_CONFIG, walk up); the API uses it. See api decision 152.
 - Core-client token discovery takes the machine data directory from embarch-topology; an unset ProgramData now errors by name instead of falling back to C:\ProgramData.
 - embarch-core-client's /status exposes host_type_schema_version, read from either key (api decision 150).
 - Compacted api spec.md: publish appendix and verify check list moved verbatim to their interface files.

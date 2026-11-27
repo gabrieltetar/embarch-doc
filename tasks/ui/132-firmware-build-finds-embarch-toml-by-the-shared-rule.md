@@ -1,7 +1,6 @@
 # 132 — firmware build finds `embarch.toml` by the shared rule
 
-**State:** blocked — waits on `tasks/api/224`, which adds the function this calls
-**Unparks when:** `api/224` has landed
+**State:** open — `api/224` landed the function this calls (`embarch_core_client::config_discovery::find_config_path`, api decision 152)
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** ui
