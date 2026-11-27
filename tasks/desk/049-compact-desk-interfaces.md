@@ -1,6 +1,6 @@
 # 049 — compact `embarch-desk/interfaces.md`
 
-**State:** open
+**State:** claimed by agent/desk/049-compact-desk-interfaces, 2026-11-27 04:31
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
@@ -12,6 +12,8 @@
 ## What
 
 `interfaces.md` is at 13,938 of 15,360 B after `desk/046` added the client-copies sentence, which puts it in reserve. The HTTP surface was not moving when this was filed; routes already split into `interfaces/` sub-files can absorb more of the table.
+
+**At dispatch:** `interfaces.md` (1,422 B left) is the only desk file in reserve, and it is this task's. Decision 56 (`access-point`) is 15 B over its own limit: do not grow it.
 
 ## Done when
 
