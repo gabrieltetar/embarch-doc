@@ -14,7 +14,7 @@
 - embarch-api person (confirm, go, answer, unit, name) acts for the engineer from a terminal with the person's token after a typed yes; no MCP tool (embarch-api decision 141).
 - Client StatusResponse carries Core's mode and keyid (api decision 139).
 - api: declare_instrument carries an instrument's metrology and calibration (a certificate file sent as its SHA-256); a re-declare keeps what is stored (decision 138)
-- The client's PendingPrompt and answer carry a Test run prompt's kind, observation, switched_on and answer value; see [decision 137](../embarch-api/decisions/client-crate.md).
+- The client's PendingPrompt and answer carry a Test run prompt's kind, observation, switched_on and answer value; see [decision 137](../embarch-api/decisions/client-crate-types.md).
 - api: CoreClient::test_run_go carries the person's go for the UI; the go ban narrows to the agent's MCP and CLI sources (decision 135).
 - api: run_test prepares a Test run and never starts it; test_status reads it; answer_prompt explains a 403. See embarch-api/decisions/test-run.md
 - The core client has pending_confirmations, confirmation_card and confirm for Core's confirmation routes, for the UI's card; no MCP tool or CLI subcommand.
@@ -40,6 +40,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Split decisions 137, 139 and 150 out of embarch-api's client-crate.md into client-crate-types.md, verbatim; client-crate.md is out of the size reserve ([decisions](../embarch-api/decisions.md)).
 - Decision 49's hello drift test now holds the client's hello type to Core's `HelloAckInfo`; hardware-selection no longer calls the two unchecked.
 - `verify` reads a Test run report's attestation by its signed record's `observed.release`, as for a Study, and its appendix prints Core mode and Release (decision 124).
 - embarch-core-client takes LoadAnswer and LEASE_GATED from embarch-core-wire; StudyEvent and the hello stay lenient, drift-tested against it (decision 49).
