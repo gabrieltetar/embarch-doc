@@ -37,6 +37,7 @@ Why it is the way it is, split by mission. Current truth: [spec.md](spec.md). Un
 | [Target discovery and selection](decisions/zephyr.md) — the Zephyr exception, what a call may name, and what a `static` project refuses rather than ignores | 12, 20, 21, 51 | 9.1 KB |
 | [The session's desk](decisions/session-desk.md) — a call naming no project builds the firmware repo of the desk the session works on, asked of the desk service, else its published file by folder | 85 | 2.0 KB |
 | [Finding the desk](decisions/desk-discovery.md) — the clients' one copy of the desk's config dir, data dir, token path, port and base URL in `embarch-core-client`; why the desk does not take the crate, and where chat's copy lives | 151 | 2.3 KB |
+| [Finding `embarch.toml`](decisions/config-discovery.md) — one function in `embarch-core-client`: explicit path, `EMBARCH_API_CONFIG`, then the walk up through every ancestor; a named file that is missing is an error, an empty variable is unset | 152 | 2.3 KB |
 | [What board.yml/app scanning trusts](decisions/zephyr-scan.md) — the retired SoC-override hatch, the uncached scan's cost bound, and the `app/`/`apps/` scan, and CPU clusters from `soc.yml` | 13, 22, 63, 86, 127 | 6.5 KB |
 | [Reaching Core](decisions/core-link.md) — address resolution and artifact transfer | 11, 14, 15, 17, 26 | 3.9 KB |
 | [The shared firmware-build crate](decisions/firmware-build-crate.md) — why `config`/`zephyr`/`resolve`/`build`/`json_out` left this repo for a sibling `embarch-ui` can reach, and the streaming build log that followed | 78, 79 | 4.7 KB |

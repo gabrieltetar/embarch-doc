@@ -1,6 +1,6 @@
 # 224 — `embarch-core-client` holds the one rule for finding `embarch.toml`
 
-**State:** claimed by agent/api/224-core-client-holds-the-one-rule-for-finding-embarch-toml, 2026-11-27 03:24 — reserve: api decisions/client-crate.md 456 B left (api/222)
+**State:** done — embarch-core-client config_discovery::find_config_path is the one rule; API calls it, find_config_upward gone; decision 152
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** api
@@ -55,10 +55,10 @@ not touch them.
 
 ## Done when
 
-- [ ] One public function in `embarch-core-client` returns the config path
+- [x] One public function in `embarch-core-client` returns the config path
       from an explicit path, the variable and a start directory; the API calls
       it and `find_config_upward` is gone; tests cover every step.
-- [ ] A new api decision records the order, the walk chosen and why, what a
+- [x] A new api decision records the order, the walk chosen and why, what a
       missing named file does, and that the umbrella and the ui follow.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings` at the workspace root); `changelog.d/` fragment.

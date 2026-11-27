@@ -6,7 +6,7 @@ Current truth: [../spec.md](../spec.md). Why the shape is this: [../decisions.md
 
 ## Where the config comes from
 
-In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upward search for `embarch/embarch.toml`** ([../decisions](../decisions/shape.md) 25). An explicit path or env var always wins outright.
+In order: **`--config <path>`**, then **`EMBARCH_API_CONFIG`**, then **a cwd-upward search through every ancestor for `embarch/embarch.toml`** ([../decisions](../decisions/shape.md) 25). An explicit path or env var always wins outright; one naming a missing file is an error naming it, and an empty variable reads as unset. The one rule lives in `embarch-core-client`'s `config_discovery` ([../decisions](../decisions/config-discovery.md) 152).
 
 
 **Conventional location: `<firmware-repo>/embarch/embarch.toml`**, one complete config per repo, scaffolded by `embarch init`. Two consequences: a repo-scoped config means `list_projects` can only offer that repo's projects, and `[core]` is duplicated into every such file.
