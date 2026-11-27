@@ -1,6 +1,6 @@
 # 046 — the desk's path rule names its two client copies
 
-**State:** claimed by agent/desk/046-the-desks-path-rule-names-its-two-client-copies, 2026-11-27 03:24 — reserve: desk decisions/built.md 415 B left (desk/048)
+**State:** done — paths.rs and interfaces.md name both client copies; compaction debt desk/049 filed
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** desk
@@ -40,6 +40,6 @@ its per-decision limit, so do not grow it.
 
 ## Done when
 
-- [ ] `paths.rs` and the desk's contract doc name both client copies.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] `paths.rs` and the desk's contract doc name both client copies.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.

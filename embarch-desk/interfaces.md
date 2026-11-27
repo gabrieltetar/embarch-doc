@@ -6,6 +6,8 @@
 
 **HTTP on `127.0.0.1:4891`**, bearer `~/.config/embarch-desk/desk-token` (generated on first run) on every route but `GET /health` and `GET /oauth/linear/callback`:
 
+The path, port and override rule is `src/paths.rs`, and two client copies repeat it: `embarch-core-client`'s `desk_discovery.rs` (Rust) and `embarch-chat`'s `src/desk/rule.ts` (TypeScript). A change to the rule moves all three in the same pass.
+
 | Route | What |
 |---|---|
 | `POST /hook` | A hook's stdin JSON verbatim; returns `{context}` for SessionStart/UserPromptSubmit |
