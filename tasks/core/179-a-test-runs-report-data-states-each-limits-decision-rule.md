@@ -1,6 +1,6 @@
 # 179 — A Test run's `report-data.json` states each limit's decision rule
 
-**State:** open
+**State:** claimed by agent/core/179-a-test-runs-report-data-states-each-limits-decision-rule, 2026-11-26 21:46
 **Source:** EMB-585 — a Test run's report-data carries no per-limit decision rule
 **Issue:** EMB-585
 **Scope:** core
