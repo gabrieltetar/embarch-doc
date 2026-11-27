@@ -1,6 +1,6 @@
 # 185 — A service Core takes firmware only as bytes or from its own staging folder
 
-**State:** open
+**State:** claimed by agent/core/185-a-service-core-takes-firmware-only-from-its-staging-folder, 2026-11-27 00:27
 **Source:** EMB-330 — A service Core would flash any file its own account can read
 **Issue:** EMB-330
 **Scope:** core
@@ -56,8 +56,10 @@ scanning the headings as `DOC-CONVENTIONS.md` says, and cite only that number
 in code comments). `interfaces/` gives the refusal. **Over or near the
 per-decision cap, do not grow:** `signing#110`, `analog-capture#127`,
 `host-study#95`, `definitions#133`, `lease#93`, `stopping-a-study#128`.
-**`open.md` is 3,917 B, 2 B under its reserve line, and `spec.md` 9,011 B, 28 B
-under it.** If your edit puts either into reserve, file
+**`open.md` is 3,916 B, 3 B under its reserve line; `spec.md` is in reserve
+(9,082 of 10,240 B; out at 9,039 B or less) and filed against `tasks/core/186`,
+so do not grow it.** If your edit puts `open.md` into reserve, or leaves
+`spec.md` there beyond what 186 names, file
 `tasks/core/<NNN>-compact-core.md` in the same commit (`tasks/README.md` has the
 shape; number from `scripts/check-task-numbers.py --next core`).
 
