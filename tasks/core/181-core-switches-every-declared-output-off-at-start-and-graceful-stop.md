@@ -1,6 +1,6 @@
 # 181 — Core switches every declared output off at start and at a graceful stop
 
-**State:** claimed by agent/core/181-core-switches-every-declared-output-off-at-start-and-graceful-stop, 2026-11-26 22:55
+**State:** done — safe-off at start and graceful stop, start/stop call-log entries, decision 156; hardware-verification debt written
 **Source:** EMB-325 — Core leaves bench outputs as they were across a stop and a start
 **Issue:** EMB-325
 **Scope:** core
@@ -80,19 +80,32 @@ shape; number from `scripts/check-task-numbers.py --next core`).
 
 ## Done when
 
-- [ ] With fake ports, a start sends every declared `safe_off` line before the
+- [x] With fake ports, a start sends every declared `safe_off` line before the
       first route answers, and a declaration without one is logged as "no
       safe-off declared".
-- [ ] A start whose port is taken fails, naming the address, and sends nothing.
-- [ ] A test-driven shutdown signal runs the safe-off after the last request
+- [x] A start whose port is taken fails, naming the address, and sends nothing.
+- [x] A test-driven shutdown signal runs the safe-off after the last request
       and before the `stop` entry.
-- [ ] After a test kill, the next `start` entry reads "not a clean stop"; the
+- [x] After a test kill, the next `start` entry reads "not a clean stop"; the
       call log's chain still recomputes.
-- [ ] A hardware-verification debt is written into this file for a real
+- [x] A hardware-verification debt is written into this file for a real
       instrument and bench board.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`), and the Windows-gated code type-checks for
       `x86_64-pc-windows-msvc` if you touch it (`cargo check --target
       x86_64-pc-windows-msvc` where the target is installed; say if it is not).
-- [ ] `interfaces/call-log.md` gives the two entry shapes; a new decision
+- [x] `interfaces/call-log.md` gives the two entry shapes; a new decision
       records the safe-off; `changelog.d/` fragment.
+
+## Hardware-verification debt
+
+Host-side half shipped (decision 156, `src/safe_off.rs`, `serve` in `src/main.rs`, `record_start`/`record_stop` in `src/call_log.rs`); nothing ran on a board. To verify, on a bench with a real instrument and a bench board, each declaring `safe_off`:
+
+1. Declare an instrument with `safe_off` (for example an electronic load, `INP OFF`) and a signal out of the bench board with `safe_off` (a shell line that drives an output low). Switch both outputs on by hand. Start Core (`run --store <dir>`): both outputs go off before the first route answers, and the call log's `start` entry has a `sent` result for each with the instrument's reply.
+2. With the outputs on, `kill -TERM` Core, and again Ctrl-C a foreground one, and on Windows `embarch-core stop` / `sc stop`: the outputs go off, the log ends `stop` and the next `start` says `previous: "clean stop"`. Note how long an SCM Stop took against the 60 s study and 10 s `hw_lock` waits (chosen, not measured; the SCM's own stop timeout is not extended by Core, no StopPending status is reported).
+3. `kill -9` Core with an output on: it stays on; the next start switches it off and says `"not a clean stop"`.
+4. Unplug the instrument and start: the start entry says `port absent` for it and the rest still run.
+5. Stop Core in the middle of a host study: the study's teardown runs before the safe-off, and the `stop` entry names the study (`cancelled_study`).
+
+Unrun here: SIGTERM and Ctrl-C on a real process (the shutdown future is test-driven), the Windows build (`cargo check --target x86_64-pc-windows-msvc` dies in `hidapi`'s `build.rs` on this host, so the Windows-gated `service.rs` was not touched and `main.rs`'s `cfg(not(unix))` branch of `shutdown_signal` is unchecked), a real signal's reply to a newline-terminated safe-off line.
+

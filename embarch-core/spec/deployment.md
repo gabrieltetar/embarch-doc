@@ -22,3 +22,6 @@ cosign verify-blob embarch-core-<target>.<zip|tar.gz> \
 ```
 
 [The proposal](../../embarch-release-signing-proposal.md) holds the design; `embarch verify-release` ([embarch-umbrella](../../embarch-umbrella/spec.md)) checks the same identity for a suite release.
+
+**Start and stop order** ([decision 156](../decisions/call-log.md)). A start binds the port first (a taken port fails naming the address, having sent nothing), then reads its tokens and logs, then switches off every output the bench declares (`safe_off`) and writes a `start` entry to the call log, then serves. A graceful stop (SCM Stop, SIGTERM, Ctrl-C) cancels a study in flight, runs the same safe-off, flushes the call log's fold and writes a `stop` entry. A kill, a crash or a power loss runs no safe-off: the next start does, and its entry reads "not a clean stop".
+
