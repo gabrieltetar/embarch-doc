@@ -1,6 +1,6 @@
 # 219 — verify judges a refused Exchange step under its recorded target
 
-**State:** claimed by agent/api/219-verify-judges-a-refused-exchange-step-under-its-recorded-target, 2026-11-26 22:55
+**State:** done — check 3 judges an Exchange row under its recorded target (api 149)
 **Source:** EMB-589 — verify reads a refused Exchange step both ways though Core records its target
 **Issue:** EMB-589
 **Scope:** api
@@ -63,12 +63,12 @@ in your report.
 
 ## Done when
 
-- [ ] A fixture Test zip whose refused `Exchange` step row carries `target`
+- [x] A fixture Test zip whose refused `Exchange` step row carries `target`
       verifies check 3 as pass or fail under that target, not partial; one
       fixture each for `dut` and `bench`.
-- [ ] A row without `target` still reads both ways, as today (an existing test
+- [x] A row without `target` still reads both ways, as today (an existing test
       may already pin it; name it).
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] Decision and index row (or 146 amended), `interfaces/verify.md` row,
+- [x] Decision and index row (or 146 amended), `interfaces/verify.md` row,
       `changelog.d/` fragment.
