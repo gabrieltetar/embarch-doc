@@ -1,6 +1,6 @@
 # 229 — the person verb raises the call log's quota
 
-**State:** open
+**State:** claimed by agent/api/229-the-person-verb-raises-the-call-logs-quota, 2026-11-27 05:23
 **Source:** embarch-core/open.md — "No client sends the quota route (161)."
 **Scope:** api
 **Hardware:** none
