@@ -11,7 +11,7 @@ Decision numbers are permanent and address this sub-project, not a file. Cite th
 | [decisions/crate.md](decisions/crate.md) | 1, 2, 3, 6, 13 | A shared crate called live, in-process, with one implementation per question |
 | [decisions/probe-selection.md](decisions/probe-selection.md) | 32, 33 | `enroll`'s probe-selection duplicating `embarch-core::resolve_probe`, closed by a shared `select_probe` that reconciles three real divergences |
 | [decisions/consumer-boundary.md](decisions/consumer-boundary.md) | 4, 8, 31 | What a consumer may link, and what the crate owes a consumer that cannot link all of it |
-| [decisions/storage.md](decisions/storage.md) | 23, 43 | Where the crate's storage physically sits, why it must match embarch-core's, and how a write replaces the file |
+| [decisions/storage.md](decisions/storage.md) | 23, 43, 52 | Where the crate's storage physically sits, why it must match embarch-core's, how a write replaces the file, and the one machine-data-directory resolver |
 | [decisions/scope.md](decisions/scope.md) | 7, 9, 10, 11, 22, 29, 30 | What it models, what it defers, and the override mechanism it deleted |
 | [decisions/enrollment.md](decisions/enrollment.md) | 14, 15, 28, 35, 41 (pointer) | The one surface that needs a human, the facts detection cannot produce, the fixed role pair a board's own name was split out of, and the bench board that holds neither |
 | [decisions/enrollment-bench.md](decisions/enrollment-bench.md) | 41, 16 | The bench board that holds no role, and the early powered check |

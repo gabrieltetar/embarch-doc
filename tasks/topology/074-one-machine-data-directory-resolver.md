@@ -1,6 +1,6 @@
 # 074 — One resolver for the machine data directory
 
-**State:** claimed by agent/topology/074-one-machine-data-directory-resolver, 2026-11-27 01:12
+**State:** done — machine_data_dir, windows_env_var, windows_path_to_wsl public in embarch-topology; decision 52
 **Source:** EMB-307 — the machine data directory is resolved five ways, with three unset behaviours
 **Issue:** EMB-307
 **Scope:** topology
@@ -80,12 +80,12 @@ there false, drop a `status.d/` fragment naming it.
 
 ## Done when
 
-- [ ] `machine_data_dir(class)` and the two WSL helpers are public, with the
+- [x] `machine_data_dir(class)` and the two WSL helpers are public, with the
       unset policy explicit and tested (an unset `ProgramData` on the
       Windows arm, a shell-out that yields nothing, `Remote`).
-- [ ] The crate's own `data_dir()` default calls it; its tests still pass.
-- [ ] The decision records the unset policy and names the four callers that
+- [x] The crate's own `data_dir()` default calls it; its tests still pass.
+- [x] The decision records the unset policy and names the four callers that
       move to it.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`, and the crate under each feature set its consumers build
       it with, per `gate.md`); `changelog.d/` fragment.

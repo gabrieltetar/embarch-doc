@@ -65,7 +65,7 @@ Everything else is detected live. These cannot be:
 | **A DUT's bootload ports** (app and bootloader USB identities) | Zephyr's default VID:PID is shared by every board built from defaults (decision 36) |
 | **A bench instrument** (USB identity, line facts, optional safe-off lines, optional metrology and calibration; a signal carries one safe-off line too) | A bridge's VID:PID is shared by every device on it; line facts are learned on the bench (decision 49); what a reading is worth is the person's declaration (decision 51) |
 
-Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file by default; the linking process may set the folder once at start (decision 23); a store predating later facts still loads.
+Storage: one file under the machine-wide directory this crate owns, one level below `embarch-core`'s token file by default; the linking process may set the folder once at start (decision 23), the directory resolved by one public resolver (decision 52); a store predating later facts still loads.
 
 ## Storage and roles
 

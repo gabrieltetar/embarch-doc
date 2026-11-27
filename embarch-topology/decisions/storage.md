@@ -24,3 +24,18 @@ Unless set, `data_dir()` resolves to `/var/lib/embarch/topology` on Linux/macOS 
 
 **Now `enrollment.toml.tmp` is written, `sync_all`ed, then renamed over the store**, and the temp file is removed on any failure before the rename. The previous file stays loadable and unchanged until the rename; a test squats a directory on the temp name to fail the write first. Output bytes are identical to before, so an existing store round-trips byte for byte. Decision 23's no-per-file-ACL still holds: the renamed file takes the directory's access. The rename's atomicity on `%ProgramData%` (NTFS, `MoveFileExW` replace) is assumed, not tested here; a power cut mid-sync is untested. A leftover `.tmp` from a crash is overwritten by the next write.
 
+### 52 — One resolver for the machine data directory, and an unset `ProgramData` is an error, never a literal
+
+The directory was resolved five ways with three behaviours when `ProgramData` is unset: Core's `token_store.rs` and this crate's `paths.rs` errored naming the variable; `embarch-core-client` fell back silently to `C:\ProgramData`; `embarch-umbrella` hardcoded `/mnt/c/ProgramData/embarch` for a WSL2 host.
+
+**Now `src/machine_dir.rs` is the one copy**, `std` and `anyhow` only, compiled under `software` or `hardware` (`TopologyClass` moved there; `software::TopologyClass` still names it). Public, all re-exported at the crate root:
+
+- `machine_data_dir(class: TopologyClass) -> Result<Option<PathBuf>>`: `Local` is `%ProgramData%\embarch` or `/var/lib/embarch`; `WslHost` is the Windows host's through the shell-out and `/mnt` translation, cached once per process; `Remote` is `Ok(None)`, no local path and not an error.
+- `local_machine_data_dir() -> Result<PathBuf>`: the `Local` arm alone, for a caller (Core, `data_dir()`) that has no class.
+- `windows_env_var(name: &str) -> Result<String>`: `cmd.exe /C echo %NAME%`, then `powershell.exe`; cached per name; a name that is not letters, digits or `_` is refused before any shell-out.
+- `windows_path_to_wsl(win_path: &str) -> Result<PathBuf>`: `wslpath -u`, then a hand parse of the drive letter.
+
+**The unset policy is one:** `ProgramData` unset or empty on Windows, or a WSL2 shell-out that yields nothing usable, is an error naming what was tried. `core-client`'s silent `C:\ProgramData` is the behaviour that goes; no caller was found that needs a fallback. `data_dir()`'s default now calls `local_machine_data_dir()`, unchanged otherwise.
+
+**Callers that move to it:** `embarch-core` `token_store.rs` (`tasks/core/192`), `embarch-core-client` `token_discovery.rs` (`tasks/api/221`), `embarch-umbrella` `setup.rs` `data_dir_for` and `locate.rs`'s two helpers (`tasks/umbrella/126`). The WSL helpers were ported from `core-client`, which had the `powershell.exe` fallback and the `wslpath`-then-parse order. Measured by unit tests with an injected shell-out; the real `cmd.exe` path is not run here.
+
