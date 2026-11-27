@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core switches every output the bench declares off at each start and graceful stop (SIGTERM, Ctrl-C, SCM Stop) and logs `start` and `stop` entries in the call log (decision 156).
 - Core's Test report-data lists each limit's decision rule, w and U per test (EMB-585).
 - A Test run Core's restart cut short keeps its finished verdicts, and `POST /test-runs/{id}/resume` prepares a new run of the rest, linked by `resumes` (core decision 153).
 - Core holds the host awake from a Test run's go to its end through a guard, Windows only, no-op elsewhere (decision 152).
