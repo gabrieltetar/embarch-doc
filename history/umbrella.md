@@ -22,6 +22,7 @@
 - `embarch verify-release [DIR]` checks a suite release offline: manifest signature under the exact workflow identity, then each file SHA-256 ([spec](../embarch-umbrella/spec.md)).
 
 ### Changed
+- embarch doctor and status take --config and honour EMBARCH_API_CONFIG; status reads its token through that config ([decision 73](../embarch-umbrella/decisions/config-discovery.md)).
 - doctor check 16 and the umbrella's WSL helpers use embarch-topology's resolver: a relocated ProgramData is measured, a resolver error named ([decision 39](../embarch-umbrella/decisions/reporting.md))
 - doctor check 11 reads Core's /status `host_type_schema_version`, falling back to the older `study_designer_schema_version`; the new key wins.
 - `setup`/`doctor` name `install-core`, then `install --service --bind`, to register Core; plain `install` registers nothing (decision 71).
