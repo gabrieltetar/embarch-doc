@@ -1,6 +1,6 @@
 # 208 — verify re-evaluates step outcomes and re-parses step-time numbers
 
-**State:** claimed by agent/api/208-verify-re-evaluates-step-outcomes-and-re-parses-step-numbers, 2026-11-26 18:52
+**State:** done — check 2 recomputes Exchange outcomes and step numbers (decision 140)
 **Source:** EMB-374 — verify does not re-evaluate step outcomes or re-parse step-time numbers
 **Issue:** EMB-374
 **Scope:** api
@@ -47,9 +47,9 @@ left; `tasks/api/201` is blocked): do not grow it. `lease#90`, `test-plans#134`,
 
 ## Done when
 
-- [ ] A fixture zip passes check 2 with every outcome and parsed number recomputed.
-- [ ] The same zip with one reply byte changed so its marker vanishes fails,
+- [x] A fixture zip passes check 2 with every outcome and parsed number recomputed.
+- [x] The same zip with one reply byte changed so its marker vanishes fails,
       naming the step.
-- [ ] The same zip with a parsed number altered fails, naming the measurement.
-- [ ] A milestone-1 zip still passes check 2.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The same zip with a parsed number altered fails, naming the measurement.
+- [x] A milestone-1 zip still passes check 2.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
