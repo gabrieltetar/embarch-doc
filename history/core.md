@@ -42,6 +42,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core's call-log decisions: decision 158 (fail closed) moved verbatim into its own decisions/ file; call-log.md out of reserve.
 - core: signed records carry observed.release; report attestation is {label, core_mode, release, reason}, replacing core_attested (decision 119).
 - Every route that acts on one board now names it in the call log's `board`: bootload, validate, signal exchange and capture (core decision 122).
 - Core compaction: decisions 4, 14, 15 (locking) split verbatim from decisions/platform.md into decisions/locking.md; spec.md §5 shortened.
