@@ -1,6 +1,6 @@
 # 220 — `embarch-core-client` reads `host_type_schema_version` from `/status`
 
-**State:** open
+**State:** claimed by agent/api/220-core-client-reads-host-type-schema-version, 2026-11-27 01:12
 **Source:** EMB-314 — the host-type schema version has three key spellings across the suite
 **Issue:** EMB-314
 **Scope:** api
