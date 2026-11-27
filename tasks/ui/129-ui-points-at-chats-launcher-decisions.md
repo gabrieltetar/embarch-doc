@@ -1,6 +1,6 @@
 # 129 — ui points at chat's launcher decisions
 
-**State:** open — `chat/052` landed: the chat decision is **123**, `embarch-doc/embarch-chat/decisions/launcher.md`.
+**State:** claimed by agent/ui/129-ui-points-at-chats-launcher-decisions, 2026-11-26 23:43
 **Source:** EMB-303 — The launcher's decisions sit in embarch-ui while its code lives in embarch-chat
 **Issue:** EMB-303
 **Scope:** ui
