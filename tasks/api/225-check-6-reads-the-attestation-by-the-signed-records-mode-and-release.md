@@ -1,6 +1,6 @@
 # 225 — check 6 reads the attestation by the signed record's mode and release
 
-**State:** claimed by agent/api/225-check-6-reads-the-attestation-by-the-signed-records-mode-and-release, 2026-11-27 03:48
+**State:** done — check 6 reads the attestation by the record release key; fixtures, appendix, decision 124 amended, verify.md row 6
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** api
@@ -69,14 +69,14 @@ of trust": what makes a run attested is its key, not a mark in its record).
 
 ## Done when
 
-- [ ] Fixture zips built from a service-mode record and from a
+- [x] Fixture zips built from a service-mode record and from a
       development-mode record, each carrying `observed.release` and the new
       attestation, pass check 6.
-- [ ] The same zip with `core_mode` altered fails check 6, naming
+- [x] The same zip with `core_mode` altered fails check 6, naming
       `attestation.core_mode`; likewise `release`.
-- [ ] A fixture with no `release` key in its record and today's attestation
+- [x] A fixture with no `release` key in its record and today's attestation
       still passes check 6.
-- [ ] The appendix prints the mode, the release and the reason when present.
-- [ ] Decision recorded; `interfaces/verify.md` row 6 says what check 6 compares.
-- [ ] Gate green (`cargo build`, `cargo test --workspace`, `cargo clippy
+- [x] The appendix prints the mode, the release and the reason when present.
+- [x] Decision recorded; `interfaces/verify.md` row 6 says what check 6 compares.
+- [x] Gate green (`cargo build`, `cargo test --workspace`, `cargo clippy
       --workspace --all-targets -- -D warnings`); `changelog.d/` fragment.
