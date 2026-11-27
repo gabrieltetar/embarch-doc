@@ -1,6 +1,6 @@
 # 214 — A Test run's zip carries JUnit and OCP exports mapped from its verdicts
 
-**State:** claimed by agent/api/214-a-test-runs-zip-carries-junit-and-ocp-exports-mapped-from-its-verdicts, 2026-11-26 20:59
+**State:** done — Test run zip carries exports/junit.xml and exports/ocp-tv.jsonl mapped from report-data and study measurements (decision 145); mock Core only
 **Source:** EMB-381 — the JUnit and OCP exports carry no verdicts for a Test run
 **Issue:** EMB-381
 **Scope:** api
@@ -61,11 +61,11 @@ it back; if so, file `tasks/api/<NNN>-compact-api.md` in the same commit.
 
 ## Done when
 
-- [ ] One fixture per row of 06's table gives the mapped JUnit element and OCP
+- [x] One fixture per row of 06's table gives the mapped JUnit element and OCP
       status and result.
-- [ ] A qualifier on a test appears as a JUnit property and as OCP metadata.
-- [ ] A Test run's zip lists both exports in Core's manifest.
-- [ ] A Study's exports are unchanged (their existing tests pass unchanged).
-- [ ] Gate green (`cargo build --workspace`, `cargo test --workspace`,
+- [x] A qualifier on a test appears as a JUnit property and as OCP metadata.
+- [x] A Test run's zip lists both exports in Core's manifest.
+- [x] A Study's exports are unchanged (their existing tests pass unchanged).
+- [x] Gate green (`cargo build --workspace`, `cargo test --workspace`,
       `cargo clippy --workspace --all-targets -- -D warnings`).
-- [ ] Decisions and interfaces updated; `changelog.d/` fragment.
+- [x] Decisions and interfaces updated; `changelog.d/` fragment.

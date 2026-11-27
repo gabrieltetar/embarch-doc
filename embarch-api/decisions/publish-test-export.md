@@ -1,0 +1,15 @@
+# embarch-api decisions: a Test run's JUnit and OCP exports
+
+**Status:** active, 2026-11-26 (`tasks/api/214`, EMB-381; `notes/hil/06-report-and-publish.md`, "Publish"). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/publish.md](../interfaces/publish.md). Extends [144](publish-test-run.md); a Study's exports ([113](publish.md), `publish_export.rs`) are not touched, byte for byte.
+
+### 145 - A Test run's zip carries `exports/junit.xml` and `exports/ocp-tv.jsonl`, pure functions of `report-data.json` and each study run's `measurements.json`, mapped by 06's table
+
+**Inputs.** `report-data.json` and the `studies/<id>/measurements.json` of every study id its tests name (a study that declared none has no file). Both are fetched at the pending revision and must equal what Core's manifest names, as the PDF's inputs must (144), so `verify` (EMB-382) can regenerate both files from the zip. No clock, path or environment: a time is a measurement's `at_utc_ms`, else `1970-01-01`. The files are `publish_test_export.rs`, listed as this crate's in the manifest with the same names a Study's carry.
+
+**JUnit.** `<testsuites>`, one `<testsuite>` per bench (`failures` counts fail and inconclusive; `errors` counts error, cancelled and gaps; `skipped` the rest), one `<testcase>` per test of `report-data.json` in its order. Pass has no child; fail `<failure>`; error `<error>`; inconclusive `<failure type="inconclusive">`; cancelled `<error type="cancelled">`; **a test skipped for a gap `<error type="not_verified">`** with its reason, so a default CI gate fails on it; skipped as `not_applicable` or `not_selected` `<skipped>`. **[Chosen]:** a skip is a gap unless its reason is one of those two, so a reason this crate does not know, `not_run` and `interrupted` among them, fails a gate and never passes one.
+
+**OCP.** A run start (suite id and version, the unit key as the DUT, run id, revision, status, summary verdict, attestation, the run's qualifiers), a step per test holding its measurements, a run end. **[Chosen] words:** status `COMPLETE`, `ERROR` or `SKIP`, result `PASS`, `FAIL` or `NOT_APPLICABLE`, by the table's rows; the verdict and reason ride in metadata, `not_verified: true` on a gap. A measurement's `U` and `k` are read from its `uncertainty`, as a Study's are. The run end is `ERROR` unless the run `completed`, then by the summary verdict, `ERROR` for a skip that is a gap.
+
+**Qualifiers** on each test, as a property and as metadata, are the union of its own (Core's `qualifiers`), those of each requirement it is under and those its measurements imply (the Study's `qualifiers` derivation, reused). A requirement's `not_verified` is the property `not_verified_requirements` on each of its tests, and its `n_of_m` the property `n_of_m.<requirement>` ("3 of 5 tests run").
+
+**Measured:** one fixture per row of the table gives its element and words, and a fixture publish against the mock Core carries both files in the zip and in `embarch_api_files`. **Not run:** a real Core, `verify` of the zip.
