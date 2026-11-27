@@ -1,6 +1,6 @@
 # 227 — the Test-run verifier reads the attestation by the record's release
 
-**State:** open — `core/195` landed (`embarch-core` `38f608c`): a Test-run record's `predicate.observed` now carries `mode`, set as a Study record's is (core decision 144). This task's branch is parked on both remotes (code: no commits; doc: the old blocked note), so a resume is `worktree add <path> <branch>`, no `-b`, and a rebase onto `origin/main`
+**State:** claimed by agent/api/227-the-test-run-verifier-reads-the-attestation-by-the-records-release, 2026-11-27 05:01 — resume onto the parked branch; core/195 landed
 **Source:** EMB-332 — a report cannot say which Core signed it; found by `api/225`'s worker and reviewer
 **Issue:** EMB-332
 **Scope:** api
