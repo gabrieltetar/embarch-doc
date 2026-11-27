@@ -38,6 +38,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- `embarch-core install --service` registers only a binary listed in installed-release.json, under Core's own account; plain `install` registers nothing; `update` refuses a service. Decision 157.
 - Each Exchange step in events.json records its signal and its target (dut or bench), the one the Test run's verdict was judged with (EMB-586).
 - core: a Test run's per-test study record carries its verdict, the image status and identities it ran against, prompt scopes, and run.json as a subject (decision 145).
 - Test-run prepare refuses (422) a premade study not hashing to its study.hash; the go card's bytes_checked_against_hash is true when checked ([core 134](../embarch-core/decisions/test-runs.md)).

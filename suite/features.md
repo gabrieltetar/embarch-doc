@@ -36,6 +36,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Flashing backend per chip family, preferring the board's own runner | Shipped | hw | 36 |
 | Unframed-byte reporting — a reset banner on a shared console UART no longer reads as silence | Shipped | hw | 40 |
 | Multi-probe selection beyond "first found" | Todo — design resolved (a serial selector), unbuilt | n/a | 9 |
+| `install --service` registers only a binary `installed-release.json` lists, as `run --service` under Core's own account (virtual account on Windows, `embarch` user on Linux); plain `install` registers nothing; `update` refuses a service | Built — **host-side only: argument and account asserted, no real registration; the record's writer (EMB-339, EMB-340) not built, so it always refuses; native Windows build unrun** | unit | 157 |
 | ESP-IDF bootloader flashing fallback | Todo — explicitly out of v1 scope | n/a | 18 |
 | Per-caller identity beyond one shared token | Declined — single-engineer scope forbids a permission model; revisit only if Core ever needs to tell *which* caller, not just authorized or not | n/a | `embarch-token.md` §5 |
 | `503` naming the holder on `hw_lock` contention (500 ms wait, then refuse) | Shipped | unit | 14 |
