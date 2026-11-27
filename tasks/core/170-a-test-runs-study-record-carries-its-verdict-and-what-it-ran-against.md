@@ -1,6 +1,6 @@
 # 170 — A test run's study record carries its verdict and what it ran against
 
-**State:** open
+**State:** claimed by agent/core/170-a-test-runs-study-record-carries-its-verdict-and-what-it-ran-against, 2026-11-26 17:43
 **Source:** EMB-369 — a Test run leaves no signed record of itself and no run-log entry per test
 **Issue:** EMB-369
 **Scope:** core
@@ -42,6 +42,9 @@ A study run outside a Test run is sealed exactly as before.
 decision there, beside it. Do not grow
 `signing#110` (2,486 B over its limit) or any other decision
 `check-doc-size.py --pressure` lists as near or over; point at them.
+**`embarch-core/open.md` is in reserve** (893 B left; its compaction
+`tasks/core/171` is blocked, In flux: yes): do not write it. If you must, carry
+`core/171`'s compaction in the same commit and keep its `Must not delete:` items.
 
 ## Done when
 
