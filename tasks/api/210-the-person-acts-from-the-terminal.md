@@ -1,6 +1,6 @@
 # 210 — The person acts from the terminal: a confirmation, the go, an observation
 
-**State:** open
+**State:** claimed by agent/api/210-the-person-acts-from-the-terminal, 2026-11-26 19:24
 **Source:** EMB-378 — the person has no terminal path for a confirmation, the go or an observation
 **Issue:** EMB-378
 **Scope:** api
