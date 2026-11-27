@@ -1,6 +1,6 @@
 # 128 — The prompt modal takes a Test run prompt's kind from the event
 
-**State:** open
+**State:** claimed by agent/ui/128-the-prompt-modal-takes-a-test-run-prompts-kind-from-the-event, 2026-11-26 22:55
 **Source:** EMB-591 — The prompt modal takes a Test run prompt's kind from the event, not a study read
 **Issue:** EMB-591
 **Scope:** ui
