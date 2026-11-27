@@ -1,6 +1,6 @@
 # 123 — compact `embarch-ui/decisions/live-study.md`
 
-**State:** open
+**State:** claimed by agent/ui/123-compact-ui, 2026-11-26 18:14
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
