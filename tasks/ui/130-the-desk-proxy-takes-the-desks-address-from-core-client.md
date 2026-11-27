@@ -1,6 +1,6 @@
 # 130 — the desk proxy takes the desk's address and token from `embarch-core-client`
 
-**State:** claimed by agent/ui/130-the-desk-proxy-takes-the-desks-address-from-core-client, 2026-11-27 03:24
+**State:** done — desk.rs takes port, base URL and token path from embarch-core-client::desk_discovery
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** ui
@@ -38,7 +38,7 @@ you edit a decision listed near its limit.
 
 ## Done when
 
-- [ ] `desk.rs` holds no copy of the desk's port or token-path rule and calls
+- [x] `desk.rs` holds no copy of the desk's port or token-path rule and calls
       `embarch-core-client`'s.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); decision amended; `changelog.d/` fragment.
