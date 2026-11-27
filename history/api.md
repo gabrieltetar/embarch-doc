@@ -40,6 +40,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- Decision 49's hello drift test now holds the client's hello type to Core's `HelloAckInfo`; hardware-selection no longer calls the two unchecked.
 - `verify` reads a Test run report's attestation by its signed record's `observed.release`, as for a Study, and its appendix prints Core mode and Release (decision 124).
 - embarch-core-client takes LoadAnswer and LEASE_GATED from embarch-core-wire; StudyEvent and the hello stay lenient, drift-tested against it (decision 49).
 - `verify` check 6 reads a report's attestation by the signed record's `release` key: Core mode and release instead of `core_attested` ([decision 124](../embarch-api/decisions/verify-report.md)).

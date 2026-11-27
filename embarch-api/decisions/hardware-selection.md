@@ -23,7 +23,7 @@ no project selection, since the route itself takes none.
 decision 72). The mirror is held to Core's type: [decision 49's](study-events.md)
 hello drift test passes `embarch-core-wire`'s `HelloAckInfo` through the client's
 type and requires the same JSON back, so a struct built from the wrong side
-fails there. Nothing else compares the two, and `embarch_topology` has no hello type to.
+fails there. Nothing else compares the two; `embarch_topology` has no hello type.
 `embarch-core-client`'s `HelloAckResponse` gained `self_reported_hardware_id`,
 `link_identity` and `probe_hardware_id` alongside the three fields it already
 had; no route parsed those three before this, so nothing existing could regress.
