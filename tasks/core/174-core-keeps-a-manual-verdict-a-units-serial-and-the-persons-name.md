@@ -1,6 +1,6 @@
 # 174 — Core keeps a manual verdict, a unit's serial and the person's name
 
-**State:** open
+**State:** claimed by agent/core/174-core-keeps-a-manual-verdict-a-units-serial-and-the-persons-name, 2026-11-26 18:52
 **Source:** EMB-372 — Core keeps no manual verdict, unit serial or person's name
 **Issue:** EMB-372
 **Scope:** core
