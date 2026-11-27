@@ -65,6 +65,7 @@
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
 
 ### Fixed
+- A service Core's `/flash` now takes one file name directly under `staging/`; nested names are refused, closing a folder-swapped-for-a-link gap (decision 160).
 - Validation, enroll, the dev-bench gate and a test's smoke check close a held probe for their identity check and reopen it, as flash and reset do (core decision 159).
 - A Test run's PromptPending event names its prompt's kind as prompt_kind, so the event's own kind tag survives; GET /study/{id} keeps kind (decision 151).
 - embarch-core refuses the agent's discard of a study run whose Test run is published, as for a published Study ([decision 149](../embarch-core/decisions/test-run-publish.md)).
