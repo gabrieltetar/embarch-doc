@@ -1,7 +1,6 @@
 # 046 — the desk's path rule names its two client copies
 
-**State:** blocked — waits on `tasks/api/223`, which creates the Rust copy this names; chat's copy landed in `chat/053` (`src/desk/rule.ts`, chat decision 124)
-**Unparks when:** `api/223` has landed
+**State:** open — both copies have landed: the Rust one in `api/223` (`embarch-core-client::desk_discovery`, api decision 151), chat's in `chat/053` (`src/desk/rule.ts`, chat decision 124)
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** desk

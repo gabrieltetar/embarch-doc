@@ -82,6 +82,7 @@
 - Removed the `instrument_exchange` tool and `instrument-exchange` subcommand; Core refuses that route, so an instrument is reached by a host study's `Instrument` step (EMB-257).
 
 ### Decided
+- The desk's config dir, data dir, token path, port and base URL are one module in embarch-core-client; session_desk.rs uses it (151).
 - embarch-api: an identity tool refused 403 on an attested Core names its `--as-person` command and the Topology tab ([143](../embarch-api/decisions/identity-acts.md)).
 - Found and pinned in a test: an api build runs the config's source_path, not the session's worktree, so a worktree session builds the main clone; a known defect, bug EMB-181, not fixed here. See [spec](../embarch-api/spec.md).
 ## 2026-10

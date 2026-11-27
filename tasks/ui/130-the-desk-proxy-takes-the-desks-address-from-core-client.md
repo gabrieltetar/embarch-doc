@@ -1,7 +1,6 @@
 # 130 — the desk proxy takes the desk's address and token from `embarch-core-client`
 
-**State:** blocked — waits on `tasks/api/223`, which adds the module this calls
-**Unparks when:** `api/223` has landed
+**State:** open — `api/223` landed the module this calls (`embarch-core-client::desk_discovery`, api decision 151)
 **Source:** EMB-305 — four clients re-derive the desk's token and port, and one copy has drifted
 **Issue:** EMB-305
 **Scope:** ui
