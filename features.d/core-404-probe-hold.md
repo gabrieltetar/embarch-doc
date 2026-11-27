@@ -1,0 +1,1 @@
+| Core holds each enrolled board's debug probe while a lease or study is live, and the signed record lists them | Built — **a Core call and a vendor tool close and reopen the probe, so those windows are not covered; fake-opener tests only, no real probe** | unit | 159 |

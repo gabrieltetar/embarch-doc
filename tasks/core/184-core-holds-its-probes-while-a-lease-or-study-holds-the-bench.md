@@ -1,6 +1,6 @@
 # 184 — Core holds its debug probes while a lease or a study holds the bench
 
-**State:** claimed by agent/core/184-core-holds-its-probes-while-a-lease-or-study-holds-the-bench, 2026-11-27 00:14
+**State:** done — probes held at take, closed and reopened around Core calls and vendor tools, listed in the signed record; real-probe debt open
 **Source:** EMB-327 — Core holds no debug probe between calls, even under a lease
 **Issue:** EMB-327
 **Scope:** core
@@ -67,3 +67,15 @@ shape; number from `scripts/check-task-numbers.py --next core`).
       the decision says what is not covered.
 - [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
+
+## Hardware-verification debt
+
+Run on a bench with a real probe (J-Link and a CMSIS-DAP or ST-Link), under a lease:
+
+- Take a lease; confirm a second Core (another HTTP port) cannot open the probe while Core holds it, and that the signed record's `observed.probes_held` lists its serial.
+- Flash through a vendor backend (`nrfutil` on an nRF54L15) under the lease; confirm the probe is closed during the tool and held again after (the log lines in decision 159), and a flash and a mem-read through probe-rs still succeed.
+- Whether a second Core's open of a held probe fails on Windows (J-Link, WinUSB) is **[assumed, unmeasured]**.
+
+## Deviation
+
+The direction said a Core call borrows the held probe. It closes and reopens instead (decision 159): the identity gate in `embarch-topology` and probe-rs's `Session` each want to own the handle. Closing the window needs `embarch-topology` to take a probe the caller opened.

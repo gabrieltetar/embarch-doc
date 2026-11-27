@@ -19,3 +19,17 @@ Every serial use opened a port, used it and closed it, so the OS kept a second o
 **The signed record** lists the ports held at sealing under `observed.ports_held` ([../interfaces/signing.md](../interfaces/signing.md)): Core observed the handles, so it is `observed`, not `claimed`. A run with no hold records `[]`.
 
 **Under test**, `declared_targets` returns nothing and each test thread has its own holder, so no test opens a port the machine declares. The pty test (`port_hold.rs`) shows a second open failing while held, Core's own write going through the held handle, and a second open succeeding after the release. **[unverified on hardware]:** Windows COM ports and a real CDC ACM bench port (debt in `tasks/core/154`).
+
+### 159 — The holder also opens each enrolled board's debug probe at the take; a Core call closes it and reopens it, and a vendor tool's window is not covered
+
+A probe was opened per call (`hardware::open_probe`), so a second Core, or a vendor tool, could take it between two calls of the attested one (`notes/hil/12-prevention.md`, "What stays outside prevention": a probe whose software admits a second connection is not covered).
+
+**`probe_hold.rs`** has the owners of decision 130 (`port_hold::acquire` and `release` call it, so the take, the study start and every release path need no new call site). Each enrolled board's probe is opened through probe-rs at the take, keyed by its serial, and closes when the last owner lets go. A probe that fails to open is logged and not held, and is not adopted later (a port is; a probe has no first-use door).
+
+**Deviation from the direction: a Core call closes and reopens, it does not borrow.** The board-identity gate (`embarch-topology`) opens the probe itself, and probe-rs 0.31's `Session` consumes the `Probe` it attaches with no way to hand it back, so neither takes a held handle. `probe_hold::around(serial, Use::Core, f)` closes the held probe, runs the call and reopens it on success and error: `hardware::flash`, `hardware::reset`, `live::with_core` (mem-read) and `read_dhcsr`. Core's call is then the only opener; the gap between the close and Core's own open is **not covered**.
+
+**A vendor backend** (`nrfutil`, J-Link) runs inside the same close; `around(.., Use::VendorTool, ..)` logs a warning that the probe is not held while the tool runs. **Not covered:** that window, and the gate's and the attach's opens inside any Core call. A second connection that takes the probe in a window makes Core's reopen fail: logged, and the probe leaves the hold and the record.
+
+**The signed record** lists the probes held at sealing under `observed.probes_held` ([../interfaces/signing.md](../interfaces/signing.md)), sorted serials, `[]` for none. A probe closed for a call's window still counts.
+
+**Under test** a fake opener counts opens and live handles: one open at the take, a close and a reopen per call, a vendor window closed before the tool and reopened after (also on error), a release during a call not undone. **[unverified on hardware]:** real probes (J-Link, CMSIS-DAP, ST-Link) and whether a second Core's open fails while Core holds one (debt in `tasks/core/184`). A fix that closes the windows needs `embarch-topology` to accept a probe the caller already opened.
