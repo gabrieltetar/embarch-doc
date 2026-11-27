@@ -1,7 +1,7 @@
 # 193 — the signed record carries the release, and the report names Core's mode
 
-**State:** blocked — waits on `tasks/api/225`, which teaches check 6 the new attestation before Core writes it
-**Unparks when:** `api/225` has landed
+**State:** blocked — waits on `tasks/api/227`, which teaches the Test-run verifier the new attestation; `api/225` (check 6, Study reports) has landed
+**Unparks when:** `api/227` has landed
 **Source:** EMB-332 — a report cannot say which Core signed it
 **Issue:** EMB-332
 **Scope:** core
@@ -13,6 +13,12 @@
 `publish.rs`'s `attestation()` writes `core_attested: false` with milestone
 1's reason on every report. When this is done, a report names the Core that
 signed it: its mode, and the release it was installed from.
+
+**Both report kinds.** `attestation()` is called by `report_data` and by
+`src/test_publish.rs`, so a Test-run report changes with a Study report.
+`embarch-api` accepts the new shape for a Study since `api/225` (check 6) and
+for a Test run once `api/227` lands, which is why this waits on `api/227`. A
+Test-run record's `observed` gains `release` by the same rule as a study's.
 
 The shape is fixed by `tasks/api/225`, which lands first and makes
 `embarch-api`'s check 6 accept it (its task file is retired when it lands;
