@@ -69,6 +69,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Core smoke-checks each bench before its first test: signals, roles and instruments declared, `validate`, board hello, instrument `*IDN?`, image readback, the same DUT unit across benches; a failure errors the bench's tests as `smoke_check` | Built — **host-side only: proven over fakes; never run against a real bench; native Windows build unrun** | unit | 143 |
 | Test run record — Core signs the run as it ends (cancel, deadline, interruption) and logs each test and the run; its studies are swept as one unit | Shipped — **no route publishes a Test run yet, so its captures are held, never swept; bench run and Windows build unverified** | unit | 144 |
 | A study record made for a test in a Test run carries the test's verdict, the images, identities and `*IDN?` replies it ran against, each prompt's answer scope, and `run.json` as a subject | Built — **host-side only: proven over the real `drive`, `seal` and a key; no bench; Core not deployed; native Windows build unrun** | unit | 145 |
+| Core keeps a manual verdict, a unit's declared serial and board revision, and the person's name as run-log entries; the agent's verdict reads `relayed`, its serial and name are refused `403` | Built — **host-side only: unit tests over the router and the chain; no bench; Core not deployed; native Windows build unrun** | unit | 147 |
 
 ## embarch-api
 
