@@ -1,6 +1,6 @@
 # 176 — Discard refuses the agent on a study a published Test run rests on
 
-**State:** open
+**State:** claimed by agent/core/176-discard-refuses-the-agent-on-a-study-a-published-test-run-rests-on, 2026-11-26 19:56
 **Source:** EMB-582 — discard lets the agent drop captures a published Test run rests on
 **Issue:** EMB-582
 **Scope:** core
