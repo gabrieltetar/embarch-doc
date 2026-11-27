@@ -1,6 +1,6 @@
 # 226 — `embarch-core-client` takes Core's wire types from Core's wire crate
 
-**State:** open — `core/194` landed the crate (`embarch-core/crates/embarch-core-wire`, core decision 164, `embarch-core` `a7cec14`)
+**State:** claimed by agent/api/226-core-client-takes-cores-wire-types-from-cores-wire-crate, 2026-11-27 04:31
 **Source:** EMB-295 — Core's wire types are hand-mirrored in core-client with uneven drift guards
 **Issue:** EMB-295
 **Scope:** api
@@ -59,7 +59,14 @@ half lands first.
   `embarch-ui` and `embarch-umbrella` worktree, which build this crate.
 - `embarch-doc/embarch-api/decisions/study-events.md`
 - **Size:** `decisions/client-crate.md` is in reserve (456 B left,
-  `tasks/api/222`); if this changes what it says, compact it in the same unit.
+  `tasks/api/222`); if this changes what it says, compact it in the same unit,
+  keeping `api/222`'s `Must not delete:` list, and say so in your report so the
+  supervisor can close `api/222`. It is the only api file in reserve at
+  dispatch. Decisions 90 (`lease`) and 134 (`test-plans`) are over their own
+  limits: do not grow them.
+- **Landing:** the supervisor builds `embarch-umbrella` and `embarch-ui`
+  against your branch before it merges; a public name they use that you
+  removed is a red gate.
 
 ## Done when
 
