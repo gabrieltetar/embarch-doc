@@ -1,6 +1,6 @@
 # 187 — The call log has a quota, and the agent's calls meet it first
 
-**State:** claimed by agent/core/187-the-call-log-has-a-quota-the-agent-meets-first, 2026-11-27 00:53
+**State:** done — quota, 90 % agent and 100 % person refusals, person-only PUT, decision 161; gate green; no hardware
 **Source:** EMB-329 — The call log has no quota, so the agent's calls can fill the store
 **Issue:** EMB-329
 **Scope:** core
@@ -67,11 +67,11 @@ the shape; number from `scripts/check-task-numbers.py --next core`).
 
 ## Done when
 
-- [ ] With a tiny quota, the agent's gated calls are refused at 90 % and the
+- [x] With a tiny quota, the agent's gated calls are refused at 90 % and the
       person's still served; at 100 % both are refused.
-- [ ] The safe-off's entries still land past the quota.
-- [ ] `PUT /call-log/quota` with the agent's token is `403`; with the person's
+- [x] The safe-off's entries still land past the quota.
+- [x] `PUT /call-log/quota` with the agent's token is `403`; with the person's
       it changes the quota and is logged.
-- [ ] Decision and `interfaces/call-log.md` written.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] Decision and `interfaces/call-log.md` written.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.

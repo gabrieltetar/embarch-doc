@@ -20,7 +20,7 @@ What is unresolved and what closes it. Truth: [spec.md](spec.md). Why: [decision
 
 - **"A pending requirement" has no store** (no Test phase): `RunLog::discard`'s `clean` test is where a requirement would hold a run. Not built.
 
-- **The call log's `board` is named by four handlers only** (`/flash`, `/reset`, the two live reads; 122): `/bootload`, `/validate`, exchange and capture leave it null. An unreleased expired lease leaves its fold pending until the next different call. Quota: EMB-329. A device study is not stopped on a full log (158).
+- **The call log's `board` is named by four handlers only** (`/flash`, `/reset`, the two live reads; 122): `/bootload`, `/validate`, exchange and capture leave it null. An expired lease leaves a fold pending till the next call. No client sends the quota route (161). A device study is not stopped on a full log (158).
 
 ## Unverified, and moved elsewhere
 

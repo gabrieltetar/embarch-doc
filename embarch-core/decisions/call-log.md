@@ -16,7 +16,7 @@ The live log in a firmware repo, an atlas write-back's receipt and the signed re
 
 **It is Core's calls, and only those.** Hardware reached without Core (the topology CLI's own hardware feature, a probe tool by hand) is not in it, and a reader must not read its absence as "nothing happened".
 
-**Not here:** a quota (EMB-329). A log that cannot be written is decision 158. `board` is not yet named by `/bootload`, `/validate`, the exchange and capture routes (`open.md`).
+**Not here:** a quota (161). A log that cannot be written is decision 158. `board` is not yet named by `/bootload`, `/validate`, the exchange and capture routes (`open.md`).
 
 **Measured:** unit tests call every `LEASE_GATED` route under a held lease and find one entry each with its scope; five identical `mem-read` calls chain one entry and fold four, and a different call between reads folds nothing; an edited, removed or reordered line names its line; a broken log is not extended. Nothing was run on a board.
 

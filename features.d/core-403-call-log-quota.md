@@ -1,0 +1,1 @@
+| The call log has a quota in bytes (default 1 GiB, kept in the store): at 90 % the agent's gated calls are refused `503`, at 100 % the person's too, a cancel and the safe-off never; `PUT /call-log/quota` is the person's | Built — **unit tests only; the 1 GiB and the 90 % and 100 % marks are chosen by the owner, not measured; no client sends the route yet** | unit | 161 |
