@@ -1,6 +1,6 @@
 # 132 — firmware build finds `embarch.toml` by the shared rule
 
-**State:** claimed by agent/ui/132-firmware-build-finds-embarch-toml-by-the-shared-rule, 2026-11-27 04:17 — no ui file is in reserve; the worktree parent links embarch-api, whose core-client carries config_discovery (api decision 152)
+**State:** done — firmware build resolves embarch.toml through core-client config_discovery; decision 114
 **Source:** EMB-306 — api, umbrella and ui each resolve `embarch.toml` their own way
 **Issue:** EMB-306
 **Scope:** ui
@@ -29,9 +29,9 @@ the case with a test.
 
 ## Done when
 
-- [ ] The firmware build resolves the config through `embarch-core-client`'s
+- [x] The firmware build resolves the config through `embarch-core-client`'s
       resolver and its own order is gone; tests cover `[build].config_path`,
       the variable and the open repo.
-- [ ] A ui decision (or an amended one) records it.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] A ui decision (or an amended one) records it.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`); `changelog.d/` fragment.
