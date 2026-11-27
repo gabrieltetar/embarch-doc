@@ -1,6 +1,6 @@
 # 205 — declare_instrument passes an instrument's metrology and calibration
 
-**State:** claimed by agent/api/205-declare-instrument-passes-metrology-and-calibration, 2026-11-26 17:43
+**State:** done — tool and subcommand carry metrology and calibration, refused before Core when malformed (decision 138)
 **Source:** EMB-375 — declare_instrument cannot pass an instrument's metrology or calibration
 **Issue:** EMB-375
 **Scope:** api
@@ -50,8 +50,8 @@ it in fewer bytes than you remove. `check-doc-size.py --pressure` lists
 
 ## Done when
 
-- [ ] Against a fake Core, the tool and the subcommand send the blocks as given.
-- [ ] A malformed date, a negative `U` and an inverted range are refused, and
+- [x] Against a fake Core, the tool and the subcommand send the blocks as given.
+- [x] A malformed date, a negative `U` and an inverted range are refused, and
       Core is not called.
-- [ ] The interface doc lists the new arguments and the decision records them.
-- [ ] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The interface doc lists the new arguments and the decision records them.
+- [x] Gate green (`cargo build --workspace`, `test`, `clippy --all-targets -- -D warnings`).
