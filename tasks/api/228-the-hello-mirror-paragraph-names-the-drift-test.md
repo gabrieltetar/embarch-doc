@@ -1,6 +1,6 @@
 # 228 — the hello mirror paragraph names the drift test
 
-**State:** open
+**State:** claimed by agent/api/228-the-hello-mirror-paragraph-names-the-drift-test, 2026-11-27 05:41
 **Source:** EMB-600 — a reviewer's finding on `api/226`: two api decisions still described the client's copies of Core's wire as unchecked after `api/226` held them to Core's own types
 **Issue:** EMB-600
 **Scope:** api
