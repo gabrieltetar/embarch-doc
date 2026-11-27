@@ -1,6 +1,6 @@
 # 121 — `setup` and `doctor` stop naming a Core install that registers nothing
 
-**State:** open
+**State:** claimed by agent/umbrella/121-setup-and-doctor-stop-naming-a-core-install-that-registers-nothing, 2026-11-27 00:43
 **Source:** EMB-339 — the finding comment of 2026-11-27 (Core decision 157, `core/183`)
 **Issue:** EMB-339
 **Scope:** umbrella
