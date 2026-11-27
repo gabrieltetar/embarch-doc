@@ -64,7 +64,9 @@ of trust").
   `interfaces/installed-release.md`
 - **Size:** `decisions/signing.md`'s decision 110 is 2,486 B over its own
   limit; touch it only if this changes what it says, and do not grow it.
-  `spec.md` is in reserve (1,158 B left, `tasks/core/186`).
+  `spec.md` is 9,008 of 10,240 B, 31 B under its reserve line since
+  `core/186` compacted it; any growth puts it back in reserve, so file the
+  debt in the same commit if it does.
 
 ## Done when
 

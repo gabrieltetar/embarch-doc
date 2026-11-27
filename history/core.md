@@ -41,6 +41,7 @@
 - Core writes an agent token and a person token and records which one each request carried; nothing is refused by scope yet (decision 109).
 
 ### Changed
+- Core compaction: decisions 4, 14, 15 (locking) split verbatim from decisions/platform.md into decisions/locking.md; spec.md §5 shortened.
 - Core's live study event, hello answer, load answer and lease-gated routes are defined once in the new embarch-core-wire crate (decision 164).
 - embarch-core decision 163: service start and stop try without elevation first and prompt only when refused for rights ([decisions](../embarch-core/decisions/service-control.md)).
 - Core's machine data directory now comes from embarch-topology's local_machine_data_dir(); its own resolver is gone (core decision 53).
