@@ -1,6 +1,6 @@
 # 126 — compact `embarch-ui/spec/tabs.md`
 
-**State:** claimed by agent/ui/126-compact-ui, 2026-11-26 19:25
+**State:** done — tabs.md 9334 to 9034 B, out of reserve
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
@@ -15,4 +15,4 @@
 
 ## Done when
 
-- [ ] `tabs.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] `tabs.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
