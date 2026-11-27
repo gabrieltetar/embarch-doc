@@ -35,7 +35,7 @@ Gaps in today's agent-facing docs, found while gathering these notes:
 - **The lease is in the tool reference, not in any procedure**: when to take it, for how long, when to let it go.
 - **§1.1's permission lists disagree with the Live mode**: `reset`, `signal_exchange`, `mem_read`, `core_state` and `bench_exchange` move to allow, the atlas's tools get a list of their own, and **on an attested Core, the identity tools leave §1.1 and the MCP surface**, becoming the person's (review round 2, owner 2026-11-19) ([05-live.md](05-live.md#reach-and-permission)).
 - **The [studies guide](../../suite/studies-guide.md) is written for an engineer** and stops at reading captures: nothing on reporting or publishing.
-- **The ledger has no procedure at all**: tools only ([embarch-api ledger tools](../../embarch-api/interfaces/tools-ledger.md)).
+- **The ledger has no procedure at all**: tools only ([embarch-api test ledger tools](../../embarch-api/interfaces/tools-test-ledger.md)).
 
 ## Open
 
