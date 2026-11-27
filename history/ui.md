@@ -15,6 +15,7 @@
 - The Desk tab shows an agent's GitHub review-replies draft, one editable box per thread, and the posted URLs after Send (EMB-205).
 
 ### Changed
+- The prompt modal now takes a Test run prompt's kind from the event's prompt_kind and no longer reads the study for it (embarch-ui decision 113).
 - Compacted embarch-ui/spec/tabs.md out of reserve; no tab row or decision number removed (ui/126).
 - Core identity line shows the mode Core reports, not one derived from the fingerprint match; unknown when absent (ui decision 112, decisions/core-identity.md).
 - Compacted the ui Live Study decisions file out of reserve; no decision changed.
