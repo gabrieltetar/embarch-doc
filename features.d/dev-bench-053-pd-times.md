@@ -1,0 +1,1 @@
+| PD bench event timing: `pd times` prints PD event stamps and intervals on the bench's own clock | Shipped — **what each interval includes is read from the stack, not measured on a board** | host test | 69 |

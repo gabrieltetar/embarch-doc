@@ -1,6 +1,6 @@
 # 053 — pd-bench reports PD timings on its own clock
 
-**State:** claimed by agent/dev-bench/053-pd-bench-reports-pd-timings-on-its-own-clock, 2026-11-26 17:43
+**State:** done — pd times and PD event stamps built, native_sim tested; hardware debt recorded
 **Source:** EMB-388 — the PD partner cannot report a PD timing on its own clock
 **Issue:** EMB-388
 **Scope:** dev-bench
@@ -52,9 +52,22 @@ CC.
 
 ## Done when
 
-- [ ] The native_sim suite tests the intervals over a scripted event list, a
+- [x] The native_sim suite tests the intervals over a scripted event list, a
       missing event giving no line for its interval.
-- [ ] Both shields build.
-- [ ] The README documents `pd times` and what each interval starts and ends
+- [x] Both shields build.
+- [x] The README documents `pd times` and what each interval starts and ends
       on.
-- [ ] The hardware-verification debt is recorded here.
+- [x] The hardware-verification debt is recorded here.
+
+## Result
+
+Decision 69. `pd times` is a new command (not extra `pd status` lines; the owner may strike it). Stamps come from `k_uptime_ticks()`; the interval arithmetic is `PdLogicInterval` in `pd_logic.c`, tested on native_sim (23 cases pass), both shields build under twister.
+
+## Hardware-verification debt
+
+On each shield (SNK1M1 and DRP1M1), against a probe on CC:
+
+- Run attach, `pd max`, `pd keepalive off` against a PPS source, then `pd times`; compare `attach_to_src_caps`, `request_to_ps_rdy` and `keepalive_stopped_to_hard_reset` with the same intervals on the CC probe.
+- Record which callback stamps each event and what each interval therefore includes: `policy_get_rdo` runs before the Request is on the wire; `MSG_ACCEPT_RECEIVED` and `TRANSITION_PS` run in the Policy Engine thread after the message; the keep-alive event is one 8 s period after the last Request.
+- Record the kernel tick's resolution on the G0B1 (`CONFIG_SYS_CLOCK_TICKS_PER_SEC`); if it is coarser than the 100 us a PD timing needs, switch to `k_cycle_get_32`.
+- Check a Hard Reset the bench sends is never stamped as received (the `hard_reset_sent` flag), on both roles.
