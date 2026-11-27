@@ -1,6 +1,6 @@
 # 065 — The core client reads a prompt event's `prompt_kind`
 
-**State:** open
+**State:** open — announced and parked, ts `1795753355.771419` (2026-11-26 21:22); the window closes 21:52 unless a reply cancels it. Poll `fleet-read.py --thread 1795753355.771419` before running.
 **Source:** EMB-584 — embarch-core-client reads PromptPending's prompt_kind
 **Issue:** EMB-584
 **Scope:** suite
