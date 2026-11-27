@@ -1,6 +1,6 @@
 # 172 — A Test run's PromptPending event names its prompt's kind without a collision
 
-**State:** open
+**State:** claimed by agent/core/172-a-test-runs-prompt-pending-event-names-its-kind-without-a-collision, 2026-11-26 20:38
 **Source:** EMB-577 — the PromptPending event's flattened prompt kind collides with the event tag
 **Issue:** EMB-577
 **Scope:** core
