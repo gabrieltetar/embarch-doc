@@ -2,7 +2,7 @@
 
 **Status:** active, 2026-09-07.
 
-Every route requires `Authorization: Bearer <token>` except `POST /auth/challenge`: the agent's or the person's (decision 109), both reaching every route, the scope recorded, and enforced on the discard in [Run log](interfaces/run-log.md) and on the confirmation card and post in [Definitions](interfaces/definitions.md). Semantics and rationale: [decisions.md](decisions.md).
+Every route requires `Authorization: Bearer <token>` except `POST /auth/challenge`: the agent's or the person's (decision 109), both reaching every route, the scope recorded, and enforced on the discard in [Run log](interfaces/run-log.md) and on the declared serial and name in [Manual verdicts](interfaces/manual-verdicts.md), and on the confirmation card and post in [Definitions](interfaces/definitions.md). Semantics and rationale: [decisions.md](decisions.md).
 
 ## Conventions
 
@@ -29,6 +29,7 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Run log](interfaces/run-log.md) — the hash-chained log of runs, publishes and discards, and the discard refused by scope | `/run-log`, `/study/{id}/log`, `/study/{id}/published`, `/study/{id}/discard` |
 | [Definitions and confirmations](interfaces/definitions.md) — HIL definitions kept by hash, the premade suites Core reads, and a person's confirmation | `/definitions`, `/definitions/{hash}`, `/suites`, `/confirmations/pending`, `/confirmations/{hash}/card`, `/confirmations` |
 | [Test runs](interfaces/test-runs.md) — a run prepared from `run.json` and the go card Core renders from it, the go, the cancel and where a run is | `/test-runs`, `/test-runs/{run_id}`, `/test-runs/{run_id}/card`, `/test-runs/{run_id}/go`, `/test-runs/{run_id}/cancel` |
+| [Manual verdicts, units and the person](interfaces/manual-verdicts.md) — a verdict entered by hand, a unit's declared serial and the person's name, each a run-log entry | `/manual-verdicts`, `/units/{unit_key}`, `/person` |
 | [Call log](interfaces/call-log.md) — the hash-chained log of every call to a lease-gated route | `/call-log` |
 | [Measurements](interfaces/measurements.md) — `measurements.json`, written as a device study ends and signed as a subject | — |
 | [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}`, `/study/{id}/measurements` |

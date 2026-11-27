@@ -1,0 +1,15 @@
+# embarch-core decisions: A manual verdict, a unit's serial and the person's name
+
+**Status:** active, 2026-11-26 (`tasks/core/174`, EMB-372; `notes/hil/03-test.md`, "The verdict" and "The report"). Index: [../decisions.md](../decisions.md). Surface: [../interfaces/manual-verdicts.md](../interfaces/manual-verdicts.md). Builds on [run-log.md](run-log.md) (111: the chain and `append`; 112: a refusal by scope), [test-run-record.md](test-run-record.md) (144: the `test` entry whose fields a manual verdict mirrors) and [auth.md](auth.md) (109, 132: the two tokens).
+
+### 147 — A manual verdict, a unit's declared serial and the person's name are entries in Core's run log
+
+**Three routes, one log.** `POST /manual-verdicts` takes `{test_id, definition_hash, unit_key, dut_image?, verdict, reason, note?}` with either token and enters a `manual_verdict` carrying the token's `scope` and `relayed`, true for the agent's. A `relayed` verdict never counts in a requirement's verdict or in coverage; whoever reads the log for a report applies that, Core only records it. `PUT /units/{unit_key}` takes `{serial, board_revision}` and `PUT /person` takes `{name}`; each enters a `unit_declared` or `person_declared` with `declared: true`, and `GET /units/{unit_key}` and `GET /person` read the latest back (`404` when none). Nothing is overwritten: a later declaration is a later entry, and the chain keeps the earlier one.
+
+**Why the run log, not a file beside it.** A serial or a name a report prints is a claim the report rests on, so it belongs in the chain a reader recomputes (111) and not in a file Core could rewrite unseen. It costs nothing new: `append` already serialises writers and refuses a log that does not verify. The price is a read that scans the log for the latest entry, as `latest` already does.
+
+**The two declarations are the person's on every Core** (`token_store::DECLARATION_ROUTES`, `403` to the agent's token before the lease and before the body is read), the way the go is (135) and unlike the identity routes (132), which a development Core serves to either token: an agent's serial or name would be the agent's word for who ran the test. The agent's token may read both. The three routes and the two reads are lease-open: they touch the log, never a port.
+
+**`verdict` is `pass`, `fail` or `inconclusive`** (assumed, not measured: the executor's own verdicts are `pass` and the cancel and not-run reasons, and a manual one is a person's reading). `definition_hash` must be 64 lowercase hex characters; `test_id`, `unit_key` and `reason` are required and not blank; a field is at most 200 bytes. Core does not check that the test, hash or unit exist: a manual verdict may be entered before the unit's serial is declared, and the report joins them.
+
+**Measured:** unit tests for each token on each route (`relayed` set and unset, both `403`s on a service and a development Core, the readback, a second declaration replacing the first, `400` for a bad verdict and hash) and the chain recomputing over the new entries. **Not run:** a native Windows build; no hardware is touched.

@@ -1,0 +1,1 @@
+| Core keeps a manual verdict, a unit's declared serial and board revision, and the person's name as run-log entries; the agent's verdict reads `relayed`, its serial and name are refused `403` | Built — **host-side only: unit tests over the router and the chain; no bench; Core not deployed; native Windows build unrun** | unit | 147 |

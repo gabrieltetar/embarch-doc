@@ -1,6 +1,6 @@
 # 174 — Core keeps a manual verdict, a unit's serial and the person's name
 
-**State:** claimed by agent/core/174-core-keeps-a-manual-verdict-a-units-serial-and-the-persons-name, 2026-11-26 18:52
+**State:** done — manual verdict, unit serial and person routes built; decision 147; host-side only
 **Source:** EMB-372 — Core keeps no manual verdict, unit serial or person's name
 **Issue:** EMB-372
 **Scope:** core
@@ -49,9 +49,9 @@ In flux: yes): do not write it.
 
 ## Done when
 
-- [ ] A manual verdict with the agent's token is entered and marked `relayed`;
+- [x] A manual verdict with the agent's token is entered and marked `relayed`;
       with the person's, it is not.
-- [ ] A serial and a name with the agent's token are refused 403; with the
+- [x] A serial and a name with the agent's token are refused 403; with the
       person's, kept and readable.
-- [ ] The run log's chain recomputes over the new entries.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] The run log's chain recomputes over the new entries.
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
