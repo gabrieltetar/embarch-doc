@@ -1,7 +1,6 @@
 # 227 — the Test-run verifier reads the attestation by the record's release
 
-**State:** blocked — the Test-run record has no `observed.mode`; `tasks/core/195` adds it (EMB-597). Ready as written once that lands. This task's branch is parked on both remotes (code: no commits; doc: this note), so a resume is `worktree add <path> <branch>`, no `-b`
-**Unparks when:** `core/195` has landed
+**State:** open — `core/195` landed (`embarch-core` `38f608c`): a Test-run record's `predicate.observed` now carries `mode`, set as a Study record's is (core decision 144). This task's branch is parked on both remotes (code: no commits; doc: the old blocked note), so a resume is `worktree add <path> <branch>`, no `-b`, and a rebase onto `origin/main`
 **Source:** EMB-332 — a report cannot say which Core signed it; found by `api/225`'s worker and reviewer
 **Issue:** EMB-332
 **Scope:** api

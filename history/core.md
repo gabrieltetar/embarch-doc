@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Core's Test-run record now carries observed.mode, set as a Study record's is (decision 144, interfaces/signing.md).
 - Core's `/status` now serves `host_type_schema_version` beside `study_designer_schema_version`, same value; the old key stays until both readers move (core decision 162).
 - Core caps the call log with a quota (default 1 GiB): the agent's gated calls are refused at 90 %, the person's at 100 %; `PUT /call-log/quota` is the person's (decision 161).
 - Core holds enrolled boards' debug probes during a lease or study, closing them for each call and vendor tool; the signed record lists them (decision 159).
