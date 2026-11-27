@@ -1,6 +1,6 @@
 # 208 — verify re-evaluates step outcomes and re-parses step-time numbers
 
-**State:** open
+**State:** claimed by agent/api/208-verify-re-evaluates-step-outcomes-and-re-parses-step-numbers, 2026-11-26 18:52
 **Source:** EMB-374 — verify does not re-evaluate step outcomes or re-parse step-time numbers
 **Issue:** EMB-374
 **Scope:** api
