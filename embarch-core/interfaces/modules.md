@@ -22,6 +22,7 @@
 | `definitions.rs`, `confirmations.rs` | HIL definitions kept by hash, the premade suites read from `EMBARCH_SUITES_DIR`, the cards' nonces; six routes (decision 133) |
 | `test_runs.rs` | a run re-expanded and registered prepared under its id, and its go card (decision 134); two routes |
 | `manual.rs` | a manual verdict, a unit's declared serial and the person's name as run-log entries, five routes (decision 147) |
+| `test_publish.rs` | a Test run's `report-data.json` (the crate's roll-up, every run on the unit) and its publish over `publish.rs`'s signing; two routes (decisions 148, 149) |
 | `run_log.rs` | `run-log.jsonl`: the chained entry per run, publish and discard, the discard refused by scope, the retention split, four routes (decision 111) |
 | `dev_bench_link.rs` | the serial transport: postcard+COBS encode/decode, open-per-study, all I/O in `spawn_blocking` |
 | `study.rs` | `/study*` handlers, handshake, `study_lock`, in-memory job registry, host watchdog, `EventsJsonWriter`, the version gate, signal-tap reader threads |

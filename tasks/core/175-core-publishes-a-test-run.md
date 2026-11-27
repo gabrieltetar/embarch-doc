@@ -1,6 +1,6 @@
 # 175 — Core publishes a Test run
 
-**State:** claimed by agent/core/175-core-publishes-a-test-run, 2026-11-26 19:24
+**State:** done — two routes, decisions 148 and 149, tests green; revision-file route filed as EMB-581
 **Source:** EMB-373 — Core cannot publish a Test run
 **Issue:** EMB-373
 **Scope:** core
@@ -70,11 +70,18 @@ commit and keep its `Must not delete:` items.
 
 ## Done when
 
-- [ ] A fixture Test run publishes a signed `report-data.json` whose requirement
+- [x] A fixture Test run publishes a signed `report-data.json` whose requirement
       verdicts equal the crate's roll-up.
-- [ ] A requirement with a test skipped for a gap reads `not_verified`, and the
+- [x] A requirement with a test skipped for a gap reads `not_verified`, and the
       skipped test is listed with its reason.
-- [ ] Every earlier run of a test on the unit, failed ones included, is listed.
-- [ ] The manifest names every study run's files and is entered in the run log.
-- [ ] Interface doc names both routes; gate green (`cargo build`, `test`,
+- [x] Every earlier run of a test on the unit, failed ones included, is listed.
+- [x] The manifest names every study run's files and is entered in the run log.
+- [x] Interface doc names both routes; gate green (`cargo build`, `test`,
       `clippy --all-targets -- -D warnings`).
+
+## Done
+
+Decisions 148 (report data) and 149 (publish) in `embarch-core/decisions/test-run-publish.md` (a split from `publish.md`, whose 12 KB group cap the pair would have passed). Code: `src/test_publish.rs`; a Study's publish moved onto the shared `sign_manifest` in `src/publish.rs`, output unchanged. Left undone and filed: a route serving a revision's files (EMB-581). Not built: a resumed pair (EMB-370), restoring a swept Test run, requirements of tests the selection excluded.
+
+**Hardware / deploy debt:** none for hardware. Core is not deployed; the native Windows build was not run.
+
