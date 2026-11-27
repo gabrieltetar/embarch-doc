@@ -1,6 +1,6 @@
 # 212 — The identity tools name the person's surfaces on a person-scope refusal
 
-**State:** open
+**State:** claimed by agent/api/212-the-identity-tools-name-the-persons-surfaces-on-a-refusal, 2026-11-26 20:12
 **Source:** EMB-335 — the identity tools give a bare refusal on an attested Core
 **Issue:** EMB-335
 **Scope:** api
