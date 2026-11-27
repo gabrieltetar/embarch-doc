@@ -1,6 +1,6 @@
 # 050 — A container login starts claude inside the agent container
 
-**State:** open
+**State:** claimed by agent/chat/050-a-container-login-starts-claude-inside-the-agent-container, 2026-11-26 18:52
 **Source:** EMB-461 — embarch-chat can only start claude in the engineer's own account
 **Issue:** EMB-461
 **Scope:** chat
