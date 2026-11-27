@@ -1,6 +1,6 @@
 # 123 — compact `embarch-ui/decisions/live-study.md`
 
-**State:** claimed by agent/ui/123-compact-ui, 2026-11-26 18:14
+**State:** done — live-study.md 11539 to 10999 B, out of reserve; Must-not-delete items kept
 **Scope:** ui
 **Hardware:** none
 **Owner:** no
@@ -15,4 +15,4 @@
 
 ## Done when
 
-- [ ] `live-study.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] `live-study.md` is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
