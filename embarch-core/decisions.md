@@ -54,6 +54,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [The smoke check before a bench's first test](decisions/smoke-check.md) | 143 | 4.0 KB |
 | [A Test run's own signed record, and each study's amended with its test](decisions/test-run-record.md) | 144, 145, 146 | 7.5 KB |
 | [A manual verdict, a unit's serial and the person's name](decisions/manual-verdicts.md) | 147 | 3.0 KB |
-| [A Test run's publish: report data and the manifest](decisions/test-run-publish.md) | 148, 149 | 6.2 KB |
+| [A Test run's publish: report data and the manifest](decisions/test-run-publish.md) | 148, 149, 150 | 7.6 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.

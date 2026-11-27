@@ -32,7 +32,7 @@ Split out of this file on 2026-09-07 (`tasks/core/020`) when it reached its size
 | [Manual verdicts, units and the person](interfaces/manual-verdicts.md) — a verdict entered by hand, a unit's declared serial and the person's name, each a run-log entry | `/manual-verdicts`, `/units/{unit_key}`, `/person` |
 | [Call log](interfaces/call-log.md) — the hash-chained log of every call to a lease-gated route | `/call-log` |
 | [Measurements](interfaces/measurements.md) — `measurements.json`, written as a device study ends and signed as a subject | — |
-| [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest of a Study or a Test run, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}`, `/study/{id}/measurements`, `/test-runs/{run_id}/report-data`, `/test-runs/{run_id}/publish` |
+| [Publish](interfaces/publish.md) — notes and prose adopted, the signed `report-data.json` and manifest of a Study or a Test run, and what Core serves of a revision | `/study/{id}/adopt`, `/study/{id}/report-data`, `/study/{id}/publish`, `/study/{id}/restore/{name}`, `/study/{id}/publish/{revision}/files/{name}`, `/study/{id}/measurements`, `/test-runs/{run_id}/report-data`, `/test-runs/{run_id}/publish`, `/test-runs/{run_id}/publish/{revision}/files/{name}` |
 | [Result layout on disk](interfaces/result-layout.md) — not a route group, what the Studies routes above read | — |
 | [Image readback](interfaces/image-readback.md) — not a route group, the states `readback` answers and the bench-firmware variable | — |
 | [Constants and knobs](interfaces/constants.md) — not a route group, spec §5's values | — |

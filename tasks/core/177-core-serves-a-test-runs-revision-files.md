@@ -1,6 +1,6 @@
 # 177 — Core serves a Test run's revision files
 
-**State:** claimed by agent/core/177-core-serves-a-test-runs-revision-files, 2026-11-26 20:12
+**State:** done — GET /test-runs/{id}/publish/{revision}/files/{name} serves a Test run revision (decision 150)
 **Source:** EMB-581 — Core serves a Test run's revision files to embarch-api
 **Issue:** EMB-581
 **Scope:** core
@@ -50,11 +50,11 @@ yes): do not write it.
 
 ## Done when
 
-- [ ] The route serves a revision's publish files, a manifest-named
+- [x] The route serves a revision's publish files, a manifest-named
       `studies/<study_id>/...` file, and at the pending revision the run's own
       files; tests cover each.
-- [ ] A name outside that set is `404`, and a climbing name is refused; tests
+- [x] A name outside that set is `404`, and a climbing name is refused; tests
       cover both.
-- [ ] The route is in the interface doc, the lease and auth route lists, and the
+- [x] The route is in the interface doc, the lease and auth route lists, and the
       route count.
-- [ ] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).
+- [x] Gate green (`cargo build`, `test`, `clippy --all-targets -- -D warnings`).

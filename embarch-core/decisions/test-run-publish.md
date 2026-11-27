@@ -24,6 +24,14 @@ The data (`kind: "test_run"`, deterministic, no clock) is read from the prepared
 
 **A resumed pair** (EMB-370, not landed) is not built. Once resume exists, the later run's record names the earlier in `resumes` (144) and the pair will publish as one zip: `report-data` reads the earlier record through that link and reports each test's latest verdict across the pair, the manifest names both records, both `result.json` and both runs' study files, and a `published` entry is made for each run id so retention releases both. Today `resumes` is carried in the data and not followed.
 
-**Not done:** no route serves a revision's files, which embarch-api needs to build the PDF (filed as a follow-up).
+**Not done:** the route that serves a revision's files is 150.
 
 **Measured:** unit tests over the real routes: the manifest verifies under a DSSE v1 check, names every study's files, run.json, result.json and the record, and is entered with the run id; the studies are released; a second publish is revision 2 naming the first; a publish before `report-data` and over a swept study are refused. **Not run:** a real Test run's publish, a third-party DSSE verifier, the native Windows build.
+
+### 150 — `GET /test-runs/{id}/publish/{revision}/files/{name}` is 116's file route over a Test run's files
+
+`tasks/core/177`, EMB-581; embarch-api renders the PDF and the JUnit and OCP exports from `report-data.json` and the run's study files before the manifest is signed, so it needs what a Study has. The route is `test_file_handler` in `src/test_publish.rs` and takes 116's rules unchanged: either token, lease-open, `application/octet-stream` as written, and a name outside the set is `404`. It shares `publish.rs`'s `manifest_names` and `served`, which `file_handler` now uses too; nothing is copied.
+
+It serves the five publish files, any file the revision's signed manifest names that Core made (`run.json`, `result.json`, `test-run.dsse.json`, `studies/<study_id>/<name>`), and at the pending revision (opened by `report-data`, no manifest) the run's own files: each study run's Core files, `run.json`, `result.json` when the run has one, and `test-run.dsse.json`. **Where a Test run differs:** a name is mapped to a file (`studies/<id>/<rest>` to that study's run directory, the rest to the run's), since the files sit in more than one directory, and a pending study file is served only for a study the run's `test_run` entry names. A name that is not a plain relative path (`..`, a leading `/`, `\`) is `404` before any path is built, and so is a name embarch-api made (`report.pdf`). The pending branch runs `ended_run`, so a Test run whose study files the sweep took is a `409` there, as at `report-data`; a published revision serves what is still on disk.
+
+**Measured:** a unit test over the real router with a fixture run: nothing before `report-data`; every file above pending; a climbing name, an unnamed study, the API's file, the pending manifest and another revision are `404`; the bytes match the manifest's digests after `publish`. **Not run:** embarch-api consuming it against a real Test run.
