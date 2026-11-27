@@ -1,6 +1,6 @@
 # 219 — verify judges a refused Exchange step under its recorded target
 
-**State:** open
+**State:** claimed by agent/api/219-verify-judges-a-refused-exchange-step-under-its-recorded-target, 2026-11-26 22:55
 **Source:** EMB-589 — verify reads a refused Exchange step both ways though Core records its target
 **Issue:** EMB-589
 **Scope:** api
