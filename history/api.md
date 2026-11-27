@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- Client StatusResponse carries Core's mode and keyid (api decision 139).
 - api: declare_instrument carries an instrument's metrology and calibration (a certificate file sent as its SHA-256); a re-declare keeps what is stored (decision 138)
 - The client's PendingPrompt and answer carry a Test run prompt's kind, observation, switched_on and answer value; see [decision 137](../embarch-api/decisions/client-crate.md).
 - api: CoreClient::test_run_go carries the person's go for the UI; the go ban narrows to the agent's MCP and CLI sources (decision 135).
