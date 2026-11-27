@@ -106,6 +106,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | `list-studies [--limit N]` — Core's retained studies, newest first, each with its taps and a flat `encoding_kind`; CLI only, no lease | Built | unit | [studies](../embarch-api/interfaces/studies.md) |
 | `schema_version` on every `--json`/MCP object, stamped by one serializer | Shipped | unit | 24, 50 |
 | `error_kind` — a machine-readable failure kind | **Retired** — never built; needs Core to serve error codes at all | n/a | 16, 50 |
+| `--as-person` on the ten identity acts, and the identity tools naming the CLI command and the Topology tab on an attested Core's person-scope refusal; CLI-side only | Built; mock Core only | unit | 143 |
 | `soc_chip_overrides` — a per-project SoC→chip escape hatch, consulted before Core's `/resolve-chip` | **Retired unbuilt 2026-09-05** — the short-circuit would skip the registry validation that is Core's whole claim to the table; a config declaring the key now fails at load naming the retirement | unit | 13 |
 | `dev_bench_hello` — the only tool serving the JTAG-vs-self-reported identity cross-check (`link_identity`, not a bool) | Shipped | local | 59 |
 | `list_serial_ports`/`list-serial-ports` — discovers a `serial_log` port value from Core's own machine | Shipped | unit | 70 |
