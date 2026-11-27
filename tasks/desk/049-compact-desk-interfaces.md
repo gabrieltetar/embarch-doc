@@ -1,6 +1,6 @@
 # 049 — compact `embarch-desk/interfaces.md`
 
-**State:** claimed by agent/desk/049-compact-desk-interfaces, 2026-11-27 04:31
+**State:** done — Linear and Promptu rows moved verbatim to interfaces/linear-routes.md; interfaces.md 13,938 to 11,097 B
 **Scope:** desk
 **Hardware:** none
 **Owner:** no
@@ -17,5 +17,5 @@
 
 ## Done when
 
-- [ ] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
-- [ ] The human question is answered in the commit message: can `interfaces.md` plus its sub-files still answer what each route takes and how a caller authenticates?
+- [x] The file is out of reserve (`scripts/check-doc-size.py --pressure`) and every `Must not delete:` item survives.
+- [x] The human question is answered in the commit message: can `interfaces.md` plus its sub-files still answer what each route takes and how a caller authenticates?
