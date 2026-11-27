@@ -1,6 +1,6 @@
 # 180 — A Test run's Exchange steps record their target in the signed files
 
-**State:** claimed by agent/core/180-a-test-runs-exchange-steps-record-their-target-in-the-signed-files, 2026-11-26 22:02
+**State:** done — Exchange step rows of events.json record signal and target; judge_steps reads the recorded target (decision 155)
 **Source:** EMB-586 — Record each Exchange step's target (DUT or bench) in the signed files
 **Issue:** EMB-586
 **Scope:** core
@@ -71,11 +71,11 @@ neighbour's number.
 
 ## Done when
 
-- [ ] Each step of a Test run's study that addressed an `Exchange` signal
+- [x] Each step of a Test run's study that addressed an `Exchange` signal
       records the target `judge_steps` gave it, in a file a signed record
       covers; a unit test shows a bench-signal refusal and a DUT-signal
       refusal recording different targets and judging `error` and `fail`.
-- [ ] `interfaces/host-studies.md` or `interfaces/publish.md` names the field.
-- [ ] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
+- [x] `interfaces/host-studies.md` or `interfaces/publish.md` names the field.
+- [x] Gate green (`cargo build`, `cargo test`, `cargo clippy --all-targets --
       -D warnings`).
-- [ ] Decision with index row; `changelog.d/` fragment.
+- [x] Decision with index row; `changelog.d/` fragment.

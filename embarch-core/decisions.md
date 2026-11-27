@@ -57,5 +57,6 @@ Why it is the way it is, split by mission — Core owns more distinct jobs than 
 | [A Test run's publish: report data and the manifest](decisions/test-run-publish.md) | 148, 149, 150, 154 | 8.8 KB |
 | [Keeping the host awake through a Test run](decisions/test-run-awake.md) | 152 | 2.2 KB |
 | [An interrupted Test run and its resume](decisions/test-run-resume.md) | 153 | 4.1 KB |
+| [A step's target in the signed events](decisions/test-run-target.md) | 155 | 2.7 KB |
 
 An entry may own several numbers where decisions were merged under a byte budget; every listed number still resolves. Retired entries stay as one-line tombstones so a dangling reference lands on an explanation rather than a gap — decision 25 is the one here.
