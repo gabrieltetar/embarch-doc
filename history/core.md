@@ -52,6 +52,7 @@
 - Core decisions split: probes.md now holds probe selection; chip mapping moved to chip-mapping.md; spec.md module table moved to interfaces/modules.md.
 
 ### Fixed
+- A Test run's test_run entry now binds each study's amended record hash; GET /study/{id}/log answers it (decision 146).
 - Retention sweeps nothing, and GET /studies lists everything, while Core's run log cannot be read or verified (decision 111).
 ## 2026-10
 
