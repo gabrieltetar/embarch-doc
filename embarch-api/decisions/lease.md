@@ -30,7 +30,7 @@ Index: [../decisions.md](../decisions.md). Current truth: [../spec.md](../spec.m
 
 **`embarch-api`'s startup turns it on, not the crate.** `CoreClient::with_lease_required` is off unless called, so `embarch-ui` and the crate's other users are unchanged whatever their environment holds: a person at the UI is not the session this is about. `embarch-atlas` reaches Core through this CLI (decision 90), so it is covered, and it needs the token exported as before.
 
-**The gated routes are a copy of Core's `lease::LEASE_GATED`,** because that table is inside Core's binary and asking Core for it would need a Core change and deploy. A unit test compares the copy with the sibling checkout's source when one is there. A route missing from the copy is not refused here, and Core still gates it while a lease is live, which is why a copy is acceptable.
+**The gated routes are Core's own `LEASE_GATED`,** re-exported from `embarch-core-wire` since `tasks/api/226` ([decision 49](study-events.md)); before that they were a copy, tested against the sibling checkout only when one was there. A route Core gates is in the table by construction, and Core still gates any route while a lease is live.
 
 **The tests are held to nothing.** They run the real binary against a mock Core, from sessions that may have the variable on, so `.cargo/config.toml` forces it empty for what cargo runs. **`cargo run` from such a session therefore skips the check too.**
 

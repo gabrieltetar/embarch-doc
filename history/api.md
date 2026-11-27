@@ -39,6 +39,7 @@
 - build answers with a verdict (warnings, first error, FLASH/RAM, log_path) and builds named variants in their own directories ([decisions](../embarch-api/decisions.md) 102, 103).
 
 ### Changed
+- embarch-core-client takes LoadAnswer and LEASE_GATED from embarch-core-wire; StudyEvent and the hello stay lenient, drift-tested against it (decision 49).
 - `verify` check 6 reads a report's attestation by the signed record's `release` key: Core mode and release instead of `core_attested` ([decision 124](../embarch-api/decisions/verify-report.md)).
 - Finding embarch.toml is one function in embarch-core-client (explicit path, EMBARCH_API_CONFIG, walk up); the API uses it. See api decision 152.
 - Core-client token discovery takes the machine data directory from embarch-topology; an unset ProgramData now errors by name instead of falling back to C:\ProgramData.
