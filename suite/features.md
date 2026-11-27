@@ -141,6 +141,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Interrupt-driven inbound RX — **fixes a silent 128-byte ceiling that dropped every larger message** | Shipped | ztest | 36 |
 | GATT capture window spanning steps | Shipped | hw | 30 |
 | Central-side pairing callbacks — **without them an authenticated link is unreachable whatever a study asks** | Shipped | hw | 34 |
+| PD bench event timing: `pd times` prints PD event stamps and intervals on the bench's own clock | Shipped — **what each interval includes is read from the stack, not measured on a board** | host test | 69 |
 | Busy-means-wait on a security request already in flight | Shipped | hw | 37 |
 | `CONFIG_LOG` forwarded to Core, per-study level, flushed before every level change | Shipped | hw | 38, 39 |
 | Firmware on the nRF54L15DK, built, flashed and handshaking | Shipped | hw | 43 |
@@ -294,6 +295,7 @@ A `Status` of `Shipped` with a caveat spells the caveat out; a bare `Shipped` ha
 | Confirm tab: the engineer confirms a custom or derived test, capability or hook from Core's own card, one or all shown, with the person's token and the card's nonce | Shipped — host-tested against a stub Core; not run in a browser or against a live Core | unit | 110 |
 | Go card: the Confirm tab draws Core's card for a prepared Test run and gives the person's go, disabled while an input is unconfirmed | Shipped — host-tested against a stub Core; not run in a browser or against a live Core; the prompt modal's kind and answer wait on EMB-575 | unit | 111 |
 | Core identity line: every tab names the Core as service or development with its fingerprint and a match verdict, a mismatch drawn as a warning | Shipped — host-tested on fixture attestations; not run in a browser or against a live Core; mode is derived from the match | unit | 112 |
+| Prompt modal for a Test run: shows a prompt's kind, the outputs Core switched on and an observation's choices or number, and sends the person's value | Shipped — host-tested; not run in a browser or against a real Core's Test run | unit | 113 |
 
 ## embarch-desk
 

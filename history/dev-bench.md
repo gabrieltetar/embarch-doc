@@ -5,6 +5,7 @@
 ## 2026-11
 
 ### Added
+- The PD bench stamps each PD event with its own uptime and `pd times` prints the intervals (decision 69, EMB-388); native_sim tested, no bench run yet.
 - pd-bench gains `pd idle` (every setting back, contract dropped, VBUS off on the DRP1M1) and `pd hello` (app, version, commit, shield): [decision 68](../embarch-dev-bench/decisions/pd-bench.md).
 - A script, `scripts/bench-firmware-list.py`, writes the release's `release/bench-firmware.json`; see embarch-dev-bench/spec/bench-firmware-list.md.
 - dev-bench `scripts/patch-sums.py` checks and refreshes a patches.yml's sha256sum values in place, with no west workspace.
