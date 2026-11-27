@@ -1,6 +1,6 @@
 # 213 — A Test run publishes as one zip
 
-**State:** open
+**State:** claimed by agent/api/213-a-test-run-publishes-as-one-zip, 2026-11-26 20:39
 **Source:** EMB-380 — a Test run cannot be published
 **Issue:** EMB-380
 **Scope:** api
